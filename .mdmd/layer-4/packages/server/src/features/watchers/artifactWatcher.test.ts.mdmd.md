@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/watchers/artifactWatcher.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-watchers-artifactwatcher-test-ts
-- Generated At: 2025-11-20T21:07:33.225Z
+- Generated At: 2025-11-24T15:19:58.893Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Verifies that `ArtifactWatcher` classifies code and documentation changes correc
 - Added alongside the watcher refactor captured in [2025-10-19 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-19.SUMMARIZED.md) to guard the unified pipeline.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:33.225Z","inputHash":"72e188081d551d1e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.893Z","inputHash":"e974f003fe0d03c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,12 +24,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `LinkInferenceOrchestrator`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
 - [`changeQueue.QueuedChange`](../changeEvents/changeQueue.ts.mdmd.md#symbol-queuedchange) (type-only)
 - [`artifactWatcher.ArtifactWatcher`](./artifactWatcher.ts.mdmd.md#symbol-artifactwatcher)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.LinkInferenceOrchestrator`](../../../../shared/src/index.ts.mdmd.md#symbol-linkinferenceorchestrator)
 - `vitest` - `describe`, `expect`, `it`, `vi`
 - `vscode-languageserver-textdocument` - `TextDocument`
 <!-- LIVE-DOC:END Dependencies -->

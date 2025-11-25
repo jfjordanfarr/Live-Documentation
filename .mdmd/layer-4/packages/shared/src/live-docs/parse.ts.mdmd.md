@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/parse.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-parse-ts
-- Generated At: 2025-11-21T04:04:59.982Z
+- Generated At: 2025-11-24T18:24:22.636Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralises Live Doc markdown parsing so CLI utilities can obtain consistent met
 Outputs workspace-relative paths and filters Live Doc links down to their underlying code artefacts, keeping downstream scripts agnostic of mirror layout conventions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-21T04:04:59.982Z","inputHash":"6ede5702d46074dc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T18:24:22.636Z","inputHash":"a758f35ae78a5658"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ParsedLiveDoc` {#symbol-parsedlivedoc}
@@ -26,9 +26,13 @@ Outputs workspace-relative paths and filters Live Doc links down to their underl
 - Type: interface
 - Source: [source](../../../../../../packages/shared/src/live-docs/parse.ts#L16)
 
+#### `ParsedDependency` {#symbol-parseddependency}
+- Type: interface
+- Source: [source](../../../../../../packages/shared/src/live-docs/parse.ts#L22)
+
 #### `parseLiveDocMarkdown` {#symbol-parselivedocmarkdown}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/parse.ts#L24)
+- Source: [source](../../../../../../packages/shared/src/live-docs/parse.ts#L32)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

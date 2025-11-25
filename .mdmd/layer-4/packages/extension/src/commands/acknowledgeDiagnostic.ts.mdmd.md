@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/acknowledgeDiagnostic.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-acknowledgediagnostic-ts
-- Generated At: 2025-11-19T15:01:33.253Z
+- Generated At: 2025-11-24T15:19:58.209Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - Keep the command signature aligned with the acknowledgement service contract so integration tests continue to assert end-to-end pruning, per [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.253Z","inputHash":"a8ff0bc110905471"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.209Z","inputHash":"e0b8620c570d3919"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ACKNOWLEDGE_DIAGNOSTIC_COMMAND` {#symbol-acknowledge_diagnostic_command}
@@ -34,11 +34,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ACKNOWLEDGE_DIAGNOSTIC_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-acknowledge_diagnostic_request)
-- [`index.AcknowledgeDiagnosticParams`](../../../shared/src/index.ts.mdmd.md#symbol-acknowledgediagnosticparams)
-- [`index.AcknowledgeDiagnosticResult`](../../../shared/src/index.ts.mdmd.md#symbol-acknowledgediagnosticresult)
-- [`index.DIAGNOSTIC_ACKNOWLEDGED_NOTIFICATION`](../../../shared/src/index.ts.mdmd.md#symbol-diagnostic_acknowledged_notification)
-- [`index.DiagnosticAcknowledgedPayload`](../../../shared/src/index.ts.mdmd.md#symbol-diagnosticacknowledgedpayload)
+- `@live-documentation/shared` - `ACKNOWLEDGE_DIAGNOSTIC_REQUEST`, `AcknowledgeDiagnosticParams`, `AcknowledgeDiagnosticResult`, `DIAGNOSTIC_ACKNOWLEDGED_NOTIFICATION`, `DiagnosticAcknowledgedPayload`
 - `vscode` - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->

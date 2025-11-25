@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/overrides/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-overrides-overridelink-ts
-- Generated At: 2025-11-19T15:01:34.409Z
+- Generated At: 2025-11-24T15:19:58.870Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the language-server side of the T027 manual override flow by persisti
 - Automated coverage was deferred in the originating change set because the Node 22 toolchain blocked lint/test execution; the outstanding validation gap is acknowledged in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.409Z","inputHash":"55c596f31a20585c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.870Z","inputHash":"f951b2554812cc1d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `applyOverrideLink` {#symbol-applyoverridelink}
@@ -26,12 +26,6 @@ Implements the language-server side of the T027 manual override flow by persisti
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkOverrideReason`, `LinkRelationshipKind`, `OverrideLinkArtifactInput`, `OverrideLinkRequest`, `OverrideLinkResponse`
 - `crypto` - `createHash`, `randomUUID`
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
-- [`index.LinkOverrideReason`](../../../../shared/src/index.ts.mdmd.md#symbol-linkoverridereason)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.OverrideLinkArtifactInput`](../../../../shared/src/index.ts.mdmd.md#symbol-overridelinkartifactinput)
-- [`index.OverrideLinkRequest`](../../../../shared/src/index.ts.mdmd.md#symbol-overridelinkrequest)
-- [`index.OverrideLinkResponse`](../../../../shared/src/index.ts.mdmd.md#symbol-overridelinkresponse)
 <!-- LIVE-DOC:END Dependencies -->

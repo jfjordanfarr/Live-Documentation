@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/scenarios.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-scenarios-ts
-- Generated At: 2025-11-19T15:01:34.328Z
+- Generated At: 2025-11-24T15:19:58.778Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the curated headless harness scenarios so automated runs can copy fixtur
 - The initial Ruby, Python, and C# entries cover the multilingual fixtures we committed to exercising headlessly; the `system` flag toggles System doc materialization for scenarios that need co-activation coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.328Z","inputHash":"8cd40746385f5192"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.778Z","inputHash":"69ce656f1565f0d4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessScenario` {#symbol-headlessharnessscenario}
@@ -37,5 +37,5 @@ Defines the curated headless harness scenarios so automated runs can copy fixtur
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput) (type-only)
+- `@live-documentation/shared/config/liveDocumentationConfig` - `LiveDocumentationConfigInput` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

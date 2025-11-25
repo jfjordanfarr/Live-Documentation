@@ -74,7 +74,7 @@ Supports CAP-003 by making Live Documentation the backbone of diagnostics, CLI t
 - Support staged adoption (Observe → Sustain) with profile configurations that control enforcement scope.
 
 ### REQ-V1 Live Visualization Command Center
-Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local explorer, and force-directed discovery view into a single `npm run live-docs:visualize` experience that remains grounded in Layer‑4 Live Docs and ready for future bidirectional authoring.
+Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local explorer, and force-directed discovery view into a single `npm run live-docs:visualize` experience that remains grounded in Layer‑4 Live Docs and ready for future bidirectional authoring. The explorer must maintain parity with the Live Doc graph: every dependency, symbol anchor, and evidence field available headlessly must surface in the UI without lossy aggregation or speculative heuristics, and visual affordances should colour or otherwise distinguish inbound versus outbound relationships to match CLI diagnostics.
 
 #### Stream LV1-A – Unified Explorer *(in progress)*
 - Refactor `visualize-explorer.ts` so the circuit-board and local views share a data model sourced from Live Docs, letting users pan globally, expand a file into its symbols, and toggle focus-mode filters that hide unrelated nodes.
@@ -192,6 +192,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 - Keyboard navigation, focus outlines, and screen-reader labels meet WCAG AA success criteria (2.1 Keyboard, 1.4.3 Contrast, 4.1.2 Name/Role/Value) across supported browsers/host IDEs.
 - The detail panel presents authored Live Doc sections read-only today, with clear messaging about pending text editing, and loads within ≤500 ms for repos under 5k files.
 - Telemetry captures view changes, focus-mode toggles, and accessibility overrides so UX audits can trace adoption and regressions.
+- Visual overlays expose inbound versus outbound relationships with distinct treatments (for example, colour or stroke style) and honour symbol-level anchors once emitted by the generator so the UI mirrors the CLI’s directional insights without regression tests flagging gaps.
 
 ### REQ-E1 Acceptance Criteria
 - MIT license, README, and marketing materials describe Live Documentation capabilities and configuration knobs.

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-symbolcorrectnessvalidator-ts
-- Generated At: 2025-11-19T19:27:13.450Z
+- Generated At: 2025-11-24T15:19:58.584Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Evaluates compiled symbol correctness profiles against the workspace graph to su
 - Leverages identifier intersection, target matchers, and directionality checks refined during the Oct 30 design sessions ([2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)) to keep MDMD-layer expectations measurable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T19:27:13.450Z","inputHash":"c0af744be8b17125"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.584Z","inputHash":"0e5fb92576b17114"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolCorrectnessDiagnosticOptions` {#symbol-symbolcorrectnessdiagnosticoptions}
@@ -41,13 +41,5 @@ Evaluates compiled symbol correctness profiles against the workspace graph to su
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.CompiledSymbolProfile`](../../../../shared/src/index.ts.mdmd.md#symbol-compiledsymbolprofile)
-- [`index.CompiledSymbolProfileRequirement`](../../../../shared/src/index.ts.mdmd.md#symbol-compiledsymbolprofilerequirement)
-- [`index.CompiledSymbolProfileTarget`](../../../../shared/src/index.ts.mdmd.md#symbol-compiledsymbolprofiletarget)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.SymbolProfileEnforcementMode`](../../../../shared/src/index.ts.mdmd.md#symbol-symbolprofileenforcementmode)
-- [`index.SymbolProfileLookup`](../../../../shared/src/index.ts.mdmd.md#symbol-symbolprofilelookup)
-- [`index.toWorkspaceRelativePath`](../../../../shared/src/index.ts.mdmd.md#symbol-toworkspacerelativepath)
+- `@live-documentation/shared` - `CompiledSymbolProfile`, `CompiledSymbolProfileRequirement`, `CompiledSymbolProfileTarget`, `GraphStore`, `KnowledgeArtifact`, `LinkRelationshipKind`, `SymbolProfileEnforcementMode`, `SymbolProfileLookup`, `toWorkspaceRelativePath`
 <!-- LIVE-DOC:END Dependencies -->

@@ -31,12 +31,34 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
     let missingDependencyCount = 0;
 
     const nodePayloads: ExplorerNodePayload[] = nodes.map(node => {
-        const dependencies = Array.from(node.dependencies);
         const dependents = Array.from(graph.inbound.get(node.codePath) ?? []);
-        const missingDependencies = node.rawDependencies.filter(dep => !graph.nodes.has(dep));
+
+        const dependencyReferences = node.rawDependencies.map<ExplorerNodePayload["dependencies"][number]>(dep => {
+            const targetId = dep.codePath;
+            const targetNode = targetId ? graph.nodes.get(targetId) : undefined;
+            const resolved = Boolean(targetNode);
+            const label = dep.label || targetId || dep.raw;
+            return {
+                targetId: targetId,
+                targetDocPath: targetNode?.docPath ?? dep.docPath,
+                targetSymbol: dep.anchor,
+                label,
+                raw: dep.raw,
+                resolved,
+                kind: "dependency"
+            };
+        });
+
+        const missingDependencies = dependencyReferences.filter(reference => !reference.resolved);
         missingDependencyCount += missingDependencies.length;
 
-        dependencies.forEach(target => addLink(node.codePath, target, "dependency"));
+        dependencyReferences
+            .filter(reference => reference.resolved && reference.targetId)
+            .forEach(reference => {
+                addLink(node.codePath, reference.targetId!, "dependency", {
+                    targetSymbol: reference.targetSymbol
+                });
+            });
 
         return {
             id: node.codePath,
@@ -46,7 +68,7 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
             docPath: node.docPath,
             docRelativePath: toRelativePath(workspaceRoot, node.docPath),
             archetype: node.archetype,
-            dependencies,
+            dependencies: dependencyReferences,
             dependents,
             missingDependencies,
             publicSymbols: node.publicSymbols,
@@ -67,19 +89,30 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
         }
     } satisfies ExplorerGraphPayload;
 
-    function addLink(source: string, target: string, kind: InheritanceLinkKind | "dependency") {
+    function addLink(
+        source: string,
+        target: string,
+        kind: InheritanceLinkKind | "dependency",
+        metadata?: { sourceSymbol?: string; targetSymbol?: string }
+    ) {
         if (source === target) {
             return;
         }
         if (!graph.nodes.has(source) || !graph.nodes.has(target)) {
             return;
         }
-        const key = `${source}|${target}|${kind}`;
+        const key = `${source}|${target}|${kind}|${metadata?.sourceSymbol ?? ""}|${metadata?.targetSymbol ?? ""}`;
         if (seenLinks.has(key)) {
             return;
         }
         seenLinks.add(key);
-        links.push({ source, target, kind });
+        links.push({
+            source,
+            target,
+            kind,
+            sourceSymbol: metadata?.sourceSymbol,
+            targetSymbol: metadata?.targetSymbol
+        });
     }
 }
 

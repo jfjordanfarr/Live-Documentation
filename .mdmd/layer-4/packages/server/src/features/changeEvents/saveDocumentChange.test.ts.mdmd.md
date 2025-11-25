@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/changeEvents/saveDocumentChange.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-changeevents-savedocumentchange-test-ts
-- Generated At: 2025-11-20T21:07:32.423Z
+- Generated At: 2025-11-24T15:19:58.464Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies the document change persistence flow from [2025-10-17 summary](../../..
 - Stubs GraphStore interactions and random UUIDs so changes to event payloads or placeholder artifacts fail fast without requiring disk-backed fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:32.423Z","inputHash":"2b44cebff527755f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.464Z","inputHash":"4a430bb95ad42040"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,12 +23,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `ChangeEvent`, `GraphStore`, `KnowledgeArtifact` (type-only)
 - [`changeQueue.QueuedChange`](./changeQueue.ts.mdmd.md#symbol-queuedchange) (type-only)
 - [`saveDocumentChange.saveDocumentChange`](./saveDocumentChange.ts.mdmd.md#symbol-savedocumentchange)
 - [`artifactWatcher.DocumentTrackedArtifactChange`](../watchers/artifactWatcher.ts.mdmd.md#symbol-documenttrackedartifactchange) (type-only)
-- [`index.ChangeEvent`](../../../../shared/src/index.ts.mdmd.md#symbol-changeevent) (type-only)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore) (type-only)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
 - `vitest` - `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
 

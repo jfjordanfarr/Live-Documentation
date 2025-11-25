@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/dependencies/buildCodeGraph.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-dependencies-buildcodegraph-ts
-- Generated At: 2025-11-19T15:01:33.714Z
+- Generated At: 2025-11-24T15:19:58.479Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Performs breadth-first traversal over incoming dependency links to generate the 
 - Caps traversal depth and link kinds to keep dependency fan-out predictable while still honouring transitive chains for the inspect/quick pick experiences.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.714Z","inputHash":"0c8c05a5e7d7d964"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.479Z","inputHash":"9e05cbc27fc286e0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CodeImpactEdge` {#symbol-codeimpactedge}
@@ -33,9 +33,7 @@ Performs breadth-first traversal over incoming dependency links to generate the 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkRelationshipKind`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

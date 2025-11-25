@@ -1,0 +1,38 @@
+# packages/scripts/src/live-docs/explorer/client/index.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
+- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
+- Generated At: 2025-11-24T15:19:58.405Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.405Z","inputHash":"def5cbdf332f18c3"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+_No public symbols detected_
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
+- [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
+- [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)
+- [`errors.attachGlobalErrorHandler`](./errors.ts.mdmd.md#symbol-attachglobalerrorhandler)
+- [`errors.reportFatalExplorerError`](./errors.ts.mdmd.md#symbol-reportfatalexplorererror)
+- [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
+- [`circuitView.createCircuitView`](./views/circuitView.ts.mdmd.md#symbol-createcircuitview)
+- [`localView.createLocalView`](./views/localView.ts.mdmd.md#symbol-createlocalview)
+- [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
+- [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
+<!-- LIVE-DOC:END Dependencies -->

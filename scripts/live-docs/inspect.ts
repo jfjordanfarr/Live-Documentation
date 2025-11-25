@@ -364,12 +364,14 @@ function searchGraph(
         continue;
       }
       for (const dependency of graphNode.rawDependencies) {
-        if (!graph.nodes.has(dependency)) {
-          frontierMap.set(`${node}|missing|${dependency}`, {
+        const targetId = dependency.codePath;
+        if (!targetId || !graph.nodes.has(targetId)) {
+          const missingKey = targetId ?? dependency.raw;
+          frontierMap.set(`${node}|missing|${missingKey}`, {
             node,
             docPath: graphNode.docPath,
             reason: "missing-doc",
-            missingDependency: dependency
+            missingDependency: missingKey
           });
         }
       }

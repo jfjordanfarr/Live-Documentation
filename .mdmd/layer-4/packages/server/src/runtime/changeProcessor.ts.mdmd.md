@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/changeProcessor.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-changeprocessor-ts
-- Generated At: 2025-11-19T15:01:34.526Z
+- Generated At: 2025-11-24T15:19:58.930Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates the runtime pipeline that drains `changeQueue`, persists document/co
 Acknowledgement gating, hysteresis, and ripple-aware publishing were added the following day—see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-06-acknowledgement-hysteresis--diagnostic-replay-lines-601-1220](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-06-acknowledgement-hysteresis--diagnostic-replay-lines-601-1220)—so any refactor must keep the sequencing between acknowledgement service, hysteresis controller, and ripple analyzer intact to avoid “stale diagnostic” regressions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.526Z","inputHash":"36e22a92f01384b7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.930Z","inputHash":"651b4496a3ed2aae"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ChangeProcessorContext` {#symbol-changeprocessorcontext}
@@ -37,6 +37,7 @@ Acknowledgement gating, hysteresis, and ripple-aware publishing were added the f
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact` (type-only)
 - [`changeQueue.QueuedChange`](../features/changeEvents/changeQueue.ts.mdmd.md#symbol-queuedchange) (type-only)
 - [`saveCodeChange.saveCodeChange`](../features/changeEvents/saveCodeChange.ts.mdmd.md#symbol-savecodechange)
 - [`saveDocumentChange.persistInferenceResult`](../features/changeEvents/saveDocumentChange.ts.mdmd.md#symbol-persistinferenceresult)
@@ -59,7 +60,5 @@ Acknowledgement gating, hysteresis, and ripple-aware publishing were added the f
 - [`environment.describeError`](./environment.ts.mdmd.md#symbol-describeerror)
 - [`llmIngestion.LlmIngestionManager`](./llmIngestion.ts.mdmd.md#symbol-llmingestionmanager) (type-only)
 - [`latencyTracker.LatencyTracker`](../telemetry/latencyTracker.ts.mdmd.md#symbol-latencytracker) (type-only)
-- [`index.GraphStore`](../../../shared/src/index.ts.mdmd.md#symbol-graphstore) (type-only)
-- [`index.KnowledgeArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
 - `vscode-languageserver/node` - `Connection` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

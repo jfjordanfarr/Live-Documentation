@@ -10,6 +10,7 @@ import {
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import {
   parseLiveDocMarkdown,
+  type ParsedDependency,
   type ParsedSymbolDocumentationEntry
 } from "@live-documentation/shared/live-docs/parse";
 
@@ -18,7 +19,7 @@ export interface LiveDocGraphNode {
   docPath: string;
   archetype: string;
   dependencies: Set<string>;
-  rawDependencies: string[];
+  rawDependencies: ParsedDependency[];
   publicSymbols: string[];
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
@@ -38,7 +39,7 @@ interface ParsedDocEntry {
   codePath: string;
   docPath: string;
   archetype: string;
-  dependencies: string[];
+  dependencies: ParsedDependency[];
   publicSymbols: string[];
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
@@ -93,8 +94,8 @@ export async function buildLiveDocGraph(options: BuildLiveDocGraphOptions): Prom
   for (const entry of entries.values()) {
     const adjacency = new Set<string>();
     for (const candidate of entry.dependencies) {
-      if (entries.has(candidate)) {
-        adjacency.add(candidate);
+      if (candidate.codePath && entries.has(candidate.codePath)) {
+        adjacency.add(candidate.codePath);
       }
     }
 

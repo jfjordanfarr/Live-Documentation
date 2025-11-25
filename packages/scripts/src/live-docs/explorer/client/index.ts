@@ -60,8 +60,9 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
         graphData.nodes.map(node => [node.id, node])
     );
     const detailPanel = createDetailPanel(nodesById);
+    const detailPanelApi = detailPanel;
 
-    const resolveLinkEndpoint = (endpoint: ExplorerLinkPayload["source"]): string => {
+    function resolveLinkEndpoint(endpoint: ExplorerLinkPayload["source"]): string {
         if (typeof endpoint === "string") {
             return endpoint;
         }
@@ -73,7 +74,9 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
             return candidate;
         }
         return String(candidate ?? endpoint);
-    };
+    }
+
+    const testCoverage = buildTestCoverageMap(graphData, resolveLinkEndpoint, nodesById);
 
     const filterToggleTests = document.getElementById("filter-toggle-tests") as HTMLInputElement | null;
     const filterToggleAssets = document.getElementById("filter-toggle-assets") as HTMLInputElement | null;
@@ -92,14 +95,16 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
         onSelectNode: selectNode,
         onOpenLocalView: node => {
             void openLocalViewForNode(node);
-        }
+        },
+        testCoverage
     });
 
     const localView = createLocalView({
         state,
         graphData,
         resolveLinkEndpoint,
-        onSelectNode: selectNode
+        onSelectNode: selectNode,
+        testCoverage
     });
 
     async function openLocalViewForNode(target?: ExplorerNodePayload): Promise<void> {
@@ -120,6 +125,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
                 circuitView.render();
             } else if (state.view === "map") {
                 localView.render();
+            } else if (state.view === "graph") {
+                renderGraph();
             }
         });
     }
@@ -132,6 +139,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
                 circuitView.render();
             } else if (state.view === "map") {
                 localView.render();
+            } else if (state.view === "graph") {
+                renderGraph();
             }
         });
     }
@@ -168,9 +177,35 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
 
     function renderGraph(): void {
         const container = requireElement<HTMLDivElement>("graph-svg");
+        const includeNode = (node: ExplorerNodePayload): boolean => {
+            if (state.selectedNode && state.selectedNode.id === node.id) {
+                return true;
+            }
+            const archetype = (node.archetype || "").toLowerCase();
+            if (archetype === "test" && !state.filters.showTests) {
+                return false;
+            }
+            if (archetype === "asset" && !state.filters.showAssets) {
+                return false;
+            }
+            return true;
+        };
+
+        const filteredNodes = graphData.nodes.filter(includeNode);
+        const allowedIds = new Set(filteredNodes.map(node => node.id));
+        const filteredLinks = graphData.links.filter(link => {
+            const sourceId = resolveLinkEndpoint(link.source);
+            const targetId = resolveLinkEndpoint(link.target);
+            return allowedIds.has(sourceId) && allowedIds.has(targetId);
+        });
+
         const dataForGraph = {
-            nodes: graphData.nodes.map(node => ({ ...node })),
-            links: graphData.links.map(link => ({ ...link }))
+            nodes: filteredNodes.map(node => ({ ...node })),
+            links: filteredLinks.map(link => ({
+                source: resolveLinkEndpoint(link.source),
+                target: resolveLinkEndpoint(link.target),
+                kind: link.kind
+            }))
         };
         if (forceGraphInstance) {
             forceGraphInstance.graphData(dataForGraph);
@@ -218,7 +253,7 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
         renderCurrentView();
         highlightSelectedCards();
 
-            await detailPanel.showNode(node);
+        await detailPanelApi.showNode(node);
     }
 
     function highlightSelectedCards(): void {
@@ -250,27 +285,33 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     };
 
     globalWindow.zoomIn = () => {
-        if (state.view !== "circuit") {
-            return;
+        if (state.view === "circuit") {
+            circuitView.zoomIn();
+            circuitView.drawConnections();
+        } else if (state.view === "map") {
+            localView.zoomIn();
+            localView.drawConnections();
         }
-        circuitView.zoomIn();
-        circuitView.drawConnections();
     };
 
     globalWindow.zoomOut = () => {
-        if (state.view !== "circuit") {
-            return;
+        if (state.view === "circuit") {
+            circuitView.zoomOut();
+            circuitView.drawConnections();
+        } else if (state.view === "map") {
+            localView.zoomOut();
+            localView.drawConnections();
         }
-        circuitView.zoomOut();
-        circuitView.drawConnections();
     };
 
     globalWindow.resetZoom = () => {
-        if (state.view !== "circuit") {
-            return;
+        if (state.view === "circuit") {
+            circuitView.resetZoom();
+            circuitView.drawConnections();
+        } else if (state.view === "map") {
+            localView.resetZoom();
+            localView.drawConnections();
         }
-        circuitView.resetZoom();
-        circuitView.drawConnections();
     };
 
     renderCurrentView();
@@ -281,4 +322,53 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
             localView.drawConnections();
         }
     });
+
+    const detailClose = document.getElementById("detail-close");
+    if (detailClose) {
+        detailClose.addEventListener("click", () => {
+            detailPanelApi.hide();
+        });
+    }
+}
+
+function buildTestCoverageMap(
+    graphData: ExplorerGraphPayload,
+    resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string,
+    nodesById: Map<string, ExplorerNodePayload>
+): Map<string, ExplorerNodePayload[]> {
+    const coverage = new Map<string, ExplorerNodePayload[]>();
+    const isTestNode = (node: ExplorerNodePayload | undefined): boolean =>
+        !!node && (node.archetype || "").toLowerCase() === "test";
+
+    const testIds = new Set<string>();
+    graphData.nodes.forEach(node => {
+        if (isTestNode(node)) {
+            testIds.add(node.id);
+        }
+    });
+
+    if (testIds.size === 0) {
+        return coverage;
+    }
+
+    graphData.links.forEach(link => {
+        const sourceId = resolveLinkEndpoint(link.source);
+        const targetId = resolveLinkEndpoint(link.target);
+        if (!testIds.has(sourceId) || testIds.has(targetId)) {
+            return;
+        }
+        const testNode = nodesById.get(sourceId);
+        if (!testNode) {
+            return;
+        }
+        if (!coverage.has(targetId)) {
+            coverage.set(targetId, []);
+        }
+        const bucket = coverage.get(targetId)!;
+        if (!bucket.some(existing => existing.id === testNode.id)) {
+            bucket.push(testNode);
+        }
+    });
+
+    return coverage;
 }

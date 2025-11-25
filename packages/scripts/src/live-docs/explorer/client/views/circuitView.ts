@@ -5,14 +5,16 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import type { CircuitTransform, DirectoryNode, ExplorerState } from "../types";
+import type { CircuitTransform, ExplorerState, TestCoverageMap } from "../types";
 import {
   ROOT_KEY,
   buildHierarchy,
-  computeColumnCount,
+  computeDirectoryLayout,
   findDominantDirectory,
-  getDirectoryKey
+  getDirectoryKey,
+  measureDirectoryTree
 } from "./layoutUtils";
+import type { DirectoryLayoutPlan } from "./layoutUtils";
 
 export interface CircuitViewOptions {
   state: ExplorerState;
@@ -20,6 +22,7 @@ export interface CircuitViewOptions {
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void;
   onOpenLocalView: (node: ExplorerNodePayload) => void | Promise<void>;
+  testCoverage: TestCoverageMap;
 }
 
 export interface CircuitViewApi {
@@ -31,11 +34,37 @@ export interface CircuitViewApi {
   resetZoom(): void;
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+
 export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
-  const { state, graphData, resolveLinkEndpoint, onSelectNode, onOpenLocalView } = options;
+  const { state, graphData, resolveLinkEndpoint, onSelectNode, onOpenLocalView, testCoverage } = options;
+  type NodeConnection = { targetId: string; kind: ExplorerLinkKind; direction: "outbound" | "inbound" };
+
+  const isTestNode = (node: ExplorerNodePayload | undefined | null): boolean =>
+    !!node && (node.archetype || "").toLowerCase() === "test";
+
+  const connectionMap = new Map<string, NodeConnection[]>();
+  graphData.nodes.forEach(node => {
+    connectionMap.set(node.id, []);
+  });
+  graphData.links.forEach(link => {
+    const sourceId = resolveLinkEndpoint(link.source);
+    const targetId = resolveLinkEndpoint(link.target);
+    const normalizedKind = link.kind ?? "dependency";
+    if (!connectionMap.has(sourceId)) {
+      connectionMap.set(sourceId, []);
+    }
+    if (!connectionMap.has(targetId)) {
+      connectionMap.set(targetId, []);
+    }
+    connectionMap.get(sourceId)!.push({ targetId, kind: normalizedKind, direction: "outbound" });
+    connectionMap.get(targetId)!.push({ targetId: sourceId, kind: normalizedKind, direction: "inbound" });
+  });
+
   const viewport = requireElement<HTMLDivElement>("circuit-viewport");
   const circuitContainer = requireElement<HTMLDivElement>("circuit-container");
   const circuitConnections = requireElement<HTMLDivElement>("circuit-connections");
+  circuitContainer.classList.add("layout-surface");
 
   let circuitTransform: CircuitTransform = { x: 0, y: 0, k: 1 };
   let isDragging = false;
@@ -46,6 +75,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
   let circuitHasInitialFit = false;
   let circuitUserAdjusted = false;
   let circuitInitialTransform: CircuitTransform | null = null;
+  let hoveredNodeId: string | null = null;
 
   viewport.style.cursor = "grab";
 
@@ -268,60 +298,153 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
   }
 
   function shouldRenderNode(node: ExplorerNodePayload): boolean {
-    const archetype = (node.archetype || "").toLowerCase();
-    if (archetype === "test" && !state.filters.showTests) {
+    if (isTestNode(node)) {
       return !!(state.selectedNode && state.selectedNode.id === node.id);
     }
+    const archetype = (node.archetype || "").toLowerCase();
     if (archetype === "asset" && !state.filters.showAssets) {
       return !!(state.selectedNode && state.selectedNode.id === node.id);
     }
     return true;
   }
 
-  function buildHierarchy(nodes: ExplorerNodePayload[]): DirectoryNode {
-    const root: DirectoryNode = { name: "", path: "__root__", children: new Map(), nodes: [] };
-    nodes.forEach(node => {
-      const parts = node.docRelativePath.split("/").filter(Boolean);
-      if (parts.length === 0) {
-        root.nodes.push(node);
-        return;
-      }
-      const dirParts = parts.slice(0, -1);
-      let current = root;
-      dirParts.forEach(part => {
-        if (!current.children.has(part)) {
-          const segmentPath = current.path === "__root__" ? part : `${current.path}/${part}`;
-          current.children.set(part, {
-            name: part,
-            path: segmentPath,
-            children: new Map(),
-            nodes: []
-          });
-        }
-        current = current.children.get(part)!;
-      });
-      current.nodes.push(node);
-    });
-    return root;
-  }
-
   function render(): void {
     const nodesForCircuit = graphData.nodes.filter(shouldRenderNode);
     const hierarchy = buildHierarchy(nodesForCircuit);
-    const clusterElements: HTMLElement[] = [];
-    const pathToElement = new Map<string, HTMLElement>();
     const dominantCluster = findDominantDirectory(graphData, nodesForCircuit, resolveLinkEndpoint);
+    const measure = measureDirectoryTree(hierarchy);
 
-    const renderDir = (dir: DirectoryNode): HTMLElement => {
-      const pathKey = dir.path || ROOT_KEY;
+    const createNodeCard = (node: ExplorerNodePayload): HTMLElement => {
+      const card = document.createElement("div");
+      card.className = "node-card";
+      card.dataset.id = node.id;
+      if (state.selectedNode && state.selectedNode.id === node.id) {
+        card.classList.add("selected");
+      }
+      card.innerHTML = [
+        `<div class="node-title">${node.name}</div>`,
+        `<div class="node-path">${node.codeRelativePath}</div>`,
+        `<div class="node-meta"><span class="badge">${node.archetype}</span><span class="badge">${node.publicSymbols.length} symbols</span></div>`,
+        '<div class="pin top"></div><div class="pin bottom"></div><div class="pin left"></div><div class="pin right"></div>'
+      ].join("");
+      card.addEventListener("click", event => {
+        event.stopPropagation();
+        onSelectNode(node);
+      });
+      card.addEventListener("dblclick", event => {
+        event.stopPropagation();
+        void onOpenLocalView(node);
+      });
+      card.addEventListener("mouseenter", () => {
+        hoveredNodeId = node.id;
+        drawConnections();
+      });
+      card.addEventListener("mouseleave", () => {
+        if (hoveredNodeId === node.id) {
+          hoveredNodeId = null;
+          drawConnections();
+        }
+      });
+
+      if (!isTestNode(node) && state.filters.showTests) {
+        const backing = testCoverage.get(node.id);
+        if (backing && backing.length > 0) {
+          card.classList.add("test-backed");
+          card.dataset.testCount = String(backing.length);
+          const meta = card.querySelector(".node-meta");
+          const coverage = document.createElement("div");
+          coverage.className = "node-tests";
+          const label = document.createElement("span");
+          label.className = "node-tests__label";
+          label.textContent = backing.length === 1 ? "Test:" : "Tests:";
+          coverage.appendChild(label);
+          backing.slice(0, 2).forEach(testNode => {
+            const tag = document.createElement("span");
+            tag.className = "node-tests__item";
+            tag.textContent = testNode.name;
+            coverage.appendChild(tag);
+          });
+          if (backing.length > 2) {
+            const remainder = document.createElement("span");
+            remainder.className = "node-tests__more";
+            remainder.textContent = `+${backing.length - 2}`;
+            coverage.appendChild(remainder);
+          }
+          card.appendChild(coverage);
+          if (meta) {
+            meta.before(coverage);
+          }
+          const existingTitle = card.getAttribute("title") ?? node.codeRelativePath;
+          const testList = backing.map(test => test.codeRelativePath).join("\n");
+          card.setAttribute("title", `${existingTitle}\nTest coverage:\n${testList}`);
+        }
+      }
+
+      return card;
+    };
+
+    if (measure.totalNodes === 0) {
+      circuitContainer.innerHTML =
+        '<div class="empty-hint">No documentation nodes matched the current filters.</div>';
+      circuitContainer.style.width = "800px";
+      circuitContainer.style.height = "520px";
+      circuitContainer.style.minWidth = "800px";
+      circuitContainer.style.minHeight = "520px";
+      updateCircuitTransform();
+      requestAnimationFrame(drawConnections);
+      return;
+    }
+
+    const layout = computeDirectoryLayout(measure);
+    const layoutWidth = layout.width;
+    const layoutHeight = layout.height;
+
+    circuitContainer.innerHTML = "";
+    circuitContainer.style.position = "relative";
+    circuitContainer.style.width = `${layoutWidth}px`;
+    circuitContainer.style.height = `${layoutHeight}px`;
+    circuitContainer.style.minWidth = `${layoutWidth}px`;
+    circuitContainer.style.minHeight = `${layoutHeight}px`;
+
+    const pathToElement = new Map<string, HTMLElement>();
+
+    const positionElement = (
+      element: HTMLElement,
+      rect: { x: number; y: number; width: number; height: number },
+      origin: { x: number; y: number }
+    ): void => {
+      element.style.position = "absolute";
+      element.style.left = `${rect.x - origin.x}px`;
+      element.style.top = `${rect.y - origin.y}px`;
+      element.style.width = `${rect.width}px`;
+      element.style.height = `${rect.height}px`;
+    };
+
+    const renderDirectoryLayout = (
+      plan: DirectoryLayoutPlan,
+      parentPlan: DirectoryLayoutPlan | null,
+      host: HTMLElement
+    ): void => {
       const element = document.createElement("div");
-      element.className = "cluster";
-      element.dataset.clusterPath = pathKey;
+      element.className = plan.depth === 0 ? "layout-box layout-box--root" : "layout-box";
+      element.dataset.clusterPath = plan.path;
       element.tabIndex = 0;
+      element.setAttribute(
+        "aria-label",
+        `Cluster ${plan.path === ROOT_KEY ? "root" : plan.name}`
+      );
       element.setAttribute("role", "button");
-      element.setAttribute("aria-label", `Cluster ${dir.path === "__root__" ? "root" : dir.path}`);
-      element.title = dir.path === ROOT_KEY ? "root" : dir.path;
-      pathToElement.set(pathKey, element);
+      element.title = plan.path === ROOT_KEY ? "root" : plan.path;
+      pathToElement.set(plan.path, element);
+      if (plan.collapsedAncestors.length > 0) {
+        plan.collapsedAncestors.forEach(ancestor => {
+          pathToElement.set(ancestor.path, element);
+        });
+        element.dataset.collapsedAncestors = plan.collapsedAncestors.map(entry => entry.path).join(",");
+      }
+
+      const origin = parentPlan ? { x: parentPlan.contentRect.x, y: parentPlan.contentRect.y } : { x: 0, y: 0 };
+      positionElement(element, plan.rect, origin);
 
       element.addEventListener("click", event => {
         if ((event.target as HTMLElement | null)?.closest?.(".node-card")) {
@@ -338,91 +461,45 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
         }
       });
 
-      const heading = document.createElement("div");
-      heading.className = "cluster-label";
-      heading.textContent = dir.path === ROOT_KEY ? "(root)" : dir.name;
-      element.appendChild(heading);
+      if (plan.depth > 0) {
+        const heading = document.createElement("div");
+        heading.className = "layout-box__label";
+        heading.textContent = plan.displayName;
+        element.appendChild(heading);
+      }
 
       const content = document.createElement("div");
-      content.className = "cluster-content";
+      content.className = "layout-box__content";
+      positionElement(content, plan.contentRect, { x: plan.rect.x, y: plan.rect.y });
+      element.appendChild(content);
+      host.appendChild(element);
 
-      dir.children.forEach(child => {
-        content.appendChild(renderDir(child));
-      });
-
-      dir.nodes
-        .slice()
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .forEach(node => {
-          const card = document.createElement("div");
-          card.className = "node-card";
-          card.dataset.id = node.id;
-          if (state.selectedNode && state.selectedNode.id === node.id) {
-            card.classList.add("selected");
-          }
-          card.innerHTML = [
-            `<div class="node-title">${node.name}</div>`,
-            `<div class="node-path">${node.codeRelativePath}</div>`,
-            `<div class="node-meta"><span class="badge">${node.archetype}</span><span class="badge">${node.publicSymbols.length} symbols</span></div>`,
-            '<div class="pin top"></div><div class="pin bottom"></div><div class="pin left"></div><div class="pin right"></div>'
-          ].join("");
-          card.addEventListener("click", event => {
-            event.stopPropagation();
-            onSelectNode(node);
-          });
-          card.addEventListener("dblclick", event => {
-            event.stopPropagation();
-            void onOpenLocalView(node);
-          });
+      if (plan.fileArea && plan.fileArea.nodes.length > 0) {
+        const nodeOrigin = { x: plan.contentRect.x, y: plan.contentRect.y };
+        plan.fileArea.nodes.forEach(nodePlan => {
+          const card = createNodeCard(nodePlan.node);
+          card.classList.add("layout-node");
+          positionElement(card, nodePlan.rect, nodeOrigin);
           content.appendChild(card);
         });
+      }
 
-      element.appendChild(content);
-      return element;
+      plan.directories.forEach(child => {
+        renderDirectoryLayout(child, plan, content);
+      });
     };
 
-    hierarchy.children.forEach(child => {
-      clusterElements.push(renderDir(child));
-    });
-
-    if (hierarchy.nodes.length > 0) {
-      clusterElements.push(
-        renderDir({
-          name: "(root)",
-          path: ROOT_KEY,
-          children: new Map(),
-          nodes: hierarchy.nodes
-        })
-      );
-    }
-
-    if (clusterElements.length === 0) {
-      circuitContainer.innerHTML = '<div style="color:#888;">No documentation nodes matched the current filters.</div>';
-      circuitContainer.style.setProperty("--circuit-max-width", "800px");
-      updateCircuitTransform();
-      requestAnimationFrame(drawConnections);
-      return;
-    }
-
-    const columns = computeColumnCount(clusterElements.length, state.filters);
-    const columnWidth = 320;
-    const gutter = 28;
-    const computedMaxWidth = Math.max(800, Math.min(2800, columns * columnWidth + (columns - 1) * gutter));
-
-    circuitContainer.style.setProperty("--circuit-columns", String(columns));
-    circuitContainer.style.setProperty("--circuit-max-width", `${computedMaxWidth}px`);
-
-    circuitContainer.innerHTML = "";
-    clusterElements.forEach(element => {
-      circuitContainer.appendChild(element);
-    });
+    renderDirectoryLayout(layout.root, null, circuitContainer);
 
     if (!circuitHasInitialFit) {
-      const viewportWidth = viewport.clientWidth;
-      const availableWidth = Math.max(viewportWidth - 120, 320);
-      const initialScale = Math.max(0.3, Math.min(1.1, availableWidth / computedMaxWidth));
-      const offsetX = (viewportWidth - computedMaxWidth * initialScale) / 2;
-      circuitTransform = { x: offsetX, y: 40, k: initialScale };
+      const viewportRect = viewport.getBoundingClientRect();
+      const padding = 160;
+      const scaleX = (viewportRect.width - padding) / layoutWidth;
+      const scaleY = (viewportRect.height - padding) / layoutHeight;
+      const initialScale = clamp(Math.min(scaleX, scaleY, 1), 0.25, 1.1);
+      const offsetX = (viewportRect.width - layoutWidth * initialScale) / 2;
+      const offsetY = (viewportRect.height - layoutHeight * initialScale) / 2;
+      circuitTransform = { x: offsetX, y: offsetY, k: initialScale };
       circuitHasInitialFit = true;
       circuitInitialTransform = { ...circuitTransform };
     }
@@ -433,12 +510,13 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     }
     requestAnimationFrame(() => {
       drawConnections();
-      if (!circuitUserAdjusted && dominantCluster) {
+      if (!circuitUserAdjusted) {
         let primaryElement: HTMLElement | null = null;
-        if (pathToElement.has(dominantCluster.path)) {
+        if (dominantCluster && pathToElement.has(dominantCluster.path)) {
           primaryElement = pathToElement.get(dominantCluster.path) ?? null;
         } else if (state.selectedNode) {
-          primaryElement = pathToElement.get(getDirectoryKey(state.selectedNode)) ?? null;
+          const directoryPath = getDirectoryKey(state.selectedNode);
+          primaryElement = pathToElement.get(directoryPath) ?? null;
         }
         if (!primaryElement) {
           primaryElement = pathToElement.get(ROOT_KEY) ?? null;
@@ -463,46 +541,77 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
       }
     });
 
-    graphData.links.forEach(edge => {
-      const sourceId = resolveLinkEndpoint(edge.source);
-      const targetId = resolveLinkEndpoint(edge.target);
+    if (hoveredNodeId && !nodeMap.has(hoveredNodeId)) {
+      hoveredNodeId = null;
+    }
 
-      const sourceEl = nodeMap.get(sourceId);
-      const targetEl = nodeMap.get(targetId);
-      if (!sourceEl || !targetEl) {
-        return;
-      }
-
-      appendConnectionLine(overlay, sourceEl, targetEl, circuitContainer, edge.kind ?? "dependency");
-    });
-  }
-
-  function appendConnectionLine(
-    overlay: HTMLElement,
-    sourceElement: HTMLElement,
-    targetElement: HTMLElement,
-    root: HTMLElement,
-    kind: ExplorerLinkKind
-  ): void {
-    const source = getRelativeCenter(sourceElement, root);
-    const target = getRelativeCenter(targetElement, root);
-
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const length = Math.sqrt(dx * dx + dy * dy);
-    if (!isFinite(length) || length < 1) {
+    const activeNodeId = hoveredNodeId ?? state.selectedNode?.id ?? null;
+    if (!activeNodeId) {
+      overlay.dataset.active = "false";
       return;
     }
 
-    const angle = Math.atan2(dy, dx);
-    const line = document.createElement("div");
-    line.className = "connection-line";
-    line.dataset.kind = kind;
-    line.style.width = `${length}px`;
-    line.style.left = `${source.x}px`;
-    line.style.top = `${source.y - 1}px`;
-    line.style.transform = `rotate(${angle}rad)`;
-    overlay.appendChild(line);
+    const sourceEl = nodeMap.get(activeNodeId);
+    if (!sourceEl) {
+      overlay.dataset.active = "false";
+      return;
+    }
+
+    const rootRect = circuitContainer.getBoundingClientRect();
+    const scale = circuitTransform.k || 1;
+    const svgWidth = Math.max(1, rootRect.width / scale);
+    const svgHeight = Math.max(1, rootRect.height / scale);
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.classList.add("connection-svg");
+    svg.setAttribute("width", `${svgWidth}`);
+    svg.setAttribute("height", `${svgHeight}`);
+    svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+    overlay.appendChild(svg);
+
+    let renderedConnections = 0;
+    const connectedEdges = connectionMap.get(activeNodeId) ?? [];
+    connectedEdges.forEach(connection => {
+      const targetEl = nodeMap.get(connection.targetId);
+      if (!targetEl) {
+        return;
+      }
+      appendConnectionPath(svg, sourceEl, targetEl, connection.direction, connection.kind);
+      renderedConnections += 1;
+    });
+
+    overlay.dataset.active = renderedConnections > 0 ? "true" : "false";
+  }
+
+  function appendConnectionPath(
+    svg: SVGSVGElement,
+    sourceElement: HTMLElement,
+    targetElement: HTMLElement,
+    direction: "outbound" | "inbound",
+    kind: ExplorerLinkKind
+  ): void {
+    const source = getRelativeCenter(sourceElement, circuitContainer);
+    const target = getRelativeCenter(targetElement, circuitContainer);
+
+    const horizontalDirection = target.x >= source.x ? 1 : -1;
+    const gap = Math.abs(target.x - source.x);
+    const commands: string[] = [`M ${source.x} ${source.y}`];
+
+    if (gap < 32) {
+      const verticalDirection = target.y >= source.y ? 1 : -1;
+      const verticalStub = Math.max(28, Math.abs(target.y - source.y) * 0.35);
+      const elbowY = source.y + verticalDirection * verticalStub;
+      commands.push(`V ${elbowY}`, `H ${target.x}`, `V ${target.y}`);
+    } else {
+      const stub = Math.min(Math.max(gap * 0.4, 28), Math.max(28, gap - 8));
+      const elbowX = source.x + horizontalDirection * stub;
+      commands.push(`H ${elbowX}`, `V ${target.y}`, `H ${target.x}`);
+    }
+
+    const path = document.createElementNS(SVG_NS, "path");
+    path.setAttribute("d", commands.join(" "));
+    path.classList.add("connection-path", direction);
+    path.dataset.kind = kind;
+    svg.appendChild(path);
   }
 
   function getRelativeCenter(element: HTMLElement, root: HTMLElement): { x: number; y: number } {
@@ -527,6 +636,9 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
         element.classList.remove("selected");
       }
     });
+    if (state.view === "circuit") {
+      drawConnections();
+    }
   }
 
   function zoomIn(): void {

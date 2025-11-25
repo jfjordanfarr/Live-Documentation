@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/utils/uri.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-utils-uri-ts
-- Generated At: 2025-11-19T21:21:16.037Z
+- Generated At: 2025-11-24T15:19:58.885Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides a server-scoped re-export of `normalizeFileUri` so every feature import
 - Introduced during the URI canonicalization sweep captured in [2025-10-19 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-19.SUMMARIZED.md) after duplicate nodes surfaced in the graph store.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T21:21:16.037Z","inputHash":"1c52553de0e0a9ff"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.885Z","inputHash":"88d8f4b7144980f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `normalizeFileUri` {#symbol-normalizefileuri}
@@ -25,7 +25,7 @@ Provides a server-scoped re-export of `normalizeFileUri` so every feature import
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`normalizeFileUri.normalizeFileUri`](../../../../shared/src/uri/normalizeFileUri.ts.mdmd.md#symbol-normalizefileuri)
+- `@live-documentation/shared/uri/normalizeFileUri` - `normalizeFileUri`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

@@ -40,6 +40,30 @@
       <div id="graph-svg"></div>
     </div>
 
+    <div id="legend-panel" role="region" aria-label="Visualization legend">
+      <div class="legend-title">Legend</div>
+      <div class="legend-row">
+        <span class="legend-swatch legend-swatch--outbound"></span>
+        <span>Outbound dependency</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-swatch legend-swatch--inbound"></span>
+        <span>Inbound dependency</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-symbol legend-symbol--outbound"></span>
+        <span>Outbound symbol pin</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-symbol legend-symbol--inbound"></span>
+        <span>Inbound symbol pin</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-shadow"></span>
+        <span>Test-backed implementation</span>
+      </div>
+    </div>
+
     <div id="controls">
       <button class="control-btn" onclick="zoomIn()" aria-label="Zoom In">+</button>
       <button class="control-btn" onclick="zoomOut()" aria-label="Zoom Out">-</button>
@@ -49,6 +73,7 @@
     <div id="detail-panel">
       <div class="detail-header">
         <h2 id="detail-title">Select a Node</h2>
+        <button id="detail-close" class="detail-close" aria-label="Close details">×</button>
       </div>
       <div id="detail-body" class="detail-scroll">
         <p class="detail-placeholder">Click on any node to view details.</p>

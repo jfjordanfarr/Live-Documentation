@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/localOllamaBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-localollamabridge-ts
-- Generated At: 2025-11-19T15:01:33.560Z
+- Generated At: 2025-11-24T15:19:58.352Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the BYOK fallback for local Ollama so the extension can keep Analyze-
 - The helper now prefers workspace settings before environment variables and emits clear warnings when models are missing or context windows are overridden, as captured in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L1920-L1950](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L1920-L1950) and reinforced during the day-end recap at [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5500-L5535](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5500-L5535).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.560Z","inputHash":"7b0010c0ca14db54"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.352Z","inputHash":"9b79796de9c04e2a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `invokeLocalOllamaBridge` {#symbol-invokelocalollamabridge}
@@ -30,11 +30,7 @@ the model is undefined or the request fails so integration tests stay reproducib
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.InvokeLlmResult`](../../../shared/src/index.ts.mdmd.md#symbol-invokellmresult)
-- [`index.OllamaInvocationError`](../../../shared/src/index.ts.mdmd.md#symbol-ollamainvocationerror)
-- [`index.createMockOllamaResponse`](../../../shared/src/index.ts.mdmd.md#symbol-createmockollamaresponse)
-- [`index.invokeOllamaChat`](../../../shared/src/index.ts.mdmd.md#symbol-invokeollamachat)
-- [`index.resolveOllamaEndpoint`](../../../shared/src/index.ts.mdmd.md#symbol-resolveollamaendpoint)
+- `@live-documentation/shared` - `InvokeLlmResult`, `OllamaInvocationError`, `createMockOllamaResponse`, `invokeOllamaChat`, `resolveOllamaEndpoint`
 - `vscode` - `vscode`
 <!-- LIVE-DOC:END Dependencies -->
 

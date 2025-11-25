@@ -38,6 +38,7 @@ Guarantee CAP-003: diagnostics, tree views, CLI exports, and narratives source t
 - CLI exports rebuild narratives exclusively from Live Docs without reaching into bespoke caches.
 - System analytics commands stream results to stdout or temporary folders unless a caller explicitly opts into persistence.
 - Regression tests compare CLI/diagnostic output before and after regeneration to ensure parity.
+- Visualization command center smoke tests validate that every edge, symbol anchor, and directional cue rendered in the UI maps back to the underlying Live Doc graph payloads so the surface never diverges from headless facts.
 
 ### REQ-F5 Markdown & Asset Integrity Gate
 Guarantee CAP-001 and CAP-004: SlopCop audits remain the first defense, ensuring Live Docs and supporting markdown stay link-accurate and asset-complete.

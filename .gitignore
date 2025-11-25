@@ -34,6 +34,14 @@ Thumbs.db
 # Prevent accidental compiled JS artifacts in TypeScript source folders
 packages/**/src/**/*.js
 packages/**/src/**/*.js.map
+packages/**/src/**/*.d.ts
+packages/**/src/**/*.d.ts.map
+
+# Ignore compiled helper outputs under scripts
+scripts/**/lib/**/*.js
+scripts/**/lib/**/*.js.map
+scripts/**/lib/**/*.d.ts
+scripts/**/lib/**/*.d.ts.map
 
 # Local lint outputs (ensure clean repo)
 eslint-report.json
@@ -46,7 +54,11 @@ AI-Agent-Workspace/ChatHistory/MDMD-Signals/
 **/AI-Agent-Workspace/tmp/
 AI-Agent-Workspace/ollama-traces/
 
+# Ignore generated Playwright MCP assets
+.playwright-mcp/
+
 # Live Documentation staging outputs
 coverage/live-docs/
 data/live-docs/
 reports/benchmarks/live-docs/
+data/graph-snapshots/*-temp.json

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/workspaceIndexProvider.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-workspaceindexprovider-ts
-- Generated At: 2025-11-19T15:01:34.271Z
+- Generated At: 2025-11-24T15:19:58.733Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Scans the workspace for implementation, documentation, and script artifacts so i
 - Extended on Oct 30 to parse MDMD identifiers and section symbols for audit tooling, as recorded in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.271Z","inputHash":"7ec9545f461a73d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.733Z","inputHash":"ba5c1f6de9dfbc40"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
@@ -50,20 +50,11 @@ have viable candidates. Intended primarily for integration and dogfooding scenar
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `ArtifactSeed`, `LinkEvidence`, `LinkRelationshipKind`, `RelationshipHint`, `WorkspaceLinkContribution`, `WorkspaceLinkProvider`, `collectIdentifierUsage`, `extractLocalImportNames`, `hasRuntimeUsage`, `hasTypeUsage`
 - `node:fs` - `Dirent`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
-- [`index.ArtifactSeed`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactseed)
-- [`index.LinkEvidence`](../../../../shared/src/index.ts.mdmd.md#symbol-linkevidence)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
-- [`index.WorkspaceLinkContribution`](../../../../shared/src/index.ts.mdmd.md#symbol-workspacelinkcontribution)
-- [`index.WorkspaceLinkProvider`](../../../../shared/src/index.ts.mdmd.md#symbol-workspacelinkprovider)
-- [`index.collectIdentifierUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-collectidentifierusage)
-- [`index.extractLocalImportNames`](../../../../shared/src/index.ts.mdmd.md#symbol-extractlocalimportnames)
-- [`index.hasRuntimeUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-hasruntimeusage)
-- [`index.hasTypeUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-hastypeusage)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
 

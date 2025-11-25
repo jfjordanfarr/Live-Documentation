@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/telemetry/driftHistoryStore.ts
 - Live Doc ID: LD-implementation-packages-server-src-telemetry-drifthistorystore-ts
-- Generated At: 2025-11-19T15:01:34.584Z
+- Generated At: 2025-11-24T15:19:58.959Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the persistence layer for diagnostic drift events added during T059—s
 The store is invoked by `acknowledgementService` and the drift history integrations delivered in the same tranche; directory fallback behaviour and metadata merging were tuned while stabilising integration tests in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-18-multi-path-lookup--green-tests-lines-2081-2180](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-18-multi-path-lookup--green-tests-lines-2081-2180), so align any future storage changes with those test expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.584Z","inputHash":"552b903a02f00fe7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.959Z","inputHash":"2d7c3a1e7136fce3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DriftHistoryStoreOptions` {#symbol-drifthistorystoreoptions}
@@ -37,12 +37,8 @@ The store is invoked by `acknowledgementService` and the drift history integrati
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `DiagnosticSeverity`, `DriftHistoryEntry`, `DriftHistorySummary`, `GraphStore`, `ListDriftHistoryOptions` (type-only)
 - `node:crypto` - `randomUUID`
-- [`index.DiagnosticSeverity`](../../../shared/src/index.ts.mdmd.md#symbol-diagnosticseverity) (type-only)
-- [`index.DriftHistoryEntry`](../../../shared/src/index.ts.mdmd.md#symbol-drifthistoryentry) (type-only)
-- [`index.DriftHistorySummary`](../../../shared/src/index.ts.mdmd.md#symbol-drifthistorysummary) (type-only)
-- [`index.GraphStore`](../../../shared/src/index.ts.mdmd.md#symbol-graphstore) (type-only)
-- [`index.ListDriftHistoryOptions`](../../../shared/src/index.ts.mdmd.md#symbol-listdrifthistoryoptions) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

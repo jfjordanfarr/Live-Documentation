@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/rippleTypes.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-rippletypes-ts
-- Generated At: 2025-11-19T15:01:33.931Z
+- Generated At: 2025-11-24T15:19:58.574Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 - Keeps ripple metadata lightweight (depth, traversal path) for noise filtering and publisher fan-out without binding to a specific analyzer implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.931Z","inputHash":"e608ecaf1bc16fbd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.574Z","inputHash":"f9e6e6520e05907e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleHint` {#symbol-ripplehint}
@@ -29,8 +29,7 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
-- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint) (type-only)
+- `@live-documentation/shared` - `KnowledgeArtifact`, `RelationshipHint` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

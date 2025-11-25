@@ -1,5 +1,6 @@
 import type {
   ExplorerDetailPayload,
+  ExplorerDependencyReference,
   ExplorerNodePayload
 } from "../shared/types";
 import { requireElement } from "./dom";
@@ -7,12 +8,26 @@ import { requireElement } from "./dom";
 export interface DetailPanelApi {
   showNode(node: ExplorerNodePayload): Promise<void>;
   setLoading(node: ExplorerNodePayload): void;
+  hide(): void;
 }
 
 export function createDetailPanel(nodesById: Map<string, ExplorerNodePayload>): DetailPanelApi {
   const panel = requireElement<HTMLDivElement>("detail-panel");
   const title = requireElement<HTMLHeadingElement>("detail-title");
   const body = requireElement<HTMLDivElement>("detail-body");
+  const closeButton = requireElement<HTMLButtonElement>("detail-close");
+
+  const hide = (): void => {
+    panel.classList.remove("visible");
+  };
+
+  closeButton.addEventListener("click", hide);
+  closeButton.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      hide();
+    }
+  });
 
   function setLoading(node: ExplorerNodePayload): void {
     panel.classList.add("visible");
@@ -36,7 +51,7 @@ export function createDetailPanel(nodesById: Map<string, ExplorerNodePayload>): 
     }
   }
 
-  return { showNode, setLoading };
+  return { showNode, setLoading, hide };
 }
 
 function buildDetailsHtml(
@@ -44,9 +59,13 @@ function buildDetailsHtml(
   details: ExplorerDetailPayload,
   nodesById: Map<string, ExplorerNodePayload>
 ): string {
-  const dependencies = node.dependencies.map(dep => toRelativePath(dep, nodesById)).sort();
-  const dependents = node.dependents.map(dep => toRelativePath(dep, nodesById)).sort();
-  const missing = details.missingDependencies ?? [];
+  const dependencies = node.dependencies
+    .filter(dep => dep.resolved)
+    .sort((a, b) => describeDependency(a, nodesById).localeCompare(describeDependency(b, nodesById)));
+  const dependents = node.dependents
+    .map(dep => toRelativePath(dep, nodesById))
+    .sort();
+  const missing = (details.missingDependencies ?? []).map(dep => describeDependency(dep, nodesById, true));
 
   const normalizedPurpose = normalizeNewlines(details.purpose ?? "");
   const purposeHtml = normalizedPurpose.split("\n").join("<br>");
@@ -76,7 +95,8 @@ function buildDetailsHtml(
   }
 
   if (dependencies.length > 0) {
-    parts.push(sectionHtml("Dependencies", listHtml(dependencies)));
+    const renderedDependencies = dependencies.map(dep => describeDependency(dep, nodesById));
+    parts.push(sectionHtml("Dependencies", listHtml(renderedDependencies)));
   }
 
   if (dependents.length > 0) {
@@ -111,4 +131,18 @@ function toRelativePath(codePath: string, nodesById: Map<string, ExplorerNodePay
 
 function normalizeNewlines(value: string): string {
   return value.replace(/\r\n?/g, "\n");
+}
+
+function describeDependency(
+  reference: ExplorerDependencyReference,
+  nodesById: Map<string, ExplorerNodePayload>,
+  markMissing = false
+): string {
+  const target = reference.targetId ? nodesById.get(reference.targetId) : undefined;
+  const basePath = target?.codeRelativePath ?? reference.targetId ?? reference.label ?? reference.raw;
+  const symbolSuffix = reference.targetSymbol ? ` · ${reference.targetSymbol}` : "";
+  if (markMissing || !reference.resolved) {
+    return `${basePath}${symbolSuffix} (missing)`;
+  }
+  return `${basePath}${symbolSuffix}`;
 }

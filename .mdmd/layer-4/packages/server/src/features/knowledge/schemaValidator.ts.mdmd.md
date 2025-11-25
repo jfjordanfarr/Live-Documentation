@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/schemaValidator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-schemavalidator-ts
-- Generated At: 2025-11-19T15:01:34.188Z
+- Generated At: 2025-11-24T15:19:58.691Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Validates incoming knowledge snapshots and stream events so ingestion rejects ma
 - Layer-4 notes refreshed during the Oct 30 metadata audit (see [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)) when validation guidance was woven into architecture docs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.188Z","inputHash":"37f4ca7e0d29222f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.691Z","inputHash":"29698f8c8c2bf43c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SchemaViolation` {#symbol-schemaviolation}
@@ -46,13 +46,7 @@ Validates incoming knowledge snapshots and stream events so ingestion rejects ma
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ArtifactLayer`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactlayer)
-- [`index.ExternalArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-externalartifact)
-- [`index.ExternalLink`](../../../../shared/src/index.ts.mdmd.md#symbol-externallink)
-- [`index.ExternalSnapshot`](../../../../shared/src/index.ts.mdmd.md#symbol-externalsnapshot)
-- [`index.ExternalStreamEvent`](../../../../shared/src/index.ts.mdmd.md#symbol-externalstreamevent)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.StreamEventKind`](../../../../shared/src/index.ts.mdmd.md#symbol-streameventkind)
+- `@live-documentation/shared` - `ArtifactLayer`, `ExternalArtifact`, `ExternalLink`, `ExternalSnapshot`, `ExternalStreamEvent`, `LinkRelationshipKind`, `StreamEventKind`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

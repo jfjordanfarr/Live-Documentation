@@ -167,10 +167,11 @@ Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) 
 
 **Acceptance Scenarios**:
 
-1. **Given** a Live Doc node on the circuit-board view, **When** the maintainer activates focus mode, **Then** the explorer hides unrelated nodes, highlights inbound/outbound edges, and the detail panel lists public symbols with “open in editor” affordances.
+1. **Given** a Live Doc node on the circuit-board view, **When** the maintainer activates focus mode, **Then** the explorer hides unrelated nodes, highlights inbound versus outbound edges with distinct treatments, and the detail panel lists public symbols with “open in editor” affordances sourced from the same Live Doc payloads the CLI exposes.
 2. **Given** the maintainer switches between circuit-board and force-directed views, **When** a node is currently selected, **Then** its selection state, highlighted neighbors, and detail panel content persist across both views.
 3. **Given** the maintainer navigates solely with a keyboard or screen reader, **When** they tab through the explorer, **Then** focus order is logical, every interactive element announces its role/name/state, and contrast checks satisfy WCAG AA (≥4.5:1).
 4. **Given** the detail panel surfaces authored Live Doc context, **When** the maintainer attempts to edit, **Then** the UI clarifies the read-only state today and exposes the upcoming docstring-bridge workflow (preview/apply) once feature flags enable authoring.
+5. **Given** a Live Doc includes symbol-level dependency anchors, **When** the maintainer inspects it in the local view, **Then** symbol rails render connectors with inbound/outbound colouring that mirrors `live-docs inspect`, and automated parity tests confirm the rendered edges match the headless payload exactly.
 
 ---
 
@@ -221,10 +222,9 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **FR-LD13**: Layer distribution tooling MUST publish Layer 1 capabilities via a scripted static site, reconcile Layer 2 requirement status with Spec-Kit/issue trackers, and keep System analytics as CLI materialized views that leave no tracked artefacts unless explicitly promoted.
 - **FR-LD14**: Round-trip authoring tools MUST expose preview/apply flows protected by feature flags, record audit telemetry for every docstring mutation, and emit generative scaffolds into scratch locations without modifying tracked files until humans promote them.
 - **FR-LD15**: The hosted showcase pipeline MUST reuse the standard generator to process public GitHub repositories headlessly, emit provenance metadata, produce a downloadable bundle (Live Docs, SQLite cache, README, prompt guide), and delete cloned data immediately after the bundle is created.
-- **FR-LD16**: The visualization command center MUST merge circuit-board and local symbol exploration into a single UI backed by Live Docs, maintain state across force-directed and 2D views, expose “open in editor” affordances, provide focus-mode filtering, and satisfy WCAG AA keyboard/contrast/screen-reader expectations while preparing the detail panel for future inline editing.
+- **FR-LD16**: The visualization command center MUST merge circuit-board and local symbol exploration into a single UI backed by Live Docs, maintain state across force-directed and 2D views, expose “open in editor” affordances, provide focus-mode filtering, and satisfy WCAG AA keyboard/contrast/screen-reader expectations while preparing the detail panel for future inline editing. The UI MUST operate purely on the Live Doc graph payload—displaying every dependency, symbol anchor, and evidence field available headlessly without inventing additional heuristics—and distinguish inbound versus outbound relationships with directional treatments that stay aligned with CLI diagnostics.
 
 ### Key Entities *(include if feature involves data)*
-
 - **Live Doc Artifact**: Markdown file containing Metadata, Authored, and Generated sections for a single source asset; stores archetype, timestamps, and provenance summary.
 - **Analyzer Output**: Structured description of symbols, dependencies, and coverage emitted by tooling; includes hash for determinism checks.
 - **Evidence Item**: Test case, benchmark, or manual review that exercises or validates an implementation artifact; includes status, location, and waiver metadata.

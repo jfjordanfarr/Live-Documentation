@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/dependencies/inspectDependencies.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-dependencies-inspectdependencies-test-ts
-- Generated At: 2025-11-20T21:07:32.459Z
+- Generated At: 2025-11-24T15:19:58.485Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the dependency traversal introduced in [2025-10-20 summary](../../../.
 - Mocks link graphs directly through `GraphStore` so we can regression-test filtering and max-depth behaviour without spinning up the integration harness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:32.459Z","inputHash":"e37b5c88341182fd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.485Z","inputHash":"40593ce1c00332fd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,10 +23,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkRelationship`
 - [`inspectDependencies.inspectDependencies`](./inspectDependencies.ts.mdmd.md#symbol-inspectdependencies)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
-- [`index.LinkRelationship`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationship)
 - `vitest` - `describe`, `expect`, `it`
 - `zod` - `z`
 <!-- LIVE-DOC:END Dependencies -->

@@ -8,7 +8,7 @@ export interface ParsedLiveDoc {
   sourcePath: string;
   archetype: string;
   publicSymbols: string[];
-  dependencies: string[];
+  dependencies: ParsedDependency[];
   docPath: string;
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
@@ -17,6 +17,14 @@ export interface ParsedSymbolDocumentationEntry {
   summary?: string;
   remarks?: string;
   parameters?: Array<{ name: string; description?: string }>;
+}
+
+export interface ParsedDependency {
+  codePath?: string;
+  docPath?: string;
+  anchor?: string;
+  label?: string;
+  raw: string;
 }
 
 const DEFAULT_ARCHETYPE = "implementation";
@@ -47,9 +55,7 @@ export function parseLiveDocMarkdown(
   const docDir = path.dirname(docAbsolutePath);
 
   const publicSymbols = Array.from(parseSymbolSection(publicSymbolsSection));
-  const dependencies = Array.from(
-    parseDependencySection(dependenciesSection, docDir, workspaceRoot, config)
-  );
+  const dependencies = parseDependencySection(dependenciesSection, docDir, workspaceRoot, config);
 
   return {
     sourcePath: normalizeWorkspacePath(rawSourcePath),
@@ -95,8 +101,9 @@ function parseDependencySection(
   docDir: string,
   workspaceRoot: string,
   config: LiveDocumentationConfig
-): Set<string> {
-  const dependencies = new Set<string>();
+): ParsedDependency[] {
+  const dependencies: ParsedDependency[] = [];
+  const seenKeys = new Set<string>();
   const lines = section.split(/\r?\n/);
   for (const line of lines) {
     const trimmed = line.trim();
@@ -114,13 +121,32 @@ function parseDependencySection(
       const [, label, target] = linkMatch;
       const resolvedTarget = resolveDependencyTarget(target, docDir, workspaceRoot, config);
       if (resolvedTarget) {
-        dependencies.add(resolvedTarget);
+        const entry: ParsedDependency = {
+          codePath: resolvedTarget.codePath,
+          docPath: resolvedTarget.docPath,
+          anchor: resolvedTarget.anchor,
+          label: stripInlineCode(label) || resolvedTarget.codePath,
+          raw: target
+        };
+        const key = dependencyKey(entry);
+        if (!seenKeys.has(key)) {
+          dependencies.push(entry);
+          seenKeys.add(key);
+        }
         continue;
       }
 
       const sanitisedLabel = stripInlineCode(label);
       if (sanitisedLabel) {
-        dependencies.add(sanitisedLabel);
+        const entry: ParsedDependency = {
+          label: sanitisedLabel,
+          raw: sanitisedLabel
+        };
+        const key = dependencyKey(entry);
+        if (!seenKeys.has(key)) {
+          dependencies.push(entry);
+          seenKeys.add(key);
+        }
       }
       continue;
     }
@@ -138,12 +164,38 @@ function parseDependencySection(
     if (sanitizedToken.startsWith(".")) {
       const resolved = resolveDependencyTarget(sanitizedToken, docDir, workspaceRoot, config);
       if (resolved) {
-        dependencies.add(resolved);
+        const entry: ParsedDependency = {
+          codePath: resolved.codePath,
+          docPath: resolved.docPath,
+          anchor: resolved.anchor,
+          raw: sanitizedToken
+        };
+        const key = dependencyKey(entry);
+        if (!seenKeys.has(key)) {
+          dependencies.push(entry);
+          seenKeys.add(key);
+        }
+      } else {
+        const entry: ParsedDependency = {
+          raw: sanitizedToken
+        };
+        const key = dependencyKey(entry);
+        if (!seenKeys.has(key)) {
+          dependencies.push(entry);
+          seenKeys.add(key);
+        }
       }
       continue;
     }
 
-    dependencies.add(sanitizedToken);
+    const entry: ParsedDependency = {
+      raw: sanitizedToken
+    };
+    const key = dependencyKey(entry);
+    if (!seenKeys.has(key)) {
+      dependencies.push(entry);
+      seenKeys.add(key);
+    }
   }
 
   return dependencies;
@@ -285,18 +337,24 @@ function parseSymbolDocumentation(section: string): Record<string, ParsedSymbolD
   return documentation;
 }
 
+interface ResolvedDependencyTarget {
+  codePath: string;
+  docPath?: string;
+  anchor?: string;
+}
+
 function resolveDependencyTarget(
   rawTarget: string,
   docDir: string,
   workspaceRoot: string,
   config: LiveDocumentationConfig
-): string | undefined {
+): ResolvedDependencyTarget | undefined {
   const target = rawTarget.trim();
   if (!target || /^[a-z]+:\/\//i.test(target)) {
     return undefined;
   }
 
-  const pathComponent = target.split("#", 1)[0];
+  const [pathComponent, anchorComponent] = target.split("#", 2);
   if (!pathComponent) {
     return undefined;
   }
@@ -319,6 +377,8 @@ function resolveDependencyTarget(
   const normalizedRelative = normalizeWorkspacePath(relative);
   const liveDocsPrefix = normalizeWorkspacePath(path.join(config.root, config.baseLayer));
 
+  const anchor = anchorComponent ? stripInlineCode(anchorComponent) : undefined;
+
   if (normalizedRelative === liveDocsPrefix) {
     return undefined;
   }
@@ -328,10 +388,19 @@ function resolveDependencyTarget(
     if (!withoutPrefix.endsWith(LIVE_DOCUMENTATION_FILE_EXTENSION)) {
       return undefined;
     }
-    return withoutPrefix.slice(0, -LIVE_DOCUMENTATION_FILE_EXTENSION.length);
+    const codePath = withoutPrefix.slice(0, -LIVE_DOCUMENTATION_FILE_EXTENSION.length);
+    const docPath = normalizeWorkspacePath(path.join(liveDocsPrefix, withoutPrefix));
+    return {
+      codePath,
+      docPath,
+      anchor
+    };
   }
 
-  return normalizedRelative;
+  return {
+    codePath: normalizedRelative,
+    anchor
+  };
 }
 
 function stripInlineCode(token: string): string {
@@ -343,4 +412,15 @@ function stripInlineCode(token: string): string {
     value = value.slice(0, -1);
   }
   return value.trim();
+}
+
+function dependencyKey(entry: ParsedDependency): string {
+  const parts = [
+    entry.codePath ?? "",
+    entry.docPath ?? "",
+    entry.anchor ?? "",
+    entry.label ?? "",
+    entry.raw
+  ];
+  return parts.join("|");
 }

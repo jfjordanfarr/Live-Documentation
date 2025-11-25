@@ -16,6 +16,8 @@ export interface ExplorerState {
   filters: ExplorerFilters;
 }
 
+export type TestCoverageMap = Map<string, ExplorerNodePayload[]>;
+
 export interface CircuitTransform {
   x: number;
   y: number;

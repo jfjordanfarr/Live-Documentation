@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/scipParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-scipparser-ts
-- Generated At: 2025-11-19T15:01:34.212Z
+- Generated At: 2025-11-24T15:19:58.703Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Converts Sourcegraph SCIP indexes into external snapshot seeds and link evidence
 - Implemented with the LSIF/SCIP ingestion option detailed in [2025-10-22 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md), landing alongside the auto-detection flow and unit coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.212Z","inputHash":"0183a601aa222e06"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.703Z","inputHash":"0d0db8c3f835f489"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SCIPParserOptions` {#symbol-scipparseroptions}
@@ -43,12 +43,8 @@ Parse SCIP index into an ExternalSnapshot
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `ExternalArtifact`, `ExternalLink`, `ExternalSnapshot`, `SCIPIndex`, `SCIPOccurrence` (type-only)
 - `node:url` - `pathToFileURL`
-- [`index.ExternalArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-externalartifact) (type-only)
-- [`index.ExternalLink`](../../../../shared/src/index.ts.mdmd.md#symbol-externallink) (type-only)
-- [`index.ExternalSnapshot`](../../../../shared/src/index.ts.mdmd.md#symbol-externalsnapshot) (type-only)
-- [`index.SCIPIndex`](../../../../shared/src/index.ts.mdmd.md#symbol-scipindex) (type-only)
-- [`index.SCIPOccurrence`](../../../../shared/src/index.ts.mdmd.md#symbol-scipoccurrence) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

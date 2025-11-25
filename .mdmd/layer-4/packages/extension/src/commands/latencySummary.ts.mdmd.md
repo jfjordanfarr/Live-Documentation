@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/latencySummary.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-latencysummary-ts
-- Generated At: 2025-11-19T15:01:33.414Z
+- Generated At: 2025-11-24T15:19:58.285Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Surfaces diagnostic latency telemetry inside VS Code by registering `linkDiagnos
 - Follow-up doc cleanup on Oct 28 removed inline-code command IDs after SlopCop flagged them, keeping symbol coverage green per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L2700-L2764](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L2700-L2764).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.414Z","inputHash":"3ea537f153d2c107"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.285Z","inputHash":"9d85a8c570e74975"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerLatencyTelemetryCommands` {#symbol-registerlatencytelemetrycommands}
@@ -34,10 +34,7 @@ Surfaces diagnostic latency telemetry inside VS Code by registering `linkDiagnos
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.LATENCY_SUMMARY_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-latency_summary_request)
-- [`index.LatencySummary`](../../../shared/src/index.ts.mdmd.md#symbol-latencysummary)
-- [`index.LatencySummaryRequest`](../../../shared/src/index.ts.mdmd.md#symbol-latencysummaryrequest)
-- [`index.LatencySummaryResponse`](../../../shared/src/index.ts.mdmd.md#symbol-latencysummaryresponse)
+- `@live-documentation/shared` - `LATENCY_SUMMARY_REQUEST`, `LatencySummary`, `LatencySummaryRequest`, `LatencySummaryResponse`
 - `vscode` - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->

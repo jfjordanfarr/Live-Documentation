@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/symbolBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-symbolbridge-ts
-- Generated At: 2025-11-19T15:01:33.601Z
+- Generated At: 2025-11-24T15:19:58.373Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 - Maintain the MAX_* limits and workspace-symbols provenance to stay aligned with the ripple diagnostics gating discussed there - future tuning should coordinate with the server's symbolBridgeProvider before widening caps.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.601Z","inputHash":"152352a374840c1a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.373Z","inputHash":"69bd300ee67c0d30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerSymbolBridge` {#symbol-registersymbolbridge}
@@ -30,11 +30,7 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ArtifactSeed`](../../../shared/src/index.ts.mdmd.md#symbol-artifactseed)
-- [`index.COLLECT_WORKSPACE_SYMBOLS_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-collect_workspace_symbols_request)
-- [`index.LinkEvidence`](../../../shared/src/index.ts.mdmd.md#symbol-linkevidence)
-- [`index.RelationshipHint`](../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
-- [`index.WorkspaceLinkContribution`](../../../shared/src/index.ts.mdmd.md#symbol-workspacelinkcontribution)
+- `@live-documentation/shared` - `ArtifactSeed`, `COLLECT_WORKSPACE_SYMBOLS_REQUEST`, `LinkEvidence`, `RelationshipHint`, `WorkspaceLinkContribution`
 - `vscode` - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 - `zod` - `z`

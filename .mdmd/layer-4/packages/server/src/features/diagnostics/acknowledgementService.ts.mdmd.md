@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/acknowledgementService.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-acknowledgementservice-ts
-- Generated At: 2025-11-19T15:01:33.792Z
+- Generated At: 2025-11-24T15:19:58.520Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists diagnostic acknowledgements, decides whether follow-up alerts should em
 - Coordinates with hysteresis release and noise-suppression runtime settings so manual acknowledgements immediately quiet reciprocal ripples.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.792Z","inputHash":"d1a89141b449296e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.520Z","inputHash":"eee9166590f040f6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AcknowledgementServiceOptions` {#symbol-acknowledgementserviceoptions}
@@ -45,13 +45,10 @@ Persists diagnostic acknowledgements, decides whether follow-up alerts should em
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `AcknowledgementAction`, `DiagnosticRecord`, `DiagnosticSeverity`, `GraphStore` (type-only)
 - `node:crypto` - `randomUUID`
 - [`hysteresisController.HysteresisController`](./hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller) (type-only)
 - [`settingsBridge.RuntimeSettings`](../settings/settingsBridge.ts.mdmd.md#symbol-runtimesettings) (type-only)
-- [`index.AcknowledgementAction`](../../../../shared/src/index.ts.mdmd.md#symbol-acknowledgementaction) (type-only)
-- [`index.DiagnosticRecord`](../../../../shared/src/index.ts.mdmd.md#symbol-diagnosticrecord) (type-only)
-- [`index.DiagnosticSeverity`](../../../../shared/src/index.ts.mdmd.md#symbol-diagnosticseverity) (type-only)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

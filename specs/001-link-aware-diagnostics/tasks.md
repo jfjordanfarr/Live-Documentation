@@ -85,7 +85,7 @@ description: "Task list for Live Documentation"
 
 [x] LD-402 Ship CLI `scripts/live-docs/inspect.ts` that resolves outbound or inbound dependency chains between `--from`/`--to` artefacts, surfaces terminal roots (fan-out) when only a starting point is supplied, and captures both success and not-found payloads via `tests/integration/live-docs/inspect-cli.test.ts`
 - [ ] LD-406 Consolidate `npm run live-docs:visualize` into a single explorer view that shares data models across circuit-board, local, and force-directed modes while preserving Antigravity deep links.
-- [ ] LD-407 Implement focus-mode filtering, persisted selection, and Live Doc detail panels (metadata, open-in-editor) so global and local exploration stay in sync.
+- [ ] LD-407 Implement focus-mode filtering, persisted selection, and Live Doc detail panels (metadata, open-in-editor) so global and local exploration stay in sync, ensuring the rendered edges, symbol anchors, and directional styling stay in parity with the `live-docs inspect` payloads (UI must never invent or omit graph facts).
 - [ ] LD-408 Add accessibility + telemetry harnesses (axe-core audit, keyboard navigation tests, selection event logging) and stage Playwright smoke tests that exercise Antigravity and VS Code entry points.
 - [ ] LD-404 Implement regeneration watcher so safe-commit or file save triggers targeted updates without full repo sweep
 - [ ] LD-405 Document legacy-parity strategy in `specs/001-link-aware-diagnostics/quickstart.md` and Layer‑3 docs, including rollback toggles

@@ -1,5 +1,15 @@
 export type ExplorerLinkKind = "dependency" | "extends" | "implements" | string;
 
+export interface ExplorerDependencyReference {
+    targetId?: string;
+    targetDocPath?: string;
+    targetSymbol?: string;
+    label: string;
+    raw: string;
+    resolved: boolean;
+    kind: ExplorerLinkKind;
+}
+
 export interface ExplorerNodePayload {
     id: string;
     name: string;
@@ -8,9 +18,9 @@ export interface ExplorerNodePayload {
     docPath: string;
     docRelativePath: string;
     archetype: string;
-    dependencies: string[];
+    dependencies: ExplorerDependencyReference[];
     dependents: string[];
-    missingDependencies: string[];
+    missingDependencies: ExplorerDependencyReference[];
     publicSymbols: string[];
     symbolDocumentation: Record<string, unknown> | undefined;
 }
@@ -19,6 +29,8 @@ export interface ExplorerLinkPayload {
     source: string | { id: string };
     target: string | { id: string };
     kind: ExplorerLinkKind;
+    sourceSymbol?: string;
+    targetSymbol?: string;
 }
 
 export interface ExplorerGraphStats {
@@ -37,9 +49,9 @@ export interface ExplorerDetailPayload {
     archetype: string;
     purpose: string;
     publicSymbols: string[];
-    dependencies: string[];
+    dependencies: ExplorerDependencyReference[];
     dependents: string[];
-    missingDependencies: string[];
+    missingDependencies: ExplorerDependencyReference[];
     docRelativePath: string;
     codeRelativePath: string;
     symbolDocumentation: Record<string, unknown> | undefined;

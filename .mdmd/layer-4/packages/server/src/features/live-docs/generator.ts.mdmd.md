@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2025-11-19T15:01:34.311Z
+- Generated At: 2025-11-24T15:19:58.767Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.311Z","inputHash":"a59602a736f22c26"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.767Z","inputHash":"80455c8bd0d1b2a0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
@@ -38,6 +38,11 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared/config/liveDocumentationConfig` - `DEFAULT_LIVE_DOCUMENTATION_CONFIG`, `LiveDocumentationArchetype`, `LiveDocumentationConfig`, `normalizeLiveDocumentationConfig`
+- `@live-documentation/shared/live-docs/core` - `SourceAnalysisResult`, `analyzeSourceFile`, `cleanupEmptyParents`, `collectDependencies`, `collectExportedSymbols`, `computePublicSymbolHeadingInfo`, `directoryExists`, `discoverTargetFiles`, `formatRelativePathFromDoc`, `hasMeaningfulAuthoredContent`, `inferScriptKind`, `renderDependencyLines`, `renderPublicSymbolLines`, `renderReExportedAnchorLines`, `resolveArchetype`
+- `@live-documentation/shared/live-docs/markdown` - `LiveDocRenderSection`, `composeLiveDocId`, `extractAuthoredBlock`, `renderLiveDocMarkdown`
+- `@live-documentation/shared/live-docs/schema` - `LiveDocGeneratorProvenance`, `LiveDocMetadata`, `LiveDocProvenance` (type-only)
+- `@live-documentation/shared/tooling/pathUtils` - `normalizeWorkspacePath`, `toWorkspaceFileUri`, `toWorkspaceRelativePath`
 - `glob` - `glob`
 - `node:crypto` - `createHash`
 - `node:fs/promises` - `fs`
@@ -47,35 +52,6 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - [`evidenceBridge.ImplementationEvidenceItem`](./evidenceBridge.ts.mdmd.md#symbol-implementationevidenceitem)
 - [`evidenceBridge.TestEvidenceItem`](./evidenceBridge.ts.mdmd.md#symbol-testevidenceitem)
 - [`evidenceBridge.loadEvidenceSnapshot`](./evidenceBridge.ts.mdmd.md#symbol-loadevidencesnapshot)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LiveDocumentationArchetype`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`core.SourceAnalysisResult`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
-- [`core.analyzeSourceFile`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
-- [`core.cleanupEmptyParents`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
-- [`core.collectDependencies`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-collectdependencies)
-- [`core.collectExportedSymbols`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-collectexportedsymbols)
-- [`core.computePublicSymbolHeadingInfo`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
-- [`core.directoryExists`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
-- [`core.discoverTargetFiles`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
-- [`core.formatRelativePathFromDoc`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-formatrelativepathfromdoc)
-- [`core.hasMeaningfulAuthoredContent`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`core.inferScriptKind`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-inferscriptkind)
-- [`core.renderDependencyLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderdependencylines)
-- [`core.renderPublicSymbolLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderpublicsymbollines)
-- [`core.renderReExportedAnchorLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderreexportedanchorlines)
-- [`core.resolveArchetype`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
-- [`markdown.LiveDocRenderSection`](../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-livedocrendersection)
-- [`markdown.composeLiveDocId`](../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-composelivedocid)
-- [`markdown.extractAuthoredBlock`](../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-extractauthoredblock)
-- [`markdown.renderLiveDocMarkdown`](../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-renderlivedocmarkdown)
-- [`schema.LiveDocGeneratorProvenance`](../../../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocgeneratorprovenance) (type-only)
-- [`schema.LiveDocMetadata`](../../../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocmetadata) (type-only)
-- [`schema.LiveDocProvenance`](../../../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
-- [`pathUtils.normalizeWorkspacePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`pathUtils.toWorkspaceFileUri`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
-- [`pathUtils.toWorkspaceRelativePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/knowledge/rippleAnalyzer.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-knowledge-rippleanalyzer-test-ts
-- Generated At: 2025-11-20T21:07:32.971Z
+- Generated At: 2025-11-24T15:19:58.677Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Confirms ripple analysis walks the graph correctly, respecting depth penalties, 
 - Added with the ripple diagnostics rollout recorded in [2025-10-20 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-20.SUMMARIZED.md) to keep traversal scoring validated.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:32.971Z","inputHash":"94014cb5dbd32e6a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.677Z","inputHash":"92bfbb1213ca89ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,13 +23,12 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`
 - `node:fs` - `mkdtempSync`, `rmSync`
 - `node:os` - `tmpdir`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
 - [`rippleAnalyzer.RippleAnalyzer`](./rippleAnalyzer.ts.mdmd.md#symbol-rippleanalyzer)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

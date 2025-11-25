@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2025-11-19T15:01:33.511Z
+- Generated At: 2025-11-24T15:19:58.328Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.511Z","inputHash":"5df48b8aa70605e1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.328Z","inputHash":"e830163ec531a2cd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
@@ -31,6 +31,7 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `FEEDS_READY_REQUEST`, `FeedsReadyResult`, `INVOKE_LLM_REQUEST`, `InvokeLlmRequest`, `InvokeLlmResult`, `RESET_DIAGNOSTIC_STATE_NOTIFICATION`, `RebindRequiredPayload`
 - [`acknowledgeDiagnostic.registerAcknowledgementWorkflow`](./commands/acknowledgeDiagnostic.ts.mdmd.md#symbol-registeracknowledgementworkflow)
 - [`analyzeWithAI.registerAnalyzeWithAICommand`](./commands/analyzeWithAI.ts.mdmd.md#symbol-registeranalyzewithaicommand)
 - [`exportDiagnostics.registerExportDiagnosticsCommand`](./commands/exportDiagnostics.ts.mdmd.md#symbol-registerexportdiagnosticscommand)
@@ -48,13 +49,6 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - [`configService.ConfigService`](./settings/configService.ts.mdmd.md#symbol-configservice)
 - [`diagnosticsTree.registerDiagnosticsTreeView`](./views/diagnosticsTree.ts.mdmd.md#symbol-registerdiagnosticstreeview)
 - [`fileMaintenance.registerFileMaintenanceWatcher`](./watchers/fileMaintenance.ts.mdmd.md#symbol-registerfilemaintenancewatcher)
-- [`index.FEEDS_READY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-feeds_ready_request)
-- [`index.FeedsReadyResult`](../../shared/src/index.ts.mdmd.md#symbol-feedsreadyresult)
-- [`index.INVOKE_LLM_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-invoke_llm_request)
-- [`index.InvokeLlmRequest`](../../shared/src/index.ts.mdmd.md#symbol-invokellmrequest)
-- [`index.InvokeLlmResult`](../../shared/src/index.ts.mdmd.md#symbol-invokellmresult)
-- [`index.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/index.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
-- [`index.RebindRequiredPayload`](../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredpayload)
 - `path` - `path`
 - `process` - `process`
 - `vscode` - `vscode`

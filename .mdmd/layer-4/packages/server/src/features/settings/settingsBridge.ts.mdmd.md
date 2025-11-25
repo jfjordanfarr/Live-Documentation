@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/settings/settingsBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-settings-settingsbridge-ts
-- Generated At: 2025-11-19T15:01:34.427Z
+- Generated At: 2025-11-24T15:19:58.880Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Transforms extension configuration into validated runtime settings for the langu
 - Expanded defaults for document-oriented relationship kinds during the Oct 21 diagnostic copy edit pass documented in [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.427Z","inputHash":"42339b2545aadc82"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.880Z","inputHash":"9c21c3a9e13f83ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NoiseSuppressionLevel` {#symbol-noisesuppressionlevel}
@@ -50,8 +50,8 @@ Transforms extension configuration into validated runtime settings for the langu
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `LinkRelationshipKind` (type-only)
 - [`providerGuard.ExtensionSettings`](./providerGuard.ts.mdmd.md#symbol-extensionsettings)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

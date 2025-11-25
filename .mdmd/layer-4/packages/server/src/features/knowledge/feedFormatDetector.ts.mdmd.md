@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedFormatDetector.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feedformatdetector-ts
-- Generated At: 2025-11-19T15:01:33.996Z
+- Generated At: 2025-11-24T15:19:58.604Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Detects and parses static knowledge feed payloads (ExternalSnapshot, LSIF, SCIP)
 - Prefers deterministic snapshot parsing before falling back to language-server formats, reflecting the LSIF/SCIP integration tuning captured in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.996Z","inputHash":"ad64be32d0b49dd1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.604Z","inputHash":"9176eb8146113f8e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedFormat` {#symbol-feedformat}
@@ -48,14 +48,12 @@ automatically detecting LSIF, SCIP, or native ExternalSnapshot formats
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `ExternalSnapshot`, `LSIFEntry`, `SCIPIndex` (type-only)
 - `node:fs` - `promises`
 - [`lsifParser.LSIFParserOptions`](./lsifParser.ts.mdmd.md#symbol-lsifparseroptions)
 - [`lsifParser.parseLSIF`](./lsifParser.ts.mdmd.md#symbol-parselsif)
 - [`scipParser.SCIPParserOptions`](./scipParser.ts.mdmd.md#symbol-scipparseroptions)
 - [`scipParser.parseSCIP`](./scipParser.ts.mdmd.md#symbol-parsescip)
-- [`index.ExternalSnapshot`](../../../../shared/src/index.ts.mdmd.md#symbol-externalsnapshot) (type-only)
-- [`index.LSIFEntry`](../../../../shared/src/index.ts.mdmd.md#symbol-lsifentry) (type-only)
-- [`index.SCIPIndex`](../../../../shared/src/index.ts.mdmd.md#symbol-scipindex) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/knowledgeGraphBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-knowledgegraphbridge-ts
-- Generated At: 2025-11-19T15:01:34.062Z
+- Generated At: 2025-11-24T15:19:58.633Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Bootstraps knowledge feed ingestion for the workspace by discovering static feed
 - Hosts the feed manager, diagnostics gateway, and derived child loggers so per-feed health surfaces cleanly, incorporating the follow-up logging and discovery tweaks tracked in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.062Z","inputHash":"c9a0104f2f8b78e3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.633Z","inputHash":"371be4ea7634890b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `KnowledgeGraphBridgeLogger` {#symbol-knowledgegraphbridgelogger}
@@ -41,6 +41,7 @@ Bootstraps knowledge feed ingestion for the workspace by discovering static feed
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `ArtifactLayer`, `ExternalArtifact`, `ExternalLink`, `ExternalSnapshot`, `GraphStore`, `KnowledgeFeed`, `KnowledgeGraphBridge`, `LinkRelationshipKind`
 - `node:crypto` - `createHash`
 - `node:fs` - `fs`, `promises`
 - `node:path` - `path`
@@ -56,14 +57,6 @@ Bootstraps knowledge feed ingestion for the workspace by discovering static feed
 - [`knowledgeFeedManager.KnowledgeFeedManager`](./knowledgeFeedManager.ts.mdmd.md#symbol-knowledgefeedmanager)
 - [`knowledgeGraphIngestor.KnowledgeGraphIngestor`](./knowledgeGraphIngestor.ts.mdmd.md#symbol-knowledgegraphingestor)
 - [`knowledgeGraphIngestor.KnowledgeGraphIngestorLogger`](./knowledgeGraphIngestor.ts.mdmd.md#symbol-knowledgegraphingestorlogger)
-- [`index.ArtifactLayer`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactlayer)
-- [`index.ExternalArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-externalartifact)
-- [`index.ExternalLink`](../../../../shared/src/index.ts.mdmd.md#symbol-externallink)
-- [`index.ExternalSnapshot`](../../../../shared/src/index.ts.mdmd.md#symbol-externalsnapshot)
-- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeFeed`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgefeed)
-- [`index.KnowledgeGraphBridge`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgegraphbridge)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

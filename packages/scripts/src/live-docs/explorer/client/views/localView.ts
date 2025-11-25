@@ -5,29 +5,54 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import type { DirectoryNode, ExplorerState } from "../types";
+import type { DirectoryNode, ExplorerState, TestCoverageMap } from "../types";
 import {
   ROOT_KEY,
   buildHierarchy,
-  computeColumnCount,
-  getDirectoryKey
+  computeDirectoryLayout,
+  getDirectoryKey,
+  measureDirectoryTree
 } from "./layoutUtils";
+import type { DirectoryLayoutPlan } from "./layoutUtils";
 
 export interface LocalViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void;
+  testCoverage: TestCoverageMap;
 }
 
 export interface LocalViewApi {
   render(): void;
   drawConnections(): void;
   highlightSelection(): void;
+  zoomIn(): void;
+  zoomOut(): void;
+  resetZoom(): void;
+}
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+interface LocalEdge {
+  sourceId: string;
+  targetId: string;
+  direction: "outbound" | "inbound";
+  kind: ExplorerLinkKind;
+  sourceSymbol?: string;
+  targetSymbol?: string;
+}
+
+interface LocalSubgraph {
+  center: ExplorerNodePayload;
+  nodes: ExplorerNodePayload[];
+  links: LocalEdge[];
+  inboundIds: Set<string>;
+  outboundIds: Set<string>;
 }
 
 export function createLocalView(options: LocalViewOptions): LocalViewApi {
-  const { state, graphData, resolveLinkEndpoint, onSelectNode } = options;
+  const { state, graphData, resolveLinkEndpoint, onSelectNode, testCoverage } = options;
   const viewport = requireElement<HTMLDivElement>("view-map");
   const container = requireElement<HTMLDivElement>("map-container");
   const overlay = requireElement<HTMLDivElement>("map-connections");
@@ -35,7 +60,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   container.classList.add("cluster-host");
   viewport.style.cursor = "grab";
 
-  let currentSubgraph: { nodes: ExplorerNodePayload[]; links: ExplorerLinkPayload[] } | null = null;
+  let currentSubgraph: LocalSubgraph | null = null;
   let mapTransform = { x: 0, y: 0, k: 1 };
   let isDragging = false;
   let lastDragPosition: { x: number; y: number; time: number } | null = null;
@@ -45,7 +70,72 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   let mapHasInitialFit = false;
   let mapUserAdjusted = false;
   let lastCenteredNodeId: string | null = null;
+  let mapInitialTransform: { x: number; y: number; k: number } | null = null;
   let contentRoot: HTMLElement | null = null;
+  let resizeAnimationFrame = 0;
+  const viewportResizeObserver = new ResizeObserver(() => scheduleResizeAdjustment());
+  viewportResizeObserver.observe(viewport);
+  const anchorRegistry = new Map<string, Map<string, HTMLElement>>();
+  const isTestNode = (node: ExplorerNodePayload | null | undefined): boolean =>
+    !!node && (node.archetype || "").toLowerCase() === "test";
+  const shouldIncludeNode = (node: ExplorerNodePayload): boolean => {
+    const archetype = (node.archetype || "").toLowerCase();
+    if (archetype === "test" && !state.filters.showTests && node.id !== state.selectedNode?.id) {
+      return false;
+    }
+    if (archetype === "asset" && !state.filters.showAssets && node.id !== state.selectedNode?.id) {
+      return false;
+    }
+    return true;
+  };
+
+  const registerAnchor = (nodeId: string, key: string, element: HTMLElement): void => {
+    if (!anchorRegistry.has(nodeId)) {
+      anchorRegistry.set(nodeId, new Map());
+    }
+    anchorRegistry.get(nodeId)!.set(key, element);
+  };
+
+  const getAnchor = (nodeId: string, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null => {
+    const anchors = anchorRegistry.get(nodeId);
+    if (!anchors) {
+      return null;
+    }
+    if (symbol) {
+      const key = `${direction}:${symbol}`;
+      if (anchors.has(key)) {
+        return anchors.get(key)!;
+      }
+    }
+    const defaultKey = `${direction}:*`;
+    if (anchors.has(defaultKey)) {
+      return anchors.get(defaultKey)!;
+    }
+    if (anchors.has("card")) {
+      return anchors.get("card")!;
+    }
+    return null;
+  };
+
+  const scheduleResizeAdjustment = (): void => {
+    if (state.view !== "map" || !contentRoot) {
+      return;
+    }
+    if (resizeAnimationFrame) {
+      cancelAnimationFrame(resizeAnimationFrame);
+    }
+    resizeAnimationFrame = requestAnimationFrame(() => {
+      resizeAnimationFrame = 0;
+      if (!mapUserAdjusted && contentRoot) {
+        fitMapToContent(contentRoot);
+      } else {
+        updateMapTransform();
+        drawConnections();
+      }
+    });
+  };
+
+  window.addEventListener("resize", scheduleResizeAdjustment);
 
   viewport.addEventListener("mousedown", event => {
     if ((event.target as HTMLElement | null)?.closest?.(".node-card")) {
@@ -150,6 +240,13 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     updateMapTransform();
   }
 
+  function zoomByFactor(factor: number): void {
+    mapUserAdjusted = true;
+    cancelInertia();
+    const viewportRect = viewport.getBoundingClientRect();
+    zoomAtPoint(viewportRect.width / 2, viewportRect.height / 2, Math.log(factor));
+  }
+
   function startInertia(initialVx: number, initialVy: number): void {
     cancelInertia();
     mapUserAdjusted = true;
@@ -216,6 +313,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     container.innerHTML = "";
     currentSubgraph = null;
     contentRoot = null;
+    anchorRegistry.clear();
 
     if (!state.selectedNode) {
       container.innerHTML = '<div class="empty-hint">Select a node to view local relationships.</div>';
@@ -223,6 +321,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       mapHasInitialFit = false;
       mapUserAdjusted = false;
       lastCenteredNodeId = null;
+      mapInitialTransform = null;
       updateMapTransform();
       return;
     }
@@ -235,91 +334,213 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       mapTransform = { x: 0, y: 0, k: 1 };
       mapHasInitialFit = false;
       mapUserAdjusted = false;
+      mapInitialTransform = null;
       updateMapTransform();
       return;
     }
 
     if (!mapUserAdjusted) {
       mapHasInitialFit = false;
+      mapInitialTransform = null;
     }
 
     if (state.selectedNode.id !== lastCenteredNodeId) {
       mapHasInitialFit = false;
       mapUserAdjusted = false;
       lastCenteredNodeId = state.selectedNode.id;
+      mapInitialTransform = null;
     }
 
-    const hierarchy = buildHierarchy(subgraph.nodes);
-    const clusterElements: HTMLElement[] = [];
-    const renderDir = (dir: DirectoryNode): HTMLElement => {
-      const pathKey = dir.path || ROOT_KEY;
-      const element = document.createElement("div");
-      element.className = "cluster local";
-      element.dataset.clusterPath = pathKey;
-      element.tabIndex = 0;
-      element.setAttribute("role", "region");
-      element.setAttribute("aria-label", `Cluster ${dir.path === ROOT_KEY ? "root" : dir.path}`);
-      element.title = dir.path === ROOT_KEY ? "root" : dir.path;
-
-      const heading = document.createElement("div");
-      heading.className = "cluster-label";
-      heading.textContent = dir.path === ROOT_KEY ? "(root)" : dir.name;
-      element.appendChild(heading);
-
-      const content = document.createElement("div");
-      content.className = "cluster-content";
-
-        Array.from(dir.children.values())
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .forEach(child => {
-            content.appendChild(renderDir(child));
-          });
-
-      dir.nodes
-        .slice()
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .forEach(node => {
-          const card = createNodeCard(node);
-          content.appendChild(card);
-        });
-
-      element.appendChild(content);
-      return element;
-    };
-
-    Array.from(hierarchy.children.values())
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .forEach(child => {
-        clusterElements.push(renderDir(child));
-      });
-
-    if (hierarchy.nodes.length > 0) {
-      const rootCluster = renderDir({
-        name: "(root)",
-        path: ROOT_KEY,
-        children: new Map(),
-        nodes: hierarchy.nodes
-      });
-      clusterElements.push(rootCluster);
-    }
-
-    const grid = document.createElement("div");
-    grid.className = "cluster-grid local-grid";
-
-    const columns = computeColumnCount(clusterElements.length, state.filters);
-    const columnWidth = 320;
-    const gutter = 28;
-    const maxWidth = Math.max(680, Math.min(1800, columns * columnWidth + (columns - 1) * gutter));
-
-    grid.style.setProperty("--cluster-columns", String(columns));
-    grid.style.setProperty("--cluster-max-width", `${maxWidth}px`);
-
-    clusterElements.forEach(element => {
-      grid.appendChild(element);
+    const connectionScore = new Map<string, number>();
+    subgraph.links.forEach(edge => {
+      connectionScore.set(edge.sourceId, (connectionScore.get(edge.sourceId) ?? 0) + 1);
+      connectionScore.set(edge.targetId, (connectionScore.get(edge.targetId) ?? 0) + 1);
     });
 
-    container.appendChild(grid);
-    contentRoot = grid;
+    const renderLayoutForNodes = (
+      nodes: ExplorerNodePayload[],
+      direction: "inbound" | "outbound" | "center"
+    ): HTMLElement | null => {
+      const eligibleNodes =
+        direction === "center" ? nodes.slice() : nodes.filter(node => shouldIncludeNode(node));
+      if (eligibleNodes.length === 0) {
+        return null;
+      }
+
+      const hierarchy = buildHierarchy(eligibleNodes);
+      const scoreCache = new Map<string, number>();
+      const computeScore = (dir: DirectoryNode): number => {
+        const cached = scoreCache.get(dir.path);
+        if (cached !== undefined) {
+          return cached;
+        }
+        let score = 0;
+        dir.nodes.forEach(node => {
+          score += connectionScore.get(node.id) ?? 0;
+        });
+        dir.children.forEach(child => {
+          score += computeScore(child);
+        });
+        scoreCache.set(dir.path, score);
+        return score;
+      };
+
+      const reorderDirectory = (dir: DirectoryNode): void => {
+        const entries = Array.from(dir.children.entries());
+        entries.forEach(([, child]) => reorderDirectory(child));
+        entries.sort(([, a], [, b]) => {
+          const weightDelta = computeScore(b) - computeScore(a);
+          if (weightDelta !== 0) {
+            return weightDelta;
+          }
+          return a.name.localeCompare(b.name);
+        });
+        dir.children.clear();
+        entries.forEach(([key, child]) => {
+          dir.children.set(key, child);
+        });
+        dir.nodes.sort((a, b) => {
+          const weightDelta = (connectionScore.get(b.id) ?? 0) - (connectionScore.get(a.id) ?? 0);
+          if (weightDelta !== 0) {
+            return weightDelta;
+          }
+          return a.name.localeCompare(b.name);
+        });
+      };
+
+      reorderDirectory(hierarchy);
+
+      const measure = measureDirectoryTree(hierarchy);
+      if (measure.totalNodes === 0) {
+        return null;
+      }
+
+      const layout = computeDirectoryLayout(measure);
+
+      const surface = document.createElement("div");
+      surface.className = "layout-surface local-surface";
+      surface.dataset.direction = direction;
+      surface.style.position = "relative";
+      surface.style.width = `${layout.width}px`;
+      surface.style.height = `${layout.height}px`;
+      surface.style.minWidth = `${layout.width}px`;
+      surface.style.minHeight = `${layout.height}px`;
+
+      const positionElement = (
+        element: HTMLElement,
+        rect: { x: number; y: number; width: number; height: number },
+        origin: { x: number; y: number }
+      ): void => {
+        element.style.position = "absolute";
+        element.style.left = `${rect.x - origin.x}px`;
+        element.style.top = `${rect.y - origin.y}px`;
+        element.style.width = `${rect.width}px`;
+        element.style.height = `${rect.height}px`;
+      };
+
+      const renderDirectoryPlan = (
+        plan: DirectoryLayoutPlan,
+        parentPlan: DirectoryLayoutPlan | null,
+        host: HTMLElement
+      ): void => {
+        const element = document.createElement("div");
+        element.className =
+          plan.depth === 0
+            ? "layout-box layout-box--root local-layout-box"
+            : "layout-box local-layout-box";
+        element.dataset.direction = direction;
+        element.dataset.clusterPath = plan.path;
+        element.setAttribute("role", "region");
+        element.setAttribute("aria-label", `Cluster ${plan.path === ROOT_KEY ? "root" : plan.name}`);
+        element.tabIndex = 0;
+        element.title = plan.path === ROOT_KEY ? "root" : plan.path;
+        if (plan.collapsedAncestors.length > 0) {
+          element.dataset.collapsedAncestors = plan.collapsedAncestors
+            .map(entry => entry.path)
+            .join(",");
+        }
+
+        const origin = parentPlan ? { x: parentPlan.contentRect.x, y: parentPlan.contentRect.y } : { x: 0, y: 0 };
+        positionElement(element, plan.rect, origin);
+
+        const showLabel = plan.depth > 0 || plan.path === ROOT_KEY;
+        if (showLabel) {
+          const heading = document.createElement("div");
+          heading.className = "layout-box__label";
+          heading.textContent = plan.path === ROOT_KEY ? "(root)" : plan.displayName;
+          element.appendChild(heading);
+        }
+
+        const content = document.createElement("div");
+        content.className = "layout-box__content";
+        positionElement(content, plan.contentRect, { x: plan.rect.x, y: plan.rect.y });
+        element.appendChild(content);
+        host.appendChild(element);
+
+        if (plan.fileArea && plan.fileArea.nodes.length > 0) {
+          const nodeOrigin = { x: plan.contentRect.x, y: plan.contentRect.y };
+          plan.fileArea.nodes.forEach(nodePlan => {
+            const card = createNodeCard(nodePlan.node);
+            card.classList.add("layout-node");
+            card.dataset.direction = direction;
+            positionElement(card, nodePlan.rect, nodeOrigin);
+            content.appendChild(card);
+          });
+        }
+
+        plan.directories.forEach(child => {
+          renderDirectoryPlan(child, plan, content);
+        });
+      };
+
+      renderDirectoryPlan(layout.root, null, surface);
+      return surface;
+    };
+
+    const createDirectionalColumn = (
+      label: string,
+      nodes: ExplorerNodePayload[],
+      direction: "inbound" | "outbound" | "center",
+      emptyLabel: string
+    ): HTMLElement => {
+      const column = document.createElement("div");
+      column.className = `local-column ${direction}`;
+      column.dataset.direction = direction;
+
+      const heading = document.createElement("div");
+      heading.className = "local-column-label";
+      heading.textContent = label;
+      column.appendChild(heading);
+
+      const surface = renderLayoutForNodes(nodes, direction);
+      if (!surface) {
+        const empty = document.createElement("div");
+        empty.className = "local-column-empty";
+        empty.textContent = emptyLabel;
+        column.appendChild(empty);
+        return column;
+      }
+
+      column.appendChild(surface);
+      return column;
+    };
+
+    const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
+    const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
+    const centerNodes = [subgraph.center];
+
+    const layout = document.createElement("div");
+    layout.className = "local-layout";
+    layout.appendChild(
+      createDirectionalColumn("Incoming Dependencies", inboundNodes, "inbound", "No incoming dependencies")
+    );
+    layout.appendChild(createDirectionalColumn("Selected Artifact", centerNodes, "center", "No artifact selected"));
+    layout.appendChild(
+      createDirectionalColumn("Outgoing Dependencies", outboundNodes, "outbound", "No outgoing dependencies")
+    );
+
+    container.appendChild(layout);
+    contentRoot = layout;
 
     if (!mapHasInitialFit && contentRoot) {
       fitMapToContent(contentRoot);
@@ -362,6 +583,8 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
 
     animateMapTransform(target, true);
     mapHasInitialFit = true;
+    mapInitialTransform = { ...target };
+    requestAnimationFrame(drawConnections);
   }
 
   function createNodeCard(node: ExplorerNodePayload): HTMLElement {
@@ -369,17 +592,69 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     card.className = "node-card";
     card.dataset.id = node.id;
     card.title = node.codeRelativePath;
+    card.tabIndex = 0;
 
     if (state.selectedNode && state.selectedNode.id === node.id) {
       card.classList.add("selected", "local-focus");
     }
 
-    card.innerHTML = [
-      `<div class="node-title">${node.name}</div>`,
-      `<div class="node-path">${node.codeRelativePath}</div>`,
-      createSymbolMarkup(node),
-      `<div class="node-directory">${getDirectoryKey(node) === ROOT_KEY ? "(root)" : getDirectoryKey(node)}</div>`
-    ].join("\n");
+    registerAnchor(node.id, "card", card);
+
+    const inboundHub = document.createElement("div");
+    inboundHub.className = "symbol-anchor hub inbound";
+    card.appendChild(inboundHub);
+    registerAnchor(node.id, "inbound:*", inboundHub);
+
+    const outboundHub = document.createElement("div");
+    outboundHub.className = "symbol-anchor hub outbound";
+    card.appendChild(outboundHub);
+    registerAnchor(node.id, "outbound:*", outboundHub);
+
+    const header = document.createElement("div");
+    header.className = "node-title";
+    header.textContent = node.name;
+    card.appendChild(header);
+
+    const pathElement = document.createElement("div");
+    pathElement.className = "node-path";
+    pathElement.textContent = node.codeRelativePath;
+    card.appendChild(pathElement);
+
+    card.appendChild(createSymbolSection(node));
+
+    if (!isTestNode(node) && state.filters.showTests) {
+      const backing = testCoverage.get(node.id);
+      if (backing && backing.length > 0) {
+        card.classList.add("test-backed");
+        card.dataset.testCount = String(backing.length);
+        const coverage = document.createElement("div");
+        coverage.className = "node-tests";
+        const label = document.createElement("span");
+        label.className = "node-tests__label";
+        label.textContent = backing.length === 1 ? "Test" : "Tests";
+        coverage.appendChild(label);
+        backing.slice(0, 3).forEach(testNode => {
+          const tag = document.createElement("span");
+          tag.className = "node-tests__item";
+          tag.textContent = testNode.name;
+          coverage.appendChild(tag);
+        });
+        if (backing.length > 3) {
+          const remainder = document.createElement("span");
+          remainder.className = "node-tests__more";
+          remainder.textContent = `+${backing.length - 3}`;
+          coverage.appendChild(remainder);
+        }
+        const coverageTitle = backing.map(test => test.codeRelativePath).join("\n");
+        card.title = `${card.title}\nTest coverage:\n${coverageTitle}`;
+        card.appendChild(coverage);
+      }
+    }
+
+    const directory = document.createElement("div");
+    directory.className = "node-directory";
+    directory.textContent = getDirectoryKey(node) === ROOT_KEY ? "(root)" : getDirectoryKey(node);
+    card.appendChild(directory);
 
     card.addEventListener("click", event => {
       event.stopPropagation();
@@ -394,45 +669,98 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     return card;
   }
 
-  function createSymbolMarkup(node: ExplorerNodePayload): string {
+  function createSymbolSection(node: ExplorerNodePayload): HTMLElement {
+    const wrapper = document.createElement("div");
+    wrapper.className = "node-symbols";
+
     if (!node.publicSymbols || node.publicSymbols.length === 0) {
-      return '<div class="node-meta">No public symbols</div>';
+      const empty = document.createElement("div");
+      empty.className = "node-meta";
+      empty.textContent = "No public symbols";
+      wrapper.appendChild(empty);
+      return wrapper;
     }
 
-    const limit = state.selectedNode && state.selectedNode.id === node.id ? node.publicSymbols.length : 4;
-    const symbols = node.publicSymbols.slice(0, limit);
-    const remainder = node.publicSymbols.length - symbols.length;
-    const pills = symbols.map(symbol => `<span class="pill">${symbol}</span>`).join("");
-    const remainderPill = remainder > 0 ? `<span class="pill ghost">+${remainder} more</span>` : "";
-    return `<div class="node-meta symbols">${pills}${remainderPill}</div>`;
+    const grid = document.createElement("div");
+    grid.className = "symbol-grid";
+
+    node.publicSymbols.forEach(symbol => {
+      const inboundAnchor = document.createElement("div");
+      inboundAnchor.className = "symbol-anchor dot inbound";
+      inboundAnchor.dataset.symbol = symbol;
+      grid.appendChild(inboundAnchor);
+      registerAnchor(node.id, `inbound:${symbol}`, inboundAnchor);
+
+      const label = document.createElement("div");
+      label.className = "symbol-label";
+      label.textContent = symbol;
+      grid.appendChild(label);
+
+      const outboundAnchor = document.createElement("div");
+      outboundAnchor.className = "symbol-anchor dot outbound";
+      outboundAnchor.dataset.symbol = symbol;
+      grid.appendChild(outboundAnchor);
+      registerAnchor(node.id, `outbound:${symbol}`, outboundAnchor);
+    });
+
+    wrapper.appendChild(grid);
+    return wrapper;
   }
 
-  function buildLocalSubgraph(center: ExplorerNodePayload): { nodes: ExplorerNodePayload[]; links: ExplorerLinkPayload[] } {
+  function buildLocalSubgraph(center: ExplorerNodePayload): LocalSubgraph {
     const neighbors = new Map<string, ExplorerNodePayload>();
-    const linkResults: ExplorerLinkPayload[] = [];
+    const linkResults: LocalEdge[] = [];
+    const inboundIds = new Set<string>();
+    const outboundIds = new Set<string>();
 
     graphData.links.forEach(edge => {
       const sourceId = resolveLinkEndpoint(edge.source);
       const targetId = resolveLinkEndpoint(edge.target);
+      const kind = edge.kind ?? "dependency";
 
       if (sourceId === center.id) {
         const neighbor = getNodeById(targetId);
         if (neighbor) {
+          if (!shouldIncludeNode(neighbor) && neighbor.id !== center.id) {
+            return;
+          }
           neighbors.set(neighbor.id, neighbor);
-          linkResults.push({ source: sourceId, target: targetId, kind: edge.kind });
+          outboundIds.add(neighbor.id);
+          linkResults.push({
+            sourceId,
+            targetId,
+            direction: "outbound",
+            kind,
+            sourceSymbol: edge.sourceSymbol,
+            targetSymbol: edge.targetSymbol
+          });
         }
       } else if (targetId === center.id) {
         const neighbor = getNodeById(sourceId);
         if (neighbor) {
+          if (!shouldIncludeNode(neighbor) && neighbor.id !== center.id) {
+            return;
+          }
           neighbors.set(neighbor.id, neighbor);
-          linkResults.push({ source: targetId, target: sourceId, kind: edge.kind });
+          inboundIds.add(neighbor.id);
+          linkResults.push({
+            sourceId,
+            targetId,
+            direction: "inbound",
+            kind,
+            sourceSymbol: edge.sourceSymbol,
+            targetSymbol: edge.targetSymbol
+          });
         }
       }
     });
 
     return {
+      center,
       nodes: [center].concat(Array.from(neighbors.values())),
-      links: linkResults
+      links: linkResults,
+      inboundIds,
+      outboundIds
     };
   }
 
@@ -443,62 +771,78 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   function drawConnections(): void {
     overlay.innerHTML = "";
     if (!state.selectedNode || !currentSubgraph) {
+      overlay.dataset.active = "false";
       return;
     }
 
-    const nodeMap = new Map<string, HTMLElement>();
-    container.querySelectorAll<HTMLElement>(".node-card").forEach(element => {
-      const id = element.dataset.id;
-      if (id) {
-        nodeMap.set(id, element);
-      }
-    });
+    const rootRect = container.getBoundingClientRect();
+    const scale = mapTransform.k || 1;
+    const svgWidth = Math.max(1, rootRect.width / scale);
+    const svgHeight = Math.max(1, rootRect.height / scale);
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.classList.add("connection-svg");
+    svg.setAttribute("width", `${svgWidth}`);
+    svg.setAttribute("height", `${svgHeight}`);
+    svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+    overlay.appendChild(svg);
 
+    const positionCache = new Map<HTMLElement, { x: number; y: number }>();
+    const measureAnchor = (anchor: HTMLElement | null): { x: number; y: number } | null => {
+      if (!anchor) {
+        return null;
+      }
+      if (positionCache.has(anchor)) {
+        return positionCache.get(anchor)!;
+      }
+      const rect = anchor.getBoundingClientRect();
+      const point = {
+        x: (rect.left - rootRect.left + rect.width / 2) / scale,
+        y: (rect.top - rootRect.top + rect.height / 2) / scale
+      };
+      positionCache.set(anchor, point);
+      return point;
+    };
+
+    let rendered = 0;
     currentSubgraph.links.forEach(edge => {
-      const sourceEl = nodeMap.get(String(edge.source));
-      const targetEl = nodeMap.get(String(edge.target));
-      if (!sourceEl || !targetEl) {
+      const source = measureAnchor(getAnchor(edge.sourceId, "outbound", edge.sourceSymbol));
+      const target = measureAnchor(getAnchor(edge.targetId, "inbound", edge.targetSymbol));
+      if (!source || !target) {
         return;
       }
-      appendConnectionLine(overlay, sourceEl, targetEl, container, edge.kind ?? "dependency");
+      appendConnectionPath(svg, source, target, edge);
+      rendered += 1;
     });
+
+    overlay.dataset.active = rendered > 0 ? "true" : "false";
   }
 
-  function appendConnectionLine(
-    overlayElement: HTMLElement,
-    sourceElement: HTMLElement,
-    targetElement: HTMLElement,
-    root: HTMLElement,
-    kind: ExplorerLinkKind
+  function appendConnectionPath(
+    svg: SVGSVGElement,
+    source: { x: number; y: number },
+    target: { x: number; y: number },
+    edge: LocalEdge
   ): void {
-    const source = getRelativePoint(sourceElement, root);
-    const target = getRelativePoint(targetElement, root);
+    const horizontalDirection = target.x >= source.x ? 1 : -1;
+    const gapX = Math.abs(target.x - source.x);
+    const commands: string[] = [`M ${source.x} ${source.y}`];
 
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const length = Math.sqrt(dx * dx + dy * dy);
-    if (!isFinite(length) || length < 1) {
-      return;
+    if (gapX < 24) {
+      const verticalDirection = target.y >= source.y ? 1 : -1;
+      const verticalStub = Math.max(28, Math.abs(target.y - source.y) * 0.35);
+      const elbowY = source.y + verticalDirection * verticalStub;
+      commands.push(`V ${elbowY}`, `H ${target.x}`, `V ${target.y}`);
+    } else {
+      const stub = Math.min(Math.max(gapX * 0.35, 22), Math.max(22, gapX - 6));
+      const elbowX = source.x + horizontalDirection * stub;
+      commands.push(`H ${elbowX}`, `V ${target.y}`, `H ${target.x}`);
     }
 
-    const angle = Math.atan2(dy, dx);
-    const line = document.createElement("div");
-    line.className = "connection-line";
-    line.dataset.kind = kind;
-    line.style.width = `${length}px`;
-    line.style.left = `${source.x}px`;
-    line.style.top = `${source.y - 1}px`;
-    line.style.transform = `rotate(${angle}rad)`;
-    overlayElement.appendChild(line);
-  }
-
-  function getRelativePoint(element: HTMLElement, root: HTMLElement): { x: number; y: number } {
-    const elementRect = element.getBoundingClientRect();
-    const rootRect = root.getBoundingClientRect();
-    return {
-      x: elementRect.left - rootRect.left + elementRect.width / 2,
-      y: elementRect.top - rootRect.top + elementRect.height / 2
-    };
+    const path = document.createElementNS(SVG_NS, "path");
+    path.setAttribute("d", commands.join(" "));
+    path.classList.add("connection-path", edge.direction);
+    path.dataset.kind = edge.kind;
+    svg.appendChild(path);
   }
 
   function easeOutCubic(t: number): number {
@@ -529,6 +873,18 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   return {
     render,
     drawConnections,
-    highlightSelection
+    highlightSelection,
+    zoomIn: () => zoomByFactor(1.2),
+    zoomOut: () => zoomByFactor(1 / 1.2),
+    resetZoom: () => {
+      if (!contentRoot) {
+        return;
+      }
+      if (mapInitialTransform) {
+        animateMapTransform(mapInitialTransform, true);
+      } else {
+        fitMapToContent(contentRoot);
+      }
+    }
   };
 }

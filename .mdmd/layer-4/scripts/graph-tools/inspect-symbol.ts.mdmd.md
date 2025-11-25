@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/inspect-symbol.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-inspect-symbol-ts
-- Generated At: 2025-11-19T15:01:35.871Z
+- Generated At: 2025-11-24T15:19:59.391Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Explores neighbor relationships for a given symbol ID, URI, or path by querying 
 - Refined 2025-10-30 to export `parseArgs`, `printResult`, and `main` so the implementation matched its Layer-4 documentation and remained script/test friendly ([export alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L3738-L3750)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.871Z","inputHash":"a09794a8e136bbb0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.391Z","inputHash":"0e3b9211f382ec6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseArgs` {#symbol-parseargs}
@@ -34,13 +34,10 @@ Explores neighbor relationships for a given symbol ID, URI, or path by querying 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkRelationshipKind`, `SymbolNeighborGroup`
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
 - `node:url` - `pathToFileURL`
 - [`symbolNeighbors.inspectSymbolNeighbors`](../../packages/server/src/features/dependencies/symbolNeighbors.ts.mdmd.md#symbol-inspectsymbolneighbors)
-- [`index.GraphStore`](../../packages/shared/src/index.ts.mdmd.md#symbol-graphstore)
-- [`index.KnowledgeArtifact`](../../packages/shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
-- [`index.LinkRelationshipKind`](../../packages/shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.SymbolNeighborGroup`](../../packages/shared/src/index.ts.mdmd.md#symbol-symbolneighborgroup)
 <!-- LIVE-DOC:END Dependencies -->
