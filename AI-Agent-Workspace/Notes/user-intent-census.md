@@ -433,6 +433,18 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L2188-L2205` — Retire churn-metric ideas tied to local git history; focus future analytics on deterministic co-activation signals sourced from workspace artifacts instead of developer-specific data.
 - `L2392-L2404` — Treat LLM assistance as optional for ambiguous System-doc archetype assignments (sample multiple times, log inputs), ensure every Implementation doc appears in at least one System doc, and resolve dynamic branches by replicating the manual reasoning process before automating it.
 
+## 2025-11-24 (Dev Day 31)
+- `2025-11-24.md:L269-L314` — Tackle explorer overlaps first: center the highest-degree directory, distribute neighbours to minimise connection length, and hide or send non-focused connectors behind nodes unless hovered.
+- `2025-11-24.md:L490-L498` — Enforce strict parity between Live Docs’ headless outputs and the visualization surface so the UI never exposes less (or more) information than the docs encode.
+- `2025-11-24.md:L500-L506` — Before coding, reread Layer‑1/Layer‑2 MDMD and the `001-link-aware-diagnostics` spec to align the visualization roadmap with documented intent.
+- `2025-11-24.md:L928-L954` — Add a legend clarifying inbound/outbound symbol pins, extend force-graph filters for tests/assets, restore local zoom controls, enforce orthogonal connectors, rebalance layouts toward wider canvases, and surface test-backed shadows behind primary nodes.
+- `2025-11-24.md:L1305-L1314` — Keep node placement independent of viewport changes; aim for roughly 1:1 or 4:3 aspect ratios without letting zoom or window resizing shuffle directory positions.
+- `2025-11-24.md:L1689-L1694` — Validate explorer changes via a background terminal plus Playwright MCP tools so the runner stays responsive during iterative UI checks.
+- `2025-11-24.md:L1885-L1894` — Treat every directory as a nested 2D canvas, using a recursive layout to tile subdirectories/files inside their parent bounds while choosing neighbours that shorten connector paths.
+- `2025-11-24.md:L2110-L2122` — Ensure visualization filters preserve dependency context (e.g., when tests are hidden) so the explorer’s graph retains parity with Live Docs relationships.
+- `2025-11-24.md:L2139-L2146` — Leverage prior system-doc infrastructure and semantic searches when solving the layout problem; embrace a force-directed + bin-packing hybrid instead of reinventing tooling in isolation.
+- `2025-11-24.md:L2185-L2193` — Freeze the layout once rendered—no responsive reflow on resize—so only zoom/pan adjust the view and connector routing remains stable.
+
 ## 2025-11-11 (Dev Day 20)
 - `2025-11-11.md:L1-L15` — Follow `devHistory.summarizeDay.prompt.md` for the 11/10 recap and tie the summary directly to commit `1da1b96e84bba2966469378ae13751817e7f7435`.
 - `L82-L120` — After any lossy autosummarisation, immediately rehydrate on the latest chat slice and capture the 11/10 directives in the census files before resuming work.

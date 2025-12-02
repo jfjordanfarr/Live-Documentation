@@ -1,9 +1,10 @@
+import { requireElement } from "./dom";
+import { parseExplorerDetailPayload } from "./parsers";
 import type {
   ExplorerDetailPayload,
   ExplorerDependencyReference,
   ExplorerNodePayload
 } from "../shared/types";
-import { requireElement } from "./dom";
 
 export interface DetailPanelApi {
   showNode(node: ExplorerNodePayload): Promise<void>;
@@ -43,7 +44,8 @@ export function createDetailPanel(nodesById: Map<string, ExplorerNodePayload>): 
       if (!response.ok) {
         throw new Error("Failed to load details");
       }
-      const details: ExplorerDetailPayload = await response.json();
+      const rawDetails = (await response.json()) as unknown;
+      const details: ExplorerDetailPayload = parseExplorerDetailPayload(rawDetails);
       body.innerHTML = buildDetailsHtml(node, details, nodesById);
     } catch (error) {
       console.error(error);

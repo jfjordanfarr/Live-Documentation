@@ -174,4 +174,23 @@ export async function orchestrate<T>(options: { workspaceRoot: string; includePa
     expect(additionalIndex).toBeGreaterThan(-1);
     expect(rendered[additionalIndex + 1]).toBe("- @deprecated Use runGenerator instead.");
   });
+
+  it("appends suffixes when normalized symbol slugs collide", () => {
+    const symbols = [
+      { name: "LayoutConstants", kind: "interface" },
+      { name: "layoutConstants", kind: "const" }
+    ];
+
+    const headings = computePublicSymbolHeadingInfo(symbols);
+    expect(headings).toHaveLength(2);
+
+    const interfaceHeading = headings.find((heading) => heading.symbol.name === "LayoutConstants");
+    const constHeading = headings.find((heading) => heading.symbol.name === "layoutConstants");
+
+    expect(interfaceHeading?.displayName).toBe("LayoutConstants (interface)");
+    expect(interfaceHeading?.slug).toBe("symbol-layoutconstants-interface");
+
+    expect(constHeading?.displayName).toBe("layoutConstants (const)");
+    expect(constHeading?.slug).toBe("symbol-layoutconstants-const");
+  });
 });

@@ -21,7 +21,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@live-documentation/shared": "workspace:*",
+    "@live-documentation/shared": "file:../shared",
     "esbuild": "^0.24.0",
     "glob": "^11.0.0"
   }

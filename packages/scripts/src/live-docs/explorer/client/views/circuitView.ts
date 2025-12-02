@@ -20,7 +20,7 @@ export interface CircuitViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
-  onSelectNode: (node: ExplorerNodePayload) => void;
+  onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onOpenLocalView: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
 }
@@ -329,7 +329,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
       ].join("");
       card.addEventListener("click", event => {
         event.stopPropagation();
-        onSelectNode(node);
+        void onSelectNode(node);
       });
       card.addEventListener("dblclick", event => {
         event.stopPropagation();

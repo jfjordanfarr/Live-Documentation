@@ -1,19 +1,44 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
+const sharedSrc = path.resolve(__dirname, "packages/shared/src");
+const scriptsSrc = path.resolve(__dirname, "packages/scripts/src");
+
+const toPosix = (value: string): string => value.split(path.sep).join("/");
+
+const withTrailingSeparator = (value: string): string => {
+  const normalized = toPosix(value);
+  return normalized.endsWith("/") ? normalized : `${normalized}/`;
+};
+
+const sharedSrcEntry = toPosix(path.join(sharedSrc, "index.ts"));
+const scriptsSrcEntry = toPosix(path.join(scriptsSrc, "index.ts"));
+
 export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^@copilot-improvement\/shared$/,
-        replacement: path.resolve(__dirname, "packages/shared/src/index.ts")
+        find: "@copilot-improvement/shared",
+        replacement: sharedSrcEntry
       },
-          find: /^@live-documentation\/shared$/,
-          replacement: path.resolve(__dirname, "packages/shared/src/index.ts")
-        replacement: path.resolve(__dirname, "packages/shared/src/$1")
+      {
+        find: /^@live-documentation\/shared$/u,
+        replacement: sharedSrcEntry
+      },
+      {
+        find: /^@live-documentation\/shared\/(.+)$/u,
+        replacement: `${withTrailingSeparator(sharedSrc)}$1`
+      },
+      {
+        find: /^@live-documentation\/scripts$/u,
+        replacement: scriptsSrcEntry
+      },
+      {
+        find: /^@live-documentation\/scripts\/(.+)$/u,
+        replacement: `${withTrailingSeparator(scriptsSrc)}$1`
       }
-          find: /^@live-documentation\/shared\/(.*)$/,
-          replacement: (subpath: string) =>
+    ]
+  },
   test: {
     globals: true,
     environment: "node",
@@ -34,9 +59,7 @@ export default defineConfig({
       enabled: true,
       reporter: ["text-summary", "html"],
       reportsDirectory: "coverage",
-      include: [
-        "packages/**/src/**/*.{ts,tsx}"
-      ],
+      include: ["packages/**/src/**/*.{ts,tsx}"],
       exclude: [
         "scripts/**/*.ts",
         "tests/**",

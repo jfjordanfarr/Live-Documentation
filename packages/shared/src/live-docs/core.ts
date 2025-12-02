@@ -1161,59 +1161,129 @@ export interface PublicSymbolHeadingInfo {
   slug: string;
 }
 
+function normalizeSymbolNameKey(name: string): string {
+  return name.trim().toLowerCase();
+}
+
 export function computePublicSymbolHeadingInfo(symbols: PublicSymbolEntry[]): PublicSymbolHeadingInfo[] {
   const infos: PublicSymbolHeadingInfo[] = [];
   const nameCounts = new Map<string, number>();
   const nameKindCounts = new Map<string, number>();
+  const slugCounts = new Map<string, number>();
+  const slugKindCounts = new Map<string, number>();
 
   for (const symbol of symbols) {
-    nameCounts.set(symbol.name, (nameCounts.get(symbol.name) ?? 0) + 1);
-    const kindKey = `${symbol.name}::${symbol.kind ?? "symbol"}`;
-    nameKindCounts.set(kindKey, (nameKindCounts.get(kindKey) ?? 0) + 1);
+    const normalizedNameKey = normalizeSymbolNameKey(symbol.name);
+    const kindLabel = symbol.kind ?? "symbol";
+    const nameKindKey = `${normalizedNameKey}::${kindLabel}`;
+
+    nameCounts.set(normalizedNameKey, (nameCounts.get(normalizedNameKey) ?? 0) + 1);
+    nameKindCounts.set(nameKindKey, (nameKindCounts.get(nameKindKey) ?? 0) + 1);
+
+    const slugValue = createSymbolSlug(symbol.name) ?? "";
+    if (slugValue) {
+      const slugKindKey = `${slugValue}::${kindLabel}`;
+      slugCounts.set(slugValue, (slugCounts.get(slugValue) ?? 0) + 1);
+      slugKindCounts.set(slugKindKey, (slugKindCounts.get(slugKindKey) ?? 0) + 1);
+    }
   }
 
   const kindOccurrences = new Map<string, number>();
 
   for (const symbol of symbols) {
-    const kindKey = `${symbol.name}::${symbol.kind ?? "symbol"}`;
-    const occurrence = (kindOccurrences.get(kindKey) ?? 0) + 1;
-    kindOccurrences.set(kindKey, occurrence);
+    const normalizedNameKey = normalizeSymbolNameKey(symbol.name);
+    const kindLabel = symbol.kind ?? "symbol";
+    const nameKindKey = `${normalizedNameKey}::${kindLabel}`;
+    const initialSlug = createSymbolSlug(symbol.name) ?? "";
+    const slugKindKey = initialSlug ? `${initialSlug}::${kindLabel}` : undefined;
 
-    const duplicateNameCount = nameCounts.get(symbol.name) ?? 0;
-    const duplicateKindCount = nameKindCounts.get(kindKey) ?? 0;
-    const normalizedName = symbol.name.trim().toLowerCase();
+    let occurrence = 0;
+    let occurrenceKey: string | undefined;
+
+    const duplicateNameCount = nameCounts.get(normalizedNameKey) ?? 0;
+    const duplicateKindCount = nameKindCounts.get(nameKindKey) ?? 0;
+    const slugCollisionCount = initialSlug ? slugCounts.get(initialSlug) ?? 0 : 0;
+    const slugKindCollisionCount = slugKindKey ? slugKindCounts.get(slugKindKey) ?? 0 : 0;
+    const normalizedName = normalizedNameKey;
     const isReservedHeadingName = RESERVED_HEADING_NAMES.has(normalizedName);
-    const baseSlug = createSymbolSlug(symbol.name) ?? "";
+    const baseSlug = initialSlug;
+
+    const shouldDisambiguateByName = duplicateNameCount > 1;
+    const shouldDisambiguateBySlug = !shouldDisambiguateByName && slugCollisionCount > 1;
+
+    if (shouldDisambiguateByName) {
+      occurrenceKey = nameKindKey;
+    } else if (shouldDisambiguateBySlug && slugKindKey) {
+      occurrenceKey = slugKindKey;
+    }
+
+    if (occurrenceKey) {
+      occurrence = (kindOccurrences.get(occurrenceKey) ?? 0) + 1;
+      kindOccurrences.set(occurrenceKey, occurrence);
+    }
 
     let displayName = symbol.name;
-    if (duplicateNameCount > 1) {
-      if (duplicateKindCount === 1 && symbol.kind) {
+    if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
+      const kindSpecificCount = shouldDisambiguateByName ? duplicateKindCount : slugKindCollisionCount;
+      if (kindSpecificCount === 1 && symbol.kind) {
         displayName = `${symbol.name} (${symbol.kind})`;
       } else {
         const labelBase = symbol.kind ? `${symbol.kind} overload` : "variant";
-        displayName = `${symbol.name} (${labelBase} ${occurrence})`;
+        const ordinal = occurrence > 0 ? occurrence : 1;
+        displayName = `${symbol.name} (${labelBase} ${ordinal})`;
       }
     } else if (isReservedHeadingName) {
       const descriptiveKind = symbol.kind ?? "symbol";
       displayName = `${symbol.name} (${descriptiveKind})`;
     }
 
-    let slugValue: string;
-    if (duplicateNameCount > 1) {
-      slugValue = createSymbolSlug(displayName) ?? baseSlug;
+    let resolvedSlug: string;
+    if (shouldDisambiguateByName || shouldDisambiguateBySlug) {
+      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
     } else if (isReservedHeadingName) {
-      slugValue = baseSlug || createSymbolSlug(displayName) || "";
+      resolvedSlug = baseSlug || createSymbolSlug(displayName) || "";
     } else {
-      slugValue = createSymbolSlug(displayName) ?? baseSlug;
+      resolvedSlug = createSymbolSlug(displayName) ?? baseSlug;
     }
     infos.push({
       symbol,
       displayName,
-      slug: slugValue
+      slug: resolvedSlug
     });
   }
 
+  ensureUniqueSymbolSlugs(infos);
+
   return infos;
+}
+
+function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
+  const used = new Set<string>();
+  const suffixCounts = new Map<string, number>();
+
+  for (const heading of headings) {
+    if (!heading.slug) {
+      continue;
+    }
+
+    const baseSlug = heading.slug;
+    const normalizedBase = baseSlug.toLowerCase();
+    if (!used.has(normalizedBase)) {
+      used.add(normalizedBase);
+      continue;
+    }
+
+    let suffix = suffixCounts.get(baseSlug) ?? 0;
+    let candidate: string;
+    do {
+      suffix += 1;
+      candidate = `${baseSlug}-${suffix}`;
+    } while (used.has(candidate.toLowerCase()));
+
+    suffixCounts.set(baseSlug, suffix);
+    heading.slug = candidate;
+    used.add(candidate.toLowerCase());
+  }
 }
 
 export function renderPublicSymbolLines(args: {

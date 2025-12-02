@@ -1,0 +1,73 @@
+# packages/shared/src/config/liveDocumentationConfig.d.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/shared/src/config/liveDocumentationConfig.d.ts
+- Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-d-ts
+- Generated At: 2025-11-24T15:19:58.977Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.977Z","inputHash":"7dea85a84cb4fd8f"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
+- Type: type
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L1)
+
+#### `LiveDocumentationArchetype` {#symbol-livedocumentationarchetype}
+- Type: type
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L2)
+
+#### `LiveDocumentationEvidenceStrictMode` {#symbol-livedocumentationevidencestrictmode}
+- Type: type
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L3)
+
+#### `LiveDocumentationEvidenceConfig` {#symbol-livedocumentationevidenceconfig}
+- Type: interface
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L4)
+
+#### `LiveDocumentationConfig` {#symbol-livedocumentationconfig}
+- Type: interface
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L7)
+
+#### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}
+- Type: type
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L27)
+
+#### `LIVE_DOCUMENTATION_DEFAULT_ROOT` {#symbol-live_documentation_default_root}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L30)
+
+#### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` {#symbol-live_documentation_default_base_layer}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L31)
+
+#### `LIVE_DOCUMENTATION_FILE_EXTENSION` {#symbol-live_documentation_file_extension}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L32)
+
+#### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L33)
+
+#### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L34)
+
+#### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L35)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->

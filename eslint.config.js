@@ -47,7 +47,8 @@ module.exports = tseslint.config(
             "./packages/shared/tsconfig.json",
             "./packages/server/tsconfig.json",
             "./packages/extension/tsconfig.json",
-            "./packages/scripts/tsconfig.json"
+            "./packages/scripts/tsconfig.json",
+            "./packages/scripts/src/live-docs/explorer/client/tsconfig.json"
           ],
           alwaysTryTypes: true
         }

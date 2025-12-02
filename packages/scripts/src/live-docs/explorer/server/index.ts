@@ -1,12 +1,12 @@
 import { exec } from "child_process";
 import * as fs from "fs/promises";
-import { createServer, type Server, type ServerResponse } from "http";
+import { createServer, type IncomingMessage, type ServerResponse } from "http";
 import * as path from "path";
 import { URL } from "url";
 
-import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerNodePayload } from "../shared/types";
 import { buildExplorerAssets } from "./buildAssets";
 import { buildExplorerGraph, normalizeDocPath } from "./graph";
+import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerNodePayload } from "../shared/types";
 
 export interface ExplorerServerOptions {
     workspaceRoot: string;
@@ -44,7 +44,11 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
     );
     logger.log(`Explorer assets emitted to ${assets.outDir}`);
 
-    const server = createServer(async (req, res) => {
+    const server = createServer((req, res) => {
+        void handleRequest(req, res);
+    });
+
+    async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
         try {
             const requestUrl = new URL(req.url ?? "/", `http://localhost:${port}`);
 
@@ -66,7 +70,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
             }
 
             if (requestUrl.pathname === "/open") {
-                await handleOpen(requestUrl, workspaceRoot, res, logger);
+                handleOpen(requestUrl, workspaceRoot, res, logger);
                 return;
             }
 
@@ -85,7 +89,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
             res.writeHead(500, { "Content-Type": "text/plain" });
             res.end("Internal server error");
         }
-    });
+    }
 
     await new Promise<void>((resolve, reject) => {
         server.once("error", reject);
@@ -149,7 +153,7 @@ async function serveStaticAsset(relativePath: string, outputDir: string, res: Se
     }
 }
 
-async function handleOpen(url: URL, workspaceRoot: string, res: ServerResponse, logger: Pick<Console, "log">): Promise<void> {
+function handleOpen(url: URL, workspaceRoot: string, res: ServerResponse, logger: Pick<Console, "log">): void {
     const codePathParam = url.searchParams.get("codePath");
     if (!codePathParam) {
         res.writeHead(400, { "Content-Type": "text/plain" });

@@ -3,16 +3,16 @@ import path from "node:path";
 import process from "node:process";
 
 import {
+  buildLiveDocGraph,
+  type LiveDocGraph,
+  type LiveDocGraphNode
+} from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
+import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
   type LiveDocumentationConfig
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "@live-documentation/shared/tooling/pathUtils";
-import {
-  buildLiveDocGraph,
-  type LiveDocGraph,
-  type LiveDocGraphNode
-} from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 
 interface ParsedArgs {
   help: boolean;

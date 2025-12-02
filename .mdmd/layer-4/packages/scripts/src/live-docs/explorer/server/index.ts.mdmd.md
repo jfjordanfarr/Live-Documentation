@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2025-11-24T15:19:58.432Z
+- Generated At: 2025-12-02T05:07:01.316Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.432Z","inputHash":"a21c61c6427d533d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-02T05:07:01.316Z","inputHash":"816ae026ad0650e7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
@@ -35,7 +35,7 @@ _Pending notes_
 ### Dependencies
 - `child_process` - `exec`
 - `fs/promises` - `fs`
-- `http` - `Server`, `ServerResponse`, `createServer`
+- `http` - `IncomingMessage`, `ServerResponse`, `createServer`
 - [`buildAssets.buildExplorerAssets`](./buildAssets.ts.mdmd.md#symbol-buildexplorerassets)
 - [`graph.buildExplorerGraph`](./graph.ts.mdmd.md#symbol-buildexplorergraph)
 - [`graph.normalizeDocPath`](./graph.ts.mdmd.md#symbol-normalizedocpath)

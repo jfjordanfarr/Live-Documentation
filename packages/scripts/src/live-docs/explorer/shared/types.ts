@@ -1,4 +1,8 @@
-export type ExplorerLinkKind = "dependency" | "extends" | "implements" | string;
+export type ExplorerLinkKind =
+    | "dependency"
+    | "extends"
+    | "implements"
+    | (string & { readonly __explorerLinkKindBrand?: never });
 
 export interface ExplorerDependencyReference {
     targetId?: string;

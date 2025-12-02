@@ -19,7 +19,7 @@ export interface LocalViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
-  onSelectNode: (node: ExplorerNodePayload) => void;
+  onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
 }
 
@@ -658,12 +658,12 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
 
     card.addEventListener("click", event => {
       event.stopPropagation();
-      onSelectNode(node);
+      void onSelectNode(node);
     });
 
     card.addEventListener("dblclick", event => {
       event.stopPropagation();
-      onSelectNode(node);
+      void onSelectNode(node);
     });
 
     return card;

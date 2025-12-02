@@ -125,7 +125,9 @@ async function main(): Promise<void> {
     );
 
     const docSymbols = new Set(parsedDoc.publicSymbols);
-    const docDependencies = new Set(parsedDoc.dependencies);
+    const docDependencies = new Set(
+      parsedDoc.dependencies.map((entry) => entry.codePath ?? entry.raw)
+    );
 
     const symbolsMetrics = compareSets(analyzerSymbols, docSymbols);
     const dependencyMetrics = compareSets(analyzerDependencies, docDependencies);

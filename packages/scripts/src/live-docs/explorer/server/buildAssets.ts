@@ -1,7 +1,6 @@
+import { build } from "esbuild";
 import * as fs from "fs/promises";
 import * as path from "path";
-
-import { build } from "esbuild";
 
 export interface BuildExplorerAssetsOptions {
     workspaceRoot: string;

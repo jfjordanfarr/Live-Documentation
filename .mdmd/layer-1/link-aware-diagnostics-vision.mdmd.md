@@ -65,7 +65,7 @@ Deliver a unified `npm run live-docs:visualize` surface that merges the “circu
 [Product roadmap – layer distribution surfaces](../layer-2/product-roadmap.mdmd.md) captures the GitHub Pages scaffold, Spec-Kit integration, and on-demand System CLI expectations backing CAP-005.
 
 ### REQ-V1 – Live Visualization Command Center
-[Product roadmap – visualization command center](../layer-2/product-roadmap.mdmd.md#req-v1-live-visualization-command-center) details the merged circuit-board/local explorer requirements, accessibility milestones, and CLI alignment needed to satisfy CAP-008.
+[Product roadmap – visualization command center](../layer-2/product-roadmap.mdmd.md#reqv1-live-visualization-command-center) details the merged circuit-board/local explorer requirements, accessibility milestones, and CLI alignment needed to satisfy CAP-008.
 
 ### REQ-H1 – Hosted Showcase Pipeline
 [Product roadmap – hosted showcase pipeline](../layer-2/product-roadmap.mdmd.md#reqh1-hosted-showcase-pipeline) details the Cloudflare marketing surface, CI/CD guardrails, telemetry, and deletion guarantees required to satisfy CAP-007 without compromising the offline-first promise.
