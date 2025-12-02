@@ -72,9 +72,6 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   let lastCenteredNodeId: string | null = null;
   let mapInitialTransform: { x: number; y: number; k: number } | null = null;
   let contentRoot: HTMLElement | null = null;
-  let resizeAnimationFrame = 0;
-  const viewportResizeObserver = new ResizeObserver(() => scheduleResizeAdjustment());
-  viewportResizeObserver.observe(viewport);
   const anchorRegistry = new Map<string, Map<string, HTMLElement>>();
   const isTestNode = (node: ExplorerNodePayload | null | undefined): boolean =>
     !!node && (node.archetype || "").toLowerCase() === "test";
@@ -116,26 +113,6 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     }
     return null;
   };
-
-  const scheduleResizeAdjustment = (): void => {
-    if (state.view !== "map" || !contentRoot) {
-      return;
-    }
-    if (resizeAnimationFrame) {
-      cancelAnimationFrame(resizeAnimationFrame);
-    }
-    resizeAnimationFrame = requestAnimationFrame(() => {
-      resizeAnimationFrame = 0;
-      if (!mapUserAdjusted && contentRoot) {
-        fitMapToContent(contentRoot);
-      } else {
-        updateMapTransform();
-        drawConnections();
-      }
-    });
-  };
-
-  window.addEventListener("resize", scheduleResizeAdjustment);
 
   viewport.addEventListener("mousedown", event => {
     if ((event.target as HTMLElement | null)?.closest?.(".node-card")) {
@@ -225,6 +202,50 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     overlay.style.transformOrigin = "0 0";
     container.style.transform = matrix;
     overlay.style.transform = matrix;
+  }
+
+  function measureContentBounds(): { left: number; top: number; width: number; height: number } | null {
+    if (!contentRoot) {
+      return null;
+    }
+
+    const previousContainerTransform = container.style.transform;
+    const previousOverlayTransform = overlay.style.transform;
+    container.style.transform = "none";
+    overlay.style.transform = "none";
+
+    const elements = contentRoot.querySelectorAll<HTMLElement>(".layout-node, .layout-box");
+    let minLeft = Number.POSITIVE_INFINITY;
+    let minTop = Number.POSITIVE_INFINITY;
+    let maxRight = Number.NEGATIVE_INFINITY;
+    let maxBottom = Number.NEGATIVE_INFINITY;
+
+    elements.forEach(element => {
+      const rect = element.getBoundingClientRect();
+      minLeft = Math.min(minLeft, rect.left);
+      minTop = Math.min(minTop, rect.top);
+      maxRight = Math.max(maxRight, rect.right);
+      maxBottom = Math.max(maxBottom, rect.bottom);
+    });
+
+    const containerRect = container.getBoundingClientRect();
+
+    container.style.transform = previousContainerTransform;
+    overlay.style.transform = previousOverlayTransform;
+
+    if (!Number.isFinite(minLeft) || !Number.isFinite(minTop) || !Number.isFinite(maxRight) || !Number.isFinite(maxBottom)) {
+      return null;
+    }
+
+    const width = Math.max(maxRight - minLeft, 1);
+    const height = Math.max(maxBottom - minTop, 1);
+
+    return {
+      left: minLeft - containerRect.left,
+      top: minTop - containerRect.top,
+      width,
+      height
+    };
   }
 
   function zoomAtPoint(offsetX: number, offsetY: number, delta: number): void {
@@ -553,27 +574,40 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
 
   function fitMapToContent(element: HTMLElement): void {
     cancelInertia();
-    const previousContainerTransform = container.style.transform;
-    const previousOverlayTransform = overlay.style.transform;
-    container.style.transform = "none";
-    overlay.style.transform = "none";
-
-    const contentRect = element.getBoundingClientRect();
+    void element;
+    const bounds = measureContentBounds();
     const viewportRect = viewport.getBoundingClientRect();
 
-    container.style.transform = previousContainerTransform;
-    overlay.style.transform = previousOverlayTransform;
+    if (!bounds) {
+      mapTransform = { x: 0, y: 0, k: 1 };
+      updateMapTransform();
+      mapHasInitialFit = true;
+      mapInitialTransform = { ...mapTransform };
+      requestAnimationFrame(drawConnections);
+      return;
+    }
+
+    const normalizedWidth = Math.max(bounds.width, 1);
+    const normalizedHeight = Math.max(bounds.height, 1);
+    container.style.width = `${normalizedWidth}px`;
+    container.style.height = `${normalizedHeight}px`;
+    container.style.minWidth = `${normalizedWidth}px`;
+    container.style.minHeight = `${normalizedHeight}px`;
+    overlay.style.width = `${normalizedWidth}px`;
+    overlay.style.height = `${normalizedHeight}px`;
+    overlay.style.minWidth = `${normalizedWidth}px`;
+    overlay.style.minHeight = `${normalizedHeight}px`;
 
     const padding = 160;
-    const width = Math.max(contentRect.width, 1);
-    const height = Math.max(contentRect.height, 1);
+    const width = Math.max(bounds.width, 1);
+    const height = Math.max(bounds.height, 1);
     const availableScale = Math.min(
       (viewportRect.width - padding) / width,
       (viewportRect.height - padding) / height
     );
     const scale = clamp(availableScale, 0.5, 2);
-    const centerX = contentRect.left - viewportRect.left + width / 2;
-    const centerY = contentRect.top - viewportRect.top + height / 2;
+    const centerX = bounds.left + width / 2;
+    const centerY = bounds.top + height / 2;
 
     const target = {
       x: viewportRect.width / 2 - centerX * scale,
@@ -775,17 +809,14 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return;
     }
 
+    const bounds = measureContentBounds();
+    if (!bounds) {
+      overlay.dataset.active = "false";
+      return;
+    }
+
     const rootRect = container.getBoundingClientRect();
     const scale = mapTransform.k || 1;
-    const svgWidth = Math.max(1, rootRect.width / scale);
-    const svgHeight = Math.max(1, rootRect.height / scale);
-    const svg = document.createElementNS(SVG_NS, "svg");
-    svg.classList.add("connection-svg");
-    svg.setAttribute("width", `${svgWidth}`);
-    svg.setAttribute("height", `${svgHeight}`);
-    svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
-    overlay.appendChild(svg);
-
     const positionCache = new Map<HTMLElement, { x: number; y: number }>();
     const measureAnchor = (anchor: HTMLElement | null): { x: number; y: number } | null => {
       if (!anchor) {
@@ -803,18 +834,49 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return point;
     };
 
-    let rendered = 0;
+    const segments: Array<{ edge: LocalEdge; source: { x: number; y: number }; target: { x: number; y: number } }> = [];
     currentSubgraph.links.forEach(edge => {
       const source = measureAnchor(getAnchor(edge.sourceId, "outbound", edge.sourceSymbol));
       const target = measureAnchor(getAnchor(edge.targetId, "inbound", edge.targetSymbol));
       if (!source || !target) {
         return;
       }
-      appendConnectionPath(svg, source, target, edge);
-      rendered += 1;
+      segments.push({ edge, source, target });
     });
 
-    overlay.dataset.active = rendered > 0 ? "true" : "false";
+    if (segments.length === 0) {
+      overlay.dataset.active = "false";
+      return;
+    }
+
+    const width = Math.max(bounds.width, 1);
+    const height = Math.max(bounds.height, 1);
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.classList.add("connection-svg");
+    svg.setAttribute("width", `${width}`);
+    svg.setAttribute("height", `${height}`);
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.style.position = "absolute";
+    svg.style.left = `${bounds.left}px`;
+    svg.style.top = `${bounds.top}px`;
+    svg.style.width = `${width}px`;
+    svg.style.height = `${height}px`;
+    svg.style.pointerEvents = "none";
+    overlay.appendChild(svg);
+
+    segments.forEach(({ edge, source, target }) => {
+      const adjustedSource = {
+        x: source.x - bounds.left,
+        y: source.y - bounds.top
+      };
+      const adjustedTarget = {
+        x: target.x - bounds.left,
+        y: target.y - bounds.top
+      };
+      appendConnectionPath(svg, adjustedSource, adjustedTarget, edge);
+    });
+
+    overlay.dataset.active = "true";
   }
 
   function appendConnectionPath(

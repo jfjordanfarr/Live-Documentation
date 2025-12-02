@@ -66,6 +66,19 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
   const circuitConnections = requireElement<HTMLDivElement>("circuit-connections");
   circuitContainer.classList.add("layout-surface");
 
+  type NodeAnchorSet = {
+    center: { x: number; y: number };
+    anchors: {
+      top: { x: number; y: number };
+      bottom: { x: number; y: number };
+      left: { x: number; y: number };
+      right: { x: number; y: number };
+    };
+  };
+
+  let layoutAnchors = new Map<string, NodeAnchorSet>();
+  let layoutDimensions: { width: number; height: number } | null = null;
+
   let circuitTransform: CircuitTransform = { x: 0, y: 0, k: 1 };
   let isDragging = false;
   let lastDragPosition: { x: number; y: number; time: number } | null = null;
@@ -314,6 +327,9 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     const dominantCluster = findDominantDirectory(graphData, nodesForCircuit, resolveLinkEndpoint);
     const measure = measureDirectoryTree(hierarchy);
 
+    layoutAnchors = new Map<string, NodeAnchorSet>();
+    layoutDimensions = null;
+
     const createNodeCard = (node: ExplorerNodePayload): HTMLElement => {
       const card = document.createElement("div");
       card.className = "node-card";
@@ -398,6 +414,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     const layout = computeDirectoryLayout(measure);
     const layoutWidth = layout.width;
     const layoutHeight = layout.height;
+    layoutDimensions = { width: layoutWidth, height: layoutHeight };
 
     circuitContainer.innerHTML = "";
     circuitContainer.style.position = "relative";
@@ -405,6 +422,10 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     circuitContainer.style.height = `${layoutHeight}px`;
     circuitContainer.style.minWidth = `${layoutWidth}px`;
     circuitContainer.style.minHeight = `${layoutHeight}px`;
+    circuitConnections.style.width = `${layoutWidth}px`;
+    circuitConnections.style.height = `${layoutHeight}px`;
+    circuitConnections.style.minWidth = `${layoutWidth}px`;
+    circuitConnections.style.minHeight = `${layoutHeight}px`;
 
     const pathToElement = new Map<string, HTMLElement>();
 
@@ -480,6 +501,18 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
           const card = createNodeCard(nodePlan.node);
           card.classList.add("layout-node");
           positionElement(card, nodePlan.rect, nodeOrigin);
+          const rect = nodePlan.rect;
+          const centerX = rect.x + rect.width / 2;
+          const centerY = rect.y + rect.height / 2;
+          layoutAnchors.set(nodePlan.node.id, {
+            center: { x: centerX, y: centerY },
+            anchors: {
+              top: { x: centerX, y: rect.y },
+              bottom: { x: centerX, y: rect.y + rect.height },
+              left: { x: rect.x, y: centerY },
+              right: { x: rect.x + rect.width, y: centerY }
+            }
+          });
           content.appendChild(card);
         });
       }
@@ -533,49 +566,43 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     const overlay = requireElement<HTMLDivElement>("circuit-connections");
     overlay.innerHTML = "";
 
-    const nodeMap = new Map<string, HTMLElement>();
-    circuitContainer.querySelectorAll<HTMLElement>(".node-card").forEach(element => {
-      const id = element.dataset.id;
-      if (id) {
-        nodeMap.set(id, element);
-      }
-    });
-
-    if (hoveredNodeId && !nodeMap.has(hoveredNodeId)) {
+    if (hoveredNodeId && !layoutAnchors.has(hoveredNodeId)) {
       hoveredNodeId = null;
     }
 
     const activeNodeId = hoveredNodeId ?? state.selectedNode?.id ?? null;
-    if (!activeNodeId) {
+    const layoutSize = layoutDimensions;
+    if (!activeNodeId || !layoutSize) {
       overlay.dataset.active = "false";
       return;
     }
 
-    const sourceEl = nodeMap.get(activeNodeId);
-    if (!sourceEl) {
+    const sourceAnchors = layoutAnchors.get(activeNodeId);
+    if (!sourceAnchors) {
       overlay.dataset.active = "false";
       return;
     }
 
-    const rootRect = circuitContainer.getBoundingClientRect();
-    const scale = circuitTransform.k || 1;
-    const svgWidth = Math.max(1, rootRect.width / scale);
-    const svgHeight = Math.max(1, rootRect.height / scale);
+    const svgWidth = Math.max(1, layoutSize.width);
+    const svgHeight = Math.max(1, layoutSize.height);
     const svg = document.createElementNS(SVG_NS, "svg");
     svg.classList.add("connection-svg");
     svg.setAttribute("width", `${svgWidth}`);
     svg.setAttribute("height", `${svgHeight}`);
     svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+    svg.style.position = "absolute";
+    svg.style.left = "0";
+    svg.style.top = "0";
     overlay.appendChild(svg);
 
     let renderedConnections = 0;
     const connectedEdges = connectionMap.get(activeNodeId) ?? [];
     connectedEdges.forEach(connection => {
-      const targetEl = nodeMap.get(connection.targetId);
-      if (!targetEl) {
+      const targetAnchors = layoutAnchors.get(connection.targetId);
+      if (!targetAnchors) {
         return;
       }
-      appendConnectionPath(svg, sourceEl, targetEl, connection.direction, connection.kind);
+      appendConnectionPath(svg, sourceAnchors, targetAnchors, connection.direction, connection.kind);
       renderedConnections += 1;
     });
 
@@ -584,27 +611,56 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
 
   function appendConnectionPath(
     svg: SVGSVGElement,
-    sourceElement: HTMLElement,
-    targetElement: HTMLElement,
+    source: NodeAnchorSet,
+    target: NodeAnchorSet,
     direction: "outbound" | "inbound",
     kind: ExplorerLinkKind
   ): void {
-    const source = getRelativeCenter(sourceElement, circuitContainer);
-    const target = getRelativeCenter(targetElement, circuitContainer);
+    const deltaX = target.center.x - source.center.x;
+    const deltaY = target.center.y - source.center.y;
+    const prioritizeHorizontal = Math.abs(deltaX) >= Math.abs(deltaY);
 
-    const horizontalDirection = target.x >= source.x ? 1 : -1;
-    const gap = Math.abs(target.x - source.x);
-    const commands: string[] = [`M ${source.x} ${source.y}`];
+    const sourcePoint = prioritizeHorizontal
+      ? deltaX >= 0
+        ? source.anchors.right
+        : source.anchors.left
+      : deltaY >= 0
+        ? source.anchors.bottom
+        : source.anchors.top;
+    const targetPoint = prioritizeHorizontal
+      ? deltaX >= 0
+        ? target.anchors.left
+        : target.anchors.right
+      : deltaY >= 0
+        ? target.anchors.top
+        : target.anchors.bottom;
 
-    if (gap < 32) {
-      const verticalDirection = target.y >= source.y ? 1 : -1;
-      const verticalStub = Math.max(28, Math.abs(target.y - source.y) * 0.35);
-      const elbowY = source.y + verticalDirection * verticalStub;
-      commands.push(`V ${elbowY}`, `H ${target.x}`, `V ${target.y}`);
+    const commands: string[] = [`M ${sourcePoint.x} ${sourcePoint.y}`];
+
+    if (prioritizeHorizontal) {
+      const gapX = Math.abs(targetPoint.x - sourcePoint.x);
+      if (gapX < 32) {
+        const verticalDirection = targetPoint.y >= sourcePoint.y ? 1 : -1;
+        const verticalStub = Math.max(28, Math.abs(targetPoint.y - sourcePoint.y) * 0.35);
+        const elbowY = sourcePoint.y + verticalDirection * verticalStub;
+        commands.push(`V ${elbowY}`, `H ${targetPoint.x}`, `V ${targetPoint.y}`);
+      } else {
+        const stub = Math.min(Math.max(gapX * 0.45, 28), Math.max(28, gapX - 12));
+        const elbowX = sourcePoint.x + (deltaX >= 0 ? stub : -stub);
+        commands.push(`H ${elbowX}`, `V ${targetPoint.y}`, `H ${targetPoint.x}`);
+      }
     } else {
-      const stub = Math.min(Math.max(gap * 0.4, 28), Math.max(28, gap - 8));
-      const elbowX = source.x + horizontalDirection * stub;
-      commands.push(`H ${elbowX}`, `V ${target.y}`, `H ${target.x}`);
+      const gapY = Math.abs(targetPoint.y - sourcePoint.y);
+      if (gapY < 32) {
+        const horizontalDirection = targetPoint.x >= sourcePoint.x ? 1 : -1;
+        const horizontalStub = Math.max(28, Math.abs(targetPoint.x - sourcePoint.x) * 0.35);
+        const elbowX = sourcePoint.x + horizontalDirection * horizontalStub;
+        commands.push(`H ${elbowX}`, `V ${targetPoint.y}`, `H ${targetPoint.x}`);
+      } else {
+        const stub = Math.min(Math.max(gapY * 0.45, 28), Math.max(28, gapY - 12));
+        const elbowY = sourcePoint.y + (deltaY >= 0 ? stub : -stub);
+        commands.push(`V ${elbowY}`, `H ${targetPoint.x}`, `V ${targetPoint.y}`);
+      }
     }
 
     const path = document.createElementNS(SVG_NS, "path");
@@ -612,15 +668,6 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     path.classList.add("connection-path", direction);
     path.dataset.kind = kind;
     svg.appendChild(path);
-  }
-
-  function getRelativeCenter(element: HTMLElement, root: HTMLElement): { x: number; y: number } {
-    const elementRect = element.getBoundingClientRect();
-    const rootRect = root.getBoundingClientRect();
-    const scale = circuitTransform.k || 1;
-    const relativeX = (elementRect.left - rootRect.left + elementRect.width / 2) / scale;
-    const relativeY = (elementRect.top - rootRect.top + elementRect.height / 2) / scale;
-    return { x: relativeX, y: relativeY };
   }
 
   function highlightSelection(): void {

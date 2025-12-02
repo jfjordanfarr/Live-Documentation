@@ -426,6 +426,10 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `2025-11-21.md:L3398-L3406` — When resuming after autosummarisation, scan the entire dev-day chat (searching for `jfjordanfarr:`) to rehydrate every standing directive before proceeding.
 - `2025-11-21.md:L4053-L4071` — Deliver one more refinement pass, then honour the nightly ritual by running `npm run safe:commit` before ending the session, even after large refactors.
 - `L1124-L1185` — Treat Layers 3/4 as the deterministic spine and Layers 1/2 as curated intent: System docs stay machine-derived from Stage‑0 signals, while Capability/Commitment docs remain human-authored with lightweight generated tallies.
+
+## 2025-12-01 (Dev Day 32)
+- `2025-12-01.md:L244-L274` — When driving the workspace back to green, lean on broad chat-history and workspace-wide searches (Layer‑4 Live Docs, `001-link-aware-diagnostics`, etc.), operate with high agency, and escalate only for true blockers while marching `npm run safe:commit -- --benchmarks --report` to green.
+- `2025-12-01.md:L640-L760` — Verify historical evidence before declaring regressions (e.g., check prior chats for successful `npm install` runs) and pick the dependency strategy that keeps the workspace stable long-term, grounding decisions in the full repository structure.
 - `L1222-L1245` — Retain numerical layer identifiers but adopt the alias names (Capability, Commitment, System, Implementation) to clarify the intent of each tier without renumbering.
 - `L1310-L1355` — Derive System-layer docs strictly from Stage‑0 (Implementation-layer) Live Docs; legacy Layer‑3 MDMD files may only be used for validation, not as scaffolding.
 - `L1344-L1505` — Gather deterministic signals (component SCCs, CLI surfaces, schemas, workflows, integrations, testing) and refactor the Live Docs generator into shared core + layer adapters so the System layer can reuse the pipeline safely.

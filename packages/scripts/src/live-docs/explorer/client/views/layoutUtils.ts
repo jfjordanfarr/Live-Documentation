@@ -66,6 +66,20 @@ export interface DirectoryLayoutResult {
   height: number;
 }
 
+interface FlowLayoutItem {
+  kind: "directory" | "files";
+  measure?: DirectoryMeasure;
+  nodes?: ExplorerNodePayload[];
+  width: number;
+  height: number;
+}
+
+interface FlowLayoutResult {
+  placements: Map<FlowLayoutItem, LayoutRect>;
+  width: number;
+  height: number;
+}
+
 export interface LayoutConstants {
   targetAspectRatio: number;
   nodeWidth: number;
@@ -81,18 +95,14 @@ const NODE_WIDTH = 260;
 const NODE_HEIGHT = 168;
 const NODE_GAP_X = 36;
 const NODE_GAP_Y = 32;
-const NODE_AREA = (NODE_WIDTH + NODE_GAP_X) * (NODE_HEIGHT + NODE_GAP_Y);
 const DIRECTORY_PADDING = 40;
 const DIRECTORY_LABEL_HEIGHT = 32;
 const DIRECTORY_MIN_WIDTH = NODE_WIDTH + NODE_GAP_X;
 const DIRECTORY_MIN_HEIGHT = NODE_HEIGHT + NODE_GAP_Y;
-const DIRECTORY_AREA_WEIGHT = 0.92;
-const MIN_DIRECTORY_SCALE = 0.4;
-const MAX_DIRECTORY_SCALE = 1.45;
 const DIRECTORY_GAP = 24;
-const FILE_AREA_INSET = 16;
-const CONTENT_SCALE_MAX = 1.12;
 const NODE_VISUAL_SCALE_MAX = 1.65;
+const GRID_STEP_X = NODE_WIDTH + NODE_GAP_X;
+const GRID_STEP_Y = NODE_HEIGHT + NODE_GAP_Y;
 
 function resolveDirectoryName(path: string, fallback: string): string {
   if (path === ROOT_KEY) {
@@ -172,36 +182,29 @@ export function getDirectoryKey(node: ExplorerNodePayload): string {
 }
 
 export function measureDirectoryTree(root: DirectoryNode, depth = 0): DirectoryMeasure {
-  const childMeasures = Array.from(root.children.values())
+  const rawChildren = Array.from(root.children.values())
     .map(child => measureDirectoryTree(child, depth + 1))
     .filter(child => child.totalNodes > 0);
 
+  const childMeasures = sortChildMeasures(rawChildren);
   const fileMetrics = root.nodes.length > 0 ? computeFileGridMetrics(root.nodes.length) : undefined;
   const nodeCount = root.nodes.length;
   const totalChildNodes = childMeasures.reduce((sum, child) => sum + child.totalNodes, 0);
   const totalNodes = nodeCount + totalChildNodes;
 
-  const largestChildWidth = childMeasures.reduce((max, child) => Math.max(max, child.contentWidth), 0);
-  const largestChildHeight = childMeasures.reduce((max, child) => Math.max(max, child.contentHeight), 0);
-  const fileWidth = fileMetrics ? fileMetrics.width : 0;
-  const fileHeight = fileMetrics ? fileMetrics.height : 0;
+  const flowItems = buildFlowItems(childMeasures, root, fileMetrics);
+  const flowBounds = computeFlowLayout(flowItems);
 
-  const weightedChildArea = childMeasures.reduce(
-    (sum, child) => sum + child.contentWidth * child.contentHeight * DIRECTORY_AREA_WEIGHT,
-    0
-  );
-  const fileArea = fileMetrics ? fileMetrics.width * fileMetrics.height : 0;
-  const targetArea = weightedChildArea + fileArea;
+  let contentWidth = flowBounds.width;
+  let contentHeight = flowBounds.height;
 
-  let contentWidth = Math.max(DIRECTORY_MIN_WIDTH, largestChildWidth, fileWidth);
-  let contentHeight = Math.max(DIRECTORY_MIN_HEIGHT, largestChildHeight, fileHeight);
-
-  if (targetArea > 0) {
-    const idealWidth = Math.sqrt(targetArea * TARGET_ASPECT_RATIO);
-    const idealHeight = targetArea / Math.max(idealWidth, 1);
-    contentWidth = Math.max(contentWidth, idealWidth);
-    contentHeight = Math.max(contentHeight, idealHeight);
+  if (contentWidth <= 0 && contentHeight <= 0) {
+    contentWidth = DIRECTORY_MIN_WIDTH;
+    contentHeight = DIRECTORY_MIN_HEIGHT;
   }
+
+  contentWidth = quantizeDimension(contentWidth, GRID_STEP_X, DIRECTORY_MIN_WIDTH);
+  contentHeight = quantizeDimension(contentHeight, GRID_STEP_Y, DIRECTORY_MIN_HEIGHT);
 
   const labelHeight = depth === 0 ? 0 : DIRECTORY_LABEL_HEIGHT;
   const outerWidth = contentWidth + DIRECTORY_PADDING * 2;
@@ -224,29 +227,128 @@ export function computeDirectoryLayout(measure: DirectoryMeasure): DirectoryLayo
   const rootRect: LayoutRect = {
     x: 0,
     y: 0,
-    width: Math.max(measure.outerWidth, DIRECTORY_MIN_WIDTH + DIRECTORY_PADDING * 2),
-    height: Math.max(measure.outerHeight, DIRECTORY_MIN_HEIGHT + DIRECTORY_PADDING * 2)
+    width: measure.outerWidth,
+    height: measure.outerHeight
   };
   const rootPlan = layoutDirectory(measure, rootRect, 0);
   return { root: rootPlan, width: rootRect.width, height: rootRect.height };
 }
-type LayoutItem =
-  | { kind: "directory"; measure: DirectoryMeasure; area: number }
-  | { kind: "files"; nodes: ExplorerNodePayload[]; area: number };
 
-type TreemapItem = LayoutItem;
+function sortChildMeasures(children: DirectoryMeasure[]): DirectoryMeasure[] {
+  return children
+    .slice()
+    .sort((a, b) => {
+      const nodeDelta = b.totalNodes - a.totalNodes;
+      if (nodeDelta !== 0) {
+        return nodeDelta;
+      }
+      const nameA = a.directory.name || "";
+      const nameB = b.directory.name || "";
+      return nameA.localeCompare(nameB);
+    });
+}
 
+function buildFlowItems(
+  childMeasures: DirectoryMeasure[],
+  directory: DirectoryNode,
+  fileMetrics?: FileGridMetrics
+): FlowLayoutItem[] {
+  const items: FlowLayoutItem[] = childMeasures.map(child => ({
+    kind: "directory",
+    measure: child,
+    width: child.outerWidth,
+    height: child.outerHeight
+  }));
+
+  if (directory.nodes.length > 0) {
+    const metrics = fileMetrics ?? computeFileGridMetrics(directory.nodes.length);
+    items.push({
+      kind: "files",
+      nodes: directory.nodes.slice(),
+      width: metrics.width,
+      height: metrics.height
+    });
+  }
+
+  return items;
+}
+
+function quantizeDimension(value: number, step: number, minimum: number): number {
+  if (!Number.isFinite(value) || value <= 0) {
+    return minimum;
+  }
+  const units = Math.ceil(value / step);
+  return Math.max(units * step, minimum);
+}
+
+function computeFlowLayout(items: FlowLayoutItem[]): FlowLayoutResult {
+  const placements = new Map<FlowLayoutItem, LayoutRect>();
+  if (items.length === 0) {
+    return { placements, width: 0, height: 0 };
+  }
+
+  const targetWidth = computeTargetRowWidth(items);
+  let cursorX = 0;
+  let cursorY = 0;
+  let currentRowHeight = 0;
+  let maxRowWidth = 0;
+
+  items.forEach(item => {
+    const width = Math.max(item.width, DIRECTORY_MIN_WIDTH);
+    const height = Math.max(item.height, DIRECTORY_MIN_HEIGHT);
+
+    if (cursorX > 0 && cursorX + width > targetWidth) {
+      cursorY += currentRowHeight + DIRECTORY_GAP;
+      cursorX = 0;
+      currentRowHeight = 0;
+    }
+
+    placements.set(item, {
+      x: cursorX,
+      y: cursorY,
+      width,
+      height
+    });
+
+    cursorX += width + DIRECTORY_GAP;
+    currentRowHeight = Math.max(currentRowHeight, height);
+    maxRowWidth = Math.max(maxRowWidth, cursorX - DIRECTORY_GAP);
+  });
+
+  const totalHeight = cursorY + currentRowHeight;
+  return {
+    placements,
+    width: Math.max(maxRowWidth, DIRECTORY_MIN_WIDTH),
+    height: Math.max(totalHeight, DIRECTORY_MIN_HEIGHT)
+  };
+}
+
+function computeTargetRowWidth(items: FlowLayoutItem[]): number {
+  const totalArea = items.reduce((sum, item) => sum + Math.max(item.width, 1) * Math.max(item.height, 1), 0);
+  const longestWidth = items.reduce((max, item) => Math.max(max, item.width), DIRECTORY_MIN_WIDTH);
+  if (totalArea <= 0) {
+    return longestWidth;
+  }
+  const idealWidth = Math.sqrt(totalArea * TARGET_ASPECT_RATIO);
+  return Math.max(longestWidth, idealWidth);
+}
 function layoutDirectory(measure: DirectoryMeasure, rect: LayoutRect, depth: number): DirectoryLayoutPlan {
   const directoryPath = measure.directory.path || ROOT_KEY;
   const directoryName = depth === 0 ? "(root)" : resolveDirectoryName(directoryPath, measure.directory.name);
 
   const labelHeight = depth === 0 ? 0 : DIRECTORY_LABEL_HEIGHT;
-  const contentRect = ensurePositiveRect({
-    x: rect.x + DIRECTORY_PADDING,
-    y: rect.y + DIRECTORY_PADDING + labelHeight,
-    width: rect.width - DIRECTORY_PADDING * 2,
-    height: rect.height - DIRECTORY_PADDING * 2 - labelHeight
-  }, DIRECTORY_MIN_WIDTH, DIRECTORY_MIN_HEIGHT);
+  const sizedRect: LayoutRect = {
+    x: rect.x,
+    y: rect.y,
+    width: measure.contentWidth + DIRECTORY_PADDING * 2,
+    height: measure.contentHeight + DIRECTORY_PADDING * 2 + labelHeight
+  };
+  const contentRect: LayoutRect = {
+    x: sizedRect.x + DIRECTORY_PADDING,
+    y: sizedRect.y + DIRECTORY_PADDING + labelHeight,
+    width: measure.contentWidth,
+    height: measure.contentHeight
+  };
 
   const shouldCollapse =
     depth > 0 &&
@@ -254,7 +356,7 @@ function layoutDirectory(measure: DirectoryMeasure, rect: LayoutRect, depth: num
     measure.childMeasures.length === 1;
 
   if (shouldCollapse) {
-    const collapsedPlan = layoutDirectory(measure.childMeasures[0], rect, depth);
+    const collapsedPlan = layoutDirectory(measure.childMeasures[0], sizedRect, depth);
     const ancestorEntry = { path: directoryPath, name: directoryName };
     const collapsedAncestors = [ancestorEntry, ...collapsedPlan.collapsedAncestors];
     return {
@@ -264,54 +366,36 @@ function layoutDirectory(measure: DirectoryMeasure, rect: LayoutRect, depth: num
     };
   }
 
-  const items: LayoutItem[] = [];
-  measure.childMeasures.forEach(child => {
-    if (child.totalNodes === 0) {
-      return;
-    }
-    const intrinsicArea = Math.max(child.contentWidth * child.contentHeight, NODE_AREA);
-    items.push({ kind: "directory", measure: child, area: intrinsicArea * DIRECTORY_AREA_WEIGHT });
-  });
-
-  if (measure.directory.nodes.length > 0) {
-    const intrinsicArea = measure.fileMetrics
-      ? Math.max(measure.fileMetrics.width * measure.fileMetrics.height, NODE_AREA)
-      : Math.max(measure.directory.nodes.length, 1) * NODE_AREA;
-    items.push({ kind: "files", nodes: measure.directory.nodes.slice(), area: intrinsicArea });
-  }
-
   const directories: DirectoryLayoutPlan[] = [];
   let fileArea: FileAreaLayoutPlan | undefined;
 
-  if (items.length > 0) {
-    normalizeItemAreas(items, contentRect.width * contentRect.height);
-    const placements = squarify(items, contentRect);
-    items.forEach(item => {
-      const placement = placements.get(item);
-      if (!placement) {
-        return;
-      }
-      if (item.kind === "directory") {
-        const adjusted = fitRectWithin(
-          placement,
-          item.measure.outerWidth,
-          item.measure.outerHeight,
-          DIRECTORY_GAP
-        );
-        directories.push(layoutDirectory(item.measure, adjusted, depth + 1));
-      } else {
-        const desiredWidth = measure.fileMetrics?.width ?? placement.width;
-        const desiredHeight = measure.fileMetrics?.height ?? placement.height;
-        const adjusted = fitRectWithin(placement, desiredWidth, desiredHeight, FILE_AREA_INSET);
-        fileArea = layoutFileArea(item.nodes, adjusted, measure.fileMetrics);
-      }
-    });
-  }
+  const layoutItems = buildFlowItems(measure.childMeasures, measure.directory, measure.fileMetrics);
+  const flowLayout = computeFlowLayout(layoutItems);
+  const offsetX = contentRect.x + Math.max(0, (contentRect.width - flowLayout.width) / 2);
+  const offsetY = contentRect.y + Math.max(0, (contentRect.height - flowLayout.height) / 2);
+
+  layoutItems.forEach(item => {
+    const placement = flowLayout.placements.get(item);
+    if (!placement) {
+      return;
+    }
+    const absoluteRect: LayoutRect = {
+      x: offsetX + placement.x,
+      y: offsetY + placement.y,
+      width: placement.width,
+      height: placement.height
+    };
+    if (item.kind === "directory" && item.measure) {
+      directories.push(layoutDirectory(item.measure, absoluteRect, depth + 1));
+    } else if (item.kind === "files") {
+      fileArea = layoutFileArea(item.nodes ?? [], absoluteRect, measure.fileMetrics);
+    }
+  });
 
   const plan: DirectoryLayoutPlan = {
     path: directoryPath,
     name: directoryName,
-    rect,
+    rect: sizedRect,
     contentRect,
     directories,
     fileArea,
@@ -321,304 +405,7 @@ function layoutDirectory(measure: DirectoryMeasure, rect: LayoutRect, depth: num
     collapsedAncestors: []
   };
 
-  finalizeDirectoryPlan(plan);
   return plan;
-}
-
-function normalizeItemAreas(items: LayoutItem[], targetArea: number): void {
-  const total = items.reduce((sum, item) => sum + item.area, 0);
-  if (total === 0 || targetArea <= 0) {
-    return;
-  }
-  const scale = targetArea / total;
-  items.forEach(item => {
-    item.area = Math.max(item.area * scale, 1);
-  });
-}
-
-function ensurePositiveRect(rect: LayoutRect, minWidth: number, minHeight: number): LayoutRect {
-  return {
-    x: rect.x,
-    y: rect.y,
-    width: Math.max(rect.width, minWidth),
-    height: Math.max(rect.height, minHeight)
-  };
-}
-
-function fitRectWithin(
-  rect: LayoutRect,
-  desiredWidth: number,
-  desiredHeight: number,
-  gap: number
-): LayoutRect {
-  const gapX = Math.min(gap, rect.width / 2);
-  const gapY = Math.min(gap, rect.height / 2);
-  const usable = {
-    x: rect.x + gapX,
-    y: rect.y + gapY,
-    width: Math.max(rect.width - gapX * 2, 0),
-    height: Math.max(rect.height - gapY * 2, 0)
-  };
-
-  if (usable.width <= 0 || usable.height <= 0) {
-    return {
-      x: rect.x,
-      y: rect.y,
-      width: Math.max(rect.width, DIRECTORY_MIN_WIDTH),
-      height: Math.max(rect.height, DIRECTORY_MIN_HEIGHT)
-    };
-  }
-
-  const safeDesiredWidth = Math.max(desiredWidth, DIRECTORY_MIN_WIDTH);
-  const safeDesiredHeight = Math.max(desiredHeight, DIRECTORY_MIN_HEIGHT);
-  const scaleX = usable.width / safeDesiredWidth;
-  const scaleY = usable.height / safeDesiredHeight;
-  const scale = Math.max(
-    MIN_DIRECTORY_SCALE,
-    Math.min(MAX_DIRECTORY_SCALE, Math.min(scaleX, scaleY))
-  );
-
-  const scaledWidth = Math.min(safeDesiredWidth * scale, usable.width);
-  const scaledHeight = Math.min(safeDesiredHeight * scale, usable.height);
-
-  const offsetX = (usable.width - scaledWidth) / 2;
-  const offsetY = (usable.height - scaledHeight) / 2;
-
-  return {
-    x: usable.x + offsetX,
-    y: usable.y + offsetY,
-    width: Math.max(scaledWidth, Math.min(usable.width, DIRECTORY_MIN_WIDTH)),
-    height: Math.max(scaledHeight, Math.min(usable.height, DIRECTORY_MIN_HEIGHT))
-  };
-}
-
-function finalizeDirectoryPlan(plan: DirectoryLayoutPlan): void {
-  adjustDirectoryContent(plan);
-  plan.directories.forEach(child => finalizeDirectoryPlan(child));
-}
-
-function adjustDirectoryContent(plan: DirectoryLayoutPlan): void {
-  const hasDirectories = plan.directories.length > 0;
-  const hasFiles = !!(plan.fileArea && plan.fileArea.nodes.length > 0);
-  if (!hasDirectories && !hasFiles) {
-    return;
-  }
-
-  const originX = plan.contentRect.x;
-  const originY = plan.contentRect.y;
-  let minX = Number.POSITIVE_INFINITY;
-  let minY = Number.POSITIVE_INFINITY;
-  let maxX = Number.NEGATIVE_INFINITY;
-  let maxY = Number.NEGATIVE_INFINITY;
-
-  const trackBounds = (rect: LayoutRect): void => {
-    const relativeX = rect.x - originX;
-    const relativeY = rect.y - originY;
-    minX = Math.min(minX, relativeX);
-    minY = Math.min(minY, relativeY);
-    maxX = Math.max(maxX, relativeX + rect.width);
-    maxY = Math.max(maxY, relativeY + rect.height);
-  };
-
-  plan.directories.forEach(child => trackBounds(child.rect));
-  if (plan.fileArea && plan.fileArea.nodes.length > 0) {
-    trackBounds(plan.fileArea.rect);
-  }
-
-  if (!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) {
-    return;
-  }
-
-  const usedWidth = Math.max(maxX - minX, 1);
-  const usedHeight = Math.max(maxY - minY, 1);
-  if (usedWidth <= 0 || usedHeight <= 0) {
-    return;
-  }
-
-  const scaleX = plan.contentRect.width / usedWidth;
-  const scaleY = plan.contentRect.height / usedHeight;
-  const rawScale = Math.min(scaleX, scaleY);
-  if (!Number.isFinite(rawScale) || rawScale <= 0) {
-    return;
-  }
-
-  let scale = rawScale > 1 ? Math.min(rawScale, CONTENT_SCALE_MAX) : rawScale;
-  scale = Math.max(scale, MIN_DIRECTORY_SCALE);
-
-  const offsetX = (plan.contentRect.width - usedWidth * scale) / 2;
-  const offsetY = (plan.contentRect.height - usedHeight * scale) / 2;
-
-  plan.directories.forEach(child => {
-    scaleDirectorySubtree(child, originX, originY, minX, minY, scale, offsetX, offsetY);
-  });
-
-  if (plan.fileArea && plan.fileArea.nodes.length > 0) {
-    scaleFileAreaPlan(plan.fileArea, originX, originY, minX, minY, scale, offsetX, offsetY);
-  }
-}
-
-function squarify(items: LayoutItem[], bounds: LayoutRect): Map<LayoutItem, LayoutRect> {
-  const result = new Map<LayoutItem, LayoutRect>();
-  const sorted = items
-    .filter(item => item.area > 0)
-    .slice()
-    .sort((a, b) => b.area - a.area);
-  if (sorted.length === 0) {
-    return result;
-  }
-
-  let rect = { ...bounds };
-  let row: TreemapItem[] = [];
-  let rowArea = 0;
-
-  const pushRow = (): void => {
-    if (row.length === 0 || rect.width <= 0 || rect.height <= 0) {
-      row = [];
-      rowArea = 0;
-      return;
-    }
-    const horizontal = rect.width >= rect.height;
-    const rowSize = rowArea / (horizontal ? rect.width : rect.height);
-    let offset = horizontal ? rect.x : rect.y;
-
-    row.forEach(item => {
-      if (horizontal) {
-        const itemWidth = item.area / rowSize;
-        result.set(item, stripPrecision({
-          x: offset,
-          y: rect.y,
-          width: itemWidth,
-          height: rowSize
-        }));
-        offset += itemWidth;
-      } else {
-        const itemHeight = item.area / rowSize;
-        result.set(item, stripPrecision({
-          x: rect.x,
-          y: offset,
-          width: rowSize,
-          height: itemHeight
-        }));
-        offset += itemHeight;
-      }
-    });
-
-    if (horizontal) {
-      rect = {
-        x: rect.x,
-        y: rect.y + rowSize,
-        width: rect.width,
-        height: Math.max(rect.height - rowSize, 0)
-      };
-    } else {
-      rect = {
-        x: rect.x + rowSize,
-        y: rect.y,
-        width: Math.max(rect.width - rowSize, 0),
-        height: rect.height
-      };
-    }
-
-    row = [];
-    rowArea = 0;
-  };
-
-  const worstAspect = (candidateRow: TreemapItem[], side: number): number => {
-    if (candidateRow.length === 0) {
-      return Number.POSITIVE_INFINITY;
-    }
-    const areas = candidateRow.map(item => item.area);
-    const sum = candidateRow.reduce((acc, item) => acc + item.area, 0);
-    const maxArea = Math.max(...areas);
-    const minArea = Math.min(...areas);
-    if (minArea === 0 || side === 0 || sum === 0) {
-      return Number.POSITIVE_INFINITY;
-    }
-    const sideSquared = side * side;
-    return Math.max((sideSquared * maxArea) / (sum * sum), (sum * sum) / (sideSquared * minArea));
-  };
-
-  sorted.forEach(item => {
-    const testRow = row.concat(item);
-    const side = Math.min(rect.width, rect.height);
-    if (row.length === 0 || worstAspect(testRow, side) <= worstAspect(row, side)) {
-      row = testRow;
-      rowArea += item.area;
-    } else {
-      pushRow();
-      row = [item];
-      rowArea = item.area;
-    }
-  });
-
-  pushRow();
-  return result;
-}
-
-function stripPrecision(rect: LayoutRect): LayoutRect {
-  return {
-    x: rect.x,
-    y: rect.y,
-    width: Math.max(rect.width, 0),
-    height: Math.max(rect.height, 0)
-  };
-}
-
-function transformRect(
-  rect: LayoutRect,
-  originX: number,
-  originY: number,
-  minX: number,
-  minY: number,
-  scale: number,
-  offsetX: number,
-  offsetY: number
-): LayoutRect {
-  const relativeX = rect.x - originX;
-  const relativeY = rect.y - originY;
-  return stripPrecision({
-    x: originX + offsetX + (relativeX - minX) * scale,
-    y: originY + offsetY + (relativeY - minY) * scale,
-    width: rect.width * scale,
-    height: rect.height * scale
-  });
-}
-
-function scaleDirectorySubtree(
-  plan: DirectoryLayoutPlan,
-  originX: number,
-  originY: number,
-  minX: number,
-  minY: number,
-  scale: number,
-  offsetX: number,
-  offsetY: number
-): void {
-  plan.rect = transformRect(plan.rect, originX, originY, minX, minY, scale, offsetX, offsetY);
-  plan.contentRect = transformRect(plan.contentRect, originX, originY, minX, minY, scale, offsetX, offsetY);
-  if (plan.fileArea && plan.fileArea.nodes.length > 0) {
-    scaleFileAreaPlan(plan.fileArea, originX, originY, minX, minY, scale, offsetX, offsetY);
-  }
-  plan.directories.forEach(child => {
-    scaleDirectorySubtree(child, originX, originY, minX, minY, scale, offsetX, offsetY);
-  });
-}
-
-function scaleFileAreaPlan(
-  fileArea: FileAreaLayoutPlan,
-  originX: number,
-  originY: number,
-  minX: number,
-  minY: number,
-  scale: number,
-  offsetX: number,
-  offsetY: number
-): void {
-  fileArea.rect = transformRect(fileArea.rect, originX, originY, minX, minY, scale, offsetX, offsetY);
-  fileArea.nodes.forEach(nodePlan => {
-    nodePlan.rect = transformRect(nodePlan.rect, originX, originY, minX, minY, scale, offsetX, offsetY);
-    nodePlan.scale = Math.min(nodePlan.scale * scale, NODE_VISUAL_SCALE_MAX);
-  });
 }
 
 function computeFileGridMetrics(count: number): FileGridMetrics {
