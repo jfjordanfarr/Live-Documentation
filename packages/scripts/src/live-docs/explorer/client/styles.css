@@ -342,6 +342,61 @@ body {
     margin-right: auto;
 }
 
+.local-column--stacked {
+    gap: 18px;
+}
+
+.local-column--stacked .layout-node {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.local-column--stacked.local-column.inbound .layout-node {
+    margin-left: auto;
+}
+
+.local-column--stacked.local-column.outbound .layout-node {
+    margin-right: auto;
+}
+
+.local-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.local-stack-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.local-stack-group__label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6c7484;
+    padding-left: 4px;
+}
+
+.local-stack-group__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 280px;
+    max-width: 280px;
+}
+
+.local-column.inbound .local-stack-group__content {
+    align-items: flex-end;
+}
+
+.local-column.outbound .local-stack-group__content {
+    align-items: flex-start;
+}
+
 .empty-hint {
     display: flex;
     align-items: center;

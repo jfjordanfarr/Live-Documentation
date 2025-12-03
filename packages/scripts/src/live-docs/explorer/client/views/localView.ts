@@ -51,6 +51,11 @@ interface LocalSubgraph {
   outboundIds: Set<string>;
 }
 
+interface CenterAlignmentGuides {
+  anchors: Map<string, number>;
+  cardCenters: Map<string, number>;
+}
+
 export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const { state, graphData, resolveLinkEndpoint, onSelectNode, testCoverage } = options;
   const viewport = requireElement<HTMLDivElement>("view-map");
@@ -202,6 +207,68 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     overlay.style.transformOrigin = "0 0";
     container.style.transform = matrix;
     overlay.style.transform = matrix;
+  }
+
+  function anchorGuideKey(nodeId: string, direction: "inbound" | "outbound", symbol: string | undefined | null): string {
+    const normalizedSymbol = symbol && symbol.length > 0 ? symbol : "*";
+    return `${nodeId}:${direction}:${normalizedSymbol}`;
+  }
+
+  function collectCenterAlignmentGuides(column: HTMLElement): CenterAlignmentGuides {
+    const anchors = new Map<string, number>();
+    const cardCenters = new Map<string, number>();
+    const rootRect = container.getBoundingClientRect();
+
+    column.querySelectorAll<HTMLElement>(".node-card").forEach(card => {
+      const nodeId = card.dataset.id;
+      if (!nodeId) {
+        return;
+      }
+      const rect = card.getBoundingClientRect();
+      const centerY = (rect.top + rect.bottom) / 2 - rootRect.top;
+      cardCenters.set(nodeId, centerY);
+    });
+
+    column.querySelectorAll<HTMLElement>(".symbol-anchor").forEach(anchor => {
+      const nodeCard = anchor.closest<HTMLElement>(".node-card");
+      if (!nodeCard) {
+        return;
+      }
+      const nodeId = nodeCard.dataset.id;
+      if (!nodeId) {
+        return;
+      }
+      const direction = anchor.classList.contains("outbound") ? "outbound" : "inbound";
+      const symbol = anchor.dataset.symbol ?? "*";
+      const rect = anchor.getBoundingClientRect();
+      const centerY = (rect.top + rect.bottom) / 2 - rootRect.top;
+      anchors.set(anchorGuideKey(nodeId, direction, symbol), centerY);
+      if (symbol !== "*") {
+        const wildcardKey = anchorGuideKey(nodeId, direction, "*");
+        if (!anchors.has(wildcardKey)) {
+          anchors.set(wildcardKey, centerY);
+        }
+      }
+    });
+
+    return { anchors, cardCenters };
+  }
+
+  function lookupCenterAnchorPosition(
+    guides: CenterAlignmentGuides,
+    nodeId: string,
+    direction: "inbound" | "outbound",
+    symbol: string | undefined | null
+  ): number | null {
+    const attempts = [anchorGuideKey(nodeId, direction, symbol), anchorGuideKey(nodeId, direction, "*")];
+    for (const attempt of attempts) {
+      const match = guides.anchors.get(attempt);
+      if (match !== undefined) {
+        return match;
+      }
+    }
+    const fallback = guides.cardCenters.get(nodeId);
+    return fallback !== undefined ? fallback : null;
   }
 
   function measureContentBounds(): { left: number; top: number; width: number; height: number } | null {
@@ -518,7 +585,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return surface;
     };
 
-    const createDirectionalColumn = (
+    const createHierarchicalColumn = (
       label: string,
       nodes: ExplorerNodePayload[],
       direction: "inbound" | "outbound" | "center",
@@ -546,22 +613,186 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return column;
     };
 
+    const computeDirectionalAlignmentValue = (
+      node: ExplorerNodePayload,
+      direction: "inbound" | "outbound",
+      guides: CenterAlignmentGuides
+    ): number => {
+      if (!currentSubgraph) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      const relatedEdges = currentSubgraph.links.filter(edge => {
+        if (direction === "inbound") {
+          return edge.direction === "inbound" && edge.sourceId === node.id;
+        }
+        return edge.direction === "outbound" && edge.targetId === node.id;
+      });
+
+      const anchorPositions: number[] = [];
+      relatedEdges.forEach(edge => {
+        const centerNodeId = direction === "inbound" ? edge.targetId : edge.sourceId;
+        if (!centerNodeId) {
+          return;
+        }
+        const anchorDirection = direction === "inbound" ? "inbound" : "outbound";
+        const symbol = direction === "inbound" ? edge.targetSymbol : edge.sourceSymbol;
+        const anchorY = lookupCenterAnchorPosition(guides, centerNodeId, anchorDirection, symbol);
+        if (anchorY !== null && Number.isFinite(anchorY)) {
+          anchorPositions.push(anchorY);
+        }
+      });
+
+      if (anchorPositions.length > 0) {
+        const sum = anchorPositions.reduce((acc, value) => acc + value, 0);
+        return sum / anchorPositions.length;
+      }
+
+      const focusFallback = state.selectedNode ? guides.cardCenters.get(state.selectedNode.id) : undefined;
+      return focusFallback !== undefined ? focusFallback : Number.POSITIVE_INFINITY;
+    };
+
+    const createStackedColumn = (
+      label: string,
+      nodes: ExplorerNodePayload[],
+      direction: "inbound" | "outbound",
+      emptyLabel: string,
+      guides: CenterAlignmentGuides
+    ): HTMLElement => {
+      const column = document.createElement("div");
+      column.className = `local-column ${direction} local-column--stacked`;
+      column.dataset.direction = direction;
+
+      const heading = document.createElement("div");
+      heading.className = "local-column-label";
+      heading.textContent = label;
+      column.appendChild(heading);
+
+      const eligibleNodes = nodes.filter(node => shouldIncludeNode(node));
+      if (eligibleNodes.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "local-column-empty";
+        empty.textContent = emptyLabel;
+        column.appendChild(empty);
+        return column;
+      }
+
+      const stack = document.createElement("div");
+      stack.className = "local-stack";
+
+      const grouped = new Map<
+        string,
+        {
+          nodes: Array<{ node: ExplorerNodePayload; alignment: number; weight: number }>;
+          order: number;
+        }
+      >();
+
+      eligibleNodes.forEach(node => {
+        const alignment = computeDirectionalAlignmentValue(node, direction, guides);
+        const weight = connectionScore.get(node.id) ?? 0;
+        const key = getDirectoryKey(node);
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            nodes: [],
+            order: Number.POSITIVE_INFINITY
+          });
+        }
+        const group = grouped.get(key)!;
+        group.nodes.push({ node, alignment, weight });
+        if (Number.isFinite(alignment)) {
+          group.order = Math.min(group.order, alignment);
+        }
+      });
+
+      const orderedGroups = Array.from(grouped.entries())
+        .map(([path, group]) => {
+          const nodesWithOrder = group.nodes.slice().sort((a, b) => {
+            const aAlignment = Number.isFinite(a.alignment) ? a.alignment : Number.POSITIVE_INFINITY;
+            const bAlignment = Number.isFinite(b.alignment) ? b.alignment : Number.POSITIVE_INFINITY;
+            if (aAlignment !== bAlignment) {
+              return aAlignment - bAlignment;
+            }
+            if (b.weight !== a.weight) {
+              return b.weight - a.weight;
+            }
+            return a.node.name.localeCompare(b.node.name);
+          });
+          const displayName = path === ROOT_KEY ? "(root)" : path.split("/").filter(Boolean).pop() ?? "(root)";
+          const orderValue = Number.isFinite(group.order) ? group.order : Number.POSITIVE_INFINITY;
+          return {
+            path,
+            displayName,
+            order: orderValue,
+            nodes: nodesWithOrder
+          };
+        })
+        .sort((a, b) => {
+          if (a.order !== b.order) {
+            return a.order - b.order;
+          }
+          return a.displayName.localeCompare(b.displayName);
+        });
+
+      orderedGroups.forEach(group => {
+        const groupElement = document.createElement("div");
+        groupElement.className = "local-stack-group";
+
+        const shouldShowLabel = !(group.path === ROOT_KEY && orderedGroups.length === 1);
+        if (shouldShowLabel) {
+          const labelElement = document.createElement("div");
+          labelElement.className = "local-stack-group__label";
+          labelElement.textContent = group.displayName;
+          groupElement.appendChild(labelElement);
+        }
+
+        const content = document.createElement("div");
+        content.className = "local-stack-group__content";
+        group.nodes.forEach(entry => {
+          const card = createNodeCard(entry.node);
+          card.classList.add("layout-node", "stacked-node");
+          card.dataset.direction = direction;
+          content.appendChild(card);
+        });
+        groupElement.appendChild(content);
+        stack.appendChild(groupElement);
+      });
+
+      column.appendChild(stack);
+      return column;
+    };
+
     const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
     const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
     const centerNodes = [subgraph.center];
 
     const layout = document.createElement("div");
     layout.className = "local-layout";
-    layout.appendChild(
-      createDirectionalColumn("Incoming Dependencies", inboundNodes, "inbound", "No incoming dependencies")
-    );
-    layout.appendChild(createDirectionalColumn("Selected Artifact", centerNodes, "center", "No artifact selected"));
-    layout.appendChild(
-      createDirectionalColumn("Outgoing Dependencies", outboundNodes, "outbound", "No outgoing dependencies")
-    );
-
     container.appendChild(layout);
     contentRoot = layout;
+
+    const centerColumn = createHierarchicalColumn("Selected Artifact", centerNodes, "center", "No artifact selected");
+    layout.appendChild(centerColumn);
+
+    const alignmentGuides = collectCenterAlignmentGuides(centerColumn);
+
+    const inboundColumn = createStackedColumn(
+      "Incoming Dependencies",
+      inboundNodes,
+      "inbound",
+      "No incoming dependencies",
+      alignmentGuides
+    );
+    layout.insertBefore(inboundColumn, centerColumn);
+
+    const outboundColumn = createStackedColumn(
+      "Outgoing Dependencies",
+      outboundNodes,
+      "outbound",
+      "No outgoing dependencies",
+      alignmentGuides
+    );
+    layout.appendChild(outboundColumn);
 
     if (!mapHasInitialFit && contentRoot) {
       fitMapToContent(contentRoot);
