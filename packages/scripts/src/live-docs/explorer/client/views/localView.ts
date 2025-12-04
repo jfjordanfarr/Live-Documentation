@@ -14,6 +14,11 @@ import {
   measureDirectoryTree
 } from "./layoutUtils";
 import type { DirectoryLayoutPlan } from "./layoutUtils";
+import {
+  buildNormalizedAnchorKey,
+  normalizeSymbolIdentifier,
+  tryBuildNormalizedKeyFromAnchorKey
+} from "./symbolAnchors";
 
 export interface LocalViewOptions {
   state: ExplorerState;
@@ -56,13 +61,27 @@ interface CenterAlignmentGuides {
   cardCenters: Map<string, number>;
 }
 
+interface Bounds {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+}
+
+interface LayoutExtents {
+  content: Bounds;
+  focus: Bounds | null;
+}
+
 export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const { state, graphData, resolveLinkEndpoint, onSelectNode, testCoverage } = options;
   const viewport = requireElement<HTMLDivElement>("view-map");
   const container = requireElement<HTMLDivElement>("map-container");
   const overlay = requireElement<HTMLDivElement>("map-connections");
 
-  container.classList.add("cluster-host");
+  container.classList.add("cluster-host", "local-map-host");
   viewport.style.cursor = "grab";
 
   let currentSubgraph: LocalSubgraph | null = null;
@@ -95,18 +114,31 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     if (!anchorRegistry.has(nodeId)) {
       anchorRegistry.set(nodeId, new Map());
     }
-    anchorRegistry.get(nodeId)!.set(key, element);
+    const anchors = anchorRegistry.get(nodeId)!;
+    anchors.set(key, element);
+    const normalizedKey = tryBuildNormalizedKeyFromAnchorKey(key);
+    if (normalizedKey) {
+      anchors.set(normalizedKey, element);
+    }
   };
 
-  const getAnchor = (nodeId: string, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null => {
+  const getAnchor = (
+    nodeId: string,
+    direction: "inbound" | "outbound",
+    symbol?: string
+  ): HTMLElement | null => {
     const anchors = anchorRegistry.get(nodeId);
     if (!anchors) {
       return null;
     }
     if (symbol) {
-      const key = `${direction}:${symbol}`;
-      if (anchors.has(key)) {
-        return anchors.get(key)!;
+      const exactKey = `${direction}:${symbol}`;
+      if (anchors.has(exactKey)) {
+        return anchors.get(exactKey)!;
+      }
+      const normalizedKey = buildNormalizedAnchorKey(direction, symbol);
+      if (normalizedKey && anchors.has(normalizedKey)) {
+        return anchors.get(normalizedKey)!;
       }
     }
     const defaultKey = `${direction}:*`;
@@ -244,6 +276,12 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       const centerY = (rect.top + rect.bottom) / 2 - rootRect.top;
       anchors.set(anchorGuideKey(nodeId, direction, symbol), centerY);
       if (symbol !== "*") {
+        const normalizedSymbol = normalizeSymbolIdentifier(symbol);
+        if (normalizedSymbol) {
+          anchors.set(anchorGuideKey(nodeId, direction, normalizedSymbol), centerY);
+        }
+      }
+      if (symbol !== "*") {
         const wildcardKey = anchorGuideKey(nodeId, direction, "*");
         if (!anchors.has(wildcardKey)) {
           anchors.set(wildcardKey, centerY);
@@ -260,7 +298,15 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     direction: "inbound" | "outbound",
     symbol: string | undefined | null
   ): number | null {
-    const attempts = [anchorGuideKey(nodeId, direction, symbol), anchorGuideKey(nodeId, direction, "*")];
+    const attempts: string[] = [];
+    if (symbol && symbol.length > 0) {
+      attempts.push(anchorGuideKey(nodeId, direction, symbol));
+      const normalizedSymbol = normalizeSymbolIdentifier(symbol);
+      if (normalizedSymbol && normalizedSymbol !== symbol) {
+        attempts.push(anchorGuideKey(nodeId, direction, normalizedSymbol));
+      }
+    }
+    attempts.push(anchorGuideKey(nodeId, direction, "*"));
     for (const attempt of attempts) {
       const match = guides.anchors.get(attempt);
       if (match !== undefined) {
@@ -271,48 +317,144 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     return fallback !== undefined ? fallback : null;
   }
 
-  function measureContentBounds(): { left: number; top: number; width: number; height: number } | null {
-    if (!contentRoot) {
-      return null;
-    }
-
+  function withTransformReset<T>(callback: (containerRect: DOMRect) => T): T {
     const previousContainerTransform = container.style.transform;
     const previousOverlayTransform = overlay.style.transform;
     container.style.transform = "none";
     overlay.style.transform = "none";
+    try {
+      const containerRect = container.getBoundingClientRect();
+      return callback(containerRect);
+    } finally {
+      container.style.transform = previousContainerTransform;
+      overlay.style.transform = previousOverlayTransform;
+    }
+  }
 
-    const elements = contentRoot.querySelectorAll<HTMLElement>(".layout-node, .layout-box");
+  function measureElementsBounds(elements: Iterable<HTMLElement>, containerRect: DOMRect): Bounds | null {
     let minLeft = Number.POSITIVE_INFINITY;
     let minTop = Number.POSITIVE_INFINITY;
     let maxRight = Number.NEGATIVE_INFINITY;
     let maxBottom = Number.NEGATIVE_INFINITY;
+    let hasElement = false;
 
-    elements.forEach(element => {
+    for (const element of elements) {
       const rect = element.getBoundingClientRect();
+      if (!Number.isFinite(rect.left) || !Number.isFinite(rect.top)) {
+        continue;
+      }
+      hasElement = true;
       minLeft = Math.min(minLeft, rect.left);
       minTop = Math.min(minTop, rect.top);
       maxRight = Math.max(maxRight, rect.right);
       maxBottom = Math.max(maxBottom, rect.bottom);
-    });
+    }
 
-    const containerRect = container.getBoundingClientRect();
-
-    container.style.transform = previousContainerTransform;
-    overlay.style.transform = previousOverlayTransform;
-
-    if (!Number.isFinite(minLeft) || !Number.isFinite(minTop) || !Number.isFinite(maxRight) || !Number.isFinite(maxBottom)) {
+    if (!hasElement) {
       return null;
     }
 
     const width = Math.max(maxRight - minLeft, 1);
     const height = Math.max(maxBottom - minTop, 1);
+    const left = minLeft - containerRect.left;
+    const top = minTop - containerRect.top;
 
     return {
-      left: minLeft - containerRect.left,
-      top: minTop - containerRect.top,
+      left,
+      top,
+      right: left + width,
+      bottom: top + height,
       width,
       height
     };
+  }
+
+  function measureElementBounds(element: HTMLElement | null, containerRect: DOMRect): Bounds | null {
+    if (!element) {
+      return null;
+    }
+    return measureElementsBounds([element], containerRect);
+  }
+
+  function measureLayoutExtents(): LayoutExtents | null {
+    if (!contentRoot) {
+      return null;
+    }
+
+    return withTransformReset(containerRect => {
+      const trackedElements = contentRoot.querySelectorAll<HTMLElement>(".layout-node, .layout-box");
+      const contentBounds = measureElementsBounds(trackedElements, containerRect);
+      if (!contentBounds) {
+        return null;
+      }
+      const focusElement =
+        contentRoot.querySelector<HTMLElement>(".node-card.local-focus") ??
+        contentRoot.querySelector<HTMLElement>(".local-column.center .node-card") ??
+        contentRoot.querySelector<HTMLElement>(".node-card");
+      const focusBounds = measureElementBounds(focusElement, containerRect);
+
+      const computedStyle = getComputedStyle(container);
+      const paddingLeft = Number.parseFloat(computedStyle.paddingLeft || "0") || 0;
+      const paddingTop = Number.parseFloat(computedStyle.paddingTop || "0") || 0;
+
+      const adjustBounds = (bounds: Bounds | null): Bounds | null => {
+        if (!bounds) {
+          return null;
+        }
+        const width = Math.max(bounds.width, 1);
+        const height = Math.max(bounds.height, 1);
+        const left = Math.max(bounds.left - paddingLeft, 0);
+        const top = Math.max(bounds.top - paddingTop, 0);
+        const right = left + width;
+        const bottom = top + height;
+        return { left, top, right, bottom, width, height };
+      };
+
+      const content = adjustBounds(contentBounds);
+      const focus = adjustBounds(focusBounds);
+
+      return { content: content ?? contentBounds, focus };
+    });
+  }
+
+  function applyColumnVerticalCentering(layoutRoot: HTMLElement): void {
+    const columns = Array.from(layoutRoot.querySelectorAll<HTMLElement>(".local-column"));
+    if (columns.length === 0) {
+      return;
+    }
+
+    columns.forEach(column => {
+      column.style.marginTop = "0px";
+      column.style.marginBottom = "0px";
+    });
+
+    withTransformReset(() => {
+      let maxHeight = 0;
+      const columnHeights = new Map<HTMLElement, number>();
+      columns.forEach(column => {
+        const rect = column.getBoundingClientRect();
+        const height = rect.height;
+        columnHeights.set(column, height);
+        if (Number.isFinite(height)) {
+          maxHeight = Math.max(maxHeight, height);
+        }
+      });
+
+      if (maxHeight <= 0) {
+        return null;
+      }
+
+      layoutRoot.style.minHeight = `${maxHeight}px`;
+
+      columns.forEach(column => {
+        const height = columnHeights.get(column) ?? 0;
+        const offset = Math.max((maxHeight - height) / 2, 0);
+        column.style.marginTop = `${offset}px`;
+        column.style.marginBottom = `${offset}px`;
+      });
+
+      return null;
+    });
   }
 
   function zoomAtPoint(offsetX: number, offsetY: number, delta: number): void {
@@ -589,16 +731,37 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       label: string,
       nodes: ExplorerNodePayload[],
       direction: "inbound" | "outbound" | "center",
-      emptyLabel: string
+      emptyLabel: string,
+      position: "left" | "center" | "right"
     ): HTMLElement => {
       const column = document.createElement("div");
       column.className = `local-column ${direction}`;
       column.dataset.direction = direction;
+      column.dataset.position = position;
 
       const heading = document.createElement("div");
       heading.className = "local-column-label";
       heading.textContent = label;
       column.appendChild(heading);
+
+      if (direction === "center") {
+        if (nodes.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "local-column-empty";
+          empty.textContent = emptyLabel;
+          column.appendChild(empty);
+          return column;
+        }
+        const focusSurface = document.createElement("div");
+        focusSurface.className = "local-focus-surface";
+        nodes.forEach(node => {
+          const card = createNodeCard(node);
+          card.classList.add("focus-node");
+          focusSurface.appendChild(card);
+        });
+        column.appendChild(focusSurface);
+        return column;
+      }
 
       const surface = renderLayoutForNodes(nodes, direction);
       if (!surface) {
@@ -635,7 +798,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
         if (!centerNodeId) {
           return;
         }
-        const anchorDirection = direction === "inbound" ? "inbound" : "outbound";
+        const anchorDirection = direction === "inbound" ? "outbound" : "inbound";
         const symbol = direction === "inbound" ? edge.targetSymbol : edge.sourceSymbol;
         const anchorY = lookupCenterAnchorPosition(guides, centerNodeId, anchorDirection, symbol);
         if (anchorY !== null && Number.isFinite(anchorY)) {
@@ -657,11 +820,13 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       nodes: ExplorerNodePayload[],
       direction: "inbound" | "outbound",
       emptyLabel: string,
-      guides: CenterAlignmentGuides
+      guides: CenterAlignmentGuides,
+      position: "left" | "right"
     ): HTMLElement => {
       const column = document.createElement("div");
       column.className = `local-column ${direction} local-column--stacked`;
       column.dataset.direction = direction;
+      column.dataset.position = position;
 
       const heading = document.createElement("div");
       heading.className = "local-column-label";
@@ -771,28 +936,38 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     container.appendChild(layout);
     contentRoot = layout;
 
-    const centerColumn = createHierarchicalColumn("Selected Artifact", centerNodes, "center", "No artifact selected");
+    const centerColumn = createHierarchicalColumn(
+      "Selected Artifact",
+      centerNodes,
+      "center",
+      "No artifact selected",
+      "center"
+    );
     layout.appendChild(centerColumn);
 
     const alignmentGuides = collectCenterAlignmentGuides(centerColumn);
 
-    const inboundColumn = createStackedColumn(
-      "Incoming Dependencies",
+    const dependenciesColumn = createStackedColumn(
+      "Dependencies (Inputs)",
       inboundNodes,
       "inbound",
-      "No incoming dependencies",
-      alignmentGuides
+      "No dependencies",
+      alignmentGuides,
+      "left"
     );
-    layout.insertBefore(inboundColumn, centerColumn);
+    layout.insertBefore(dependenciesColumn, centerColumn);
 
-    const outboundColumn = createStackedColumn(
-      "Outgoing Dependencies",
+    const dependentsColumn = createStackedColumn(
+      "Dependents (Outputs)",
       outboundNodes,
       "outbound",
-      "No outgoing dependencies",
-      alignmentGuides
+      "No dependents",
+      alignmentGuides,
+      "right"
     );
-    layout.appendChild(outboundColumn);
+    layout.appendChild(dependentsColumn);
+
+    applyColumnVerticalCentering(layout);
 
     if (!mapHasInitialFit && contentRoot) {
       fitMapToContent(contentRoot);
@@ -806,10 +981,10 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   function fitMapToContent(element: HTMLElement): void {
     cancelInertia();
     void element;
-    const bounds = measureContentBounds();
+    const extents = measureLayoutExtents();
     const viewportRect = viewport.getBoundingClientRect();
 
-    if (!bounds) {
+    if (!extents) {
       mapTransform = { x: 0, y: 0, k: 1 };
       updateMapTransform();
       mapHasInitialFit = true;
@@ -818,8 +993,12 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return;
     }
 
-    const normalizedWidth = Math.max(bounds.width, 1);
-    const normalizedHeight = Math.max(bounds.height, 1);
+    const { content, focus } = extents;
+    const contentWidth = Math.max(content.width, 1);
+    const contentHeight = Math.max(content.height, 1);
+    const normalizedWidth = Math.max(Math.ceil(content.right), Math.ceil(contentWidth));
+    const normalizedHeight = Math.max(Math.ceil(content.bottom), Math.ceil(contentHeight));
+
     container.style.width = `${normalizedWidth}px`;
     container.style.height = `${normalizedHeight}px`;
     container.style.minWidth = `${normalizedWidth}px`;
@@ -829,22 +1008,57 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     overlay.style.minWidth = `${normalizedWidth}px`;
     overlay.style.minHeight = `${normalizedHeight}px`;
 
-    const padding = 160;
-    const width = Math.max(bounds.width, 1);
-    const height = Math.max(bounds.height, 1);
-    const availableScale = Math.min(
-      (viewportRect.width - padding) / width,
-      (viewportRect.height - padding) / height
-    );
-    const scale = clamp(availableScale, 0.5, 2);
-    const centerX = bounds.left + width / 2;
-    const centerY = bounds.top + height / 2;
+    const horizontalPadding = clamp(viewportRect.width * 0.02, 8, 72);
+    const verticalPadding = clamp(viewportRect.height * 0.025, 8, 72);
 
-    const target = {
-      x: viewportRect.width / 2 - centerX * scale,
-      y: viewportRect.height / 2 - centerY * scale,
-      k: scale
-    };
+    const focusBounds = focus ?? content;
+    const focusLeftDistance = Math.max(0, focusBounds.left - content.left);
+    const focusRightDistance = Math.max(0, content.right - focusBounds.right);
+    const focusTopDistance = Math.max(0, focusBounds.top - content.top);
+    const focusBottomDistance = Math.max(0, content.bottom - focusBounds.bottom);
+
+    const horizontalBuffer = Math.max(viewportRect.width * 0.1, 160);
+    const verticalBuffer = Math.max(viewportRect.height * 0.16, 140);
+
+    const effectiveWidth = Math.max(
+      1,
+      Math.min(
+        contentWidth,
+        focusBounds.width + Math.min(focusLeftDistance, horizontalBuffer) + Math.min(focusRightDistance, horizontalBuffer)
+      )
+    );
+    const effectiveHeight = Math.max(
+      1,
+      Math.min(
+        contentHeight,
+        focusBounds.height + Math.min(focusTopDistance, verticalBuffer) + Math.min(focusBottomDistance, verticalBuffer)
+      )
+    );
+
+    const availableScaleX = Math.max((viewportRect.width - horizontalPadding * 2) / effectiveWidth, 0.05);
+    const availableScaleY = Math.max((viewportRect.height - verticalPadding * 2) / effectiveHeight, 0.05);
+    const autoScale = Math.min(availableScaleX, availableScaleY);
+    const scale = clamp(Math.min(autoScale * 0.96, 1), 0.6, 1.45);
+
+    const focusCenterX = focusBounds.left + focusBounds.width / 2;
+    const focusCenterY = focusBounds.top + focusBounds.height / 2;
+
+    let targetX = viewportRect.width / 2 - focusCenterX * scale;
+    let targetY = viewportRect.height / 2 - focusCenterY * scale;
+
+    const minTargetX = viewportRect.width - horizontalPadding - content.right * scale;
+    const maxTargetX = horizontalPadding - content.left * scale;
+    if (minTargetX <= maxTargetX) {
+      targetX = clamp(targetX, minTargetX, maxTargetX);
+    }
+
+    const minTargetY = viewportRect.height - verticalPadding - content.bottom * scale;
+    const maxTargetY = verticalPadding - content.top * scale;
+    if (minTargetY <= maxTargetY) {
+      targetY = clamp(targetY, minTargetY, maxTargetY);
+    }
+
+    const target = { x: targetX, y: targetY, k: scale };
 
     animateMapTransform(target, true);
     mapHasInitialFit = true;
@@ -1040,16 +1254,28 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
       return;
     }
 
-    const bounds = measureContentBounds();
-    if (!bounds) {
+    const extents = measureLayoutExtents();
+    if (!extents) {
       overlay.dataset.active = "false";
       return;
     }
+    const bounds = extents.content;
 
     const rootRect = container.getBoundingClientRect();
     const scale = mapTransform.k || 1;
-    const positionCache = new Map<HTMLElement, { x: number; y: number }>();
-    const measureAnchor = (anchor: HTMLElement | null): { x: number; y: number } | null => {
+
+    interface AnchorMeasurement {
+      centerX: number;
+      centerY: number;
+      leftX: number;
+      rightX: number;
+      topY: number;
+      bottomY: number;
+      isSymbol: boolean;
+    }
+
+    const positionCache = new Map<HTMLElement, AnchorMeasurement>();
+    const measureAnchor = (anchor: HTMLElement | null): AnchorMeasurement | null => {
       if (!anchor) {
         return null;
       }
@@ -1057,22 +1283,60 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
         return positionCache.get(anchor)!;
       }
       const rect = anchor.getBoundingClientRect();
-      const point = {
-        x: (rect.left - rootRect.left + rect.width / 2) / scale,
-        y: (rect.top - rootRect.top + rect.height / 2) / scale
+      const measurement: AnchorMeasurement = {
+        centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
+        centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
+        leftX: (rect.left - rootRect.left) / scale,
+        rightX: (rect.right - rootRect.left) / scale,
+        topY: (rect.top - rootRect.top) / scale,
+        bottomY: (rect.bottom - rootRect.top) / scale,
+        isSymbol: anchor.classList.contains("symbol-anchor")
       };
-      positionCache.set(anchor, point);
-      return point;
+      positionCache.set(anchor, measurement);
+      return measurement;
     };
 
-    const segments: Array<{ edge: LocalEdge; source: { x: number; y: number }; target: { x: number; y: number } }> = [];
+    const selectHorizontalPoint = (
+      anchor: AnchorMeasurement,
+      direction: number,
+      variant: "entry" | "exit"
+    ): number => {
+      if (!anchor.isSymbol || Math.abs(direction) < 0.001) {
+        return anchor.centerX;
+      }
+      const isRightward = direction >= 0;
+      if (variant === "exit") {
+        return isRightward ? anchor.rightX : anchor.leftX;
+      }
+      return isRightward ? anchor.leftX : anchor.rightX;
+    };
+
+    const segments: Array<{
+      edge: LocalEdge;
+      renderDirection: "inbound" | "outbound";
+      source: { x: number; y: number };
+      target: { x: number; y: number };
+    }> = [];
     currentSubgraph.links.forEach(edge => {
-      const source = measureAnchor(getAnchor(edge.sourceId, "outbound", edge.sourceSymbol));
-      const target = measureAnchor(getAnchor(edge.targetId, "inbound", edge.targetSymbol));
-      if (!source || !target) {
+      const providerAnchor = measureAnchor(getAnchor(edge.sourceId, "outbound", edge.sourceSymbol));
+      const consumerAnchor = measureAnchor(getAnchor(edge.targetId, "inbound", edge.targetSymbol));
+      if (!providerAnchor || !consumerAnchor) {
         return;
       }
-      segments.push({ edge, source, target });
+      let horizontalDirection = Math.sign(consumerAnchor.centerX - providerAnchor.centerX);
+      if (horizontalDirection === 0) {
+        horizontalDirection = 1;
+      }
+      const sourcePoint = {
+        x: selectHorizontalPoint(providerAnchor, horizontalDirection, "exit"),
+        y: providerAnchor.centerY
+      };
+      const targetPoint = {
+        x: selectHorizontalPoint(consumerAnchor, horizontalDirection, "entry"),
+        y: consumerAnchor.centerY
+      };
+      const renderDirection: "inbound" | "outbound" = edge.direction;
+      segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint });
     });
 
     if (segments.length === 0) {
@@ -1095,7 +1359,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     svg.style.pointerEvents = "none";
     overlay.appendChild(svg);
 
-    segments.forEach(({ edge, source, target }) => {
+    segments.forEach(({ edge, renderDirection, source, target }) => {
       const adjustedSource = {
         x: source.x - bounds.left,
         y: source.y - bounds.top
@@ -1104,7 +1368,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
         x: target.x - bounds.left,
         y: target.y - bounds.top
       };
-      appendConnectionPath(svg, adjustedSource, adjustedTarget, edge);
+      appendConnectionPath(svg, adjustedSource, adjustedTarget, renderDirection, edge);
     });
 
     overlay.dataset.active = "true";
@@ -1114,6 +1378,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     svg: SVGSVGElement,
     source: { x: number; y: number },
     target: { x: number; y: number },
+    renderDirection: "inbound" | "outbound",
     edge: LocalEdge
   ): void {
     const horizontalDirection = target.x >= source.x ? 1 : -1;
@@ -1121,19 +1386,23 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     const commands: string[] = [`M ${source.x} ${source.y}`];
 
     if (gapX < 24) {
-      const verticalDirection = target.y >= source.y ? 1 : -1;
-      const verticalStub = Math.max(28, Math.abs(target.y - source.y) * 0.35);
-      const elbowY = source.y + verticalDirection * verticalStub;
-      commands.push(`V ${elbowY}`, `H ${target.x}`, `V ${target.y}`);
+      const midY = (source.y + target.y) / 2;
+      commands.push(`Q ${source.x} ${midY} ${target.x} ${target.y}`);
     } else {
-      const stub = Math.min(Math.max(gapX * 0.35, 22), Math.max(22, gapX - 6));
-      const elbowX = source.x + horizontalDirection * stub;
-      commands.push(`H ${elbowX}`, `V ${target.y}`, `H ${target.x}`);
+      const stubBase = Math.max(gapX * 0.42, 32);
+      const stubLimit = Math.max(44, gapX - 20);
+      const stub = Math.min(stubBase, stubLimit);
+      const control1X = source.x + horizontalDirection * stub;
+      const control2X = target.x - horizontalDirection * stub;
+      const deltaY = target.y - source.y;
+      const control1Y = source.y + deltaY * 0.2;
+      const control2Y = target.y - deltaY * 0.2;
+      commands.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${target.x} ${target.y}`);
     }
 
     const path = document.createElementNS(SVG_NS, "path");
     path.setAttribute("d", commands.join(" "));
-    path.classList.add("connection-path", edge.direction);
+    path.classList.add("connection-path", renderDirection);
     path.dataset.kind = edge.kind;
     svg.appendChild(path);
   }

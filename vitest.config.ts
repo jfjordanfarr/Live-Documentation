@@ -46,6 +46,7 @@ export default defineConfig({
       "packages/shared/src/**/*.test.ts",
       "packages/server/src/**/*.test.ts",
       "packages/extension/src/**/*.test.ts",
+      "packages/scripts/src/**/*.test.ts",
       "scripts/**/*.test.ts",
       "tests/integration/slopcop/**/*.test.ts"
     ],

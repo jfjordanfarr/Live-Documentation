@@ -330,6 +330,12 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L3448-L3560` — Design and implement a compiler-backed TypeScript oracle via Code Like Clay: document scope, prototype generator, compare against committed expectations, and retain manual graph overlays for cross-language edges (see MAJOR NOTE).
 - `L3622-L3645` — Operate with high agency, escalate blockers, and ground decisions in empirically provable workspace graph correctness.
 - `L3705-L3710` — On subsequent autosummarization, rehydrate over `#file:2025-11-03.md:2840-3703` before resuming analysis.
+## 2025-12-02 (Dev Day 33)
+- `2025-12-02.md:L199-L207` — Treat the Circuit Board and Local Map as fixed virtual canvases: determine node sizing from canonical metrics, keep layout independent of viewport resizes, and use camera-style transforms for zoom/pan rather than recomputing positions.
+- `2025-12-02.md:L210-L214` — When launching the explorer for validation, start it in a background terminal so the Copilot runner stays responsive while Playwright sessions interact with `localhost:3000`.
+- `2025-12-02.md:L956-L965` — Proactively raise Playwright MCP browsers to inspect Local Map behavior, capture concrete usability issues, and report actionable improvements for dependency-direction clarity before iterating.
+- `2025-12-02.md:L1669-L1678` — Force inbound and outbound dependency cards to stack in single-width vertical lanes aligned to their target symbols, continue collapsing excess whitespace, and feel free to split Circuit Board and Local Map code paths to achieve that precision.
+
 - `L5146-L5208` — Address every automated VS Code code-review comment, confirming or rejecting suggestions with rationale.
 
 ## 2025-11-04 (Dev Day 13)

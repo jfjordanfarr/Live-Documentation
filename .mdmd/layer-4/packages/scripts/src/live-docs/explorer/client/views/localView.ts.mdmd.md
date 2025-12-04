@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-ts
-- Generated At: 2025-11-25T02:32:13.294Z
+- Generated At: 2025-12-03T20:25:19.350Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-25T02:32:13.294Z","inputHash":"baaa0e2b1a587304"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-03T20:25:19.350Z","inputHash":"97ba4ee0a3afe4ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
@@ -28,7 +28,7 @@ _Pending notes_
 
 #### `createLocalView` {#symbol-createlocalview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView.ts#L54)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView.ts#L59)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
