@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-index-ts
-- Generated At: 2025-11-24T18:24:22.416Z
+- Generated At: 2025-12-05T20:44:57.438Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the single `@copilot-improvement/shared` entrypoint that re-exports inf
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T18:24:22.416Z","inputHash":"55760e4636e167cf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:57.438Z","inputHash":"55760e4636e167cf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipExtractor` {#symbol-relationshipextractor}
@@ -718,6 +718,9 @@ Provides the single `@copilot-improvement/shared` entrypoint that re-exports inf
 
 #### `ParsedSymbolDocumentationEntry` {#symbol-parsedsymboldocumentationentry}
 - Re-exported from [`parse`](./live-docs/parse.ts.mdmd.md#symbol-parsedsymboldocumentationentry)
+
+#### `ParsedTypeReference` {#symbol-parsedtypereference}
+- Re-exported from [`parse`](./live-docs/parse.ts.mdmd.md#symbol-parsedtypereference)
 
 #### `parseLiveDocMarkdown` {#symbol-parselivedocmarkdown}
 - Re-exported from [`parse`](./live-docs/parse.ts.mdmd.md#symbol-parselivedocmarkdown)

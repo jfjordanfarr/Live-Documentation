@@ -12,7 +12,10 @@ export interface LocalViewOptions {
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onRecenterNode: (node: ExplorerNodePayload) => void | Promise<void>;
+  onFocusSidebar: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
+  /** Map of node IDs to node payloads for type reference navigation. */
+  nodesById: Map<string, ExplorerNodePayload>;
 }
 
 export interface LocalViewApi {

@@ -4,6 +4,50 @@ import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig"
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
+/**
+ * Represents a type reference extracted from a Live Doc's Public Symbols section.
+ *
+ * @remarks
+ * This mirrors the structure rendered by the Live Doc generator when a symbol's
+ * return type, parameter type, extends clause, or implements clause references
+ * another type defined in the workspace. The `targetDocPath` and `targetAnchor`
+ * fields enable navigation in the Explorer's Local Map.
+ */
+export interface ParsedTypeReference {
+  /**
+   * The name of the referenced type as displayed in the Live Doc.
+   */
+  typeName: string;
+
+  /**
+   * The role this type plays in the symbol's signature.
+   */
+  role: "return" | "parameter" | "extends" | "implements" | "constraint";
+
+  /**
+   * For parameter types, the name of the parameter.
+   */
+  parameterName?: string;
+
+  /**
+   * Whether this type resolved to a Live Doc link.
+   * If false, it was rendered as plain code (external or primitive type).
+   */
+  isResolved: boolean;
+
+  /**
+   * The relative path to the target Live Doc (if resolved).
+   * E.g., "./types.ts.mdmd.md"
+   */
+  targetDocPath?: string;
+
+  /**
+   * The anchor within the target Live Doc (if resolved).
+   * E.g., "symbol-widget"
+   */
+  targetAnchor?: string;
+}
+
 export interface ParsedLiveDoc {
   sourcePath: string;
   archetype: string;
@@ -17,6 +61,11 @@ export interface ParsedSymbolDocumentationEntry {
   summary?: string;
   remarks?: string;
   parameters?: Array<{ name: string; description?: string }>;
+  /**
+   * Type references extracted from the symbol's metadata lines
+   * (Returns:, Parameters:, Extends:, Implements:, Constraints:).
+   */
+  typeReferences?: ParsedTypeReference[];
 }
 
 export interface ParsedDependency {
@@ -304,6 +353,20 @@ function parseSymbolDocumentation(section: string): Record<string, ParsedSymbolD
       continue;
     }
 
+    // When we're in the metadata area (between #### heading and ##### subsections),
+    // try to parse type reference lines
+    if (currentSymbol && currentSection === null) {
+      const typeRefs = parseTypeReferenceLine(line);
+      if (typeRefs.length > 0) {
+        const entry = ensureEntry(currentSymbol);
+        if (!entry.typeReferences) {
+          entry.typeReferences = [];
+        }
+        entry.typeReferences.push(...typeRefs);
+      }
+      continue;
+    }
+
     if (!currentSection || !currentSymbol) {
       continue;
     }
@@ -412,6 +475,120 @@ function stripInlineCode(token: string): string {
     value = value.slice(0, -1);
   }
   return value.trim();
+}
+
+/**
+ * Parses a type reference from a metadata line like:
+ * - `- Returns: [\`Widget\`](./types.ts.mdmd.md#symbol-widget)`
+ * - `- Returns: \`Widget\``
+ * - `- Extends: [\`BaseClass\`](./base.ts.mdmd.md#symbol-baseclass)`
+ *
+ * @param content The content after the role label (e.g., "[\`Widget\`](./types.ts.mdmd.md#symbol-widget)")
+ * @param role The role of this type reference
+ * @param parameterName Optional parameter name for parameter types
+ * @returns Array of parsed type references (may be multiple for union/intersection types)
+ */
+function parseTypeReferencesFromContent(
+  content: string,
+  role: ParsedTypeReference["role"],
+  parameterName?: string
+): ParsedTypeReference[] {
+  const refs: ParsedTypeReference[] = [];
+  
+  // Split by comma and/or pipe (union types) to handle multiple types
+  // E.g., "[\`Widget\`](./a.md), \`Error\`" or "\`A\` | \`B\`"
+  const segments = content.split(/[,|]/).map(s => s.trim()).filter(Boolean);
+  
+  for (const segment of segments) {
+    // Try to match a markdown link: [`TypeName`](path#anchor)
+    const linkMatch = segment.match(/\[`([^`]+)`\]\(([^)]+)\)/);
+    if (linkMatch) {
+      const typeName = linkMatch[1];
+      const fullPath = linkMatch[2];
+      const [targetDocPath, targetAnchor] = fullPath.split("#", 2);
+      
+      refs.push({
+        typeName,
+        role,
+        parameterName,
+        isResolved: true,
+        targetDocPath: targetDocPath || undefined,
+        targetAnchor: targetAnchor || undefined
+      });
+      continue;
+    }
+    
+    // Try to match plain code span: `TypeName` or `TypeName`[]
+    const codeMatch = segment.match(/`([^`]+)`(\[\])?/);
+    if (codeMatch) {
+      const typeName = codeMatch[1] + (codeMatch[2] ?? "");
+      refs.push({
+        typeName,
+        role,
+        parameterName,
+        isResolved: false
+      });
+    }
+  }
+  
+  return refs;
+}
+
+/**
+ * Parses a full type reference line from the Public Symbols section.
+ * Handles lines like:
+ * - `- Returns: [\`Widget\`](./types.ts.mdmd.md#symbol-widget)`
+ * - `- Parameters: \`input\`: \`string\`; \`options\`: [\`Config\`](./config.ts.mdmd.md#symbol-config)`
+ * - `- Extends: [\`BaseClass\`](./base.ts.mdmd.md#symbol-baseclass)`
+ * - `- Implements: [\`Interface\`](./interface.ts.mdmd.md#symbol-interface)`
+ * - `- Constraints: \`T\` extends [\`Widget\`](./types.ts.mdmd.md#symbol-widget)`
+ */
+function parseTypeReferenceLine(line: string): ParsedTypeReference[] {
+  const trimmed = line.trim();
+  if (!trimmed.startsWith("-")) {
+    return [];
+  }
+  
+  // Match the role prefix
+  const returnsMatch = trimmed.match(/^-\s+Returns:\s+(.+)$/);
+  if (returnsMatch) {
+    return parseTypeReferencesFromContent(returnsMatch[1], "return");
+  }
+  
+  const extendsMatch = trimmed.match(/^-\s+Extends:\s+(.+)$/);
+  if (extendsMatch) {
+    return parseTypeReferencesFromContent(extendsMatch[1], "extends");
+  }
+  
+  const implementsMatch = trimmed.match(/^-\s+Implements:\s+(.+)$/);
+  if (implementsMatch) {
+    return parseTypeReferencesFromContent(implementsMatch[1], "implements");
+  }
+  
+  const constraintsMatch = trimmed.match(/^-\s+Constraints:\s+(.+)$/);
+  if (constraintsMatch) {
+    return parseTypeReferencesFromContent(constraintsMatch[1], "constraint");
+  }
+  
+  // Parameters line: `- Parameters: \`name\`: Type; \`other\`: Type`
+  const paramsMatch = trimmed.match(/^-\s+Parameters:\s+(.+)$/);
+  if (paramsMatch) {
+    const refs: ParsedTypeReference[] = [];
+    // Split by semicolon for each parameter
+    const paramSegments = paramsMatch[1].split(";").map(s => s.trim()).filter(Boolean);
+    for (const seg of paramSegments) {
+      // Match `paramName`: TypeContent
+      const paramMatch = seg.match(/`([^`]+)`:\s*(.+)/);
+      if (paramMatch) {
+        const paramName = paramMatch[1];
+        const typeContent = paramMatch[2];
+        refs.push(...parseTypeReferencesFromContent(typeContent, "parameter", paramName));
+      }
+    }
+    return refs;
+  }
+  
+  return [];
 }
 
 function dependencyKey(entry: ParsedDependency): string {

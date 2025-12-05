@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-types-ts
-- Generated At: 2025-12-05T19:38:38.213Z
+- Generated At: 2025-12-05T20:44:56.299Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T19:38:38.213Z","inputHash":"0875860c1bc5e174"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:56.299Z","inputHash":"c99efb496848fad9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
@@ -24,31 +24,31 @@ _Pending notes_
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L18)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L21)
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L27)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L30)
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L36)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L39)
 
 #### `CenterAlignmentGuides` {#symbol-centeralignmentguides}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L44)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L47)
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L49)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L52)
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L58)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L61)
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L63)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L66)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

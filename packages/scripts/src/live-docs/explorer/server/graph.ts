@@ -3,13 +3,17 @@ import * as path from "path";
 
 import {
     buildLiveDocGraph,
+    type LiveDocGraph,
     type LiveDocGraphNode
 } from "../../graph/liveDocGraph";
 import type {
     ExplorerGraphPayload,
     ExplorerLinkPayload,
-    ExplorerNodePayload
+    ExplorerNodePayload,
+    ExplorerPublicSymbol,
+    ExplorerTypeReference
 } from "../shared/types";
+import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 type TypeResolver = (token: string) => LiveDocGraphNode | undefined;
 
@@ -60,6 +64,9 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
                 });
             });
 
+        // Build extended symbol information with type references
+        const publicSymbolsExtended = buildPublicSymbolsExtended(node, graph);
+
         return {
             id: node.codePath,
             name: path.basename(node.codePath),
@@ -72,6 +79,7 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
             dependents,
             missingDependencies,
             publicSymbols: node.publicSymbols,
+            publicSymbolsExtended,
             symbolDocumentation: node.symbolDocumentation
         } satisfies ExplorerNodePayload;
     });
@@ -289,4 +297,70 @@ function sanitizeTypeToken(raw: string): string | undefined {
     const segments = candidate.split(".");
     const tail = segments[segments.length - 1];
     return tail ? tail : undefined;
+}
+
+/**
+ * Builds extended symbol information with resolved type references.
+ *
+ * @param node The Live Doc graph node to process.
+ * @param graph The full Live Doc graph for resolving type reference targets.
+ * @returns Array of extended symbol objects with type references.
+ */
+function buildPublicSymbolsExtended(
+    node: LiveDocGraphNode,
+    graph: LiveDocGraph
+): ExplorerPublicSymbol[] {
+    const extended: ExplorerPublicSymbol[] = [];
+    const docDir = path.dirname(node.docPath);
+
+    for (const symbolName of node.publicSymbols) {
+        const docEntry = node.symbolDocumentation[symbolName];
+        const parsedTypeRefs = (docEntry as { typeReferences?: ParsedTypeReference[] })?.typeReferences;
+
+        if (!parsedTypeRefs || parsedTypeRefs.length === 0) {
+            // No type references — include symbol without extended info
+            extended.push({ name: symbolName });
+            continue;
+        }
+
+        // Convert ParsedTypeReference to ExplorerTypeReference, resolving targets
+        const typeReferences: ExplorerTypeReference[] = parsedTypeRefs.map(ref => {
+            let targetId: string | undefined;
+
+            if (ref.isResolved && ref.targetDocPath) {
+                // Resolve the relative doc path against the current doc's directory
+                const resolvedDocPath = path.resolve(docDir, ref.targetDocPath);
+                const normalizedDocPath = path.normalize(resolvedDocPath);
+                
+                // Try to resolve the doc path to a code path via the graph
+                targetId = graph.docToCode.get(normalizedDocPath);
+
+                // If not found with normalized path, try case-insensitive match on Windows
+                if (!targetId) {
+                    for (const [docPath, codePath] of graph.docToCode.entries()) {
+                        if (path.normalize(docPath).toLowerCase() === normalizedDocPath.toLowerCase()) {
+                            targetId = codePath;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return {
+                typeName: ref.typeName,
+                role: ref.role,
+                parameterName: ref.parameterName,
+                isResolved: ref.isResolved && Boolean(targetId),
+                targetId,
+                targetAnchor: ref.targetAnchor
+            };
+        });
+
+        extended.push({
+            name: symbolName,
+            typeReferences
+        });
+    }
+
+    return extended;
 }

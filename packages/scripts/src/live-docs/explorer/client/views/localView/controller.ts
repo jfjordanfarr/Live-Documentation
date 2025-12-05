@@ -338,6 +338,10 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onRecenterNode(node);
   }
 
+  async focusSidebar(node: ExplorerNodePayload): Promise<void> {
+    await this.options.onFocusSidebar(node);
+  }
+
   measureLayoutExtents(): LayoutExtents | null {
     return this.computeLayoutExtents();
   }

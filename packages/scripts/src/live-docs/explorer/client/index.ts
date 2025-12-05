@@ -77,23 +77,23 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     selectedNode: null,
     focusedNode: null,
     filters: {
-      showTests: false,
+      showTests: true,
       showAssets: false
     },
     tuning: {
       bezier: {
-        stubFactor: 0.42,
-        stubMin: 32,
+        stubFactor: 0.8,
+        stubMin: 10,
         stubMaxOffset: 20,
-        verticalOffset: 0.2
+        verticalOffset: 0
       },
       clickBehavior: {
         singleClickFocusOnly: true,
         doubleClickRecenter: true
       },
       visual: {
-        showTypeBadges: false,
-        alchemyGlow: false
+        showTypeBadges: true,
+        alchemyGlow: true
       }
     }
   };
@@ -142,7 +142,9 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
     onRecenterNode: node => handleNodeDoubleClick(node),
-    testCoverage
+    onFocusSidebar: node => focusSidebar(node),
+    testCoverage,
+    nodesById
   });
 
   let forceGraphInstance: ForceGraphInstance | null = null;
@@ -177,23 +179,27 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   };
 
   globalWindow.openInEditor = () => {
-    if (!state.selectedNode) {
+    const target = state.selectedNode ?? state.focusedNode;
+    if (!target) {
       return;
     }
-    void fetch(`/open?codePath=${encodeURIComponent(state.selectedNode.codePath)}`);
+    void fetch(`/open?codePath=${encodeURIComponent(target.codePath)}`);
   };
 
   globalWindow.openInLocalView = () => {
-    if (!state.selectedNode) {
+    const target = state.selectedNode ?? state.focusedNode;
+    if (!target) {
       return;
     }
-    void openLocalViewForNode();
+    void openLocalViewForNode(target);
   };
 
   globalWindow.openInGraphView = () => {
-    if (!state.selectedNode) {
+    const target = state.selectedNode ?? state.focusedNode;
+    if (!target) {
       return;
     }
+    state.selectedNode = target;
     state.view = "graph";
     setActiveView("graph");
     renderCurrentView();

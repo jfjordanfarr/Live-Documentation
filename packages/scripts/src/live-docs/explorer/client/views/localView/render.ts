@@ -1,4 +1,4 @@
-import type { ExplorerNodePayload } from "../../../shared/types";
+import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import type { DirectoryNode } from "../../types";
 import {
   ROOT_KEY,
@@ -427,17 +427,64 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
   const grid = document.createElement("div");
   grid.className = "symbol-grid";
 
+  // Build a map from symbol name to extended info (if available)
+  const extendedByName = new Map<string, ExplorerPublicSymbol>();
+  if (node.publicSymbolsExtended) {
+    for (const ext of node.publicSymbolsExtended) {
+      extendedByName.set(ext.name, ext);
+    }
+  }
+
   node.publicSymbols.forEach(symbol => {
+    const extended = extendedByName.get(symbol);
+    const hasTypeRefs = extended?.typeReferences && extended.typeReferences.length > 0;
+    const hasResolvedTypeRefs = hasTypeRefs && extended!.typeReferences!.some(ref => ref.isResolved);
+
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
     inboundAnchor.dataset.symbol = symbol;
     grid.appendChild(inboundAnchor);
     controller.registerAnchor(node.id, `inbound:${symbol}`, inboundAnchor);
 
+    const labelWrapper = document.createElement("div");
+    labelWrapper.className = "symbol-label-wrapper";
+
     const label = document.createElement("div");
     label.className = "symbol-label";
     label.textContent = symbol;
-    grid.appendChild(label);
+    labelWrapper.appendChild(label);
+
+    // Add type reference indicator if present
+    if (hasTypeRefs && controller.options.state.tuning.visual.showTypeBadges) {
+      const typeIndicator = createTypeReferenceIndicator(controller, extended!.typeReferences!);
+      labelWrapper.appendChild(typeIndicator);
+    }
+
+    // If there are resolved type refs, make the symbol clickable to navigate to the first resolved type
+    if (hasResolvedTypeRefs) {
+      labelWrapper.classList.add("has-type-link");
+      const firstResolved = extended!.typeReferences!.find(ref => ref.isResolved);
+      if (firstResolved?.targetId) {
+        labelWrapper.dataset.targetId = firstResolved.targetId;
+        labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
+        labelWrapper.addEventListener("click", event => {
+          event.stopPropagation();
+          const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
+          if (targetNode) {
+            void controller.focusSidebar(targetNode);
+          }
+        });
+        labelWrapper.addEventListener("dblclick", event => {
+          event.stopPropagation();
+          const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
+          if (targetNode) {
+            void controller.recenterNode(targetNode);
+          }
+        });
+      }
+    }
+
+    grid.appendChild(labelWrapper);
 
     const outboundAnchor = document.createElement("div");
     outboundAnchor.className = "symbol-anchor dot outbound";
@@ -448,6 +495,97 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
 
   wrapper.appendChild(grid);
   return wrapper;
+}
+
+/**
+ * Creates a type reference indicator element showing what types a symbol references.
+ */
+function createTypeReferenceIndicator(
+  controller: LocalViewController,
+  typeRefs: ExplorerTypeReference[]
+): HTMLElement {
+  const indicator = document.createElement("div");
+  indicator.className = "type-refs-indicator";
+
+  // Group by role
+  const returnRefs = typeRefs.filter(r => r.role === "return");
+  const paramRefs = typeRefs.filter(r => r.role === "parameter");
+  const extendsRefs = typeRefs.filter(r => r.role === "extends");
+  const implementsRefs = typeRefs.filter(r => r.role === "implements");
+
+  const badges: HTMLElement[] = [];
+
+  if (returnRefs.length > 0) {
+    const badge = createTypeBadge(controller, returnRefs, "→", "return");
+    badges.push(badge);
+  }
+
+  if (paramRefs.length > 0) {
+    const badge = createTypeBadge(controller, paramRefs, "←", "param");
+    badges.push(badge);
+  }
+
+  if (extendsRefs.length > 0) {
+    const badge = createTypeBadge(controller, extendsRefs, "⊲", "extends");
+    badges.push(badge);
+  }
+
+  if (implementsRefs.length > 0) {
+    const badge = createTypeBadge(controller, implementsRefs, "◇", "implements");
+    badges.push(badge);
+  }
+
+  for (const badge of badges) {
+    indicator.appendChild(badge);
+  }
+
+  return indicator;
+}
+
+/**
+ * Creates a single type badge element for a group of type references.
+ */
+function createTypeBadge(
+  controller: LocalViewController,
+  refs: ExplorerTypeReference[],
+  icon: string,
+  kind: string
+): HTMLElement {
+  const badge = document.createElement("span");
+  badge.className = `type-badge type-badge-${kind}`;
+
+  const hasResolved = refs.some(r => r.isResolved);
+  if (hasResolved) {
+    badge.classList.add("type-badge-resolved");
+  }
+
+  const typeNames = refs.map(r => r.typeName).join(", ");
+  badge.title = `${kind}: ${typeNames}`;
+  badge.textContent = icon;
+
+  // Make resolved badges clickable to navigate to the type
+  if (hasResolved) {
+    const firstResolved = refs.find(r => r.isResolved);
+    if (firstResolved?.targetId) {
+      badge.classList.add("clickable");
+      badge.addEventListener("click", event => {
+        event.stopPropagation();
+        const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
+        if (targetNode) {
+          void controller.focusSidebar(targetNode);
+        }
+      });
+      badge.addEventListener("dblclick", event => {
+        event.stopPropagation();
+        const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
+        if (targetNode) {
+          void controller.recenterNode(targetNode);
+        }
+      });
+    }
+  }
+
+  return badge;
 }
 
 function renderLayoutForNodes(
