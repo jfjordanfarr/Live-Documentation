@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2025-12-05T04:16:17.373Z
+- Generated At: 2025-12-05T15:37:23.087Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.373Z","inputHash":"9e4a4b476f4780c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.087Z","inputHash":"9e4a4b476f4780c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -54,19 +54,19 @@ _Pending notes_
 #### `buildHierarchy` {#symbol-buildhierarchy}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L149)
-- Returns: `DirectoryNode`
-- Parameters: `nodes`: `ExplorerNodePayload`[]
+- Returns: [`DirectoryNode`](../types.ts.mdmd.md#symbol-directorynode)
+- Parameters: `nodes`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)[]
 
 #### `getDirectoryKey` {#symbol-getdirectorykey}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L176)
-- Parameters: `node`: `ExplorerNodePayload`
+- Parameters: `node`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)
 
 #### `measureDirectoryTree` {#symbol-measuredirectorytree}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L184)
 - Returns: `DirectoryMeasure`
-- Parameters: `root`: `DirectoryNode`
+- Parameters: `root`: [`DirectoryNode`](../types.ts.mdmd.md#symbol-directorynode)
 
 #### `computeDirectoryLayout` {#symbol-computedirectorylayout}
 - Type: function
@@ -77,7 +77,7 @@ _Pending notes_
 #### `findDominantDirectory` {#symbol-finddominantdirectory}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L543)
-- Parameters: `graphData`: `ExplorerGraphPayload`; `nodes`: `ExplorerNodePayload`[]; `_unnamed_`: `ExplorerLinkPayload`
+- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../../index.ts.mdmd.md#symbol-explorergraphpayload); `nodes`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)[]; `_unnamed_`: [`ExplorerLinkPayload`](../../../../index.ts.mdmd.md#symbol-explorerlinkpayload)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

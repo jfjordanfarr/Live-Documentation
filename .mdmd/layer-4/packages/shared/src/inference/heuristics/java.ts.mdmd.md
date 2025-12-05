@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-java-ts
-- Generated At: 2025-12-05T04:16:19.546Z
+- Generated At: 2025-12-05T15:37:25.211Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Recovers `imports`/`uses` edges for the Phase 8 Java fixtures by mapping impor
 - After adjustments, regenerate the Java fallback fixtures (`npm run fixtures:record-fallback -- --lang java`) so java-service and java-basic stay aligned with the oracle edges <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L1340-L1420>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.546Z","inputHash":"dca5d8eb77b2fd7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.211Z","inputHash":"dca5d8eb77b2fd7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createJavaHeuristic` {#symbol-createjavaheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/java.ts#L12)
-- Returns: `FallbackHeuristic`
+- Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

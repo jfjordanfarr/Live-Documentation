@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-powershell-ts
-- Generated At: 2025-12-05T04:16:19.562Z
+- Generated At: 2025-12-05T15:37:25.230Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Describe the fallback heuristic that teaches the inference pipeline how to recog
 - Normalises `$PSScriptRoot`, de-duplicates specifiers, and delegates matching to the shared `resolveReference` helper to stay consistent with other language heuristics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.562Z","inputHash":"cc5d2baf8b511314"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.230Z","inputHash":"cc5d2baf8b511314"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createPowerShellHeuristic` {#symbol-createpowershellheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/powershell.ts#L21)
-- Returns: `FallbackHeuristic`
+- Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

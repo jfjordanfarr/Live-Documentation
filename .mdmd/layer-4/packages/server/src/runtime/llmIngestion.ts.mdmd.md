@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/llmIngestion.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-llmingestion-ts
-- Generated At: 2025-12-05T04:16:19.110Z
+- Generated At: 2025-12-05T15:37:24.791Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the language-server side of the Analyze-with-AI pipeline, queuing artifacts
 `createDefaultRelationshipExtractor` gates remote invocation behind `providerGuard` so disabled or local-only modes short-circuit gracefully; tune the provider policy alongside the analyzer contract touched in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1754-L1789](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1754-L1789) to avoid regressions. Logging only emits the first successful dispatch per session to keep the extension host output readable while still surfacing failures during the ingestion loop.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.110Z","inputHash":"4f86808c5ec3c5d7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.791Z","inputHash":"4f86808c5ec3c5d7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LlmIngestionManagerOptions` {#symbol-llmingestionmanageroptions}
@@ -33,7 +33,7 @@ Runs the language-server side of the Analyze-with-AI pipeline, queuing artifacts
 #### `createDefaultRelationshipExtractor` {#symbol-createdefaultrelationshipextractor}
 - Type: function
 - Source: [source](../../../../../../packages/server/src/runtime/llmIngestion.ts#L85)
-- Returns: `RelationshipExtractor`
+- Returns: [`RelationshipExtractor`](../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractor)
 - Parameters: `options`: `CreateRelationshipExtractorOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 

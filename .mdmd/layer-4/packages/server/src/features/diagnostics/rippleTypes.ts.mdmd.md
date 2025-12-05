@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/rippleTypes.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-rippletypes-ts
-- Generated At: 2025-12-05T04:16:17.963Z
+- Generated At: 2025-12-05T15:37:23.625Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 - Keeps ripple metadata lightweight (depth, traversal path) for noise filtering and publisher fan-out without binding to a specific analyzer implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.963Z","inputHash":"d73b540b8803a08c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.625Z","inputHash":"d73b540b8803a08c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleHint` {#symbol-ripplehint}
 - Type: type
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/rippleTypes.ts#L3)
-- Returns: `RelationshipHint`
+- Returns: [`RelationshipHint`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint)
 
 #### `RippleImpact` {#symbol-rippleimpact}
 - Type: interface

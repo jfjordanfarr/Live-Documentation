@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/environment.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-environment-ts
-- Generated At: 2025-12-05T04:16:19.074Z
+- Generated At: 2025-12-05T15:37:24.752Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Provides shared runtime utilities for the language server—resolving database l
 `describeError` and `fileUriToPath` gained Windows path handling during that pass—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602)—so any future refactor must preserve UNC safety and drive-by evidence in `environment.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.074Z","inputHash":"36e367ad273cf6af"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.752Z","inputHash":"36e367ad273cf6af"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveDatabasePath` {#symbol-resolvedatabasepath}
 - Type: function
 - Source: [source](../../../../../../packages/server/src/runtime/environment.ts#L10)
-- Parameters: `params`: `InitializeParams`; `settings`: `ExtensionSettings`
+- Parameters: `params`: `InitializeParams`; `settings`: [`ExtensionSettings`](../features/settings/providerGuard.ts.mdmd.md#symbol-extensionsettings)
 
 #### `resolveWorkspaceRoot` {#symbol-resolveworkspaceroot}
 - Type: function

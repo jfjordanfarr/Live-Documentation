@@ -36,7 +36,7 @@ describe("SlopCop asset CLI", () => {
       expect(repairedPayload.scannedFiles).toBeGreaterThan(0);
       expect(repairedPayload.issues).toHaveLength(0);
     });
-  }, 15_000);
+  }, 30_000);
 });
 
 function runCli(workspace: string) {

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/telemetry/inferenceAccuracy.ts
 - Live Doc ID: LD-implementation-packages-shared-src-telemetry-inferenceaccuracy-ts
-- Generated At: 2025-12-05T04:16:20.050Z
+- Generated At: 2025-12-05T15:37:25.669Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Tracks LLM benchmark outcomes across repos so shared tooling, server telemetry, 
 - Documented during the symbol-coverage remediation pass that pushed telemetry exports to 100 % coverage, confirming audits read the tracker headings.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.050Z","inputHash":"284e500f7cd2e900"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.669Z","inputHash":"284e500f7cd2e900"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `InferenceOutcome` {#symbol-inferenceoutcome}
@@ -42,7 +42,7 @@ Tracks LLM benchmark outcomes across repos so shared tooling, server telemetry, 
 #### `BenchmarkAccuracySummary` {#symbol-benchmarkaccuracysummary}
 - Type: interface
 - Source: [source](../../../../../../packages/shared/src/telemetry/inferenceAccuracy.ts#L43)
-- Extends: `AccuracyTotals`
+- Extends: [`AccuracyTotals`](../../../server/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-accuracytotals)
 
 #### `InferenceAccuracySummary` {#symbol-inferenceaccuracysummary}
 - Type: interface

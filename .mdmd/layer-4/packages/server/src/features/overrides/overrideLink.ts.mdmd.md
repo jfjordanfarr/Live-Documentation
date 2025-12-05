@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/overrides/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-overrides-overridelink-ts
-- Generated At: 2025-12-05T04:16:18.888Z
+- Generated At: 2025-12-05T15:37:24.523Z
 
 ## Authored
 ### Purpose
@@ -16,14 +16,14 @@ Implements the language-server side of the T027 manual override flow by persisti
 - Automated coverage was deferred in the originating change set because the Node 22 toolchain blocked lint/test execution; the outstanding validation gap is acknowledged in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.888Z","inputHash":"c52e40645df3dbc6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.523Z","inputHash":"c52e40645df3dbc6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `applyOverrideLink` {#symbol-applyoverridelink}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/overrides/overrideLink.ts#L20)
-- Returns: `OverrideLinkResponse`
-- Parameters: `store`: `GraphStore`; `request`: `OverrideLinkRequest`
+- Returns: [`OverrideLinkResponse`](../../../../shared/src/contracts/overrides.ts.mdmd.md#symbol-overridelinkresponse)
+- Parameters: `store`: [`GraphStore`](../../../../shared/src/db/graphStore.ts.mdmd.md#symbol-graphstore); `request`: [`OverrideLinkRequest`](../../../../shared/src/contracts/overrides.ts.mdmd.md#symbol-overridelinkrequest)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

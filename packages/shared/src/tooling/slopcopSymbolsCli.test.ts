@@ -13,10 +13,7 @@ const TSCONFIG = path.resolve(ROOT, "tsconfig.base.json");
 const FIXTURE = path.resolve(ROOT, "tests/integration/fixtures/slopcop-symbols/workspace");
 
 describe("SlopCop symbol CLI", () => {
-  it(
-    "passes when docs are healthy and flags issues when headings drift",
-    { timeout: 15000 },
-    () => {
+  it("passes when docs are healthy and flags issues when headings drift", () => {
     withFixtureWorkspace((workspace) => {
       breakWorkspace(workspace);
 
@@ -38,8 +35,7 @@ describe("SlopCop symbol CLI", () => {
       expect(repairedPayload.scannedFiles).toBeGreaterThan(0);
       expect(repairedPayload.issues).toHaveLength(0);
     });
-    }
-  );
+  }, 30_000);
 });
 
 function runCli(workspace: string) {

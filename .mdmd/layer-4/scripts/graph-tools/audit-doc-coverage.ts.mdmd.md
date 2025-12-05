@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/audit-doc-coverage.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-audit-doc-coverage-ts
-- Generated At: 2025-12-05T04:16:20.447Z
+- Generated At: 2025-12-05T15:37:25.989Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Runs the graph coverage audit that compares code artifacts against Layer‑4 doc
 - Refined 2025-11-04 to invoke `snapshotWorkspace` quietly before auditing, guaranteeing fresh caches during CI and local runs ([self-refresh integration](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.447Z","inputHash":"dadb238850843d03"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.989Z","inputHash":"dadb238850843d03"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseArgs` {#symbol-parseargs}
@@ -29,7 +29,7 @@ Runs the graph coverage audit that compares code artifacts against Layer‑4 doc
 - Type: function
 - Source: [source](../../../../scripts/graph-tools/audit-doc-coverage.ts#L311)
 - Returns: `AuditReport`
-- Parameters: `store`: `GraphStore`; `options`: `AuditOptions`
+- Parameters: `store`: [`GraphStore`](../../packages/shared/src/db/graphStore.ts.mdmd.md#symbol-graphstore); `options`: `AuditOptions`
 
 #### `printReport` {#symbol-printreport}
 - Type: function

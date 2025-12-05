@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.d.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-d-ts
-- Generated At: 2025-12-05T04:16:19.217Z
+- Generated At: 2025-12-05T15:37:24.897Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.217Z","inputHash":"4a3ffe2eb2d1e346"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.897Z","inputHash":"4a3ffe2eb2d1e346"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -61,13 +61,13 @@ _Pending notes_
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
 - Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L34)
-- Returns: `LiveDocumentationConfig`
+- Returns: [`LiveDocumentationConfig`](./liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.d.ts#L35)
-- Returns: `LiveDocumentationConfig`
-- Parameters: `input`: `LiveDocumentationConfigInput`
+- Returns: [`LiveDocumentationConfig`](./liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- Parameters: `input`: [`LiveDocumentationConfigInput`](./liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

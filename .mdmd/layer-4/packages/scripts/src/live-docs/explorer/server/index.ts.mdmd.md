@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2025-12-05T04:16:17.487Z
+- Generated At: 2025-12-05T15:37:23.169Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.487Z","inputHash":"f0cb505499f8d222"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.169Z","inputHash":"f0cb505499f8d222"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
@@ -29,7 +29,7 @@ _Pending notes_
 #### `startExplorerServer` {#symbol-startexplorerserver}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L30)
-- Parameters: `options`: `ExplorerServerOptions`
+- Parameters: `options`: [`ExplorerServerOptions`](../../../index.ts.mdmd.md#symbol-explorerserveroptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

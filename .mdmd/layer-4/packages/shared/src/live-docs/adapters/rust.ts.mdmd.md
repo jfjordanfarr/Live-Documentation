@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-ts
-- Generated At: 2025-12-05T04:16:19.818Z
+- Generated At: 2025-12-05T15:37:25.479Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Parses Rust sources to collect public symbols, structured Rustdoc sections, and 
 - Keep new Rustdoc heading or tag support aligned with the regression tests before re-running the Live Docs generator <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.818Z","inputHash":"bf60ff14dda6ce3e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.479Z","inputHash":"bf60ff14dda6ce3e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
 - Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/rust.ts#L32)
-- Returns: `LanguageAdapter`
+- Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

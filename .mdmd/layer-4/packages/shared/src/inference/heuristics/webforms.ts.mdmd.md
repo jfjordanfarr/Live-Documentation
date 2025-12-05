@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/webforms.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-webforms-ts
-- Generated At: 2025-12-05T04:16:19.601Z
+- Generated At: 2025-12-05T15:37:25.274Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Captures the WebForms-specific fallback logic we added while wiring the csharp-w
 - Keep the fixture-driven expectations in sync with `tests/integration/benchmarks/fixtures/csharp/webforms/**`; regenerate the oracle after adjusting heuristics to ensure the hidden-field → JS ripple still scores correctly <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L4028-L4052>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.601Z","inputHash":"a680e4dd437c5a1c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.274Z","inputHash":"a680e4dd437c5a1c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createWebFormsHeuristic` {#symbol-createwebformsheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/webforms.ts#L19)
-- Returns: `FallbackHeuristic`
+- Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

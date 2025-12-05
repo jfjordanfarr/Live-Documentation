@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-ts
-- Generated At: 2025-12-05T04:16:19.717Z
+- Generated At: 2025-12-05T15:37:25.390Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Extends Hangfire heuristics to capture scheduled and recurring jobs, mirroring the LD-402 queue-worker fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.717Z","inputHash":"e75d8982f7610895"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.390Z","inputHash":"e75d8982f7610895"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
 - Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.ts#L55)
-- Returns: `LanguageAdapter`
+- Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

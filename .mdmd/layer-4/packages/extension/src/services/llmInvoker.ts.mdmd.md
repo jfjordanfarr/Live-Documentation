@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/llmInvoker.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-llminvoker-ts
-- Generated At: 2025-12-05T04:16:17.116Z
+- Generated At: 2025-12-05T15:37:22.910Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Provides the Analyze-with-AI command a reusable wrapper around `vscode.lm` so di
 - Respects the governance decisions from Oct 21 to default sensitive workspaces to `llmProviderMode: local-only` and to block diagnostics when the provider is disabled, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L120-L190](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L120-L190); keep the filter and error reasons aligned with those consent requirements.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.116Z","inputHash":"30259e3c0d423ed1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:22.910Z","inputHash":"30259e3c0d423ed1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LlmProviderMode` {#symbol-llmprovidermode}
 - Type: type
 - Source: [source](../../../../../../packages/extension/src/services/llmInvoker.ts#L5)
-- Returns: `LinkDiagnosticsSettings`
+- Returns: [`LinkDiagnosticsSettings`](../settings/configService.ts.mdmd.md#symbol-linkdiagnosticssettings)
 
 #### `LlmInvocationFailureReason` {#symbol-llminvocationfailurereason}
 - Type: type

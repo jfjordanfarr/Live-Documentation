@@ -3,7 +3,7 @@
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
     "artifacts": 960,
-    "links": 1606
+    "links": 1607
   },
   "artifacts": [
     {
@@ -7644,64 +7644,80 @@
             "context": "inline-code"
           },
           {
-            "symbol": "TypeReference",
+            "symbol": "ResolvedSymbolLocation",
             "context": "inline-code"
+          },
+          {
+            "symbol": "WorkspaceSymbolIndex",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "TypeReference",
+            "context": "section-heading"
           },
           {
             "symbol": "PublicSymbolEntry",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "DependencyEntry",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "ReExportedSymbolInfo",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "LocationInfo",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationField",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationParameter",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationException",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationExample",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationLinkKind",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentationLink",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SymbolDocumentation",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "SUPPORTED_SCRIPT_EXTENSIONS",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "MODULE_RESOLUTION_EXTENSIONS",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "discoverTargetFiles",
-            "context": "inline-code"
+            "context": "section-heading"
+          },
+          {
+            "symbol": "buildWorkspaceSymbolIndex",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "resolveTypeToLiveDoc",
+            "context": "section-heading"
           },
           {
             "symbol": "resolveArchetype",
@@ -7729,7 +7745,7 @@
           },
           {
             "symbol": "collectExportedSymbols",
-            "context": "inline-code"
+            "context": "section-heading"
           },
           {
             "symbol": "collectDependencies",
@@ -7829,6 +7845,8 @@
           "exports": [],
           "sectionSymbols": [
             "SourceAnalysisResult",
+            "ResolvedSymbolLocation",
+            "WorkspaceSymbolIndex",
             "TypeReference",
             "PublicSymbolEntry",
             "DependencyEntry",
@@ -7844,6 +7862,8 @@
             "SUPPORTED_SCRIPT_EXTENSIONS",
             "MODULE_RESOLUTION_EXTENSIONS",
             "discoverTargetFiles",
+            "buildWorkspaceSymbolIndex",
+            "resolveTypeToLiveDoc",
             "resolveArchetype",
             "hasMeaningfulAuthoredContent",
             "directoryExists",
@@ -20799,6 +20819,14 @@
             "kind": "interface"
           },
           {
+            "name": "ResolvedSymbolLocation",
+            "kind": "interface"
+          },
+          {
+            "name": "WorkspaceSymbolIndex",
+            "kind": "type"
+          },
+          {
             "name": "TypeReference",
             "kind": "interface"
           },
@@ -20856,6 +20884,16 @@
           },
           {
             "name": "discoverTargetFiles",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "buildWorkspaceSymbolIndex",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "resolveTypeToLiveDoc",
             "kind": "function",
             "isDefault": false
           },
@@ -31284,6 +31322,15 @@
       "createdBy": "heuristic"
     },
     {
+      "id": "orchestrated-link-6e994d17",
+      "sourceId": "orchestrated-artifact-819940aa",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-4a2a0a73",
       "sourceId": "orchestrated-artifact-819940aa",
       "targetId": "orchestrated-artifact-a8692166",
@@ -32301,15 +32348,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-f5999b69",
-      "sourceId": "orchestrated-artifact-9bf9eb77",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-d12a58c5",
       "sourceId": "orchestrated-artifact-9bf9eb77",
       "targetId": "orchestrated-artifact-5dfcf3e7",
@@ -32317,6 +32355,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-8dfa84fb",
+      "sourceId": "orchestrated-artifact-9bf9eb77",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-698b4257",
@@ -32517,15 +32564,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-7c42b5cb",
-      "sourceId": "orchestrated-artifact-9ecfee6b",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-57d37327",
       "sourceId": "orchestrated-artifact-9ecfee6b",
       "targetId": "orchestrated-artifact-5dfcf3e7",
@@ -32551,6 +32589,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-14a39f5d",
+      "sourceId": "orchestrated-artifact-9ecfee6b",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-f0345cb9",
@@ -32958,15 +33005,6 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-7a02e6a4",
-      "sourceId": "orchestrated-artifact-a830e95a",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-5593a400",
       "sourceId": "orchestrated-artifact-a830e95a",
       "targetId": "orchestrated-artifact-5dfcf3e7",
@@ -33010,6 +33048,15 @@
       "confidence": 0.75,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-1263d036",
+      "sourceId": "orchestrated-artifact-a830e95a",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-edf48d92",

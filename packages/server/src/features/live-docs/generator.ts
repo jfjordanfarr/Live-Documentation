@@ -11,6 +11,7 @@ import {
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import {
   analyzeSourceFile,
+  buildWorkspaceSymbolIndex,
   cleanupEmptyParents,
   collectDependencies,
   collectExportedSymbols,
@@ -24,7 +25,8 @@ import {
   renderReExportedAnchorLines,
   renderPublicSymbolLines,
   resolveArchetype,
-  type SourceAnalysisResult
+  type SourceAnalysisResult,
+  type WorkspaceSymbolIndex
 } from "@live-documentation/shared/live-docs/core";
 import {
   composeLiveDocId,
@@ -124,6 +126,18 @@ export async function generateLiveDocs(
     logger
   });
 
+  // Build workspace-wide symbol index for cross-Live-Doc type reference resolution
+  const liveDocsRoot = normalizeWorkspacePath(
+    path.join(normalizedConfig.root, normalizedConfig.baseLayer)
+  );
+  const symbolIndex = await buildWorkspaceSymbolIndex({
+    targetFiles,
+    workspaceRoot,
+    liveDocsRoot,
+    docExtension: normalizedConfig.extension
+  });
+  logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names`);
+
   const results: LiveDocWriteRecord[] = [];
   let written = 0;
   let skipped = 0;
@@ -188,7 +202,8 @@ export async function generateLiveDocs(
       sourceRelativePath: normalizedSourcePath,
       evidenceSnapshot,
       liveDocsRootAbsolute,
-      docExtension
+      docExtension,
+      symbolIndex
     });
 
     const renderDocument = (generatedAt: string): string => {
@@ -359,6 +374,7 @@ function buildGeneratedSections(params: {
   evidenceSnapshot: EvidenceSnapshot;
   liveDocsRootAbsolute: string;
   docExtension: string;
+  symbolIndex?: WorkspaceSymbolIndex;
 }): LiveDocRenderSection[] {
   const docDir = path.dirname(params.docAbsolutePath);
   const sourceAbsolute = path.resolve(params.workspaceRoot, params.sourceRelativePath);
@@ -370,7 +386,9 @@ function buildGeneratedSections(params: {
     sourceAbsolute,
     workspaceRoot: params.workspaceRoot,
     sourceRelativePath: params.sourceRelativePath,
-    headings
+    headings,
+    symbolIndex: params.symbolIndex,
+    liveDocsRootAbsolute: params.liveDocsRootAbsolute
   });
 
   const dependencyLines = renderDependencyLines({

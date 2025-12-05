@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/dependencies/symbolNeighbors.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-dependencies-symbolneighbors-ts
-- Generated At: 2025-12-05T04:16:17.742Z
+- Generated At: 2025-12-05T15:37:23.421Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Traverses the Live Documentation graph to assemble neighbor summaries for a requ
 - Uses bounded breadth-first traversal with depth and count guards so the `inspectSymbolNeighbors` CLI and extension command stay responsive even on dense workspaces.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.742Z","inputHash":"6b4e351f4afd9b8b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.421Z","inputHash":"6b4e351f4afd9b8b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `InspectSymbolNeighborsOptions` {#symbol-inspectsymbolneighborsoptions}
@@ -25,7 +25,7 @@ Traverses the Live Documentation graph to assemble neighbor summaries for a requ
 #### `inspectSymbolNeighbors` {#symbol-inspectsymbolneighbors}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/dependencies/symbolNeighbors.ts#L32)
-- Returns: `InspectSymbolNeighborsResult`
+- Returns: [`InspectSymbolNeighborsResult`](../../../../shared/src/contracts/symbols.ts.mdmd.md#symbol-inspectsymbolneighborsresult)
 - Parameters: `options`: `InspectSymbolNeighborsOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 

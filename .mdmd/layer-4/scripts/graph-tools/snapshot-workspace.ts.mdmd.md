@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/snapshot-workspace.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-snapshot-workspace-ts
-- Generated At: 2025-12-05T04:16:20.493Z
+- Generated At: 2025-12-05T15:37:26.036Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 - Refactored 2025-11-04 to expose a reusable `snapshotWorkspace` helper and quiet mode; `audit-doc-coverage.ts` now invokes it automatically before audits to avoid stale caches ([self-refresh change](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.493Z","inputHash":"ae02fd61e8abd2f6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:26.036Z","inputHash":"ae02fd61e8abd2f6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_DB` {#symbol-default_db}
@@ -44,7 +44,7 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 #### `writeDatabaseWithRecovery` {#symbol-writedatabasewithrecovery}
 - Type: function
 - Source: [source](../../../../scripts/graph-tools/snapshot-workspace.ts#L320)
-- Parameters: `snapshot`: `ExternalSnapshot`; `options`: `WriteDatabaseOptions`
+- Parameters: `snapshot`: [`ExternalSnapshot`](../../packages/shared/src/knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalsnapshot); `options`: `WriteDatabaseOptions`
 
 #### `snapshotWorkspace` {#symbol-snapshotworkspace}
 - Type: function

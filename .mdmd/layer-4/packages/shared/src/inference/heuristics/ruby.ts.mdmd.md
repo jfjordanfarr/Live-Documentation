@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-ruby-ts
-- Generated At: 2025-12-05T04:16:19.576Z
+- Generated At: 2025-12-05T15:37:25.246Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,13 @@ Detects `require_relative` relationships so Ruby fixtures (cli, analytics, suppo
 - Path resolution continues to lean on `normalizePath`; if future fixtures add `require_relative` calls that walk outside the workspace, capture that as technical debt rather than broadening this function to chase absolute filesystem paths blindly <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L780-L860>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.576Z","inputHash":"98fe8df7f1fe9abf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.246Z","inputHash":"98fe8df7f1fe9abf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createRubyHeuristic` {#symbol-createrubyheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/ruby.ts#L9)
-- Returns: `FallbackHeuristic`
+- Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

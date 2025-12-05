@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/linkInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-linkinference-ts
-- Generated At: 2025-12-05T04:16:19.620Z
+- Generated At: 2025-12-05T15:37:25.294Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Implements the link inference orchestrator from US1 task T028, unifying fallback
 The markdown watcher streams saved documents through this orchestrator to capture seeds and hints before diagnostics publish, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343), and later work plans to route its output into the live knowledge feed manager under the guarded ingestion roadmap in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1306](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1306).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.620Z","inputHash":"73e30b6a29426197"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.294Z","inputHash":"73e30b6a29426197"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkInferenceTraceOrigin` {#symbol-linkinferencetraceorigin}
 - Type: type
 - Source: [source](../../../../../../packages/shared/src/inference/linkInference.ts#L26)
-- Returns: `WorkspaceProviderKind`, `KnowledgeFeedKind`, `InferenceTraceEntry`
+- Returns: `WorkspaceProviderKind`, `KnowledgeFeedKind`, [`InferenceTraceEntry`](./fallbackInference.ts.mdmd.md#symbol-inferencetraceentry)
 
 #### `LinkInferenceTraceEntry` {#symbol-linkinferencetraceentry}
 - Type: interface

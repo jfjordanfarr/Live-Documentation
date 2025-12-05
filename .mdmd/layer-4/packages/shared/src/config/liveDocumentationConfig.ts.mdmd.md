@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2025-12-05T04:16:19.231Z
+- Generated At: 2025-12-05T15:37:24.908Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect, eviden
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.231Z","inputHash":"1af8425710ad6eaa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.908Z","inputHash":"1af8425710ad6eaa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -61,13 +61,13 @@ Default globs now cover scripts and cross-language test fixtures so Live Docs re
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
 - Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L104)
-- Returns: `LiveDocumentationConfig`
+- Returns: [`LiveDocumentationConfig`](./liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfig)
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L118)
-- Returns: `LiveDocumentationConfig`
-- Parameters: `input`: `LiveDocumentationConfigInput`
+- Returns: [`LiveDocumentationConfig`](./liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfig)
+- Parameters: `input`: [`LiveDocumentationConfigInput`](./liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfiginput)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

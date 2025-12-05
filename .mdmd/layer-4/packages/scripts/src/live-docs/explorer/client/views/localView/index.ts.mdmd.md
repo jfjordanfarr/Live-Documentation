@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-index-ts
-- Generated At: 2025-12-05T04:16:17.418Z
+- Generated At: 2025-12-05T15:37:23.118Z
 
 ## Authored
 ### Purpose
@@ -15,14 +15,14 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.418Z","inputHash":"379e1dd956251c3e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.118Z","inputHash":"379e1dd956251c3e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createLocalView` {#symbol-createlocalview}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/index.ts#L4)
-- Returns: `LocalViewApi`
-- Parameters: `options`: `LocalViewOptions`
+- Returns: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
+- Parameters: `options`: [`LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions)
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: unknown

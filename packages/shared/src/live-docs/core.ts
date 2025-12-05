@@ -20,6 +20,63 @@ export interface SourceAnalysisResult {
 }
 
 /**
+ * Represents a resolved symbol location in the Live Documentation workspace.
+ *
+ * @remarks
+ * This interface maps a symbol name to its Live Doc file path and anchor,
+ * enabling cross-Live-Doc linking when type references are rendered.
+ *
+ * @see WorkspaceSymbolIndex
+ */
+export interface ResolvedSymbolLocation {
+  /**
+   * Workspace-relative path to the Live Doc file (e.g., ".mdmd/layer-4/src/types.ts.mdmd.md").
+   */
+  liveDocPath: string;
+
+  /**
+   * Workspace-relative path to the source file (e.g., "src/types.ts").
+   */
+  sourcePath: string;
+
+  /**
+   * The anchor slug for the symbol within the Live Doc (e.g., "symbol-widget").
+   */
+  anchor: string;
+
+  /**
+   * The kind of symbol (e.g., "class", "interface", "type", "function").
+   */
+  kind: string;
+}
+
+/**
+ * A workspace-wide index mapping symbol names to their Live Doc locations.
+ *
+ * @remarks
+ * This index is built during Live Doc generation by collecting all exported
+ * symbols from all tracked files. It enables type reference resolution:
+ * when a symbol's return type or parameter type is a type defined elsewhere
+ * in the workspace, we can render it as a link to that type's Live Doc.
+ *
+ * The index supports multiple symbols with the same name (from different files)
+ * by storing an array of locations. Resolution prefers exact matches and
+ * falls back to qualified name matching when ambiguous.
+ *
+ * @example
+ * ```typescript
+ * const index: WorkspaceSymbolIndex = new Map([
+ *   ["Widget", [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
+ *   ["processWidget", [{ liveDocPath: ".mdmd/layer-4/src/core.ts.mdmd.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
+ * ]);
+ * ```
+ *
+ * @see ResolvedSymbolLocation
+ * @see buildWorkspaceSymbolIndex
+ */
+export type WorkspaceSymbolIndex = Map<string, ResolvedSymbolLocation[]>;
+
+/**
  * Represents a type reference extracted from a symbol's signature.
  *
  * @remarks
@@ -321,6 +378,148 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
 
   candidates.sort();
   return candidates;
+}
+
+/**
+ * Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
+ *
+ * @remarks
+ * This function performs a lightweight pre-scan of all target files to collect
+ * exported symbols and their locations. The resulting index enables type references
+ * in one Live Doc to link to type definitions in other Live Docs.
+ *
+ * The index is keyed by symbol name (case-sensitive) and maps to an array of
+ * locations, allowing for multiple symbols with the same name from different files.
+ *
+ * @param options - Configuration for the index build.
+ * @param options.targetFiles - Absolute paths to all files being processed.
+ * @param options.workspaceRoot - Absolute path to the workspace root.
+ * @param options.liveDocsRoot - Workspace-relative path to the Live Docs root (e.g., ".mdmd/layer-4").
+ * @param options.docExtension - File extension for Live Docs (e.g., ".mdmd.md").
+ *
+ * @returns A map from symbol names to their resolved Live Doc locations.
+ *
+ * @example
+ * ```typescript
+ * const index = await buildWorkspaceSymbolIndex({
+ *   targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
+ *   workspaceRoot: "/workspace",
+ *   liveDocsRoot: ".mdmd/layer-4",
+ *   docExtension: ".mdmd.md"
+ * });
+ * // index.get("Widget") => [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", ... }]
+ * ```
+ *
+ * @see WorkspaceSymbolIndex
+ * @see ResolvedSymbolLocation
+ */
+export async function buildWorkspaceSymbolIndex(options: {
+  targetFiles: string[];
+  workspaceRoot: string;
+  liveDocsRoot: string;
+  docExtension: string;
+}): Promise<WorkspaceSymbolIndex> {
+  const index: WorkspaceSymbolIndex = new Map();
+
+  for (const absolutePath of options.targetFiles) {
+    const sourcePath = normalizeWorkspacePath(
+      path.relative(options.workspaceRoot, absolutePath)
+    );
+
+    // Compute the Live Doc path for this source file
+    const liveDocPath = normalizeWorkspacePath(
+      path.join(options.liveDocsRoot, `${sourcePath}${options.docExtension}`)
+    );
+
+    // Try to extract symbols from the file
+    let symbols: PublicSymbolEntry[] = [];
+    try {
+      const content = await fs.readFile(absolutePath, "utf8");
+      const ext = path.extname(absolutePath).toLowerCase();
+
+      // Only process files we can analyze for symbols
+      if ([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"].includes(ext)) {
+        const scriptKind = inferScriptKind(absolutePath);
+        const sourceFile = ts.createSourceFile(
+          absolutePath,
+          content,
+          ts.ScriptTarget.Latest,
+          true,
+          scriptKind
+        );
+        symbols = collectExportedSymbols(sourceFile);
+      }
+      // For other languages, we could add adapter-based symbol extraction here
+    } catch {
+      // Skip files that can't be read or parsed
+      continue;
+    }
+
+    // Compute heading info for proper anchor slugs
+    const headings = computePublicSymbolHeadingInfo(symbols);
+
+    // Register each symbol in the index
+    for (const heading of headings) {
+      const symbol = heading.symbol;
+      const location: ResolvedSymbolLocation = {
+        liveDocPath,
+        sourcePath,
+        anchor: heading.slug,
+        kind: symbol.kind
+      };
+
+      // Register by primary name
+      const existing = index.get(symbol.name) ?? [];
+      existing.push(location);
+      index.set(symbol.name, existing);
+
+      // Also register by qualified name if different
+      if (symbol.qualifiedName && symbol.qualifiedName !== symbol.name) {
+        const qualifiedExisting = index.get(symbol.qualifiedName) ?? [];
+        qualifiedExisting.push(location);
+        index.set(symbol.qualifiedName, qualifiedExisting);
+      }
+    }
+  }
+
+  return index;
+}
+
+/**
+ * Resolves a type name to its Live Doc location using the workspace symbol index.
+ *
+ * @remarks
+ * Returns undefined if the type is not found in the index. When multiple
+ * symbols with the same name exist, returns the first match (future enhancement:
+ * could use import context to disambiguate).
+ *
+ * @param typeName - The type name to resolve (e.g., "Widget", "Foo.Bar").
+ * @param index - The workspace-wide symbol index.
+ * @param currentSourcePath - The source path of the file being rendered (to avoid self-links).
+ *
+ * @returns The resolved location, or undefined if not found.
+ */
+export function resolveTypeToLiveDoc(
+  typeName: string,
+  index: WorkspaceSymbolIndex,
+  currentSourcePath: string
+): ResolvedSymbolLocation | undefined {
+  const locations = index.get(typeName);
+  if (!locations || locations.length === 0) {
+    return undefined;
+  }
+
+  // Filter out self-references (types defined in the current file)
+  const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
+
+  // Prefer external definitions; fall back to any match if all are self-refs
+  if (external.length > 0) {
+    return external[0];
+  }
+
+  // All matches are in the current file — return undefined to avoid self-link
+  // (the type is already visible in the same Live Doc)
+  return undefined;
 }
 
 /**
@@ -1952,6 +2151,10 @@ export function renderPublicSymbolLines(args: {
   workspaceRoot: string;
   sourceRelativePath: string;
   headings: PublicSymbolHeadingInfo[];
+  /** Optional workspace-wide symbol index for resolving type references to Live Doc links. */
+  symbolIndex?: WorkspaceSymbolIndex;
+  /** Absolute path to the Live Docs root (e.g., "/workspace/.mdmd/layer-4"). */
+  liveDocsRootAbsolute?: string;
 }): string[] {
   const lines: string[] = [];
 
@@ -1983,7 +2186,13 @@ export function renderPublicSymbolLines(args: {
     }
 
     // Render type references if present
-    const typeRefLines = renderTypeReferences(symbol.typeReferences);
+    const typeRefLines = renderTypeReferences(
+      symbol.typeReferences,
+      args.symbolIndex,
+      args.sourceRelativePath,
+      args.docDir,
+      args.liveDocsRootAbsolute
+    );
     if (typeRefLines.length > 0) {
       detailLines.push(...typeRefLines);
     }
@@ -2008,22 +2217,38 @@ export function renderPublicSymbolLines(args: {
 }
 
 /**
- * Renders type references as markdown bullet points.
+ * Renders type references as markdown bullet points with optional Live Doc links.
  *
  * @remarks
  * Groups type references by role (returns, parameters, extends, implements)
- * and formats them as readable bullet points. Type names are rendered as
- * code spans; future enhancements will resolve them to Live Doc links.
+ * and formats them as readable bullet points. When a symbol index is provided,
+ * type names that resolve to workspace symbols are rendered as markdown links
+ * to their Live Doc definitions.
  *
  * @param typeReferences - Array of type references extracted from the symbol.
+ * @param symbolIndex - Optional workspace-wide symbol index for resolving type links.
+ * @param currentSourcePath - Source path of the current file (to avoid self-links).
+ * @param docDir - Directory of the current Live Doc (for relative path calculation).
+ * @param liveDocsRootAbsolute - Absolute path to Live Docs root.
  * @returns Array of markdown lines representing the type references.
  */
-function renderTypeReferences(typeReferences: TypeReference[] | undefined): string[] {
+function renderTypeReferences(
+  typeReferences: TypeReference[] | undefined,
+  symbolIndex?: WorkspaceSymbolIndex,
+  currentSourcePath?: string,
+  docDir?: string,
+  liveDocsRootAbsolute?: string
+): string[] {
   if (!typeReferences || typeReferences.length === 0) {
     return [];
   }
 
   const lines: string[] = [];
+
+  // Create a type formatter with the resolution context
+  const formatType = (ref: TypeReference): string => {
+    return formatTypeReference(ref, symbolIndex, currentSourcePath, docDir, liveDocsRootAbsolute);
+  };
 
   // Group by role
   const returnTypes = typeReferences.filter((ref) => ref.role === "return");
@@ -2034,7 +2259,7 @@ function renderTypeReferences(typeReferences: TypeReference[] | undefined): stri
 
   // Render return types
   if (returnTypes.length > 0) {
-    const formatted = formatTypeList(returnTypes);
+    const formatted = formatTypeListWithLinks(returnTypes, formatType);
     lines.push(`- Returns: ${formatted}`);
   }
 
@@ -2049,26 +2274,26 @@ function renderTypeReferences(typeReferences: TypeReference[] | undefined): stri
 
   if (paramsByName.size > 0) {
     const paramEntries = Array.from(paramsByName.entries())
-      .map(([name, refs]) => `\`${name}\`: ${formatTypeList(refs)}`)
+      .map(([name, refs]) => `\`${name}\`: ${formatTypeListWithLinks(refs, formatType)}`)
       .join("; ");
     lines.push(`- Parameters: ${paramEntries}`);
   }
 
   // Render extends
   if (extendsTypes.length > 0) {
-    const formatted = formatTypeList(extendsTypes);
+    const formatted = formatTypeListWithLinks(extendsTypes, formatType);
     lines.push(`- Extends: ${formatted}`);
   }
 
   // Render implements
   if (implementsTypes.length > 0) {
-    const formatted = formatTypeList(implementsTypes);
+    const formatted = formatTypeListWithLinks(implementsTypes, formatType);
     lines.push(`- Implements: ${formatted}`);
   }
 
   // Render generic constraints
   if (constraintTypes.length > 0) {
-    const formatted = formatTypeList(constraintTypes);
+    const formatted = formatTypeListWithLinks(constraintTypes, formatType);
     lines.push(`- Constraints: ${formatted}`);
   }
 
@@ -2076,32 +2301,71 @@ function renderTypeReferences(typeReferences: TypeReference[] | undefined): stri
 }
 
 /**
- * Formats a list of type references as a comma-separated code span list.
+ * Formats a single type reference, optionally as a link if resolvable.
  *
- * @remarks
- * Adds modifiers like `[]` for arrays, `?` for optional/union with undefined,
- * and wraps each type name in backticks for code formatting.
+ * @param ref - The type reference to format.
+ * @param symbolIndex - Optional workspace symbol index.
+ * @param currentSourcePath - Current source path to avoid self-links.
+ * @param docDir - Current Live Doc directory for relative path calculation.
+ * @param liveDocsRootAbsolute - Absolute path to Live Docs root.
+ * @returns Formatted type string (code span or link).
+ */
+function formatTypeReference(
+  ref: TypeReference,
+  symbolIndex?: WorkspaceSymbolIndex,
+  currentSourcePath?: string,
+  docDir?: string,
+  liveDocsRootAbsolute?: string
+): string {
+  // Try to resolve the type to a Live Doc
+  let resolved: ResolvedSymbolLocation | undefined;
+  if (symbolIndex && currentSourcePath) {
+    resolved = resolveTypeToLiveDoc(ref.name, symbolIndex, currentSourcePath);
+  }
+
+  let formatted: string;
+
+  if (resolved && docDir && liveDocsRootAbsolute) {
+    // Compute relative path from current doc to target Live Doc
+    const targetDocAbsolute = path.resolve(
+      liveDocsRootAbsolute,
+      "..",  // Go up from liveDocsRoot (which is .mdmd/layer-4) to .mdmd
+      "..",  // Go up to workspace root
+      resolved.liveDocPath
+    );
+    const relativePath = formatRelativePathFromDoc(docDir, targetDocAbsolute);
+    const fragment = resolved.anchor ? `#${resolved.anchor}` : "";
+    formatted = `[\`${ref.name}\`](${relativePath}${fragment})`;
+  } else {
+    // No resolution — render as plain code span
+    formatted = `\`${ref.name}\``;
+  }
+
+  // Add array indicator
+  if (ref.isArrayElement) {
+    formatted = `${formatted}[]`;
+  }
+
+  // Add Promise indicator
+  if (ref.isPromiseResolution) {
+    formatted = `Promise<${formatted}>`;
+  }
+
+  return formatted;
+}
+
+/**
+ * Formats a list of type references with optional links.
  *
  * @param refs - Array of type references to format.
- * @returns A formatted string of type names.
+ * @param formatFn - Function to format each individual type reference.
+ * @returns A comma-separated string of formatted type names.
  */
-function formatTypeList(refs: TypeReference[]): string {
-  const formatted = refs.map((ref) => {
-    let name = `\`${ref.name}\``;
-
-    // Add array indicator
-    if (ref.isArrayElement) {
-      name = `${name}[]`;
-    }
-
-    // Add Promise indicator
-    if (ref.isPromiseResolution) {
-      name = `Promise<${name}>`;
-    }
-
-    return name;
-  });
-
+function formatTypeListWithLinks(
+  refs: TypeReference[],
+  formatFn: (ref: TypeReference) => string
+): string {
+  const formatted = refs.map(formatFn);
   // Deduplicate and join
   const unique = [...new Set(formatted)];
   return unique.join(", ");
