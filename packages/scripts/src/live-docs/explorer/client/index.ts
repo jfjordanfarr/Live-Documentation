@@ -75,9 +75,26 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   const state: ExplorerState = {
     view: "circuit",
     selectedNode: null,
+    focusedNode: null,
     filters: {
       showTests: false,
       showAssets: false
+    },
+    tuning: {
+      bezier: {
+        stubFactor: 0.42,
+        stubMin: 32,
+        stubMaxOffset: 20,
+        verticalOffset: 0.2
+      },
+      clickBehavior: {
+        singleClickFocusOnly: true,
+        doubleClickRecenter: true
+      },
+      visual: {
+        showTypeBadges: false,
+        alchemyGlow: false
+      }
     }
   };
 
@@ -111,7 +128,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     state,
     graphData,
     resolveLinkEndpoint,
-    onSelectNode: selectNode,
+    onSelectNode: node => handleNodeClick(node),
+    onRecenterNode: node => handleNodeDoubleClick(node),
     onOpenLocalView: node => {
       void openLocalViewForNode(node);
     },
@@ -122,7 +140,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     state,
     graphData,
     resolveLinkEndpoint,
-    onSelectNode: selectNode,
+    onSelectNode: node => handleNodeClick(node),
+    onRecenterNode: node => handleNodeDoubleClick(node),
     testCoverage
   });
 
@@ -219,9 +238,11 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   });
 
   renderCurrentView();
+  initTuningPanel();
 
   async function selectNode(node: ExplorerNodePayload): Promise<void> {
     state.selectedNode = node;
+    state.focusedNode = node;
     const contextName = document.getElementById("context-name");
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
@@ -229,6 +250,72 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     renderCurrentView();
     highlightSelectedCards();
     await detailPanel.showNode(node);
+  }
+
+  async function focusSidebar(node: ExplorerNodePayload): Promise<void> {
+    state.focusedNode = node;
+    const contextName = document.getElementById("context-name");
+    if (contextName instanceof HTMLElement) {
+      contextName.textContent = node.codeRelativePath;
+    }
+    highlightSelectedCards();
+    await detailPanel.showNode(node);
+  }
+
+  function handleNodeClick(node: ExplorerNodePayload): void | Promise<void> {
+    if (state.tuning.clickBehavior.singleClickFocusOnly) {
+      return focusSidebar(node);
+    }
+    return selectNode(node);
+  }
+
+  function handleNodeDoubleClick(node: ExplorerNodePayload): void | Promise<void> {
+    if (state.tuning.clickBehavior.doubleClickRecenter) {
+      return selectNode(node);
+    }
+    return focusSidebar(node);
+  }
+
+  function initTuningPanel(): void {
+    const stubFactorInput = document.getElementById("tuning-stub-factor") as HTMLInputElement | null;
+    const stubMinInput = document.getElementById("tuning-stub-min") as HTMLInputElement | null;
+    const stubMaxOffsetInput = document.getElementById("tuning-stub-max-offset") as HTMLInputElement | null;
+    const verticalOffsetInput = document.getElementById("tuning-vertical-offset") as HTMLInputElement | null;
+    const singleClickFocusInput = document.getElementById("tuning-single-click-focus") as HTMLInputElement | null;
+    const doubleClickRecenterInput = document.getElementById("tuning-double-click-recenter") as HTMLInputElement | null;
+    const typeBadgesInput = document.getElementById("tuning-type-badges") as HTMLInputElement | null;
+    const alchemyGlowInput = document.getElementById("tuning-alchemy-glow") as HTMLInputElement | null;
+
+    const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
+      if (!input) return;
+      const output = document.getElementById(outputId) as HTMLOutputElement | null;
+      input.addEventListener("input", () => {
+        const value = parseFloat(input.value);
+        setter(value);
+        if (output) output.textContent = input.value;
+        if (state.view === "map") {
+          localView.drawConnections();
+        }
+      });
+    };
+
+    const wireCheckbox = (input: HTMLInputElement | null, setter: (v: boolean) => void): void => {
+      if (!input) return;
+      input.addEventListener("change", () => {
+        setter(input.checked);
+        renderCurrentView();
+      });
+    };
+
+    wireSlider(stubFactorInput, "tuning-stub-factor-value", v => { state.tuning.bezier.stubFactor = v; });
+    wireSlider(stubMinInput, "tuning-stub-min-value", v => { state.tuning.bezier.stubMin = v; });
+    wireSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", v => { state.tuning.bezier.stubMaxOffset = v; });
+    wireSlider(verticalOffsetInput, "tuning-vertical-offset-value", v => { state.tuning.bezier.verticalOffset = v; });
+
+    wireCheckbox(singleClickFocusInput, v => { state.tuning.clickBehavior.singleClickFocusOnly = v; });
+    wireCheckbox(doubleClickRecenterInput, v => { state.tuning.clickBehavior.doubleClickRecenter = v; });
+    wireCheckbox(typeBadgesInput, v => { state.tuning.visual.showTypeBadges = v; });
+    wireCheckbox(alchemyGlowInput, v => { state.tuning.visual.alchemyGlow = v; });
   }
 
   function highlightSelectedCards(): void {

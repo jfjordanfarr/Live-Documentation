@@ -11,6 +11,7 @@ export interface LocalViewOptions {
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
+  onRecenterNode: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
 }
 

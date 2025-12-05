@@ -406,7 +406,7 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
 
   card.addEventListener("dblclick", event => {
     event.stopPropagation();
-    void controller.selectNode(node);
+    void controller.recenterNode(node);
   });
 
   return card;

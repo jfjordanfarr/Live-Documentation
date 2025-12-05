@@ -84,6 +84,59 @@
         <button class="action-btn" onclick="openInEditor()">Open in Editor</button>
       </div>
     </div>
+
+    <div id="tuning-panel">
+      <details class="tuning-section">
+        <summary class="tuning-header">⚙️ Tuning Controls</summary>
+        <div class="tuning-body">
+          <fieldset class="tuning-group">
+            <legend>Bezier Curve (Local Map)</legend>
+            <label class="tuning-slider">
+              <span>Stub Factor</span>
+              <input type="range" id="tuning-stub-factor" min="0.1" max="0.8" step="0.01" value="0.42" />
+              <output id="tuning-stub-factor-value">0.42</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Stub Min</span>
+              <input type="range" id="tuning-stub-min" min="8" max="64" step="2" value="32" />
+              <output id="tuning-stub-min-value">32</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Stub Max Offset</span>
+              <input type="range" id="tuning-stub-max-offset" min="8" max="64" step="2" value="20" />
+              <output id="tuning-stub-max-offset-value">20</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Vertical Offset</span>
+              <input type="range" id="tuning-vertical-offset" min="0" max="0.5" step="0.02" value="0.2" />
+              <output id="tuning-vertical-offset-value">0.2</output>
+            </label>
+          </fieldset>
+          <fieldset class="tuning-group">
+            <legend>Click Behavior</legend>
+            <label class="tuning-checkbox">
+              <input type="checkbox" id="tuning-single-click-focus" checked />
+              <span>Single-click focuses sidebar only</span>
+            </label>
+            <label class="tuning-checkbox">
+              <input type="checkbox" id="tuning-double-click-recenter" checked />
+              <span>Double-click recenters view</span>
+            </label>
+          </fieldset>
+          <fieldset class="tuning-group">
+            <legend>Visual Experiments</legend>
+            <label class="tuning-checkbox">
+              <input type="checkbox" id="tuning-type-badges" />
+              <span>Show type reference badges</span>
+            </label>
+            <label class="tuning-checkbox">
+              <input type="checkbox" id="tuning-alchemy-glow" />
+              <span>Alchemy glow for multi-type symbols</span>
+            </label>
+          </fieldset>
+        </div>
+      </details>
+    </div>
   </div>
 
   <script type="module" src="/static/index.js"></script>

@@ -21,6 +21,7 @@ export interface CircuitViewOptions {
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
+  onRecenterNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onOpenLocalView: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
 }
@@ -37,7 +38,7 @@ export interface CircuitViewApi {
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
-  const { state, graphData, resolveLinkEndpoint, onSelectNode, onOpenLocalView, testCoverage } = options;
+  const { state, graphData, resolveLinkEndpoint, onSelectNode, onRecenterNode, onOpenLocalView: _onOpenLocalView, testCoverage } = options;
   type NodeConnection = { targetId: string; kind: ExplorerLinkKind; direction: "outbound" | "inbound" };
 
   const isTestNode = (node: ExplorerNodePayload | undefined | null): boolean =>
@@ -347,7 +348,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
       });
       card.addEventListener("dblclick", event => {
         event.stopPropagation();
-        void onOpenLocalView(node);
+        void onRecenterNode(node);
       });
       card.addEventListener("mouseenter", () => {
         hoveredNodeId = node.id;

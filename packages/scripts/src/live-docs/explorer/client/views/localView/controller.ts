@@ -334,6 +334,10 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onSelectNode(node);
   }
 
+  async recenterNode(node: ExplorerNodePayload): Promise<void> {
+    await this.options.onRecenterNode(node);
+  }
+
   measureLayoutExtents(): LayoutExtents | null {
     return this.computeLayoutExtents();
   }

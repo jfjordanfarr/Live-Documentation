@@ -1,6 +1,6 @@
 import type { LocalViewRuntime } from "./runtime";
 import type { LayoutExtents, LocalEdge } from "./types";
-import type { ExplorerState } from "../../types";
+import type { BezierTuning, ExplorerState } from "../../types";
 
 export interface ConnectionsContext {
   runtime: LocalViewRuntime;
@@ -147,7 +147,7 @@ export function drawConnections(context: ConnectionsContext): void {
       x: target.x - bounds.left,
       y: target.y - bounds.top
     };
-    appendConnectionPath(svg, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace);
+    appendConnectionPath(svg, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier);
   });
 
   overlay.dataset.active = "true";
@@ -159,7 +159,8 @@ function appendConnectionPath(
   target: { x: number; y: number },
   renderDirection: "inbound" | "outbound",
   edge: LocalEdge,
-  svgNamespace: string
+  svgNamespace: string,
+  tuning: BezierTuning
 ): void {
   const horizontalDirection = target.x >= source.x ? 1 : -1;
   const gapX = Math.abs(target.x - source.x);
@@ -169,14 +170,14 @@ function appendConnectionPath(
     const midY = (source.y + target.y) / 2;
     commands.push(`Q ${source.x} ${midY} ${target.x} ${target.y}`);
   } else {
-    const stubBase = Math.max(gapX * 0.42, 32);
-    const stubLimit = Math.max(44, gapX - 20);
+    const stubBase = Math.max(gapX * tuning.stubFactor, tuning.stubMin);
+    const stubLimit = Math.max(44, gapX - tuning.stubMaxOffset);
     const stub = Math.min(stubBase, stubLimit);
     const control1X = source.x + horizontalDirection * stub;
     const control2X = target.x - horizontalDirection * stub;
     const deltaY = target.y - source.y;
-    const control1Y = source.y + deltaY * 0.2;
-    const control2Y = target.y - deltaY * 0.2;
+    const control1Y = source.y + deltaY * tuning.verticalOffset;
+    const control2Y = target.y - deltaY * tuning.verticalOffset;
     commands.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${target.x} ${target.y}`);
   }
 

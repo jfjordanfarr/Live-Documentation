@@ -10,10 +10,35 @@ export interface ExplorerFilters {
   showAssets: boolean;
 }
 
+export interface BezierTuning {
+  stubFactor: number;
+  stubMin: number;
+  stubMaxOffset: number;
+  verticalOffset: number;
+}
+
+export interface ClickBehaviorTuning {
+  singleClickFocusOnly: boolean;
+  doubleClickRecenter: boolean;
+}
+
+export interface VisualTuning {
+  showTypeBadges: boolean;
+  alchemyGlow: boolean;
+}
+
+export interface TuningConfig {
+  bezier: BezierTuning;
+  clickBehavior: ClickBehaviorTuning;
+  visual: VisualTuning;
+}
+
 export interface ExplorerState {
   view: ViewName;
   selectedNode: ExplorerNodePayload | null;
+  focusedNode: ExplorerNodePayload | null;
   filters: ExplorerFilters;
+  tuning: TuningConfig;
 }
 
 export type TestCoverageMap = Map<string, ExplorerNodePayload[]>;
