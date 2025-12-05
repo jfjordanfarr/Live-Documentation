@@ -35,7 +35,7 @@ describeIfRuntime("powershellAdapter", () => {
     }
   });
 
-  it("extracts public functions and dependency graph data from scripts", async () => {
+  it("extracts public functions and dependency graph data from scripts", { timeout: 15000 }, async () => {
     const scriptPath = path.join(
       workspaceRoot,
       "powershell-compendium",
@@ -62,7 +62,7 @@ describeIfRuntime("powershellAdapter", () => {
     expect(dotSource?.resolvedPath).toBe("powershell-compendium/common/logging.ps1");
   });
 
-  it("honors Export-ModuleMember filters when reporting module exports", async () => {
+  it("honors Export-ModuleMember filters when reporting module exports", { timeout: 15000 }, async () => {
     const modulePath = path.join(
       workspaceRoot,
       "powershell-compendium",

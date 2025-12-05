@@ -330,6 +330,16 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L3448-L3560` — Design and implement a compiler-backed TypeScript oracle via Code Like Clay: document scope, prototype generator, compare against committed expectations, and retain manual graph overlays for cross-language edges (see MAJOR NOTE).
 - `L3622-L3645` — Operate with high agency, escalate blockers, and ground decisions in empirically provable workspace graph correctness.
 - `L3705-L3710` — On subsequent autosummarization, rehydrate over `#file:2025-11-03.md:2840-3703` before resuming analysis.
+## 2025-12-04 (Dev Day 35)
+- `2025-12-04.md:L570-L590` — When experimental UI features (like intra-symbol connector lines) cause more visual confusion than clarity, sideline them quickly rather than iterating endlessly; prioritize composition cleanliness over feature density.
+- `2025-12-04.md:L680-L700` — Refactor visualization TypeScript files once they exceed ~1,000 lines; LLM-driven edit tools (believed to use GPT-4.1 Nano under the hood) routinely fail above this threshold, causing partial or incorrect patches.
+- `2025-12-04.md:L1800-L1820` — Refactor monolithic CSS files (~1,135 lines) into domain-specific modules (theme, shell, view-shared, circuit, local, graph) so Copilot can reliably read and edit the full styling context without long-range interaction misses.
+- `2025-12-04.md:L2200-L2220` — Connector lines must always take the shortest path: draw **from** blue pins (right side / output) **to** green pins (left side / input), never spanning across entire nodes; this is a hard UX requirement.
+- `2025-12-04.md:L2400-L2450` — Connectors should render in front of nodes but behind pins to sell the visual connection effect; z-index layering must enforce this hierarchy (connections > cards > test-backed glow).
+- `2025-12-04.md:L2800-L2850` — Replace Circuit Board connector SVG lines with CSS highlighting of related files; the connector noise in Circuit Board view is unacceptable compared to the cleaner Local Map approach.
+- `2025-12-04.md:L3200-L3250` — The "test-backed" purple shadow effect must render **behind** the node card, not in front; removing `z-index` from `.node-card` allows `::before` pseudo-elements with `z-index: -1` to escape the stacking context.
+- `2025-12-04.md:L3400-L3450` — Use Simple Browser or Playwright MCP tools with JavaScript evaluation to inspect computed CSS properties and DOM structure when debugging z-index/stacking issues; screenshots alone are insufficient for diagnosing render order problems.
+
 ## 2025-12-02 (Dev Day 33)
 - `2025-12-02.md:L199-L207` — Treat the Circuit Board and Local Map as fixed virtual canvases: determine node sizing from canonical metrics, keep layout independent of viewport resizes, and use camera-style transforms for zoom/pan rather than recomputing positions.
 - `2025-12-02.md:L210-L214` — When launching the explorer for validation, start it in a background terminal so the Copilot runner stays responsive while Playwright sessions interact with `localhost:3000`.

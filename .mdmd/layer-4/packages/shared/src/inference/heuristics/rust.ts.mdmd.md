@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-rust-ts
-- Generated At: 2025-11-19T15:01:35.012Z
+- Generated At: 2025-12-05T04:16:19.586Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Encodes the Rust module/use heuristics that recovered the AST benchmarks on Novâ
 - Keep the fallback fixture recorder (`npm run fixtures:record-fallback -- --lang rust`) in the loop after edits so rust-log and friends stay aligned with the curated expected graphs <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L1478-L1544>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.012Z","inputHash":"9ae56c5b8996b1f8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.586Z","inputHash":"2c7e039a7354ae8f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createRustHeuristic` {#symbol-createrustheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/rust.ts#L21)
+- Returns: `FallbackHeuristic`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

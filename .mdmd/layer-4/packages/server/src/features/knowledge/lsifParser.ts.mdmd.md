@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/lsifParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-lsifparser-ts
-- Generated At: 2025-11-24T15:19:58.671Z
+- Generated At: 2025-12-05T04:16:18.231Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms newline-delimited LSIF dumps into external snapshots with artifact en
 - Built during the LSIF/SCIP ingestion effort captured in [2025-10-22 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md), landing alongside auto-detection and bridge wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.671Z","inputHash":"7ec97b075744f93e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.231Z","inputHash":"6c68c04aae3b98e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LSIFParserOptions` {#symbol-lsifparseroptions}
@@ -36,6 +36,8 @@ Reference: LSIF specification (Language Server Index Format).
 #### `parseLSIF` {#symbol-parselsif}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/lsifParser.ts#L282)
+- Returns: `ExternalSnapshot`
+- Parameters: `options`: `LSIFParserOptions`
 
 ##### `parseLSIF` — Summary
 Parse LSIF content into an ExternalSnapshot

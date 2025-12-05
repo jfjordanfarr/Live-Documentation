@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/workspaceIndexProvider.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-workspaceindexprovider-ts
-- Generated At: 2025-11-24T15:19:58.733Z
+- Generated At: 2025-12-05T04:16:18.434Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Scans the workspace for implementation, documentation, and script artifacts so i
 - Extended on Oct 30 to parse MDMD identifiers and section symbols for audit tooling, as recorded in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.733Z","inputHash":"ba5c1f6de9dfbc40"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.434Z","inputHash":"2bdec53d2a7eb2c9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
@@ -42,6 +42,8 @@ Scans the workspace for implementation, documentation, and script artifacts so i
 #### `createWorkspaceIndexProvider` {#symbol-createworkspaceindexprovider}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L80)
+- Returns: `WorkspaceLinkProvider`
+- Parameters: `options`: `WorkspaceIndexProviderOptions`
 
 ##### `createWorkspaceIndexProvider` — Summary
 Lightweight workspace indexer that seeds implementation artifacts so markdown linkage heuristics

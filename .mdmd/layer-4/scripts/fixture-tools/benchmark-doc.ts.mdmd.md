@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-doc.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-doc-ts
-- Generated At: 2025-11-19T15:01:35.762Z
+- Generated At: 2025-12-05T04:16:20.343Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 - Repointed 2025-11-16 to emit into `.live-documentation/source/benchmarks/astAccuracyFixtures.md`, preserving the Stage-0 `.md` mirror while keeping sync-ast-doc.ts and verify-fixtures.ts aligned with the new location ([mirror alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2700-L2820)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.762Z","inputHash":"4e62f9302b198e59"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.343Z","inputHash":"df1648b79d3e96b9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `VENDOR_SECTION_START` {#symbol-vendor_section_start}
@@ -38,10 +38,12 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 #### `ensureVendorSection` {#symbol-ensurevendorsection}
 - Type: function
 - Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L32)
+- Parameters: `fixtures`: `BenchmarkFixtureDefinition`[]; `options`: `RenderOptions`
 
 #### `renderVendorInventory` {#symbol-rendervendorinventory}
 - Type: function
 - Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L45)
+- Parameters: `fixtures`: `BenchmarkFixtureDefinition`[]; `_options`: `RenderOptions`
 
 #### `extractVendorInventory` {#symbol-extractvendorinventory}
 - Type: function

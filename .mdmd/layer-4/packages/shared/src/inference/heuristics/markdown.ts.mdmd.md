@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/markdown.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-markdown-ts
-- Generated At: 2025-11-19T15:01:34.987Z
+- Generated At: 2025-12-05T04:16:19.552Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Translates Markdown links and wiki-link syntax in Layer‑4 docs into fallback g
 - When we add new link dialects (for example reference-style links or images), extend the shared `resolveReference` path so every documentation heuristic continues sharing the same normalization rules <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L820-L900>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.987Z","inputHash":"af8918260181c179"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.552Z","inputHash":"140e29b9fef3dc9a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createMarkdownHeuristic` {#symbol-createmarkdownheuristic}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/markdown.ts#L9)
+- Returns: `FallbackHeuristic`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

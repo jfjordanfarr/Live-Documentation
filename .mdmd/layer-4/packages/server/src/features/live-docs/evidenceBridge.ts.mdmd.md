@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/evidenceBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-evidencebridge-ts
-- Generated At: 2025-11-24T15:19:58.741Z
+- Generated At: 2025-12-05T04:16:18.462Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 - Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.741Z","inputHash":"3ec65663cfc30ea7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.462Z","inputHash":"671f581e705c5275"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EvidenceKind` {#symbol-evidencekind}
@@ -46,6 +46,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 #### `loadEvidenceSnapshot` {#symbol-loadevidencesnapshot}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L52)
+- Parameters: `options`: `LoadEvidenceOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

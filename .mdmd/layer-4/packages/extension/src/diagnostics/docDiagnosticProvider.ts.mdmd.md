@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/diagnostics/docDiagnosticProvider.ts
 - Live Doc ID: LD-implementation-packages-extension-src-diagnostics-docdiagnosticprovider-ts
-- Generated At: 2025-11-19T15:01:33.488Z
+- Generated At: 2025-12-05T04:16:17.050Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers the Problems-view diagnostic source that translates server ripple payl
 - Unit tests (`docDiagnosticProvider.test.ts`) landed with that change set, and the same run verified Problems actions end-to-end via `npm run test:integration`, recorded at [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1238-L1276](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1238-L1276).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.488Z","inputHash":"30d694bdcbdcf16a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.050Z","inputHash":"59656565f2bc3ee2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OPEN_LINKED_ARTIFACT_COMMAND` {#symbol-open_linked_artifact_command}
@@ -30,6 +30,7 @@ Registers the Problems-view diagnostic source that translates server ripple payl
 #### `registerDocDiagnosticProvider` {#symbol-registerdocdiagnosticprovider}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/diagnostics/docDiagnosticProvider.ts#L31)
+- Returns: `vscode.Disposable`
 
 #### `buildOpenActionTitle` {#symbol-buildopenactiontitle}
 - Type: function
@@ -38,6 +39,7 @@ Registers the Problems-view diagnostic source that translates server ripple payl
 #### `buildRippleSummary` {#symbol-buildripplesummary}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/diagnostics/docDiagnosticProvider.ts#L281)
+- Parameters: `data`: `LinkDiagnosticData`
 
 #### `formatConfidenceLabel` {#symbol-formatconfidencelabel}
 - Type: function

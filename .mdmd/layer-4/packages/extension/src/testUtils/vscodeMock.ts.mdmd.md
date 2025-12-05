@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/testUtils/vscodeMock.ts
 - Live Doc ID: LD-implementation-packages-extension-src-testutils-vscodemock-ts
-- Generated At: 2025-11-19T15:01:33.622Z
+- Generated At: 2025-12-05T04:16:17.229Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies a shared VS Code mock for command/unit tests so we can simulate tree up
 Keep the shared mock in sync with the command tests added that day—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md#L3609-L3858](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md#L3609-L3858)—so that diagnostics tree, Analyze with AI, and Inspect Symbol Neighbors suites keep reusing the same disposables instead of drifting into bespoke fakes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.622Z","inputHash":"35df0405282db258"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.229Z","inputHash":"82b9c3f702487704"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SharedVscodeMock` {#symbol-sharedvscodemock}
@@ -25,14 +25,17 @@ Keep the shared mock in sync with the command tests added that day—see [AI-Age
 #### `createVscodeMock` {#symbol-createvscodemock}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/testUtils/vscodeMock.ts#L33)
+- Returns: `SharedVscodeMock`
 
 #### `getSharedVscodeMock` {#symbol-getsharedvscodemock}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/testUtils/vscodeMock.ts#L109)
+- Returns: `SharedVscodeMock`
 
 #### `resetSharedVscodeMock` {#symbol-resetsharedvscodemock}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/testUtils/vscodeMock.ts#L117)
+- Returns: `SharedVscodeMock`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

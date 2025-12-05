@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/symbolBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-symbolbridge-ts
-- Generated At: 2025-11-24T15:19:58.373Z
+- Generated At: 2025-12-05T04:16:17.209Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,14 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 - Maintain the MAX_* limits and workspace-symbols provenance to stay aligned with the ripple diagnostics gating discussed there - future tuning should coordinate with the server's symbolBridgeProvider before widening caps.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.373Z","inputHash":"69bd300ee67c0d30"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.209Z","inputHash":"8cf9d4980afe03ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerSymbolBridge` {#symbol-registersymbolbridge}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/services/symbolBridge.ts#L69)
+- Returns: `vscode.Disposable`
+- Parameters: `client`: `LanguageClient`
 
 #### `SymbolBridgeAnalyzer` {#symbol-symbolbridgeanalyzer}
 - Type: class

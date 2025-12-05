@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/shared.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-shared-ts
-- Generated At: 2025-11-19T15:01:35.020Z
+- Generated At: 2025-12-05T04:16:19.593Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides the cross-language path normalisation, comment filtering, and reference
 - The extension-swapping logic was introduced to keep `.js` specifiers mapped onto `.ts/.tsx` sources; extend the replacement list in this helper instead of reimplementing it in future heuristics <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L2302-L2315>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.020Z","inputHash":"98cd2314cac724c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.593Z","inputHash":"a3f4e0d66bbbf22a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cleanupReference` {#symbol-cleanupreference}
@@ -42,6 +42,7 @@ Provides the cross-language path normalisation, comment filtering, and reference
 #### `computeReferenceStart` {#symbol-computereferencestart}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/shared.ts#L36)
+- Parameters: `match`: `RegExpMatchArray`
 
 #### `isWithinComment` {#symbol-iswithincomment}
 - Type: function
@@ -58,6 +59,8 @@ Provides the cross-language path normalisation, comment filtering, and reference
 #### `evaluateVariantMatch` {#symbol-evaluatevariantmatch}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/shared.ts#L137)
+- Returns: `VariantMatchScore`
+- Parameters: `candidate`: `HeuristicArtifact`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

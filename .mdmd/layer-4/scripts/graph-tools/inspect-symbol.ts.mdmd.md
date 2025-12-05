@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/inspect-symbol.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-inspect-symbol-ts
-- Generated At: 2025-11-24T15:19:59.391Z
+- Generated At: 2025-12-05T04:16:20.469Z
 
 ## Authored
 ### Purpose
@@ -16,16 +16,18 @@ Explores neighbor relationships for a given symbol ID, URI, or path by querying 
 - Refined 2025-10-30 to export `parseArgs`, `printResult`, and `main` so the implementation matched its Layer-4 documentation and remained script/test friendly ([export alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L3738-L3750)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.391Z","inputHash":"0e3b9211f382ec6b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.469Z","inputHash":"b8170d212ffa0adb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseArgs` {#symbol-parseargs}
 - Type: function
 - Source: [source](../../../../scripts/graph-tools/inspect-symbol.ts#L42)
+- Returns: `ParsedArgs`
 
 #### `printResult` {#symbol-printresult}
 - Type: function
 - Source: [source](../../../../scripts/graph-tools/inspect-symbol.ts#L233)
+- Parameters: `options`: `ParsedArgs`
 
 #### `main` {#symbol-main}
 - Type: function

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/config.ts
 - Live Doc ID: LD-implementation-scripts-slopcop-config-ts
-- Generated At: 2025-11-19T15:01:36.023Z
+- Generated At: 2025-12-05T04:16:21.729Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Centralises SlopCop configuration parsing so the markdown, asset, and symbol aud
 - `CONFIG_FILE_NAME` remains fixed so `npm run slopcop:*` commands and `safe-to-commit.mjs` can rely on workspace-relative resolution, with `--config` allowing targeted regression tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.023Z","inputHash":"94a5527508e962ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:21.729Z","inputHash":"280155c050c8f80d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SeveritySetting` {#symbol-severitysetting}
@@ -31,6 +31,7 @@ Centralises SlopCop configuration parsing so the markdown, asset, and symbol aud
 #### `SlopcopSymbolConfig` {#symbol-slopcopsymbolconfig}
 - Type: interface
 - Source: [source](../../../../scripts/slopcop/config.ts#L13)
+- Extends: `SlopcopConfigSection`
 
 #### `SlopcopConfig` {#symbol-slopcopconfig}
 - Type: interface
@@ -43,22 +44,27 @@ Centralises SlopCop configuration parsing so the markdown, asset, and symbol aud
 #### `loadSlopcopConfig` {#symbol-loadslopcopconfig}
 - Type: function
 - Source: [source](../../../../scripts/slopcop/config.ts#L33)
+- Returns: `SlopcopConfig`
 
 #### `resolveIgnoreGlobs` {#symbol-resolveignoreglobs}
 - Type: function
 - Source: [source](../../../../scripts/slopcop/config.ts#L56)
+- Parameters: `config`: `SlopcopConfig`; `section`: `SectionKey`
 
 #### `resolveIncludeGlobs` {#symbol-resolveincludeglobs}
 - Type: function
 - Source: [source](../../../../scripts/slopcop/config.ts#L66)
+- Parameters: `config`: `SlopcopConfig`; `section`: `SectionKey`
 
 #### `compileIgnorePatterns` {#symbol-compileignorepatterns}
 - Type: function
 - Source: [source](../../../../scripts/slopcop/config.ts#L78)
+- Parameters: `config`: `SlopcopConfig`; `section`: `SectionKey`
 
 #### `resolveRootDirectories` {#symbol-resolverootdirectories}
 - Type: function
 - Source: [source](../../../../scripts/slopcop/config.ts#L103)
+- Parameters: `config`: `SlopcopConfig`; `section`: `SectionKey`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

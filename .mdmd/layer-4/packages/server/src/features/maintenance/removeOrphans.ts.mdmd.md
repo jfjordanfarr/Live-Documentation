@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/maintenance/removeOrphans.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-maintenance-removeorphans-ts
-- Generated At: 2025-11-24T15:19:58.864Z
+- Generated At: 2025-12-05T04:16:18.873Z
 
 ## Authored
 ### Purpose
@@ -16,16 +16,18 @@ Emits maintenance diagnostics and rebind notifications when tracked artifacts ar
 - Layer-4 coverage extended as part of the diagnostics pipeline brief noted in [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.864Z","inputHash":"44d64fd0fe9772c5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.873Z","inputHash":"ba998229be6b9793"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `handleArtifactDeleted` {#symbol-handleartifactdeleted}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/maintenance/removeOrphans.ts#L16)
+- Parameters: `connection`: `Connection`; `store`: `GraphStore`; `diagnostics`: `DiagnosticSender`
 
 #### `handleArtifactRenamed` {#symbol-handleartifactrenamed}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/maintenance/removeOrphans.ts#L25)
+- Parameters: `connection`: `Connection`; `store`: `GraphStore`; `diagnostics`: `DiagnosticSender`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

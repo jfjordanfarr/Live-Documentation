@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-generator-ts
-- Generated At: 2025-11-24T15:19:58.854Z
+- Generated At: 2025-12-05T04:16:18.844Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 - Supports custom `outputDir` and mirror cleanup so headless harness and `npm run live-docs:system` executions materialize ephemeral System docs outside the repo, matching the on-demand plan agreed the same day.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.854Z","inputHash":"a3f1f18eb4c942ae"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.844Z","inputHash":"6d1d0019630094d9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GenerateSystemLiveDocsOptions` {#symbol-generatesystemlivedocsoptions}
@@ -38,6 +38,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 #### `generateSystemLiveDocs` {#symbol-generatesystemlivedocs}
 - Type: function
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/generator.ts#L192)
+- Parameters: `options`: `GenerateSystemLiveDocsOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

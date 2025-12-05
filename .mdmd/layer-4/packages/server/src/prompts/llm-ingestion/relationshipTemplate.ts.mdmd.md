@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/prompts/llm-ingestion/relationshipTemplate.ts
 - Live Doc ID: LD-implementation-packages-server-src-prompts-llm-ingestion-relationshiptemplate-ts
-- Generated At: 2025-11-24T15:19:58.922Z
+- Generated At: 2025-12-05T04:16:19.038Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Renders the versioned relationship-extraction prompt and JSON schema that power 
 - Keep the prompt text, response schema, and `dry-run.sample.json` fixture in lockstep—our orchestrator and integration tests treat that sample as the canonical contract <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2457-L2499> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6045-L6052>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.922Z","inputHash":"6a648003e0541f6c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.038Z","inputHash":"86b78b8a31781269"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConfidenceLabel` {#symbol-confidencelabel}
@@ -41,6 +41,8 @@ Renders the versioned relationship-extraction prompt and JSON schema that power 
 #### `renderRelationshipExtractionPrompt` {#symbol-renderrelationshipextractionprompt}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/prompts/llm-ingestion/relationshipTemplate.ts#L44)
+- Returns: `RenderedRelationshipPrompt`
+- Parameters: `options`: `RelationshipPromptOptions`
 
 #### `RELATIONSHIP_RESPONSE_SCHEMA` {#symbol-relationship_response_schema}
 - Type: const

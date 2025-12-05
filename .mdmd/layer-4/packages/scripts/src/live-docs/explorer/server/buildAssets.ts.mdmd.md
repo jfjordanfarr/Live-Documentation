@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/buildAssets.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-buildassets-ts
-- Generated At: 2025-12-02T05:07:01.299Z
+- Generated At: 2025-12-05T04:16:17.465Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-02T05:07:01.299Z","inputHash":"59d21e4f7512cec6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.465Z","inputHash":"bb03dd79bc4beec3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildExplorerAssetsOptions` {#symbol-buildexplorerassetsoptions}
@@ -29,6 +29,7 @@ _Pending notes_
 #### `buildExplorerAssets` {#symbol-buildexplorerassets}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/buildAssets.ts#L19)
+- Parameters: `options`: `BuildExplorerAssetsOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

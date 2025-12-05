@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/changeEvents/saveDocumentChange.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-changeevents-savedocumentchange-ts
-- Generated At: 2025-11-24T15:19:58.470Z
+- Generated At: 2025-12-05T04:16:17.621Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists markdown change events and any accompanying inference output into the g
 - Generates canonical artifact records and change-event IDs even when inference metadata is absent, ensuring downstream diagnostics still learn about the save.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.470Z","inputHash":"3ab57a665b797e49"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.621Z","inputHash":"2e49dac9d29eb727"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PersistedDocumentChange` {#symbol-persisteddocumentchange}
@@ -29,10 +29,13 @@ Persists markdown change events and any accompanying inference output into the g
 #### `persistInferenceResult` {#symbol-persistinferenceresult}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/changeEvents/saveDocumentChange.ts#L25)
+- Parameters: `graphStore`: `GraphStore`; `inference`: `LinkInferenceRunResult`
 
 #### `saveDocumentChange` {#symbol-savedocumentchange}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/changeEvents/saveDocumentChange.ts#L59)
+- Returns: `PersistedDocumentChange`
+- Parameters: `options`: `SaveDocumentChangeOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

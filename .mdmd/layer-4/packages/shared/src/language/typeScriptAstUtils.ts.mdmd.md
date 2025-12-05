@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/language/typeScriptAstUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-language-typescriptastutils-ts
-- Generated At: 2025-11-19T15:01:35.104Z
+- Generated At: 2025-12-05T04:16:19.666Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tracks TypeScript identifier usage so fallback inference and workspace indexing 
 The ripple semantics review the same day captured why we route TypeScript compiler events through these helpers instead of trusting raw LSIF output—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504) for the rationale that guides future adjustments.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.104Z","inputHash":"f9014bb8cd438040"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.666Z","inputHash":"6b40e5cd7efd33a7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IdentifierUsage` {#symbol-identifierusage}
@@ -25,10 +25,12 @@ The ripple semantics review the same day captured why we route TypeScript compil
 #### `extractLocalImportNames` {#symbol-extractlocalimportnames}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/language/typeScriptAstUtils.ts#L8)
+- Parameters: `importClause`: `ts.ImportClause`
 
 #### `collectIdentifierUsage` {#symbol-collectidentifierusage}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/language/typeScriptAstUtils.ts#L34)
+- Parameters: `sourceFile`: `ts.SourceFile`
 
 #### `hasRuntimeUsage` {#symbol-hasruntimeusage}
 - Type: function

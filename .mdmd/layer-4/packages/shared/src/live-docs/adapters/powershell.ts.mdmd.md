@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-powershell-ts
-- Generated At: 2025-11-21T04:04:59.853Z
+- Generated At: 2025-12-05T04:16:19.756Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,13 @@ Dot-sourced paths are normalized to workspace-relative form so downstream graph 
 Runtime extraction depends on [`scripts/powershell/emit-ast.ps1`](../../../../../scripts/powershell/emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-21T04:04:59.853Z","inputHash":"8a6fd8dc9f3a08c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.756Z","inputHash":"139bbb13ba61ff5e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
 - Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/powershell.ts#L52)
+- Returns: `LanguageAdapter`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

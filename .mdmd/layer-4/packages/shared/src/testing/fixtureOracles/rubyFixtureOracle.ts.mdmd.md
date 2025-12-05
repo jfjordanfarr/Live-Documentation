@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-rubyfixtureoracle-ts
-- Generated At: 2025-11-19T15:01:35.546Z
+- Generated At: 2025-12-05T04:16:20.135Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Parses Ruby fixtures with a lightweight AST walk to extract `require` and `inclu
 - Verified in the Nov 16 unit sweep alongside the other fixture oracles, so rerun `npm run test:unit -- rubyFixtureOracle` after meaningful parser changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.546Z","inputHash":"f236f8d32ea21783"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.135Z","inputHash":"211c1bdfd6a40300"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RubyOracleEdgeRelation` {#symbol-rubyoracleedgerelation}
@@ -58,18 +58,25 @@ Parses Ruby fixtures with a lightweight AST walk to extract `require` and `inclu
 #### `generateRubyFixtureGraph` {#symbol-generaterubyfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L61)
+- Returns: `RubyOracleEdge`[]
+- Parameters: `options`: `RubyFixtureOracleOptions`
 
 #### `serializeRubyOracleEdges` {#symbol-serializerubyoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L80)
+- Parameters: `edges`: `RubyOracleEdge`[]
 
 #### `partitionRubyOracleSegments` {#symbol-partitionrubyoraclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L85)
+- Returns: `RubyOracleSegmentPartition`
+- Parameters: `edges`: `RubyOracleEdge`[]; `overrides`: `RubyOracleOverrideConfig`
 
 #### `mergeRubyOracleEdges` {#symbol-mergerubyoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L121)
+- Returns: `RubyOracleMergeResult`
+- Parameters: `edges`: `RubyOracleEdge`[]; `overrides`: `RubyOracleOverrideConfig`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/telemetry/inferenceAccuracy.ts
 - Live Doc ID: LD-implementation-packages-server-src-telemetry-inferenceaccuracy-ts
-- Generated At: 2025-11-24T15:19:58.968Z
+- Generated At: 2025-12-05T04:16:19.187Z
 
 ## Authored
 ### Purpose
@@ -15,40 +15,48 @@ Re-exports the shared inference-accuracy tracker after the telemetry relocation 
 This file exists purely for backward compatibility—new code should import from `@copilot-improvement/shared/telemetry/inferenceAccuracy`. The re-export was added during the benchmark scaffold described in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601), and we should delete it once downstream modules are migrated.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.968Z","inputHash":"f7e0c37a325e8864"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.187Z","inputHash":"294c540eb290e5b1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AccuracySample` {#symbol-accuracysample}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L14)
+- Returns: `SharedAccuracySample`
 
 #### `AccuracyTotals` {#symbol-accuracytotals}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L15)
+- Returns: `SharedAccuracyTotals`
 
 #### `BenchmarkAccuracySummary` {#symbol-benchmarkaccuracysummary}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L16)
+- Returns: `SharedBenchmarkAccuracySummary`
 
 #### `InferenceAccuracySummary` {#symbol-inferenceaccuracysummary}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L17)
+- Returns: `SharedInferenceAccuracySummary`
 
 #### `InferenceAccuracyTrackerOptions` {#symbol-inferenceaccuracytrackeroptions}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L18)
+- Returns: `SharedInferenceAccuracyTrackerOptions`
 
 #### `InferenceOutcome` {#symbol-inferenceoutcome}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L19)
+- Returns: `SharedInferenceOutcome`
 
 #### `RecordOutcomeOptions` {#symbol-recordoutcomeoptions}
 - Type: type
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L20)
+- Returns: `SharedRecordOutcomeOptions`
 
 #### `InferenceAccuracyTracker` {#symbol-inferenceaccuracytracker}
 - Type: class
 - Source: [source](../../../../../../packages/server/src/telemetry/inferenceAccuracy.ts#L22)
+- Extends: `SharedInferenceAccuracyTracker`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

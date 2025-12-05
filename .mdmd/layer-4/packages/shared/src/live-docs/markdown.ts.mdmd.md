@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/markdown.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-markdown-ts
-- Generated At: 2025-11-19T15:01:35.360Z
+- Generated At: 2025-12-05T04:16:19.936Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Renders Live Doc sections with deterministic markers, provenance, and authored-b
 - Updated in the Stage‑0 recovery to adopt the `.md` extension and lint-friendly import order while keeping authored sections intact.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-15-shift-live-docs-to-md-outputs-lines-1401-1820]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.360Z","inputHash":"0b421c6ba58200a0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.936Z","inputHash":"debdec33fe42dcaa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LIVE_DOC_BEGIN_MARKER_PREFIX` {#symbol-live_doc_begin_marker_prefix}
@@ -42,6 +42,7 @@ Renders Live Doc sections with deterministic markers, provenance, and authored-b
 #### `renderLiveDocMarkdown` {#symbol-renderlivedocmarkdown}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/live-docs/markdown.ts#L33)
+- Parameters: `options`: `RenderLiveDocOptions`
 
 #### `renderBeginMarker` {#symbol-renderbeginmarker}
 - Type: function
@@ -54,6 +55,7 @@ Renders Live Doc sections with deterministic markers, provenance, and authored-b
 #### `renderProvenanceComment` {#symbol-renderprovenancecomment}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/live-docs/markdown.ts#L80)
+- Parameters: `provenance`: `LiveDocProvenance`
 
 #### `extractAuthoredBlock` {#symbol-extractauthoredblock}
 - Type: function

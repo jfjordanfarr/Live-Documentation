@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/dependencies/buildCodeGraph.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-dependencies-buildcodegraph-ts
-- Generated At: 2025-11-24T15:19:58.479Z
+- Generated At: 2025-12-05T04:16:17.657Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Performs breadth-first traversal over incoming dependency links to generate the 
 - Caps traversal depth and link kinds to keep dependency fan-out predictable while still honouring transitive chains for the inspect/quick pick experiences.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.479Z","inputHash":"9e05cbc27fc286e0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.657Z","inputHash":"e5eef005fc3c2be1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CodeImpactEdge` {#symbol-codeimpactedge}
@@ -29,6 +29,8 @@ Performs breadth-first traversal over incoming dependency links to generate the 
 #### `buildCodeImpactGraph` {#symbol-buildcodeimpactgraph}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/dependencies/buildCodeGraph.ts#L32)
+- Returns: `CodeImpactEdge`[]
+- Parameters: `graphStore`: `GraphStore`; `triggers`: `KnowledgeArtifact`[]; `options`: `BuildCodeGraphOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/stage0/docLoader.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-stage0-docloader-ts
-- Generated At: 2025-11-24T15:19:58.806Z
+- Generated At: 2025-12-05T04:16:18.708Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Parses the Stage-0 Live Doc mirror into structured records (metadata, symbols, d
 - Warns on missing metadata or malformed sections instead of throwing, keeping generator runs resilient while we iterate on newly migrated docs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.806Z","inputHash":"87d571f64b9e2517"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.708Z","inputHash":"f2cdd45f072a3b5a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadStage0Docs` {#symbol-loadstage0docs}
 - Type: function
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/stage0/docLoader.ts#L33)
+- Parameters: `args`: `LoadStage0DocsArgs`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

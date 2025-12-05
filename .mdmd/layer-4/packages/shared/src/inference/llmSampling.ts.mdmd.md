@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/llmSampling.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-llmsampling-ts
-- Generated At: 2025-11-19T15:01:35.063Z
+- Generated At: 2025-12-05T04:16:19.631Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared LLM sampling harness—request/result contracts, vote aggrega
 Link inference will eventually call `runSamplingSession` once the sampling pipeline is ready; the same change log outlines the follow-up to wire in telemetry sinks, so keep this module in sync with [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L4679](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L4679).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.063Z","inputHash":"49fa9e45e4573adc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.631Z","inputHash":"bdd683dd15e770ee"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SamplingPromptVariant` {#symbol-samplingpromptvariant}
@@ -37,6 +37,8 @@ Link inference will eventually call `runSamplingSession` once the sampling pipel
 #### `SamplingVoteCollector` {#symbol-samplingvotecollector}
 - Type: type
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L32)
+- Returns: `SamplingVote`[]
+- Parameters: `request`: `SamplingRequest`
 
 #### `AggregatedVote` {#symbol-aggregatedvote}
 - Type: interface
@@ -61,22 +63,29 @@ Link inference will eventually call `runSamplingSession` once the sampling pipel
 #### `SamplingTelemetrySink` {#symbol-samplingtelemetrysink}
 - Type: type
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L71)
+- Parameters: `payload`: `SamplingTelemetry`
 
 #### `aggregateVotes` {#symbol-aggregatevotes}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L75)
+- Returns: `AggregatedVote`[]
+- Parameters: `votes`: `SamplingVote`[]
 
 #### `scoreSamples` {#symbol-scoresamples}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L124)
+- Returns: `SamplingEvaluation`
+- Parameters: `votes`: `SamplingVote`[]; `request`: `SamplingRequest`
 
 #### `runSamplingSession` {#symbol-runsamplingsession}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L151)
+- Parameters: `request`: `SamplingRequest`
 
 #### `emitSamplingTelemetry` {#symbol-emitsamplingtelemetry}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/inference/llmSampling.ts#L176)
+- Parameters: `result`: `SamplingResult`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

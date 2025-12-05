@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/parse.d.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-parse-d-ts
-- Generated At: 2025-11-24T15:19:59.225Z
+- Generated At: 2025-12-05T04:16:19.942Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.225Z","inputHash":"b28b195b4e813907"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.942Z","inputHash":"1f3fdcd1c9a4ebcb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ParsedLiveDoc` {#symbol-parsedlivedoc}
@@ -29,6 +29,8 @@ _Pending notes_
 #### `parseLiveDocMarkdown` {#symbol-parselivedocmarkdown}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/live-docs/parse.d.ts#L18)
+- Returns: `ParsedLiveDoc`
+- Parameters: `config`: `LiveDocumentationConfig`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/utils/benchmarkRecorder.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-utils-benchmarkrecorder-ts
-- Generated At: 2025-11-19T15:01:36.383Z
+- Generated At: 2025-12-05T04:16:22.055Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Serialises benchmark runs into tmp and versioned JSON outputs so rebuild and acc
 - Emits fixture-specific diff bundles with precision/recall tallies to speed up triaging false positives/negatives when the AST suite regresses ([fixture diff bundles](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L680-L720)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.383Z","inputHash":"f2cceb4d3df7af62"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:22.055Z","inputHash":"a02e70406abcd680"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EdgeRecord` {#symbol-edgerecord}
@@ -34,10 +34,12 @@ Serialises benchmark runs into tmp and versioned JSON outputs so rebuild and acc
 #### `writeBenchmarkResult` {#symbol-writebenchmarkresult}
 - Type: function
 - Source: [source](../../../../../../tests/integration/benchmarks/utils/benchmarkRecorder.ts#L43)
+- Parameters: `options`: `BenchmarkResultOptions`
 
 #### `writeBenchmarkFixtureReport` {#symbol-writebenchmarkfixturereport}
 - Type: function
 - Source: [source](../../../../../../tests/integration/benchmarks/utils/benchmarkRecorder.ts#L80)
+- Parameters: `fixtures`: `FixtureDiffReport`[]; `options`: `FixtureReportOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

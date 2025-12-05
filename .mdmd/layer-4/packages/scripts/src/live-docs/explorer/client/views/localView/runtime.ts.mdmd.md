@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-runtime-ts
-- Generated At: 2025-12-04T20:07:44.432Z
+- Generated At: 2025-12-05T04:16:17.443Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-04T20:07:44.432Z","inputHash":"31bb37fcd0e71ef9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.443Z","inputHash":"deddc7db626cbe1d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorRegistry` {#symbol-anchorregistry}
@@ -33,18 +33,23 @@ _Pending notes_
 #### `createRuntime` {#symbol-createruntime}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L30)
+- Returns: `LocalViewRuntime`
+- Parameters: `viewport`: `HTMLDivElement`; `container`: `HTMLDivElement`; `overlay`: `HTMLDivElement`
 
 #### `registerAnchor` {#symbol-registeranchor}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L55)
+- Parameters: `registry`: `AnchorRegistry`
 
 #### `getAnchor` {#symbol-getanchor}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L73)
+- Parameters: `registry`: `AnchorRegistry`
 
 #### `clearAnchorRegistry` {#symbol-clearanchorregistry}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L104)
+- Parameters: `registry`: `AnchorRegistry`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

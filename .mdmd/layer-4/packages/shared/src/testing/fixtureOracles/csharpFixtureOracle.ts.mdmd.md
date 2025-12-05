@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-csharpfixtureoracle-ts
-- Generated At: 2025-11-19T15:01:35.505Z
+- Generated At: 2025-12-05T04:16:20.088Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Uses Roslyn-style parsing via regex and include analysis to map `using` directiv
 - Continues to pass under the Nov 16 unit sweep, so re-run `npm run test:unit -- csharpFixtureOracle` after parser updates <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.505Z","inputHash":"e0efb8655869d945"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.088Z","inputHash":"63bc765bfa8fc40a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CSharpOracleEdgeRelation` {#symbol-csharporacleedgerelation}
@@ -58,18 +58,25 @@ Uses Roslyn-style parsing via regex and include analysis to map `using` directiv
 #### `generateCSharpFixtureGraph` {#symbol-generatecsharpfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L110)
+- Returns: `CSharpOracleEdge`[]
+- Parameters: `options`: `CSharpFixtureOracleOptions`
 
 #### `serializeCSharpOracleEdges` {#symbol-serializecsharporacleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L141)
+- Parameters: `edges`: `CSharpOracleEdge`[]
 
 #### `partitionCSharpOracleSegments` {#symbol-partitioncsharporaclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L146)
+- Returns: `CSharpOracleSegmentPartition`
+- Parameters: `edges`: `CSharpOracleEdge`[]; `overrides`: `CSharpOracleOverrideConfig`
 
 #### `mergeCSharpOracleEdges` {#symbol-mergecsharporacleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L182)
+- Returns: `CSharpOracleMergeResult`
+- Parameters: `edges`: `CSharpOracleEdge`[]; `overrides`: `CSharpOracleOverrideConfig`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

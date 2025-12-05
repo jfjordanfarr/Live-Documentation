@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/targets/manifest.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-targets-manifest-ts
-- Generated At: 2025-11-24T15:19:58.859Z
+- Generated At: 2025-12-05T04:16:18.859Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads the optional `data/live-docs/targets.json` manifest so the System generato
 - Returns `undefined` when the manifest is absent, letting CLI and headless harness runs proceed without bespoke fixtures while still honoring curated views when present.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.859Z","inputHash":"4f4fe978a8600501"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.859Z","inputHash":"2b9d1e4d02224ec4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadTargetManifest` {#symbol-loadtargetmanifest}

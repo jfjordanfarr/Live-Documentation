@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/simple-workspace/src/core.ts
 - Live Doc ID: LD-asset-tests-integration-fixtures-simple-workspace-src-core-ts
-- Generated At: 2025-11-19T15:01:37.049Z
+- Generated At: 2025-12-05T04:16:28.257Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the baseline request/response pipeline that powers the “simple-workspa
 - Keep the field taxonomy (`Request`, `Response`, and `processRequest` orchestration) stable unless the paired fixture documentation and linked markdown guides are refreshed in tandem; the fixture currently verifies cleanly under `npm run fixtures:verify` as of the Oct 29 validation pass <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5288-L5320>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:37.049Z","inputHash":"d03b47b441ad2f90"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:28.257Z","inputHash":"d4d591ffd8f1b91e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Request` {#symbol-request}
@@ -35,10 +35,13 @@ Core business logic module
 #### `processRequest` {#symbol-processrequest}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/core.ts#L18)
+- Returns: `Response`
+- Parameters: `request`: `Request`
 
 #### `validateRequest` {#symbol-validaterequest}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/core.ts#L31)
+- Parameters: `request`: `Request`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

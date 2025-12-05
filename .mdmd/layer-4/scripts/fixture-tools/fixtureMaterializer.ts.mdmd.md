@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/fixtureMaterializer.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-fixturematerializer-ts
-- Generated At: 2025-11-19T15:01:35.780Z
+- Generated At: 2025-12-05T04:16:20.362Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Creates ephemeral benchmark workspaces by cloning or copying fixtures defined in
 - On 2025-11-06 we validated the helper across new fixtures (e.g., java-okhttp) while computing integrity digests, proving ephemeral mode cleans up after multi-repo clones ([ephemeral verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1910-L1913)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.780Z","inputHash":"3a1c3e8199ed52f9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.362Z","inputHash":"f3eb92e85e936c83"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MaterializeResult` {#symbol-materializeresult}
@@ -27,6 +27,7 @@ Creates ephemeral benchmark workspaces by cloning or copying fixtures defined in
 #### `materializeFixture` {#symbol-materializefixture}
 - Type: function
 - Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L18)
+- Parameters: `fixture`: `BenchmarkFixtureDefinition`; `options`: `MaterializeOptions`
 
 #### `MaterializeOptions` {#symbol-materializeoptions}
 - Type: interface

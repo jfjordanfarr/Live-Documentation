@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/analyzeWithAI.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-analyzewithai-ts
-- Generated At: 2025-11-24T15:19:58.236Z
+- Generated At: 2025-12-05T04:16:16.819Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,14 @@ Registers the `linkDiagnostics.analyzeWithAI` command so reviewers can run an LL
 - Spec tracking on Oct 28 confirmed T047 was fully implemented and unit-tested even though tasks.md still needed its checkbox flipped, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475); keep this command aligned with that spec entry.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.236Z","inputHash":"9462f4122a42054d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:16.819Z","inputHash":"667f7a3820d6e3ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerAnalyzeWithAICommand` {#symbol-registeranalyzewithaicommand}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/commands/analyzeWithAI.ts#L31)
+- Returns: `vscode.Disposable`
+- Parameters: `options`: `AnalyzeWithAIOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

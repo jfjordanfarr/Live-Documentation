@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/inspectSymbolNeighbors.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-inspectsymbolneighbors-ts
-- Generated At: 2025-11-24T15:19:58.276Z
+- Generated At: 2025-12-05T04:16:16.943Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,14 @@ Provides the US4 “Inspect Symbol Neighbors” palette command that calls `INSP
 - Once the stubs landed, `npm run verify` completed end to end and the command shipped as part of commit 558781b (`feat: ship symbol neighbor explorer and harden graph persistence`), confirmed in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2880-L2944](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2880-L2944).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.276Z","inputHash":"86242083f7555bf1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:16.943Z","inputHash":"11c6160bbcde27dc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerInspectSymbolNeighborsCommand` {#symbol-registerinspectsymbolneighborscommand}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/commands/inspectSymbolNeighbors.ts#L28)
+- Returns: `vscode.Disposable`
+- Parameters: `client`: `LanguageClient`
 
 #### `SymbolNeighborQuickPickController` {#symbol-symbolneighborquickpickcontroller}
 - Type: class
@@ -30,10 +32,12 @@ Provides the US4 “Inspect Symbol Neighbors” palette command that calls `INSP
 #### `ParsedInspectSymbolNeighborsResult` {#symbol-parsedinspectsymbolneighborsresult}
 - Type: type
 - Source: [source](../../../../../../packages/extension/src/commands/inspectSymbolNeighbors.ts#L251)
+- Returns: `z.infer`
 
 #### `ParsedNeighborNode` {#symbol-parsedneighbornode}
 - Type: type
 - Source: [source](../../../../../../packages/extension/src/commands/inspectSymbolNeighbors.ts#L254)
+- Returns: `z.infer`
 
 #### `InspectSymbolNeighborsResultValidator` {#symbol-inspectsymbolneighborsresultvalidator}
 - Type: const

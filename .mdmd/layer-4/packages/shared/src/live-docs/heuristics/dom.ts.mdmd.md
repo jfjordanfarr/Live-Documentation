@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/heuristics/dom.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-heuristics-dom-ts
-- Generated At: 2025-11-20T21:07:34.088Z
+- Generated At: 2025-12-05T04:16:19.926Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Infers markup dependencies for JavaScript that queries the DOM by element id, al
 - The heuristic complements `aspNetMarkupAdapter` by flowing the opposite direction (script → markup), which is why the LD-402 integration tests assert end-to-end paths rather than relying on this module in isolation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:34.088Z","inputHash":"76f16558e2210ed2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.926Z","inputHash":"56dd51a5ec8a53c0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `inferDomDependencies` {#symbol-inferdomdependencies}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/live-docs/heuristics/dom.ts#L33)
+- Parameters: `params`: `DomDependencyParams`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

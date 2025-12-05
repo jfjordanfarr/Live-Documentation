@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/changeProcessor.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-changeprocessor-ts
-- Generated At: 2025-11-24T15:19:58.930Z
+- Generated At: 2025-12-05T04:16:19.064Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates the runtime pipeline that drains `changeQueue`, persists document/co
 Acknowledgement gating, hysteresis, and ripple-aware publishing were added the following day—see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-06-acknowledgement-hysteresis--diagnostic-replay-lines-601-1220](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-06-acknowledgement-hysteresis--diagnostic-replay-lines-601-1220)—so any refactor must keep the sequencing between acknowledgement service, hysteresis controller, and ripple analyzer intact to avoid “stale diagnostic” regressions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.930Z","inputHash":"651b4496a3ed2aae"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.064Z","inputHash":"c3ba25c705a6cd0a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ChangeProcessorContext` {#symbol-changeprocessorcontext}
@@ -33,6 +33,8 @@ Acknowledgement gating, hysteresis, and ripple-aware publishing were added the f
 #### `createChangeProcessor` {#symbol-createchangeprocessor}
 - Type: function
 - Source: [source](../../../../../../packages/server/src/runtime/changeProcessor.ts#L51)
+- Returns: `ChangeProcessor`
+- Parameters: `_unnamed_`: `ChangeProcessorOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-ruby-ts
-- Generated At: 2025-11-20T21:07:33.974Z
+- Generated At: 2025-12-05T04:16:19.799Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 - Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:33.974Z","inputHash":"ddf14d025e303b40"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.799Z","inputHash":"1a48de2734b9aee4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
 - Type: const
 - Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/ruby.ts#L32)
+- Returns: `LanguageAdapter`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

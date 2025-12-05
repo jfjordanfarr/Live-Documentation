@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-typescriptfixtureoracle-ts
-- Generated At: 2025-11-19T15:01:35.576Z
+- Generated At: 2025-12-05T04:16:20.164Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Builds compiler-derived dependency edges for TypeScript benchmark fixtures so re
 - Regularly re-run via `npm run test:unit -- typeScriptFixtureOracle` and the broader unit sweep (latest on Nov 16) to guard the classification logic and serialization contract <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.576Z","inputHash":"5d16bccd5ccc06d2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.164Z","inputHash":"69397f21adbfce18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OracleEdgeRelation` {#symbol-oracleedgerelation}
@@ -58,18 +58,25 @@ Builds compiler-derived dependency edges for TypeScript benchmark fixtures so re
 #### `generateTypeScriptFixtureGraph` {#symbol-generatetypescriptfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L75)
+- Returns: `OracleEdge`[]
+- Parameters: `options`: `TypeScriptFixtureOracleOptions`
 
 #### `serializeOracleEdges` {#symbol-serializeoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L188)
+- Parameters: `edges`: `OracleEdge`[]
 
 #### `partitionOracleSegments` {#symbol-partitionoraclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L193)
+- Returns: `OracleSegmentPartition`
+- Parameters: `edges`: `OracleEdge`[]; `overrides`: `OracleOverrideConfig`
 
 #### `mergeOracleEdges` {#symbol-mergeoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L229)
+- Returns: `OracleMergeResult`
+- Parameters: `edges`: `OracleEdge`[]; `overrides`: `OracleOverrideConfig`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

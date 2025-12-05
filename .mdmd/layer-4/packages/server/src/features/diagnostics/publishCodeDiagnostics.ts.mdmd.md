@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/publishCodeDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-publishcodediagnostics-ts
-- Generated At: 2025-11-24T15:19:58.552Z
+- Generated At: 2025-12-05T04:16:17.890Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Issues ripple warnings for code artifacts impacted by upstream documentation or 
 - Shares the acknowledgement and hysteresis safeguards added on Oct 21 ([2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md)) and inherits the noise-filter tuning from Oct 23 ([2025-10-23 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.552Z","inputHash":"0474da3f50277ad5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.890Z","inputHash":"2e33bcc97d5ec4c5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CodeChangeContext` {#symbol-codechangecontext}
@@ -33,6 +33,8 @@ Issues ripple warnings for code artifacts impacted by upstream documentation or 
 #### `publishCodeDiagnostics` {#symbol-publishcodediagnostics}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/publishCodeDiagnostics.ts#L47)
+- Returns: `PublishCodeDiagnosticsResult`
+- Parameters: `options`: `PublishCodeDiagnosticsOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

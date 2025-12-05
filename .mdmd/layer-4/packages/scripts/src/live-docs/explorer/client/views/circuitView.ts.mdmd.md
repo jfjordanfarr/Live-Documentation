@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-ts
-- Generated At: 2025-11-25T02:32:13.249Z
+- Generated At: 2025-12-05T04:16:17.350Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-25T02:32:13.249Z","inputHash":"2f886b1f2a5a72ad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.350Z","inputHash":"2d0ce157b919c403"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}
@@ -29,6 +29,8 @@ _Pending notes_
 #### `createCircuitView` {#symbol-createcircuitview}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L39)
+- Returns: `CircuitViewApi`
+- Parameters: `options`: `CircuitViewOptions`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

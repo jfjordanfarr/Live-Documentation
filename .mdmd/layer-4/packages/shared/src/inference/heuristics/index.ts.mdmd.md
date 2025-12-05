@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-index-ts
-- Generated At: 2025-11-20T18:46:09.955Z
+- Generated At: 2025-12-05T04:16:19.539Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Turns the per-language builders into the default heuristic suite that replaced t
 - When adding a new heuristic module, export it through this registry and update `fallbackInference.languages.test.ts` so the regression suite exercises the new behavior <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L600-L676>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T18:46:09.955Z","inputHash":"a97fcb2958a7b4b6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.539Z","inputHash":"1647f5b8d8b6b80d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDefaultHeuristics` {#symbol-createdefaultheuristics}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/inference/heuristics/index.ts#L14)
+- Returns: `FallbackHeuristic`[]
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

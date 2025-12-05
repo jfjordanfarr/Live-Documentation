@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-pythonfixtureoracle-ts
-- Generated At: 2025-11-19T15:01:35.533Z
+- Generated At: 2025-12-05T04:16:20.124Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Executes Python fixtures through the CPython interpreter to emit ground-truth de
 - Continues to run under the full unit suite (Nov 16) to guard subprocess handling and override merging <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.533Z","inputHash":"bb82d10e2550a87b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.124Z","inputHash":"ff8dca64da8aba99"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PythonOracleEdgeRelation` {#symbol-pythonoracleedgerelation}
@@ -58,18 +58,24 @@ Executes Python fixtures through the CPython interpreter to emit ground-truth de
 #### `generatePythonFixtureGraph` {#symbol-generatepythonfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L71)
+- Parameters: `options`: `PythonFixtureOracleOptions`
 
 #### `serializePythonOracleEdges` {#symbol-serializepythonoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L93)
+- Parameters: `edges`: `PythonOracleEdge`[]
 
 #### `partitionPythonOracleSegments` {#symbol-partitionpythonoraclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L98)
+- Returns: `PythonOracleSegmentPartition`
+- Parameters: `edges`: `PythonOracleEdge`[]; `overrides`: `PythonOracleOverrideConfig`
 
 #### `mergePythonOracleEdges` {#symbol-mergepythonoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L134)
+- Returns: `PythonOracleMergeResult`
+- Parameters: `edges`: `PythonOracleEdge`[]; `overrides`: `PythonOracleOverrideConfig`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

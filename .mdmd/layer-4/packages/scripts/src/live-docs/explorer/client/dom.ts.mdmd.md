@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/dom.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-dom-ts
-- Generated At: 2025-11-24T15:19:58.397Z
+- Generated At: 2025-12-05T04:16:17.287Z
 
 ## Authored
 ### Purpose
@@ -15,16 +15,18 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.397Z","inputHash":"d5f84ca0af879771"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.287Z","inputHash":"28a969dd26afa0ed"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `requireElement` {#symbol-requireelement}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L3)
+- Returns: `T`
 
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L11)
+- Parameters: `view`: `ViewName`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

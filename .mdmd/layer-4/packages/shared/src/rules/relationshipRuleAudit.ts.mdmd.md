@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipRuleAudit.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipruleaudit-ts
-- Generated At: 2025-11-19T15:01:35.419Z
+- Generated At: 2025-12-05T04:16:20.000Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Evaluates compiled relationship rules against the graph to surface coverage diag
 - Formats JSON and text diagnostics used by `graph-tools/audit-doc-coverage.ts` after symbol-correctness profiles landed, ensuring missing relationships can be triaged quickly.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-26-add-symbol-correctness-profiles--wire-them-into-audits-lines-5711-6120]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.419Z","inputHash":"6d1005a30f30c807"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.000Z","inputHash":"ebe2d1978bcf89a1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipCoverageChain` {#symbol-relationshipcoveragechain}
@@ -45,6 +45,8 @@ Evaluates compiled relationship rules against the graph to surface coverage diag
 #### `evaluateRelationshipCoverage` {#symbol-evaluaterelationshipcoverage}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/rules/relationshipRuleAudit.ts#L48)
+- Returns: `RelationshipCoverageResult`
+- Parameters: `options`: `EvaluateRelationshipCoverageOptions`
 
 #### `RelationshipCoverageDiagnostic` {#symbol-relationshipcoveragediagnostic}
 - Type: interface
@@ -53,6 +55,8 @@ Evaluates compiled relationship rules against the graph to surface coverage diag
 #### `formatRelationshipDiagnostics` {#symbol-formatrelationshipdiagnostics}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/rules/relationshipRuleAudit.ts#L354)
+- Returns: `RelationshipCoverageDiagnostic`[]
+- Parameters: `result`: `RelationshipCoverageResult`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

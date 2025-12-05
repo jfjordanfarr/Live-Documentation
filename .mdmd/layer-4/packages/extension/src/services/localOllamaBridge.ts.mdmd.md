@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/localOllamaBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-localollamabridge-ts
-- Generated At: 2025-11-24T15:19:58.352Z
+- Generated At: 2025-12-05T04:16:17.154Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Implements the BYOK fallback for local Ollama so the extension can keep Analyze-
 - The helper now prefers workspace settings before environment variables and emits clear warnings when models are missing or context windows are overridden, as captured in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L1920-L1950](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L1920-L1950) and reinforced during the day-end recap at [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5500-L5535](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5500-L5535).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.352Z","inputHash":"9b79796de9c04e2a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.154Z","inputHash":"14af6a864fef9d88"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `invokeLocalOllamaBridge` {#symbol-invokelocalollamabridge}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/services/localOllamaBridge.ts#L22)
+- Parameters: `options`: `LocalInvocationOptions`
 
 ##### `invokeLocalOllamaBridge` — Summary
 Attempt to call a workspace-local Ollama server. Falls back to a deterministic mock response when

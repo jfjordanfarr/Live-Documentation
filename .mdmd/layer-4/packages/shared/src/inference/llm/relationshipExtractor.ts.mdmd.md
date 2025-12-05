@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/llm/relationshipExtractor.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-llm-relationshipextractor-ts
-- Generated At: 2025-11-19T15:01:35.089Z
+- Generated At: 2025-12-05T04:16:19.652Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Normalizes LLM prompt responses into validated relationship batches so the inges
 - We intentionally ship with a stub model invoker (logs once, yields empty relationships) to let the change processor exercise ingestion without mutating the graph; replace it only alongside real `vscode.lm` wiring and updated fixtures <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6944-L6954>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.089Z","inputHash":"70bb11c050ed289b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.652Z","inputHash":"7d25b94f547c9182"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConfidenceTier` {#symbol-confidencetier}
@@ -42,6 +42,7 @@ Normalizes LLM prompt responses into validated relationship batches so the inges
 #### `ModelInvoker` {#symbol-modelinvoker}
 - Type: type
 - Source: [source](../../../../../../../packages/shared/src/inference/llm/relationshipExtractor.ts#L31)
+- Parameters: `request`: `ModelInvocationRequest`
 
 #### `RelationshipExtractionRequest` {#symbol-relationshipextractionrequest}
 - Type: interface

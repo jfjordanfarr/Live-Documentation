@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/onboarding/providerGate.ts
 - Live Doc ID: LD-implementation-packages-extension-src-onboarding-providergate-ts
-- Generated At: 2025-11-19T15:01:33.519Z
+- Generated At: 2025-12-05T04:16:17.091Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,13 @@ Enforces the explicit LLM-provider consent gate mandated in Turn 9 of [AI-Agent-
 - The bypass was introduced after repeated QuickPick stalls, leading us to short-circuit the gate when `context.extensionMode === Test`; the design intent is captured in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-19.md#L1110-L1165](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-19.md#L1110-L1165).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.519Z","inputHash":"2f78825dab0c0fcc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.091Z","inputHash":"8a43b050082978a7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ensureProviderSelection` {#symbol-ensureproviderselection}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/onboarding/providerGate.ts#L13)
+- Parameters: `context`: `vscode.ExtensionContext`; `configService`: `ConfigService`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

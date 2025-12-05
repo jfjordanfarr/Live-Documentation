@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/render.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-render-ts
-- Generated At: 2025-12-04T20:07:44.426Z
+- Generated At: 2025-12-05T04:16:17.436Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-04T20:07:44.426Z","inputHash":"ff49a9b648d8e297"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.436Z","inputHash":"e8a7b6de0e1f170b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderLocalView` {#symbol-renderlocalview}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/render.ts#L14)
+- Parameters: `controller`: `LocalViewController`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/watchers/artifactWatcher.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-watchers-artifactwatcher-ts
-- Generated At: 2025-11-24T15:19:58.901Z
+- Generated At: 2025-12-05T04:16:18.975Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates how workspace file updates flow into the server ingestion pipeline b
 - Normalizes file URIs prior to persistence so downstream diagnostics and knowledge feeds address a single canonical node per artifact.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.901Z","inputHash":"229dfe8fd1105ea8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.975Z","inputHash":"3741921a34a12f7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactCategory` {#symbol-artifactcategory}
@@ -42,10 +42,12 @@ Coordinates how workspace file updates flow into the server ingestion pipeline b
 #### `DocumentTrackedArtifactChange` {#symbol-documenttrackedartifactchange}
 - Type: type
 - Source: [source](../../../../../../../packages/server/src/features/watchers/artifactWatcher.ts#L60)
+- Returns: `TrackedArtifactChange`
 
 #### `CodeTrackedArtifactChange` {#symbol-codetrackedartifactchange}
 - Type: type
 - Source: [source](../../../../../../../packages/server/src/features/watchers/artifactWatcher.ts#L61)
+- Returns: `TrackedArtifactChange`
 
 #### `SkippedArtifactChange` {#symbol-skippedartifactchange}
 - Type: interface

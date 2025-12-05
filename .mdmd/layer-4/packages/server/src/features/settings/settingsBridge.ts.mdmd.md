@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/settings/settingsBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-settings-settingsbridge-ts
-- Generated At: 2025-11-24T15:19:58.880Z
+- Generated At: 2025-12-05T04:16:18.917Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Transforms extension configuration into validated runtime settings for the langu
 - Expanded defaults for document-oriented relationship kinds during the Oct 21 diagnostic copy edit pass documented in [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.880Z","inputHash":"9c21c3a9e13f83ec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.917Z","inputHash":"3236d06cf12a537a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NoiseSuppressionLevel` {#symbol-noisesuppressionlevel}
@@ -42,10 +42,13 @@ Transforms extension configuration into validated runtime settings for the langu
 #### `DEFAULT_RUNTIME_SETTINGS` {#symbol-default_runtime_settings}
 - Type: const
 - Source: [source](../../../../../../../packages/server/src/features/settings/settingsBridge.ts#L35)
+- Returns: `RuntimeSettings`
 
 #### `deriveRuntimeSettings` {#symbol-deriveruntimesettings}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/settings/settingsBridge.ts#L148)
+- Returns: `RuntimeSettings`
+- Parameters: `settings`: `ExtensionSettings`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

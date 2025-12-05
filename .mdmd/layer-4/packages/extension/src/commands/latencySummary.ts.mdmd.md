@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/latencySummary.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-latencysummary-ts
-- Generated At: 2025-11-24T15:19:58.285Z
+- Generated At: 2025-12-05T04:16:16.967Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,14 @@ Surfaces diagnostic latency telemetry inside VS Code by registering `linkDiagnos
 - Follow-up doc cleanup on Oct 28 removed inline-code command IDs after SlopCop flagged them, keeping symbol coverage green per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L2700-L2764](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L2700-L2764).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.285Z","inputHash":"9d85a8c570e74975"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:16.967Z","inputHash":"9f69e1e3899c4be6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerLatencyTelemetryCommands` {#symbol-registerlatencytelemetrycommands}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/commands/latencySummary.ts#L59)
+- Returns: `vscode.Disposable`
+- Parameters: `client`: `LanguageClient`
 
 #### `LATENCY_SUMMARY_COMMAND` {#symbol-latency_summary_command}
 - Type: const

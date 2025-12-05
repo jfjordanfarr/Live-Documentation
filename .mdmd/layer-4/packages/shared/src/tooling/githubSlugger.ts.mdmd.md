@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSlugger.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-githubslugger-ts
-- Generated At: 2025-11-20T21:07:34.300Z
+- Generated At: 2025-12-05T04:16:20.206Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 - November 7 anchor-audit confirmed the maintainCase flag and unicode handling stay aligned with GitHub after targeting mis-slugged `COMP-003 – Heuristic Suite` references.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:34.300Z","inputHash":"320c0fa674ca5a53"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.206Z","inputHash":"0ff9c720d242862e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SlugContext` {#symbol-slugcontext}
@@ -34,6 +34,7 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 #### `createSlugger` {#symbol-createslugger}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L63)
+- Returns: `GitHubSlugger`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
