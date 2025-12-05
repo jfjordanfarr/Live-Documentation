@@ -77,7 +77,6 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
   };
 
   let layoutAnchors = new Map<string, NodeAnchorSet>();
-  let layoutDimensions: { width: number; height: number } | null = null;
 
   let circuitTransform: CircuitTransform = { x: 0, y: 0, k: 1 };
   let isDragging = false;
@@ -328,7 +327,6 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     const measure = measureDirectoryTree(hierarchy);
 
     layoutAnchors = new Map<string, NodeAnchorSet>();
-    layoutDimensions = null;
 
     const createNodeCard = (node: ExplorerNodePayload): HTMLElement => {
       const card = document.createElement("div");
@@ -414,7 +412,6 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     const layout = computeDirectoryLayout(measure);
     const layoutWidth = layout.width;
     const layoutHeight = layout.height;
-    layoutDimensions = { width: layoutWidth, height: layoutHeight };
 
     circuitContainer.innerHTML = "";
     circuitContainer.style.position = "relative";
@@ -563,53 +560,31 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     if (state.view !== "circuit") {
       return;
     }
-    const overlay = requireElement<HTMLDivElement>("circuit-connections");
-    overlay.innerHTML = "";
+    // Clear previous connection highlights
+    document.querySelectorAll<HTMLElement>(".node-card.connected-outbound, .node-card.connected-inbound").forEach(el => {
+      el.classList.remove("connected-outbound", "connected-inbound");
+    });
 
     if (hoveredNodeId && !layoutAnchors.has(hoveredNodeId)) {
       hoveredNodeId = null;
     }
 
     const activeNodeId = hoveredNodeId ?? state.selectedNode?.id ?? null;
-    const layoutSize = layoutDimensions;
-    if (!activeNodeId || !layoutSize) {
-      overlay.dataset.active = "false";
+    if (!activeNodeId) {
       return;
     }
 
-    const sourceAnchors = layoutAnchors.get(activeNodeId);
-    if (!sourceAnchors) {
-      overlay.dataset.active = "false";
-      return;
-    }
-
-    const svgWidth = Math.max(1, layoutSize.width);
-    const svgHeight = Math.max(1, layoutSize.height);
-    const svg = document.createElementNS(SVG_NS, "svg");
-    svg.classList.add("connection-svg");
-    svg.setAttribute("width", `${svgWidth}`);
-    svg.setAttribute("height", `${svgHeight}`);
-    svg.setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
-    svg.style.position = "absolute";
-    svg.style.left = "0";
-    svg.style.top = "0";
-    overlay.appendChild(svg);
-
-    let renderedConnections = 0;
+    // Highlight connected nodes instead of drawing SVG connectors
     const connectedEdges = connectionMap.get(activeNodeId) ?? [];
     connectedEdges.forEach(connection => {
-      const targetAnchors = layoutAnchors.get(connection.targetId);
-      if (!targetAnchors) {
-        return;
+      const targetCard = document.querySelector<HTMLElement>(`.node-card[data-id="${connection.targetId}"]`);
+      if (targetCard) {
+        targetCard.classList.add(connection.direction === "outbound" ? "connected-outbound" : "connected-inbound");
       }
-      appendConnectionPath(svg, sourceAnchors, targetAnchors, connection.direction, connection.kind);
-      renderedConnections += 1;
     });
-
-    overlay.dataset.active = renderedConnections > 0 ? "true" : "false";
   }
 
-  function appendConnectionPath(
+  function _appendConnectionPath(
     svg: SVGSVGElement,
     source: NodeAnchorSet,
     target: NodeAnchorSet,

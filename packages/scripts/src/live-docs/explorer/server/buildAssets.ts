@@ -37,6 +37,15 @@ export async function buildExplorerAssets(options: BuildExplorerAssetsOptions): 
     const cssSource = await fs.readFile(path.join(clientRoot, "styles.css"), "utf8");
     await fs.writeFile(path.join(outDir, "styles.css"), cssSource, "utf8");
 
+    const stylesDir = path.join(clientRoot, "styles");
+    await fs.mkdir(path.join(outDir, "styles"), { recursive: true });
+    const styleEntries = await fs.readdir(stylesDir);
+    await Promise.all(
+        styleEntries
+            .filter(entry => entry.endsWith(".css"))
+            .map(entry => fs.copyFile(path.join(stylesDir, entry), path.join(outDir, "styles", entry)))
+    );
+
     const template = await fs.readFile(path.join(serverRoot, "template.html"), "utf8");
 
     return {

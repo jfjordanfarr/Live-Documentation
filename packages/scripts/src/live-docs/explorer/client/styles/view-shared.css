@@ -1,0 +1,495 @@
+.dom-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 0;
+    will-change: transform;
+    padding: 40px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.layout-surface {
+    position: relative;
+    width: max-content;
+    height: max-content;
+    min-width: max-content;
+    min-height: max-content;
+}
+
+.layout-node {
+    box-sizing: border-box;
+}
+
+.cluster-host {
+    padding: 40px;
+    box-sizing: border-box;
+    min-width: max-content;
+}
+
+.cluster-host.local-map-host {
+    padding: 12px;
+}
+
+#map-container .cluster-grid {
+    position: relative;
+    gap: 28px;
+}
+
+.empty-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #888;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+}
+
+.node-card {
+    width: 100%;
+    min-width: 200px;
+    background: var(--node-bg);
+    border: 1px solid var(--node-border);
+    border-radius: 6px;
+    padding: 12px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+    flex-shrink: 0;
+}
+
+.node-card:hover {
+    background: var(--node-hover);
+    border-color: #777;
+}
+
+.node-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3);
+}
+
+/* Circuit Board: highlight connected nodes instead of drawing connector lines */
+.node-card.connected-outbound {
+    border-color: var(--connection-stroke);
+    box-shadow: 0 0 0 2px rgba(0, 189, 255, 0.4), 0 0 12px rgba(0, 189, 255, 0.25);
+}
+
+.node-card.connected-inbound {
+    border-color: rgba(0, 240, 180, 0.7);
+    box-shadow: 0 0 0 2px rgba(0, 240, 180, 0.35), 0 0 12px rgba(0, 240, 180, 0.2);
+}
+
+.node-card.local-focus {
+    border-width: 2px;
+    box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.4), 0 12px 30px rgba(0, 145, 255, 0.22);
+}
+
+.node-card.test-backed {
+    border-color: rgba(138, 92, 255, 0.65);
+}
+
+/* Test-backed shadow rendered via ::before pseudo-element */
+.node-card.test-backed::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 10px;
+    background: rgba(138, 92, 255, 0.18);
+    border: 1px solid rgba(138, 92, 255, 0.4);
+    pointer-events: none;
+    box-shadow: 0 12px 24px rgba(138, 92, 255, 0.22);
+    z-index: -1;
+}
+
+/* Alternative: Test-backed shadow as sibling element (requires JS to create) */
+.test-backed-shadow {
+    position: absolute;
+    border-radius: 10px;
+    background: rgba(138, 92, 255, 0.18);
+    border: 1px solid rgba(138, 92, 255, 0.4);
+    pointer-events: none;
+    box-shadow: 0 12px 24px rgba(138, 92, 255, 0.22);
+    z-index: 1;
+}
+
+.node-title {
+    font-weight: bold;
+    font-size: 13px;
+    color: #eee;
+    margin-bottom: 6px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.node-path {
+    font-size: 10px;
+    color: #a8a8b2;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.node-symbols {
+    margin-top: 10px;
+}
+
+.symbol-grid {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) 16px;
+    row-gap: 6px;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.symbol-label {
+    font-size: 11px;
+    color: #d4d4dc;
+    font-family: "Segoe UI", sans-serif;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.symbol-anchor {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0, 145, 255, 0.35);
+    position: relative;
+    z-index: 30;
+    box-shadow: 0 0 6px rgba(0, 145, 255, 0.35);
+    pointer-events: none;
+}
+
+.symbol-anchor.dot {
+    border: 1px solid rgba(0, 145, 255, 0.45);
+}
+
+.symbol-anchor.hub {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    opacity: 0.55;
+    border: 1px solid rgba(0, 145, 255, 0.35);
+    transform: translateY(-50%);
+    z-index: 28;
+}
+
+.symbol-anchor.hub.inbound {
+    left: -6px;
+}
+
+.symbol-anchor.hub.outbound {
+    right: -6px;
+}
+
+.symbol-anchor.inbound {
+    background: rgba(0, 211, 170, 0.4);
+    border: 1px solid rgba(0, 211, 170, 0.55);
+    box-shadow: 0 0 6px rgba(0, 211, 170, 0.45);
+}
+
+.symbol-anchor.outbound {
+    background: rgba(0, 145, 255, 0.4);
+    border: 1px solid rgba(0, 145, 255, 0.6);
+    box-shadow: 0 0 6px rgba(0, 145, 255, 0.45);
+}
+
+.node-meta {
+    margin-top: 8px;
+    font-size: 10px;
+    color: #c0c0c8;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.node-tests {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 10px;
+    color: #cbc8f8;
+    letter-spacing: 0.2px;
+}
+
+.node-tests__label {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #a59fe0;
+}
+
+.node-tests__item,
+.node-tests__more {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(138, 92, 255, 0.18);
+    border: 1px solid rgba(138, 92, 255, 0.45);
+    color: #e7e5ff;
+}
+
+.node-meta.symbols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 145, 255, 0.15);
+    border: 1px solid rgba(0, 145, 255, 0.45);
+    color: #f0f8ff;
+}
+
+.node-directory {
+    margin-top: 6px;
+    font-size: 10px;
+    color: #7f8896;
+    font-style: italic;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+#controls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+#legend-panel {
+    position: absolute;
+    bottom: 100px;
+    left: 20px;
+    width: 240px;
+    background: rgba(22, 22, 27, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.42);
+    color: #dee3f7;
+    backdrop-filter: blur(12px);
+    z-index: 95;
+}
+
+.legend-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3bc;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.legend-swatch,
+.legend-symbol,
+.legend-shadow {
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.legend-swatch {
+    width: 22px;
+    height: 6px;
+    border-radius: 999px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+}
+
+.legend-swatch--outbound {
+    background: rgba(0, 145, 255, 0.85);
+    box-shadow: 0 0 8px rgba(0, 145, 255, 0.4);
+}
+
+.legend-swatch--inbound {
+    background: rgba(0, 211, 170, 0.85);
+    box-shadow: 0 0 8px rgba(0, 211, 170, 0.4);
+}
+
+.legend-symbol {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-symbol--outbound {
+    background: rgba(0, 145, 255, 0.4);
+    border: 1px solid rgba(0, 145, 255, 0.6);
+    box-shadow: 0 0 6px rgba(0, 145, 255, 0.45);
+}
+
+.legend-symbol--inbound {
+    background: rgba(0, 211, 170, 0.4);
+    border: 1px solid rgba(0, 211, 170, 0.55);
+    box-shadow: 0 0 6px rgba(0, 211, 170, 0.45);
+}
+
+.legend-shadow {
+    width: 22px;
+    height: 14px;
+    border-radius: 6px;
+    background: rgba(138, 92, 255, 0.25);
+    border: 1px solid rgba(138, 92, 255, 0.5);
+    box-shadow: 0 10px 18px rgba(138, 92, 255, 0.32);
+}
+
+.control-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+}
+
+.control-btn:hover {
+    background: #333;
+    color: white;
+    transform: translateY(-2px);
+}
+
+button.action-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button.action-btn:hover {
+    background: #0070d4;
+    transform: translateY(-1px);
+}
+
+button.action-btn.ghost {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+button.action-btn.ghost:hover {
+    background: rgba(0, 145, 255, 0.18);
+}
+
+.connections-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+#view-map .connections-layer {
+    z-index: 100;
+}
+
+#view-circuit .connections-layer {
+    z-index: 41;
+}
+
+.connections-layer[data-active="true"] {
+    opacity: 1;
+}
+
+.connection-line {
+    position: absolute;
+    height: 2px;
+    background: var(--connection-stroke);
+    border-radius: 999px;
+    transform-origin: 0 50%;
+    opacity: 0.6;
+    box-shadow: 0 0 8px rgba(0, 189, 255, 0.2);
+}
+
+.connection-line[data-kind="extends"] {
+    background: rgba(255, 104, 144, 0.75);
+    box-shadow: 0 0 10px rgba(255, 104, 144, 0.45);
+}
+
+.connection-line[data-kind="implements"] {
+    background: rgba(255, 188, 87, 0.75);
+    box-shadow: 0 0 10px rgba(255, 188, 87, 0.35);
+}
+
+.connection-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    position: absolute;
+    z-index: 41;
+}
+
+.connection-path {
+    fill: none;
+    stroke: var(--connection-stroke);
+    stroke-width: 2.2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.7;
+}
+
+.connection-path.outbound {
+    stroke: rgba(0, 145, 255, 0.85);
+    filter: drop-shadow(0 0 6px rgba(0, 145, 255, 0.35));
+}
+
+.connection-path.inbound {
+    stroke: rgba(0, 211, 170, 0.85);
+    filter: drop-shadow(0 0 6px rgba(0, 211, 170, 0.35));
+}
+
+.connection-path[data-kind="extends"] {
+    stroke: rgba(255, 104, 144, 0.85);
+    filter: drop-shadow(0 0 8px rgba(255, 104, 144, 0.4));
+}
+
+.connection-path[data-kind="implements"] {
+    stroke: rgba(255, 188, 87, 0.85);
+    filter: drop-shadow(0 0 8px rgba(255, 188, 87, 0.4));
+}
+
+.nav-item:focus-visible,
+.control-btn:focus-visible,
+.node-card:focus-visible,
+button.action-btn:focus-visible,
+.detail-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

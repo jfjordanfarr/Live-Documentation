@@ -1,0 +1,25 @@
+:root {
+    --bg: #18181a;
+    --sidebar-bg: #1f1f22;
+    --border: #2f2f34;
+    --accent: #0091ff;
+    --text: #e4e4e4;
+    --text-active: #ffffff;
+    --glass: rgba(34, 34, 37, 0.95);
+    --cluster-bg: rgba(0, 145, 255, 0.035);
+    --cluster-border: rgba(0, 145, 255, 0.1);
+    --node-bg: #232326;
+    --node-border: #3f3f46;
+    --node-hover: #2f2f33;
+    --connection-stroke: rgba(0, 189, 255, 0.45);
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", sans-serif;
+    display: flex;
+    height: 100vh;
+}

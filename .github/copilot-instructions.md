@@ -76,6 +76,7 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - Specific feature/story documentation: stored under folders like `specs/NNN-feature-name/` (see note about 'Spec-Kit' below)
 - **Copilot's (your) own scratch space/workspace during development:** `./AI-Agent-Workspace/`
     - **The entire development history, in summarized and unsummarized form, is located at `./AI-Agent-Workspace/ChatHistory/`.**
+    - **Because virtually all workspace changes have occurred by Copilot's hand, this searchable history is the definitive audit trail of _why_ the code is the way it is.**
 
 ---
 

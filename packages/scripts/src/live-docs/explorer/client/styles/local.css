@@ -1,0 +1,157 @@
+.local-grid {
+    --cluster-columns: 3;
+    --cluster-column-width: 300px;
+    grid-template-columns: repeat(var(--cluster-columns), var(--cluster-column-width));
+}
+
+.local-layout {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    column-gap: 52px;
+    align-items: start;
+    justify-content: center;
+    width: max-content;
+}
+
+.local-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.local-column .local-surface {
+    position: relative;
+}
+
+.local-column[data-position="left"] .local-surface {
+    margin-left: auto;
+}
+
+.local-column.center .local-surface {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.local-column[data-position="right"] .local-surface {
+    margin-right: auto;
+}
+
+.local-layout-box {
+    cursor: default;
+}
+
+.local-column-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6c7484;
+}
+
+.local-column-empty {
+    font-size: 12px;
+    color: #7a8494;
+    padding: 8px 0 4px 0;
+}
+
+.local-column .cluster-grid {
+    width: auto;
+}
+
+.local-column .cluster-content {
+    grid-template-columns: 1fr;
+}
+
+.local-column[data-position="left"] .cluster-grid {
+    justify-content: end;
+}
+
+.local-column.center .cluster-grid {
+    justify-content: center;
+}
+
+.local-column[data-position="right"] .cluster-grid {
+    justify-content: start;
+}
+
+.local-column[data-position="left"] .node-card {
+    margin-left: auto;
+}
+
+.local-column[data-position="right"] .node-card {
+    margin-right: auto;
+}
+
+.local-column.center .node-card {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.local-focus-surface {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 12px 8px 20px 8px;
+}
+
+.local-focus-surface .node-card {
+    margin: 0 auto;
+}
+
+.local-column--stacked {
+    gap: 18px;
+}
+
+.local-column--stacked .layout-node {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.local-column--stacked.local-column[data-position="left"] .layout-node {
+    margin-left: auto;
+}
+
+.local-column--stacked.local-column[data-position="right"] .layout-node {
+    margin-right: auto;
+}
+
+.local-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.local-stack-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.local-stack-group__label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6c7484;
+    padding-left: 4px;
+}
+
+.local-stack-group__content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 240px;
+    max-width: 240px;
+}
+
+.local-column[data-position="left"] .local-stack-group__content {
+    align-items: flex-end;
+}
+
+.local-column[data-position="right"] .local-stack-group__content {
+    align-items: flex-start;
+}
