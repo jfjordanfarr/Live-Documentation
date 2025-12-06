@@ -179,7 +179,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   };
 
   globalWindow.openInEditor = () => {
-    const target = state.selectedNode ?? state.focusedNode;
+    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
+    const target = state.focusedNode ?? state.selectedNode;
     if (!target) {
       return;
     }
@@ -187,7 +188,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   };
 
   globalWindow.openInLocalView = () => {
-    const target = state.selectedNode ?? state.focusedNode;
+    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
+    const target = state.focusedNode ?? state.selectedNode;
     if (!target) {
       return;
     }
@@ -195,7 +197,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   };
 
   globalWindow.openInGraphView = () => {
-    const target = state.selectedNode ?? state.focusedNode;
+    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
+    const target = state.focusedNode ?? state.selectedNode;
     if (!target) {
       return;
     }
