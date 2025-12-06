@@ -83,8 +83,8 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     tuning: {
       bezier: {
         stubFactor: 0.8,
-        stubMin: 10,
-        stubMaxOffset: 20,
+        stubMin: 8,
+        stubMaxOffset: 8,
         verticalOffset: 0
       },
       clickBehavior: {

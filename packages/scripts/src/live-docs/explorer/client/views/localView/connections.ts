@@ -84,15 +84,24 @@ export function drawConnections(context: ConnectionsContext): void {
 
   const centerId = currentSubgraph.center.id;
 
-  const faceToward = (anchor: AnchorMeasurement, otherX: number): { x: number; y: number } => {
-    if (anchor.columnPosition === "left") {
-      return { x: anchor.cardRight, y: anchor.centerY };
-    }
-    if (anchor.columnPosition === "right") {
-      return { x: anchor.cardLeft, y: anchor.centerY };
-    }
-    const towardsLeft = otherX < anchor.centerX;
-    return { x: towardsLeft ? anchor.cardLeft : anchor.cardRight, y: anchor.centerY };
+  // Pin radius in CSS pixels (half of the 11.33px anchor width).
+  // Paths stop one radius shy of the pin center so they don't overlap the circle.
+  const PIN_RADIUS = 6;
+
+  // Offset a point horizontally by `distance` pixels based on pin direction.
+  // This keeps Y at the pin center while offsetting X to the pin edge.
+  // Outbound pins: connections exit to the right → offset to right edge (+distance)
+  // Inbound pins: connections enter from the left → offset to left edge (-distance)
+  const offsetToEdge = (
+    anchor: AnchorMeasurement,
+    pinDirection: "inbound" | "outbound",
+    distance: number
+  ): { x: number; y: number } => {
+    // Outbound pins emit to the right, inbound pins receive from the left
+    const offsetX = pinDirection === "outbound"
+      ? anchor.centerX + distance  // Right edge for outbound
+      : anchor.centerX - distance; // Left edge for inbound
+    return { x: offsetX, y: anchor.centerY };
   };
 
   currentSubgraph.links.forEach(edge => {
@@ -112,8 +121,10 @@ export function drawConnections(context: ConnectionsContext): void {
       return;
     }
 
-    const sourcePoint = faceToward(providerAnchor, consumerAnchor.centerX);
-    const targetPoint = faceToward(consumerAnchor, providerAnchor.centerX);
+    // Offset both endpoints by PIN_RADIUS so paths stop at the pin edge, not center.
+    // Provider is always outbound (emitting), consumer is always inbound (receiving).
+    const sourcePoint = offsetToEdge(providerAnchor, "outbound", PIN_RADIUS);
+    const targetPoint = offsetToEdge(consumerAnchor, "inbound", PIN_RADIUS);
     const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
     segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint });
   });
@@ -136,8 +147,14 @@ export function drawConnections(context: ConnectionsContext): void {
   svg.style.width = `${width}px`;
   svg.style.height = `${height}px`;
   svg.style.pointerEvents = "none";
+
+  // Create defs element for gradients
+  const defs = document.createElementNS(context.svgNamespace, "defs");
+  svg.appendChild(defs);
+
   overlay.appendChild(svg);
 
+  let gradientIndex = 0;
   segments.forEach(({ edge, renderDirection, source, target }) => {
     const adjustedSource = {
       x: source.x - bounds.left,
@@ -147,7 +164,8 @@ export function drawConnections(context: ConnectionsContext): void {
       x: target.x - bounds.left,
       y: target.y - bounds.top
     };
-    appendConnectionPath(svg, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier);
+    const gradientId = `conn-grad-${gradientIndex++}`;
+    appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier, gradientId);
   });
 
   overlay.dataset.active = "true";
@@ -155,12 +173,14 @@ export function drawConnections(context: ConnectionsContext): void {
 
 function appendConnectionPath(
   svg: SVGSVGElement,
+  defs: SVGDefsElement,
   source: { x: number; y: number },
   target: { x: number; y: number },
   renderDirection: "inbound" | "outbound",
   edge: LocalEdge,
   svgNamespace: string,
-  tuning: BezierTuning
+  tuning: BezierTuning,
+  gradientId: string
 ): void {
   const horizontalDirection = target.x >= source.x ? 1 : -1;
   const gapX = Math.abs(target.x - source.x);
@@ -181,8 +201,31 @@ function appendConnectionPath(
     commands.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${target.x} ${target.y}`);
   }
 
+  // Create a linear gradient from source (outbound/blue) to target (inbound/green).
+  // Colors match the CSS variables: --outbound-color and --inbound-color.
+  const gradient = document.createElementNS(svgNamespace, "linearGradient");
+  gradient.setAttribute("id", gradientId);
+  gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+  gradient.setAttribute("x1", String(source.x));
+  gradient.setAttribute("y1", String(source.y));
+  gradient.setAttribute("x2", String(target.x));
+  gradient.setAttribute("y2", String(target.y));
+
+  const stopStart = document.createElementNS(svgNamespace, "stop");
+  stopStart.setAttribute("offset", "0%");
+  stopStart.setAttribute("stop-color", "#38bdf8"); // outbound blue (sky-400)
+
+  const stopEnd = document.createElementNS(svgNamespace, "stop");
+  stopEnd.setAttribute("offset", "100%");
+  stopEnd.setAttribute("stop-color", "#34d399"); // inbound green (emerald-400)
+
+  gradient.appendChild(stopStart);
+  gradient.appendChild(stopEnd);
+  defs.appendChild(gradient);
+
   const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
   path.setAttribute("d", commands.join(" "));
+  path.setAttribute("stroke", `url(#${gradientId})`);
   path.classList.add("connection-path", renderDirection);
   path.dataset.kind = edge.kind;
   svg.appendChild(path);

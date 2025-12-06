@@ -419,17 +419,15 @@ button.action-btn.ghost:hover {
     height: 100%;
     pointer-events: none;
     overflow: visible;
-    z-index: 40;
+    /* Keep connectors above cards but below pins */
+    z-index: 20;
     opacity: 0;
     transition: opacity 0.18s ease;
 }
 
-#view-map .connections-layer {
-    z-index: 100;
-}
-
+#view-map .connections-layer,
 #view-circuit .connections-layer {
-    z-index: 41;
+    z-index: 20;
 }
 
 .connections-layer[data-active="true"] {
@@ -461,12 +459,12 @@ button.action-btn.ghost:hover {
     height: 100%;
     overflow: visible;
     position: absolute;
-    z-index: 41;
+    z-index: inherit;
 }
 
 .connection-path {
     fill: none;
-    stroke: var(--connection-stroke);
+    /* stroke is set inline via gradient url() */
     stroke-width: 2.2px;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -474,12 +472,12 @@ button.action-btn.ghost:hover {
 }
 
 .connection-path.outbound {
-    stroke: rgba(0, 145, 255, 0.85);
+    /* Gradient goes blue→green; use blue-tinted glow */
     filter: drop-shadow(0 0 6px rgba(0, 145, 255, 0.35));
 }
 
 .connection-path.inbound {
-    stroke: rgba(0, 211, 170, 0.85);
+    /* Gradient goes blue→green; use green-tinted glow */
     filter: drop-shadow(0 0 6px rgba(0, 211, 170, 0.35));
 }
 

@@ -343,8 +343,16 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
 
   controller.registerAnchor(node.id, "card", card);
 
-  // Note: inbound:* hub removed — the "Internals" pseudo-symbol now serves as the fallback
-  // for inbound connections that don't map to a specific public symbol.
+  const isAsset = (node.archetype || "").toLowerCase() === "asset";
+
+  // For assets: add a node-wide inbound hub (green dot on left) since they don't have an Internals row
+  // For code/test: the "Internals" pseudo-symbol in createSymbolSection serves as inbound:* fallback
+  if (isAsset) {
+    const inboundHub = document.createElement("div");
+    inboundHub.className = "symbol-anchor hub inbound";
+    card.appendChild(inboundHub);
+    controller.registerAnchor(node.id, "inbound:*", inboundHub);
+  }
 
   const outboundHub = document.createElement("div");
   outboundHub.className = "symbol-anchor hub outbound";
@@ -414,12 +422,14 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
   const wrapper = document.createElement("div");
   wrapper.className = "node-symbols";
 
-  if (!node.publicSymbols || node.publicSymbols.length === 0) {
+  const hasPublicSymbols = node.publicSymbols && node.publicSymbols.length > 0;
+
+  if (!hasPublicSymbols) {
     const empty = document.createElement("div");
     empty.className = "node-meta";
     empty.textContent = "No public symbols";
     wrapper.appendChild(empty);
-    return wrapper;
+    // Fall through to add the Internals row as the fallback anchor
   }
 
   const grid = document.createElement("div");
@@ -493,24 +503,27 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
 
   // Add the "Internals" pseudo-symbol at the end — represents private implementation
   // This row only has an inbound anchor (data flows IN but doesn't flow OUT to other files)
-  // Register it as both the specific anchor AND the fallback "inbound:*" so generic connections route here
-  const internalsInbound = document.createElement("div");
-  internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
-  internalsInbound.dataset.symbol = "__internals__";
-  grid.appendChild(internalsInbound);
-  controller.registerAnchor(node.id, "inbound:__internals__", internalsInbound);
-  controller.registerAnchor(node.id, "inbound:*", internalsInbound);
+  // Skip for assets — they use the node-wide inbound hub instead (no internal logic to represent)
+  const isAsset = (node.archetype || "").toLowerCase() === "asset";
+  if (!isAsset) {
+    const internalsInbound = document.createElement("div");
+    internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
+    internalsInbound.dataset.symbol = "__internals__";
+    grid.appendChild(internalsInbound);
+    controller.registerAnchor(node.id, "inbound:__internals__", internalsInbound);
+    controller.registerAnchor(node.id, "inbound:*", internalsInbound);
 
-  const internalsLabel = document.createElement("div");
-  internalsLabel.className = "symbol-label-wrapper internals-label";
-  internalsLabel.innerHTML = `<div class="symbol-label internals-text">⬛ Internals</div>`;
-  internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
-  grid.appendChild(internalsLabel);
+    const internalsLabel = document.createElement("div");
+    internalsLabel.className = "symbol-label-wrapper internals-label";
+    internalsLabel.innerHTML = `<div class="symbol-label internals-text">⬛ Internals</div>`;
+    internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
+    grid.appendChild(internalsLabel);
 
-  // Empty placeholder for the outbound column (internals don't have outbound connections)
-  const internalsOutboundPlaceholder = document.createElement("div");
-  internalsOutboundPlaceholder.className = "symbol-anchor-placeholder";
-  grid.appendChild(internalsOutboundPlaceholder);
+    // Empty placeholder for the outbound column (internals don't have outbound connections)
+    const internalsOutboundPlaceholder = document.createElement("div");
+    internalsOutboundPlaceholder.className = "symbol-anchor-placeholder";
+    grid.appendChild(internalsOutboundPlaceholder);
+  }
 
   wrapper.appendChild(grid);
   return wrapper;

@@ -340,6 +340,14 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `2025-12-04.md:L3200-L3250` — The "test-backed" purple shadow effect must render **behind** the node card, not in front; removing `z-index` from `.node-card` allows `::before` pseudo-elements with `z-index: -1` to escape the stacking context.
 - `2025-12-04.md:L3400-L3450` — Use Simple Browser or Playwright MCP tools with JavaScript evaluation to inspect computed CSS properties and DOM structure when debugging z-index/stacking issues; screenshots alone are insufficient for diagnosing render order problems.
 
+## 2025-12-05 (Dev Day 36)
+- `2025-12-05.md:L115-L135` — Run `combine-summaries.ts` across dev-day summaries to build a temporary combined history, read it for context, and articulate the project story before starting work.
+- `2025-12-05.md:L262-L270` — Improve cross-file type linkage: sample Layer‑4 Live Docs, review prior docstring-bridge work, and design how Public Symbols reference types defined in other Live Docs.
+- `2025-12-05.md:L1040-L1072` — Treat the full `npm run safe:commit -- --benchmarks --report` as the gate before continuing; rerun it verbatim on request.
+- `2025-12-05.md:L1120-L1130` — Explore parallelizing the safe:commit stages (unit, integration, benchmarks, doc/graph/symbol audits) if it keeps CI viability; otherwise acceptable to defer.
+- `2025-12-05.md:L3555-L3560` — Make Public Symbol rows clickable when they correspond to other Live Docs and add a clearly distinct "Internals"/black-box pseudo-symbol as the sink for non-public flows.
+- `2025-12-05.md:L3744-L3750` — Reroute generic inbound connections to the Internals pin, keep its styling readable while preserving the black-box cue, and validate via Playwright/Simple Browser as needed.
+
 ## 2025-12-02 (Dev Day 33)
 - `2025-12-02.md:L199-L207` — Treat the Circuit Board and Local Map as fixed virtual canvases: determine node sizing from canonical metrics, keep layout independent of viewport resizes, and use camera-style transforms for zoom/pan rather than recomputing positions.
 - `2025-12-02.md:L210-L214` — When launching the explorer for validation, start it in a background terminal so the Copilot runner stays responsive while Playwright sessions interact with `localhost:3000`.
