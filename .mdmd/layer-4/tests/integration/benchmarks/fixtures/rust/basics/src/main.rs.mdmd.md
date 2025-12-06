@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/main.rs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-basics-src-main-rs
-- Generated At: 2025-11-18T20:51:25.117Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-main-rs
+- Generated At: 2025-12-06T22:49:48.627Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Serves as the entry point for the Rust basics benchmark, wiring `math` and `util
 Keep the logic intentionally simple; adjust alongside the other `rust/basics` sources to preserve deterministic edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.117Z","inputHash":"187f4c67768ea166"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.627Z","inputHash":"187f4c67768ea166"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

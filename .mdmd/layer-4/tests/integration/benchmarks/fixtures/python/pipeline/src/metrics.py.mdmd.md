@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/metrics.py
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-src-metrics-py
-- Generated At: 2025-11-19T15:01:36.204Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-metrics-py
+- Generated At: 2025-12-06T22:49:48.519Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Calculates aggregate statistics for the Python pipeline benchmark while invoking
 Retain the validation calls ahead of aggregation; they ensure dependency order is visible to the analyzer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.204Z","inputHash":"4248461ae8d9741c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.519Z","inputHash":"4248461ae8d9741c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `compute_summary` {#symbol-compute_summary}

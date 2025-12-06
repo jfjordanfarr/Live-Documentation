@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/data/Repository.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-data-repository-java
-- Generated At: 2025-11-19T15:01:36.159Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-data-repository-java
+- Generated At: 2025-12-06T22:49:48.472Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Fetches datasets for the Java service benchmark, logging access and routing thro
 Keep the logging call and delegation intact; they ensure both util and registry modules appear in the graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.159Z","inputHash":"ba69e4bc2bd0474d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.472Z","inputHash":"ba69e4bc2bd0474d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository (class)` {#symbol-repository-class}

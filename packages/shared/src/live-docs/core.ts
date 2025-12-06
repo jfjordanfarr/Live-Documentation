@@ -278,6 +278,32 @@ export const SUPPORTED_SCRIPT_EXTENSIONS = new Set([
   ".cjs"
 ]);
 
+/**
+ * Extensions that are always treated as implementation code, even under fixture directories.
+ * These files contain analyzable source code with symbols and dependencies.
+ */
+export const IMPLEMENTATION_CODE_EXTENSIONS = new Set([
+  // TypeScript/JavaScript
+  ".ts", ".tsx", ".mts", ".cts",
+  ".js", ".jsx", ".mjs", ".cjs",
+  // C/C++
+  ".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".cxx", ".hxx",
+  // C#
+  ".cs",
+  // Java
+  ".java",
+  // Python
+  ".py",
+  // Ruby
+  ".rb",
+  // Rust
+  ".rs",
+  // PowerShell
+  ".ps1", ".psm1", ".psd1",
+  // ASP.NET Markup (code-behind)
+  ".aspx", ".cshtml", ".razor", ".ascx"
+]);
+
 export const MODULE_RESOLUTION_EXTENSIONS = [
   ".ts",
   ".tsx",
@@ -552,10 +578,27 @@ export function resolveArchetype(
     }
   }
 
-  if (sourcePath.includes("/__fixtures__/") || /\bfixtures\b/.test(sourcePath)) {
+  // Check for test files FIRST - these always take precedence
+  // Matches: *.test.ts, *.spec.ts, *.test.js, etc.
+  const basename = path.basename(sourcePath);
+  if (/\.(test|spec)\.[^.]+$/.test(basename)) {
+    return "test";
+  }
+
+  // Check if this is a fixture directory
+  const isFixturePath = sourcePath.includes("/__fixtures__/") || /\bfixtures\b/.test(sourcePath);
+  
+  if (isFixturePath) {
+    // Fixture files with code extensions are implementation (they have symbols/dependencies)
+    // Non-code fixtures (JSON, config, etc.) are assets
+    const ext = path.extname(sourcePath).toLowerCase();
+    if (IMPLEMENTATION_CODE_EXTENSIONS.has(ext)) {
+      return "implementation";
+    }
     return "asset";
   }
 
+  // Check for test directories (but not individual test files - those were caught above)
   if (/\btests?\b|__tests__/i.test(sourcePath)) {
     return "test";
   }

@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/data/Catalog.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-src-com-example-data-catalog-java
-- Generated At: 2025-11-19T15:01:36.134Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-data-catalog-java
+- Generated At: 2025-12-06T22:49:48.447Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies dataset captions for the Java basic benchmark so summaries can demonstr
 Catalog entries stay intentionally small; expand them only when the fixture needs new graph edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.134Z","inputHash":"9e745427c9b5f008"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.447Z","inputHash":"9e745427c9b5f008"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Catalog` {#symbol-catalog}

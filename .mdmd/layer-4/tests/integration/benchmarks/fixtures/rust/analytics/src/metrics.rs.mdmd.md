@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/metrics.rs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-analytics-src-metrics-rs
-- Generated At: 2025-11-19T15:01:36.295Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-metrics-rs
+- Generated At: 2025-12-06T22:49:48.619Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the summarization and alert thresholds for the Rust analytics benchma
 Preserve the inline documentation and threshold values—they ensure the analyzer sees rich symbol metadata in this fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.295Z","inputHash":"e5c9201114f64861"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.619Z","inputHash":"e5c9201114f64861"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize` {#symbol-summarize}

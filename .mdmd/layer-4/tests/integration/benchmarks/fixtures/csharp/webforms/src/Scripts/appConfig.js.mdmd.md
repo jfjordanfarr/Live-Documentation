@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/src/Scripts/appConfig.js
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-webforms-src-scripts-appconfig-js
-- Generated At: 2025-11-18T20:51:24.486Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-webforms-src-scripts-appconfig-js
+- Generated At: 2025-12-06T22:49:48.429Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Mirrors the client-side bootstrap for the WebForms benchmark, reading hidden fie
 Keep the element IDs and shape of `widgetConfig` stable; regression tests assert on these values.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.486Z","inputHash":"f1e505310e6323c7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.429Z","inputHash":"f1e505310e6323c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

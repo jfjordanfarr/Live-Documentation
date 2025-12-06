@@ -103,7 +103,7 @@ logger *logger_build(logger *handle, int level);
         kind: "import",
         specifier: "logger.h",
         resolvedPath: "src/logger.h",
-        symbols: []
+        symbols: ["logger"]
       }
     ]);
 

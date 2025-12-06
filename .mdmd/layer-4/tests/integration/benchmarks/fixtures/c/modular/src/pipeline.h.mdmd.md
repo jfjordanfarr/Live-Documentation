@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/pipeline.h
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-modular-src-pipeline-h
-- Generated At: 2025-12-06T21:12:45.133Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-modular-src-pipeline-h
+- Generated At: 2025-12-06T22:49:48.368Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the primary analytics entry point for the modular C benchmark, mirroring
 Includes `<stddef.h>` for the `size_t` alias and chains to `metrics.h` so downstream headers stay self-contained during compilation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T21:12:45.133Z","inputHash":"a26b15502ea7d141"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.368Z","inputHash":"a26b15502ea7d141"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PIPELINE_H` {#symbol-pipeline_h}

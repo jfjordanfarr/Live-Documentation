@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/Models/FormattedReport.cs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-models-formattedreport-cs
-- Generated At: 2025-11-19T15:01:36.090Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-models-formattedreport-cs
+- Generated At: 2025-12-06T22:49:48.390Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Represents the rendered diagnostics payload for the C# basic benchmark, pairing 
 This record intentionally mirrors the service output; change it only when the service contract evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.090Z","inputHash":"8c855665f24a133a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.390Z","inputHash":"8c855665f24a133a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FormattedReport (record)` {#symbol-formattedreport-record}

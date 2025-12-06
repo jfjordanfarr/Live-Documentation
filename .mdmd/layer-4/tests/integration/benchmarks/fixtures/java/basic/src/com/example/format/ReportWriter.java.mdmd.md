@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/format/ReportWriter.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-src-com-example-format-reportwriter-java
-- Generated At: 2025-11-19T15:01:36.142Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-format-reportwriter-java
+- Generated At: 2025-12-06T22:49:48.455Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms record collections into summaries for the Java basic benchmark, tying
 Do not reorder the dependency on `Catalog`; it exists to highlight formatter-to-data module edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.142Z","inputHash":"11984193155b950e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.455Z","inputHash":"11984193155b950e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriter` {#symbol-reportwriter}

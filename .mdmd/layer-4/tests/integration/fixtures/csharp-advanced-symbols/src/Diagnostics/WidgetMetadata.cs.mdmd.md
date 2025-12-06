@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs
-- Live Doc ID: LD-asset-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgetmetadata-cs
-- Generated At: 2025-11-19T15:01:36.612Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgetmetadata-cs
+- Generated At: 2025-12-06T22:49:48.915Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tracks the `WidgetMetadata` value type leveraged by the C# advanced symbols fixt
 Retain the constructor guardrails and `WithTag` helper so dependency analysis keeps seeing enrichment paths.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.612Z","inputHash":"bd5e259104a4cc3a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.915Z","inputHash":"bd5e259104a4cc3a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WidgetMetadata (struct)` {#symbol-widgetmetadata-struct}

@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Extensions/WidgetExtensions.cs
-- Live Doc ID: LD-asset-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-extensions-widgetextensions-cs
-- Generated At: 2025-11-19T15:01:36.604Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-extensions-widgetextensions-cs
+- Generated At: 2025-12-06T22:49:48.906Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the `WidgetExtensions` helpers the C# advanced symbols fixture uses to 
 Leave the extension method signature as-is; the benchmark inspects the generated symbol to ensure extension discovery.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.604Z","inputHash":"e1b78a973a1a3020"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.906Z","inputHash":"e1b78a973a1a3020"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WidgetExtensions` {#symbol-widgetextensions}

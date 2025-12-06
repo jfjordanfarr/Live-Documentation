@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/app/App.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-src-com-example-app-app-java
-- Generated At: 2025-11-19T15:01:36.130Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-app-app-java
+- Generated At: 2025-12-06T22:49:48.442Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates the Java basic benchmark by routing datasets through the reader and 
 Retain the argument guard and documentation—they help exercise exception paths and Javadoc parsing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.130Z","inputHash":"5122e401b4d5dabc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.442Z","inputHash":"5122e401b4d5dabc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}

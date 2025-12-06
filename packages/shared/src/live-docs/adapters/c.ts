@@ -33,7 +33,7 @@ export const cAdapter: LanguageAdapter = {
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
     const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
+    const dependencies = await extractDependenciesWithSymbols(content, absolutePath, workspaceRoot);
 
     if (!symbols.length && !dependencies.length) {
       return {
@@ -193,28 +193,150 @@ function stripBlockLine(line: string): string {
   return line.replace(/^\s*\*\s?/, "").replace(/\s+$/u, "");
 }
 
-function extractDependencies(content: string, absolutePath: string, workspaceRoot: string): DependencyEntry[] {
+/**
+ * Enhanced dependency extraction that detects symbol-level usages.
+ *
+ * @remarks
+ * This function not only extracts #include statements but also:
+ * 1. Reads the included header files to discover their public symbols
+ * 2. Scans the current file's body for usages of those symbols
+ * 3. Populates the `symbols` array with actual usages
+ *
+ * This enables the Live Documentation system to generate symbol-level
+ * dependency links (e.g., `logger.log_message` instead of just `logger.h`).
+ */
+async function extractDependenciesWithSymbols(
+  content: string,
+  absolutePath: string,
+  workspaceRoot: string
+): Promise<DependencyEntry[]> {
   const dependencies = new Map<string, DependencyEntry>();
   const directory = path.dirname(absolutePath);
   let match: RegExpExecArray | null;
   INCLUDE_PATTERN.lastIndex = 0;
 
+  // First pass: collect all #include statements
+  const includes: Array<{ specifier: string; resolvedPath?: string; absoluteHeaderPath?: string }> = [];
+
   while ((match = INCLUDE_PATTERN.exec(content)) !== null) {
     const isSystem = match[1] === "<";
     const specifier = match[2];
     const resolvedPath = isSystem ? undefined : resolveInclude(directory, workspaceRoot, specifier);
-    const key = `${specifier}:${resolvedPath ?? "system"}`;
+    const absoluteHeaderPath = resolvedPath ? path.resolve(workspaceRoot, resolvedPath) : undefined;
+    includes.push({ specifier, resolvedPath, absoluteHeaderPath });
+  }
+
+  // Second pass: for resolved includes, extract symbols from header files
+  const headerSymbolsMap = new Map<string, Set<string>>();
+
+  for (const include of includes) {
+    if (!include.absoluteHeaderPath) {
+      continue;
+    }
+
+    try {
+      const headerContent = await fs.readFile(include.absoluteHeaderPath, "utf8");
+      const headerSymbols = extractSymbols(headerContent);
+      const symbolNames = new Set(headerSymbols.map(symbol => symbol.name));
+      headerSymbolsMap.set(include.resolvedPath!, symbolNames);
+    } catch {
+      // Header file not readable, continue without symbol info
+    }
+  }
+
+  // Third pass: scan current file body for usages of header symbols
+  const usedSymbols = detectSymbolUsages(content, headerSymbolsMap);
+
+  // Build final dependency entries with symbol information
+  for (const include of includes) {
+    const key = `${include.specifier}:${include.resolvedPath ?? "system"}`;
     if (!dependencies.has(key)) {
+      const symbols = include.resolvedPath
+        ? Array.from(usedSymbols.get(include.resolvedPath) ?? []).sort()
+        : [];
+
       dependencies.set(key, {
-        specifier,
-        resolvedPath,
-        symbols: [],
+        specifier: include.specifier,
+        resolvedPath: include.resolvedPath,
+        symbols,
         kind: "import"
       });
     }
   }
 
   return Array.from(dependencies.values()).sort((left, right) => left.specifier.localeCompare(right.specifier));
+}
+
+/**
+ * Detects which symbols from included headers are actually used in the source.
+ *
+ * @param content - The source file content to scan
+ * @param headerSymbolsMap - Map of header path to set of symbol names defined in that header
+ * @returns Map of header path to set of symbol names used from that header
+ */
+function detectSymbolUsages(
+  content: string,
+  headerSymbolsMap: Map<string, Set<string>>
+): Map<string, Set<string>> {
+  const usedSymbols = new Map<string, Set<string>>();
+
+  // Strip comments and string literals to avoid false positives
+  const strippedContent = stripCommentsAndStrings(content);
+
+  for (const [headerPath, symbolNames] of headerSymbolsMap) {
+    const used = new Set<string>();
+
+    for (const symbolName of symbolNames) {
+      // Skip include guards (typically FILENAME_H patterns)
+      if (/^[A-Z_]+_H$/.test(symbolName)) {
+        continue;
+      }
+
+      // Look for symbol usage patterns:
+      // 1. Function calls: symbolName(
+      // 2. Type references: struct symbolName, enum symbolName, symbolName varname
+      // 3. Macro usages: symbolName (as identifier, not in #define)
+      const usagePattern = new RegExp(
+        `(?<!#\\s*define\\s+)\\b${escapeRegExp(symbolName)}\\b`,
+        "g"
+      );
+
+      if (usagePattern.test(strippedContent)) {
+        used.add(symbolName);
+      }
+    }
+
+    if (used.size > 0) {
+      usedSymbols.set(headerPath, used);
+    }
+  }
+
+  return usedSymbols;
+}
+
+/**
+ * Strips C/C++ comments and string literals from source content.
+ * This prevents false positive symbol matches inside comments or strings.
+ */
+function stripCommentsAndStrings(content: string): string {
+  // Remove block comments /* ... */
+  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
+
+  // Remove line comments // ...
+  result = result.replace(/\/\/[^\n]*/g, " ");
+
+  // Remove string literals "..." and '...'
+  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
+  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
+
+  return result;
+}
+
+/**
+ * Escapes special regex characters in a string.
+ */
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function resolveInclude(directory: string, workspaceRoot: string, specifier: string): string | undefined {

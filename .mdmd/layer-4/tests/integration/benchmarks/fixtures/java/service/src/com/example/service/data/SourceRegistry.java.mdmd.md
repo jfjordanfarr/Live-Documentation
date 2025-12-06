@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/data/SourceRegistry.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-data-sourceregistry-java
-- Generated At: 2025-11-19T15:01:36.163Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-data-sourceregistry-java
+- Generated At: 2025-12-06T22:49:48.476Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains the in-memory dataset catalog for the Java service benchmark so resolv
 Sample values stay intentionally small; tweak them only if the benchmark needs additional dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.163Z","inputHash":"6660ce3c49745565"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.476Z","inputHash":"6660ce3c49745565"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceRegistry (class)` {#symbol-sourceregistry-class}

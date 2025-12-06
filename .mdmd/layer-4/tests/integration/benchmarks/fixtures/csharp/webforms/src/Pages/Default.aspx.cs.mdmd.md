@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/src/Pages/Default.aspx.cs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-webforms-src-pages-default-aspx-cs
-- Generated At: 2025-11-19T15:01:36.114Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-webforms-src-pages-default-aspx-cs
+- Generated At: 2025-12-06T22:49:48.421Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the WebForms code-behind for the benchmark page, populating hidden fi
 Preserve the `Page_Load` behavior; client tests depend on the hidden values being assigned during initial render.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.114Z","inputHash":"7bce40739bce1434"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.421Z","inputHash":"7bce40739bce1434"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Default` {#symbol-default}

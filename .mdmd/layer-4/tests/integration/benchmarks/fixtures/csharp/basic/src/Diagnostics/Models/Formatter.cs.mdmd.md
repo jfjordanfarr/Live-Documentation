@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/Models/Formatter.cs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-models-formatter-cs
-- Generated At: 2025-11-19T15:01:36.094Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-models-formatter-cs
+- Generated At: 2025-12-06T22:49:48.394Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats diagnostics records for the C# basic benchmark, demonstrating culture-aw
 Retain the `Render` method's copy semantics and comment—they ensure the analyzer observes immutable record patterns.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.094Z","inputHash":"826a46cc8a39e49a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.394Z","inputHash":"826a46cc8a39e49a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Formatter` {#symbol-formatter}

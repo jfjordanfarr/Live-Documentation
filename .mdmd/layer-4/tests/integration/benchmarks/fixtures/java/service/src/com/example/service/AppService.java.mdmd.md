@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/AppService.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-appservice-java
-- Generated At: 2025-11-19T15:01:36.152Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-appservice-java
+- Generated At: 2025-12-06T22:49:48.466Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates repository and analyzer dependencies for the Java service benchmark 
 Leave the constructor and `generate` method focused on delegation; additional logic belongs in the collaborators.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.152Z","inputHash":"babb11380d810ff7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.466Z","inputHash":"babb11380d810ff7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AppService (class)` {#symbol-appservice-class}

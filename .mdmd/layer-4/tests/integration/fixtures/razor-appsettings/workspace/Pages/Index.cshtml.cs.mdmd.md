@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs
-- Live Doc ID: LD-asset-tests-integration-fixtures-razor-appsettings-workspace-pages-index-cshtml-cs
-- Generated At: 2025-11-19T15:01:37.031Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-razor-appsettings-workspace-pages-index-cshtml-cs
+- Generated At: 2025-12-06T22:49:55.213Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Backs the Razor telemetry page by promoting `appsettings.json` values into view 
 - Mirrors the Blazor `_Host` model to keep parity across ASP.NET fixtures; future coverage comparing the two will rely on this doc’s dependency links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:37.031Z","inputHash":"cf530d938b40fcb9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:55.213Z","inputHash":"cf530d938b40fcb9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IndexModel (class)` {#symbol-indexmodel-class}

@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/src/main.c
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-basics-src-main-c
-- Generated At: 2025-11-19T15:01:36.048Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-basics-src-main-c
+- Generated At: 2025-12-06T23:20:02.980Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the C basics benchmark, calling into `util` so the analyzer obse
 The body must stay compact; its role is to surface the `build_widget` usage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.048Z","inputHash":"19b2d93d5a93ff1a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:20:02.980Z","inputHash":"295e3be966f16b37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
@@ -31,5 +31,6 @@ int Zero when widget math behaves as expected.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`util`](./util.h.mdmd.md)
+- [`util.build_widget`](./util.h.mdmd.md#symbol-build_widget)
+- [`util.widget`](./util.h.mdmd.md#symbol-widget)
 <!-- LIVE-DOC:END Dependencies -->

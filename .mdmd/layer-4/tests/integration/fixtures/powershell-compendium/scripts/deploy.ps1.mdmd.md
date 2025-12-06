@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1
-- Live Doc ID: LD-asset-tests-integration-fixtures-powershell-compendium-scripts-deploy-ps1
-- Generated At: 2025-11-20T18:00:45.283Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-scripts-deploy-ps1
+- Generated At: 2025-12-06T22:49:51.780Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Simulate a deployment entry point that dot-sources helpers, imports a custom mod
 Pairs with the module and logging fixtures to exercise dependency fan-out, ensuring Live Docs records module, requirement, and dot-source edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T18:00:45.283Z","inputHash":"a2b68330780a4448"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:51.780Z","inputHash":"a2b68330780a4448"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Invoke-Deployment` {#symbol-invokedeployment}

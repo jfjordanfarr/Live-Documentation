@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/lib/commands/report.rb
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-lib-commands-report-rb
-- Generated At: 2025-11-19T15:01:36.259Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-cli-lib-commands-report-rb
+- Generated At: 2025-12-06T22:49:48.578Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the `report` command for the Ruby CLI benchmark, stitching together s
 Keep the flow focused on service calls; this command intentionally avoids extra logic to highlight dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.259Z","inputHash":"db70eacab928aa73"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.578Z","inputHash":"db70eacab928aa73"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

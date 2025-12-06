@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs
-- Live Doc ID: LD-asset-tests-integration-fixtures-csharp-reflection-workspace-services-reflectionfactory-cs
-- Generated At: 2025-11-19T15:01:36.789Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-reflection-workspace-services-reflectionfactory-cs
+- Generated At: 2025-12-06T22:49:49.089Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Models a reflection-based factory that wires telemetry handlers without direct t
 - Emits the fully-qualified type name as a dependency anchor, which the inspect CLI consumes when traversing from factories to generated handler docs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.789Z","inputHash":"f211cf208c263464"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:49.089Z","inputHash":"f211cf208c263464"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReflectionFactory` {#symbol-reflectionfactory}

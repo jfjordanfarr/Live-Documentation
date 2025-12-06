@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1
-- Live Doc ID: LD-asset-tests-integration-fixtures-powershell-compendium-modules-inventory-psm1
-- Generated At: 2025-11-20T18:00:44.488Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-modules-inventory-psm1
+- Generated At: 2025-12-06T22:49:50.925Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Model a simple inventory module so the adapter can prove it honors Export-Module
 `Get-InventorySecret` remains unexported on purpose to ensure the test catches any leakage of internal helpers into Live Docs output.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T18:00:44.488Z","inputHash":"122913b35589da6b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:50.925Z","inputHash":"122913b35589da6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Get-InventorySnapshot` {#symbol-getinventorysnapshot}

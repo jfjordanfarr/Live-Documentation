@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/utils/format.ts
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-layered-src-utils-format-ts
-- Generated At: 2025-12-05T15:37:27.882Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-utils-format-ts
+- Generated At: 2025-12-06T22:49:48.694Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Finishes the `ts-layered` runtime chain by emitting the formatted report string,
 - Uses simple aggregation to keep diffs stable while still demonstrating that value-level dependencies survive the analyzer pipeline.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:27.882Z","inputHash":"9097a068627812d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.694Z","inputHash":"9097a068627812d0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatReport` {#symbol-formatreport}

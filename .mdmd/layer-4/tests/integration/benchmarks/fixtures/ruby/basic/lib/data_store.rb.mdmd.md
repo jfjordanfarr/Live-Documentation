@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/basic/lib/data_store.rb
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-basic-lib-data-store-rb
-- Generated At: 2025-11-19T15:01:36.231Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-basic-lib-data-store-rb
+- Generated At: 2025-12-06T22:49:48.546Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains the static datasets for the Ruby basic benchmark so dependency analysi
 Dataset keys and values are intentionally small; change them only when expanding fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.231Z","inputHash":"0827a5cb082e72b8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.546Z","inputHash":"0827a5cb082e72b8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}

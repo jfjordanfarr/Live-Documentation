@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/model/Record.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-src-com-example-model-record-java
-- Generated At: 2025-11-19T15:01:36.145Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-model-record-java
+- Generated At: 2025-12-06T22:49:48.459Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the immutable `Record` used throughout the Java basic benchmark so the a
 Field names should stay aligned with formatter expectations; change them only with corresponding pipeline updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.145Z","inputHash":"212a5fe1a9474bfb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.459Z","inputHash":"212a5fe1a9474bfb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}

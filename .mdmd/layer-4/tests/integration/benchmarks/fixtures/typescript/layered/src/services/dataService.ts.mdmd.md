@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/services/dataService.ts
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-layered-src-services-dataservice-ts
-- Generated At: 2025-11-19T15:01:36.359Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-services-dataservice-ts
+- Generated At: 2025-12-06T22:49:48.684Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the intermediate service layer for the `ts-layered` benchmark so depend
 - Instantiates `StorageClient` at module scope to highlight runtime evaluation and ensure static analyzers respect constructor side effects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.359Z","inputHash":"a127bc3d986816ad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.684Z","inputHash":"a127bc3d986816ad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadWidgetMetrics` {#symbol-loadwidgetmetrics}

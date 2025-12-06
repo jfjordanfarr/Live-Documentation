@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs
-- Live Doc ID: LD-asset-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-rendercontext-cs
-- Generated At: 2025-11-19T15:01:36.608Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-rendercontext-cs
+- Generated At: 2025-12-06T22:49:48.910Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Describes the `RenderContext` helper consumed by the C# advanced symbols fixture
 Preserve the null-checks and event recording semantics—they intentionally surface analyzer inputs for the benchmark.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.608Z","inputHash":"7f8dc149a921c70c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.910Z","inputHash":"7f8dc149a921c70c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RenderContext (class)` {#symbol-rendercontext-class}

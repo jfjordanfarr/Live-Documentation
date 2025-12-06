@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/App.cs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-app-cs
-- Generated At: 2025-11-19T15:01:36.082Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-app-cs
+- Generated At: 2025-12-06T22:49:48.381Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates the C# basic diagnostics benchmark by instantiating repository, form
 Keep the control flow direct; the goal is to surface namespace interactions rather than additional logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.082Z","inputHash":"cce8bcc1dd7f2506"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.381Z","inputHash":"cce8bcc1dd7f2506"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}

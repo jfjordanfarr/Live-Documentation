@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/analytics/Analyzer.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-analytics-analyzer-java
-- Generated At: 2025-11-19T15:01:36.156Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-analytics-analyzer-java
+- Generated At: 2025-12-06T22:49:48.470Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the analytics workflow for the Java service benchmark, logging progress and
 Preserve both logging statements; they provide the analyzer with multiple util dependencies in a single method.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.156Z","inputHash":"c2fc85eafc9e7f4c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.470Z","inputHash":"c2fc85eafc9e7f4c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Analyzer (class)` {#symbol-analyzer-class}

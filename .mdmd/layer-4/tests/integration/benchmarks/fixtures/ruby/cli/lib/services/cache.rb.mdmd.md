@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/lib/services/cache.rb
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-lib-services-cache-rb
-- Generated At: 2025-11-19T15:01:36.267Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-cli-lib-services-cache-rb
+- Generated At: 2025-12-06T22:49:48.587Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the memoization layer for the Ruby CLI benchmark so the analyzer enco
 The store intentionally uses `object_id` keys; adjust cautiously to avoid breaking deterministic cache behavior in tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.267Z","inputHash":"071058bcf10dd6ee"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.587Z","inputHash":"071058bcf10dd6ee"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

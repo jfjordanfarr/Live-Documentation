@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/simple-workspace/src/dataAlpha.ts
-- Live Doc ID: LD-asset-tests-integration-fixtures-simple-workspace-src-dataalpha-ts
-- Generated At: 2025-11-19T15:01:37.053Z
+- Live Doc ID: LD-implementation-tests-integration-fixtures-simple-workspace-src-dataalpha-ts
+- Generated At: 2025-12-06T22:49:55.232Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Supplies the canonical “alpha” payload variant that the US1 integration suit
 - The payload currently participates in clean fixture verification (`npm run fixtures:verify`) alongside the rest of simple-workspace; re-run that manifest whenever timestamps or formatting change <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5288-L5320>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:37.053Z","inputHash":"05747524ba4cc8ed"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:55.232Z","inputHash":"05747524ba4cc8ed"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createAlphaPayload` {#symbol-createalphapayload}

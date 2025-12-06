@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/basic/lib/templates.rb
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-basic-lib-templates-rb
-- Generated At: 2025-11-19T15:01:36.249Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-basic-lib-templates-rb
+- Generated At: 2025-12-06T22:49:48.566Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats summarized metrics for the Ruby basic benchmark so the analyzer observes
 Keep the string template stable; downstream assertions rely on the current total/count wording.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.249Z","inputHash":"5ca7882acc87663d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.566Z","inputHash":"5ca7882acc87663d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}

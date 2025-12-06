@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: test
 - Code Path: tests/integration/live-docs/polyglot-fixtures.test.ts
-- Live Doc ID: LD-asset-tests-integration-live-docs-polyglot-fixtures-test-ts
-- Generated At: 2025-11-16T22:34:14.332Z
+- Live Doc ID: LD-test-tests-integration-live-docs-polyglot-fixtures-test-ts
+- Generated At: 2025-12-06T23:12:08.808Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the Live Docs generator across the curated polyglot fixture workspaces so w
 - Expanded iteratively as new adapters landed—first adding Java coverage, then layering in the rest of the Roslyn-era fixtures—so the suite snapshots representative markdown for every supported language ([Java adapter expansion](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-13.SUMMARIZED.md#turn-05-extend-polyglot-integration-test-lines-901-1020)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:14.332Z","inputHash":"9cbb4f59d28cf6b7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:12:08.808Z","inputHash":"9cbb4f59d28cf6b7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,3 +28,13 @@ _No public symbols detected_
 - `node:os` - `os`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

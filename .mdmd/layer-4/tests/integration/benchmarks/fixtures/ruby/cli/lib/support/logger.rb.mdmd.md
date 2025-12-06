@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/lib/support/logger.rb
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-lib-support-logger-rb
-- Generated At: 2025-11-19T15:01:36.274Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-cli-lib-support-logger-rb
+- Generated At: 2025-12-06T22:49:48.596Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the lightweight logging backend for the Ruby CLI benchmark so support m
 Leave the API minimal; the analyzer relies on these two methods to map support module usage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.274Z","inputHash":"c227cdecfe41f0e7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.596Z","inputHash":"c227cdecfe41f0e7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

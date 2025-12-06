@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/pipeline.py
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-src-pipeline-py
-- Generated At: 2025-11-19T15:01:36.208Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-pipeline-py
+- Generated At: 2025-12-06T22:49:48.522Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates report construction for the Python pipeline benchmark, tying reposi
 Maintain the dataclass wrapper and sequencing—they model the minimal integration flow the benchmark expects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.208Z","inputHash":"af5603c39fb88052"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.522Z","inputHash":"af5603c39fb88052"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}

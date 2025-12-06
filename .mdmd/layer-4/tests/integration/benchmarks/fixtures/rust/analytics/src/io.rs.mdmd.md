@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/io.rs
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-analytics-src-io-rs
-- Generated At: 2025-11-19T15:01:36.285Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-io-rs
+- Generated At: 2025-12-06T22:49:48.608Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies deterministic sample data for the Rust analytics benchmark so the analy
 Adjust the shape of the sample sets only when the benchmark needs new dependency edges; keep labels simple for readability.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.285Z","inputHash":"1c1a648faf0a981f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.608Z","inputHash":"1c1a648faf0a981f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}

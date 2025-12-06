@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/repositories.py
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-src-repositories-py
-- Generated At: 2025-11-19T15:01:36.212Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-repositories-py
+- Generated At: 2025-12-06T22:49:48.526Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides dataset loading for the Python pipeline benchmark, including error path
 Dataset values are intentionally simple; adjust the structure only when altering expected analyzer edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.212Z","inputHash":"119fada53ac5392b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.526Z","inputHash":"119fada53ac5392b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}

@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/data/Reader.java
-- Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-src-com-example-data-reader-java
-- Generated At: 2025-11-19T15:01:36.138Z
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-data-reader-java
+- Generated At: 2025-12-06T22:49:48.451Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads synthetic records for the Java basic benchmark, illustrating how data modu
 Keep the sample values predictable; analyzer regressions rely on this deterministic dataset.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.138Z","inputHash":"8c204d80fe422fc5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.451Z","inputHash":"8c204d80fe422fc5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Reader` {#symbol-reader}
