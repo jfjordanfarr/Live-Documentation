@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/render.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-render-ts
-- Generated At: 2025-12-05T20:44:56.291Z
+- Generated At: 2025-12-06T13:36:26.733Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:56.291Z","inputHash":"b307e620975f269c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.733Z","inputHash":"fe70b0066a82faf4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderLocalView` {#symbol-renderlocalview}
@@ -35,6 +35,7 @@ _Pending notes_
 - [`layoutUtils.measureDirectoryTree`](../layoutUtils.ts.mdmd.md#symbol-measuredirectorytree)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`types.CenterAlignmentGuides`](./types.ts.mdmd.md#symbol-centeralignmentguides) (type-only)
+- [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 - [`types.ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference) (type-only)

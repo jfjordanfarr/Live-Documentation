@@ -19,6 +19,7 @@ import {
 import type {
   Bounds,
   CenterAlignmentGuides,
+  ColumnRole,
   LocalViewApi,
   LocalViewOptions,
   LayoutExtents,
@@ -126,7 +127,7 @@ export class LocalViewController implements LocalViewApi {
       runtime: this.runtime,
       state: this.options.state,
       svgNamespace: this.svgNamespace,
-      getAnchor: (nodeId, direction, symbol) => this.getAnchor(nodeId, direction, symbol),
+      getAnchor: (nodeId, columnRole, direction, symbol) => this.getAnchor(nodeId, columnRole, direction, symbol),
       measureLayoutExtents: () => this.measureLayoutExtents()
     });
   }
@@ -278,8 +279,8 @@ export class LocalViewController implements LocalViewApi {
     this.runtime.contentRoot = value;
   }
 
-  registerAnchor(nodeId: string, key: string, element: HTMLElement): void {
-    storeAnchor(this.runtime.anchorRegistry, nodeId, key, element, keyValue =>
+  registerAnchor(nodeId: string, columnRole: ColumnRole, key: string, element: HTMLElement): void {
+    storeAnchor(this.runtime.anchorRegistry, nodeId, columnRole, key, element, keyValue =>
       this.tryBuildNormalizedKey(keyValue)
     );
   }
@@ -288,8 +289,8 @@ export class LocalViewController implements LocalViewApi {
     clearAnchorRegistry(this.runtime.anchorRegistry);
   }
 
-  getAnchor(nodeId: string, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
-    return fetchAnchor(this.runtime.anchorRegistry, nodeId, direction, symbol, (dir, sym) =>
+  getAnchor(nodeId: string, columnRole: ColumnRole, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
+    return fetchAnchor(this.runtime.anchorRegistry, nodeId, columnRole, direction, symbol, (dir, sym) =>
       this.buildNormalizedAnchorKey(dir, sym)
     );
   }

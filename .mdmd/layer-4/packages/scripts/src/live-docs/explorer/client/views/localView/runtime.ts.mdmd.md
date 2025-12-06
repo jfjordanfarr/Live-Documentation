@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-runtime-ts
-- Generated At: 2025-12-05T04:16:17.443Z
+- Generated At: 2025-12-06T13:36:26.738Z
 
 ## Authored
 ### Purpose
@@ -15,45 +15,55 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.443Z","inputHash":"deddc7db626cbe1d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.738Z","inputHash":"d1c0d4f0fa7411f1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorRegistry` {#symbol-anchorregistry}
 - Type: type
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L3)
 
+#### `buildRegistryKey` {#symbol-buildregistrykey}
+- Type: function
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L9)
+- Parameters: `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
+
+##### `buildRegistryKey` — Summary
+Builds the composite registry key for anchor storage.
+Format: `{columnRole}:{nodeId}` to disambiguate nodes appearing in multiple columns.
+
 #### `DragPosition` {#symbol-dragposition}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L5)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L13)
 
 #### `LocalViewRuntime` {#symbol-localviewruntime}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L11)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L19)
 
 #### `createRuntime` {#symbol-createruntime}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L30)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L38)
 - Returns: `LocalViewRuntime`
 - Parameters: `viewport`: `HTMLDivElement`; `container`: `HTMLDivElement`; `overlay`: `HTMLDivElement`
 
 #### `registerAnchor` {#symbol-registeranchor}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L55)
-- Parameters: `registry`: `AnchorRegistry`
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L63)
+- Parameters: `registry`: `AnchorRegistry`; `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 #### `getAnchor` {#symbol-getanchor}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L73)
-- Parameters: `registry`: `AnchorRegistry`
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L83)
+- Parameters: `registry`: `AnchorRegistry`; `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 #### `clearAnchorRegistry` {#symbol-clearanchorregistry}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L104)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts#L116)
 - Parameters: `registry`: `AnchorRegistry`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

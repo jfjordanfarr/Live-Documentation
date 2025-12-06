@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-controller-ts
-- Generated At: 2025-12-05T15:37:23.111Z
+- Generated At: 2025-12-06T13:36:26.715Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.111Z","inputHash":"b2dcbbe7badcb79a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.715Z","inputHash":"e680878e62fadadc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L29)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L30)
 - Implements: [`LocalViewApi`](./index.ts.mdmd.md#symbol-localviewapi)
 <!-- LIVE-DOC:END Public Symbols -->
 
@@ -35,6 +35,7 @@ _Pending notes_
 - [`runtime.registerAnchor`](./runtime.ts.mdmd.md#symbol-registeranchor)
 - [`types.Bounds`](./types.ts.mdmd.md#symbol-bounds) (type-only)
 - [`types.CenterAlignmentGuides`](./types.ts.mdmd.md#symbol-centeralignmentguides) (type-only)
+- [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)

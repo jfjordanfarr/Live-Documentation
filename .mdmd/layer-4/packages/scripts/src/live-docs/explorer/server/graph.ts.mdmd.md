@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/graph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-graph-ts
-- Generated At: 2025-12-05T20:44:56.321Z
+- Generated At: 2025-12-06T13:59:54.233Z
 
 ## Authored
 ### Purpose
@@ -15,16 +15,16 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:56.321Z","inputHash":"eeac6d1952c01c2c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:59:54.233Z","inputHash":"9a55d2b77a8a240e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L28)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L32)
 
 #### `normalizeDocPath` {#symbol-normalizedocpath}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L127)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L134)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

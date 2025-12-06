@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-types-ts
-- Generated At: 2025-12-05T20:44:56.299Z
+- Generated At: 2025-12-06T13:36:26.744Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:56.299Z","inputHash":"c99efb496848fad9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.744Z","inputHash":"6cef6d915b850be7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
@@ -49,6 +49,19 @@ _Pending notes_
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L66)
+
+#### `ColumnRole` {#symbol-columnrole}
+- Type: type
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/types.ts#L81)
+
+##### `ColumnRole` — Summary
+Column role for anchor registration disambiguation.
+Uses semantic names (upstream/downstream) instead of spatial (left/right)
+to future-proof for multi-hop graph expansion.
+
+- `upstream`: Dependencies column (data flows FROM these nodes)
+- `center`: Focus/selected node column
+- `downstream`: Dependents column (data flows TO these nodes)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

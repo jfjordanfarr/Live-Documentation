@@ -68,3 +68,14 @@ export interface MapTransform {
   y: number;
   k: number;
 }
+
+/**
+ * Column role for anchor registration disambiguation.
+ * Uses semantic names (upstream/downstream) instead of spatial (left/right)
+ * to future-proof for multi-hop graph expansion.
+ * 
+ * - `upstream`: Dependencies column (data flows FROM these nodes)
+ * - `center`: Focus/selected node column
+ * - `downstream`: Dependents column (data flows TO these nodes)
+ */
+export type ColumnRole = "upstream" | "center" | "downstream";

@@ -1,6 +1,14 @@
-import type { LocalSubgraph, MapTransform } from "./types";
+import type { ColumnRole, LocalSubgraph, MapTransform } from "./types";
 
 export type AnchorRegistry = Map<string, Map<string, HTMLElement>>;
+
+/**
+ * Builds the composite registry key for anchor storage.
+ * Format: `{columnRole}:{nodeId}` to disambiguate nodes appearing in multiple columns.
+ */
+export function buildRegistryKey(columnRole: ColumnRole, nodeId: string): string {
+  return `${columnRole}:${nodeId}`;
+}
 
 export interface DragPosition {
   x: number;
@@ -55,14 +63,16 @@ export function createRuntime(
 export function registerAnchor(
   registry: AnchorRegistry,
   nodeId: string,
+  columnRole: ColumnRole,
   key: string,
   element: HTMLElement,
   normalize: (key: string) => string | null
 ): void {
-  if (!registry.has(nodeId)) {
-    registry.set(nodeId, new Map());
+  const registryKey = buildRegistryKey(columnRole, nodeId);
+  if (!registry.has(registryKey)) {
+    registry.set(registryKey, new Map());
   }
-  const anchors = registry.get(nodeId)!;
+  const anchors = registry.get(registryKey)!;
   anchors.set(key, element);
   const normalizedKey = normalize(key);
   if (normalizedKey) {
@@ -73,11 +83,13 @@ export function registerAnchor(
 export function getAnchor(
   registry: AnchorRegistry,
   nodeId: string,
+  columnRole: ColumnRole,
   direction: "inbound" | "outbound",
   symbol: string | undefined,
   buildNormalizedKey: (direction: "inbound" | "outbound", symbol: string) => string | null
 ): HTMLElement | null {
-  const anchors = registry.get(nodeId);
+  const registryKey = buildRegistryKey(columnRole, nodeId);
+  const anchors = registry.get(registryKey);
   if (!anchors) {
     return null;
   }

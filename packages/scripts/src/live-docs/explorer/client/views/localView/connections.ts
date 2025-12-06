@@ -1,12 +1,12 @@
 import type { LocalViewRuntime } from "./runtime";
-import type { LayoutExtents, LocalEdge } from "./types";
+import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState } from "../../types";
 
 export interface ConnectionsContext {
   runtime: LocalViewRuntime;
   state: ExplorerState;
   svgNamespace: string;
-  getAnchor: (nodeId: string, direction: "inbound" | "outbound", symbol?: string) => HTMLElement | null;
+  getAnchor: (nodeId: string, columnRole: ColumnRole, direction: "inbound" | "outbound", symbol?: string) => HTMLElement | null;
   measureLayoutExtents: () => LayoutExtents | null;
 }
 
@@ -109,13 +109,15 @@ export function drawConnections(context: ConnectionsContext): void {
     // For dependents (direction === "inbound"), draw from the center's outbound side to the dependent's inbound side.
     const isDependency = edge.direction === "outbound";
 
+    // Column role mapping:
+    // - Dependencies live in "upstream" column, center node in "center", dependents in "downstream"
     const providerAnchor = isDependency
-      ? measureAnchor(context.getAnchor(edge.targetId, "outbound", edge.targetSymbol))
-      : measureAnchor(context.getAnchor(centerId, "outbound", edge.targetSymbol));
+      ? measureAnchor(context.getAnchor(edge.targetId, "upstream", "outbound", edge.targetSymbol))
+      : measureAnchor(context.getAnchor(centerId, "center", "outbound", edge.targetSymbol));
 
     const consumerAnchor = isDependency
-      ? measureAnchor(context.getAnchor(centerId, "inbound", edge.sourceSymbol))
-      : measureAnchor(context.getAnchor(edge.sourceId, "inbound", edge.sourceSymbol));
+      ? measureAnchor(context.getAnchor(centerId, "center", "inbound", edge.sourceSymbol))
+      : measureAnchor(context.getAnchor(edge.sourceId, "downstream", "inbound", edge.sourceSymbol));
 
     if (!providerAnchor || !consumerAnchor) {
       return;

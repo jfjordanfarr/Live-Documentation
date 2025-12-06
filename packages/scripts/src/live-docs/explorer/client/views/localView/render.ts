@@ -9,7 +9,7 @@ import {
 } from "../layoutUtils";
 import type { DirectoryLayoutPlan } from "../layoutUtils";
 import type { LocalViewController } from "./controller";
-import type { CenterAlignmentGuides } from "./types";
+import type { CenterAlignmentGuides, ColumnRole } from "./types";
 
 export function renderLocalView(controller: LocalViewController): void {
   const container = controller.getContainer();
@@ -151,7 +151,7 @@ function createHierarchicalColumn(
     const focusSurface = document.createElement("div");
     focusSurface.className = "local-focus-surface";
     nodes.forEach(node => {
-      const card = createNodeCard(controller, node);
+      const card = createNodeCard(controller, node, "center");
       card.classList.add("focus-node");
       focusSurface.appendChild(card);
     });
@@ -272,8 +272,12 @@ function createStackedColumn(
 
     const content = document.createElement("div");
     content.className = "local-stack-group__content";
+    // Map edge direction to column role:
+    // - "outbound" edges → "upstream" column (dependencies — data flows FROM these)
+    // - "inbound" edges → "downstream" column (dependents — data flows TO these)
+    const columnRole: ColumnRole = direction === "outbound" ? "upstream" : "downstream";
     group.nodes.forEach(entry => {
-      const card = createNodeCard(controller, entry.node);
+      const card = createNodeCard(controller, entry.node, columnRole);
       card.classList.add("layout-node", "stacked-node");
       card.dataset.direction = direction;
       content.appendChild(card);
@@ -328,10 +332,15 @@ function computeDirectionalAlignmentValue(
   return focusFallback !== undefined ? focusFallback : Number.POSITIVE_INFINITY;
 }
 
-function createNodeCard(controller: LocalViewController, node: ExplorerNodePayload): HTMLElement {
+function createNodeCard(
+  controller: LocalViewController,
+  node: ExplorerNodePayload,
+  columnRole: ColumnRole
+): HTMLElement {
   const card = document.createElement("div");
   card.className = "node-card";
   card.dataset.id = node.id;
+  card.dataset.columnRole = columnRole;
   card.title = node.codeRelativePath;
   card.tabIndex = 0;
 
@@ -341,7 +350,7 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
     card.classList.add("selected", "local-focus");
   }
 
-  controller.registerAnchor(node.id, "card", card);
+  controller.registerAnchor(node.id, columnRole, "card", card);
 
   const isAsset = (node.archetype || "").toLowerCase() === "asset";
 
@@ -351,13 +360,13 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
     const inboundHub = document.createElement("div");
     inboundHub.className = "symbol-anchor hub inbound";
     card.appendChild(inboundHub);
-    controller.registerAnchor(node.id, "inbound:*", inboundHub);
+    controller.registerAnchor(node.id, columnRole, "inbound:*", inboundHub);
   }
 
   const outboundHub = document.createElement("div");
   outboundHub.className = "symbol-anchor hub outbound";
   card.appendChild(outboundHub);
-  controller.registerAnchor(node.id, "outbound:*", outboundHub);
+  controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
 
   const header = document.createElement("div");
   header.className = "node-title";
@@ -369,7 +378,7 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
   pathElement.textContent = node.codeRelativePath;
   card.appendChild(pathElement);
 
-  card.appendChild(createSymbolSection(controller, node));
+  card.appendChild(createSymbolSection(controller, node, columnRole));
 
   if (!controller.isTestNode(node) && state.filters.showTests) {
     const backing = testCoverage.get(node.id);
@@ -418,7 +427,11 @@ function createNodeCard(controller: LocalViewController, node: ExplorerNodePaylo
   return card;
 }
 
-function createSymbolSection(controller: LocalViewController, node: ExplorerNodePayload): HTMLElement {
+function createSymbolSection(
+  controller: LocalViewController,
+  node: ExplorerNodePayload,
+  columnRole: ColumnRole
+): HTMLElement {
   const wrapper = document.createElement("div");
   wrapper.className = "node-symbols";
 
@@ -452,7 +465,7 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
     inboundAnchor.className = "symbol-anchor dot inbound";
     inboundAnchor.dataset.symbol = symbol;
     grid.appendChild(inboundAnchor);
-    controller.registerAnchor(node.id, `inbound:${symbol}`, inboundAnchor);
+    controller.registerAnchor(node.id, columnRole, `inbound:${symbol}`, inboundAnchor);
 
     const labelWrapper = document.createElement("div");
     labelWrapper.className = "symbol-label-wrapper";
@@ -498,7 +511,7 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
     outboundAnchor.className = "symbol-anchor dot outbound";
     outboundAnchor.dataset.symbol = symbol;
     grid.appendChild(outboundAnchor);
-    controller.registerAnchor(node.id, `outbound:${symbol}`, outboundAnchor);
+    controller.registerAnchor(node.id, columnRole, `outbound:${symbol}`, outboundAnchor);
   });
 
   // Add the "Internals" pseudo-symbol at the end — represents private implementation
@@ -510,8 +523,8 @@ function createSymbolSection(controller: LocalViewController, node: ExplorerNode
     internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
     internalsInbound.dataset.symbol = "__internals__";
     grid.appendChild(internalsInbound);
-    controller.registerAnchor(node.id, "inbound:__internals__", internalsInbound);
-    controller.registerAnchor(node.id, "inbound:*", internalsInbound);
+    controller.registerAnchor(node.id, columnRole, "inbound:__internals__", internalsInbound);
+    controller.registerAnchor(node.id, columnRole, "inbound:*", internalsInbound);
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";
@@ -716,8 +729,11 @@ function renderLayoutForNodes(
 
     if (plan.fileArea && plan.fileArea.nodes.length > 0) {
       const nodeOrigin = { x: plan.contentRect.x, y: plan.contentRect.y };
+      // Map edge direction to column role for anchor registration
+      const columnRole: ColumnRole = direction === "center" ? "center"
+        : direction === "outbound" ? "upstream" : "downstream";
       plan.fileArea.nodes.forEach(nodePlan => {
-        const card = createNodeCard(controller, nodePlan.node);
+        const card = createNodeCard(controller, nodePlan.node, columnRole);
         card.classList.add("layout-node");
         card.dataset.direction = direction;
         positionElement(card, nodePlan.rect, nodeOrigin);

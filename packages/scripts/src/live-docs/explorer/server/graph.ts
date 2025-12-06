@@ -23,6 +23,10 @@ interface InheritanceLink {
     source: string;
     target: string;
     kind: InheritanceLinkKind;
+    /** The class/interface name that extends/implements */
+    sourceSymbol?: string;
+    /** The parent type name being extended/implemented */
+    targetSymbol?: string;
 }
 
 export async function buildExplorerGraph(workspaceRoot: string): Promise<ExplorerGraphPayload> {
@@ -85,7 +89,10 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
     });
 
     const inheritanceLinks = await detectInheritance(nodes, workspaceRoot, resolveType);
-    inheritanceLinks.forEach(link => addLink(link.source, link.target, link.kind));
+    inheritanceLinks.forEach(link => addLink(link.source, link.target, link.kind, {
+        sourceSymbol: link.sourceSymbol,
+        targetSymbol: link.targetSymbol
+    }));
 
     return {
         nodes: nodePayloads,
@@ -204,8 +211,10 @@ async function detectInheritance(
             continue;
         }
 
-        for (const raw of matchTypeTokens(content, /class\s+[A-Za-z0-9_]+\s+extends\s+([^\n{]+)/g)) {
-            const parentToken = raw.split(/implements/i)[0];
+        // Match: class ClassName extends ParentType [implements ...]
+        for (const match of matchTypeTokensWithCapture(content, /class\s+([A-Za-z0-9_]+)\s+extends\s+([^\n{]+)/g)) {
+            const [className, parentClause] = match;
+            const parentToken = parentClause.split(/implements/i)[0];
             const reference = sanitizeTypeToken(parentToken);
             if (!reference) {
                 continue;
@@ -214,16 +223,24 @@ async function detectInheritance(
             if (!target) {
                 continue;
             }
-            const key = `${node.codePath}|${target.codePath}|extends`;
+            const key = `${node.codePath}|${target.codePath}|extends|${className}|${reference}`;
             if (seen.has(key)) {
                 continue;
             }
             seen.add(key);
-            results.push({ source: node.codePath, target: target.codePath, kind: "extends" });
+            results.push({
+                source: node.codePath,
+                target: target.codePath,
+                kind: "extends",
+                sourceSymbol: className,
+                targetSymbol: reference
+            });
         }
 
-        for (const raw of matchTypeTokens(content, /class\s+[A-Za-z0-9_]+\s+implements\s+([^\n{]+)/g)) {
-            const segments = raw.split(",").map(segment => segment.trim()).filter(Boolean);
+        // Match: class ClassName implements Interface1, Interface2
+        for (const match of matchTypeTokensWithCapture(content, /class\s+([A-Za-z0-9_]+)\s+(?:extends\s+[^\n{]+\s+)?implements\s+([^\n{]+)/g)) {
+            const [className, implementsClause] = match;
+            const segments = implementsClause.split(",").map(segment => segment.trim()).filter(Boolean);
             for (const segment of segments) {
                 const reference = sanitizeTypeToken(segment);
                 if (!reference) {
@@ -233,17 +250,25 @@ async function detectInheritance(
                 if (!target) {
                     continue;
                 }
-                const key = `${node.codePath}|${target.codePath}|implements`;
+                const key = `${node.codePath}|${target.codePath}|implements|${className}|${reference}`;
                 if (seen.has(key)) {
                     continue;
                 }
                 seen.add(key);
-                results.push({ source: node.codePath, target: target.codePath, kind: "implements" });
+                results.push({
+                    source: node.codePath,
+                    target: target.codePath,
+                    kind: "implements",
+                    sourceSymbol: className,
+                    targetSymbol: reference
+                });
             }
         }
 
-        for (const raw of matchTypeTokens(content, /interface\s+[A-Za-z0-9_]+\s+extends\s+([^\n{]+)/g)) {
-            const segments = raw.split(",").map(segment => segment.trim()).filter(Boolean);
+        // Match: interface InterfaceName extends Parent1, Parent2
+        for (const match of matchTypeTokensWithCapture(content, /interface\s+([A-Za-z0-9_]+)\s+extends\s+([^\n{]+)/g)) {
+            const [interfaceName, extendsClause] = match;
+            const segments = extendsClause.split(",").map(segment => segment.trim()).filter(Boolean);
             for (const segment of segments) {
                 const reference = sanitizeTypeToken(segment);
                 if (!reference) {
@@ -253,12 +278,18 @@ async function detectInheritance(
                 if (!target) {
                     continue;
                 }
-                const key = `${node.codePath}|${target.codePath}|extends`;
+                const key = `${node.codePath}|${target.codePath}|extends|${interfaceName}|${reference}`;
                 if (seen.has(key)) {
                     continue;
                 }
                 seen.add(key);
-                results.push({ source: node.codePath, target: target.codePath, kind: "extends" });
+                results.push({
+                    source: node.codePath,
+                    target: target.codePath,
+                    kind: "extends",
+                    sourceSymbol: interfaceName,
+                    targetSymbol: reference
+                });
             }
         }
     }
@@ -278,6 +309,25 @@ function matchTypeTokens(content: string, pattern: RegExp): string[] {
         tokens.push(candidate);
     }
     return tokens;
+}
+
+/**
+ * Like matchTypeTokens, but captures two groups: [group1, group2] for each match.
+ * Used for patterns like /class\s+(\w+)\s+extends\s+(.+)/ where we need both the class name and parent.
+ */
+function matchTypeTokensWithCapture(content: string, pattern: RegExp): Array<[string, string]> {
+    const results: Array<[string, string]> = [];
+    const regex = new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
+    let match: RegExpExecArray | null;
+    while ((match = regex.exec(content)) !== null) {
+        const group1 = match[1];
+        const group2 = match[2];
+        if (!group1 || !group2) {
+            continue;
+        }
+        results.push([group1, group2]);
+    }
+    return results;
 }
 
 function sanitizeTypeToken(raw: string): string | undefined {
