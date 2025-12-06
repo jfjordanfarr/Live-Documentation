@@ -1,20 +1,27 @@
-# benchmarks/astAccuracyFixtures
+# AST Benchmark Fixtures
 
 ## Metadata
-- Layer: 4
-- Archetype: implementation
-- Code Path: benchmarks/astAccuracyFixtures
-- Live Doc ID: LD-implementation-benchmarks-astaccuracyfixtures
+- Layer: 3
+- Archetype: component
+- Live Doc ID: COMP-benchmark-fixtures
 
 ## Authored
 ### Purpose
-Document every fixture that feeds the AST accuracy benchmark so we can explain what each scenario exercises, why it exists, and which manifests/tests must be kept in sync with the Live Docs pipeline.
+Document the polyglot fixture corpus that feeds AST accuracy benchmarks, explaining what each scenario exercises, why it exists, and which manifests/tests must stay in sync with the Live Docs pipeline.
+
+### Strategy
+This component aggregates synthetic and vendored fixtures across TypeScript, C, Python, Rust, Java, Ruby, and C# to validate analyzer precision/recall. Each fixture pairs a curated `expected.json` ground truth with inferred graph output so benchmark runs can compute deltas.
 
 ### Notes
 #### Covered Artifacts
 - Fixtures: `tests/integration/benchmarks/fixtures/**/{typescript,c,python,rust,java,ruby,csharp}/**`
-- Vendor manifest: [`tests/integration/benchmarks/fixtures/fixtures.manifest.json`](../../../tests/integration/benchmarks/fixtures/fixtures.manifest.json)
-- Harness: [`tests/integration/benchmarks/astAccuracy.test.ts`](../../../tests/integration/benchmarks/astAccuracy.test.ts)
+- Vendor manifest: [`tests/integration/benchmarks/fixtures/fixtures.manifest.json`](../../tests/integration/benchmarks/fixtures/fixtures.manifest.json)
+- Harness: [`tests/integration/benchmarks/astAccuracy.test.ts`](../../tests/integration/benchmarks/astAccuracy.test.ts)
+
+## System References
+### Components
+- [tests/integration/benchmarks/astAccuracy.test.ts](../layer-4/tests/integration/benchmarks/astAccuracy.test.ts.mdmd.md)
+- [fixtures.manifest.json](../layer-4/tests/integration/benchmarks/fixtures/fixtures.manifest.json.mdmd.md)
 
 #### Fixture Inventory Overview
 Each fixture pairs a curated `expected.json` (ground truth) with the current `inferred.json` graph so benchmark runs can compute precision/recall deltas. Synthetic fixtures cover simple and layered scenarios per language, while vendored workspaces (Ky, libuv, Requests, Rust Log, Roslyn slice, OkHttp) validate the analyzers against real repositories.
@@ -60,12 +67,12 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 <!-- benchmark-vendor-inventory:end -->
 
 #### TypeScript Fixtures
-- `ts-basic`: Minimal helper-heavy module fan-out covering [`src/index.ts`](../../../tests/integration/benchmarks/fixtures/typescript/basic/src/index.ts) through shared utilities. Validates import/usage detection noise handling.
-- `ts-layered`: Layered reporting service with services, repositories, and shared models across [`src/services/**`](../../../tests/integration/benchmarks/fixtures/typescript/layered/src/services/reportService.ts). Stresses deeper graph reconstruction.
+- `ts-basic`: Minimal helper-heavy module fan-out covering [`src/index.ts`](../../tests/integration/benchmarks/fixtures/typescript/basic/src/index.ts) through shared utilities. Validates import/usage detection noise handling.
+- `ts-layered`: Layered reporting service with services, repositories, and shared models across [`src/services/**`](../../tests/integration/benchmarks/fixtures/typescript/layered/src/services/reportService.ts). Stresses deeper graph reconstruction.
 - `ts-ky`: Staged clone of the Ky repository to measure analyzer behaviour against a production TypeScript surface. Comment-aware heuristics strip JSDoc-only imports, so expectations align with actual runtime dependencies.
 
 #### C Language Fixtures
-- `c-basics`: Translation unit plus helper/header pair (e.g., [`src/main.c`](../../../tests/integration/benchmarks/fixtures/c/basics/src/main.c)) to ensure include resolution stays accurate.
+- `c-basics`: Translation unit plus helper/header pair (e.g., [`src/main.c`](../../tests/integration/benchmarks/fixtures/c/basics/src/main.c)) to ensure include resolution stays accurate.
 - `c-modular`: Multi-file pipeline (metrics, logger, pipeline orchestrator) emphasizing layered include chains.
 - `c-libuv`: Deterministic sparse checkout of the libuv portability layer spanning platform-specific headers; showcases large include graphs without manual pruning.
 
@@ -94,13 +101,13 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 - `ruby-cli`: CLI surface layering command dispatch, services, cache, and logging helpers to exercise denser Ruby graphs.
 
 #### Operational Notes
-- Fixture metadata lives in [`fixtures.manifest.json`](../../../tests/integration/benchmarks/fixtures/fixtures.manifest.json) and feeds both the benchmark harness and the vendor inventory above.
+- Fixture metadata lives in [`fixtures.manifest.json`](../../tests/integration/benchmarks/fixtures/fixtures.manifest.json) and feeds both the benchmark harness and the vendor inventory above.
 - `reports/test-report.ast.md` surfaces precision/recall deltas per fixture; regenerating fixtures or expectations must be followed by report refreshes.
 - Determinism rules: fixtures avoid external dependencies, pin upstream commits, and record integrity digests so Safe Commit can validate vendored workspaces.
 
 #### Shared Reporting Types
-- [`BenchmarkEnvironment`](../../../packages/shared/src/reporting/testReport.ts): describes runtime characteristics (Node version, platform, provider mode) per benchmark run.
-- [`ReportSection`](../../../packages/shared/src/reporting/testReport.ts): markdown fragment container used by the benchmark reporter when emitting the AST suite summary.
+- [`BenchmarkEnvironment`](../../packages/shared/src/reporting/testReport.ts): describes runtime characteristics (Node version, platform, provider mode) per benchmark run.
+- [`ReportSection`](../../packages/shared/src/reporting/testReport.ts): markdown fragment container used by the benchmark reporter when emitting the AST suite summary.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

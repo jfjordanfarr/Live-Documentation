@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+SVG connection drawing for the Local Map. Draws Bézier splines between anchor points in the inbound/center/outbound columns.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 during localView modularisation.
+- `drawConnections` iterates over edges and maps symbol keys to registered anchors.
+- Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.699Z","inputHash":"bc28cba469963f31"}]} -->

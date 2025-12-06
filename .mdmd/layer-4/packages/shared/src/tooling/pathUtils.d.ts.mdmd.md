@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript declaration file for `pathUtils.ts`, providing type signatures for workspace path normalisation utilities.
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`pathUtils.ts`](./pathUtils.ts.mdmd.md).
+- Exports `toWorkspaceRelativePath`, `toWorkspaceFileUri`, and `normalizeWorkspacePath` for URI/path conversions.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.320Z","inputHash":"ea25fdd97bdb16f8"}]} -->

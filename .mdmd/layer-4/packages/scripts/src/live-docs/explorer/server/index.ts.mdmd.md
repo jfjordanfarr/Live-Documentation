@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+HTTP server entry point for the Live Documentation Explorer. Starts a local server that serves the visualization UI and exposes graph data via `/graph` and `/details` endpoints.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 as part of the `packages/scripts` modularisation.
+- Returns an `ExplorerServerInstance` with `stop()`, `reloadGraph()`, and `getGraph()` methods for programmatic control.
+- Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.169Z","inputHash":"f0cb505499f8d222"}]} -->

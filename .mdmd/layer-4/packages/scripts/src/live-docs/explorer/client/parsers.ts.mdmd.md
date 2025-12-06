@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Runtime schema validators for graph and detail payloads fetched from the Explorer server. Ensures API responses conform to expected shapes before the client processes them.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-02 to centralise JSON parsing logic.
+- Uses a builder-pattern validator (`expectObject`, `expectArray`, `expectString`) for lightweight runtime checks without external dependencies.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-02T05:07:01.232Z","inputHash":"04f713d16889cf61"}]} -->

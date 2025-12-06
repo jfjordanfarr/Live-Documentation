@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files in the workspace. Powers the Explorer visualization and the `live-docs inspect` CLI.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the `packages/scripts` package scaffold.
+- Returns a `LiveDocGraph` with `nodes`, `inbound` adjacency map, and `docToCode` lookup for resolving dependencies.
+- The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.213Z","inputHash":"1f9fdb8d157a6811"}]} -->

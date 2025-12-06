@@ -1,6 +1,6 @@
 ﻿# Copilot Instructions
 
-Last updated: 2025-11-16
+Last updated: 2025-12-06
 
 ---
 
@@ -47,6 +47,7 @@ Github Copilot is the lead developer, primary code author, _software_ architect,
 - **Continuous Improvement**: The technology underlying Github Copilot is necessarily unable to internalize lessons from a single VS Code workspace into the underlying language models' weights. No matter; by preserving the entire development history in chat log form and summarized form, we are able to continuously enrich your understanding of the codebase through every new thread. Combining this with careful use of `applyTo:`-glob-frontmattered `.github/instructions/*.instructions.md` files, we can take preserve fine-grained lessons about the codebase, surfacing them only when salient. Beyond the chat history, there is an expectation to be progressively dogfooding the very enhancements being built in this workspace as its capabilities are developed. 
 - **Safeguard In-Flight Work**: Keep explicit awareness of ongoing, uncommitted changes—note what’s outstanding, stage durable checkpoints when practical, and block destructive commands until that work is secured. Autosummarisation and tooling resets will not do this for you.
 - **Bespoke Scripts Over Terminal Tricks**: Dense powershell commands work vastly less than Copilot appears to expect. Meanwhile, small authored typescript files in the `AI-Agent-Workspace\tmp\` folder have shown themselves to a reliable way to tackle immediate transitory problems and questions with light code. (Pro tip: if one of those scripts is really useful over and over, why not promote it to the `AI-Agent-Workspace\scripts\` folder?)
+- **Chat Archaeology for Live Documentation**: When authoring Live Documentation `Purpose` and `Notes` sections, search the chat history (`AI-Agent-Workspace/ChatHistory/`) to find when and why files were created. Knowing the creation date and original intent transforms placeholder prose into auditable provenance. Use `combine-summaries.ts` or grep searches to locate the relevant context efficiently.
 
 ---
 
@@ -73,6 +74,7 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - Supporting roots: `specs/`, `data/`, `tests/`, `.specify/`
 - TypeScript 5.x targeting Node.js 22 (see `.nvmrc`)
 - Projectwide documentation: `.mdmd/` (see note about 'MDMD' below)
+- Live Documentation output: `.mdmd/layer-4/` (our workspace configuration routes Live Doc generation here instead of the default `/.live-documentation/source/`)
 - Specific feature/story documentation: stored under folders like `specs/NNN-feature-name/` (see note about 'Spec-Kit' below)
 - **Copilot's (your) own scratch space/workspace during development:** `./AI-Agent-Workspace/`
     - **The entire development history, in summarized and unsummarized form, is located at `./AI-Agent-Workspace/ChatHistory/`.**
@@ -96,7 +98,8 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - `npm run live-docs:inspect -- <path>`: emits markdown/JSON summaries for a given artifact; mirrors the Copilot prompt helper behaviour.
 - `npm run live-docs:inspect -- --from <path> [--to <path>]`: Live Docs pathfinder. Use this before and after risky edits to enumerate actual hop chains (Oracle-of-Bacon style). Remember `--direction inbound` for reverse lookups and `--json` for automation. If no `--to` is provided, review the terminal fan-out to see where data ultimately lands.
 - `npm run live-docs:lint`: validates structural markers, relative-link hygiene, slug dialect compliance, and evidence placeholders inside staged Live Docs.
-- `npm run live-docs:migrate -- --dry-run`: (planned) compares staged Live Docs to `.mdmd/layer-4/` and prepares promotion.
+- `npm run live-docs:visualize`: launches the Explorer HTTP server with Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. Use this to navigate the Live Doc graph visually.
+- `npm run live-docs:migrate -- --dry-run`: compares staged Live Docs to `.mdmd/layer-4/` and prepares promotion (used during initial migration; now primarily for auditing drift).
 
 Full CLI catalogue (including graph, fixtures, and lint tooling) lives in `docs/tooling/cli-command-catalog.md`; keep that document updated whenever new npm scripts land.
 

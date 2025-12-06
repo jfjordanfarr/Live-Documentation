@@ -95,6 +95,7 @@ export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "tests/**/*.rb",
   "tests/**/*.rs",
   "tests/**/*.c",
+  "tests/**/*.h",
   "tests/**/*.cpp",
   "tests/**/*.html",
   "tests/**/*.css",

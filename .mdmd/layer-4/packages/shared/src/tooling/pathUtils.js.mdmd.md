@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Compiled JavaScript output for `pathUtils.ts`. Provides workspace path normalisation utilities used throughout the Live Documentation tooling.
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`pathUtils.ts`](./pathUtils.ts.mdmd.md).
+- Original implementation created 2025-10-30 to centralise URI-to-path conversions.[AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md]
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.321Z","inputHash":"5f198a8b67d4bf2b"}]} -->

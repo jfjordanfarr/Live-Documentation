@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Compiled JavaScript output for `liveDocumentationConfig.ts`. Provides configuration schema, defaults, and normalisation for Live Documentation tooling.
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`liveDocumentationConfig.ts`](./liveDocumentationConfig.ts.mdmd.md).
+- Houses the canonical default globs, archetype definitions, and slug dialect settings.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.979Z","inputHash":"eb34f2a22d75774d"}]} -->

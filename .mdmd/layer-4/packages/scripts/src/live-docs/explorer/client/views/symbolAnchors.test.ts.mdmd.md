@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Unit tests for the symbol anchor normalisation logic. Validates that `normalizeSymbolIdentifier` and `buildNormalizedAnchorKey` handle edge cases like type annotations, special characters, and casing.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-03 alongside `symbolAnchors.ts`.
+- Exercises decorator stripping (`(class)`, `(function)`), whitespace handling, and round-trip parsing with `tryBuildNormalizedKeyFromAnchorKey`.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:07:39.490Z","inputHash":"946da017c4f8a77d"}]} -->

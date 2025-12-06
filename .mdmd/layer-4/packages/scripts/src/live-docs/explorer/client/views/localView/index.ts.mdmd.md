@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Public entry point for the Local Map view module. Exposes `createLocalView` factory and re-exports `LocalViewApi`/`LocalViewOptions` types.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 as the barrel export for the modular localView directory.
+- Delegates to `LocalViewController` for implementation.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.118Z","inputHash":"379e1dd956251c3e"}]} -->

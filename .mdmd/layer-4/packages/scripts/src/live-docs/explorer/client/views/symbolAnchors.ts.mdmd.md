@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Symbol anchor key normalisation utilities for the Local Map. Ensures that symbol identifiers from different sources (graph payloads, DOM data attributes) resolve to consistent anchor keys for connection routing.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-03.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-03 to centralise symbol matching logic.
+- `normalizeSymbolIdentifier` strips decorators like `(class)`, `(function)` and converts to lowercase.
+- `buildNormalizedAnchorKey` combines node ID, direction, and optional symbol into a canonical key.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:07:39.499Z","inputHash":"5682d2fe07f1d70b"}]} -->

@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript declaration file for `liveDocumentationConfig.ts`, exposing the `LiveDocumentationConfig` interface and related types used throughout the Live Documentation toolchain.
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`liveDocumentationConfig.ts`](./liveDocumentationConfig.ts.mdmd.md).
+- Defines `LiveDocumentationArchetype`, `LiveDocumentationSlugDialect`, and evidence configuration types.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.897Z","inputHash":"4a3ffe2eb2d1e346"}]} -->

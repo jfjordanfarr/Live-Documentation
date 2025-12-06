@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Compiled JavaScript output for `parse.ts`. Provides the Live Doc markdown parser used by the graph builder and inspect CLI.
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`parse.ts`](./parse.ts.mdmd.md).
+- Original implementation created 2025-11-17 when the inspect CLI was introduced.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-17.md]
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.228Z","inputHash":"7a6f17888af071c5"}]} -->

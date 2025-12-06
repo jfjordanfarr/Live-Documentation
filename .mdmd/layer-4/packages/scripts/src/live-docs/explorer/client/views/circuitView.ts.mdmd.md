@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Circuit Board view for the Explorer. Renders the entire Live Doc graph as a treemap where folders are nested rectangles and files are interactive cells. Supports zoom, pan, and click-to-focus navigation.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was refactored.
+- Uses `computeTreemapLayout` from `layoutUtils.ts` to compute cell positions.
+- Click events update `ExplorerState.selectedNode` and can trigger Local Map view switches.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T19:38:38.153Z","inputHash":"6517cdfcdd52a7a8"}]} -->

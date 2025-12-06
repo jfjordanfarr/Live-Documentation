@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Global error handling for the Explorer client. Displays a user-friendly error overlay when fatal exceptions occur and captures unhandled promise rejections.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 to surface JavaScript errors during development.
+- `attachGlobalErrorHandler` wires `window.onerror` and `unhandledrejection` listeners.
+- Error overlay includes stack traces and a "Reload" button.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-02T05:07:01.214Z","inputHash":"e12a82c737fed29b"}]} -->

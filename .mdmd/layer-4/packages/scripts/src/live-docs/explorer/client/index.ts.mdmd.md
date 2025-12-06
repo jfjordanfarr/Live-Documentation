@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Bootstrap entry point for the Explorer client. Fetches the graph payload, initialises the Circuit, Local Map, and Force Graph views, and wires up global navigation and toolbar handlers.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was modularised.
+- Exposes `window.switchView`, `window.openInEditor`, and zoom controls to the HTML template.
+- Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-04T20:07:44.326Z","inputHash":"2159e8ef5f5cd22b"}]} -->

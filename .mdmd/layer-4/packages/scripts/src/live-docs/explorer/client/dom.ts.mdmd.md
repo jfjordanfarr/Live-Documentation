@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+DOM utility functions for the Explorer client. Provides `requireElement` for type-safe element lookups and `setActiveView` for toggling the active CSS view class.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the explorer modularisation.
+- `requireElement` throws if the element is missing, failing fast on template mismatches.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.032Z","inputHash":"28a969dd26afa0ed"}]} -->

@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Shared type definitions used by both the Explorer server and client. Defines the shape of graph payloads, node payloads, link payloads, and detail responses exchanged over the HTTP API.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client/server/shared modules.
+- Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:56.330Z","inputHash":"c178c988b8070278"}]} -->

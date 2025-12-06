@@ -21,11 +21,22 @@ Document the CLI toolbox that maintains Live Documentation quality—generation,
 
 ## System References
 ### Components
-- [scripts/live-docs/generate.ts](../layer-4/scripts/live-docs/generate.ts.mdmd.md)
-- [scripts/live-docs/lint.ts](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
-- [scripts/live-docs/inspect.ts](../layer-4/scripts/live-docs/inspect.ts.mdmd.md)
-- [scripts/live-docs/system.ts](../layer-4/scripts/live-docs/system.ts.mdmd.md)
+- [scripts/live-docs/build-target-manifest.ts](../layer-4/scripts/live-docs/build-target-manifest.ts.mdmd.md)
+- [scripts/live-docs/co-activation.ts](../layer-4/scripts/live-docs/co-activation.ts.mdmd.md)
 - [scripts/live-docs/find-orphans.ts](../layer-4/scripts/live-docs/find-orphans.ts.mdmd.md)
+- [scripts/live-docs/generate.ts](../layer-4/scripts/live-docs/generate.ts.mdmd.md)
+- [scripts/live-docs/headless.ts](../layer-4/scripts/live-docs/headless.ts.mdmd.md)
+- [scripts/live-docs/inspect.ts](../layer-4/scripts/live-docs/inspect.ts.mdmd.md)
+- [scripts/live-docs/lint.ts](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
+- [scripts/live-docs/migrate-authored-mdmd.ts](../layer-4/scripts/live-docs/migrate-authored-mdmd.ts.mdmd.md)
+- [scripts/live-docs/report-precision.ts](../layer-4/scripts/live-docs/report-precision.ts.mdmd.md)
+- [scripts/live-docs/run-all.ts](../layer-4/scripts/live-docs/run-all.ts.mdmd.md)
+- [scripts/live-docs/system.ts](../layer-4/scripts/live-docs/system.ts.mdmd.md)
+- [scripts/live-docs/visualize.ts](../layer-4/scripts/live-docs/visualize.ts.mdmd.md)
+- [scripts/live-docs/visualize-circuit.ts](../layer-4/scripts/live-docs/visualize-circuit.ts.mdmd.md)
+- [scripts/live-docs/visualize-explorer.ts](../layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md)
+- [scripts/live-docs/visualize-sonar.ts](../layer-4/scripts/live-docs/visualize-sonar.ts.mdmd.md)
+- [scripts/live-docs/lib/liveDocGraph.ts](../layer-4/scripts/live-docs/lib/liveDocGraph.ts.mdmd.md)
 
 ## Evidence
 - Safe-to-commit pipeline invokes these scripts in sequence; the 2025-11-19 run recorded zero lint regressions after regeneration.

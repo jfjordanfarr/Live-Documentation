@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Barrel export for the `@live-documentation/scripts` workspace package, exposing the Explorer server and graph-building utilities as the package's public API.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was refactored into a modular `packages/scripts` package.
+- Consumers import `startExplorerServer` and related types from `@live-documentation/scripts` directly.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.392Z","inputHash":"4794c286c67dd107"}]} -->

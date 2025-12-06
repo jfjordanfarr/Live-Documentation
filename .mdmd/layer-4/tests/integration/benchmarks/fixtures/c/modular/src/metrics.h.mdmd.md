@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/metrics.h
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-modular-src-metrics-h
-- Generated At: 2025-11-18T23:45:00.000Z
+- Generated At: 2025-12-06T21:12:45.127Z
 
 ## Authored
 ### Purpose
@@ -15,20 +15,44 @@ Summarises the statistical helpers exposed to the modular pipeline implementatio
 Exports both averaging and clamping routines so the pipeline can normalise values before logging.
 
 ## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T21:12:45.127Z","inputHash":"a212518f5c4d089b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `compute_average`
-- Type: function
-- Summary: Computes the arithmetic mean for a contiguous sample window.
-- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/modular/src/metrics.h#L12)
+#### `METRICS_H` {#symbol-metrics_h}
+- Type: const
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/modular/src/metrics.h#L2)
 
-#### `clamp`
+#### `compute_average` {#symbol-compute_average}
 - Type: function
-- Summary: Restricts a floating-point value to the provided bounds.
-- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/modular/src/metrics.h#L22)
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/modular/src/metrics.h#L13)
+
+##### `compute_average` — Summary
+Computes the arithmetic mean for a sample window.
+
+##### `compute_average` — Parameters
+- `values`: Pointer to the contiguous collection of samples.
+- `count`: Number of entries available in `values`.
+
+##### `compute_average` — Returns
+double Average value or 0.0 when `count` is zero.
+
+#### `clamp` {#symbol-clamp}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/modular/src/metrics.h#L23)
+
+##### `clamp` — Summary
+Restricts a value to the provided inclusive range.
+
+##### `clamp` — Parameters
+- `value`: Candidate value.
+- `lower`: Minimum allowed value.
+- `upper`: Maximum allowed value.
+
+##### `clamp` — Returns
+double Value clamped to the requested bounds.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_Not applicable_
+- `stddef.h`
 <!-- LIVE-DOC:END Dependencies -->

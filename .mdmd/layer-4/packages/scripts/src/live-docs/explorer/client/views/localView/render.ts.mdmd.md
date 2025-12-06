@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+DOM rendering logic for the Local Map view. Lays out inbound/center/outbound columns and registers anchor rectangles for SVG connection drawing.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 by extracting rendering code from the monolithic `localView.ts`.
+- Renders directory nodes as expandable groups using `computeDirectoryLayout`.
+- Passes anchor positions to the controller for Bézier spline routing.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.733Z","inputHash":"fe70b0066a82faf4"}]} -->

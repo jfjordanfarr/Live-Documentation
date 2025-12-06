@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Client-side type definitions for the Explorer UI. Defines view state, filters, bezier curve tuning parameters, and test coverage map types used across client modules.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the explorer client/server split.
+- `ViewName` union (`"circuit" | "map" | "graph"`) controls which visualization mode is active.
+- `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T19:38:38.134Z","inputHash":"7f7151322be7d042"}]} -->

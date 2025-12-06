@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript declaration file for `parse.ts`, exposing the `parseLiveDocMarkdown` function and its associated interfaces (`ParsedLiveDoc`, `ParsedDependency`, `ParsedSymbolDocumentationEntry`).
 
 ### Notes
-_Pending notes_
+- Build artifact; the authoritative source is [`parse.ts`](./parse.ts.mdmd.md).
+- Extended in December 2025 to include `ParsedTypeReference` for type-reference rendering in the Local Map.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.577Z","inputHash":"1f3fdcd1c9a4ebcb"}]} -->

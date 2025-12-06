@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Controller class for the Local Map. Orchestrates runtime state, rendering, and Bézier connection drawing in response to selection changes.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 during localView modularisation.
+- Implements `LocalViewApi.update()` to re-render the 3-column subgraph.
+- Manages scroll sync, column expansion, and SVG layer updates.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.715Z","inputHash":"e680878e62fadadc"}]} -->

@@ -67,7 +67,7 @@ Captures precision/recall metrics for ripple inference. [Inference Accuracy Tele
 - Benchmark integration suites under `tests/integration/benchmarks` ensure rebuild stability and inference accuracy assertions stay green.
 - Latest `npm run safe:commit -- --benchmarks` run (2025-11-04) captured 210 TP / 8 FP / 8 FN (96.3% precision/recall) in `reports/benchmarks/ast/ast-accuracy.json`, with the Python pipeline fixture graduating to 7 TP / 0 FP / 0 FN.
 - Live Documentation latency baselines recorded in `reports/benchmarks/live-docs/latency.md` guard regeneration performance budgets.
-- Stage-0 Live Doc [`benchmarks/astAccuracyFixtures`](../layer-4/benchmarks/astAccuracyFixtures.mdmd.md) captures curated fixture intent and oracle overrides that this component relies on during AST accuracy audits.
+- Stage-0 Live Doc [`AST Benchmark Fixtures`](./benchmark-fixtures.mdmd.md) captures curated fixture intent and oracle overrides that this component relies on during AST accuracy audits.
 - Telemetry unit tests (`inferenceAccuracy.test.ts`, `latencyTracker.test.ts`) protect metric calculations.
 - Safe-to-commit pipeline runs `npm run verify -- --report` weekly to produce artefacts referenced in stakeholder updates.
 

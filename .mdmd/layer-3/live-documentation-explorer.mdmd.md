@@ -1,0 +1,61 @@
+# Live Documentation Explorer
+
+## Metadata
+- Layer: 3
+- Archetype: component
+- Live Doc ID: COMP-livedocs-explorer
+
+## Authored
+### Purpose
+Document the visualization command center that renders the Live Doc graph as interactive views—Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—served via HTTP for browser-based exploration.
+
+### Notes
+- Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with server, client, and shared modules.
+- The server (`explorer/server/`) builds the graph payload from Layer-4 Live Docs and serves static HTML/CSS/JS assets.
+- The client (`explorer/client/`) renders three view modes:
+  - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
+  - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
+  - **Force Graph**: Force-directed layout for spatial discovery (accessibility relaxed vs primary views).
+- The Local Map was split into a modular `localView/` directory on 2025-12-04 to support column-aware anchor registration, gradient connections, and type-reference edge rendering.
+- Symbol anchors (`symbolAnchors.ts`, created 2025-12-03) normalise identifiers so connection routing works across different payload formats.
+
+### Strategy
+- Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
+- Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
+- Prepare the detail panel for future inline editing so authors can scaffold docstrings bidirectionally.
+
+## System References
+### Components
+#### Server
+- [packages/scripts/src/live-docs/explorer/server/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/server/graph.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/graph.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/server/buildAssets.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/buildAssets.ts.mdmd.md)
+
+#### Shared
+- [packages/scripts/src/live-docs/explorer/shared/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/types.ts.mdmd.md)
+
+#### Client Core
+- [packages/scripts/src/live-docs/explorer/client/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/types.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/parsers.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/parsers.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/dom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/dom.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/errors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/errors.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/detailPanel.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/detailPanel.ts.mdmd.md)
+
+#### Views
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts.mdmd.md)
+
+#### Local Map (modularised 2025-12-04)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/render.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/render.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/types.ts.mdmd.md)
+
+## Evidence
+- `npm run live-docs:visualize` launches the HTTP server and opens the browser; manual smoke tests validate view switching and connection rendering.
+- Unit tests for symbol anchor normalisation live in `symbolAnchors.test.ts`.
+- December 2025 chat sessions (12/03–12/06) document the Local Map refinements: gradient connections, column-aware anchors, type-reference edges, and origin-over-barrel preference for inheritance links.

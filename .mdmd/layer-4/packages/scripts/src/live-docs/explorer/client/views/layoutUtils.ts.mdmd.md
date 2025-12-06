@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Shared layout utilities for the Circuit and Local Map views. Builds hierarchical folder trees from flat node lists and computes treemap-style rectangle layouts.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the explorer modularisation; significantly enhanced 2025-11-24 with treemap layout algorithms.
+- `buildHierarchy` groups nodes by directory path.
+- `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.087Z","inputHash":"9e4a4b476f4780c4"}]} -->

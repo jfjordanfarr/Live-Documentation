@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Runtime state management for the Local Map. Maintains the anchor registry, drag positions, and references to core DOM elements.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 during the localView modularisation.
+- `AnchorRegistry` maps composite keys (column:nodeId) to bounding rectangles.
+- `LocalViewRuntime` bundles the registry, DOM refs, and drag state.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.738Z","inputHash":"d1c0d4f0fa7411f1"}]} -->

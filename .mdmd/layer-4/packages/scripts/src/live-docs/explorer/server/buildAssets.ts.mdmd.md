@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds the Explorer's client-side assets (HTML, CSS, JavaScript) from the modular source files in `explorer/client/`. Emits bundled assets to a temporary directory for the HTTP server to serve.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the explorer modularisation.
+- Uses `esbuild` to bundle TypeScript client code into a single `bundle.js`.
+- Injects the compiled CSS and JS into the `template.html` to produce the final `index.html`.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.465Z","inputHash":"bb03dd79bc4beec3"}]} -->

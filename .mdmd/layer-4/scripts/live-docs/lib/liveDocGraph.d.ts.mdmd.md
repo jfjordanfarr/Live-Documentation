@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript declaration file for the `liveDocGraph.ts` re-export shim, generated automatically by the build process.
 
 ### Notes
-_Pending notes_
+- Companion to `liveDocGraph.ts`; see that file's Live Doc for rationale.
+- Declaration files (`.d.ts`) are build artifacts that provide type information for compiled JavaScript.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.452Z","inputHash":"406588a2bad9399c"}]} -->

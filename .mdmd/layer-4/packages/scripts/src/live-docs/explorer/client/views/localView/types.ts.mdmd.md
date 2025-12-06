@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Type definitions for the Local Map view. Centralises interfaces for view options, subgraph structures, anchor registries, and column roles.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
 
 ### Notes
-_Pending notes_
+- Created 2025-12-04 when `localView.ts` was split into a modular directory.
+- `LocalSubgraph` describes the 3-column layout (inbound, center, outbound nodes).
+- `CenterAlignmentGuides` tracks vertical positions for connection line rendering.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.744Z","inputHash":"6cef6d915b850be7"}]} -->

@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Manages the Explorer's right-hand detail panel. Fetches and displays Live Doc metadata, dependency lists, and public symbols for the currently selected node.
 
 ### Notes
-_Pending notes_
+- Created 2025-11-21 during the explorer modularisation.
+- Exposes a `DetailPanelApi` with `setNode()` to update the panel and `getFocusedNode()` to query the current selection.
+- Populates the sidebar with "Open in Editor", "Open in Local View", and dependency links.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.282Z","inputHash":"cff7775d3fdef912"}]} -->

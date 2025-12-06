@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with inheritance links, type references, and resolved symbol documentation for the Explorer client.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- Performs inheritance detection by parsing `extends`/`implements` clauses from Public Symbols sections.
+- Extended in December 2025 to build `publicSymbolsExtended` with type-reference metadata for Local Map rendering.
+- Contains the barrel-file deprioritisation heuristic (`isBarrelFile`) to prefer origin files for inheritance links.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T20:11:53.131Z","inputHash":"90e8c89916643311"}]} -->

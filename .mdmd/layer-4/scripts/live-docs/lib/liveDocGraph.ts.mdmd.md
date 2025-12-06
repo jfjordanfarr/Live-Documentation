@@ -9,10 +9,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Re-export shim providing backwards-compatible access to the `buildLiveDocGraph` function from its new home in `@live-documentation/scripts`. Created during the 11/21 package refactor to maintain CLI compatibility.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
-_Pending notes_
+- This file contains only a re-export statement; the actual implementation lives in `packages/scripts/src/live-docs/graph/liveDocGraph.ts`.
+- Exists to preserve import paths for scripts that predated the `packages/scripts` workspace package.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.457Z","inputHash":"4204629c79695397"}]} -->
