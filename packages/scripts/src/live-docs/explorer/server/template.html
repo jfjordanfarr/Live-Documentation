@@ -7,12 +7,132 @@
   <script src="//unpkg.com/3d-force-graph"></script>
 </head>
 <body>
+  <!-- Omnisearch (VS Code Command Palette style) -->
+  <div id="omnisearch" class="omnisearch" hidden>
+    <div class="omnisearch-backdrop"></div>
+    <div class="omnisearch-dialog">
+      <input type="text" id="omnisearch-input" class="omnisearch-input" placeholder="Search files and symbols..." autocomplete="off" />
+      <div id="omnisearch-results" class="omnisearch-results"></div>
+    </div>
+  </div>
+
   <div id="sidebar">
     <div class="sidebar-header">Live Docs Explorer</div>
-    <div class="nav-item active" data-view="circuit" onclick="switchView(event, 'circuit')"><span>Circuit Board</span></div>
-    <div class="nav-item" data-view="map" onclick="switchView(event, 'map')"><span>Local Map</span></div>
-    <div class="nav-item" data-view="graph" onclick="switchView(event, 'graph')"><span>Force Graph</span></div>
-    <div id="context-bar">
+    
+    <!-- View Navigation -->
+    <div class="sidebar-section">
+      <div class="nav-item active" data-view="circuit" onclick="switchView(event, 'circuit')">
+        <span class="nav-icon">⚡</span><span>Circuit Board</span>
+      </div>
+      <div class="nav-item" data-view="map" onclick="switchView(event, 'map')">
+        <span class="nav-icon">🗺️</span><span>Local Map</span>
+      </div>
+      <div class="nav-item" data-view="graph" onclick="switchView(event, 'graph')">
+        <span class="nav-icon">🌐</span><span>Force Graph</span>
+      </div>
+    </div>
+
+    <!-- Search Trigger -->
+    <div class="sidebar-section">
+      <button id="omnisearch-trigger" class="sidebar-search-btn" onclick="openOmnisearch()">
+        <span class="search-icon">🔍</span>
+        <span>Search...</span>
+        <kbd class="search-shortcut">Ctrl+P</kbd>
+      </button>
+    </div>
+
+    <!-- Display Filters -->
+    <div class="sidebar-section">
+      <div class="section-label">Display</div>
+      <label class="sidebar-checkbox">
+        <input id="filter-toggle-tests" type="checkbox" />
+        <span>Show Tests</span>
+      </label>
+      <label class="sidebar-checkbox">
+        <input id="filter-toggle-assets" type="checkbox" />
+        <span>Show Assets</span>
+      </label>
+    </div>
+
+    <!-- Tuning Controls (collapsible) -->
+    <details class="sidebar-section sidebar-details">
+      <summary class="section-label clickable">Tuning</summary>
+      <div class="tuning-content">
+        <div class="tuning-subsection">
+          <div class="subsection-label">Bezier Curve</div>
+          <label class="tuning-slider">
+            <span>Stub Factor</span>
+            <input type="range" id="tuning-stub-factor" min="0.1" max="0.8" step="0.01" value="0.8" />
+            <output id="tuning-stub-factor-value">0.8</output>
+          </label>
+          <label class="tuning-slider">
+            <span>Stub Min</span>
+            <input type="range" id="tuning-stub-min" min="8" max="64" step="2" value="10" />
+            <output id="tuning-stub-min-value">10</output>
+          </label>
+          <label class="tuning-slider">
+            <span>Stub Max Offset</span>
+            <input type="range" id="tuning-stub-max-offset" min="8" max="64" step="2" value="20" />
+            <output id="tuning-stub-max-offset-value">20</output>
+          </label>
+          <label class="tuning-slider">
+            <span>Vertical Offset</span>
+            <input type="range" id="tuning-vertical-offset" min="0" max="0.5" step="0.02" value="0" />
+            <output id="tuning-vertical-offset-value">0</output>
+          </label>
+        </div>
+        <div class="tuning-subsection">
+          <div class="subsection-label">Click Behavior</div>
+          <label class="sidebar-checkbox">
+            <input type="checkbox" id="tuning-single-click-focus" checked />
+            <span>Single-click focuses only</span>
+          </label>
+          <label class="sidebar-checkbox">
+            <input type="checkbox" id="tuning-double-click-recenter" checked />
+            <span>Double-click recenters</span>
+          </label>
+        </div>
+        <div class="tuning-subsection">
+          <div class="subsection-label">Visual</div>
+          <label class="sidebar-checkbox">
+            <input type="checkbox" id="tuning-type-badges" />
+            <span>Type reference badges</span>
+          </label>
+          <label class="sidebar-checkbox">
+            <input type="checkbox" id="tuning-alchemy-glow" />
+            <span>Alchemy glow</span>
+          </label>
+        </div>
+      </div>
+    </details>
+
+    <!-- Legend -->
+    <div class="sidebar-section">
+      <div class="section-label">Legend</div>
+      <div class="legend-row">
+        <span class="legend-swatch legend-swatch--outbound"></span>
+        <span>Outbound dependency</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-swatch legend-swatch--inbound"></span>
+        <span>Inbound dependency</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-symbol legend-symbol--outbound"></span>
+        <span>Outbound pin</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-symbol legend-symbol--inbound"></span>
+        <span>Inbound pin</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-shadow"></span>
+        <span>Test-backed</span>
+      </div>
+    </div>
+
+    <!-- Stats (at bottom) -->
+    <div id="context-bar" class="sidebar-section sidebar-footer">
       <div id="stats-line">Loading...</div>
       <div>Context: <span id="context-name">None</span></div>
     </div>
@@ -20,11 +140,6 @@
 
   <div id="main">
     <div id="view-circuit" class="view-container active">
-      <div id="circuit-toolbar" class="view-toolbar" role="group" aria-label="Circuit Filters">
-        <span class="toolbar-label">Show</span>
-        <label class="filter-toggle"><input id="filter-toggle-tests" type="checkbox" aria-label="Toggle test archetype" /><span>Tests</span></label>
-        <label class="filter-toggle"><input id="filter-toggle-assets" type="checkbox" aria-label="Toggle asset archetype" /><span>Assets</span></label>
-      </div>
       <div id="circuit-viewport">
         <div id="circuit-container" class="dom-layer"></div>
         <div id="circuit-connections" class="connections-layer"></div>
@@ -42,36 +157,14 @@
       <div id="graph-svg"></div>
     </div>
 
-    <div id="legend-panel" role="region" aria-label="Visualization legend">
-      <div class="legend-title">Legend</div>
-      <div class="legend-row">
-        <span class="legend-swatch legend-swatch--outbound"></span>
-        <span>Outbound dependency</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-swatch legend-swatch--inbound"></span>
-        <span>Inbound dependency</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-symbol legend-symbol--outbound"></span>
-        <span>Outbound symbol pin</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-symbol legend-symbol--inbound"></span>
-        <span>Inbound symbol pin</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-shadow"></span>
-        <span>Test-backed implementation</span>
-      </div>
-    </div>
-
+    <!-- Floating zoom controls -->
     <div id="controls">
       <button class="control-btn" onclick="zoomIn()" aria-label="Zoom In">+</button>
       <button class="control-btn" onclick="zoomOut()" aria-label="Zoom Out">-</button>
       <button class="control-btn" onclick="resetZoom()" aria-label="Reset Zoom">⟲</button>
     </div>
 
+    <!-- Detail panel (right sidebar) -->
     <div id="detail-panel">
       <div class="detail-header">
         <h2 id="detail-title">Select a Node</h2>
@@ -85,59 +178,6 @@
         <button class="action-btn ghost" onclick="openInGraphView()">Open in Graph View</button>
         <button class="action-btn" onclick="openInEditor()">Open in Editor</button>
       </div>
-    </div>
-
-    <div id="tuning-panel">
-      <details class="tuning-section">
-        <summary class="tuning-header">⚙️ Tuning Controls</summary>
-        <div class="tuning-body">
-          <fieldset class="tuning-group">
-            <legend>Bezier Curve (Local Map)</legend>
-            <label class="tuning-slider">
-              <span>Stub Factor</span>
-              <input type="range" id="tuning-stub-factor" min="0.1" max="0.8" step="0.01" value="0.8" />
-              <output id="tuning-stub-factor-value">0.8</output>
-            </label>
-            <label class="tuning-slider">
-              <span>Stub Min</span>
-              <input type="range" id="tuning-stub-min" min="8" max="64" step="2" value="10" />
-              <output id="tuning-stub-min-value">10</output>
-            </label>
-            <label class="tuning-slider">
-              <span>Stub Max Offset</span>
-              <input type="range" id="tuning-stub-max-offset" min="8" max="64" step="2" value="20" />
-              <output id="tuning-stub-max-offset-value">20</output>
-            </label>
-            <label class="tuning-slider">
-              <span>Vertical Offset</span>
-              <input type="range" id="tuning-vertical-offset" min="0" max="0.5" step="0.02" value="0" />
-              <output id="tuning-vertical-offset-value">0</output>
-            </label>
-          </fieldset>
-          <fieldset class="tuning-group">
-            <legend>Click Behavior</legend>
-            <label class="tuning-checkbox">
-              <input type="checkbox" id="tuning-single-click-focus" checked />
-              <span>Single-click focuses sidebar only</span>
-            </label>
-            <label class="tuning-checkbox">
-              <input type="checkbox" id="tuning-double-click-recenter" checked />
-              <span>Double-click recenters view</span>
-            </label>
-          </fieldset>
-          <fieldset class="tuning-group">
-            <legend>Visual Experiments</legend>
-            <label class="tuning-checkbox">
-              <input type="checkbox" id="tuning-type-badges" />
-              <span>Show type reference badges</span>
-            </label>
-            <label class="tuning-checkbox">
-              <input type="checkbox" id="tuning-alchemy-glow" />
-              <span>Alchemy glow for multi-type symbols</span>
-            </label>
-          </fieldset>
-        </div>
-      </details>
     </div>
   </div>
 

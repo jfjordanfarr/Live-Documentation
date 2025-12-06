@@ -552,3 +552,326 @@ button.action-btn:focus-visible,
     font-size: 10px;
     color: white;
 }
+
+/* ============================================
+   OMNISEARCH (VS Code Command Palette style)
+   ============================================ */
+
+.omnisearch {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15vh;
+}
+
+.omnisearch[hidden] {
+    display: none;
+}
+
+.omnisearch-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.omnisearch-dialog {
+    position: relative;
+    width: 600px;
+    max-width: 90vw;
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+.omnisearch-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-family: inherit;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-active);
+    outline: none;
+}
+
+.omnisearch-input::placeholder {
+    color: #666;
+}
+
+.omnisearch-results {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.omnisearch-results:empty::before {
+    content: "Type to search files and symbols...";
+    display: block;
+    padding: 20px;
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+}
+
+.omnisearch-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.1s ease;
+}
+
+.omnisearch-result:hover,
+.omnisearch-result.selected {
+    background: rgba(0, 145, 255, 0.15);
+}
+
+.omnisearch-result-icon {
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.omnisearch-result-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.omnisearch-result-name {
+    font-size: 14px;
+    color: var(--text-active);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.omnisearch-result-path {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.omnisearch-result-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 145, 255, 0.2);
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+/* ============================================
+   SIDEBAR SECTIONS
+   ============================================ */
+
+.sidebar-section {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section:last-child {
+    border-bottom: none;
+}
+
+.section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+}
+
+.section-label.clickable {
+    cursor: pointer;
+    padding: 4px 0;
+    margin-bottom: 0;
+}
+
+.section-label.clickable:hover {
+    color: var(--accent);
+}
+
+.nav-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Sidebar Search Button */
+.sidebar-search-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: #666;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sidebar-search-btn:hover {
+    background: rgba(0, 145, 255, 0.1);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.search-icon {
+    font-size: 14px;
+}
+
+.search-shortcut {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* Sidebar Checkbox */
+.sidebar-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.sidebar-checkbox:hover {
+    color: var(--text-active);
+}
+
+.sidebar-checkbox input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar-checkbox input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.sidebar-checkbox input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: white;
+}
+
+/* Sidebar Details (collapsible) */
+.sidebar-details {
+    padding: 0;
+}
+
+.sidebar-details > summary {
+    padding: 12px 16px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.sidebar-details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.sidebar-details > summary::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 8px;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-details[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.tuning-content {
+    padding: 0 16px 12px;
+}
+
+.tuning-subsection {
+    margin-bottom: 16px;
+}
+
+.tuning-subsection:last-child {
+    margin-bottom: 0;
+}
+
+.subsection-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(0, 145, 255, 0.2);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    margin-top: auto;
+    background: #111;
+}
+
+/* Legend in Sidebar */
+.sidebar-section .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--text);
+}
+
+.sidebar-section .legend-swatch {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.sidebar-section .legend-symbol {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 5px;
+}
+
+.sidebar-section .legend-shadow {
+    width: 20px;
+    height: 14px;
+    border-radius: 3px;
+    background: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+    flex-shrink: 0;
+}
+

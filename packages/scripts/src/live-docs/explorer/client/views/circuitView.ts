@@ -470,6 +470,18 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
           return;
         }
         event.stopPropagation();
+        // When singleClickFocusOnly is enabled, don't zoom on directory single-click
+        // This prevents accidental zooms when trying to pan across the treemap
+        if (!state.tuning.clickBehavior.singleClickFocusOnly) {
+          focusClusterElement(element);
+        }
+      });
+
+      element.addEventListener("dblclick", event => {
+        if ((event.target as HTMLElement | null)?.closest?.(".node-card")) {
+          return;
+        }
+        event.stopPropagation();
         focusClusterElement(element);
       });
 
