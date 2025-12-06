@@ -347,9 +347,11 @@ export class LocalViewController implements LocalViewApi {
   }
 
   updateMapTransform(): void {
-    const { container } = this.runtime;
-    container.style.transform = `translate(${this.mapTransform.x}px, ${this.mapTransform.y}px) scale(${this.mapTransform.k})`;
-    this.overlay.style.transform = container.style.transform;
+    // Apply transform to the viewport wrapper so container and overlay share the same stacking context
+    const viewport = this.runtime.container.parentElement;
+    if (viewport) {
+      viewport.style.transform = `translate(${this.mapTransform.x}px, ${this.mapTransform.y}px) scale(${this.mapTransform.k})`;
+    }
   }
 
   // Placeholder utilities to be implemented below
@@ -686,16 +688,18 @@ export class LocalViewController implements LocalViewApi {
   }
 
   private withTransformReset<T>(callback: (containerRect: DOMRect) => T): T {
-    const previousContainerTransform = this.container.style.transform;
-    const previousOverlayTransform = this.overlay.style.transform;
-    this.container.style.transform = "none";
-    this.overlay.style.transform = "none";
+    const viewport = this.container.parentElement;
+    const previousViewportTransform = viewport?.style.transform ?? "";
+    if (viewport) {
+      viewport.style.transform = "none";
+    }
     try {
       const containerRect = this.container.getBoundingClientRect();
       return callback(containerRect);
     } finally {
-      this.container.style.transform = previousContainerTransform;
-      this.overlay.style.transform = previousOverlayTransform;
+      if (viewport) {
+        viewport.style.transform = previousViewportTransform;
+      }
     }
   }
 
