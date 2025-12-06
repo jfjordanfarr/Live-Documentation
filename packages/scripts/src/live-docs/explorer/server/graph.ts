@@ -88,6 +88,30 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
         } satisfies ExplorerNodePayload;
     });
 
+    // Create edges for type references (param/return types that reference other files)
+    // These enable connections to be drawn from the providing file to the consuming symbol
+    for (const nodePayload of nodePayloads) {
+        if (!nodePayload.publicSymbolsExtended) continue;
+        
+        for (const symbol of nodePayload.publicSymbolsExtended) {
+            if (!symbol.typeReferences) continue;
+            
+            for (const typeRef of symbol.typeReferences) {
+                if (!typeRef.isResolved || !typeRef.targetId) continue;
+                
+                // Skip extends/implements - they're handled separately with pink/gold styling
+                if (typeRef.role === "extends" || typeRef.role === "implements") continue;
+                
+                // Create an edge from the target file to this file
+                // Direction: target provides the type, this file's symbol consumes it
+                addLink(nodePayload.id, typeRef.targetId, "type-reference", {
+                    sourceSymbol: symbol.name,
+                    targetSymbol: typeRef.typeName
+                });
+            }
+        }
+    }
+
     const inheritanceLinks = await detectInheritance(nodes, workspaceRoot, resolveType);
     inheritanceLinks.forEach(link => addLink(link.source, link.target, link.kind, {
         sourceSymbol: link.sourceSymbol,
@@ -107,7 +131,7 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
     function addLink(
         source: string,
         target: string,
-        kind: InheritanceLinkKind | "dependency",
+        kind: InheritanceLinkKind | "dependency" | "type-reference",
         metadata?: { sourceSymbol?: string; targetSymbol?: string }
     ) {
         if (source === target) {
@@ -398,9 +422,11 @@ function buildPublicSymbolsExtended(
             let targetId: string | undefined;
 
             if (ref.isResolved && ref.targetDocPath) {
-                // Resolve the relative doc path against the current doc's directory
-                const resolvedDocPath = path.resolve(docDir, ref.targetDocPath);
-                const normalizedDocPath = path.normalize(resolvedDocPath);
+                // Join the relative doc path with the current doc's directory,
+                // then normalize to collapse ../.. segments.
+                // Use path.join (NOT path.resolve) to preserve relative paths.
+                const joinedDocPath = path.join(docDir, ref.targetDocPath);
+                const normalizedDocPath = path.normalize(joinedDocPath);
                 
                 // Try to resolve the doc path to a code path via the graph
                 targetId = graph.docToCode.get(normalizedDocPath);
