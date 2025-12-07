@@ -11,7 +11,8 @@ import type {
   SymbolDocumentationExample,
   SymbolDocumentationLink,
   SymbolDocumentationLinkKind,
-  SymbolDocumentationParameter
+  SymbolDocumentationParameter,
+  TypeReference
 } from "../core";
 import type { LanguageAdapter } from "./index";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
@@ -21,10 +22,13 @@ interface CSharpTypeMatch {
   name: string;
   line: number;
   documentation?: SymbolDocumentation;
+  typeReferences?: TypeReference[];
 }
 
 const USING_DIRECTIVE_PATTERN = /^\s*using\s+(?:static\s+)?([^=;]+);/gm;
 const TYPE_DECLARATION_PATTERN = /^\s*(?:\b(?:public|internal|protected|private|abstract|sealed|static|partial|readonly|unsafe|ref|file|new)\s+)*(class|struct|interface|record|enum)(?:\s+(?:class|struct))?\s+([A-Za-z_][A-Za-z0-9_]*)/gm;
+// Extended pattern to capture inheritance clause: class Name<T> : Base, IInterface where T : constraint
+const TYPE_WITH_INHERITANCE_PATTERN = /^\s*(?:\b(?:public|internal|protected|private|abstract|sealed|static|partial|readonly|unsafe|ref|file|new)\s+)*(class|struct|interface|record|enum)(?:\s+(?:class|struct))?\s+([A-Za-z_][A-Za-z0-9_]*)(?:<[^>]+>)?\s*(?::\s*([^{\n]+))?/gm;
 const BUILT_IN_NAMESPACE_PREFIX = "System";
 const MEMBER_MODIFIER_FRAGMENT = "(?:static|virtual|override|sealed|abstract|async|readonly|unsafe|extern|partial|new)";
 const FIELD_MODIFIER_FRAGMENT = "(?:static|readonly|const|volatile|new)";
@@ -82,19 +86,22 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   const matches: CSharpTypeMatch[] = [];
   let match: RegExpExecArray | null;
 
-  while ((match = TYPE_DECLARATION_PATTERN.exec(content)) !== null) {
+  // Use the extended pattern that captures inheritance clauses
+  while ((match = TYPE_WITH_INHERITANCE_PATTERN.exec(content)) !== null) {
     const kind = match[1];
     const name = match[2];
+    const inheritanceClause = match[3]?.trim();
     if (!kind || !name) {
       continue;
     }
 
     const line = computeLineNumber(content, match.index);
     const documentation = extractDocumentation(content, match.index);
-    matches.push({ kind, name, line, documentation });
+    const typeReferences = extractTypeReferencesFromInheritance(kind, inheritanceClause);
+    matches.push({ kind, name, line, documentation, typeReferences });
   }
 
-  TYPE_DECLARATION_PATTERN.lastIndex = 0;
+  TYPE_WITH_INHERITANCE_PATTERN.lastIndex = 0;
 
   const symbols = matches
     .sort((a, b) => a.line - b.line || a.name.localeCompare(b.name))
@@ -105,7 +112,8 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
         line: entry.line,
         character: 1
       },
-      documentation: entry.documentation ?? undefined
+      documentation: entry.documentation ?? undefined,
+      typeReferences: entry.typeReferences && entry.typeReferences.length > 0 ? entry.typeReferences : undefined
     })) as PublicSymbolEntry[];
 
   const memberSymbols = extractMemberSymbols(content);
@@ -124,6 +132,98 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   });
 
   return combined;
+}
+
+/**
+ * Extracts type references from a C# inheritance clause.
+ * Handles patterns like:
+ * - `class Foo : Bar` → extends Bar
+ * - `class Foo : Bar, IInterface` → extends Bar, implements IInterface
+ * - `interface IFoo : IBar, IBaz` → extends IBar, IBaz
+ * - `class Foo : Base where T : constraint` → extends Base (strips where clause)
+ *
+ * @param typeKind - The kind of type declaration (class, struct, interface, record, enum)
+ * @param inheritanceClause - The text after the colon (e.g., "Base, IFoo, IBar where T : constraint")
+ * @returns Array of type references with appropriate roles
+ */
+function extractTypeReferencesFromInheritance(
+  typeKind: string,
+  inheritanceClause: string | undefined
+): TypeReference[] {
+  if (!inheritanceClause) {
+    return [];
+  }
+
+  // Strip "where" constraints (e.g., "where T : IDisposable")
+  const withoutWhere = inheritanceClause.split(/\s+where\s+/)[0]?.trim() ?? "";
+  if (!withoutWhere) {
+    return [];
+  }
+
+  // Split by comma to get individual base types
+  const baseTypes = withoutWhere
+    .split(",")
+    .map(t => t.trim())
+    .filter(Boolean);
+
+  const references: TypeReference[] = [];
+  const isInterface = typeKind === "interface";
+
+  for (let i = 0; i < baseTypes.length; i++) {
+    const typeName = baseTypes[i];
+    // Strip generic parameters for the name (e.g., "List<T>" → "List")
+    const cleanName = typeName.replace(/<[^>]+>/g, "").trim();
+    if (!cleanName) {
+      continue;
+    }
+
+    // Skip common system types that aren't worth linking
+    if (isSystemType(cleanName)) {
+      continue;
+    }
+
+    // For interfaces: all base types are "extends" (interfaces extend other interfaces)
+    // For classes: first non-interface is "extends", interfaces are "implements"
+    // Heuristic: interfaces start with "I" followed by uppercase letter
+    const looksLikeInterface = /^I[A-Z]/.test(cleanName);
+
+    let role: TypeReference["role"];
+    if (isInterface) {
+      role = "extends";
+    } else if (i === 0 && !looksLikeInterface) {
+      // First type and doesn't look like interface → base class
+      role = "extends";
+    } else {
+      // Interface implementation
+      role = "implements";
+    }
+
+    references.push({ name: cleanName, role });
+  }
+
+  return references;
+}
+
+/**
+ * Checks if a type name is a common system/framework type that shouldn't be linked.
+ */
+function isSystemType(typeName: string): boolean {
+  const systemTypes = new Set([
+    "object", "Object",
+    "string", "String",
+    "int", "Int32", "Int64", "long", "short", "Int16",
+    "float", "Single", "double", "Double", "decimal", "Decimal",
+    "bool", "Boolean",
+    "byte", "Byte", "sbyte", "SByte",
+    "char", "Char",
+    "void", "Void",
+    "dynamic",
+    "ValueType", "Enum", "Array", "Delegate", "MulticastDelegate",
+    // Common system interfaces
+    "IDisposable", "IEnumerable", "IEnumerator", "IComparable", "IEquatable",
+    "ICloneable", "IFormattable", "IConvertible", "IAsyncDisposable"
+  ]);
+  return systemTypes.has(typeName);
 }
 
 async function extractDependencies(params: {

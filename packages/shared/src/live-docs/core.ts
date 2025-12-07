@@ -460,11 +460,11 @@ export async function buildWorkspaceSymbolIndex(options: {
     // Try to extract symbols from the file
     let symbols: PublicSymbolEntry[] = [];
     try {
-      const content = await fs.readFile(absolutePath, "utf8");
       const ext = path.extname(absolutePath).toLowerCase();
 
-      // Only process files we can analyze for symbols
+      // Process JavaScript/TypeScript files with the built-in TypeScript parser
       if ([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"].includes(ext)) {
+        const content = await fs.readFile(absolutePath, "utf8");
         const scriptKind = inferScriptKind(absolutePath);
         const sourceFile = ts.createSourceFile(
           absolutePath,
@@ -474,8 +474,16 @@ export async function buildWorkspaceSymbolIndex(options: {
           scriptKind
         );
         symbols = collectExportedSymbols(sourceFile);
+      } else {
+        // Try language-specific adapters for other file types (C#, Java, Python, etc.)
+        const adapterResult = await analyzeWithLanguageAdapters({
+          absolutePath,
+          workspaceRoot: options.workspaceRoot
+        });
+        if (adapterResult) {
+          symbols = adapterResult.symbols;
+        }
       }
-      // For other languages, we could add adapter-based symbol extraction here
     } catch {
       // Skip files that can't be read or parsed
       continue;

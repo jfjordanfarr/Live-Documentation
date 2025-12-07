@@ -72,6 +72,8 @@ export interface ParsedDependency {
   codePath?: string;
   docPath?: string;
   anchor?: string;
+  /** Anchor of the symbol on the *source* file that declares this dependency */
+  sourceAnchor?: string;
   label?: string;
   raw: string;
 }

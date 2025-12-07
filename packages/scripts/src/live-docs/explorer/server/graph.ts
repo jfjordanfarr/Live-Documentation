@@ -50,6 +50,7 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
                 targetId: targetId,
                 targetDocPath: targetNode?.docPath ?? dep.docPath,
                 targetSymbol: dep.anchor,
+                sourceSymbol: dep.sourceAnchor,
                 label,
                 raw: dep.raw,
                 resolved,
@@ -64,6 +65,7 @@ export async function buildExplorerGraph(workspaceRoot: string): Promise<Explore
             .filter(reference => reference.resolved && reference.targetId)
             .forEach(reference => {
                 addLink(node.codePath, reference.targetId!, "dependency", {
+                    sourceSymbol: reference.sourceSymbol,
                     targetSymbol: reference.targetSymbol
                 });
             });

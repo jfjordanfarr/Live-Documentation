@@ -38,6 +38,10 @@ export function normalizeSymbolIdentifier(raw: string | null | undefined): strin
     // Remove leading symbol- prefixes produced by slugged anchors.
     value = value.replace(/^symbol-/i, "");
 
+    // Remove trailing kind suffixes from slugged symbol names (e.g., "-class", "-interface").
+    // These are added by the GitHub slugger when generating anchors for symbols like "BaseWidget (class)".
+    value = value.replace(/-(class|interface|struct|enum|type|function|method|property|constructor|constant|variable)$/i, "");
+
     // No-op for empty or non-informative results.
     if (value.length === 0) {
         return null;

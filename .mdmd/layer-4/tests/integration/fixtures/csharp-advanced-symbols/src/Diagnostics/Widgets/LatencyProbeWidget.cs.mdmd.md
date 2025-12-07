@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/LatencyProbeWidget.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgets-latencyprobewidget-cs
-- Generated At: 2025-12-06T22:49:48.938Z
+- Generated At: 2025-12-06T23:59:13.539Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Documents the `LatencyProbeWidget` type used by the C# advanced symbols fixture 
 Do not trim the metadata tag or `CollectDependencies` entries; they guarantee the analyzer sees telemetry-specific edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.938Z","inputHash":"4df23a08302f2447"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:59:13.539Z","inputHash":"6e8ab037b24fcf58"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LatencyProbeWidget (class)` {#symbol-latencyprobewidget-class}
 - Type: class
 - Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/LatencyProbeWidget.cs#L3)
+- Extends: [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 #### `LatencyProbeWidget (constructor)` {#symbol-latencyprobewidget-constructor}
 - Type: constructor

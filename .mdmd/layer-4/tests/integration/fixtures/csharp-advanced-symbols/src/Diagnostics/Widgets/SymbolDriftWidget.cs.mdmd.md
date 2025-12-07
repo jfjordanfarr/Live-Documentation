@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/SymbolDriftWidget.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgets-symboldriftwidget-cs
-- Generated At: 2025-12-06T22:49:48.942Z
+- Generated At: 2025-12-06T23:59:13.544Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Details the `SymbolDriftWidget` implementation that feeds tag-heavy metadata int
 Maintain the merge semantics and dependency list—they emulate a real drift monitor the analyzer depends on.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.942Z","inputHash":"404b057fb041bec4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:59:13.544Z","inputHash":"9ca43b0966650c57"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolDriftWidget (class)` {#symbol-symboldriftwidget-class}
 - Type: class
 - Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/SymbolDriftWidget.cs#L4)
+- Extends: [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 #### `SymbolDriftWidget (constructor)` {#symbol-symboldriftwidget-constructor}
 - Type: constructor

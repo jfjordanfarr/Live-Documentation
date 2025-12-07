@@ -354,19 +354,20 @@ function createNodeCard(
 
   const isAsset = (node.archetype || "").toLowerCase() === "asset";
 
-  // For assets: add a node-wide inbound hub (green dot on left) since they don't have an Internals row
-  // For code/test: the "Internals" pseudo-symbol in createSymbolSection serves as inbound:* fallback
+  // For assets: add node-wide inbound AND outbound hubs since they don't have symbol rows
+  // For code/test: symbol-level anchors handle connections; no node-wide outbound hub is added
+  // to avoid drawing fallback file-level lines when symbol resolution fails
   if (isAsset) {
     const inboundHub = document.createElement("div");
     inboundHub.className = "symbol-anchor hub inbound";
     card.appendChild(inboundHub);
     controller.registerAnchor(node.id, columnRole, "inbound:*", inboundHub);
-  }
 
-  const outboundHub = document.createElement("div");
-  outboundHub.className = "symbol-anchor hub outbound";
-  card.appendChild(outboundHub);
-  controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
+    const outboundHub = document.createElement("div");
+    outboundHub.className = "symbol-anchor hub outbound";
+    card.appendChild(outboundHub);
+    controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
+  }
 
   const header = document.createElement("div");
   header.className = "node-title";

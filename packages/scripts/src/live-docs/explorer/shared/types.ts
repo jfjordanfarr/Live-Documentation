@@ -8,6 +8,8 @@ export interface ExplorerDependencyReference {
     targetId?: string;
     targetDocPath?: string;
     targetSymbol?: string;
+    /** Symbol on this file that references the target */
+    sourceSymbol?: string;
     label: string;
     raw: string;
     resolved: boolean;

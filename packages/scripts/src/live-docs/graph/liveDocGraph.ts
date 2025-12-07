@@ -93,18 +93,55 @@ export async function buildLiveDocGraph(options: BuildLiveDocGraphOptions): Prom
 
   for (const entry of entries.values()) {
     const adjacency = new Set<string>();
+    const typeRefDependencies: ParsedDependency[] = [];
+    
+    // Add explicit dependencies from the Dependencies section
     for (const candidate of entry.dependencies) {
       if (candidate.codePath && entries.has(candidate.codePath)) {
         adjacency.add(candidate.codePath);
       }
     }
 
+    // Add type references (extends/implements) from Public Symbols as dependencies
+    const docDir = path.dirname(entry.docPath);
+    for (const [symbolName, symbolDoc] of Object.entries(entry.symbolDocumentation)) {
+      if (!symbolDoc.typeReferences) {
+        continue;
+      }
+      for (const typeRef of symbolDoc.typeReferences) {
+        // Only include resolved type references that point to workspace files
+        if (!typeRef.isResolved || !typeRef.targetDocPath) {
+          continue;
+        }
+        // Resolve the relative target doc path to a workspace-relative path
+        const resolvedDocPath = path.posix.normalize(
+          path.posix.join(docDir.replace(/\\/g, "/"), typeRef.targetDocPath)
+        );
+        const targetCodePath = docToCode.get(resolvedDocPath);
+        if (targetCodePath && entries.has(targetCodePath)) {
+          adjacency.add(targetCodePath);
+          // Also add to rawDependencies so the visualization picks it up
+          typeRefDependencies.push({
+            codePath: targetCodePath,
+            docPath: resolvedDocPath,
+            anchor: typeRef.targetAnchor,
+            sourceAnchor: symbolName, // The symbol on this file that extends/implements/references the type
+            label: `${typeRef.role}: ${typeRef.typeName}`,
+            raw: `${symbolName} ${typeRef.role} ${typeRef.typeName}`
+          });
+        }
+      }
+    }
+
+    // Merge explicit dependencies with type reference dependencies
+    const allRawDependencies = [...entry.dependencies, ...typeRefDependencies];
+
     nodes.set(entry.codePath, {
       codePath: entry.codePath,
       docPath: entry.docPath,
       archetype: entry.archetype,
       dependencies: adjacency,
-      rawDependencies: entry.dependencies,
+      rawDependencies: allRawDependencies,
       publicSymbols: entry.publicSymbols,
       symbolDocumentation: entry.symbolDocumentation
     });
