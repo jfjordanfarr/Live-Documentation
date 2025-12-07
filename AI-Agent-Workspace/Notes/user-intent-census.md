@@ -535,6 +535,26 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1854-L1890` — Plan enhancements to cover Razor pages, SPA runtime configs, and reflection flows, keeping LLM assistance optional but available for ambiguous edges so deterministic heuristics stay primary.
 - `L1901-L1906` — Operate with elevated agency, minimising chatter while escalating only when forks or roadblocks arise, to conserve context for the ongoing inspect CLI expansion.
 
+## 2025-12-06 (Dev Day 37)
+### Chat 1 (2025-12-06.1.md)
+- `2025-12-06.1.md:L822-L830` — Connection lines should continue INSIDE the node card to connect to the specific symbol anchors (colored pins next to symbol names); connectors should render above cards and below pins in the z-index hierarchy.
+- `L909-L915` — Connection paths should stop one radius shy of the centerpoint of their start and end anchor targets so the circular pins remain visually clean and unobscured.
+- `L976-L1010` — Optimal bezier curve tuning values identified: stubFactor=0.8, stubMin=8, stubMaxOffset=8, verticalOffset=0; these maximize readability in the Local Map view.
+- `L1144-L1156` — Even test files and asset files need dedicated node-wide input/output pins; for assets, use symmetric green/blue dot pins at node level without an "Internals" row (since assets have no internal logic to consume inputs).
+- `L1195-L1232` — For Asset archetyped nodes, place a green inbound dot on the opposite side of the blue outbound dot at the node-wide level; don't use an "Internals" row for pure assets since that implies internal logic.
+- `L1622-L1650` — When an `extends` badge (⊲) shows on a symbol, the connection should route to the dependency column (left), not the dependents column (right); connections must reflect the actual inheritance direction.
+
+### Chat 2 (2025-12-06.2.md)
+- `2025-12-06.2.md:L126-L200` — **Chat Archaeology** defined: when authoring Live Documentation Purpose/Notes sections, search the chat history to find when and why files were created; knowing the creation date and original intent transforms placeholder prose into auditable provenance.
+- `L385-L462` — For Chat Archaeology, search the actual chat history files rather than summaries; use increased max results beyond the default 20-result limit threshold across `AI-Agent-Workspace/ChatHistory/`.
+- `L953-L985` — When updating copilot-instructions.md, edits may be rock solid if grounded in comprehensive chat history analysis; the user reserves discretion to fine-tune phrasing but expects high-quality proposals.
+- `L1057-L1110` — **Documentation aggregates** (files that document conceptual collections without a single source file) belong in Layer 3 (Architecture), not Layer 4 (Implementation); Layer 4 follows the pattern "one source file → one Live Doc".
+- `L1353-L1400` — When choosing between Explorer ergonomics, cross-language reference badges, and Playwright tests, prioritize lowest-risk/highest-immediate-impact work (ergonomics) as foundation before regression testing.
+- `L1465-L1475` — Consolidate configuration UI elements (filter checkboxes, tuning sliders) into the left sidebar rather than scattering them across floating panels; reduce visual complexity while maintaining all controls.
+- `L1560-L1575` — Omnisearch should follow VS Code Command Palette style: top-center, floating above everything, dropdown results, keyboard-driven (Ctrl+P to open). Omnisearch is special and deserves prominent placement.
+- `L1941-L1960` — C files and C header files should NOT be classified as "Asset" archetype; code files under fixtures directories should be "Implementation" if they have code extensions (.c, .h, .cs, .ts, etc.), not "Asset".
+- `L2131-L2145` — Ensure archetype assignments are accurate AND symbols are properly interconnected; test files (`.test.ts`) should be "Test" archetype even when under fixtures directories, not "Implementation".
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

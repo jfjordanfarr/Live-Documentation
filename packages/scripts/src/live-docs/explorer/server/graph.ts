@@ -1,6 +1,8 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
+import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
+
 import {
     buildLiveDocGraph,
     type LiveDocGraph,
@@ -13,7 +15,6 @@ import type {
     ExplorerPublicSymbol,
     ExplorerTypeReference
 } from "../shared/types";
-import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 type TypeResolver = (token: string) => LiveDocGraphNode | undefined;
 
@@ -343,7 +344,7 @@ async function detectInheritance(
     return results;
 }
 
-function matchTypeTokens(content: string, pattern: RegExp): string[] {
+function _matchTypeTokens(content: string, pattern: RegExp): string[] {
     const tokens: string[] = [];
     const regex = new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
     let match: RegExpExecArray | null;

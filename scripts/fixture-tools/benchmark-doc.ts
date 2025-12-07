@@ -20,12 +20,12 @@ export interface RenderOptions {
 
 export function resolveAstFixtureDocPath(repoRoot: string): string {
   const config = DEFAULT_LIVE_DOCUMENTATION_CONFIG;
+  // benchmark-fixtures is a Layer 3 architectural doc, not a Layer 4 source doc
   return path.join(
     repoRoot,
     config.root,
-    config.baseLayer,
-    "benchmarks",
-    `astAccuracyFixtures${config.extension}`
+    "layer-3",
+    `benchmark-fixtures${config.extension}`
   );
 }
 

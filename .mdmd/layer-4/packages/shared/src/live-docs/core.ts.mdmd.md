@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2025-12-07T00:01:52.912Z
+- Generated At: 2025-12-07T03:35:42.386Z
 
 ## Authored
 ### Purpose
@@ -17,557 +17,282 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T00:01:52.912Z","inputHash":"b6354f2ad9f5283c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T03:35:42.386Z","inputHash":"0cbaf08ee63239ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L16)
-
-#### `ResolvedSymbolLocation` {#symbol-resolvedsymbollocation}
-- Type: interface
+- Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L31)
 
-##### `ResolvedSymbolLocation` — Summary
-Represents a resolved symbol location in the Live Documentation workspace.
-
-##### `ResolvedSymbolLocation` — Remarks
-This interface maps a symbol name to its Live Doc file path and anchor,
-enabling cross-Live-Doc linking when type references are rendered.
-
-##### `ResolvedSymbolLocation` — Links
-- `WorkspaceSymbolIndex`
+#### `ResolvedSymbolLocation` {#symbol-resolvedsymbollocation}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L32)
 
 #### `WorkspaceSymbolIndex` {#symbol-workspacesymbolindex}
-- Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L77)
-
-##### `WorkspaceSymbolIndex` — Summary
-A workspace-wide index mapping symbol names to their Live Doc locations.
-
-##### `WorkspaceSymbolIndex` — Remarks
-This index is built during Live Doc generation by collecting all exported
-symbols from all tracked files. It enables type reference resolution:
-when a symbol's return type or parameter type is a type defined elsewhere
-in the workspace, we can render it as a link to that type's Live Doc.
-
-The index supports multiple symbols with the same name (from different files)
-by storing an array of locations. Resolution prefers exact matches and
-falls back to qualified name matching when ambiguous.
-
-##### `WorkspaceSymbolIndex` — Examples
-```typescript
-const index: WorkspaceSymbolIndex = new Map([
-  ["Widget", [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
-  ["processWidget", [{ liveDocPath: ".mdmd/layer-4/src/core.ts.mdmd.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
-]);
-```
-
-##### `WorkspaceSymbolIndex` — Links
-- `buildWorkspaceSymbolIndex`
-- `ResolvedSymbolLocation` — *
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L33)
 
 #### `TypeReference` {#symbol-typereference}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L90)
-
-##### `TypeReference` — Summary
-Represents a type reference extracted from a symbol's signature.
-
-##### `TypeReference` — Remarks
-Type references capture the relationship between a symbol and the types it uses,
-enabling cross-Live-Doc linking when those types are defined in other workspace files.
-This powers the "type-aware symbol linking" feature in the Explorer's Local Map.
-
-##### `TypeReference` — Links
-- `collectTypeReferences`
-- `PublicSymbolEntry.typeReferences` — *
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L34)
 
 #### `PublicSymbolEntry` {#symbol-publicsymbolentry}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L159)
-
-##### `PublicSymbolEntry` — Summary
-Describes a public symbol exported from a source file.
-
-##### `PublicSymbolEntry` — Remarks
-This interface captures the essential metadata for each exported symbol,
-including its name, kind, location, documentation, and type references.
-The `typeReferences` field enables cross-Live-Doc linking when types
-are defined in other workspace files.
-
-##### `PublicSymbolEntry` — Links
-- `collectExportedSymbols` — *
-- `TypeReference`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L35)
 
 #### `DependencyEntry` {#symbol-dependencyentry}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L196)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L36)
 
 #### `ReExportedSymbolInfo` {#symbol-reexportedsymbolinfo}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L206)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L37)
 
 #### `LocationInfo` {#symbol-locationinfo}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L214)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L38)
 
 #### `SymbolDocumentationField` {#symbol-symboldocumentationfield}
-- Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L219)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L39)
 
 #### `SymbolDocumentationParameter` {#symbol-symboldocumentationparameter}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L231)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L40)
 
 #### `SymbolDocumentationException` {#symbol-symboldocumentationexception}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L236)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L41)
 
 #### `SymbolDocumentationExample` {#symbol-symboldocumentationexample}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L241)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L42)
 
 #### `SymbolDocumentationLinkKind` {#symbol-symboldocumentationlinkkind}
-- Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L247)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L43)
 
 #### `SymbolDocumentationLink` {#symbol-symboldocumentationlink}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L249)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L44)
 
 #### `SymbolDocumentation` {#symbol-symboldocumentation}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L255)
-
-#### `SUPPORTED_SCRIPT_EXTENSIONS` {#symbol-supported_script_extensions}
-- Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L270)
-
-#### `IMPLEMENTATION_CODE_EXTENSIONS` {#symbol-implementation_code_extensions}
-- Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L285)
-
-##### `IMPLEMENTATION_CODE_EXTENSIONS` — Summary
-Extensions that are always treated as implementation code, even under fixture directories.
-These files contain analyzable source code with symbols and dependencies.
-
-#### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
-- Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L307)
-
-#### `discoverTargetFiles` {#symbol-discovertargetfiles}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L374)
-- Parameters: `options`: `DiscoverOptions`
-
-##### `discoverTargetFiles` — Summary
-Locates workspace files that should receive Live Documentation generation.
-
-##### `discoverTargetFiles` — Remarks
-When `options.changedOnly` is `true`, the discovery set is intersected with
-files currently marked as changed in git, allowing quick iterations that only
-regenerate touched artifacts.
-
-##### `discoverTargetFiles` — Parameters
-- `options.changedOnly`: When `true`, restricts results to files with local modifications.
-- `options.config`: Live Documentation configuration describing default globs and overrides.
-- `options.include`: Optional override set limiting discovery to pre-selected relative paths.
-- `options.workspaceRoot`: Absolute path to the repository root the CLI is operating in.
-
-##### `discoverTargetFiles` — Returns
-A sorted array of absolute, workspace-resolved file paths ready for analysis.
-
-##### `discoverTargetFiles` — Examples
-```ts
-const files = await discoverTargetFiles({
-  workspaceRoot,
-  config,
-  include: new Set(["packages/server/src/index.ts"]),
-  changedOnly: false
-});
-```
-
-##### `discoverTargetFiles` — Links
-- `detectChangedFiles` — *
-
-#### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L442)
-
-##### `buildWorkspaceSymbolIndex` — Summary
-Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
-
-##### `buildWorkspaceSymbolIndex` — Remarks
-This function performs a lightweight pre-scan of all target files to collect
-exported symbols and their locations. The resulting index enables type references
-in one Live Doc to link to type definitions in other Live Docs.
-
-The index is keyed by symbol name (case-sensitive) and maps to an array of
-locations, allowing for multiple symbols with the same name from different files.
-
-##### `buildWorkspaceSymbolIndex` — Parameters
-- `options`: Configuration for the index build.
-- `options.docExtension`: File extension for Live Docs (e.g., ".mdmd.md").
-- `options.liveDocsRoot`: Workspace-relative path to the Live Docs root (e.g., ".mdmd/layer-4").
-- `options.targetFiles`: Absolute paths to all files being processed.
-- `options.workspaceRoot`: Absolute path to the workspace root.
-
-##### `buildWorkspaceSymbolIndex` — Returns
-A map from symbol names to their resolved Live Doc locations.
-
-##### `buildWorkspaceSymbolIndex` — Examples
-```typescript
-const index = await buildWorkspaceSymbolIndex({
-  targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
-  workspaceRoot: "/workspace",
-  liveDocsRoot: ".mdmd/layer-4",
-  docExtension: ".mdmd.md"
-});
-// index.get("Widget") => [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", ... }]
-```
-
-##### `buildWorkspaceSymbolIndex` — Links
-- `ResolvedSymbolLocation`
-- `WorkspaceSymbolIndex` — *
-
-#### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L536)
-- Returns: `ResolvedSymbolLocation`
-- Parameters: `index`: `WorkspaceSymbolIndex`
-
-##### `resolveTypeToLiveDoc` — Summary
-Resolves a type name to its Live Doc location using the workspace symbol index.
-
-##### `resolveTypeToLiveDoc` — Remarks
-Returns undefined if the type is not found in the index. When multiple
-symbols with the same name exist, returns the first match (future enhancement:
-could use import context to disambiguate).
-
-##### `resolveTypeToLiveDoc` — Parameters
-- `currentSourcePath`: The source path of the file being rendered (to avoid self-links).
-- `index`: The workspace-wide symbol index.
-- `typeName`: The type name to resolve (e.g., "Widget", "Foo.Bar").
-
-##### `resolveTypeToLiveDoc` — Returns
-The resolved location, or undefined if not found.
-
-#### `resolveArchetype` {#symbol-resolvearchetype}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L578)
-- Returns: [`LiveDocumentationArchetype`](../config/liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationarchetype)
-- Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfig)
-
-##### `resolveArchetype` — Summary
-Determines which Live Documentation archetype applies to a given source file.
-
-##### `resolveArchetype` — Remarks
-Explicit `archetypeOverrides` from the configuration take precedence. When no
-overrides match, common fixture and test naming conventions are used as a
-fallback before defaulting to the `implementation` archetype.
-
-##### `resolveArchetype` — Parameters
-- `config`: Live Documentation configuration containing archetype overrides.
-- `sourcePath`: Workspace-relative source path using forward slashes.
-
-##### `resolveArchetype` — Returns
-The archetype that should be reflected in the generated markdown metadata.
-
-##### `resolveArchetype` — Examples
-```ts
-const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
-// archetype === "test"
-```
-
-#### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L624)
-
-##### `hasMeaningfulAuthoredContent` — Summary
-Checks whether an authored markdown block carries information beyond the default placeholders.
-
-##### `hasMeaningfulAuthoredContent` — Parameters
-- `authoredBlock`: Raw markdown captured between the `## Authored` markers.
-
-##### `hasMeaningfulAuthoredContent` — Returns
-`true` when the block contains substantive content, otherwise `false`.
-
-#### `directoryExists` {#symbol-directoryexists}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L646)
-
-#### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L666)
-
-##### `cleanupEmptyParents` — Summary
-Recursively removes empty directories from `startDir` up to (but excluding) `stopDir`.
-
-##### `cleanupEmptyParents` — Remarks
-The walk stops as soon as a directory contains any entries or when the
-`stopDir` boundary is reached, preventing accidental deletion outside the Live
-Doc mirror.
-
-##### `cleanupEmptyParents` — Parameters
-- `startDir`: Directory that was just emptied (for example, a deleted Live Doc path).
-- `stopDir`: Absolute directory boundary that must remain intact.
-
-#### `analyzeSourceFile` {#symbol-analyzesourcefile}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L713)
-
-##### `analyzeSourceFile` — Summary
-Produces symbol and dependency analysis for a single source artifact.
-
-##### `analyzeSourceFile` — Remarks
-Language-specific adapters run before falling back to the built-in
-TypeScript/JavaScript parser. This lets polyglot fixtures supply rich metadata
-without requiring the TypeScript compiler to understand those languages.
-
-##### `analyzeSourceFile` — Parameters
-- `absolutePath`: Absolute filesystem path to the source file under inspection.
-- `workspaceRoot`: Workspace root used to normalise relative dependency paths.
-
-##### `analyzeSourceFile` — Returns
-Analyzer output describing exported symbols and detected dependencies.
-
-##### `analyzeSourceFile` — Examples
-```ts
-const analysis = await analyzeSourceFile(srcPath, workspaceRoot);
-if (analysis.symbols.length === 0) {
-  console.warn("No exports detected");
-}
-```
-
-#### `inferScriptKind` {#symbol-inferscriptkind}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L781)
-- Returns: `ts.ScriptKind`
-
-##### `inferScriptKind` — Summary
-Maps a file extension to the TypeScript compiler script kind used for parsing.
-
-##### `inferScriptKind` — Parameters
-- `extension`: Lowercase file extension including the leading dot.
-
-##### `inferScriptKind` — Returns
-The matching `ts.ScriptKind`, defaulting to `Unknown` for unsupported types.
-
-#### `collectExportedSymbols` {#symbol-collectexportedsymbols}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L807)
-- Returns: `PublicSymbolEntry`[]
-- Parameters: `sourceFile`: `ts.SourceFile`
-
-##### `collectExportedSymbols` — Summary
-Scans a TypeScript source file for exported declarations and captures their metadata.
-
-##### `collectExportedSymbols` — Parameters
-- `sourceFile`: Parsed TypeScript source file produced by the compiler host.
-
-##### `collectExportedSymbols` — Returns
-A location-sorted list of exported symbols suitable for Live Doc rendering.
-
-#### `collectDependencies` {#symbol-collectdependencies}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L1546)
-
-##### `collectDependencies` — Summary
-Enumerates import and export dependencies declared within a TypeScript source file.
-
-##### `collectDependencies` — Remarks
-Relative specifiers are resolved against the workspace using Node-style extension
-fallbacks so the resulting Live Docs can point to concrete files when possible.
-
-##### `collectDependencies` — Parameters
-- `params.absolutePath`: Absolute path to the origin file, used for resolution.
-- `params.sourceFile`: Parsed source file that acts as the dependency origin.
-- `params.workspaceRoot`: Workspace root for normalising resolved paths.
-
-##### `collectDependencies` — Returns
-A sorted list of dependency entries describing specifiers and imported symbols.
-
-##### `collectDependencies` — Links
-- `resolveDependency` — *
-
-#### `resolveDependency` {#symbol-resolvedependency}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L1911)
-
-##### `resolveDependency` — Summary
-Resolves a relative module specifier to a workspace-relative file path.
-
-##### `resolveDependency` — Parameters
-- `fromFile`: Absolute path to the file containing the specifier.
-- `specifier`: Module specifier as written in the source file (for example, "./utils").
-- `workspaceRoot`: Workspace root used to convert to a relative path.
-
-##### `resolveDependency` — Returns
-The normalised relative path when resolution succeeds, otherwise `undefined`.
-
-##### `resolveDependency` — Links
-- `collectDependencies` — *
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L45)
 
 #### `PublicSymbolHeadingInfo` {#symbol-publicsymbolheadinginfo}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2067)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L46)
 
-##### `PublicSymbolHeadingInfo` — Summary
-Renders the markdown lines that populate the `Public Symbols` section for a Live Doc.
+#### `SUPPORTED_SCRIPT_EXTENSIONS` {#symbol-supported_script_extensions}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L54)
 
-##### `PublicSymbolHeadingInfo` — Remarks
-The output includes symbol metadata (type, location, qualifiers) followed by
-deterministic `#####` subsections per documented field (summary, remarks,
-parameters, returns, etc.). This structure keeps docstring bridges stable and
-individually addressable across languages.
+#### `IMPLEMENTATION_CODE_EXTENSIONS` {#symbol-implementation_code_extensions}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L55)
 
-##### `PublicSymbolHeadingInfo` — Parameters
-- `args.analysis`: Analyzer output describing exported symbols and dependencies.
-- `args.docDir`: Absolute directory path of the Live Doc being written.
-- `args.sourceAbsolute`: Absolute path to the source file backing this Live Doc.
-- `args.sourceRelativePath`: Workspace-relative source path (unused here but
-preserved for parity with other render helpers).
-- `args.workspaceRoot`: Workspace root, used to resolve relative links.
+#### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L56)
 
-##### `PublicSymbolHeadingInfo` — Returns
-An array of markdown lines ready to insert beneath the `Public Symbols` heading.
-
-##### `PublicSymbolHeadingInfo` — Examples
-```ts
-const lines = renderPublicSymbolLines({
-  analysis,
-  docDir,
-  sourceAbsolute,
-  workspaceRoot,
-  sourceRelativePath
-});
-```
-
-##### `PublicSymbolHeadingInfo` — Links
-- `renderDependencyLines`
-
-#### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2077)
-- Returns: `PublicSymbolHeadingInfo`[]
-- Parameters: `symbols`: `PublicSymbolEntry`[]
-
-#### `renderPublicSymbolLines` {#symbol-renderpublicsymbollines}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2198)
-
-#### `renderDependencyLines` {#symbol-renderdependencylines}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2589)
-
-##### `renderDependencyLines` — Summary
-Renders the markdown bullet list for a Live Doc's `Dependencies` section.
-
-##### `renderDependencyLines` — Remarks
-Module specifiers that resolve inside the workspace are linked directly to
-their Live Doc counterparts, while external dependencies are emitted as inline
-code with optional symbol suffixes.
-
-##### `renderDependencyLines` — Parameters
-- `args.analysis`: Analyzer output describing imported and re-exported modules.
-- `args.docDir`: Directory containing the Live Doc being written.
-- `args.liveDocsRootAbsolute`: Absolute path to the Live Docs mirror root.
-- `args.workspaceRoot`: Workspace root used to compute relative links.
-
-##### `renderDependencyLines` — Returns
-Markdown lines suitable for the `Dependencies` section, or an empty array when none exist.
-
-##### `renderDependencyLines` — Links
-- `renderPublicSymbolLines` — *
-
-#### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2724)
+#### `RESERVED_HEADING_NAMES` {#symbol-reserved_heading_names}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L57)
 
 #### `formatSourceLink` {#symbol-formatsourcelink}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2774)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L65)
 
 #### `formatRelativePathFromDoc` {#symbol-formatrelativepathfromdoc}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2779)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L66)
 
 #### `createSymbolSlug` {#symbol-createsymbolslug}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2787)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L67)
 
 #### `toModuleLabel` {#symbol-tomodulelabel}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2796)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L68)
 
 #### `formatInlineCode` {#symbol-formatinlinecode}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2802)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L69)
 
 #### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2807)
-- Parameters: `dependency`: `DependencyEntry`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L70)
 
 #### `resolveExportAssignmentName` {#symbol-resolveexportassignmentname}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2821)
-- Parameters: `expression`: `ts.Expression`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L71)
 
 #### `hasExportModifier` {#symbol-hasexportmodifier}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2831)
-- Parameters: `node`: `ts.Node`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L72)
 
 #### `hasDefaultModifier` {#symbol-hasdefaultmodifier}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2839)
-- Parameters: `node`: `ts.Node`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L73)
 
 #### `getNodeLocation` {#symbol-getnodelocation}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2847)
-- Returns: `LocationInfo`
-- Parameters: `node`: `ts.Node`; `sourceFile`: `ts.SourceFile`
-
-#### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L2856)
-- Returns: `SymbolDocumentation`
-- Parameters: `node`: `ts.Node`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L74)
 
 #### `displayDependencyKey` {#symbol-displaydependencykey}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L3178)
-- Parameters: `entry`: `DependencyEntry`
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L75)
+
+#### `resolveArchetype` {#symbol-resolvearchetype}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L83)
+
+#### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L84)
+
+#### `discoverTargetFiles` {#symbol-discovertargetfiles}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L92)
+
+#### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L93)
+
+#### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L94)
+
+#### `inferScriptKind` {#symbol-inferscriptkind}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L102)
+
+#### `collectExportedSymbols` {#symbol-collectexportedsymbols}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L103)
+
+#### `collectDependencies` {#symbol-collectdependencies}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L111)
+
+#### `mergeDependencyEntries` {#symbol-mergedependencyentries}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L112)
+
+#### `resolveDependency` {#symbol-resolvedependency}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L113)
+
+#### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L114)
+
+#### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L115)
+
+#### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L123)
+
+#### `renderPublicSymbolLines` {#symbol-renderpublicsymbollines}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L124)
+
+#### `renderDependencyLines` {#symbol-renderdependencylines}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L125)
+
+#### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L126)
+
+#### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L133)
 
 #### `detectChangedFiles` {#symbol-detectchangedfiles}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L3182)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L140)
 
 #### `parsePorcelainLine` {#symbol-parseporcelainline}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L3204)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L141)
 
 #### `execFileAsync` {#symbol-execfileasync}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L3226)
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L142)
+
+#### `directoryExists` {#symbol-directoryexists}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L150)
+
+#### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L151)
+
+#### `analyzeSourceFile` {#symbol-analyzesourcefile}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L158)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
-- `node:child_process` - `execFile`
-- `node:fs/promises` - `fs`
-- `node:path` - `path`
-- [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
-- [`dom.inferDomDependencies`](./heuristics/dom.ts.mdmd.md#symbol-inferdomdependencies)
-- [`githubSlugger.slug`](../tooling/githubSlugger.ts.mdmd.md#symbol-slug)
-- [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- `typescript` - `ts`
+- [`archetype.hasMeaningfulAuthoredContent`](./archetype.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent) (re-export)
+- [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype) (re-export)
+- [`coreConstants.IMPLEMENTATION_CODE_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-implementation_code_extensions) (re-export)
+- [`coreConstants.MODULE_RESOLUTION_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-module_resolution_extensions) (re-export)
+- [`coreConstants.RESERVED_HEADING_NAMES`](./coreConstants.ts.mdmd.md#symbol-reserved_heading_names) (re-export)
+- [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions) (re-export)
+- [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (re-export, type-only)
+- [`coreTypes.LocationInfo`](./coreTypes.ts.mdmd.md#symbol-locationinfo) (re-export, type-only)
+- [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (re-export, type-only)
+- [`coreTypes.PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo) (re-export, type-only)
+- [`coreTypes.ReExportedSymbolInfo`](./coreTypes.ts.mdmd.md#symbol-reexportedsymbolinfo) (re-export, type-only)
+- [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (re-export, type-only)
+- [`coreTypes.SourceAnalysisResult`](./coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (re-export, type-only)
+- [`coreTypes.SymbolDocumentation`](./coreTypes.ts.mdmd.md#symbol-symboldocumentation) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationExample`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationexample) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationException`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationexception) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationField`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationfield) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationLink`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationlink) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationLinkKind`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationlinkkind) (re-export, type-only)
+- [`coreTypes.SymbolDocumentationParameter`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationparameter) (re-export, type-only)
+- [`coreTypes.TypeReference`](./coreTypes.ts.mdmd.md#symbol-typereference) (re-export, type-only)
+- [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (re-export, type-only)
+- [`coreUtils.createSymbolSlug`](./coreUtils.ts.mdmd.md#symbol-createsymbolslug) (re-export)
+- [`coreUtils.displayDependencyKey`](./coreUtils.ts.mdmd.md#symbol-displaydependencykey) (re-export)
+- [`coreUtils.formatDependencyQualifier`](./coreUtils.ts.mdmd.md#symbol-formatdependencyqualifier) (re-export)
+- [`coreUtils.formatInlineCode`](./coreUtils.ts.mdmd.md#symbol-formatinlinecode) (re-export)
+- [`coreUtils.formatRelativePathFromDoc`](./coreUtils.ts.mdmd.md#symbol-formatrelativepathfromdoc) (re-export)
+- [`coreUtils.formatSourceLink`](./coreUtils.ts.mdmd.md#symbol-formatsourcelink) (re-export)
+- [`coreUtils.getNodeLocation`](./coreUtils.ts.mdmd.md#symbol-getnodelocation) (re-export)
+- [`coreUtils.hasDefaultModifier`](./coreUtils.ts.mdmd.md#symbol-hasdefaultmodifier) (re-export)
+- [`coreUtils.hasExportModifier`](./coreUtils.ts.mdmd.md#symbol-hasexportmodifier) (re-export)
+- [`coreUtils.resolveExportAssignmentName`](./coreUtils.ts.mdmd.md#symbol-resolveexportassignmentname) (re-export)
+- [`coreUtils.toModuleLabel`](./coreUtils.ts.mdmd.md#symbol-tomodulelabel) (re-export)
+- [`dependencies.augmentWithReExportedSymbols`](./dependencies.ts.mdmd.md#symbol-augmentwithreexportedsymbols) (re-export)
+- [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies) (re-export)
+- [`dependencies.mergeDependencyEntries`](./dependencies.ts.mdmd.md#symbol-mergedependencyentries) (re-export)
+- [`dependencies.resolveDependency`](./dependencies.ts.mdmd.md#symbol-resolvedependency) (re-export)
+- [`dependencies.shouldInferDomDependencies`](./dependencies.ts.mdmd.md#symbol-shouldinferdomdependencies) (re-export)
+- [`discovery.buildWorkspaceSymbolIndex`](./discovery.ts.mdmd.md#symbol-buildworkspacesymbolindex) (re-export)
+- [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
+- [`discovery.resolveTypeToLiveDoc`](./discovery.ts.mdmd.md#symbol-resolvetypetolivedoc) (re-export)
+- [`fileUtils.cleanupEmptyParents`](./fileUtils.ts.mdmd.md#symbol-cleanupemptyparents) (re-export)
+- [`fileUtils.directoryExists`](./fileUtils.ts.mdmd.md#symbol-directoryexists) (re-export)
+- [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles) (re-export)
+- [`gitUtils.execFileAsync`](./gitUtils.ts.mdmd.md#symbol-execfileasync) (re-export)
+- [`gitUtils.parsePorcelainLine`](./gitUtils.ts.mdmd.md#symbol-parseporcelainline) (re-export)
+- [`jsDoc.extractJsDocDocumentation`](./jsDoc.ts.mdmd.md#symbol-extractjsdocdocumentation) (re-export)
+- [`rendering.computePublicSymbolHeadingInfo`](./rendering.ts.mdmd.md#symbol-computepublicsymbolheadinginfo) (re-export)
+- [`rendering.renderDependencyLines`](./rendering.ts.mdmd.md#symbol-renderdependencylines) (re-export)
+- [`rendering.renderPublicSymbolLines`](./rendering.ts.mdmd.md#symbol-renderpublicsymbollines) (re-export)
+- [`rendering.renderReExportedAnchorLines`](./rendering.ts.mdmd.md#symbol-renderreexportedanchorlines) (re-export)
+- [`sourceAnalysis.analyzeSourceFile`](./sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile) (re-export)
+- [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols) (re-export)
+- [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

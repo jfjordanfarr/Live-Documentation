@@ -459,8 +459,9 @@ function createSymbolSection(
 
   node.publicSymbols.forEach(symbol => {
     const extended = extendedByName.get(symbol);
-    const hasTypeRefs = extended?.typeReferences && extended.typeReferences.length > 0;
-    const hasResolvedTypeRefs = hasTypeRefs && extended!.typeReferences!.some(ref => ref.isResolved);
+    const typeRefs = extended?.typeReferences;
+    const hasTypeRefs = typeRefs && typeRefs.length > 0;
+    const hasResolvedTypeRefs = hasTypeRefs && typeRefs.some(ref => ref.isResolved);
 
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
@@ -478,20 +479,20 @@ function createSymbolSection(
 
     // Add type reference indicator if present
     if (hasTypeRefs && controller.options.state.tuning.visual.showTypeBadges) {
-      const typeIndicator = createTypeReferenceIndicator(controller, extended!.typeReferences!);
+      const typeIndicator = createTypeReferenceIndicator(controller, typeRefs);
       labelWrapper.appendChild(typeIndicator);
     }
 
     // If there are resolved type refs, make the symbol clickable to navigate to the first resolved type
     if (hasResolvedTypeRefs) {
       labelWrapper.classList.add("has-type-link");
-      const firstResolved = extended!.typeReferences!.find(ref => ref.isResolved);
+      const firstResolved = typeRefs.find(ref => ref.isResolved);
       if (firstResolved?.targetId) {
         labelWrapper.dataset.targetId = firstResolved.targetId;
         labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
         labelWrapper.addEventListener("click", event => {
           event.stopPropagation();
-          const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
+          const targetNode = controller.options.nodesById.get(firstResolved.targetId);
           if (targetNode) {
             void controller.focusSidebar(targetNode);
           }

@@ -26,7 +26,8 @@ interface CSharpTypeMatch {
 }
 
 const USING_DIRECTIVE_PATTERN = /^\s*using\s+(?:static\s+)?([^=;]+);/gm;
-const TYPE_DECLARATION_PATTERN = /^\s*(?:\b(?:public|internal|protected|private|abstract|sealed|static|partial|readonly|unsafe|ref|file|new)\s+)*(class|struct|interface|record|enum)(?:\s+(?:class|struct))?\s+([A-Za-z_][A-Za-z0-9_]*)/gm;
+// Kept for reference; TYPE_WITH_INHERITANCE_PATTERN supersedes it
+const _TYPE_DECLARATION_PATTERN = /^\s*(?:\b(?:public|internal|protected|private|abstract|sealed|static|partial|readonly|unsafe|ref|file|new)\s+)*(class|struct|interface|record|enum)(?:\s+(?:class|struct))?\s+([A-Za-z_][A-Za-z0-9_]*)/gm;
 // Extended pattern to capture inheritance clause: class Name<T> : Base, IInterface where T : constraint
 const TYPE_WITH_INHERITANCE_PATTERN = /^\s*(?:\b(?:public|internal|protected|private|abstract|sealed|static|partial|readonly|unsafe|ref|file|new)\s+)*(class|struct|interface|record|enum)(?:\s+(?:class|struct))?\s+([A-Za-z_][A-Za-z0-9_]*)(?:<[^>]+>)?\s*(?::\s*([^{\n]+))?/gm;
 const BUILT_IN_NAMESPACE_PREFIX = "System";
