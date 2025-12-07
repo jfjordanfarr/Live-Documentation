@@ -355,8 +355,6 @@ function createNodeCard(
   const isAsset = (node.archetype || "").toLowerCase() === "asset";
 
   // For assets: add node-wide inbound AND outbound hubs since they don't have symbol rows
-  // For code/test: symbol-level anchors handle connections; no node-wide outbound hub is added
-  // to avoid drawing fallback file-level lines when symbol resolution fails
   if (isAsset) {
     const inboundHub = document.createElement("div");
     inboundHub.className = "symbol-anchor hub inbound";
@@ -367,6 +365,16 @@ function createNodeCard(
     outboundHub.className = "symbol-anchor hub outbound";
     card.appendChild(outboundHub);
     controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
+  }
+
+  // For center column only: add outbound hub for file-level dependent connections
+  // This ensures connections to dependents have a proper anchor at card edge,
+  // not the card center, when symbol resolution isn't available
+  if (columnRole === "center" && !isAsset) {
+    const centerOutboundHub = document.createElement("div");
+    centerOutboundHub.className = "symbol-anchor hub outbound center-hub";
+    card.appendChild(centerOutboundHub);
+    controller.registerAnchor(node.id, columnRole, "outbound:*", centerOutboundHub);
   }
 
   const header = document.createElement("div");

@@ -43,6 +43,7 @@ declare global {
     openInEditor: () => void;
     openInLocalView: () => void;
     openInGraphView: () => void;
+    openInCircuitBoard: () => void;
     openOmnisearch: () => void;
     zoomIn: () => void;
     zoomOut: () => void;
@@ -56,22 +57,106 @@ attachGlobalErrorHandler();
 
 void bootstrapExplorer();
 
+/**
+ * Static data bundle shape (when loading from explorer-data.json).
+ */
+interface StaticBundle {
+  graph?: unknown;
+  docs?: Record<string, string>;
+}
+
+/**
+ * Result from loading explorer data.
+ */
+interface LoadedExplorerData {
+  graphData: ExplorerGraphPayload;
+  staticDocs?: Record<string, string>;
+}
+
+/**
+ * Bootstrap the explorer, supporting both server mode and static mode.
+ * 
+ * Static mode detection:
+ * 1. Check for inline `<script id="explorer-data">` JSON
+ * 2. Check for `?data=<url>` query parameter
+ * 3. Check for `./explorer-data.json` file
+ * 4. Fall back to server `/graph` endpoint
+ */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const response = await fetch(`/graph?ts=${Date.now()}`);
-    if (!response.ok) {
-      throw new Error(`Failed to load graph data (${response.status})`);
-    }
-    const rawGraph = (await response.json()) as unknown;
-    const graphData = parseExplorerGraphPayload(rawGraph);
-    startExplorer(graphData);
+    const { graphData, staticDocs } = await loadExplorerData();
+    startExplorer(graphData, staticDocs);
   } catch (error) {
     reportFatalExplorerError(error);
   }
 }
 
-function startExplorer(graphData: ExplorerGraphPayload): void {
+async function loadExplorerData(): Promise<LoadedExplorerData> {
+  // 1. Check for inline data
+  const inlineElement = document.getElementById("explorer-data");
+  if (inlineElement?.textContent) {
+    console.log("Loading explorer data from inline script");
+    const staticData = JSON.parse(inlineElement.textContent) as StaticBundle;
+    if (staticData.graph) {
+      return {
+        graphData: parseExplorerGraphPayload(staticData.graph),
+        staticDocs: staticData.docs
+      };
+    }
+    return { graphData: parseExplorerGraphPayload(staticData) };
+  }
+
+  // 2. Check for data URL parameter
+  const params = new URLSearchParams(window.location.search);
+  const dataUrl = params.get("data");
+  if (dataUrl) {
+    console.log(`Loading explorer data from URL: ${dataUrl}`);
+    const response = await fetch(dataUrl, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Failed to load explorer data from ${dataUrl} (${response.status})`);
+    }
+    const staticData = (await response.json()) as StaticBundle;
+    if (staticData.graph) {
+      return {
+        graphData: parseExplorerGraphPayload(staticData.graph),
+        staticDocs: staticData.docs
+      };
+    }
+    return { graphData: parseExplorerGraphPayload(staticData) };
+  }
+
+  // 3. Try static explorer-data.json (for static builds)
+  try {
+    const staticResponse = await fetch("./explorer-data.json", { cache: "no-store" });
+    if (staticResponse.ok) {
+      console.log("Loading explorer data from explorer-data.json");
+      const staticData = (await staticResponse.json()) as StaticBundle;
+      if (staticData.graph) {
+        return {
+          graphData: parseExplorerGraphPayload(staticData.graph),
+          staticDocs: staticData.docs
+        };
+      }
+      return { graphData: parseExplorerGraphPayload(staticData) };
+    }
+  } catch {
+    // Static file not found, fall through to server mode
+  }
+
+  // 4. Fall back to server mode
+  console.log("Loading explorer data from server /graph endpoint");
+  const response = await fetch(`/graph?ts=${Date.now()}`);
+  if (!response.ok) {
+    throw new Error(`Failed to load graph data (${response.status})`);
+  }
+  return { graphData: parseExplorerGraphPayload(await response.json()) };
+}
+
+function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<string, string>): void {
   console.log("Live Docs Explorer graph loaded", graphData);
+  if (staticDocs) {
+    console.log(`Static mode: ${Object.keys(staticDocs).length} docs embedded`);
+  }
 
   const state: ExplorerState = {
     view: "circuit",
@@ -100,7 +185,33 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
   };
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
-  const detailPanel = createDetailPanel(nodesById);
+
+  // Helper to open a node in Circuit Board view
+  const openInCircuitBoardView = (node: ExplorerNodePayload): void => {
+    state.selectedNode = node;
+    state.view = "circuit";
+    setActiveView("circuit");
+    renderCurrentView();
+    // Scroll to the node after render
+    setTimeout(() => {
+      circuitView.scrollToNode(node.id);
+    }, 50);
+  };
+
+  // Helper to handle clicks on node links in documentation
+  const handleDocNodeClick = (nodeId: string): void => {
+    const node = nodesById.get(nodeId);
+    if (node) {
+      state.focusedNode = node;
+      void detailPanel.showNode(node);
+    }
+  };
+
+  const detailPanel = createDetailPanel(nodesById, {
+    staticDocs,
+    onNodeClick: handleDocNodeClick,
+    onOpenInCircuitBoard: openInCircuitBoardView
+  });
 
   const resolveLinkEndpoint = (endpoint: ExplorerLinkPayload["source"]): string => {
     if (typeof endpoint === "string") {
@@ -207,6 +318,15 @@ function startExplorer(graphData: ExplorerGraphPayload): void {
     state.view = "graph";
     setActiveView("graph");
     renderCurrentView();
+  };
+
+  globalWindow.openInCircuitBoard = () => {
+    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
+    const target = state.focusedNode ?? state.selectedNode;
+    if (!target) {
+      return;
+    }
+    openInCircuitBoardView(target);
   };
 
   globalWindow.zoomIn = () => {

@@ -42,6 +42,7 @@
     "live-docs:report": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/report-precision.ts",
     "live-docs:inspect": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/inspect.ts",
     "live-docs:visualize": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-explorer.ts",
+    "live-docs:visualize:static": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-static.ts",
     "live-docs:co-activation": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/co-activation.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts",
     "test:contracts": "npm run test:contracts -w packages/server",

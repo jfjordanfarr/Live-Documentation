@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-ts
-- Generated At: 2025-12-05T19:38:38.153Z
+- Generated At: 2025-12-07T19:11:27.401Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Circuit Board view for the Explorer. Renders the entire Live Doc graph as a tree
 - Click events update `ExplorerState.selectedNode` and can trigger Local Map view switches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T19:38:38.153Z","inputHash":"6517cdfcdd52a7a8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T19:11:27.401Z","inputHash":"c5948c4ba853fbb2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}
@@ -30,7 +30,7 @@ Circuit Board view for the Explorer. Renders the entire Live Doc graph as a tree
 
 #### `createCircuitView` {#symbol-createcircuitview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L40)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L41)
 - Returns: `CircuitViewApi`
 - Parameters: `options`: `CircuitViewOptions`
 <!-- LIVE-DOC:END Public Symbols -->

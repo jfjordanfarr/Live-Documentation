@@ -7,6 +7,8 @@ import { URL } from "url";
 import { buildExplorerAssets } from "./buildAssets";
 import { buildExplorerGraph, normalizeDocPath } from "./graph";
 import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerNodePayload } from "../shared/types";
+import { buildLocalMapData, buildTestCoverageMap } from "../shared/localMapBuilder";
+import type { ExplorerLinkPayload } from "../shared/types";
 
 export interface ExplorerServerOptions {
     workspaceRoot: string;
@@ -25,6 +27,8 @@ export interface ExplorerServerInstance {
 interface InternalContext {
     graph: ExplorerGraphPayload;
     nodesByDocPath: Map<string, ExplorerNodePayload>;
+    testCoverage: Map<string, string[]>;
+    resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
 }
 
 export async function startExplorerServer(options: ExplorerServerOptions): Promise<ExplorerServerInstance> {
@@ -33,9 +37,21 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
     const logger = options.logger ?? console;
 
     const assets = await buildExplorerAssets({ workspaceRoot });
+    
+    const resolveLinkEndpoint = (endpoint: ExplorerLinkPayload["source"]): string => {
+        if (typeof endpoint === "string") return endpoint;
+        if (endpoint && typeof endpoint === "object" && "id" in endpoint) {
+            return typeof endpoint.id === "string" ? endpoint.id : "";
+        }
+        return "";
+    };
+    
+    const initialGraph = await buildExplorerGraph(workspaceRoot);
     const context: InternalContext = {
-        graph: await buildExplorerGraph(workspaceRoot),
-        nodesByDocPath: new Map()
+        graph: initialGraph,
+        nodesByDocPath: new Map(),
+        testCoverage: buildTestCoverageMap(initialGraph, resolveLinkEndpoint),
+        resolveLinkEndpoint
     };
     refreshNodeLookup(context, workspaceRoot);
 
@@ -79,6 +95,11 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
                 return;
             }
 
+            if (requestUrl.pathname === "/local-map") {
+                await handleLocalMap(requestUrl, context, res);
+                return;
+            }
+
             res.writeHead(200, {
                 "Content-Type": "text/html; charset=utf-8",
                 "Cache-Control": "no-store"
@@ -116,6 +137,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
 
     const reloadGraph = async () => {
         context.graph = await buildExplorerGraph(workspaceRoot);
+        context.testCoverage = buildTestCoverageMap(context.graph, context.resolveLinkEndpoint);
         refreshNodeLookup(context, workspaceRoot);
         logger.log(
             `Explorer graph refreshed: ${context.graph.stats.nodes} nodes, ${context.graph.stats.links} links, ${context.graph.stats.missingDependencies} missing dependencies.`
@@ -229,6 +251,48 @@ async function handleDetails(
 function extractPurposeSection(content: string): string {
     const purposeMatch = content.match(/##\s+Purpose\s+([\s\S]*?)(?=##|$)/);
     return purposeMatch ? purposeMatch[1].trim() : "No purpose defined.";
+}
+
+/**
+ * Handle the /local-map endpoint for headless JSON Local Map data.
+ * 
+ * @example GET /local-map?nodeId=packages/server/src/main.ts
+ * @example GET /local-map?nodeId=packages/server/src/main.ts&pretty=1
+ */
+async function handleLocalMap(
+    url: URL,
+    context: InternalContext,
+    res: ServerResponse
+): Promise<void> {
+    const nodeId = url.searchParams.get("nodeId");
+    if (!nodeId) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Missing nodeId parameter" }));
+        return;
+    }
+
+    const localMap = buildLocalMapData(context.graph, context.testCoverage, {
+        focusNodeId: nodeId,
+        includeExtendedSymbols: true,
+        includeSymbolAnchors: true
+    });
+
+    if (!localMap) {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: `Node not found: ${nodeId}` }));
+        return;
+    }
+
+    const prettyPrint = url.searchParams.get("pretty") === "1";
+    const json = prettyPrint
+        ? JSON.stringify(localMap, null, 2)
+        : JSON.stringify(localMap);
+
+    res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store"
+    });
+    res.end(json);
 }
 
 function refreshNodeLookup(context: InternalContext, workspaceRoot: string): void {

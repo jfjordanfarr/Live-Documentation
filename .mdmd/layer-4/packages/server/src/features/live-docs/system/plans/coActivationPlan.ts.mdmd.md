@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/coActivationPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-coactivationplan-ts
-- Generated At: 2025-12-07T05:08:38.475Z
+- Generated At: 2025-12-07T16:27:06.741Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T05:08:38.475Z","inputHash":"4af94a342f1269bd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.741Z","inputHash":"4af94a342f1269bd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildCoActivationPlans` {#symbol-buildcoactivationplans}
@@ -53,3 +53,9 @@ _Pending notes_
 - [`utils.formatDisplayName`](../utils.ts.mdmd.md#symbol-formatdisplayname)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [generator.test.ts](../generator.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

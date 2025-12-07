@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/constants.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-constants-ts
-- Generated At: 2025-12-07T05:08:38.327Z
+- Generated At: 2025-12-07T16:27:06.592Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T05:08:38.327Z","inputHash":"1d4e986c16eeebdb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.592Z","inputHash":"1d4e986c16eeebdb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LAYER3_PREFIX` {#symbol-layer3_prefix}
@@ -94,3 +94,9 @@ _Pending notes_
 - [`types.Layer3Archetype`](./types.ts.mdmd.md#symbol-layer3archetype) (type-only)
 - [`types.SystemGeneratorLogger`](./types.ts.mdmd.md#symbol-systemgeneratorlogger) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [generator.test.ts](./generator.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

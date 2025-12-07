@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/componentPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-componentplan-ts
-- Generated At: 2025-12-07T05:08:38.491Z
+- Generated At: 2025-12-07T16:27:06.757Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T05:08:38.491Z","inputHash":"aa7018e6e5c38f47"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.757Z","inputHash":"aa7018e6e5c38f47"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildComponentPlans` {#symbol-buildcomponentplans}
@@ -46,3 +46,9 @@ _Pending notes_
 - [`utils.includeInComponents`](../utils.ts.mdmd.md#symbol-includeincomponents)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [generator.test.ts](../generator.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/live-docs/system/generator.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-live-docs-system-generator-test-ts
-- Generated At: 2025-12-07T04:00:24.819Z
+- Generated At: 2025-12-07T16:27:06.614Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises `generateSystemLiveDocs` end-to-end against a temporary workspace to p
 - Uses a throwaway workspace and baseline config to catch regressions in output-directory handling, mirroring the on-demand materialization strategy finalized on 2025-11-11.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:24.819Z","inputHash":"d29335f2d13f994a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.614Z","inputHash":"d29335f2d13f994a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,7 +35,9 @@ _No public symbols detected_
 ### Targets
 #### Vitest Unit Tests
 - packages/server/src/features/live-docs/stage0: [docLoader.ts](../stage0/docLoader.ts.mdmd.md)
-- packages/server/src/features/live-docs/system: [generator.ts](./generator.ts.mdmd.md)
+- packages/server/src/features/live-docs/system: [constants.ts](./constants.ts.mdmd.md), [formatting.ts](./formatting.ts.mdmd.md), [generator.ts](./generator.ts.mdmd.md), [rendering.ts](./rendering.ts.mdmd.md), [stageSequence.ts](./stageSequence.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
+  [utils.ts](./utils.ts.mdmd.md)
+- packages/server/src/features/live-docs/system/plans: [coActivationPlan.ts](./plans/coActivationPlan.ts.mdmd.md), [componentPlan.ts](./plans/componentPlan.ts.mdmd.md), [interactionPlan.ts](./plans/interactionPlan.ts.mdmd.md), [plans/index.ts](./plans/index.ts.mdmd.md), [testingPlan.ts](./plans/testingPlan.ts.mdmd.md), [workflowPlan.ts](./plans/workflowPlan.ts.mdmd.md)
 - packages/server/src/features/live-docs/targets: [manifest.ts](../targets/manifest.ts.mdmd.md)
 - packages/shared/src/config: [liveDocumentationConfig.ts](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md)
 - packages/shared/src/live-docs: [archetype.ts](../../../../../shared/src/live-docs/archetype.ts.mdmd.md), [core.ts](../../../../../shared/src/live-docs/core.ts.mdmd.md), [coreConstants.ts](../../../../../shared/src/live-docs/coreConstants.ts.mdmd.md), [coreTypes.ts](../../../../../shared/src/live-docs/coreTypes.ts.mdmd.md), [coreUtils.ts](../../../../../shared/src/live-docs/coreUtils.ts.mdmd.md), [dependencies.ts](../../../../../shared/src/live-docs/dependencies.ts.mdmd.md)

@@ -157,6 +157,21 @@ description: "Task list for Live Documentation"
 - [ ] LD-801 Define integration pattern for Layer‑2 commitments via Spec-Kit and external issue trackers, adding cross-links from Live Docs to canonical work items.
 - [ ] LD-802 Update onboarding/quickstart docs to explain the layered artifact distribution and reference the System analytics CLI as the source of materialized views.
 
+### Static Explorer Distribution (LD-810–LD-819)
+
+**Purpose**: Enable zero-server distribution of the Live Documentation Explorer via JSON bundles, GitHub Pages embedding, and standalone HTML viewers.
+
+- [ ] LD-810 Implement `StaticExplorerData` builder in `packages/scripts/src/live-docs/explorer/server/staticBuilder.ts` that wraps `ExplorerGraphPayload` with provenance metadata and symbol index (schema defined in `explorer/shared/staticExplorerData.ts`).
+- [ ] LD-811 [P] Add `--static` flag to `npm run live-docs:visualize` that emits `explorer-data.json` + `index.html` to a configurable output directory instead of starting the HTTP server.
+- [ ] LD-812 [P] Create standalone HTML viewer (`explorer/static/index.html`) that loads from inline `<script id="explorer-data">`, relative `explorer-data.json`, or configurable remote URL, detecting mode automatically.
+- [ ] LD-813 Update viewer client (`explorer/client/index.ts`) to accept graph data from static JSON in addition to server fetch, preserving all existing functionality (Circuit Board, Local Map, Force Graph).
+- [ ] LD-814 Add provenance display panel in viewer footer showing `generatedAt`, `commitHash`, and `generatorVersion` from static bundle.
+- [ ] LD-815 [P] Implement client-side symbol search using `symbolIndex` from static bundle, enabling fuzzy search without server roundtrips.
+- [ ] LD-816 Add integration test `tests/integration/live-docs/static-explorer.test.ts` validating JSON schema compliance, viewer loading modes, and symbol search accuracy.
+- [ ] LD-817 Document static distribution workflow in `specs/001-link-aware-diagnostics/quickstart.md` covering GitHub Pages embedding, Teams Card integration, and offline usage.
+- [ ] LD-818 Wire static bundle generation into the Hosted Showcase pipeline (LD-902) so downloaded bundles include explorable visualization.
+- [ ] LD-819 [P] Add optional treemap layout pre-computation for large workspaces (>1000 nodes) to avoid client-side d3 performance issues.
+
 **Checkpoint**: Documentation layers are mapped to their long-term homes, the GitHub Pages build runs inside CI/CD, and Live Docs tooling references them accordingly.
 
 ## Stage 9 – Hosted Showcase Trials (CAP-007, REQ-H1)
@@ -190,8 +205,8 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 
 ## Summary Metrics
 **Summary Metrics**
-- **Total Tasks**: 75 (13 closed, 62 open)
-- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (3 open), Stage9 (3 open)
-- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`
-- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401)
+- **Total Tasks**: 85 (13 closed, 72 open)
+- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open)
+- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`
+- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801)
 

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/types.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-types-ts
-- Generated At: 2025-12-07T05:18:03.297Z
+- Generated At: 2025-12-07T16:27:06.891Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T05:18:03.297Z","inputHash":"2b014d15749bf90e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.891Z","inputHash":"2b014d15749bf90e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Layer3Archetype` {#symbol-layer3archetype}
@@ -97,3 +97,9 @@ _Pending notes_
 - `@live-documentation/shared/live-docs/analysis/coActivation` - `CoActivationEdge` (type-only)
 - `@live-documentation/shared/live-docs/markdown` - `LiveDocRenderSection` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [generator.test.ts](./generator.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

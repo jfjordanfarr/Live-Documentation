@@ -33,6 +33,7 @@ export interface CircuitViewApi {
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
+  scrollToNode(nodeId: string): void;
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -692,12 +693,37 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     }
   }
 
+  function scrollToNode(nodeId: string): void {
+    const anchors = layoutAnchors.get(nodeId);
+    if (!anchors) return;
+
+    const viewportRect = viewport.getBoundingClientRect();
+    const centerX = viewportRect.width / 2;
+    const centerY = viewportRect.height / 2;
+
+    // Calculate transform to center the node
+    const targetX = centerX - anchors.center.x * circuitTransform.k;
+    const targetY = centerY - anchors.center.y * circuitTransform.k;
+
+    animateCircuitTransform({ x: targetX, y: targetY, k: circuitTransform.k }, true);
+
+    // Highlight the node
+    const nodeElement = circuitContainer.querySelector(`[data-node-id="${nodeId}"]`);
+    if (nodeElement) {
+      nodeElement.classList.add("pulse-highlight");
+      setTimeout(() => {
+        nodeElement.classList.remove("pulse-highlight");
+      }, 1500);
+    }
+  }
+
   return {
     render,
     highlightSelection,
     drawConnections,
     zoomIn,
     zoomOut,
-    resetZoom
+    resetZoom,
+    scrollToNode
   };
 }

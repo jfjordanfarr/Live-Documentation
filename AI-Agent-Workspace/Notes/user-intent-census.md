@@ -555,6 +555,13 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1941-L1960` — C files and C header files should NOT be classified as "Asset" archetype; code files under fixtures directories should be "Implementation" if they have code extensions (.c, .h, .cs, .ts, etc.), not "Asset".
 - `L2131-L2145` — Ensure archetype assignments are accurate AND symbols are properly interconnected; test files (`.test.ts`) should be "Test" archetype even when under fixtures directories, not "Implementation".
 
+### Chat 3 (2025-12-06.3.md) — Architectural Stewardship
+- `2025-12-06.3.md:L801-L850` — **Barrel exports are correct for library-style modules**: When a module has a defined public API surface, keep the barrel re-export file for encapsulation, deliberate exports, and backward compatibility; downsides (tree-shaking, circular deps, IDE perf) don't apply to small/deliberate/stable barrels.
+- `L851-L920` — **Capability-oriented module splits**: When refactoring large files, ask "what are the independently evolvable capabilities?" rather than "how do we split this file?"; this leads to natural module boundaries that support progressive enhancement.
+- `L921-L980` — **Each plan builder = one capability**: Analytical strategy modules (Component, Interaction, Workflow, Testing, CoActivation) should be separate files because they represent distinct capabilities that can be enhanced, replaced, or A/B tested independently.
+- `L981-L1020` — **Rendering functions are cohesive**: Section renderers that share the same output contract and change together when output format evolves should stay in one file; splitting them creates coupling without cohesion.
+- `L1021-L1100` — **UTF-8 awareness in heuristics**: Binary file detection must account for valid UTF-8 multi-byte sequences (bytes 0x80-0xF4) to avoid false positives on files with Unicode characters like box drawings, emoji, and international text.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.
