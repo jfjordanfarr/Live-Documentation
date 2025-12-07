@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/live-docs/system/generator.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-live-docs-system-generator-test-ts
-- Generated At: 2025-11-24T15:19:58.813Z
+- Generated At: 2025-12-07T04:00:24.819Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises `generateSystemLiveDocs` end-to-end against a temporary workspace to p
 - Uses a throwaway workspace and baseline config to catch regressions in output-directory handling, mirroring the on-demand materialization strategy finalized on 2025-11-11.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.813Z","inputHash":"d29335f2d13f994a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:24.819Z","inputHash":"d29335f2d13f994a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -38,7 +38,9 @@ _No public symbols detected_
 - packages/server/src/features/live-docs/system: [generator.ts](./generator.ts.mdmd.md)
 - packages/server/src/features/live-docs/targets: [manifest.ts](../targets/manifest.ts.mdmd.md)
 - packages/shared/src/config: [liveDocumentationConfig.ts](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../../../../../shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../../../../shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../../../../shared/src/live-docs/schema.ts.mdmd.md), [types.ts](../../../../../shared/src/live-docs/types.ts.mdmd.md)
+- packages/shared/src/live-docs: [archetype.ts](../../../../../shared/src/live-docs/archetype.ts.mdmd.md), [core.ts](../../../../../shared/src/live-docs/core.ts.mdmd.md), [coreConstants.ts](../../../../../shared/src/live-docs/coreConstants.ts.mdmd.md), [coreTypes.ts](../../../../../shared/src/live-docs/coreTypes.ts.mdmd.md), [coreUtils.ts](../../../../../shared/src/live-docs/coreUtils.ts.mdmd.md), [dependencies.ts](../../../../../shared/src/live-docs/dependencies.ts.mdmd.md)
+  [discovery.ts](../../../../../shared/src/live-docs/discovery.ts.mdmd.md), [fileUtils.ts](../../../../../shared/src/live-docs/fileUtils.ts.mdmd.md), [gitUtils.ts](../../../../../shared/src/live-docs/gitUtils.ts.mdmd.md), [jsDoc.ts](../../../../../shared/src/live-docs/jsDoc.ts.mdmd.md), [markdown.ts](../../../../../shared/src/live-docs/markdown.ts.mdmd.md), [rendering.ts](../../../../../shared/src/live-docs/rendering.ts.mdmd.md)
+  [schema.ts](../../../../../shared/src/live-docs/schema.ts.mdmd.md), [sourceAnalysis.ts](../../../../../shared/src/live-docs/sourceAnalysis.ts.mdmd.md), [symbolExtraction.ts](../../../../../shared/src/live-docs/symbolExtraction.ts.mdmd.md), [types.ts](../../../../../shared/src/live-docs/types.ts.mdmd.md)
 - packages/shared/src/live-docs/adapters: [adapters/index.ts](../../../../../shared/src/live-docs/adapters/index.ts.mdmd.md), [aspnet.ts](../../../../../shared/src/live-docs/adapters/aspnet.ts.mdmd.md), [c.ts](../../../../../shared/src/live-docs/adapters/c.ts.mdmd.md), [csharp.ts](../../../../../shared/src/live-docs/adapters/csharp.ts.mdmd.md), [java.ts](../../../../../shared/src/live-docs/adapters/java.ts.mdmd.md), [powershell.ts](../../../../../shared/src/live-docs/adapters/powershell.ts.mdmd.md)
   [python.ts](../../../../../shared/src/live-docs/adapters/python.ts.mdmd.md), [ruby.ts](../../../../../shared/src/live-docs/adapters/ruby.ts.mdmd.md), [rust.ts](../../../../../shared/src/live-docs/adapters/rust.ts.mdmd.md)
 - packages/shared/src/live-docs/analysis: [coActivation.ts](../../../../../shared/src/live-docs/analysis/coActivation.ts.mdmd.md)

@@ -500,12 +500,20 @@ async function isLikelyBinaryFile(filePath: string): Promise<boolean> {
     // Contains NUL byte → binary
     if (buf.includes(0)) return true;
 
-    // If too many non-printable characters, treat as binary
+    // If too many non-printable characters, treat as binary.
+    // We also allow UTF-8 multi-byte sequences (bytes 0x80-0xF4) so that files
+    // containing Unicode characters (box drawings, emoji, etc.) aren't rejected.
     let nonPrintable = 0;
     for (let i = 0; i < sampleSize; i++) {
       const c = buf[i];
-      // allow tab(9), lf(10), cr(13), common whitespace, and printable ASCII 32-126
-      const printable = c === 9 || c === 10 || c === 13 || (c >= 32 && c <= 126);
+      // allow tab(9), lf(10), cr(13), common whitespace, printable ASCII 32-126,
+      // and UTF-8 continuation/leading bytes (0x80-0xF4)
+      const printable =
+        c === 9 ||
+        c === 10 ||
+        c === 13 ||
+        (c >= 32 && c <= 126) ||
+        (c >= 0x80 && c <= 0xf4);
       if (!printable) nonPrintable++;
     }
     return nonPrintable / sampleSize > 0.2;
