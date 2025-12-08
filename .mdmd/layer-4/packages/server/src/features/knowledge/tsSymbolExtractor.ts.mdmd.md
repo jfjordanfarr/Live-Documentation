@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/tsSymbolExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-tssymbolextractor-ts
-- Generated At: 2025-12-08T19:22:38.926Z
+- Generated At: 2025-12-08T20:03:27.739Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:38.926Z","inputHash":"003545f4c340af67"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.739Z","inputHash":"003545f4c340af67"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExportedSymbolKind` {#symbol-exportedsymbolkind}
@@ -42,3 +42,9 @@ Extracts exported symbol metadata from a TypeScript/JavaScript file.
 - [`languageInference.inferScriptKind`](./languageInference.ts.mdmd.md#symbol-inferscriptkind)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

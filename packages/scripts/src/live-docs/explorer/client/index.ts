@@ -170,7 +170,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
       bezier: {
         stubFactor: 0.8,
         stubMin: 8,
-        stubMaxOffset: 8,
+        stubMaxOffset: 40,
         verticalOffset: 0
       },
       clickBehavior: {

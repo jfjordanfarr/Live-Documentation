@@ -7,7 +7,7 @@
 .local-layout {
     display: grid;
     grid-template-columns: repeat(3, max-content);
-    column-gap: var(--local-column-gap, 52px);
+    column-gap: var(--local-column-gap, 100px);
     align-items: start;
     justify-content: center;
     width: max-content;

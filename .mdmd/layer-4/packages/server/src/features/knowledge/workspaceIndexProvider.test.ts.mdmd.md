@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/knowledge/workspaceIndexProvider.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-knowledge-workspaceindexprovider-test-ts
-- Generated At: 2025-11-20T21:07:33.056Z
+- Generated At: 2025-12-08T20:03:27.743Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the workspace indexer against a miniature TypeScript project to confir
 - Remained relevant after the metadata expansion on Oct 30 (see [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)), ensuring dependency capture stayed intact while MDMD parsing grew more sophisticated.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:33.056Z","inputHash":"ca86e0efff9b2e35"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.743Z","inputHash":"ca86e0efff9b2e35"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,7 +35,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
 #### Vitest Unit Tests
-- packages/server/src/features/knowledge: [workspaceIndexProvider.ts](./workspaceIndexProvider.ts.mdmd.md)
+- packages/server/src/features/knowledge: [directoryScanner.ts](./directoryScanner.ts.mdmd.md), [importEvidenceExtractor.ts](./importEvidenceExtractor.ts.mdmd.md), [languageInference.ts](./languageInference.ts.mdmd.md), [linkHintExtractor.ts](./linkHintExtractor.ts.mdmd.md), [mdmdParser.ts](./mdmdParser.ts.mdmd.md), [tsSymbolExtractor.ts](./tsSymbolExtractor.ts.mdmd.md)
+  [workspaceIndexProvider.ts](./workspaceIndexProvider.ts.mdmd.md)
 - packages/shared/src: [src/index.ts](../../../../shared/src/index.ts.mdmd.md)
 - packages/shared/src/config: [liveDocumentationConfig.ts](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md)
 - packages/shared/src/contracts: [dependencies.ts](../../../../shared/src/contracts/dependencies.ts.mdmd.md), [diagnostics.ts](../../../../shared/src/contracts/diagnostics.ts.mdmd.md), [llm.ts](../../../../shared/src/contracts/llm.ts.mdmd.md), [lsif.ts](../../../../shared/src/contracts/lsif.ts.mdmd.md), [maintenance.ts](../../../../shared/src/contracts/maintenance.ts.mdmd.md), [overrides.ts](../../../../shared/src/contracts/overrides.ts.mdmd.md)

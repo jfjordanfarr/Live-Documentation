@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/mdmdParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-mdmdparser-ts
-- Generated At: 2025-12-08T19:22:38.872Z
+- Generated At: 2025-12-08T20:03:27.653Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:38.872Z","inputHash":"f9639c1a2d330a06"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.653Z","inputHash":"f9639c1a2d330a06"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
@@ -137,3 +137,9 @@ Determines if an inline code snippet should be registered as a symbol reference.
 - [`linkHintExtractor.LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
 - [`linkHintExtractor.resolveReferencePath`](./linkHintExtractor.ts.mdmd.md#symbol-resolvereferencepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

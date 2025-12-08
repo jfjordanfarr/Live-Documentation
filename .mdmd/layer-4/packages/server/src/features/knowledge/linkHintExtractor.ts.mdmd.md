@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/linkHintExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-linkhintextractor-ts
-- Generated At: 2025-12-08T19:22:38.831Z
+- Generated At: 2025-12-08T20:03:27.594Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:38.831Z","inputHash":"779e165cd140bb05"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.594Z","inputHash":"779e165cd140bb05"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkHintContext` {#symbol-linkhintcontext}
@@ -61,3 +61,9 @@ Attempts to resolve a path reference to an absolute file path.
 - `node:url` - `pathToFileURL`
 - [`directoryScanner.fileExists`](./directoryScanner.ts.mdmd.md#symbol-fileexists)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

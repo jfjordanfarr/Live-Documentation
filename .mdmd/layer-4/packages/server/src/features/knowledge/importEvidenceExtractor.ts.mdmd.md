@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/importEvidenceExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-importevidenceextractor-ts
-- Generated At: 2025-12-08T19:22:38.767Z
+- Generated At: 2025-12-08T20:03:27.502Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:38.767Z","inputHash":"e28025f08849d4fa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.502Z","inputHash":"e28025f08849d4fa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ImportEvidenceContext` {#symbol-importevidencecontext}
@@ -41,3 +41,9 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - [`languageInference.inferScriptKind`](./languageInference.ts.mdmd.md#symbol-inferscriptkind)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

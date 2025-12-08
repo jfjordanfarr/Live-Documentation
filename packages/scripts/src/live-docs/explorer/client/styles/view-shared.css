@@ -446,15 +446,9 @@ button.action-btn.ghost:hover {
     box-shadow: 0 0 8px rgba(0, 189, 255, 0.2);
 }
 
-.connection-line[data-kind="extends"] {
-    background: rgba(255, 104, 144, 0.75);
-    box-shadow: 0 0 10px rgba(255, 104, 144, 0.45);
-}
-
-.connection-line[data-kind="implements"] {
-    background: rgba(255, 188, 87, 0.75);
-    box-shadow: 0 0 10px rgba(255, 188, 87, 0.35);
-}
+/* Semantic connection-line coloring removed per design direction (12/8.1):
+   Let Reference Badges on symbols carry the extends/implements semantics.
+   All connection lines now use uniform blue-to-green gradient. */
 
 .connection-svg {
     width: 100%;
@@ -483,20 +477,9 @@ button.action-btn.ghost:hover {
     filter: drop-shadow(0 0 6px rgba(0, 211, 170, 0.35));
 }
 
-.connection-path[data-kind="extends"] {
-    stroke: rgba(255, 104, 144, 0.85);
-    filter: drop-shadow(0 0 8px rgba(255, 104, 144, 0.4));
-}
-
-.connection-path[data-kind="implements"] {
-    stroke: rgba(255, 188, 87, 0.85);
-    filter: drop-shadow(0 0 8px rgba(255, 188, 87, 0.4));
-}
-
-.connection-path[data-kind="type-reference"]:not(.self-loop) {
-    stroke: rgba(138, 180, 248, 0.85);
-    filter: drop-shadow(0 0 8px rgba(138, 180, 248, 0.4));
-}
+/* Semantic connection-path coloring removed per design direction (12/8.1):
+   extends/implements/type-reference now use the standard blue→green gradient.
+   Reference Badges on the symbol anchors carry semantic color-coding instead. */
 
 /* Self-loop paths use their own gradient colors (pin-matching blue/green) */
 .connection-path.self-loop {
