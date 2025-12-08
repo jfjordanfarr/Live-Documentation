@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/db/graphStore.ts
 - Live Doc ID: LD-implementation-packages-shared-src-db-graphstore-ts
-- Generated At: 2025-11-19T15:01:34.696Z
+- Generated At: 2025-12-08T19:22:39.377Z
 
 ## Authored
 ### Purpose
@@ -15,37 +15,39 @@ Backs the workspace knowledge graph with a deterministic better-sqlite3 store—
 Canonical ID reuse and drift-history projection landed as part of the October 23 persistence hardening, eliminating `artifacts`/`links` uniqueness faults and feeding downstream symbol-neighbor and diagnostics flows; see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-27-graphstore-dedupe-attempt--new-failures-lines-3521-4000](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-27-graphstore-dedupe-attempt--new-failures-lines-3521-4000).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:34.696Z","inputHash":"85dd6882b8fcf9a9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:39.377Z","inputHash":"0c68ac48e130ff59"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `DriftHistorySummary` {#symbol-drifthistorysummary}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L43)
+
+#### `ListDriftHistoryOptions` {#symbol-listdrifthistoryoptions}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L44)
+
 #### `GraphStoreOptions` {#symbol-graphstoreoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L20)
+- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L47)
 
 #### `LinkedArtifactSummary` {#symbol-linkedartifactsummary}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L25)
+- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L52)
 
 #### `GraphStore` {#symbol-graphstore}
 - Type: class
-- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L67)
+- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L94)
 
 ##### `GraphStore` — Summary
 Thin wrapper around better-sqlite3 that materialises our knowledge-graph projections. The
 implementation deliberately keeps schema bootstrapping local so the store can be rebuilt after
 cache deletion without bespoke tooling.
-
-#### `DriftHistorySummary` {#symbol-drifthistorysummary}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L1189)
-
-#### `ListDriftHistoryOptions` {#symbol-listdrifthistoryoptions}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/db/graphStore.ts#L1209)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `./graphStore.mappers` - `mapArtifactRow`, `mapDiagnosticRow`, `mapDriftHistoryRow`, `mapLinkRow`, `mapLlmEdgeProvenanceRow`
+- `./graphStore.types` - `ArtifactRow`, `DiagnosticRow`, `DriftHistoryAckRow`, `DriftHistoryCountRow`, `DriftHistoryRow`, `DriftHistorySummary`, `FindDiagnosticByChangeEventOptions`, `LinkRow`, `LinkedArtifactRow`, `ListDriftHistoryOptions`, `LlmEdgeProvenanceRow`, `UpdateDiagnosticStatusOptions`
 - `better-sqlite3` - `Database`
 - `node:fs` - `fs`
 - `node:path` - `path`

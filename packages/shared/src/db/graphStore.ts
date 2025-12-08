@@ -3,6 +3,27 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
+  mapArtifactRow,
+  mapLinkRow,
+  mapLlmEdgeProvenanceRow,
+  mapDiagnosticRow,
+  mapDriftHistoryRow
+} from "./graphStore.mappers";
+import {
+  ArtifactRow,
+  DiagnosticRow,
+  DriftHistoryAckRow,
+  DriftHistoryCountRow,
+  DriftHistoryRow,
+  DriftHistorySummary,
+  FindDiagnosticByChangeEventOptions,
+  LinkedArtifactRow,
+  LinkRow,
+  ListDriftHistoryOptions,
+  LlmEdgeProvenanceRow,
+  UpdateDiagnosticStatusOptions
+} from "./graphStore.types";
+import {
   AcknowledgementAction,
   ChangeEvent,
   DiagnosticRecord,
@@ -16,6 +37,12 @@ import {
   LinkRelationship,
   LinkRelationshipKind
 } from "../domain/artifacts";
+
+// Re-export types for consumers
+export type {
+  DriftHistorySummary,
+  ListDriftHistoryOptions
+} from "./graphStore.types";
 
 export interface GraphStoreOptions {
   /** Absolute path to the SQLite database file. */
@@ -146,7 +173,7 @@ export class GraphStore {
       return undefined;
     }
 
-    return this.mapArtifactRow(row as ArtifactRow);
+    return mapArtifactRow(row as ArtifactRow);
   }
 
   getArtifactByUri(uri: string): KnowledgeArtifact | undefined {
@@ -160,7 +187,7 @@ export class GraphStore {
       return undefined;
     }
 
-    return this.mapArtifactRow(row as ArtifactRow);
+    return mapArtifactRow(row as ArtifactRow);
   }
 
   listArtifacts(): KnowledgeArtifact[] {
@@ -170,7 +197,7 @@ export class GraphStore {
       )
       .all() as ArtifactRow[];
 
-    return rows.map(row => this.mapArtifactRow(row));
+    return rows.map(row => mapArtifactRow(row));
   }
 
   listLinkedArtifacts(
@@ -236,7 +263,7 @@ export class GraphStore {
         kind: row.link_kind,
         confidence: row.link_confidence,
         direction,
-        artifact: this.mapArtifactRow(artifactRow)
+        artifact: mapArtifactRow(artifactRow)
       };
     });
   }
@@ -589,7 +616,7 @@ export class GraphStore {
       )
       .all(parameters) as DriftHistoryRow[];
 
-    return rows.map(row => this.mapDriftHistoryRow(row));
+    return rows.map(row => mapDriftHistoryRow(row));
   }
 
   summarizeDriftHistory(changeEventId: string): DriftHistorySummary {
@@ -658,7 +685,7 @@ export class GraphStore {
       `)
       .all({ status }) as DiagnosticRow[];
 
-    return rows.map(row => this.mapDiagnosticRow(row));
+    return rows.map(row => mapDiagnosticRow(row));
   }
 
   getDiagnosticById(id: string): DiagnosticRecord | undefined {
@@ -686,7 +713,7 @@ export class GraphStore {
       return undefined;
     }
 
-    return this.mapDiagnosticRow(row);
+    return mapDiagnosticRow(row);
   }
 
   updateDiagnosticStatus(options: UpdateDiagnosticStatusOptions): void {
@@ -734,7 +761,7 @@ export class GraphStore {
       return undefined;
     }
 
-    return this.mapDiagnosticRow(row);
+    return mapDiagnosticRow(row);
   }
 
   storeSnapshot(snapshot: KnowledgeSnapshot): void {
@@ -888,328 +915,4 @@ export class GraphStore {
     }
   }
 
-  private mapArtifactRow(row: ArtifactRow): KnowledgeArtifact {
-    return {
-      id: row.id,
-      uri: row.uri,
-      layer: row.layer as KnowledgeArtifact["layer"],
-      language: row.language ?? undefined,
-      owner: row.owner ?? undefined,
-      lastSynchronizedAt: row.last_synchronized_at ?? undefined,
-      hash: row.hash ?? undefined,
-      metadata: this.parseMetadata(row.metadata)
-    };
-  }
-
-  private parseMetadata(value: string | null): Record<string, unknown> | undefined {
-    if (!value) {
-      return undefined;
-    }
-
-    try {
-      return JSON.parse(value) as Record<string, unknown>;
-    } catch {
-      return undefined;
-    }
-  }
-
-  private mapDiagnosticRow(row: DiagnosticRow): DiagnosticRecord {
-    return {
-      id: row.id,
-      artifactId: row.artifact_id,
-      triggerArtifactId: row.trigger_artifact_id,
-      changeEventId: row.change_event_id ?? "",
-      message: row.message,
-      severity: row.severity as DiagnosticRecord["severity"],
-      status: row.status as DiagnosticStatus,
-      createdAt: row.created_at,
-      acknowledgedAt: row.acknowledged_at ?? undefined,
-      acknowledgedBy: row.acknowledged_by ?? undefined,
-      linkIds: this.parseLinkIds(row.link_ids),
-      llmAssessment: this.parseLlmAssessment(row.llm_assessment)
-    };
-  }
-
-  private parseLlmAssessment(value: string | null): LlmAssessment | undefined {
-    if (!value) {
-      return undefined;
-    }
-
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(value) as unknown;
-    } catch {
-      return undefined;
-    }
-
-    if (!parsed || typeof parsed !== "object") {
-      return undefined;
-    }
-
-    const record = parsed as Record<string, unknown>;
-    const summary = typeof record.summary === "string" ? record.summary : undefined;
-    const confidence = typeof record.confidence === "number" ? record.confidence : undefined;
-    const recommendedRaw = Array.isArray(record.recommendedActions)
-      ? record.recommendedActions.filter((item): item is string => typeof item === "string")
-      : [];
-
-    if (!summary || confidence === undefined) {
-      return undefined;
-    }
-
-    const normalized: LlmAssessment = {
-      summary,
-      confidence: Math.max(0, Math.min(1, confidence)),
-      recommendedActions: recommendedRaw.slice(0, 10)
-    };
-
-    if (typeof record.generatedAt === "string") {
-      normalized.generatedAt = record.generatedAt;
-    }
-
-    const model = record.model;
-    if (model && typeof model === "object") {
-      const modelRecord = model as Record<string, unknown>;
-      const id = typeof modelRecord.id === "string" ? modelRecord.id : undefined;
-      if (id) {
-        normalized.model = {
-          id,
-          name: typeof modelRecord.name === "string" ? modelRecord.name : undefined,
-          vendor: typeof modelRecord.vendor === "string" ? modelRecord.vendor : undefined,
-          family: typeof modelRecord.family === "string" ? modelRecord.family : undefined,
-          version: typeof modelRecord.version === "string" ? modelRecord.version : undefined
-        };
-      }
-    }
-
-    if (typeof record.promptHash === "string") {
-      normalized.promptHash = record.promptHash;
-    }
-
-    if (typeof record.rawResponse === "string") {
-      normalized.rawResponse = record.rawResponse;
-    }
-
-    if (record.tags && typeof record.tags === "object") {
-      const tags = record.tags as Record<string, unknown>;
-      const cleaned: Record<string, string> = {};
-      for (const [key, value] of Object.entries(tags)) {
-        if (typeof value === "string") {
-          cleaned[key] = value;
-        }
-      }
-      if (Object.keys(cleaned).length > 0) {
-        normalized.tags = cleaned;
-      }
-    }
-
-    return normalized;
-  }
-
-  private mapDriftHistoryRow(row: DriftHistoryRow): DriftHistoryEntry {
-    return {
-      id: row.id,
-      diagnosticId: row.diagnostic_id,
-      changeEventId: row.change_event_id,
-      triggerArtifactId: row.trigger_artifact_id,
-      targetArtifactId: row.target_artifact_id,
-      status: row.status as DriftHistoryStatus,
-      severity: row.severity as DriftHistoryEntry["severity"],
-      recordedAt: row.recorded_at,
-      actor: row.actor ?? undefined,
-      notes: row.notes ?? undefined,
-      metadata: this.parseMetadata(row.metadata)
-    };
-  }
-
-  private parseLinkIds(value: string | null): string[] {
-    if (!value) {
-      return [];
-    }
-
-    try {
-      const parsed = JSON.parse(value) as unknown;
-      return Array.isArray(parsed) ? parsed.filter(id => typeof id === "string") : [];
-    } catch {
-      return [];
-    }
-  }
-}
-
-interface ArtifactRow {
-  id: string;
-  uri: string;
-  layer: string;
-  language: string | null;
-  owner: string | null;
-  last_synchronized_at: string | null;
-  hash: string | null;
-  metadata: string | null;
-}
-
-interface LinkRow {
-  id: string;
-  source_id: string;
-  target_id: string;
-  kind: string;
-  confidence: number;
-  created_at: string;
-  created_by: string;
-}
-
-function mapLinkRow(row: LinkRow): LinkRelationship {
-  return {
-    id: row.id,
-    sourceId: row.source_id,
-    targetId: row.target_id,
-    kind: row.kind as LinkRelationshipKind,
-    confidence: row.confidence,
-    createdAt: row.created_at,
-    createdBy: row.created_by
-  } satisfies LinkRelationship;
-}
-
-interface LlmEdgeProvenanceRow {
-  link_id: string;
-  template_id: string;
-  template_version: string;
-  prompt_hash: string;
-  model_id: string;
-  issued_at: string;
-  created_at: string;
-  confidence_tier: string;
-  calibrated_confidence: number;
-  raw_confidence: number | null;
-  diagnostics_eligible: number;
-  shadowed: number;
-  supporting_chunks: string | null;
-  promotion_criteria: string | null;
-  rationale: string | null;
-}
-
-function mapLlmEdgeProvenanceRow(row: LlmEdgeProvenanceRow): LlmEdgeProvenance {
-  return {
-    linkId: row.link_id,
-    templateId: row.template_id,
-    templateVersion: row.template_version,
-    promptHash: row.prompt_hash,
-    modelId: row.model_id,
-    issuedAt: row.issued_at,
-    createdAt: row.created_at,
-    confidenceTier: normalizeTier(row.confidence_tier),
-    calibratedConfidence: row.calibrated_confidence,
-    rawConfidence: typeof row.raw_confidence === "number" ? row.raw_confidence : undefined,
-    diagnosticsEligible: row.diagnostics_eligible === 1,
-    shadowed: row.shadowed === 1,
-    supportingChunks: parseStringArray(row.supporting_chunks),
-    promotionCriteria: parseStringArray(row.promotion_criteria),
-    rationale: row.rationale ?? undefined
-  } satisfies LlmEdgeProvenance;
-}
-
-function normalizeTier(tier: string): "high" | "medium" | "low" {
-  const normal = tier.toLowerCase();
-  if (normal === "high" || normal === "medium" || normal === "low") {
-    return normal;
-  }
-  return "low";
-}
-
-function parseStringArray(value: string | null): string[] | undefined {
-  if (!value) {
-    return undefined;
-  }
-
-  try {
-    const parsed = JSON.parse(value) as unknown;
-    if (!Array.isArray(parsed)) {
-      return undefined;
-    }
-    return (parsed as unknown[]).filter((item): item is string => typeof item === "string");
-  } catch {
-    return undefined;
-  }
-}
-
-interface LinkedArtifactRow {
-  link_id: string;
-  link_kind: LinkRelationshipKind;
-  link_confidence: number;
-  source_id: string;
-  target_id: string;
-  artifact_id: string;
-  artifact_uri: string;
-  artifact_layer: string;
-  artifact_language: string | null;
-  artifact_owner: string | null;
-  artifact_last_synchronized_at: string | null;
-  artifact_hash: string | null;
-  artifact_metadata: string | null;
-}
-
-interface DiagnosticRow {
-  id: string;
-  artifact_id: string;
-  trigger_artifact_id: string;
-  change_event_id: string | null;
-  message: string;
-  severity: string;
-  status: string;
-  created_at: string;
-  acknowledged_at: string | null;
-  acknowledged_by: string | null;
-  link_ids: string | null;
-  llm_assessment: string | null;
-}
-
-interface DriftHistoryRow {
-  id: string;
-  diagnostic_id: string;
-  change_event_id: string;
-  trigger_artifact_id: string;
-  target_artifact_id: string;
-  status: string;
-  severity: string;
-  recorded_at: string;
-  actor: string | null;
-  notes: string | null;
-  metadata: string | null;
-}
-
-interface DriftHistoryCountRow {
-  status: string;
-  count: number;
-}
-
-interface DriftHistoryAckRow {
-  recorded_at: string;
-  actor: string | null;
-}
-
-export interface DriftHistorySummary {
-  changeEventId: string;
-  totals: Record<DriftHistoryStatus, number>;
-  lastAcknowledgedAt: string | null;
-  lastAcknowledgedBy: string | null;
-}
-
-interface UpdateDiagnosticStatusOptions {
-  id: string;
-  status: DiagnosticStatus;
-  acknowledgedAt?: string;
-  acknowledgedBy?: string;
-}
-
-interface FindDiagnosticByChangeEventOptions {
-  changeEventId: string;
-  artifactId: string;
-  triggerArtifactId: string;
-}
-
-export interface ListDriftHistoryOptions {
-  changeEventId?: string;
-  targetArtifactId?: string;
-  diagnosticId?: string;
-  status?: DriftHistoryStatus;
-  limit?: number;
 }

@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1024,
-    "links": 1800
+    "artifacts": 1040,
+    "links": 1819
   },
   "artifacts": [
     {
@@ -3838,6 +3838,51 @@
       }
     },
     {
+      "id": "orchestrated-artifact-29f5f40a",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/directoryScanner.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "scanDirectory",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "shouldSkipDir",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "shouldSkipPath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "isLikelyBinaryFile",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "fileExists",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/directoryScanner.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "scanDirectory",
+            "shouldSkipDir",
+            "shouldSkipPath",
+            "isLikelyBinaryFile",
+            "fileExists"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-7b692976",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/feedCheckpointStore.ts.mdmd.md",
       "layer": "implementation",
@@ -3965,6 +4010,36 @@
             "detectFormat",
             "ParseFeedFileOptions",
             "parseFeedFile"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-52451429",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/importEvidenceExtractor.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "ImportEvidenceContext",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractImportEvidences",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/importEvidenceExtractor.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "ImportEvidenceContext",
+            "extractImportEvidences"
           ]
         }
       }
@@ -4171,6 +4246,111 @@
       }
     },
     {
+      "id": "orchestrated-artifact-70317f90",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/languageInference.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "DEFAULT_CODE_EXTENSIONS",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DEFAULT_DOC_EXTENSIONS",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "MODULE_RESOLUTION_EXTENSIONS",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "inferLanguage",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "inferDocLanguage",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "inferScriptKind",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "looksLikeDocsPath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "inferDocumentLayer",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/languageInference.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "DEFAULT_CODE_EXTENSIONS",
+            "DEFAULT_DOC_EXTENSIONS",
+            "MODULE_RESOLUTION_EXTENSIONS",
+            "inferLanguage",
+            "inferDocLanguage",
+            "inferScriptKind",
+            "looksLikeDocsPath",
+            "inferDocumentLayer"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-2d115c6e",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/linkHintExtractor.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "LinkHintContext",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractLinkHints",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractPathReferenceHints",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "isExternalReference",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "resolveReferencePath",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/linkHintExtractor.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "LinkHintContext",
+            "extractLinkHints",
+            "extractPathReferenceHints",
+            "isExternalReference",
+            "resolveReferencePath"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-ee4ea272",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/llmIngestionOrchestrator.test.ts.mdmd.md",
       "layer": "implementation",
@@ -4280,6 +4460,106 @@
             "LSIFParserOptions",
             "LSIFParser",
             "parseLSIF"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-ba7f3dee",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/mdmdParser.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "MdmdDocumentDetails",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DocumentSymbolReferenceMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractMdmdDocumentDetails",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "createMdmdMetadataHints",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractDocumentSymbolReferences",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseMdmdMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectSectionSymbols",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "resolveSectionSymbolTargets",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "looksLikeSymbolIdentifier",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "isPotentialMdmdSymbol",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractSymbolToken",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "stripSymbolAnchor",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "stripSymbolWrappers",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeMetadataKey",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "splitMetadataList",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "shouldRegisterInlineCode",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/mdmdParser.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "MdmdDocumentDetails",
+            "DocumentSymbolReferenceMetadata",
+            "extractMdmdDocumentDetails",
+            "createMdmdMetadataHints",
+            "extractDocumentSymbolReferences",
+            "parseMdmdMetadata",
+            "collectSectionSymbols",
+            "resolveSectionSymbolTargets",
+            "looksLikeSymbolIdentifier",
+            "isPotentialMdmdSymbol",
+            "extractSymbolToken",
+            "stripSymbolAnchor",
+            "stripSymbolWrappers",
+            "normalizeMetadataKey",
+            "splitMetadataList",
+            "shouldRegisterInlineCode"
           ]
         }
       }
@@ -4504,6 +4784,41 @@
       }
     },
     {
+      "id": "orchestrated-artifact-801934c4",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/tsSymbolExtractor.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "ExportedSymbolKind",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExportedSymbolMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractExportedSymbols",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/server/src/features/knowledge/tsSymbolExtractor.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "ExportedSymbolKind",
+            "ExportedSymbolMetadata",
+            "extractExportedSymbols"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-a4f6889f",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/server/src/features/knowledge/workspaceIndexProvider.test.ts.mdmd.md",
       "layer": "implementation",
@@ -4528,14 +4843,6 @@
       "metadata": {
         "symbolReferences": [
           {
-            "symbol": "DEFAULT_CODE_EXTENSIONS",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "DEFAULT_DOC_EXTENSIONS",
-            "context": "inline-code"
-          },
-          {
             "symbol": "ExportedSymbolKind",
             "context": "inline-code"
           },
@@ -4545,6 +4852,18 @@
           },
           {
             "symbol": "DocumentSymbolReferenceMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "MdmdDocumentDetails",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DEFAULT_CODE_EXTENSIONS",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DEFAULT_DOC_EXTENSIONS",
             "context": "inline-code"
           },
           {
@@ -4560,11 +4879,12 @@
           ],
           "exports": [],
           "sectionSymbols": [
-            "DEFAULT_CODE_EXTENSIONS",
-            "DEFAULT_DOC_EXTENSIONS",
             "ExportedSymbolKind",
             "ExportedSymbolMetadata",
             "DocumentSymbolReferenceMetadata",
+            "MdmdDocumentDetails",
+            "DEFAULT_CODE_EXTENSIONS",
+            "DEFAULT_DOC_EXTENSIONS",
             "createWorkspaceIndexProvider"
           ]
         }
@@ -7105,6 +7425,76 @@
       }
     },
     {
+      "id": "orchestrated-artifact-597c9a34",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/db/graphStore.mappers.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "mapArtifactRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "mapLinkRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "mapLlmEdgeProvenanceRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "mapDiagnosticRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "mapDriftHistoryRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseLinkIds",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseLlmAssessment",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeTier",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseStringArray",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/db/graphStore.mappers.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "mapArtifactRow",
+            "mapLinkRow",
+            "mapLlmEdgeProvenanceRow",
+            "mapDiagnosticRow",
+            "mapDriftHistoryRow",
+            "parseMetadata",
+            "parseLinkIds",
+            "parseLlmAssessment",
+            "normalizeTier",
+            "parseStringArray"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-3f1c8714",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/db/graphStore.test.ts.mdmd.md",
       "layer": "implementation",
@@ -7129,6 +7519,14 @@
       "metadata": {
         "symbolReferences": [
           {
+            "symbol": "DriftHistorySummary",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ListDriftHistoryOptions",
+            "context": "inline-code"
+          },
+          {
             "symbol": "GraphStoreOptions",
             "context": "inline-code"
           },
@@ -7138,14 +7536,6 @@
           },
           {
             "symbol": "GraphStore",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "DriftHistorySummary",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ListDriftHistoryOptions",
             "context": "inline-code"
           }
         ],
@@ -7157,10 +7547,90 @@
           ],
           "exports": [],
           "sectionSymbols": [
+            "DriftHistorySummary",
+            "ListDriftHistoryOptions",
             "GraphStoreOptions",
             "LinkedArtifactSummary",
-            "GraphStore",
+            "GraphStore"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-8e4ed9ad",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/db/graphStore.types.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "ArtifactRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LinkRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LlmEdgeProvenanceRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DiagnosticRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DriftHistoryRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DriftHistoryCountRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DriftHistoryAckRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LinkedArtifactRow",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DriftHistorySummary",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "UpdateDiagnosticStatusOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "FindDiagnosticByChangeEventOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ListDriftHistoryOptions",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/db/graphStore.types.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "ArtifactRow",
+            "LinkRow",
+            "LlmEdgeProvenanceRow",
+            "DiagnosticRow",
+            "DriftHistoryRow",
+            "DriftHistoryCountRow",
+            "DriftHistoryAckRow",
+            "LinkedArtifactRow",
             "DriftHistorySummary",
+            "UpdateDiagnosticStatusOptions",
+            "FindDiagnosticByChangeEventOptions",
             "ListDriftHistoryOptions"
           ]
         }
@@ -20048,6 +20518,41 @@
       }
     },
     {
+      "id": "orchestrated-artifact-cc721c97",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/directoryScanner.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "scanDirectory",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "shouldSkipDir",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "shouldSkipPath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isLikelyBinaryFile",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "fileExists",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-21dcf6d7",
       "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/feedCheckpointStore.ts",
       "layer": "code",
@@ -20125,6 +20630,25 @@
           },
           {
             "name": "parseFeedFile",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-225fef8a",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/importEvidenceExtractor.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "ImportEvidenceContext",
+            "kind": "interface"
+          },
+          {
+            "name": "extractImportEvidences",
             "kind": "function",
             "isDefault": false
           }
@@ -20255,6 +20779,87 @@
       }
     },
     {
+      "id": "orchestrated-artifact-68c72171",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/languageInference.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "DEFAULT_CODE_EXTENSIONS",
+            "kind": "variable"
+          },
+          {
+            "name": "DEFAULT_DOC_EXTENSIONS",
+            "kind": "variable"
+          },
+          {
+            "name": "MODULE_RESOLUTION_EXTENSIONS",
+            "kind": "variable"
+          },
+          {
+            "name": "inferLanguage",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "inferDocLanguage",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "inferScriptKind",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "looksLikeDocsPath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "inferDocumentLayer",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-b888bc4f",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/linkHintExtractor.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "LinkHintContext",
+            "kind": "interface"
+          },
+          {
+            "name": "extractLinkHints",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractPathReferenceHints",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isExternalReference",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "resolveReferencePath",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-918d0753",
       "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/llmIngestionOrchestrator.test.ts",
       "layer": "code",
@@ -20315,6 +20920,94 @@
           },
           {
             "name": "parseLSIF",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-ff9a8afb",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/mdmdParser.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "MdmdDocumentDetails",
+            "kind": "interface"
+          },
+          {
+            "name": "DocumentSymbolReferenceMetadata",
+            "kind": "interface"
+          },
+          {
+            "name": "extractMdmdDocumentDetails",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "createMdmdMetadataHints",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractDocumentSymbolReferences",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseMdmdMetadata",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectSectionSymbols",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "resolveSectionSymbolTargets",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "looksLikeSymbolIdentifier",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isPotentialMdmdSymbol",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractSymbolToken",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "stripSymbolAnchor",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "stripSymbolWrappers",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "normalizeMetadataKey",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "splitMetadataList",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "shouldRegisterInlineCode",
             "kind": "function",
             "isDefault": false
           }
@@ -20461,6 +21154,29 @@
       }
     },
     {
+      "id": "orchestrated-artifact-3f014aa5",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/tsSymbolExtractor.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "ExportedSymbolKind",
+            "kind": "type"
+          },
+          {
+            "name": "ExportedSymbolMetadata",
+            "kind": "interface"
+          },
+          {
+            "name": "extractExportedSymbols",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-81866500",
       "uri": "file:///D:/Projects/Live-Documentation/packages/server/src/features/knowledge/workspaceIndexProvider.test.ts",
       "layer": "code",
@@ -20474,24 +21190,34 @@
       "metadata": {
         "exportedSymbols": [
           {
-            "name": "DEFAULT_CODE_EXTENSIONS",
-            "kind": "variable"
-          },
-          {
-            "name": "DEFAULT_DOC_EXTENSIONS",
-            "kind": "variable"
-          },
-          {
             "name": "ExportedSymbolKind",
-            "kind": "type"
+            "kind": "unknown",
+            "isTypeOnly": false
           },
           {
             "name": "ExportedSymbolMetadata",
-            "kind": "interface"
+            "kind": "unknown",
+            "isTypeOnly": false
           },
           {
             "name": "DocumentSymbolReferenceMetadata",
-            "kind": "interface"
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "MdmdDocumentDetails",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "DEFAULT_CODE_EXTENSIONS",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "DEFAULT_DOC_EXTENSIONS",
+            "kind": "unknown",
+            "isTypeOnly": false
           },
           {
             "name": "createWorkspaceIndexProvider",
@@ -22249,6 +22975,66 @@
       }
     },
     {
+      "id": "orchestrated-artifact-157c2341",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/db/graphStore.mappers.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "mapArtifactRow",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "mapLinkRow",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "mapLlmEdgeProvenanceRow",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "mapDiagnosticRow",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "mapDriftHistoryRow",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseMetadata",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseLinkIds",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseLlmAssessment",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "normalizeTier",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseStringArray",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-e0a1fb75",
       "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/db/graphStore.test.ts",
       "layer": "code",
@@ -22262,6 +23048,16 @@
       "metadata": {
         "exportedSymbols": [
           {
+            "name": "DriftHistorySummary",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "ListDriftHistoryOptions",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
             "name": "GraphStoreOptions",
             "kind": "interface"
           },
@@ -22273,9 +23069,59 @@
             "name": "GraphStore",
             "kind": "class",
             "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-4fc6813a",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/db/graphStore.types.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "ArtifactRow",
+            "kind": "interface"
+          },
+          {
+            "name": "LinkRow",
+            "kind": "interface"
+          },
+          {
+            "name": "LlmEdgeProvenanceRow",
+            "kind": "interface"
+          },
+          {
+            "name": "DiagnosticRow",
+            "kind": "interface"
+          },
+          {
+            "name": "DriftHistoryRow",
+            "kind": "interface"
+          },
+          {
+            "name": "DriftHistoryCountRow",
+            "kind": "interface"
+          },
+          {
+            "name": "DriftHistoryAckRow",
+            "kind": "interface"
+          },
+          {
+            "name": "LinkedArtifactRow",
+            "kind": "interface"
           },
           {
             "name": "DriftHistorySummary",
+            "kind": "interface"
+          },
+          {
+            "name": "UpdateDiagnosticStatusOptions",
+            "kind": "interface"
+          },
+          {
+            "name": "FindDiagnosticByChangeEventOptions",
             "kind": "interface"
           },
           {
@@ -27483,13 +28329,58 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-77010c02",
+      "id": "orchestrated-link-632530b0",
       "sourceId": "orchestrated-artifact-04540bba",
-      "targetId": "orchestrated-artifact-6a8cadd4",
+      "targetId": "orchestrated-artifact-225fef8a",
       "kind": "depends_on",
-      "confidence": 0.6,
+      "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-1c0c9356",
+      "sourceId": "orchestrated-artifact-04540bba",
+      "targetId": "orchestrated-artifact-3f014aa5",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-40853b7c",
+      "sourceId": "orchestrated-artifact-04540bba",
+      "targetId": "orchestrated-artifact-68c72171",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-b18b12c2",
+      "sourceId": "orchestrated-artifact-04540bba",
+      "targetId": "orchestrated-artifact-b888bc4f",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-f593cc20",
+      "sourceId": "orchestrated-artifact-04540bba",
+      "targetId": "orchestrated-artifact-cc721c97",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-a0874fde",
+      "sourceId": "orchestrated-artifact-04540bba",
+      "targetId": "orchestrated-artifact-ff9a8afb",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-b6ac05dc",
@@ -27724,6 +28615,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-6e90c3be",
+      "sourceId": "orchestrated-artifact-07d78025",
+      "targetId": "orchestrated-artifact-157c2341",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-b5305d75",
@@ -28316,6 +29216,15 @@
       "targetId": "orchestrated-artifact-f2f88d92",
       "kind": "depends_on",
       "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-180efc0e",
+      "sourceId": "orchestrated-artifact-157c2341",
+      "targetId": "orchestrated-artifact-8af84abb",
+      "kind": "references",
+      "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
     },
@@ -29211,6 +30120,33 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-ec1adec3",
+      "sourceId": "orchestrated-artifact-225fef8a",
+      "targetId": "orchestrated-artifact-68c72171",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-2296af49",
+      "sourceId": "orchestrated-artifact-225fef8a",
+      "targetId": "orchestrated-artifact-6a8cadd4",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-a1296f67",
+      "sourceId": "orchestrated-artifact-225fef8a",
+      "targetId": "orchestrated-artifact-cc721c97",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-1bfcb0aa",
       "sourceId": "orchestrated-artifact-23faaae7",
       "targetId": "orchestrated-artifact-839b7c9d",
@@ -29436,6 +30372,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-24ad3eee",
+      "sourceId": "orchestrated-artifact-29f5f40a",
+      "targetId": "orchestrated-artifact-cc721c97",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-4e0d8182",
       "sourceId": "orchestrated-artifact-2a12bed7",
       "targetId": "orchestrated-artifact-7d2c6476",
@@ -29520,6 +30465,15 @@
       "id": "orchestrated-link-add86945",
       "sourceId": "orchestrated-artifact-2cf8c2f4",
       "targetId": "orchestrated-artifact-eb33c355",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-65e23552",
+      "sourceId": "orchestrated-artifact-2d115c6e",
+      "targetId": "orchestrated-artifact-b888bc4f",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -30352,6 +31306,15 @@
       "confidence": 0.7,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-9e10a75d",
+      "sourceId": "orchestrated-artifact-3f014aa5",
+      "targetId": "orchestrated-artifact-68c72171",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-20fac306",
@@ -32298,6 +33261,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-7ba1a90c",
+      "sourceId": "orchestrated-artifact-4fc6813a",
+      "targetId": "orchestrated-artifact-8af84abb",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-edadb6ce",
       "sourceId": "orchestrated-artifact-505d4101",
       "targetId": "orchestrated-artifact-073714a1",
@@ -32510,6 +33482,15 @@
       "targetId": "orchestrated-artifact-e4798816",
       "kind": "documents",
       "confidence": 0.7,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-bbb63c8b",
+      "sourceId": "orchestrated-artifact-52451429",
+      "targetId": "orchestrated-artifact-225fef8a",
+      "kind": "documents",
+      "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
     },
@@ -32823,6 +33804,15 @@
       "id": "orchestrated-link-7474aff6",
       "sourceId": "orchestrated-artifact-58753783",
       "targetId": "orchestrated-artifact-fff9e990",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-331232ad",
+      "sourceId": "orchestrated-artifact-597c9a34",
+      "targetId": "orchestrated-artifact-157c2341",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -33750,6 +34740,15 @@
       "id": "orchestrated-link-9e8a1ab8",
       "sourceId": "orchestrated-artifact-6f5b1641",
       "targetId": "orchestrated-artifact-e8f0b3a2",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-4c55888a",
+      "sourceId": "orchestrated-artifact-70317f90",
+      "targetId": "orchestrated-artifact-68c72171",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -34980,6 +35979,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-a2e9e97b",
+      "sourceId": "orchestrated-artifact-801934c4",
+      "targetId": "orchestrated-artifact-3f014aa5",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-d889809e",
       "sourceId": "orchestrated-artifact-808f112d",
       "targetId": "orchestrated-artifact-2dc6c727",
@@ -36141,6 +37149,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-54e5b1ce",
+      "sourceId": "orchestrated-artifact-8e4ed9ad",
+      "targetId": "orchestrated-artifact-4fc6813a",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-3b4327ba",
       "sourceId": "orchestrated-artifact-8e62b3b3",
       "targetId": "orchestrated-artifact-43f72bc0",
@@ -36609,15 +37626,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-f5999b69",
-      "sourceId": "orchestrated-artifact-9bf9eb77",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-d12a58c5",
       "sourceId": "orchestrated-artifact-9bf9eb77",
       "targetId": "orchestrated-artifact-5dfcf3e7",
@@ -36841,15 +37849,6 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
-    },
-    {
-      "id": "orchestrated-link-7c42b5cb",
-      "sourceId": "orchestrated-artifact-9ecfee6b",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-57d37327",
@@ -37372,15 +38371,6 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
-    },
-    {
-      "id": "orchestrated-link-7a02e6a4",
-      "sourceId": "orchestrated-artifact-a830e95a",
-      "targetId": "orchestrated-artifact-5dfcf2b1",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-5593a400",
@@ -38517,6 +39507,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-f1ebcb15",
+      "sourceId": "orchestrated-artifact-b888bc4f",
+      "targetId": "orchestrated-artifact-cc721c97",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-c03948fc",
       "sourceId": "orchestrated-artifact-b9440a16",
       "targetId": "orchestrated-artifact-61072921",
@@ -38583,6 +39582,15 @@
       "id": "orchestrated-link-451b20a9",
       "sourceId": "orchestrated-artifact-ba6f5f93",
       "targetId": "orchestrated-artifact-5c0beaa0",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-85d45086",
+      "sourceId": "orchestrated-artifact-ba7f3dee",
+      "targetId": "orchestrated-artifact-ff9a8afb",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -43323,6 +44331,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-43e6311b",
+      "sourceId": "orchestrated-artifact-ff9a8afb",
+      "targetId": "orchestrated-artifact-b888bc4f",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-237bf2be",
       "sourceId": "orchestrated-artifact-ffcab6cd",
       "targetId": "orchestrated-artifact-7153f42e",
@@ -43363,9 +44380,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1076,
-      "hintCount": 711,
-      "evidenceCount": 684
+      "seedCount": 1092,
+      "hintCount": 719,
+      "evidenceCount": 700
     },
     {
       "id": "relationship-rules",

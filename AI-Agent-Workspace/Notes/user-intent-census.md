@@ -562,6 +562,20 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L981-L1020` — **Rendering functions are cohesive**: Section renderers that share the same output contract and change together when output format evolves should stay in one file; splitting them creates coupling without cohesion.
 - `L1021-L1100` — **UTF-8 awareness in heuristics**: Binary file detection must account for valid UTF-8 multi-byte sequences (bytes 0x80-0xF4) to avoid false positives on files with Unicode characters like box drawings, emoji, and international text.
 
+## 2025-12-07 (Dev Day 38)
+### Chat 3 (2025-12-07.3.md) — French Corset Refinements + Audit Fixes
+- `2025-12-07.3.md:L165-L185` — **Self-loop tapering**: French Corset connectors should thin from standard line thickness to half as they exit the outbound pin and wrap behind the card, then thicken as they approach the inbound pin; provide a tuning slider to control this effect.
+- `L185-L210` — **Pin color matching for self-loops**: Self-reference connectors must match their pin colors (blue for outbound, green for inbound) rather than using intermediate grayish-blue; equal visual attention across connector types is preferred over accidental emphasis on mundane self-references.
+- `L600-L620` — **Visual intuition is worth the effort**: When refining visualizations, trust that providing accurate visual intuition is worth pixel-level polish; the human eye should be able to intuit things about the codebase at first glance.
+- `L690-L710` — **Self-loop hard edge termination**: Self-loop connectors should terminate with a hard edge at the card glow boundary (not fade out via opacity gradient) to sell the illusion of wires wrapping behind the card.
+- `L785-L815` — **Pin alignment debugging**: When debugging visual gaps, inspect the browser dev tools to understand computed layout; in this case, pins were left-aligned in their grid cells causing asymmetric gaps (fix: `justify-self: center`).
+- `L830-L850` — **Tuning defaults matter**: Optimal tuning values (Column Gap=100, Hover Dim=0.4, Self-Loop Taper=0.2) should become the defaults so users experience the best visualization out of the box.
+- `L1055-L1075` — **Ownership of all messes**: "It's only us in this repo. Every mess is our mess, made by us." Even if an issue isn't related to the current commit, clean it up rather than deferring—there's no one else whose responsibility it is.
+- `L1090-L1110` — **No git stash for investigations**: When investigating root causes, avoid git state changes like stash/checkout that could lose work; use read-only analysis (file reads, grep searches, terminal commands) to diagnose issues safely.
+- `L1400-L1450` — **JSDoc heading levels**: H2 (`##`) headings in JSDoc comments conflict with Live Doc structural headings when extracted; use bold text (`**Title**`) or H3+ for documentation sections within JSDoc to avoid breaking the generated document structure.
+- `L1650-L1680` — **Barrel file pattern support**: Barrel files (`index.ts`, `mod.ts`) that use `export *` re-exports need explicit pattern recognition in audits; their Live Docs list symbols that don't exist as declarations in the source file, which is expected behavior for barrel patterns.
+- `L1750-L1780` — **Update instruction files when patterns emerge**: When a structural mistake (like JSDoc H2 headings) is discovered, update the relevant `.instructions.md` file to prevent recurrence; the Layer 4 instructions now explicitly state H2 is reserved for structural sections.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.
