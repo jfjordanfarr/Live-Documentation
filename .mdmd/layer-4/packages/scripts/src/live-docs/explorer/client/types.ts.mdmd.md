@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2025-12-05T19:38:38.134Z
+- Generated At: 2025-12-08T01:17:17.824Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T19:38:38.134Z","inputHash":"7f7151322be7d042"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T01:17:17.824Z","inputHash":"f60508acb6b7881a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
@@ -40,33 +40,37 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - Type: interface
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L25)
 
-#### `TuningConfig` {#symbol-tuningconfig}
+#### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L30)
 
+#### `TuningConfig` {#symbol-tuningconfig}
+- Type: interface
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L38)
+
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L36)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L45)
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L44)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L53)
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L46)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L55)
 
 #### `DragPosition` {#symbol-dragposition}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L52)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L61)
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L58)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L67)
 
 #### `ConnectionKind` {#symbol-connectionkind}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L65)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L74)
 - Returns: [`ExplorerLinkKind`](../../../index.ts.mdmd.md#symbol-explorerlinkkind)
 <!-- LIVE-DOC:END Public Symbols -->
 

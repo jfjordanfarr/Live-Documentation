@@ -31,6 +31,8 @@ export interface LocalMapTuning {
   columnGap: number;
   hoverDimSymbols: number;
   hoverDimConnections: number;
+  /** How much self-loop "French Corset" strokes taper (0=no taper, 1=full taper to half width) */
+  selfLoopTaper: number;
 }
 
 export interface TuningConfig {

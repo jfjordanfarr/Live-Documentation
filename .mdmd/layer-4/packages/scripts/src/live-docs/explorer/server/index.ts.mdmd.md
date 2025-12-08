@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2025-12-07T16:27:05.606Z
+- Generated At: 2025-12-08T03:30:11.127Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,20 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:05.606Z","inputHash":"a0cb42c19d3de7ed"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T03:30:11.127Z","inputHash":"f28c69a4f4da07d9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L13)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L12)
 
 #### `ExplorerServerInstance` {#symbol-explorerserverinstance}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L20)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L19)
 
 #### `startExplorerServer` {#symbol-startexplorerserver}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L34)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L33)
 - Parameters: `options`: [`ExplorerServerOptions`](../../../index.ts.mdmd.md#symbol-explorerserveroptions)
 <!-- LIVE-DOC:END Public Symbols -->
 

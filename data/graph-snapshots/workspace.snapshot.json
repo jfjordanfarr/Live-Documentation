@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1010,
-    "links": 1774
+    "artifacts": 1024,
+    "links": 1800
   },
   "artifacts": [
     {
@@ -510,6 +510,10 @@
           {
             "symbol": "Local",
             "context": "section-heading"
+          },
+          {
+            "symbol": "Static",
+            "context": "section-heading"
           }
         ],
         "mdmd": {
@@ -522,7 +526,8 @@
             "Shared",
             "Client",
             "Views",
-            "Local"
+            "Local",
+            "Static"
           ]
         }
       }
@@ -1812,6 +1817,10 @@
             "context": "inline-code"
           },
           {
+            "symbol": "DetailPanelOptions",
+            "context": "inline-code"
+          },
+          {
             "symbol": "createDetailPanel",
             "context": "inline-code"
           }
@@ -1825,6 +1834,7 @@
           "exports": [],
           "sectionSymbols": [
             "DetailPanelApi",
+            "DetailPanelOptions",
             "createDetailPanel"
           ]
         }
@@ -1908,6 +1918,36 @@
       }
     },
     {
+      "id": "orchestrated-artifact-f5aa96ff",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/markdown.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "renderMarkdown",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "RenderMarkdownOptions",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/markdown.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "renderMarkdown",
+            "RenderMarkdownOptions"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-9f9591aa",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/parsers.ts.mdmd.md",
       "layer": "implementation",
@@ -1965,6 +2005,10 @@
             "context": "inline-code"
           },
           {
+            "symbol": "LocalMapTuning",
+            "context": "inline-code"
+          },
+          {
             "symbol": "TuningConfig",
             "context": "inline-code"
           },
@@ -2006,6 +2050,7 @@
             "BezierTuning",
             "ClickBehaviorTuning",
             "VisualTuning",
+            "LocalMapTuning",
             "TuningConfig",
             "ExplorerState",
             "TestCoverageMap",
@@ -2535,6 +2580,441 @@
             "ExplorerServerOptions",
             "ExplorerServerInstance",
             "startExplorerServer"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-03c8f2f2",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/index.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "ExplorerDependencyReference",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerDetailPayload",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerGraphPayload",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerGraphStats",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerLinkKind",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerLinkPayload",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerNodePayload",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerPublicSymbol",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ExplorerTypeReference",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BuildLocalMapOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildNormalizedAnchorKey",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LOCAL_MAP_SCHEMA_VERSION",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapColumn",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapEdge",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapMetadata",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapNode",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapStats",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapSymbolAnchor",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeSymbolIdentifier",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildLocalMapData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildTestCoverageMap",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "TestCoverageMap",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildSymbolIndex",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "STATIC_EXPLORER_SCHEMA_VERSION",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "STATIC_EXPLORER_VERSION",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerBuildOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerProvenance",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerSymbolEntry",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerSymbolIndex",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerTreemapLayout",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerTreemapNode",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StaticExplorerViewerConfig",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildLocalMapJson",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildStaticExplorer",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BuildStaticExplorerOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BuildStaticExplorerResult",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/index.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "ExplorerDependencyReference",
+            "ExplorerDetailPayload",
+            "ExplorerGraphPayload",
+            "ExplorerGraphStats",
+            "ExplorerLinkKind",
+            "ExplorerLinkPayload",
+            "ExplorerNodePayload",
+            "ExplorerPublicSymbol",
+            "ExplorerTypeReference",
+            "BuildLocalMapOptions",
+            "buildNormalizedAnchorKey",
+            "LOCAL_MAP_SCHEMA_VERSION",
+            "LocalMapColumn",
+            "LocalMapData",
+            "LocalMapEdge",
+            "LocalMapMetadata",
+            "LocalMapNode",
+            "LocalMapStats",
+            "LocalMapSymbolAnchor",
+            "normalizeSymbolIdentifier",
+            "buildLocalMapData",
+            "buildTestCoverageMap",
+            "TestCoverageMap",
+            "buildSymbolIndex",
+            "STATIC_EXPLORER_SCHEMA_VERSION",
+            "STATIC_EXPLORER_VERSION",
+            "StaticExplorerBuildOptions",
+            "StaticExplorerData",
+            "StaticExplorerProvenance",
+            "StaticExplorerSymbolEntry",
+            "StaticExplorerSymbolIndex",
+            "StaticExplorerTreemapLayout",
+            "StaticExplorerTreemapNode",
+            "StaticExplorerViewerConfig",
+            "buildLocalMapJson",
+            "buildStaticExplorer",
+            "BuildStaticExplorerOptions",
+            "BuildStaticExplorerResult"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-f68f56da",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "TestCoverageMap",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildLocalMapData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildTestCoverageMap",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "TestCoverageMap",
+            "buildLocalMapData",
+            "buildTestCoverageMap"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-d5f4e5cd",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/localMapData.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "LocalMapColumn",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapNode",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapEdge",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapSymbolAnchor",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapStats",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "LocalMapMetadata",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "LOCAL_MAP_SCHEMA_VERSION",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "BuildLocalMapOptions",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "normalizeSymbolIdentifier",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "buildNormalizedAnchorKey",
+            "context": "section-heading"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/localMapData.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "LocalMapColumn",
+            "LocalMapNode",
+            "LocalMapEdge",
+            "LocalMapSymbolAnchor",
+            "LocalMapData",
+            "LocalMapStats",
+            "LocalMapMetadata",
+            "LOCAL_MAP_SCHEMA_VERSION",
+            "BuildLocalMapOptions",
+            "normalizeSymbolIdentifier",
+            "buildNormalizedAnchorKey"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-6c5cc197",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "BuildStaticExplorerOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BuildStaticExplorerResult",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildStaticExplorer",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildLocalMapJson",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "BuildStaticExplorerOptions",
+            "BuildStaticExplorerResult",
+            "buildStaticExplorer",
+            "buildLocalMapJson"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-d106b1f1",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "StaticExplorerProvenance",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerViewerConfig",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerSymbolEntry",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerSymbolIndex",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerTreemapLayout",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerTreemapNode",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerData",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "StaticExplorerBuildOptions",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "buildSymbolIndex",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "STATIC_EXPLORER_SCHEMA_VERSION",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "STATIC_EXPLORER_VERSION",
+            "context": "section-heading"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "StaticExplorerProvenance",
+            "StaticExplorerViewerConfig",
+            "StaticExplorerSymbolEntry",
+            "StaticExplorerSymbolIndex",
+            "StaticExplorerTreemapLayout",
+            "StaticExplorerTreemapNode",
+            "StaticExplorerData",
+            "StaticExplorerBuildOptions",
+            "buildSymbolIndex",
+            "STATIC_EXPLORER_SCHEMA_VERSION",
+            "STATIC_EXPLORER_VERSION"
           ]
         }
       }
@@ -12420,6 +12900,23 @@
       }
     },
     {
+      "id": "orchestrated-artifact-f72494a2",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/scripts/live-docs/visualize-static.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "scripts/live-docs/visualize-static.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-5b8fc62f",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/scripts/live-docs/visualize.ts.mdmd.md",
       "layer": "implementation",
@@ -18367,6 +18864,10 @@
             "kind": "interface"
           },
           {
+            "name": "DetailPanelOptions",
+            "kind": "interface"
+          },
+          {
             "name": "createDetailPanel",
             "kind": "function",
             "isDefault": false
@@ -18421,6 +18922,25 @@
       "language": "typescript"
     },
     {
+      "id": "orchestrated-artifact-06ff848c",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/markdown.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "renderMarkdown",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "RenderMarkdownOptions",
+            "kind": "interface"
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-2b4da80b",
       "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/parsers.ts",
       "layer": "code",
@@ -18463,6 +18983,10 @@
           },
           {
             "name": "VisualTuning",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapTuning",
             "kind": "interface"
           },
           {
@@ -18854,6 +19378,175 @@
             "name": "startExplorerServer",
             "kind": "function",
             "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-a6312bd3",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/index.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-2a8c733b",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "TestCoverageMap",
+            "kind": "type"
+          },
+          {
+            "name": "buildLocalMapData",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "buildTestCoverageMap",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-9ea8b65a",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/localMapData.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "LocalMapColumn",
+            "kind": "type"
+          },
+          {
+            "name": "LocalMapNode",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapEdge",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapSymbolAnchor",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapData",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapStats",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapMetadata",
+            "kind": "interface"
+          },
+          {
+            "name": "LOCAL_MAP_SCHEMA_VERSION",
+            "kind": "variable"
+          },
+          {
+            "name": "BuildLocalMapOptions",
+            "kind": "interface"
+          },
+          {
+            "name": "normalizeSymbolIdentifier",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "buildNormalizedAnchorKey",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-462ec578",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "BuildStaticExplorerOptions",
+            "kind": "interface"
+          },
+          {
+            "name": "BuildStaticExplorerResult",
+            "kind": "interface"
+          },
+          {
+            "name": "buildStaticExplorer",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "buildLocalMapJson",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-715c85fe",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "StaticExplorerProvenance",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerViewerConfig",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerSymbolEntry",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerSymbolIndex",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerTreemapLayout",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerTreemapNode",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerData",
+            "kind": "interface"
+          },
+          {
+            "name": "StaticExplorerBuildOptions",
+            "kind": "interface"
+          },
+          {
+            "name": "buildSymbolIndex",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "STATIC_EXPLORER_SCHEMA_VERSION",
+            "kind": "variable"
+          },
+          {
+            "name": "STATIC_EXPLORER_VERSION",
+            "kind": "variable"
           }
         ]
       }
@@ -25399,6 +26092,12 @@
       "language": "typescript"
     },
     {
+      "id": "orchestrated-artifact-51eacc03",
+      "uri": "file:///D:/Projects/Live-Documentation/scripts/live-docs/visualize-static.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-5b2b70bc",
       "uri": "file:///D:/Projects/Live-Documentation/scripts/live-docs/visualize.ts",
       "layer": "code",
@@ -26755,6 +27454,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "relationship-rules"
+    },
+    {
+      "id": "orchestrated-link-64ae51fa",
+      "sourceId": "orchestrated-artifact-03c8f2f2",
+      "targetId": "orchestrated-artifact-a6312bd3",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-fded9663",
@@ -28746,6 +29454,24 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-5b6694c1",
+      "sourceId": "orchestrated-artifact-2a8c733b",
+      "targetId": "orchestrated-artifact-773a86cc",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-26149d19",
+      "sourceId": "orchestrated-artifact-2a8c733b",
+      "targetId": "orchestrated-artifact-9ea8b65a",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-85927a0b",
       "sourceId": "orchestrated-artifact-2afa6aad",
       "targetId": "orchestrated-artifact-f0310a62",
@@ -30312,6 +31038,60 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-e5d5c6ba",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-2a8c733b",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-2d4f5d5c",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-5161c8b9",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-d597e8fb",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-6794da44",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-773a86cc",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-865a938d",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-9ea8b65a",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-922c1d29",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-e4798816",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-b193b68a",
       "sourceId": "orchestrated-artifact-46521456",
       "targetId": "orchestrated-artifact-07d78025",
@@ -31635,6 +32415,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-a3bf17ea",
+      "sourceId": "orchestrated-artifact-51eacc03",
+      "targetId": "orchestrated-artifact-462ec578",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-fd2e4c7c",
       "sourceId": "orchestrated-artifact-51f8a51f",
       "targetId": "orchestrated-artifact-37b3f43b",
@@ -31676,6 +32465,15 @@
       "targetId": "orchestrated-artifact-ef9221a3",
       "kind": "references",
       "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-595f4589",
+      "sourceId": "orchestrated-artifact-521602b5",
+      "targetId": "orchestrated-artifact-2a8c733b",
+      "kind": "depends_on",
+      "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
     },
@@ -32085,9 +32883,9 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-aa5bec1d",
+      "id": "orchestrated-link-5a7411b9",
       "sourceId": "orchestrated-artifact-5a9956ac",
-      "targetId": "orchestrated-artifact-2b4da80b",
+      "targetId": "orchestrated-artifact-06ff848c",
       "kind": "depends_on",
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -32814,6 +33612,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-36b6e959",
+      "sourceId": "orchestrated-artifact-6c5cc197",
+      "targetId": "orchestrated-artifact-462ec578",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-7ae4ab09",
       "sourceId": "orchestrated-artifact-6c77ec75",
       "targetId": "orchestrated-artifact-f68deb56",
@@ -32979,6 +33786,15 @@
       "id": "orchestrated-link-b8f42925",
       "sourceId": "orchestrated-artifact-71532117",
       "targetId": "orchestrated-artifact-a24b4797",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-f0206a60",
+      "sourceId": "orchestrated-artifact-715c85fe",
+      "targetId": "orchestrated-artifact-773a86cc",
       "kind": "references",
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -35109,6 +35925,15 @@
       "createdBy": "relationship-rules"
     },
     {
+      "id": "orchestrated-link-b199ddc7",
+      "sourceId": "orchestrated-artifact-8d4eaba8",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "documents",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "relationship-rules"
+    },
+    {
       "id": "orchestrated-link-cc5f326f",
       "sourceId": "orchestrated-artifact-8d4eaba8",
       "targetId": "orchestrated-artifact-773a86cc",
@@ -35213,6 +36038,15 @@
       "targetId": "orchestrated-artifact-cc0676f9",
       "kind": "documents",
       "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "relationship-rules"
+    },
+    {
+      "id": "orchestrated-link-21b64550",
+      "sourceId": "orchestrated-artifact-8d4eaba8",
+      "targetId": "orchestrated-artifact-d106b1f1",
+      "kind": "documents",
+      "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "relationship-rules"
     },
@@ -36000,6 +36834,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-12ae7c9f",
+      "sourceId": "orchestrated-artifact-9ea8b65a",
+      "targetId": "orchestrated-artifact-773a86cc",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-7c42b5cb",
       "sourceId": "orchestrated-artifact-9ecfee6b",
       "targetId": "orchestrated-artifact-5dfcf2b1",
@@ -36376,6 +37219,51 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-354a4804",
+      "sourceId": "orchestrated-artifact-a6312bd3",
+      "targetId": "orchestrated-artifact-2a8c733b",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-579f66e1",
+      "sourceId": "orchestrated-artifact-a6312bd3",
+      "targetId": "orchestrated-artifact-462ec578",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-250c6a45",
+      "sourceId": "orchestrated-artifact-a6312bd3",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-62f1aa9d",
+      "sourceId": "orchestrated-artifact-a6312bd3",
+      "targetId": "orchestrated-artifact-773a86cc",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-81b763e6",
+      "sourceId": "orchestrated-artifact-a6312bd3",
+      "targetId": "orchestrated-artifact-9ea8b65a",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-748600b6",
@@ -39015,6 +39903,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-c8e9ca8f",
+      "sourceId": "orchestrated-artifact-d106b1f1",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-5cfda4bb",
       "sourceId": "orchestrated-artifact-d11f6bee",
       "targetId": "orchestrated-artifact-48b6543f",
@@ -39274,6 +40171,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-73114cab",
+      "sourceId": "orchestrated-artifact-d5f4e5cd",
+      "targetId": "orchestrated-artifact-9ea8b65a",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-e807e537",
@@ -41607,6 +42513,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-d90a4459",
+      "sourceId": "orchestrated-artifact-f5aa96ff",
+      "targetId": "orchestrated-artifact-06ff848c",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-75640048",
       "sourceId": "orchestrated-artifact-f646fb89",
       "targetId": "orchestrated-artifact-22219a80",
@@ -41850,6 +42765,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-7bc0cca1",
+      "sourceId": "orchestrated-artifact-f68f56da",
+      "targetId": "orchestrated-artifact-2a8c733b",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-4addca65",
       "sourceId": "orchestrated-artifact-f6c5413d",
       "targetId": "orchestrated-artifact-f1af3226",
@@ -41857,6 +42781,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-d30d5a14",
+      "sourceId": "orchestrated-artifact-f72494a2",
+      "targetId": "orchestrated-artifact-51eacc03",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-099248c4",
@@ -42430,16 +43363,16 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1061,
-      "hintCount": 704,
-      "evidenceCount": 668
+      "seedCount": 1076,
+      "hintCount": 711,
+      "evidenceCount": 684
     },
     {
       "id": "relationship-rules",
       "label": "Relationship Rule Engine",
       "seedCount": 0,
       "hintCount": 0,
-      "evidenceCount": 383
+      "evidenceCount": 386
     }
   ],
   "errors": []

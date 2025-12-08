@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2025-12-07T21:41:17.265Z
+- Generated At: 2025-12-08T15:55:19.445Z
 
 ## Authored
 ### Purpose
@@ -14,8 +14,25 @@ _Pending authored purpose_
 ### Notes
 _Pending notes_
 
+### File Structure
+
+When distributed as files:
+```
+explorer/
+  index.html          # Viewer HTML (can load from CDN or inline)
+  explorer-data.json  # This schema
+  assets/             # Optional: CSS, JS if not using CDN
+```
+
+### Embedding
+
+The viewer supports three loading modes:
+1. **Inline**: Data embedded as `<script id="explorer-data">` JSON
+2. **Fetch**: Data loaded from `explorer-data.json` relative URL
+3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
+
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.265Z","inputHash":"05097e7240588d65"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T15:55:19.445Z","inputHash":"64974dc33e28bd3f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
@@ -91,7 +108,7 @@ The complete Static Explorer data bundle.
 This is the top-level schema for the JSON file emitted by
 `npm run live-docs:visualize --static` or included in hosted showcase bundles.
 
-## File Structure
+**File Structure**
 
 When distributed as files:
 ```
@@ -101,7 +118,7 @@ explorer/
   assets/             # Optional: CSS, JS if not using CDN
 ```
 
-## Embedding
+**Embedding**
 
 The viewer supports three loading modes:
 1. **Inline**: Data embedded as `<script id="explorer-data">` JSON

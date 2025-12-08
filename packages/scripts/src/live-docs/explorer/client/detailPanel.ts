@@ -145,8 +145,8 @@ function parseLiveDocSections(markdown: string): ParsedLiveDoc {
   const result: ParsedLiveDoc = { metadata: {}, authored: "", generated: "" };
   
   // Find section boundaries using ## headers
-  const metadataMatch = markdown.match(/^## Metadata\s*\n([\s\S]*?)(?=^## |\Z)/m);
-  const authoredMatch = markdown.match(/^## Authored\s*\n([\s\S]*?)(?=^## |\Z)/m);
+  const metadataMatch = markdown.match(/^## Metadata\s*\n([\s\S]*?)(?=^## |$)/m);
+  const authoredMatch = markdown.match(/^## Authored\s*\n([\s\S]*?)(?=^## |$)/m);
   const generatedMatch = markdown.match(/^## Generated\s*\n([\s\S]*?)$/m);
   
   // Parse metadata as key-value pairs

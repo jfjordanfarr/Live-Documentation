@@ -177,7 +177,7 @@ function processInline(
         /\[([^\]]+)\]\(([^)]+)\)/g,
         (_match: string, linkText: string, href: string) => {
             // Process the link text for inline code (backticks)
-            let processedLinkText = linkText.replace(/`([^`]+)`/g, (_m: string, code: string) => {
+            const processedLinkText = linkText.replace(/`([^`]+)`/g, (_m: string, code: string) => {
                 return `<code>${escapeHtml(code)}</code>`;
             });
             

@@ -24,6 +24,7 @@ Default storage for generated Layer‑4 Live Docs is `/.mdmd/layer-4/`; adjust c
 - Required generated sections for every archetype: `### Public Symbols` and `### Dependencies`.  Additional sections (for example, `### Observed Evidence`, `### Targets`, `### Supporting Fixtures`) are controlled by archetype-specific instructions (`mdmd.layer4.*.instructions.md`).  When multiple sections are present, follow the order defined by those files.
 - The generator may prepend a provenance marker (`<!-- LIVE-DOC:PROVENANCE … -->`) before the first generated section; keep it intact.
 - Optional human-owned appendices must appear **after** the generated block.  Do not mix manual notes inside generated sections.
+- **Authored sections must never use `##` (H2) headings**; the `##` level is reserved for the canonical structural sections (`## Metadata`, `## Authored`, `## Generated`).  Use `###` or deeper headings within `## Authored` for any custom subsections.
 - Use workspace-relative Markdown links throughout the document so tooling can resolve references offline.
 - When a generated section has no data, emit `_No data recorded yet_` (or a similarly explicit placeholder).  Mention any intentional waivers in `### Notes`.
 - Keep content ASCII unless the underlying artifact demands Unicode (for example, identifiers).  Trim trailing whitespace inside generated sections to minimise diff churn.

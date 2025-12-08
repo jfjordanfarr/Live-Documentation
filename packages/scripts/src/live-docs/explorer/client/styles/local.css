@@ -167,7 +167,8 @@
 
 /* Transition for smooth dimming effect */
 .symbol-row > *,
-.connection-path {
+.connection-path,
+.node-card {
     transition: opacity 0.15s ease-out;
 }
 
@@ -194,4 +195,25 @@
 /* Also target center column directly in case local-focus isn't applied */
 .symbol-hover-active .local-column.center .symbol-row:not(.symbol-highlighted) > * {
     opacity: var(--hover-dim-symbols, 0.4);
+}
+
+/* ==========================================
+   Node Card Hover Highlighting
+   ========================================== */
+
+/* Dim entire node cards that have no connection to the hovered symbol */
+/* Only applies to side columns (dependencies/dependents), not center */
+.symbol-hover-active .local-column[data-position="left"] .node-card:not(.card-highlighted),
+.symbol-hover-active .local-column[data-position="right"] .node-card:not(.card-highlighted) {
+    opacity: var(--hover-dim-symbols, 0.4);
+}
+
+/* Keep highlighted cards at full opacity */
+.symbol-hover-active .node-card.card-highlighted {
+    opacity: 1;
+}
+
+/* Center card is always visible */
+.symbol-hover-active .local-column.center .node-card {
+    opacity: 1;
 }

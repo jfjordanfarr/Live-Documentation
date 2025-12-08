@@ -163,11 +163,19 @@ export class LocalViewController implements LocalViewApi {
    * - Symbol rows store display names: "collectIdentifierUsage"
    * - Cross-file edges store slugified anchors: "symbol-collectidentifierusage"
    * - Self-loop edges store display names: "OracleEdge"
+   * - The special "__internals__" symbol represents private implementation
    * We normalize everything to lowercase for matching.
+   * 
+   * Special cases:
+   * - Hovering "__internals__" on center: highlight all edges that have no targetSymbol
+   *   (connections into internal implementation)
+   * - Hovering "__internals__" on a neighbor: highlight the symbol on center that connects to it
    */
   highlightSymbolConnections(nodeId: string, symbol: string): void {
     const { currentSubgraph, options } = this;
     if (!currentSubgraph) return;
+
+    const centerId = currentSubgraph.center.id;
 
     // Get dimming values from tuning config
     const dimSymbols = options.state.tuning.localMap?.hoverDimSymbols ?? 0.4;
@@ -178,7 +186,8 @@ export class LocalViewController implements LocalViewApi {
     this.container.style.setProperty("--hover-dim-connections", String(dimConnections));
 
     // Normalize the hovered symbol for matching
-    const normalizedHoverSymbol = normalizeSymbolIdentifier(symbol) ?? symbol.toLowerCase();
+    const isInternalsHover = symbol === "__internals__";
+    const normalizedHoverSymbol = isInternalsHover ? "__internals__" : (normalizeSymbolIdentifier(symbol) ?? symbol.toLowerCase());
 
     // Helper to normalize edge symbol (handles both slugified anchors and display names)
     const normalizeEdgeSymbol = (sym: string | undefined): string => {
@@ -188,30 +197,74 @@ export class LocalViewController implements LocalViewApi {
       return stripped.toLowerCase();
     };
 
+    // Helper to check if an edge symbol matches "Internals" (empty or undefined target)
+    const isInternalsEdge = (edgeTargetSymbol: string | undefined): boolean => {
+      return !edgeTargetSymbol || edgeTargetSymbol === "";
+    };
+
     // Find all edges that involve this symbol on this node
-    const relatedEdges = currentSubgraph.links.filter(edge => {
-      const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
-      const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
-      
-      // Check if this node+symbol is on the source side of the edge
-      const isSourceMatch = edge.sourceId === nodeId && edgeSourceSymbol === normalizedHoverSymbol;
-      // Check if this node+symbol is on the target side of the edge  
-      const isTargetMatch = edge.targetId === nodeId && edgeTargetSymbol === normalizedHoverSymbol;
-      return isSourceMatch || isTargetMatch;
-    });
+    let relatedEdges: typeof currentSubgraph.links;
+
+    if (isInternalsHover && nodeId === centerId) {
+      // Hovering Internals on the CENTER node:
+      // Find edges where the center is the TARGET and has no specific targetSymbol
+      // (edges coming INTO the center's internal implementation)
+      relatedEdges = currentSubgraph.links.filter(edge => {
+        // Inbound edges go TO the center node
+        return edge.targetId === centerId && isInternalsEdge(edge.targetSymbol);
+      });
+    } else if (isInternalsHover) {
+      // Hovering Internals on a NEIGHBOR node:
+      // Find edges where this neighbor's internal implementation receives data
+      // (the neighbor is the source with no sourceSymbol, or the neighbor is the target with no targetSymbol)
+      relatedEdges = currentSubgraph.links.filter(edge => {
+        // Case 1: Neighbor is receiving data into internals (neighbor is target with no targetSymbol)
+        // This means center has an outbound edge to this neighbor's internals
+        const neighborReceivesFromCenter = edge.targetId === nodeId && isInternalsEdge(edge.targetSymbol);
+        // Case 2: Neighbor's internals are providing to center (neighbor is source with no sourceSymbol)
+        const neighborSendsToCenter = edge.sourceId === nodeId && isInternalsEdge(edge.sourceSymbol);
+        return neighborReceivesFromCenter || neighborSendsToCenter;
+      });
+    } else {
+      // Normal symbol hover
+      relatedEdges = currentSubgraph.links.filter(edge => {
+        const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
+        const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
+        
+        // Check if this node+symbol is on the source side of the edge
+        const isSourceMatch = edge.sourceId === nodeId && edgeSourceSymbol === normalizedHoverSymbol;
+        // Check if this node+symbol is on the target side of the edge  
+        const isTargetMatch = edge.targetId === nodeId && edgeTargetSymbol === normalizedHoverSymbol;
+        return isSourceMatch || isTargetMatch;
+      });
+    }
 
     // Build sets of related node+symbol pairs for highlighting (using normalized symbols)
     const relatedSymbols = new Set<string>();
     relatedSymbols.add(`${nodeId}:${normalizedHoverSymbol}`); // The hovered symbol itself
 
+    // Build set of related node IDs for card-level highlighting
+    const relatedNodeIds = new Set<string>();
+    relatedNodeIds.add(nodeId); // The hovered card itself
+
     relatedEdges.forEach(edge => {
       // Add both endpoints of each related edge
       if (edge.sourceSymbol) {
         relatedSymbols.add(`${edge.sourceId}:${normalizeEdgeSymbol(edge.sourceSymbol)}`);
+      } else {
+        // No source symbol means it goes to internals
+        relatedSymbols.add(`${edge.sourceId}:__internals__`);
       }
       if (edge.targetSymbol) {
         relatedSymbols.add(`${edge.targetId}:${normalizeEdgeSymbol(edge.targetSymbol)}`);
+      } else {
+        // No target symbol means it goes to internals
+        relatedSymbols.add(`${edge.targetId}:__internals__`);
       }
+
+      // Track related nodes for card highlighting
+      relatedNodeIds.add(edge.sourceId);
+      relatedNodeIds.add(edge.targetId);
     });
 
     // Add class to container AND overlay to enable dimming mode
@@ -225,10 +278,20 @@ export class LocalViewController implements LocalViewApi {
       const rowSymbol = row.dataset.symbol;
       if (rowNodeId && rowSymbol) {
         // Normalize the row's symbol for comparison
-        const normalizedRowSymbol = normalizeSymbolIdentifier(rowSymbol) ?? rowSymbol.toLowerCase();
+        const normalizedRowSymbol = rowSymbol === "__internals__" 
+          ? "__internals__" 
+          : (normalizeSymbolIdentifier(rowSymbol) ?? rowSymbol.toLowerCase());
         if (relatedSymbols.has(`${rowNodeId}:${normalizedRowSymbol}`)) {
           row.classList.add("symbol-highlighted");
         }
+      }
+    });
+
+    // Mark related cards as highlighted (for card-level dimming)
+    this.container.querySelectorAll<HTMLElement>(".node-card").forEach(card => {
+      const cardId = card.dataset.id;
+      if (cardId && relatedNodeIds.has(cardId)) {
+        card.classList.add("card-highlighted");
       }
     });
 
@@ -263,6 +326,9 @@ export class LocalViewController implements LocalViewApi {
     this.overlay.classList.remove("symbol-hover-active");
     this.container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {
       el.classList.remove("symbol-highlighted");
+    });
+    this.container.querySelectorAll<HTMLElement>(".card-highlighted").forEach(el => {
+      el.classList.remove("card-highlighted");
     });
     this.overlay.querySelectorAll<SVGPathElement>(".connection-highlighted").forEach(path => {
       path.classList.remove("connection-highlighted");

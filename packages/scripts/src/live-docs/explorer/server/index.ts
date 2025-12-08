@@ -6,9 +6,8 @@ import { URL } from "url";
 
 import { buildExplorerAssets } from "./buildAssets";
 import { buildExplorerGraph, normalizeDocPath } from "./graph";
-import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerNodePayload } from "../shared/types";
 import { buildLocalMapData, buildTestCoverageMap } from "../shared/localMapBuilder";
-import type { ExplorerLinkPayload } from "../shared/types";
+import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
 export interface ExplorerServerOptions {
     workspaceRoot: string;
@@ -259,11 +258,11 @@ function extractPurposeSection(content: string): string {
  * @example GET /local-map?nodeId=packages/server/src/main.ts
  * @example GET /local-map?nodeId=packages/server/src/main.ts&pretty=1
  */
-async function handleLocalMap(
+function handleLocalMap(
     url: URL,
     context: InternalContext,
     res: ServerResponse
-): Promise<void> {
+): void {
     const nodeId = url.searchParams.get("nodeId");
     if (!nodeId) {
         res.writeHead(400, { "Content-Type": "application/json" });

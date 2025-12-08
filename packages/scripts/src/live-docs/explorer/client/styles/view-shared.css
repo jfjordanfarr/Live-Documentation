@@ -175,6 +175,8 @@
 
 .symbol-anchor.dot {
     border: 1px solid rgba(0, 145, 255, 0.45);
+    /* Center the dot within its grid cell to ensure equal gaps on both sides */
+    justify-self: center;
 }
 
 .symbol-anchor.hub {
@@ -491,9 +493,20 @@ button.action-btn.ghost:hover {
     filter: drop-shadow(0 0 8px rgba(255, 188, 87, 0.4));
 }
 
-.connection-path[data-kind="type-reference"] {
+.connection-path[data-kind="type-reference"]:not(.self-loop) {
     stroke: rgba(138, 180, 248, 0.85);
     filter: drop-shadow(0 0 8px rgba(138, 180, 248, 0.4));
+}
+
+/* Self-loop paths use their own gradient colors (pin-matching blue/green) */
+.connection-path.self-loop {
+    /* Override any kind-based stroke colors - use the inline gradient */
+    stroke-width: 2.2px;
+}
+
+/* Self-loop polygons use inline style.fill for gradient - ensure no CSS interference */
+polygon.connection-path.self-loop {
+    /* stroke:none is set inline; the base fill:none is overridden by inline style.fill */
 }
 
 .nav-item:focus-visible,

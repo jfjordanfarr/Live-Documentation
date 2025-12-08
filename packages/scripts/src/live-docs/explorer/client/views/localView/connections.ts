@@ -184,7 +184,7 @@ export function drawConnections(context: ConnectionsContext): void {
   svg.style.pointerEvents = "none";
 
   // Create defs element for gradients
-  const defs = document.createElementNS(context.svgNamespace, "defs");
+  const defs = document.createElementNS(context.svgNamespace, "defs") as SVGDefsElement;
   svg.appendChild(defs);
 
   overlay.appendChild(svg);
@@ -205,6 +205,7 @@ export function drawConnections(context: ConnectionsContext): void {
 
   // Render self-loop connections (intra-node type references) with wraparound beziers
   if (centerCardBounds) {
+    const taper = state.tuning.localMap?.selfLoopTaper ?? 0.5;
     selfLoopSegments.forEach(({ edge, source, target, sourcePoint, targetPoint }) => {
       const adjustedSource = {
         x: sourcePoint.x - bounds.left,
@@ -220,8 +221,7 @@ export function drawConnections(context: ConnectionsContext): void {
         top: centerCardBounds.top - bounds.top,
         bottom: centerCardBounds.bottom - bounds.top
       };
-      const gradientId = `selfloop-grad-${gradientIndex++}`;
-      appendSelfLoopPath(svg, defs, adjustedSource, adjustedTarget, source, target, cardBoundsAdjusted, edge, context.svgNamespace, gradientId);
+      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, source, target, cardBoundsAdjusted, edge, context.svgNamespace, taper);
     });
   }
 
@@ -318,10 +318,12 @@ function appendConnectionPath(
  *
  * The stubs don't connect visually — the "behind the card" connection is implied.
  * This creates a cleaner "lacing" effect without tangled beziers.
+ * 
+ * Tapering: The strokes thin from full width at the pin to a narrower width at the end,
+ * controlled by the selfLoopTaper tuning parameter (0 = no taper, 1 = taper to 25% width).
  */
 function appendSelfLoopPath(
   svg: SVGSVGElement,
-  defs: SVGDefsElement,
   source: { x: number; y: number },
   target: { x: number; y: number },
   _sourceAnchor: AnchorMeasurement,
@@ -329,126 +331,80 @@ function appendSelfLoopPath(
   _cardBounds: { left: number; right: number; top: number; bottom: number },
   edge: LocalEdge,
   svgNamespace: string,
-  gradientId: string
+  taper: number
 ): void {
-  // Stub parameters - keep these small for the "nubby" effect
-  const STUB_LENGTH = 12;      // How far the stub extends horizontally
-  const CURL_AMOUNT = 6;       // How much the stub curls inward (Y direction)
-  const TAPER_LENGTH = 4;      // Extra length for the tapered "disappearing" end
+  // Stub parameters - small nubs that extend from the pin's outer edge
+  const STUB_LENGTH = 14;      // How far the stub extends horizontally from pin edge
+  const CURL_AMOUNT = 8;       // How much the stub curls toward partner symbol
+  const BASE_WIDTH = 2.5;      // Width at the pin edge
+  // Taper: 0 = stay at BASE_WIDTH, 1 = go down to 25% of BASE_WIDTH
+  const END_WIDTH = BASE_WIDTH * (1 - taper * 0.75);
 
   // Direction of Y curl: toward the partner symbol
   const providerCurlY = target.y > source.y ? CURL_AMOUNT : -CURL_AMOUNT;
   const consumerCurlY = source.y > target.y ? CURL_AMOUNT : -CURL_AMOUNT;
 
+  // Calculate perpendicular offsets for the polygon edges
+  const halfBaseWidth = BASE_WIDTH / 2;
+  const halfEndWidth = END_WIDTH / 2;
+
   // === Provider stub (outbound/blue side) ===
-  // Starts at source, extends right, curls toward target Y, then tapers
-  const providerCommands: string[] = [];
-  providerCommands.push(`M ${source.x} ${source.y}`);
-  
-  // Quadratic curve: extend right while curling toward target
-  const providerEndX = source.x + STUB_LENGTH;
+  // source.x is already at the pin's RIGHT edge (center + PIN_RADIUS from caller)
+  // Start right at the pin edge, extend outward
+  const providerStartX = source.x;  // Pin's right edge
+  const providerEndX = source.x + STUB_LENGTH;  // Extend outward
   const providerEndY = source.y + providerCurlY;
-  const providerCtrlX = source.x + STUB_LENGTH * 0.6;
-  const providerCtrlY = source.y;
-  providerCommands.push(`Q ${providerCtrlX} ${providerCtrlY} ${providerEndX} ${providerEndY}`);
   
-  // Tiny taper line that "disappears behind"
-  const providerTaperX = providerEndX + TAPER_LENGTH;
-  const providerTaperY = providerEndY + (providerCurlY * 0.5);
-  providerCommands.push(`L ${providerTaperX} ${providerTaperY}`);
+  const providerPolygonPoints = [
+    `${providerStartX},${source.y - halfBaseWidth}`,
+    `${providerEndX},${providerEndY - halfEndWidth}`,
+    `${providerEndX},${providerEndY + halfEndWidth}`,
+    `${providerStartX},${source.y + halfBaseWidth}`
+  ].join(" ");
 
   // === Consumer stub (inbound/green side) ===
-  // Starts at target, extends left, curls toward source Y, then tapers
-  const consumerCommands: string[] = [];
-  consumerCommands.push(`M ${target.x} ${target.y}`);
-  
-  // Quadratic curve: extend left while curling toward source
-  const consumerEndX = target.x - STUB_LENGTH;
+  // target.x is already at the pin's LEFT edge (center - PIN_RADIUS from caller)
+  // Start right at the pin edge, extend outward
+  const consumerStartX = target.x;  // Pin's left edge
+  const consumerEndX = target.x - STUB_LENGTH;  // Extend outward
   const consumerEndY = target.y + consumerCurlY;
-  const consumerCtrlX = target.x - STUB_LENGTH * 0.6;
-  const consumerCtrlY = target.y;
-  consumerCommands.push(`Q ${consumerCtrlX} ${consumerCtrlY} ${consumerEndX} ${consumerEndY}`);
   
-  // Tiny taper line that "disappears behind"
-  const consumerTaperX = consumerEndX - TAPER_LENGTH;
-  const consumerTaperY = consumerEndY + (consumerCurlY * 0.5);
-  consumerCommands.push(`L ${consumerTaperX} ${consumerTaperY}`);
+  const consumerPolygonPoints = [
+    `${consumerStartX},${target.y - halfBaseWidth}`,
+    `${consumerEndX},${consumerEndY - halfEndWidth}`,
+    `${consumerEndX},${consumerEndY + halfEndWidth}`,
+    `${consumerStartX},${target.y + halfBaseWidth}`
+  ].join(" ");
 
-  // === Create gradient for provider stub (blue fading to transparent) ===
-  const providerGradientId = `${gradientId}-provider`;
-  const providerGradient = document.createElementNS(svgNamespace, "linearGradient");
-  providerGradient.setAttribute("id", providerGradientId);
-  providerGradient.setAttribute("gradientUnits", "userSpaceOnUse");
-  providerGradient.setAttribute("x1", String(source.x));
-  providerGradient.setAttribute("y1", String(source.y));
-  providerGradient.setAttribute("x2", String(providerTaperX));
-  providerGradient.setAttribute("y2", String(providerTaperY));
+  // Solid colors matching the pin colors (no gradient/opacity fade)
+  const PROVIDER_COLOR = "#38bdf8"; // sky-400 (outbound blue)
+  const CONSUMER_COLOR = "#34d399"; // emerald-400 (inbound green)
 
-  const providerStopStart = document.createElementNS(svgNamespace, "stop");
-  providerStopStart.setAttribute("offset", "0%");
-  providerStopStart.setAttribute("stop-color", "#38bdf8"); // sky-400 (outbound blue)
-  providerStopStart.setAttribute("stop-opacity", "1");
+  // === Render provider stub as filled polygon (true taper) ===
+  const providerPolygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
+  providerPolygon.setAttribute("points", providerPolygonPoints);
+  // Use style.fill (inline CSS) instead of attribute to override the CSS fill:none rule
+  providerPolygon.style.fill = PROVIDER_COLOR;
+  providerPolygon.style.stroke = "none";
+  providerPolygon.classList.add("connection-path", "self-loop", "self-loop-provider");
+  providerPolygon.dataset.kind = edge.kind;
+  providerPolygon.dataset.sourceId = edge.sourceId;
+  providerPolygon.dataset.targetId = edge.targetId;
+  providerPolygon.dataset.sourceSymbol = edge.sourceSymbol ?? "";
+  providerPolygon.dataset.targetSymbol = edge.targetSymbol ?? "";
+  svg.appendChild(providerPolygon);
 
-  const providerStopEnd = document.createElementNS(svgNamespace, "stop");
-  providerStopEnd.setAttribute("offset", "100%");
-  providerStopEnd.setAttribute("stop-color", "#38bdf8");
-  providerStopEnd.setAttribute("stop-opacity", "0.2"); // Fade out
-
-  providerGradient.appendChild(providerStopStart);
-  providerGradient.appendChild(providerStopEnd);
-  defs.appendChild(providerGradient);
-
-  // === Create gradient for consumer stub (green fading to transparent) ===
-  const consumerGradientId = `${gradientId}-consumer`;
-  const consumerGradient = document.createElementNS(svgNamespace, "linearGradient");
-  consumerGradient.setAttribute("id", consumerGradientId);
-  consumerGradient.setAttribute("gradientUnits", "userSpaceOnUse");
-  consumerGradient.setAttribute("x1", String(target.x));
-  consumerGradient.setAttribute("y1", String(target.y));
-  consumerGradient.setAttribute("x2", String(consumerTaperX));
-  consumerGradient.setAttribute("y2", String(consumerTaperY));
-
-  const consumerStopStart = document.createElementNS(svgNamespace, "stop");
-  consumerStopStart.setAttribute("offset", "0%");
-  consumerStopStart.setAttribute("stop-color", "#34d399"); // emerald-400 (inbound green)
-  consumerStopStart.setAttribute("stop-opacity", "1");
-
-  const consumerStopEnd = document.createElementNS(svgNamespace, "stop");
-  consumerStopEnd.setAttribute("offset", "100%");
-  consumerStopEnd.setAttribute("stop-color", "#34d399");
-  consumerStopEnd.setAttribute("stop-opacity", "0.2"); // Fade out
-
-  consumerGradient.appendChild(consumerStopStart);
-  consumerGradient.appendChild(consumerStopEnd);
-  defs.appendChild(consumerGradient);
-
-  // === Render provider stub ===
-  const providerPath = document.createElementNS(svgNamespace, "path") as SVGPathElement;
-  providerPath.setAttribute("d", providerCommands.join(" "));
-  providerPath.setAttribute("stroke", `url(#${providerGradientId})`);
-  providerPath.setAttribute("stroke-width", "2");
-  providerPath.setAttribute("fill", "none");
-  providerPath.setAttribute("stroke-linecap", "round");
-  providerPath.classList.add("connection-path", "self-loop", "self-loop-provider");
-  providerPath.dataset.kind = edge.kind;
-  providerPath.dataset.sourceId = edge.sourceId;
-  providerPath.dataset.targetId = edge.targetId;
-  providerPath.dataset.sourceSymbol = edge.sourceSymbol ?? "";
-  providerPath.dataset.targetSymbol = edge.targetSymbol ?? "";
-  svg.appendChild(providerPath);
-
-  // === Render consumer stub ===
-  const consumerPath = document.createElementNS(svgNamespace, "path") as SVGPathElement;
-  consumerPath.setAttribute("d", consumerCommands.join(" "));
-  consumerPath.setAttribute("stroke", `url(#${consumerGradientId})`);
-  consumerPath.setAttribute("stroke-width", "2");
-  consumerPath.setAttribute("fill", "none");
-  consumerPath.setAttribute("stroke-linecap", "round");
-  consumerPath.classList.add("connection-path", "self-loop", "self-loop-consumer");
-  consumerPath.dataset.kind = edge.kind;
-  consumerPath.dataset.sourceId = edge.sourceId;
-  consumerPath.dataset.targetId = edge.targetId;
-  consumerPath.dataset.sourceSymbol = edge.sourceSymbol ?? "";
-  consumerPath.dataset.targetSymbol = edge.targetSymbol ?? "";
-  svg.appendChild(consumerPath);
+  // === Render consumer stub as filled polygon (true taper) ===
+  const consumerPolygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
+  consumerPolygon.setAttribute("points", consumerPolygonPoints);
+  // Use style.fill (inline CSS) instead of attribute to override the CSS fill:none rule
+  consumerPolygon.style.fill = CONSUMER_COLOR;
+  consumerPolygon.style.stroke = "none";
+  consumerPolygon.classList.add("connection-path", "self-loop", "self-loop-consumer");
+  consumerPolygon.dataset.kind = edge.kind;
+  consumerPolygon.dataset.sourceId = edge.sourceId;
+  consumerPolygon.dataset.targetId = edge.targetId;
+  consumerPolygon.dataset.sourceSymbol = edge.sourceSymbol ?? "";
+  consumerPolygon.dataset.targetSymbol = edge.targetSymbol ?? "";
+  svg.appendChild(consumerPolygon);
 }

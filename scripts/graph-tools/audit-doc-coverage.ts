@@ -135,6 +135,7 @@ const DOCUMENT_ARTIFACT_IGNORE_PATTERNS: RegExp[] = [
 
 interface SymbolCoverageIgnoreConfig {
   artifactGlobs: string[];
+  barrelFilePatterns: string[];
 }
 
 interface CompiledGlobPattern {
@@ -144,10 +145,12 @@ interface CompiledGlobPattern {
 
 interface AuditOptions {
   symbolIgnorePatterns: CompiledGlobPattern[];
+  barrelFilePatterns: CompiledGlobPattern[];
 }
 
 const EMPTY_AUDIT_OPTIONS: AuditOptions = {
-  symbolIgnorePatterns: []
+  symbolIgnorePatterns: [],
+  barrelFilePatterns: []
 };
 
 async function ensureFreshSnapshot(parsed: ParsedArgs): Promise<void> {
@@ -426,6 +429,13 @@ export function auditCoverage(
         orphanDocuments.push(toSummary(artifact));
       }
 
+      // Skip orphan symbol check for barrel file documents
+      // Barrel files use `export *` which re-exports symbols from other files,
+      // so the declared symbols in the Live Doc won't match declarations in the barrel file itself
+      if (isBarrelFileDocument(artifact, options.barrelFilePatterns)) {
+        continue;
+      }
+
       const exportedSymbolsDeclared = readDocumentExportedSymbols(artifact.uri, docExportedSymbolCache);
       if (exportedSymbolsDeclared.length > 0) {
         const codeNeighbors = neighbors.filter(neighbor => {
@@ -495,6 +505,25 @@ function matchesAnyPattern(uri: string, patterns: RegExp[]): boolean {
     return false;
   }
   return patterns.some(pattern => pattern.test(uri));
+}
+
+function isBarrelFileDocument(artifact: KnowledgeArtifact, barrelPatterns: CompiledGlobPattern[]): boolean {
+  // A Live Doc for a barrel file will have a URI like:
+  // .mdmd/layer-4/packages/foo/index.ts.mdmd.md
+  // We check if the source code file (extracted from the doc path) matches barrel patterns
+  if (!barrelPatterns.length) {
+    return false;
+  }
+  
+  // Extract the source file path from the Live Doc URI
+  // Example: .mdmd/layer-4/packages/foo/index.ts.mdmd.md -> packages/foo/index.ts
+  const match = artifact.uri.match(/\.mdmd\/layer-\d+\/(.+)\.mdmd\.md$/);
+  if (!match) {
+    return false;
+  }
+  
+  const sourceFilePath = match[1];
+  return barrelPatterns.some(pattern => pattern.regex.test(sourceFilePath));
 }
 
 function shouldIgnoreRelationshipDiagnostic(diagnostic: RelationshipCoverageDiagnostic): boolean {
@@ -744,6 +773,7 @@ export async function main(): Promise<void> {
   const workspaceRoot = parsed.workspace ? path.resolve(parsed.workspace) : process.cwd();
   const ignoreConfig = loadSymbolCoverageIgnoreConfig(workspaceRoot);
   const compiledIgnores = compileGlobPatterns(ignoreConfig.artifactGlobs);
+  const compiledBarrelPatterns = compileGlobPatterns(ignoreConfig.barrelFilePatterns);
 
   const dbPath = resolveDatabasePath(parsed);
   if (!fs.existsSync(dbPath)) {
@@ -755,7 +785,10 @@ export async function main(): Promise<void> {
 
   const store = new GraphStore({ dbPath });
   try {
-    const report = auditCoverage(store, { symbolIgnorePatterns: compiledIgnores });
+    const report = auditCoverage(store, { 
+      symbolIgnorePatterns: compiledIgnores,
+      barrelFilePatterns: compiledBarrelPatterns
+    });
     const ruleConfig = loadRelationshipRuleConfig(workspaceRoot);
     const compiledRules = compileRelationshipRules(ruleConfig.config, workspaceRoot);
     const ruleWarnings: RelationshipRuleWarning[] = [...ruleConfig.warnings, ...compiledRules.warnings];
@@ -823,7 +856,7 @@ main().catch(error => {
 function loadSymbolCoverageIgnoreConfig(workspaceRoot: string): SymbolCoverageIgnoreConfig {
   const configPath = path.join(workspaceRoot, "symbol-coverage.ignore.json");
   if (!fs.existsSync(configPath)) {
-    return { artifactGlobs: [] };
+    return { artifactGlobs: [], barrelFilePatterns: [] };
   }
 
   try {
@@ -837,12 +870,16 @@ function loadSymbolCoverageIgnoreConfig(workspaceRoot: string): SymbolCoverageIg
       ? parsed.artifactGlobs.filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0)
       : [];
 
-    return { artifactGlobs };
+    const barrelFilePatterns = Array.isArray(parsed.barrelFilePatterns)
+      ? parsed.barrelFilePatterns.filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0)
+      : [];
+
+    return { artifactGlobs, barrelFilePatterns };
   } catch (error) {
     console.warn(
       `Failed to read symbol coverage ignore config at ${configPath}: ${error instanceof Error ? error.message : String(error)}.`
     );
-    return { artifactGlobs: [] };
+    return { artifactGlobs: [], barrelFilePatterns: [] };
   }
 }
 

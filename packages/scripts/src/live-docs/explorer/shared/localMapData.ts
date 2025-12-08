@@ -22,7 +22,6 @@
 
 import type {
     ExplorerLinkKind,
-    ExplorerNodePayload,
     ExplorerPublicSymbol
 } from "./types";
 

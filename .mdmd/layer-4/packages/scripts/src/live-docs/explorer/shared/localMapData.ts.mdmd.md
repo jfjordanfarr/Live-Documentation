@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapdata-ts
-- Generated At: 2025-12-07T21:41:17.246Z
+- Generated At: 2025-12-08T03:30:11.199Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.246Z","inputHash":"7b2b5e71c11c2e38"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T03:30:11.199Z","inputHash":"646147f89737dc39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalMapColumn` {#symbol-localmapcolumn}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L37)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L36)
 
 ##### `LocalMapColumn` — Summary
 Column role in the 3-column layout.
@@ -28,7 +28,7 @@ Uses semantic names for clarity and future multi-hop expansion.
 
 #### `LocalMapNode` {#symbol-localmapnode}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L43)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L42)
 
 ##### `LocalMapNode` — Summary
 A node card as it appears in the Local Map.
@@ -36,7 +36,7 @@ Simpler than full `ExplorerNodePayload` — contains only render-relevant fields
 
 #### `LocalMapEdge` {#symbol-localmapedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L83)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L82)
 
 ##### `LocalMapEdge` — Summary
 An edge in the Local Map connecting two nodes.
@@ -44,7 +44,7 @@ Includes symbol-level anchoring for precise connection rendering.
 
 #### `LocalMapSymbolAnchor` {#symbol-localmapsymbolanchor}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L114)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L113)
 
 ##### `LocalMapSymbolAnchor` — Summary
 A symbol anchor point for edge connection routing.
@@ -52,7 +52,7 @@ In the DOM, this corresponds to a `.symbol-item` element's position.
 
 #### `LocalMapData` {#symbol-localmapdata}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L160)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L159)
 
 ##### `LocalMapData` — Summary
 Complete Local Map data for a focus node.
@@ -78,35 +78,35 @@ This is the JSON payload that:
 
 #### `LocalMapStats` {#symbol-localmapstats}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L208)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L207)
 
 ##### `LocalMapStats` — Summary
 Statistics about the Local Map subgraph.
 
 #### `LocalMapMetadata` {#symbol-localmapmetadata}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L234)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L233)
 
 ##### `LocalMapMetadata` — Summary
 Metadata about when/how this Local Map was generated.
 
 #### `LOCAL_MAP_SCHEMA_VERSION` {#symbol-local_map_schema_version}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L252)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L251)
 
 ##### `LOCAL_MAP_SCHEMA_VERSION` — Summary
 Current Local Map schema version.
 
 #### `BuildLocalMapOptions` {#symbol-buildlocalmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L257)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L256)
 
 ##### `BuildLocalMapOptions` — Summary
 Options for building a Local Map from the full graph.
 
 #### `normalizeSymbolIdentifier` {#symbol-normalizesymbolidentifier}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L275)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L274)
 
 ##### `normalizeSymbolIdentifier` — Summary
 Normalize a symbol identifier for anchor matching.
@@ -114,7 +114,7 @@ Mirrors the client-side `normalizeSymbolIdentifier` function.
 
 #### `buildNormalizedAnchorKey` {#symbol-buildnormalizedanchorkey}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L287)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L286)
 - Parameters: `column`: [`LocalMapColumn`](#symbol-localmapcolumn)
 
 ##### `buildNormalizedAnchorKey` — Summary
@@ -124,6 +124,5 @@ Build a normalized anchor key for symbol matching.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.ExplorerLinkKind`](./types.ts.mdmd.md#symbol-explorerlinkkind) (type-only)
-- [`types.ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](./types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -182,9 +182,10 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
         alchemyGlow: true
       },
       localMap: {
-        columnGap: 52,
+        columnGap: 100,
         hoverDimSymbols: 0.4,
-        hoverDimConnections: 0.3
+        hoverDimConnections: 0.4,
+        selfLoopTaper: 0.2
       }
     }
   };
@@ -589,6 +590,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     const columnGapInput = document.getElementById("tuning-column-gap") as HTMLInputElement | null;
     const hoverDimSymbolsInput = document.getElementById("tuning-hover-dim-symbols") as HTMLInputElement | null;
     const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
+    const selfLoopTaperInput = document.getElementById("tuning-self-loop-taper") as HTMLInputElement | null;
 
     const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
       if (!input) return;
@@ -625,7 +627,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
         setter(value);
         if (output) output.textContent = input.value;
         // Update CSS custom property on the local-layout element
-        const localLayout = document.querySelector(".local-layout") as HTMLElement | null;
+        const localLayout = document.querySelector<HTMLElement>(".local-layout");
         if (localLayout) {
           localLayout.style.setProperty(cssProperty, cssProperty === "--local-column-gap" ? `${value}px` : String(value));
         }
@@ -649,6 +651,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     wireLocalMapSlider(columnGapInput, "tuning-column-gap-value", "--local-column-gap", v => { state.tuning.localMap.columnGap = v; });
     wireLocalMapSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", "--hover-dim-symbols", v => { state.tuning.localMap.hoverDimSymbols = v; });
     wireLocalMapSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", "--hover-dim-connections", v => { state.tuning.localMap.hoverDimConnections = v; });
+    wireLocalMapSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", "--self-loop-taper", v => { state.tuning.localMap.selfLoopTaper = v; });
   }
 
   function highlightSelectedCards(): void {

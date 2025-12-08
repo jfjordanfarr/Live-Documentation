@@ -1,5 +1,9 @@
 {
   "artifactGlobs": [
     "tests/**"
-  ]
+  ],
+  "barrelFilePatterns": [
+    "**/index.ts"
+  ],
+  "note": "Barrel files (index.ts) use 'export *' statements to re-export symbols from other files. The Live Doc generator lists these re-exported symbols, but they're not declared in the barrel file itself, causing audit mismatches. This is expected behavior for barrel files."
 }

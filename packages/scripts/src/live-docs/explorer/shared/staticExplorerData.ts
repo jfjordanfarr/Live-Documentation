@@ -196,7 +196,7 @@ export interface StaticExplorerTreemapNode {
  * This is the top-level schema for the JSON file emitted by
  * `npm run live-docs:visualize --static` or included in hosted showcase bundles.
  *
- * ## File Structure
+ * **File Structure**
  *
  * When distributed as files:
  * ```
@@ -206,7 +206,7 @@ export interface StaticExplorerTreemapNode {
  *   assets/             # Optional: CSS, JS if not using CDN
  * ```
  *
- * ## Embedding
+ * **Embedding**
  *
  * The viewer supports three loading modes:
  * 1. **Inline**: Data embedded as `<script id="explorer-data">` JSON
