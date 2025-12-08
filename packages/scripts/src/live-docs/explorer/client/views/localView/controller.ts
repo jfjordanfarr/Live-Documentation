@@ -190,11 +190,11 @@ export class LocalViewController implements LocalViewApi {
     const normalizedHoverSymbol = isInternalsHover ? "__internals__" : (normalizeSymbolIdentifier(symbol) ?? symbol.toLowerCase());
 
     // Helper to normalize edge symbol (handles both slugified anchors and display names)
+    // Must be consistent with the normalization used for row symbols below!
     const normalizeEdgeSymbol = (sym: string | undefined): string => {
       if (!sym) return "";
-      // If it starts with "symbol-", strip that prefix
-      const stripped = sym.startsWith("symbol-") ? sym.slice(7) : sym;
-      return stripped.toLowerCase();
+      // Use the same normalizeSymbolIdentifier function for consistency
+      return normalizeSymbolIdentifier(sym) ?? sym.toLowerCase();
     };
 
     // Helper to check if an edge symbol matches "Internals" (empty or undefined target)
@@ -207,23 +207,25 @@ export class LocalViewController implements LocalViewApi {
 
     if (isInternalsHover && nodeId === centerId) {
       // Hovering Internals on the CENTER node:
-      // Find edges where the center is the TARGET and has no specific targetSymbol
-      // (edges coming INTO the center's internal implementation)
+      // Find edges where center's receiving end goes to Internals (no specific symbol).
+      // - For dependencies (outbound edges): center is SOURCE, its sourceSymbol is the consumer
+      // - For dependents (inbound edges): center is TARGET, its targetSymbol is the consumer
       relatedEdges = currentSubgraph.links.filter(edge => {
-        // Inbound edges go TO the center node
-        return edge.targetId === centerId && isInternalsEdge(edge.targetSymbol);
+        // Outbound edges: center → neighbor (center imports from dependency)
+        // Center's inbound pin connects to sourceSymbol
+        const isDependencyToInternals = edge.sourceId === centerId && isInternalsEdge(edge.sourceSymbol);
+        // Inbound edges: neighbor → center (dependent imports from center)
+        // Center's outbound pin connects to targetSymbol
+        const isDependentFromInternals = edge.targetId === centerId && isInternalsEdge(edge.targetSymbol);
+        return isDependencyToInternals || isDependentFromInternals;
       });
     } else if (isInternalsHover) {
       // Hovering Internals on a NEIGHBOR node:
-      // Find edges where this neighbor's internal implementation receives data
-      // (the neighbor is the source with no sourceSymbol, or the neighbor is the target with no targetSymbol)
+      // Internals represents "all the internal code of this file", so highlight ALL edges
+      // that involve this neighbor - whether they have specific symbols or not.
+      // This shows which center symbols depend on (or are depended upon by) this neighbor.
       relatedEdges = currentSubgraph.links.filter(edge => {
-        // Case 1: Neighbor is receiving data into internals (neighbor is target with no targetSymbol)
-        // This means center has an outbound edge to this neighbor's internals
-        const neighborReceivesFromCenter = edge.targetId === nodeId && isInternalsEdge(edge.targetSymbol);
-        // Case 2: Neighbor's internals are providing to center (neighbor is source with no sourceSymbol)
-        const neighborSendsToCenter = edge.sourceId === nodeId && isInternalsEdge(edge.sourceSymbol);
-        return neighborReceivesFromCenter || neighborSendsToCenter;
+        return edge.sourceId === nodeId || edge.targetId === nodeId;
       });
     } else {
       // Normal symbol hover
