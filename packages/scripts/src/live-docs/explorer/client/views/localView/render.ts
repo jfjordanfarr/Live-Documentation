@@ -471,10 +471,24 @@ function createSymbolSection(
     const hasTypeRefs = typeRefs && typeRefs.length > 0;
     const hasResolvedTypeRefs = hasTypeRefs && typeRefs.some(ref => ref.isResolved);
 
+    // Wrapper element for hover targeting (uses display: contents to preserve grid layout)
+    const symbolRow = document.createElement("div");
+    symbolRow.className = "symbol-row";
+    symbolRow.dataset.nodeId = node.id;
+    symbolRow.dataset.symbol = symbol;
+
+    // Add hover handlers for connection highlighting
+    symbolRow.addEventListener("mouseenter", () => {
+      controller.highlightSymbolConnections(node.id, symbol);
+    });
+    symbolRow.addEventListener("mouseleave", () => {
+      controller.clearSymbolHighlight();
+    });
+
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
     inboundAnchor.dataset.symbol = symbol;
-    grid.appendChild(inboundAnchor);
+    symbolRow.appendChild(inboundAnchor);
     controller.registerAnchor(node.id, columnRole, `inbound:${symbol}`, inboundAnchor);
 
     const labelWrapper = document.createElement("div");
@@ -515,13 +529,15 @@ function createSymbolSection(
       }
     }
 
-    grid.appendChild(labelWrapper);
+    symbolRow.appendChild(labelWrapper);
 
     const outboundAnchor = document.createElement("div");
     outboundAnchor.className = "symbol-anchor dot outbound";
     outboundAnchor.dataset.symbol = symbol;
-    grid.appendChild(outboundAnchor);
+    symbolRow.appendChild(outboundAnchor);
     controller.registerAnchor(node.id, columnRole, `outbound:${symbol}`, outboundAnchor);
+
+    grid.appendChild(symbolRow);
   });
 
   // Add the "Internals" pseudo-symbol at the end — represents private implementation
@@ -529,10 +545,24 @@ function createSymbolSection(
   // Skip for assets — they use the node-wide inbound hub instead (no internal logic to represent)
   const isAsset = (node.archetype || "").toLowerCase() === "asset";
   if (!isAsset) {
+    // Wrapper element for hover targeting (uses display: contents to preserve grid layout)
+    const internalsRow = document.createElement("div");
+    internalsRow.className = "symbol-row internals-row";
+    internalsRow.dataset.nodeId = node.id;
+    internalsRow.dataset.symbol = "__internals__";
+
+    // Add hover handlers for connection highlighting
+    internalsRow.addEventListener("mouseenter", () => {
+      controller.highlightSymbolConnections(node.id, "__internals__");
+    });
+    internalsRow.addEventListener("mouseleave", () => {
+      controller.clearSymbolHighlight();
+    });
+
     const internalsInbound = document.createElement("div");
     internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
     internalsInbound.dataset.symbol = "__internals__";
-    grid.appendChild(internalsInbound);
+    internalsRow.appendChild(internalsInbound);
     controller.registerAnchor(node.id, columnRole, "inbound:__internals__", internalsInbound);
     controller.registerAnchor(node.id, columnRole, "inbound:*", internalsInbound);
 
@@ -540,12 +570,14 @@ function createSymbolSection(
     internalsLabel.className = "symbol-label-wrapper internals-label";
     internalsLabel.innerHTML = `<div class="symbol-label internals-text">⬛ Internals</div>`;
     internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
-    grid.appendChild(internalsLabel);
+    internalsRow.appendChild(internalsLabel);
 
     // Empty placeholder for the outbound column (internals don't have outbound connections)
     const internalsOutboundPlaceholder = document.createElement("div");
     internalsOutboundPlaceholder.className = "symbol-anchor-placeholder";
-    grid.appendChild(internalsOutboundPlaceholder);
+    internalsRow.appendChild(internalsOutboundPlaceholder);
+
+    grid.appendChild(internalsRow);
   }
 
   wrapper.appendChild(grid);

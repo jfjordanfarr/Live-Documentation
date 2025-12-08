@@ -1,6 +1,6 @@
 # CLI Command Catalog
 
-_Last updated: 2025-11-12_
+_Last updated: 2025-12-07_
 
 This catalog summarizes the npm scripts supplied by the workspace. Invoke any command with `npm run <script> [-- <options>]`. Options listed below assume PowerShell (`;` joins commands) but work with other shells once translated.
 
@@ -16,6 +16,8 @@ This catalog summarizes the npm scripts supplied by the workspace. Invoke any co
 | `npm run live-docs:report` | Emits diagnostics precision/recall summaries. | `--workspace <path>` |
 | `npm run live-docs:co-activation` | Regenerates the co-activation analytics JSON used by System plans. | `--workspace <path>`, analytics-specific env vars |
 | `npm run live-docs:orphans` | Finds Live Docs without corresponding source artifacts. | `--workspace <path>` |
+| `npm run live-docs:visualize` | Launches the Explorer HTTP server (Circuit Board, Local Map, Force Graph views). Also exposes `/local-map?nodeId=<path>` JSON API for headless debugging. | `--port <number>` |
+| `npm run live-docs:visualize:static` | Builds a fully static Explorer bundle (graph + symbols + all markdown) to `dist/explorer/`. Deployable to GitHub Pages or any static host. | `--output <dir>`, `--pretty` |
 
 ## Graph & Analysis Tooling
 

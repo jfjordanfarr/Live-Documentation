@@ -74,6 +74,10 @@ export function buildLocalMapData(
     // Build edges
     const edges = buildEdges(subgraph, focusNodeId);
 
+    // Add self-loop edges from intra-file type references
+    const selfLoopEdges = buildSelfLoopEdges(focusNode, focusNodeId);
+    edges.push(...selfLoopEdges);
+
     // Build symbol anchors if requested
     const symbolAnchors = includeSymbolAnchors
         ? buildSymbolAnchors(center, upstream, downstream, edges)
@@ -270,6 +274,60 @@ function buildEdgeLabel(edge: EdgeInfo): string {
         return `${edge.sourceSymbol} → ${edge.targetSymbol}`;
     }
     return "depends on";
+}
+
+/**
+ * Build self-loop edges from intra-file type references.
+ * When a symbol references another symbol in the same file, we create a self-loop edge.
+ * These enable the "French Corset" wraparound bezier visualization.
+ */
+function buildSelfLoopEdges(
+    focusNode: ExplorerNodePayload,
+    focusNodeId: string
+): LocalMapEdge[] {
+    const selfLoopEdges: LocalMapEdge[] = [];
+    const seenKeys = new Set<string>();
+
+    // Get extended symbol info with type references
+    const symbols = focusNode.publicSymbolsExtended;
+    if (!symbols) return selfLoopEdges;
+
+    // Build a set of symbol names in this file for quick lookup
+    const localSymbolNames = new Set(symbols.map(s => s.name));
+
+    for (const symbol of symbols) {
+        const typeRefs = symbol.typeReferences;
+        if (!typeRefs) continue;
+
+        for (const ref of typeRefs) {
+            // Check if this type reference points to a symbol in the same file
+            // Either by targetId matching focusNodeId, or by typeName being in localSymbolNames
+            const isSelfReference =
+                (ref.isResolved && ref.targetId === focusNodeId) ||
+                (!ref.isResolved && localSymbolNames.has(ref.typeName));
+
+            if (isSelfReference) {
+                // Create self-loop edge:
+                // - sourceSymbol: the symbol that has the type reference (consumer)
+                // - targetSymbol: the referenced type (provider)
+                const key = `${focusNodeId}|${focusNodeId}|type-reference|${symbol.name}|${ref.typeName}`;
+                if (seenKeys.has(key)) continue;
+                seenKeys.add(key);
+
+                selfLoopEdges.push({
+                    sourceId: focusNodeId,
+                    targetId: focusNodeId,
+                    direction: "outbound", // Self-loops are conceptually "outbound then back in"
+                    kind: "type-reference",
+                    sourceSymbol: symbol.name, // The symbol consuming the type
+                    targetSymbol: ref.typeName, // The symbol providing the type
+                    label: `${symbol.name} uses ${ref.typeName}`
+                });
+            }
+        }
+    }
+
+    return selfLoopEdges;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

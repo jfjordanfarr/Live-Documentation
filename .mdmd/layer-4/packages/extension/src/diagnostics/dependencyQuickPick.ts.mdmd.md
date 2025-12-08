@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/diagnostics/dependencyQuickPick.ts
 - Live Doc ID: LD-implementation-packages-extension-src-diagnostics-dependencyquickpick-ts
-- Generated At: 2025-12-05T04:16:17.028Z
+- Generated At: 2025-12-07T21:41:16.889Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the T039 dependency inspection quick pick so the extension can call `
 - The same change set validated lint, unit, and integration runs (`npm run lint`, `npm run test:unit`, `npm run test:integration`), ensuring the quick pick stays regression-tested; see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1500-L1568](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1500-L1568).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.028Z","inputHash":"8c7ac38886576b39"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:16.889Z","inputHash":"8c7ac38886576b39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerDependencyQuickPick` {#symbol-registerdependencyquickpick}
@@ -37,7 +37,7 @@ Implements the T039 dependency inspection quick pick so the extension can call `
 #### `describeEdgePath` {#symbol-describeedgepath}
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/diagnostics/dependencyQuickPick.ts#L159)
-- Parameters: `edge`: `ParsedEdge`
+- Parameters: `edge`: [`ParsedEdge`](#symbol-parsededge)
 
 #### `InspectDependenciesResultValidator` {#symbol-inspectdependenciesresultvalidator}
 - Type: const

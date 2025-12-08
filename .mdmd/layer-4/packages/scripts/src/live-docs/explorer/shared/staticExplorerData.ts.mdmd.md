@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2025-12-07T19:11:27.570Z
+- Generated At: 2025-12-07T21:41:17.265Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T19:11:27.570Z","inputHash":"05097e7240588d65"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.265Z","inputHash":"05097e7240588d65"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
@@ -130,7 +130,7 @@ Options for building a static explorer bundle.
 #### `buildSymbolIndex` {#symbol-buildsymbolindex}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L307)
-- Returns: `StaticExplorerSymbolIndex`
+- Returns: [`StaticExplorerSymbolIndex`](#symbol-staticexplorersymbolindex)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../index.ts.mdmd.md#symbol-explorernodepayload)[]
 
 ##### `buildSymbolIndex` — Summary

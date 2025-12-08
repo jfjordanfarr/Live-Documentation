@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipRuleEngine.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipruleengine-ts
-- Generated At: 2025-12-05T15:37:25.631Z
+- Generated At: 2025-12-07T21:41:19.481Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads, compiles, and executes relationship rules to produce link evidence that s
 - Introduced alongside symbol correctness work so graph audits could reason about rule provenance and warn on malformed configs before they reach the provider.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.631Z","inputHash":"b52507ea53a86b21"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.481Z","inputHash":"b52507ea53a86b21"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadRelationshipRuleConfig` {#symbol-loadrelationshipruleconfig}
@@ -40,8 +40,8 @@ Loads, compiles, and executes relationship rules to produce link evidence that s
 #### `generateRelationshipEvidences` {#symbol-generaterelationshipevidences}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/rules/relationshipRuleEngine.ts#L140)
-- Returns: `RelationshipEvidenceGenerationResult`
-- Parameters: `options`: `GenerateRelationshipEvidencesOptions`
+- Returns: [`RelationshipEvidenceGenerationResult`](#symbol-relationshipevidencegenerationresult)
+- Parameters: `options`: [`GenerateRelationshipEvidencesOptions`](#symbol-generaterelationshipevidencesoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

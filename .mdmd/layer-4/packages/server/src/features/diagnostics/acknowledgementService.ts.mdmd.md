@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/acknowledgementService.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-acknowledgementservice-ts
-- Generated At: 2025-12-05T04:16:17.790Z
+- Generated At: 2025-12-07T21:41:17.491Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists diagnostic acknowledgements, decides whether follow-up alerts should em
 - Coordinates with hysteresis release and noise-suppression runtime settings so manual acknowledgements immediately quiet reciprocal ripples.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.790Z","inputHash":"ac8ecc7d5b5123b0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.491Z","inputHash":"ac8ecc7d5b5123b0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AcknowledgementServiceOptions` {#symbol-acknowledgementserviceoptions}
@@ -33,7 +33,7 @@ Persists diagnostic acknowledgements, decides whether follow-up alerts should em
 #### `RegisterDiagnosticEmissionInput` {#symbol-registerdiagnosticemissioninput}
 - Type: interface
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/acknowledgementService.ts#L61)
-- Extends: `ShouldEmitDiagnosticInput`
+- Extends: [`ShouldEmitDiagnosticInput`](#symbol-shouldemitdiagnosticinput)
 
 #### `AcknowledgeOutcome` {#symbol-acknowledgeoutcome}
 - Type: type

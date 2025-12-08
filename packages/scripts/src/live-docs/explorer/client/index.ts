@@ -180,6 +180,11 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
       visual: {
         showTypeBadges: true,
         alchemyGlow: true
+      },
+      localMap: {
+        columnGap: 52,
+        hoverDimSymbols: 0.4,
+        hoverDimConnections: 0.3
       }
     }
   };
@@ -581,6 +586,9 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     const doubleClickRecenterInput = document.getElementById("tuning-double-click-recenter") as HTMLInputElement | null;
     const typeBadgesInput = document.getElementById("tuning-type-badges") as HTMLInputElement | null;
     const alchemyGlowInput = document.getElementById("tuning-alchemy-glow") as HTMLInputElement | null;
+    const columnGapInput = document.getElementById("tuning-column-gap") as HTMLInputElement | null;
+    const hoverDimSymbolsInput = document.getElementById("tuning-hover-dim-symbols") as HTMLInputElement | null;
+    const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
 
     const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
       if (!input) return;
@@ -603,6 +611,30 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
       });
     };
 
+    // Wire slider that also updates CSS custom property on the local-layout container
+    const wireLocalMapSlider = (
+      input: HTMLInputElement | null,
+      outputId: string,
+      cssProperty: string,
+      setter: (v: number) => void
+    ): void => {
+      if (!input) return;
+      const output = document.getElementById(outputId) as HTMLOutputElement | null;
+      input.addEventListener("input", () => {
+        const value = parseFloat(input.value);
+        setter(value);
+        if (output) output.textContent = input.value;
+        // Update CSS custom property on the local-layout element
+        const localLayout = document.querySelector(".local-layout") as HTMLElement | null;
+        if (localLayout) {
+          localLayout.style.setProperty(cssProperty, cssProperty === "--local-column-gap" ? `${value}px` : String(value));
+        }
+        if (state.view === "map") {
+          localView.drawConnections();
+        }
+      });
+    };
+
     wireSlider(stubFactorInput, "tuning-stub-factor-value", v => { state.tuning.bezier.stubFactor = v; });
     wireSlider(stubMinInput, "tuning-stub-min-value", v => { state.tuning.bezier.stubMin = v; });
     wireSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", v => { state.tuning.bezier.stubMaxOffset = v; });
@@ -612,6 +644,11 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     wireCheckbox(doubleClickRecenterInput, v => { state.tuning.clickBehavior.doubleClickRecenter = v; });
     wireCheckbox(typeBadgesInput, v => { state.tuning.visual.showTypeBadges = v; });
     wireCheckbox(alchemyGlowInput, v => { state.tuning.visual.alchemyGlow = v; });
+
+    // Local Map tuning sliders
+    wireLocalMapSlider(columnGapInput, "tuning-column-gap-value", "--local-column-gap", v => { state.tuning.localMap.columnGap = v; });
+    wireLocalMapSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", "--hover-dim-symbols", v => { state.tuning.localMap.hoverDimSymbols = v; });
+    wireLocalMapSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", "--hover-dim-connections", v => { state.tuning.localMap.hoverDimConnections = v; });
   }
 
   function highlightSelectedCards(): void {

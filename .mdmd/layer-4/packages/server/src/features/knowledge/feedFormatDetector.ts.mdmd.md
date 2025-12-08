@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedFormatDetector.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feedformatdetector-ts
-- Generated At: 2025-12-05T04:16:18.052Z
+- Generated At: 2025-12-07T21:41:17.676Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Detects and parses static knowledge feed payloads (ExternalSnapshot, LSIF, SCIP)
 - Prefers deterministic snapshot parsing before falling back to language-server formats, reflecting the LSIF/SCIP integration tuning captured in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.052Z","inputHash":"b1495e1e6d9a2a15"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.676Z","inputHash":"b1495e1e6d9a2a15"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedFormat` {#symbol-feedformat}
@@ -29,7 +29,7 @@ Detects and parses static knowledge feed payloads (ExternalSnapshot, LSIF, SCIP)
 #### `detectFormat` {#symbol-detectformat}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/feedFormatDetector.ts#L18)
-- Returns: `FormatDetectionResult`
+- Returns: [`FormatDetectionResult`](#symbol-formatdetectionresult)
 
 ##### `detectFormat` — Summary
 Detect the format of a knowledge feed file by inspecting its content structure
@@ -41,7 +41,7 @@ Detect the format of a knowledge feed file by inspecting its content structure
 #### `parseFeedFile` {#symbol-parsefeedfile}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/feedFormatDetector.ts#L124)
-- Parameters: `options`: `ParseFeedFileOptions`
+- Parameters: `options`: [`ParseFeedFileOptions`](#symbol-parsefeedfileoptions)
 
 ##### `parseFeedFile` — Summary
 Parse a knowledge feed file into ExternalSnapshot format,

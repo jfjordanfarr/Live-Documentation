@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/headlessHarness.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-headlessharness-ts
-- Generated At: 2025-12-05T04:16:18.590Z
+- Generated At: 2025-12-07T21:41:18.119Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 - Emits optional container specs and timestamped reports so CI and hosted demos can replay the same runs without manual wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.590Z","inputHash":"18978a48f454a943"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:18.119Z","inputHash":"18978a48f454a943"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessLogger` {#symbol-headlessharnesslogger}
@@ -34,7 +34,7 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 #### `runHeadlessHarness` {#symbol-runheadlessharness}
 - Type: function
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L56)
-- Parameters: `options`: `HeadlessHarnessRunOptions`
+- Parameters: `options`: [`HeadlessHarnessRunOptions`](#symbol-headlessharnessrunoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

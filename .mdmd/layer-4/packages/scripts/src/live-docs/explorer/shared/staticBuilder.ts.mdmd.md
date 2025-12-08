@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticbuilder-ts
-- Generated At: 2025-12-07T19:11:27.558Z
+- Generated At: 2025-12-07T21:41:17.258Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T19:11:27.558Z","inputHash":"12b550d2b6c79947"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.258Z","inputHash":"12b550d2b6c79947"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
@@ -29,7 +29,7 @@ _Pending notes_
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L106)
-- Parameters: `options`: `BuildStaticExplorerOptions`
+- Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
 Build a complete static explorer bundle.

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/markdownLinks.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-markdownlinks-ts
-- Generated At: 2025-12-05T04:16:20.222Z
+- Generated At: 2025-12-07T21:41:19.613Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Detects broken local markdown links for the SlopCop markdown audit by walking in
 - Feeds MDMD relationship analysis too—relationship resolvers reuse the detected targets to wire documentation ↔ code edges without reimplementing link parsing ([shared helper extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.222Z","inputHash":"efdd6576cb1848d9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.613Z","inputHash":"efdd6576cb1848d9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MarkdownLinkIssue` {#symbol-markdownlinkissue}
@@ -30,8 +30,8 @@ Detects broken local markdown links for the SlopCop markdown audit by walking in
 #### `findBrokenMarkdownLinks` {#symbol-findbrokenmarkdownlinks}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L29)
-- Returns: `MarkdownLinkIssue`[]
-- Parameters: `options`: `MarkdownLinkAuditOptions`
+- Returns: [`MarkdownLinkIssue`](#symbol-markdownlinkissue)[]
+- Parameters: `options`: [`MarkdownLinkAuditOptions`](#symbol-markdownlinkauditoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

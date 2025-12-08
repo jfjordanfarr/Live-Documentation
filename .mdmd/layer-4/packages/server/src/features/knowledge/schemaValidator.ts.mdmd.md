@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/schemaValidator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-schemavalidator-ts
-- Generated At: 2025-12-05T15:37:23.961Z
+- Generated At: 2025-12-07T21:41:17.897Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Validates incoming knowledge snapshots and stream events so ingestion rejects ma
 - Layer-4 notes refreshed during the Oct 30 metadata audit (see [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)) when validation guidance was woven into architecture docs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.961Z","inputHash":"60656395d7d47c97"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.897Z","inputHash":"60656395d7d47c97"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SchemaViolation` {#symbol-schemaviolation}
@@ -30,13 +30,13 @@ Validates incoming knowledge snapshots and stream events so ingestion rejects ma
 #### `validateSnapshot` {#symbol-validatesnapshot}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/schemaValidator.ts#L44)
-- Returns: `SchemaValidationResult`
+- Returns: [`SchemaValidationResult`](#symbol-schemavalidationresult)
 - Parameters: `snapshot`: [`ExternalSnapshot`](../../../../shared/src/knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalsnapshot)
 
 #### `validateStreamEvent` {#symbol-validatestreamevent}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/schemaValidator.ts#L108)
-- Returns: `SchemaValidationResult`
+- Returns: [`SchemaValidationResult`](#symbol-schemavalidationresult)
 - Parameters: `event`: [`ExternalStreamEvent`](../../../../shared/src/knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalstreamevent)
 
 #### `assertValidSnapshot` {#symbol-assertvalidsnapshot}

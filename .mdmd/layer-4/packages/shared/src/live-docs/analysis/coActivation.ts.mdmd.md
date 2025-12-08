@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/analysis/coActivation.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-analysis-coactivation-ts
-- Generated At: 2025-12-05T04:16:19.838Z
+- Generated At: 2025-12-07T21:41:19.323Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Computes co-activation graphs from Stage‑0 manifests to surface statistically 
 - Later upgraded with statistical testing (p/q/z scores) so generated docs highlight significant clusters instead of heuristic caps.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-11.SUMMARIZED.md#turn-16-implement-statistically-backed-co-activation-lines-1881-2020]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.838Z","inputHash":"a8ea740b97a81de8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.323Z","inputHash":"a8ea740b97a81de8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CoActivationBuildArgs` {#symbol-coactivationbuildargs}
@@ -42,13 +42,13 @@ Computes co-activation graphs from Stage‑0 manifests to surface statistically 
 #### `buildCoActivationReport` {#symbol-buildcoactivationreport}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/live-docs/analysis/coActivation.ts#L93)
-- Returns: `CoActivationReport`
-- Parameters: `args`: `CoActivationBuildArgs`
+- Returns: [`CoActivationReport`](#symbol-coactivationreport)
+- Parameters: `args`: [`CoActivationBuildArgs`](#symbol-coactivationbuildargs)
 
 #### `serializeCoActivationReport` {#symbol-serializecoactivationreport}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/live-docs/analysis/coActivation.ts#L304)
-- Parameters: `report`: `CoActivationReport`
+- Parameters: `report`: [`CoActivationReport`](#symbol-coactivationreport)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/symbolReferences.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-symbolreferences-ts
-- Generated At: 2025-12-05T04:16:20.282Z
+- Generated At: 2025-12-07T21:41:19.653Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 - Relies on the vendored GitHub slugger and shared markdown parsing helpers so reported slugs match GitHub’s anchor rules when we fix MDMD/spec links ([slug alignment plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1089-L1244)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.282Z","inputHash":"493aa765e393ea46"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.653Z","inputHash":"493aa765e393ea46"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolIssueKind` {#symbol-symbolissuekind}
@@ -30,7 +30,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 #### `SymbolRuleSetting` {#symbol-symbolrulesetting}
 - Type: type
 - Source: [source](../../../../../../packages/shared/src/tooling/symbolReferences.ts#L14)
-- Returns: `SymbolIssueSeverity`
+- Returns: [`SymbolIssueSeverity`](#symbol-symbolissueseverity)
 
 #### `SymbolReferenceIssue` {#symbol-symbolreferenceissue}
 - Type: interface
@@ -43,8 +43,8 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 #### `findSymbolReferenceAnomalies` {#symbol-findsymbolreferenceanomalies}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/symbolReferences.ts#L68)
-- Returns: `SymbolReferenceIssue`[]
-- Parameters: `options`: `SymbolAuditOptions`
+- Returns: [`SymbolReferenceIssue`](#symbol-symbolreferenceissue)[]
+- Parameters: `options`: [`SymbolAuditOptions`](#symbol-symbolauditoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

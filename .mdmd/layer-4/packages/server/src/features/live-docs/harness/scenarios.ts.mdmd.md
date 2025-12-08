@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/scenarios.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-scenarios-ts
-- Generated At: 2025-12-05T04:16:18.609Z
+- Generated At: 2025-12-07T21:41:18.135Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the curated headless harness scenarios so automated runs can copy fixtur
 - The initial Ruby, Python, and C# entries cover the multilingual fixtures we committed to exercising headlessly; the `system` flag toggles System doc materialization for scenarios that need co-activation coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.609Z","inputHash":"8db2bb9742be2421"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:18.135Z","inputHash":"8db2bb9742be2421"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessScenario` {#symbol-headlessharnessscenario}
@@ -29,12 +29,12 @@ Defines the curated headless harness scenarios so automated runs can copy fixtur
 #### `listScenarios` {#symbol-listscenarios}
 - Type: function
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/scenarios.ts#L43)
-- Returns: `HeadlessHarnessScenario`[]
+- Returns: [`HeadlessHarnessScenario`](#symbol-headlessharnessscenario)[]
 
 #### `getScenarioByName` {#symbol-getscenariobyname}
 - Type: function
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/scenarios.ts#L47)
-- Returns: `HeadlessHarnessScenario`
+- Returns: [`HeadlessHarnessScenario`](#symbol-headlessharnessscenario)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -128,7 +128,8 @@ export class LocalViewController implements LocalViewApi {
       state: this.options.state,
       svgNamespace: this.svgNamespace,
       getAnchor: (nodeId, columnRole, direction, symbol) => this.getAnchor(nodeId, columnRole, direction, symbol),
-      measureLayoutExtents: () => this.measureLayoutExtents()
+      measureLayoutExtents: () => this.measureLayoutExtents(),
+      getCenterCardBounds: () => this.getCenterCardBounds()
     });
   }
 
@@ -149,6 +150,125 @@ export class LocalViewController implements LocalViewApi {
     });
   }
 
+  /**
+   * Highlights connections related to a hovered symbol by dimming unrelated elements.
+   * Called when a symbol row gains hover focus.
+   * 
+   * Edge structure reminder:
+   * - sourceId/sourceSymbol: the node+symbol where the edge originates (consuming side)
+   * - targetId/targetSymbol: the node+symbol being referenced (providing side)
+   * - For cross-file edges, one of sourceId/targetId is the center node
+   * 
+   * Symbol format note:
+   * - Symbol rows store display names: "collectIdentifierUsage"
+   * - Cross-file edges store slugified anchors: "symbol-collectidentifierusage"
+   * - Self-loop edges store display names: "OracleEdge"
+   * We normalize everything to lowercase for matching.
+   */
+  highlightSymbolConnections(nodeId: string, symbol: string): void {
+    const { currentSubgraph, options } = this;
+    if (!currentSubgraph) return;
+
+    // Get dimming values from tuning config
+    const dimSymbols = options.state.tuning.localMap?.hoverDimSymbols ?? 0.4;
+    const dimConnections = options.state.tuning.localMap?.hoverDimConnections ?? 0.3;
+
+    // Apply CSS custom properties for dimming
+    this.container.style.setProperty("--hover-dim-symbols", String(dimSymbols));
+    this.container.style.setProperty("--hover-dim-connections", String(dimConnections));
+
+    // Normalize the hovered symbol for matching
+    const normalizedHoverSymbol = normalizeSymbolIdentifier(symbol) ?? symbol.toLowerCase();
+
+    // Helper to normalize edge symbol (handles both slugified anchors and display names)
+    const normalizeEdgeSymbol = (sym: string | undefined): string => {
+      if (!sym) return "";
+      // If it starts with "symbol-", strip that prefix
+      const stripped = sym.startsWith("symbol-") ? sym.slice(7) : sym;
+      return stripped.toLowerCase();
+    };
+
+    // Find all edges that involve this symbol on this node
+    const relatedEdges = currentSubgraph.links.filter(edge => {
+      const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
+      const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
+      
+      // Check if this node+symbol is on the source side of the edge
+      const isSourceMatch = edge.sourceId === nodeId && edgeSourceSymbol === normalizedHoverSymbol;
+      // Check if this node+symbol is on the target side of the edge  
+      const isTargetMatch = edge.targetId === nodeId && edgeTargetSymbol === normalizedHoverSymbol;
+      return isSourceMatch || isTargetMatch;
+    });
+
+    // Build sets of related node+symbol pairs for highlighting (using normalized symbols)
+    const relatedSymbols = new Set<string>();
+    relatedSymbols.add(`${nodeId}:${normalizedHoverSymbol}`); // The hovered symbol itself
+
+    relatedEdges.forEach(edge => {
+      // Add both endpoints of each related edge
+      if (edge.sourceSymbol) {
+        relatedSymbols.add(`${edge.sourceId}:${normalizeEdgeSymbol(edge.sourceSymbol)}`);
+      }
+      if (edge.targetSymbol) {
+        relatedSymbols.add(`${edge.targetId}:${normalizeEdgeSymbol(edge.targetSymbol)}`);
+      }
+    });
+
+    // Add class to container AND overlay to enable dimming mode
+    // (Overlay is a sibling, not descendant, so needs its own class)
+    this.container.classList.add("symbol-hover-active");
+    this.overlay.classList.add("symbol-hover-active");
+
+    // Mark related symbols as highlighted (across ALL cards, including neighbors)
+    this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+      const rowNodeId = row.dataset.nodeId;
+      const rowSymbol = row.dataset.symbol;
+      if (rowNodeId && rowSymbol) {
+        // Normalize the row's symbol for comparison
+        const normalizedRowSymbol = normalizeSymbolIdentifier(rowSymbol) ?? rowSymbol.toLowerCase();
+        if (relatedSymbols.has(`${rowNodeId}:${normalizedRowSymbol}`)) {
+          row.classList.add("symbol-highlighted");
+        }
+      }
+    });
+
+    // Mark related connection paths as highlighted
+    // Paths have symbols in edge format (may be slugified), so normalize for comparison
+    this.overlay.querySelectorAll<SVGPathElement>(".connection-path").forEach(path => {
+      const pathSourceId = path.dataset.sourceId;
+      const pathTargetId = path.dataset.targetId;
+      const pathSourceSymbol = normalizeEdgeSymbol(path.dataset.sourceSymbol);
+      const pathTargetSymbol = normalizeEdgeSymbol(path.dataset.targetSymbol);
+
+      const isRelated = relatedEdges.some(edge => {
+        const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
+        const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
+        return edge.sourceId === pathSourceId &&
+               edge.targetId === pathTargetId &&
+               edgeSourceSymbol === pathSourceSymbol &&
+               edgeTargetSymbol === pathTargetSymbol;
+      });
+
+      if (isRelated) {
+        path.classList.add("connection-highlighted");
+      }
+    });
+  }
+
+  /**
+   * Clears symbol hover highlighting, restoring all elements to normal opacity.
+   */
+  clearSymbolHighlight(): void {
+    this.container.classList.remove("symbol-hover-active");
+    this.overlay.classList.remove("symbol-hover-active");
+    this.container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {
+      el.classList.remove("symbol-highlighted");
+    });
+    this.overlay.querySelectorAll<SVGPathElement>(".connection-highlighted").forEach(path => {
+      path.classList.remove("connection-highlighted");
+    });
+  }
+
   zoomIn(): void {
     this.zoomByFactor(1.2);
   }
@@ -156,6 +276,7 @@ export class LocalViewController implements LocalViewApi {
   zoomOut(): void {
     this.zoomByFactor(1 / 1.2);
   }
+
 
   resetZoom(): void {
     if (!this.runtime.contentRoot) {
@@ -345,6 +466,26 @@ export class LocalViewController implements LocalViewApi {
 
   measureLayoutExtents(): LayoutExtents | null {
     return this.computeLayoutExtents();
+  }
+
+  /**
+   * Returns the bounding box of the center column's node card in viewport-layer coordinates.
+   * Used for self-loop wraparound path routing.
+   */
+  getCenterCardBounds(): { left: number; right: number; top: number; bottom: number } | null {
+    const centerCard = this.container.querySelector<HTMLElement>(".local-column.center .node-card");
+    if (!centerCard || !this.runtime.contentRoot) {
+      return null;
+    }
+    const cardRect = centerCard.getBoundingClientRect();
+    const rootRect = this.runtime.contentRoot.getBoundingClientRect();
+    const scale = this.mapTransform.k;
+    return {
+      left: (cardRect.left - rootRect.left) / scale,
+      right: (cardRect.right - rootRect.left) / scale,
+      top: (cardRect.top - rootRect.top) / scale,
+      bottom: (cardRect.bottom - rootRect.top) / scale
+    };
   }
 
   updateMapTransform(): void {
@@ -800,6 +941,11 @@ export class LocalViewController implements LocalViewApi {
       }
     });
 
+    // Generate self-loop edges from intra-file type references
+    // (symbols that reference other symbols in the same file)
+    const selfLoopEdges = this.buildSelfLoopEdges(center);
+    linkResults.push(...selfLoopEdges);
+
     return {
       center,
       nodes: [center, ...neighbors.values()],
@@ -807,6 +953,51 @@ export class LocalViewController implements LocalViewApi {
       inboundIds,
       outboundIds
     };
+  }
+
+  /**
+   * Build self-loop edges from intra-file type references.
+   * When a symbol references another symbol in the same file, we create a self-loop edge.
+   * These enable the "French Corset" wraparound bezier visualization.
+   */
+  private buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraph["links"] {
+    const selfLoopEdges: LocalSubgraph["links"] = [];
+    const seenKeys = new Set<string>();
+
+    const symbols = center.publicSymbolsExtended;
+    if (!symbols) return selfLoopEdges;
+
+    // Build a set of symbol names in this file for quick lookup
+    const localSymbolNames = new Set(symbols.map(s => s.name));
+
+    for (const symbol of symbols) {
+      const typeRefs = symbol.typeReferences;
+      if (!typeRefs) continue;
+
+      for (const ref of typeRefs) {
+        // Check if this type reference points to a symbol in the same file
+        const isSelfReference =
+          (ref.isResolved && ref.targetId === center.id) ||
+          (!ref.isResolved && localSymbolNames.has(ref.typeName));
+
+        if (isSelfReference) {
+          const key = `${center.id}|${center.id}|type-reference|${symbol.name}|${ref.typeName}`;
+          if (seenKeys.has(key)) continue;
+          seenKeys.add(key);
+
+          selfLoopEdges.push({
+            sourceId: center.id,
+            targetId: center.id,
+            direction: "outbound",
+            kind: "type-reference",
+            sourceSymbol: symbol.name,
+            targetSymbol: ref.typeName
+          });
+        }
+      }
+    }
+
+    return selfLoopEdges;
   }
 
   private easeOutCubic(t: number): number {

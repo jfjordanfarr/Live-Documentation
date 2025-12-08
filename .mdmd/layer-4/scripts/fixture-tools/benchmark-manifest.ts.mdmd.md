@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-manifest.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-manifest-ts
-- Generated At: 2025-12-05T04:16:20.351Z
+- Generated At: 2025-12-07T21:41:19.697Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - Extended 2025-11-06 while onboarding C# fixtures, using `computeIntegrityDigest` to stamp the new `csharp-webforms` hash set and enforce algorithm selection during verification ([C# integrity update](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5520-L5638)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.351Z","inputHash":"161b6613bc317c13"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.697Z","inputHash":"161b6613bc317c13"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FixtureSummary` {#symbol-fixturesummary}
@@ -47,7 +47,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 #### `FixtureMaterialization` {#symbol-fixturematerialization}
 - Type: type
 - Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L58)
-- Returns: `FixtureGitMaterialization`
+- Returns: [`FixtureGitMaterialization`](#symbol-fixturegitmaterialization)
 
 #### `FixtureGitMaterialization` {#symbol-fixturegitmaterialization}
 - Type: interface
@@ -64,7 +64,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 #### `computeIntegrityDigest` {#symbol-computeintegritydigest}
 - Type: function
 - Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L102)
-- Parameters: `fixture`: `BenchmarkFixtureDefinition`
+- Parameters: `fixture`: [`BenchmarkFixtureDefinition`](#symbol-benchmarkfixturedefinition)
 
 #### `normalizeRelative` {#symbol-normalizerelative}
 - Type: function

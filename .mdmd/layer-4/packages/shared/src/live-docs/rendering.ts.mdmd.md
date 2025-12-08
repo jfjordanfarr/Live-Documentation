@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/rendering.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-rendering-ts
-- Generated At: 2025-12-07T04:00:25.819Z
+- Generated At: 2025-12-07T21:41:19.426Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:25.819Z","inputHash":"fc406eeefd8f8db0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.426Z","inputHash":"1ffb795efc6e1406"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
@@ -68,7 +68,7 @@ An array of markdown lines ready to insert beneath the `Public Symbols` heading.
 
 #### `renderDependencyLines` {#symbol-renderdependencylines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L635)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L657)
 
 ##### `renderDependencyLines` — Summary
 Renders the markdown bullet list for a Live Doc's `Dependencies` section.
@@ -94,7 +94,7 @@ Markdown lines suitable for the `Dependencies` section, or an empty array when n
 
 #### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L784)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L806)
 
 ##### `renderReExportedAnchorLines` — Summary
 Renders the markdown for the Re-Exported Symbol Anchors section.

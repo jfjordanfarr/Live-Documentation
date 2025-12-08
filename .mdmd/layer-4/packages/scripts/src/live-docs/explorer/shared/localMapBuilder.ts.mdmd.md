@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapbuilder-ts
-- Generated At: 2025-12-07T16:27:05.650Z
+- Generated At: 2025-12-07T20:49:32.809Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:05.650Z","inputHash":"2d73e311ba24300d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T20:49:32.809Z","inputHash":"ff3f881c023751f9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestCoverageMap` {#symbol-testcoveragemap}
@@ -44,7 +44,7 @@ Complete LocalMapData ready for rendering or serialization.
 
 #### `buildTestCoverageMap` {#symbol-buildtestcoveragemap}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts#L387)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts#L445)
 - Returns: [`TestCoverageMap`](../client/types.ts.mdmd.md#symbol-testcoveragemap)
 - Parameters: `graphData`: [`ExplorerGraphPayload`](../../../index.ts.mdmd.md#symbol-explorergraphpayload); `_unnamed_`: [`ExplorerLinkPayload`](../../../index.ts.mdmd.md#symbol-explorerlinkpayload)
 

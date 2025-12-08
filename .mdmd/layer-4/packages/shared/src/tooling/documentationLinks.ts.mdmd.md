@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/documentationLinks.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-documentationlinks-ts
-- Generated At: 2025-12-05T04:16:20.196Z
+- Generated At: 2025-12-07T21:41:19.596Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 - Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.196Z","inputHash":"b8057e76ec64ea12"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.596Z","inputHash":"b8057e76ec64ea12"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentationRule` {#symbol-documentationrule}
@@ -26,7 +26,7 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 #### `DEFAULT_RULES` {#symbol-default_rules}
 - Type: const
 - Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L22)
-- Returns: `DocumentationRule`[]
+- Returns: [`DocumentationRule`](#symbol-documentationrule)[]
 
 #### `DocumentationAnchorSummary` {#symbol-documentationanchorsummary}
 - Type: interface
@@ -65,24 +65,24 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L104)
 - Returns: `ParsedDocumentationAnchors`
-- Parameters: `_unnamed_`: `ParseDocumentationAnchorsOptions`
+- Parameters: `_unnamed_`: [`ParseDocumentationAnchorsOptions`](#symbol-parsedocumentationanchorsoptions)
 
 #### `resolveCodeToDocumentationMap` {#symbol-resolvecodetodocumentationmap}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L161)
-- Returns: `DocumentationTargetMap`
-- Parameters: `documents`: `DocumentationDocumentAnchors`[]; `targetMap`: `DocumentationTargetMap`
+- Returns: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
+- Parameters: `documents`: [`DocumentationDocumentAnchors`](#symbol-documentationdocumentanchors)[]; `targetMap`: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 
 #### `formatDocumentationLinkComment` {#symbol-formatdocumentationlinkcomment}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L195)
-- Parameters: `target`: `ResolvedDocumentationTarget`
+- Parameters: `target`: [`ResolvedDocumentationTarget`](#symbol-resolveddocumentationtarget)
 
 #### `runDocumentationLinkEnforcement` {#symbol-rundocumentationlinkenforcement}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L208)
-- Returns: `DocumentationLinkEnforcementResult`
-- Parameters: `options`: `RunDocumentationLinkEnforcementOptions`
+- Returns: [`DocumentationLinkEnforcementResult`](#symbol-documentationlinkenforcementresult)
+- Parameters: `options`: [`RunDocumentationLinkEnforcementOptions`](#symbol-rundocumentationlinkenforcementoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

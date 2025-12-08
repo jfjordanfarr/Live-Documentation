@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-symbolcorrectnessvalidator-ts
-- Generated At: 2025-12-05T04:16:17.995Z
+- Generated At: 2025-12-07T21:41:17.627Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Evaluates compiled symbol correctness profiles against the workspace graph to su
 - Leverages identifier intersection, target matchers, and directionality checks refined during the Oct 30 design sessions ([2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)) to keep MDMD-layer expectations measurable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.995Z","inputHash":"4784d88d073f9902"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.627Z","inputHash":"4784d88d073f9902"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolCorrectnessDiagnosticOptions` {#symbol-symbolcorrectnessdiagnosticoptions}
@@ -37,8 +37,8 @@ Evaluates compiled symbol correctness profiles against the workspace graph to su
 #### `generateSymbolCorrectnessDiagnostics` {#symbol-generatesymbolcorrectnessdiagnostics}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts#L53)
-- Returns: `SymbolCorrectnessReport`
-- Parameters: `options`: `SymbolCorrectnessDiagnosticOptions`
+- Returns: [`SymbolCorrectnessReport`](#symbol-symbolcorrectnessreport)
+- Parameters: `options`: [`SymbolCorrectnessDiagnosticOptions`](#symbol-symbolcorrectnessdiagnosticoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

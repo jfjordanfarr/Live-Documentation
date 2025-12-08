@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedCheckpointStore.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feedcheckpointstore-ts
-- Generated At: 2025-12-05T04:16:18.012Z
+- Generated At: 2025-12-07T21:41:17.642Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists per-feed stream checkpoints on disk so ingestion can resume without rep
 - Sanitises filenames and validates payloads to defend against malformed checkpoint JSON before committing to disk.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:18.012Z","inputHash":"4fb3d9b06e9369ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.642Z","inputHash":"4fb3d9b06e9369ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedCheckpointStore` {#symbol-feedcheckpointstore}
@@ -25,7 +25,7 @@ Persists per-feed stream checkpoints on disk so ingestion can resume without rep
 #### `FileFeedCheckpointStore` {#symbol-filefeedcheckpointstore}
 - Type: class
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/feedCheckpointStore.ts#L12)
-- Implements: `FeedCheckpointStore`
+- Implements: [`FeedCheckpointStore`](#symbol-feedcheckpointstore)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

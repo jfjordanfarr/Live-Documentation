@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-cfixtureoracle-ts
-- Generated At: 2025-12-05T04:16:20.065Z
+- Generated At: 2025-12-07T21:41:19.518Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Parses the C benchmark fixtures to infer `#include` and function-call edges so o
 - Still validated in the Nov 16 unit run, so rerun `npm run test:unit -- cFixtureOracle` after parser or glob changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:20.065Z","inputHash":"4c0066ec1fc443bc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.518Z","inputHash":"4c0066ec1fc443bc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `COracleEdgeRelation` {#symbol-coracleedgerelation}
@@ -58,25 +58,25 @@ Parses the C benchmark fixtures to infer `#include` and function-call edges so o
 #### `generateCFixtureGraph` {#symbol-generatecfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts#L82)
-- Returns: `COracleEdge`[]
-- Parameters: `options`: `CFixtureOracleOptions`
+- Returns: [`COracleEdge`](#symbol-coracleedge)[]
+- Parameters: `options`: [`CFixtureOracleOptions`](#symbol-cfixtureoracleoptions)
 
 #### `serializeCOracleEdges` {#symbol-serializecoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts#L155)
-- Parameters: `edges`: `COracleEdge`[]
+- Parameters: `edges`: [`COracleEdge`](#symbol-coracleedge)[]
 
 #### `partitionCOracleSegments` {#symbol-partitioncoraclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts#L160)
-- Returns: `COracleSegmentPartition`
-- Parameters: `edges`: `COracleEdge`[]; `overrides`: `COracleOverrideConfig`
+- Returns: [`COracleSegmentPartition`](#symbol-coraclesegmentpartition)
+- Parameters: `edges`: [`COracleEdge`](#symbol-coracleedge)[]; `overrides`: [`COracleOverrideConfig`](#symbol-coracleoverrideconfig)
 
 #### `mergeCOracleEdges` {#symbol-mergecoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts#L196)
-- Returns: `COracleMergeResult`
-- Parameters: `edges`: `COracleEdge`[]; `overrides`: `COracleOverrideConfig`
+- Returns: [`COracleMergeResult`](#symbol-coraclemergeresult)
+- Parameters: `edges`: [`COracleEdge`](#symbol-coracleedge)[]; `overrides`: [`COracleOverrideConfig`](#symbol-coracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

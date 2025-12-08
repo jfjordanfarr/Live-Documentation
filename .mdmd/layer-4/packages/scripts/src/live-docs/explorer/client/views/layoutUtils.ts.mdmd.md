@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2025-12-05T15:37:23.087Z
+- Generated At: 2025-12-07T21:41:17.111Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.087Z","inputHash":"9e4a4b476f4780c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.111Z","inputHash":"9e4a4b476f4780c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -51,7 +51,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 #### `layoutConstants (const)` {#symbol-layoutconstants-const}
 - Type: const
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L139)
-- Returns: `LayoutConstants`
+- Returns: [`LayoutConstants`](#symbol-layoutconstants-interface)
 
 #### `buildHierarchy` {#symbol-buildhierarchy}
 - Type: function
@@ -73,7 +73,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 #### `computeDirectoryLayout` {#symbol-computedirectorylayout}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L226)
-- Returns: `DirectoryLayoutResult`
+- Returns: [`DirectoryLayoutResult`](#symbol-directorylayoutresult)
 - Parameters: `measure`: `DirectoryMeasure`
 
 #### `findDominantDirectory` {#symbol-finddominantdirectory}

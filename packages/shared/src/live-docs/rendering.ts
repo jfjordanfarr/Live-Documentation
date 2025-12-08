@@ -273,33 +273,48 @@ export function renderPublicSymbolLines(args: {
 // ============================================================================
 
 /**
+ * Result of resolving a type name to its Live Doc location.
+ */
+interface ResolvedTypeLocation {
+  /** The resolved symbol location. */
+  location: ResolvedSymbolLocation;
+  /** True if the type is defined in the same file (intra-file reference). */
+  isSelfReference: boolean;
+}
+
+/**
  * Resolves a type name to its Live Doc location using the workspace symbol index.
  *
  * @param typeName - The type name to resolve (e.g., "Widget", "Foo.Bar").
  * @param index - The workspace-wide symbol index.
- * @param currentSourcePath - The source path of the file being rendered (to avoid self-links).
+ * @param currentSourcePath - The source path of the file being rendered.
  *
- * @returns The resolved location, or undefined if not found.
+ * @returns The resolved location with self-reference flag, or undefined if not found.
  */
 function resolveTypeToLiveDoc(
   typeName: string,
   index: WorkspaceSymbolIndex,
   currentSourcePath: string
-): ResolvedSymbolLocation | undefined {
+): ResolvedTypeLocation | undefined {
   const locations = index.get(typeName);
   if (!locations || locations.length === 0) {
     return undefined;
   }
 
-  // Filter out self-references (types defined in the current file)
+  // Separate self-references from external references
   const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
+  const selfRefs = locations.filter((loc) => loc.sourcePath === currentSourcePath);
 
-  // Prefer external definitions; fall back to any match if all are self-refs
+  // Prefer external definitions
   if (external.length > 0) {
-    return external[0];
+    return { location: external[0], isSelfReference: false };
   }
 
-  // All matches are in the current file — return undefined to avoid self-link
+  // Fall back to self-reference (intra-file link)
+  if (selfRefs.length > 0) {
+    return { location: selfRefs[0], isSelfReference: true };
+  }
+
   return undefined;
 }
 
@@ -405,7 +420,7 @@ function formatTypeReference(
   liveDocsRootAbsolute?: string
 ): string {
   // Try to resolve the type to a Live Doc
-  let resolved: ResolvedSymbolLocation | undefined;
+  let resolved: ResolvedTypeLocation | undefined;
   if (symbolIndex && currentSourcePath) {
     resolved = resolveTypeToLiveDoc(ref.name, symbolIndex, currentSourcePath);
   }
@@ -413,16 +428,23 @@ function formatTypeReference(
   let formatted: string;
 
   if (resolved && docDir && liveDocsRootAbsolute) {
-    // Compute relative path from current doc to target Live Doc
-    const targetDocAbsolute = path.resolve(
-      liveDocsRootAbsolute,
-      "..",  // Go up from liveDocsRoot (which is .mdmd/layer-4) to .mdmd
-      "..",  // Go up to workspace root
-      resolved.liveDocPath
-    );
-    const relativePath = formatRelativePathFromDoc(docDir, targetDocAbsolute);
-    const fragment = resolved.anchor ? `#${resolved.anchor}` : "";
-    formatted = `[\`${ref.name}\`](${relativePath}${fragment})`;
+    const { location, isSelfReference } = resolved;
+    const fragment = location.anchor ? `#${location.anchor}` : "";
+
+    if (isSelfReference) {
+      // Intra-file reference: use fragment-only link (same document)
+      formatted = `[\`${ref.name}\`](${fragment})`;
+    } else {
+      // External reference: compute relative path to target Live Doc
+      const targetDocAbsolute = path.resolve(
+        liveDocsRootAbsolute,
+        "..",  // Go up from liveDocsRoot (which is .mdmd/layer-4) to .mdmd
+        "..",  // Go up to workspace root
+        location.liveDocPath
+      );
+      const relativePath = formatRelativePathFromDoc(docDir, targetDocAbsolute);
+      formatted = `[\`${ref.name}\`](${relativePath}${fragment})`;
+    }
   } else {
     // No resolution — render as plain code span
     formatted = `\`${ref.name}\``;

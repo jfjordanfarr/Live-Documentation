@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapdata-ts
-- Generated At: 2025-12-07T16:27:05.659Z
+- Generated At: 2025-12-07T21:41:17.246Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:05.659Z","inputHash":"7b2b5e71c11c2e38"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.246Z","inputHash":"7b2b5e71c11c2e38"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalMapColumn` {#symbol-localmapcolumn}
@@ -115,7 +115,7 @@ Mirrors the client-side `normalizeSymbolIdentifier` function.
 #### `buildNormalizedAnchorKey` {#symbol-buildnormalizedanchorkey}
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapData.ts#L287)
-- Parameters: `column`: `LocalMapColumn`
+- Parameters: `column`: [`LocalMapColumn`](#symbol-localmapcolumn)
 
 ##### `buildNormalizedAnchorKey` — Summary
 Build a normalized anchor key for symbol matching.

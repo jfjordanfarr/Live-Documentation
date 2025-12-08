@@ -1,6 +1,6 @@
 ﻿# Copilot Instructions
 
-Last updated: 2025-12-06
+Last updated: 2025-12-07
 
 ---
 
@@ -98,7 +98,8 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - `npm run live-docs:inspect -- <path>`: emits markdown/JSON summaries for a given artifact; mirrors the Copilot prompt helper behaviour.
 - `npm run live-docs:inspect -- --from <path> [--to <path>]`: Live Docs pathfinder. Use this before and after risky edits to enumerate actual hop chains (Oracle-of-Bacon style). Remember `--direction inbound` for reverse lookups and `--json` for automation. If no `--to` is provided, review the terminal fan-out to see where data ultimately lands.
 - `npm run live-docs:lint`: validates structural markers, relative-link hygiene, slug dialect compliance, and evidence placeholders inside staged Live Docs.
-- `npm run live-docs:visualize`: launches the Explorer HTTP server with Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. Use this to navigate the Live Doc graph visually.
+- `npm run live-docs:visualize`: launches the Explorer HTTP server with Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. Use this to navigate the Live Doc graph visually. The server exposes a `/local-map?nodeId=<path>` JSON endpoint for headless debugging.
+- `npm run live-docs:visualize:static`: builds a fully static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline.
 - `npm run live-docs:migrate -- --dry-run`: compares staged Live Docs to `.mdmd/layer-4/` and prepares promotion (used during initial migration; now primarily for auditing drift).
 
 Full CLI catalogue (including graph, fixtures, and lint tooling) lives in `docs/tooling/cli-command-catalog.md`; keep that document updated whenever new npm scripts land.

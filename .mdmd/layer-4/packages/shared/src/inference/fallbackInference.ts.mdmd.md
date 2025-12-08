@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/fallbackInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-fallbackinference-ts
-- Generated At: 2025-12-05T04:16:19.488Z
+- Generated At: 2025-12-07T21:41:19.083Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the cross-language fallback inference pipeline—seed normalization, 
 Subsequent passes layered in AST-backed type filtering and deeper language heuristics—see [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) for the TypeScript runtime/type split and [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520) for the C#/WebForms heuristics that stabilized benchmark precision.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.488Z","inputHash":"699cbb1d5faafbe7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.083Z","inputHash":"699cbb1d5faafbe7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactSeed` {#symbol-artifactseed}
@@ -61,7 +61,7 @@ Subsequent passes layered in AST-backed type filtering and deeper language heuri
 #### `inferFallbackGraph` {#symbol-inferfallbackgraph}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L97)
-- Parameters: `input`: `FallbackGraphInput`; `options`: `FallbackGraphOptions`
+- Parameters: `input`: [`FallbackGraphInput`](#symbol-fallbackgraphinput); `options`: [`FallbackGraphOptions`](#symbol-fallbackgraphoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

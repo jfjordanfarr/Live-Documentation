@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/changeEvents/saveCodeChange.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-changeevents-savecodechange-ts
-- Generated At: 2025-12-05T04:16:17.579Z
+- Generated At: 2025-12-07T21:41:17.339Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records code edits and their change events in the graph store, feeding the rippl
 - Reuses the canonical artifact returned from `GraphStore.upsertArtifact` after the foreign-key fix documented in [2025-10-29 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-29.SUMMARIZED.md) so persisted change events stay relationally valid.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.579Z","inputHash":"259ca0416e5806f1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.339Z","inputHash":"259ca0416e5806f1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PersistedCodeChange` {#symbol-persistedcodechange}
@@ -29,8 +29,8 @@ Records code edits and their change events in the graph store, feeding the rippl
 #### `saveCodeChange` {#symbol-savecodechange}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/changeEvents/saveCodeChange.ts#L21)
-- Returns: `PersistedCodeChange`
-- Parameters: `options`: `SaveCodeChangeOptions`
+- Returns: [`PersistedCodeChange`](#symbol-persistedcodechange)
+- Parameters: `options`: [`SaveCodeChangeOptions`](#symbol-savecodechangeoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

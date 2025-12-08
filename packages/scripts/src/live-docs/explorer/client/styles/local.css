@@ -7,7 +7,7 @@
 .local-layout {
     display: grid;
     grid-template-columns: repeat(3, max-content);
-    column-gap: 52px;
+    column-gap: var(--local-column-gap, 52px);
     align-items: start;
     justify-content: center;
     width: max-content;
@@ -154,4 +154,44 @@
 
 .local-column[data-position="right"] .local-stack-group__content {
     align-items: flex-start;
+}
+
+/* ==========================================
+   Symbol Row Hover Highlighting
+   ========================================== */
+
+/* Symbol row wrapper uses display:contents to preserve grid layout */
+.symbol-row {
+    display: contents;
+}
+
+/* Transition for smooth dimming effect */
+.symbol-row > *,
+.connection-path {
+    transition: opacity 0.15s ease-out;
+}
+
+/* When hover mode is active, dim all symbol rows by default */
+.symbol-hover-active .symbol-row > * {
+    opacity: var(--hover-dim-symbols, 0.4);
+}
+
+/* Keep highlighted symbols at full opacity */
+.symbol-hover-active .symbol-row.symbol-highlighted > * {
+    opacity: 1;
+}
+
+/* Dim all connection paths by default in hover mode */
+.symbol-hover-active .connection-path {
+    opacity: var(--hover-dim-connections, 0.3);
+}
+
+/* Keep highlighted connections at full opacity */
+.symbol-hover-active .connection-path.connection-highlighted {
+    opacity: 1;
+}
+
+/* Also target center column directly in case local-focus isn't applied */
+.symbol-hover-active .local-column.center .symbol-row:not(.symbol-highlighted) > * {
+    opacity: var(--hover-dim-symbols, 0.4);
 }

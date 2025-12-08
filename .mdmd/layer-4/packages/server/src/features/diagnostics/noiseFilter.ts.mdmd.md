@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/noiseFilter.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-noisefilter-ts
-- Generated At: 2025-12-05T15:37:23.536Z
+- Generated At: 2025-12-07T21:41:17.533Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Applies confidence, depth, and per-target budgets to ripple diagnostics so publi
 - Maintains per-change and per-artifact counters to coordinate with acknowledgement and hysteresis layers without duplicating their logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.536Z","inputHash":"5741acedb77b071c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.533Z","inputHash":"5741acedb77b071c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NoiseFilterTotals` {#symbol-noisefiltertotals}
@@ -25,7 +25,7 @@ Applies confidence, depth, and per-target budgets to ripple diagnostics so publi
 #### `ZERO_NOISE_FILTER_TOTALS` {#symbol-zero_noise_filter_totals}
 - Type: const
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/noiseFilter.ts#L11)
-- Returns: `NoiseFilterTotals`
+- Returns: [`NoiseFilterTotals`](#symbol-noisefiltertotals)
 
 #### `NoiseFilterResult` {#symbol-noisefilterresult}
 - Type: interface
@@ -35,7 +35,7 @@ Applies confidence, depth, and per-target budgets to ripple diagnostics so publi
 #### `applyNoiseFilter` {#symbol-applynoisefilter}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/noiseFilter.ts#L51)
-- Returns: `NoiseFilterResult`
+- Returns: [`NoiseFilterResult`](#symbol-noisefilterresult)
 - Parameters: `config`: [`NoiseFilterRuntimeConfig`](../settings/settingsBridge.ts.mdmd.md#symbol-noisefilterruntimeconfig)
 - Constraints: `HasRippleImpacts`
 <!-- LIVE-DOC:END Public Symbols -->

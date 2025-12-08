@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/simple-workspace/src/util.ts
 - Live Doc ID: LD-implementation-tests-integration-fixtures-simple-workspace-src-util-ts
-- Generated At: 2025-12-06T22:49:55.241Z
+- Generated At: 2025-12-07T21:41:20.764Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides deterministic normalization helpers that underpin the simple-workspace 
 - The fixture continues to pass the `npm run fixtures:verify` sweep that revalidated simple-workspace behavior on Oct 29, so future edits should rerun that manifest before landing <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5288-L5320>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:55.241Z","inputHash":"bd67118e60a9f8d8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:20.764Z","inputHash":"bd67118e60a9f8d8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PrimitiveValue` {#symbol-primitivevalue}
@@ -26,12 +26,12 @@ Provides deterministic normalization helpers that underpin the simple-workspace 
 #### `NormalizedValue` {#symbol-normalizedvalue}
 - Type: type
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/util.ts#L2)
-- Returns: `PrimitiveValue`, `NormalizedArray`, `NormalizedObject`
+- Returns: [`PrimitiveValue`](#symbol-primitivevalue), [`NormalizedArray`](#symbol-normalizedarray), [`NormalizedObject`](#symbol-normalizedobject)
 
 #### `NormalizedArray` {#symbol-normalizedarray}
 - Type: type
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/util.ts#L3)
-- Returns: `NormalizedValue`[]
+- Returns: [`NormalizedValue`](#symbol-normalizedvalue)[]
 
 #### `NormalizedObject` {#symbol-normalizedobject}
 - Type: interface
@@ -40,12 +40,12 @@ Provides deterministic normalization helpers that underpin the simple-workspace 
 #### `normalizeValue` {#symbol-normalizevalue}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/util.ts#L8)
-- Returns: `NormalizedValue`
+- Returns: [`NormalizedValue`](#symbol-normalizedvalue)
 
 #### `summarizeShape` {#symbol-summarizeshape}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/simple-workspace/src/util.ts#L40)
-- Parameters: `value`: `NormalizedValue`
+- Parameters: `value`: [`NormalizedValue`](#symbol-normalizedvalue)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

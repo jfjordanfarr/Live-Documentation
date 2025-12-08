@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connections-ts
-- Generated At: 2025-12-06T13:36:26.699Z
+- Generated At: 2025-12-07T21:41:17.122Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ SVG connection drawing for the Local Map. Draws Bézier splines between anchor p
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T13:36:26.699Z","inputHash":"bc28cba469963f31"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.122Z","inputHash":"71c62dfc341ddaf8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConnectionsContext` {#symbol-connectionscontext}
@@ -26,8 +26,8 @@ SVG connection drawing for the Local Map. Draws Bézier splines between anchor p
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L26)
-- Parameters: `context`: `ConnectionsContext`
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L28)
+- Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

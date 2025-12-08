@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/fallbackHeuristicTypes.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-fallbackheuristictypes-ts
-- Generated At: 2025-12-05T04:16:19.463Z
+- Generated At: 2025-12-07T21:41:19.061Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared `FallbackHeuristic` contract—match contexts, emitters, and 
 Serves as the hub each language module implements post-refactor (see [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-07.SUMMARIZED.md#turn-12-rebuild-fallback-orchestrator-lines-2381-2740](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-07.SUMMARIZED.md#turn-12-rebuild-fallback-orchestrator-lines-2381-2740)), keeping new heuristics—like the WebForms signals from [2025-11-06](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520)—consistent.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.463Z","inputHash":"45d196bfa8ee3de7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.061Z","inputHash":"45d196bfa8ee3de7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MatchContext` {#symbol-matchcontext}
@@ -33,7 +33,7 @@ Serves as the hub each language module implements post-refactor (see [AI-Agent-W
 #### `MatchEmitter` {#symbol-matchemitter}
 - Type: type
 - Source: [source](../../../../../../packages/shared/src/inference/fallbackHeuristicTypes.ts#L28)
-- Parameters: `candidate`: `MatchCandidate`
+- Parameters: `candidate`: [`MatchCandidate`](#symbol-matchcandidate)
 
 #### `FallbackHeuristic` {#symbol-fallbackheuristic}
 - Type: interface

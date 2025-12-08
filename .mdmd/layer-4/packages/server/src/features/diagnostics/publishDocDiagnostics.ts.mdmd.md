@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/publishDocDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-publishdocdiagnostics-ts
-- Generated At: 2025-12-05T04:16:17.946Z
+- Generated At: 2025-12-07T21:41:17.586Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Aggregates document change contexts into diagnostics batches so the language ser
 - Subsequent passes added acknowledgement gating and hysteresis (see [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md)) and threaded the noise filter budget across emissions ([2025-10-23 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.946Z","inputHash":"1666926fe521720f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.586Z","inputHash":"1666926fe521720f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentChangeContext` {#symbol-documentchangecontext}
@@ -33,8 +33,8 @@ Aggregates document change contexts into diagnostics batches so the language ser
 #### `publishDocDiagnostics` {#symbol-publishdocdiagnostics}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/diagnostics/publishDocDiagnostics.ts#L43)
-- Returns: `PublishDocDiagnosticsResult`
-- Parameters: `options`: `PublishDocDiagnosticsOptions`
+- Returns: [`PublishDocDiagnosticsResult`](#symbol-publishdocdiagnosticsresult)
+- Parameters: `options`: [`PublishDocDiagnosticsOptions`](#symbol-publishdocdiagnosticsoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

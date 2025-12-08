@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/symbolCorrectnessProfiles.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-symbolcorrectnessprofiles-ts
-- Generated At: 2025-12-05T15:37:25.661Z
+- Generated At: 2025-12-07T21:41:19.505Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Compiles symbol-correctness profiles from relationship-rules config so diagnosti
 - Continuous runs of `npm run graph:audit` after October 30 rely on these compiled profiles to report satisfied vs missing relationships per artifact.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-10.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.661Z","inputHash":"6415f4099bcf581c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.505Z","inputHash":"6415f4099bcf581c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolProfileLoadResult` {#symbol-symbolprofileloadresult}
@@ -30,13 +30,13 @@ Compiles symbol-correctness profiles from relationship-rules config so diagnosti
 #### `loadSymbolCorrectnessProfiles` {#symbol-loadsymbolcorrectnessprofiles}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/rules/symbolCorrectnessProfiles.ts#L34)
-- Returns: `SymbolProfileLoadResult`
+- Returns: [`SymbolProfileLoadResult`](#symbol-symbolprofileloadresult)
 - Parameters: `config`: [`RelationshipRulesConfig`](./relationshipRuleTypes.ts.mdmd.md#symbol-relationshiprulesconfig)
 
 #### `compileSymbolProfiles` {#symbol-compilesymbolprofiles}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/rules/symbolCorrectnessProfiles.ts#L55)
-- Returns: `CompileSymbolProfilesResult`
+- Returns: [`CompileSymbolProfilesResult`](#symbol-compilesymbolprofilesresult)
 - Parameters: `config`: [`RelationshipRulesConfig`](./relationshipRuleTypes.ts.mdmd.md#symbol-relationshiprulesconfig)
 <!-- LIVE-DOC:END Public Symbols -->
 

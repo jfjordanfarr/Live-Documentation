@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/acknowledgeDiagnostic.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-acknowledgediagnostic-ts
-- Generated At: 2025-12-05T04:16:16.742Z
+- Generated At: 2025-12-07T21:41:16.704Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - Keep the command signature aligned with the acknowledgement service contract so integration tests continue to assert end-to-end pruning, per [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:16.742Z","inputHash":"105efb310707d473"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:16.704Z","inputHash":"105efb310707d473"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ACKNOWLEDGE_DIAGNOSTIC_COMMAND` {#symbol-acknowledge_diagnostic_command}
@@ -31,7 +31,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - Type: function
 - Source: [source](../../../../../../packages/extension/src/commands/acknowledgeDiagnostic.ts#L24)
 - Returns: `vscode.Disposable`
-- Parameters: `client`: `LanguageClient`; `options`: `AcknowledgementWorkflowOptions`
+- Parameters: `client`: `LanguageClient`; `options`: [`AcknowledgementWorkflowOptions`](#symbol-acknowledgementworkflowoptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -27,10 +27,17 @@ export interface VisualTuning {
   alchemyGlow: boolean;
 }
 
+export interface LocalMapTuning {
+  columnGap: number;
+  hoverDimSymbols: number;
+  hoverDimConnections: number;
+}
+
 export interface TuningConfig {
   bezier: BezierTuning;
   clickBehavior: ClickBehaviorTuning;
   visual: VisualTuning;
+  localMap: LocalMapTuning;
 }
 
 export interface ExplorerState {
