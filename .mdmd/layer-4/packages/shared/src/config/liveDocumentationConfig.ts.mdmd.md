@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2025-12-06T21:12:42.788Z
+- Generated At: 2025-12-09T01:18:22.945Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect, eviden
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T21:12:42.788Z","inputHash":"c750eaa8d95cb8ed"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:22.945Z","inputHash":"c750eaa8d95cb8ed"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -114,10 +114,14 @@ _No dependencies documented yet_
 - [aspnet.test.ts](../live-docs/adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](../live-docs/adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](../live-docs/adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](../live-docs/adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](../live-docs/adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](../live-docs/adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](../live-docs/adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](../live-docs/adapters/rust.typeref.test.ts.mdmd.md)
 - [coActivation.test.ts](../live-docs/analysis/coActivation.test.ts.mdmd.md)
 - [core.docstring.test.ts](../live-docs/core.docstring.test.ts.mdmd.md)
 - [generator.test.ts](../live-docs/generator.test.ts.mdmd.md)

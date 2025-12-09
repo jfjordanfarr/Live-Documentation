@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Lightweight markdown renderer for the Live Docs Explorer detail panel. Handles headings, code blocks, links, lists, and inline formatting without a full CommonMark implementation.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 as part of the Static Explorer client bundle
+- Intentionally minimal: targets only patterns found in Live Documentation markdown
+- `renderMarkdown()` is the main entry point; supports custom link handlers for relative path resolution
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.079Z","inputHash":"4ee9526b6b521e16"}]} -->

@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Markdown section renderers for System-layer Live Documentation. Produces Components lists, Topology Mermaid diagrams, Activation heatmaps, and Public Symbols tables from a `SystemDocPlan`.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (371 lines)
+- `renderTopologySection()` builds Mermaid `graph TD` with virtual nodes for external dependencies
+- `renderActivationSection()` summarises co-activation clusters with p-values and edge counts
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.844Z","inputHash":"bde0bd9e85279e98"}]} -->

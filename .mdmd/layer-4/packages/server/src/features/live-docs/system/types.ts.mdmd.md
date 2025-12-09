@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Type definitions for the System-layer Live Documentation generator. Defines archetypes, plan structures, result records, and activation summary types used throughout system materialisation.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (167 lines)
+- `Layer3Archetype` defines component/interaction/workflow/integration/testing
+- `SystemDocPlan` is the core planning type: components, edges, virtual nodes, and activation data
+- Re-exports `LiveDocRenderSection` and `CoActivationEdge` from shared for convenience
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.891Z","inputHash":"2b014d15749bf90e"}]} -->

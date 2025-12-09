@@ -9,11 +9,14 @@ import type {
   SymbolDocumentationExample,
   SymbolDocumentationLink,
   SymbolDocumentationLinkKind,
-  SymbolDocumentationParameter
+  SymbolDocumentationParameter,
+  TypeReference
 } from "../core";
 import type { LanguageAdapter } from "./index";
 
-const TYPE_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:(?:abstract|final|sealed|static)\s+)*(class|interface|enum|record)\s+([A-Za-z_][A-Za-z0-9_$]*)/g;
+// Captures: [1] docblock, [2] access, [3] kind, [4] name, [5] extends clause, [6] implements clause
+// Uses non-greedy +? and lookahead to opening paren (records) or brace (classes) to separate clauses
+const TYPE_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:(?:abstract|final|sealed|static)\s+)*(class|interface|enum|record)\s+([A-Za-z_][A-Za-z0-9_$]*)(?:<[^>]+>)?(?:\s+extends\s+([A-Za-z0-9_$.,<>\s]+?))?(?:\s+implements\s+([A-Za-z0-9_$.,<>\s]+?))?(?=\s*[({])/g;
 const MEMBER_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:static\s+|final\s+|abstract\s+|default\s+|synchronized\s+|strictfp\s+)*(?:([^\s(]+)\s+)?([A-Za-z_][A-Za-z0-9_$]*)\s*\(/g;
 const IMPORT_PATTERN = /^\s*import\s+([^;]+);/gm;
 const BUILT_IN_PACKAGE_PREFIX = "java.";
@@ -48,15 +51,41 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     const declarationIndex = match.index + (match[1] ? match[1].length : 0);
     const { line, character } = computePosition(content, declarationIndex);
     const documentation = parseJavaDoc(match[1]);
+    const kind = match[3];
+    const extendsClause = match[5]?.trim();
+    const implementsClause = match[6]?.trim();
+
+    // Extract type references from inheritance
+    const typeReferences: TypeReference[] = [];
+    if (extendsClause) {
+      // For interfaces, extends can have multiple types; for classes, just one
+      const types = extendsClause.split(",").map(t => t.trim().split("<")[0].trim()).filter(Boolean);
+      for (const typeName of types) {
+        typeReferences.push({
+          name: typeName,
+          role: "extends"
+        });
+      }
+    }
+    if (implementsClause) {
+      const types = implementsClause.split(",").map(t => t.trim().split("<")[0].trim()).filter(Boolean);
+      for (const typeName of types) {
+        typeReferences.push({
+          name: typeName,
+          role: "implements"
+        });
+      }
+    }
 
     results.push({
       name: match[4],
-      kind: match[3],
+      kind,
       location: {
         line,
         character
       },
-      documentation: documentation ?? undefined
+      documentation: documentation ?? undefined,
+      typeReferences: typeReferences.length > 0 ? typeReferences : undefined
     } as PublicSymbolEntry);
   }
 

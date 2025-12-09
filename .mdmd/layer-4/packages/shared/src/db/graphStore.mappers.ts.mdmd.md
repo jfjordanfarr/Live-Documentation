@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Row-to-domain mapper functions for the GraphStore database layer. Converts raw SQLite row types from `graphStore.types.ts` into typed domain objects from `domain/artifacts.ts`, handling JSON parsing, null coalescing, and type narrowing.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `graphStore.ts` during the workspaceIndexProvider extraction session
+- Each `map*Row()` function is a pure transformation with no side effects
+- Handles nullable database fields by converting to `undefined` for domain model consistency
+- JSON-stringified columns (`metadata`, `link_ids`, `llm_assessment`) are safely parsed with fallbacks
+- 252 lines covering 5 entity types plus helper parsing functions
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:39.366Z","inputHash":"6359367299c57506"}]} -->

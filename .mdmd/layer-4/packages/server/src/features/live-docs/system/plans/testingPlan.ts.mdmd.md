@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds System-layer `testing` archetype plans from the target manifest. Groups tests targeting `live-docs` paths and creates edges from tests to their implementation targets.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (138 lines)
+- Uses `TargetManifest` from `tests/integration/benchmarks/target-manifest.json`
+- Creates virtual nodes for test groups without backing Stage0 docs (e.g., integration tests)
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.803Z","inputHash":"ad9487106dc34713"}]} -->

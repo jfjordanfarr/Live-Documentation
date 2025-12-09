@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Number and statistical formatting utilities for System-layer Live Documentation output. Ensures consistent display of numbers, percentages, and p-values in generated markdown.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring
+- Handles edge cases like `NaN`/`Infinity` by returning safe defaults (`"0"`, `"n/a"`)
+- `formatPValue()` uses scientific notation for very small values, trims trailing zeros for readability
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.597Z","inputHash":"acd02ec5bd59a99b"}]} -->

@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds System-layer `interaction` archetype plans for scripts in `scripts/live-docs/`. Each script (except `run-all.ts`) gets an interaction view showing its dependencies and stage-sequence neighbours.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (91 lines)
+- Skips scripts already covered by component plans via `skipSources`
+- Edges derive from direct dependencies and stage-sequence before/after neighbours
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.776Z","inputHash":"f692a809c3a4ff3d"}]} -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2025-12-07T03:35:42.386Z
+- Generated At: 2025-12-09T01:18:23.342Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T03:35:42.386Z","inputHash":"0cbaf08ee63239ca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.342Z","inputHash":"0cbaf08ee63239ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -304,9 +304,13 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](./core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

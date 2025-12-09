@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/validators.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-validators-py
-- Generated At: 2025-12-06T22:49:48.531Z
+- Generated At: 2025-12-09T00:17:28.558Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Defines validation helpers and the custom exception for the Python pipeline benc
 Keep the validators lightweight but explicit; downstream modules rely on these checks to exercise dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.531Z","inputHash":"13671b4cfa106503"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T00:17:28.558Z","inputHash":"bf6d8656dff05aab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ValidationError` {#symbol-validationerror}
 - Type: class
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/python/pipeline/src/validators.py#L1)
+- Extends: `Exception`
 
 ##### `ValidationError` — Summary
 Raised when validation of a data series fails.

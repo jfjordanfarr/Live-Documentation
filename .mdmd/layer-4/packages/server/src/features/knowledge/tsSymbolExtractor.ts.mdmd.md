@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript symbol extraction for the knowledge graph. Parses TypeScript/JavaScript source files to extract exported symbol metadata (name, kind, isDefault, isTypeOnly) for indexing and link resolution.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `workspaceIndexProvider.ts` during the refactoring session
+- Handles all TypeScript export syntax: `export default`, `export { }`, `export const`, `export function`, etc.
+- Returns `ExportedSymbolKind` enum values: class, function, variable, enum, interface, type, namespace, default, unknown
+- Skips C# files (`.cs`) which require a different parser
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.739Z","inputHash":"003545f4c340af67"}]} -->

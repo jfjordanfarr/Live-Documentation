@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSluggerRegex.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-githubsluggerregex-ts
-- Generated At: 2025-11-20T21:07:34.306Z
+- Generated At: 2025-12-09T01:18:23.582Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Packages the vendored GitHub slug sanitiser regex so our slugger matches exactly
 - Verified repeatedly while tuning doc-link anchors for SlopCop on November 7, ensuring unicode headings slug to `comp003--heuristic-suite` and similar real-world cases.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:34.306Z","inputHash":"047b81693a3d7f2d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.582Z","inputHash":"047b81693a3d7f2d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GITHUB_SLUG_REMOVE_PATTERN` {#symbol-github_slug_remove_pattern}
@@ -67,10 +67,14 @@ _No dependencies documented yet_
 - [aspnet.test.ts](../live-docs/adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](../live-docs/adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](../live-docs/adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](../live-docs/adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](../live-docs/adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](../live-docs/adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](../live-docs/adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](../live-docs/adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](../live-docs/core.docstring.test.ts.mdmd.md)
 - [documentationLinks.test.ts](./documentationLinks.test.ts.mdmd.md)
 - [githubSlugger.test.ts](./githubSlugger.test.ts.mdmd.md)

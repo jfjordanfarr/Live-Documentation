@@ -6,7 +6,8 @@ import type {
   SourceAnalysisResult,
   SymbolDocumentation,
   SymbolDocumentationExample,
-  SymbolDocumentationLink
+  SymbolDocumentationLink,
+  TypeReference
 } from "../core";
 import type { LanguageAdapter } from "./index";
 
@@ -15,7 +16,8 @@ interface DependencyBucket {
   symbols: Set<string>;
 }
 
-const TOP_LEVEL_PATTERN = /^([ \t]*)(async\s+def|def|class)\s+([A-Za-z_][A-Za-z0-9_]*)/;
+// Captures: [1] indent, [2] keyword, [3] name, [4] base classes (optional)
+const TOP_LEVEL_PATTERN = /^([ \t]*)(async\s+def|def|class)\s+([A-Za-z_][A-Za-z0-9_]*)(?:\(([^)]+)\))?/;
 const DECORATOR_PATTERN = /^\s*@/;
 const REST_FIELD_PATTERN = /^:([a-zA-Z_]+)(?:\s+([^:]+))?:\s*(.*)$/;
 const SECTION_HEADER_PATTERN = /^([A-Za-z][A-Za-z0-9 -]*):\s*$/;
@@ -74,9 +76,27 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
 
     const keyword = match[2];
     const name = match[3];
+    const baseClasses = match[4];
     const kind = keyword.includes("class") ? "class" : "function";
     const docstring = extractDocstring(lines, index);
     const documentation = docstring ? parseDocstring(docstring) : undefined;
+
+    // Extract type references from base classes for class definitions
+    let typeReferences: TypeReference[] | undefined;
+    if (kind === "class" && baseClasses) {
+      const bases = baseClasses
+        .split(",")
+        .map(b => b.trim())
+        .filter(b => b && !b.includes("=")) // Exclude keyword args like metaclass=
+        .map(b => b.split("[")[0].trim()); // Strip generic params like List[int]
+      
+      if (bases.length > 0) {
+        typeReferences = bases.map(baseName => ({
+          name: baseName,
+          role: "extends" as const
+        }));
+      }
+    }
 
     results.push({
       name,
@@ -85,7 +105,8 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
         line: index + 1,
         character: indent.length + 1
       },
-      documentation
+      documentation,
+      typeReferences
     } as PublicSymbolEntry);
   }
 

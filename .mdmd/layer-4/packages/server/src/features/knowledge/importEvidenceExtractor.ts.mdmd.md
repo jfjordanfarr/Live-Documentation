@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Extracts link evidence from import/require statements in TypeScript/JavaScript files for the knowledge graph. Parses AST to find module references, resolves them to workspace paths, and determines if bindings are used at runtime vs type-only.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `workspaceIndexProvider.ts` during the refactoring session
+- Distinguishes `import`, `export`, `require`, and dynamic `import()` contexts
+- Uses `collectIdentifierUsage()` and `hasRuntimeUsage()`/`hasTypeUsage()` to filter unused imports
+- Module resolution probes multiple extensions via `MODULE_RESOLUTION_EXTENSIONS`
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.502Z","inputHash":"e28025f08849d4fa"}]} -->

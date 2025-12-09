@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Barrel export for the Explorer shared module. Re-exports types, Local Map builder, and Static Explorer data utilities used by both server and client.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 as part of the Static Explorer implementation (LD-402)
+- Groups core types, Local Map (headless JSON), and Static Explorer APIs
+- Shared by server (HTTP endpoints) and client (browser rendering)
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:05.639Z","inputHash":"5f230b8ab3559c63"}]} -->

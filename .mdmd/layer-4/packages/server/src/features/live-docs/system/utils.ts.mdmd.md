@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Utility functions for the System-layer generator. Path resolution, file operations, change classification, and document filtering helpers shared across plan builders and renderers.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (143 lines)
+- `resolveSystemDocPaths()` computes doc absolute/relative paths for a given archetype and slug
+- `includeInComponents()` filters out compiled artifacts (.d.ts, .js in dist/node_modules)
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.926Z","inputHash":"bb29934a99af9bcc"}]} -->

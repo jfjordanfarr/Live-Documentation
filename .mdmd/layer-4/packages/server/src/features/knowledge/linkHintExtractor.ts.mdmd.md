@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Extracts relationship hints from code files by parsing `@link` directives and string-literal path references. Converts discovered references into `documents` relationship hints for the knowledge graph.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `workspaceIndexProvider.ts` during the refactoring session
+- `extractLinkHints()` parses `@link directive` comments (0.9 confidence)
+- `extractPathReferenceHints()` finds string paths like `./templates/x.md` (0.75 confidence)
+- `resolveReferencePath()` handles relative/absolute path resolution and exports for reuse in `mdmdParser.ts`
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.594Z","inputHash":"779e165cd140bb05"}]} -->

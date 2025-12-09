@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Headless computation layer for the Local Map view. Takes a full `ExplorerGraphPayload` and a focus node ID, then computes the 3-column subgraph (upstream dependencies → center artifact → downstream dependents) as a pure `LocalMapData` object. This enables both server-side JSON API responses and static export pre-computation without any DOM or rendering logic.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 during the Static Explorer feature (LD-406) to separate data computation from visual rendering
+- `buildLocalMapData()` is the primary entry point; powers `/local-map?nodeId=` API endpoint and static bundle pre-computation
+- `buildSelfLoopEdges()` creates intra-file type reference edges for the "French Corset" wraparound bezier visualization
+- `buildTestCoverageMap()` mirrors client-side logic to determine which test files cover which implementation files
+- Symbol anchors are pre-computed so static renderers can route connection lines without querying the DOM
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T20:49:32.809Z","inputHash":"ff3f881c023751f9"}]} -->

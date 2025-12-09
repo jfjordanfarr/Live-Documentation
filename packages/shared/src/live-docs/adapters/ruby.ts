@@ -10,7 +10,8 @@ import type {
   SymbolDocumentationExample,
   SymbolDocumentationLink,
   SymbolDocumentationLinkKind,
-  SymbolDocumentationParameter
+  SymbolDocumentationParameter,
+  TypeReference
 } from "../core";
 import type { LanguageAdapter } from "./index";
 
@@ -18,7 +19,14 @@ interface PendingDocBlock {
   lines: string[];
 }
 
-const CLASS_OR_MODULE_PATTERN = /^(\s*)(class|module)\s+([A-Za-z_][A-Za-z0-9_:]*)/;
+/**
+ * Extended class/module pattern that captures inheritance.
+ * Group 1: leading whitespace
+ * Group 2: "class" or "module"
+ * Group 3: name (including namespacing like Foo::Bar)
+ * Group 4: parent class if present (e.g., "< ParentClass")
+ */
+const CLASS_OR_MODULE_PATTERN = /^(\s*)(class|module)\s+([A-Za-z_][A-Za-z0-9_:]*)(?:\s*<\s*([A-Za-z_][A-Za-z0-9_:]*))?/;
 const METHOD_PATTERN = /^(\s*)def\s+(self\.)?([A-Za-z_][A-Za-z0-9_!?=]*)/;
 const ATTR_PATTERN = /^(\s*)attr_(reader|writer|accessor)\s+(.+)/;
 const REQUIRE_PATTERN = /^(\s*)require(_relative)?\s+(["'])([^"']+)(["'])/;
@@ -56,6 +64,9 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   const entries: PublicSymbolEntry[] = [];
   let pendingDoc: PendingDocBlock | null = null;
 
+  // Track class/module scope for associating mixins with their enclosing type
+  const scopeStack: { name: string; indent: number; typeReferences: TypeReference[]; entryIndex: number }[] = [];
+
   for (let index = 0; index < lines.length; index += 1) {
     const raw = lines[index];
     const trimmed = raw.trim();
@@ -85,10 +96,50 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
       continue;
     }
 
+    // Pop scopes that have ended (based on indentation)
+    const currentIndent = raw.length - raw.trimStart().length;
+    while (scopeStack.length > 0 && currentIndent <= scopeStack[scopeStack.length - 1].indent) {
+      const popped = scopeStack.pop()!;
+      // Finalize typeReferences on the class/module entry
+      if (popped.typeReferences.length > 0) {
+        entries[popped.entryIndex].typeReferences = popped.typeReferences;
+      }
+    }
+
+    // Check for include/extend/prepend within a class/module
+    const mixinMatch = INCLUDE_PATTERN.exec(raw);
+    if (mixinMatch && scopeStack.length > 0) {
+      const currentScope = scopeStack[scopeStack.length - 1];
+      // mixinMatch[2] is the type (include/extend/prepend) - all mapped to "implements"
+      const mixinName = mixinMatch[3];
+
+      // Map Ruby mixin types to TypeReference roles:
+      // - include: like "implements" (adds instance methods)
+      // - extend: adds class methods (also like "implements")
+      // - prepend: like "implements" but higher priority
+      currentScope.typeReferences.push({
+        name: mixinName,
+        role: "implements"
+      });
+      pendingDoc = null;
+      continue;
+    }
+
     const classOrModuleMatch = CLASS_OR_MODULE_PATTERN.exec(raw);
     if (classOrModuleMatch) {
       const kind = classOrModuleMatch[2] === "class" ? "class" : "module";
       const name = classOrModuleMatch[3];
+      const parentClass = classOrModuleMatch[4];
+
+      const typeReferences: TypeReference[] = [];
+      if (parentClass) {
+        typeReferences.push({
+          name: parentClass,
+          role: "extends"
+        });
+      }
+
+      const entryIndex = entries.length;
       entries.push({
         name,
         kind,
@@ -96,8 +147,18 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
           line: index + 1,
           character: (classOrModuleMatch[1]?.length ?? 0) + 1
         },
-        documentation: pendingDoc ? parseRubyDocumentation(pendingDoc.lines) : undefined
+        documentation: pendingDoc ? parseRubyDocumentation(pendingDoc.lines) : undefined,
+        typeReferences: typeReferences.length > 0 ? typeReferences : undefined
       });
+
+      // Push this class/module onto the scope stack to collect its mixins
+      scopeStack.push({
+        name,
+        indent: currentIndent,
+        typeReferences,
+        entryIndex
+      });
+
       pendingDoc = null;
       continue;
     }
@@ -153,6 +214,14 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     }
 
     pendingDoc = null;
+  }
+
+  // Finalize any remaining open scopes
+  while (scopeStack.length > 0) {
+    const popped = scopeStack.pop()!;
+    if (popped.typeReferences.length > 0) {
+      entries[popped.entryIndex].typeReferences = popped.typeReferences;
+    }
   }
 
   entries.sort((left, right) => {

@@ -5,17 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/fileUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-fileutils-ts
-- Generated At: 2025-12-07T04:00:25.758Z
+- Generated At: 2025-12-09T01:18:23.380Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+File system utilities for Live Documentation. Provides helpers for checking directory existence and cleaning up empty parent directories when Live Doc files are deleted.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
+- `directoryExists()` wraps `fs.stat` with a boolean return for directory checks
+- `cleanupEmptyParents()` prevents orphaned empty directories from accumulating in the Live Doc mirror
+- Both functions handle errors gracefully with try/catch, returning `false` or breaking the loop on failure
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:25.758Z","inputHash":"af3018c08ace9068"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.380Z","inputHash":"af3018c08ace9068"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `directoryExists` {#symbol-directoryexists}
@@ -63,9 +66,13 @@ Doc mirror.
 - [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](./core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

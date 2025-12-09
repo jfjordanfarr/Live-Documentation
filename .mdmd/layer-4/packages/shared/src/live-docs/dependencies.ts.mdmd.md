@@ -5,17 +5,22 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-dependencies-ts
-- Generated At: 2025-12-07T04:00:25.742Z
+- Generated At: 2025-12-09T01:18:23.368Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Dependency collection and resolution for Live Documentation. Extracts import/export dependencies from TypeScript source files and resolves module specifiers to workspace-relative paths using Node-style extension fallbacks.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
+- `collectDependencies()` walks AST statements for imports and re-exports, returning sorted `DependencyEntry[]`
+- `resolveDependency()` handles relative specifiers with extension probing (`.ts`, `.tsx`, `.mts`, etc.)
+- `mergeDependencyEntries()` combines symbol lists when multiple imports reference the same module
+- `augmentWithReExportedSymbols()` handles star exports (`export * from`) by parsing target modules
+- 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:25.742Z","inputHash":"19c90a219aa0a9da"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.368Z","inputHash":"19c90a219aa0a9da"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}
@@ -121,9 +126,13 @@ Object containing augmented symbols and re-export info
 - [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](./core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

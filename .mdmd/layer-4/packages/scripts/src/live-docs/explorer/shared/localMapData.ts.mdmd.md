@@ -5,17 +5,21 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapdata-ts
-- Generated At: 2025-12-08T03:30:11.199Z
+- Generated At: 2025-12-09T01:54:26.949Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Schema definition for the headless Local Map JSON format. Defines the 3-column subgraph structure (upstream → center → downstream) that powers LLM consumption, static site embedding, programmatic queries, and debugging without DOM inspection. The visual renderer becomes a pure function of `LocalMapData`.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 during the Static Explorer feature (LD-406) alongside `localMapBuilder.ts`
+- `LocalMapColumn` uses semantic names ("upstream"/"center"/"downstream") for future multi-hop expansion
+- `LocalMapNode` is a render-relevant subset of `ExplorerNodePayload` — strips non-visual metadata
+- `LocalMapSymbolAnchor` enables pre-computed edge routing for static renderers
+- `normalizeSymbolIdentifier()` and `buildNormalizedAnchorKey()` are shared between server and client for consistent anchor matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T03:30:11.199Z","inputHash":"646147f89737dc39"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:54:26.949Z","inputHash":"646147f89737dc39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalMapColumn` {#symbol-localmapcolumn}

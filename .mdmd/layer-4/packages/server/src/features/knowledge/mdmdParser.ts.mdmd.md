@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+MDMD (Membrane Design MarkDown) document parser for the knowledge layer. Extracts structured metadata from MDMD documents including layer, code paths, exports, and section symbols to build the knowledge graph.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `workspaceIndexProvider.ts` during the refactoring session
+- 465 lines — handles the complexity of parsing MDMD metadata sections
+- `extractMdmdDocumentDetails()` is the main entry point for parsing MDMD files
+- `createMdmdMetadataHints()` generates `documents` relationship hints from code paths
+- `collectSectionSymbols()` extracts symbol names from configured section headings per layer
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.653Z","inputHash":"f9639c1a2d330a06"}]} -->

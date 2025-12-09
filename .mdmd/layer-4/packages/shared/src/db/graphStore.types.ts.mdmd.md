@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+SQLite row shape interfaces for the GraphStore database layer. Defines the TypeScript types that mirror the database schema for artifacts, links, LLM edge provenance, diagnostics, and drift history tables.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `graphStore.ts` during the workspaceIndexProvider extraction session
+- These are "row" types — the raw database representation, not the domain model
+- Companion file `graphStore.mappers.ts` converts between row types and domain types
+- Used by `better-sqlite3` query results via the `as` assertion pattern
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:39.380Z","inputHash":"2e8f87c637318007"}]} -->

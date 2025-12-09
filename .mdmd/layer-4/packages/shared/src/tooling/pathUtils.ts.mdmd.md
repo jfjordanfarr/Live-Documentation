@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/pathUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-pathutils-ts
-- Generated At: 2025-11-20T21:07:34.335Z
+- Generated At: 2025-12-09T01:18:23.607Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Unifies workspace path handling by converting between file URIs, absolute paths,
 - Chosen over ad hoc normalisation so Windows drive letters and separator differences collapse to the same canonical representation used by Live Docs and link audits ([upgrade summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L5428-L5454)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:34.335Z","inputHash":"dafc9f3e22eaf56d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.607Z","inputHash":"dafc9f3e22eaf56d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `toWorkspaceRelativePath` {#symbol-toworkspacerelativepath}
@@ -86,10 +86,14 @@ Normalise a path so directory separators are POSIX-style.
 - [aspnet.test.ts](../live-docs/adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](../live-docs/adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](../live-docs/adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](../live-docs/adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](../live-docs/adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](../live-docs/adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](../live-docs/adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](../live-docs/adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](../live-docs/core.docstring.test.ts.mdmd.md)
 - [generator.test.ts](../live-docs/generator.test.ts.mdmd.md)
 - [relationshipRuleProvider.test.ts](../rules/relationshipRuleProvider.test.ts.mdmd.md)

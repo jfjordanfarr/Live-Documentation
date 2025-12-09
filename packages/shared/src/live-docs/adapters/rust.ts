@@ -29,6 +29,15 @@ const IMPORT_PATTERN = /^\s*use\s+([^;]+);/gm;
 const MARKDOWN_LINK_REGEX = /\[([^\]]+)]\((https?:\/\/[^)\s]+)\)/g;
 const URL_REGEX = /(https?:\/\/[^)\s]+)/g;
 
+/**
+ * Pattern to capture impl blocks:
+ * - `impl Foo { ... }` - inherent impl
+ * - `impl TraitName for StructName { ... }` - trait impl
+ * Group 1: trait name (if present)
+ * Group 2: struct/type name (after "for" or immediately after "impl")
+ */
+const IMPL_PATTERN = /^(\s*)impl(?:<[^>]*>)?\s+(?:([A-Za-z_][A-Za-z0-9_:]*(?:<[^>]*>)?)\s+for\s+)?([A-Za-z_][A-Za-z0-9_:]*(?:<[^>]*>)?)/;
+
 export const rustAdapter: LanguageAdapter = {
   id: "rust-basic",
   extensions: [".rs"],
@@ -55,6 +64,9 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   const lines = content.split(/\r?\n/);
   const symbols: PublicSymbolEntry[] = [];
   let pendingDoc: PendingDocComment | null = null;
+
+  // Track struct/enum names to their symbol indices for adding trait impls
+  const typeNameToIndex = new Map<string, number>();
 
   for (let index = 0; index < lines.length; index += 1) {
     const rawLine = lines[index];
@@ -94,6 +106,7 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
       const kind = normalizeSymbolKind(declarationType);
       const char = match[0] ? rawLine.indexOf(match[0]) + 1 : 1;
 
+      const symbolIndex = symbols.length;
       symbols.push({
         name,
         kind,
@@ -103,6 +116,36 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
         },
         documentation: doc ?? undefined
       } as PublicSymbolEntry);
+
+      // Track structs and enums for impl block association
+      if (kind === "struct" || kind === "enum") {
+        typeNameToIndex.set(name, symbolIndex);
+      }
+
+      pendingDoc = null;
+      continue;
+    }
+
+    // Check for impl blocks - both inherent and trait implementations
+    const implMatch = IMPL_PATTERN.exec(rawLine);
+    if (implMatch) {
+      const traitName = implMatch[2];  // undefined for inherent impls
+      const typeName = stripGenericParams(implMatch[3]);
+
+      // If this is a trait impl (impl Trait for Type), add a typeReference
+      if (traitName && typeNameToIndex.has(typeName)) {
+        const symbolIndex = typeNameToIndex.get(typeName)!;
+        const cleanTraitName = stripGenericParams(traitName);
+
+        // Skip standard library traits that aren't interesting for linking
+        if (!isStdTrait(cleanTraitName)) {
+          const existingRefs = symbols[symbolIndex].typeReferences ?? [];
+          symbols[symbolIndex].typeReferences = [
+            ...existingRefs,
+            { name: cleanTraitName, role: "implements" }
+          ];
+        }
+      }
 
       pendingDoc = null;
       continue;
@@ -122,6 +165,32 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     }
     return left.name.localeCompare(right.name);
   });
+}
+
+/**
+ * Strip generic parameters from a type name.
+ * e.g., "HashMap<K, V>" → "HashMap"
+ */
+function stripGenericParams(typeName: string): string {
+  const bracketIndex = typeName.indexOf("<");
+  return bracketIndex >= 0 ? typeName.slice(0, bracketIndex) : typeName;
+}
+
+/**
+ * Check if a trait is a standard library trait that's not interesting for linking.
+ * These are ubiquitous and would create too much noise.
+ */
+function isStdTrait(traitName: string): boolean {
+  const stdTraits = new Set([
+    "Debug", "Display", "Clone", "Copy", "Default",
+    "Eq", "PartialEq", "Ord", "PartialOrd", "Hash",
+    "Send", "Sync", "Sized", "Drop",
+    "From", "Into", "TryFrom", "TryInto",
+    "Iterator", "IntoIterator",
+    "Deref", "DerefMut", "AsRef", "AsMut",
+    "Serialize", "Deserialize"  // serde traits are also very common
+  ]);
+  return stdTraits.has(traitName);
 }
 
 function consumeBlockDoc(lines: string[], startIndex: number): { lines: string[]; nextIndex: number } {

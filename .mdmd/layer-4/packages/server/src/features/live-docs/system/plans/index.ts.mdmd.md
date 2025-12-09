@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Barrel re-export for the System-layer plan builders. Aggregates component, interaction, workflow, testing, and co-activation plan factories for the main generator.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 as part of the `system/generator.ts` refactoring
+- Pure re-export module with no implementation logic
+- Provides a single import point for all plan builder functions
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.761Z","inputHash":"9fc09c79aeb92417"}]} -->

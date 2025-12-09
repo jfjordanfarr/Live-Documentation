@@ -367,14 +367,15 @@ function createNodeCard(
     controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
   }
 
-  // For center column only: add outbound hub for file-level dependent connections
-  // This ensures connections to dependents have a proper anchor at card edge,
-  // not the card center, when symbol resolution isn't available
-  if (columnRole === "center" && !isAsset) {
-    const centerOutboundHub = document.createElement("div");
-    centerOutboundHub.className = "symbol-anchor hub outbound center-hub";
-    card.appendChild(centerOutboundHub);
-    controller.registerAnchor(node.id, columnRole, "outbound:*", centerOutboundHub);
+  // For center and upstream columns: add outbound hub for file-level connections
+  // - Center: for connections to dependents when symbol resolution isn't available
+  // - Upstream (dependencies): for file-level dependency edges (e.g., require_relative)
+  // This ensures connections anchor at the card edge, not the card center.
+  if ((columnRole === "center" || columnRole === "upstream") && !isAsset) {
+    const outboundHub = document.createElement("div");
+    outboundHub.className = "symbol-anchor hub outbound" + (columnRole === "center" ? " center-hub" : "");
+    card.appendChild(outboundHub);
+    controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
   }
 
   const header = document.createElement("div");

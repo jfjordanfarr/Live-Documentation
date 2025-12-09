@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds System-layer `component` archetype plans by grouping Live Docs implementation files by their directory structure. Produces component topology edges from dependency relationships.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (130 lines)
+- Groups Live Docs by `deriveComponentKey()` which extracts common path prefixes
+- Special handling for `scripts/live-docs` group: injects stage-sequence orchestration edges
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.757Z","inputHash":"aa7018e6e5c38f47"}]} -->

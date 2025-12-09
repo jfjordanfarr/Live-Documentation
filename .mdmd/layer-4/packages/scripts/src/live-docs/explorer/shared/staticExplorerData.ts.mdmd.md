@@ -5,14 +5,18 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2025-12-08T15:55:19.445Z
+- Generated At: 2025-12-09T01:54:26.964Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Schema definition for the Static Explorer JSON format, enabling zero-server distribution of the Live Documentation Explorer via GitHub Pages, Teams Cards, downloadable bundles, or any static hosting platform. Wraps `ExplorerGraphPayload` with provenance metadata, pre-computed symbol index, and viewer configuration hints.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 during the Static Explorer feature (LD-406)
+- `StaticExplorerProvenance` enables reproducibility: consumers can verify bundles match known commits and analyzer versions
+- `StaticExplorerSymbolIndex` powers fast client-side fuzzy search, click-to-navigate from type references, and anchor resolution
+- Viewer supports three loading modes: inline `<script>`, relative fetch, or remote URL (Teams Card scenario)
+- `STATIC_EXPLORER_SCHEMA_VERSION` increments on breaking changes; viewers reject unknown schema versions
 
 ### File Structure
 
@@ -32,7 +36,7 @@ The viewer supports three loading modes:
 3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T15:55:19.445Z","inputHash":"64974dc33e28bd3f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:54:26.964Z","inputHash":"64974dc33e28bd3f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}

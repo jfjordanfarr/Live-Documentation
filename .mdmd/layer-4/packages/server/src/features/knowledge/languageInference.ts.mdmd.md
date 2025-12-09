@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Language and file type inference for the knowledge layer. Maps file extensions to programming languages, document formats, and TypeScript ScriptKind values for parsing. Also identifies documentation folders via path heuristics.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-08 from `workspaceIndexProvider.ts` during the refactoring session
+- `inferLanguage()` returns language IDs matching VS Code's language identifiers
+- `inferScriptKind()` enables correct TypeScript parser configuration per file type
+- `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T20:03:27.581Z","inputHash":"2ffdf3d95a0f7b9a"}]} -->

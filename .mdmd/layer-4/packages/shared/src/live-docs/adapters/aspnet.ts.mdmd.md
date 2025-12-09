@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/aspnet.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-aspnet-ts
-- Generated At: 2025-12-05T15:37:25.351Z
+- Generated At: 2025-12-09T01:18:23.210Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 - Intentional filesystem probes ensure we only yield dependencies for files that actually exist, preventing noisy edges during Stage-0 regeneration.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:25.351Z","inputHash":"f6cb1e25f4146116"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.210Z","inputHash":"f6cb1e25f4146116"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `aspNetMarkupAdapter` {#symbol-aspnetmarkupadapter}
@@ -44,9 +44,13 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 - [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

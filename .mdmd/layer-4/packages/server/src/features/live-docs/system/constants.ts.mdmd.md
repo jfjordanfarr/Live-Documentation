@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Constants for the System-layer Live Documentation generator. Defines archetype prefixes, path segments, and thresholds used across all System view materialisation.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring
+- `LAYER3_PREFIX` maps archetypes like `component`→`COMP`, `workflow`→`FLOW`
+- Threshold constants control clustering (min 4 members), topology (max 80 edges), and activation display limits
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.592Z","inputHash":"1d4e986c16eeebdb"}]} -->

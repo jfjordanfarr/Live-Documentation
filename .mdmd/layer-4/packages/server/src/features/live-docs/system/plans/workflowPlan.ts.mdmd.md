@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds System-layer `workflow` archetype plans for orchestrator scripts (e.g., `run-all.ts`). Produces a full workflow view with stage-sequence edges showing execution order.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (66 lines)
+- Targets any file ending in `run-all.ts`
+- Combines direct dependencies with stage-sequence edges for complete orchestration topology
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.818Z","inputHash":"f91ac4da6e24c0c3"}]} -->

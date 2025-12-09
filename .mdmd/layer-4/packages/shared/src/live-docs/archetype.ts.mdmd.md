@@ -5,17 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/archetype.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-archetype-ts
-- Generated At: 2025-12-07T04:00:25.692Z
+- Generated At: 2025-12-09T01:54:29.186Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Archetype classification for Live Documentation. Determines which archetype (`implementation`, `test`, or `asset`) applies to a source file based on configuration overrides and naming conventions. The archetype affects which sections are generated in the Live Doc (e.g., tests show "Observed Evidence" vs implementations showing "Public Symbols").
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
+- Priority order: explicit `archetypeOverrides` > `.test.`/`.spec.` suffix > fixture directory > test directory > default `implementation`
+- `hasMeaningfulAuthoredContent()` detects whether authored sections contain real content vs placeholder text
+- `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T04:00:25.692Z","inputHash":"69cb6c42c1020292"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:54:29.186Z","inputHash":"69cb6c42c1020292"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArchetype` {#symbol-resolvearchetype}
@@ -76,9 +79,13 @@ Checks whether an authored markdown block carries information beyond the default
 - [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./adapters/python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./adapters/ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./adapters/ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./adapters/rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./adapters/rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](./core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

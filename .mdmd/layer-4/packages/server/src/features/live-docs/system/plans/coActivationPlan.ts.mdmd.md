@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds System-layer plans from co-activation report clusters. Converts statistically-significant clusters into `SystemDocPlan` objects with component lists, edges, activation summaries, and node metrics.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (349 lines)
+- `buildCoActivationPlans()` filters clusters by significance and min member count
+- `deriveClusterIdentity()` picks a descriptive slug from common path segments or highest-degree node
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.741Z","inputHash":"4af94a342f1269bd"}]} -->

@@ -9,10 +9,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow system views. Produces edges representing script execution order to visualise orchestration flows.
 
 ### Notes
-_Pending notes_
+- Extracted 2025-12-06 from `system/generator.ts` during the generator refactoring (118 lines)
+- `buildStageSequence()` converts stage descriptors into an ordered list with before/after neighbours
+- `extractRunAllStageDescriptors()` parses `run-all.ts` to discover script references
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.858Z","inputHash":"cadb3a272cf6d4f8"}]} -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/audit-doc-coverage.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-audit-doc-coverage-ts
-- Generated At: 2025-12-08T15:50:51.577Z
+- Generated At: 2025-12-09T01:18:23.704Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Runs the graph coverage audit that compares code artifacts against Layer‑4 doc
 - Refined 2025-11-04 to invoke `snapshotWorkspace` quietly before auditing, guaranteeing fresh caches during CI and local runs ([self-refresh integration](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T15:50:51.577Z","inputHash":"9daf5828efdeff08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.704Z","inputHash":"9daf5828efdeff08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseArgs` {#symbol-parseargs}

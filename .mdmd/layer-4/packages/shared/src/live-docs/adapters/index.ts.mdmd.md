@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2025-12-05T04:16:19.729Z
+- Generated At: 2025-12-09T01:18:23.243Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.729Z","inputHash":"d03d9f17b3fd3723"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.243Z","inputHash":"d03d9f17b3fd3723"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageAdapter` {#symbol-languageadapter}
@@ -61,9 +61,13 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
+- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
+- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
+- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
+- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
 - [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

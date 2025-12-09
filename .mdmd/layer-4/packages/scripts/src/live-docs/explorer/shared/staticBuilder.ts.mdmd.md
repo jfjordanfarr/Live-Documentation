@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Core builder module for creating fully static Live Documentation Explorer bundles. Produces a self-contained `dist/explorer/` package with HTML viewer, graph JSON, symbol index, and pre-computed Local Maps that can be deployed to GitHub Pages or embedded in documentation portals without a running server.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-07 as part of the Static Explorer feature (LD-406)
+- Exposes two public APIs: `buildStaticExplorer()` for full bundles and `buildLocalMapJson()` for headless single-node queries
+- Uses lazy imports to avoid circular dependencies with server modules
+- Transforms the server HTML template into a static viewer that loads `explorer-data.json`
+- Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.258Z","inputHash":"12b550d2b6c79947"}]} -->
