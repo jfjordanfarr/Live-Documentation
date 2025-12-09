@@ -562,6 +562,16 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L981-L1020` — **Rendering functions are cohesive**: Section renderers that share the same output contract and change together when output format evolves should stay in one file; splitting them creates coupling without cohesion.
 - `L1021-L1100` — **UTF-8 awareness in heuristics**: Binary file detection must account for valid UTF-8 multi-byte sequences (bytes 0x80-0xF4) to avoid false positives on files with Unicode characters like box drawings, emoji, and international text.
 
+## 2025-12-08 (Dev Day 39)
+### Chat 2 (2025-12-08.2.md) — Polyglot typeReferences + Chat Archaeology
+- `2025-12-08.2.md:L690-L730` — **Test-backed rigor for new features**: When implementing new adapter capabilities (like typeReferences), formalize the test scripts into unit tests rather than deleting them; claiming work complete without tests is unacceptable.
+- `L800-L860` — **Challenge file-level connection semantics**: If connections originate from "Internals" or card centers, demand justification—how can non-public members emit into other nodes? Defend architectural claims with concrete evidence.
+- `L1050-L1090` — **Polyglot parity is table stakes**: The tool "sells" genuine polyglot workspace-wide intelligence; any language lacking symbol-level connections should be brought up to parity, with fixtures and benchmarks proving correctness.
+- `L1200-L1260` — **Upstream nodes need output pins**: File-level dependencies from upstream nodes should anchor to blue output pins, not fall back to card centers; fix anchor registration so the visualization accurately represents relationships.
+- `L1660-L1720` — **Test files are first-class artifacts**: Test files (`.test.ts`) ARE legitimate artifacts with Live Docs; they consume public symbols and should be visible in the Explorer via "Show Tests" toggle—do NOT ignore them in audits.
+- `L1780-L1850` — **Chat Archaeology requires full source reads**: When authoring Live Documentation Purpose/Notes sections, read the COMPLETE source code file AND the current Live Doc file AND the relevant chat history. No shortcuts. "We do it right and we do it completely the first time."
+- `L1900-L1950` — **One file at a time for Chat Archaeology**: Do not parallelize Chat Archaeology; focus on getting one file right before moving to the next. Multi-edit batch approaches produce generic placeholder content instead of substantive documentation.
+
 ## 2025-12-07 (Dev Day 38)
 ### Chat 3 (2025-12-07.3.md) — French Corset Refinements + Audit Fixes
 - `2025-12-07.3.md:L165-L185` — **Self-loop tapering**: French Corset connectors should thin from standard line thickness to half as they exit the outbound pin and wrap behind the card, then thicken as they approach the inbound pin; provide a tuning slider to control this effect.

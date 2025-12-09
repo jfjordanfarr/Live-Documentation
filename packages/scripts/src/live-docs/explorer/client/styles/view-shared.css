@@ -51,7 +51,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #888;
+    color: var(--text-muted);
     font-size: 14px;
     letter-spacing: 0.02em;
 }
@@ -71,7 +71,7 @@
 
 .node-card:hover {
     background: var(--node-hover);
-    border-color: #777;
+    border-color: var(--border-hover);
 }
 
 .node-card.selected {
@@ -96,7 +96,7 @@
 }
 
 .node-card.test-backed {
-    border-color: rgba(138, 92, 255, 0.65);
+    border-color: var(--color-test-border);
 }
 
 /* Test-backed shadow rendered via ::before pseudo-element */
@@ -105,10 +105,10 @@
     position: absolute;
     inset: -8px;
     border-radius: 10px;
-    background: rgba(138, 92, 255, 0.18);
-    border: 1px solid rgba(138, 92, 255, 0.4);
+    background: var(--color-test-bg);
+    border: 1px solid var(--color-test-border);
     pointer-events: none;
-    box-shadow: 0 12px 24px rgba(138, 92, 255, 0.22);
+    box-shadow: 0 12px 24px var(--color-test-glow);
     z-index: -1;
 }
 
@@ -116,17 +116,17 @@
 .test-backed-shadow {
     position: absolute;
     border-radius: 10px;
-    background: rgba(138, 92, 255, 0.18);
-    border: 1px solid rgba(138, 92, 255, 0.4);
+    background: var(--color-test-bg);
+    border: 1px solid var(--color-test-border);
     pointer-events: none;
-    box-shadow: 0 12px 24px rgba(138, 92, 255, 0.22);
+    box-shadow: 0 12px 24px var(--color-test-glow);
     z-index: 1;
 }
 
 .node-title {
     font-weight: bold;
     font-size: 13px;
-    color: #eee;
+    color: var(--text-secondary);
     margin-bottom: 6px;
     white-space: normal;
     word-break: break-word;
@@ -135,7 +135,7 @@
 
 .node-path {
     font-size: 10px;
-    color: #a8a8b2;
+    color: var(--text-muted);
     white-space: normal;
     word-break: break-word;
     overflow-wrap: anywhere;
@@ -155,7 +155,7 @@
 
 .symbol-label {
     font-size: 11px;
-    color: #d4d4dc;
+    color: var(--text-secondary);
     font-family: "Segoe UI", sans-serif;
     white-space: normal;
     word-break: break-word;
@@ -169,7 +169,8 @@
     background: rgba(0, 145, 255, 0.35);
     position: relative;
     z-index: 30;
-    box-shadow: 0 0 6px rgba(0, 145, 255, 0.35);
+    box-shadow: 0 0 6px var(--color-outbound-glow);
+    /* Anchors are visual-only; let clicks pass through to the parent row */
     pointer-events: none;
 }
 
@@ -201,19 +202,19 @@
 .symbol-anchor.inbound {
     background: rgba(0, 211, 170, 0.4);
     border: 1px solid rgba(0, 211, 170, 0.55);
-    box-shadow: 0 0 6px rgba(0, 211, 170, 0.45);
+    box-shadow: 0 0 6px var(--color-inbound-glow);
 }
 
 .symbol-anchor.outbound {
     background: rgba(0, 145, 255, 0.4);
     border: 1px solid rgba(0, 145, 255, 0.6);
-    box-shadow: 0 0 6px rgba(0, 145, 255, 0.45);
+    box-shadow: 0 0 6px var(--color-outbound-glow);
 }
 
 .node-meta {
     margin-top: 8px;
     font-size: 10px;
-    color: #c0c0c8;
+    color: var(--text-muted);
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
@@ -226,23 +227,23 @@
     flex-wrap: wrap;
     gap: 6px;
     font-size: 10px;
-    color: #cbc8f8;
+    color: var(--color-test-text-muted);
     letter-spacing: 0.2px;
 }
 
 .node-tests__label {
     text-transform: uppercase;
     font-weight: 600;
-    color: #a59fe0;
+    color: var(--color-test-label);
 }
 
 .node-tests__item,
 .node-tests__more {
     padding: 2px 6px;
     border-radius: 4px;
-    background: rgba(138, 92, 255, 0.18);
-    border: 1px solid rgba(138, 92, 255, 0.45);
-    color: #e7e5ff;
+    background: var(--color-test-bg);
+    border: 1px solid var(--color-test-border);
+    color: var(--color-test-text);
 }
 
 .node-meta.symbols {
@@ -255,15 +256,15 @@
     display: inline-block;
     padding: 2px 6px;
     border-radius: 4px;
-    background: rgba(0, 145, 255, 0.15);
+    background: var(--accent-subtle);
     border: 1px solid rgba(0, 145, 255, 0.45);
-    color: #f0f8ff;
+    color: var(--text-active);
 }
 
 .node-directory {
     margin-top: 6px;
     font-size: 10px;
-    color: #7f8896;
+    color: var(--text-panel-subtle);
     font-style: italic;
     white-space: normal;
     word-break: break-word;
@@ -284,15 +285,15 @@
     bottom: 100px;
     left: 20px;
     width: 240px;
-    background: rgba(22, 22, 27, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--glass-panel);
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
     padding: 14px 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.42);
-    color: #dee3f7;
+    color: var(--text-panel);
     backdrop-filter: blur(12px);
     z-index: 95;
 }
@@ -302,7 +303,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #9ca3bc;
+    color: var(--text-panel-muted);
 }
 
 .legend-row {
@@ -328,13 +329,13 @@
 }
 
 .legend-swatch--outbound {
-    background: rgba(0, 145, 255, 0.85);
-    box-shadow: 0 0 8px rgba(0, 145, 255, 0.4);
+    background: var(--color-outbound);
+    box-shadow: 0 0 8px var(--color-outbound-glow);
 }
 
 .legend-swatch--inbound {
-    background: rgba(0, 211, 170, 0.85);
-    box-shadow: 0 0 8px rgba(0, 211, 170, 0.4);
+    background: var(--color-inbound);
+    box-shadow: 0 0 8px var(--color-inbound-glow);
 }
 
 .legend-symbol {
@@ -346,13 +347,13 @@
 .legend-symbol--outbound {
     background: rgba(0, 145, 255, 0.4);
     border: 1px solid rgba(0, 145, 255, 0.6);
-    box-shadow: 0 0 6px rgba(0, 145, 255, 0.45);
+    box-shadow: 0 0 6px var(--color-outbound-glow);
 }
 
 .legend-symbol--inbound {
     background: rgba(0, 211, 170, 0.4);
     border: 1px solid rgba(0, 211, 170, 0.55);
-    box-shadow: 0 0 6px rgba(0, 211, 170, 0.45);
+    box-shadow: 0 0 6px var(--color-inbound-glow);
 }
 
 .legend-shadow {
@@ -361,7 +362,7 @@
     border-radius: 6px;
     background: rgba(138, 92, 255, 0.25);
     border: 1px solid rgba(138, 92, 255, 0.5);
-    box-shadow: 0 10px 18px rgba(138, 92, 255, 0.32);
+    box-shadow: 0 10px 18px var(--color-test-glow);
 }
 
 .control-btn {
@@ -381,8 +382,8 @@
 }
 
 .control-btn:hover {
-    background: #333;
-    color: white;
+    background: var(--bg-input);
+    color: var(--text-active);
     transform: translateY(-2px);
 }
 
@@ -399,7 +400,7 @@ button.action-btn {
 }
 
 button.action-btn:hover {
-    background: #0070d4;
+    background: var(--accent-hover);
     transform: translateY(-1px);
 }
 
@@ -410,7 +411,7 @@ button.action-btn.ghost {
 }
 
 button.action-btn.ghost:hover {
-    background: rgba(0, 145, 255, 0.18);
+    background: var(--accent-subtle);
 }
 
 .connections-layer {

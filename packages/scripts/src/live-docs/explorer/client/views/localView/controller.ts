@@ -39,6 +39,9 @@ export class LocalViewController implements LocalViewApi {
   private readonly container = this.runtime.container;
   private readonly overlay = this.runtime.overlay;
 
+  /** Tracks which symbol is "pinned" (sticky highlight). Format: "nodeId:symbol" or null */
+  private pinnedSymbol: string | null = null;
+
   private readonly handleWindowMouseMove = (event: MouseEvent): void => {
     const { state } = this.options;
     const lastDragPosition = this.runtime.lastDragPosition;
@@ -171,15 +174,18 @@ export class LocalViewController implements LocalViewApi {
    *   (connections into internal implementation)
    * - Hovering "__internals__" on a neighbor: highlight the symbol on center that connects to it
    */
-  highlightSymbolConnections(nodeId: string, symbol: string): void {
+  highlightSymbolConnections(nodeId: string, symbol: string, fromPin = false): void {
     const { currentSubgraph, options } = this;
     if (!currentSubgraph) return;
+
+    // If a symbol is pinned and this isn't the pin-triggering call, suppress hover
+    if (this.pinnedSymbol && !fromPin) return;
 
     const centerId = currentSubgraph.center.id;
 
     // Get dimming values from tuning config
-    const dimSymbols = options.state.tuning.localMap?.hoverDimSymbols ?? 0.4;
-    const dimConnections = options.state.tuning.localMap?.hoverDimConnections ?? 0.3;
+    const dimSymbols = options.state.tuning.localMap?.hoverDimSymbols ?? 0.5;
+    const dimConnections = options.state.tuning.localMap?.hoverDimConnections ?? 0.1;
 
     // Apply CSS custom properties for dimming
     this.container.style.setProperty("--hover-dim-symbols", String(dimSymbols));
@@ -322,8 +328,14 @@ export class LocalViewController implements LocalViewApi {
 
   /**
    * Clears symbol hover highlighting, restoring all elements to normal opacity.
+   * If a symbol is pinned, this is a no-op unless force=true.
    */
-  clearSymbolHighlight(): void {
+  clearSymbolHighlight(force = false): void {
+    // Don't clear if we have a pinned symbol (unless forced)
+    if (this.pinnedSymbol && !force) {
+      return;
+    }
+    
     this.container.classList.remove("symbol-hover-active");
     this.overlay.classList.remove("symbol-hover-active");
     this.container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {
@@ -335,6 +347,56 @@ export class LocalViewController implements LocalViewApi {
     this.overlay.querySelectorAll<SVGPathElement>(".connection-highlighted").forEach(path => {
       path.classList.remove("connection-highlighted");
     });
+    this.container.querySelectorAll<HTMLElement>(".symbol-pinned").forEach(el => {
+      el.classList.remove("symbol-pinned");
+    });
+  }
+
+  /**
+   * Toggles "pinned" state for a symbol. When pinned, the highlight persists
+   * even when the mouse leaves the symbol row. Useful for mobile and for
+   * exploring connections in large files.
+   * 
+   * - If clicking the same symbol that's pinned: unpins it
+   * - If clicking a different symbol: pins the new one (replaces old pin)
+   * - If no symbol is pinned: pins the clicked symbol
+   */
+  togglePinnedSymbol(nodeId: string, symbol: string): void {
+    const key = `${nodeId}:${symbol}`;
+    
+    if (this.pinnedSymbol === key) {
+      // Clicking the same symbol: unpin and clear
+      this.pinnedSymbol = null;
+      this.clearSymbolHighlight(true);
+    } else {
+      // Pin the new symbol (clear any previous pin first)
+      this.clearSymbolHighlight(true);
+      this.pinnedSymbol = key;
+      this.highlightSymbolConnections(nodeId, symbol, true);
+      
+      // Mark the pinned row visually
+      this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+        if (row.dataset.nodeId === nodeId && row.dataset.symbol === symbol) {
+          row.classList.add("symbol-pinned");
+        }
+      });
+    }
+  }
+
+  /**
+   * Checks if a symbol is currently pinned.
+   */
+  isPinned(nodeId: string, symbol: string): boolean {
+    return this.pinnedSymbol === `${nodeId}:${symbol}`;
+  }
+
+  /**
+   * Clears any pinned symbol without clearing the highlight.
+   * Called when recentering to a new node.
+   */
+  clearPinnedSymbol(): void {
+    this.pinnedSymbol = null;
+    this.clearSymbolHighlight(true);
   }
 
   zoomIn(): void {
@@ -525,6 +587,8 @@ export class LocalViewController implements LocalViewApi {
   }
 
   async recenterNode(node: ExplorerNodePayload): Promise<void> {
+    // Clear any pinned symbol when recentering to a new node
+    this.clearPinnedSymbol();
     await this.options.onRecenterNode(node);
   }
 

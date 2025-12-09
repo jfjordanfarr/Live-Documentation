@@ -183,8 +183,8 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
       },
       localMap: {
         columnGap: 100,
-        hoverDimSymbols: 0.4,
-        hoverDimConnections: 0.4,
+        hoverDimSymbols: 0.5,
+        hoverDimConnections: 0.1,
         selfLoopTaper: 0.2
       }
     }

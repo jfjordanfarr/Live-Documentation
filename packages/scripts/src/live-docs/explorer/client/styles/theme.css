@@ -1,17 +1,88 @@
 :root {
-    --bg: #18181a;
-    --sidebar-bg: #1f1f22;
-    --border: #2f2f34;
+    /* ══════════════════════════════════════════════════════════════════════════
+       CORE PALETTE - Base colors that define the visual identity
+       ══════════════════════════════════════════════════════════════════════════ */
+    
+    /* Primary accent - the signature blue */
     --accent: #0091ff;
-    --text: #e4e4e4;
-    --text-active: #ffffff;
+    --accent-hover: #0070d4;
+    --accent-subtle: rgba(0, 145, 255, 0.12);
+    --accent-muted: rgba(0, 145, 255, 0.08);
+    
+    /* Connection colors - outbound (blue) and inbound (green/teal) */
+    --color-outbound: rgba(0, 145, 255, 0.85);
+    --color-outbound-glow: rgba(0, 145, 255, 0.4);
+    --color-inbound: rgba(0, 211, 170, 0.85);
+    --color-inbound-glow: rgba(0, 211, 170, 0.4);
+    --connection-stroke: rgba(0, 189, 255, 0.45);
+    
+    /* Test-backed purple family */
+    --color-test: rgba(138, 92, 255, 1);
+    --color-test-bg: rgba(138, 92, 255, 0.18);
+    --color-test-border: rgba(138, 92, 255, 0.45);
+    --color-test-glow: rgba(138, 92, 255, 0.32);
+    --color-test-text: #e7e5ff;
+    --color-test-text-muted: #cbc8f8;
+    --color-test-label: #a59fe0;
+    
+    /* Semantic code colors - for syntax-like highlighting */
+    --color-path: #7dd3fc;           /* Cyan - file paths, links */
+    --color-path-hover: #a5f3fc;     /* Lighter cyan on hover */
+    --color-symbol: #f0abfc;         /* Pink - symbols, code references */
+    --color-symbol-muted: #e8a0ff;   /* Slightly muted pink for inline code */
+    --color-workspace: #c4b5fd;      /* Purple - workspace file links */
+    --color-error: #f88;             /* Red - errors */
+    
+    /* ══════════════════════════════════════════════════════════════════════════
+       BACKGROUNDS - Surface hierarchy from deepest to most elevated
+       ══════════════════════════════════════════════════════════════════════════ */
+    
+    --bg: #18181a;                   /* App background */
+    --bg-deep: #111;                 /* Deepest surfaces (header, footer) */
+    --bg-surface: #1e1e1e;           /* Main content area */
+    --bg-elevated: #1f1f22;          /* Sidebars, panels */
+    --bg-card: #232326;              /* Cards, nodes */
+    --bg-input: #333;                /* Input fields, buttons on hover */
+    --bg-overlay: rgba(0, 0, 0, 0.5); /* Modal backdrops */
+    
+    /* Glass/frosted surfaces */
     --glass: rgba(34, 34, 37, 0.95);
+    --glass-panel: rgba(22, 22, 27, 0.92);
+    
+    /* Cluster backgrounds */
     --cluster-bg: rgba(0, 145, 255, 0.035);
     --cluster-border: rgba(0, 145, 255, 0.1);
-    --node-bg: #232326;
-    --node-border: #3f3f46;
+    
+    /* Aliases for compatibility */
+    --sidebar-bg: var(--bg-elevated);
+    --node-bg: var(--bg-card);
     --node-hover: #2f2f33;
-    --connection-stroke: rgba(0, 189, 255, 0.45);
+    
+    /* ══════════════════════════════════════════════════════════════════════════
+       BORDERS - Subtle separators and interactive states
+       ══════════════════════════════════════════════════════════════════════════ */
+    
+    --border: #2f2f34;               /* Default borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);  /* Very subtle separators */
+    --border-interactive: #3f3f46;   /* Interactive element borders */
+    --border-hover: #777;            /* Border on hover */
+    --node-border: var(--border-interactive);
+    
+    /* ══════════════════════════════════════════════════════════════════════════
+       TEXT - Hierarchy from primary to disabled
+       ══════════════════════════════════════════════════════════════════════════ */
+    
+    --text: #e4e4e4;                 /* Primary text */
+    --text-active: #fff;             /* Emphasized/active text */
+    --text-secondary: #ccc;          /* Secondary text, paragraphs */
+    --text-muted: #888;              /* Muted labels, placeholders */
+    --text-disabled: #666;           /* Disabled state */
+    --text-subtle: #777;             /* Very subtle text */
+    
+    /* Panel-specific text (legend, sidebars) */
+    --text-panel: #dee3f7;           /* Panel body text */
+    --text-panel-muted: #9ca3bc;     /* Panel labels, titles */
+    --text-panel-subtle: #6c7484;    /* Column labels, hints */
 }
 
 body {

@@ -46,12 +46,12 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #6c7484;
+    color: var(--text-panel-subtle);
 }
 
 .local-column-empty {
     font-size: 12px;
-    color: #7a8494;
+    color: var(--text-panel-subtle);
     padding: 8px 0 4px 0;
 }
 
@@ -136,7 +136,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #6c7484;
+    color: var(--text-panel-subtle);
     padding-left: 4px;
 }
 
@@ -174,7 +174,7 @@
 
 /* When hover mode is active, dim all symbol rows by default */
 .symbol-hover-active .symbol-row > * {
-    opacity: var(--hover-dim-symbols, 0.4);
+    opacity: var(--hover-dim-symbols, 0.5);
 }
 
 /* Keep highlighted symbols at full opacity */
@@ -184,7 +184,7 @@
 
 /* Dim all connection paths by default in hover mode */
 .symbol-hover-active .connection-path {
-    opacity: var(--hover-dim-connections, 0.3);
+    opacity: var(--hover-dim-connections, 0.1);
 }
 
 /* Keep highlighted connections at full opacity */
@@ -194,7 +194,7 @@
 
 /* Also target center column directly in case local-focus isn't applied */
 .symbol-hover-active .local-column.center .symbol-row:not(.symbol-highlighted) > * {
-    opacity: var(--hover-dim-symbols, 0.4);
+    opacity: var(--hover-dim-symbols, 0.5);
 }
 
 /* ==========================================
@@ -216,4 +216,28 @@
 /* Center card is always visible */
 .symbol-hover-active .local-column.center .node-card {
     opacity: 1;
+}
+
+/* ==========================================
+   Pinned Symbol Indicator
+   ========================================== */
+
+/* Make symbol rows look clickable - target the label wrapper since .symbol-row has display:contents */
+.symbol-row .symbol-label-wrapper {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: -2px -6px;
+    transition: background 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.symbol-row .symbol-label-wrapper:hover {
+    background: var(--accent-muted);
+}
+
+/* Visual indicator that a symbol is "pinned" (sticky highlight) */
+/* Target the label wrapper since .symbol-row has display:contents and can't be styled directly */
+.symbol-row.symbol-pinned .symbol-label-wrapper {
+    background: var(--accent-subtle);
+    box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }

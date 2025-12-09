@@ -40,7 +40,7 @@
 .cluster-label {
     font-size: 12px;
     font-weight: bold;
-    color: #888;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -142,7 +142,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #7a8190;
+    color: var(--text-panel-subtle);
     pointer-events: none;
 }
 

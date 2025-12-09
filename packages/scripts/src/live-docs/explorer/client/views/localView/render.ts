@@ -426,6 +426,8 @@ function createNodeCard(
 
   card.addEventListener("click", event => {
     event.stopPropagation();
+    // Clear any pinned symbol when clicking on a card (but not on a symbol row, which handles its own clicks)
+    controller.clearPinnedSymbol();
     void controller.selectNode(node);
   });
 
@@ -485,6 +487,11 @@ function createSymbolSection(
     symbolRow.addEventListener("mouseleave", () => {
       controller.clearSymbolHighlight();
     });
+    // Add click handler for "sticky" pinned highlighting (useful for mobile & exploring large files)
+    symbolRow.addEventListener("click", (event) => {
+      event.stopPropagation();
+      controller.togglePinnedSymbol(node.id, symbol);
+    });
 
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
@@ -514,7 +521,7 @@ function createSymbolSection(
         labelWrapper.dataset.targetId = firstResolved.targetId;
         labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
         labelWrapper.addEventListener("click", event => {
-          event.stopPropagation();
+          // Don't stop propagation - let the row's click handler also fire to toggle pin
           const targetNode = controller.options.nodesById.get(firstResolved.targetId);
           if (targetNode) {
             void controller.focusSidebar(targetNode);
@@ -558,6 +565,11 @@ function createSymbolSection(
     });
     internalsRow.addEventListener("mouseleave", () => {
       controller.clearSymbolHighlight();
+    });
+    // Add click handler for "sticky" pinned highlighting
+    internalsRow.addEventListener("click", (event) => {
+      event.stopPropagation();
+      controller.togglePinnedSymbol(node.id, "__internals__");
     });
 
     const internalsInbound = document.createElement("div");
@@ -657,7 +669,7 @@ function createTypeBadge(
     if (firstResolved?.targetId) {
       badge.classList.add("clickable");
       badge.addEventListener("click", event => {
-        event.stopPropagation();
+        // Don't stop propagation - let the row's click handler also fire to toggle pin
         const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
         if (targetNode) {
           void controller.focusSidebar(targetNode);
