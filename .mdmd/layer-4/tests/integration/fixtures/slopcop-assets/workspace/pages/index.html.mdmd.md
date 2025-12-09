@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/pages/index.html
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-pages-index-html
-- Generated At: 2025-11-18T20:51:26.692Z
+- Generated At: 2025-12-09T16:07:42.343Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Fixture HTML page that exercises SlopCop asset validation by referencing both va
 - Update alongside configured asset expectations to keep lint behaviour deterministic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:26.692Z","inputHash":"e88cb5b159b6a31e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:07:42.343Z","inputHash":"868296bcadd654dd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,5 +25,14 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`awesome`](../public/fonts/awesome.woff2.mdmd.md)
+- [`banner-hash.123abc456def7890`](../public/images/banner-hash.123abc456def7890.png.mdmd.md)
+- [`banner`](../public/images/banner.png.mdmd.md)
+- [`banner@2x`](../public/images/banner@2x.png.mdmd.md)
+- [`gallery`](../public/images/gallery.png.mdmd.md)
+- [`missing`](../public/images/missing.png.mdmd.md)
+- [`trailer`](../public/images/trailer.jpg.mdmd.md)
+- [`missing`](../public/styles/missing.css.mdmd.md)
+- [`intro`](../public/videos/intro.mp4.mdmd.md)
+- [`site`](../styles/site.css.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

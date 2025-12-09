@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/styles/site.css
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-styles-site-css
-- Generated At: 2025-11-18T20:51:26.713Z
+- Generated At: 2025-12-09T16:07:42.356Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ CSS asset used by the SlopCop asset audit fixture to model a valid stylesheet re
 - Update alongside fixture HTML and configuration when testing new asset scenarios.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:26.713Z","inputHash":"77a17c89e3a84644"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:07:42.356Z","inputHash":"790ad29576928567"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,5 +25,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`awesome`](../public/fonts/awesome.woff2.mdmd.md)
+- [`ghost`](../public/fonts/ghost.woff2.mdmd.md)
+- [`background`](../public/images/background.png.mdmd.md)
+- [`icon.d41d8cd98f00aa11`](../public/images/icon.d41d8cd98f00aa11.png.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

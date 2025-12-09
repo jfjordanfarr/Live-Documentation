@@ -520,7 +520,7 @@ function createSymbolSection(
       if (firstResolved?.targetId) {
         labelWrapper.dataset.targetId = firstResolved.targetId;
         labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
-        labelWrapper.addEventListener("click", event => {
+        labelWrapper.addEventListener("click", _event => {
           // Don't stop propagation - let the row's click handler also fire to toggle pin
           const targetNode = controller.options.nodesById.get(firstResolved.targetId);
           if (targetNode) {
@@ -668,7 +668,7 @@ function createTypeBadge(
     const firstResolved = refs.find(r => r.isResolved);
     if (firstResolved?.targetId) {
       badge.classList.add("clickable");
-      badge.addEventListener("click", event => {
+      badge.addEventListener("click", _event => {
         // Don't stop propagation - let the row's click handler also fire to toggle pin
         const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
         if (targetNode) {

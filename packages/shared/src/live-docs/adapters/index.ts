@@ -4,6 +4,8 @@ import type { SourceAnalysisResult } from "../core";
 import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
 import { csharpAdapter } from "./csharp";
+import { cssAdapter } from "./css";
+import { htmlAdapter } from "./html";
 import { javaAdapter } from "./java";
 import { powershellAdapter } from "./powershell";
 import { pythonAdapter } from "./python";
@@ -20,6 +22,8 @@ const ADAPTERS: readonly LanguageAdapter[] = [
   cAdapter,
   csharpAdapter,
   aspNetMarkupAdapter,
+  cssAdapter,
+  htmlAdapter,
   javaAdapter,
   powershellAdapter,
   pythonAdapter,

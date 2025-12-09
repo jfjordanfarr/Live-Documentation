@@ -99,7 +99,24 @@ export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "tests/**/*.cpp",
   "tests/**/*.html",
   "tests/**/*.css",
-  "tests/**/*.json"
+  "tests/**/*.json",
+  // Static assets — stub-like Live Docs for graph connectivity (2025-11-08 vision)
+  "tests/**/*.png",
+  "tests/**/*.jpg",
+  "tests/**/*.jpeg",
+  "tests/**/*.gif",
+  "tests/**/*.svg",
+  "tests/**/*.ico",
+  "tests/**/*.webp",
+  "tests/**/*.woff",
+  "tests/**/*.woff2",
+  "tests/**/*.ttf",
+  "tests/**/*.eot",
+  "tests/**/*.mp4",
+  "tests/**/*.webm",
+  "tests/**/*.mp3",
+  "tests/**/*.wav",
+  "tests/**/*.ogg"
 ];
 
 export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {

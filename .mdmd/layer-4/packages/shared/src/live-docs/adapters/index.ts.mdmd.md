@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2025-12-09T01:18:23.243Z
+- Generated At: 2025-12-09T15:23:04.298Z
 
 ## Authored
 ### Purpose
@@ -16,16 +16,16 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.243Z","inputHash":"d03d9f17b3fd3723"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T15:23:04.298Z","inputHash":"c63109d5ace5aad3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L13)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L15)
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L38)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L42)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -44,6 +44,8 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [`aspnet.aspNetMarkupAdapter`](./aspnet.ts.mdmd.md#symbol-aspnetmarkupadapter)
 - [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
 - [`csharp.csharpAdapter`](./csharp.ts.mdmd.md#symbol-csharpadapter)
+- [`css.cssAdapter`](./css.ts.mdmd.md#symbol-cssadapter)
+- [`html.htmlAdapter`](./html.ts.mdmd.md#symbol-htmladapter)
 - [`java.javaAdapter`](./java.ts.mdmd.md#symbol-javaadapter)
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
