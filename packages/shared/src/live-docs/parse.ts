@@ -133,12 +133,8 @@ function parseSymbolSection(section: string): Set<string> {
   const symbols = new Set<string>();
   const lines = section.split(/\r?\n/);
   for (const line of lines) {
-    const bulletMatch = line.match(/-\s+`([^`]+)`/);
-    if (bulletMatch) {
-      symbols.add(bulletMatch[1]);
-      continue;
-    }
-
+    // Only match H4 symbol headings like: #### `symbolName` {#anchor}
+    // Do NOT match arbitrary bullets with backticks (e.g., documentation text like "- `@param`")
     const headingMatch = line.match(/^####\s+`([^`]+)`/);
     if (headingMatch) {
       symbols.add(headingMatch[1]);

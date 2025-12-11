@@ -22,6 +22,10 @@ const {
 
 const MIN_SYMBOL_PRECISION = 0.9;
 const MIN_DEPENDENCY_RECALL = 0.8;
+// Per-file floor: targets internal modules where symbol extraction may
+// incorrectly mark non-exported helpers as public symbols.
+// Set at 75% to surface extraction bugs for remediation.
+const MIN_PER_FILE_SYMBOL_PRECISION = 0.75;
 
 interface ComparisonMetrics {
   tp: number;
@@ -187,6 +191,21 @@ async function main(): Promise<void> {
   if (summaryDependencies.recall < MIN_DEPENDENCY_RECALL) {
     thresholdFailures.push(
       `Dependency recall ${summaryDependencies.recall.toFixed(3)} fell below ${MIN_DEPENDENCY_RECALL.toFixed(3)}`
+    );
+  }
+
+  // Per-file precision floor: flag files with non-trivial symbol counts that fall below threshold
+  const perFileFailures = report.files
+    .filter((file) => {
+      // Only enforce threshold when the file has symbols to measure (TP + FP + FN > 0)
+      const totalRelevant = file.symbols.tp + file.symbols.fp + file.symbols.fn;
+      return totalRelevant > 0 && file.symbols.precision < MIN_PER_FILE_SYMBOL_PRECISION;
+    })
+    .map((file) => `${file.sourcePath}: ${(file.symbols.precision * 100).toFixed(1)}%`);
+
+  if (perFileFailures.length > 0) {
+    thresholdFailures.push(
+      `${perFileFailures.length} file(s) fell below per-file symbol precision floor (${(MIN_PER_FILE_SYMBOL_PRECISION * 100).toFixed(0)}%):\n    ${perFileFailures.slice(0, 10).join("\n    ")}${perFileFailures.length > 10 ? `\n    ... and ${perFileFailures.length - 10} more` : ""}`
     );
   }
 

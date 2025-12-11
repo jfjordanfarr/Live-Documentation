@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2025-12-11T02:48:44.218Z",
+  "recordedAt": "2025-12-11T15:28:57.496Z",
   "environment": {
     "nodeVersion": "v22.14.0",
     "platform": "win32",
@@ -13,8 +13,8 @@
   "data": {
     "mode": "ast",
     "thresholds": {
-      "precision": 0.6,
-      "recall": 0.6
+      "precision": 0.95,
+      "recall": 0.85
     },
     "totals": {
       "totalEvaluated": 1164,

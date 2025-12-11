@@ -85,8 +85,8 @@ interface TypeScriptOracleModule {
 
 const REPO_ROOT = getRepoRoot(__dirname);
 const FIXTURE_ROOT = resolveRepoPath("tests", "integration", "benchmarks", "fixtures");
-const PRECISION_THRESHOLD = Number(process.env.BENCHMARK_PRECISION_THRESHOLD ?? "0.6");
-const RECALL_THRESHOLD = Number(process.env.BENCHMARK_RECALL_THRESHOLD ?? "0.6");
+const PRECISION_THRESHOLD = Number(process.env.BENCHMARK_PRECISION_THRESHOLD ?? "0.95");
+const RECALL_THRESHOLD = Number(process.env.BENCHMARK_RECALL_THRESHOLD ?? "0.85");
 const BENCHMARK_MODE = (process.env.BENCHMARK_MODE ?? "self-similarity").toLowerCase();
 const requireModule = createRequire(__filename);
 const oracleModulePath = path.join(
