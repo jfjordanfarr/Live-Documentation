@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/fallbackInference.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-fallbackinference-test-ts
-- Generated At: 2025-11-20T21:07:33.648Z
+- Generated At: 2025-12-11T02:38:01.705Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks in the fallback inference contract from T054–T056—heuristic markdown/c
 Later assertions track the TypeScript runtime/type split and regression fixes from [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) while leaving room for the language-specific suites captured in `fallbackInference.languages.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:33.648Z","inputHash":"a7f27157ee9c9e54"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.705Z","inputHash":"a7f27157ee9c9e54"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,10 +35,7 @@ _No public symbols detected_
 #### Vitest Unit Tests
 - packages/shared/src/domain: [artifacts.ts](../domain/artifacts.ts.mdmd.md)
 - packages/shared/src/inference: [fallbackHeuristicTypes.ts](./fallbackHeuristicTypes.ts.mdmd.md), [fallbackInference.ts](./fallbackInference.ts.mdmd.md)
-- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](./heuristics/artifactLayerUtils.ts.mdmd.md), [cFunctions.ts](./heuristics/cFunctions.ts.mdmd.md), [csharp.ts](./heuristics/csharp.ts.mdmd.md), [directives.ts](./heuristics/directives.ts.mdmd.md), [heuristics/index.ts](./heuristics/index.ts.mdmd.md), [imports.ts](./heuristics/imports.ts.mdmd.md)
-  [includes.ts](./heuristics/includes.ts.mdmd.md), [java.ts](./heuristics/java.ts.mdmd.md), [markdown.ts](./heuristics/markdown.ts.mdmd.md), [powershell.ts](./heuristics/powershell.ts.mdmd.md), [referenceResolver.ts](./heuristics/referenceResolver.ts.mdmd.md), [ruby.ts](./heuristics/ruby.ts.mdmd.md)
-  [rust.ts](./heuristics/rust.ts.mdmd.md), [shared.ts](./heuristics/shared.ts.mdmd.md), [webforms.ts](./heuristics/webforms.ts.mdmd.md)
-- packages/shared/src/language: [typeScriptAstUtils.ts](../language/typeScriptAstUtils.ts.mdmd.md)
+- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](./heuristics/artifactLayerUtils.ts.mdmd.md), [heuristics/index.ts](./heuristics/index.ts.mdmd.md), [shared.ts](./heuristics/shared.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

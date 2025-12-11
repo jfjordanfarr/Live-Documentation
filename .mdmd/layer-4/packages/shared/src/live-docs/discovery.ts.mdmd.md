@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2025-12-09T01:54:29.237Z
+- Generated At: 2025-12-11T02:38:02.118Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:54:29.237Z","inputHash":"4ff1234dca4d2e73"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.118Z","inputHash":"4ff1234dca4d2e73"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -137,23 +137,3 @@ The resolved location, or undefined if not found.
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [generator.test.ts](../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
-- [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
-- [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
-- [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
-- [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
-- [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
-- [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
-- [python.typeref.test.ts](./adapters/python.typeref.test.ts.mdmd.md)
-- [ruby.docstring.test.ts](./adapters/ruby.docstring.test.ts.mdmd.md)
-- [ruby.typeref.test.ts](./adapters/ruby.typeref.test.ts.mdmd.md)
-- [rust.docstring.test.ts](./adapters/rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./adapters/rust.typeref.test.ts.mdmd.md)
-- [core.docstring.test.ts](./core.docstring.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

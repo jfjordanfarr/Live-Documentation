@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/coActivationPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-coactivationplan-ts
-- Generated At: 2025-12-07T16:27:06.741Z
+- Generated At: 2025-12-11T02:38:01.142Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - `deriveClusterIdentity()` picks a descriptive slug from common path segments or highest-degree node
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.741Z","inputHash":"4af94a342f1269bd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.142Z","inputHash":"4af94a342f1269bd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildCoActivationPlans` {#symbol-buildcoactivationplans}
@@ -55,9 +55,3 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - [`utils.formatDisplayName`](../utils.ts.mdmd.md#symbol-formatdisplayname)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [generator.test.ts](../generator.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

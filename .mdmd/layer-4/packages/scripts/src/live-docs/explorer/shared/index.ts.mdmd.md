@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-index-ts
-- Generated At: 2025-12-07T16:27:05.639Z
+- Generated At: 2025-12-11T02:41:25.833Z
 
 ## Authored
 ### Purpose
@@ -17,160 +17,10 @@ Barrel export for the Explorer shared module. Re-exports types, Local Map builde
 - Shared by server (HTTP endpoints) and client (browser rendering)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:05.639Z","inputHash":"5f230b8ab3559c63"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:41:25.833Z","inputHash":"6d4754b7693dc97a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `ExplorerDependencyReference` {#symbol-explorerdependencyreference}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerDetailPayload` {#symbol-explorerdetailpayload}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerGraphStats` {#symbol-explorergraphstats}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerLinkKind` {#symbol-explorerlinkkind}
-- Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerNodePayload` {#symbol-explorernodepayload}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerPublicSymbol` {#symbol-explorerpublicsymbol}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `ExplorerTypeReference` {#symbol-explorertypereference}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L7)
-
-#### `BuildLocalMapOptions` {#symbol-buildlocalmapoptions}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `buildNormalizedAnchorKey` {#symbol-buildnormalizedanchorkey}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LOCAL_MAP_SCHEMA_VERSION` {#symbol-local_map_schema_version}
-- Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapColumn` {#symbol-localmapcolumn}
-- Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapData` {#symbol-localmapdata}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapEdge` {#symbol-localmapedge}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapMetadata` {#symbol-localmapmetadata}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapNode` {#symbol-localmapnode}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapStats` {#symbol-localmapstats}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `LocalMapSymbolAnchor` {#symbol-localmapsymbolanchor}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `normalizeSymbolIdentifier` {#symbol-normalizesymbolidentifier}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L10)
-
-#### `buildLocalMapData` {#symbol-buildlocalmapdata}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L11)
-
-#### `buildTestCoverageMap` {#symbol-buildtestcoveragemap}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L11)
-
-#### `TestCoverageMap` {#symbol-testcoveragemap}
-- Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L11)
-
-#### `buildSymbolIndex` {#symbol-buildsymbolindex}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `STATIC_EXPLORER_SCHEMA_VERSION` {#symbol-static_explorer_schema_version}
-- Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `STATIC_EXPLORER_VERSION` {#symbol-static_explorer_version}
-- Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerBuildOptions` {#symbol-staticexplorerbuildoptions}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerData` {#symbol-staticexplorerdata}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerSymbolEntry` {#symbol-staticexplorersymbolentry}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerSymbolIndex` {#symbol-staticexplorersymbolindex}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerTreemapLayout` {#symbol-staticexplorertreemaplayout}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerTreemapNode` {#symbol-staticexplorertreemapnode}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `StaticExplorerViewerConfig` {#symbol-staticexplorerviewerconfig}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L14)
-
-#### `buildLocalMapJson` {#symbol-buildlocalmapjson}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L15)
-
-#### `buildStaticExplorer` {#symbol-buildstaticexplorer}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L15)
-
-#### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L15)
-
-#### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/index.ts#L15)
+_No public symbols detected_
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -181,3 +31,120 @@ Barrel export for the Explorer shared module. Re-exports types, Local Map builde
 - [`staticExplorerData`](./staticExplorerData.ts.mdmd.md) (re-export)
 - [`types`](./types.ts.mdmd.md) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Re-Exported Symbol Anchors -->
+### Re-Exported Symbol Anchors
+#### `buildLocalMapData` {#symbol-buildlocalmapdata}
+- Re-exported from [`localMapBuilder`](./localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
+
+#### `buildLocalMapJson` {#symbol-buildlocalmapjson}
+- Re-exported from [`staticBuilder`](./staticBuilder.ts.mdmd.md#symbol-buildlocalmapjson)
+
+#### `BuildLocalMapOptions` {#symbol-buildlocalmapoptions}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-buildlocalmapoptions)
+
+#### `buildNormalizedAnchorKey` {#symbol-buildnormalizedanchorkey}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-buildnormalizedanchorkey)
+
+#### `buildStaticExplorer` {#symbol-buildstaticexplorer}
+- Re-exported from [`staticBuilder`](./staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
+
+#### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
+- Re-exported from [`staticBuilder`](./staticBuilder.ts.mdmd.md#symbol-buildstaticexploreroptions)
+
+#### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
+- Re-exported from [`staticBuilder`](./staticBuilder.ts.mdmd.md#symbol-buildstaticexplorerresult)
+
+#### `buildSymbolIndex` {#symbol-buildsymbolindex}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-buildsymbolindex)
+
+#### `buildTestCoverageMap` {#symbol-buildtestcoveragemap}
+- Re-exported from [`localMapBuilder`](./localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
+
+#### `ExplorerDependencyReference` {#symbol-explorerdependencyreference}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorerdependencyreference)
+
+#### `ExplorerDetailPayload` {#symbol-explorerdetailpayload}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorerdetailpayload)
+
+#### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorergraphpayload)
+
+#### `ExplorerGraphStats` {#symbol-explorergraphstats}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorergraphstats)
+
+#### `ExplorerLinkKind` {#symbol-explorerlinkkind}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorerlinkkind)
+
+#### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorerlinkpayload)
+
+#### `ExplorerNodePayload` {#symbol-explorernodepayload}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorernodepayload)
+
+#### `ExplorerPublicSymbol` {#symbol-explorerpublicsymbol}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorerpublicsymbol)
+
+#### `ExplorerTypeReference` {#symbol-explorertypereference}
+- Re-exported from [`types`](./types.ts.mdmd.md#symbol-explorertypereference)
+
+#### `LOCAL_MAP_SCHEMA_VERSION` {#symbol-local_map_schema_version}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-local_map_schema_version)
+
+#### `LocalMapColumn` {#symbol-localmapcolumn}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapcolumn)
+
+#### `LocalMapData` {#symbol-localmapdata}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapdata)
+
+#### `LocalMapEdge` {#symbol-localmapedge}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapedge)
+
+#### `LocalMapMetadata` {#symbol-localmapmetadata}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapmetadata)
+
+#### `LocalMapNode` {#symbol-localmapnode}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapnode)
+
+#### `LocalMapStats` {#symbol-localmapstats}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapstats)
+
+#### `LocalMapSymbolAnchor` {#symbol-localmapsymbolanchor}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-localmapsymbolanchor)
+
+#### `normalizeSymbolIdentifier` {#symbol-normalizesymbolidentifier}
+- Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-normalizesymbolidentifier)
+
+#### `STATIC_EXPLORER_SCHEMA_VERSION` {#symbol-static_explorer_schema_version}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_schema_version)
+
+#### `STATIC_EXPLORER_VERSION` {#symbol-static_explorer_version}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_version)
+
+#### `StaticExplorerBuildOptions` {#symbol-staticexplorerbuildoptions}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerbuildoptions)
+
+#### `StaticExplorerData` {#symbol-staticexplorerdata}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata)
+
+#### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerprovenance)
+
+#### `StaticExplorerSymbolEntry` {#symbol-staticexplorersymbolentry}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorersymbolentry)
+
+#### `StaticExplorerSymbolIndex` {#symbol-staticexplorersymbolindex}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorersymbolindex)
+
+#### `StaticExplorerTreemapLayout` {#symbol-staticexplorertreemaplayout}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorertreemaplayout)
+
+#### `StaticExplorerTreemapNode` {#symbol-staticexplorertreemapnode}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorertreemapnode)
+
+#### `StaticExplorerViewerConfig` {#symbol-staticexplorerviewerconfig}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerviewerconfig)
+
+#### `TestCoverageMap` {#symbol-testcoveragemap}
+- Re-exported from [`localMapBuilder`](./localMapBuilder.ts.mdmd.md#symbol-testcoveragemap)
+<!-- LIVE-DOC:END Re-Exported Symbol Anchors -->

@@ -572,6 +572,19 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1780-L1850` — **Chat Archaeology requires full source reads**: When authoring Live Documentation Purpose/Notes sections, read the COMPLETE source code file AND the current Live Doc file AND the relevant chat history. No shortcuts. "We do it right and we do it completely the first time."
 - `L1900-L1950` — **One file at a time for Chat Archaeology**: Do not parallelize Chat Archaeology; focus on getting one file right before moving to the next. Multi-edit batch approaches produce generic placeholder content instead of substantive documentation.
 
+## 2025-12-09 (Dev Day 40)
+### Chat 1 (2025-12-09.1.md) — CSS Theme Consolidation + Sticky Symbol Highlighting
+- `2025-12-09.1.md:L570-L590` — **Emoji indicators are out of fashion**: When designing UI affordances, prefer visual treatments (glows, borders, highlights) over emoji indicators like 📌; emoji-based UI is "rapidly falling out of fashion."
+- `L680-L720` — **`display: contents` CSS workaround**: Elements with `display: contents` don't participate in the box model—target their visible child elements (e.g., `.symbol-label-wrapper`) instead of the phantom parent when applying visual styles like glows.
+- `L750-L780` — **Mobile-friendly exploration**: Sticky symbol highlighting (click-to-pin) enables mobile users to "strike their proverbial piton into a symbol and scroll around to find everything related" without relying on hover states.
+
+### Chat 2 (2025-12-09.2.md) — HTML/CSS Adapters + Document Root Detection
+- `2025-12-09.2.md:L420-L460` — **Solve the actual problem, don't work around**: When facing path resolution issues, reject workarounds (modifying fixtures, documenting limitations) in favor of fixing the underlying resolution logic; "Please read through the user-intent-census.md in full to get a sense for the kind of expectations I have."
+- `L580-L620` — **"Total panopticon visibility" for assets**: Binary assets (images, fonts, videos) need stub Live Docs so graph edges can form TO them; deleting `banner.png` should show that `index.html` would be affected.
+- `L850-L890` — **Document root detection heuristic**: Web projects commonly use `public/`, `wwwroot/`, `static/`, `dist/`, `assets/` as static asset roots; path resolution should check these sibling directories when server-root-relative paths (`/images/...`) don't resolve directly.
+- `L1050-L1090` — **Three pieces of context for Chat Archaeology**: When authoring Live Doc Purpose/Notes, must read: (1) the chat history relevant to file creation, (2) the complete source file, (3) the current Live Doc file unabridged. "I was very clear that the context required to do one correctly is so large as to nearly make it impossible to parallelize."
+- `L1120-L1150` — **Distinguish file creation from Live Doc generation**: Authored content should note when the SOURCE FILE was created (e.g., "Created: 2025-10-27") separately from when the Live Doc was generated (e.g., "Live Doc: 2025-12-09"); accurate provenance requires this distinction.
+
 ## 2025-12-07 (Dev Day 38)
 ### Chat 3 (2025-12-07.3.md) — French Corset Refinements + Audit Fixes
 - `2025-12-07.3.md:L165-L185` — **Self-loop tapering**: French Corset connectors should thin from standard line thickness to half as they exit the outbound pin and wrap behind the card, then thicken as they approach the inbound pin; provide a tuning slider to control this effect.

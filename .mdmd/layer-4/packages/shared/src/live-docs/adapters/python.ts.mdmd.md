@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2025-12-09T01:18:23.278Z
+- Generated At: 2025-12-11T02:38:02.005Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Implements the Python adapter that normalizes reST, Google, and NumPy docstrings
 - Guard rails come from `python.docstring.test.ts` and the `safe:commit -- --benchmarks` run that accompanied the rollout; update those fixtures when extending the parser <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.278Z","inputHash":"49915f982e5d8696"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.005Z","inputHash":"8f1869a6ba1c617f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L34)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L29)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -34,33 +34,18 @@ on Python runtime introspection.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `./python.docstring` - `parseDocstring`
 - `node:fs` - `promises`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
-- [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
-- [`core.SymbolDocumentationExample`](../core.ts.mdmd.md#symbol-symboldocumentationexample) (type-only)
-- [`core.SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [generator.test.ts](../../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
-- [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
-- [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
-- [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
-- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
-- [powershell.test.ts](./powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
 - [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
-- [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
-- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
-- [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-- [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

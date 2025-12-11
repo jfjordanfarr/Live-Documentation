@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-ruby-ts
-- Generated At: 2025-12-09T01:18:23.295Z
+- Generated At: 2025-12-11T02:38:02.025Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 - Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.295Z","inputHash":"5188e9e201bbaf7d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.025Z","inputHash":"5188e9e201bbaf7d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
@@ -44,19 +44,6 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [generator.test.ts](../../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
-- [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
-- [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
-- [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
-- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
-- [powershell.test.ts](./powershell.test.ts.mdmd.md)
-- [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
-- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
 - [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
-- [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-- [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

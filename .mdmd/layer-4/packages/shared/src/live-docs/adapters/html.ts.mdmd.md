@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/html.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-html-ts
-- Generated At: 2025-12-09T17:30:00.834Z
+- Generated At: 2025-12-11T02:38:01.938Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Returns empty symbols array since HTML files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T17:30:00.834Z","inputHash":"513f9b870e2fdd7e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.938Z","inputHash":"513f9b870e2fdd7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `htmlAdapter` {#symbol-htmladapter}
@@ -38,3 +38,9 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [html.test.ts](./html.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

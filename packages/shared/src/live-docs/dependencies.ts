@@ -381,6 +381,12 @@ export function shouldInferDomDependencies(extension: string): boolean {
 /**
  * Augments symbol list with re-exported symbols from star exports.
  *
+ * For pure barrel files (no existing symbols), re-exports are returned in the
+ * `reExports` array rather than being added to `symbols`. This ensures:
+ * - The "Public Symbols" section correctly shows no declared symbols
+ * - The "Re-Exported Symbol Anchors" section lists what the barrel re-exports
+ * - Precision metrics remain accurate (re-exports aren't declared in the file)
+ *
  * @param params - Parameters for augmentation
  * @returns Object containing augmented symbols and re-export info
  */
@@ -405,21 +411,10 @@ export async function augmentWithReExportedSymbols(params: {
     return { symbols: params.existingSymbols, reExports: [] };
   }
 
-  if (params.existingSymbols.length === 0) {
-    const additions: PublicSymbolEntry[] = reExports.map((info) => ({
-      name: info.name,
-      kind: info.kind,
-      isDefault: false,
-      isTypeOnly: info.isTypeOnly,
-      documentation: undefined,
-      location: info.location
-    }));
-    return {
-      symbols: [...params.existingSymbols, ...additions],
-      reExports: []
-    };
-  }
-
+  // Always return re-exports in the dedicated array. For pure barrel files
+  // (existingSymbols.length === 0), this ensures the Public Symbols section
+  // correctly shows "No public symbols detected" while the Re-Exported Symbol
+  // Anchors section displays the re-exported API surface.
   return { symbols: params.existingSymbols, reExports };
 }
 

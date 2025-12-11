@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-c-ts
-- Generated At: 2025-12-09T01:18:23.222Z
+- Generated At: 2025-12-11T02:38:01.865Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 - Extend both the parser and its test scenarios when onboarding new Doxygen tags, following the coverage matrix captured in the adapter plan <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.222Z","inputHash":"b57711b81f72e25d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.865Z","inputHash":"b57711b81f72e25d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cAdapter` {#symbol-cadapter}
@@ -43,19 +43,5 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [generator.test.ts](../../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
-- [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
-- [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
-- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
-- [powershell.test.ts](./powershell.test.ts.mdmd.md)
-- [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
-- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
-- [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
-- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
-- [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-- [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

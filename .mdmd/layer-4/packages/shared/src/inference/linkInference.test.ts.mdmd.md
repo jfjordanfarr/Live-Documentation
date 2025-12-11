@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/linkInference.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-linkinference-test-ts
-- Generated At: 2025-11-20T21:07:33.776Z
+- Generated At: 2025-12-11T02:38:01.798Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates that the link inference orchestrator fuses fallback heuristics, worksp
 Keeps the orchestrator’s provider/feed summaries and trace outputs aligned with the pipeline expectations that the markdown watcher and diagnostics publisher consume—codified across the US1 plumbing captured in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-12-stand-up-markdown-watcher-lines-658-824](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-12-stand-up-markdown-watcher-lines-658-824).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:33.776Z","inputHash":"4870139ed04d0a9a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.798Z","inputHash":"4870139ed04d0a9a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -37,11 +37,8 @@ _No public symbols detected_
 - packages/shared/src/db: [graphStore.ts](../db/graphStore.ts.mdmd.md)
 - packages/shared/src/domain: [artifacts.ts](../domain/artifacts.ts.mdmd.md)
 - packages/shared/src/inference: [fallbackHeuristicTypes.ts](./fallbackHeuristicTypes.ts.mdmd.md), [fallbackInference.ts](./fallbackInference.ts.mdmd.md), [linkInference.ts](./linkInference.ts.mdmd.md)
-- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](./heuristics/artifactLayerUtils.ts.mdmd.md), [cFunctions.ts](./heuristics/cFunctions.ts.mdmd.md), [csharp.ts](./heuristics/csharp.ts.mdmd.md), [directives.ts](./heuristics/directives.ts.mdmd.md), [heuristics/index.ts](./heuristics/index.ts.mdmd.md), [imports.ts](./heuristics/imports.ts.mdmd.md)
-  [includes.ts](./heuristics/includes.ts.mdmd.md), [java.ts](./heuristics/java.ts.mdmd.md), [markdown.ts](./heuristics/markdown.ts.mdmd.md), [powershell.ts](./heuristics/powershell.ts.mdmd.md), [referenceResolver.ts](./heuristics/referenceResolver.ts.mdmd.md), [ruby.ts](./heuristics/ruby.ts.mdmd.md)
-  [rust.ts](./heuristics/rust.ts.mdmd.md), [shared.ts](./heuristics/shared.ts.mdmd.md), [webforms.ts](./heuristics/webforms.ts.mdmd.md)
+- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](./heuristics/artifactLayerUtils.ts.mdmd.md), [heuristics/index.ts](./heuristics/index.ts.mdmd.md), [shared.ts](./heuristics/shared.ts.mdmd.md)
 - packages/shared/src/knowledge: [knowledgeGraphBridge.ts](../knowledge/knowledgeGraphBridge.ts.mdmd.md)
-- packages/shared/src/language: [typeScriptAstUtils.ts](../language/typeScriptAstUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

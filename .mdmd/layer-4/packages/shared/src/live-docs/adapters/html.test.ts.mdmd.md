@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/html.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-html-test-ts
-- Generated At: 2025-12-09T15:24:37.848Z
+- Generated At: 2025-12-11T02:38:01.932Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Unit test suite for the HTML language adapter, validating dependency extraction 
 - Tests deduplication of repeated references and srcset multi-URL parsing
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T15:24:37.848Z","inputHash":"3b5011a4bdb0dfd0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.932Z","inputHash":"3b5011a4bdb0dfd0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -37,7 +37,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
+- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [html.ts](./html.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

@@ -289,6 +289,58 @@ async function ingestSpecifier(params: {
   params.targets.add(normalized);
 }
 
+/**
+ * Detects whether a source file is a "barrel" or "index" file.
+ *
+ * Barrel files are characterized by:
+ * - Named index.ts/index.js (or variants)
+ * - OR consisting primarily of re-export statements with minimal implementation
+ *
+ * When expanding test dependencies transitively, we stop at barrel files
+ * because they re-export many modules that the test doesn't actually use.
+ */
+function isBarrelFile(absolutePath: string, sourceFile: ts.SourceFile): boolean {
+  const fileName = path.basename(absolutePath).toLowerCase();
+
+  // Check filename pattern: index.ts, index.js, index.mts, etc.
+  if (/^index\.[cm]?[jt]sx?$/.test(fileName)) {
+    return true;
+  }
+
+  // Check content: if >80% of top-level statements are exports/re-exports, it's a barrel
+  const statements = sourceFile.statements;
+  if (statements.length === 0) {
+    return false;
+  }
+
+  let exportStatements = 0;
+  for (const statement of statements) {
+    if (ts.isExportDeclaration(statement) || ts.isExportAssignment(statement)) {
+      exportStatements++;
+    } else if (
+      ts.isImportDeclaration(statement) &&
+      !statement.importClause
+    ) {
+      // Side-effect import like `import "./polyfill"` - not an export
+      continue;
+    } else if (ts.isImportDeclaration(statement)) {
+      // Regular import for re-export - count as part of barrel pattern
+      continue;
+    } else {
+      // Any other statement (function, class, variable declaration with logic)
+      // indicates this is not a pure barrel
+    }
+  }
+
+  // If more than 80% of non-import statements are exports, treat as barrel
+  const nonImportStatements = statements.filter((s) => !ts.isImportDeclaration(s));
+  if (nonImportStatements.length === 0) {
+    return false;
+  }
+
+  return exportStatements / nonImportStatements.length >= 0.8;
+}
+
 async function expandTargetsWithDependencies(params: {
   targets: Set<string>;
   workspaceRoot: string;
@@ -323,6 +375,14 @@ async function expandTargetsWithDependencies(params: {
 
     const scriptKind = inferScriptKind(extension);
     const sourceFile = ts.createSourceFile(absolute, content, ts.ScriptTarget.Latest, true, scriptKind);
+
+    // Skip transitive expansion through barrel files
+    // Barrel files re-export many modules, but tests importing from them
+    // typically only use a subset. Expanding through barrels causes false
+    // positives where a test is marked as "covering" modules it never touches.
+    if (isBarrelFile(absolute, sourceFile)) {
+      continue;
+    }
 
     const specifiers = new Set<string>();
     collectModuleSpecifiers(sourceFile, specifiers);

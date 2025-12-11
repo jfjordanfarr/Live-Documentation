@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/rules/relationshipRuleProvider.test.ts
 - Live Doc ID: LD-test-packages-shared-src-rules-relationshipruleprovider-test-ts
-- Generated At: 2025-11-20T21:07:34.184Z
+- Generated At: 2025-12-11T02:38:02.250Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the relationship rule provider end-to-end—loading configs, compiling
 - Exercises graph-store integration, heuristic lookups, and rule warnings the day the provider was hardened, catching regressions before they impact graph audits.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T21:07:34.184Z","inputHash":"e4510aaa822dbb9b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.250Z","inputHash":"e4510aaa822dbb9b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -42,11 +42,8 @@ _No public symbols detected_
 - packages/shared/src/db: [graphStore.ts](../db/graphStore.ts.mdmd.md)
 - packages/shared/src/domain: [artifacts.ts](../domain/artifacts.ts.mdmd.md)
 - packages/shared/src/inference: [fallbackHeuristicTypes.ts](../inference/fallbackHeuristicTypes.ts.mdmd.md), [fallbackInference.ts](../inference/fallbackInference.ts.mdmd.md), [linkInference.ts](../inference/linkInference.ts.mdmd.md)
-- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](../inference/heuristics/artifactLayerUtils.ts.mdmd.md), [cFunctions.ts](../inference/heuristics/cFunctions.ts.mdmd.md), [csharp.ts](../inference/heuristics/csharp.ts.mdmd.md), [directives.ts](../inference/heuristics/directives.ts.mdmd.md), [heuristics/index.ts](../inference/heuristics/index.ts.mdmd.md), [imports.ts](../inference/heuristics/imports.ts.mdmd.md)
-  [includes.ts](../inference/heuristics/includes.ts.mdmd.md), [java.ts](../inference/heuristics/java.ts.mdmd.md), [markdown.ts](../inference/heuristics/markdown.ts.mdmd.md), [powershell.ts](../inference/heuristics/powershell.ts.mdmd.md), [referenceResolver.ts](../inference/heuristics/referenceResolver.ts.mdmd.md), [ruby.ts](../inference/heuristics/ruby.ts.mdmd.md)
-  [rust.ts](../inference/heuristics/rust.ts.mdmd.md), [shared.ts](../inference/heuristics/shared.ts.mdmd.md), [webforms.ts](../inference/heuristics/webforms.ts.mdmd.md)
+- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](../inference/heuristics/artifactLayerUtils.ts.mdmd.md), [heuristics/index.ts](../inference/heuristics/index.ts.mdmd.md), [shared.ts](../inference/heuristics/shared.ts.mdmd.md)
 - packages/shared/src/knowledge: [knowledgeGraphBridge.ts](../knowledge/knowledgeGraphBridge.ts.mdmd.md)
-- packages/shared/src/language: [typeScriptAstUtils.ts](../language/typeScriptAstUtils.ts.mdmd.md)
 - packages/shared/src/rules: [relationshipResolvers.ts](./relationshipResolvers.ts.mdmd.md), [relationshipRuleEngine.ts](./relationshipRuleEngine.ts.mdmd.md), [relationshipRuleProvider.ts](./relationshipRuleProvider.ts.mdmd.md), [relationshipRuleTypes.ts](./relationshipRuleTypes.ts.mdmd.md)
 - packages/shared/src/tooling: [markdownShared.ts](../tooling/markdownShared.ts.mdmd.md), [pathUtils.ts](../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->

@@ -5,7 +5,9 @@
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,7 +24,7 @@
   },
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.12",
     "glob": "^11.0.0"
   }
 }

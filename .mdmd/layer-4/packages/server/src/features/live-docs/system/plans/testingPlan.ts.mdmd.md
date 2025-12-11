@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/testingPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-testingplan-ts
-- Generated At: 2025-12-07T16:27:06.803Z
+- Generated At: 2025-12-11T02:38:01.186Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - Creates virtual nodes for test groups without backing Stage0 docs (e.g., integration tests)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.803Z","inputHash":"ad9487106dc34713"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.186Z","inputHash":"ad9487106dc34713"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildTestingPlans` {#symbol-buildtestingplans}
@@ -46,9 +46,3 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
 - [`manifest.loadTargetManifest`](../../targets/manifest.ts.mdmd.md#symbol-loadtargetmanifest)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [generator.test.ts](../generator.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

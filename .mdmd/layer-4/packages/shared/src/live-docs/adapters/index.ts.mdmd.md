@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2025-12-09T15:23:04.298Z
+- Generated At: 2025-12-11T02:38:01.945Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T15:23:04.298Z","inputHash":"c63109d5ace5aad3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.945Z","inputHash":"c63109d5ace5aad3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageAdapter` {#symbol-languageadapter}
@@ -57,12 +57,11 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [generator.test.ts](../../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
 - [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
+- [css.test.ts](./css.test.ts.mdmd.md)
+- [html.test.ts](./html.test.ts.mdmd.md)
 - [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
 - [powershell.test.ts](./powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
@@ -71,5 +70,4 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
 - [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
 - [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-- [core.docstring.test.ts](../core.docstring.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1067,
-    "links": 1843
+    "artifacts": 1079,
+    "links": 1860
   },
   "artifacts": [
     {
@@ -2590,160 +2590,6 @@
       "layer": "implementation",
       "language": "markdown",
       "metadata": {
-        "symbolReferences": [
-          {
-            "symbol": "ExplorerDependencyReference",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerDetailPayload",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerGraphPayload",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerGraphStats",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerLinkKind",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerLinkPayload",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerNodePayload",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerPublicSymbol",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "ExplorerTypeReference",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "BuildLocalMapOptions",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildNormalizedAnchorKey",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LOCAL_MAP_SCHEMA_VERSION",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapColumn",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapData",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapEdge",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapMetadata",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapNode",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapStats",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "LocalMapSymbolAnchor",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "normalizeSymbolIdentifier",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildLocalMapData",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildTestCoverageMap",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "TestCoverageMap",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildSymbolIndex",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "STATIC_EXPLORER_SCHEMA_VERSION",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "STATIC_EXPLORER_VERSION",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerBuildOptions",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerData",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerProvenance",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerSymbolEntry",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerSymbolIndex",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerTreemapLayout",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerTreemapNode",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "StaticExplorerViewerConfig",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildLocalMapJson",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "buildStaticExplorer",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "BuildStaticExplorerOptions",
-            "context": "inline-code"
-          },
-          {
-            "symbol": "BuildStaticExplorerResult",
-            "context": "inline-code"
-          }
-        ],
         "mdmd": {
           "layer": "4",
           "identifiers": [],
@@ -2751,46 +2597,7 @@
             "packages/scripts/src/live-docs/explorer/shared/index.ts"
           ],
           "exports": [],
-          "sectionSymbols": [
-            "ExplorerDependencyReference",
-            "ExplorerDetailPayload",
-            "ExplorerGraphPayload",
-            "ExplorerGraphStats",
-            "ExplorerLinkKind",
-            "ExplorerLinkPayload",
-            "ExplorerNodePayload",
-            "ExplorerPublicSymbol",
-            "ExplorerTypeReference",
-            "BuildLocalMapOptions",
-            "buildNormalizedAnchorKey",
-            "LOCAL_MAP_SCHEMA_VERSION",
-            "LocalMapColumn",
-            "LocalMapData",
-            "LocalMapEdge",
-            "LocalMapMetadata",
-            "LocalMapNode",
-            "LocalMapStats",
-            "LocalMapSymbolAnchor",
-            "normalizeSymbolIdentifier",
-            "buildLocalMapData",
-            "buildTestCoverageMap",
-            "TestCoverageMap",
-            "buildSymbolIndex",
-            "STATIC_EXPLORER_SCHEMA_VERSION",
-            "STATIC_EXPLORER_VERSION",
-            "StaticExplorerBuildOptions",
-            "StaticExplorerData",
-            "StaticExplorerProvenance",
-            "StaticExplorerSymbolEntry",
-            "StaticExplorerSymbolIndex",
-            "StaticExplorerTreemapLayout",
-            "StaticExplorerTreemapNode",
-            "StaticExplorerViewerConfig",
-            "buildLocalMapJson",
-            "buildStaticExplorer",
-            "BuildStaticExplorerOptions",
-            "BuildStaticExplorerResult"
-          ]
+          "sectionSymbols": []
         }
       }
     },
@@ -9013,6 +8820,103 @@
       }
     },
     {
+      "id": "orchestrated-artifact-8a9a4cf8",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/csharp.dependencies.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "ExtractDependenciesParams",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractDependencies",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectConfigKeys",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectConfigurationIndexerKeys",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectTypeNameLiterals",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectHangfireTargets",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectTypeIdentifiers",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "locateNearestFile",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "fileExists",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "resolveReflectionTargets",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "resolveReflectionTarget",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "readFileSafe",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/csharp.dependencies.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "ExtractDependenciesParams",
+            "extractDependencies",
+            "collectConfigKeys",
+            "collectConfigurationIndexerKeys",
+            "collectTypeNameLiterals",
+            "collectHangfireTargets",
+            "collectTypeIdentifiers",
+            "locateNearestFile",
+            "fileExists",
+            "resolveReflectionTargets",
+            "resolveReflectionTarget",
+            "readFileSafe"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-20a7436a",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-3db3b833",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/csharp.hangfire.test.ts.mdmd.md",
       "layer": "implementation",
@@ -9051,6 +8955,123 @@
           "sectionSymbols": [
             "csharpAdapter"
           ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-46bafda0",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "RECOGNIZED_DOC_TAGS",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildDocumentationFromLines",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "stripDocCommentMarker",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractSingleTagText",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractParameterTags",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractExceptionTags",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractExampleTags",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractLinkTags",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractRawDocFragments",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "detectUnsupportedTags",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseXmlAttributes",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeXmlText",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "decodeXmlEntities",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeCrefTarget",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "renderCrefText",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "hasStructuredContent",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/csharp.xmldoc.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "RECOGNIZED_DOC_TAGS",
+            "buildDocumentationFromLines",
+            "stripDocCommentMarker",
+            "extractSingleTagText",
+            "extractParameterTags",
+            "extractExceptionTags",
+            "extractExampleTags",
+            "extractLinkTags",
+            "extractRawDocFragments",
+            "detectUnsupportedTags",
+            "parseXmlAttributes",
+            "normalizeXmlText",
+            "decodeXmlEntities",
+            "normalizeCrefTarget",
+            "renderCrefText",
+            "hasStructuredContent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-25c14212",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/csharp.xmldoc.unit.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/csharp.xmldoc.unit.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
         }
       }
     },
@@ -9263,6 +9284,173 @@
           "identifiers": [],
           "codePaths": [
             "packages/shared/src/live-docs/adapters/python.docstring.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-38fcef8d",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/python.docstring.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "MutableDocstringState",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "createEmptyDocstringState",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseDocstring",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractDocstringSummary",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseRestFields",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "detectGoogleSections",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "detectNumpySections",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseGoogleSections",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseNumpySections",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectIndentedBlock",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectGoogleBlock",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "collectNumpyBlock",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseGoogleParameters",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseGoogleReturns",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseGoogleExceptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseNumpyParameters",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseNumpyReturns",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseNumpyExceptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseIndentedEntries",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "parseNumpyEntries",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "normalizeExample",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "joinParagraphs",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "detectMinimumIndent",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ensureParameter",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ensureException",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "capitalize",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/python.docstring.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "MutableDocstringState",
+            "createEmptyDocstringState",
+            "parseDocstring",
+            "extractDocstringSummary",
+            "parseRestFields",
+            "detectGoogleSections",
+            "detectNumpySections",
+            "parseGoogleSections",
+            "parseNumpySections",
+            "collectIndentedBlock",
+            "collectGoogleBlock",
+            "collectNumpyBlock",
+            "parseGoogleParameters",
+            "parseGoogleReturns",
+            "parseGoogleExceptions",
+            "parseNumpyParameters",
+            "parseNumpyReturns",
+            "parseNumpyExceptions",
+            "parseIndentedEntries",
+            "parseNumpyEntries",
+            "normalizeExample",
+            "joinParagraphs",
+            "detectMinimumIndent",
+            "ensureParameter",
+            "ensureException",
+            "capitalize"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-1ec36fbf",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/live-docs/adapters/python.docstring.unit.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/live-docs/adapters/python.docstring.unit.test.ts"
           ],
           "exports": [],
           "sectionSymbols": []
@@ -24404,6 +24592,81 @@
       }
     },
     {
+      "id": "orchestrated-artifact-11e2bc59",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/csharp.dependencies.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "ExtractDependenciesParams",
+            "kind": "interface"
+          },
+          {
+            "name": "extractDependencies",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectConfigKeys",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectConfigurationIndexerKeys",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectTypeNameLiterals",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectHangfireTargets",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectTypeIdentifiers",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "locateNearestFile",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "fileExists",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "resolveReflectionTargets",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "resolveReflectionTarget",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "readFileSafe",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-2c32204b",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-033b4ec0",
       "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/csharp.hangfire.test.ts",
       "layer": "code",
@@ -24422,6 +24685,101 @@
           }
         ]
       }
+    },
+    {
+      "id": "orchestrated-artifact-66b7c481",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/csharp.xmldoc.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "RECOGNIZED_DOC_TAGS",
+            "kind": "variable"
+          },
+          {
+            "name": "buildDocumentationFromLines",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "stripDocCommentMarker",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractSingleTagText",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractParameterTags",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractExceptionTags",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractExampleTags",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractLinkTags",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractRawDocFragments",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "detectUnsupportedTags",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseXmlAttributes",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "normalizeXmlText",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "decodeXmlEntities",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "normalizeCrefTarget",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "renderCrefText",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "hasStructuredContent",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-a4191673",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/csharp.xmldoc.unit.test.ts",
+      "layer": "code",
+      "language": "typescript"
     },
     {
       "id": "orchestrated-artifact-87499474",
@@ -24525,6 +24883,151 @@
     {
       "id": "orchestrated-artifact-5738c1a0",
       "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/python.docstring.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-c0824b1a",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/python.docstring.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "MutableDocstringState",
+            "kind": "interface"
+          },
+          {
+            "name": "createEmptyDocstringState",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseDocstring",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "extractDocstringSummary",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseRestFields",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "detectGoogleSections",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "detectNumpySections",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseGoogleSections",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseNumpySections",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectIndentedBlock",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectGoogleBlock",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "collectNumpyBlock",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseGoogleParameters",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseGoogleReturns",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseGoogleExceptions",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseNumpyParameters",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseNumpyReturns",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseNumpyExceptions",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseIndentedEntries",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "parseNumpyEntries",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "normalizeExample",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "joinParagraphs",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "detectMinimumIndent",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "ensureParameter",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "ensureException",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "capitalize",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-7ba2f1cc",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/live-docs/adapters/python.docstring.unit.test.ts",
       "layer": "code",
       "language": "typescript"
     },
@@ -28507,24 +29010,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-42dc2fac",
-      "sourceId": "orchestrated-artifact-0176e96a",
-      "targetId": "orchestrated-artifact-3e91f96c",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
-      "id": "orchestrated-link-24852100",
-      "sourceId": "orchestrated-artifact-0176e96a",
-      "targetId": "orchestrated-artifact-3e91faa2",
-      "kind": "depends_on",
-      "confidence": 0.95,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "workspace-index"
-    },
-    {
       "id": "orchestrated-link-d93efc7d",
       "sourceId": "orchestrated-artifact-0176e96a",
       "targetId": "orchestrated-artifact-48b6543f",
@@ -28541,6 +29026,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-88f2e693",
+      "sourceId": "orchestrated-artifact-0176e96a",
+      "targetId": "orchestrated-artifact-f2f88d92",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-328d5cde",
@@ -29383,6 +29877,33 @@
       "id": "orchestrated-link-08b23890",
       "sourceId": "orchestrated-artifact-10821efc",
       "targetId": "orchestrated-artifact-2cd3aedb",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-5dd9db9f",
+      "sourceId": "orchestrated-artifact-11e2bc59",
+      "targetId": "orchestrated-artifact-3e91f96c",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-3f82ccf3",
+      "sourceId": "orchestrated-artifact-11e2bc59",
+      "targetId": "orchestrated-artifact-3e91faa2",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-f43ca870",
+      "sourceId": "orchestrated-artifact-11e2bc59",
+      "targetId": "orchestrated-artifact-48b6543f",
       "kind": "references",
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -30289,6 +30810,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-305cafa7",
+      "sourceId": "orchestrated-artifact-1ec36fbf",
+      "targetId": "orchestrated-artifact-7ba2f1cc",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-50882d7d",
       "sourceId": "orchestrated-artifact-1f63fb99",
       "targetId": "orchestrated-artifact-7a5eaea6",
@@ -30386,6 +30916,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-c0d1a616",
+      "sourceId": "orchestrated-artifact-20a7436a",
+      "targetId": "orchestrated-artifact-2c32204b",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-37a77409",
@@ -30694,6 +31233,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-4ae6e004",
+      "sourceId": "orchestrated-artifact-25c14212",
+      "targetId": "orchestrated-artifact-a4191673",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-0d2bfa7e",
       "sourceId": "orchestrated-artifact-25c2ca11",
       "targetId": "orchestrated-artifact-33666172",
@@ -30888,6 +31436,15 @@
       "targetId": "orchestrated-artifact-fd1ac90f",
       "kind": "depends_on",
       "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-9503b550",
+      "sourceId": "orchestrated-artifact-2c32204b",
+      "targetId": "orchestrated-artifact-f2f88d92",
+      "kind": "depends_on",
+      "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
@@ -31570,6 +32127,15 @@
       "id": "orchestrated-link-64e81910",
       "sourceId": "orchestrated-artifact-38538546",
       "targetId": "orchestrated-artifact-7d5fa827",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-ac77b3ce",
+      "sourceId": "orchestrated-artifact-38fcef8d",
+      "targetId": "orchestrated-artifact-c0824b1a",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -32564,6 +33130,15 @@
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-3bfd0109",
+      "sourceId": "orchestrated-artifact-46bafda0",
+      "targetId": "orchestrated-artifact-66b7c481",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-def75d98",
@@ -34906,6 +35481,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-bced60bd",
+      "sourceId": "orchestrated-artifact-66b7c481",
+      "targetId": "orchestrated-artifact-48b6543f",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-ed57c64c",
       "sourceId": "orchestrated-artifact-67717848",
       "targetId": "orchestrated-artifact-e90609d5",
@@ -36238,6 +36822,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-b60da939",
+      "sourceId": "orchestrated-artifact-7ba2f1cc",
+      "targetId": "orchestrated-artifact-c0824b1a",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-c2921321",
       "sourceId": "orchestrated-artifact-7c11f451",
       "targetId": "orchestrated-artifact-22219a80",
@@ -36470,6 +37063,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-5807b73a",
+      "sourceId": "orchestrated-artifact-7ec91dd5",
+      "targetId": "orchestrated-artifact-c0824b1a",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-a41e4871",
@@ -37150,6 +37752,15 @@
       "id": "orchestrated-link-533eec00",
       "sourceId": "orchestrated-artifact-8a7155da",
       "targetId": "orchestrated-artifact-8af84abb",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-cf3db8f8",
+      "sourceId": "orchestrated-artifact-8a9a4cf8",
+      "targetId": "orchestrated-artifact-11e2bc59",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -38173,6 +38784,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-f5999b69",
+      "sourceId": "orchestrated-artifact-9bf9eb77",
+      "targetId": "orchestrated-artifact-5dfcf2b1",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-d12a58c5",
       "sourceId": "orchestrated-artifact-9bf9eb77",
       "targetId": "orchestrated-artifact-5dfcf3e7",
@@ -38396,6 +39016,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-7c42b5cb",
+      "sourceId": "orchestrated-artifact-9ecfee6b",
+      "targetId": "orchestrated-artifact-5dfcf2b1",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-57d37327",
@@ -38677,6 +39306,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-e3b69ef0",
+      "sourceId": "orchestrated-artifact-a4191673",
+      "targetId": "orchestrated-artifact-f2f88d92",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-e4c414e6",
       "sourceId": "orchestrated-artifact-a4772205",
       "targetId": "orchestrated-artifact-e64bc9e6",
@@ -38936,6 +39574,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-7a02e6a4",
+      "sourceId": "orchestrated-artifact-a830e95a",
+      "targetId": "orchestrated-artifact-5dfcf2b1",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-5593a400",
@@ -40664,6 +41311,15 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-d7a27fe3",
+      "sourceId": "orchestrated-artifact-c0824b1a",
+      "targetId": "orchestrated-artifact-48b6543f",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-78830197",
@@ -44999,9 +45655,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1119,
-      "hintCount": 738,
-      "evidenceCount": 714
+      "seedCount": 1131,
+      "hintCount": 744,
+      "evidenceCount": 717
     },
     {
       "id": "relationship-rules",
