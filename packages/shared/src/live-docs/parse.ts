@@ -137,7 +137,10 @@ function parseSymbolSection(section: string): Set<string> {
     // Do NOT match arbitrary bullets with backticks (e.g., documentation text like "- `@param`")
     const headingMatch = line.match(/^####\s+`([^`]+)`/);
     if (headingMatch) {
-      symbols.add(headingMatch[1]);
+      // Strip disambiguation suffixes like " (interface)" or " (const)" added for display
+      const rawName = headingMatch[1];
+      const baseName = rawName.replace(/\s+\((interface|const|type|class|function|enum)\)$/i, "");
+      symbols.add(baseName);
     }
   }
   return symbols;

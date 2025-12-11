@@ -22,10 +22,9 @@ const {
 
 const MIN_SYMBOL_PRECISION = 0.9;
 const MIN_DEPENDENCY_RECALL = 0.8;
-// Per-file floor: targets internal modules where symbol extraction may
-// incorrectly mark non-exported helpers as public symbols.
-// Set at 75% to surface extraction bugs for remediation.
-const MIN_PER_FILE_SYMBOL_PRECISION = 0.75;
+// Per-file floor: raised to 95% to surface remaining symbol extraction issues.
+// Files below this threshold represent work to be done, not gates to lower.
+const MIN_PER_FILE_SYMBOL_PRECISION = 0.95;
 
 interface ComparisonMetrics {
   tp: number;
