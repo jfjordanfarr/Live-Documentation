@@ -461,6 +461,10 @@
       "oracle": {
         "kind": "csharp",
         "root": ".",
+        "include": [
+          "src/Compilers/CSharp/Portable/FlowAnalysis/**/*.cs",
+          "src/Compilers/CSharp/Portable/Utilities/**/*.cs"
+        ],
         "manualOverrides": "oracle.overrides.json"
       }
     },

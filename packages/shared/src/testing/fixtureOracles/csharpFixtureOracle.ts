@@ -1,3 +1,4 @@
+import { minimatch } from "minimatch";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -214,8 +215,6 @@ function collectSourceFiles(
   exclude?: string[]
 ): Map<string, string> {
   const collected = new Map<string, string>();
-  const includePatterns = include?.map(pattern => path.resolve(root, pattern));
-  const excludePatterns = exclude?.map(pattern => path.resolve(root, pattern)) ?? [];
 
   const walk = (current: string): void => {
     const entries = fs.readdirSync(current, { withFileTypes: true });
@@ -233,11 +232,20 @@ function collectSourceFiles(
       }
 
       const absolutePath = path.join(current, entry.name);
-      if (excludePatterns.some(pattern => absolutePath.startsWith(pattern))) {
-        continue;
+      const relativePath = path.relative(root, absolutePath).replace(/\\/g, "/");
+
+      // Check exclude patterns first
+      if (exclude && exclude.length > 0) {
+        const excluded = exclude.some(pattern => minimatch(relativePath, pattern, { dot: true }));
+        if (excluded) {
+          continue;
+        }
       }
-      if (includePatterns && includePatterns.length > 0) {
-        if (!includePatterns.some(pattern => absolutePath.startsWith(pattern))) {
+
+      // Check include patterns - if specified, file must match at least one
+      if (include && include.length > 0) {
+        const included = include.some(pattern => minimatch(relativePath, pattern, { dot: true }));
+        if (!included) {
           continue;
         }
       }

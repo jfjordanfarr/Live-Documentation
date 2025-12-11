@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2025-12-11T15:28:57.496Z",
+  "recordedAt": "2025-12-11T17:34:32.598Z",
   "environment": {
     "nodeVersion": "v22.14.0",
     "platform": "win32",
@@ -14,16 +14,16 @@
     "mode": "ast",
     "thresholds": {
       "precision": 0.95,
-      "recall": 0.85
+      "recall": 0.95
     },
     "totals": {
-      "totalEvaluated": 1164,
+      "totalEvaluated": 1124,
       "truePositives": 1118,
       "falsePositives": 3,
-      "falseNegatives": 43,
+      "falseNegatives": 3,
       "precision": 0.9973238180196253,
-      "recall": 0.9629629629629629,
-      "f1Score": 0.9798422436459246
+      "recall": 0.9973238180196253,
+      "f1Score": 0.9973238180196253
     },
     "fixtures": [
       {
@@ -2630,10 +2630,10 @@
         "totals": {
           "truePositives": 252,
           "falsePositives": 3,
-          "falseNegatives": 43,
+          "falseNegatives": 3,
           "precision": 0.9882352941176471,
-          "recall": 0.8542372881355932,
-          "f1Score": 0.9163636363636364
+          "recall": 0.9882352941176471,
+          "f1Score": 0.9882352941176471
         },
         "truePositives": [
           {
@@ -3916,76 +3916,6 @@
         ],
         "falseNegatives": [
           {
-            "source": "src/Compilers/CSharp/Portable/CSharpCompilationOptions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpCompilationOptions.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpExtensions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpExtensions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/LocalDataFlowPass.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpExtensions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpExtensions.cs",
-            "target": "src/Compilers/CSharp/Portable/Utilities/InterceptableLocation.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpFileSystemExtensions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpParseOptions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpParseOptions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/CSharpParseOptions.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/FlowAnalysis/AbstractFlowPass.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/FlowAnalysis/ControlFlowPass.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.VariableIdentifier.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
             "source": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
             "target": "src/Compilers/CSharp/Portable/FlowAnalysis/AbstractFlowPass.cs",
             "relation": "uses"
@@ -3996,139 +3926,9 @@
             "relation": "uses"
           },
           {
-            "source": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
             "source": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.DebugVerifier.cs",
             "target": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
             "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/GlobalSuppressions.cs",
-            "target": "src/Compilers/CSharp/Portable/CSharpParseOptions.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/GlobalSuppressions.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/DefiniteAssignment.cs",
-            "relation": "uses"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "target": "src/Compilers/CSharp/Portable/FlowAnalysis/NullableWalker.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/InterceptableLocation.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.BoolValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.ByteTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.CharTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.DecimalTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.DoubleTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.EnumeratedValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.FloatingValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.IntTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.INumericTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.LongTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.NintValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.NuintValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.NumericValueSet.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.SByteTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.ShortTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.SingleTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.StringTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.UIntTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.ULongTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
-          },
-          {
-            "source": "src/Compilers/CSharp/Portable/Utilities/ValueSetFactory.UShortTC.cs",
-            "target": "src/Compilers/CSharp/Portable/LanguageVersion.cs",
-            "relation": "imports"
           }
         ]
       },
