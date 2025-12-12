@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-doc.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-doc-ts
-- Generated At: 2025-12-07T21:41:19.691Z
+- Generated At: 2025-12-12T16:10:25.673Z
 
 ## Authored
 ### Purpose
@@ -16,47 +16,47 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 - Repointed 2025-11-16 to emit into `.live-documentation/source/benchmarks/astAccuracyFixtures.md`, preserving the Stage-0 `.md` mirror while keeping sync-ast-doc.ts and verify-fixtures.ts aligned with the new location ([mirror alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2700-L2820)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.691Z","inputHash":"df1648b79d3e96b9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:25.673Z","inputHash":"608c14fe8ebc42ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `VENDOR_SECTION_START` {#symbol-vendor_section_start}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L13)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L14)
 
 #### `VENDOR_SECTION_END` {#symbol-vendor_section_end}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L14)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L15)
 
 #### `RenderOptions` {#symbol-renderoptions}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L16)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L17)
 
 #### `resolveAstFixtureDocPath` {#symbol-resolveastfixturedocpath}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L21)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L22)
 
 #### `ensureVendorSection` {#symbol-ensurevendorsection}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L32)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L35)
 - Parameters: `fixtures`: [`BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)[]; `options`: [`RenderOptions`](#symbol-renderoptions)
 
 #### `renderVendorInventory` {#symbol-rendervendorinventory}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L45)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L48)
 - Parameters: `fixtures`: [`BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)[]; `_options`: [`RenderOptions`](#symbol-renderoptions)
 
 #### `extractVendorInventory` {#symbol-extractvendorinventory}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L77)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L80)
 
 #### `replaceDelimitedSection` {#symbol-replacedelimitedsection}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L90)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L93)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `promises`
+- `node:fs` - `existsSync`, `promises`
 - `node:path` - `path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`benchmark-manifest.BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)

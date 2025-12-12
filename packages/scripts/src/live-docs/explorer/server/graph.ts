@@ -1,6 +1,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
+import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
 import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 import {
@@ -30,8 +31,11 @@ interface InheritanceLink {
     targetSymbol?: string;
 }
 
-export async function buildExplorerGraph(workspaceRoot: string): Promise<ExplorerGraphPayload> {
-    const graph = await buildLiveDocGraph({ workspaceRoot });
+export async function buildExplorerGraph(
+    workspaceRoot: string,
+    config?: LiveDocumentationConfig
+): Promise<ExplorerGraphPayload> {
+    const graph = await buildLiveDocGraph({ workspaceRoot, config });
     const nodes = Array.from(graph.nodes.values());
     const resolveType = createTypeResolver(nodes);
 

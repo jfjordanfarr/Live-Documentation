@@ -4,6 +4,8 @@ import { createServer, type IncomingMessage, type ServerResponse } from "http";
 import * as path from "path";
 import { URL } from "url";
 
+import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+
 import { buildExplorerAssets } from "./buildAssets";
 import { buildExplorerGraph, normalizeDocPath } from "./graph";
 import { buildLocalMapData, buildTestCoverageMap } from "../shared/localMapBuilder";
@@ -13,6 +15,7 @@ export interface ExplorerServerOptions {
     workspaceRoot: string;
     port?: number;
     openBrowser?: boolean;
+    config?: LiveDocumentationConfig;
     logger?: Pick<Console, "log" | "error">;
 }
 
@@ -45,7 +48,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
         return "";
     };
     
-    const initialGraph = await buildExplorerGraph(workspaceRoot);
+    const initialGraph = await buildExplorerGraph(workspaceRoot, options.config);
     const context: InternalContext = {
         graph: initialGraph,
         nodesByDocPath: new Map(),
@@ -135,7 +138,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
         });
 
     const reloadGraph = async () => {
-        context.graph = await buildExplorerGraph(workspaceRoot);
+        context.graph = await buildExplorerGraph(workspaceRoot, options.config);
         context.testCoverage = buildTestCoverageMap(context.graph, context.resolveLinkEndpoint);
         refreshNodeLookup(context, workspaceRoot);
         logger.log(

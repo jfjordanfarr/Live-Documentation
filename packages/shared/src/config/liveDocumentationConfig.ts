@@ -45,9 +45,13 @@ export type LiveDocumentationConfigInput = Partial<LiveDocumentationConfig> & {
   evidence?: Partial<LiveDocumentationEvidenceConfig>;
 };
 
-export const LIVE_DOCUMENTATION_DEFAULT_ROOT = ".mdmd";
-export const LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER = "layer-4";
-export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".mdmd.md";
+// Consumer-friendly defaults.
+//
+// This repo often overrides these defaults to align with its internal MDMD convention
+// (e.g. root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md").
+export const LIVE_DOCUMENTATION_DEFAULT_ROOT = ".live-documentation";
+export const LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER = "source";
+export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".md";
 export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "packages/**/src/**/*.ts",
   "packages/**/src/**/*.tsx",

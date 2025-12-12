@@ -7,8 +7,8 @@ import ts from "typescript";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  LIVE_DOCUMENTATION_FILE_EXTENSION,
-  normalizeLiveDocumentationConfig
+  normalizeLiveDocumentationConfig,
+  type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { parseLiveDocMarkdown } from "@live-documentation/shared/live-docs/parse";
 
@@ -52,17 +52,123 @@ interface Report {
   skipped: string[];
 }
 
+interface ParsedArgs {
+  help: boolean;
+  workspace?: string;
+  configPath?: string;
+  root?: string;
+  baseLayer?: string;
+  extension?: string;
+}
+
+function parseArgs(argv: string[]): ParsedArgs {
+  const parsed: ParsedArgs = {
+    help: false
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const current = argv[index];
+    switch (current) {
+      case "-h":
+      case "--help": {
+        parsed.help = true;
+        break;
+      }
+      case "--workspace": {
+        parsed.workspace = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--config": {
+        parsed.configPath = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--root": {
+        parsed.root = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--base-layer": {
+        parsed.baseLayer = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--extension": {
+        parsed.extension = expectValue(argv, ++index, current);
+        break;
+      }
+      default: {
+        if (current.startsWith("-")) {
+          throw new Error(`Unknown option: ${current}`);
+        }
+        throw new Error(`Unexpected argument: ${current}`);
+      }
+    }
+  }
+
+  return parsed;
+}
+
+function expectValue(argv: string[], index: number, flag: string): string {
+  const value = argv[index];
+  if (!value || value.startsWith("-")) {
+    throw new Error(`Option ${flag} requires a value.`);
+  }
+  return value;
+}
+
+function usage(): string {
+  return [
+    "Usage: npm run live-docs:report -- [options]",
+    "",
+    "Options:",
+    "  --workspace <path>     Workspace root (defaults to current directory).",
+    "  --config <file>        Load configuration from JSON file.",
+    "  --root <path>          Override liveDocumentation.root.",
+    "  --base-layer <name>    Override liveDocumentation.baseLayer.",
+    "  --extension <suffix>   Override liveDocumentation.extension.",
+    "  --help                 Show this help message."
+  ].join("\n");
+}
+
+async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
+  const resolved = path.resolve(configPath);
+  const raw = await fs.readFile(resolved, "utf8");
+  return JSON.parse(raw) as LiveDocumentationConfigInput;
+}
+
 async function main(): Promise<void> {
-  const workspaceRoot = process.cwd();
+  const args = parseArgs(process.argv.slice(2));
+
+  if (args.help) {
+    console.log(usage());
+    return;
+  }
+
+  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+
+  let configInput: LiveDocumentationConfigInput = {};
+  if (args.configPath) {
+    configInput = await readConfigFile(args.configPath);
+  }
+
+  if (args.root) {
+    configInput.root = args.root;
+  }
+  if (args.baseLayer) {
+    configInput.baseLayer = args.baseLayer;
+  }
+  if (args.extension) {
+    configInput.extension = args.extension;
+  }
+
   const config = normalizeLiveDocumentationConfig({
-    ...DEFAULT_LIVE_DOCUMENTATION_CONFIG
+    ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+    ...configInput
   });
 
   const docGlob = path.join(
     config.root,
     config.baseLayer,
     "**",
-    `*${LIVE_DOCUMENTATION_FILE_EXTENSION}`
+    `*${config.extension}`
   );
   const docs = await glob(docGlob, {
     cwd: workspaceRoot,

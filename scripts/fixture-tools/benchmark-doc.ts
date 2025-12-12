@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
@@ -19,14 +20,16 @@ export interface RenderOptions {
 }
 
 export function resolveAstFixtureDocPath(repoRoot: string): string {
+  // benchmark-fixtures is a Layer 3 architectural doc, not a Layer 4 source doc.
+  // Prefer this repo's MDMD location when present; otherwise fall back to the
+  // consumer-default Live Docs root.
+  const mdmdCandidate = path.join(repoRoot, ".mdmd", "layer-3", "benchmark-fixtures.mdmd.md");
+  if (existsSync(mdmdCandidate)) {
+    return mdmdCandidate;
+  }
+
   const config = DEFAULT_LIVE_DOCUMENTATION_CONFIG;
-  // benchmark-fixtures is a Layer 3 architectural doc, not a Layer 4 source doc
-  return path.join(
-    repoRoot,
-    config.root,
-    "layer-3",
-    `benchmark-fixtures${config.extension}`
-  );
+  return path.join(repoRoot, config.root, "layer-3", `benchmark-fixtures${config.extension}`);
 }
 
 export async function ensureVendorSection(

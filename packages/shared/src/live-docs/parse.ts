@@ -1,7 +1,6 @@
 import path from "node:path";
 
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 /**
@@ -449,10 +448,11 @@ function resolveDependencyTarget(
 
   if (normalizedRelative.startsWith(`${liveDocsPrefix}/`)) {
     const withoutPrefix = normalizedRelative.slice(liveDocsPrefix.length + 1);
-    if (!withoutPrefix.endsWith(LIVE_DOCUMENTATION_FILE_EXTENSION)) {
+    const docExtension = config.extension;
+    if (!withoutPrefix.toLowerCase().endsWith(docExtension.toLowerCase())) {
       return undefined;
     }
-    const codePath = withoutPrefix.slice(0, -LIVE_DOCUMENTATION_FILE_EXTENSION.length);
+    const codePath = withoutPrefix.slice(0, -docExtension.length);
     const docPath = normalizeWorkspacePath(path.join(liveDocsPrefix, withoutPrefix));
     return {
       codePath,

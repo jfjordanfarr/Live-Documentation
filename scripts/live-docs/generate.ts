@@ -153,7 +153,7 @@ function usage(): string {
     `  --workspace <path>        Workspace root (defaults to current directory).\n` +
     `  --root <path>             Override liveDocumentation.root.\n` +
     `  --base-layer <name>       Override liveDocumentation.baseLayer.\n` +
-    `  --extension <suffix>      Override liveDocumentation.extension (default .mdmd.md).\n` +
+    `  --extension <suffix>      Override liveDocumentation.extension (default .md).\n` +
     `  --glob <pattern>          Additional glob pattern (can repeat).\n` +
     `  --include <pattern>       Target a specific file or glob (can repeat).\n` +
     `  --config <file>           Load configuration from JSON file.\n` +

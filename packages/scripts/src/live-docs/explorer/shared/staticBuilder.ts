@@ -25,6 +25,8 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
+import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+
 import {
     buildLocalMapData,
     buildTestCoverageMap
@@ -56,6 +58,9 @@ export interface BuildStaticExplorerOptions {
 
     /** Output directory for the static bundle. */
     outputDir: string;
+
+    /** Live Docs configuration override controlling where docs are read from. */
+    config?: LiveDocumentationConfig;
 
     /** Pre-compute Local Maps for these focus node IDs. */
     includeLocalMaps?: string[];
@@ -112,6 +117,7 @@ export async function buildStaticExplorer(
         includeLocalMaps = [],
         includeAllLocalMaps = false,
         buildOptions = {},
+        config,
         commitHash,
         gitRef,
         logger = console
@@ -129,7 +135,7 @@ export async function buildStaticExplorer(
 
     // Build the graph
     logger.log("Building explorer graph...");
-    const graph = await buildExplorerGraph(workspaceRoot);
+    const graph = await buildExplorerGraph(workspaceRoot, config);
     logger.log(`Graph: ${graph.stats.nodes} nodes, ${graph.stats.links} links`);
 
     // Build test coverage map

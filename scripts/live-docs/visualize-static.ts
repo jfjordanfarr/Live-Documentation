@@ -22,9 +22,15 @@
  * ```
  */
 
-import * as path from "path";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
 
 import { buildStaticExplorer } from "@live-documentation/scripts/live-docs/explorer/shared/staticBuilder";
+import {
+    DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+    normalizeLiveDocumentationConfig,
+    type LiveDocumentationConfigInput
+} from "@live-documentation/shared/config/liveDocumentationConfig";
 
 interface CliOptions {
     outputDir: string;
@@ -33,6 +39,7 @@ interface CliOptions {
     prettyPrint: boolean;
     commitHash?: string;
     gitRef?: string;
+    configPath?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -61,16 +68,34 @@ function parseArgs(args: string[]): CliOptions {
             options.commitHash = args[++i];
         } else if (arg === "--ref") {
             options.gitRef = args[++i];
+        } else if (arg === "--config") {
+            options.configPath = args[++i];
         }
     }
 
     return options;
 }
 
+async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
+    const resolved = path.resolve(configPath);
+    const raw = await fs.readFile(resolved, "utf8");
+    return JSON.parse(raw) as LiveDocumentationConfigInput;
+}
+
 async function main(): Promise<void> {
     const args = process.argv.slice(2);
     const options = parseArgs(args);
     const workspaceRoot = process.cwd();
+
+    let configInput: LiveDocumentationConfigInput = {};
+    if (options.configPath) {
+        configInput = await readConfigFile(options.configPath);
+    }
+
+    const config = normalizeLiveDocumentationConfig({
+        ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+        ...configInput
+    });
 
     console.log("Building static explorer bundle...");
     console.log(`  Workspace: ${workspaceRoot}`);
@@ -79,6 +104,7 @@ async function main(): Promise<void> {
     const result = await buildStaticExplorer({
         workspaceRoot,
         outputDir: options.outputDir,
+        config,
         includeLocalMaps: options.localMaps,
         includeAllLocalMaps: options.allLocalMaps,
         buildOptions: {

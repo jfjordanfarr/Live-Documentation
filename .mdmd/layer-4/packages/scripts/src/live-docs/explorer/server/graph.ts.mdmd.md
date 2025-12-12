@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/graph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-graph-ts
-- Generated At: 2025-12-07T03:35:39.843Z
+- Generated At: 2025-12-12T16:10:24.134Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,22 @@ Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with i
 - Contains the barrel-file deprioritisation heuristic (`isBarrelFile`) to prefer origin files for inheritance links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T03:35:39.843Z","inputHash":"61ed4931bcaf9c75"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:24.134Z","inputHash":"eca252d8b19d45c5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L33)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L34)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfig)
 
 #### `normalizeDocPath` {#symbol-normalizedocpath}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L161)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L165)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@live-documentation/shared/config/liveDocumentationConfig` - `LiveDocumentationConfig` (type-only)
 - `@live-documentation/shared/live-docs/parse` - `ParsedTypeReference` (type-only)
 - `fs/promises` - `fs`
 - [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

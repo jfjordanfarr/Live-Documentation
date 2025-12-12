@@ -1,125 +1,364 @@
 # Quickstart: Live Documentation
 
-Live Documentation pairs every tracked workspace asset with a markdown artifact that combines an authored preamble (`Description`, `Purpose`, `Notes`) and generated sections (`Public Symbols`, `Dependencies`, archetype-specific evidence). This quickstart walks through staging those docs under `/.live-documentation/<baseLayer>/` (default `source/`), reviewing the output, and preparing for migration into Layer‑4 MDMD once parity is proven.
+Live Documentation pairs every tracked workspace asset with a markdown artifact that combines an **authored preamble** (`Purpose`, `Notes`) and **generated sections** (`Public Symbols`, `Dependencies`, archetype-specific evidence). This quickstart walks through staging those docs under `/.live-documentation/<baseLayer>/` (default `source/`), exploring them visually, and distributing them as static sites.
+
+---
+
+## The Four Experience Loops
+
+Live Documentation supports four distinct workflows:
+
+| Loop | User | Action | System Response |
+|------|------|--------|-----------------|
+| **Writer's Loop** | Technical Writers, PMs | Edit markdown, reference a moved file | IDE underlines the broken link; Quick Fix heals it |
+| **Developer's Loop** | Engineers | Modify a core utility | "Ripple Effect" shows every impacted file (code + docs) |
+| **Explorer's Loop** | Architects, Onboarders | Run the Visualizer | Interactive Circuit Board / Local Map / Force Graph views |
+| **Maintainer's Loop** | Leads, Ops | Prepare a commit | SlopCop audits block if links, symbols, or assets are broken |
+
+---
 
 ## Prerequisites
-- VS Code 1.91+ with the Live Documentation extension loaded from this repository.
-- Node.js 22.x and npm.
-- Git tooling capable of capturing large workspace diffs (for Live Doc reviews).
-- Optional: local LLM runtime (e.g., Ollama) for docstring summarisation once bridges are enabled.
+
+- **Node.js 22.x** (see `.nvmrc`)
+- **VS Code 1.91+** (optional — CLI works standalone)
+- Git tooling for large workspace diffs
+- Optional: local LLM runtime (e.g., Ollama) for docstring summarisation
+
+---
 
 ## Bootstrap the Workspace
-1. Clone and install dependencies:
-   ```powershell
-   git clone https://github.com/jfjordanfarr/Copilot-Improvement-Experiments.git
-   cd Copilot-Improvement-Experiments
-   npm install
-   ```
-2. Build the packages so shared utilities and extension bundles are in sync:
-   ```powershell
-   npm run build
-   ```
-3. Launch the extension in VS Code using the `Launch Extension` configuration. The language server exposes regeneration and lint services once the dev host is ready.
-4. Confirm `.live-documentation/` is ignored by git (see `.gitignore`). The generator will stage markdown there until the migration gate flips Layer‑4 MDMD to mirror the new tree.
+
+```powershell
+# 1. Clone and install
+git clone https://github.com/jfjordanfarr/Live-Documentation.git
+cd Live-Documentation
+npm install
+
+# 2. Build packages
+npm run build
+
+# 3. Generate the world
+npm run live-docs:generate
+
+# 4. Verify the truth
+npm run graph:audit
+```
+
+For VS Code extension development, launch the `Launch Extension` configuration. The language server exposes regeneration and lint services once the dev host is ready.
+
+---
 
 ## Configure Live Documentation
-Add the following settings to your workspace (e.g., `.vscode/settings.json`) to establish staging defaults:
+
+Live Docs are configured via a JSON config file (or CLI flags).
+
+Create `live-docs.config.json` at your repo root:
 
 ```json
 {
-  "liveDocumentation.root": ".live-documentation",
-  "liveDocumentation.baseLayer": "source",
-  "liveDocumentation.slugDialect": "github",
-  "liveDocumentation.requireRelativeLinks": true,
-  "liveDocumentation.glob": [
-      "packages/**/src/**/*.{ts,tsx,js,jsx,mjs,cjs,mts,cts}",
-      "scripts/**/*.{ts,tsx,mjs,cjs}",
-      "tests/**/*.{ts,tsx,js,jsx,mjs,cjs,mts,cts,cs,cshtml,cshtml.cs,py,java,rb,rs,c,cpp,html,css,json}"
+  "root": ".live-documentation",
+  "baseLayer": "source",
+  "extension": ".md",
+  "slugDialect": "github",
+  "requireRelativeLinks": true,
+  "glob": [
+    "packages/**/src/**/*.{ts,tsx,js,jsx,mjs,cjs,mts,cts}",
+    "scripts/**/*.{ts,tsx,mjs,cjs}",
+    "tests/**/*.{ts,tsx,js,jsx,mjs,cjs,mts,cts,cs,cshtml,py,java,rb,rs,c,cpp,h,html,css,json,ps1,psm1}"
   ]
 }
 ```
 
-**Key options**
+Then point the generator to it:
+
+```powershell
+npm run live-docs:generate -- --config live-docs.config.json
+```
+
+This repository uses an internal MDMD convention and overrides these defaults via `.live-docs.config.json`.
+
+### Implementation References (for curious readers)
+
+- Generator CLI entrypoint: [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts)
+- Inspect CLI entrypoint: [`scripts/live-docs/inspect.ts`](../../scripts/live-docs/inspect.ts)
+- Explorer server entrypoint: [`packages/scripts/src/live-docs/explorer/server/index.ts`](../../packages/scripts/src/live-docs/explorer/server/index.ts)
+- Static Explorer builder: [`packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts`](../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts)
+
+**Key Options**
 
 | Setting | Default | Purpose |
-| --- | --- | --- |
-| `liveDocumentation.root` | `.live-documentation` | Filesystem root for staged docs. Can point outside the repo for private mirrors. |
-| `liveDocumentation.baseLayer` | `source` | Folder name that mirrors the source tree. Rename when layering additional Live Documentation (e.g., `architecture/`, `work-items/`). |
-| `liveDocumentation.slugDialect` | `github` | Header slug strategy. Supports `github`, `azure-devops`, and `gitlab`. |
-| `liveDocumentation.requireRelativeLinks` | `true` | Forces generated and authored markdown links to remain relative, enabling repo-backed wikis. |
-| `liveDocumentation.glob` | `[]` | Glob patterns defining which assets receive Live Docs. Honour the one-doc-per-source rule. |
-| `liveDocumentation.enableDocstringBridge` | `false` | Enables bidirectional updates between Live Docs and inline docstrings once bridges stabilise. |
-| `liveDocumentation.archetypeOverrides` | `{}` | Optional map for assigning non-default archetypes (e.g., treat `tests/**` as `test`). |
+|---------|---------|---------|
+| `root` | `.live-documentation` | Filesystem root for staged docs |
+| `baseLayer` | `source` | Folder mirroring the source tree |
+| `extension` | `.md` | Output extension for Live Docs |
+| `slugDialect` | `github` | Header slug strategy (`github`, `azure-devops`, `gitlab`) |
+| `requireRelativeLinks` | `true` | Forces relative links for repo-backed wikis |
+| `glob` | `[...]` | Glob patterns defining which assets receive Live Docs |
 
-## Stage 0 – Observe
-1. **Run the generator (dry-run first):**
-   ```powershell
-   npm run live-docs:generate -- --dry-run
-   ```
-   Inspect the diff summary to ensure authored blocks remain untouched. When satisfied, repeat without `--dry-run` to materialise markdown under `/.live-documentation/source/`.
-2. **Review placeholders:** The generator produces:
-   - `Metadata` front matter with `Live Doc ID`, archetype, source path, and provenance hash.
-   - Authored headings seeded from templates. Populate `Description`, `Purpose`, and `Notes` manually.
-   - Generated sections marked by HTML fences (`<!-- LIVE-DOC:BEGIN Public Symbols -->`). Editing inside these blocks raises lint failures.
-3. **Track regeneration latency:** After running `npm run safe:commit`, copy the Live Documentation timings from the log into `reports/benchmarks/live-docs/latency.md`. These numbers anchor performance budgets before promotion.
-4. **Prototype diff tooling:** Use the VS Code diff viewer or `git diff -- .live-documentation/source` to confirm generated sections change deterministically when source files update.
+---
 
-## Trace dependency paths with the inspect CLI
-1. **Walk outbound or inbound chains:**
-   ```powershell
-   npm run live-docs:inspect -- --from Controllers/TelemetryController.cs --to appsettings.json --json
-   ```
-   The CLI emits `kind: "path"` with a `nodes` array tracing each hop plus a `hops` collection that mirrors the rendered markdown edges. Add `--direction inbound` to reverse the traversal.
-2. **List terminal fan-out:**
-   ```powershell
-   npm run live-docs:inspect -- --from Services/TelemetryScheduler.cs --direction outbound --json
-   ```
-   Omitting `--to` returns `kind: "fanout"` alongside `terminalPaths` up to the configured `maxDepth` (defaults to 25). Each terminal path lists the artefacts encountered so prompt tooling can highlight downstream impact.
-3. **Diagnose missing edges:**
-   ```powershell
-   npm run live-docs:inspect -- --from Services/TelemetryScheduler.cs --to Controllers/TelemetryController.cs --json
-   ```
-   When no chain exists the CLI exits with code 1, reports `kind: "not-found"`, and enumerates a `frontier` array with reasons such as `terminal`, `max-depth`, or `missing-doc`. LD-402 regression tests assert these payloads to keep failure diagnostics stable.
+## The Explorer: Visual Understanding
 
-## Stage 1 – Guard
-1. **Update authored headers:** Replace placeholder text in the staged docs with human-curated intent. Keep entries concise—LLMs ingest the authored block before generated sections.
-2. **Enable lint gates:**
-   ```powershell
-   npm run live-docs:lint
-   ```
-   The lint pass enforces relative links, generated-marker integrity, and evidence presence (unless a waiver HTML comment exists).
-3. **Wire safe-commit:** Add the Live Docs lint step to `scripts/safe-to-commit.mjs` (the repo already chains it) so every commit validates structure.
-4. **Adopt docstring bridges:** Toggle `liveDocumentation.enableDocstringBridge` in settings once the archetype instructions are satisfied. Regeneration will fail if docstrings drift beyond one cycle without waivers.
+The Live Documentation Explorer provides three interactive views for navigating your codebase visually.
 
-## Stage 2 – Bridge
-1. **Connect coverage sources:** Configure language-specific adapters (Vitest, Pytest, dotnet test) so evidence sections populate automatically.
-2. **Inspect drift diagnostics:** Regeneration surfaces markdown/implementation mismatches via diagnostics and CLI output (`npm run live-docs:evidence -- path/to/file.ts`). Resolve or waive before migration.
-3. **Verify CLI/UI parity:** Ensure every Live Documentation insight has both an extension command and a CLI equivalent (inspect, evidence, docstring sync, migrate, report). This enables GitHub Copilot and headless tooling to exercise the same features.
+### Launch the Explorer Server
 
-## Stage 3 – Sustain
-1. **Dry-run migration:**
-   ```powershell
-   npm run live-docs:migrate -- --dry-run
-   ```
-   Compare the staged docs to `.mdmd/layer-4/` using the generated report.
-2. **Flip the canonical toggle:** When parity is proven, set `liveDocumentation.promoteLayer4` to `true`. The next regeneration writes directly into `.mdmd/layer-4/` while preserving the staging tree for audits.
-3. **Audit telemetry:** Check `reports/benchmarks/live-docs/*.json` and telemetry dashboards for regeneration latency, waiver counts, and evidence coverage. Document anomalies before closing the migration work item.
+```powershell
+npm run live-docs:visualize
+# Opens http://localhost:3000
+```
 
-## Maintenance Cheat-Sheet
-- **Regenerate after source edits:** `npm run live-docs:generate -- --changed` scopes regeneration to recently modified files (watch mode forthcoming).
-- **Inspect dependencies:** `npm run live-docs:inspect -- --from packages/server/src/foo.ts --to packages/server/src/bar.ts --json` traces the Live Doc graph. Drop `--to` to enumerate terminal fan-out or add `--direction inbound` to reverse the search.
-- **Sync docstrings:** `npm run live-docs:sync-docstrings -- packages/server/src/foo.ts` reconciles inline comments with the Live Doc summary.
-- **Report coverage gaps:** `npm run live-docs:report -- --format markdown` produces dashboards summarising evidence waivers and dependency fan-out.
+### Three Views
 
-## Testing & CI Hooks
-- **Regeneration tests:** `npm run test:integration -- --filter live-docs` (coming soon) verifies authored preservation and deterministic output.
-- **Benchmarks:** `npm run run-benchmarks -- --mode live-docs` replays polyglot AST fixtures to guard symbol/dependency accuracy.
-- **Safe commit:** `npm run safe:commit` already chains Live Doc lint, regeneration dry-run, standard linting, unit tests, integration suites, and benchmark drift checks. Use `--benchmarks` to capture AST accuracy results before migration approvals.
+| View | Purpose | Best For |
+|------|---------|----------|
+| **Circuit Board** | Macroscopic "motherboard" map showing clusters and hubs | Architecture overview, identifying hotspots |
+| **Local Map** | 3-column layout: Inbound → Active Node → Outbound | Understanding a single file's relationships |
+| **Force Graph** | Physics-based network visualization | Discovering unexpected connections |
+
+### Explorer Features
+
+- **Hover highlighting**: Dim unrelated connections to trace symbol-to-symbol relationships
+- **Sticky pins**: Click a symbol to "pin" the highlight (mobile-friendly)
+- **Type reference badges**: Click cyan badges to navigate to type definitions
+- **Test-backed glow**: Purple shadow indicates files with test coverage
+- **Detail panel**: Full markdown rendering of the selected artifact's Live Doc
+
+### Headless JSON API
+
+For LLM/automation use, query the Local Map data directly:
+
+```powershell
+# Get structured JSON for any node's neighborhood
+Invoke-RestMethod "http://localhost:3000/local-map?nodeId=packages/shared/src/live-docs/core.ts&pretty=1"
+```
+
+Returns: center node, upstream/downstream neighbors, edges with symbol anchors, layout statistics.
+
+---
+
+## Static Site Export (GitHub Pages)
+
+Generate a fully static Explorer bundle for hosting anywhere:
+
+```powershell
+npm run live-docs:visualize:static
+# Output: dist/explorer/ (~5MB for a 600-node workspace)
+```
+
+**What's Bundled**:
+- `index.html` — Self-contained viewer
+- `explorer-data.json` — Graph (nodes, links), symbol index, all Live Doc markdown
+- Provenance metadata (commit hash, generator version, timestamp)
+
+**Deployment**:
+```powershell
+# Copy to any static host
+Copy-Item dist/explorer/* /path/to/gh-pages/ -Recurse
+
+# Or serve locally for testing
+npx serve dist/explorer
+```
+
+The static bundle works offline, embeds in Teams/Slack cards, and survives vendor switches.
+
+---
+
+## Trace Dependency Paths (Inspect CLI)
+
+The inspect CLI provides "Oracle of Bacon" style pathfinding through the Live Doc graph.
+
+### Walk Outbound or Inbound Chains
+
+```powershell
+npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/shared/src/types.ts --json
+```
+
+Output kind: `"path"` with `nodes` array tracing each hop, plus a `hops` collection mirroring the rendered edges. Add `--direction inbound` to reverse the traversal.
+
+### List Terminal Fan-Out
+
+```powershell
+npm run live-docs:inspect -- --from packages/server/src/main.ts --direction outbound --json
+```
+
+Omitting `--to` returns kind: `"fanout"` alongside `terminalPaths` up to `maxDepth` (default 25). Use this before risky edits to see where data ultimately lands.
+
+### Diagnose Missing Edges
+
+```powershell
+npm run live-docs:inspect -- --from packages/server/src/foo.ts --to packages/shared/src/bar.ts --json
+```
+
+When no path exists: exits code 1, reports kind: `"not-found"`, and enumerates a `frontier` array with reasons (`terminal`, `max-depth`, `missing-doc`).
+
+### Quick Summary (Default Mode)
+
+```powershell
+npm run live-docs:inspect -- packages/shared/src/live-docs/core.ts
+```
+
+Without `--from`/`--to` flags, emits a markdown summary of the artifact's Live Doc metadata (useful for Copilot prompt fuel).
+
+---
+
+## Stage 0: Generate
+
+**Goal**: Materialise Live Docs for your workspace.
+
+```powershell
+# Dry-run first to see what would change
+npm run live-docs:generate -- --dry-run
+
+# Execute when satisfied
+npm run live-docs:generate
+
+# Regenerate only recently modified files
+npm run live-docs:generate -- --changed
+```
+
+**What gets created**:
+- `Metadata` frontmatter: Live Doc ID, archetype, source path, provenance hash
+- `Purpose` / `Notes` headers seeded from templates — **you write these**
+- `Public Symbols` / `Dependencies` / `Observed Evidence` — **machine-generated** (fenced with HTML markers)
+
+**Editing rules**: Populate the authored sections manually. Never edit inside `<!-- LIVE-DOC:BEGIN ... -->` fences — lint fails if you do.
+
+---
+
+## Stage 1: Lint
+
+**Goal**: Validate structure before commits.
+
+```powershell
+npm run live-docs:lint
+```
+
+**What's enforced**:
+- Relative links only (no absolute paths)
+- Generated-marker integrity (fences intact)
+- Evidence presence (unless waived)
+- Slug dialect compliance (`github`, `azure-devops`, `gitlab`)
+
+**Wire into safe-commit**: The repo's `npm run safe:commit` already chains the lint pass. Every commit validates Live Doc structure automatically.
+
+---
+
+## Stage 2: Explore
+
+**Goal**: Navigate the dependency graph visually.
+
+```powershell
+# Interactive server
+npm run live-docs:visualize
+
+# Static bundle for hosting
+npm run live-docs:visualize:static
+
+# CLI pathfinder
+npm run live-docs:inspect -- --from <path> --to <path>
+```
+
+Use the Explorer to identify:
+- Architectural hotspots (Circuit Board)
+- Single-file impact (Local Map)
+- Unexpected connections (Force Graph)
+
+---
+
+## Stage 3: Sustain
+
+**Goal**: Integrate Live Docs into daily workflow.
+
+### Daily Commands
+
+| Task | Command |
+|------|---------|
+| Regenerate after edits | `npm run live-docs:generate -- --changed` |
+| Trace dependencies | `npm run live-docs:inspect -- --from <path>` |
+| Validate before commit | `npm run safe:commit` |
+| Audit coverage gaps | `npm run graph:audit` |
+| Visualize relationships | `npm run live-docs:visualize` |
+
+### CI Integration (Coming Soon)
+
+```yaml
+# Tier 1: Every push (<3min)
+- npm audit
+- npm run lint
+- npm run build
+- npm run test:unit
+
+# Tier 2: Nightly (~15min)
+- npm run test:integration
+- npm run live-docs:generate
+- npm run live-docs:visualize:static
+- Deploy to GitHub Pages
+
+# Tier 3: Pre-release (manual)
+- npm run safe:commit -- --benchmarks
+```
+
+---
+
+## CLI Reference
+
+| Command | Purpose |
+|---------|---------|
+| `npm run live-docs:generate` | Regenerate Live Docs (supports `--dry-run`, `--changed`) |
+| `npm run live-docs:lint` | Validate structural markers, links, slug dialect |
+| `npm run live-docs:inspect -- <path>` | Emit markdown summary for an artifact |
+| `npm run live-docs:inspect -- --from <a> --to <b>` | Find path between two artifacts |
+| `npm run live-docs:visualize` | Launch interactive Explorer server |
+| `npm run live-docs:visualize:static` | Build static bundle for hosting |
+| `npm run live-docs:system` | Materialise System views (default output: `AI-Agent-Workspace/tmp/system-cli-output`) |
+| `npm run live-docs:migrate -- --dry-run` | Audit drift between staged docs and `.mdmd/layer-4/` |
+| `npm run graph:audit` | Flag files missing Live Docs or evidence |
+| `npm run graph:snapshot` | Rebuild SQLite cache and JSON fixture |
+
+For the full catalogue, see [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md).
+
+---
+
+## Polyglot Support
+
+Live Documentation analyzes multiple languages via its adapter system:
+
+| Language | Adapter | Symbols | Dependencies |
+|----------|---------|---------|--------------|
+| TypeScript/JavaScript | Built-in (TS Compiler API) | ✅ Full | ✅ Full |
+| C# | tree-sitter | ✅ Partial | ✅ Partial |
+| Python | tree-sitter | ✅ Partial | ✅ Partial |
+| Rust | tree-sitter | ✅ Partial | ✅ Partial |
+| C/C++ | tree-sitter | ✅ Partial | ✅ Partial |
+| Java | tree-sitter | ✅ Partial | ✅ Partial |
+| Ruby | tree-sitter | ✅ Partial | ✅ Partial |
+| Go | tree-sitter | 🚧 Planned | 🚧 Planned |
+
+Tree-sitter adapters extract symbols and dependencies through pattern matching. The benchmark suite (`npm run test:benchmarks -- --mode ast`) validates extraction accuracy.
+
+---
 
 ## Implementation Traceability
-- [`packages/shared/src/live-docs/schema.ts`](../../packages/shared/src/live-docs/schema.ts) (planned) defines the metadata contract enforced across archetypes.
-- [`packages/server/src/features/live-docs/generator.ts`](../../packages/server/src/features/live-docs/generator.ts) will orchestrate regeneration, authored preservation, and provenance hashing.
-- [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) exposes the CLI entry used throughout this quickstart.
-- `.github/instructions/mdmd.layer4*.instructions.md` document the authored/generated schema and archetype-specific sections that the generator honours.
 
-Keep this guide close during the migration. Once Live Docs become canonical, Layer‑4 MDMD files emerge directly from the generator, giving both humans and copilots the same ground-truth view of the repository.
+Core implementation lives in:
+
+- [packages/shared/src/live-docs/](../../packages/shared/src/live-docs/) — Core contracts (metadata types, frontmatter schema)
+- [scripts/live-docs/](../../scripts/live-docs/) — CLI entry points (generate, inspect, lint, system, migrate)
+- [packages/server/src/features/live-docs/](../../packages/server/src/features/live-docs/) — Server-side orchestration
+
+Copilot instruction files that govern Live Doc authoring:
+
+- `.github/instructions/mdmd.layer4.instructions.md` — Authored/generated schema
+- `.github/instructions/mdmd.instructions.md` — General MDMD conventions
+
+---
+
+## Getting Help
+
+- **Full CLI reference**: [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md)
+- **Architecture**: [.mdmd/layer-3/](../../.mdmd/layer-3/)
+- **Development journey**: [AI-Agent-Workspace/Notes/Project Development Journey.md](../../AI-Agent-Workspace/Notes/Project%20Development%20Journey.md)
+- **Chat history**: [AI-Agent-Workspace/ChatHistory/](../../AI-Agent-Workspace/ChatHistory/) — Fully auditable dev decisions
+
+Keep this guide close as you onboard. Live Documentation's goal: **for any change in any file, provide the definitive answer to "What other files will be impacted?"**

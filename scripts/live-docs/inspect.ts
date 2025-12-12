@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -10,7 +11,8 @@ import {
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
-  type LiveDocumentationConfig
+  type LiveDocumentationConfig,
+  type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "@live-documentation/shared/tooling/pathUtils";
 
@@ -19,6 +21,7 @@ interface ParsedArgs {
   version: boolean;
   json: boolean;
   workspace?: string;
+  configPath?: string;
   root?: string;
   baseLayer?: string;
   extension?: string;
@@ -95,14 +98,55 @@ async function main(): Promise<void> {
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
-  const configInput: LiveDocumentationConfig = normalizeLiveDocumentationConfig({
+  const hasExplicitConfigOverrides = Boolean(
+    args.configPath || args.root || args.baseLayer || args.extension
+  );
+
+  let configFileInput: LiveDocumentationConfigInput = {};
+  let resolvedConfigPath: string | undefined;
+  if (args.configPath) {
+    resolvedConfigPath = args.configPath;
+  } else {
+    const defaultConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
+    try {
+      await fs.access(defaultConfigPath);
+      resolvedConfigPath = defaultConfigPath;
+    } catch {
+      // No default config present.
+    }
+  }
+
+  if (resolvedConfigPath) {
+    configFileInput = await readConfigFile(resolvedConfigPath);
+  }
+
+  let configInput: LiveDocumentationConfig = normalizeLiveDocumentationConfig({
     ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-    root: args.root ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.root,
-    baseLayer: args.baseLayer ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer,
-    extension: args.extension ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension
+    ...configFileInput,
+    root: args.root ?? configFileInput.root ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.root,
+    baseLayer: args.baseLayer ?? configFileInput.baseLayer ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer,
+    extension: args.extension ?? configFileInput.extension ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension
   });
 
-  const graph = await buildLiveDocGraph({ workspaceRoot, config: configInput });
+  let graph = await buildLiveDocGraph({ workspaceRoot, config: configInput });
+  if (graph.nodes.size === 0 && !hasExplicitConfigOverrides) {
+    // Back-compat fallback: older workspaces (and some fixtures) may still use the
+    // MDMD-oriented defaults. Only attempt this when the user did not explicitly
+    // choose a config (flags or --config).
+    const legacyConfig = normalizeLiveDocumentationConfig({
+      ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+      root: ".mdmd",
+      baseLayer: "layer-4",
+      extension: ".mdmd.md"
+    });
+
+    const legacyGraph = await buildLiveDocGraph({ workspaceRoot, config: legacyConfig });
+    if (legacyGraph.nodes.size > 0) {
+      configInput = legacyConfig;
+      graph = legacyGraph;
+    }
+  }
+
   if (graph.nodes.size === 0) {
     console.error("No Live Docs found. Generate Live Documentation before running inspect.");
     process.exit(1);
@@ -176,6 +220,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--config": {
+        parsed.configPath = expectValue(argv, ++index, current);
+        break;
+      }
+
       case "--root": {
         parsed.root = expectValue(argv, ++index, current);
         break;
@@ -227,6 +276,12 @@ function parseArgs(argv: string[]): ParsedArgs {
   }
 
   return parsed;
+}
+
+async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
+  const resolved = path.resolve(configPath);
+  const raw = await fs.readFile(resolved, "utf8");
+  return JSON.parse(raw) as LiveDocumentationConfigInput;
 }
 
 function expectValue(argv: string[], index: number, flag: string): string {
@@ -616,6 +671,7 @@ function usage(): string {
     `  --to <path>              Target artefact. Omit to list terminal paths from --from.\n` +
     `  --direction <dir>        Traversal direction: outbound (default) or inbound.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
+    `  --config <file>          Load configuration from JSON file.\n` +
     `  --json                   Emit JSON instead of text.\n` +
     `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
     `  --root <path>            Override liveDocumentation.root.\n` +

@@ -6,8 +6,8 @@ import process from "node:process";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig,
+  type LiveDocumentationConfigInput,
   type LiveDocumentationEvidenceStrictMode
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
@@ -22,21 +22,148 @@ interface LintWarning {
   message: string;
 }
 
-const AUTHORED_CONTENT_IGNORE_PATTERNS: RegExp[] = [
-  /^\.mdmd\/layer-4\/tests\/integration\/dist\//
-];
+interface ParsedArgs {
+  help: boolean;
+  version: boolean;
+  workspace?: string;
+  configPath?: string;
+  root?: string;
+  baseLayer?: string;
+  extension?: string;
+}
+
+function parseArgs(argv: string[]): ParsedArgs {
+  const parsed: ParsedArgs = {
+    help: false,
+    version: false
+  };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const current = argv[index];
+    switch (current) {
+      case "-h":
+      case "--help": {
+        parsed.help = true;
+        break;
+      }
+      case "-v":
+      case "--version": {
+        parsed.version = true;
+        break;
+      }
+      case "--workspace": {
+        parsed.workspace = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--config": {
+        parsed.configPath = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--root": {
+        parsed.root = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--base-layer": {
+        parsed.baseLayer = expectValue(argv, ++index, current);
+        break;
+      }
+      case "--extension": {
+        parsed.extension = expectValue(argv, ++index, current);
+        break;
+      }
+      default: {
+        if (current.startsWith("-")) {
+          throw new Error(`Unknown option: ${current}`);
+        }
+        throw new Error(`Unexpected argument: ${current}`);
+      }
+    }
+  }
+
+  return parsed;
+}
+
+function expectValue(argv: string[], index: number, flag: string): string {
+  const value = argv[index];
+  if (!value || value.startsWith("-")) {
+    throw new Error(`Option ${flag} requires a value.`);
+  }
+  return value;
+}
+
+function usage(): string {
+  return [
+    "Usage: npm run live-docs:lint -- [options]",
+    "",
+    "Options:",
+    "  --workspace <path>     Workspace root (defaults to current directory).",
+    "  --config <file>        Load configuration from JSON file.",
+    "  --root <path>          Override liveDocumentation.root.",
+    "  --base-layer <name>    Override liveDocumentation.baseLayer.",
+    "  --extension <suffix>   Override liveDocumentation.extension.",
+    "  --version              Print CLI version.",
+    "  --help                 Show this help message."
+  ].join("\n");
+}
+
+async function readConfigFile(configPath: string): Promise<LiveDocumentationConfigInput> {
+  const resolved = path.resolve(configPath);
+  const raw = await fs.readFile(resolved, "utf8");
+  return JSON.parse(raw) as LiveDocumentationConfigInput;
+}
+
+function escapeRegexLiteral(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildAuthoredContentIgnorePatterns(configRoot: string, baseLayer: string): RegExp[] {
+  const root = configRoot.replace(/\\/g, "/").replace(/^\/+/, "").replace(/\/+$/, "");
+  const layer = baseLayer.replace(/\\/g, "/").replace(/^\/+/, "").replace(/\/+$/, "");
+  const prefix = `${escapeRegexLiteral(root)}/${escapeRegexLiteral(layer)}`;
+  return [new RegExp(`^${prefix}/tests/integration/dist/`)];
+}
 
 async function main(): Promise<void> {
-  const workspaceRoot = process.cwd();
+  const args = parseArgs(process.argv.slice(2));
+
+  if (args.help) {
+    console.log(usage());
+    return;
+  }
+
+  if (args.version) {
+    const version = process.env.LIVE_DOCS_LINT_VERSION ?? "0.1.0";
+    console.log(version);
+    return;
+  }
+
+  const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
+
+  let configInput: LiveDocumentationConfigInput = {};
+  if (args.configPath) {
+    configInput = await readConfigFile(args.configPath);
+  }
+
+  if (args.root) {
+    configInput.root = args.root;
+  }
+  if (args.baseLayer) {
+    configInput.baseLayer = args.baseLayer;
+  }
+  if (args.extension) {
+    configInput.extension = args.extension;
+  }
+
   const config = normalizeLiveDocumentationConfig({
-    ...DEFAULT_LIVE_DOCUMENTATION_CONFIG
+    ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+    ...configInput
   });
 
   const docGlob = path.join(
     config.root,
     config.baseLayer,
     "**",
-    `*${LIVE_DOCUMENTATION_FILE_EXTENSION}`
+    `*${config.extension}`
   );
   const files = await glob(docGlob, {
     cwd: workspaceRoot,
@@ -52,6 +179,10 @@ async function main(): Promise<void> {
 
   const issues: LintIssue[] = [];
   const warnings: LintWarning[] = [];
+  const authoredContentIgnorePatterns = buildAuthoredContentIgnorePatterns(
+    config.root,
+    config.baseLayer
+  );
 
   await Promise.all(
     files.map(async (absolutePath) => {
@@ -59,7 +190,7 @@ async function main(): Promise<void> {
       const relativePath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");
 
       validateStructure(relativePath, content, issues);
-      validateAuthoredSections(relativePath, content, warnings);
+      validateAuthoredSections(relativePath, content, warnings, authoredContentIgnorePatterns);
 
       const archetype = detectArchetype(content);
       if (archetype === "implementation") {
@@ -119,8 +250,13 @@ function validateStructure(file: string, content: string, issues: LintIssue[]): 
   }
 }
 
-function validateAuthoredSections(file: string, content: string, warnings: LintWarning[]): void {
-  if (shouldIgnoreAuthoredContentWarning(file)) {
+function validateAuthoredSections(
+  file: string,
+  content: string,
+  warnings: LintWarning[],
+  ignorePatterns: RegExp[]
+): void {
+  if (shouldIgnoreAuthoredContentWarning(file, ignorePatterns)) {
     return;
   }
   const block = extractAuthoredBlock(content);
@@ -167,8 +303,8 @@ function validateAuthoredSections(file: string, content: string, warnings: LintW
   }
 }
 
-function shouldIgnoreAuthoredContentWarning(file: string): boolean {
-  return AUTHORED_CONTENT_IGNORE_PATTERNS.some(pattern => pattern.test(file));
+function shouldIgnoreAuthoredContentWarning(file: string, ignorePatterns: RegExp[]): boolean {
+  return ignorePatterns.some(pattern => pattern.test(file));
 }
 
 function validateImplementationEvidence(

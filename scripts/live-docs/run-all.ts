@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -41,6 +42,14 @@ const VALUE_FLAGS = new Set([
 const BOOLEAN_FLAGS = new Set([
   "--dry-run",
   "--changed"
+]);
+
+const PIPELINE_CONFIG_FLAGS = new Set([
+  "--workspace",
+  "--config",
+  "--root",
+  "--base-layer",
+  "--extension"
 ]);
 
 function parseArgs(rawArgs: string[]): OrchestratorOptions {
@@ -201,6 +210,82 @@ function splitFlagAndValue(arg: string): [string, string | undefined] {
   return [flag, value];
 }
 
+function hasConfigArg(args: string[]): boolean {
+  for (const arg of args) {
+    const [flagCandidate] = splitFlagAndValue(arg);
+    if (flagCandidate === "--config") {
+      return true;
+    }
+  }
+  return false;
+}
+
+function resolveWorkspaceRoot(args: string[]): string {
+  for (let index = 0; index < args.length; index += 1) {
+    const [flagCandidate, inlineValue] = splitFlagAndValue(args[index] ?? "");
+    if (flagCandidate !== "--workspace") {
+      continue;
+    }
+
+    if (inlineValue) {
+      return path.resolve(inlineValue);
+    }
+
+    const nextValue = args[index + 1];
+    if (nextValue && !nextValue.startsWith("-")) {
+      return path.resolve(nextValue);
+    }
+  }
+
+  return path.resolve(process.cwd());
+}
+
+function appendDefaultConfigIfPresent(args: string[], workspaceRoot: string): string[] {
+  if (hasConfigArg(args)) {
+    return args;
+  }
+
+  const defaultConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
+  if (!fs.existsSync(defaultConfigPath)) {
+    return args;
+  }
+
+  return [...args, "--config", defaultConfigPath];
+}
+
+function filterArgsForLintAndReport(args: string[]): string[] {
+  const filtered: string[] = [];
+
+  for (let index = 0; index < args.length; index += 1) {
+    const current = args[index];
+    if (!current) {
+      continue;
+    }
+
+    const [flagCandidate] = splitFlagAndValue(current);
+    if (!PIPELINE_CONFIG_FLAGS.has(flagCandidate)) {
+      continue;
+    }
+
+    filtered.push(current);
+
+    const hasInlineValue = current.includes("=");
+    if (hasInlineValue) {
+      continue;
+    }
+
+    if (index + 1 < args.length) {
+      const possibleValue = args[index + 1];
+      if (possibleValue && !possibleValue.startsWith("-")) {
+        filtered.push(possibleValue);
+        index += 1;
+      }
+    }
+  }
+
+  return filtered;
+}
+
 function formatUsage(): string {
   return `Usage: npm run livedocs -- [options]\n\n` +
     `Runs the Live Documentation pipeline in order: target manifest → generate → lint.\n\n` +
@@ -251,6 +336,10 @@ async function runStage(stage: Stage): Promise<void> {
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
 
+  const workspaceRoot = resolveWorkspaceRoot(options.generatorArgs);
+  options.generatorArgs = appendDefaultConfigIfPresent(options.generatorArgs, workspaceRoot);
+  const lintAndReportArgs = filterArgsForLintAndReport(options.generatorArgs);
+
   if (options.showHelp) {
     console.log(formatUsage());
     return;
@@ -278,7 +367,7 @@ async function main(): Promise<void> {
     {
       label: "live-docs:lint",
       script: "scripts/live-docs/lint.ts",
-      args: [],
+      args: lintAndReportArgs,
       enabled: !options.skipLint
     }
   ];
@@ -287,7 +376,7 @@ async function main(): Promise<void> {
     stages.push({
       label: "live-docs:report",
       script: "scripts/live-docs/report-precision.ts",
-      args: [],
+      args: lintAndReportArgs,
       enabled: true
     });
   }

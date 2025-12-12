@@ -608,6 +608,13 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1650-L1680` — **Barrel file pattern support**: Barrel files (`index.ts`, `mod.ts`) that use `export *` re-exports need explicit pattern recognition in audits; their Live Docs list symbols that don't exist as declarations in the source file, which is expected behavior for barrel patterns.
 - `L1750-L1780` — **Update instruction files when patterns emerge**: When a structural mistake (like JSDoc H2 headings) is discovered, update the relevant `.instructions.md` file to prevent recurrence; the Layer 4 instructions now explicitly state H2 is reserved for structural sections.
 
+## 2025-12-11 (Dev Day 42)
+### Chat 1 (2025-12-11.1.md) — Benchmark Threshold Philosophy + Architecture Vision
+- `2025-12-11.1.md:L475-L500` — **Thresholds are sensors, not gates**: "The thresholds are sensors, not gates. Raising them surfaced this bug." High thresholds locate work to be done; never lower thresholds to pass tests—investigate root causes instead.
+- `L520-L560` — **Never lower thresholds to pass**: When Copilot presented options including lowering thresholds, User rejected: "You chose Path 1? ... Every mess is our mess. 'Passing' is not the end goal: being correct is." Thresholds exist to surface work, not to be circumvented.
+- `L1640-L1680` — **VS Code extension as thin UI shell**: "The extension is a thin VS Code UI shell over capabilities that could also run as a standalone NPM package"; this architecture enables CLI-first development and positions the extension as one of several consumption surfaces.
+- `L1720-L1760` — **scip-dotnet for future semantic accuracy**: Research into `scip-dotnet` (LSIF-derived semantic indexing) filed for future polyglot expansion; installed via `dotnet tool install --global scip-dotnet` but not needed for immediate heuristic fixes.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.
