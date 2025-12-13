@@ -82,8 +82,8 @@ void main();
 
 function buildWorkspace(repoRoot: string): void {
   console.log("Building extension and language server bundles...");
-  const npmCli = getNpmCliPath();
-  const result = spawnSync(process.execPath, [npmCli, "run", "build"], {
+  const npmInvocation = resolveNpmInvocation();
+  const result = spawnSync(npmInvocation.command, [...npmInvocation.args, "run", "build"], {
     cwd: repoRoot,
     stdio: "inherit"
   });
@@ -161,6 +161,21 @@ function getNpmCliPath(): string {
     "bin",
     "npm-cli.js"
   );
+}
+
+function resolveNpmInvocation(): { command: string; args: string[] } {
+  const npmExecPath = process.env.npm_execpath;
+  if (npmExecPath && npmExecPath.endsWith("npm-cli.js") && fs.existsSync(npmExecPath)) {
+    return {
+      command: process.execPath,
+      args: [npmExecPath]
+    };
+  }
+
+  return {
+    command: process.platform === "win32" ? "npm.cmd" : "npm",
+    args: []
+  };
 }
 
 function resolveVSCodeCliPath(vscodeExecutablePath: string): string {
