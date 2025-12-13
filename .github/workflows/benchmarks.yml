@@ -8,6 +8,11 @@ on:
         required: false
         default: "all"
 
+# Cancel in-progress runs if a new dispatch is triggered
+concurrency:
+  group: benchmarks-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   benchmarks:
     runs-on: ubuntu-latest
