@@ -153,16 +153,6 @@ function rebuildNativeModules(repoRoot: string, electronVersion: string): void {
   }
 }
 
-function getNpmCliPath(): string {
-  return path.resolve(
-    path.dirname(process.execPath),
-    "node_modules",
-    "npm",
-    "bin",
-    "npm-cli.js"
-  );
-}
-
 function resolveNpmInvocation(): { command: string; args: string[] } {
   const npmExecPath = process.env.npm_execpath;
   if (npmExecPath && npmExecPath.endsWith("npm-cli.js") && fs.existsSync(npmExecPath)) {

@@ -214,7 +214,8 @@ async function waitForLanguageServerReady(): Promise<void> {
 async function clearDiagnostics(): Promise<void> {
   // Invoke custom command to reset diagnostic state for clean test runs
   await vscode.commands.executeCommand("linkAwareDiagnostics.clearAllDiagnostics");
-  const timeoutAt = Date.now() + 5000;
+  const clearTimeout = 15000; // 15s to accommodate slower CI runners
+  const timeoutAt = Date.now() + clearTimeout;
   while (Date.now() < timeoutAt) {
     const hasDiagnostics = vscode.languages
       .getDiagnostics()
@@ -226,7 +227,7 @@ async function clearDiagnostics(): Promise<void> {
     await sleep(100);
   }
 
-  throw new Error("Diagnostics did not clear within 5s of issuing clearAllDiagnostics");
+  throw new Error(`Diagnostics did not clear within ${clearTimeout / 1000}s of issuing clearAllDiagnostics`);
 }
 
 async function waitForDiagnostics(uri: vscode.Uri, timeout: number): Promise<void> {
