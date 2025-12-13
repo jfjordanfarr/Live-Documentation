@@ -18,7 +18,7 @@
     "rebuild:better-sqlite3:node": "node ./scripts/rebuild-better-sqlite3.mjs",
     "rebuild:better-sqlite3:force": "node ./scripts/rebuild-better-sqlite3.mjs --force",
     "test:unit": "npm run rebuild:better-sqlite3:node --if-present && vitest run",
-    "test:integration": "node ./tests/integration/clean-dist.mjs && tsc -p tests/integration/tsconfig.json && node ./tests/integration/dist/vscode/runTests.js",
+    "test:integration": "node ./tests/integration/clean-dist.mjs && npm run build && tsc -p tests/integration/tsconfig.json && node ./tests/integration/dist/vscode/runTests.js",
     "test:benchmarks": "node ./scripts/run-benchmarks.mjs",
     "verify": "node ./scripts/verify.mjs",
     "safe:commit": "node ./scripts/safe-to-commit.mjs",
