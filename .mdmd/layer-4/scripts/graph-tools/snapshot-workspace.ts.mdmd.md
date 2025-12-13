@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/snapshot-workspace.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-snapshot-workspace-ts
-- Generated At: 2025-12-07T21:41:19.790Z
+- Generated At: 2025-12-13T03:52:24.198Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 - Refactored 2025-11-04 to expose a reusable `snapshotWorkspace` helper and quiet mode; `audit-doc-coverage.ts` now invokes it automatically before audits to avoid stale caches ([self-refresh change](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.790Z","inputHash":"ae02fd61e8abd2f6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-13T03:52:24.198Z","inputHash":"fcc880c9d7a1a463"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_DB` {#symbol-default_db}
@@ -53,7 +53,7 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 
 #### `main` {#symbol-main}
 - Type: function
-- Source: [source](../../../../scripts/graph-tools/snapshot-workspace.ts#L481)
+- Source: [source](../../../../scripts/graph-tools/snapshot-workspace.ts#L484)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

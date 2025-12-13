@@ -1,263 +1,349 @@
-# @link packages/server/src/features/diagnostics/listOutstandingDiagnostics.ts
-# @link packages/server/src/runtime/changeProcessor.ts
-# @link tests/integration/us3/acknowledgeDiagnostics.test.ts
 openapi: 3.1.0
 info:
-  title: Link-Aware Diagnostics Service
+  title: Live Documentation Explorer
   version: 0.1.0
   description: >-
-    REST surface exposed by the link-aware diagnostics server for optional headless workflows
-    (CI validation, integrations). VS Code extension communicates via LSP commands that map to
-    these operations.
+    Minimal HTTP server used by the Live Documentation Explorer UI.
+    This contract reflects the current implementation in
+    packages/scripts/src/live-docs/explorer/server/index.ts.
 servers:
-  - url: http://localhost:43111
-    description: Local development server
+  - url: http://localhost:3000
+    description: Default local explorer server
 paths:
-  /artifacts/register:
-    post:
-      summary: Register or update a knowledge artifact
-      operationId: registerArtifact
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ArtifactInput'
-      responses:
-        '200':
-          description: Artifact registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Artifact'
-  /links:
-    post:
-      summary: Create or update a link relationship
-      operationId: upsertLink
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LinkInput'
-      responses:
-        '200':
-          description: Link created or updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Link'
+  /:
     get:
-      summary: List link relationships with optional filters
-      operationId: listLinks
-      parameters:
-        - in: query
-          name: sourceId
-          schema:
-            type: string
-            format: uuid
-        - in: query
-          name: targetId
-          schema:
-            type: string
-            format: uuid
-        - in: query
-          name: kind
-          schema:
-            $ref: '#/components/schemas/LinkKind'
+      summary: Serve the Explorer UI shell
+      operationId: getExplorerIndex
       responses:
         '200':
-          description: Matching links
+          description: Explorer HTML
           content:
-            application/json:
+            text/html:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Link'
-  /diagnostics:
+                type: string
+  /graph:
     get:
-      summary: Retrieve outstanding diagnostics grouped by artifact
-      operationId: listDiagnostics
+      summary: Retrieve the full Explorer graph payload
+      operationId: getExplorerGraph
       parameters:
         - in: query
-          name: status
+          name: refresh
+          required: false
+          description: When set to `1`, rebuilds the graph before returning it.
           schema:
-            $ref: '#/components/schemas/DiagnosticStatus'
+            type: string
+            enum: ['1']
+      responses:
+        '200':
+          description: Explorer graph
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExplorerGraphPayload'
+  /details:
+    get:
+      summary: Retrieve detail payload for a single Live Doc
+      operationId: getExplorerDetails
+      parameters:
         - in: query
-          name: layer
-          schema:
-            $ref: '#/components/schemas/ArtifactType'
-      responses:
-        '200':
-          description: Active diagnostics
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Diagnostic'
-  /diagnostics/{id}/acknowledge:
-    post:
-      summary: Mark a diagnostic as acknowledged
-      operationId: acknowledgeDiagnostic
-      parameters:
-        - in: path
-          name: id
+          name: docPath
           required: true
+          description: Workspace-relative doc path (e.g. `.mdmd/layer-4/packages/shared/src/index.ts.mdmd.md`).
           schema:
             type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AcknowledgementInput'
       responses:
         '200':
-          description: Diagnostic acknowledged
+          description: Details payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Diagnostic'
-  /diagnostics/{id}/dismiss:
-    post:
-      summary: Suppress a diagnostic
-      operationId: dismissDiagnostic
+                $ref: '#/components/schemas/ExplorerDetailPayload'
+        '400':
+          description: Missing/invalid docPath
+        '404':
+          description: Node not found
+  /open:
+    get:
+      summary: Open a code file in VS Code
+      operationId: openInEditor
       parameters:
-        - in: path
-          name: id
+        - in: query
+          name: codePath
           required: true
+          description: Absolute path to a file within the workspace.
           schema:
             type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DismissInput'
       responses:
         '200':
-          description: Diagnostic suppressed
+          description: OK
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/Diagnostic'
-  /llm/evaluate:
-    post:
-      summary: Request optional LLM assessment for a diagnostic cluster
-      operationId: evaluateWithLLM
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LLMEvaluationInput'
+                type: string
+        '400':
+          description: Missing/invalid codePath
+  /local-map:
+    get:
+      summary: Retrieve headless JSON Local Map data for a node
+      operationId: getLocalMap
+      parameters:
+        - in: query
+          name: nodeId
+          required: true
+          description: Node id (code path) to focus on.
+          schema:
+            type: string
+        - in: query
+          name: pretty
+          required: false
+          description: When set to `1`, pretty-prints the JSON.
+          schema:
+            type: string
+            enum: ['1']
       responses:
-        '202':
-          description: Assessment accepted
+        '200':
+          description: Local Map data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LLMEvaluationTicket'
+                $ref: '#/components/schemas/LocalMapData'
+        '400':
+          description: Missing nodeId
+        '404':
+          description: Node not found
 components:
   schemas:
-    ArtifactType:
+    ExplorerLinkKind:
       type: string
-      enum: [vision, requirements, architecture, implementation, code]
-    Artifact:
+      description: Explorer edge kind (open-ended).
+    ExplorerDependencyReference:
       type: object
+      additionalProperties: false
+      required: [label, raw, resolved, kind]
+      properties:
+        targetId:
+          type: string
+        targetDocPath:
+          type: string
+        targetSymbol:
+          type: string
+        sourceSymbol:
+          type: string
+        label:
+          type: string
+        raw:
+          type: string
+        resolved:
+          type: boolean
+        kind:
+          $ref: '#/components/schemas/ExplorerLinkKind'
+    ExplorerTypeReference:
+      type: object
+      additionalProperties: false
+      required: [typeName, role, isResolved]
+      properties:
+        typeName:
+          type: string
+        role:
+          type: string
+          enum: [return, parameter, extends, implements, constraint]
+        parameterName:
+          type: string
+        isResolved:
+          type: boolean
+        targetId:
+          type: string
+        targetAnchor:
+          type: string
+    ExplorerPublicSymbol:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name:
+          type: string
+        typeReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerTypeReference'
+    ExplorerNodePayload:
+      type: object
+      additionalProperties: true
+      required:
+        - id
+        - name
+        - codePath
+        - codeRelativePath
+        - docPath
+        - docRelativePath
+        - archetype
+        - dependencies
+        - dependents
+        - missingDependencies
+        - publicSymbols
       properties:
         id:
           type: string
-          format: uuid
-        uri:
+        name:
           type: string
-        type:
-          $ref: '#/components/schemas/ArtifactType'
-        language:
+        codePath:
           type: string
+        codeRelativePath:
+          type: string
+        docPath:
+          type: string
+        docRelativePath:
+          type: string
+        archetype:
+          type: string
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerDependencyReference'
+        dependents:
+          type: array
+          items:
+            type: string
+        missingDependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerDependencyReference'
+        publicSymbols:
+          type: array
+          items:
+            type: string
+        publicSymbolsExtended:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerPublicSymbol'
+        symbolDocumentation:
+          type: object
+          additionalProperties: true
           nullable: true
-        owner:
+    ExplorerLinkPayload:
+      type: object
+      additionalProperties: true
+      required: [source, target, kind]
+      properties:
+        source:
+          oneOf:
+            - type: string
+            - type: object
+              additionalProperties: true
+        target:
+          oneOf:
+            - type: string
+            - type: object
+              additionalProperties: true
+        kind:
+          $ref: '#/components/schemas/ExplorerLinkKind'
+        sourceSymbol:
           type: string
-          nullable: true
-        lastSynchronizedAt:
+        targetSymbol:
           type: string
-          format: date-time
+    ExplorerGraphStats:
+      type: object
+      additionalProperties: false
+      required: [nodes, links, missingDependencies]
+      properties:
+        nodes:
+          type: number
+        links:
+          type: number
+        missingDependencies:
+          type: number
+    ExplorerGraphPayload:
+      type: object
+      additionalProperties: false
+      required: [nodes, links, stats]
+      properties:
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerNodePayload'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerLinkPayload'
+        stats:
+          $ref: '#/components/schemas/ExplorerGraphStats'
+    ExplorerDetailPayload:
+      type: object
+      additionalProperties: true
+      required:
+        - archetype
+        - purpose
+        - publicSymbols
+        - dependencies
+        - dependents
+        - missingDependencies
+        - docRelativePath
+        - codeRelativePath
+      properties:
+        archetype:
+          type: string
+        purpose:
+          type: string
+        publicSymbols:
+          type: array
+          items:
+            type: string
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerDependencyReference'
+        dependents:
+          type: array
+          items:
+            type: string
+        missingDependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExplorerDependencyReference'
+        docRelativePath:
+          type: string
+        codeRelativePath:
+          type: string
+        symbolDocumentation:
+          type: object
+          additionalProperties: true
           nullable: true
+    LocalMapData:
+      type: object
+      additionalProperties: true
+      required: [focusNodeId, center, upstream, downstream, edges, symbolAnchors, stats, metadata]
+      properties:
+        focusNodeId:
+          type: string
+        center:
+          type: object
+          additionalProperties: true
+        upstream:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        downstream:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        edges:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        symbolAnchors:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        stats:
+          type: object
+          additionalProperties: true
         metadata:
           type: object
           additionalProperties: true
-    ArtifactInput:
-      type: object
-      required: [uri, type]
-      properties:
-        uri:
-          type: string
-        type:
-          $ref: '#/components/schemas/ArtifactType'
-        language:
-          type: string
-        owner:
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
-    LinkKind:
-      type: string
-      enum: [documents, implements, depends_on, references]
-    Link:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        sourceId:
-          type: string
-          format: uuid
-        targetId:
-          type: string
-          format: uuid
-        kind:
-          $ref: '#/components/schemas/LinkKind'
-        confidence:
-          type: number
-          format: float
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-    LinkInput:
-      type: object
-      required: [sourceId, targetId, kind]
-      properties:
-        sourceId:
-          type: string
-          format: uuid
-        targetId:
-          type: string
-          format: uuid
-        kind:
-          $ref: '#/components/schemas/LinkKind'
-        confidence:
-          type: number
-          format: float
-          default: 1
-        createdBy:
-          type: string
-    DiagnosticStatus:
-      type: string
-      enum: [active, acknowledged, suppressed]
-    Diagnostic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        artifactId:
-          type: string
           format: uuid
         triggerArtifactId:
           type: string

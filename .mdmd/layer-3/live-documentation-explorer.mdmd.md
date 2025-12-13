@@ -22,7 +22,7 @@ Document the visualization command center that renders the Live Doc graph as int
 ### Strategy
 - Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
-- Prepare the detail panel for future inline editing so authors can scaffold docstrings bidirectionally.
+- Prepare the detail panel for future inline editing as a wishlist item; core value remains read-only exploration + deterministic regeneration + drift visibility.
 - **Static Distribution (LD-810–LD-819)**: Enable zero-server distribution via JSON bundles, GitHub Pages embedding, and standalone HTML viewers. The `StaticExplorerData` schema wraps the graph payload with provenance metadata and a symbol index for client-side search. Distribution scenarios include GitHub Pages (alongside Layer-1 markdown), Hosted Showcase bundles (REQ-H1), Teams Card embedding, and offline analysis.
 
 ## System References

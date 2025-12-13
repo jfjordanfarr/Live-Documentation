@@ -380,6 +380,10 @@ export async function snapshotWorkspace(options: SnapshotWorkspaceOptions): Prom
     : path.resolve(workspaceRoot, options.dbPath ?? DEFAULT_DB);
   const outputPath = path.resolve(workspaceRoot, options.outputPath ?? DEFAULT_OUTPUT);
 
+  // NOTE: "specs" is intentionally excluded from documentation globs.
+  // Spec-Kit docs are design artifacts, not Live Documentation mirrors.
+  // They are still validated by slopcop:markdown for link integrity, but
+  // graph:audit does not require them to "touch code" like base-layer Live Docs.
   const orchestrationTargets = {
     implementation: ["packages", "tests", "scripts", "src", "lib", "examples", "include"],
     documentation: [
@@ -387,7 +391,6 @@ export async function snapshotWorkspace(options: SnapshotWorkspaceOptions): Prom
       ".live-documentation",
       path.join(".live-documentation", "source"),
       path.join(".live-documentation", "system"),
-      "specs",
       "docs",
       path.join("tests", "integration", "fixtures", "simple-workspace", "docs"),
       path.join("tests", "integration", "fixtures", "slopcop-symbols", "workspace", "docs"),

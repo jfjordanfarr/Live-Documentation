@@ -4,26 +4,31 @@ applyTo: ".mdmd/layer-1/**/*.mdmd.md"
 
 # Layer 1 MDMD Conventions
 
-Layer 1 documents are **concept-layer** artefacts that should read like polished release notes or public roadmap statements.  Authored content leads; generated blocks provide lightweight rollups derived from linked Layer 2 requirements.
+Layer 1 documents are **concept-layer** artefacts that should read like polished release notes or public roadmap statements.
 
-- Start every file with the canonical metadata block (include `Site:` when the capability is mirrored to a public build target):
+This workspace originally experimented with strict, fully-closed MDMD link hierarchies and higher-layer `## Generated` rollups, but practice proved too messy to enforce rigorously at Layers 1–3. The durable guarantee that remains is base-layer (Layer 4 / Live Documentation) coverage.
+
+Layer 1 is therefore **authored-only** today.
+
+- Start every file with a metadata block:
   ```markdown
   ## Metadata
   - Layer: 1
-  - Archetype: capability|release|narrative
-  - Live Doc ID: CAP-example-id
+  - Capability IDs: CAP-...
   ```
-- Required section order:
-  1. `# <Capability or Release Title>`.
-  2. `## Metadata` as shown above.
-   3. `## Authored` containing:
-     - `### Intent` – concise promise or vision statement.
-     - `### Signals` – curated success indicators (planned milestones, stakeholder commitments, externally facing KPIs).  Use prose or bullet lists; avoid inline metrics the generator cannot verify.
-     - Optional `### Publishing` – describe static site expectations (e.g., GitHub Pages path, build workflow job) when the capability is surfaced publicly.
-     - Optional `### Notes` for durable context.  Omit when empty.
-  4. `## Generated` with the following headings when data exists:
-     - `### Completion Snapshot` – deterministic counts derived from linked Layer 2 docs (for example, “Requirements satisfied: 3 / 4”).
-     - `### Evidence Snapshot` – list of immutable artefacts (release blog, public demo link) discovered from the workspace or configured metadata.  Leave `_No evidence recorded yet_` when empty.
-  5. `## Dependencies` – markdown list of direct Layer 2 requirement links.  This is the only required downward reference.
-- Limit authored hyperlinks to Layer 2 or peer Layer 1 docs.  Do **not** link directly to Layer 3/4 artefacts; rollups should flow through the requirement layer. When referencing external trackers or publishing pipelines, include a Layer 2 link plus a brief plain-text pointer (e.g., “published via `site/vision` job”).
-- Keep identifiers stable (`CAP-…`) so tooling can correlate capabilities with requirements and architecture components.
+  - This repo prefers `Capability IDs` (see `.mdmd/layer-1/link-aware-diagnostics-vision.mdmd.md`).
+  - Do **not** add a `## Generated` section in Layer 1.
+
+- Recommended section order (flexible; optimize for clarity):
+  1. `# <Vision Title>`.
+  2. `## Metadata`.
+  3. A capability-focused body (commonly `## Capabilities` with `### CAP-...` subsections).
+  4. Optional outcome sections such as `## Desired Outcomes`, `## Success Signals`, `## Evidence`, `## Target Personas`, `## Guiding Principles`, `## Scope and Non Goals`, `## Evolution Path`, `## Adoption Path`, `## Open Questions`.
+
+- Links and hierarchy:
+  - Prefer linking to Layer 2 summaries when possible, but do **not** treat full closure (L1→L2→L3→L4) as a hard requirement.
+  - Direct links to Layer 3/4 artefacts are allowed when they improve auditability or reader utility.
+
+- Provenance (why these rules changed):
+  - Early strict-downward + higher-layer-generated ideation: `AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md`.
+  - Relaxation after the `layer4-orphans` experiment: `AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-19.SUMMARIZED.md`.

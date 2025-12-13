@@ -16,7 +16,7 @@ Explain how the VS Code extension manifests Live Documentation inside the editor
 - Bridges dependency inspection commands to the shared CLI so engineers can jump between editor quick picks and headless audits without switching mental models.
 
 ### Strategy
-- Unify Analyze-with-AI, regeneration, and scaffold flows under a single telemetry surface before we enable bidirectional authoring by default.
+- Unify Analyze-with-AI, regeneration, and drift signals under a single telemetry surface; any future docs → code authoring remains explicitly opt-in and deferred.
 - Continue dogfooding the extension against the integration harness to guarantee editor cues stay deterministic when the server rolls out new diagnostics or rule profiles.
 
 ## System References

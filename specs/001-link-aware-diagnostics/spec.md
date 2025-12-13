@@ -8,7 +8,7 @@
 
 **Input**: "Deliver an open-source, markdown-as-AST system where every workspace artifact has Live Documentation: an authored preamble plus generated sections describing programmatic surface, dependencies, and evidence, powering diagnostics and copilots without cloud dependencies."
 
-**Current Vision**: Live Documentation mirrors each tracked asset under `/.live-documentation/source/`, giving it an authored preamble plus deterministic generated metadata. Diagnostics, CLI exports, and copilots consume the same markdown graph, while System-level views (clusters, workflows, coverage rollups) are generated on demand instead of being committed to the repository, keeping the experience reproducible and ephemeral by design. Layer 1 capabilities publish to a static site (initially GitHub Pages), Layer 2 requirements reconcile with Spec-Kit and issue trackers, and the System CLI streams materialized views so no architecture markdown lingers in the repo. A future Cloudflare-hosted showcase reuses the exact same generator so prospects can submit a public GitHub repository, receive a downloadable bundle (Live Docs, SQLite cache, README + prompt guide), and replay the experience locally without installing the extension or paying for LLM tokens.
+**Current Vision**: Live Documentation mirrors each tracked asset into the configured base layer (this repo uses `.mdmd/layer-4/` with the `.mdmd.md` extension), giving it an authored preamble plus deterministic generated metadata. Diagnostics, CLI exports, and copilots consume the same markdown graph, while System-level views (clusters, workflows, coverage rollups) are generated on demand instead of being committed to the repository, keeping the experience reproducible and ephemeral by design. Layer 1 capabilities publish to a static site (initially GitHub Pages), Layer 2 requirements reconcile with Spec-Kit and issue trackers, and the System CLI streams materialized views so no architecture markdown lingers in the repo. A future Cloudflare-hosted showcase reuses the exact same generator so prospects can submit a public GitHub repository, receive a downloadable bundle (Live Docs, SQLite cache, README + prompt guide), and replay the experience locally without installing the extension or paying for LLM tokens.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -16,7 +16,7 @@
 
 **Status**: In progress — validated by instruction updates and upcoming integration suites under `tests/integration/live-docs`.
 
-Maintainers open a Live Doc, edit the authored `Description`, `Purpose`, or `Notes`, and regenerate generated sections without losing manual context. The mirror tree lives under `/.live-documentation/` by default but can be reconfigured.
+Maintainers open a Live Doc, edit the authored `Description`, `Purpose`, or `Notes`, and regenerate generated sections without losing manual context. The mirror tree lives under a configurable root (this repo uses `.mdmd/layer-4/`) but can be reconfigured.
 
 **Why this priority**: The authored preamble communicates intent; losing it would make Live Docs untrustworthy even if generated metadata is correct. Authors need deterministic tooling to preserve their work.
 
@@ -120,22 +120,22 @@ Stakeholders expect Layer 1 vision pages to publish externally without manual 
 
 ---
 
-### User Story 7 – Writers sync docstrings & generate scaffolds (Priority: P2)
+### User Story 7 – Writers monitor docstrings & draft changes (Priority: P3)
 
-**Status**: Planned — feature-flagged pilot gated behind docstring round-trip adapters. Requires REQ-G1 completion.
+**Status**: Planned — drift diagnostics are in-scope; docs → code write-back remains a deferred wishlist item.
 
-Authors treat Live Docs as the canonical AST for documentation and optional skeleton code. They can edit summaries, remarks, and parameter notes inside Layer‑4 markdown, preview the diff against inline docstrings, and push updates with provenance logging. Early adopters can also request language-specific scaffolds or pseudocode drafts seeded from the same Live Doc without mutating tracked files.
+Authors treat Live Docs as the canonical AST for documentation and understanding. They can edit summaries, remarks, and parameter notes inside Layer‑4 markdown, and the system can surface drift diagnostics when inline docstrings diverge from the generated Live Doc schema (or remain missing). If docs → code write-back is explored later, it must remain feature-flagged and auditable.
 
-**Why this priority**: Bidirectional sync unlocks the long-term vision of Live Docs as a generation surface; without it, documentation edits drift from code, and generative workflows lack a grounded source of truth.
+**Why this priority**: The core value is “map + freshness engine” (code → docs + diagnostics). Write-back can be valuable, but it is not required to make Live Documentation useful.
 
-**Independent Test**: Modify the `run` summary inside `src/com/example/app/App.java`’s Live Doc, run the round-trip CLI with preview mode, approve the update, and confirm the Javadoc now mirrors the markdown while audit telemetry records the change.
+**Independent Test**: Modify a Live Doc’s symbol summary, run regeneration/verification, and confirm the system reports drift (and remediation guidance) without mutating source files.
 
 **Acceptance Scenarios**:
 
-1. **Given** a Live Doc edit that changes summary and parameters, **When** the author runs `npm run live-docs:sync-docstrings -- --apply`, **Then** the tool presents a diff, updates the inline docstring upon confirmation, and writes an audit entry listing the symbols touched.
-2. **Given** a Live Doc edit that introduces unsupported tags, **When** preview runs, **Then** the diff highlights unmapped fragments, falls back to `rawFragments`, and blocks automatic application until the adapter learns the tag.
-3. **Given** a request for generative scaffolding in Rust, **When** the author invokes `live-docs:scaffold --language rust`, **Then** a draft appears under `AI-Agent-Workspace/tmp/live-docs/scaffolds/` with references back to the originating Live Doc and no tracked files changed.
-4. **Given** feature flags disabled, **When** a user attempts to apply docstring updates, **Then** the tool exits with guidance to enable the workspace setting, ensuring legacy workflows remain untouched.
+1. **Given** a Live Doc edit that changes summary and parameters, **When** verification runs, **Then** drift is reported with symbol/field-level pointers and remediation guidance, and no tracked files are mutated.
+2. **Given** docstrings containing unsupported tags, **When** regeneration runs, **Then** unmapped fragments are preserved as `rawFragments` with provenance so no data is silently dropped.
+3. **Given** a request for generative scaffolding in Rust, **When** scaffolding runs, **Then** a draft appears under `AI-Agent-Workspace/tmp/live-docs/scaffolds/` with references back to the originating Live Doc and no tracked files changed.
+4. **Given** any future write-back feature flags are disabled, **When** a user attempts to apply docstring updates, **Then** the tool exits safely with guidance, ensuring legacy workflows remain untouched.
 
 ---
 
@@ -161,6 +161,8 @@ Prospective adopters visit a Cloudflare-backed site, enter a public GitHub repos
 
 Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) to explore the repository: the primary view presents a circuit-board layout of Live Docs, clicking or hovering a file expands its public symbols, and focus mode hides unrelated nodes so inbound/outbound relationships stand out. The detail panel reveals the Live Doc metadata, links back to the source, and previews authored sections that will eventually become editable. A complementary force-directed graph remains available for discovery but may relax accessibility compared to the primary surface.
 
+The Local Map view also acts as a non-headless equivalent of `live-docs inspect`: maintainers can provide a `From` artifact and a `To` artifact and the view expands to show the multi-hop path between them (or a clear “no connection” result) using the same underlying hop semantics as the CLI. The interaction stays minimal: pathfinding auto-runs (debounced) when both endpoints are valid, with no extra “Find Path” action beyond the inputs and the result.
+
 **Why this priority**: The command center turns Live Docs into an everyday cockpit—bridging global topology, local symbol context, and future authoring without bouncing between disparate prototypes. Without it, teams struggle to reason about change impact or prepare docstring scaffolds directly from the documentation graph.
 
 **Independent Test**: Launch the explorer against the repository, select `packages/server/src/runtime/changeProcessor.ts`, confirm the board collapses to show only related neighbors, inspect the detail panel for Live Doc metadata, open the file in VS Code, and run an accessibility audit (axe-core) to ensure WCAG AA obligations pass.
@@ -172,6 +174,8 @@ Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) 
 3. **Given** the maintainer navigates solely with a keyboard or screen reader, **When** they tab through the explorer, **Then** focus order is logical, every interactive element announces its role/name/state, and contrast checks satisfy WCAG AA (≥4.5:1).
 4. **Given** the detail panel surfaces authored Live Doc context, **When** the maintainer attempts to edit, **Then** the UI clarifies the read-only state today and exposes the upcoming docstring-bridge workflow (preview/apply) once feature flags enable authoring.
 5. **Given** a Live Doc includes symbol-level dependency anchors, **When** the maintainer inspects it in the local view, **Then** symbol rails render connectors with inbound/outbound colouring that mirrors `live-docs inspect`, and automated parity tests confirm the rendered edges match the headless payload exactly.
+6. **Given** the maintainer provides a `From` artifact and a `To` artifact in the Local Map view, **When** both endpoints are valid, **Then** the explorer auto-runs pathfinding (debounced) and the UI expands beyond one hop to render the multi-hop chain (including where paths join) using the same hop semantics as `live-docs inspect --from/--to`.
+7. **Given** the maintainer provides a `From` artifact and a `To` artifact that have no connection, **When** pathfinding runs, **Then** the UI reports a deterministic “no connection” outcome rather than showing unrelated neighbor columns.
 
 ---
 
@@ -193,7 +197,7 @@ Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) 
 
 ### Live Doc Generation Lifecycle
 
-1. **Staging**: Regeneration writes output to `/.live-documentation/` (or configured path), preserving authored sections and updating generated blocks.
+1. **Staging**: Regeneration writes output to the configured base layer (this repo uses `.mdmd/layer-4/` with `.mdmd.md`), preserving authored sections and updating generated blocks.
 2. **Validation**: Safe-commit runs structural lint, analyzer parity checks, and evidence completeness audits before allowing merges.
 3. **Authoring Loop**: Feature-flagged tooling compares authored Live Doc edits with inline docstrings, records preview/apply telemetry, and (optionally) emits generative scaffolds into scratch directories without touching tracked files until humans promote them.
 4. **Promotion**: Once parity with existing MDMD Layer‑4 docs is proven, configuration flips to treat Live Docs as canonical; legacy docs become generated outputs as well.
@@ -207,7 +211,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 
 ### Functional Requirements
 
-- **FR-LD1**: Generator MUST create/refresh Live Docs under a configurable root (default `/.live-documentation/`), preserving authored sections and updating generated sections with deterministic output guarded by HTML markers.
+- **FR-LD1**: Generator MUST create/refresh Live Docs under a configurable root (this repo uses `.mdmd/layer-4/` with `.mdmd.md`), preserving authored sections and updating generated sections with deterministic output guarded by HTML markers (`<!-- LIVE-DOC:BEGIN ... -->` / `<!-- LIVE-DOC:END ... -->`).
 - **FR-LD2**: Generator MUST emit `Public Symbols`, `Dependencies`, and archetype-specific sections (Implementation: `Observed Evidence`; Test: `Targets`, `Supporting Fixtures`; Asset: `Consumers`) using analyzer output and coverage data.
 - **FR-LD3**: Regeneration MUST record provenance metadata (analyzer id, timestamp, benchmark hash) within generated blocks for auditability.
 - **FR-LD4**: Safe-commit pipeline MUST lint Live Docs for structural completeness, analyzer parity, and evidence presence, failing merges when violations occur unless explicit waivers are present.
@@ -220,7 +224,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **FR-LD11**: Generated Live Docs MUST emit workspace-relative markdown links and enforce header slugs according to the configured dialect (GitHub default); violations require explicit waivers surfaced in lint.
 - **FR-LD12**: System analytics MUST default to ephemeral outputs (stdout or temporary directories) and require explicit user confirmation before writing tracked files; commands MUST tag persisted exports so lint can detect strays.
 - **FR-LD13**: Layer distribution tooling MUST publish Layer 1 capabilities via a scripted static site, reconcile Layer 2 requirement status with Spec-Kit/issue trackers, and keep System analytics as CLI materialized views that leave no tracked artefacts unless explicitly promoted.
-- **FR-LD14**: Round-trip authoring tools MUST expose preview/apply flows protected by feature flags, record audit telemetry for every docstring mutation, and emit generative scaffolds into scratch locations without modifying tracked files until humans promote them.
+- **FR-LD14**: Docstring tooling MUST surface drift diagnostics and preserve provenance for unmapped tags. Any future write-back (preview/apply) MUST remain feature-flagged, explicitly confirmed, and auditable, and scaffolds MUST emit into scratch locations without modifying tracked files until humans promote them.
 - **FR-LD15**: The hosted showcase pipeline MUST reuse the standard generator to process public GitHub repositories headlessly, emit provenance metadata, produce a downloadable bundle (Live Docs, SQLite cache, README, prompt guide), and delete cloned data immediately after the bundle is created.
 - **FR-LD16**: The visualization command center MUST merge circuit-board and local symbol exploration into a single UI backed by Live Docs, maintain state across force-directed and 2D views, expose “open in editor” affordances, provide focus-mode filtering, and satisfy WCAG AA keyboard/contrast/screen-reader expectations while preparing the detail panel for future inline editing. The UI MUST operate purely on the Live Doc graph payload—displaying every dependency, symbol anchor, and evidence field available headlessly without inventing additional heuristics—and distinguish inbound versus outbound relationships with directional treatments that stay aligned with CLI diagnostics.
 
@@ -258,7 +262,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **SC-LD8**: System analytics commands leave no tracked artefacts by default and finish within ≤2 s for repositories under 10k files when streaming to stdout.
 - **SC-LD9**: Static site builds publish Layer 1 capabilities without broken links, Layer 2 requirements stay in sync with Spec-Kit/issue trackers, and the System CLI surfaces architectural debt while keeping the tracked tree clean between runs.
 - **SC-LD10**: Structured docstring bridges populate canonical subsections for ≥95% of documented public symbols in supported languages; unmapped tags surface in telemetry within one regeneration cycle.
-- **SC-LD11**: Bidirectional docstring sync succeeds (preview + apply) for ≥90% of supported language fixtures, emits telemetry for 100% of write-backs, and never mutates tracked files without explicit human confirmation logged in safe-commit output.
+- **SC-LD11**: Docstring drift diagnostics cover ≥95% of documented public symbols in supported fixtures and resolve within one regeneration cycle when docstrings are updated manually; any future write-back remains opt-in and auditable.
 - **SC-LD12**: Hosted showcase runs finish within ≤3 minutes for repos under 5k files, emit bundles whose hashes match local regeneration, and delete temporary clones/caches within 60 seconds of completion.
 - **SC-LD13**: Visualization command center focus-mode interactions resolve within two steps, keyboard/screen-reader audits pass WCAG AA checks (2.1, 1.4.3, 4.1.2), and detail panels render within ≤500 ms for repos under 5k files while logging telemetry for view toggles and accessibility overrides.
 

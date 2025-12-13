@@ -26,9 +26,9 @@ Supports FR-LD5, FR-LD7, and SC-LD4 by delivering the VS Code UX and CLI surface
 - Inject Live Doc summary panels (authored header + Observed Evidence) into dependency explorers and status bar surfaces.
 
 ### Authoring Loop Commands
-- Present Live Documentation preview/apply flows (`liveDocumentation.previewDocstring`, `liveDocumentation.applyDocstring`) that surface diffs, respect feature flags, and forward audit metadata to the language server.
-- Trigger scaffolding commands (`liveDocumentation.scaffoldFromDoc`) that emit scratch drafts linked back to the originating Live Documentation file without modifying tracked sources.
-- Display toast and status notifications summarising round-trip outcomes (applied, skipped, failed) so authors can react immediately.
+- Surface docstring drift diagnostics and remediation guidance (read-only) so authors can keep docs and code aligned.
+- If/when docs → code write-back is pursued, present preview/apply flows behind strict feature flags and audit logging.
+- If/when scaffolding is pursued, emit scratch drafts linked back to the originating Live Documentation file without modifying tracked sources.
 
 ### Headless Tooling Support
 - Ship CLI parity (`graph:inspect`, `graph:audit`, `graph:snapshot`, `live-docs:generate`, `live-docs:inspect`) so automation and shell workflows reuse the same traversal contracts and Live Doc metadata as the extension UI.
@@ -64,8 +64,8 @@ Supplies workspace symbols and references to inference pipelines. Implementation
 ### IMP-111 liveDocsCommands
 Registers Live Doc regeneration, inspect, and diff commands. The CLI parity is now expressed through `npm run live-docs:generate` and `npm run live-docs:system`; inspect [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md) for the generated view.
 
-### IMP-112 liveDocsAuthoringCommands *(planned)*
-Will register preview/apply and scaffolding surfaces for bidirectional authoring once the feature flag enables REQ-G1. Implementation intent will live at `.mdmd/layer-4/packages/extension/src/commands/liveDocsAuthoring.ts.mdmd.md` when generated.
+### IMP-112 liveDocsAuthoringCommands *(wishlist)*
+If docs → code write-back is pursued, this will register preview/apply and scaffolding surfaces behind explicit opt-in. Implementation intent will live at `.mdmd/layer-4/packages/extension/src/commands/liveDocsAuthoring.ts.mdmd.md` when generated.
 
 ### IMP-302 graphCoverageAudit CLI
 Headless audit ensuring code/docs linkage. Operational detail is sourced from [audit-doc-coverage.ts Live Doc](../layer-4/scripts/graph-tools/audit-doc-coverage.ts.mdmd.md).

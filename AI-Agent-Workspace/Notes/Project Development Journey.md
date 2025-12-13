@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 10, 2025\)*
+*Status: Active Development (Dec 12, 2025\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -305,7 +305,7 @@ Scope: Commits 12/6.1–12/6.3, 109–111, 125, 121, 123
 The system underwent a massive refactor to pay down technical debt and pushed into deep symbol analysis for systems languages.
 
 * **The "Core" Refactor (Commit 125):** The shared core.ts file had ballooned to 3,254 lines. It was exploded into **14 focused modules** (rendering.ts, symbolExtraction.ts, dependencies.ts, etc.), decisively enforcing the "500-line limit" rule across the entire stack.  
-* **The "Generator" Refactor (Commit 126):** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.). *Note: Committed early Dec 7 but represents the culmination of the Dec 6 refactor.*  
+* **The "Generator" Refactor:** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.).  
 * **Type Reference Extraction (Commit 109):** The typeScriptAdapter was upgraded to extract complex types (extends, implements, function return types, parameter types). It includes an isPrimitiveOrBuiltin filter to ignore noise (e.g., string, Promise). This is the backend logic that powers the "Cyan Lines" visualization.  
 * **Type Resolution Engine (Commit 110):** The LiveDocsGenerator now builds a symbolIndex to resolve type names (e.g., returns: Promise\<Widget\>) to concrete file paths, creating clickable links instead of just text strings.  
 * **Systems Language Depth (C):** The cAdapter was upgraded to parse specific function declarations and macro usages, enabling the graph to trace individual C function calls across files (Commit 123). (Note: This also enables C++ support via common syntax features).  
@@ -348,26 +348,36 @@ Scope: Commits 12/9.1–12/9.2, 134, 135
 
 The system achieved "Full Stack" visibility and professional-grade polish.
 
-* **Sticky Highlighting (Commit 134):** A "Click-to-Pin" interaction model allows users (and mobile devices) to freeze the highlight state of a symbol, enabling deep path tracing without holding the mouse.  
-* **Design System (Commit 134):** Hardcoded hex values were replaced with a unified theme.css variable system, standardizing the UI language.  
 * **The Web Tier (Commit 135):** New htmlAdapter and cssAdapter enable the graph to trace dependencies from React components \-\> CSS imports \-\> Image/Font assets.  
 * **Document Root Detection (Commit 135):** Smart logic resolves server-relative paths (/assets/logo.png) by probing common roots (public, wwwroot, static).  
-* **Binary Asset Stub Live Docs (Commit 135):** The system now generates "Stub Live Docs" for binary assets (images, fonts, videos), allowing them to participate in the dependency graph. Deleting banner.png will now correctly show a ripple effect on index.html.
+* **Binary Asset Stub Live Docs (Commit 135):** The system now generates "Stub Live Docs" for binary assets (images, fonts, videos), allowing them to participate in the dependency graph. Deleting banner.png will now correctly show a ripple effect on index.html.  
+* **Sticky Highlighting (Commit 134):** A "Click-to-Pin" interaction model allows users (and mobile devices) to freeze the highlight state of a symbol, enabling deep path tracing without holding the mouse.  
+* **Design System (Commit 134):** Hardcoded hex values were replaced with a unified theme.css variable system, standardizing the UI language.
 
-### **Gallery of the Vision**
+### **Phase XXIII: Adapter Stewardship & Precision (Dec 10-11)**
 
-*A glimpse into the current state of the interface.*
+Date: December 10–11, 2025
 
-1. **The Stacked Local Map:** . Note the clear left-to-right flow and the specific "French Corset" styling on self-loops .  
-2. **The Circuit Board:** . A high-density view of the entire system architecture, capable of zooming out to show the "Big Picture" .  
-3. **The Web Cluster:** . Visualizing the relationship between code and static assets like images and fonts.
+Scope: Commits 136, 137, 138, 139
 
-## **Open Loops & Loose Threads**
+The team continued the "Architectural Stewardship" campaign, focusing on precision engineering in the analysis layer.
 
-*Promises made by the architecture that are not yet fulfilled.*
+* **Adapter Refactoring (Commit 136):** The python.ts (1145 lines) and csharp.ts (1120 lines) adapters were decomposed. The docstring parsing logic was extracted into focused modules (python.docstring.ts, csharp.xmldoc.ts), bringing all source files under the 1,000-line threshold.  
+* **Barrel File Precision (Commit 136):** A critical flaw in test coverage metrics was identified where "Barrel Files" (files that just re-export others) were causing tests to be credited with covering *every* re-exported module. The team implemented isBarrelFile() heuristics to block this transitive expansion, restoring accurate precision metrics (\>90%).  
+* **Symbol Extraction Precision (Commit 137):** Fixed a bug where JSDoc tags (like @param) were being extracted as symbols if they appeared in backticks. Restricted extraction to only H4 headings. This pushed symbol precision from 92% to **99.85%**.  
+* **Disambiguation Suffixes (Commit 138):** Live Docs append suffixes like (interface) to symbols, but the analyzer returns bare names. The parser was updated to strip these suffixes, achieving **100% symbol precision**.  
+* **Glob Pattern Support (Commit 139):** The C\# Oracle was updated to support glob patterns (minimatch) for include/exclude logic, fixing a recall issue in the Roslyn fixture where out-of-scope files were being analyzed.
 
-1. **The Ripple Narrative (Commit 49):** The T084–T086 tasks promised "Ripple Narratives"—human-readable explanations of *why* a change ripples. This is currently "Vaporware"; the system calculates the ripple but doesn't explain it.  
-2. **The Static Telemetry (Commit 51):** The "Lead's Dashboard" (User Story 3\) vision pivoted. Instead of a live operational dashboard inside VS Code, the team implemented **Static Markdown Reports** (docs/test-report.md) generated by CI. The "Live Dashboard" ambition has been deprecated in favor of durable artifacts.
+### **Phase XXIV: Repo Config Overrides (Dec 12\)**
+
+Date: December 12, 2025
+
+Scope: Commit 140
+
+The team finalized the separation between consumer defaults and repository-specific configuration.
+
+* **Configurable Defaults (Commit 140):** The CLI and Explorer were updated to switch consumer defaults to .live-documentation/source and .md extensions, aligning with the standard deployment model. However, the repository itself retained the legacy .mdmd configuration via a new .live-docs.config.json override file.  
+* **Pipeline Hardening:** The livedocs \-- \--report pipeline was fixed to forward configuration correctly to the lint and report stages. Fixture verification was also updated to respect the configured base layer paths.
 
 ## **Vision Evolution Log**
 
@@ -380,7 +390,8 @@ The system achieved "Full Stack" visibility and professional-grade polish.
 * **Late Nov (Part IV):** "Visual Code Explorer." (Interactive Maps via Dual-IDE workflow).  
 * **Early Dec (Part V):** "Self-Aware System." (Linking Code to History/Chat).  
 * **Mid Dec (Phase XX):** "Static Publishing Platform." (Docs that live anywhere).  
-* **Dec 9 (Phase XXII):** "Full-Stack Web Explorer." (HTML/CSS/Asset graph integration).
+* **Dec 9 (Phase XXII):** "Full-Stack Web Explorer." (HTML/CSS/Asset graph integration).  
+* **Dec 10 (Phase XXIII):** "Precision & Refactoring." (Adapter cleanup and test metric fixes).
 
 ## **Technical Themes & Motifs**
 

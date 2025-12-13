@@ -4,29 +4,34 @@ applyTo: ".mdmd/layer-2/**/*.mdmd.md"
 
 # Layer 2 MDMD Conventions
 
-Layer 2 documents are **unit-layer** records for requirements or work items.  They balance human-owned checklists with generated completion summaries so Layer 1 can roll up progress deterministically.
+Layer 2 documents are **unit-layer** records for requirements, roadmaps, or work items.
 
-- Begin with the canonical metadata block (add `External Tracker:` when mirroring to Spec-Kit tasks or GitHub Issues):
+This workspace originally planned for Layer 2 to expose machine-countable checklists and generated rollups, but in practice the only rigorously-enforced invariant is base-layer (Layer 4 / Live Documentation) coverage. Layer 2 is therefore **authored-only** today.
+
+- Begin with a metadata block (add `External Tracker:` when mirroring to Spec-Kit tasks or GitHub Issues):
   ```markdown
   ## Metadata
   - Layer: 2
-  - Archetype: requirement|work-item
-  - Live Doc ID: REQ-example-id
+  - Requirement IDs: REQ-...
   ```
-- Required section order:
-  1. `# <Requirement Title>` (use the stable `REQ-…` identifier in the heading).
-  2. `## Metadata` as above.
-   3. `## Authored` containing:
-     - `### Requirement` – list acceptance expectations as Markdown checkboxes (`- [ ]` / `- [x]`).  Each line should include concise wording so tooling can count completion.
-     - `### Acceptance Criteria` – additional verification checkboxes (functional, non-functional, regression).  Keep the same checkbox syntax.
-     - `### Evidence` – curated links to artefacts proving progress (testing architecture docs, logs, design notes).  Use bullet lists; avoid inline status phrases that drift.
-     - Optional `### Integration` – enumerate the Spec-Kit tasks, GitHub Issues, or Azure DevOps items that track day-to-day execution (use plain-text IDs plus links where available).
-     - Optional `### Notes` for durable context.
-     - Optional `### Upstream` containing exactly one markdown link to the owning Layer 1 capability or release.
-  4. `## Dependencies` – bullet list of Layer 3 architecture docs this requirement depends on.  Do not link directly to Layer 4.
-  5. `## Generated` with the following headings when data exists:
-     - `### Completion Snapshot` – counts of checked boxes (requirement vs acceptance criteria) or other deterministic rollups.
-     - `### Linked Components` – machine-generated list of Layer 3 docs discovered from dependencies or traceability tooling.
-     - `### Linked Evidence` – summarised artefacts automatically detected (latest benchmark report, CI log, etc.).  Leave `_No evidence recorded yet_` when empty.
-- Keep all links workspace-relative.  If no evidence is available, note the gap in `### Evidence` and surface a placeholder in the generated block. External trackers should be referenced via their summary page (e.g., Spec-Kit markdown) rather than deep-linking to SaaS URLs when offline parity matters.
+- This repo commonly uses `Requirement IDs` (see `.mdmd/layer-2/product-roadmap.mdmd.md`).
+- Do **not** add a `## Generated` section in Layer 2.
+- Recommended section order (flexible; optimize for clarity):
+  1. `# <Layer 2 Title>`.
+  2. `## Metadata`.
+  3. A requirements body (commonly `## Requirements`, with `### REQ-...` subsections where applicable).
+  4. Optional `## Acceptance Criteria` sections (either narrative bullets or checklists; both are acceptable).
+
+- Checklists are optional:
+  - You may use Markdown checkboxes (`- [ ]` / `- [x]`) when it helps humans track progress.
+  - Do not design tooling that *requires* checkboxes in Layer 2; treat them as authoring convenience only.
+
+- Links and hierarchy:
+  - Prefer workspace-relative links.
+  - Do **not** treat full closure (L1→L2→L3→L4) as a hard requirement.
+  - Direct links to Layer 3/4 artefacts are allowed when they improve auditability or reader utility.
+
+- Evidence guidance:
+  - Keep evidence as curated bullets (docs, test reports, logs).
+  - Avoid embedding raw git history inside narrative sections; link to durable artefacts instead when needed.
 - Avoid referencing Git history directly inside authored sections; instead, capture commit evidence under `### Evidence` so tooling can keep the generated summaries clean.

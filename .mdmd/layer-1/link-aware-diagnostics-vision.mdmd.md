@@ -16,6 +16,8 @@ Automate symbol extraction, docstring reconciliation, dependency inference, and 
 ### CAP-003 – On-Demand System Views
 Expose ephemeral system-level materialized views—clustered components, workflows, coverage rollups—through CLI commands, diagnostics, and APIs. These views are regenerated when requested and never treated as long-lived documents, allowing us to mix rigorous statistics, local history, and scenario-specific filters without risking doc rot ([AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md](../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md)). The flagship CLI experience traces dependency paths between arbitrary “from” and “to” artifacts (or walks to terminal roots when only one endpoint is provided) so impact analysis becomes a single command instead of a scavenger hunt across docs.
 
+The same “from/to” pathfinding must also exist as a non-headless experience in the Explorer: a Local Map mode where maintainers can enter a `From` artifact and a `To` artifact and see the multi-hop path rendered (or clear “no connection” feedback) using the same underlying Live Doc graph facts as the CLI. The interaction model should remain minimal: pathfinding runs automatically (debounced) when both endpoints are valid, with no additional “Find Path” control beyond the inputs and the rendered result.
+
 ### CAP-004 – Governance & Memory
 Keep stakeholder directives, MIT licensing posture, and competitive research (Windsurf Codemaps, GitLab Knowledge Graph) codified alongside the Live Doc tooling while enforcing guardrails (SlopCop, safe-commit, waiver taxonomies) that make the whole system auditable ([AI-Agent-Workspace/Notes/user-intent-census.md](../../AI-Agent-Workspace/Notes/user-intent-census.md)).
 
@@ -23,13 +25,15 @@ Keep stakeholder directives, MIT licensing posture, and competitive research (Wi
 Publish vision + roadmap knowledge to a static site (initially GitHub Pages), delegate requirement execution traceability to Spec-Kit and issue trackers, and keep System intelligence as CLI-driven materialized views. This capability ensures each MDMD layer lives where it provides the most value while the Layer‑4 corpus remains the canonical source of truth for generated analytics ([AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md](../../AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md)).
 
 ### CAP-006 – Generative Authoring & Docstring Bridges
-Deliver a two-way authoring loop where Live Docs act as the editable AST for code and documentation. Writers can draft or revise summaries, remarks, and parameter notes inside Layer‑4 markdown and push those changes back into inline docstrings; conversely, analyzers harvest rich docstring payloads (including HTML blocks, custom tags, and examples) into canonical Live Doc sections. Feature flags protect legacy flows while we graduate round-trip sync, generative skeleton scaffolding, and language-specific adapters that can emit starter code or pseudocode from authored Live Doc intent ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md](../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md)).
+Deliver a human-first documentation loop where Live Docs remain the canonical, reviewable AST for understanding code, and docstring bridges flow primarily **code → docs**. Analyzers harvest rich docstring payloads (including HTML blocks, custom tags, and examples) into canonical Live Doc sections, and diagnostics flag drift when inline documentation diverges from generated summaries or required fields are missing. Optional **docs → code** write-back (preview/apply) remains a deferred wishlist item: it may be explored behind strict feature flags and audit trails later, but it is not a near-term make-or-break dependency for Live Documentation’s core value ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md](../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md)).
 
 ### CAP-007 – Hosted Showcase & Trials
 Deliver a stateless, Cloudflare-hosted showcase that clones public GitHub repositories, runs the existing Live Docs generator headlessly, and returns a downloadable bundle (markdown mirror, provenance metadata, replay instructions) so prospects can evaluate the system without installing the extension. The hosted surface is marketing-only: it never replaces the offline-first workflow, always links back to the local VS Code extension, and must highlight compatibility with VS Code forks like Windsurf and Cursor to reinforce multi-IDE reach. Instrument the flow with telemetry that proves workspaces are deleted immediately while preserving enough audit trails to troubleshoot demo failures ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md](../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md)).
 
 ### CAP-008 – Live Visualization Command Center
 Deliver a unified `npm run live-docs:visualize` surface that merges the “circuit board” workspace view, the local symbol explorer, and the force-directed graph into a single command center grounded in Layer‑4 Live Docs. Maintainers should pan across file-level clusters, hover or click to expand a file into its public symbols, and optionally hide unrelated nodes to focus on inbound/outbound relationships. The detail panel must surface the relevant Live Doc metadata, provide “open in editor” affordances, and set the stage for future text editing so authors can scaffold code or docstrings bidirectionally. The visualization must stay in **data parity** with the headless Live Doc graph—no inferred edges or metadata beyond what Live Docs encode, and no omissions of symbol-level relationships once anchors are emitted—so CLI, diagnostics, and UI surfaces remain interchangeable views over the same facts. This primary view is expected to meet WCAG AA accessibility (keyboard navigation, high-contrast palettes, screen-reader announcements), while the force-directed explorer may prioritise spatial discovery over full accessibility. Requirements are captured across the 2025-11-20 Antigravity UX sessions ([AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md](../../AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining%20UI%20Interactions.md)).
+
+The Local Map view is the natural home for non-headless inspection: it should be able to “sprawl” beyond the current one-hop neighbor columns when `From` and `To` are provided, rendering the hop-by-hop chain (including where paths join) as a readable impact narrative in the same window. The rendering updates automatically as `From`/`To` change so users can iteratively refine endpoints without leaving the view.
 
 ## Desired Outcomes
 - Layer‑4 Live Docs regenerate deterministically; authored content stays small, intentional, and easy to review.
@@ -44,7 +48,7 @@ Deliver a unified `npm run live-docs:visualize` surface that merges the “circu
 - Markdown links stay relative (slug dialect configurable) so Live Docs double as wiki-friendly artefacts consumers can publish directly.
 - Tooling, instructions, and licensing remain MIT-friendly so adopters can regenerate Layer‑4 docs locally and opt into System analytics when needed.
 - Structured docstring subsections provide anchored headers per field so diagnostics, prompts, and writers can target summaries, parameters, remarks, or examples without scraping prose.
-- Two-way docstring bridges allow Live Docs to seed inline documentation and future generative workflows without forking the source of truth.
+- Docstring bridges harvest inline documentation into Live Docs and surface drift diagnostics; any future write-back remains explicitly opt-in and feature-flagged.
 - Multi-IDE distribution (VS Code, Windsurf, Cursor, and future forks) stays first-class by ensuring commands, docs, and hosted showcases all document their compatibility and offline fallback steps.
 
 ## Downstream Requirements
@@ -76,8 +80,9 @@ Deliver a unified `npm run live-docs:visualize` surface that merges the “circu
 - On-demand System exports flag architectural hotspots (coverage gaps, cluster outliers) in ≤2 s for repositories under 10k files without writing permanent files (SC-LD-003).
 - External adopters can enable the Live Documentation extension, regenerate Layer‑4 docs, and run System analytics locally thanks to MIT licensing and deterministic pipelines (SC-LD-004).
 - Structured docstring bridges surface multi-tag payloads (summary, remarks, parameters, returns, exceptions) in ≥95% of regenerated Live Docs for supported languages, with unmapped tags logged for follow-up (SC-LD-005).
-- Bidirectional docstring sync ships behind a feature flag, records round-trip success for ≥90% of supported language fixtures, and never mutates authored sections without human opt-in (SC-LD-006).
+- Docstring drift diagnostics ship in read-only mode, remain deterministic across fixtures, and any future write-back stays feature-flagged and explicitly opt-in (SC-LD-006).
 - The visualization command center meets WCAG AA contrast and keyboard-navigation checks, resolves focus-mode filtering within two interactions, and launches local-symbol detail panels in ≤500 ms for repos under 5k files (SC-LD-007).
+- The Explorer Local Map can render multi-hop dependency paths between a user-specified `From` and `To` using the same hop semantics as `live-docs inspect`, and reports “no connection” deterministically when paths do not exist (SC-LD-008).
 
 ## Evidence
 - US1–US5 integration suites validate ripple diagnostics for code, documentation, acknowledgement, scope collision, and transforms ([tests/integration](/tests/integration)).
@@ -99,7 +104,7 @@ Deliver a unified `npm run live-docs:visualize` surface that merges the “circu
 5. **Shareable by Default** – Live Docs, CLI exports, hosted showcase bundles, and MIT licensing keep artefacts portable across GitHub, Azure DevOps, and other wiki surfaces.
 6. **System Views are Materialized** – architecture/topology views are regenerated when needed and never treated as permanent docs, freeing analytics to evolve without churn.
 7. **Continuous Falsifiability** – benchmarks, integration suites, and SlopCop rules back every guarantee with repeatable tests.
-8. **Authoring Loops Stay Human-First** – bidirectional sync and generative scaffolds require explicit human confirmation and publish audit trails so Live Docs never silently rewrite code or docstrings.
+8. **Authoring Loops Stay Human-First** – any write-back to code or docstrings (if/when explored) requires explicit human confirmation and audit trails so Live Docs never silently rewrite source files.
 9. **Accessibility Guides Trust** – visualization surfaces prioritise keyboard access, focus management, and contrast so Live Docs remain inclusive even as discovery-focused views (force graph) experiment with richer spatial affordances.
 
 ## Scope and Non Goals
@@ -109,7 +114,7 @@ Deliver a unified `npm run live-docs:visualize` surface that merges the “circu
 ## Evolution Path
 - **Live Doc Baseline (present)**: converge MDMD Layer‑4 docs onto authored/generated structure and stage generator output in `/.live-documentation/`.
 - **Docstring & Evidence Bridges (near term)**: wire analyzers and coverage tools so generated sections stay accurate across languages and test suites. Canonicalise docstring tags into the shared schema, emit deterministic per-field subheadings, validate against curated polyglot fixtures, and surface drift diagnostics when inline documentation diverges from Live Doc narratives.
-- **Bidirectional Authoring (mid term)**: land docstring round-trip tooling, capture provenance for pushes from Live Docs into code, and graduate feature flags that let Live Docs seed pseudocode or skeleton implementations across languages.
+- **Optional Authoring (wishlist)**: explore docstring round-trip preview/apply and scaffolding behind strict feature flags and audit trails, without making docs → code a dependency for the core “map + freshness engine”.
 - **Consumption Surfaces (near term)**: deliver CLI, diagnostics, and LLM exports backed by the Live Doc graph.
 - **Layer Distribution (mid term)**: stand up the public site pipeline, formalise Spec-Kit/issue tracker delegation for Layer 2, and ship the on-demand System CLI so no architecture docs linger in the repo.
 - **Metadata Enrichers (mid term)**: add churn metrics, reference counts, and change history as optional generated sections; experiment with higher-layer docs (releases, work items, architecture) generated from Layer‑4 facts.

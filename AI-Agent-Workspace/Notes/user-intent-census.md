@@ -615,6 +615,17 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1640-L1680` — **VS Code extension as thin UI shell**: "The extension is a thin VS Code UI shell over capabilities that could also run as a standalone NPM package"; this architecture enables CLI-first development and positions the extension as one of several consumption surfaces.
 - `L1720-L1760` — **scip-dotnet for future semantic accuracy**: Research into `scip-dotnet` (LSIF-derived semantic indexing) filed for future polyglot expansion; installed via `dotnet tool install --global scip-dotnet` but not needed for immediate heuristic fixes.
 
+### Chat 2 (2025-12-11.2.md) — CI Pragmatism + Consumer Defaults + Quickstart Rigor
+- `2025-12-11.2.md:L311-L311` — **Scope control**: When Copilot derailed into investigation, User intervened: "Whoa-whoa-whoa what are you doing? Please summarize yesterday's chat first, yeah?" (Summaries-first discipline remains the dev-day ritual.)
+- `L465-L466` — **CI compute realism + main-only workflow is acceptable (for now)**: `safe:commit` is expensive; CI design must be deliberate about what runs when. User explicitly noted single-branch (main-only) development has been “speedy as can be.”
+- `L469-L477` — **Security checks are welcome, but should be right-sized**: Enable GitHub security scanning (Dependabot) and consider pairing it with a blocking `npm audit` step (User: “Perhaps we do both the dependabot scan and the npm audit step?”).
+- `L544-L552` — **Near-term policy: rely on CI rejecting pushes to main**: User agreed on a tiered pipeline philosophy and stated that “having our pushes into main rejected by CI should be sufficient” until feature branches are introduced.
+- `L552-L552` — **Documentation as forced context ingestion**: User explicitly chose updating `specs/001-link-aware-diagnostics/quickstart.md` next because it forces deeper repo-context “inhalation,” pointing to `AI-Agent-Workspace/Notes/Project Development Journey.md` as a starting anchor.
+- `L705-L708` — **Use external RAG fact-checking as a signal**: User used NotebookLM (RAG over exported commits) to fact-check docs; asked Copilot to double-check `quickstart.md` and treat NotebookLM findings as potentially valuable even if imperfect.
+- `L797-L799` — **Consumer defaults must not be MDMD-centric**: User challenged whether defaults had drifted to `.mdmd.md` + `layer-4` for consumers, emphasizing MDMD is project-specific and should not be imposed as the product default.
+- `L1114-L1114` — **Commit gate: restore green**: Direct instruction to get `npm run safe:commit` back to green (“Please get us to `npm run safe:commit` green.”).
+- `L1296-L1296` — **Spec-Kit classification expectations**: Spec artifacts under `specs/001-link-aware-diagnostics/` are “decisively not MDMD layer 4 docs”; audit tooling should have a defensible, explainable reason when treating them as documentation requiring code linkage.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

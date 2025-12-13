@@ -11,7 +11,7 @@ Guarantee CAP-001: every Live Doc contains the mandated `Metadata`, `Authored`, 
 
 #### REQ-F1 Criteria
 - Safe-commit fails when a Live Doc misses required sections, headings, or generated markers.
-- HTML comment markers `<!-- BEGIN/END GENERATED SECTION: ... -->` are present and non-overlapping for each generated block.
+- HTML comment markers `<!-- LIVE-DOC:BEGIN ... -->` / `<!-- LIVE-DOC:END ... -->` are present and non-overlapping for each generated block.
 - Authored subsections (`Description`, `Purpose`, `Notes`) remain editable while generated subsections remain untouched outside automation.
 
 ### REQ-F2 Generated Section Determinism
@@ -52,6 +52,11 @@ Guarantee CAP-001 and CAP-004: SlopCop audits remain the first defense, ensuring
 ### REQ-F6 Docstring Bridge Drift Detection
 Guarantee CAP-002 and CAP-003: docstring bridges remain truthful by reconciling inline documentation with Live Doc generated summaries.
 
+#### REQ-F6 Criteria
+- Docstring bridge CLI compares inline docstrings against generated `Public Symbols` entries and raises drift diagnostics within a single regen cycle.
+- Safe-commit fails when drift counts exceed zero, unless waivers are recorded in the authored block.
+- Integration fixtures exercise positive/negative drift scenarios across TypeScript, Python, and C# examples.
+
 ### REQ-F7 System View Ephemerality
 Guarantee CAP-003: System-level analytics (clusters, workflows, coverage rollups) remain ephemeral outputs derived from Layer‑4 Live Docs and never accumulate as stale tracked artefacts.
 
@@ -68,13 +73,8 @@ Guarantee CAP-005: Layer 1 capabilities, Layer 2 requirements, and System ma
 - Layer 2 requirements document Spec-Kit/task IDs in `### Integration`, and automated snapshots flag mismatches between markdown checkboxes and external state.
 - System analytics CLI leaves `.live-documentation/system/` empty unless a persistence flag is passed, and lint catches stray materialized files lacking the `live-docs:materialized` marker.
 
-#### REQ-F6 Criteria
-- Docstring bridge CLI compares inline docstrings against generated `Public Symbols` entries and raises drift diagnostics within a single regen cycle.
-- Safe-commit fails when drift counts exceed zero, unless waivers are recorded in the authored block.
-- Integration fixtures exercise positive/negative drift scenarios across TypeScript, Python, and C# examples.
-
 ### REQ-F9 Bidirectional Authoring Safeguards
-Guarantee CAP-006: feature-flagged authoring loops reflect Live Documentation edits back into inline docstrings and scaffolding outputs without risking silent mutations or data loss.
+Guarantee CAP-006: any future feature-flagged authoring loops (docs → code write-back or scaffolding) remain explicitly opt-in and cannot silently mutate tracked source files.
 
 #### REQ-F9 Criteria
 - Preview/apply workflows render human-readable diffs before any docstring mutation and require explicit confirmation from the caller (CLI or VS Code command).

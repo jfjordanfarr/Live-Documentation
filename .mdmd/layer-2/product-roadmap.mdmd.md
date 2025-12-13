@@ -96,18 +96,23 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 - Add smoke tests that launch the explorer in CI (headless browser or Playwright) to validate data binding, focus management, and “open in editor” deep links.
 - Document manual QA scripts for Antigravity/Windsurf to ensure non-VS Code forks keep parity.
 
-### REQ-G1 Generative Authoring Bridge
-Supports CAP-006 by enabling two-way sync between Live Docs and inline docstrings while incubating generative authoring workflows that treat Layer‑4 markdown as the canonical AST for code scaffolding.
+#### Stream LV1-E – Non-Headless Inspect (Local Map From/To) *(planned)*
+- Add `From` and `To` inputs to the Local Map view so maintainers can run `live-docs inspect`-equivalent pathfinding without leaving the explorer.
+- When both endpoints are provided, run pathfinding automatically (debounced) and expand the Local Map beyond one hop to render the multi-hop chain (including join points) using the same hop semantics the CLI emits.
+- When no path exists, provide deterministic “no connection” feedback rather than silently showing unrelated neighbors.
 
-#### Stream LDG-A – Docstring Round-Trip *(in progress)*
-- Extend docstring bridges to emit structured deltas when authored Live Doc sections change, preserving provenance for every push back into code.
-- Provide CLI and VS Code commands that preview pending docstring updates, require human confirmation, and log audit metadata (`actor`, `timestamp`, `target symbol`).
-- Harden polyglot fixtures (C#, Java, TypeScript, Python) with multi-paragraph, HTML-rich docstrings to validate sanitisation, canonical tagging, and lossless round trips.
+### REQ-G1 Docstring Drift & Optional Authoring (Wishlist)
+Supports CAP-006 by keeping docstring extraction and drift visibility reliable (code → docs), while explicitly deferring docs → code write-back and scaffolding to an opt-in wishlist item.
 
-#### Stream LDG-B – Feature Controls & Telemetry *(planned)*
-- Introduce workspace-level feature flags so adopters can enable bidirectional sync and generative scaffolds incrementally without destabilising existing regeneration flows.
-- Capture success/failure metrics for docstring pushes, unmapped tag fallbacks, and user rollbacks; surface telemetry inside `reports/benchmarks/live-docs/roundtrip.json`.
-- Wire safety rails into safe-commit so automated rewrites require explicit opt-in and fall back cleanly when analyzers report uncertainty.
+#### Stream LDG-A – Docstring Drift Diagnostics *(planned)*
+- Extend docstring bridges to compute structured drift signals (missing/changed docstring fields, unmapped tags) between inline docstrings and generated Live Doc schema.
+- Provide deterministic, human-readable drift reports (CLI + diagnostics) that point to the affected symbol/field and recommended remediation paths.
+- Harden polyglot fixtures (C#, Java, TypeScript, Python) with multi-paragraph, HTML-rich docstrings to validate sanitisation, canonical tagging, and drift detection coverage.
+
+#### Stream LDG-B – Feature Controls & Telemetry *(wishlist)*
+- If docs → code write-back is explored later, protect it behind workspace-level feature flags so the default experience stays read-only.
+- Capture metrics for drift counts, unmapped tag fallbacks, and (if applicable) preview/apply attempts.
+- Wire safety rails into safe-commit so any automated rewrites require explicit opt-in and fall back cleanly when analyzers report uncertainty.
 
 #### Stream LDG-C – Generative Scaffolding *(stretch goal)*
 - Generate language-specific skeletons or pseudocode from Live Doc authored intent, emitting draft source files into a scratch workspace for review.
@@ -175,8 +180,8 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 ### REQ-L2 Acceptance Criteria
 
 ### REQ-G1 Acceptance Criteria
-- Docstring round-trip commands present human-readable diffs and succeed for ≥90% of supported language fixtures without losing structure or provenance.
-- Feature flags default to read-only mode; enabling bidirectional sync requires explicit configuration and emits telemetry for every write-back event.
+- Docstring drift detection reports missing or divergent fields within one regeneration cycle for supported fixtures, without requiring write-back to be enabled.
+- Any preview/apply tooling (if/when implemented) is feature-flagged, default-off, and emits telemetry for every attempted write-back.
 - Generative scaffolding workflows emit artifacts into `AI-Agent-Workspace/tmp/**` (or caller-provided scratch paths) and never mutate tracked files without a follow-up approval step recorded in safe-commit logs.
 - Unmapped docstring tags appear in Live Docs under `rawFragments` with actionable telemetry so adapters can be extended without silently dropping content.
 
@@ -193,6 +198,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 - The detail panel presents authored Live Doc sections read-only today, with clear messaging about pending text editing, and loads within ≤500 ms for repos under 5k files.
 - Telemetry captures view changes, focus-mode toggles, and accessibility overrides so UX audits can trace adoption and regressions.
 - Visual overlays expose inbound versus outbound relationships with distinct treatments (for example, colour or stroke style) and honour symbol-level anchors once emitted by the generator so the UI mirrors the CLI’s directional insights without regression tests flagging gaps.
+- The Local Map provides `From`/`To` pathfinding that auto-runs (debounced) and renders the same multi-hop chain as `live-docs inspect --from/--to` (or deterministic “no connection”) using only Live Doc graph facts.
 
 ### REQ-E1 Acceptance Criteria
 - MIT license, README, and marketing materials describe Live Documentation capabilities and configuration knobs.
@@ -341,11 +347,11 @@ Supports REQ-V1. (Explorer implementation lives in `scripts/live-docs/visualize-
 ### IMP-950 hostedShowcaseWorker *(planned)*
 Supports REQ-H1. (Implementation will live under `scripts/live-docs/showcaseWorker.ts` with infrastructure configuration documented alongside the hosted pipeline.)
 
-### IMP-901 docstringRoundTripService *(planned)*
-Supports REQ-G1. (Implementation will live under `packages/server/src/features/live-docs/docstringRoundTripService.ts` once the authoring bridge lands.)
+### IMP-901 docstringRoundTripService *(wishlist)*
+Supports REQ-G1. (If docs → code write-back is pursued, a dedicated server-side service will be introduced with strict feature-flag and audit requirements.)
 
-### IMP-902 liveDocsAuthoringCommands *(planned)*
-Supports REQ-G1. (VS Code commands under `packages/extension/src/commands/liveDocsAuthoring.ts` will surface preview and apply flows for docstring sync and scaffolding.)
+### IMP-902 liveDocsAuthoringCommands *(wishlist)*
+Supports REQ-G1. (If docs → code write-back is pursued, VS Code commands will surface preview/apply flows and scaffolding under strict opt-in controls.)
 
 ## Evidence
 

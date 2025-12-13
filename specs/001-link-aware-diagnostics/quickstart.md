@@ -52,7 +52,9 @@ For VS Code extension development, launch the `Launch Extension` configuration. 
 
 Live Docs are configured via a JSON config file (or CLI flags).
 
-Create `live-docs.config.json` at your repo root:
+This repository uses `.live-docs.config.json` at the repo root. For your own repo, you can start by copying it or creating a new config file.
+
+Example (new repo): create `live-docs.config.json` at your repo root:
 
 ```json
 {
@@ -113,7 +115,7 @@ npm run live-docs:visualize
 | View | Purpose | Best For |
 |------|---------|----------|
 | **Circuit Board** | Macroscopic "motherboard" map showing clusters and hubs | Architecture overview, identifying hotspots |
-| **Local Map** | 3-column layout: Inbound → Active Node → Outbound | Understanding a single file's relationships |
+| **Local Map** | 3-column layout: Inbound → Active Node → Outbound (plus an optional From/To pathfinding mode) | Understanding a single file's relationships; tracing multi-hop chains |
 | **Force Graph** | Physics-based network visualization | Discovering unexpected connections |
 
 ### Explorer Features
@@ -123,6 +125,7 @@ npm run live-docs:visualize
 - **Type reference badges**: Click cyan badges to navigate to type definitions
 - **Test-backed glow**: Purple shadow indicates files with test coverage
 - **Detail panel**: Full markdown rendering of the selected artifact's Live Doc
+- **Non-headless inspect (From/To)**: Provide `From` and `To` endpoints in the Local Map and the explorer auto-runs (debounced) pathfinding to render the multi-hop chain or a deterministic “no connection” result.
 
 ### Headless JSON API
 
