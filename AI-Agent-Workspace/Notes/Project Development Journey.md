@@ -200,18 +200,18 @@ Scope: Commits 56–57, 68–70, 74, 80–83, 90, 101, 103
 
 The project outgrew its "Experiments" moniker. The vision shifted from "Diagnostics" to "Live Documentation"—a system that proactively generates docs rather than just linting them.
 
-* **The "Stage 0" Pivot:** The team implemented a split between *ephemeral* docs (generated from code) and *persistent* docs (authored metadata). The .live-documentation/ folder is now a generated mirror of the repo, but it preserves "Purpose/Notes" blocks written by humans (Commit 11/15).  
-* **The "Code Like Clay" Engine (Commit 68):** The LiveDocsGenerator was implemented to execute this preservation. It reads the previous file, extracts the human sections using regex markers, and injects them into the new generation. This allows documentation to be both automated and authored.  
-* **System Scaffolding (Commit 69):** The "Stage 0" concept was formalized with the scaffolding of the System Layer generator. This commit also updated the task list to reflect the massive scope expansion (13 closed tasks, 45 open tasks across 7 phases), cementing the new direction.  
-* **System Mirroring (Commit 70):** The generator was extended to create a full directory mirror of the codebase in .live-documentation/system/. The team also hardened the anchor cleaning logic in audit-doc-coverage.ts to ensure "SlopCop" compliance for these new generated files.  
-* **Core Refactor (Commit 81):** As the Live Docs logic grew, the team refactored the monolithic core.ts into parse.ts (extraction) and generate.ts (rendering), introducing a **Headless Harness** for faster, disk-free unit testing.  
-* **MDMD Unification (Commit 82):** The team formalized **"Membrane Design MarkDown (MDMD)"** in the Copilot instructions. Crucially, they configured the generator to produce .mdmd files for the system mirror, effectively treating the generated artifacts as "Layer 4" specifications. This unifies "Authored Specs" and "Generated Docs" into a single, continuous hierarchy. The code also hardened configuration by replacing hardcoded paths with constants (DEFAULT\_LIVE\_DOC\_ROOT).  
-* **The Rename:** The repository was renamed to Live-Documentation to reflect this new identity. Commit 101 finally updated all internal package references (@copilot-improvement/shared \-\> @live-documentation/shared), resolving the long-standing "identity crisis" in the monorepo configuration.  
-* **The Hosted Vision (Commit 80):** The team refactored file extensions from .mdmd.md to .md and updated the roadmap (CAP-007) to explicitly target **GitHub Pages** hosting. This established the goal that Live Docs should be a deployable static site, not just a VS Code feature.  
-* **Workspace Migration (Commit 74):** A massive housekeeping commit updated all internal references to match the new repository structure, regenerated snapshots with new IDs, and cleaned up legacy chat artifacts.  
-* **Anchor Stabilization (Commit 90):** The team hardened the anchor generation logic (LD-implementation-...) to ensure stable deep links even as content shifts, regenerating the entire doc set to lock in these robust IDs.  
-* **Chat Archival (Commit 73):** The chat history was reorganized into a structured archive (2025/11/) to support long-term memory without cluttering the root.  
-* **Package Clean-up (Commit 103):** The rename was finalized by purging old package aliases from tsconfig.json and updating vitest.config.ts to map @live-documentation/\* correctly.
+*   **The "Stage 0" Pivot:** The team implemented a split between *ephemeral* docs (generated from code) and *persistent* docs (authored metadata). The `.live-documentation/` folder is now a generated mirror of the repo, but it preserves "Purpose/Notes" blocks written by humans (Commit 11/15).
+*   **The LiveDocsGenerator (Commit 68):** This component was implemented to enable the **"Code Like Clay" methodology**. It reads the previous file, extracts the human sections using regex markers, and injects them into the new generation. This allows documentation to be both automated and authored, fulfilling the "molding" vision described in the governance docs.
+*   **System Scaffolding (Commit 69):** The "Stage 0" concept was formalized with the scaffolding of the System Layer generator. This commit also updated the task list to reflect the massive scope expansion (13 closed tasks, 45 open tasks across 7 phases), cementing the new direction.
+*   **System Mirroring (Commit 70):** The generator was extended to create a full directory mirror of the codebase in `.live-documentation/system/`. The team also hardened the anchor cleaning logic in `audit-doc-coverage.ts` to ensure "SlopCop" compliance for these new generated files.
+*   **Core Refactor (Commit 81):** As the Live Docs logic grew, the team refactored the monolithic `core.ts` into `parse.ts` (extraction) and `generate.ts` (rendering), introducing a **Headless Harness** for faster, disk-free unit testing.
+*   **MDMD Unification (Commit 82):** The team formalized **"Membrane Design MarkDown (MDMD)"** in the Copilot instructions. Crucially, they configured the generator to produce `.mdmd` files for the system mirror, effectively treating the generated artifacts as "Layer 4" specifications. This unifies "Authored Specs" and "Generated Docs" into a single, continuous hierarchy. The code also hardened configuration by replacing hardcoded paths with constants (`DEFAULT_LIVE_DOC_ROOT`).
+*   **The Rename:** The repository was renamed to `Live-Documentation` to reflect this new identity. Commit 101 finally updated all internal package references (`@copilot-improvement/shared` -> `@live-documentation/shared`), resolving the long-standing "identity crisis" in the monorepo configuration.
+*   **The Hosted Vision (Commit 80):** The team refactored file extensions from `.mdmd.md` to `.md` and updated the roadmap (`CAP-007`) to explicitly target **GitHub Pages** hosting. This established the goal that Live Docs should be a deployable static site, not just a VS Code feature.
+*   **Workspace Migration (Commit 74):** A massive housekeeping commit updated all internal references to match the new repository structure, regenerated snapshots with new IDs, and cleaned up legacy chat artifacts.
+*   **Anchor Stabilization (Commit 90):** The team hardened the anchor generation logic (`LD-implementation-...`) to ensure stable deep links even as content shifts, regenerating the entire doc set to lock in these robust IDs.
+*   **Chat Archival (Commit 73):** The chat history was reorganized into a structured archive (`2025/11/`) to support long-term memory without cluttering the root.
+*   **Package Clean-up (Commit 103):** The rename was finalized by purging old package aliases from `tsconfig.json` and updating `vitest.config.ts` to map `@live-documentation/*` correctly.
 
 ### **Phase XVI: The Polyglot Adapters & The Docstring Bridge**
 
@@ -305,7 +305,7 @@ Scope: Commits 12/6.1–12/6.3, 109–111, 125, 121, 123
 The system underwent a massive refactor to pay down technical debt and pushed into deep symbol analysis for systems languages.
 
 * **The "Core" Refactor (Commit 125):** The shared core.ts file had ballooned to 3,254 lines. It was exploded into **14 focused modules** (rendering.ts, symbolExtraction.ts, dependencies.ts, etc.), decisively enforcing the "500-line limit" rule across the entire stack.  
-* **The "Generator" Refactor:** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.).  
+* **The "Generator" Refactor (Commit 126):** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.). *Note: Committed early Dec 7 but represents the culmination of the Dec 6 refactor.*  
 * **Type Reference Extraction (Commit 109):** The typeScriptAdapter was upgraded to extract complex types (extends, implements, function return types, parameter types). It includes an isPrimitiveOrBuiltin filter to ignore noise (e.g., string, Promise). This is the backend logic that powers the "Cyan Lines" visualization.  
 * **Type Resolution Engine (Commit 110):** The LiveDocsGenerator now builds a symbolIndex to resolve type names (e.g., returns: Promise\<Widget\>) to concrete file paths, creating clickable links instead of just text strings.  
 * **Systems Language Depth (C):** The cAdapter was upgraded to parse specific function declarations and macro usages, enabling the graph to trace individual C function calls across files (Commit 123). (Note: This also enables C++ support via common syntax features).  
@@ -368,16 +368,18 @@ The team continued the "Architectural Stewardship" campaign, focusing on precisi
 * **Disambiguation Suffixes (Commit 138):** Live Docs append suffixes like (interface) to symbols, but the analyzer returns bare names. The parser was updated to strip these suffixes, achieving **100% symbol precision**.  
 * **Glob Pattern Support (Commit 139):** The C\# Oracle was updated to support glob patterns (minimatch) for include/exclude logic, fixing a recall issue in the Roslyn fixture where out-of-scope files were being analyzed.
 
-### **Phase XXIV: Repo Config Overrides (Dec 12\)**
+### **Phase XXIV: Configuration & Vision Alignment (Dec 12\)**
 
 Date: December 12, 2025
 
-Scope: Commit 140
+Scope: Commits 140, 141
 
-The team finalized the separation between consumer defaults and repository-specific configuration.
+The team finalized the separation between consumer defaults and repository-specific configuration, and solidified the strategic vision.
 
 * **Configurable Defaults (Commit 140):** The CLI and Explorer were updated to switch consumer defaults to .live-documentation/source and .md extensions, aligning with the standard deployment model. However, the repository itself retained the legacy .mdmd configuration via a new .live-docs.config.json override file.  
-* **Pipeline Hardening:** The livedocs \-- \--report pipeline was fixed to forward configuration correctly to the lint and report stages. Fixture verification was also updated to respect the configured base layer paths.
+* **Pipeline Hardening (Commit 140):** The livedocs \-- \--report pipeline was fixed to forward configuration correctly to the lint and report stages. Fixture verification was also updated to respect the configured base layer paths.  
+* **Vision Refactor (Commit 141):** The team made a strategic decision to simplify the product vision. **SpecKit** (the prompt library) was formally classified as a **Prescriptive** tool (Design/Planning), while **Live Documentation** was classified as a **Descriptive** tool (Implementation Mirror). The "Bidirectional Authoring" feature (editing code via docstrings) was moved to the wishlist to focus on the core value proposition: **Drift Diagnostics**.  
+* **Audit Correction (Commit 141):** Adjusted snapshot-workspace.ts to stop treating Spec-Kit design docs as Live Documentation mirrors, clearing spurious "missing implementation" audit flags.
 
 ## **Vision Evolution Log**
 
@@ -391,7 +393,8 @@ The team finalized the separation between consumer defaults and repository-speci
 * **Early Dec (Part V):** "Self-Aware System." (Linking Code to History/Chat).  
 * **Mid Dec (Phase XX):** "Static Publishing Platform." (Docs that live anywhere).  
 * **Dec 9 (Phase XXII):** "Full-Stack Web Explorer." (HTML/CSS/Asset graph integration).  
-* **Dec 10 (Phase XXIII):** "Precision & Refactoring." (Adapter cleanup and test metric fixes).
+* **Dec 10 (Phase XXIII):** "Precision & Refactoring." (Adapter cleanup and test metric fixes).  
+* **Dec 12 (Phase XXIV):** "Drift-First Refocus." (Explicitly deferring bidirectional authoring).
 
 ## **Technical Themes & Motifs**
 
@@ -400,4 +403,5 @@ The team finalized the separation between consumer defaults and repository-speci
 * **Prompt Engineering as Source Code:** The .prompt.md files remain the "operating system" for the development process.  
 * **Documentation-Driven Development (DDD):** The discipline of spec \-\> plan \-\> task never wavered, allowing the project to scale to 100+ commits without collapsing under complexity.  
 * **"SlopCop" & Data Hygiene:** The project consistently prioritized *cleaning* input data (whether markdown links or chat logs) to ensure high-quality output.  
-* **The "Living" Repository:** The repository is now a complete holographic record of its own birth—Code, Docs, Tests, and *Conversations* are all inextricably linked.
+* **The "Living" Repository:** The repository is now a complete holographic record of its own birth—Code, Docs, Tests, and *Conversations* are all inextricably linked.  
+* **Prescriptive vs. Descriptive:** A key architectural separation. Tools like SpecKit are *Prescriptive* (Plans/Design), while Live Documentation is *Descriptive* (Mirrors/Implementation). This distinction prevents the system from confusing "what we want" with "what we have."

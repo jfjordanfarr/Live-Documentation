@@ -626,6 +626,18 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1114-L1114` — **Commit gate: restore green**: Direct instruction to get `npm run safe:commit` back to green (“Please get us to `npm run safe:commit` green.”).
 - `L1296-L1296` — **Spec-Kit classification expectations**: Spec artifacts under `specs/001-link-aware-diagnostics/` are “decisively not MDMD layer 4 docs”; audit tooling should have a defensible, explainable reason when treating them as documentation requiring code linkage.
 
+## 2025-12-12 (Dev Day 43)
+### Chat 1 (2025-12-12.1.md) — Vision Pivot + Non-Headless Inspect + Instruction Reality
+- `2025-12-12.1.md:L241-L246` — **Docs→code write-back deferred**: Put “docs → code” docstring bridging on the backburner as a wishlist item; keep “code → docs” docstring bridging as the primary value and revise Layer‑1/Layer‑2/001 spec docs accordingly.
+- `L243-L249` — **Product posture: understanding + drift correction**: Live Documentation’s main value is a “great map” (Explorer) to improve code understanding; prioritize empirically-derived freshness to rectify divergence and use lint (plus optional VS Code alerts) to guide external LLM tools for docs→code changes; for code→docs, regenerate Live Docs.
+- `L245-L245` — **Simplicity principle**: The simplest correct solution is often the most correct; simplification is a major driver of breakthroughs.
+- `L509-L514` — **High-priority UX: non-headless inspect**: Prioritize a non-headless Explorer equivalent of `npm run live-docs:inspect`, specifically a Local Map “From/To” start/end workflow that plans for more hops and can sprawl until paths join (or clearly report no connection).
+- `L599-L608` — **MDMD instruction correction**: Layer‑1/Layer‑2 should be Authored-only (no Generated section); strict “layer-link closure” was a good idea but too messy in practice—only Layer‑4/Base Layer closure is guaranteed; update instructions based on chat-history archaeology.
+- `L742-L742` — **Layer‑3 acknowledged as WIP**: It’s acceptable to communicate that Layer‑3 is not yet figured out; instruction text may reflect ambiguity and evolving format.
+- `L996-L1048` — **Align docs to codebase reality**: When docs are stale or inconsistent (schema triad mismatch, generated-marker fence choice, requirement ordering slips), prefer researching the codebase as source-of-truth and aligning docs to it; spec-kit templates may have been violated—opt for unified vision across docs over rigid template compliance.
+- `L1019-L1048` — **Inspect endpoints should be symbol-granular**: Strong preference for symbol-to-symbol pathfinding (and symbol↔artifact combos) for CLI + Explorer; this is more valuable than editing Live Doc markdown in the Explorer or pursuing bidirectional docstring work.
+- `L1026-L1038` — **Naming clarification**: “Link-Aware Diagnostics” is a legacy Spec-Kit-generated phrase/branch-name artifact; “Live Documentation” is the project’s name.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

@@ -1,0 +1,41 @@
+name: Benchmarks (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Benchmark mode (self-similarity | ast | all)"
+        required: false
+        default: "all"
+
+jobs:
+  benchmarks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run safe:commit with benchmarks
+        env:
+          CI: "true"
+        run: npm run safe:commit -- --benchmarks --mode "${{ inputs.mode }}" --report
+
+      - name: Upload benchmark reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-reports
+          path: |
+            reports/test-report.*.md
+            reports/benchmarks/**
