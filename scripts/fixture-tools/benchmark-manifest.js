@@ -43,7 +43,9 @@ async function computeIntegrityDigest(repoRoot, fixture, workspaceRootOverride) 
     const fileHashes = [];
     for (const relPath of normalizedPaths) {
         const filePath = path.join(fixtureRoot, basePath, relPath);
-        const content = await node_fs_1.promises.readFile(filePath);
+        let content = await node_fs_1.promises.readFile(filePath);
+        // Normalize line endings to LF for platform-independent hashing
+        content = Buffer.from(content.toString("utf8").replace(/\r\n/g, "\n"));
         const digest = (0, node_crypto_1.createHash)("sha256").update(content).digest("hex");
         fileHashes.push({ path: relPath, hash: digest });
     }

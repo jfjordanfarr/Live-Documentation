@@ -38,31 +38,31 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 #### `c-libuv` (libuv repository)
 
 - **Source**: `libuv/libuv` @ `12d1ed1380c59c5ec27503cf149833de6f0e6bb0` — MIT
-- **Integrity**: `sha256` root `f057cbccf2b7939e4ffa78e7ab98d4ac2aee56cc7fff23d2c9fbbbaa83920f8c` (118 files)
+- **Integrity**: `sha256` root `cdd68bd046e94e1ab1705088bb608e5ac5b329c9f936264a0fe14310f7bfc71a` (118 files)
 - **File Selection**: include `src/**/*.c`, `src/**/*.h`, `include/**/*.h`; exclude `test/**`, `docs/**`, `cmake/**`, `samples/**` (resolved 118 files)
 
 #### `python-requests` (Requests HTTP client repository)
 
 - **Source**: `psf/requests` @ `61e2240f283f15780ac2d0e2cfefb0fd6fdab627` — Apache-2.0
-- **Integrity**: `sha256` root `15a1472f5b939c3180740202cdc7b92a519a28297318864c16d75d87554345b6` (18 files)
+- **Integrity**: `sha256` root `d63b7f2a1c33fbe3e48d8727310e0dba9db7d91b02f8abde19aade6ca0a4df3b` (18 files)
 - **File Selection**: include `src/requests/**/*.py`; exclude `src/requests/__pycache__/**` (resolved 18 files)
 
 #### `rust-log` (Rust logging facade (rust-lang/log))
 
 - **Source**: `rust-lang/log` @ `6e1735597bb21c5d979a077395df85e1d633e077` — Apache-2.0 OR MIT
-- **Integrity**: `sha256` root `28f475a305a4226ed660b7c5cccb193715970a30e66d12fc55c7705b2e01700c` (10 files)
+- **Integrity**: `sha256` root `1133cd7078de2076079aa81f4c70727f9fe8ff77f1f50782aed467053a2b5676` (10 files)
 - **File Selection**: include `src/**/*.rs`, `Cargo.toml`; exclude `tests/**`, `benches/**`, `examples/**`, `rfcs/**` (resolved 10 files)
 
 #### `csharp-roslyn-compilers` (Roslyn flow analysis slice)
 
 - **Source**: `dotnet/roslyn` @ `fa2ab851c437a345b2302a85021b59fe3c0ce0db` — MIT
-- **Integrity**: `sha256` root `94cd0626228ea7140ce3ea6cac0f79f232480855a964c3490990dd404ff16df8` (72 files)
+- **Integrity**: `sha256` root `9d99d3fe61dcb5a428941f8a1b80c6831d8ded688a70264698c2d1114d34e8ae` (72 files)
 - **File Selection**: include `src/Compilers/CSharp/Portable/FlowAnalysis/**/*.cs`, `src/Compilers/CSharp/Portable/Utilities/**/*.cs`; exclude `**/*Tests.cs`, `**/*.Tests.cs` (resolved 72 files)
 
 #### `java-okhttp` (OkHttp client repository)
 
 - **Source**: `square/okhttp` @ `ad97bd3df34376eec85aa187dc8f45cfde8a2c01` — Apache-2.0
-- **Integrity**: `sha256` root `be90ccd6ebe51756c3a48287cd7249672be9d3eb3672215d4c33af9295881bad` (151 files)
+- **Integrity**: `sha256` root `3a25221f8b880369a43ff52714391991896837a330707aedb8807cbd8daf315c` (151 files)
 - **File Selection**: include `okhttp/src/main/java/**/*.java`, `mockwebserver/src/main/java/**/*.java`, `okcurl/src/main/java/**/*.java`, `okhttp-dnsoverhttps/src/main/java/**/*.java`, `okhttp-logging-interceptor/src/main/java/**/*.java`, `okhttp-sse/src/main/java/**/*.java`, `okhttp-testing-support/src/main/java/**/*.java`, `okhttp-tests/src/main/java/**/*.java`, `okhttp-tls/src/main/java/**/*.java`, `okhttp-urlconnection/src/main/java/**/*.java`; exclude `**/src/test/**`, `samples/**` (resolved 151 files)
 <!-- benchmark-vendor-inventory:end -->
 

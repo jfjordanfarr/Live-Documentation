@@ -129,7 +129,9 @@ export async function computeIntegrityDigest(
 
   for (const relPath of normalizedPaths) {
     const filePath = path.join(fixtureRoot, basePath, relPath);
-    const content = await fs.readFile(filePath);
+    let content = await fs.readFile(filePath);
+    // Normalize line endings to LF for platform-independent hashing
+    content = Buffer.from(content.toString("utf8").replace(/\r\n/g, "\n"));
     const digest = createHash("sha256").update(content).digest("hex");
     fileHashes.push({ path: relPath, hash: digest });
   }
