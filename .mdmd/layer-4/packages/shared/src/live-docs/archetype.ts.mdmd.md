@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/archetype.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-archetype-ts
-- Generated At: 2025-12-11T02:38:02.066Z
+- Generated At: 2025-12-14T00:04:07.231Z
 
 ## Authored
 ### Purpose
@@ -18,14 +18,14 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.066Z","inputHash":"69cb6c42c1020292"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-14T00:04:07.231Z","inputHash":"69cb6c42c1020292"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/live-docs/archetype.ts#L39)
-- Returns: [`LiveDocumentationArchetype`](../config/liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationarchetype)
-- Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.d.ts.mdmd.md#symbol-livedocumentationconfig)
+- Returns: [`LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
+- Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `resolveArchetype` — Summary
 Determines which Live Documentation archetype applies to a given source file.

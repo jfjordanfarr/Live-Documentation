@@ -89,13 +89,14 @@ function runSafeCommitCheck() {
         );
       }
     }
+    runNpmScript('Live Docs regeneration', ['run', 'live-docs:generate']);
     runNpmScript('Graph snapshot', ['run', 'graph:snapshot', '--', '--quiet']);
     runNpmScript('Graph coverage audit', ['run', 'graph:audit']);
     runNpmScript('Fixture workspace verification', ['run', 'fixtures:verify'], {
       FIXTURES_VERIFY_QUIET: '1'
     });
     runNpmScript('Documentation link enforcement', ['run', 'docs:links:enforce']);
-    runNpmScript('Live Docs pipeline', ['run', 'livedocs', '--', '--report']);
+    runNpmScript('Live Docs pipeline (lint + report)', ['run', 'livedocs', '--', '--skip-generate', '--report']);
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);

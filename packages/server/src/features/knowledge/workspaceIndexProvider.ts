@@ -11,6 +11,7 @@ import {
 } from "@live-documentation/shared";
 
 import {
+  createGitignoreFilter,
   scanDirectory,
   shouldSkipPath,
   isLikelyBinaryFile
@@ -73,11 +74,15 @@ export function createWorkspaceIndexProvider(options: WorkspaceIndexProviderOpti
       ];
       const scriptTargets = options.scriptGlobs ?? ["scripts"];
 
+      // Load gitignore filter for this workspace
+      const gitignoreFilter = await createGitignoreFilter(normalizedRoot);
+      const scanOptions = { gitignoreFilter, workspaceRoot: normalizedRoot };
+
       // Implementation/code
       for (const target of implTargets) {
         const absolute = path.resolve(normalizedRoot, target);
         await scanDirectory(absolute, async (filePath) => {
-          if (shouldSkipPath(filePath)) return;
+          if (shouldSkipPath(filePath, scanOptions)) return;
           const ext = path.extname(filePath).toLowerCase();
           if (!DEFAULT_CODE_EXTENSIONS.has(ext)) return;
 
@@ -122,14 +127,14 @@ export function createWorkspaceIndexProvider(options: WorkspaceIndexProviderOpti
           } catch {
             // ignore
           }
-        });
+        }, scanOptions);
       }
 
       // Documentation/templates (as requirements layer)
       for (const target of docTargets) {
         const absolute = path.resolve(normalizedRoot, target);
         await scanDirectory(absolute, async (filePath) => {
-          if (shouldSkipPath(filePath)) return;
+          if (shouldSkipPath(filePath, scanOptions)) return;
           const ext = path.extname(filePath).toLowerCase();
           if (!DEFAULT_DOC_EXTENSIONS.has(ext) && !looksLikeDocsPath(filePath)) return;
 
@@ -192,14 +197,14 @@ export function createWorkspaceIndexProvider(options: WorkspaceIndexProviderOpti
           } catch {
             // ignore
           }
-        });
+        }, scanOptions);
       }
 
       // Scripts (outside src) as code
       for (const target of scriptTargets) {
         const absolute = path.resolve(normalizedRoot, target);
         await scanDirectory(absolute, async (filePath) => {
-          if (shouldSkipPath(filePath)) return;
+          if (shouldSkipPath(filePath, scanOptions)) return;
           const ext = path.extname(filePath).toLowerCase();
           if (!DEFAULT_CODE_EXTENSIONS.has(ext)) return;
 
@@ -239,7 +244,7 @@ export function createWorkspaceIndexProvider(options: WorkspaceIndexProviderOpti
           } catch {
             // ignore
           }
-        });
+        }, scanOptions);
       }
 
       const allTargets = [...implTargets, ...docTargets, ...scriptTargets];

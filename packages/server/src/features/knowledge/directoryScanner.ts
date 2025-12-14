@@ -1,15 +1,54 @@
+import ignore, { Ignore } from "ignore";
 import { Dirent } from "node:fs";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 /**
+ * Creates a gitignore filter from .gitignore patterns at the workspace root.
+ * Falls back to basic hardcoded patterns if no .gitignore is found.
+ */
+export async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore> {
+  const ig = ignore();
+  
+  // Always exclude .git directory
+  ig.add(".git");
+  
+  try {
+    const gitignorePath = path.join(workspaceRoot, ".gitignore");
+    const content = await fs.readFile(gitignorePath, "utf8");
+    ig.add(content);
+  } catch {
+    // No .gitignore found — add sensible defaults
+    ig.add([
+      "node_modules",
+      "dist",
+      "out", 
+      "build",
+      "coverage",
+      ".vscode",
+      ".vscode-test",
+      ".idea",
+      ".history"
+    ]);
+  }
+  
+  return ig;
+}
+
+/**
  * Recursively scans a directory, invoking the callback for each file found.
- * Automatically skips common non-content directories (node_modules, .git, dist, etc.).
+ * Respects .gitignore patterns when gitignoreFilter is provided.
  */
 export async function scanDirectory(
   root: string,
-  onFile: (filePath: string) => Promise<void>
+  onFile: (filePath: string) => Promise<void>,
+  options?: {
+    gitignoreFilter?: Ignore;
+    workspaceRoot?: string;
+  }
 ): Promise<void> {
+  const { gitignoreFilter, workspaceRoot } = options ?? {};
+  
   let entries: Dirent[];
   try {
     entries = await fs.readdir(root, { withFileTypes: true });
@@ -20,9 +59,22 @@ export async function scanDirectory(
   await Promise.all(
     entries.map(async (entry) => {
       const resolved = path.join(root, entry.name);
+      
+      // Check gitignore filter first if available
+      if (gitignoreFilter && workspaceRoot) {
+        const relativePath = path.relative(workspaceRoot, resolved).replace(/\\/g, "/");
+        // Add trailing slash for directories so gitignore patterns like "dist/" work correctly
+        const pathToCheck = entry.isDirectory() ? `${relativePath}/` : relativePath;
+        if (gitignoreFilter.ignores(pathToCheck)) {
+          return;
+        }
+      } else {
+        // Fall back to hardcoded skip logic
+        if (entry.isDirectory() && shouldSkipDir(entry.name)) return;
+      }
+      
       if (entry.isDirectory()) {
-        if (shouldSkipDir(entry.name)) return;
-        await scanDirectory(resolved, onFile);
+        await scanDirectory(resolved, onFile, options);
         return;
       }
 
@@ -54,8 +106,20 @@ export function shouldSkipDir(name: string): boolean {
 
 /**
  * Returns true if a file path should be excluded from indexing based on its full path.
+ * If a gitignoreFilter is provided, uses that for matching; otherwise falls back to hardcoded patterns.
  */
-export function shouldSkipPath(filePath: string): boolean {
+export function shouldSkipPath(
+  filePath: string, 
+  options?: { gitignoreFilter?: Ignore; workspaceRoot?: string }
+): boolean {
+  const { gitignoreFilter, workspaceRoot } = options ?? {};
+  
+  if (gitignoreFilter && workspaceRoot) {
+    const relativePath = path.relative(workspaceRoot, filePath).replace(/\\/g, "/");
+    return gitignoreFilter.ignores(relativePath);
+  }
+  
+  // Fallback: hardcoded patterns
   const normalized = filePath.replace(/\\/g, "/").toLowerCase();
   return (
     /\/\.git\//.test(normalized) ||

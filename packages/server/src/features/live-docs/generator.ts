@@ -335,7 +335,7 @@ async function pruneStaleLiveDocs(args: {
     const content = await fs.readFile(absolute, "utf8");
     const authoredBlock = extractAuthoredBlock(content);
     if (hasMeaningfulAuthoredContent(authoredBlock)) {
-      args.logger.warn(`Preserving ${workspaceRelative} (authored content detected)`);
+      args.logger.info(`Preserving ${workspaceRelative} (authored content detected)`);
       continue;
     }
 

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/workspaceIndexProvider.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-workspaceindexprovider-ts
-- Generated At: 2025-12-08T19:22:38.937Z
+- Generated At: 2025-12-13T23:56:47.720Z
 
 ## Authored
 ### Purpose
@@ -16,36 +16,36 @@ Scans the workspace for implementation, documentation, and script artifacts so i
 - Extended on Oct 30 to parse MDMD identifiers and section symbols for audit tooling, as recorded in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-08T19:22:38.937Z","inputHash":"df41c5a13e263914"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-13T23:56:47.720Z","inputHash":"c1b63cd5cafffcf6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExportedSymbolKind` {#symbol-exportedsymbolkind}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L36)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L37)
 
 #### `ExportedSymbolMetadata` {#symbol-exportedsymbolmetadata}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L36)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L37)
 
 #### `DocumentSymbolReferenceMetadata` {#symbol-documentsymbolreferencemetadata}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L37)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L38)
 
 #### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L37)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L38)
 
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L38)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L39)
 
 #### `DEFAULT_DOC_EXTENSIONS` {#symbol-default_doc_extensions}
 - Type: unknown
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L38)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L39)
 
 #### `createWorkspaceIndexProvider` {#symbol-createworkspaceindexprovider}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L54)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/workspaceIndexProvider.ts#L55)
 - Returns: [`WorkspaceLinkProvider`](../../../../shared/src/inference/linkInference.ts.mdmd.md#symbol-workspacelinkprovider)
 - Parameters: `options`: `WorkspaceIndexProviderOptions`
 
@@ -60,6 +60,7 @@ have viable candidates. Intended primarily for integration and dogfooding scenar
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:url` - `pathToFileURL`
+- [`directoryScanner.createGitignoreFilter`](./directoryScanner.ts.mdmd.md#symbol-creategitignorefilter)
 - [`directoryScanner.isLikelyBinaryFile`](./directoryScanner.ts.mdmd.md#symbol-islikelybinaryfile)
 - [`directoryScanner.scanDirectory`](./directoryScanner.ts.mdmd.md#symbol-scandirectory)
 - [`directoryScanner.shouldSkipPath`](./directoryScanner.ts.mdmd.md#symbol-shouldskippath)

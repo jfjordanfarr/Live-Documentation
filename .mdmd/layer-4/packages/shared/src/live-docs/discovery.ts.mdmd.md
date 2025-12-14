@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2025-12-11T02:38:02.118Z
+- Generated At: 2025-12-14T00:04:07.266Z
 
 ## Authored
 ### Purpose
@@ -19,12 +19,12 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.118Z","inputHash":"4ff1234dca4d2e73"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-14T00:04:07.266Z","inputHash":"a8a45398ac768b2d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L70)
+- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L94)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -59,7 +59,7 @@ const files = await discoverTargetFiles({
 
 #### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L142)
+- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L177)
 
 ##### `buildWorkspaceSymbolIndex` — Summary
 Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
@@ -99,7 +99,7 @@ const index = await buildWorkspaceSymbolIndex({
 
 #### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L240)
+- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L275)
 - Returns: [`ResolvedSymbolLocation`](./core.ts.mdmd.md#symbol-resolvedsymbollocation)
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./core.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -123,6 +123,7 @@ The resolved location, or undefined if not found.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
+- `ignore` - `Ignore`, `ignore`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)

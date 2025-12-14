@@ -9,6 +9,7 @@
  */
 
 import { glob } from "glob";
+import ignore, { type Ignore } from "ignore";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
@@ -34,6 +35,29 @@ interface DiscoverOptions {
   config: LiveDocumentationConfig;
   include: Set<string>;
   changedOnly: boolean;
+}
+
+// ============================================================================
+// Gitignore Filtering
+// ============================================================================
+
+/**
+ * Creates an `ignore` instance seeded with the workspace's `.gitignore` patterns.
+ *
+ * @param workspaceRoot - Absolute path to the repository root.
+ * @returns An `Ignore` instance if `.gitignore` exists, or `null` if not found.
+ */
+async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | null> {
+  const gitignorePath = path.join(workspaceRoot, ".gitignore");
+  try {
+    const content = await fs.readFile(gitignorePath, "utf-8");
+    const ig = ignore();
+    ig.add(content);
+    return ig;
+  } catch {
+    // .gitignore does not exist or is unreadable
+    return null;
+  }
 }
 
 // ============================================================================
@@ -85,6 +109,17 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
   }
 
   let candidates = Array.from(absoluteFiles);
+
+  // Apply gitignore filtering to exclude build artifacts and other ignored paths
+  const gitignoreFilter = await createGitignoreFilter(options.workspaceRoot);
+  if (gitignoreFilter) {
+    candidates = candidates.filter((absolute) => {
+      const relative = normalizeWorkspacePath(
+        path.relative(options.workspaceRoot, absolute)
+      );
+      return !gitignoreFilter.ignores(relative);
+    });
+  }
 
   if (options.changedOnly) {
     const changed = await detectChangedFiles(options.workspaceRoot);

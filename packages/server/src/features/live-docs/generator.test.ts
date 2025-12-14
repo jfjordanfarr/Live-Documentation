@@ -168,7 +168,7 @@ describe("generateLiveDocs pruning", () => {
     await expect(fs.stat(orphanDocPath)).rejects.toThrowError();
     await expect(fs.stat(preserveDocPath)).resolves.toBeDefined();
 
-    expect(warnMessages.some((message) => message.includes("authored content detected"))).toBe(true);
+    expect(infoMessages.some((message) => message.includes("authored content detected"))).toBe(true);
     expect(infoMessages.some((message) => message.includes("Deleted stale Live Doc"))).toBe(true);
   });
 });

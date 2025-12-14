@@ -9,7 +9,7 @@ Templates Requiring Updates:
 Follow-up TODOs: None
 -->
 
-# Copilot-Improvement-Experiments Constitution
+# Live Documentation Constitution
 
 ## Core Principles
 

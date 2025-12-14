@@ -3,7 +3,7 @@ import * as path from "node:path";
 
 let cachedRoot: string | undefined;
 
-const REPO_NAMES = new Set(["copilot-improvement-experiments", "live-documentation"]);
+const REPO_NAMES = new Set(["live-documentation"]);
 
 export function getRepoRoot(startDir: string = __dirname): string {
   if (cachedRoot) {
