@@ -664,6 +664,13 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L3355-L3355` — **Hash provenance**: Fixture integrity hashes should come from an automated process (not manual edits); use Chat Archaeology + workspace searches to find and preserve the real regeneration workflow.
 - `L3488-L3488` — **Commit hygiene**: Propose a fitting commit message aligned to the actual work before pushing.
 
+## 2025-12-15 (Dev Day 46)
+### Chat 1 (2025-12-15.1.md) — CI Durability + README Chat Archaeology + Feature Consolidation
+- `2025-12-15.1.md:L~850` — **Durable fixes over fragile ones**: When Copilot proposed a fix that relied on "not regenerating package-lock.json," User pushed back: "What is the _durable_ fix?" Fixes must survive normal developer workflows (npm install, lockfile regeneration, cache invalidation).
+- `L~1050` — **Feature consolidation clarity**: "Oracle of Bacon/Symbol pathfinding and Non-headless Explorer Inspect **are the same thing**." Consolidate roadmap entries and avoid describing them as separate features.
+- `L~1100-L1150` — **Core Philosophy: automatic generation, not nudging**: Corrected README framing: "We do far better than that: we generate Live Documentation from your source code directly... You don't even **need** to get nudged to update your docs. We don't boss you around, we come in and do the job for you, so that the documentation is 100% correct automatically."
+- `L~600-L800` — **Chat Archaeology as README source of truth**: When README updates diverge from prior decisions, Chat Archaeology provides definitive alignment (GitHub Pages link, competitive landscape table, Oracle of Bacon priority, docs→code deferral status). Prior decisions outweigh ad-hoc rewrites.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

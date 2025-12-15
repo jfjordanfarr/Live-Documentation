@@ -25,6 +25,6 @@
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
     "esbuild": "^0.25.12",
-    "glob": "^11.0.0"
+    "glob": "^11.0.2"
   }
 }
