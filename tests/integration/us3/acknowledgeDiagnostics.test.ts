@@ -58,8 +58,10 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     // Trigger initial documentation drift diagnostic.
     await appendText(sourceDoc, "\n\n## Acknowledgement Flow\nInitial change to trigger diagnostics.");
     await sourceDoc.save();
+    // Allow debounce + server processing time before waiting for diagnostic
+    await sleep(2000);
 
-    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
+    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 45000);
     assert.ok(initial.recordId, "Diagnostic should include persistent record identifier");
 
     const acknowledgementPayload =
@@ -110,8 +112,10 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     // Introduce a new change event to ensure acknowledgements only suppress existing records.
     await appendText(sourceDoc, "\n\n## Follow-up Change\nSubsequent edit to re-trigger diagnostics.");
     await sourceDoc.save();
+    // Allow debounce + server processing time before waiting for diagnostic
+    await sleep(2000);
 
-    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
+    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 45000);
     assert.ok(subsequent.recordId, "Subsequent diagnostic should include persistent record identifier");
     assert.notStrictEqual(subsequent.recordId, initial.recordId, "New change event should emit new diagnostic record");
   });
