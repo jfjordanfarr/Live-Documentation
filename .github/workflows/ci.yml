@@ -35,11 +35,13 @@ jobs:
             ${{ runner.os }}-vscode-test-
 
       - name: Install dependencies
-        # Use `npm install` instead of `npm ci` to handle cross-platform optional
-        # dependencies (e.g., @rollup/rollup-linux-x64-gnu). The lockfile generated
-        # on Windows omits Linux platform binaries; `npm install` adds them for the
-        # current platform while still respecting the lockfile for version resolution.
-        run: npm install
+        # The lockfile generated on Windows omits Linux platform binaries for Rollup.
+        # npm has a known bug (https://github.com/npm/cli/issues/4828) where optional
+        # deps aren't properly resolved from cross-platform lockfiles. We explicitly
+        # install the Linux Rollup binary after the main install to work around this.
+        run: |
+          npm ci
+          npm install @rollup/rollup-linux-x64-gnu --no-save --ignore-scripts
 
       - name: Install xvfb (for integration tests)
         run: sudo apt-get update && sudo apt-get install -y xvfb
