@@ -12,8 +12,8 @@
 Scans `.mdmd/layer-{n}/` directories to discover canonical heading patterns (e.g., "Metadata", "Authored", "Generated") by coverage threshold, then flags files missing those sections or introducing uncommon ones—helping maintain structural consistency across the four-layer MDMD documentation hierarchy.
 
 ### Notes
-- Created 2025-10-30 as mdmd-layer-audit.ts during relationship rule engine rollout (commit `6473d51c`) to detect documentation drift in the newly-standardized layer structure ([chat summary](../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md), Turn 19).
-- Renamed mdmd-layer-audit.ts → layer-audit.ts on 2025-12-14 during Phase 1 npm readiness cleanup; "mdmd-" prefix dropped as a workspace-specific convention ([chat log](../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-14.1.md#L1095-L1450)).
+- Created 2025-10-30 as mdmd-layer-audit.ts during relationship rule engine rollout (commit `6473d51c`) to detect documentation drift in the newly-standardized layer structure ([chat summary](../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md), Turn 19).
+- Renamed mdmd-layer-audit.ts → layer-audit.ts on 2025-12-14 during Phase 1 npm readiness cleanup; "mdmd-" prefix dropped as a workspace-specific convention ([chat log](../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-14.1.md)).
 - Exports `parseArgs`, `collectLayerReport`, `logLayerReport`, and `main` to support both CLI usage (`npx tsx layer-audit.ts --layer 4`) and programmatic invocation by doc validators.
 
 ## Generated

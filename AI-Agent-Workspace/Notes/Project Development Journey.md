@@ -409,6 +409,20 @@ The team tackled the final friction point between Windows development and Linux 
 
 * **Integrity Normalization:** The benchmark fixture verification failed on CI because git clone on Windows produced CRLF line endings, changing the file hashes compared to Linux (LF). The team updated the hashing algorithm to normalize line endings (CRLF → LF) before computing digests, ensuring consistent integrity checks across all platforms.
 
+### **Phase XXVII: Identity Unification (Dec 14\)**
+
+Date: December 14, 2025
+
+Scope: Commit 150
+
+With the CI/CD pipeline green and the integrity checks robust, the team executed the final cleanup of legacy branding to prepare for a public package release.
+
+* **The Final Rename (Commit 150):** Purged the remaining "Copilot Improvement Experiments" and "Link-Aware Diagnostics" references.  
+  * **Extension ID:** Switched from copilot-improvement.link-aware-diagnostics to live-documentation.live-documentation.  
+  * **Runtime Paths:** The SQLite database now lives at .live-documentation/live-documentation.db.  
+  * **Package Scopes:** Renamed @copilot-improvement/server to @live-documentation/server, unifying the monorepo namespaces.  
+* **Terminology Cleanup:** Renamed mdmdParser.ts to liveDocParser.ts and mdmd-layer-audit.ts to layer-audit.ts, reducing the cognitive load of internal acronyms in favor of the clear product name: **Live Documentation**.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -423,7 +437,8 @@ The team tackled the final friction point between Windows development and Linux 
 * **Dec 9 (Phase XXII):** "Full-Stack Web Explorer." (HTML/CSS/Asset graph integration).  
 * **Dec 10 (Phase XXIII):** "Precision & Refactoring." (Adapter cleanup and test metric fixes).  
 * **Dec 12 (Phase XXIV):** "Drift-First Refocus." (Explicitly deferring bidirectional authoring).  
-* **Dec 13 (Phase XXV):** "Automated Governance." (CI/CD pipelines enforcing the rules).
+* **Dec 13 (Phase XXV):** "Automated Governance." (CI/CD pipelines enforcing the rules).  
+* **Dec 14 (Phase XXVII):** "Identity Unification." (Complete purge of legacy branding).
 
 ## **Technical Themes & Motifs**
 

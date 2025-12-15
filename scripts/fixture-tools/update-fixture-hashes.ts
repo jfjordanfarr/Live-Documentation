@@ -14,10 +14,8 @@ import * as path from "node:path";
 import process from "node:process";
 
 import {
-  BENCHMARK_MANIFEST_SEGMENTS,
   computeIntegrityDigest,
-  loadBenchmarkManifest,
-  type BenchmarkFixtureDefinition
+  loadBenchmarkManifest
 } from "./benchmark-manifest";
 import { materializeFixture } from "./fixtureMaterializer";
 

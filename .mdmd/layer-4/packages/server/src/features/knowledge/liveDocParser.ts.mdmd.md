@@ -12,8 +12,8 @@
 Parses Live Documentation markdown files (originally MDMD format) to extract structured metadata—layer, identifiers, code paths, exports, and section symbols—enabling workspaceIndexProvider to seed the knowledge graph with document-to-code relationships and symbol references for integration test environments and graph audits.
 
 ### Notes
-- Created 2025-12-08 during workspaceIndexProvider modularization (commit `4cd6cfa1`); extracted from 1461-line orchestrator to isolate MDMD parsing logic ([chat log](../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-08.2.SUMMARIZED.md)).
-- Renamed from mdmdParser.ts → liveDocParser.ts on 2025-12-14 during Phase 1 npm readiness cleanup to eliminate workspace-specific naming from production code ([chat log](../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-14.1.md#L1095-L1450)).
+- Created 2025-12-08 during workspaceIndexProvider modularization (commit `4cd6cfa1`); extracted from 1461-line orchestrator to isolate MDMD parsing logic ([chat log](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-08.2.SUMMARIZED.md)).
+- Renamed from mdmdParser.ts → liveDocParser.ts on 2025-12-14 during Phase 1 npm readiness cleanup to eliminate workspace-specific naming from production code ([chat log](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-14.1.md)).
 - The "MDMD" naming persists in function/interface names (`extractMdmdDocumentDetails`, `MdmdDocumentDetails`) as an internal implementation detail; the module itself now uses the public "Live Documentation" branding.
 
 ## Generated
