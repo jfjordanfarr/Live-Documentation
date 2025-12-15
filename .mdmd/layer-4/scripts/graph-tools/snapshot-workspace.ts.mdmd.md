@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/snapshot-workspace.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-snapshot-workspace-ts
-- Generated At: 2025-12-13T03:52:24.198Z
+- Generated At: 2025-12-15T00:38:07.427Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 - Refactored 2025-11-04 to expose a reusable `snapshotWorkspace` helper and quiet mode; `audit-doc-coverage.ts` now invokes it automatically before audits to avoid stale caches ([self-refresh change](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-13T03:52:24.198Z","inputHash":"fcc880c9d7a1a463"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.427Z","inputHash":"4ef6541da8b04838"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_DB` {#symbol-default_db}
@@ -58,11 +58,19 @@ Materialises a deterministic workspace graph snapshot by rebuilding the SQLite c
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ExternalArtifact`, `ExternalLink`, `ExternalSnapshot`, `GraphStore`, `KnowledgeArtifact`, `KnowledgeGraphBridge`, `LinkInferenceOrchestrator`, `LinkRelationship`, `createRelationshipRuleProvider`
 - `node:child_process` - `spawn`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - `node:process` - `process`
 - `node:url` - `fileURLToPath`
 - [`workspaceIndexProvider.createWorkspaceIndexProvider`](../../packages/server/src/features/knowledge/workspaceIndexProvider.ts.mdmd.md#symbol-createworkspaceindexprovider)
+- [`index.ExternalArtifact`](../../packages/shared/src/index.ts.mdmd.md#symbol-externalartifact)
+- [`index.ExternalLink`](../../packages/shared/src/index.ts.mdmd.md#symbol-externallink)
+- [`index.ExternalSnapshot`](../../packages/shared/src/index.ts.mdmd.md#symbol-externalsnapshot)
+- [`index.GraphStore`](../../packages/shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../packages/shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.KnowledgeGraphBridge`](../../packages/shared/src/index.ts.mdmd.md#symbol-knowledgegraphbridge)
+- [`index.LinkInferenceOrchestrator`](../../packages/shared/src/index.ts.mdmd.md#symbol-linkinferenceorchestrator)
+- [`index.LinkRelationship`](../../packages/shared/src/index.ts.mdmd.md#symbol-linkrelationship)
+- [`index.createRelationshipRuleProvider`](../../packages/shared/src/index.ts.mdmd.md#symbol-createrelationshipruleprovider)
 <!-- LIVE-DOC:END Dependencies -->

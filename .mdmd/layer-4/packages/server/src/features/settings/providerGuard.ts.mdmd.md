@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/settings/providerGuard.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-settings-providerguard-ts
-- Generated At: 2025-11-24T15:19:58.874Z
+- Generated At: 2025-12-15T00:38:06.584Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Captures extension-scoped consent and configuration flags coming from the client
 - Works in tandem with `settingsBridge` to supply sanitized runtime defaults, a pairing reinforced in [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.874Z","inputHash":"9a0d56451f3b334e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.584Z","inputHash":"6f5e27404c3a5c28"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleExtensionSettings` {#symbol-rippleextensionsettings}
@@ -34,7 +34,7 @@ Captures extension-scoped consent and configuration flags coming from the client
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `LinkRelationshipKind` (type-only)
+- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
 - `vscode-languageserver` - `Connection`
 <!-- LIVE-DOC:END Dependencies -->
 

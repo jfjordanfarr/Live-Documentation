@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "templateId": "link-aware-diagnostics.llm-ingestion.v1",
+    "templateId": "live-documentation.llm-ingestion.v1",
     "templateVersion": "2025-10-24",
     "modelId": "mock-model-001",
     "promptHash": "examplehash0001",

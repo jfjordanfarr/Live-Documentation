@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/llmIngestion.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-llmingestion-ts
-- Generated At: 2025-12-07T21:41:18.816Z
+- Generated At: 2025-12-15T00:38:06.664Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the language-server side of the Analyze-with-AI pipeline, queuing artifacts
 `createDefaultRelationshipExtractor` gates remote invocation behind `providerGuard` so disabled or local-only modes short-circuit gracefully; tune the provider policy alongside the analyzer contract touched in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1754-L1789](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1754-L1789) to avoid regressions. Logging only emits the first successful dispatch per session to keep the extension host output readable while still surfacing failures during the ingestion loop.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:18.816Z","inputHash":"4f86808c5ec3c5d7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.664Z","inputHash":"3684b9b630db7d70"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LlmIngestionManagerOptions` {#symbol-llmingestionmanageroptions}
@@ -39,9 +39,13 @@ Runs the language-server side of the Analyze-with-AI pipeline, queuing artifacts
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `INVOKE_LLM_REQUEST`, `InvokeLlmRequest`, `InvokeLlmResult`, `ModelInvoker`, `RelationshipExtractor`
 - [`llmIngestionOrchestrator.LlmIngestionOrchestrator`](../features/knowledge/llmIngestionOrchestrator.ts.mdmd.md#symbol-llmingestionorchestrator)
 - [`llmIngestionOrchestrator.LlmIngestionResult`](../features/knowledge/llmIngestionOrchestrator.ts.mdmd.md#symbol-llmingestionresult)
 - [`providerGuard.ProviderGuard`](../features/settings/providerGuard.ts.mdmd.md#symbol-providerguard) (type-only)
+- [`index.INVOKE_LLM_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-invoke_llm_request)
+- [`index.InvokeLlmRequest`](../../../shared/src/index.ts.mdmd.md#symbol-invokellmrequest)
+- [`index.InvokeLlmResult`](../../../shared/src/index.ts.mdmd.md#symbol-invokellmresult)
+- [`index.ModelInvoker`](../../../shared/src/index.ts.mdmd.md#symbol-modelinvoker)
+- [`index.RelationshipExtractor`](../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractor)
 - `vscode-languageserver/node` - `Connection` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

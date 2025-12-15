@@ -35,7 +35,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
 #### Vitest Unit Tests
-- packages/server/src/features/knowledge: [directoryScanner.ts](./directoryScanner.ts.mdmd.md), [importEvidenceExtractor.ts](./importEvidenceExtractor.ts.mdmd.md), [languageInference.ts](./languageInference.ts.mdmd.md), [linkHintExtractor.ts](./linkHintExtractor.ts.mdmd.md), [mdmdParser.ts](./mdmdParser.ts.mdmd.md), [tsSymbolExtractor.ts](./tsSymbolExtractor.ts.mdmd.md)
+- packages/server/src/features/knowledge: [directoryScanner.ts](./directoryScanner.ts.mdmd.md), [importEvidenceExtractor.ts](./importEvidenceExtractor.ts.mdmd.md), [languageInference.ts](./languageInference.ts.mdmd.md), [linkHintExtractor.ts](./linkHintExtractor.ts.mdmd.md), [liveDocParser.ts](./liveDocParser.ts.mdmd.md), [tsSymbolExtractor.ts](./tsSymbolExtractor.ts.mdmd.md)
   [workspaceIndexProvider.ts](./workspaceIndexProvider.ts.mdmd.md)
 - packages/shared/src: [src/index.ts](../../../../shared/src/index.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->

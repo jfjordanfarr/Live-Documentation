@@ -39,7 +39,7 @@ const DEFAULT_IGNORE = [
   "**/coverage/**",
   "**/dist/**",
   "**/out/**",
-  "**/.link-aware-diagnostics/**",
+  "**/.live-documentation/**",
   "**/AI-Agent-Workspace/ChatHistory/**"
 ];
 

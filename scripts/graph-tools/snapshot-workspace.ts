@@ -69,7 +69,7 @@ interface WriteDatabaseOptions {
 }
 
 const DEFAULT_TIMESTAMP = "2025-01-01T00:00:00.000Z";
-export const DEFAULT_DB = path.join(".link-aware-diagnostics", "link-aware-diagnostics.db");
+export const DEFAULT_DB = path.join(".live-documentation", "live-documentation.db");
 export const DEFAULT_OUTPUT = path.join("data", "graph-snapshots", "workspace.snapshot.json");
 
 export interface SnapshotWorkspaceOptions {
@@ -153,7 +153,7 @@ function usage(): string {
     "Workspace discovery:\n" +
     "  --workspace <path>           Workspace root to scan (default: cwd).\n\n" +
     "Outputs:\n" +
-    "  --db <path>                   SQLite database path (default: ./.link-aware-diagnostics/link-aware-diagnostics.db).\n" +
+    "  --db <path>                   SQLite database path (default: ./.live-documentation/live-documentation.db).\n" +
     "  --output <path>               JSON fixture path (default: ./data/graph-snapshots/workspace.snapshot.json).\n" +
     "  --skip-db                     Skip writing the SQLite database.\n\n" +
     "Controls:\n" +

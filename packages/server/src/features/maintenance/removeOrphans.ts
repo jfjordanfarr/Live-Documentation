@@ -103,7 +103,7 @@ function publishRemovalDiagnostics(
         end: { line: 0, character: 1 }
       },
       message,
-      source: "link-aware-diagnostics",
+      source: "live-documentation",
       code: "doc-drift",
       data: {
         triggerUri: removedUri,

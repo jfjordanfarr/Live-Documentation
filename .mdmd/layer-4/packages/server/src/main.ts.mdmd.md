@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/main.ts
 - Live Doc ID: LD-implementation-packages-server-src-main-ts
-- Generated At: 2025-11-24T15:19:58.917Z
+- Generated At: 2025-12-15T00:38:06.627Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Hosts the language server entrypoint, wiring the LSP connection, runtime service
 - Keeps telemetry and ingestion services alive during integration runs, which is why the benchmark and US suites exercise this file whenever the language server boots ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.917Z","inputHash":"5fc1e88d6eb8826d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.627Z","inputHash":"0c229df0aa6a1b97"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,7 +25,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ACKNOWLEDGE_DIAGNOSTIC_REQUEST`, `AcknowledgeDiagnosticParams`, `AcknowledgeDiagnosticResult`, `DIAGNOSTIC_ACKNOWLEDGED_NOTIFICATION`, `DiagnosticAcknowledgedPayload`, `FEEDS_READY_REQUEST`, `FeedsReadyResult`, `GraphStore`, `INSPECT_DEPENDENCIES_REQUEST`, `INSPECT_SYMBOL_NEIGHBORS_REQUEST`, `InspectDependenciesParams`, `InspectDependenciesResult`, `InspectSymbolNeighborsParams`, `InspectSymbolNeighborsResult`, `LATENCY_SUMMARY_REQUEST`, `LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`, `LatencySummaryRequest`, `LatencySummaryResponse`, `LinkInferenceOrchestrator`, `ListOutstandingDiagnosticsResult`, `OVERRIDE_LINK_REQUEST`, `OverrideLinkRequest`, `OverrideLinkResponse`, `RESET_DIAGNOSTIC_STATE_NOTIFICATION`, `SET_DIAGNOSTIC_ASSESSMENT_REQUEST`, `SetDiagnosticAssessmentParams`, `SetDiagnosticAssessmentResult`, `createRelationshipRuleProvider`
 - `node:path` - `path`
 - [`changeQueue.ChangeQueue`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-changequeue)
 - [`changeQueue.QueuedChange`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-queuedchange)
@@ -60,6 +59,34 @@ _No public symbols detected_
 - [`settings.mergeExtensionSettings`](./runtime/settings.ts.mdmd.md#symbol-mergeextensionsettings)
 - [`driftHistoryStore.DriftHistoryStore`](./telemetry/driftHistoryStore.ts.mdmd.md#symbol-drifthistorystore)
 - [`latencyTracker.LatencyTracker`](./telemetry/latencyTracker.ts.mdmd.md#symbol-latencytracker)
+- [`index.ACKNOWLEDGE_DIAGNOSTIC_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-acknowledge_diagnostic_request)
+- [`index.AcknowledgeDiagnosticParams`](../../shared/src/index.ts.mdmd.md#symbol-acknowledgediagnosticparams)
+- [`index.AcknowledgeDiagnosticResult`](../../shared/src/index.ts.mdmd.md#symbol-acknowledgediagnosticresult)
+- [`index.DIAGNOSTIC_ACKNOWLEDGED_NOTIFICATION`](../../shared/src/index.ts.mdmd.md#symbol-diagnostic_acknowledged_notification)
+- [`index.DiagnosticAcknowledgedPayload`](../../shared/src/index.ts.mdmd.md#symbol-diagnosticacknowledgedpayload)
+- [`index.FEEDS_READY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-feeds_ready_request)
+- [`index.FeedsReadyResult`](../../shared/src/index.ts.mdmd.md#symbol-feedsreadyresult)
+- [`index.GraphStore`](../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.INSPECT_DEPENDENCIES_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-inspect_dependencies_request)
+- [`index.INSPECT_SYMBOL_NEIGHBORS_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-inspect_symbol_neighbors_request)
+- [`index.InspectDependenciesParams`](../../shared/src/index.ts.mdmd.md#symbol-inspectdependenciesparams)
+- [`index.InspectDependenciesResult`](../../shared/src/index.ts.mdmd.md#symbol-inspectdependenciesresult)
+- [`index.InspectSymbolNeighborsParams`](../../shared/src/index.ts.mdmd.md#symbol-inspectsymbolneighborsparams)
+- [`index.InspectSymbolNeighborsResult`](../../shared/src/index.ts.mdmd.md#symbol-inspectsymbolneighborsresult)
+- [`index.LATENCY_SUMMARY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-latency_summary_request)
+- [`index.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
+- [`index.LatencySummaryRequest`](../../shared/src/index.ts.mdmd.md#symbol-latencysummaryrequest)
+- [`index.LatencySummaryResponse`](../../shared/src/index.ts.mdmd.md#symbol-latencysummaryresponse)
+- [`index.LinkInferenceOrchestrator`](../../shared/src/index.ts.mdmd.md#symbol-linkinferenceorchestrator)
+- [`index.ListOutstandingDiagnosticsResult`](../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
+- [`index.OVERRIDE_LINK_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-override_link_request)
+- [`index.OverrideLinkRequest`](../../shared/src/index.ts.mdmd.md#symbol-overridelinkrequest)
+- [`index.OverrideLinkResponse`](../../shared/src/index.ts.mdmd.md#symbol-overridelinkresponse)
+- [`index.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/index.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
+- [`index.SET_DIAGNOSTIC_ASSESSMENT_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-set_diagnostic_assessment_request)
+- [`index.SetDiagnosticAssessmentParams`](../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentparams)
+- [`index.SetDiagnosticAssessmentResult`](../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentresult)
+- [`index.createRelationshipRuleProvider`](../../shared/src/index.ts.mdmd.md#symbol-createrelationshipruleprovider)
 - `vscode-languageserver-textdocument` - `TextDocument`
 - `vscode-languageserver/node` - `Connection`, `DidChangeConfigurationNotification`, `DidChangeConfigurationParams`, `DocumentDiagnosticParams`, `DocumentDiagnosticRequest`, `InitializeParams`, `InitializeResult`, `ProposedFeatures`, `TextDocumentChangeEvent`, `TextDocumentSyncKind`, `TextDocuments`, `TextDocumentsConfiguration`, `createConnection`
 <!-- LIVE-DOC:END Dependencies -->

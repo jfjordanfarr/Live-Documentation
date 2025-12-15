@@ -16,7 +16,7 @@ suite("US4: Scoped identifier collision guard", () => {
     alphaUri = vscode.Uri.joinPath(workspaceUri, "src", "dataAlpha.ts");
     betaUri = vscode.Uri.joinPath(workspaceUri, "src", "dataBeta.ts");
 
-    const extension = vscode.extensions.getExtension("copilot-improvement.link-aware-diagnostics");
+    const extension = vscode.extensions.getExtension("live-documentation.live-documentation");
     assert.ok(extension, "Extension must be installed");
 
     if (!process.env.LINK_AWARE_PROVIDER_MODE) {

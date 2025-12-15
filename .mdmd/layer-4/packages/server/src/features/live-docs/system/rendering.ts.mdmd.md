@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/rendering.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-rendering-ts
-- Generated At: 2025-12-07T16:27:06.844Z
+- Generated At: 2025-12-15T00:38:06.548Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Markdown section renderers for System-layer Live Documentation. Produces Compone
 - `renderActivationSection()` summarises co-activation clusters with p-values and edge counts
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.844Z","inputHash":"bde0bd9e85279e98"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.548Z","inputHash":"f2f72218857f2aa4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderComponentsSection` {#symbol-rendercomponentssection}
@@ -51,8 +51,6 @@ Markdown section renderers for System-layer Live Documentation. Produces Compone
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/live-docs/core` - `formatRelativePathFromDoc`
-- `@live-documentation/shared/live-docs/types` - `Stage0Doc`, `Stage0Symbol` (type-only)
 - `node:path` - `path`
 - [`constants.MAX_PUBLIC_SYMBOLS_PER_ENTRY`](./constants.ts.mdmd.md#symbol-max_public_symbols_per_entry)
 - [`constants.MAX_PUBLIC_SYMBOL_ENTRIES`](./constants.ts.mdmd.md#symbol-max_public_symbol_entries)
@@ -65,6 +63,9 @@ Markdown section renderers for System-layer Live Documentation. Produces Compone
 - [`types.SystemDocPlan`](./types.ts.mdmd.md#symbol-systemdocplan) (type-only)
 - [`types.SystemVirtualNode`](./types.ts.mdmd.md#symbol-systemvirtualnode) (type-only)
 - [`utils.layer3Slug`](./utils.ts.mdmd.md#symbol-layer3slug)
+- [`core.formatRelativePathFromDoc`](../../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-formatrelativepathfromdoc)
+- [`types.Stage0Doc`](../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0doc) (type-only)
+- [`types.Stage0Symbol`](../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0symbol) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

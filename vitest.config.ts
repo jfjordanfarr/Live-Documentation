@@ -18,10 +18,6 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: "@copilot-improvement/shared",
-        replacement: sharedSrcEntry
-      },
-      {
         find: /^@live-documentation\/shared$/u,
         replacement: sharedSrcEntry
       },

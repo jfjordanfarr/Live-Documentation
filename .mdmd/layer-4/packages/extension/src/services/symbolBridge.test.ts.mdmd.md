@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/services/symbolBridge.test.ts
 - Live Doc ID: LD-test-packages-extension-src-services-symbolbridge-test-ts
-- Generated At: 2025-12-11T02:37:59.935Z
+- Generated At: 2025-12-15T00:38:05.938Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercised `SymbolBridgeAnalyzer` with mocked VS Code symbol and reference provid
 - Coverage reports must stay above the ~80 percent threshold captured that day; if analyzer behaviour changes, extend these tests before relying on integration harness updates to catch regressions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:37:59.935Z","inputHash":"8fe5b06b69e7e66b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.938Z","inputHash":"0b03a15f8681c56e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,8 +24,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ArtifactSeed` (type-only)
 - [`symbolBridge.SymbolBridgeAnalyzer`](./symbolBridge.ts.mdmd.md#symbol-symbolbridgeanalyzer)
+- [`index.ArtifactSeed`](../../../shared/src/index.ts.mdmd.md#symbol-artifactseed) (type-only)
 - `vitest` - `Mock`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 - `vscode` - `DocumentSymbol`, `Location`, `Position`, `Range`, `SymbolKind`, `Uri`, `commands`, `workspace`
 <!-- LIVE-DOC:END Dependencies -->

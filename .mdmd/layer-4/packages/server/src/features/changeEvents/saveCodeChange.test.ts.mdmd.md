@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/changeEvents/saveCodeChange.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-changeevents-savecodechange-test-ts
-- Generated At: 2025-12-11T02:38:00.231Z
+- Generated At: 2025-12-15T00:38:06.145Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks in the regression coverage added in [2025-10-29 summary](../../../../../..
 - Fakes GraphStore methods so we can assert on persisted payloads and foreign-key-safe IDs without invoking SQLite.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:00.231Z","inputHash":"52f73ee6fd207620"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.145Z","inputHash":"aedc5ebf19053cc5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ChangeEvent`, `GraphStore`, `KnowledgeArtifact` (type-only)
 - [`saveCodeChange.saveCodeChange`](./saveCodeChange.ts.mdmd.md#symbol-savecodechange)
 - [`artifactWatcher.CodeTrackedArtifactChange`](../watchers/artifactWatcher.ts.mdmd.md#symbol-codetrackedartifactchange) (type-only)
+- [`index.ChangeEvent`](../../../../shared/src/index.ts.mdmd.md#symbol-changeevent) (type-only)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore) (type-only)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
 - `vitest` - `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
 

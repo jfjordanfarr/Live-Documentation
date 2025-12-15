@@ -54,7 +54,7 @@ module.exports = tseslint.config(
         }
       },
       "import/core-modules": ["vscode"],
-      "import/internal-regex": "^@(copilot-improvement|live-documentation)/"
+      "import/internal-regex": "^@live-documentation/"
     },
     rules: {
       "import/order": [

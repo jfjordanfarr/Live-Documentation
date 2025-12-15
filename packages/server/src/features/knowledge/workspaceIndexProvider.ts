@@ -30,12 +30,12 @@ import {
   extractMdmdDocumentDetails,
   createMdmdMetadataHints,
   extractDocumentSymbolReferences
-} from "./mdmdParser";
+} from "./liveDocParser";
 import { extractExportedSymbols } from "./tsSymbolExtractor";
 
 // Re-export types for consumers
 export { ExportedSymbolKind, ExportedSymbolMetadata } from "./tsSymbolExtractor";
-export { DocumentSymbolReferenceMetadata, MdmdDocumentDetails } from "./mdmdParser";
+export { DocumentSymbolReferenceMetadata, MdmdDocumentDetails } from "./liveDocParser";
 export { DEFAULT_CODE_EXTENSIONS, DEFAULT_DOC_EXTENSIONS } from "./languageInference";
 
 interface WorkspaceIndexProviderOptions {

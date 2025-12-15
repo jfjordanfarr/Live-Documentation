@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticbuilder-ts
-- Generated At: 2025-12-12T16:10:24.192Z
+- Generated At: 2025-12-15T00:38:06.125Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Core builder module for creating fully static Live Documentation Explorer bundle
 - Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:24.192Z","inputHash":"413ae42f7f7b1bad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.125Z","inputHash":"32ecfc439d67af02"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
@@ -49,7 +49,6 @@ This is the headless API that LLMs and scripts can consume.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/config/liveDocumentationConfig` - `LiveDocumentationConfig` (type-only)
 - `fs/promises` - `fs`
 - [`localMapBuilder.buildLocalMapData`](./localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
 - [`localMapBuilder.buildTestCoverageMap`](./localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
@@ -61,5 +60,6 @@ This is the headless API that LLMs and scripts can consume.
 - [`staticExplorerData.StaticExplorerProvenance`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerprovenance)
 - [`staticExplorerData.buildSymbolIndex`](./staticExplorerData.ts.mdmd.md#symbol-buildsymbolindex)
 - [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
+- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - `path` - `path`
 <!-- LIVE-DOC:END Dependencies -->

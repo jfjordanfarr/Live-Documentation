@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/rippleAnalyzer.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-rippleanalyzer-ts
-- Generated At: 2025-12-05T15:37:23.940Z
+- Generated At: 2025-12-15T00:38:06.402Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Traverses the knowledge graph to produce ripple hints, scoring downstream artifa
 - Subsequent ingestion updates on Oct 22 (see [2025-10-22 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md)) kept the analyzer aligned with feed-derived artifacts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.940Z","inputHash":"8345023cdb0c55d9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.402Z","inputHash":"27ed1bbe37ad84e4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleAnalyzerLogger` {#symbol-rippleanalyzerlogger}
@@ -43,8 +43,12 @@ Traverses the knowledge graph to produce ripple hints, scoring downstream artifa
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkRelationshipKind`, `LinkedArtifactSummary`, `RelationshipHint`
 - [`uri.normalizeFileUri`](../utils/uri.ts.mdmd.md#symbol-normalizefileuri)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
+- [`index.LinkedArtifactSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-linkedartifactsummary)
+- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

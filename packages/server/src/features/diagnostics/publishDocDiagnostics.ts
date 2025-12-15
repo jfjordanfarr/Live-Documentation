@@ -185,7 +185,7 @@ function createDiagnostic(
       end: { line: 0, character: 1 }
     },
     message: `linked documentation changed${relationshipLabel}: ${docPath} -> ${targetPath}${depthLabel}.${rationale}`.trim(),
-    source: "link-aware-diagnostics",
+    source: "live-documentation",
     code: "doc-drift",
     data: {
       triggerUri: sourceArtifact.uri,
@@ -239,7 +239,7 @@ function collectBrokenLinkDiagnostics(context: DocumentChangeContext): Diagnosti
         end: { line: 0, character: 1 }
       },
       message: `linked documentation missing: ${normaliseDisplayPath(targetUri)} (referenced by ${sourcePath}).`,
-      source: "link-aware-diagnostics",
+      source: "live-documentation",
       code: "doc-drift",
       data: {
         triggerUri: targetUri,

@@ -29,18 +29,18 @@ describe("resolveDatabasePath", () => {
 
   it("prefers explicit storage path", () => {
     const result = resolveDatabasePath(baseParams, { storagePath: "C:/data" });
-    expect(normalizePath(result)).toBe(normalizePath(path.join("C:/data", "link-aware-diagnostics.db")));
+    expect(normalizePath(result)).toBe(normalizePath(path.join("C:/data", "live-documentation.db")));
   });
 
   it("falls back to workspace path", () => {
     const result = resolveDatabasePath(baseParams, {});
     expect(normalizePath(result)).toBe(
-      normalizePath(path.join(path.resolve("/workspace"), ".link-aware-diagnostics", "link-aware-diagnostics.db"))
+      normalizePath(path.join(path.resolve("/workspace"), ".live-documentation", "live-documentation.db"))
     );
   });
 
   it("uses temp directory when workspace missing", () => {
-    const temp = path.join(os.tmpdir(), "link-aware-diagnostics", "link-aware-diagnostics.db");
+    const temp = path.join(os.tmpdir(), "live-documentation", "live-documentation.db");
     const result = resolveDatabasePath(params({ workspaceFolders: [] }), {});
     expect(normalizePath(result)).toBe(normalizePath(temp));
   });

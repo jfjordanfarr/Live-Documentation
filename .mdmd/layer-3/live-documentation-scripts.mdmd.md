@@ -28,7 +28,6 @@ Document the CLI toolbox that maintains Live Documentation quality—generation,
 - [scripts/live-docs/headless.ts](../layer-4/scripts/live-docs/headless.ts.mdmd.md)
 - [scripts/live-docs/inspect.ts](../layer-4/scripts/live-docs/inspect.ts.mdmd.md)
 - [scripts/live-docs/lint.ts](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
-- [scripts/live-docs/migrate-authored-mdmd.ts](../layer-4/scripts/live-docs/migrate-authored-mdmd.ts.mdmd.md)
 - [scripts/live-docs/report-precision.ts](../layer-4/scripts/live-docs/report-precision.ts.mdmd.md)
 - [scripts/live-docs/run-all.ts](../layer-4/scripts/live-docs/run-all.ts.mdmd.md)
 - [scripts/live-docs/system.ts](../layer-4/scripts/live-docs/system.ts.mdmd.md)

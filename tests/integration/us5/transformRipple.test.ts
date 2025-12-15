@@ -18,7 +18,7 @@ suite("US5: Template transform ripple detection", () => {
     transformScriptUri = vscode.Uri.joinPath(workspaceUri, "scripts", "applyTemplate.ts");
     outputConfigUri = vscode.Uri.joinPath(workspaceUri, "config", "web.config");
 
-    const extension = vscode.extensions.getExtension("copilot-improvement.link-aware-diagnostics");
+    const extension = vscode.extensions.getExtension("live-documentation.live-documentation");
     assert.ok(extension, "Extension must be installed");
 
     if (!process.env.LINK_AWARE_PROVIDER_MODE) {

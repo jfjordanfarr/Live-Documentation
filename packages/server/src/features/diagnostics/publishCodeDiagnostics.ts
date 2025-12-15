@@ -186,7 +186,7 @@ function createDiagnostic(context: CodeChangeContext, impact: RippleImpact): Dia
     severity: DiagnosticSeverity.Warning,
     range: ZERO_RANGE,
     message: `linked dependency changed${relationshipLabel} in ${triggerPath}. Review ${dependentPath} for compatibility.${metadata}${rationale}`.trim(),
-    source: "link-aware-diagnostics",
+    source: "live-documentation",
     code: DIAGNOSTIC_CODE,
     data: {
       triggerUri: context.artifact.uri,

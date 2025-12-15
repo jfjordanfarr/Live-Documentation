@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/testingPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-testingplan-ts
-- Generated At: 2025-12-11T02:38:01.186Z
+- Generated At: 2025-12-15T00:38:06.536Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - Creates virtual nodes for test groups without backing Stage0 docs (e.g., integration tests)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.186Z","inputHash":"ad9487106dc34713"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.536Z","inputHash":"2604c052689d719e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildTestingPlans` {#symbol-buildtestingplans}
@@ -35,8 +35,6 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/live-docs/types` - `Stage0Doc`, `TargetManifest` (type-only)
-- `@live-documentation/shared/tooling/pathUtils` - `normalizeWorkspacePath`
 - [`constants.LAYER3_PREFIX`](../constants.ts.mdmd.md#symbol-layer3_prefix)
 - [`constants.VIRTUAL_NODE_PREFIX`](../constants.ts.mdmd.md#symbol-virtual_node_prefix)
 - [`types.SystemDocPlan`](../types.ts.mdmd.md#symbol-systemdocplan) (type-only)
@@ -45,4 +43,7 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - [`utils.includeInComponents`](../utils.ts.mdmd.md#symbol-includeincomponents)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
 - [`manifest.loadTargetManifest`](../../targets/manifest.ts.mdmd.md#symbol-loadtargetmanifest)
+- [`types.Stage0Doc`](../../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0doc) (type-only)
+- [`types.TargetManifest`](../../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-targetmanifest) (type-only)
+- [`pathUtils.normalizeWorkspacePath`](../../../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

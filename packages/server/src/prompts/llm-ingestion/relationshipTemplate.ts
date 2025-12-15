@@ -38,7 +38,7 @@ export interface RenderedRelationshipPrompt {
   issuedAt: string;
 }
 
-const TEMPLATE_ID = "link-aware-diagnostics.llm-ingestion.v1";
+const TEMPLATE_ID = "live-documentation.llm-ingestion.v1";
 const DEFAULT_TEMPLATE_VERSION = "2025-10-24";
 
 export function renderRelationshipExtractionPrompt(

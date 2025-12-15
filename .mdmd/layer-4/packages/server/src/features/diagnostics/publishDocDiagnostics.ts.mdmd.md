@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/publishDocDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-publishdocdiagnostics-ts
-- Generated At: 2025-12-07T21:41:17.586Z
+- Generated At: 2025-12-15T00:38:06.264Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Aggregates document change contexts into diagnostics batches so the language ser
 - Subsequent passes added acknowledgement gating and hysteresis (see [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md)) and threaded the noise filter budget across emissions ([2025-10-23 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.586Z","inputHash":"1666926fe521720f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.264Z","inputHash":"1be8a0ddc4c2b29b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentChangeContext` {#symbol-documentchangecontext}
@@ -39,7 +39,6 @@ Aggregates document change contexts into diagnostics batches so the language ser
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `KnowledgeArtifact` (type-only)
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:url` - `fileURLToPath`, `pathToFileURL`
@@ -53,6 +52,7 @@ Aggregates document change contexts into diagnostics batches so the language ser
 - [`rippleTypes.RippleImpact`](./rippleTypes.ts.mdmd.md#symbol-rippleimpact) (type-only)
 - [`settingsBridge.RuntimeSettings`](../settings/settingsBridge.ts.mdmd.md#symbol-runtimesettings) (type-only)
 - [`artifactWatcher.DocumentTrackedArtifactChange`](../watchers/artifactWatcher.ts.mdmd.md#symbol-documenttrackedartifactchange) (type-only)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
 - `vscode-languageserver/node` - `Diagnostic`, `DiagnosticSeverity`
 <!-- LIVE-DOC:END Dependencies -->
 

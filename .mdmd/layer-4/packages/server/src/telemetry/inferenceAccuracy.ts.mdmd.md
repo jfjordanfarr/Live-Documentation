@@ -5,17 +5,17 @@
 - Archetype: implementation
 - Code Path: packages/server/src/telemetry/inferenceAccuracy.ts
 - Live Doc ID: LD-implementation-packages-server-src-telemetry-inferenceaccuracy-ts
-- Generated At: 2025-12-05T04:16:19.187Z
+- Generated At: 2025-12-15T00:38:06.683Z
 
 ## Authored
 ### Purpose
 Re-exports the shared inference-accuracy tracker after the telemetry relocation in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-29-shared-telemetry-relocation--alias-fallout-lines-3202-3335](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-29-shared-telemetry-relocation--alias-fallout-lines-3202-3335), keeping existing server imports stable while benchmarks and diagnostics consume the unified implementation.
 
 ### Notes
-This file exists purely for backward compatibility—new code should import from `@copilot-improvement/shared/telemetry/inferenceAccuracy`. The re-export was added during the benchmark scaffold described in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601), and we should delete it once downstream modules are migrated.
+This file exists purely for backward compatibility—new code should import from `@live-documentation/shared/telemetry/inferenceAccuracy`. The re-export was added during the benchmark scaffold described in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601), and we should delete it once downstream modules are migrated.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:19.187Z","inputHash":"294c540eb290e5b1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.683Z","inputHash":"1bf761ffb4939db8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AccuracySample` {#symbol-accuracysample}
@@ -61,7 +61,14 @@ This file exists purely for backward compatibility—new code should import from
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/telemetry/inferenceAccuracy` - `AccuracySample`, `AccuracyTotals`, `BenchmarkAccuracySummary`, `InferenceAccuracySummary`, `InferenceAccuracyTracker`, `InferenceAccuracyTrackerOptions`, `InferenceOutcome`, `RecordOutcomeOptions`
+- [`inferenceAccuracy.AccuracySample`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-accuracysample)
+- [`inferenceAccuracy.AccuracyTotals`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-accuracytotals)
+- [`inferenceAccuracy.BenchmarkAccuracySummary`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-benchmarkaccuracysummary)
+- [`inferenceAccuracy.InferenceAccuracySummary`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-inferenceaccuracysummary)
+- [`inferenceAccuracy.InferenceAccuracyTracker`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-inferenceaccuracytracker)
+- [`inferenceAccuracy.InferenceAccuracyTrackerOptions`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-inferenceaccuracytrackeroptions)
+- [`inferenceAccuracy.InferenceOutcome`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-inferenceoutcome)
+- [`inferenceAccuracy.RecordOutcomeOptions`](../../../shared/src/telemetry/inferenceAccuracy.ts.mdmd.md#symbol-recordoutcomeoptions)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/views/diagnosticsTree.ts
 - Live Doc ID: LD-implementation-packages-extension-src-views-diagnosticstree-ts
-- Generated At: 2025-12-07T21:41:17.028Z
+- Generated At: 2025-12-15T00:38:05.964Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Hosts the Link-Aware Diagnostics tree view, listing outstanding issues and ackno
 AI summaries and confidence ribbons were threaded into this tree during the Analyze-with-AI rollout—see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1728-L1774](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1728-L1774)—so updates to the data model must stay aligned with `LlmInvoker` payloads and `exportDiagnostics.ts` to keep UI parity.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.028Z","inputHash":"df5c52b6a06caf42"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.964Z","inputHash":"1bc47fe953081225"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TreeNode` {#symbol-treenode}
@@ -52,8 +52,10 @@ AI summaries and confidence ribbons were threaded into this tree during the Anal
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`, `ListOutstandingDiagnosticsResult`, `OutstandingDiagnosticSummary`
 - [`acknowledgeDiagnostic.ACKNOWLEDGE_DIAGNOSTIC_COMMAND`](../commands/acknowledgeDiagnostic.ts.mdmd.md#symbol-acknowledge_diagnostic_command)
+- [`index.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
+- [`index.ListOutstandingDiagnosticsResult`](../../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
+- [`index.OutstandingDiagnosticSummary`](../../../shared/src/index.ts.mdmd.md#symbol-outstandingdiagnosticsummary)
 - `vscode` - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->

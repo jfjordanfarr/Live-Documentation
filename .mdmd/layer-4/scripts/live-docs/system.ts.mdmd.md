@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/system.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-system-ts
-- Generated At: 2025-11-24T15:19:59.484Z
+- Generated At: 2025-12-15T00:38:07.479Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ CLI wrapper for `generateSystemLiveDocs`, producing Layer‑3 “System” docum
 We added this helper when commissioning the System doc generator (Nov 2024) to give designers a repeatable way to export markdown to `AI-Agent-Workspace/tmp/system-cli-output`. It supports `--clean` and `--dry-run` flags so CI and human runs can avoid clobbering curated exports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.484Z","inputHash":"61d85196b4a36810"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.479Z","inputHash":"c87778778c3ff011"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/config/liveDocumentationConfig` - `DEFAULT_LIVE_DOCUMENTATION_CONFIG`, `LiveDocumentationConfigInput`, `normalizeLiveDocumentationConfig`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
 - [`generator.generateSystemLiveDocs`](../../packages/server/src/features/live-docs/system/generator.ts.mdmd.md#symbol-generatesystemlivedocs)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 <!-- LIVE-DOC:END Dependencies -->

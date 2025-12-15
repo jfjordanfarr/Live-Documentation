@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/componentPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-componentplan-ts
-- Generated At: 2025-12-11T02:38:01.155Z
+- Generated At: 2025-12-15T00:38:06.522Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `component` archetype plans by grouping Live Docs implementa
 - Special handling for `scripts/live-docs` group: injects stage-sequence orchestration edges
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.155Z","inputHash":"aa7018e6e5c38f47"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.522Z","inputHash":"2d247579f8363f7d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildComponentPlans` {#symbol-buildcomponentplans}
@@ -36,7 +36,6 @@ Builds System-layer `component` archetype plans by grouping Live Docs implementa
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/live-docs/types` - `Stage0Doc` (type-only)
 - [`constants.IMPLEMENTATION_ARCHETYPE`](../constants.ts.mdmd.md#symbol-implementation_archetype)
 - [`constants.LAYER3_PREFIX`](../constants.ts.mdmd.md#symbol-layer3_prefix)
 - [`constants.LIVE_DOCS_SEGMENT`](../constants.ts.mdmd.md#symbol-live_docs_segment)
@@ -47,4 +46,5 @@ Builds System-layer `component` archetype plans by grouping Live Docs implementa
 - [`utils.formatDisplayName`](../utils.ts.mdmd.md#symbol-formatdisplayname)
 - [`utils.includeInComponents`](../utils.ts.mdmd.md#symbol-includeincomponents)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
+- [`types.Stage0Doc`](../../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0doc) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

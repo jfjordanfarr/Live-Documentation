@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-explorer.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-explorer-ts
-- Generated At: 2025-12-12T16:10:25.911Z
+- Generated At: 2025-12-15T00:38:07.489Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Serve as a sandbox CLI that snapshots the workspace graph and spins up a lightwe
 - Generates induced/inheritance link data on the fly, writes it to `data/graph-snapshots/explorer-temp.json`, and renders multiple SVG views (circuit, map, force) inside a browser shell.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:25.911Z","inputHash":"1b6d19908148b86d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.489Z","inputHash":"7ca616d4afc8bb09"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,8 +23,12 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/scripts` - `ExplorerServerInstance`, `ExplorerServerOptions`, `startExplorerServer` (type-only)
-- `@live-documentation/shared/config/liveDocumentationConfig` - `DEFAULT_LIVE_DOCUMENTATION_CONFIG`, `LiveDocumentationConfigInput`, `normalizeLiveDocumentationConfig`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
+- [`index.ExplorerServerInstance`](../../packages/scripts/src/index.ts.mdmd.md#symbol-explorerserverinstance) (type-only)
+- [`index.ExplorerServerOptions`](../../packages/scripts/src/index.ts.mdmd.md#symbol-explorerserveroptions) (type-only)
+- [`index.startExplorerServer`](../../packages/scripts/src/index.ts.mdmd.md#symbol-startexplorerserver) (type-only)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 <!-- LIVE-DOC:END Dependencies -->

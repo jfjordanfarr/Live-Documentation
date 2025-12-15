@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-overridelink-ts
-- Generated At: 2025-12-05T04:16:16.997Z
+- Generated At: 2025-12-15T00:38:05.885Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers the `linkDiagnostics.overrideLink` command so maintainers can manually
 - That change landed without automated coverage because the Node 22 toolchain blocked `npm run lint` and follow-on test runs; the gap is noted in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:16.997Z","inputHash":"505791a8a1116ac7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.885Z","inputHash":"7d5725dd9a388fd2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerOverrideLinkCommand` {#symbol-registeroverridelinkcommand}
@@ -28,7 +28,14 @@ Registers the `linkDiagnostics.overrideLink` command so maintainers can manually
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ArtifactLayer`, `LinkRelationshipKind`, `OVERRIDE_LINK_REQUEST`, `OverrideLinkRequest`, `OverrideLinkResponse`, `RebindImpactedArtifact`, `RebindReason`, `RebindRequiredArtifact`
+- [`index.ArtifactLayer`](../../../shared/src/index.ts.mdmd.md#symbol-artifactlayer)
+- [`index.LinkRelationshipKind`](../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
+- [`index.OVERRIDE_LINK_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-override_link_request)
+- [`index.OverrideLinkRequest`](../../../shared/src/index.ts.mdmd.md#symbol-overridelinkrequest)
+- [`index.OverrideLinkResponse`](../../../shared/src/index.ts.mdmd.md#symbol-overridelinkresponse)
+- [`index.RebindImpactedArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindimpactedartifact)
+- [`index.RebindReason`](../../../shared/src/index.ts.mdmd.md#symbol-rebindreason)
+- [`index.RebindRequiredArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredartifact)
 - `path` - `path`
 - `vscode` - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`

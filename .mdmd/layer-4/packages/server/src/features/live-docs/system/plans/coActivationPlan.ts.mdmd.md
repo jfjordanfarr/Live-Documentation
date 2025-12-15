@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/coActivationPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-coactivationplan-ts
-- Generated At: 2025-12-11T02:38:01.142Z
+- Generated At: 2025-12-15T00:38:06.516Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - `deriveClusterIdentity()` picks a descriptive slug from common path segments or highest-degree node
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.142Z","inputHash":"4af94a342f1269bd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.516Z","inputHash":"27a598157deba236"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildCoActivationPlans` {#symbol-buildcoactivationplans}
@@ -38,9 +38,6 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/live-docs/analysis/coActivation` - `CoActivationEdge`, `CoActivationReport` (type-only)
-- `@live-documentation/shared/live-docs/types` - `Stage0Doc` (type-only)
-- `@live-documentation/shared/tooling/pathUtils` - `normalizeWorkspacePath`
 - [`constants.LAYER3_PREFIX`](../constants.ts.mdmd.md#symbol-layer3_prefix)
 - [`constants.MAX_ACTIVATION_TOP_EDGES`](../constants.ts.mdmd.md#symbol-max_activation_top_edges)
 - [`constants.MAX_ACTIVATION_TOP_SOURCES`](../constants.ts.mdmd.md#symbol-max_activation_top_sources)
@@ -54,4 +51,8 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - [`types.SystemDocPlan`](../types.ts.mdmd.md#symbol-systemdocplan) (type-only)
 - [`utils.formatDisplayName`](../utils.ts.mdmd.md#symbol-formatdisplayname)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
+- [`coActivation.CoActivationEdge`](../../../../../../shared/src/live-docs/analysis/coActivation.ts.mdmd.md#symbol-coactivationedge) (type-only)
+- [`coActivation.CoActivationReport`](../../../../../../shared/src/live-docs/analysis/coActivation.ts.mdmd.md#symbol-coactivationreport) (type-only)
+- [`types.Stage0Doc`](../../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0doc) (type-only)
+- [`pathUtils.normalizeWorkspacePath`](../../../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

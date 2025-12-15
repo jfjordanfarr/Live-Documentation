@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/stageSequence.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-stagesequence-ts
-- Generated At: 2025-12-07T16:27:06.858Z
+- Generated At: 2025-12-15T00:38:06.554Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow sys
 - `extractRunAllStageDescriptors()` parses `run-all.ts` to discover script references
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.858Z","inputHash":"cadb3a272cf6d4f8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.554Z","inputHash":"4785a28205f98a6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildStageSequence` {#symbol-buildstagesequence}
@@ -37,13 +37,13 @@ Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow sys
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/tooling/pathUtils` - `normalizeWorkspacePath`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - [`types.RunAllStageDescriptor`](./types.ts.mdmd.md#symbol-runallstagedescriptor) (type-only)
 - [`types.StageSequence`](./types.ts.mdmd.md#symbol-stagesequence) (type-only)
 - [`types.StageSequenceMapEntry`](./types.ts.mdmd.md#symbol-stagesequencemapentry) (type-only)
 - [`utils.includeInComponents`](./utils.ts.mdmd.md#symbol-includeincomponents)
+- [`pathUtils.normalizeWorkspacePath`](../../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

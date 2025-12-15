@@ -147,7 +147,7 @@ async function main() {
 
             // Normalize module path for matching
             // e.g. @live-documentation/shared/telemetry/inferenceAccuracy -> shared/telemetry/inferenceAccuracy
-            const cleanModulePath = modulePath.replace("@copilot-improvement/", "packages/");
+            const cleanModulePath = modulePath.replace("@live-documentation/", "packages/");
 
             // Try to find a node that ends with this path
             parentNode = filteredArtifacts.find(n => {
@@ -187,7 +187,7 @@ async function main() {
             const importMatch = content.match(importRegex);
             if (importMatch) {
               const modulePath = importMatch[1];
-              const cleanModulePath = modulePath.replace("@copilot-improvement/", "packages/");
+              const cleanModulePath = modulePath.replace("@live-documentation/", "packages/");
               ifaceNode = filteredArtifacts.find(n => {
                 const nodePath = n.uri.replace("file:///", "").replace("file://", "");
                 return nodePath.includes(cleanModulePath) && !nodePath.includes("node_modules");

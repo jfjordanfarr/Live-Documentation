@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/dependencies/inspectDependencies.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-dependencies-inspectdependencies-ts
-- Generated At: 2025-12-07T21:41:17.430Z
+- Generated At: 2025-12-15T00:38:06.183Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Builds dependency fan-out reports for a given artifact, forming the server half 
 - Normalizes URIs and routes through `buildCodeImpactGraph` so CLI and extension surfaces share consistent traversal limits, filtering, and summary math.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.430Z","inputHash":"8fd1f6a2f474c72a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.183Z","inputHash":"dc775b0280594046"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `InspectDependenciesOptions` {#symbol-inspectdependenciesoptions}
@@ -31,10 +31,15 @@ Builds dependency fan-out reports for a given artifact, forming the server half 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `DependencyGraphEdge`, `GraphStore`, `InspectDependenciesResult`, `InspectDependenciesSummary`, `KnowledgeArtifact`, `LinkRelationshipKind`
 - [`buildCodeGraph.CodeImpactEdge`](./buildCodeGraph.ts.mdmd.md#symbol-codeimpactedge)
 - [`buildCodeGraph.buildCodeImpactGraph`](./buildCodeGraph.ts.mdmd.md#symbol-buildcodeimpactgraph)
 - [`uri.normalizeFileUri`](../utils/uri.ts.mdmd.md#symbol-normalizefileuri)
+- [`index.DependencyGraphEdge`](../../../../shared/src/index.ts.mdmd.md#symbol-dependencygraphedge)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.InspectDependenciesResult`](../../../../shared/src/index.ts.mdmd.md#symbol-inspectdependenciesresult)
+- [`index.InspectDependenciesSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-inspectdependenciessummary)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

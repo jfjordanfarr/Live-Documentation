@@ -12,8 +12,8 @@ void (async () => {
       "integration",
       "fixtures",
       "simple-workspace",
-      ".link-aware-diagnostics",
-      "link-aware-diagnostics.db"
+      ".live-documentation",
+      "live-documentation.db"
     );
 
   console.log("Reading graph from", dbPath);

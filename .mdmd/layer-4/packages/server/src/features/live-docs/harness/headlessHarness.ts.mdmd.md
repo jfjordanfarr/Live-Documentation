@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/headlessHarness.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-headlessharness-ts
-- Generated At: 2025-12-07T21:41:18.119Z
+- Generated At: 2025-12-15T00:38:06.472Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 - Emits optional container specs and timestamped reports so CI and hosted demos can replay the same runs without manual wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:18.119Z","inputHash":"18978a48f454a943"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.472Z","inputHash":"24de71c6a48507eb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessLogger` {#symbol-headlessharnesslogger}
@@ -39,7 +39,6 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/config/liveDocumentationConfig` - `DEFAULT_LIVE_DOCUMENTATION_CONFIG`, `LiveDocumentationConfig`, `LiveDocumentationConfigInput`, `normalizeLiveDocumentationConfig`
 - `node:fs/promises` - `fs`
 - `node:os` - `os`
 - `node:path` - `path`
@@ -48,4 +47,8 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 - [`scenarios.HeadlessHarnessScenario`](./scenarios.ts.mdmd.md#symbol-headlessharnessscenario) (type-only)
 - [`generator.SystemLiveDocGeneratorResult`](../system/generator.ts.mdmd.md#symbol-systemlivedocgeneratorresult) (type-only)
 - [`generator.generateSystemLiveDocs`](../system/generator.ts.mdmd.md#symbol-generatesystemlivedocs) (type-only)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 <!-- LIVE-DOC:END Dependencies -->

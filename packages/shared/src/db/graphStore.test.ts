@@ -80,7 +80,7 @@ describe("GraphStore", () => {
 
       store.storeLlmEdgeProvenance({
         linkId,
-        templateId: "link-aware-diagnostics.llm-ingestion.v1",
+        templateId: "live-documentation.llm-ingestion.v1",
         templateVersion: "2025-10-24",
         promptHash: "hash",
         modelId: "mock",

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/workflowPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-workflowplan-ts
-- Generated At: 2025-12-11T02:38:01.198Z
+- Generated At: 2025-12-15T00:38:06.541Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `workflow` archetype plans for orchestrator scripts (e.g., `
 - Combines direct dependencies with stage-sequence edges for complete orchestration topology
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.198Z","inputHash":"f91ac4da6e24c0c3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.541Z","inputHash":"c8b93526e984153d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildWorkflowPlans` {#symbol-buildworkflowplans}
@@ -28,7 +28,6 @@ Builds System-layer `workflow` archetype plans for orchestrator scripts (e.g., `
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/live-docs/types` - `Stage0Doc` (type-only)
 - [`constants.LAYER3_PREFIX`](../constants.ts.mdmd.md#symbol-layer3_prefix)
 - [`stageSequence.buildStageSequenceEdges`](../stageSequence.ts.mdmd.md#symbol-buildstagesequenceedges)
 - [`types.StageSequence`](../types.ts.mdmd.md#symbol-stagesequence) (type-only)
@@ -36,4 +35,5 @@ Builds System-layer `workflow` archetype plans for orchestrator scripts (e.g., `
 - [`utils.formatDisplayName`](../utils.ts.mdmd.md#symbol-formatdisplayname)
 - [`utils.includeInComponents`](../utils.ts.mdmd.md#symbol-includeincomponents)
 - [`utils.layer3Slug`](../utils.ts.mdmd.md#symbol-layer3slug)
+- [`types.Stage0Doc`](../../../../../../shared/src/live-docs/types.ts.mdmd.md#symbol-stage0doc) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

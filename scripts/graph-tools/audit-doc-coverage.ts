@@ -227,14 +227,14 @@ function usage(): string {
     "Usage: npm run graph:audit -- [options]\n\n" +
     "Database discovery:\n" +
     "  --db <path>                   Explicit SQLite database path.\n" +
-    "  --workspace <path>            Workspace root used to locate .link-aware-diagnostics storage.\n\n" +
+    "  --workspace <path>            Workspace root used to locate .live-documentation storage.\n\n" +
     "Output controls:\n" +
     "  --json                       Emit raw JSON instead of formatted text.\n" +
     "  --strict-symbols             Treat undocumented exported symbols as fatal gaps.\n" +
     "  --help                       Display this help text.\n\n" +
     "Examples:\n" +
     "  npm run graph:audit -- --workspace .\n" +
-    "  npm run graph:audit -- --db ../.link-aware-diagnostics/link-aware-diagnostics.db --json\n"
+    "  npm run graph:audit -- --db ../.live-documentation/live-documentation.db --json\n"
   );
 }
 
@@ -308,7 +308,7 @@ function resolveDatabasePath(options: ParsedArgs): string {
   }
 
   const workspace = options.workspace ? path.resolve(options.workspace) : process.cwd();
-  return path.join(workspace, ".link-aware-diagnostics", "link-aware-diagnostics.db");
+  return path.join(workspace, ".live-documentation", "live-documentation.db");
 }
 
 export function auditCoverage(

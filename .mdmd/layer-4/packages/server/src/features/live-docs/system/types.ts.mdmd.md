@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/types.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-types-ts
-- Generated At: 2025-12-07T16:27:06.891Z
+- Generated At: 2025-12-15T00:38:06.558Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Type definitions for the System-layer Live Documentation generator. Defines arch
 - Re-exports `LiveDocRenderSection` and `CoActivationEdge` from shared for convenience
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.891Z","inputHash":"2b014d15749bf90e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.558Z","inputHash":"f0385c79ba5c1b53"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Layer3Archetype` {#symbol-layer3archetype}
@@ -96,9 +96,9 @@ Type definitions for the System-layer Live Documentation generator. Defines arch
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared/config/liveDocumentationConfig` - `LiveDocumentationConfig` (type-only)
-- `@live-documentation/shared/live-docs/analysis/coActivation` - `CoActivationEdge` (type-only)
-- `@live-documentation/shared/live-docs/markdown` - `LiveDocRenderSection` (type-only)
+- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`coActivation.CoActivationEdge`](../../../../../shared/src/live-docs/analysis/coActivation.ts.mdmd.md#symbol-coactivationedge) (type-only)
+- [`markdown.LiveDocRenderSection`](../../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-livedocrendersection) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

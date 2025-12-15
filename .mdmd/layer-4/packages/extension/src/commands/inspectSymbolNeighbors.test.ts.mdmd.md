@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/commands/inspectSymbolNeighbors.test.ts
 - Live Doc ID: LD-test-packages-extension-src-commands-inspectsymbolneighbors-test-ts
-- Generated At: 2025-12-11T02:37:59.770Z
+- Generated At: 2025-12-15T00:38:05.861Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the symbol neighbor command through the extension test hooks, stubbing
 - Command automation now runs inside `npm run verify`, which completed cleanly after commit 558781b landed per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2880-L2944](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2880-L2944).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:37:59.770Z","inputHash":"87c75ea77731ec46"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.861Z","inputHash":"c6c3e09f8314c87f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,10 +24,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `InspectSymbolNeighborsParams` (type-only)
 - [`inspectSymbolNeighbors.ParsedInspectSymbolNeighborsResult`](./inspectSymbolNeighbors.ts.mdmd.md#symbol-parsedinspectsymbolneighborsresult) (type-only)
 - [`vscodeMock.SharedVscodeMock`](../testUtils/vscodeMock.ts.mdmd.md#symbol-sharedvscodemock)
 - [`vscodeMock.createVscodeMock`](../testUtils/vscodeMock.ts.mdmd.md#symbol-createvscodemock)
+- [`index.InspectSymbolNeighborsParams`](../../../shared/src/index.ts.mdmd.md#symbol-inspectsymbolneighborsparams) (type-only)
 - `vitest` - `afterAll`, `beforeAll`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 - `vscode` - `vscode` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/dependencies/symbolNeighbors.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-dependencies-symbolneighbors-ts
-- Generated At: 2025-12-07T21:41:17.460Z
+- Generated At: 2025-12-15T00:38:06.196Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Traverses the Live Documentation graph to assemble neighbor summaries for a requ
 - Uses bounded breadth-first traversal with depth and count guards so the `inspectSymbolNeighbors` CLI and extension command stay responsive even on dense workspaces.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.460Z","inputHash":"6b4e351f4afd9b8b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.196Z","inputHash":"e287a9f86c073d66"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `InspectSymbolNeighborsOptions` {#symbol-inspectsymbolneighborsoptions}
@@ -31,8 +31,15 @@ Traverses the Live Documentation graph to assemble neighbor summaries for a requ
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `GraphStore`, `InspectSymbolNeighborsResult`, `InspectSymbolNeighborsSummary`, `KnowledgeArtifact`, `LinkRelationshipKind`, `LinkedArtifactSummary`, `SymbolNeighborGroup`, `SymbolNeighborNode`
 - [`uri.normalizeFileUri`](../utils/uri.ts.mdmd.md#symbol-normalizefileuri)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.InspectSymbolNeighborsResult`](../../../../shared/src/index.ts.mdmd.md#symbol-inspectsymbolneighborsresult)
+- [`index.InspectSymbolNeighborsSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-inspectsymbolneighborssummary)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
+- [`index.LinkedArtifactSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-linkedartifactsummary)
+- [`index.SymbolNeighborGroup`](../../../../shared/src/index.ts.mdmd.md#symbol-symbolneighborgroup)
+- [`index.SymbolNeighborNode`](../../../../shared/src/index.ts.mdmd.md#symbol-symbolneighbornode)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

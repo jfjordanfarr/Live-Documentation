@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/graph-tools/audit-doc-coverage.ts
 - Live Doc ID: LD-implementation-scripts-graph-tools-audit-doc-coverage-ts
-- Generated At: 2025-12-09T01:18:23.704Z
+- Generated At: 2025-12-15T00:38:07.411Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Runs the graph coverage audit that compares code artifacts against Layer‑4 doc
 - Refined 2025-11-04 to invoke `snapshotWorkspace` quietly before auditing, guaranteeing fresh caches during CI and local runs ([self-refresh integration](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2434-L2455)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T01:18:23.704Z","inputHash":"9daf5828efdeff08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.411Z","inputHash":"419d19d2ffc1538e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseArgs` {#symbol-parseargs}
@@ -43,13 +43,23 @@ Runs the graph coverage audit that compares code artifacts against Layer‑4 doc
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ArtifactLayer`, `GraphStore`, `KnowledgeArtifact`, `LinkedArtifactSummary`, `RelationshipCoverageDiagnostic`, `RelationshipRuleWarning`, `compileRelationshipRules`, `compileSymbolProfiles`, `evaluateRelationshipCoverage`, `formatRelationshipDiagnostics`, `loadRelationshipRuleConfig`
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
 - `node:url` - `fileURLToPath`
 - [`symbolCorrectnessValidator.SymbolCorrectnessReport`](../../packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts.mdmd.md#symbol-symbolcorrectnessreport)
 - [`symbolCorrectnessValidator.generateSymbolCorrectnessDiagnostics`](../../packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts.mdmd.md#symbol-generatesymbolcorrectnessdiagnostics)
+- [`index.ArtifactLayer`](../../packages/shared/src/index.ts.mdmd.md#symbol-artifactlayer)
+- [`index.GraphStore`](../../packages/shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../packages/shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkedArtifactSummary`](../../packages/shared/src/index.ts.mdmd.md#symbol-linkedartifactsummary)
+- [`index.RelationshipCoverageDiagnostic`](../../packages/shared/src/index.ts.mdmd.md#symbol-relationshipcoveragediagnostic)
+- [`index.RelationshipRuleWarning`](../../packages/shared/src/index.ts.mdmd.md#symbol-relationshiprulewarning)
+- [`index.compileRelationshipRules`](../../packages/shared/src/index.ts.mdmd.md#symbol-compilerelationshiprules)
+- [`index.compileSymbolProfiles`](../../packages/shared/src/index.ts.mdmd.md#symbol-compilesymbolprofiles)
+- [`index.evaluateRelationshipCoverage`](../../packages/shared/src/index.ts.mdmd.md#symbol-evaluaterelationshipcoverage)
+- [`index.formatRelationshipDiagnostics`](../../packages/shared/src/index.ts.mdmd.md#symbol-formatrelationshipdiagnostics)
+- [`index.loadRelationshipRuleConfig`](../../packages/shared/src/index.ts.mdmd.md#symbol-loadrelationshipruleconfig)
 - [`snapshot-workspace.DEFAULT_DB`](./snapshot-workspace.ts.mdmd.md#symbol-default_db)
 - [`snapshot-workspace.DEFAULT_OUTPUT`](./snapshot-workspace.ts.mdmd.md#symbol-default_output)
 - [`snapshot-workspace.snapshotWorkspace`](./snapshot-workspace.ts.mdmd.md#symbol-snapshotworkspace)

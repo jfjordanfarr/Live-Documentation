@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/watchers/pathReferenceDetector.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-watchers-pathreferencedetector-ts
-- Generated At: 2025-12-05T15:37:24.663Z
+- Generated At: 2025-12-15T00:38:06.617Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Extracts relative-path references from markdown and code so the watcher pipeline
 - When workspace indexing rules change (new script/doc globs or additional path hint sources) update these heuristics in tandem so seed hints continue to mirror the indexer output <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2832-L2864>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.663Z","inputHash":"a85410a04903dd9e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.617Z","inputHash":"98d5618e1c8e1340"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactCategory` {#symbol-artifactcategory}
@@ -36,11 +36,11 @@ Extracts relative-path references from markdown and code so the watcher pipeline
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `RelationshipHint` (type-only)
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:url` - `fileURLToPath`, `pathToFileURL`
 - [`uri.normalizeFileUri`](../utils/uri.ts.mdmd.md#symbol-normalizefileuri)
+- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

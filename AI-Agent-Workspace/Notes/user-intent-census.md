@@ -638,6 +638,22 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L1019-L1048` — **Inspect endpoints should be symbol-granular**: Strong preference for symbol-to-symbol pathfinding (and symbol↔artifact combos) for CLI + Explorer; this is more valuable than editing Live Doc markdown in the Explorer or pursuing bidirectional docstring work.
 - `L1026-L1038` — **Naming clarification**: “Link-Aware Diagnostics” is a legacy Spec-Kit-generated phrase/branch-name artifact; “Live Documentation” is the project’s name.
 
+## 2025-12-13 (Dev Day 44)
+### Chat 1 (2025-12-13.1.md) — CI/CD + Pages + Security + Fixture Integrity
+- `2025-12-13.1.md:L126-L129` — **CI/CD focus**: Stand up GitHub Actions CI/CD that (1) runs `npm run safe:commit` checks “to the best of our ability” but pragmatically adjusted for runner feasibility, (2) builds + deploys the Explorer static site via GitHub Pages, and (3) adds CodeQL + Dependabot (optional/deferrable if spurious) plus `npm audit`.
+- `L133-L137` — **Chat Archaeology as planning prerequisite**: During the CI/CD planning phase, explicitly mine chat history + Layer‑1/Layer‑2 + `001-link-aware-diagnostics` to separate “already agreed to do,” “already agreed not to do,” and “still ambiguous / unresolved.”
+- `L214-L214` — **Auditability requirement**: For authored workflow files, provide an auditable explanation of each file’s purpose/mechanics, plus expected GitHub Actions compute costs and a “cost/security/sanity” posture (avoid noisy, endless issue raising).
+- `L407-L416` — **Noise policy for security automation**: Only alert/block on high/critical; treat moderate vulnerabilities as non-blocking warnings; reduce Dependabot noise via grouping + conservative open-PR limits + manual merge posture.
+- `L948-L955` — **Repro-first debugging for Pages**: When Pages output looks broken, reproduce against the repo’s own static export locally to distinguish pipeline-only failures; request commit-message proposals for incremental fixes while parallel investigation proceeds.
+- `L1081-L1083` — **CI realism**: Integration runs on GitHub runners can’t reproduce local-only advantages (e.g., Ollama inference availability; high-spec workstation); account for those differences explicitly when interpreting CI outcomes.
+- `L1545-L1545` — **Benchmark reports are truth artifacts**: Don’t revert benchmark JSON reports just to reduce diffs; they reflect the true state of what’s being committed.
+- `L2444-L2450` — **Durable artifact filtering**: Prefer “respect `.gitignore`” as the cleanest/durablest way to exclude build artifacts, rather than maintaining extra ignore-glob configuration.
+- `L2640-L2644` — **Simplify duplicated discovery mechanisms**: Treat divergent file discovery between the graph indexer and the Live Docs generator as technical debt; simplify toward one correct approach.
+- `L2853-L2860` — **CLI correctness + runner realities**: Validate that `--dry-run` is actually non-destructive; remember the Copilot runner may halt on manual command approvals, so logs may claim a command ran when the user actually executed it.
+- `L2969-L2974` — **Pipeline ordering + logging UX**: Change “preserving authored content” from warn→info for PowerShell UX; ensure `npm run live-docs:generate` happens earlier in `npm run safe:commit` so downstream audits don’t fail due to stale docs.
+- `L3355-L3355` — **Hash provenance**: Fixture integrity hashes should come from an automated process (not manual edits); use Chat Archaeology + workspace searches to find and preserve the real regeneration workflow.
+- `L3488-L3488` — **Commit hygiene**: Propose a fitting commit message aligned to the actual work before pushing.
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

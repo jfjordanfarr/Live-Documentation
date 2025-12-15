@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lib/liveDocGraph.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-lib-livedocgraph-ts
-- Generated At: 2025-11-24T15:19:59.457Z
+- Generated At: 2025-12-15T00:38:07.462Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Re-export shim providing backwards-compatible access to the `buildLiveDocGraph` 
 - Exists to preserve import paths for scripts that predated the `packages/scripts` workspace package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:59.457Z","inputHash":"4204629c79695397"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.462Z","inputHash":"298d04f0115c39a6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,5 +24,20 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/scripts/live-docs/graph/liveDocGraph` (re-export)
+- [`liveDocGraph`](../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Re-Exported Symbol Anchors -->
+### Re-Exported Symbol Anchors
+#### `buildLiveDocGraph` {#symbol-buildlivedocgraph}
+- Re-exported from [`liveDocGraph`](../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraph)
+
+#### `BuildLiveDocGraphOptions` {#symbol-buildlivedocgraphoptions}
+- Re-exported from [`liveDocGraph`](../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraphoptions)
+
+#### `LiveDocGraph` {#symbol-livedocgraph}
+- Re-exported from [`liveDocGraph`](../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph)
+
+#### `LiveDocGraphNode` {#symbol-livedocgraphnode}
+- Re-exported from [`liveDocGraph`](../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraphnode)
+<!-- LIVE-DOC:END Re-Exported Symbol Anchors -->

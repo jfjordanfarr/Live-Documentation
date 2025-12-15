@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/changeEvents/saveDocumentChange.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-changeevents-savedocumentchange-ts
-- Generated At: 2025-12-07T21:41:17.373Z
+- Generated At: 2025-12-15T00:38:06.164Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists markdown change events and any accompanying inference output into the g
 - Generates canonical artifact records and change-event IDs even when inference metadata is absent, ensuring downstream diagnostics still learn about the save.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.373Z","inputHash":"2e49dac9d29eb727"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.164Z","inputHash":"223d889dfd2b795d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PersistedDocumentChange` {#symbol-persisteddocumentchange}
@@ -40,10 +40,12 @@ Persists markdown change events and any accompanying inference output into the g
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `GraphStore`, `KnowledgeArtifact`, `LinkInferenceRunResult`
 - `node:crypto` - `randomUUID`
 - [`uri.normalizeFileUri`](../utils/uri.ts.mdmd.md#symbol-normalizefileuri)
 - [`artifactWatcher.DocumentTrackedArtifactChange`](../watchers/artifactWatcher.ts.mdmd.md#symbol-documenttrackedartifactchange) (type-only)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkInferenceRunResult`](../../../../shared/src/index.ts.mdmd.md#symbol-linkinferencerunresult)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

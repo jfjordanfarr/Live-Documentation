@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/llmIngestionOrchestrator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-llmingestionorchestrator-ts
-- Generated At: 2025-11-24T15:19:58.662Z
+- Generated At: 2025-12-15T00:38:06.383Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates LLM-assisted relationship ingestion by batching queued artifacts, ge
 Implements a guarded queue that respects administrator LLM settings, supports dry-run snapshots for auditability, and funnels extraction results through `calibrateConfidence` before storing provenance-rich edges; concurrency and chunk sizing remain tunable to balance throughput against context window limits.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.662Z","inputHash":"8112a6b9f12a5577"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.383Z","inputHash":"85abf27a618af707"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LlmIngestionLogger` {#symbol-llmingestionlogger}
@@ -41,7 +41,6 @@ Implements a guarded queue that respects administrator LLM settings, supports dr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `CalibratedRelationship`, `CalibrationContext`, `GraphStore`, `KnowledgeArtifact`, `LinkRelationshipKind`, `RawRelationshipCandidate`, `RelationshipExtractionBatch`, `RelationshipExtractionPrompt`, `RelationshipExtractionRequest`, `RelationshipExtractor`, `calibrateConfidence`
 - `node:crypto` - `createHash`, `randomUUID`
 - `node:fs` - `promises`
 - `node:path` - `path`
@@ -51,6 +50,17 @@ Implements a guarded queue that respects administrator LLM settings, supports dr
 - [`relationshipTemplate.PromptChunkSummary`](../../prompts/llm-ingestion/relationshipTemplate.ts.mdmd.md#symbol-promptchunksummary)
 - [`relationshipTemplate.RELATIONSHIP_RESPONSE_SCHEMA`](../../prompts/llm-ingestion/relationshipTemplate.ts.mdmd.md#symbol-relationship_response_schema)
 - [`relationshipTemplate.renderRelationshipExtractionPrompt`](../../prompts/llm-ingestion/relationshipTemplate.ts.mdmd.md#symbol-renderrelationshipextractionprompt)
+- [`index.CalibratedRelationship`](../../../../shared/src/index.ts.mdmd.md#symbol-calibratedrelationship)
+- [`index.CalibrationContext`](../../../../shared/src/index.ts.mdmd.md#symbol-calibrationcontext)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
+- [`index.RawRelationshipCandidate`](../../../../shared/src/index.ts.mdmd.md#symbol-rawrelationshipcandidate)
+- [`index.RelationshipExtractionBatch`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractionbatch)
+- [`index.RelationshipExtractionPrompt`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractionprompt)
+- [`index.RelationshipExtractionRequest`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractionrequest)
+- [`index.RelationshipExtractor`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshipextractor)
+- [`index.calibrateConfidence`](../../../../shared/src/index.ts.mdmd.md#symbol-calibrateconfidence)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

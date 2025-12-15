@@ -9,7 +9,7 @@
 
 ## Authored
 ### Purpose
-Provides the single `@copilot-improvement/shared` entrypoint that re-exports inference, telemetry, and tooling surfaces so extension, server, and CLI code consume a consistent API ([link inference orchestrator rollout](../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-11-build-link-inference-orchestrator-lines-515-657)).
+Provides the single `@live-documentation/shared` entrypoint that re-exports inference, telemetry, and tooling surfaces so extension, server, and CLI code consume a consistent API ([link inference orchestrator rollout](../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-11-build-link-inference-orchestrator-lines-515-657)).
 
 ### Notes
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).

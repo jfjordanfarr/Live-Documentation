@@ -177,7 +177,7 @@ function usage(): string {
     `  --kinds <k1,k2>               Comma-separated link kinds (${KNOWN_LINK_KINDS.join(", ")}).\n\n` +
     `Database discovery:\n` +
     `  --db <path>                   Explicit SQLite database path.\n` +
-    `  --workspace <path>            Workspace root used to locate .link-aware-diagnostics storage.\n\n` +
+    `  --workspace <path>            Workspace root used to locate .live-documentation storage.\n\n` +
     `Output controls:\n` +
     `  --json                       Emit raw JSON instead of formatted text.\n` +
     `  --list-kinds                 Print recognised link relationship kinds.\n` +
@@ -185,7 +185,7 @@ function usage(): string {
     `\nExamples:\n` +
     `  npm run graph:inspect -- --file packages/server/src/main.ts\n` +
     `  npm run graph:inspect -- --id artifact-123 --max-depth 3 --kinds depends_on,implements\n` +
-    `  npm run graph:inspect -- --db ../.link-aware-diagnostics/link-aware-diagnostics.db --json\n`;
+    `  npm run graph:inspect -- --db ../.live-documentation/live-documentation.db --json\n`;
 }
 
 function listKinds(): void {
@@ -201,7 +201,7 @@ function resolveDatabasePath(options: ParsedArgs): string {
   }
 
   const workspace = options.workspace ? path.resolve(options.workspace) : process.cwd();
-  return path.join(workspace, ".link-aware-diagnostics", "link-aware-diagnostics.db");
+  return path.join(workspace, ".live-documentation", "live-documentation.db");
 }
 
 function formatConfidence(confidence: number): string {

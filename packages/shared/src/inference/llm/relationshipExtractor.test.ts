@@ -8,7 +8,7 @@ import {
 
 function createPrompt(overrides: Partial<RelationshipExtractionPrompt> = {}): RelationshipExtractionPrompt {
   return {
-    templateId: "link-aware-diagnostics.llm-ingestion.v1",
+    templateId: "live-documentation.llm-ingestion.v1",
     templateVersion: "2025-10-24",
     promptText: "<prompt>",
     promptHash: "hash1234",

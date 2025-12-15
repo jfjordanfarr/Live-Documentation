@@ -25,7 +25,7 @@ suite("US1: Developers see code-change impact", () => {
     featureUri = vscode.Uri.joinPath(workspaceUri, "src", "feature.ts");
     utilUri = vscode.Uri.joinPath(workspaceUri, "src", "util.ts");
 
-    const extension = vscode.extensions.getExtension("copilot-improvement.link-aware-diagnostics");
+    const extension = vscode.extensions.getExtension("live-documentation.live-documentation");
     assert.ok(extension, "Extension must be installed");
 
     if (!process.env.LINK_AWARE_PROVIDER_MODE) {

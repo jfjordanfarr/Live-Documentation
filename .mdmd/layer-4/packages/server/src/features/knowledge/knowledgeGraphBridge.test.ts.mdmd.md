@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/knowledge/knowledgeGraphBridge.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-knowledge-knowledgegraphbridge-test-ts
-- Generated At: 2025-12-11T02:38:00.642Z
+- Generated At: 2025-12-15T00:38:06.324Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Confirms the bridge service discovers static knowledge feeds, hydrates them into
 - Exercises both the happy path (static JSON feed + onStatusChanged listeners) and the disabled-workspace fallback, ensuring the service keeps safeguards added during the Oct 30 refinement cycle ([2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:00.642Z","inputHash":"909ae1b88c1d1eaa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.324Z","inputHash":"6affea4bc3206246"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,12 +23,12 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `GraphStore`
 - `node:fs` - `mkdirSync`, `mkdtempSync`, `rmSync`, `writeFileSync`
 - `node:os` - `tmpdir`
 - `node:path` - `path`
 - [`knowledgeGraphBridge.KnowledgeGraphBridgeLogger`](./knowledgeGraphBridge.ts.mdmd.md#symbol-knowledgegraphbridgelogger)
 - [`knowledgeGraphBridge.KnowledgeGraphBridgeService`](./knowledgeGraphBridge.ts.mdmd.md#symbol-knowledgegraphbridgeservice)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

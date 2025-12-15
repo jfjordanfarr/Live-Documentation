@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/lsifParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-lsifparser-ts
-- Generated At: 2025-12-07T21:41:17.842Z
+- Generated At: 2025-12-15T00:38:06.391Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms newline-delimited LSIF dumps into external snapshots with artifact en
 - Built during the LSIF/SCIP ingestion effort captured in [2025-10-22 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md), landing alongside auto-detection and bridge wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.842Z","inputHash":"6c68c04aae3b98e8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.391Z","inputHash":"b2d9662e240e56c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LSIFParserOptions` {#symbol-lsifparseroptions}
@@ -45,8 +45,14 @@ Parse LSIF content into an ExternalSnapshot
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `ExternalArtifact`, `ExternalLink`, `ExternalSnapshot`, `LSIFDocument`, `LSIFEntry`, `LSIFRange`, `ParsedLSIFIndex` (type-only)
 - `node:url` - `fileURLToPath`, `pathToFileURL`
+- [`index.ExternalArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-externalartifact) (type-only)
+- [`index.ExternalLink`](../../../../shared/src/index.ts.mdmd.md#symbol-externallink) (type-only)
+- [`index.ExternalSnapshot`](../../../../shared/src/index.ts.mdmd.md#symbol-externalsnapshot) (type-only)
+- [`index.LSIFDocument`](../../../../shared/src/index.ts.mdmd.md#symbol-lsifdocument) (type-only)
+- [`index.LSIFEntry`](../../../../shared/src/index.ts.mdmd.md#symbol-lsifentry) (type-only)
+- [`index.LSIFRange`](../../../../shared/src/index.ts.mdmd.md#symbol-lsifrange) (type-only)
+- [`index.ParsedLSIFIndex`](../../../../shared/src/index.ts.mdmd.md#symbol-parsedlsifindex) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

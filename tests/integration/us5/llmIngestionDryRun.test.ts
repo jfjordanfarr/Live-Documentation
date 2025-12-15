@@ -61,7 +61,7 @@ suite("US5: LLM ingestion dry-run harness", () => {
     const snapshotPath = results[0].dryRunSnapshotPath!;
     const snapshot = JSON.parse(await fsp.readFile(snapshotPath, "utf8"));
 
-    assert.strictEqual(snapshot.metadata.templateId, "link-aware-diagnostics.llm-ingestion.v1");
+    assert.strictEqual(snapshot.metadata.templateId, "live-documentation.llm-ingestion.v1");
     assert.strictEqual(snapshot.relationships.length, 2);
 
     const lowEdge = snapshot.relationships.find((entry: any) => entry.targetId === "speculative");

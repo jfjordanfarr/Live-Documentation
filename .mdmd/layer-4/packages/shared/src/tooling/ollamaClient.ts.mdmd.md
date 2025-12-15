@@ -12,7 +12,7 @@
 Implements the shared HTTP client for Ollama chat requests—handling timeouts, usage metrics, deterministic error surfaces, and optional tracing—so both the extension and CLI can invoke workspace-local models without bespoke fetch logic ([bridge plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L695-L757), [runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
 
 ### Notes
-- Exposed via `@copilot-improvement/shared` and used by `invokeLocalOllamaBridge` plus `scripts/ollama/run-chat.ts`, giving the extension, integration harness, and tooling identical retry/trace behaviour ([runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
+- Exposed via `@live-documentation/shared` and used by `invokeLocalOllamaBridge` plus `scripts/ollama/run-chat.ts`, giving the extension, integration harness, and tooling identical retry/trace behaviour ([runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
 - Captures raw responses and timing data into per-run traces when `LINK_AWARE_OLLAMA_TRACE_DIR` is set, supporting the telemetry/benchmark reporting workstream called out during the rollout ([runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
 
 ## Generated

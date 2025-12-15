@@ -9,16 +9,16 @@ import { ExtensionSettings } from "../features/settings/providerGuard";
 
 export function resolveDatabasePath(params: InitializeParams, settings: ExtensionSettings): string {
   if (settings.storagePath) {
-    return path.join(settings.storagePath, "link-aware-diagnostics.db");
+    return path.join(settings.storagePath, "live-documentation.db");
   }
 
   const workspaceFolder = params.workspaceFolders?.[0]?.uri;
   if (workspaceFolder) {
     const folderPath = fileUriToPath(workspaceFolder);
-    return path.join(folderPath, ".link-aware-diagnostics", "link-aware-diagnostics.db");
+    return path.join(folderPath, ".live-documentation", "live-documentation.db");
   }
 
-  return path.join(os.tmpdir(), "link-aware-diagnostics", "link-aware-diagnostics.db");
+  return path.join(os.tmpdir(), "live-documentation", "live-documentation.db");
 }
 
 export function resolveWorkspaceRoot(params: InitializeParams): string | undefined {

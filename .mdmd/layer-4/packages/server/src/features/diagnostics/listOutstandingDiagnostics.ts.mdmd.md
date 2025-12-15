@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/listOutstandingDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-listoutstandingdiagnostics-ts
-- Generated At: 2025-12-05T15:37:23.524Z
+- Generated At: 2025-12-15T00:38:06.230Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms persisted diagnostic records into Explorer-friendly summaries for the
 - Resolves trigger/target artifacts on demand so the tree view stays synchronized with the GraphStore even as acknowledgements arrive.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.524Z","inputHash":"a1028e26597af7af"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.230Z","inputHash":"0782ad294f16d528"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildOutstandingDiagnosticsResult` {#symbol-buildoutstandingdiagnosticsresult}
@@ -33,7 +33,11 @@ Transforms persisted diagnostic records into Explorer-friendly summaries for the
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@live-documentation/shared` - `DiagnosticRecord`, `GraphStore`, `KnowledgeArtifact`, `ListOutstandingDiagnosticsResult`, `OutstandingDiagnosticSummary`
+- [`index.DiagnosticRecord`](../../../../shared/src/index.ts.mdmd.md#symbol-diagnosticrecord)
+- [`index.GraphStore`](../../../../shared/src/index.ts.mdmd.md#symbol-graphstore)
+- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact)
+- [`index.ListOutstandingDiagnosticsResult`](../../../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
+- [`index.OutstandingDiagnosticSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-outstandingdiagnosticsummary)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

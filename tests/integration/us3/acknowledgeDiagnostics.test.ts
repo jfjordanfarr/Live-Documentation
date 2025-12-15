@@ -28,7 +28,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
 
     _sourceDocUri = vscode.Uri.joinPath(workspaceUri, "docs", "link-source.md");
     _targetCodeUri = vscode.Uri.joinPath(workspaceUri, "src", "core.ts");
-    storageDir = path.join(workspaceUri.fsPath, ".link-aware-diagnostics-test");
+    storageDir = path.join(workspaceUri.fsPath, ".live-documentation-test");
     await fs.mkdir(storageDir, { recursive: true });
 
     const config = vscode.workspace.getConfiguration("linkAwareDiagnostics");
@@ -36,7 +36,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     await config.update("llmProviderMode", "local-only", vscode.ConfigurationTarget.Workspace);
     await config.update("storagePath", storageDir, vscode.ConfigurationTarget.Workspace);
 
-    const extension = vscode.extensions.getExtension("copilot-improvement.link-aware-diagnostics");
+    const extension = vscode.extensions.getExtension("live-documentation.live-documentation");
     assert.ok(extension, "Extension must be installed");
 
     if (!process.env.LINK_AWARE_PROVIDER_MODE) {
@@ -255,9 +255,9 @@ async function waitForDiagnosticAbsence(uri: vscode.Uri, recordId: string, timeo
 async function locateDatabasePath(storageDir: string, workspacePath: string, timeout: number): Promise<string> {
   const pollInterval = 200;
   let elapsed = 0;
-  const primary = path.join(storageDir, "link-aware-diagnostics.db");
-  const fallbackWorkspace = path.join(workspacePath, ".link-aware-diagnostics", "link-aware-diagnostics.db");
-  const fallbackTemp = path.join(os.tmpdir(), "link-aware-diagnostics", "link-aware-diagnostics.db");
+  const primary = path.join(storageDir, "live-documentation.db");
+  const fallbackWorkspace = path.join(workspacePath, ".live-documentation", "live-documentation.db");
+  const fallbackTemp = path.join(os.tmpdir(), "live-documentation", "live-documentation.db");
   const candidates = [primary, fallbackWorkspace, fallbackTemp];
 
   while (elapsed < timeout) {

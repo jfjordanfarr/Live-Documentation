@@ -136,7 +136,7 @@ const changeProcessor = createChangeProcessor({
 changeProcessor.updateContext({ runtimeSettings });
 
 connection.onInitialize((params: InitializeParams): InitializeResult => {
-  connection.console.info("link-aware-diagnostics server starting up");
+  connection.console.info("live-documentation server starting up");
   diagnosticPublisher.clear();
 
   const initialSettings = extractExtensionSettings(params.initializationOptions);
@@ -279,7 +279,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
 });
 
 connection.onInitialized(() => {
-  connection.console.info("link-aware-diagnostics server initialised");
+  connection.console.info("live-documentation server initialised");
   void connection.client.register(DidChangeConfigurationNotification.type, undefined);
 });
 
@@ -318,7 +318,7 @@ connection.onShutdown(() => {
   latencyTracker = null;
   diagnosticPublisher.clear();
 
-  connection.console.info("link-aware-diagnostics server shutdown complete");
+  connection.console.info("live-documentation server shutdown complete");
 });
 
 connection.onDidChangeConfiguration((change: DidChangeConfigurationParams) => {

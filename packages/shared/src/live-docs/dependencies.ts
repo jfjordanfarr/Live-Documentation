@@ -256,7 +256,7 @@ async function resolveWorkspaceAlias(
   specifier: string,
   workspaceRoot: string
 ): Promise<string | undefined> {
-  const prefix = "@copilot-improvement/";
+  const prefix = "@live-documentation/";
   if (!specifier.startsWith(prefix)) {
     if (specifier.startsWith("@/")) {
       const remainder = specifier.slice(2);

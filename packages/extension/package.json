@@ -1,7 +1,7 @@
 {
-  "name": "link-aware-diagnostics",
-  "displayName": "Link-Aware Diagnostics",
-  "publisher": "copilot-improvement",
+  "name": "live-documentation",
+  "displayName": "Live Documentation",
+  "publisher": "live-documentation",
   "version": "0.0.0",
   "engines": {
     "vscode": "^1.91.0"
