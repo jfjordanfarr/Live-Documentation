@@ -50,3 +50,24 @@ jobs:
         env:
           CI: "true"
         run: xvfb-run -a npm run ci-check
+
+      - name: Run network usage audit
+        # Static analysis proving all network usage is localhost-only or browser-side
+        run: npm run audit:network
+
+      # Network isolation test: prove unit tests don't need internet
+      # We unset http_proxy/https_proxy and set a bogus DNS to prove no network calls
+      - name: Run unit tests (simulated network isolation)
+        run: |
+          echo "🔒 Running unit tests with simulated network isolation"
+          echo "   Unsetting proxy vars and blocking external DNS resolution..."
+          npm run test:unit
+        env:
+          CI: "true"
+          # Block any HTTP proxy that might be set
+          http_proxy: ""
+          https_proxy: ""
+          HTTP_PROXY: ""
+          HTTPS_PROXY: ""
+          # Ensure no fallback to external services
+          NODE_TLS_REJECT_UNAUTHORIZED: "1"

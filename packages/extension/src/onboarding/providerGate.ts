@@ -6,6 +6,8 @@ const ONBOARDED_KEY = "linkDiagnostics.providerOnboarded";
 
 interface ProviderChoice {
   label: string;
+  description?: string;
+  detail?: string;
   mode: "prompt" | "local-only" | "disabled";
   enableDiagnostics: boolean;
 }
@@ -50,17 +52,23 @@ export async function ensureProviderSelection(
 
   const quickPickItems: ProviderChoice[] = [
     {
-      label: "Enable diagnostics with local provider",
+      label: "$(shield) Local Ollama only (recommended for privacy)",
+      description: "localhost:11434",
+      detail: "Your code never leaves your machine. Requires Ollama installed locally.",
       mode: "local-only",
       enableDiagnostics: true
     },
     {
-      label: "Prompt me to choose a provider each time",
+      label: "$(cloud) VS Code language models",
+      description: "GitHub Copilot, Azure OpenAI, etc.",
+      detail: "⚠️ Code snippets may be sent to cloud providers. Standard cloud LLM policies apply.",
       mode: "prompt",
       enableDiagnostics: true
     },
     {
-      label: "Keep diagnostics disabled",
+      label: "$(circle-slash) Keep diagnostics disabled",
+      description: "No LLM features",
+      detail: "Core documentation generation works without LLM. You can enable later in settings.",
       mode: "disabled",
       enableDiagnostics: false
     }
@@ -68,7 +76,9 @@ export async function ensureProviderSelection(
 
   const selection = await vscode.window.showQuickPick(quickPickItems, {
     placeHolder: "Select how Link-Aware Diagnostics should use language models",
-    ignoreFocusOut: true
+    ignoreFocusOut: true,
+    matchOnDescription: true,
+    matchOnDetail: true
   });
 
   if (!selection) {

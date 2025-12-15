@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
+import { safeFetch, NetworkPolicyViolation } from "./safeFetch";
+
 export interface OllamaChatRequest {
   endpoint: string;
   model: string;
@@ -43,11 +45,6 @@ export class OllamaInvocationError extends Error {
 }
 
 export async function invokeOllamaChat(request: OllamaChatRequest): Promise<OllamaChatResult> {
-  const fetchFn: typeof fetch | undefined = (globalThis as typeof globalThis & { fetch?: typeof fetch }).fetch;
-  if (!fetchFn) {
-    throw new OllamaInvocationError("Global fetch API is not available; upgrade to Node 18+ or provide a polyfill");
-  }
-
   const controller = new AbortController();
   const timeoutMs = request.timeoutMs ?? 60_000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -55,7 +52,10 @@ export async function invokeOllamaChat(request: OllamaChatRequest): Promise<Olla
   const trace = createTraceHandle(request);
 
   try {
-    const response = await fetchFn(new URL("/api/chat", request.endpoint).toString(), {
+    // Use safeFetch to enforce localhost-only network policy.
+    // This ensures Ollama can only be accessed via localhost endpoints,
+    // preventing accidental or malicious exfiltration to remote servers.
+    const response = await safeFetch(new URL("/api/chat", request.endpoint).toString(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -98,6 +98,16 @@ export async function invokeOllamaChat(request: OllamaChatRequest): Promise<Olla
     return result;
   } catch (error) {
     clearTimeout(timeout);
+    // Re-throw network policy violations directly — these indicate configuration errors
+    // (e.g., user configured a cloud Ollama endpoint instead of localhost)
+    if (error instanceof NetworkPolicyViolation) {
+      trace?.failure(error, Date.now() - startedAt);
+      throw new OllamaInvocationError(
+        `Ollama endpoint "${request.endpoint}" violates network policy. ` +
+          `Only localhost endpoints are allowed. See SECURITY.md for details.`,
+        error
+      );
+    }
     if (error instanceof OllamaInvocationError) {
       trace?.failure(error, Date.now() - startedAt);
       throw error;

@@ -19,6 +19,7 @@ export * from "./tooling/symbolReferences";
 export * from "./tooling/ollamaEndpoint";
 export * from "./tooling/ollamaClient";
 export * from "./tooling/ollamaMock";
+export * from "./tooling/safeFetch";
 export * from "./telemetry/inferenceAccuracy";
 export * from "./uri/normalizeFileUri";
 export * from "./reporting/testReport";

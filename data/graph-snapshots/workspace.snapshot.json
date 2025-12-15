@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1050,
-    "links": 1737
+    "artifacts": 1056,
+    "links": 1748
   },
   "artifacts": [
     {
@@ -12482,6 +12482,63 @@
       }
     },
     {
+      "id": "orchestrated-artifact-a6f3ae58",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/tooling/safeFetch.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/tooling/safeFetch.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-b00c9b54",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/tooling/safeFetch.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "NetworkPolicyViolation",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "isLocalhostHost",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "safeFetch",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "validateNetworkPolicy",
+            "context": "section-heading"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/shared/src/tooling/safeFetch.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "NetworkPolicyViolation",
+            "isLocalhostHost",
+            "safeFetch",
+            "validateNetworkPolicy"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-ee6d78e5",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/shared/src/tooling/slopcopAssetCli.test.ts.mdmd.md",
       "layer": "implementation",
@@ -12604,6 +12661,23 @@
           "sectionSymbols": [
             "normalizeFileUri"
           ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-8f24bf9f",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/scripts/analysis/audit-network-usage.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "scripts/analysis/audit-network-usage.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
         }
       }
     },
@@ -26918,6 +26992,42 @@
       }
     },
     {
+      "id": "orchestrated-artifact-384dd1b9",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/tooling/safeFetch.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-1f67cf61",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/tooling/safeFetch.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "NetworkPolicyViolation",
+            "kind": "class",
+            "isDefault": false
+          },
+          {
+            "name": "isLocalhostHost",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "safeFetch",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "validateNetworkPolicy",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-801ae9c6",
       "uri": "file:///D:/Projects/Live-Documentation/packages/shared/src/tooling/slopcopAssetCli.test.ts",
       "layer": "code",
@@ -26984,6 +27094,12 @@
           }
         ]
       }
+    },
+    {
+      "id": "orchestrated-artifact-67e04980",
+      "uri": "file:///D:/Projects/Live-Documentation/scripts/analysis/audit-network-usage.ts",
+      "layer": "code",
+      "language": "typescript"
     },
     {
       "id": "orchestrated-artifact-2d73bc91",
@@ -30845,6 +30961,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-1721c485",
+      "sourceId": "orchestrated-artifact-2cd3aedb",
+      "targetId": "orchestrated-artifact-1f67cf61",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-add86945",
       "sourceId": "orchestrated-artifact-2cf8c2f4",
       "targetId": "orchestrated-artifact-eb33c355",
@@ -31446,6 +31571,15 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-497d1c1c",
+      "sourceId": "orchestrated-artifact-384dd1b9",
+      "targetId": "orchestrated-artifact-1f67cf61",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-64e81910",
@@ -35903,9 +36037,9 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-ae393b96",
+      "id": "orchestrated-link-b60da939",
       "sourceId": "orchestrated-artifact-7ba2f1cc",
-      "targetId": "orchestrated-artifact-7ec91dd5",
+      "targetId": "orchestrated-artifact-c0824b1a",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -36196,6 +36330,15 @@
       "targetId": "orchestrated-artifact-c1bb2523",
       "kind": "depends_on",
       "confidence": 0.7,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-6e994d17",
+      "sourceId": "orchestrated-artifact-819940aa",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
@@ -37271,6 +37414,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-63fe5a40",
+      "sourceId": "orchestrated-artifact-8f24bf9f",
+      "targetId": "orchestrated-artifact-67e04980",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-2c6eaca0",
       "sourceId": "orchestrated-artifact-90070d96",
       "targetId": "orchestrated-artifact-0d0b2c77",
@@ -37721,6 +37873,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-8dfa84fb",
+      "sourceId": "orchestrated-artifact-9bf9eb77",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-698b4257",
       "sourceId": "orchestrated-artifact-9bf9eb77",
       "targetId": "orchestrated-artifact-a8692166",
@@ -37953,6 +38114,15 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-14a39f5d",
+      "sourceId": "orchestrated-artifact-9ecfee6b",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-f0345cb9",
@@ -38405,6 +38575,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-d2e6c908",
+      "sourceId": "orchestrated-artifact-a6f3ae58",
+      "targetId": "orchestrated-artifact-384dd1b9",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-3fd166b2",
       "sourceId": "orchestrated-artifact-a72a8ed1",
       "targetId": "orchestrated-artifact-903ee632",
@@ -38502,6 +38681,15 @@
       "confidence": 0.75,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-1263d036",
+      "sourceId": "orchestrated-artifact-a830e95a",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-edf48d92",
@@ -38835,6 +39023,15 @@
       "confidence": 0.7,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-59675a23",
+      "sourceId": "orchestrated-artifact-b00c9b54",
+      "targetId": "orchestrated-artifact-1f67cf61",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-1769e36f",
@@ -40563,6 +40760,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-9dd89987",
+      "sourceId": "orchestrated-artifact-c7279e11",
+      "targetId": "orchestrated-artifact-a8692030",
+      "kind": "depends_on",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-796956e3",
@@ -43022,6 +43228,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-49ef45ff",
+      "sourceId": "orchestrated-artifact-f47ac6f7",
+      "targetId": "orchestrated-artifact-1f67cf61",
+      "kind": "depends_on",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-beae9de8",
       "sourceId": "orchestrated-artifact-f47ac6f7",
       "targetId": "orchestrated-artifact-1fcf04e4",
@@ -44097,9 +44312,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1100,
-      "hintCount": 703,
-      "evidenceCount": 718
+      "seedCount": 1107,
+      "hintCount": 706,
+      "evidenceCount": 721
     },
     {
       "id": "relationship-rules",

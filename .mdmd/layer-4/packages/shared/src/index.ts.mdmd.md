@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-index-ts
-- Generated At: 2025-12-05T20:44:57.438Z
+- Generated At: 2025-12-15T23:36:39.933Z
 
 ## Authored
 ### Purpose
@@ -15,68 +15,68 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T20:44:57.438Z","inputHash":"55760e4636e167cf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:36:39.933Z","inputHash":"c1bf0c8e5f4f3312"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipExtractor` {#symbol-relationshipextractor}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L28)
+- Source: [source](../../../../../packages/shared/src/index.ts#L29)
 
 #### `RelationshipExtractorError` {#symbol-relationshipextractorerror}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L29)
+- Source: [source](../../../../../packages/shared/src/index.ts#L30)
 
 #### `RelationshipExtractorLogger` {#symbol-relationshipextractorlogger}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L30)
+- Source: [source](../../../../../packages/shared/src/index.ts#L31)
 
 #### `RelationshipExtractionBatch` {#symbol-relationshipextractionbatch}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L31)
+- Source: [source](../../../../../packages/shared/src/index.ts#L32)
 
 #### `RelationshipExtractionPrompt` {#symbol-relationshipextractionprompt}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L32)
+- Source: [source](../../../../../packages/shared/src/index.ts#L33)
 
 #### `RelationshipExtractionRequest` {#symbol-relationshipextractionrequest}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L33)
+- Source: [source](../../../../../packages/shared/src/index.ts#L34)
 
 #### `RawRelationshipCandidate` {#symbol-rawrelationshipcandidate}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L34)
+- Source: [source](../../../../../packages/shared/src/index.ts#L35)
 
 #### `ModelInvocationRequest` {#symbol-modelinvocationrequest}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L35)
+- Source: [source](../../../../../packages/shared/src/index.ts#L36)
 
 #### `ModelInvocationResult` {#symbol-modelinvocationresult}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L36)
+- Source: [source](../../../../../packages/shared/src/index.ts#L37)
 
 #### `ModelInvoker` {#symbol-modelinvoker}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L37)
+- Source: [source](../../../../../packages/shared/src/index.ts#L38)
 
 #### `ModelUsage` {#symbol-modelusage}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L38)
+- Source: [source](../../../../../packages/shared/src/index.ts#L39)
 
 #### `calibrateConfidence` {#symbol-calibrateconfidence}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L42)
+- Source: [source](../../../../../packages/shared/src/index.ts#L43)
 
 #### `CalibratedRelationship` {#symbol-calibratedrelationship}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L43)
+- Source: [source](../../../../../packages/shared/src/index.ts#L44)
 
 #### `LlmConfidenceTier` {#symbol-llmconfidencetier}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L44)
+- Source: [source](../../../../../packages/shared/src/index.ts#L45)
 
 #### `CalibrationContext` {#symbol-calibrationcontext}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L45)
+- Source: [source](../../../../../packages/shared/src/index.ts#L46)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -127,6 +127,7 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - [`ollamaEndpoint`](./tooling/ollamaEndpoint.ts.mdmd.md) (re-export)
 - [`ollamaMock`](./tooling/ollamaMock.ts.mdmd.md) (re-export)
 - [`pathUtils`](./tooling/pathUtils.ts.mdmd.md) (re-export)
+- [`safeFetch`](./tooling/safeFetch.ts.mdmd.md) (re-export)
 - [`symbolReferences`](./tooling/symbolReferences.ts.mdmd.md) (re-export)
 - [`normalizeFileUri`](./uri/normalizeFileUri.ts.mdmd.md) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
@@ -470,6 +471,9 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `isLikelyTypeDefinitionSpecifier` {#symbol-islikelytypedefinitionspecifier}
 - Re-exported from [`typeScriptAstUtils`](./language/typeScriptAstUtils.ts.mdmd.md#symbol-islikelytypedefinitionspecifier)
 
+#### `isLocalhostHost` {#symbol-islocalhosthost}
+- Re-exported from [`safeFetch`](./tooling/safeFetch.ts.mdmd.md#symbol-islocalhosthost)
+
 #### `KnowledgeArtifact` {#symbol-knowledgeartifact}
 - Re-exported from [`artifacts`](./domain/artifacts.ts.mdmd.md#symbol-knowledgeartifact)
 
@@ -668,6 +672,9 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `MockOllamaResponse` {#symbol-mockollamaresponse}
 - Re-exported from [`ollamaMock`](./tooling/ollamaMock.ts.mdmd.md#symbol-mockollamaresponse)
 
+#### `NetworkPolicyViolation` {#symbol-networkpolicyviolation}
+- Re-exported from [`safeFetch`](./tooling/safeFetch.ts.mdmd.md#symbol-networkpolicyviolation)
+
 #### `normalizeFileUri` {#symbol-normalizefileuri}
 - Re-exported from [`normalizeFileUri`](./uri/normalizeFileUri.ts.mdmd.md#symbol-normalizefileuri)
 
@@ -818,6 +825,9 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `ResolveOllamaEndpointOptions` {#symbol-resolveollamaendpointoptions}
 - Re-exported from [`ollamaEndpoint`](./tooling/ollamaEndpoint.ts.mdmd.md#symbol-resolveollamaendpointoptions)
 
+#### `safeFetch` {#symbol-safefetch}
+- Re-exported from [`safeFetch`](./tooling/safeFetch.ts.mdmd.md#symbol-safefetch)
+
 #### `SCIPDiagnostic` {#symbol-scipdiagnostic}
 - Re-exported from [`scip`](./contracts/scip.ts.mdmd.md#symbol-scipdiagnostic)
 
@@ -925,6 +935,9 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 
 #### `toWorkspaceRelativePath` {#symbol-toworkspacerelativepath}
 - Re-exported from [`pathUtils`](./tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
+
+#### `validateNetworkPolicy` {#symbol-validatenetworkpolicy}
+- Re-exported from [`safeFetch`](./tooling/safeFetch.ts.mdmd.md#symbol-validatenetworkpolicy)
 
 #### `WorkspaceConfigurationLike` {#symbol-workspaceconfigurationlike}
 - Re-exported from [`ollamaEndpoint`](./tooling/ollamaEndpoint.ts.mdmd.md#symbol-workspaceconfigurationlike)

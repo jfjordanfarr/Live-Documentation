@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/ollamaClient.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-ollamaclient-ts
-- Generated At: 2025-12-11T02:38:02.389Z
+- Generated At: 2025-12-15T23:36:40.285Z
 
 ## Authored
 ### Purpose
@@ -16,28 +16,28 @@ Implements the shared HTTP client for Ollama chat requests—handling timeouts, 
 - Captures raw responses and timing data into per-run traces when `LINK_AWARE_OLLAMA_TRACE_DIR` is set, supporting the telemetry/benchmark reporting workstream called out during the rollout ([runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.389Z","inputHash":"75e18e48dcde9ac5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:36:40.285Z","inputHash":"463daa2903475861"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OllamaChatRequest` {#symbol-ollamachatrequest}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L5)
+- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L7)
 
 #### `OllamaChatUsage` {#symbol-ollamachatusage}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L15)
+- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L17)
 
 #### `OllamaChatResult` {#symbol-ollamachatresult}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L21)
+- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L23)
 
 #### `OllamaInvocationError` {#symbol-ollamainvocationerror}
 - Type: class
-- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L38)
+- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L40)
 
 #### `invokeOllamaChat` {#symbol-invokeollamachat}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L45)
+- Source: [source](../../../../../../packages/shared/src/tooling/ollamaClient.ts#L47)
 - Parameters: `request`: [`OllamaChatRequest`](#symbol-ollamachatrequest)
 <!-- LIVE-DOC:END Public Symbols -->
 
@@ -46,4 +46,6 @@ Implements the shared HTTP client for Ollama chat requests—handling timeouts, 
 - `node:crypto` - `randomUUID`
 - `node:fs` - `promises`
 - `node:path` - `path`
+- [`safeFetch.NetworkPolicyViolation`](./safeFetch.ts.mdmd.md#symbol-networkpolicyviolation)
+- [`safeFetch.safeFetch`](./safeFetch.ts.mdmd.md#symbol-safefetch)
 <!-- LIVE-DOC:END Dependencies -->
