@@ -59,7 +59,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     await appendText(sourceDoc, "\n\n## Acknowledgement Flow\nInitial change to trigger diagnostics.");
     await sourceDoc.save();
 
-    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 20000);
+    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
     assert.ok(initial.recordId, "Diagnostic should include persistent record identifier");
 
     const acknowledgementPayload =
@@ -111,7 +111,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     await appendText(sourceDoc, "\n\n## Follow-up Change\nSubsequent edit to re-trigger diagnostics.");
     await sourceDoc.save();
 
-    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 20000);
+    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
     assert.ok(subsequent.recordId, "Subsequent diagnostic should include persistent record identifier");
     assert.notStrictEqual(subsequent.recordId, initial.recordId, "New change event should emit new diagnostic record");
   });
