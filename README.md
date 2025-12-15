@@ -2,21 +2,23 @@
 
 **The Offline-First, Falsifiable Truth for Your Codebase.**
 
-> [!IMPORTANT]
 > **Documentation should be a compilation target, not a creative writing exercise.** Live Documentation treats markdown as a structured artifact derived directly from your code, ensuring that what you read matches what you run.
 
 Live Documentation is a VS Code extension and CLI suite that mirrors every tracked workspace artifact into **deterministic, machine-verified markdown** stored locally under `/.live-documentation/`.
 
 It is a **falsifiable graph of knowledge** that lives in your repo, works offline, and guarantees provenance.
 
+**[🔗 Explore the Live Demo →](https://jfjordanfarr.github.io/Live-Documentation/)**
+
 ---
 
 ## The Challenge: Durable Intelligence
 
 In the age of AI, generating documentation is easy. Ensuring its **correctness** and **longevity** is the real challenge.
-*   **Cloud-hosted wikis** often drift from the codebase they describe.
-*   **AI chat contexts** are powerful but ephemeral; the insight vanishes when the session ends.
-*   **"Just-in-time" maps** provide great transient understanding but leave no permanent artifact for the team.
+
+- **Cloud-hosted wikis** often drift from the codebase they describe.
+- **AI chat contexts** are powerful but ephemeral; the insight vanishes when the session ends.
+- **"Just-in-time" maps** provide great transient understanding but leave no permanent artifact for the team.
 
 Live Documentation bridges this gap by creating a **permanent, audit-proof library** inside your own project.
 
@@ -24,13 +26,13 @@ Live Documentation bridges this gap by creating a **permanent, audit-proof libra
 
 ## Core Philosophy: The Pit of Success
 
-Live Documentation is designed to create a **"linting machine"** that guides you to the right state. It's not about adding toil; it's about **Squiggle-Driven Development**.
+Live Documentation is designed to make correctness automatic. Point it at any directory of interconnected files, and it finds the public connection surface between them—generating markdown documents with headers for each public symbol that serve as a **lightweight, verifiable AST**.
 
-1.  **Markdown as AST**: We treat markdown files as Abstract Syntax Trees. They are structured data nodes linked to your code.
-2.  **Offline-First**: No API keys. No cloud dependencies. Your documentation is generated locally and stored in Git.
-3.  **Falsifiable Guidance**: Every generated section (Dependencies, Public Symbols, Evidence) is backed by a linter.
-    *   *The Old Way:* You forget to update the docs. A user complains 6 months later.
-    *   *The Live Doc Way:* You change the code. The linter gently nudges you (via a squiggle or a build check) to update the doc. **The system makes the correct path the easiest path.**
+1. **Markdown as AST**: We treat markdown files as Abstract Syntax Trees. They are structured data nodes linked to your code.
+2. **Offline-First**: No API keys. No cloud dependencies. Your documentation is generated locally and stored in Git.
+3. **Automatic Correctness**: We don't nag you to update docs—we generate them from your source code directly.
+   - *The Old Way:* You forget to update the docs. A user complains 6 months later.
+   - *The Live Doc Way:* You run `live-docs:generate`. The documentation is 100% correct automatically. **No busywork. No drift.**
 
 ---
 
@@ -48,109 +50,111 @@ Live Documentation is designed to complement, not replace, other tools in the ec
 | **Cost** | **Free** (Open Source) | Free (Public Repos) | Paid Product | Paid Enterprise Feature |
 
 **Why this matters:**
-*   **CodeWiki** and **GitLab's Knowledge Graph** are powerful, but they own the data. If you leave their platform, you lose the intelligence.
-*   **Windsurf's CodeMaps** are incredible for speed, but the map disappears when you close the tab.
-*   **Live Documentation** writes the intelligence *back into your repo*. It travels with your code, works offline, and survives any vendor switch.
 
----
-
-## Core Concepts
-
-### MDMD (Markdown-to-Markdown)
-*Note: "MDMD" is a local convention we use to describe our layering strategy.*
-
-We organize documentation into **Layers** of abstraction:
-*   **Layer 4 (The Truth)**: The raw, generated mirror of your code. One file per source file. **Machine-owned.**
-*   **Layer 3 (The Map)**: Architecture notes, decision logs, and "System Views". These link *down* to Layer 4. **Human-owned, Machine-verified.**
-*   **Layer 2 (The Plan)**: Requirements and Roadmaps.
-*   **Layer 1 (The Vision)**: High-level mission statements.
+- **CodeWiki** and **GitLab's Knowledge Graph** are powerful, but they own the data. If you leave their platform, you lose the intelligence.
+- **Windsurf's CodeMaps** are incredible for speed, but the map disappears when you close the tab.
+- **Live Documentation** writes the intelligence *back into your repo*. It travels with your code, works offline, and survives any vendor switch.
 
 ---
 
 ## CLI Tooling Reference
 
-We provide a suite of tools to generate, inspect, and enforce documentation integrity.
+### The Pathfinder (LD-402)
 
-### For Users (The Magic)
+```powershell
+npm run live-docs:inspect -- --from <path>
+```
 
-*   **`npm run live-docs:inspect -- --from <path>`**
-    *   *The Pathfinder.*
-    *   Traces the dependency graph to answer "What does this touch?" or "What touches this?".
-    *   **Value:** Provides the LLM with the *provenance* of a file. For example, inspecting `packages/server/src/server.ts` reveals every service it initializes and every config it reads.
-    *   **Real Usage:**
-        *   *Impact Analysis:* `npm run live-docs:inspect -- --from packages/server/src/server.ts` (Lists all downstream dependencies).
-        *   *Traceability:* `npm run live-docs:inspect -- --from packages/site/Scripts/app-insights.js --to Web.config` (Explains *why* a script depends on a config file by showing the full path).
+Traces the dependency graph to answer "What does this touch?" or "What touches this?". This is the **"Oracle of Bacon" for code**: find the shortest path between any two artifacts.
 
-*   **`npm run live-docs:system`**
-    *   *Architecture on Demand.*
-    *   Generates high-level views of your system.
-    *   **Real Example:** `npm run live-docs:system` generates `FLOW-scripts-live-docs-run-all`, a visual map showing exactly how `run-all.ts` orchestrates the generation pipeline, derived entirely from the code.
-    *   **Value:** Creates ephemeral maps that are guaranteed to be accurate at the moment of generation.
+- **Hop-chain tracing**: `npm run live-docs:inspect -- --from <path> --to <path>`
+- **Reverse lookup**: `npm run live-docs:inspect -- --from <path> --direction inbound`
+- **Machine-readable output**: add `--json`
 
-*   **`npm run live-docs:generate`**
-    *   *The Engine.*
-    *   Scans your workspace and materializes the Layer 4 mirror.
-    *   *Usage:* `npm run live-docs:generate` (or `-- --dry-run` to preview).
+### Visualization Explorer
 
-### The Truth Engine (Enforcement)
+```powershell
+npm run live-docs:visualize
+```
 
-*   **`npm run graph:audit`**
-    *   *The Watchdog.*
-    *   Enforces your custom documentation rules.
-    *   **Real Rule:** Our own `layer4-orphans` rule ensures that every generated implementation doc is linked to a Layer 3 architecture doc. If you add a new feature but don't map it to the architecture, the build fails.
+Starts a local Explorer server with Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. Also exposes a headless endpoint: `GET /local-map?nodeId=<path>`.
 
-*   **`npm run slopcop:markdown`**
-    *   *The Link Validator.*
-    *   Instantly verifies every markdown link in your project.
-    *   **Real Usage:** We use this to ensure that generated "See Also" links in `/.live-documentation/` never point to missing files, preventing dead ends in the documentation graph.
+### Static Export
 
-### For Contributors
+```powershell
+npm run live-docs:visualize:static
+```
 
-*   **`npm run safe:commit`**
-    *   *The Safety Gate.*
-    *   Runs the full battery (tests + audits + benchmarks) to guarantee a clean state before merging.
-    *   **Philosophy:** "Zero broken windows."
+Builds a fully static Explorer bundle to `dist/explorer/` for offline viewing or GitHub Pages deployment.
+
+### Generate Live Docs
+
+```powershell
+npm run live-docs:generate
+```
+
+Scans your workspace and materializes the documentation mirror. Add `-- --dry-run` to preview changes.
+
+### Quality Gates
+
+- `npm run safe:commit` — the full readiness gate (lint + tests + audits + reports).
+- `npm run slopcop:markdown` — verifies every markdown link in your project.
+- `npm run graph:audit` — audits documentation coverage expectations against the workspace.
+
+---
+
+## Security Posture
+
+- **Offline-first**: No telemetry. No external HTTP calls required for core functionality.
+- **No lifecycle scripts**: `postinstall`/`preinstall` hooks are explicitly avoided.
+- **Localhost-only LLM access**: Optional LLM provider defaults to none; when enabled, only local endpoints (Ollama, VS Code's configured provider) are used.
+
+---
+
+## Native Dependencies (better-sqlite3)
+
+Some workflows require native bindings for both Node and VS Code's Electron runtime. If tests fail due to ABI mismatch, run:
+
+```powershell
+npm run rebuild:better-sqlite3:force
+```
 
 ---
 
 ## Roadmap
 
-*   **Codebase-Mirrored Live Documentation**: **Complete**. (Supports TS, C#, Python, Ruby, Rust, Java, C).
-*   **Docstring Bridges**: **In Progress**. (Adapters now harvest TypeScript/JSDoc, Python/Ruby docstrings, and PowerShell comment-based help; bidirectional sync coming soon).
-*   **System Views**: **In Progress**. (Basic graphs working, advanced filtering next).
-*   **Hosted Showcase**: **Planned**. (A read-only web viewer for public repos).
+- **Codebase-Mirrored Live Documentation**: **Complete**. (Supports TS, C#, Python, Ruby, Rust, Java, C, PowerShell).
+- **Docstring Extraction (code→docs)**: **Complete**. (Adapters harvest TypeScript/JSDoc, Python, Ruby, Rust, PowerShell comment-based help).
+- **"Oracle of Bacon" Visual Pathfinder**: **In Progress**. (Non-headless Explorer UI for symbol↔symbol hop-chain tracing—the visual equivalent of `live-docs:inspect --from --to`).
+- **Docstring Write-Back (docs→code)**: **Wishlist**. (External LLM agents already handle this well; we focus on the map).
 
 ---
 
-## Future Vision (Pie in the Sky)
+## Future Vision
 
-*   **The "Reverse Bridge"**: Edit the documentation to refactor the code. True bidirectional sync.
-*   **Greenfield Generative UX**: A clean, document-based interface where you write pseudocode (Live Docs), and the system generates the implementation skeletons for you.
-*   **Universal Showcase**: Point us at any public repo, and we materialize its graph instantly in the browser. No install required.
-*   **"Oracle of Bacon" for Code**: We already shipped the CLI (`inspect`), but the vision is a visual graph explorer that finds the "six degrees of separation" between any two symbols in your codebase.
+- **Universal Showcase**: Point us at any public repo, and we materialize its graph instantly in the browser. No install required.
+- **Greenfield Generative UX**: A document-based interface where you write pseudocode (Live Docs), and the system generates implementation skeletons.
+
+---
+
+## About "MDMD" (Internal Convention)
+
+This repository uses a four-layer documentation convention under `.mdmd/` as an internal organization strategy. Consumers of Live Documentation are not required to adopt this convention—by default, output goes to `/.live-documentation/source/`.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-*   Node.js 22.x (see `.nvmrc`)
-*   VS Code 1.91+
+
+- Node.js 22.x (see `.nvmrc`)
+- VS Code 1.91+ (for extension features)
 
 ### Installation
-1.  **Install dependencies**:
-    ```powershell
-    npm install
-    ```
-2.  **Build the suite**:
-    ```powershell
-    npm run build
-    ```
-3.  **Generate the world**:
-    ```powershell
-    npm run live-docs:generate
-    ```
-4.  **Verify the truth**:
-    ```powershell
-    npm run graph:audit
-    ```
+
+```powershell
+npm install
+npm run build
+npm run live-docs:generate
+npm run graph:audit
+```
