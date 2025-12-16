@@ -18,7 +18,7 @@ export const KnowledgeArtifactSchema = z.object({
   owner: z.string().optional(),
   lastSynchronizedAt: z.string().optional(),
   hash: z.string().optional(),
-  metadata: z.record(z.unknown()).optional()
+  metadata: z.record(z.string(), z.unknown()).optional()
 });
 
 export type KnowledgeArtifact = z.infer<typeof KnowledgeArtifactSchema>;

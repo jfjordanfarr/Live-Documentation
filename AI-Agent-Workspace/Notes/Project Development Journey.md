@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 14, 2025\)*
+*Status: Active Development (Dec 15, 2025\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -423,6 +423,46 @@ With the CI/CD pipeline green and the integrity checks robust, the team executed
   * **Package Scopes:** Renamed @copilot-improvement/server to @live-documentation/server, unifying the monorepo namespaces.  
 * **Terminology Cleanup:** Renamed mdmdParser.ts to liveDocParser.ts and mdmd-layer-audit.ts to layer-audit.ts, reducing the cognitive load of internal acronyms in favor of the clear product name: **Live Documentation**.
 
+### **Phase XXVIII: CI Stabilization & The Linux Rollup Saga (Dec 15\)**
+
+Date: December 15, 2025
+
+Scope: Commits 151–154, 156
+
+The team faced the final boss of cross-platform CI: npm ci vs optionalDependencies.
+
+* **The Rollup Issue (Commits 152, 153):** The package-lock.json generated on Windows did not include the Linux binary for @rollup/rollup-linux-x64-gnu. This caused npm ci to fail on Linux runners. The team mitigated this by switching to npm install (to allow platform-specific resolution) and adding explicit installs for the missing binary.  
+* **Test Hardening (Commit 154):** Integration tests for the "Acknowledgement Workflow" were flaky on slower CI runners. The timeout was increased from 20s to 30s to provide more headroom.  
+* **Dependency Stewardship (Commits 155, 156):** Removed unused dependencies (zod from shared) and updated glob to fix security alerts, keeping the lockfile lean.
+
+### **Phase XXIX: The Network Air-Gap (Dec 15\)**
+
+Date: December 15, 2025
+
+Scope: Commit 157
+
+The "Offline-First" philosophy was upgraded to a **Security Guarantee**.
+
+* **Layer 1 \- Static Analysis:** Implemented audit-network-usage.ts to scan the codebase for fetch, axios, http.get, and other network patterns.  
+* **Layer 2 \- Runtime Enforcement:** Introduced a safeFetch() wrapper that throws NetworkPolicyViolation for any non-localhost URL.  
+* **Layer 3 \- CI Verification:** The network audit now runs on every commit.  
+* **Documentation:** Created SECURITY.md to formalize the project's data privacy stance and "Air-Gap" architecture.
+
+### **Phase XXX: Packaging & Mobile Polish (Dec 15\)**
+
+Date: December 15, 2025
+
+Scope: Commits 158, 159
+
+The team prepared the codebase for public consumption and real-world usage scenarios.
+
+* **The CLI Package (Commit 158):** Created packages/cli to expose the live-docs command via npx, routing to the existing scripts.  
+* **Pre-Publish Metadata:** Added description, keywords, license, and homepage fields to all package.json files, preparing for npm publish.  
+* **Mobile Explorer Polish (Commit 159):** Fixed critical usability issues on mobile devices.  
+  * **Scrolling:** Enabled overflow-y: auto on the sidebar for short viewports.  
+  * **Touch:** Added touch-action: none to prevent the browser from hijacking pan gestures.  
+  * **Selection:** Added user-select: none to prevent accidental text selection while dragging nodes.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -438,11 +478,13 @@ With the CI/CD pipeline green and the integrity checks robust, the team executed
 * **Dec 10 (Phase XXIII):** "Precision & Refactoring." (Adapter cleanup and test metric fixes).  
 * **Dec 12 (Phase XXIV):** "Drift-First Refocus." (Explicitly deferring bidirectional authoring).  
 * **Dec 13 (Phase XXV):** "Automated Governance." (CI/CD pipelines enforcing the rules).  
-* **Dec 14 (Phase XXVII):** "Identity Unification." (Complete purge of legacy branding).
+* **Dec 14 (Phase XXVII):** "Identity Unification." (Complete purge of legacy branding).  
+* **Dec 15 (Phase XXIX):** "Network Isolation & Pre-Publish." (Security guarantees and npm readiness).
 
 ## **Technical Themes & Motifs**
 
 * **Offline-First:** The system is explicitly designed to run without cloud dependencies or API keys. All intelligence is generated locally from the codebase itself.  
+* **Network Isolation:** A multi-layer security strategy (Static Audit \-\> Runtime Enforcement \-\> CI Gate) ensures the extension never makes unauthorized outbound calls, enforcing a strict "Air-Gap" for user code.  
 * **Squiggle-Driven Development:** The methodology relies on "Falsifiability First"—creating diagnostics (squiggly lines) that fail when documentation drifts from code, forcing the developer to fix the docs to clear the error.  
 * **Prompt Engineering as Source Code:** The .prompt.md files remain the "operating system" for the development process.  
 * **Documentation-Driven Development (DDD):** The discipline of spec \-\> plan \-\> task never wavered, allowing the project to scale to 100+ commits without collapsing under complexity.  

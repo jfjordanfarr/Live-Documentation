@@ -97,7 +97,7 @@ const ArtifactSeedSchema = z.object({
   language: z.string().optional(),
   owner: z.string().optional(),
   hash: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   lastSynchronizedAt: z.string().optional(),
   content: z.string().optional()
 });
