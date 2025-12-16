@@ -94,3 +94,18 @@ body {
     display: flex;
     height: 100vh;
 }
+
+/* Prevent text selection during pan/drag operations */
+body.dragging,
+body.dragging * {
+    user-select: none !important;
+    cursor: grabbing !important;
+}
+
+/* Touch-friendly: prevent browser gestures from interfering with panning */
+.viewport-layer,
+#circuit-viewport,
+#local-viewport,
+#graph-viewport {
+    touch-action: none;
+}

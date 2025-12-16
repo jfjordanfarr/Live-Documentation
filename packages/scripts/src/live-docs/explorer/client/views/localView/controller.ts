@@ -102,6 +102,7 @@ export class LocalViewController implements LocalViewApi {
     }
     this.isDragging = false;
     this.viewport.style.cursor = "grab";
+    document.body.classList.remove("dragging");
     const lastDragPosition = this.runtime.lastDragPosition;
     if (!lastDragPosition) {
       return;
@@ -649,6 +650,7 @@ export class LocalViewController implements LocalViewApi {
       this.runtime.lastDragPosition = { x: event.clientX, y: event.clientY, time: performance.now() };
       this.runtime.dragVelocity = { x: 0, y: 0 };
       this.viewport.style.cursor = "grabbing";
+      document.body.classList.add("dragging");
     });
 
     window.addEventListener("mousemove", this.handleWindowMouseMove);

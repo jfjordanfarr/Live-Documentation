@@ -103,6 +103,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     lastDragPosition = { x: event.clientX, y: event.clientY, time: performance.now() };
     dragVelocity = { x: 0, y: 0 };
     viewport.style.cursor = "grabbing";
+    document.body.classList.add("dragging");
   });
 
   window.addEventListener("mousemove", event => {
@@ -133,6 +134,7 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
     }
     isDragging = false;
     viewport.style.cursor = "grab";
+    document.body.classList.remove("dragging");
     if (!lastDragPosition) {
       return;
     }
