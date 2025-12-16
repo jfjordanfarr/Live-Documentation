@@ -171,7 +171,7 @@
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
     "vscode-languageclient": "^9.0.1",
-    "zod": "^3.23.8"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/vscode": "^1.107.0"
