@@ -2,6 +2,14 @@
   "name": "@live-documentation/server",
   "version": "0.0.0",
   "private": true,
+  "description": "Language server for Live Documentation VS Code extension.",
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git",
+    "directory": "packages/server"
+  },
   "type": "commonjs",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",

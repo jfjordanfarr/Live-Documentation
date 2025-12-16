@@ -1,0 +1,47 @@
+{
+  "name": "@live-documentation/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CLI for Live Documentation - mirrors your codebase into deterministic, machine-verified markdown.",
+  "keywords": [
+    "documentation",
+    "markdown",
+    "ast",
+    "code-analysis",
+    "dependency-graph",
+    "typescript",
+    "polyglot",
+    "offline-first",
+    "cli"
+  ],
+  "homepage": "https://github.com/jfjordanfarr/Live-Documentation#readme",
+  "bugs": {
+    "url": "https://github.com/jfjordanfarr/Live-Documentation/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git"
+  },
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "live-docs": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "@live-documentation/shared": "file:../shared",
+    "@live-documentation/scripts": "file:../scripts",
+    "glob": "^11.0.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

@@ -71,3 +71,11 @@ jobs:
           HTTPS_PROXY: ""
           # Ensure no fallback to external services
           NODE_TLS_REJECT_UNAUTHORIZED: "1"
+
+      # Pack smoke test: verify the CLI package can be packed without errors
+      - name: CLI pack smoke test
+        run: |
+          echo "📦 Testing CLI package can be packed..."
+          cd packages/cli
+          npm pack --dry-run 2>&1 | tee pack-output.txt
+          echo "✅ CLI pack dry-run succeeded"

@@ -2,6 +2,29 @@
   "name": "live-documentation",
   "version": "0.0.0",
   "private": true,
+  "description": "Mirrors your codebase into deterministic, machine-verified markdown. Offline-first documentation that lives in your repo.",
+  "keywords": [
+    "documentation",
+    "markdown",
+    "ast",
+    "code-analysis",
+    "dependency-graph",
+    "typescript",
+    "polyglot",
+    "offline-first",
+    "vscode-extension",
+    "cli"
+  ],
+  "homepage": "https://github.com/jfjordanfarr/Live-Documentation#readme",
+  "bugs": {
+    "url": "https://github.com/jfjordanfarr/Live-Documentation/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git"
+  },
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
   "engines": {
     "node": ">=22.0.0"
   },
@@ -9,7 +32,8 @@
     "packages/extension",
     "packages/server",
     "packages/shared",
-    "packages/scripts"
+    "packages/scripts",
+    "packages/cli"
   ],
   "scripts": {
     "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/server && npm run compile -w packages/extension",

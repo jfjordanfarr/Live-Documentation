@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1056,
-    "links": 1748
+    "artifacts": 1058,
+    "links": 1744
   },
   "artifacts": [
     {
@@ -908,6 +908,23 @@
             "IMP-409",
             "IMP-410"
           ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-b234f0cd",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/cli/src/index.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/cli/src/index.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
         }
       }
     },
@@ -19096,6 +19113,12 @@
       "language": "markdown"
     },
     {
+      "id": "orchestrated-artifact-3774822e",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/cli/src/index.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-7d0c0b7d",
       "uri": "file:///D:/Projects/Live-Documentation/packages/extension/src/commands/acknowledgeDiagnostic.ts",
       "layer": "code",
@@ -36334,15 +36357,6 @@
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-6e994d17",
-      "sourceId": "orchestrated-artifact-819940aa",
-      "targetId": "orchestrated-artifact-a8692030",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-4a2a0a73",
       "sourceId": "orchestrated-artifact-819940aa",
       "targetId": "orchestrated-artifact-a8692166",
@@ -37873,15 +37887,6 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-8dfa84fb",
-      "sourceId": "orchestrated-artifact-9bf9eb77",
-      "targetId": "orchestrated-artifact-a8692030",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-698b4257",
       "sourceId": "orchestrated-artifact-9bf9eb77",
       "targetId": "orchestrated-artifact-a8692166",
@@ -38114,15 +38119,6 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
-    },
-    {
-      "id": "orchestrated-link-14a39f5d",
-      "sourceId": "orchestrated-artifact-9ecfee6b",
-      "targetId": "orchestrated-artifact-a8692030",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-f0345cb9",
@@ -38681,15 +38677,6 @@
       "confidence": 0.75,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
-    },
-    {
-      "id": "orchestrated-link-1263d036",
-      "sourceId": "orchestrated-artifact-a830e95a",
-      "targetId": "orchestrated-artifact-a8692030",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-edf48d92",
@@ -39460,6 +39447,15 @@
       "id": "orchestrated-link-b0344cc0",
       "sourceId": "orchestrated-artifact-b217e05e",
       "targetId": "orchestrated-artifact-e181ef3f",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-1c0cb40a",
+      "sourceId": "orchestrated-artifact-b234f0cd",
+      "targetId": "orchestrated-artifact-3774822e",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -40760,15 +40756,6 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
-    },
-    {
-      "id": "orchestrated-link-9dd89987",
-      "sourceId": "orchestrated-artifact-c7279e11",
-      "targetId": "orchestrated-artifact-a8692030",
-      "kind": "depends_on",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-796956e3",
@@ -44312,9 +44299,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1107,
-      "hintCount": 706,
-      "evidenceCount": 721
+      "seedCount": 1109,
+      "hintCount": 712,
+      "evidenceCount": 722
     },
     {
       "id": "relationship-rules",
@@ -44324,5 +44311,10 @@
       "evidenceCount": 386
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "source": "provider:workspace-index",
+      "message": "Evidence skipped because artifacts are missing for file:///D:/Projects/Live-Documentation/packages/cli/src/index.ts -> file:///D:/Projects/Live-Documentation/packages/cli/package.json"
+    }
+  ]
 }

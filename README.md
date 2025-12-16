@@ -4,7 +4,7 @@
 
 > **Documentation should be a compilation target, not a creative writing exercise.** Live Documentation treats markdown as a structured artifact derived directly from your code, ensuring that what you read matches what you run.
 
-Live Documentation is a VS Code extension and CLI suite that mirrors every tracked workspace artifact into **deterministic, machine-verified markdown** stored locally under `/.live-documentation/`.
+Live Documentation is a VS Code extension and CLI suite that mirrors every tracked workspace artifact into **deterministic, machine-verified markdown** stored locally (by default) under `/.live-documentation/source/`.
 
 It is a **falsifiable graph of knowledge** that lives in your repo, works offline, and guarantees provenance.
 
@@ -33,6 +33,34 @@ Live Documentation is designed to make correctness automatic. Point it at any di
 3. **Automatic Correctness**: We don't nag you to update docs—we generate them from your source code directly.
    - *The Old Way:* You forget to update the docs. A user complains 6 months later.
    - *The Live Doc Way:* You run `live-docs:generate`. The documentation is 100% correct automatically. **No busywork. No drift.**
+
+---
+
+## How It Works (In One Pass)
+
+Live Documentation turns your workspace into a markdown graph:
+
+1. **Discovery**: Selects source artifacts via configurable glob patterns.
+2. **Analysis**: Extracts public symbols and dependency edges (language-aware where possible).
+3. **Materialization**: Writes deterministic markdown mirrors while preserving small authored sections.
+4. **Consumption**: CLI inspection, visualization, and VS Code diagnostics operate on the same markdown-as-AST corpus.
+
+---
+
+## Supported Languages (Today)
+
+Live Documentation is polyglot. Support varies by language (some have richer symbol graphs than others), but all are unified into the same markdown mirror format.
+
+- **TypeScript / JavaScript**: Full analysis via the TypeScript compiler API (public symbols + module dependency resolution).
+- **C / C++**: Adapter-based symbol + include/import extraction.
+- **C#**: Adapter-based symbol + using/namespace extraction; also supports ASP.NET ecosystems via markup files.
+- **ASP.NET Markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor` (dependency-centric extraction; connects code-behind + configuration conventions).
+- **Java**: Adapter-based symbol + import extraction.
+- **Python**: Adapter-based symbol + import/from extraction.
+- **Ruby**: Adapter-based symbol + require extraction.
+- **Rust**: Adapter-based symbol + use/mod extraction.
+- **PowerShell**: Adapter-based extraction for `.ps1`, `.psm1`, `.psd1`.
+- **HTML / CSS**: Dependency extraction for assets and references.
 
 ---
 
@@ -107,7 +135,7 @@ Scans your workspace and materializes the documentation mirror. Add `-- --dry-ru
 
 - **Offline-first**: No telemetry. No external HTTP calls required for core functionality.
 - **No lifecycle scripts**: `postinstall`/`preinstall` hooks are explicitly avoided.
-- **Localhost-only LLM access**: Optional LLM provider defaults to none; when enabled, only local endpoints (Ollama, VS Code's configured provider) are used.
+- **Localhost-only by default**: Any HTTP our code makes is constrained to localhost. Optional VS Code language model integration may route to cloud providers depending on your VS Code configuration (see `SECURITY.md`).
 
 ---
 
@@ -123,7 +151,7 @@ npm run rebuild:better-sqlite3:force
 
 ## Roadmap
 
-- **Codebase-Mirrored Live Documentation**: **Complete**. (Supports TS, C#, Python, Ruby, Rust, Java, C, PowerShell).
+- **Codebase-Mirrored Live Documentation**: **Complete**. (TypeScript/JavaScript + polyglot adapters for C/C++, C#, Java, Python, Ruby, Rust, PowerShell, HTML, CSS, and ASP.NET markup).
 - **Docstring Extraction (code→docs)**: **Complete**. (Adapters harvest TypeScript/JSDoc, Python, Ruby, Rust, PowerShell comment-based help).
 - **"Oracle of Bacon" Visual Pathfinder**: **In Progress**. (Non-headless Explorer UI for symbol↔symbol hop-chain tracing—the visual equivalent of `live-docs:inspect --from --to`).
 - **Docstring Write-Back (docs→code)**: **Wishlist**. (External LLM agents already handle this well; we focus on the map).
@@ -137,9 +165,20 @@ npm run rebuild:better-sqlite3:force
 
 ---
 
-## About "MDMD" (Internal Convention)
+## Output Configuration (Folder + Extension)
 
-This repository uses a four-layer documentation convention under `.mdmd/` as an internal organization strategy. Consumers of Live Documentation are not required to adopt this convention—by default, output goes to `/.live-documentation/source/`.
+Live Documentation is designed to fit into *your* documentation conventions.
+
+- Default output is staged under `/.live-documentation/source/` with `.md` files.
+- Both the output root folder and the generated file extension are configurable (via `.live-docs.config.json` or CLI flags).
+
+This repository intentionally overrides the defaults to prove that flexibility in practice:
+
+- Output root: `.mdmd/`
+- Base layer: `layer-4`
+- Extension: `.mdmd.md`
+
+That internal convention is a project of its own (and is not required to use Live Documentation): https://github.com/jfjordanfarr/mdmd
 
 ---
 

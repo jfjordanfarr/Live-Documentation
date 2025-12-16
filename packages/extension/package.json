@@ -1,8 +1,20 @@
 {
   "name": "live-documentation",
   "displayName": "Live Documentation",
+  "description": "Mirrors your codebase into deterministic, machine-verified markdown. Offline-first documentation that lives in your repo.",
   "publisher": "live-documentation",
   "version": "0.0.0",
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git",
+    "directory": "packages/extension"
+  },
+  "homepage": "https://github.com/jfjordanfarr/Live-Documentation#readme",
+  "bugs": {
+    "url": "https://github.com/jfjordanfarr/Live-Documentation/issues"
+  },
   "engines": {
     "vscode": "^1.91.0"
   },
@@ -15,57 +27,57 @@
     "commands": [
       {
         "command": "linkDiagnostics.overrideLink",
-        "title": "Link Diagnostics: Override Link",
+        "title": "Live Documentation: Override Link",
         "icon": "$(link-external)"
       },
       {
         "command": "linkDiagnostics.inspectDependencies",
-        "title": "Link Diagnostics: Inspect Dependencies",
+        "title": "Live Documentation: Inspect Dependencies",
         "icon": "$(repo)"
       },
       {
         "command": "linkDiagnostics.inspectSymbolNeighbors",
-        "title": "Link Diagnostics: Inspect Symbol Neighbors",
+        "title": "Live Documentation: Inspect Symbol Neighbors",
         "icon": "$(symbol-structure)"
       },
       {
         "command": "linkDiagnostics.analyzeWithAI",
-        "title": "Link Diagnostics: Analyze Impact with AI",
+        "title": "Live Documentation: Analyze Impact with AI",
         "icon": "$(sparkle)"
       },
       {
         "command": "linkDiagnostics.refreshDiagnosticsTree",
-        "title": "Link Diagnostics: Refresh Diagnostics Tree",
+        "title": "Live Documentation: Refresh Diagnostics Tree",
         "icon": "$(refresh)"
       },
       {
         "command": "linkDiagnostics.acknowledgeDiagnosticFromTree",
-        "title": "Link Diagnostics: Acknowledge Diagnostic",
+        "title": "Live Documentation: Acknowledge Diagnostic",
         "icon": "$(check)"
       },
       {
         "command": "linkDiagnostics.exportDiagnostics",
-        "title": "Link Diagnostics: Export Diagnostics",
+        "title": "Live Documentation: Export Diagnostics",
         "icon": "$(cloud-download)"
       },
       {
         "command": "linkDiagnostics.showLatencySummary",
-        "title": "Link Diagnostics: Show Telemetry Summary",
+        "title": "Live Documentation: Show Telemetry Summary",
         "icon": "$(pulse)"
       },
       {
         "command": "linkDiagnostics.openLinkedArtifact",
-        "title": "Link Diagnostics: Open Linked Artifact",
+        "title": "Live Documentation: Open Linked Artifact",
         "icon": "$(go-to-file)"
       },
       {
         "command": "linkAwareDiagnostics.isServerReady",
-        "title": "Link-Aware Diagnostics: Server Ready",
+        "title": "Live Documentation: Server Ready",
         "icon": "$(debug-start)"
       },
       {
         "command": "linkAwareDiagnostics.clearAllDiagnostics",
-        "title": "Link-Aware Diagnostics: Clear Diagnostics",
+        "title": "Live Documentation: Clear Diagnostics",
         "icon": "$(trash)"
       }
     ],
@@ -73,7 +85,7 @@
       "explorer": [
         {
           "id": "linkDiagnostics.diagnosticsTree",
-          "name": "Link Diagnostics"
+          "name": "Live Documentation"
         }
       ]
     },
@@ -99,7 +111,7 @@
       ]
     },
     "configuration": {
-      "title": "Link-Aware Diagnostics",
+      "title": "Live Documentation",
       "properties": {
         "linkAwareDiagnostics.llmProviderMode": {
           "type": "string",

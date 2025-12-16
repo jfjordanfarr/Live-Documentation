@@ -109,9 +109,11 @@ GitHub Dependabot monitors our dependencies for known vulnerabilities. We addres
 
 If you discover a security vulnerability, please report it responsibly:
 
-1. **Do not** open a public GitHub issue
-2. Email: [security contact to be added]
-3. Include: description, reproduction steps, potential impact
+1. **Preferred**: Use GitHub's [private security advisory](https://github.com/jfjordanfarr/Live-Documentation/security/advisories/new) feature.
+2. **Alternative**: Email jfjordanfarr@gmail.com with subject line `[SECURITY] Live Documentation`.
+3. **Do not** open a public GitHub issue for security vulnerabilities.
+
+Please include: description, reproduction steps, and potential impact.
 
 We aim to respond within 48 hours and provide a fix within 7 days for critical issues.
 
@@ -123,6 +125,80 @@ All development decisions are captured in our [Chat History](AI-Agent-Workspace/
 - Decision rationale for architecture choices
 
 This linear development history is searchable and auditable.
+
+## Verification Limitations
+
+Our multi-layer approach provides strong evidence but not absolute proof. This section documents what we can and cannot prove, and what was attempted.
+
+### What We Attempted: True Network Isolation in CI
+
+The gold standard for proving "software never needs internet" is to run tests in a Docker container with `--network none`. We attempted to add this to our CI workflow:
+
+```yaml
+network-isolation-test:
+  runs-on: ubuntu-latest
+  container:
+    image: node:22-slim
+    options: --network none  # No network stack at all
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+    - run: npm run test:unit
+```
+
+If tests passed in this environment, it would be **definitive proof** that our software doesn't require internet access.
+
+### Why It Doesn't Work
+
+GitHub Actions itself requires network to function:
+
+- `actions/checkout@v4` needs to clone the repository from GitHub
+- `actions/download-artifact@v4` needs to download from GitHub's artifact storage
+
+With `--network none`, the container starts with no network stack, so these actions fail before tests even run.
+
+### Alternatives Considered
+
+| Approach | Why Rejected |
+|----------|-------------|
+| Self-hosted runner with Docker-in-Docker | Requires external infrastructure, complex to maintain |
+| Two-stage job with volume mounting | Complex Docker orchestration within GitHub Actions |
+| iptables firewall rules | Requires root permissions, may interfere with GitHub Actions telemetry |
+
+### What Our Current Approach Proves
+
+| Layer | What It Proves | Limitation |
+|-------|---------------|------------|
+| Static audit | Code doesn't contain unaccounted network calls | Doesn't prove runtime behavior of dependencies |
+| `safeFetch()` wrapper | Our fetch calls are localhost-only | Doesn't cover internal calls from third-party dependencies |
+| CI audit | New code is checked on every commit | Audit could theoretically have false negatives |
+
+### Manual Verification for High-Security Environments
+
+For PCI-DSS compliance or air-gapped environments requiring definitive proof, run this locally:
+
+```bash
+# Build a test image
+docker build -t ld-network-test -f - . <<EOF
+FROM node:22-slim
+WORKDIR /app
+COPY . .
+RUN npm ci --ignore-scripts
+EOF
+
+# Run tests with no network
+docker run --rm --network none ld-network-test npm run test:unit
+```
+
+If this passes, the software genuinely does not require internet access at runtime.
+
+### What This Means for Security Teams
+
+Our automated CI provides **strong circumstantial evidence** of localhost-only network access. For environments requiring **absolute proof**, we recommend:
+
+1. Running the manual Docker verification above as part of your release acceptance
+2. Network monitoring/auditing in your deployment environment
+3. Reviewing the static audit output (`npm run audit:network`) for your specific compliance needs
 
 ## Verification Commands
 
