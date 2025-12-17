@@ -204,7 +204,7 @@ function startExplorer(
    * Parse initial view and node from URL parameters.
    * Priority: URL params > viewerConfig > defaults (Local Map)
    */
-  const parseInitialState = (): { view: ViewName; nodeId: string | null } => {
+  const parseInitialState = (): { view: ViewName; nodeId: string | null; hasUrlState: boolean } => {
     const params = new URLSearchParams(window.location.search);
     const urlView = params.get("view");
     const urlNode = params.get("node");
@@ -213,7 +213,8 @@ function startExplorer(
     if (urlView || urlNode) {
       return {
         view: urlView ? viewNameToInternal(urlView) : "map",
-        nodeId: urlNode
+        nodeId: urlNode,
+        hasUrlState: true
       };
     }
 
@@ -221,12 +222,13 @@ function startExplorer(
     if (viewerConfig) {
       return {
         view: viewerConfig.defaultView ? viewNameToInternal(viewerConfig.defaultView) : "map",
-        nodeId: viewerConfig.initialFocusNode ?? null
+        nodeId: viewerConfig.initialFocusNode ?? null,
+        hasUrlState: false
       };
     }
 
     // Defaults: Local Map is most valuable for grounding
-    return { view: "map", nodeId: null };
+    return { view: "map", nodeId: null, hasUrlState: false };
   };
 
   /**
@@ -268,39 +270,298 @@ function startExplorer(
   // Parse initial state from URL/config
   const initialState = parseInitialState();
 
-  const state: ExplorerState = {
-    view: initialState.view,
-    selectedNode: null,
-    focusedNode: null,
-    filters: {
-      showTests: true,
-      showAssets: false
+  // ─────────────────────────────────────────────────────────────────────────
+  // LocalStorage: Persisted UI State (tuning + filters)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const PERSISTED_UI_KEY = "live-docs-explorer:ui:v1";
+  const PERSISTED_UI_VERSION = 1 as const;
+
+  type PersistedUiV1 = {
+    version: typeof PERSISTED_UI_VERSION;
+    filters?: Partial<ExplorerFilters>;
+    tuning?: Partial<TuningConfig>;
+  };
+
+  const getDefaultFilters = (): ExplorerFilters => ({
+    showTests: true,
+    showAssets: false
+  });
+
+  const getDefaultTuning = (): TuningConfig => ({
+    bezier: {
+      stubFactor: 0.8,
+      stubMin: 8,
+      stubMaxOffset: 40,
+      verticalOffset: 0
     },
-    tuning: {
-      bezier: {
-        stubFactor: 0.8,
-        stubMin: 8,
-        stubMaxOffset: 40,
-        verticalOffset: 0
-      },
-      clickBehavior: {
-        singleClickFocusOnly: true,
-        doubleClickRecenter: true
-      },
-      visual: {
-        showTypeBadges: true,
-        alchemyGlow: true
-      },
-      localMap: {
-        columnGap: 100,
-        hoverDimSymbols: 0.5,
-        hoverDimConnections: 0.1,
-        selfLoopTaper: 0.2
+    clickBehavior: {
+      singleClickFocusOnly: true,
+      doubleClickRecenter: true
+    },
+    visual: {
+      showTypeBadges: true,
+      alchemyGlow: true
+    },
+    localMap: {
+      columnGap: 100,
+      hoverDimSymbols: 0.5,
+      hoverDimConnections: 0.1,
+      selfLoopTaper: 0.2
+    }
+  });
+
+  const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  };
+
+  const readBoolean = (value: unknown): boolean | undefined => {
+    return typeof value === "boolean" ? value : undefined;
+  };
+
+  const readFiniteNumber = (value: unknown): number | undefined => {
+    return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+  };
+
+  const readPersistedUi = (): PersistedUiV1 | null => {
+    try {
+      const raw = window.localStorage.getItem(PERSISTED_UI_KEY);
+      if (!raw) {
+        return null;
       }
+      const parsed: unknown = JSON.parse(raw);
+      if (!isRecord(parsed)) {
+        window.localStorage.removeItem(PERSISTED_UI_KEY);
+        return null;
+      }
+      if (parsed.version !== PERSISTED_UI_VERSION) {
+        window.localStorage.removeItem(PERSISTED_UI_KEY);
+        return null;
+      }
+
+      const result: PersistedUiV1 = { version: PERSISTED_UI_VERSION };
+
+      if (isRecord(parsed.filters)) {
+        const showTests = readBoolean(parsed.filters.showTests);
+        const showAssets = readBoolean(parsed.filters.showAssets);
+        result.filters = {
+          ...(showTests !== undefined ? { showTests } : null),
+          ...(showAssets !== undefined ? { showAssets } : null)
+        };
+      }
+
+      if (isRecord(parsed.tuning)) {
+        const tuning: Partial<TuningConfig> = {};
+
+        if (isRecord(parsed.tuning.bezier)) {
+          const stubFactor = readFiniteNumber(parsed.tuning.bezier.stubFactor);
+          const stubMin = readFiniteNumber(parsed.tuning.bezier.stubMin);
+          const stubMaxOffset = readFiniteNumber(parsed.tuning.bezier.stubMaxOffset);
+          const verticalOffset = readFiniteNumber(parsed.tuning.bezier.verticalOffset);
+          tuning.bezier = {
+            ...(stubFactor !== undefined ? { stubFactor } : null),
+            ...(stubMin !== undefined ? { stubMin } : null),
+            ...(stubMaxOffset !== undefined ? { stubMaxOffset } : null),
+            ...(verticalOffset !== undefined ? { verticalOffset } : null)
+          };
+        }
+
+        if (isRecord(parsed.tuning.clickBehavior)) {
+          const singleClickFocusOnly = readBoolean(parsed.tuning.clickBehavior.singleClickFocusOnly);
+          const doubleClickRecenter = readBoolean(parsed.tuning.clickBehavior.doubleClickRecenter);
+          tuning.clickBehavior = {
+            ...(singleClickFocusOnly !== undefined ? { singleClickFocusOnly } : null),
+            ...(doubleClickRecenter !== undefined ? { doubleClickRecenter } : null)
+          };
+        }
+
+        if (isRecord(parsed.tuning.visual)) {
+          const showTypeBadges = readBoolean(parsed.tuning.visual.showTypeBadges);
+          const alchemyGlow = readBoolean(parsed.tuning.visual.alchemyGlow);
+          tuning.visual = {
+            ...(showTypeBadges !== undefined ? { showTypeBadges } : null),
+            ...(alchemyGlow !== undefined ? { alchemyGlow } : null)
+          };
+        }
+
+        if (isRecord(parsed.tuning.localMap)) {
+          const columnGap = readFiniteNumber(parsed.tuning.localMap.columnGap);
+          const hoverDimSymbols = readFiniteNumber(parsed.tuning.localMap.hoverDimSymbols);
+          const hoverDimConnections = readFiniteNumber(parsed.tuning.localMap.hoverDimConnections);
+          const selfLoopTaper = readFiniteNumber(parsed.tuning.localMap.selfLoopTaper);
+          tuning.localMap = {
+            ...(columnGap !== undefined ? { columnGap } : null),
+            ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
+            ...(hoverDimConnections !== undefined ? { hoverDimConnections } : null),
+            ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null)
+          };
+        }
+
+        result.tuning = tuning;
+      }
+
+      return result;
+    } catch {
+      try {
+        window.localStorage.removeItem(PERSISTED_UI_KEY);
+      } catch {
+        // ignore
+      }
+      return null;
     }
   };
 
+  const applyPersistedUi = (
+    defaults: { filters: ExplorerFilters; tuning: TuningConfig },
+    persisted: PersistedUiV1 | null
+  ): { filters: ExplorerFilters; tuning: TuningConfig } => {
+    if (!persisted) {
+      return defaults;
+    }
+
+    const filters: ExplorerFilters = {
+      ...defaults.filters,
+      ...(persisted.filters ?? {})
+    };
+
+    const tuning: TuningConfig = {
+      ...defaults.tuning,
+      bezier: {
+        ...defaults.tuning.bezier,
+        ...(persisted.tuning?.bezier ?? {})
+      },
+      clickBehavior: {
+        ...defaults.tuning.clickBehavior,
+        ...(persisted.tuning?.clickBehavior ?? {})
+      },
+      visual: {
+        ...defaults.tuning.visual,
+        ...(persisted.tuning?.visual ?? {})
+      },
+      localMap: {
+        ...defaults.tuning.localMap,
+        ...(persisted.tuning?.localMap ?? {})
+      }
+    };
+
+    return { filters, tuning };
+  };
+
+  const defaults = { filters: getDefaultFilters(), tuning: getDefaultTuning() };
+  const persistedUi = readPersistedUi();
+  const initialUi = applyPersistedUi(defaults, persistedUi);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LocalStorage: Persisted Navigation (view + node selection)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const PERSISTED_NAV_KEY = "live-docs-explorer:nav:v1";
+  const PERSISTED_NAV_VERSION = 1 as const;
+
+  type PersistedNavV1 = {
+    version: typeof PERSISTED_NAV_VERSION;
+    view?: ViewName;
+    nodeId?: string | null;
+  };
+
+  const readPersistedNav = (): PersistedNavV1 | null => {
+    try {
+      const raw = window.localStorage.getItem(PERSISTED_NAV_KEY);
+      if (!raw) {
+        return null;
+      }
+      const parsed: unknown = JSON.parse(raw);
+      if (!isRecord(parsed)) {
+        window.localStorage.removeItem(PERSISTED_NAV_KEY);
+        return null;
+      }
+      if (parsed.version !== PERSISTED_NAV_VERSION) {
+        window.localStorage.removeItem(PERSISTED_NAV_KEY);
+        return null;
+      }
+
+      const viewCandidate = parsed.view;
+      const nodeIdCandidate = parsed.nodeId;
+
+      const view: ViewName | undefined =
+        viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" ? viewCandidate : undefined;
+
+      const nodeId: string | null | undefined =
+        typeof nodeIdCandidate === "string" ? nodeIdCandidate : nodeIdCandidate === null ? null : undefined;
+
+      return {
+        version: PERSISTED_NAV_VERSION,
+        ...(view ? { view } : null),
+        ...(nodeId !== undefined ? { nodeId } : null)
+      };
+    } catch {
+      try {
+        window.localStorage.removeItem(PERSISTED_NAV_KEY);
+      } catch {
+        // ignore
+      }
+      return null;
+    }
+  };
+
+  const persistedNav = initialState.hasUrlState ? null : readPersistedNav();
+
+  const resolveInitialView = (): ViewName => {
+    if (initialState.hasUrlState) {
+      return initialState.view;
+    }
+    return persistedNav?.view ?? initialState.view;
+  };
+
+  const state: ExplorerState = {
+    view: resolveInitialView(),
+    selectedNode: null,
+    focusedNode: null,
+    filters: initialUi.filters,
+    tuning: initialUi.tuning
+  };
+
+  let persistUiTimer: number | null = null;
+  const schedulePersistUi = (): void => {
+    if (persistUiTimer !== null) {
+      window.clearTimeout(persistUiTimer);
+    }
+    persistUiTimer = window.setTimeout(() => {
+      persistUiTimer = null;
+      try {
+        const payload: PersistedUiV1 = {
+          version: PERSISTED_UI_VERSION,
+          filters: state.filters,
+          tuning: state.tuning
+        };
+        window.localStorage.setItem(PERSISTED_UI_KEY, JSON.stringify(payload));
+      } catch {
+        // ignore (storage may be unavailable/blocked)
+      }
+    }, 150);
+  };
+
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
+
+  let persistNavTimer: number | null = null;
+  const schedulePersistNav = (): void => {
+    if (persistNavTimer !== null) {
+      window.clearTimeout(persistNavTimer);
+    }
+    persistNavTimer = window.setTimeout(() => {
+      persistNavTimer = null;
+      try {
+        const payload: PersistedNavV1 = {
+          version: PERSISTED_NAV_VERSION,
+          view: state.view,
+          nodeId: state.focusedNode?.id ?? state.selectedNode?.id ?? null
+        };
+        window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
+      } catch {
+        // ignore
+      }
+    }, 150);
+  };
 
   // Helper to open a node in Circuit Board view
   const openInCircuitBoardView = (node: ExplorerNodePayload): void => {
@@ -308,6 +569,7 @@ function startExplorer(
     state.view = "circuit";
     setActiveView("circuit");
     updateUrlState("circuit", node.id);
+    schedulePersistNav();
     renderCurrentView();
     // Scroll to the node after render
     setTimeout(() => {
@@ -491,6 +753,7 @@ function startExplorer(
         return;
       }
       state.filters.showTests = event.target.checked;
+      schedulePersistUi();
       renderCurrentView();
     });
   }
@@ -501,6 +764,7 @@ function startExplorer(
         return;
       }
       state.filters.showAssets = event.target.checked;
+      schedulePersistUi();
       renderCurrentView();
     });
   }
@@ -510,6 +774,7 @@ function startExplorer(
     setActiveView(viewName);
     state.view = viewName;
     updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null);
+    schedulePersistNav();
     renderCurrentView();
   };
 
@@ -541,6 +806,7 @@ function startExplorer(
     state.view = "graph";
     setActiveView("graph");
     updateUrlState("graph", target.id);
+    schedulePersistNav();
     renderCurrentView();
   };
 
@@ -601,11 +867,29 @@ function startExplorer(
   renderCurrentView();
 
   // Apply initial focus node if specified (after initial render)
-  const initialFocusNodeId = initialState.nodeId ?? inferDefaultEntryNodeId();
+  const urlRequestedNodeId = initialState.hasUrlState ? initialState.nodeId : null;
+  const storedOrConfiguredNodeId = !initialState.hasUrlState ? (persistedNav?.nodeId ?? initialState.nodeId) : null;
+
+  const initialFocusNodeId = (() => {
+    if (urlRequestedNodeId) {
+      return urlRequestedNodeId;
+    }
+    if (storedOrConfiguredNodeId && nodesById.has(storedOrConfiguredNodeId)) {
+      return storedOrConfiguredNodeId;
+    }
+    return inferDefaultEntryNodeId();
+  })();
   if (initialFocusNodeId) {
     const focusNode = nodesById.get(initialFocusNodeId);
     if (focusNode) {
-      const focusSource = initialState.nodeId ? "URL/config" : "heuristic";
+      const focusSource =
+        initialState.hasUrlState && initialState.nodeId
+          ? "URL"
+          : !initialState.hasUrlState && persistedNav?.nodeId && nodesById.has(persistedNav.nodeId)
+            ? "localStorage"
+            : !initialState.hasUrlState && initialState.nodeId && nodesById.has(initialState.nodeId)
+              ? "viewerConfig"
+              : "heuristic";
       console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
       // Use setTimeout to ensure view is fully rendered before focusing
       setTimeout(() => {
@@ -793,6 +1077,7 @@ function startExplorer(
       contextName.textContent = node.codeRelativePath;
     }
     updateUrlState(state.view, node.id);
+    schedulePersistNav();
     renderCurrentView();
     highlightSelectedCards();
     await detailPanel.showNode(node);
@@ -805,6 +1090,7 @@ function startExplorer(
       contextName.textContent = node.codeRelativePath;
     }
     updateUrlState(state.view, node.id);
+    schedulePersistNav();
     highlightSelectedCards();
     await detailPanel.showNode(node);
   }
@@ -844,6 +1130,7 @@ function startExplorer(
         const value = parseFloat(input.value);
         setter(value);
         if (output) output.textContent = input.value;
+        schedulePersistUi();
         if (state.view === "map") {
           localView.drawConnections();
         }
@@ -854,6 +1141,7 @@ function startExplorer(
       if (!input) return;
       input.addEventListener("change", () => {
         setter(input.checked);
+        schedulePersistUi();
         renderCurrentView();
       });
     };
@@ -871,6 +1159,7 @@ function startExplorer(
         const value = parseFloat(input.value);
         setter(value);
         if (output) output.textContent = input.value;
+        schedulePersistUi();
         // Update CSS custom property on the local-layout element
         const localLayout = document.querySelector<HTMLElement>(".local-layout");
         if (localLayout) {
@@ -881,6 +1170,59 @@ function startExplorer(
         }
       });
     };
+
+    const clampToInput = (input: HTMLInputElement, value: number): number => {
+      const min = input.min ? parseFloat(input.min) : Number.NEGATIVE_INFINITY;
+      const max = input.max ? parseFloat(input.max) : Number.POSITIVE_INFINITY;
+      if (!Number.isFinite(value)) {
+        return parseFloat(input.value);
+      }
+      return Math.min(max, Math.max(min, value));
+    };
+
+    const setSlider = (input: HTMLInputElement | null, outputId: string, value: number, format?: (v: number) => string): number => {
+      if (!input) return value;
+      const clamped = clampToInput(input, value);
+      input.value = String(clamped);
+      const output = document.getElementById(outputId) as HTMLOutputElement | null;
+      if (output) {
+        output.textContent = format ? format(clamped) : input.value;
+      }
+      return clamped;
+    };
+
+    const setCheckbox = (input: HTMLInputElement | null, value: boolean): void => {
+      if (!input) return;
+      input.checked = value;
+    };
+
+    const syncTuningControlsFromState = (): void => {
+      state.tuning.bezier.stubFactor = setSlider(stubFactorInput, "tuning-stub-factor-value", state.tuning.bezier.stubFactor);
+      state.tuning.bezier.stubMin = setSlider(stubMinInput, "tuning-stub-min-value", state.tuning.bezier.stubMin);
+      state.tuning.bezier.stubMaxOffset = setSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", state.tuning.bezier.stubMaxOffset);
+      state.tuning.bezier.verticalOffset = setSlider(verticalOffsetInput, "tuning-vertical-offset-value", state.tuning.bezier.verticalOffset);
+
+      setCheckbox(singleClickFocusInput, state.tuning.clickBehavior.singleClickFocusOnly);
+      setCheckbox(doubleClickRecenterInput, state.tuning.clickBehavior.doubleClickRecenter);
+      setCheckbox(typeBadgesInput, state.tuning.visual.showTypeBadges);
+      setCheckbox(alchemyGlowInput, state.tuning.visual.alchemyGlow);
+
+      state.tuning.localMap.columnGap = setSlider(columnGapInput, "tuning-column-gap-value", state.tuning.localMap.columnGap, v => String(v));
+      state.tuning.localMap.hoverDimSymbols = setSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", state.tuning.localMap.hoverDimSymbols);
+      state.tuning.localMap.hoverDimConnections = setSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", state.tuning.localMap.hoverDimConnections);
+      state.tuning.localMap.selfLoopTaper = setSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", state.tuning.localMap.selfLoopTaper);
+
+      const localLayout = document.querySelector<HTMLElement>(".local-layout");
+      if (localLayout) {
+        localLayout.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
+        localLayout.style.setProperty("--hover-dim-symbols", String(state.tuning.localMap.hoverDimSymbols));
+        localLayout.style.setProperty("--hover-dim-connections", String(state.tuning.localMap.hoverDimConnections));
+        localLayout.style.setProperty("--self-loop-taper", String(state.tuning.localMap.selfLoopTaper));
+      }
+    };
+
+    // Ensure controls reflect restored state before wiring events.
+    syncTuningControlsFromState();
 
     wireSlider(stubFactorInput, "tuning-stub-factor-value", v => { state.tuning.bezier.stubFactor = v; });
     wireSlider(stubMinInput, "tuning-stub-min-value", v => { state.tuning.bezier.stubMin = v; });

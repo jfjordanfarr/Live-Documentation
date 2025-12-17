@@ -16,6 +16,24 @@ export function renderLocalView(controller: LocalViewController): void {
   const overlay = controller.getOverlay();
   const { state } = controller.options;
 
+  // Apply Local Map tuning as CSS variables at render time.
+  // This is important because the layout root is recreated on render, and the
+  // UI tuning panel may initialize before `.local-layout` exists.
+  const columnGap = state.tuning.localMap?.columnGap;
+  if (typeof columnGap === "number" && Number.isFinite(columnGap)) {
+    container.style.setProperty("--local-column-gap", `${columnGap}px`);
+  }
+
+  const dimSymbols = state.tuning.localMap?.hoverDimSymbols;
+  if (typeof dimSymbols === "number" && Number.isFinite(dimSymbols)) {
+    container.style.setProperty("--hover-dim-symbols", String(dimSymbols));
+  }
+
+  const dimConnections = state.tuning.localMap?.hoverDimConnections;
+  if (typeof dimConnections === "number" && Number.isFinite(dimConnections)) {
+    container.style.setProperty("--hover-dim-connections", String(dimConnections));
+  }
+
   overlay.innerHTML = "";
   container.innerHTML = "";
   controller.currentSubgraph = null;
