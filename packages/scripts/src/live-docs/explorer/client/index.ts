@@ -5,6 +5,7 @@ import { parseExplorerGraphPayload } from "./parsers";
 import type { ExplorerState, TestCoverageMap, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createLocalView } from "./views/localView";
+import type { StaticExplorerViewerConfig } from "../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkPayload,
@@ -63,6 +64,7 @@ void bootstrapExplorer();
 interface StaticBundle {
   graph?: unknown;
   docs?: Record<string, string>;
+  viewerConfig?: StaticExplorerViewerConfig;
 }
 
 /**
@@ -71,6 +73,7 @@ interface StaticBundle {
 interface LoadedExplorerData {
   graphData: ExplorerGraphPayload;
   staticDocs?: Record<string, string>;
+  viewerConfig?: StaticExplorerViewerConfig;
 }
 
 /**
@@ -84,8 +87,8 @@ interface LoadedExplorerData {
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const { graphData, staticDocs } = await loadExplorerData();
-    startExplorer(graphData, staticDocs);
+    const { graphData, staticDocs, viewerConfig } = await loadExplorerData();
+    startExplorer(graphData, staticDocs, viewerConfig);
   } catch (error) {
     reportFatalExplorerError(error);
   }
@@ -100,7 +103,8 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
     if (staticData.graph) {
       return {
         graphData: parseExplorerGraphPayload(staticData.graph),
-        staticDocs: staticData.docs
+        staticDocs: staticData.docs,
+        viewerConfig: staticData.viewerConfig
       };
     }
     return { graphData: parseExplorerGraphPayload(staticData) };
@@ -119,7 +123,8 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
     if (staticData.graph) {
       return {
         graphData: parseExplorerGraphPayload(staticData.graph),
-        staticDocs: staticData.docs
+        staticDocs: staticData.docs,
+        viewerConfig: staticData.viewerConfig
       };
     }
     return { graphData: parseExplorerGraphPayload(staticData) };
@@ -134,7 +139,8 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
       if (staticData.graph) {
         return {
           graphData: parseExplorerGraphPayload(staticData.graph),
-          staticDocs: staticData.docs
+          staticDocs: staticData.docs,
+          viewerConfig: staticData.viewerConfig
         };
       }
       return { graphData: parseExplorerGraphPayload(staticData) };
@@ -152,14 +158,118 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
   return { graphData: parseExplorerGraphPayload(await response.json()) };
 }
 
-function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<string, string>): void {
+function startExplorer(
+  graphData: ExplorerGraphPayload,
+  staticDocs?: Record<string, string>,
+  viewerConfig?: StaticExplorerViewerConfig
+): void {
   console.log("Live Docs Explorer graph loaded", graphData);
   if (staticDocs) {
     console.log(`Static mode: ${Object.keys(staticDocs).length} docs embedded`);
   }
+  if (viewerConfig) {
+    console.log("Viewer config loaded:", viewerConfig);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // URL State Management
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Map between URL/config view names and internal state view names.
+   * URL uses: circuit, local, force (matches config schema)
+   * Internal uses: circuit, map, graph
+   */
+  const viewNameToInternal = (name: string): ViewName => {
+    switch (name) {
+      case "local": return "map";
+      case "force": return "graph";
+      case "circuit":
+      default:
+        return "circuit";
+    }
+  };
+
+  const viewNameToUrl = (name: ViewName): string => {
+    switch (name) {
+      case "map": return "local";
+      case "graph": return "force";
+      case "circuit":
+      default:
+        return "circuit";
+    }
+  };
+
+  /**
+   * Parse initial view and node from URL parameters.
+   * Priority: URL params > viewerConfig > defaults (Local Map)
+   */
+  const parseInitialState = (): { view: ViewName; nodeId: string | null } => {
+    const params = new URLSearchParams(window.location.search);
+    const urlView = params.get("view");
+    const urlNode = params.get("node");
+
+    // URL params take priority
+    if (urlView || urlNode) {
+      return {
+        view: urlView ? viewNameToInternal(urlView) : "map",
+        nodeId: urlNode
+      };
+    }
+
+    // Fall back to viewerConfig
+    if (viewerConfig) {
+      return {
+        view: viewerConfig.defaultView ? viewNameToInternal(viewerConfig.defaultView) : "map",
+        nodeId: viewerConfig.initialFocusNode ?? null
+      };
+    }
+
+    // Defaults: Local Map is most valuable for grounding
+    return { view: "map", nodeId: null };
+  };
+
+  /**
+   * Update URL to reflect current view and focused node without page reload.
+   * Uses replaceState to avoid polluting browser history on every interaction.
+   */
+  const updateUrlState = (view: ViewName, nodeId: string | null): void => {
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    // Preserve data param if present
+    const dataParam = params.get("data");
+
+    // Clear existing view/node params
+    params.delete("view");
+    params.delete("node");
+
+    // Set new params (skip defaults to keep URLs clean)
+    // Local Map ("local") is the default, so omit it from URL
+    const urlViewName = viewNameToUrl(view);
+    if (urlViewName !== "local") {
+      params.set("view", urlViewName);
+    }
+    if (nodeId) {
+      params.set("node", nodeId);
+    }
+
+    // Restore data param at the end for consistency
+    if (dataParam) {
+      params.delete("data");
+      params.set("data", dataParam);
+    }
+
+    // Build clean URL (no params = no query string)
+    const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
+    window.history.replaceState({}, "", newUrl);
+  };
+
+  // Parse initial state from URL/config
+  const initialState = parseInitialState();
 
   const state: ExplorerState = {
-    view: "circuit",
+    view: initialState.view,
     selectedNode: null,
     focusedNode: null,
     filters: {
@@ -197,6 +307,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     state.selectedNode = node;
     state.view = "circuit";
     setActiveView("circuit");
+    updateUrlState("circuit", node.id);
     renderCurrentView();
     // Scroll to the node after render
     setTimeout(() => {
@@ -230,6 +341,111 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
       }
     }
     return "";
+  };
+
+  const inferDefaultEntryNodeId = (): string | null => {
+    if (!graphData.nodes || graphData.nodes.length === 0) {
+      return null;
+    }
+
+    const excludedPathFragments = [
+      "/node_modules/",
+      "/dist/",
+      "/build/",
+      "/coverage/",
+      "/.git/",
+      "/.mdmd/",
+      "/docs/",
+      "/specs/",
+      "/ai-agent-workspace/",
+      "/tests/",
+      "/test/",
+      "/__tests__/"
+    ];
+
+    const degreeById = new Map<string, number>();
+    for (const link of graphData.links) {
+      const sourceId = resolveLinkEndpoint(link.source);
+      const targetId = resolveLinkEndpoint(link.target);
+      if (nodesById.has(sourceId)) {
+        degreeById.set(sourceId, (degreeById.get(sourceId) ?? 0) + 1);
+      }
+      if (nodesById.has(targetId)) {
+        degreeById.set(targetId, (degreeById.get(targetId) ?? 0) + 1);
+      }
+    }
+
+    const scoreNode = (node: ExplorerNodePayload): number => {
+      const archetype = (node.archetype || "").toLowerCase();
+      const path = (node.codeRelativePath || node.codePath || node.id || "").replace(/\\/g, "/").toLowerCase();
+      const basename = path.split("/").pop() ?? "";
+
+      // Hard excludes
+      if (excludedPathFragments.some(fragment => path.includes(fragment))) {
+        return -1_000_000;
+      }
+      if (archetype === "test") {
+        return -500_000;
+      }
+      if (archetype === "asset") {
+        return -200_000;
+      }
+
+      let score = 0;
+
+      // Prefer implementation-ish nodes (when archetype is reliable)
+      if (archetype === "implementation") {
+        score += 150;
+      } else if (archetype === "script") {
+        score += 50;
+      } else if (archetype === "config") {
+        score -= 50;
+      }
+
+      // Entry-point filename heuristics (cross-language, case-insensitive)
+      if (basename === "main.ts" || basename === "main.js") score += 1200;
+      if (basename === "index.ts" || basename === "index.js") score += 1000;
+      if (basename === "app.ts" || basename === "app.js") score += 900;
+      if (basename === "server.ts" || basename === "server.js") score += 850;
+      if (basename === "extension.ts" || basename === "extension.js") score += 800;
+      if (basename === "cli.ts" || basename === "cli.js") score += 750;
+      if (basename === "program.cs") score += 1200;
+      if (basename === "startup.cs") score += 1100;
+      if (basename === "global.asax.cs") score += 950;
+
+      // Prefer conventional src locations
+      if (path.includes("/src/")) score += 150;
+      if (path.endsWith("/src/main.ts") || path.endsWith("/src/main.js")) score += 200;
+      if (path.endsWith("/src/index.ts") || path.endsWith("/src/index.js")) score += 150;
+
+      // Prefer common monorepo entry packages (small nudges; not required)
+      if (path.startsWith("packages/server/")) score += 120;
+      if (path.startsWith("packages/extension/")) score += 90;
+      if (path.startsWith("packages/cli/")) score += 70;
+
+      // Graph centrality as a tie-breaker signal
+      score += Math.min(300, degreeById.get(node.id) ?? 0);
+
+      // Shallow paths are often entrypoints
+      const depth = path.split("/").filter(Boolean).length;
+      score += Math.max(0, 20 - depth);
+
+      return score;
+    };
+
+    let best: { nodeId: string; score: number; path: string } | null = null;
+    for (const node of graphData.nodes) {
+      const score = scoreNode(node);
+      const path = (node.codeRelativePath || node.codePath || node.id || "").replace(/\\/g, "/");
+      if (!best || score > best.score || (score === best.score && path.localeCompare(best.path) < 0)) {
+        best = { nodeId: node.id, score, path };
+      }
+    }
+
+    if (!best || best.score < 0) {
+      return null;
+    }
+    return best.nodeId;
   };
 
   const testCoverage = buildTestCoverageMap(graphData, resolveLinkEndpoint, nodesById);
@@ -293,6 +509,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     event.preventDefault();
     setActiveView(viewName);
     state.view = viewName;
+    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null);
     renderCurrentView();
   };
 
@@ -323,6 +540,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     state.selectedNode = target;
     state.view = "graph";
     setActiveView("graph");
+    updateUrlState("graph", target.id);
     renderCurrentView();
   };
 
@@ -376,7 +594,32 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
   // Initialize omnisearch
   initOmnisearch();
 
+  // Set initial sidebar active state based on parsed URL/config
+  setActiveView(state.view);
+
+  // Render initial view
   renderCurrentView();
+
+  // Apply initial focus node if specified (after initial render)
+  const initialFocusNodeId = initialState.nodeId ?? inferDefaultEntryNodeId();
+  if (initialFocusNodeId) {
+    const focusNode = nodesById.get(initialFocusNodeId);
+    if (focusNode) {
+      const focusSource = initialState.nodeId ? "URL/config" : "heuristic";
+      console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
+      // Use setTimeout to ensure view is fully rendered before focusing
+      setTimeout(() => {
+        void selectNode(focusNode);
+        // For circuit view, also scroll to the node
+        if (state.view === "circuit") {
+          circuitView.scrollToNode(focusNode.id);
+        }
+      }, 100);
+    } else {
+      console.warn(`Initial focus node not found: ${initialFocusNodeId}`);
+    }
+  }
+
   initTuningPanel();
 
   // ============================================
@@ -549,6 +792,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
+    updateUrlState(state.view, node.id);
     renderCurrentView();
     highlightSelectedCards();
     await detailPanel.showNode(node);
@@ -560,6 +804,7 @@ function startExplorer(graphData: ExplorerGraphPayload, staticDocs?: Record<stri
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
+    updateUrlState(state.view, node.id);
     highlightSelectedCards();
     await detailPanel.showNode(node);
   }
