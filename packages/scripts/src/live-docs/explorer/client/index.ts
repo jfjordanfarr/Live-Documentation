@@ -2,7 +2,14 @@ import { createDetailPanel } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { parseExplorerGraphPayload } from "./parsers";
-import { initPathfind, type PathfindEndpoint } from "./pathfind";
+import {
+  findPath,
+  initPathfind,
+  parsePathfindFromUrl,
+  updatePathfindUrl,
+  type PathfindEndpoint,
+  type PathfindResult
+} from "./pathfind";
 import type { ExplorerState, TestCoverageMap, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createLocalView } from "./views/localView";
@@ -901,25 +908,203 @@ function startExplorer(
   // Initialize omnisearch
   initOmnisearch();
 
+  // ==================
+  // PATHFIND STATE
+  // ==================
+
+  /** Current path result, if any (prefixed with _ as used only for state tracking) */
+  let _currentPathResult: PathfindResult | null = null;
+
+  /** Render the path visualization strip */
+  const renderPathVisualization = (result: PathfindResult): void => {
+    const pathEl = document.getElementById("pathfind-path");
+    const viewMapEl = document.getElementById("view-map");
+    if (!pathEl) return;
+
+    // Clear previous path
+    pathEl.innerHTML = "";
+
+    if (!result.found || result.path.length === 0) {
+      pathEl.hidden = true;
+      viewMapEl?.classList.remove("has-path");
+      return;
+    }
+
+    // Build path visualization
+    result.path.forEach((hop, index) => {
+      // Add arrow between hops (except before first)
+      if (index > 0) {
+        const arrow = document.createElement("span");
+        arrow.className = "pathfind-path-arrow";
+        arrow.textContent = "→";
+        pathEl.appendChild(arrow);
+      }
+
+      // Create hop element
+      const hopEl = document.createElement("div");
+      hopEl.className = "pathfind-path-hop";
+      
+      // Mark endpoints
+      if (index === 0 || index === result.path.length - 1) {
+        hopEl.classList.add("endpoint");
+      }
+
+      // File name
+      const nameEl = document.createElement("div");
+      nameEl.className = "pathfind-path-hop-name";
+      const fileName = hop.node.id.split("/").pop() || hop.node.id;
+      nameEl.textContent = fileName;
+      nameEl.title = hop.node.id;
+      hopEl.appendChild(nameEl);
+
+      // Symbol (if present)
+      if (hop.symbol) {
+        const symbolEl = document.createElement("div");
+        symbolEl.className = "pathfind-path-hop-symbol";
+        symbolEl.textContent = `→ ${hop.symbol}`;
+        hopEl.appendChild(symbolEl);
+      }
+
+      // Click handler to navigate to this node
+      hopEl.addEventListener("click", () => {
+        void handleNodeClick(hop.node);
+      });
+
+      pathEl.appendChild(hopEl);
+    });
+
+    pathEl.hidden = false;
+    viewMapEl?.classList.add("has-path");
+  };
+
+  /** Show path result in UI */
+  const showPathResult = (result: PathfindResult): void => {
+    _currentPathResult = result;
+    const statusEl = document.getElementById("pathfind-status");
+
+    if (result.found && result.path.length > 0) {
+      // Path found - switch to Local Map view centered on first node
+      if (state.view !== "map") {
+        state.view = "map";
+        setActiveView("map");
+      }
+
+      // Center on first node in path
+      const firstNode = result.path[0].node;
+      void handleNodeClick(firstNode);
+
+      // Render the path visualization strip
+      renderPathVisualization(result);
+
+      // Update status message
+      if (statusEl) {
+        statusEl.textContent = `Path found: ${result.path.length} nodes`;
+        statusEl.className = "pathfind-status success";
+        statusEl.hidden = false;
+      }
+
+      console.log(
+        "[Pathfind] Path found:",
+        result.path.map(h => h.nodeId).join(" → ")
+      );
+    } else {
+      // No path found - hide path visualization
+      renderPathVisualization(result);
+
+      if (statusEl) {
+        const reason = result.maxDepthReached
+          ? `No path within 10 hops (searched ${result.searchedNodes} nodes)`
+          : `No path exists (searched ${result.searchedNodes} nodes)`;
+        statusEl.textContent = reason;
+        statusEl.className = "pathfind-status error";
+        statusEl.hidden = false;
+      }
+
+      console.log(
+        "[Pathfind] No path found:",
+        result.fromEndpoint.node.id,
+        "→",
+        result.toEndpoint.node.id,
+        result.maxDepthReached ? "(max depth reached)" : ""
+      );
+    }
+  };
+
+  /** Clear path result from UI */
+  const clearPathResult = (): void => {
+    _currentPathResult = null;
+    const statusEl = document.getElementById("pathfind-status");
+    if (statusEl) {
+      statusEl.hidden = true;
+    }
+    // Clear path visualization
+    const pathEl = document.getElementById("pathfind-path");
+    const viewMapEl = document.getElementById("view-map");
+    if (pathEl) {
+      pathEl.innerHTML = "";
+      pathEl.hidden = true;
+    }
+    viewMapEl?.classList.remove("has-path");
+  };
+
   // Initialize pathfind toolbar (Local Map FROM/TO navigation)
-  const _pathfindState = initPathfind(graphData.nodes, {
+  const pathfindApi = initPathfind(graphData.nodes, {
     onFromChange: (endpoint: PathfindEndpoint | undefined) => {
       console.log("[Pathfind] FROM changed:", endpoint?.node.id, endpoint?.symbol);
-      // TODO: Highlight FROM node in Local Map
+      // Update URL state
+      updatePathfindUrl({ from: endpoint, to: pathfindApi.state.to });
+      // Clear any previous path result when endpoints change
+      clearPathResult();
     },
     onToChange: (endpoint: PathfindEndpoint | undefined) => {
       console.log("[Pathfind] TO changed:", endpoint?.node.id, endpoint?.symbol);
-      // TODO: Highlight TO node in Local Map
+      // Update URL state
+      updatePathfindUrl({ from: pathfindApi.state.from, to: endpoint });
+      // Clear any previous path result when endpoints change
+      clearPathResult();
     },
     onFindPath: (from: PathfindEndpoint, to: PathfindEndpoint) => {
-      console.log("[Pathfind] Find path:", from.node.id, "->", to.node.id);
-      // TODO: Execute BFS pathfinding and visualize result
+      console.log("[Pathfind] Find path:", from.node.id, "→", to.node.id);
+
+      // Execute BFS pathfinding
+      const result = findPath(from.node.id, to.node.id, nodesById, graphData.links);
+
+      // Attach symbol information to result
+      if (result.found && result.path.length > 0) {
+        // Annotate first hop with from symbol if specified
+        if (from.symbol && result.path[0]) {
+          result.path[0].symbol = from.symbol;
+        }
+        // Annotate last hop with to symbol if specified
+        if (to.symbol && result.path[result.path.length - 1]) {
+          result.path[result.path.length - 1].symbol = to.symbol;
+        }
+      }
+
+      showPathResult(result);
     },
     onClear: () => {
       console.log("[Pathfind] Cleared");
-      // TODO: Reset Local Map visualization
+      // Clear URL state
+      updatePathfindUrl({});
+      // Clear path result
+      clearPathResult();
     }
   });
+
+  // Restore pathfind state from URL if present
+  const urlPathfindState = parsePathfindFromUrl(nodesById);
+  if (urlPathfindState.from) {
+    pathfindApi.setFrom(urlPathfindState.from);
+  }
+  if (urlPathfindState.to) {
+    pathfindApi.setTo(urlPathfindState.to);
+  }
+  // Auto-execute pathfind if both endpoints are specified in URL
+  if (urlPathfindState.from && urlPathfindState.to) {
+    // Defer execution to after initial render
+    setTimeout(() => pathfindApi.executeFindPath(), 100);
+  }
 
   // Set initial sidebar active state based on parsed URL/config
   setActiveView(state.view);

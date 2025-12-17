@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2025-12-17T21:11:37.636Z
+- Generated At: 2025-12-17T21:37:31.616Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-17T21:11:37.636Z","inputHash":"a888e0d944fdad09"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-17T21:37:31.616Z","inputHash":"98145b26911192f6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,7 +32,11 @@ _No public symbols detected_
 - [`errors.reportFatalExplorerError`](./errors.ts.mdmd.md#symbol-reportfatalexplorererror)
 - [`parsers.parseExplorerGraphPayload`](./parsers.ts.mdmd.md#symbol-parseexplorergraphpayload)
 - [`pathfind.PathfindEndpoint`](./pathfind.ts.mdmd.md#symbol-pathfindendpoint)
+- [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
+- [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
 - [`pathfind.initPathfind`](./pathfind.ts.mdmd.md#symbol-initpathfind)
+- [`pathfind.parsePathfindFromUrl`](./pathfind.ts.mdmd.md#symbol-parsepathfindfromurl)
+- [`pathfind.updatePathfindUrl`](./pathfind.ts.mdmd.md#symbol-updatepathfindurl)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.TestCoverageMap`](./types.ts.mdmd.md#symbol-testcoveragemap) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)

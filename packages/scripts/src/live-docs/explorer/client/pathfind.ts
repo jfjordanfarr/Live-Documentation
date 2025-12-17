@@ -5,7 +5,7 @@
  * Integrates with the omnisearch pattern but operates inline within the Local Map view.
  */
 
-import type { ExplorerNodePayload } from "../shared/types";
+import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
 /** Pathfind endpoint selection */
 export interface PathfindEndpoint {
@@ -19,6 +19,26 @@ export interface PathfindState {
   to?: PathfindEndpoint;
 }
 
+/** A hop in a path result */
+export interface PathHop {
+  nodeId: string;
+  node: ExplorerNodePayload;
+  symbol?: string;
+}
+
+/** Result of a pathfinding operation */
+export interface PathfindResult {
+  found: boolean;
+  path: PathHop[];
+  fromEndpoint: PathfindEndpoint;
+  toEndpoint: PathfindEndpoint;
+  searchedNodes: number;
+  maxDepthReached: boolean;
+}
+
+/** Default maximum hops to search */
+export const DEFAULT_MAX_HOPS = 10;
+
 /** Callbacks for pathfind events */
 export interface PathfindCallbacks {
   onFromChange: (endpoint: PathfindEndpoint | undefined) => void;
@@ -28,12 +48,187 @@ export interface PathfindCallbacks {
 }
 
 /**
+ * BFS pathfinding between two nodes in the explorer graph.
+ * Returns the shortest path from source to target.
+ */
+export function findPath(
+  fromNodeId: string,
+  toNodeId: string,
+  nodesById: Map<string, ExplorerNodePayload>,
+  links: ExplorerLinkPayload[],
+  maxHops: number = DEFAULT_MAX_HOPS
+): PathfindResult {
+  const fromNode = nodesById.get(fromNodeId);
+  const toNode = nodesById.get(toNodeId);
+
+  if (!fromNode || !toNode) {
+    return {
+      found: false,
+      path: [],
+      fromEndpoint: { node: fromNode || { id: fromNodeId } as ExplorerNodePayload },
+      toEndpoint: { node: toNode || { id: toNodeId } as ExplorerNodePayload },
+      searchedNodes: 0,
+      maxDepthReached: false
+    };
+  }
+
+  // Build bidirectional adjacency list from links
+  // We treat the graph as undirected for pathfinding since we want to find
+  // any connection path regardless of dependency direction.
+  const adjacency = new Map<string, Set<string>>();
+  for (const link of links) {
+    const sourceId = typeof link.source === "string" ? link.source : link.source.id;
+    const targetId = typeof link.target === "string" ? link.target : link.target.id;
+    
+    // Add edge source → target
+    if (!adjacency.has(sourceId)) {
+      adjacency.set(sourceId, new Set());
+    }
+    adjacency.get(sourceId)!.add(targetId);
+    
+    // Add reverse edge target → source
+    if (!adjacency.has(targetId)) {
+      adjacency.set(targetId, new Set());
+    }
+    adjacency.get(targetId)!.add(sourceId);
+  }
+
+  // BFS
+  const visited = new Set<string>();
+  const parents = new Map<string, string>();
+  const queue: Array<{ nodeId: string; depth: number }> = [{ nodeId: fromNodeId, depth: 0 }];
+  visited.add(fromNodeId);
+
+  let maxDepthReached = false;
+
+  while (queue.length > 0) {
+    const { nodeId, depth } = queue.shift()!;
+
+    if (nodeId === toNodeId) {
+      // Reconstruct path
+      const path: PathHop[] = [];
+      let current: string | undefined = toNodeId;
+      while (current !== undefined) {
+        const node = nodesById.get(current);
+        if (node) {
+          path.unshift({ nodeId: current, node });
+        }
+        current = parents.get(current);
+      }
+      return {
+        found: true,
+        path,
+        fromEndpoint: { node: fromNode },
+        toEndpoint: { node: toNode },
+        searchedNodes: visited.size,
+        maxDepthReached: false
+      };
+    }
+
+    if (depth >= maxHops) {
+      maxDepthReached = true;
+      continue;
+    }
+
+    const neighbors = adjacency.get(nodeId) || new Set();
+    for (const neighborId of neighbors) {
+      if (!visited.has(neighborId)) {
+        visited.add(neighborId);
+        parents.set(neighborId, nodeId);
+        queue.push({ nodeId: neighborId, depth: depth + 1 });
+      }
+    }
+  }
+
+  return {
+    found: false,
+    path: [],
+    fromEndpoint: { node: fromNode },
+    toEndpoint: { node: toNode },
+    searchedNodes: visited.size,
+    maxDepthReached
+  };
+}
+
+/**
+ * Parse pathfind state from URL parameters.
+ */
+export function parsePathfindFromUrl(
+  nodesById: Map<string, ExplorerNodePayload>
+): { from?: PathfindEndpoint; to?: PathfindEndpoint } {
+  const params = new URLSearchParams(window.location.search);
+  const fromId = params.get("from");
+  const toId = params.get("to");
+  const fromSymbol = params.get("fromSymbol");
+  const toSymbol = params.get("toSymbol");
+
+  const result: { from?: PathfindEndpoint; to?: PathfindEndpoint } = {};
+
+  if (fromId) {
+    const fromNode = nodesById.get(fromId);
+    if (fromNode) {
+      result.from = { node: fromNode, symbol: fromSymbol || undefined };
+    }
+  }
+
+  if (toId) {
+    const toNode = nodesById.get(toId);
+    if (toNode) {
+      result.to = { node: toNode, symbol: toSymbol || undefined };
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Update URL with pathfind state.
+ */
+export function updatePathfindUrl(state: PathfindState): void {
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+
+  // Clear existing pathfind params
+  params.delete("from");
+  params.delete("to");
+  params.delete("fromSymbol");
+  params.delete("toSymbol");
+
+  // Set new params
+  if (state.from) {
+    params.set("from", state.from.node.id);
+    if (state.from.symbol) {
+      params.set("fromSymbol", state.from.symbol);
+    }
+  }
+  if (state.to) {
+    params.set("to", state.to.node.id);
+    if (state.to.symbol) {
+      params.set("toSymbol", state.to.symbol);
+    }
+  }
+
+  // Update URL without reload
+  const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
+  window.history.replaceState({}, "", newUrl);
+}
+
+/** Return type for initPathfind */
+export interface PathfindApi {
+  state: PathfindState;
+  setFrom: (endpoint: PathfindEndpoint | undefined) => void;
+  setTo: (endpoint: PathfindEndpoint | undefined) => void;
+  clearAll: () => void;
+  executeFindPath: () => void;
+}
+
+/**
  * Initialize the pathfind toolbar with search and symbol selection
  */
 export function initPathfind(
   nodes: ExplorerNodePayload[],
   callbacks: PathfindCallbacks
-): PathfindState {
+): PathfindApi {
   const state: PathfindState = {};
 
   // DOM elements
@@ -51,7 +246,14 @@ export function initPathfind(
 
   if (!toolbar || !fromInput || !fromResults || !toInput || !toResults) {
     console.warn("Pathfind toolbar elements not found");
-    return state;
+    // Return no-op API when elements not found
+    return {
+      state,
+      setFrom: () => {},
+      setTo: () => {},
+      clearAll: () => {},
+      executeFindPath: () => {}
+    };
   }
 
   // Shadowed references after guard - TypeScript knows these are non-null
@@ -419,5 +621,64 @@ export function initPathfind(
     }
   });
 
-  return state;
+  // ==================
+  // PROGRAMMATIC API
+  // ==================
+
+  /**
+   * Set the FROM endpoint programmatically (for URL restore)
+   */
+  function setFrom(endpoint: PathfindEndpoint | undefined): void {
+    if (!endpoint) {
+      clearFrom();
+      return;
+    }
+    state.from = endpoint;
+    fromInput!.value = endpoint.node.name;
+    fromInput!.classList.add("has-selection");
+    fromClear!.hidden = false;
+    fromResultsEl.hidden = true;
+    populateSymbolDropdown(fromSymbol, endpoint.node);
+    if (endpoint.symbol && fromSymbol) {
+      fromSymbol.value = endpoint.symbol;
+    }
+    updateGoButton();
+  }
+
+  /**
+   * Set the TO endpoint programmatically (for URL restore)
+   */
+  function setTo(endpoint: PathfindEndpoint | undefined): void {
+    if (!endpoint) {
+      clearTo();
+      return;
+    }
+    state.to = endpoint;
+    toInput!.value = endpoint.node.name;
+    toInput!.classList.add("has-selection");
+    toClear!.hidden = false;
+    toResultsEl.hidden = true;
+    populateSymbolDropdown(toSymbol, endpoint.node);
+    if (endpoint.symbol && toSymbol) {
+      toSymbol.value = endpoint.symbol;
+    }
+    updateGoButton();
+  }
+
+  /**
+   * Execute pathfinding with current state
+   */
+  function executeFindPath(): void {
+    if (state.from && state.to) {
+      callbacks.onFindPath(state.from, state.to);
+    }
+  }
+
+  return {
+    state,
+    setFrom,
+    setTo,
+    clearAll,
+    executeFindPath
+  };
 }
