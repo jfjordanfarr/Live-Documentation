@@ -16,6 +16,7 @@ This catalog summarizes the npm scripts supplied by the workspace. Invoke any co
 | `npm run live-docs:report` | Emits diagnostics precision/recall summaries. | `--workspace <path>` |
 | `npm run live-docs:co-activation` | Regenerates the co-activation analytics JSON used by System plans. | `--workspace <path>`, analytics-specific env vars |
 | `npm run live-docs:orphans` | Finds Live Docs without corresponding source artifacts. | `--workspace <path>` |
+| `npm run live-docs:inspect` | Pathfinder CLI for querying dependency chains between artifacts. Supports symbol-level pathfinding using `file.ts#SymbolName` syntax. | `--from <path[#symbol]>`, `--to <path[#symbol]>`, `--direction <outbound|inbound>`, `--max-depth <n>`, `--json`, `--verbose` |
 | `npm run live-docs:visualize` | Launches the Explorer HTTP server (Circuit Board, Local Map, Force Graph views). Also exposes `/local-map?nodeId=<path>` JSON API for headless debugging. | `--port <number>` |
 | `npm run live-docs:visualize:static` | Builds a fully static Explorer bundle (graph + symbols + all markdown) to `dist/explorer/`. Deployable to GitHub Pages or any static host. | `--output <dir>`, `--pretty` |
 

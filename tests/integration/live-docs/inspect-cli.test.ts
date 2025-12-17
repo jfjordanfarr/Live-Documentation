@@ -381,7 +381,8 @@ suite("Live Docs inspect CLI", () => {
       "scripts/deploy.ps1",
       "--to",
       "scripts/common/logging.ps1",
-      "--json"
+      "--json",
+      "--verbose"
     ]);
 
     assert.strictEqual(run.exitCode, 0, `inspect exited ${run.exitCode}:\n${run.stderr || run.stdout}`);
