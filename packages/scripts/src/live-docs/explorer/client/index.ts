@@ -2,6 +2,7 @@ import { createDetailPanel } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { parseExplorerGraphPayload } from "./parsers";
+import { initPathfind, type PathfindEndpoint } from "./pathfind";
 import type { ExplorerState, TestCoverageMap, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createLocalView } from "./views/localView";
@@ -899,6 +900,26 @@ function startExplorer(
 
   // Initialize omnisearch
   initOmnisearch();
+
+  // Initialize pathfind toolbar (Local Map FROM/TO navigation)
+  const _pathfindState = initPathfind(graphData.nodes, {
+    onFromChange: (endpoint: PathfindEndpoint | undefined) => {
+      console.log("[Pathfind] FROM changed:", endpoint?.node.id, endpoint?.symbol);
+      // TODO: Highlight FROM node in Local Map
+    },
+    onToChange: (endpoint: PathfindEndpoint | undefined) => {
+      console.log("[Pathfind] TO changed:", endpoint?.node.id, endpoint?.symbol);
+      // TODO: Highlight TO node in Local Map
+    },
+    onFindPath: (from: PathfindEndpoint, to: PathfindEndpoint) => {
+      console.log("[Pathfind] Find path:", from.node.id, "->", to.node.id);
+      // TODO: Execute BFS pathfinding and visualize result
+    },
+    onClear: () => {
+      console.log("[Pathfind] Cleared");
+      // TODO: Reset Local Map visualization
+    }
+  });
 
   // Set initial sidebar active state based on parsed URL/config
   setActiveView(state.view);

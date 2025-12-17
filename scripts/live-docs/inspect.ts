@@ -102,7 +102,7 @@ interface SymbolPathSearchResult {
  * Converts a symbol name (e.g., "GraphStore") to an anchor slug (e.g., "symbol-graphstore").
  * This matches the format used in Live Doc markdown links.
  */
-function symbolToAnchor(symbol: string): string {
+function _symbolToAnchor(symbol: string): string {
   return `symbol-${symbol.toLowerCase()}`;
 }
 

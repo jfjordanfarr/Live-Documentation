@@ -1,0 +1,259 @@
+/* ============================================
+   PATHFIND TOOLBAR (FROM/TO symbol search)
+   ============================================ */
+
+.pathfind-toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg-deep);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+}
+
+.pathfind-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.pathfind-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.pathfind-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-panel-subtle);
+    min-width: 36px;
+}
+
+.pathfind-input-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.pathfind-input {
+    width: 220px;
+    padding: 8px 12px;
+    padding-right: 28px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-active);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pathfind-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 145, 255, 0.2);
+}
+
+.pathfind-input::placeholder {
+    color: var(--text-disabled);
+}
+
+.pathfind-input.has-selection {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+}
+
+.pathfind-input-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: var(--text-disabled);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.1s, color 0.1s;
+}
+
+.pathfind-input-clear:hover {
+    opacity: 1;
+    color: var(--text-active);
+}
+
+.pathfind-input-clear[hidden] {
+    display: none;
+}
+
+.pathfind-symbol-dropdown {
+    min-width: 160px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-family: inherit;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-active);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.pathfind-symbol-dropdown:focus {
+    border-color: var(--accent);
+}
+
+.pathfind-symbol-dropdown[hidden] {
+    display: none;
+}
+
+.pathfind-symbol-dropdown option {
+    background: var(--bg-surface);
+    color: var(--text-active);
+}
+
+.pathfind-arrow {
+    font-size: 18px;
+    color: var(--text-panel-subtle);
+    padding: 0 4px;
+}
+
+.pathfind-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* Pathfind Results Dropdown (inline below input) */
+.pathfind-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 200;
+    width: 360px;
+    max-height: 320px;
+    margin-top: 4px;
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.pathfind-results[hidden] {
+    display: none;
+}
+
+/* Position FROM results below the FROM group */
+#pathfind-from-results {
+    left: 0;
+}
+
+/* Position TO results below the TO group */
+#pathfind-to-results {
+    left: 0;
+}
+
+.pathfind-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.1s ease;
+}
+
+.pathfind-result:last-child {
+    border-bottom: none;
+}
+
+.pathfind-result:hover,
+.pathfind-result.selected {
+    background: var(--accent-subtle);
+}
+
+.pathfind-result-icon {
+    font-size: 14px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.pathfind-result-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.pathfind-result-name {
+    font-size: 13px;
+    color: var(--text-active);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pathfind-result-path {
+    font-size: 10px;
+    color: var(--text-disabled);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pathfind-result-badge {
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: rgba(0, 145, 255, 0.2);
+    color: var(--accent);
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.pathfind-results-empty {
+    padding: 16px;
+    text-align: center;
+    color: var(--text-disabled);
+    font-size: 12px;
+}
+
+/* Adjust map viewport to account for toolbar */
+#view-map .viewport-layer {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Pathfind status indicator */
+.pathfind-status {
+    font-size: 11px;
+    color: var(--text-panel-subtle);
+    padding: 4px 8px;
+    background: var(--bg-surface);
+    border-radius: 4px;
+}
+
+.pathfind-status.success {
+    color: var(--text-success, #4caf50);
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.pathfind-status.error {
+    color: var(--text-error, #f44336);
+    background: rgba(244, 67, 54, 0.1);
+}
