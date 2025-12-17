@@ -4,7 +4,7 @@ You have been requested to summarize the following dev day conversation file int
 
 [Development Chat History Summary Index](/AI-Agent-Workspace/ChatHistory/README.md)
 
-Next, extract turn-by-turn conversation summaries, with a preference for direct quotes as practical, **1200 lines at a time**. Emit an update to the summary file after each 1200 lines of conversation history parsed. Please do not collapse multiple conversation turns into a a single entry; all turns must be represented in the summary.
+Next, extract turn-by-turn conversation summaries, with a preference for direct quotes as practical, **1200 lines at a time**. Emit an update to the summary file after each 1200 lines of conversation history parsed. Please do not collapse multiple conversation turns into a a single entry; all turns must be represented in the summary. A "conversation turn" is defined as a single prompt-response pair. 
 
 [Raw Development Chat History Folder](/AI-Agent-Workspace/ChatHistory/README.md)
 

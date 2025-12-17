@@ -44,15 +44,21 @@ export function drawConnections(context: ConnectionsContext): void {
   const rootRect = container.getBoundingClientRect();
   const scale = mapTransform.k || 1;
 
-  const positionCache = new Map<HTMLElement, AnchorMeasurement>();
+  const positionCache = new Map<HTMLElement, AnchorMeasurement | null>();
   const measureAnchor = (anchor: HTMLElement | null): AnchorMeasurement | null => {
     if (!anchor) {
       return null;
     }
     if (positionCache.has(anchor)) {
-      return positionCache.get(anchor)!;
+      return positionCache.get(anchor) ?? null;
     }
     const rect = anchor.getBoundingClientRect();
+    // Hidden elements (display: none or collapsed) return zero-sized rects.
+    // Treat them as unmeasurable so edges skip them instead of drawing garbage paths.
+    if (rect.width === 0 && rect.height === 0) {
+      positionCache.set(anchor, null);
+      return null;
+    }
     const cardElem = anchor.closest(".node-card");
     const cardRect = cardElem instanceof HTMLElement ? cardElem.getBoundingClientRect() : null;
     const columnElem = anchor.closest(".local-column");

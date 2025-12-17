@@ -281,6 +281,49 @@ export class LocalViewController implements LocalViewApi {
     this.container.classList.add("symbol-hover-active");
     this.overlay.classList.add("symbol-hover-active");
 
+    // Determine if collapse mode is enabled (based on hover vs. pin state)
+    const shouldCollapse = fromPin 
+      ? options.state.tuning.localMap.collapseOnPin 
+      : options.state.tuning.localMap.collapseOnHover;
+
+    // Identify node-wide exporters: nodes where ALL their edges lack symbol-level info.
+    // These are Ruby files, barrel/index files, assets, etc. that export their entire selves.
+    // We skip collapse for these cards because they inherently connect as a whole.
+    const nodeWideExporterIds = new Set<string>();
+    if (shouldCollapse) {
+      // Group edges by node ID to analyze each node's edge patterns
+      const edgesByNode = new Map<string, Array<typeof currentSubgraph.links[0]>>();
+      currentSubgraph.links.forEach(edge => {
+        if (!edgesByNode.has(edge.sourceId)) edgesByNode.set(edge.sourceId, []);
+        if (!edgesByNode.has(edge.targetId)) edgesByNode.set(edge.targetId, []);
+        edgesByNode.get(edge.sourceId)!.push(edge);
+        edgesByNode.get(edge.targetId)!.push(edge);
+      });
+      
+      // A node is a "node-wide exporter" if ALL its edges lack symbol info on its side
+      edgesByNode.forEach((edges, nodeIdToCheck) => {
+        const allEdgesLackSymbol = edges.every(edge => {
+          // Check if this node's side of the edge lacks symbol info
+          const isSource = edge.sourceId === nodeIdToCheck;
+          const symbolOnThisSide = isSource ? edge.sourceSymbol : edge.targetSymbol;
+          return !symbolOnThisSide || symbolOnThisSide === "";
+        });
+        if (allEdgesLackSymbol && edges.length > 0) {
+          nodeWideExporterIds.add(nodeIdToCheck);
+        }
+      });
+      
+      // Also treat assets as node-wide exporters
+      currentSubgraph.nodes.forEach(n => {
+        if ((n.archetype || "").toLowerCase() === "asset") {
+          nodeWideExporterIds.add(n.id);
+        }
+      });
+    }
+
+    // Track whether we collapsed anything (need to redraw connections if so)
+    let didCollapse = false;
+
     // Mark related symbols as highlighted (across ALL cards, including neighbors)
     this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
       const rowNodeId = row.dataset.nodeId;
@@ -290,8 +333,17 @@ export class LocalViewController implements LocalViewApi {
         const normalizedRowSymbol = rowSymbol === "__internals__" 
           ? "__internals__" 
           : (normalizeSymbolIdentifier(rowSymbol) ?? rowSymbol.toLowerCase());
-        if (relatedSymbols.has(`${rowNodeId}:${normalizedRowSymbol}`)) {
+        const isRelated = relatedSymbols.has(`${rowNodeId}:${normalizedRowSymbol}`);
+        
+        if (isRelated) {
           row.classList.add("symbol-highlighted");
+        } else if (shouldCollapse && rowNodeId !== centerId) {
+          // Collapse unrelated symbols (except on center node).
+          // The center node always shows all its symbols so users can explore them.
+          // Node-wide exporters (barrel files, assets) are still collapsed if they have
+          // no connection to the pinned symbol—we want to show only relevant connections.
+          row.classList.add("symbol-collapsed");
+          didCollapse = true;
         }
       }
     });
@@ -304,26 +356,23 @@ export class LocalViewController implements LocalViewApi {
       }
     });
 
+    // If we collapsed any symbols, redraw connections so paths to hidden anchors disappear
+    // Do this BEFORE marking connection highlights, since drawConnections replaces all paths
+    if (didCollapse) {
+      this.drawConnections();
+    }
+
     // Mark related connection paths as highlighted
-    // Paths have symbols in edge format (may be slugified), so normalize for comparison
-    this.overlay.querySelectorAll<SVGPathElement>(".connection-path").forEach(path => {
-      const pathSourceId = path.dataset.sourceId;
-      const pathTargetId = path.dataset.targetId;
-      const pathSourceSymbol = normalizeEdgeSymbol(path.dataset.sourceSymbol);
-      const pathTargetSymbol = normalizeEdgeSymbol(path.dataset.targetSymbol);
-
-      const isRelated = relatedEdges.some(edge => {
-        const edgeSourceSymbol = normalizeEdgeSymbol(edge.sourceSymbol);
-        const edgeTargetSymbol = normalizeEdgeSymbol(edge.targetSymbol);
-        return edge.sourceId === pathSourceId &&
-               edge.targetId === pathTargetId &&
-               edgeSourceSymbol === pathSourceSymbol &&
-               edgeTargetSymbol === pathTargetSymbol;
-      });
-
-      if (isRelated) {
+    // For each related edge, find the matching path(s) by data attributes
+    // Note: path attributes use empty string for missing symbols (via ?? "")
+    relatedEdges.forEach(edge => {
+      const sourceSymbol = edge.sourceSymbol ?? "";
+      const targetSymbol = edge.targetSymbol ?? "";
+      // Build selector to find paths with matching data attributes (kebab-case in HTML)
+      const selector = `.connection-path[data-source-id="${edge.sourceId}"][data-target-id="${edge.targetId}"][data-source-symbol="${sourceSymbol}"][data-target-symbol="${targetSymbol}"]`;
+      this.overlay.querySelectorAll<SVGPathElement>(selector).forEach(path => {
         path.classList.add("connection-highlighted");
-      }
+      });
     });
   }
 
@@ -336,11 +385,17 @@ export class LocalViewController implements LocalViewApi {
     if (this.pinnedSymbol && !force) {
       return;
     }
+
+    // Track if we had any collapsed symbols (need to redraw connections if so)
+    const hadCollapsed = this.container.querySelector(".symbol-collapsed") !== null;
     
     this.container.classList.remove("symbol-hover-active");
     this.overlay.classList.remove("symbol-hover-active");
     this.container.querySelectorAll<HTMLElement>(".symbol-highlighted").forEach(el => {
       el.classList.remove("symbol-highlighted");
+    });
+    this.container.querySelectorAll<HTMLElement>(".symbol-collapsed").forEach(el => {
+      el.classList.remove("symbol-collapsed");
     });
     this.container.querySelectorAll<HTMLElement>(".card-highlighted").forEach(el => {
       el.classList.remove("card-highlighted");
@@ -351,6 +406,11 @@ export class LocalViewController implements LocalViewApi {
     this.container.querySelectorAll<HTMLElement>(".symbol-pinned").forEach(el => {
       el.classList.remove("symbol-pinned");
     });
+
+    // If we had collapsed symbols, redraw connections to restore all paths
+    if (hadCollapsed) {
+      this.drawConnections();
+    }
   }
 
   /**

@@ -33,6 +33,10 @@ export interface LocalMapTuning {
   hoverDimConnections: number;
   /** How much self-loop "French Corset" strokes taper (0=no taper, 1=full taper to half width) */
   selfLoopTaper: number;
+  /** Collapse (hide) unrelated symbols when hovering a symbol row */
+  collapseOnHover: boolean;
+  /** Collapse (hide) unrelated symbols when a symbol is pinned */
+  collapseOnPin: boolean;
 }
 
 export interface TuningConfig {

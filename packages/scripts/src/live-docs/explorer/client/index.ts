@@ -320,7 +320,9 @@ function startExplorer(
       columnGap: 100,
       hoverDimSymbols: 0.5,
       hoverDimConnections: 0.1,
-      selfLoopTaper: 0.2
+      selfLoopTaper: 0.2,
+      collapseOnHover: false,
+      collapseOnPin: true
     }
   });
 
@@ -415,11 +417,15 @@ function startExplorer(
           const hoverDimSymbols = readFiniteNumber(localMapRaw.hoverDimSymbols);
           const hoverDimConnections = readFiniteNumber(localMapRaw.hoverDimConnections);
           const selfLoopTaper = readFiniteNumber(localMapRaw.selfLoopTaper);
+          const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
+          const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
           tuning.localMap = {
             ...(columnGap !== undefined ? { columnGap } : null),
             ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
             ...(hoverDimConnections !== undefined ? { hoverDimConnections } : null),
-            ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null)
+            ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null),
+            ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
+            ...(collapseOnPin !== undefined ? { collapseOnPin } : null)
           };
         }
 

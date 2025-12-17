@@ -182,6 +182,11 @@
     opacity: 1;
 }
 
+/* Collapsed symbols are completely hidden (used when collapseOnHover/collapseOnPin is enabled) */
+.symbol-hover-active .symbol-row.symbol-collapsed > * {
+    display: none;
+}
+
 /* Dim all connection paths by default in hover mode */
 .symbol-hover-active .connection-path {
     opacity: var(--hover-dim-connections, 0.1);
