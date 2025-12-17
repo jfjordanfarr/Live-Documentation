@@ -171,19 +171,31 @@ function startExplorer(
     console.log("Viewer config loaded:", viewerConfig);
   }
 
+  // Shared HTML escape helper
+  const escapeHtml = (str: string): string => {
+    return str.replace(/[&<>"']/g, c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;"
+    }[c] ?? c));
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
   // URL State Management
   // ─────────────────────────────────────────────────────────────────────────
 
   /**
    * Map between URL/config view names and internal state view names.
-   * URL uses: circuit, local, force (matches config schema)
-   * Internal uses: circuit, map, graph
+   * URL uses: circuit, local, force, sources (matches config schema)
+   * Internal uses: circuit, map, graph, sources
    */
   const viewNameToInternal = (name: string): ViewName => {
     switch (name) {
       case "local": return "map";
       case "force": return "graph";
+      case "sources": return "sources";
       case "circuit":
       default:
         return "circuit";
@@ -194,6 +206,7 @@ function startExplorer(
     switch (name) {
       case "map": return "local";
       case "graph": return "force";
+      case "sources": return "sources";
       case "circuit":
       default:
         return "circuit";
@@ -227,8 +240,8 @@ function startExplorer(
       };
     }
 
-    // Defaults: Local Map is most valuable for grounding
-    return { view: "map", nodeId: null, hasUrlState: false };
+    // Defaults: Knowledge Sources is the cold-start landing for first-time visitors
+    return { view: "sources", nodeId: null, hasUrlState: false };
   };
 
   /**
@@ -315,6 +328,11 @@ function startExplorer(
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
   };
 
+  const getRecord = (obj: Record<string, unknown>, key: string): Record<string, unknown> | null => {
+    const val = obj[key];
+    return isRecord(val) ? val : null;
+  };
+
   const readBoolean = (value: unknown): boolean | undefined => {
     return typeof value === "boolean" ? value : undefined;
   };
@@ -341,23 +359,28 @@ function startExplorer(
 
       const result: PersistedUiV1 = { version: PERSISTED_UI_VERSION };
 
-      if (isRecord(parsed.filters)) {
-        const showTests = readBoolean(parsed.filters.showTests);
-        const showAssets = readBoolean(parsed.filters.showAssets);
+      const parsedFilters = getRecord(parsed, "filters");
+      if (parsedFilters) {
+        const showTests = readBoolean(parsedFilters.showTests);
+        const showAssets = readBoolean(parsedFilters.showAssets);
         result.filters = {
           ...(showTests !== undefined ? { showTests } : null),
           ...(showAssets !== undefined ? { showAssets } : null)
         };
       }
 
-      if (isRecord(parsed.tuning)) {
+      /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment --
+         Type guards verified by tsc; ESLint projectService doesn't resolve this client tsconfig properly */
+      const parsedTuning = getRecord(parsed, "tuning");
+      if (parsedTuning) {
         const tuning: Partial<TuningConfig> = {};
 
-        if (isRecord(parsed.tuning.bezier)) {
-          const stubFactor = readFiniteNumber(parsed.tuning.bezier.stubFactor);
-          const stubMin = readFiniteNumber(parsed.tuning.bezier.stubMin);
-          const stubMaxOffset = readFiniteNumber(parsed.tuning.bezier.stubMaxOffset);
-          const verticalOffset = readFiniteNumber(parsed.tuning.bezier.verticalOffset);
+        const bezierRaw = getRecord(parsedTuning, "bezier");
+        if (bezierRaw) {
+          const stubFactor = readFiniteNumber(bezierRaw.stubFactor);
+          const stubMin = readFiniteNumber(bezierRaw.stubMin);
+          const stubMaxOffset = readFiniteNumber(bezierRaw.stubMaxOffset);
+          const verticalOffset = readFiniteNumber(bezierRaw.verticalOffset);
           tuning.bezier = {
             ...(stubFactor !== undefined ? { stubFactor } : null),
             ...(stubMin !== undefined ? { stubMin } : null),
@@ -366,29 +389,32 @@ function startExplorer(
           };
         }
 
-        if (isRecord(parsed.tuning.clickBehavior)) {
-          const singleClickFocusOnly = readBoolean(parsed.tuning.clickBehavior.singleClickFocusOnly);
-          const doubleClickRecenter = readBoolean(parsed.tuning.clickBehavior.doubleClickRecenter);
+        const clickBehaviorRaw = getRecord(parsedTuning, "clickBehavior");
+        if (clickBehaviorRaw) {
+          const singleClickFocusOnly = readBoolean(clickBehaviorRaw.singleClickFocusOnly);
+          const doubleClickRecenter = readBoolean(clickBehaviorRaw.doubleClickRecenter);
           tuning.clickBehavior = {
             ...(singleClickFocusOnly !== undefined ? { singleClickFocusOnly } : null),
             ...(doubleClickRecenter !== undefined ? { doubleClickRecenter } : null)
           };
         }
 
-        if (isRecord(parsed.tuning.visual)) {
-          const showTypeBadges = readBoolean(parsed.tuning.visual.showTypeBadges);
-          const alchemyGlow = readBoolean(parsed.tuning.visual.alchemyGlow);
+        const visualRaw = getRecord(parsedTuning, "visual");
+        if (visualRaw) {
+          const showTypeBadges = readBoolean(visualRaw.showTypeBadges);
+          const alchemyGlow = readBoolean(visualRaw.alchemyGlow);
           tuning.visual = {
             ...(showTypeBadges !== undefined ? { showTypeBadges } : null),
             ...(alchemyGlow !== undefined ? { alchemyGlow } : null)
           };
         }
 
-        if (isRecord(parsed.tuning.localMap)) {
-          const columnGap = readFiniteNumber(parsed.tuning.localMap.columnGap);
-          const hoverDimSymbols = readFiniteNumber(parsed.tuning.localMap.hoverDimSymbols);
-          const hoverDimConnections = readFiniteNumber(parsed.tuning.localMap.hoverDimConnections);
-          const selfLoopTaper = readFiniteNumber(parsed.tuning.localMap.selfLoopTaper);
+        const localMapRaw = getRecord(parsedTuning, "localMap");
+        if (localMapRaw) {
+          const columnGap = readFiniteNumber(localMapRaw.columnGap);
+          const hoverDimSymbols = readFiniteNumber(localMapRaw.hoverDimSymbols);
+          const hoverDimConnections = readFiniteNumber(localMapRaw.hoverDimConnections);
+          const selfLoopTaper = readFiniteNumber(localMapRaw.selfLoopTaper);
           tuning.localMap = {
             ...(columnGap !== undefined ? { columnGap } : null),
             ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
@@ -399,6 +425,7 @@ function startExplorer(
 
         result.tuning = tuning;
       }
+      /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
 
       return result;
     } catch {
@@ -419,6 +446,8 @@ function startExplorer(
       return defaults;
     }
 
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment --
+       Type guards verified by tsc; ESLint projectService doesn't resolve this client tsconfig properly */
     const filters: ExplorerFilters = {
       ...defaults.filters,
       ...(persisted.filters ?? {})
@@ -443,10 +472,13 @@ function startExplorer(
         ...(persisted.tuning?.localMap ?? {})
       }
     };
+    /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
     return { filters, tuning };
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
   const defaults = { filters: getDefaultFilters(), tuning: getDefaultTuning() };
   const persistedUi = readPersistedUi();
   const initialUi = applyPersistedUi(defaults, persistedUi);
@@ -484,7 +516,7 @@ function startExplorer(
       const nodeIdCandidate = parsed.nodeId;
 
       const view: ViewName | undefined =
-        viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" ? viewCandidate : undefined;
+        viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" || viewCandidate === "sources" ? viewCandidate : undefined;
 
       const nodeId: string | null | undefined =
         typeof nodeIdCandidate === "string" ? nodeIdCandidate : nodeIdCandidate === null ? null : undefined;
@@ -517,7 +549,9 @@ function startExplorer(
     view: resolveInitialView(),
     selectedNode: null,
     focusedNode: null,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
     filters: initialUi.filters,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
     tuning: initialUi.tuning
   };
 
@@ -1257,6 +1291,10 @@ function startExplorer(
   }
 
   function renderCurrentView(): void {
+    if (state.view === "sources") {
+      renderSourcesView();
+      return;
+    }
     if (graphData.nodes.length === 0) {
       return;
     }
@@ -1267,6 +1305,171 @@ function startExplorer(
     } else if (state.view === "graph") {
       renderGraph();
     }
+  }
+
+  function renderSourcesView(): void {
+    const container = requireElement<HTMLDivElement>("sources-container");
+
+    // Compute graph health metrics
+    const nodeCount = graphData.nodes.length;
+    const linkCount = graphData.links.length;
+
+    // Count archetypes
+    const archetypeCounts = new Map<string, number>();
+    graphData.nodes.forEach(node => {
+      const arch = (node.archetype || "unknown").toLowerCase();
+      archetypeCounts.set(arch, (archetypeCounts.get(arch) ?? 0) + 1);
+    });
+
+    // High fan-out nodes (potential barrels)
+    const outboundCounts = new Map<string, number>();
+    const inboundCounts = new Map<string, number>();
+    graphData.links.forEach(link => {
+      const sourceId = resolveLinkEndpoint(link.source);
+      const targetId = resolveLinkEndpoint(link.target);
+      if (sourceId) outboundCounts.set(sourceId, (outboundCounts.get(sourceId) ?? 0) + 1);
+      if (targetId) inboundCounts.set(targetId, (inboundCounts.get(targetId) ?? 0) + 1);
+    });
+
+    const HIGH_FANOUT_THRESHOLD = 50;
+    const HIGH_FANIN_THRESHOLD = 30;
+
+    const highFanoutNodes = graphData.nodes
+      .filter(node => (outboundCounts.get(node.id) ?? 0) >= HIGH_FANOUT_THRESHOLD)
+      .sort((a, b) => (outboundCounts.get(b.id) ?? 0) - (outboundCounts.get(a.id) ?? 0))
+      .slice(0, 5);
+
+    const highFaninNodes = graphData.nodes
+      .filter(node => (inboundCounts.get(node.id) ?? 0) >= HIGH_FANIN_THRESHOLD)
+      .sort((a, b) => (inboundCounts.get(b.id) ?? 0) - (inboundCounts.get(a.id) ?? 0))
+      .slice(0, 5);
+
+    // Determine data source
+    const isStaticMode = !!staticDocs || document.getElementById("explorer-data")?.textContent;
+    const dataSourceLabel = isStaticMode ? "Static bundle (embedded/fetched)" : "Server /graph endpoint";
+
+    // Build archetype breakdown string
+    const archetypeList = Array.from(archetypeCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([arch, count]) => `${arch}: ${count}`)
+      .join(", ");
+
+    // Render
+    container.innerHTML = `
+      <div class="sources-header">
+        <h1>📊 Knowledge Sources</h1>
+        <p>Where this graph gets its data, what it knows, and how you can improve it.</p>
+      </div>
+
+      <div class="sources-panel">
+        <h2><span class="panel-icon">🔌</span> Data Provenance</h2>
+        <div class="sources-row">
+          <span class="sources-row-label">Data source</span>
+          <span class="sources-row-value neutral">${escapeHtml(dataSourceLabel)}</span>
+        </div>
+        <div class="sources-row">
+          <span class="sources-row-label">Viewer config</span>
+          <span class="sources-row-value ${viewerConfig ? "positive" : "neutral"}">${viewerConfig ? "Present" : "Not provided"}</span>
+        </div>
+        <div class="sources-row">
+          <span class="sources-row-label">Knowledge feeds</span>
+          <span class="sources-row-value neutral">0 discovered (server-only feature)</span>
+        </div>
+      </div>
+
+      <div class="sources-panel">
+        <h2><span class="panel-icon">📈</span> Graph Statistics</h2>
+        <div class="sources-row">
+          <span class="sources-row-label">Total nodes</span>
+          <span class="sources-row-value positive">${nodeCount.toLocaleString()}</span>
+        </div>
+        <div class="sources-row">
+          <span class="sources-row-label">Total links</span>
+          <span class="sources-row-value positive">${linkCount.toLocaleString()}</span>
+        </div>
+        <div class="sources-row">
+          <span class="sources-row-label">Archetypes</span>
+          <span class="sources-row-value neutral">${escapeHtml(archetypeList) || "None"}</span>
+        </div>
+      </div>
+
+      <div class="sources-panel">
+        <h2><span class="panel-icon">⚠️</span> Graph Health Warnings</h2>
+        ${renderHealthWarnings(highFanoutNodes, highFaninNodes, outboundCounts, inboundCounts)}
+      </div>
+
+      <div class="sources-panel">
+        <h2><span class="panel-icon">💡</span> How to Improve</h2>
+        <div class="sources-guidance">
+          <p>The Explorer builds its graph from <strong>Live Documentation</strong> — markdown files that mirror your source code and declare their dependencies explicitly.</p>
+          <p>To enrich the graph:</p>
+          <ul>
+            <li>Run <code>npm run live-docs:generate</code> to create or update Live Docs for your workspace.</li>
+            <li>Place SCIP or LSIF JSON files in <code>data/knowledge-feeds/</code> for compiler-verified symbol data.</li>
+            <li>Use <code>npm run live-docs:inspect -- &lt;path&gt;</code> to trace dependency paths from the command line.</li>
+          </ul>
+          <p><strong>Barrel files</strong> (index.ts re-exporters) can obscure original symbol sources. If you see high fan-out warnings above, consider whether those files are masking the true dependency structure.</p>
+        </div>
+      </div>
+    `;
+
+    // Attach click handlers for warning nodes
+    container.querySelectorAll<HTMLElement>(".warning-node").forEach(el => {
+      el.addEventListener("click", () => {
+        const nodeId = el.dataset.nodeId;
+        if (nodeId) {
+          const node = nodesById.get(nodeId);
+          if (node) {
+            state.view = "map";
+            setActiveView("map");
+            updateUrlState("map", node.id);
+            schedulePersistNav();
+            void selectNode(node);
+          }
+        }
+      });
+    });
+  }
+
+  function renderHealthWarnings(
+    highFanout: ExplorerNodePayload[],
+    highFanin: ExplorerNodePayload[],
+    outboundCounts: Map<string, number>,
+    inboundCounts: Map<string, number>
+  ): string {
+    const warnings: string[] = [];
+
+    highFanout.forEach(node => {
+      const count = outboundCounts.get(node.id) ?? 0;
+      warnings.push(`
+        <li>
+          <span class="warning-icon">📤</span>
+          <span class="warning-text">
+            <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
+            has <strong>${count}</strong> outbound dependencies (potential barrel file)
+          </span>
+        </li>
+      `);
+    });
+
+    highFanin.forEach(node => {
+      const count = inboundCounts.get(node.id) ?? 0;
+      warnings.push(`
+        <li>
+          <span class="warning-icon">📥</span>
+          <span class="warning-text">
+            <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
+            has <strong>${count}</strong> inbound dependencies (heavily depended-upon)
+          </span>
+        </li>
+      `);
+    });
+
+    if (warnings.length === 0) {
+      return '<div class="sources-empty">✅ No high fan-out or fan-in nodes detected. Graph looks healthy!</div>';
+    }
+
+    return `<ul class="sources-warnings">${warnings.join("")}</ul>`;
   }
 
   function renderGraph(): void {

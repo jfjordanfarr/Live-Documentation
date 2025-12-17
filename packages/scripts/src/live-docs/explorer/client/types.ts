@@ -3,7 +3,7 @@ import type {
   ExplorerNodePayload
 } from "../shared/types";
 
-export type ViewName = "circuit" | "map" | "graph";
+export type ViewName = "circuit" | "map" | "graph" | "sources";
 
 export interface ExplorerFilters {
   showTests: boolean;

@@ -21,6 +21,9 @@
     
     <!-- View Navigation -->
     <div class="sidebar-section">
+      <div class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
+        <span class="nav-icon">📊</span><span>Knowledge Sources</span>
+      </div>
       <div class="nav-item active" data-view="circuit" onclick="switchView(event, 'circuit')">
         <span class="nav-icon">⚡</span><span>Circuit Board</span>
       </div>
@@ -162,6 +165,10 @@
   </div>
 
   <div id="main">
+    <div id="view-sources" class="view-container">
+      <div id="sources-container" class="sources-view"></div>
+    </div>
+
     <div id="view-circuit" class="view-container active">
       <div id="circuit-viewport">
         <div id="circuit-container" class="dom-layer"></div>
