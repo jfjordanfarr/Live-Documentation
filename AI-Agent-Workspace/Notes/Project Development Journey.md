@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 16, 2025\)*
+*Status: Active Development (Dec 17, 2025\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -479,6 +479,20 @@ Triggered by an architectural critique from NotebookLM (an AI evaluating the cod
 * **Persistence (Commit 176):** The Explorer now remembers user preferences (tuning, filters) via versioned localStorage, making it a true persistent application rather than just a transient viewer.  
 * **Maintenance (Commit 174):** Addressed a breaking change in zod@4 (Dependabot) to keep the CI pipeline green.
 
+### **Phase XXXII: The Pathfinder & The Debt Collector (Dec 17\)**
+
+Date: December 17, 2025
+
+Scope: Commits 178–182
+
+The team focused on advanced "GPS-style" navigation within the graph and automating the governance rules.
+
+* **Visual Pathfinding (Commits 180, 181):** A new **Pathfinding Toolbar** allows users to select a "Start" and "End" artifact/symbol. The system executes a BFS (Breadth-First Search) on the graph and visualizes the shortest path as a clickable "Hop Strip," solving the "How is A connected to B?" question visually.  
+* **Symbol-Level Inspection (Commit 179):** The inspect CLI was upgraded to support symbol-specific pathfinding (--from "file.ts\#Symbol"). This enables precise debugging of dependency chains down to the function level.  
+* **Focus & Pinning (Commit 178):** The Explorer interaction model was refined with **Click-to-Pin**. Pinning a symbol now dims all unrelated nodes and paths, allowing the user to trace specific data flows through a noisy graph.  
+* **Automated Governance (Commit 182):** The team implemented a **Tech Debt Detector** script that runs as part of the safe:commit pipeline. It proactively warns on files violating the "1000-line limit" and flags files that haven't been touched in 30 days, turning the project's "Constitution" into executable code.  
+* **UX Polish (Commit 182):** A collapsible sidebar was added to reclaim screen real estate, and the Force Graph now opens a detail panel on click instead of triggering a jarring navigation event.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -496,7 +510,8 @@ Triggered by an architectural critique from NotebookLM (an AI evaluating the cod
 * **Dec 13 (Phase XXV):** "Automated Governance." (CI/CD pipelines enforcing the rules).  
 * **Dec 14 (Phase XXVII):** "Identity Unification." (Complete purge of legacy branding).  
 * **Dec 15 (Phase XXIX):** "Network Isolation & Pre-Publish." (Security guarantees and npm readiness).  
-* **Dec 16 (Phase XXXI):** "The Explorer's Truth." (Self-auditing provenance and health transparency).
+* **Dec 16 (Phase XXXI):** "The Explorer's Truth." (Self-auditing provenance and health transparency).  
+* **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).
 
 ## **Technical Themes & Motifs**
 

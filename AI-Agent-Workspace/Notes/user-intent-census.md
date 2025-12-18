@@ -694,13 +694,26 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L~1935-L1945` — **localStorage persistence with schema-safe fallback**: When persisting UI state (filters, tuning, view, node), version the schema (`live-docs-explorer:ui:v1`); if the stored payload is invalid, wrong shape, or wrong version, ignore and clear it so code defaults take over. Clamp restored numeric values to current slider min/max to handle range changes gracefully.
 - `L~(summary)` — **Turn numbering semantics for summaries**: A "turn" in chat summaries is defined as a prompt/response pair (User → Copilot), not individual messages. This was clarified after prior summaries used per-message numbering.
 
-### Chat 2 (2025-12-17.1.md) — Symbol Pinning with Connection Highlighting and Collapse
+## 2025-12-17 (Dev Day 48)
+### Chat 1 (2025-12-17.1.md) — Symbol Pinning with Connection Highlighting and Collapse
 - `2025-12-17.1.md:L~600-L650` — **Simplest solution is most correct**: User proposed collapsing irrelevant symbols within cards instead of hiding entire nodes: "What if... we collapse or hide all Public Symbols which are not salient to the set of connections related to the Pinned symbols? Often, the simplest solution is the most correct." Symbol-level collapse proved simpler than node-level hiding (layout stability, context preservation, automatic recovery on unpin).
 - `L~650-L700` — **Test hover vs pin behavior**: Differentiate hover (temporary, dimming only) from pin (persistent, collapse + highlight). Default config: `collapseOnHover: false`, `collapseOnPin: true`. Hover shows relationships without visual disruption; pin provides focused exploration.
 - `L~700-L750` — **Major Goal 2 framing: Multi-hop Local Maps**: FROM/TO omnisearch for symbol-to-symbol pathfinding across N hops (configurable). When both FROM and TO are specified, find the path and render a multi-column Local Map (more than 3 columns). This is aspirational/deferred work that may take multiple dev days.
 - `L~1800-L1850` — **Destructive edits pushback**: When asked to fix summary turn numbering, Copilot rewrote substantial content instead of just renumbering. User pushed back: "The diff on that is +45 lines and -211... Why the destructive edits? The summary looks quite different now." Requested changes should be surgical, not opportunities for unrequested rewrites.
 - `L~2500-L2550` — **Attribute selectors over loop matching**: Direct CSS attribute selectors (`[data-source-id="..."]`) proved more robust than O(n×m) normalized comparison loops for connection path highlighting. When data structures are identical, selector-based matching avoids subtle normalization mismatches.
 - `L~2300-L2350` — **Terminal management for dev servers**: User ran visualization server from their own non-Copilot terminal after Copilot's terminal commands repeatedly stopped/failed to refresh the server. Long-running dev servers benefit from separation from agentic tool control.
+
+### Chat 2 (2025-12-17.2.md) — Symbol-Level Pathfinding + FROM/TO Pathfind Toolbar
+- `2025-12-17.2.md:L~1200-L1300` — **Symbol-level pathfinding in inspect CLI**: Support for `file.ts#SymbolName` syntax in pathfinding queries. Normalization between PascalCase symbols and kebab-case slugs is required for reliable matching.
+- `L~3600-L3800` — **FROM/TO pathfind toolbar**: Implement searchable artifact selection with symbol dropdowns for pathfinding visualization. "We solve problems completely and totally... I expect the omnisearch bars and symbol dropdowns to work like a charm before committing, with zero shortcuts taken."
+- `L~4200-L4400` — **Bidirectional BFS for pathfinding**: Treat the graph as undirected to find any connection path regardless of link direction. This enables finding "how is X related to Y" even if the dependency flow is indirect.
+
+### Chat 3 (2025-12-17.3.md) — Multi-hop Rejection + Tech Debt Tooling + UX Polish
+- `2025-12-17.3.md:L~400-L500` — **Multi-hop visualization rejection**: Rejection of "bolt-on" implementation that breaks core features (connection lines, symbol pinning). "This isn't anywhere close to 'fixed' or 'working'. Not even close."
+- `L~550-L650` — **Architectural Debt Acknowledgment**: Acknowledged that the Local Map was engineered for exactly 3 columns; multi-hop requires a foundational rewrite of connection drawing and anchor registration. "The Local Map was originally engineered for 3 columns... our architecture was nowhere near ready for it."
+- `L~900-L1000` — **Tech Debt Detection Heuristics**: Mandate for a script to detect large files (>1000 lines) and stale files (>30 days). "Examines the codebase and simply emits a warning for any code file longer than 1000 lines... Looks at the last edit date on git-tracked files and flags any files with an 'Info' rather than warning if they have not changed in over 30 days."
+- `L~450-L500` — **Honest Failure over Spin**: Explicitly called out "gaslighting" when claiming success by disabling broken features. "I think we need to throw out and discard everything but the chat history from this changeset and start over."
+- `L~950-L1000` — **LLM Edit Accuracy Threshold**: 1000 lines identified as the threshold where LLM edit accuracy degrades. "Files that will struggle to intake LLM-driven edits."
 
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
