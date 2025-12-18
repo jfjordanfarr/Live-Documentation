@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1060,
-    "links": 1753
+    "artifacts": 1062,
+    "links": 1755
   },
   "artifacts": [
     {
@@ -12810,6 +12810,23 @@
             "logLayerReport",
             "main"
           ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-0cac34b4",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/scripts/analysis/tech-debt-detector.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "scripts/analysis/tech-debt-detector.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
         }
       }
     },
@@ -27288,6 +27305,12 @@
       }
     },
     {
+      "id": "orchestrated-artifact-6a961e41",
+      "uri": "file:///D:/Projects/Live-Documentation/scripts/analysis/tech-debt-detector.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-e0fb3090",
       "uri": "file:///D:/Projects/Live-Documentation/scripts/doc-tools/combine-summaries.ts",
       "layer": "code",
@@ -29533,6 +29556,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-89b26349",
+      "sourceId": "orchestrated-artifact-0cac34b4",
+      "targetId": "orchestrated-artifact-6a961e41",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-67f6e8bb",
       "sourceId": "orchestrated-artifact-0cb2af37",
       "targetId": "orchestrated-artifact-452ceb44",
@@ -30629,6 +30661,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-fa2b8dba",
+      "sourceId": "orchestrated-artifact-20a5d72d",
+      "targetId": "orchestrated-artifact-6a961e41",
+      "kind": "documents",
+      "confidence": 0.75,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-65c94a5b",
@@ -44513,8 +44554,8 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1111,
-      "hintCount": 713,
+      "seedCount": 1114,
+      "hintCount": 715,
       "evidenceCount": 725
     },
     {

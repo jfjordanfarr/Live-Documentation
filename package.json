@@ -58,6 +58,7 @@
     "slopcop:markdown": "tsx --tsconfig ./tsconfig.base.json scripts/slopcop/check-markdown-links.ts",
     "slopcop:assets": "tsx --tsconfig ./tsconfig.base.json scripts/slopcop/check-asset-paths.ts",
     "slopcop:symbols": "tsx --tsconfig ./tsconfig.base.json scripts/slopcop/check-symbols.ts",
+    "tech-debt": "tsx --tsconfig ./tsconfig.base.json scripts/analysis/tech-debt-detector.ts",
     "audit:network": "tsx --tsconfig ./tsconfig.base.json scripts/analysis/audit-network-usage.ts",
     "livedocs": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/run-all.ts",
     "live-docs:generate": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/generate.ts --config ./.live-docs.config.json",

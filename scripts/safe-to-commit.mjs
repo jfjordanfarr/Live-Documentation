@@ -100,6 +100,7 @@ function runSafeCommitCheck() {
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
+    runNpmScript('Technical debt detection', ['run', 'tech-debt', '--', '--stale-limit', '10']);
 
     if (flags.generateReport) {
       const reportModes = resolveReportModes(flags.mode);

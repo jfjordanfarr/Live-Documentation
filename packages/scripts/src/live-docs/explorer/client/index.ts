@@ -57,6 +57,7 @@ declare global {
     zoomIn: () => void;
     zoomOut: () => void;
     resetZoom: () => void;
+    toggleSidebar: () => void;
   }
 }
 
@@ -894,6 +895,17 @@ function startExplorer(
     } else if (state.view === "map") {
       localView.resetZoom();
       localView.drawConnections();
+    }
+  };
+
+  globalWindow.toggleSidebar = () => {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("sidebar-toggle");
+    if (sidebar) {
+      sidebar.classList.toggle("collapsed");
+      if (toggleBtn) {
+        toggleBtn.textContent = sidebar.classList.contains("collapsed") ? "▶" : "◀";
+      }
     }
   };
 
@@ -1754,7 +1766,9 @@ function startExplorer(
         if (!original) {
           return;
         }
-        void openLocalViewForNode(original);
+        // Show node in detail panel without navigating away from Force Graph
+        state.focusedNode = original;
+        void detailPanel.showNode(original);
       });
   }
 
