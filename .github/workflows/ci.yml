@@ -64,9 +64,7 @@ jobs:
           npm run test:unit
         env:
           CI: "true"
-          # Block any HTTP proxy that might be set
-          http_proxy: ""
-          https_proxy: ""
+          # Block any HTTP proxy that might be set (uppercase form is canonical on Linux)
           HTTP_PROXY: ""
           HTTPS_PROXY: ""
           # Ensure no fallback to external services

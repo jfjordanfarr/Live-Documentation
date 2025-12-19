@@ -5,17 +5,21 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-state-ts
-- Generated At: 2025-12-18T23:59:04.119Z
+- Generated At: 2025-12-19T18:42:37.920Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Observable state container for the Local Map visualization, providing pure-data state shape, reactive subscriptions, and action functions for pin/hover/focus mutations.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as first of three pure-function module extractions from the monolithic controller/render code
+- Design principle: no DOM, no side effects — can be unit tested without jsdom
+- `StateStore<T>` pattern enables reactive UI updates via `.subscribe()` and `.update()`
+- `SymbolPin` with `hopIndex` tracks position in multi-hop path; `PathResult` bridges BFS output to rendering
+- 153 unit tests across state.ts, layout-math.ts, connection-geometry.ts validate the extraction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T23:59:04.119Z","inputHash":"6eddd378ea87fc08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T18:42:37.920Z","inputHash":"6eddd378ea87fc08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolPin` {#symbol-symbolpin}

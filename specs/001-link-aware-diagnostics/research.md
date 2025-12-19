@@ -1,5 +1,7 @@
 # Research Findings
 
+> **Note (2025-12-19)**: This document captures architectural research from the project's early days (October–November 2025). While some sections reference superseded approaches (e.g., "Link-Aware Diagnostics" before the "Live Documentation" pivot), the competitive analysis and fundamental decisions remain valid. Refresh this document if undertaking new competitive research or architectural pivots.
+
 ## Diagnostic Architecture
 - **Decision**: Use a Node.js-based language server, coordinated by a thin VS Code extension, to own graph construction and drift diagnostics.
 - **Rationale**: LSP keeps analysis off the UI thread, enables reuse in other editors/CI, and aligns with official tooling guidance. Prior research confirmed diagnostics can be published via `connection.sendDiagnostics` and the VS Code client can remain lightweight.

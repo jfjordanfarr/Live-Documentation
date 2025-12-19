@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Unit tests for the LocalMapState shape, StateStore subscriptions, and pin/hover/focus action functions.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) alongside state.ts extraction
+- Tests pure-function behavior: `addPin`, `removePin`, `clearPins`, `setHoveredSymbol`, `setFocusedNode`, `toggleCollapseUnrelated`
+- Validates `getRequiredColumnCount()`, `getPinnedNodeIds()`, `isSymbolPinned()` selectors
+- No jsdom required — these tests run in pure Node environment
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T22:35:34.164Z","inputHash":"7a954bf26966281d"}]} -->

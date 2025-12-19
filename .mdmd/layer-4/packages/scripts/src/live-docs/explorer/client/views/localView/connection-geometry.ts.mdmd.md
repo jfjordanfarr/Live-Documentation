@@ -5,17 +5,22 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connection-geometry-ts
-- Generated At: 2025-12-18T23:59:04.052Z
+- Generated At: 2025-12-19T18:42:37.870Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Pure-function SVG geometry for the Local Map: Bézier path computation, self-loop stub generation, gradient definitions, and rect/point primitives.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as third of three pure-function module extractions
+- `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances
+- `computeSelfLoopStubs()` handles intra-node symbol connections (same file, different symbols)
+- `createConnectionGradient()` returns `GradientDef` for directional color transitions
+- Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting
+- 385 lines of geometry, all unit-testable without DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T23:59:04.052Z","inputHash":"1a167b97f006ecba"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T18:42:37.870Z","inputHash":"1a167b97f006ecba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Point` {#symbol-point}

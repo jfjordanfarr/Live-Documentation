@@ -5,17 +5,21 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/safeFetch.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-safefetch-ts
-- Generated At: 2025-12-15T23:41:25.616Z
+- Generated At: 2025-12-19T18:42:38.660Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Localhost-only fetch wrapper that enforces network isolation by blocking any outbound request not targeting 127.0.0.0/8, `::1`, or `*.localhost`.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-15 (Dev Day 46) in chat 2025-12-15.2.md as core component of the network security hardening initiative
+- User quote: "I come from the sciences. I want to give hard evidence" — this module provides proof that Live Documentation never contacts the open internet
+- Defense-in-depth layer: static audit (audit-network-usage.ts) confirms codebase uses this wrapper; this wrapper enforces policy at runtime
+- Exports `NetworkPolicyViolation` error class for catch-and-distinguish handling
+- ollamaClient.ts was immediately refactored to use safeFetch instead of raw fetch
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:41:25.616Z","inputHash":"4316142a6658c963"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T18:42:38.660Z","inputHash":"4316142a6658c963"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NetworkPolicyViolation` {#symbol-networkpolicyviolation}

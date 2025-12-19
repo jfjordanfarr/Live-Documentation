@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 17, 2025\)*
+*Status: Active Development (Dec 18, 2025\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -493,6 +493,21 @@ The team focused on advanced "GPS-style" navigation within the graph and automat
 * **Automated Governance (Commit 182):** The team implemented a **Tech Debt Detector** script that runs as part of the safe:commit pipeline. It proactively warns on files violating the "1000-line limit" and flags files that haven't been touched in 30 days, turning the project's "Constitution" into executable code.  
 * **UX Polish (Commit 182):** A collapsible sidebar was added to reclaim screen real estate, and the Force Graph now opens a detail panel on click instead of triggering a jarring navigation event.
 
+### **Phase XXXIII: The Multi-Hop Revolution (Dec 18\)**
+
+Date: December 18, 2025
+
+Scope: Commits 183–184
+
+The Local Map evolved from a static "Three-Column" view into a dynamic **"Path Mode"** engine capable of visualizing multi-step narrative journeys (FROM → VIA → TO).
+
+* **Multi-Hop Architecture (Commit 184):** A massive frontend refactor transformed the visualizer.  
+  * **Reactive State:** Introduced a StateStore (Observable pattern) to manage complex UI state, moving away from ad-hoc controller logic.  
+  * **Pure Math:** Extracted layout and geometry logic into pure modules (layout-math.ts, connection-geometry.ts), backed by 153 new unit tests.  
+  * **Path Mode UI:** The view now dynamically renders a **FROM / VIA / TO** column layout when a path is active, visualizing the entire hop sequence in a single linear narrative.  
+* **Dual-Direction Pathfinder (Commit 183):** The CLI pathfinder was upgraded to support simultaneous **Outbound** (Dependency) and **Inbound** (Dependent) tracing. This allows developers to answer both "What does this break?" and "What breaks this?" in a single query.  
+* **Precision Signal (Commit 184):** The team implemented a **Barrel File Resolution** fix. The resolution engine now intelligently prefers the "Origin Definition" over the "Re-export" when linking symbols, significantly reducing noise in the graph.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -511,7 +526,8 @@ The team focused on advanced "GPS-style" navigation within the graph and automat
 * **Dec 14 (Phase XXVII):** "Identity Unification." (Complete purge of legacy branding).  
 * **Dec 15 (Phase XXIX):** "Network Isolation & Pre-Publish." (Security guarantees and npm readiness).  
 * **Dec 16 (Phase XXXI):** "The Explorer's Truth." (Self-auditing provenance and health transparency).  
-* **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).
+* **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).  
+* **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).
 
 ## **Technical Themes & Motifs**
 

@@ -9,10 +9,15 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Pure-function layout computation for the Local Map: column counts, grid templates, multi-hop positioning, and pin-to-hop-data conversion.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as second of three pure-function module extractions
+- Uses "upstream/downstream" semantics (not "left/right") to support future RTL layouts
+- `computeColumnCount()` handles both exploration mode (3 columns) and path mode (2N+1 for N hops)
+- `pinsToHopData()` converts `SymbolPin[]` to renderable `HopData[]` for multi-hop visualization
+- `computeMultiHopLayout()` generates full `LocalMapLayout` with per-column node positions
+- 495 lines of geometry and layout logic, all unit-testable without DOM
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T23:59:04.091Z","inputHash":"c0a59256aec21dad"}]} -->

@@ -267,8 +267,8 @@ Supports REQ-D1. [Live Documentation Pipeline](../layer-3/live-documentation-pip
 ### COMP-021 Generative Authoring Bridge
 Supports REQ-G1. [Live Documentation Pipeline](../layer-3/live-documentation-pipeline.mdmd.md#comp203-live-doc-authoring-bridge)
 
-### COMP-030 Visualization Explorer *(planned)*
-Supports REQ-V1. Component doc will capture the merged circuit-board/local explorer architecture once the Antigravity prototype hardens into a reusable view.
+### COMP-030 Visualization Explorer
+Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (treemap), Local Map (3-column symbol graph), and Force Graph. Static distribution via `npm run live-docs:visualize:static` and interactive Local Map `From`/`To` pathfinding are shipped as of commit `a0cc5de2` (2025-12-18). Accessibility audits and Playwright smoke tests remain outstanding (LD-406–LD-408).
 
 ## Linked Implementations
 
@@ -341,8 +341,8 @@ Supports REQ-201 and REQ-301. [LLM Sampling Harness](../../.mdmd/layer-4/package
 ### IMP-610 liveDocsSystemCli *(planned)*
 Supports REQ-D1. (CLI will be documented alongside the System analytics implementation.)
 
-### IMP-650 liveDocsVisualizeExplorer *(planned)*
-Supports REQ-V1. (Explorer implementation lives in `scripts/live-docs/visualize-explorer.ts` with future shared components promoted into `packages/extension/src/views/` once the command center stabilises.)
+### IMP-650 liveDocsVisualizeExplorer
+Supports REQ-V1. [Visualize Explorer CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md). Interactive server (`npm run live-docs:visualize`) and static distribution (`npm run live-docs:visualize:static`) are shipped. Local Map `From`/`To` pathfinding completed 2025-12-18 (commit `a0cc5de2`).
 
 ### IMP-950 hostedShowcaseWorker *(planned)*
 Supports REQ-H1. (Implementation will live under `scripts/live-docs/showcaseWorker.ts` with infrastructure configuration documented alongside the hosted pipeline.)

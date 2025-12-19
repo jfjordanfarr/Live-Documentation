@@ -14,7 +14,7 @@
 
 ### User Story 1 – Authors curate Live Documentation headers (Priority: P1)
 
-**Status**: In progress — validated by instruction updates and upcoming integration suites under `tests/integration/live-docs`.
+**Status**: Complete — validated by `npm run live-docs:generate` with authored block preservation, `npm run live-docs:lint` enforcing structural markers, and 585 Live Docs passing validation as of 2025-12-19.
 
 Maintainers open a Live Doc, edit the authored `Description`, `Purpose`, or `Notes`, and regenerate generated sections without losing manual context. The mirror tree lives under a configurable root (this repo uses `.mdmd/layer-4/`) but can be reconfigured.
 
@@ -32,7 +32,7 @@ Maintainers open a Live Doc, edit the authored `Description`, `Purpose`, or `Not
 
 ### User Story 2 – Generated sections stay in sync (Priority: P1)
 
-**Status**: In progress — benchmarks and regeneration CLIs exist; evidence feeds still pending.
+**Status**: Complete — benchmarks and regeneration CLIs operational. Generator emits `Public Symbols`, `Dependencies`, archetype-specific sections. Evidence feeds (coverage ingestion) still pending for automatic population.
 
 Developers run regeneration or save a file; the Live Doc generator updates `Public Symbols`, `Dependencies`, and archetype-specific sections (`Observed Evidence`, `Targets`, `Consumers`) deterministically using analyzers and coverage feeds.
 
@@ -51,7 +51,7 @@ Developers run regeneration or save a file; the Live Doc generator updates `Publ
 
 ### User Story 3 – Teams consume Live Doc intelligence on demand (Priority: P2)
 
-**Status**: Planned — existing diagnostics and CLI outputs will pivot to Live Docs and stream System analytics without persisting new docs.
+**Status**: Substantially complete — `npm run live-docs:inspect` ships with `--from`/`--to` pathfinding, `--direction` (outbound/inbound/both), and fan-out enumeration. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). System analytics CLI (LD-718) and evidence feeds remain pending.
 
 Leads export impact reports, Copilot prompts, or diagnostics sourced from the Live Doc graph, seeing the same metadata (generated timestamp, evidence count, dependency depth) regardless of surface. System-level analytics (clusters, workflows, coverage gaps) remain ephemeral views that can be regenerated whenever needed.
 
@@ -157,7 +157,7 @@ Prospective adopters visit a Cloudflare-backed site, enter a public GitHub repos
 
 ### User Story 9 – Visualize Live Docs in a Command Center (Priority: P1)
 
-**Status**: In progress — Antigravity prototypes exist, but the unified explorer needs refactoring, accessibility polish, and integration with upcoming authoring workflows.
+**Status**: Substantially complete — Explorer ships with Circuit Board, Local Map, and Force Graph views. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). Accessibility audits (LD-408) and unified explorer refactoring (LD-406) remain outstanding.
 
 Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) to explore the repository: the primary view presents a circuit-board layout of Live Docs, clicking or hovering a file expands its public symbols, and focus mode hides unrelated nodes so inbound/outbound relationships stand out. The detail panel reveals the Live Doc metadata, links back to the source, and previews authored sections that will eventually become editable. A complementary force-directed graph remains available for discovery but may relax accessibility compared to the primary surface.
 

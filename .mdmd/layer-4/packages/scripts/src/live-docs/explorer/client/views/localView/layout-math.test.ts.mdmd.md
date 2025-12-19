@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Unit tests for layout-math.ts covering column counting, grid template generation, hop indexing, and multi-hop layout computation.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) alongside layout-math.ts extraction
+- Tests edge cases: zero pins, single pin, max hops exceeded, overlapping nodes in same column
+- Validates `getColumnRole()` returns correct semantic role (upstream/downstream/center)
+- Ensures `pinsToHopData()` preserves symbol metadata through conversion
+- Part of the 153-test pure-function module validation suite
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T22:35:34.139Z","inputHash":"014ea89ef17b9328"}]} -->

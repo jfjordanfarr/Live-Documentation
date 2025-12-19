@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Thin dispatcher entry point for the `live-docs` CLI that routes commands (generate, lint, inspect, visualize, system, report, orphans) to their respective TypeScript scripts.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-15 (Dev Day 46) in chat 2025-12-15.2.md Turn 23 as part of npm-publish preparation
+- Intentionally thin: spawns `npx tsx` on the underlying script rather than importing logic directly, keeping the dispatcher stable across script changes
+- Supports `--help`, `--version`, and per-command help pass-through
+- Single-package architecture decision: CLI/server/shared tightly coupled, no need for scoped monorepo overhead
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-16T01:12:51.694Z","inputHash":"2debc6434b3d3511"}]} -->

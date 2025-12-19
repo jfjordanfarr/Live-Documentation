@@ -9,10 +9,14 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Unit tests for connection-geometry.ts covering Bézier path generation, self-loop stubs, gradient definitions, and rect/point primitives.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-18 (Dev Day 49) alongside connection-geometry.ts extraction
+- Tests edge cases: zero horizontal gap, negative coordinates, coincident points
+- Validates SVG path string format (`M ... C ...`) for Bézier curves
+- Ensures self-loop stubs produce valid arc paths even for symbols in the same node
+- Part of the 153-test pure-function module validation suite
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T22:35:34.110Z","inputHash":"b344a35d9b5d2815"}]} -->

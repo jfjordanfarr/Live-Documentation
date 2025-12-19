@@ -9,10 +9,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Unit tests validating the safeFetch localhost-only policy across IPv4, IPv6, subdomain patterns, and edge cases.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-15 (Dev Day 46) alongside safeFetch.ts
+- 13 test cases covering: direct localhost matches, 127.x.x.x range, `[::1]` bracket notation, `.localhost` subdomains, and blocked external hosts
+- Tests use vi.mock to stub globalThis.fetch, ensuring no real network requests are made
+- Validates NetworkPolicyViolation is thrown with correct `attemptedHost` property
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:41:25.612Z","inputHash":"e67059a8a49ec3cd"}]} -->

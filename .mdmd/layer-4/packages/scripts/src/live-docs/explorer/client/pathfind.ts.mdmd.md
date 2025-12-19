@@ -9,10 +9,15 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Pathfinding module providing FROM/TO omnisearch UI, BFS graph traversal, and path result computation for the Explorer Local Map visualization.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-17 (Dev Day 48) in chat 2025-12-17.2.md Turn 07 as complete FROM/TO pathfind toolbar implementation
+- BFS is bidirectional: builds both outbound (source→dependencies) and inbound (target→dependents) adjacency lists, tries outbound first then falls back to inbound
+- `PathfindResult.direction` field (added 2025-12-18) indicates whether path was found via "outbound" or "inbound" traversal — essential for correct arrow directionality
+- Fuzzy search over artifact names/paths with type icons (📦 implementation, 🧪 test) in dropdown
+- Symbol dropdown populated from selected artifact's `publicSymbols` metadata
+- Integrates with URL state for shareable pathfind queries (`from`, `to`, `fromSymbol`, `toSymbol` params)
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.319Z","inputHash":"603b7d850309e55e"}]} -->

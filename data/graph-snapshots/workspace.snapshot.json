@@ -2328,7 +2328,7 @@
           },
           {
             "symbol": "distance",
-            "context": "section-heading"
+            "context": "inline-code"
           },
           {
             "symbol": "SelfLoopParams",
@@ -2352,7 +2352,7 @@
           },
           {
             "symbol": "rectCenter",
-            "context": "section-heading"
+            "context": "inline-code"
           },
           {
             "symbol": "rectSize",
@@ -2368,11 +2368,11 @@
           },
           {
             "symbol": "mergeRects",
-            "context": "section-heading"
+            "context": "inline-code"
           },
           {
             "symbol": "GradientDef",
-            "context": "section-heading"
+            "context": "inline-code"
           },
           {
             "symbol": "createConnectionGradient",
@@ -40270,6 +40270,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-c1ca6aa7",
+      "sourceId": "orchestrated-artifact-b08d7912",
+      "targetId": "orchestrated-artifact-049277b1",
+      "kind": "documents",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-ff7ce68e",
       "sourceId": "orchestrated-artifact-b08d7912",
       "targetId": "orchestrated-artifact-1587952f",
@@ -45265,15 +45274,6 @@
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-3763e639",
-      "sourceId": "orchestrated-artifact-fa083392",
-      "targetId": "orchestrated-artifact-b08d7912",
-      "kind": "documents",
-      "confidence": 0.75,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-be0044eb",
       "sourceId": "orchestrated-artifact-fa0ee5a8",
       "targetId": "orchestrated-artifact-72406acd",
@@ -45621,7 +45621,7 @@
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
       "seedCount": 1128,
-      "hintCount": 722,
+      "hintCount": 721,
       "evidenceCount": 739
     },
     {

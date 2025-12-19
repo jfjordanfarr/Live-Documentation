@@ -9,10 +9,15 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Static analysis script that scans the codebase for network-related API usage (fetch, http/https, socket, etc.), providing auditable evidence that Live Documentation only makes network requests through the safeFetch wrapper which enforces localhost-only connections.
 
 ### Notes
-_Pending notes_
+- Created 2025-12-15 (Dev Day 46) as part of the network security hardening initiative
+- Integrated into CI pipeline as `npm run audit:network` with blocking exit codes
+- Patterns scanned: `fetch()`, `http.request/get`, `createServer`, `net.Socket`, third-party clients (axios, got, node-fetch)
+- Verdicts: `safe` (known-safe), `allowed` (browser-only/test code), `review` (needs manual inspection)
+- SAFE_PATTERNS allowlist covers safeFetch itself, tests, client-side browser code, and markdown/json data files
+- Exit code 1 on unaccounted network usage forces pipeline failure until resolved
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:36:40.310Z","inputHash":"3840231b2af03c06"}]} -->

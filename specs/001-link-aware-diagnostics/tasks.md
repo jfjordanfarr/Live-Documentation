@@ -83,11 +83,11 @@ description: "Task list for Live Documentation"
 
 **Purpose**: Ensure diagnostics, CLI tooling, and Copilot prompts read from staged Live Docs while retaining legacy fallback during migration.
 
-[x] LD-402 Ship CLI `scripts/live-docs/inspect.ts` that resolves outbound or inbound dependency chains between `--from`/`--to` artefacts, surfaces terminal roots (fan-out) when only a starting point is supplied, and captures both success and not-found payloads via `tests/integration/live-docs/inspect-cli.test.ts`
+- [x] LD-402 Ship CLI `scripts/live-docs/inspect.ts` that resolves outbound or inbound dependency chains between `--from`/`--to` artefacts, surfaces terminal roots (fan-out) when only a starting point is supplied, and captures both success and not-found payloads via `tests/integration/live-docs/inspect-cli.test.ts`
 - [ ] LD-406 Consolidate `npm run live-docs:visualize` into a single explorer view that shares data models across circuit-board, local, and force-directed modes while preserving Antigravity deep links.
 - [ ] LD-407 Implement focus-mode filtering, persisted selection, and Live Doc detail panels (metadata, open-in-editor) so global and local exploration stay in sync, ensuring the rendered edges, symbol anchors, and directional styling stay in parity with the `live-docs inspect` payloads (UI must never invent or omit graph facts).
 - [ ] LD-408 Add accessibility + telemetry harnesses (axe-core audit, keyboard navigation tests, selection event logging) and stage Playwright smoke tests that exercise Antigravity and VS Code entry points.
-- [ ] LD-409 Implement Local Map `From`/`To` pathfinding (non-headless `live-docs inspect`): auto-run (debounced) when both endpoints are valid, render the multi-hop chain (or deterministic “no connection”), and preserve parity with CLI hop semantics.
+- [x] LD-409 Implement Local Map `From`/`To` pathfinding (non-headless `live-docs inspect`): auto-run (debounced) when both endpoints are valid, render the multi-hop chain (or deterministic “no connection”), and preserve parity with CLI hop semantics.
 - [ ] LD-404 Implement regeneration watcher so safe-commit or file save triggers targeted updates without full repo sweep
 - [ ] LD-405 Document legacy-parity strategy in `specs/001-link-aware-diagnostics/quickstart.md` and Layer‑3 docs, including rollback toggles
 
@@ -162,11 +162,11 @@ description: "Task list for Live Documentation"
 
 **Purpose**: Enable zero-server distribution of the Live Documentation Explorer via JSON bundles, GitHub Pages embedding, and standalone HTML viewers.
 
-- [ ] LD-810 Implement `StaticExplorerData` builder in `packages/scripts/src/live-docs/explorer/server/staticBuilder.ts` that wraps `ExplorerGraphPayload` with provenance metadata and symbol index (schema defined in `explorer/shared/staticExplorerData.ts`).
-- [ ] LD-811 [P] Add `--static` flag to `npm run live-docs:visualize` that emits `explorer-data.json` + `index.html` to a configurable output directory instead of starting the HTTP server.
-- [ ] LD-812 [P] Create standalone HTML viewer (`explorer/static/index.html`) that loads from inline `<script id="explorer-data">`, relative `explorer-data.json`, or configurable remote URL, detecting mode automatically.
-- [ ] LD-813 Update viewer client (`explorer/client/index.ts`) to accept graph data from static JSON in addition to server fetch, preserving all existing functionality (Circuit Board, Local Map, Force Graph).
-- [ ] LD-814 Add provenance display panel in viewer footer showing `generatedAt`, `commitHash`, and `generatorVersion` from static bundle.
+- [x] LD-810 Implement `StaticExplorerData` builder in `packages/scripts/src/live-docs/explorer/server/staticBuilder.ts` that wraps `ExplorerGraphPayload` with provenance metadata and symbol index (schema defined in `explorer/shared/staticExplorerData.ts`).
+- [x] LD-811 [P] Add `--static` flag to `npm run live-docs:visualize` that emits `explorer-data.json` + `index.html` to a configurable output directory instead of starting the HTTP server.
+- [x] LD-812 [P] Create standalone HTML viewer (`explorer/static/index.html`) that loads from inline `<script id="explorer-data">`, relative `explorer-data.json`, or configurable remote URL, detecting mode automatically.
+- [x] LD-813 Update viewer client (`explorer/client/index.ts`) to accept graph data from static JSON in addition to server fetch, preserving all existing functionality (Circuit Board, Local Map, Force Graph).
+- [x] LD-814 Add provenance display panel in viewer footer showing `generatedAt`, `commitHash`, and `generatorVersion` from static bundle.
 - [ ] LD-815 [P] Implement client-side symbol search using `symbolIndex` from static bundle, enabling fuzzy search without server roundtrips.
 - [ ] LD-816 Add integration test `tests/integration/live-docs/static-explorer.test.ts` validating JSON schema compliance, viewer loading modes, and symbol search accuracy.
 - [ ] LD-817 Document static distribution workflow in `specs/001-link-aware-diagnostics/quickstart.md` covering GitHub Pages embedding, Teams Card integration, and offline usage.
