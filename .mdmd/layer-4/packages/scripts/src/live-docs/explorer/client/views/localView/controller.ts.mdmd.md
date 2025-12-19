@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-controller-ts
-- Generated At: 2025-12-19T04:50:47.373Z
+- Generated At: 2025-12-19T21:55:44.495Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,12 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - Manages scroll sync, column expansion, and SVG layer updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.373Z","inputHash":"d4bca3163831519f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.495Z","inputHash":"3069ecf7258371c6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L46)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L71)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 <!-- LIVE-DOC:END Public Symbols -->
 
@@ -30,6 +30,22 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
+- [`layout-measure.CenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-centeralignmentguides)
+- [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
+- [`layout-measure.applyColumnVerticalCentering`](./layout-measure.ts.mdmd.md#symbol-applycolumnverticalcentering)
+- [`layout-measure.applyContainerDimensions`](./layout-measure.ts.mdmd.md#symbol-applycontainerdimensions)
+- [`layout-measure.collectCenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-collectcenteralignmentguides)
+- [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
+- [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
+- [`layout-measure.lookupCenterAnchorPosition`](./layout-measure.ts.mdmd.md#symbol-lookupcenteranchorposition)
+- [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
+- [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)
+- [`pan-zoom.handleDragEnd`](./pan-zoom.ts.mdmd.md#symbol-handledragend)
+- [`pan-zoom.handleDragMove`](./pan-zoom.ts.mdmd.md#symbol-handledragmove)
+- [`pan-zoom.handleWheel`](./pan-zoom.ts.mdmd.md#symbol-handlewheel)
+- [`pan-zoom.startDrag`](./pan-zoom.ts.mdmd.md#symbol-startdrag)
+- [`pan-zoom.startInertia`](./pan-zoom.ts.mdmd.md#symbol-startinertia)
+- [`pan-zoom.zoomByFactor`](./pan-zoom.ts.mdmd.md#symbol-zoombyfactor)
 - [`render.renderLocalView`](./render.ts.mdmd.md#symbol-renderlocalview)
 - [`runtime.clearAnchorRegistry`](./runtime.ts.mdmd.md#symbol-clearanchorregistry)
 - [`runtime.createRuntime`](./runtime.ts.mdmd.md#symbol-createruntime)
@@ -49,10 +65,12 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - [`state.removePin`](./state.ts.mdmd.md#symbol-removepin)
 - [`state.setActivePath`](./state.ts.mdmd.md#symbol-setactivepath)
 - [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
-- [`types.Bounds`](./types.ts.mdmd.md#symbol-bounds) (type-only)
-- [`types.CenterAlignmentGuides`](./types.ts.mdmd.md#symbol-centeralignmentguides) (type-only)
+- [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
+- [`subgraph-builder.createLocalSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-createlocalsubgraph)
+- [`symbol-highlight.applySymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-applysymbolhighlight)
+- [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
+- [`symbol-highlight.computeSymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-computesymbolhighlight)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
-- [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
@@ -60,6 +78,5 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
-- [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

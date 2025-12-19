@@ -61,6 +61,11 @@ export interface LocalEdge {
   targetSymbol?: string;
 }
 
+/**
+ * Alias for LocalEdge - used in subgraph contexts.
+ */
+export type LocalSubgraphLink = LocalEdge;
+
 export interface LocalSubgraph {
   center: ExplorerNodePayload;
   nodes: ExplorerNodePayload[];
