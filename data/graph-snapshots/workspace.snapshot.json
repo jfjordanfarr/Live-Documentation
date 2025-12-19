@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1062,
-    "links": 1755
+    "artifacts": 1076,
+    "links": 1778
   },
   "artifacts": [
     {
@@ -2275,12 +2275,153 @@
       }
     },
     {
+      "id": "orchestrated-artifact-1531aa4f",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-1e00c0fd",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "Point",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "Rect",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BezierTuningParams",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DEFAULT_BEZIER_TUNING",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "PathResult",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeStubLength",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeBezierPath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "distance",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "SelfLoopParams",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "DEFAULT_SELF_LOOP_PARAMS",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "SelfLoopStubResult",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "computeSelfLoopStubs",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "offsetToPinEdge",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "rectCenter",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "rectSize",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "expandRect",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "boundingBoxFromPoints",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "mergeRects",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "GradientDef",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "createConnectionGradient",
+            "context": "section-heading"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "Point",
+            "Rect",
+            "BezierTuningParams",
+            "DEFAULT_BEZIER_TUNING",
+            "PathResult",
+            "computeStubLength",
+            "computeBezierPath",
+            "distance",
+            "SelfLoopParams",
+            "DEFAULT_SELF_LOOP_PARAMS",
+            "SelfLoopStubResult",
+            "computeSelfLoopStubs",
+            "offsetToPinEdge",
+            "rectCenter",
+            "rectSize",
+            "expandRect",
+            "boundingBoxFromPoints",
+            "mergeRects",
+            "GradientDef",
+            "createConnectionGradient"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-898fc5a9",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts.mdmd.md",
       "layer": "implementation",
       "language": "markdown",
       "metadata": {
         "symbolReferences": [
+          {
+            "symbol": "MultiHopEntry",
+            "context": "inline-code"
+          },
           {
             "symbol": "ConnectionsContext",
             "context": "inline-code"
@@ -2298,6 +2439,7 @@
           ],
           "exports": [],
           "sectionSymbols": [
+            "MultiHopEntry",
             "ConnectionsContext",
             "drawConnections"
           ]
@@ -2365,6 +2507,138 @@
       }
     },
     {
+      "id": "orchestrated-artifact-aed63f99",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-ba328573",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "LayoutNode",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LayoutColumn",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapLayout",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ColumnRole",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "HopData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LayoutConfig",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "DEFAULT_LAYOUT_CONFIG",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeGridTemplate",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeColumnCount",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "getColumnRole",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "getHopIndex",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "generateColumnLabel",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeSingleHopLayout",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeMultiHopLayout",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "pinsToHopData",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "computeVerticalAlignments",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "sortByAlignment",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "getIntermediateColumns",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "isMultiHopConnection",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "LayoutNode",
+            "LayoutColumn",
+            "LocalMapLayout",
+            "ColumnRole",
+            "HopData",
+            "LayoutConfig",
+            "DEFAULT_LAYOUT_CONFIG",
+            "computeGridTemplate",
+            "computeColumnCount",
+            "getColumnRole",
+            "getHopIndex",
+            "generateColumnLabel",
+            "computeSingleHopLayout",
+            "computeMultiHopLayout",
+            "pinsToHopData",
+            "computeVerticalAlignments",
+            "sortByAlignment",
+            "getIntermediateColumns",
+            "isMultiHopConnection"
+          ]
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-85405e38",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/render.ts.mdmd.md",
       "layer": "implementation",
@@ -2405,6 +2679,10 @@
             "context": "inline-code"
           },
           {
+            "symbol": "buildRegistryKeyWithHop",
+            "context": "inline-code"
+          },
+          {
             "symbol": "DragPosition",
             "context": "inline-code"
           },
@@ -2421,7 +2699,15 @@
             "context": "inline-code"
           },
           {
+            "symbol": "registerAnchorWithHop",
+            "context": "inline-code"
+          },
+          {
             "symbol": "getAnchor",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "getAnchorWithHop",
             "context": "inline-code"
           },
           {
@@ -2439,12 +2725,184 @@
           "sectionSymbols": [
             "AnchorRegistry",
             "buildRegistryKey",
+            "buildRegistryKeyWithHop",
             "DragPosition",
             "LocalViewRuntime",
             "createRuntime",
             "registerAnchor",
+            "registerAnchorWithHop",
             "getAnchor",
+            "getAnchorWithHop",
             "clearAnchorRegistry"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-eb651e66",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-37baea5f",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-5393b6ed",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/state.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "SymbolPin",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "HoveredSymbol",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "PathResult",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "LocalMapState",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "createInitialState",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StateSubscriber",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "StateStore",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "createStateStore",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "addPin",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "removePin",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "clearPins",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "setActivePath",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "clearActivePath",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "setHoveredSymbol",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "setFocusedNode",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "setMaxHops",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "toggleCollapseUnrelated",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "getPinnedNodeIds",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "getPinnedSymbolsForNode",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "isSymbolPinned",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "getHopIndexForSymbol",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "isHoveredSymbolPinned",
+            "context": "section-heading"
+          },
+          {
+            "symbol": "getRequiredColumnCount",
+            "context": "section-heading"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "SymbolPin",
+            "HoveredSymbol",
+            "PathResult",
+            "LocalMapState",
+            "createInitialState",
+            "StateSubscriber",
+            "StateStore",
+            "createStateStore",
+            "addPin",
+            "removePin",
+            "clearPins",
+            "setActivePath",
+            "clearActivePath",
+            "setHoveredSymbol",
+            "setFocusedNode",
+            "setMaxHops",
+            "toggleCollapseUnrelated",
+            "getPinnedNodeIds",
+            "getPinnedSymbolsForNode",
+            "isSymbolPinned",
+            "getHopIndexForSymbol",
+            "isHoveredSymbolPinned",
+            "getRequiredColumnCount"
           ]
         }
       }
@@ -9868,6 +10326,14 @@
             "context": "inline-code"
           },
           {
+            "symbol": "isBarrelFilePath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "compareSymbolLocationsPreferOrigin",
+            "context": "inline-code"
+          },
+          {
             "symbol": "resolveArchetype",
             "context": "inline-code"
           },
@@ -9999,6 +10465,8 @@
             "hasDefaultModifier",
             "getNodeLocation",
             "displayDependencyKey",
+            "isBarrelFilePath",
+            "compareSymbolLocationsPreferOrigin",
             "resolveArchetype",
             "hasMeaningfulAuthoredContent",
             "discoverTargetFiles",
@@ -10216,6 +10684,14 @@
           {
             "symbol": "displayDependencyKey",
             "context": "inline-code"
+          },
+          {
+            "symbol": "isBarrelFilePath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "compareSymbolLocationsPreferOrigin",
+            "context": "section-heading"
           }
         ],
         "mdmd": {
@@ -10236,7 +10712,9 @@
             "hasExportModifier",
             "hasDefaultModifier",
             "getNodeLocation",
-            "displayDependencyKey"
+            "displayDependencyKey",
+            "isBarrelFilePath",
+            "compareSymbolLocationsPreferOrigin"
           ]
         }
       }
@@ -20108,12 +20586,123 @@
       }
     },
     {
+      "id": "orchestrated-artifact-3d128fdc",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-3697875e",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "Point",
+            "kind": "interface"
+          },
+          {
+            "name": "Rect",
+            "kind": "interface"
+          },
+          {
+            "name": "BezierTuningParams",
+            "kind": "interface"
+          },
+          {
+            "name": "DEFAULT_BEZIER_TUNING",
+            "kind": "variable"
+          },
+          {
+            "name": "PathResult",
+            "kind": "interface"
+          },
+          {
+            "name": "computeStubLength",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "computeBezierPath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "distance",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "SelfLoopParams",
+            "kind": "interface"
+          },
+          {
+            "name": "DEFAULT_SELF_LOOP_PARAMS",
+            "kind": "variable"
+          },
+          {
+            "name": "SelfLoopStubResult",
+            "kind": "interface"
+          },
+          {
+            "name": "computeSelfLoopStubs",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "offsetToPinEdge",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "rectCenter",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "rectSize",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "expandRect",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "boundingBoxFromPoints",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "mergeRects",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "GradientDef",
+            "kind": "interface"
+          },
+          {
+            "name": "createConnectionGradient",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-f20e220a",
       "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts",
       "layer": "code",
       "language": "typescript",
       "metadata": {
         "exportedSymbols": [
+          {
+            "name": "MultiHopEntry",
+            "kind": "interface"
+          },
           {
             "name": "ConnectionsContext",
             "kind": "interface"
@@ -20167,6 +20756,110 @@
       }
     },
     {
+      "id": "orchestrated-artifact-cb362526",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-caea4bd4",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "LayoutNode",
+            "kind": "interface"
+          },
+          {
+            "name": "LayoutColumn",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapLayout",
+            "kind": "interface"
+          },
+          {
+            "name": "ColumnRole",
+            "kind": "type"
+          },
+          {
+            "name": "HopData",
+            "kind": "interface"
+          },
+          {
+            "name": "LayoutConfig",
+            "kind": "interface"
+          },
+          {
+            "name": "DEFAULT_LAYOUT_CONFIG",
+            "kind": "variable"
+          },
+          {
+            "name": "computeGridTemplate",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "computeColumnCount",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getColumnRole",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getHopIndex",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "generateColumnLabel",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "computeSingleHopLayout",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "computeMultiHopLayout",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "pinsToHopData",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "computeVerticalAlignments",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "sortByAlignment",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getIntermediateColumns",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isMultiHopConnection",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
       "id": "orchestrated-artifact-30e45e45",
       "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/render.ts",
       "layer": "code",
@@ -20198,6 +20891,11 @@
             "isDefault": false
           },
           {
+            "name": "buildRegistryKeyWithHop",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
             "name": "DragPosition",
             "kind": "interface"
           },
@@ -20216,12 +20914,153 @@
             "isDefault": false
           },
           {
+            "name": "registerAnchorWithHop",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
             "name": "getAnchor",
             "kind": "function",
             "isDefault": false
           },
           {
+            "name": "getAnchorWithHop",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
             "name": "clearAnchorRegistry",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-3eaa0073",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-2bf8766c",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-5d1fc6ce",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "SymbolPin",
+            "kind": "interface"
+          },
+          {
+            "name": "HoveredSymbol",
+            "kind": "interface"
+          },
+          {
+            "name": "PathResult",
+            "kind": "interface"
+          },
+          {
+            "name": "LocalMapState",
+            "kind": "interface"
+          },
+          {
+            "name": "createInitialState",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "StateSubscriber",
+            "kind": "type"
+          },
+          {
+            "name": "StateStore",
+            "kind": "interface"
+          },
+          {
+            "name": "createStateStore",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "addPin",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "removePin",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "clearPins",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "setActivePath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "clearActivePath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "setHoveredSymbol",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "setFocusedNode",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "setMaxHops",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "toggleCollapseUnrelated",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getPinnedNodeIds",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getPinnedSymbolsForNode",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isSymbolPinned",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getHopIndexForSymbol",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isHoveredSymbolPinned",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "getRequiredColumnCount",
             "kind": "function",
             "isDefault": false
           }
@@ -25278,6 +26117,16 @@
             "isTypeOnly": false
           },
           {
+            "name": "isBarrelFilePath",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "compareSymbolLocationsPreferOrigin",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
             "name": "resolveArchetype",
             "kind": "unknown",
             "isTypeOnly": false
@@ -25554,6 +26403,16 @@
           },
           {
             "name": "displayDependencyKey",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "isBarrelFilePath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "compareSymbolLocationsPreferOrigin",
             "kind": "function",
             "isDefault": false
           }
@@ -29790,6 +30649,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-efd321c3",
+      "sourceId": "orchestrated-artifact-1531aa4f",
+      "targetId": "orchestrated-artifact-3d128fdc",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-bf9868c1",
       "sourceId": "orchestrated-artifact-15426eed",
       "targetId": "orchestrated-artifact-e64bc9e6",
@@ -30546,6 +31414,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-8f5a01e9",
+      "sourceId": "orchestrated-artifact-1e00c0fd",
+      "targetId": "orchestrated-artifact-3697875e",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-d4cdf66a",
       "sourceId": "orchestrated-artifact-1e654d69",
       "targetId": "orchestrated-artifact-0bd879f6",
@@ -30659,6 +31536,15 @@
       "targetId": "orchestrated-artifact-5a9956ac",
       "kind": "depends_on",
       "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-83c243a6",
+      "sourceId": "orchestrated-artifact-20a5d72d",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
     },
@@ -31158,6 +32044,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-8bb9d24c",
+      "sourceId": "orchestrated-artifact-2bf8766c",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-35193e59",
       "sourceId": "orchestrated-artifact-2bfb1863",
       "targetId": "orchestrated-artifact-f076a64d",
@@ -31410,6 +32305,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-11e1bb4c",
+      "sourceId": "orchestrated-artifact-30e45e45",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-31ce0259",
       "sourceId": "orchestrated-artifact-30e45e45",
       "targetId": "orchestrated-artifact-773a86cc",
@@ -31419,11 +32323,29 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-27b23c3c",
+      "sourceId": "orchestrated-artifact-30e45e45",
+      "targetId": "orchestrated-artifact-caea4bd4",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-591ca51c",
       "sourceId": "orchestrated-artifact-30e45e45",
       "targetId": "orchestrated-artifact-cc0676f9",
       "kind": "depends_on",
-      "confidence": 0.95,
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-ad34560d",
+      "sourceId": "orchestrated-artifact-30e45e45",
+      "targetId": "orchestrated-artifact-cc0676f9",
+      "kind": "references",
+      "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
     },
@@ -31797,6 +32719,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-762ebbb6",
+      "sourceId": "orchestrated-artifact-37baea5f",
+      "targetId": "orchestrated-artifact-2bf8766c",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-b6d286c3",
       "sourceId": "orchestrated-artifact-38210306",
       "targetId": "orchestrated-artifact-5eefd193",
@@ -31977,6 +32908,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-9f30cd26",
+      "sourceId": "orchestrated-artifact-3d128fdc",
+      "targetId": "orchestrated-artifact-3697875e",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-9ad1bc05",
       "sourceId": "orchestrated-artifact-3dabb747",
       "targetId": "orchestrated-artifact-fa0ee5a8",
@@ -31993,6 +32933,15 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-4039744c",
+      "sourceId": "orchestrated-artifact-3eaa0073",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-139e1112",
@@ -33885,6 +34834,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-9703ce54",
+      "sourceId": "orchestrated-artifact-5161c8b9",
+      "targetId": "orchestrated-artifact-4403c72a",
+      "kind": "depends_on",
+      "confidence": 0.6,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-fc8c68f8",
       "sourceId": "orchestrated-artifact-5161c8b9",
       "targetId": "orchestrated-artifact-625fe29a",
@@ -34144,6 +35102,15 @@
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
+    },
+    {
+      "id": "orchestrated-link-8153de26",
+      "sourceId": "orchestrated-artifact-5393b6ed",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-5264dff1",
@@ -36819,6 +37786,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-e671c8a7",
+      "sourceId": "orchestrated-artifact-84f6f5a7",
+      "targetId": "orchestrated-artifact-f20e220a",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-438b7727",
       "sourceId": "orchestrated-artifact-85405e38",
       "targetId": "orchestrated-artifact-30e45e45",
@@ -37020,6 +37996,15 @@
       "id": "orchestrated-link-e5c55578",
       "sourceId": "orchestrated-artifact-8a48b90c",
       "targetId": "orchestrated-artifact-3e91faa2",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-844834e8",
+      "sourceId": "orchestrated-artifact-8a48b90c",
+      "targetId": "orchestrated-artifact-4403c72a",
       "kind": "depends_on",
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -39240,6 +40225,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-c3f8bef8",
+      "sourceId": "orchestrated-artifact-aed63f99",
+      "targetId": "orchestrated-artifact-cb362526",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-46fa11ba",
       "sourceId": "orchestrated-artifact-af33f5f8",
       "targetId": "orchestrated-artifact-72406acd",
@@ -40066,6 +41060,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-1674bd19",
+      "sourceId": "orchestrated-artifact-ba328573",
+      "targetId": "orchestrated-artifact-caea4bd4",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-451b20a9",
@@ -41056,6 +42059,33 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-0f3892a7",
+      "sourceId": "orchestrated-artifact-caea4bd4",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-20cf1f38",
+      "sourceId": "orchestrated-artifact-cb362526",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-369fa028",
+      "sourceId": "orchestrated-artifact-cb362526",
+      "targetId": "orchestrated-artifact-caea4bd4",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-542a194e",
@@ -42327,6 +43357,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-42c34bb5",
+      "sourceId": "orchestrated-artifact-e64bc9e6",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-62af92c2",
       "sourceId": "orchestrated-artifact-e64bc9e6",
       "targetId": "orchestrated-artifact-773a86cc",
@@ -42627,6 +43666,15 @@
       "id": "orchestrated-link-b7a8f96b",
       "sourceId": "orchestrated-artifact-eb51d921",
       "targetId": "orchestrated-artifact-899f102e",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-33665416",
+      "sourceId": "orchestrated-artifact-eb651e66",
+      "targetId": "orchestrated-artifact-3eaa0073",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -43153,6 +44201,15 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-1c4ed1e1",
+      "sourceId": "orchestrated-artifact-f20e220a",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-fe879ec9",
@@ -44082,6 +45139,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-6019286d",
+      "sourceId": "orchestrated-artifact-f88ccf7f",
+      "targetId": "orchestrated-artifact-5d1fc6ce",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-d41d206b",
       "sourceId": "orchestrated-artifact-f88ccf7f",
       "targetId": "orchestrated-artifact-773a86cc",
@@ -44554,9 +45620,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1114,
-      "hintCount": 715,
-      "evidenceCount": 725
+      "seedCount": 1128,
+      "hintCount": 722,
+      "evidenceCount": 739
     },
     {
       "id": "relationship-rules",

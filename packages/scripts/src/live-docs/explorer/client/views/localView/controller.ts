@@ -14,8 +14,24 @@ import {
   clearAnchorRegistry,
   createRuntime,
   getAnchor as fetchAnchor,
-  registerAnchor as storeAnchor
+  getAnchorWithHop as fetchAnchorWithHop,
+  registerAnchor as storeAnchor,
+  registerAnchorWithHop as storeAnchorWithHop
 } from "./runtime";
+import {
+  type StateStore,
+  type LocalMapState,
+  type SymbolPin,
+  type PathResult,
+  createStateStore,
+  createInitialState,
+  addPin,
+  removePin,
+  clearPins,
+  setHoveredSymbol,
+  isSymbolPinned,
+  setActivePath as setActivePathAction
+} from "./state";
 import type {
   Bounds,
   CenterAlignmentGuides,
@@ -39,8 +55,20 @@ export class LocalViewController implements LocalViewApi {
   private readonly container = this.runtime.container;
   private readonly overlay = this.runtime.overlay;
 
-  /** Tracks which symbol is "pinned" (sticky highlight). Format: "nodeId:symbol" or null */
+  /** 
+   * Legacy single-pin state for backward compatibility.
+   * @deprecated Use localMapState.pinnedPath instead. Will be removed once multi-hop is stable.
+   */
   private pinnedSymbol: string | null = null;
+
+  /**
+   * Observable state store for multi-hop pinned path visualization.
+   * Contains pinnedPath[], hoveredSymbol, focusedNodeId, and visualization settings.
+   */
+  readonly localMapState: StateStore<LocalMapState>;
+
+  /** Cleanup function for state subscription */
+  private stateUnsubscribe: (() => void) | null = null;
 
   private readonly handleWindowMouseMove = (event: MouseEvent): void => {
     const { state } = this.options;
@@ -116,10 +144,50 @@ export class LocalViewController implements LocalViewApi {
 
   constructor(options: LocalViewOptions) {
     this.options = options;
+    this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
     this.viewport.style.cursor = "grab";
     this.bindPointerEvents();
     this.bindWheelEvents();
+    this.subscribeToStateChanges();
+  }
+
+  /**
+   * Subscribes to localMapState changes for reactive updates.
+   * Triggers connection redraws when pinnedPath, hoveredSymbol, or activePath changes.
+   */
+  private subscribeToStateChanges(): void {
+    this.stateUnsubscribe = this.localMapState.subscribe((state, prevState) => {
+      // When activePath changes, trigger full re-render for path-mode layout
+      if (state.activePath !== prevState.activePath) {
+        // Defer render to avoid recursive updates
+        requestAnimationFrame(() => this.render());
+        return;
+      }
+
+      // When pinned path length changes (e.g., going from 1→2 hops or 2→1), trigger full re-render
+      // to switch between single-hop and multi-hop layouts
+      const lengthChanged = state.pinnedPath.length !== prevState.pinnedPath.length;
+      if (lengthChanged && (state.pinnedPath.length > 1 || prevState.pinnedPath.length > 1)) {
+        // Defer render to avoid recursive updates
+        requestAnimationFrame(() => this.render());
+      } else if (state.pinnedPath !== prevState.pinnedPath) {
+        // Pin content changed but layout structure is the same - just redraw connections
+        this.scheduleConnectionRedraw();
+      }
+      // Could add more reactive updates here (e.g., hover state changes)
+    });
+  }
+
+  /**
+   * Cleanup method to unsubscribe from state store.
+   * Should be called when the controller is disposed.
+   */
+  dispose(): void {
+    if (this.stateUnsubscribe) {
+      this.stateUnsubscribe();
+      this.stateUnsubscribe = null;
+    }
   }
 
   render(): void {
@@ -132,9 +200,30 @@ export class LocalViewController implements LocalViewApi {
       state: this.options.state,
       svgNamespace: this.svgNamespace,
       getAnchor: (nodeId, columnRole, direction, symbol) => this.getAnchor(nodeId, columnRole, direction, symbol),
+      getAnchorWithHop: (nodeId, columnRole, hopIndex, direction, symbol) => 
+        this.getAnchorWithHop(nodeId, columnRole, hopIndex, direction, symbol),
       measureLayoutExtents: () => this.measureLayoutExtents(),
-      getCenterCardBounds: () => this.getCenterCardBounds()
+      getCenterCardBounds: () => this.getCenterCardBounds(),
+      multiHopData: this.runtime.multiHopSubgraphs ?? undefined,
+      activePath: this.localMapState.getState().activePath ?? undefined
     });
+  }
+
+  /**
+   * Sets multi-hop subgraphs for connection drawing.
+   * Called by render.ts during multi-hop column rendering.
+   */
+  setMultiHopSubgraphs(hopSubgraphs: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> | null): void {
+    if (!hopSubgraphs) {
+      this.runtime.multiHopSubgraphs = null;
+      return;
+    }
+    // Convert to MultiHopEntry format
+    this.runtime.multiHopSubgraphs = hopSubgraphs.map((entry, index) => ({
+      hopIndex: index,
+      centerId: entry.center.id,
+      subgraph: entry.subgraph
+    }));
   }
 
   highlightSelection(): void {
@@ -180,7 +269,13 @@ export class LocalViewController implements LocalViewApi {
     if (!currentSubgraph) return;
 
     // If a symbol is pinned and this isn't the pin-triggering call, suppress hover
-    if (this.pinnedSymbol && !fromPin) return;
+    const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
+    if ((this.pinnedSymbol || hasPinnedPath) && !fromPin) return;
+
+    // Update hover state in the state store (for reactive updates)
+    if (!fromPin) {
+      this.localMapState.update(s => setHoveredSymbol(s, { nodeId, symbol }));
+    }
 
     const centerId = currentSubgraph.center.id;
 
@@ -382,9 +477,13 @@ export class LocalViewController implements LocalViewApi {
    */
   clearSymbolHighlight(force = false): void {
     // Don't clear if we have a pinned symbol (unless forced)
-    if (this.pinnedSymbol && !force) {
+    const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
+    if ((this.pinnedSymbol || hasPinnedPath) && !force) {
       return;
     }
+
+    // Clear hover state in the state store
+    this.localMapState.update(s => setHoveredSymbol(s, null));
 
     // Track if we had any collapsed symbols (need to redraw connections if so)
     const hadCollapsed = this.container.querySelector(".symbol-collapsed") !== null;
@@ -424,15 +523,26 @@ export class LocalViewController implements LocalViewApi {
    */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
     const key = `${nodeId}:${symbol}`;
+    const currentState = this.localMapState.getState();
     
-    if (this.pinnedSymbol === key) {
+    // Check if this symbol is already pinned using the new state
+    const alreadyPinned = isSymbolPinned(currentState, nodeId, symbol);
+    
+    if (this.pinnedSymbol === key || alreadyPinned) {
       // Clicking the same symbol: unpin and clear
       this.pinnedSymbol = null;
+      // Clear the new state as well
+      this.localMapState.update(s => clearPins(s));
       this.clearSymbolHighlight(true);
     } else {
       // Pin the new symbol (clear any previous pin first)
       this.clearSymbolHighlight(true);
       this.pinnedSymbol = key;
+      
+      // Update the new state store with this pin at hop 0 (origin)
+      const newPin: SymbolPin = { nodeId, symbol, hopIndex: 0 };
+      this.localMapState.update(s => addPin(clearPins(s), newPin));
+      
       this.highlightSymbolConnections(nodeId, symbol, true);
       
       // Mark the pinned row visually
@@ -445,10 +555,227 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
+   * Adds a pin to the multi-hop path at a specific hop index.
+   * Used for building multi-hop traces through the dependency graph.
+   * 
+   * @param nodeId - The node ID where the symbol resides
+   * @param symbol - The symbol name to pin
+   * @param hopIndex - Which hop in the chain (0 = origin)
+   */
+  addPinToPath(nodeId: string, symbol: string, hopIndex: number): void {
+    const newPin: SymbolPin = { nodeId, symbol, hopIndex };
+    this.localMapState.update(s => addPin(s, newPin));
+    
+    // Also update legacy state if this is hop 0
+    if (hopIndex === 0) {
+      this.pinnedSymbol = `${nodeId}:${symbol}`;
+    }
+    
+    // Apply visual highlight for the pinned symbol
+    this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+      if (row.dataset.nodeId === nodeId && row.dataset.symbol === symbol) {
+        row.classList.add("symbol-pinned");
+      }
+    });
+  }
+
+  /**
+   * Removes pins from the path starting at a specific hop index.
+   * Truncates the path, removing this hop and all subsequent hops.
+   * 
+   * @param fromHopIndex - Remove pins from this hop index onward
+   */
+  removePinFromPath(fromHopIndex: number): void {
+    this.localMapState.update(s => removePin(s, fromHopIndex));
+    
+    // If removing from hop 0, also clear legacy state
+    if (fromHopIndex === 0) {
+      this.pinnedSymbol = null;
+    }
+    
+    // Refresh visual state
+    this.scheduleConnectionRedraw();
+  }
+
+  /**
+   * Gets the current pinned path for external inspection.
+   */
+  getPinnedPath(): SymbolPin[] {
+    return this.localMapState.getState().pinnedPath;
+  }
+
+  /**
+   * Sets the active path for path-mode rendering.
+   * Path mode renders ONLY the nodes in the path as a linear chain,
+   * without showing the full Dependencies/Dependents subgraphs of each node.
+   * 
+   * This is distinct from "exploration mode" (single FROM node) which
+   * shows the classic 3-column layout: Dependencies → Center → Dependents.
+   * 
+   * @param path - The path result containing nodeIds and symbols, or null to exit path mode
+   */
+  setActivePath(path: PathResult | null): void {
+    this.localMapState.update(s => setActivePathAction(s, path));
+    
+    // Also populate the pinnedPath from the path result for rendering
+    if (path) {
+      // Clear existing pins
+      this.localMapState.update(s => clearPins(s));
+      
+      // Add pins for each node in the path
+      for (let i = 0; i < path.nodeIds.length; i++) {
+        const nodeId = path.nodeIds[i];
+        // Use the appropriate symbol for first/last nodes, or a generic symbol for intermediates
+        let symbol = "";
+        if (i === 0 && path.fromSymbol) {
+          symbol = path.fromSymbol;
+        } else if (i === path.nodeIds.length - 1 && path.toSymbol) {
+          symbol = path.toSymbol;
+        }
+        const pin: SymbolPin = { nodeId, symbol, hopIndex: i };
+        this.localMapState.update(s => addPin(s, pin));
+      }
+    } else {
+      // Exiting path mode - clear all pins
+      this.localMapState.update(s => clearPins(s));
+    }
+    
+    // Trigger re-render with new path mode
+    requestAnimationFrame(() => this.render());
+  }
+
+  /**
+   * Gets the current active path, or null if in exploration mode.
+   */
+  getActivePath(): PathResult | null {
+    return this.localMapState.getState().activePath;
+  }
+
+  /**
+   * Builds subgraph data for each hop in the pinned path.
+   * Used by render.ts for multi-hop column rendering.
+   * 
+   * @returns Array of { center, subgraph } for each hop, or null if path is empty
+   */
+  buildMultiHopSubgraphs(): Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> | null {
+    const pinnedPath = this.localMapState.getState().pinnedPath;
+    if (pinnedPath.length === 0) {
+      return null;
+    }
+
+    const result: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> = [];
+
+    for (const pin of pinnedPath) {
+      const node = this.resolveNode(pin.nodeId);
+      if (!node) {
+        // Skip pins that reference nodes no longer in the graph
+        continue;
+      }
+      const subgraph = this.buildLocalSubgraph(node);
+      result.push({ center: node, subgraph });
+    }
+
+    return result.length > 0 ? result : null;
+  }
+
+  /**
+   * Builds a subgraph for path mode visualization.
+   * 
+   * Unlike exploration mode which shows all neighbors of a center node,
+   * path mode shows only the nodes in the path and edges between adjacent nodes.
+   * 
+   * For a path [A, B, C]:
+   * - A is the "origin" (FROM)
+   * - C is the "destination" (TO)
+   * - B is intermediate
+   * - Edges are filtered to only include A→B and B→C connections
+   * 
+   * Returns a subgraph with the first node as "center" and edges representing
+   * only the path connections.
+   */
+  buildPathSubgraph(pathNodeIds: string[]): LocalSubgraph | null {
+    if (pathNodeIds.length < 2) return null;
+
+    const nodes: ExplorerNodePayload[] = [];
+    for (const id of pathNodeIds) {
+      const node = this.resolveNode(id);
+      if (!node) return null;
+      nodes.push(node);
+    }
+
+    const center = nodes[0];
+    const pathNodeIdSet = new Set(pathNodeIds);
+
+    // Build set of valid adjacent pairs for edge filtering
+    const adjacentPairs = new Set<string>();
+    for (let i = 0; i < pathNodeIds.length - 1; i++) {
+      // Edge can go either direction, so add both orderings
+      adjacentPairs.add(`${pathNodeIds[i]}:${pathNodeIds[i + 1]}`);
+      adjacentPairs.add(`${pathNodeIds[i + 1]}:${pathNodeIds[i]}`);
+    }
+
+    const resolveLinkEndpoint = (endpoint: ExplorerLinkPayload["source"]): string =>
+      this.options.resolveLinkEndpoint(endpoint);
+
+    // Filter graph edges to only those between adjacent path nodes
+    const linkResults: LocalSubgraph["links"] = [];
+    const inboundIds = new Set<string>();
+    const outboundIds = new Set<string>();
+
+    this.options.graphData.links.forEach(edge => {
+      const sourceId = resolveLinkEndpoint(edge.source);
+      const targetId = resolveLinkEndpoint(edge.target);
+
+      // Only include edges between adjacent path nodes
+      const pairKey = `${sourceId}:${targetId}`;
+      if (!adjacentPairs.has(pairKey)) return;
+
+      // Both nodes must be in the path
+      if (!pathNodeIdSet.has(sourceId) || !pathNodeIdSet.has(targetId)) return;
+
+      const kind = edge.kind ?? "dependency";
+
+      // Determine direction relative to the path flow
+      // In path mode, edges flow FROM → TO (left to right)
+      // If sourceId comes before targetId in path, it's "outbound" (providing)
+      // If targetId comes before sourceId, it's "inbound" (consuming)
+      const sourceIndex = pathNodeIds.indexOf(sourceId);
+      const targetIndex = pathNodeIds.indexOf(targetId);
+      const direction: "inbound" | "outbound" = sourceIndex < targetIndex ? "outbound" : "inbound";
+
+      if (direction === "outbound") {
+        outboundIds.add(targetId);
+      } else {
+        inboundIds.add(sourceId);
+      }
+
+      linkResults.push({
+        sourceId,
+        targetId,
+        direction,
+        kind,
+        sourceSymbol: edge.sourceSymbol,
+        targetSymbol: edge.targetSymbol
+      });
+    });
+
+    return {
+      center,
+      nodes,
+      links: linkResults,
+      inboundIds,
+      outboundIds
+    };
+  }
+
+  /**
    * Checks if a symbol is currently pinned.
    */
   isPinned(nodeId: string, symbol: string): boolean {
-    return this.pinnedSymbol === `${nodeId}:${symbol}`;
+    // Check both legacy and new state for backward compatibility
+    const legacyPinned = this.pinnedSymbol === `${nodeId}:${symbol}`;
+    const newStatePinned = isSymbolPinned(this.localMapState.getState(), nodeId, symbol);
+    return legacyPinned || newStatePinned;
   }
 
   /**
@@ -457,6 +784,7 @@ export class LocalViewController implements LocalViewApi {
    */
   clearPinnedSymbol(): void {
     this.pinnedSymbol = null;
+    this.localMapState.update(s => clearPins(s));
     this.clearSymbolHighlight(true);
   }
 
@@ -603,6 +931,20 @@ export class LocalViewController implements LocalViewApi {
 
   getAnchor(nodeId: string, columnRole: ColumnRole, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
     return fetchAnchor(this.runtime.anchorRegistry, nodeId, columnRole, direction, symbol, (dir, sym) =>
+      this.buildNormalizedAnchorKey(dir, sym)
+    );
+  }
+
+  /** Register anchor for multi-hop columns where same node may appear at different hop indices */
+  registerAnchorWithHop(nodeId: string, columnRole: ColumnRole, hopIndex: number, key: string, element: HTMLElement): void {
+    storeAnchorWithHop(this.runtime.anchorRegistry, nodeId, columnRole, hopIndex, key, element, keyValue =>
+      this.tryBuildNormalizedKey(keyValue)
+    );
+  }
+
+  /** Retrieve anchor for multi-hop columns using hop index to disambiguate */
+  getAnchorWithHop(nodeId: string, columnRole: ColumnRole, hopIndex: number, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
+    return fetchAnchorWithHop(this.runtime.anchorRegistry, nodeId, columnRole, hopIndex, direction, symbol, (dir, sym) =>
       this.buildNormalizedAnchorKey(dir, sym)
     );
   }
@@ -868,7 +1210,8 @@ export class LocalViewController implements LocalViewApi {
     }
 
     return this.withTransformReset(containerRect => {
-      const trackedElements = this.contentRoot!.querySelectorAll<HTMLElement>(".layout-node, .layout-box");
+      // Query for layout elements - include .node-card for path mode which doesn't use layout-node/layout-box
+      const trackedElements = this.contentRoot!.querySelectorAll<HTMLElement>(".layout-node, .layout-box, .node-card");
       const contentBounds = this.measureElementsBounds(trackedElements, containerRect);
       if (!contentBounds) {
         return null;

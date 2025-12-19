@@ -1,3 +1,4 @@
+import type { LocalMapState, PathResult, StateStore, SymbolPin } from "./state";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkKind,
@@ -25,6 +26,30 @@ export interface LocalViewApi {
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
+  
+  /** Observable state store for multi-hop visualization. */
+  readonly localMapState: StateStore<LocalMapState>;
+  
+  /** Adds a pin to the multi-hop path at a specific hop index. */
+  addPinToPath(nodeId: string, symbol: string, hopIndex: number): void;
+  
+  /** Removes pins from the path starting at a specific hop index. */
+  removePinFromPath(fromHopIndex: number): void;
+  
+  /** Gets the current pinned path. */
+  getPinnedPath(): SymbolPin[];
+  
+  /** 
+   * Sets the active path for path-mode rendering.
+   * Pass null to exit path mode and return to exploration mode.
+   */
+  setActivePath(path: PathResult | null): void;
+  
+  /** Gets the current active path, or null if in exploration mode. */
+  getActivePath(): PathResult | null;
+  
+  /** Cleanup method to unsubscribe from state store. */
+  dispose(): void;
 }
 
 export interface LocalEdge {

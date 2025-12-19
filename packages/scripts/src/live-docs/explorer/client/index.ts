@@ -19,6 +19,7 @@ import type {
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../shared/types";
+import type { PathResult } from "./views/localView/state";
 
 interface ForceGraphLink {
   source: string;
@@ -614,6 +615,8 @@ function startExplorer(
 
   // Helper to open a node in Circuit Board view
   const openInCircuitBoardView = (node: ExplorerNodePayload): void => {
+    // Hide detail panel when navigating to another view
+    detailPanel.hide();
     state.selectedNode = node;
     state.view = "circuit";
     setActiveView("circuit");
@@ -851,6 +854,8 @@ function startExplorer(
     if (!target) {
       return;
     }
+    // Hide detail panel when navigating to another view
+    detailPanel.hide();
     state.selectedNode = target;
     state.view = "graph";
     setActiveView("graph");
@@ -995,29 +1000,51 @@ function startExplorer(
     const statusEl = document.getElementById("pathfind-status");
 
     if (result.found && result.path.length > 0) {
+      // Hide detail panel to avoid blocking the visualization
+      detailPanel.hide();
+
       // Path found - switch to Local Map view centered on first node
       if (state.view !== "map") {
         state.view = "map";
         setActiveView("map");
       }
 
-      // Center on first node in path
+      // Center on first node in path (suppress detail panel since we just hid it)
       const firstNode = result.path[0].node;
-      void handleNodeClick(firstNode);
+      void handleNodeClick(firstNode, { suppressDetailPanel: true });
 
       // Render the path visualization strip
       renderPathVisualization(result);
 
-      // Update status message
+      // Build PathResult for path-mode rendering
+      // "inbound" direction means TO depends on FROM - the expected/natural flow
+      // "outbound" direction means FROM depends on TO - reversed from user intent
+      const isReversed = result.direction === "outbound";
+      const pathResult: PathResult = {
+        nodeIds: result.path.map(hop => hop.nodeId),
+        fromSymbol: result.fromEndpoint.symbol,
+        toSymbol: result.toEndpoint.symbol,
+        isReversed
+      };
+      
+      // Set active path - this triggers path-mode rendering
+      // which shows ONLY the path nodes in a linear chain
+      localView.setActivePath(pathResult);
+
+      // Update status message with direction context
+      const directionHint = isReversed 
+        ? ` (FROM depends on TO)` 
+        : ` (TO depends on FROM)`;
       if (statusEl) {
-        statusEl.textContent = `Path found: ${result.path.length} nodes`;
+        statusEl.textContent = `Path found: ${result.path.length} nodes${directionHint}`;
         statusEl.className = "pathfind-status success";
         statusEl.hidden = false;
       }
 
       console.log(
         "[Pathfind] Path found:",
-        result.path.map(h => h.nodeId).join(" → ")
+        result.path.map(h => h.nodeId).join(" → "),
+        `[direction: ${result.direction}]`
       );
     } else {
       // No path found - hide path visualization
@@ -1057,6 +1084,8 @@ function startExplorer(
       pathEl.hidden = true;
     }
     viewMapEl?.classList.remove("has-path");
+    // Clear path mode and re-render to restore exploration mode layout
+    localView.setActivePath(null);
   };
 
   // Initialize pathfind toolbar (Local Map FROM/TO navigation)
@@ -1077,6 +1106,26 @@ function startExplorer(
     },
     onFindPath: (from: PathfindEndpoint, to: PathfindEndpoint) => {
       console.log("[Pathfind] Find path:", from.node.id, "→", to.node.id);
+
+      // If FROM and TO are the same node, treat as exploration mode (not path mode)
+      if (from.node.id === to.node.id) {
+        console.log("[Pathfind] FROM == TO, treating as exploration mode");
+        detailPanel.hide();
+        localView.setActivePath(null);
+        if (state.view !== "map") {
+          state.view = "map";
+          setActiveView("map");
+        }
+        void selectNode(from.node, { suppressDetailPanel: true });
+        // Update status to indicate single-node exploration
+        const statusEl = document.getElementById("pathfind-status");
+        if (statusEl) {
+          statusEl.textContent = `Exploring: ${from.node.name}`;
+          statusEl.className = "pathfind-status success";
+          statusEl.hidden = false;
+        }
+        return;
+      }
 
       // Execute BFS pathfinding
       const result = findPath(from.node.id, to.node.id, nodesById, graphData.links);
@@ -1327,7 +1376,12 @@ function startExplorer(
     });
   }
 
-  async function selectNode(node: ExplorerNodePayload): Promise<void> {
+  interface SelectNodeOptions {
+    /** If true, suppress opening the detail panel */
+    suppressDetailPanel?: boolean;
+  }
+
+  async function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): Promise<void> {
     state.selectedNode = node;
     state.focusedNode = node;
     const contextName = document.getElementById("context-name");
@@ -1338,10 +1392,12 @@ function startExplorer(
     schedulePersistNav();
     renderCurrentView();
     highlightSelectedCards();
-    await detailPanel.showNode(node);
+    if (!options?.suppressDetailPanel) {
+      await detailPanel.showNode(node);
+    }
   }
 
-  async function focusSidebar(node: ExplorerNodePayload): Promise<void> {
+  async function focusSidebar(node: ExplorerNodePayload, options?: SelectNodeOptions): Promise<void> {
     state.focusedNode = node;
     const contextName = document.getElementById("context-name");
     if (contextName instanceof HTMLElement) {
@@ -1350,21 +1406,23 @@ function startExplorer(
     updateUrlState(state.view, node.id);
     schedulePersistNav();
     highlightSelectedCards();
-    await detailPanel.showNode(node);
+    if (!options?.suppressDetailPanel) {
+      await detailPanel.showNode(node);
+    }
   }
 
-  function handleNodeClick(node: ExplorerNodePayload): void | Promise<void> {
+  function handleNodeClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
     if (state.tuning.clickBehavior.singleClickFocusOnly) {
-      return focusSidebar(node);
+      return focusSidebar(node, options);
     }
-    return selectNode(node);
+    return selectNode(node, options);
   }
 
-  function handleNodeDoubleClick(node: ExplorerNodePayload): void | Promise<void> {
+  function handleNodeDoubleClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
     if (state.tuning.clickBehavior.doubleClickRecenter) {
-      return selectNode(node);
+      return selectNode(node, options);
     }
-    return focusSidebar(node);
+    return focusSidebar(node, options);
   }
 
   function initTuningPanel(): void {
@@ -1509,9 +1567,18 @@ function startExplorer(
     if (!node) {
       return;
     }
+    // Exit path mode and return to exploration mode
+    localView.setActivePath(null);
+    clearPathResult();
+    // Hide detail panel to avoid blocking the visualization
+    detailPanel.hide();
+    // Switch to Local Map and select the node (suppress detail panel since we just hid it)
     state.view = "map";
     setActiveView("map");
-    await selectNode(node);
+    await selectNode(node, { suppressDetailPanel: true });
+    // Populate FROM field with the node and CLEAR TO field (exploration mode)
+    pathfindApi.setFrom({ node, symbol: undefined });
+    pathfindApi.setTo(undefined);
   }
 
   function renderCurrentView(): void {

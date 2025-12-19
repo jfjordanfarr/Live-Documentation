@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2025-12-17T18:40:34.269Z
+- Generated At: 2025-12-19T04:50:47.323Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-17T18:40:34.269Z","inputHash":"a61c4476be8d5faf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.323Z","inputHash":"a61c4476be8d5faf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
@@ -71,7 +71,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 #### `ConnectionKind` {#symbol-connectionkind}
 - Type: type
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L78)
-- Returns: [`ExplorerLinkKind`](../../../index.ts.mdmd.md#symbol-explorerlinkkind)
+- Returns: [`ExplorerLinkKind`](../shared/types.ts.mdmd.md#symbol-explorerlinkkind)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

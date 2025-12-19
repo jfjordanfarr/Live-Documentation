@@ -34,6 +34,13 @@ export interface PathfindResult {
   toEndpoint: PathfindEndpoint;
   searchedNodes: number;
   maxDepthReached: boolean;
+  /**
+   * Which edge direction was followed to find the path:
+   * - "inbound": TO depends on FROM (path follows dependent → dependency chain)
+   * - "outbound": FROM depends on TO (path follows dependency → dependent chain)
+   * - null: No path found
+   */
+  direction: "inbound" | "outbound" | null;
 }
 
 /** Default maximum hops to search */
@@ -72,28 +79,83 @@ export function findPath(
     };
   }
 
-  // Build bidirectional adjacency list from links
-  // We treat the graph as undirected for pathfinding since we want to find
-  // any connection path regardless of dependency direction.
-  const adjacency = new Map<string, Set<string>>();
+  // Build DIRECTED adjacency lists:
+  // - outboundAdj: source → [targets] (nodes that source depends on)
+  // - inboundAdj: target → [sources] (nodes that depend on target)
+  // Links are stored as source → target where source DEPENDS ON target
+  const outboundAdj = new Map<string, Set<string>>();
+  const inboundAdj = new Map<string, Set<string>>();
+  
   for (const link of links) {
     const sourceId = typeof link.source === "string" ? link.source : link.source.id;
     const targetId = typeof link.target === "string" ? link.target : link.target.id;
     
-    // Add edge source → target
-    if (!adjacency.has(sourceId)) {
-      adjacency.set(sourceId, new Set());
+    // source depends on target (outbound from source to target)
+    if (!outboundAdj.has(sourceId)) {
+      outboundAdj.set(sourceId, new Set());
     }
-    adjacency.get(sourceId)!.add(targetId);
+    outboundAdj.get(sourceId)!.add(targetId);
     
-    // Add reverse edge target → source
-    if (!adjacency.has(targetId)) {
-      adjacency.set(targetId, new Set());
+    // target has source as a dependent (inbound to target from source)
+    if (!inboundAdj.has(targetId)) {
+      inboundAdj.set(targetId, new Set());
     }
-    adjacency.get(targetId)!.add(sourceId);
+    inboundAdj.get(targetId)!.add(sourceId);
   }
 
-  // BFS
+  // Try to find a path following INBOUND edges (FROM is depended on by... → TO)
+  // This means: FROM → (something that depends on FROM) → ... → TO
+  // Semantically: TO depends (transitively) on FROM
+  const inboundPath = directedBFS(fromNodeId, toNodeId, inboundAdj, nodesById, maxHops);
+  if (inboundPath.found) {
+    return { ...inboundPath, direction: "inbound" as const };
+  }
+
+  // Try to find a path following OUTBOUND edges (FROM depends on... → TO)
+  // This means: FROM → (something FROM depends on) → ... → TO
+  // Semantically: FROM depends (transitively) on TO
+  const outboundPath = directedBFS(fromNodeId, toNodeId, outboundAdj, nodesById, maxHops);
+  if (outboundPath.found) {
+    return { ...outboundPath, direction: "outbound" as const };
+  }
+
+  // No directed path found
+  return {
+    found: false,
+    path: [],
+    fromEndpoint: { node: fromNode },
+    toEndpoint: { node: toNode },
+    searchedNodes: inboundPath.searchedNodes + outboundPath.searchedNodes,
+    maxDepthReached: inboundPath.maxDepthReached || outboundPath.maxDepthReached,
+    direction: null
+  };
+}
+
+/**
+ * Directed BFS following edges in one direction only.
+ */
+function directedBFS(
+  fromNodeId: string,
+  toNodeId: string,
+  adjacency: Map<string, Set<string>>,
+  nodesById: Map<string, ExplorerNodePayload>,
+  maxHops: number
+): PathfindResult {
+  const fromNode = nodesById.get(fromNodeId);
+  const toNode = nodesById.get(toNodeId);
+
+  if (!fromNode || !toNode) {
+    return {
+      found: false,
+      path: [],
+      fromEndpoint: { node: fromNode || { id: fromNodeId } as ExplorerNodePayload },
+      toEndpoint: { node: toNode || { id: toNodeId } as ExplorerNodePayload },
+      searchedNodes: 0,
+      maxDepthReached: false,
+      direction: null
+    };
+  }
+
   const visited = new Set<string>();
   const parents = new Map<string, string>();
   const queue: Array<{ nodeId: string; depth: number }> = [{ nodeId: fromNodeId, depth: 0 }];
@@ -121,7 +183,8 @@ export function findPath(
         fromEndpoint: { node: fromNode },
         toEndpoint: { node: toNode },
         searchedNodes: visited.size,
-        maxDepthReached: false
+        maxDepthReached: false,
+        direction: null // Caller will override with actual direction
       };
     }
 
@@ -146,7 +209,8 @@ export function findPath(
     fromEndpoint: { node: fromNode },
     toEndpoint: { node: toNode },
     searchedNodes: visited.size,
-    maxDepthReached
+    maxDepthReached,
+    direction: null
   };
 }
 

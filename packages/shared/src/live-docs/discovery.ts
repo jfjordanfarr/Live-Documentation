@@ -20,6 +20,7 @@ import type {
   ResolvedSymbolLocation,
   WorkspaceSymbolIndex
 } from "./coreTypes";
+import { compareSymbolLocationsPreferOrigin } from "./coreUtils";
 import { detectChangedFiles } from "./gitUtils";
 import { computePublicSymbolHeadingInfo } from "./rendering";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
@@ -286,11 +287,17 @@ export function resolveTypeToLiveDoc(
   const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
 
   // Prefer external definitions; fall back to any match if all are self-refs
-  if (external.length > 0) {
+  if (external.length === 0) {
+    // All matches are in the current file — return undefined to avoid self-link
+    // (the type is already visible in the same Live Doc)
+    return undefined;
+  }
+  
+  if (external.length === 1) {
     return external[0];
   }
-
-  // All matches are in the current file — return undefined to avoid self-link
-  // (the type is already visible in the same Live Doc)
-  return undefined;
+  
+  // Multiple external matches: prefer origin files over barrels
+  const sorted = external.slice().sort(compareSymbolLocationsPreferOrigin);
+  return sorted[0];
 }

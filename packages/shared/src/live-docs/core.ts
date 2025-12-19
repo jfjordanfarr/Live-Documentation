@@ -72,7 +72,9 @@ export {
   hasExportModifier,
   hasDefaultModifier,
   getNodeLocation,
-  displayDependencyKey
+  displayDependencyKey,
+  isBarrelFilePath,
+  compareSymbolLocationsPreferOrigin
 } from "./coreUtils";
 
 // ============================================================================

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreutils-ts
-- Generated At: 2025-12-11T02:38:02.097Z
+- Generated At: 2025-12-19T04:50:48.221Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 - All functions are pure with no side effects
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.097Z","inputHash":"b78b0978c5c50d66"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:48.221Z","inputHash":"94c55226486ecbd9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatSourceLink` {#symbol-formatsourcelink}
@@ -156,6 +156,58 @@ Gets the display key for a dependency entry.
 
 ##### `displayDependencyKey` — Returns
 The resolved path if available, otherwise the specifier
+
+#### `isBarrelFilePath` {#symbol-isbarrelfilepath}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L210)
+
+##### `isBarrelFilePath` — Summary
+Determines if a file path represents a barrel/index file.
+
+##### `isBarrelFilePath` — Remarks
+Barrel files (also known as index files) are TypeScript/JavaScript modules
+that primarily re-export symbols from other files rather than defining them.
+They are commonly used as public API entry points for packages.
+
+When resolving symbol references, we generally prefer to link to the file
+where a symbol is **defined** rather than a barrel that re-exports it.
+This produces more accurate dependency graphs and clearer documentation links.
+
+##### `isBarrelFilePath` — Parameters
+- `filePath`: The file path to check (workspace-relative or absolute)
+
+##### `isBarrelFilePath` — Returns
+True if the file appears to be a barrel file based on its name
+
+##### `isBarrelFilePath` — Examples
+```ts
+isBarrelFilePath("packages/foo/index.ts");      // true
+isBarrelFilePath("packages/foo/src/utils.ts");  // false
+isBarrelFilePath("lib/mod.ts");                 // true
+```
+
+#### `compareSymbolLocationsPreferOrigin` {#symbol-comparesymbollocationspreferorigin}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L232)
+
+##### `compareSymbolLocationsPreferOrigin` — Summary
+Sorts symbol locations to prefer non-barrel files over barrel files.
+
+##### `compareSymbolLocationsPreferOrigin` — Remarks
+When multiple files export the same symbol (e.g., an origin file and a
+barrel that re-exports it), we want to resolve links to the origin file
+where the symbol is actually defined.
+
+This comparator:
+1. Puts non-barrel files before barrel files
+2. Among files of the same barrel-ness, prefers deeper paths (more specific)
+
+##### `compareSymbolLocationsPreferOrigin` — Parameters
+- `a`: First location to compare
+- `b`: Second location to compare
+
+##### `compareSymbolLocationsPreferOrigin` — Returns
+Negative if a should come first, positive if b should come first
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

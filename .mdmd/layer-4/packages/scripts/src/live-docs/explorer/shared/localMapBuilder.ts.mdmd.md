@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapbuilder-ts
-- Generated At: 2025-12-07T20:49:32.809Z
+- Generated At: 2025-12-19T04:50:47.461Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Headless computation layer for the Local Map view. Takes a full `ExplorerGraphPa
 - Symbol anchors are pre-computed so static renderers can route connection lines without querying the DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T20:49:32.809Z","inputHash":"ff3f881c023751f9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.461Z","inputHash":"ff3f881c023751f9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestCoverageMap` {#symbol-testcoveragemap}
@@ -33,7 +33,7 @@ Test coverage map: node ID → array of test file IDs that cover it.
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts#L38)
 - Returns: [`LocalMapData`](./localMapData.ts.mdmd.md#symbol-localmapdata)
-- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../index.ts.mdmd.md#symbol-explorergraphpayload); `testCoverage`: [`TestCoverageMap`](../client/types.ts.mdmd.md#symbol-testcoveragemap); `options`: [`BuildLocalMapOptions`](./localMapData.ts.mdmd.md#symbol-buildlocalmapoptions)
+- Parameters: `graphData`: [`ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload); `testCoverage`: [`TestCoverageMap`](../client/types.ts.mdmd.md#symbol-testcoveragemap); `options`: [`BuildLocalMapOptions`](./localMapData.ts.mdmd.md#symbol-buildlocalmapoptions)
 
 ##### `buildLocalMapData` — Summary
 Build a LocalMapData object for the given focus node.
@@ -50,7 +50,7 @@ Complete LocalMapData ready for rendering or serialization.
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts#L445)
 - Returns: [`TestCoverageMap`](../client/types.ts.mdmd.md#symbol-testcoveragemap)
-- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../index.ts.mdmd.md#symbol-explorergraphpayload); `_unnamed_`: [`ExplorerLinkPayload`](../../../index.ts.mdmd.md#symbol-explorerlinkpayload)
+- Parameters: `graphData`: [`ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload); `_unnamed_`: [`ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload)
 
 ##### `buildTestCoverageMap` — Summary
 Build test coverage map from the graph.

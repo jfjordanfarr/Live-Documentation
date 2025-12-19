@@ -2,6 +2,7 @@ import * as fs from "fs/promises";
 import * as path from "path";
 
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+import { isBarrelFilePath } from "@live-documentation/shared/live-docs/coreUtils";
 import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 import {
@@ -175,15 +176,6 @@ function toRelativePath(workspaceRoot: string, absolutePath: string): string {
     return normalized || ".";
 }
 
-/**
- * Check if a file path looks like a barrel/index file (re-exports symbols from other files).
- * Barrel files should have lower priority for type resolution since they don't define symbols.
- */
-function isBarrelFile(codePath: string): boolean {
-    const baseName = path.basename(codePath, path.extname(codePath)).toLowerCase();
-    return baseName === "index" || baseName === "mod" || baseName === "barrel";
-}
-
 function createTypeResolver(nodes: LiveDocGraphNode[]): TypeResolver {
     // Map symbol name → all nodes that export it (for later prioritization)
     const symbolCandidates = new Map<string, LiveDocGraphNode[]>();
@@ -208,7 +200,7 @@ function createTypeResolver(nodes: LiveDocGraphNode[]): TypeResolver {
     const symbolLookup = new Map<string, LiveDocGraphNode>();
     for (const [symbol, candidates] of symbolCandidates) {
         // Prefer non-barrel files over barrel files
-        const nonBarrel = candidates.filter(n => !isBarrelFile(n.codePath));
+        const nonBarrel = candidates.filter(n => !isBarrelFilePath(n.codePath));
         const best = nonBarrel.length > 0 ? nonBarrel[0] : candidates[0];
         symbolLookup.set(symbol, best);
     }

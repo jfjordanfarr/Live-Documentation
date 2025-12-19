@@ -6,7 +6,8 @@
 
 .local-layout {
     display: grid;
-    grid-template-columns: repeat(3, max-content);
+    /* Default to 3 columns; overridden by inline style for multi-hop */
+    grid-template-columns: repeat(var(--local-column-count, 3), max-content);
     column-gap: var(--local-column-gap, 100px);
     align-items: start;
     justify-content: center;

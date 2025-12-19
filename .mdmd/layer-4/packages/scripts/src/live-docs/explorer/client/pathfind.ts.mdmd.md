@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/pathfind.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-pathfind-ts
-- Generated At: 2025-12-17T21:56:07.812Z
+- Generated At: 2025-12-19T04:50:47.319Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-17T21:56:07.812Z","inputHash":"9676b724d6c4f3a4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.319Z","inputHash":"603b7d850309e55e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PathfindEndpoint` {#symbol-pathfindendpoint}
@@ -48,23 +48,23 @@ Result of a pathfinding operation
 
 #### `DEFAULT_MAX_HOPS` {#symbol-default_max_hops}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L40)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L47)
 
 ##### `DEFAULT_MAX_HOPS` — Summary
 Default maximum hops to search
 
 #### `PathfindCallbacks` {#symbol-pathfindcallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L43)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L50)
 
 ##### `PathfindCallbacks` — Summary
 Callbacks for pathfind events
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L54)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L61)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
-- Parameters: `links`: [`ExplorerLinkPayload`](../../../index.ts.mdmd.md#symbol-explorerlinkpayload)[]
+- Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
 ##### `findPath` — Summary
 BFS pathfinding between two nodes in the explorer graph.
@@ -72,14 +72,14 @@ Returns the shortest path from source to target.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L156)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L220)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L187)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L251)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -87,16 +87,16 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L217)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L281)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L228)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/pathfind.ts#L292)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
-- Parameters: `nodes`: [`ExplorerNodePayload`](../../../index.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
+- Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 
 ##### `initPathfind` — Summary
 Initialize the pathfind toolbar with search and symbol selection

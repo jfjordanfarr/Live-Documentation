@@ -1,5 +1,9 @@
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
 import type { DirectoryNode } from "../../types";
+import type { DirectoryLayoutPlan } from "../layoutUtils";
+import type { LocalViewController } from "./controller";
+import type { PathResult, SymbolPin } from "./state";
+import type { CenterAlignmentGuides, ColumnRole, LocalSubgraph } from "./types";
 import {
   ROOT_KEY,
   buildHierarchy,
@@ -7,9 +11,11 @@ import {
   getDirectoryKey,
   measureDirectoryTree
 } from "../layoutUtils";
-import type { DirectoryLayoutPlan } from "../layoutUtils";
-import type { LocalViewController } from "./controller";
-import type { CenterAlignmentGuides, ColumnRole } from "./types";
+import {
+  computeColumnCount,
+  computeGridTemplate,
+  generateColumnLabel
+} from "./layout-math";
 
 export function renderLocalView(controller: LocalViewController): void {
   const container = controller.getContainer();
@@ -82,51 +88,44 @@ export function renderLocalView(controller: LocalViewController): void {
     connectionScore.set(edge.targetId, (connectionScore.get(edge.targetId) ?? 0) + 1);
   });
 
+  // Check if we're in path mode (FROM-TO pathfinding result)
+  const activePath = controller.localMapState.getState().activePath;
+  const pinnedPath = controller.localMapState.getState().pinnedPath;
+  
+  // Determine column count based on mode:
+  // - Path mode: N columns (one per node in path, no Dependencies column)
+  // - Multi-hop exploration: 2*N columns (each hop has Center + Dependents, plus origin Dependencies)
+  // - Single-hop exploration: 3 columns (Dependencies, Center, Dependents)
+  const pathNodeCount = activePath ? activePath.nodeIds.length : 0;
+  const hopCount = Math.max(1, pinnedPath.length);
+  const columnCount = activePath 
+    ? pathNodeCount  // Path mode: one column per node
+    : computeColumnCount(hopCount);  // Exploration mode
+
   const layoutRoot = document.createElement("div");
   layoutRoot.className = "local-layout";
+  // Apply dynamic grid template based on column count
+  layoutRoot.style.setProperty("--local-column-count", String(columnCount));
+  layoutRoot.style.gridTemplateColumns = computeGridTemplate(columnCount);
   container.appendChild(layoutRoot);
   controller.contentRoot = layoutRoot;
 
-  const centerNodes = [subgraph.center];
-  const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
-  const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
-
-  const centerColumn = createHierarchicalColumn(
-    controller,
-    "Selected Artifact",
-    centerNodes,
-    "center",
-    "No artifact selected",
-    "center",
-    connectionScore
-  );
-  layoutRoot.appendChild(centerColumn);
-
-  const alignmentGuides = controller.collectCenterAlignmentGuides(centerColumn);
-
-  const dependenciesColumn = createStackedColumn(
-    controller,
-    "Dependencies (Inputs)",
-    outboundNodes,
-    "outbound",
-    "No dependencies",
-    alignmentGuides,
-    "left",
-    connectionScore
-  );
-  layoutRoot.insertBefore(dependenciesColumn, centerColumn);
-
-  const dependentsColumn = createStackedColumn(
-    controller,
-    "Dependents (Outputs)",
-    inboundNodes,
-    "inbound",
-    "No dependents",
-    alignmentGuides,
-    "right",
-    connectionScore
-  );
-  layoutRoot.appendChild(dependentsColumn);
+  // Path mode: render a simple linear chain of nodes
+  if (activePath && activePath.nodeIds.length > 0) {
+    renderPathModeColumns(controller, layoutRoot, activePath, connectionScore);
+    // Always fit viewport to path content (path mode is a fresh visualization)
+    controller.applyColumnVerticalCentering(layoutRoot);
+    controller.fitMapToContent();
+    controller.scheduleConnectionRedraw();
+    return;
+  }
+  // Multi-hop exploration: when pinnedPath has multiple entries, render each hop
+  else if (pinnedPath.length > 1) {
+    renderMultiHopColumns(controller, layoutRoot, pinnedPath, connectionScore);
+  } else {
+    // Single-hop exploration: classic 3-column layout
+    renderSingleHopColumns(controller, layoutRoot, subgraph, hopCount, connectionScore);
+  }
 
   controller.applyColumnVerticalCentering(layoutRoot);
 
@@ -139,6 +138,379 @@ export function renderLocalView(controller: LocalViewController): void {
   controller.scheduleConnectionRedraw();
 }
 
+/**
+ * Renders the classic 3-column single-hop layout.
+ */
+function renderSingleHopColumns(
+  controller: LocalViewController,
+  layoutRoot: HTMLElement,
+  subgraph: LocalSubgraph,
+  hopCount: number,
+  connectionScore: Map<string, number>
+): void {
+  const centerNodes = [subgraph.center];
+  const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
+  const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
+
+  // Generate column labels based on hop count (single-hop vs multi-hop)
+  const centerLabel = generateColumnLabel("center", 0, hopCount);
+  const upstreamLabel = generateColumnLabel("upstream", 0, hopCount);
+  const downstreamLabel = generateColumnLabel("downstream", 0, hopCount);
+
+  const centerColumn = createHierarchicalColumn(
+    controller,
+    centerLabel,
+    centerNodes,
+    "center",
+    "No artifact selected",
+    "center",
+    connectionScore
+  );
+  layoutRoot.appendChild(centerColumn);
+
+  const alignmentGuides = controller.collectCenterAlignmentGuides(centerColumn);
+
+  const dependenciesColumn = createStackedColumn(
+    controller,
+    upstreamLabel,
+    outboundNodes,
+    "outbound",
+    "No dependencies",
+    alignmentGuides,
+    "left",
+    connectionScore
+  );
+  layoutRoot.insertBefore(dependenciesColumn, centerColumn);
+
+  const dependentsColumn = createStackedColumn(
+    controller,
+    downstreamLabel,
+    inboundNodes,
+    "inbound",
+    "No dependents",
+    alignmentGuides,
+    "right",
+    connectionScore
+  );
+  layoutRoot.appendChild(dependentsColumn);
+}
+
+/**
+ * Renders multi-hop columns based on the pinned path.
+ * 
+ * Layout pattern for N hops:
+ * - Column 0: Dependencies of hop 0 (upstream)
+ * - Column 1: Center of hop 0 (origin)
+ * - Column 2: Dependents of hop 0 / Next hop targets
+ * - Column 3: Center of hop 1 (if exists)
+ * - Column 4: Dependents of hop 1 (if exists)
+ * - ...and so on
+ */
+function renderMultiHopColumns(
+  controller: LocalViewController,
+  layoutRoot: HTMLElement,
+  pinnedPath: SymbolPin[],
+  connectionScore: Map<string, number>
+): void {
+  const totalHops = pinnedPath.length;
+  
+  // Build subgraphs for each hop
+  const hopSubgraphs = controller.buildMultiHopSubgraphs();
+  if (!hopSubgraphs || hopSubgraphs.length === 0) {
+    // Fallback: render empty state
+    const empty = document.createElement("div");
+    empty.className = "local-column-empty";
+    empty.textContent = "No path data available";
+    layoutRoot.appendChild(empty);
+    return;
+  }
+
+  // Store hop subgraphs in controller for connection drawing
+  controller.setMultiHopSubgraphs(hopSubgraphs);
+
+  // Column 0: Dependencies of origin (first hop)
+  const originSubgraph = hopSubgraphs[0].subgraph;
+  const originOutbound = originSubgraph.nodes.filter(node => originSubgraph.outboundIds.has(node.id));
+  
+  const depColumn = createStackedColumn(
+    controller,
+    generateColumnLabel("upstream", 0, totalHops),
+    originOutbound,
+    "outbound",
+    "No dependencies",
+    { anchors: new Map(), cardCenters: new Map() }, // We'll collect guides after center is rendered
+    "left",
+    connectionScore,
+    0 // hopIndex
+  );
+  depColumn.dataset.hopIndex = "0";
+  depColumn.dataset.columnRole = "upstream";
+  layoutRoot.appendChild(depColumn);
+
+  // For each hop, create center + dependents columns
+  for (let hopIndex = 0; hopIndex < hopSubgraphs.length; hopIndex++) {
+    const { center, subgraph } = hopSubgraphs[hopIndex];
+    const isOrigin = hopIndex === 0;
+    
+    // Center column for this hop
+    const centerLabel = generateColumnLabel("center", hopIndex, totalHops);
+    const centerColumn = createHierarchicalColumn(
+      controller,
+      centerLabel,
+      [center],
+      "center",
+      "No artifact",
+      "center",
+      connectionScore,
+      hopIndex
+    );
+    
+    // Add hop-specific styling
+    if (!isOrigin) {
+      centerColumn.classList.add("hop-center");
+    }
+    centerColumn.dataset.hopIndex = String(hopIndex);
+    centerColumn.dataset.columnRole = "center";
+    layoutRoot.appendChild(centerColumn);
+    
+    // Collect alignment guides from this center column
+    const guides = controller.collectCenterAlignmentGuides(centerColumn);
+    
+    // Update the previous dependencies column with proper alignment
+    // (First dependencies column was created without guides)
+    if (hopIndex === 0 && depColumn) {
+      // Re-sort dependencies column based on center guides
+      // For now, we accept the initial order; proper re-sorting would require DOM manipulation
+    }
+    
+    // Dependents column for this hop
+    // Skip the dependents column for the LAST hop (destination) in multi-hop paths
+    // because "Via N" is misleading — the path ends at the destination, not via its dependents
+    const isLastHop = hopIndex === totalHops - 1;
+    if (isLastHop && totalHops > 1) {
+      // Destination reached — don't show its dependents as "Via" nodes
+      continue;
+    }
+    
+    const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
+    const dependentsLabel = generateColumnLabel("downstream", hopIndex, totalHops);
+    
+    const dependentsColumn = createStackedColumn(
+      controller,
+      dependentsLabel,
+      inboundNodes,
+      "inbound",
+      hopIndex < totalHops - 1 ? "Via next hop" : "No dependents",
+      guides,
+      "right",
+      connectionScore,
+      hopIndex
+    );
+    dependentsColumn.dataset.hopIndex = String(hopIndex);
+    dependentsColumn.dataset.columnRole = "downstream";
+    layoutRoot.appendChild(dependentsColumn);
+  }
+}
+
+/**
+ * Renders path mode: a simple linear chain of nodes in the path.
+ * 
+ * Path mode is used when a FROM-TO pathfinding result is active.
+ * To leverage the existing connection drawing infrastructure, we render
+ * the path nodes using the same column structure as exploration mode:
+ * 
+ * For 2-node path (FROM → TO):
+ *   - FROM as center column
+ *   - TO as downstream (dependents) column
+ *   - Edges from the path subgraph are used for connections
+ * 
+ * For N-node path (FROM → Hop1 → ... → TO):
+ *   - Each node gets its own column as in multi-hop mode
+ *   - But only edges between adjacent path nodes are shown
+ * 
+ * This approach reuses the proven connection drawing infrastructure.
+ */
+function renderPathModeColumns(
+  controller: LocalViewController,
+  layoutRoot: HTMLElement,
+  activePath: PathResult,
+  connectionScore: Map<string, number>
+): void {
+  const { nodeIds, fromSymbol, toSymbol } = activePath;
+  
+  if (nodeIds.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "local-column-empty";
+    empty.textContent = "No path data available";
+    layoutRoot.appendChild(empty);
+    return;
+  }
+
+  // Build the path subgraph with edges between adjacent nodes
+  const pathSubgraph = controller.buildPathSubgraph(nodeIds);
+  if (!pathSubgraph) {
+    const empty = document.createElement("div");
+    empty.className = "local-column-empty";
+    empty.textContent = "Path nodes not found in graph";
+    layoutRoot.appendChild(empty);
+    return;
+  }
+
+  // Set the path subgraph as currentSubgraph for connection drawing
+  controller.currentSubgraph = pathSubgraph;
+
+  // For a 2-node path, render as center + downstream (like exploration mode)
+  // This lets the existing single-hop connection drawing work
+  if (nodeIds.length === 2) {
+    const fromNode = pathSubgraph.nodes[0];
+    const toNode = pathSubgraph.nodes[1];
+
+    // Apply path mode class for styling
+    layoutRoot.classList.add("path-mode");
+
+    // FROM as center column
+    const centerColumn = createHierarchicalColumn(
+      controller,
+      "FROM",
+      [fromNode],
+      "center",
+      "No artifact",
+      "center",
+      connectionScore
+    );
+    centerColumn.classList.add("path-node", "path-origin");
+    layoutRoot.appendChild(centerColumn);
+
+    // Collect alignment guides from center for stacked column
+    const alignmentGuides = controller.collectCenterAlignmentGuides(centerColumn);
+
+    // TO as downstream (inbound dependents) column
+    const downstreamColumn = createStackedColumn(
+      controller,
+      "TO",
+      [toNode],
+      "inbound",
+      "No destination",
+      alignmentGuides,
+      "right",
+      connectionScore
+    );
+    downstreamColumn.classList.add("path-node", "path-destination");
+    layoutRoot.appendChild(downstreamColumn);
+
+    // Highlight FROM/TO symbols if specified
+    if (fromSymbol) {
+      highlightSymbolInColumn(centerColumn, fromSymbol);
+    }
+    if (toSymbol) {
+      highlightSymbolInColumn(downstreamColumn, toSymbol);
+    }
+    return;
+  }
+
+  // For N-node paths (3+), render a simple linear chain of center columns
+  // Each path node gets exactly ONE column - no duplicates
+  layoutRoot.classList.add("path-mode");
+  
+  for (let i = 0; i < pathSubgraph.nodes.length; i++) {
+    const node = pathSubgraph.nodes[i];
+    const isOrigin = i === 0;
+    const isDestination = i === pathSubgraph.nodes.length - 1;
+
+    // Generate label
+    let label: string;
+    if (isOrigin) {
+      label = "FROM";
+    } else if (isDestination) {
+      label = "TO";
+    } else {
+      label = `Via ${i}`;
+    }
+
+    // Center column for this path node
+    const centerColumn = createHierarchicalColumn(
+      controller,
+      label,
+      [node],
+      "center",
+      "No artifact",
+      "center",
+      connectionScore,
+      i
+    );
+    centerColumn.classList.add("path-node");
+    if (isOrigin) centerColumn.classList.add("path-origin");
+    if (isDestination) centerColumn.classList.add("path-destination");
+    centerColumn.dataset.hopIndex = String(i);
+    centerColumn.dataset.columnRole = "center";
+    centerColumn.dataset.pathIndex = String(i);
+    layoutRoot.appendChild(centerColumn);
+
+    // Highlight symbols if specified
+    if (isOrigin && fromSymbol) {
+      highlightSymbolInColumn(centerColumn, fromSymbol);
+    }
+    if (isDestination && toSymbol) {
+      highlightSymbolInColumn(centerColumn, toSymbol);
+    }
+  }
+
+  // Set up for multi-hop connection drawing
+  // Build hop subgraphs that include edges to the next hop only
+  const hopSubgraphs: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> = [];
+  for (let i = 0; i < pathSubgraph.nodes.length; i++) {
+    const node = pathSubgraph.nodes[i];
+    
+    // Each hop's subgraph contains only edges to/from adjacent path nodes
+    const hopLinks = pathSubgraph.links.filter(edge => {
+      // Include edges connecting to the next node in path
+      if (i < pathSubgraph.nodes.length - 1) {
+        const nextNode = pathSubgraph.nodes[i + 1];
+        if ((edge.sourceId === node.id && edge.targetId === nextNode.id) ||
+            (edge.targetId === node.id && edge.sourceId === nextNode.id)) {
+          return true;
+        }
+      }
+      // Include edges connecting to the previous node in path
+      if (i > 0) {
+        const prevNode = pathSubgraph.nodes[i - 1];
+        if ((edge.sourceId === node.id && edge.targetId === prevNode.id) ||
+            (edge.targetId === node.id && edge.sourceId === prevNode.id)) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    const hopSubgraph: LocalSubgraph = {
+      center: node,
+      nodes: [node],
+      links: hopLinks,
+      inboundIds: new Set(hopLinks.filter(e => e.targetId === node.id).map(e => e.sourceId)),
+      outboundIds: new Set(hopLinks.filter(e => e.sourceId === node.id).map(e => e.targetId))
+    };
+
+    hopSubgraphs.push({ center: node, subgraph: hopSubgraph });
+  }
+
+  // Store hop subgraphs for multi-hop connection drawing
+  controller.setMultiHopSubgraphs(hopSubgraphs);
+}
+
+/**
+ * Highlights a specific symbol row in a column.
+ * Used in path mode to auto-highlight FROM/TO symbols.
+ */
+function highlightSymbolInColumn(column: HTMLElement, symbol: string): void {
+  const normalizedSymbol = symbol.toLowerCase();
+  column.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+    const rowSymbol = row.dataset.symbol?.toLowerCase();
+    if (rowSymbol === normalizedSymbol) {
+      row.classList.add("symbol-pinned");
+    }
+  });
+}
+
 function createHierarchicalColumn(
   controller: LocalViewController,
   label: string,
@@ -146,7 +518,8 @@ function createHierarchicalColumn(
   direction: "inbound" | "outbound" | "center",
   emptyLabel: string,
   position: "left" | "center" | "right",
-  connectionScore: Map<string, number>
+  connectionScore: Map<string, number>,
+  hopIndex?: number
 ): HTMLElement {
   const column = document.createElement("div");
   column.className = `local-column ${direction}`;
@@ -169,7 +542,7 @@ function createHierarchicalColumn(
     const focusSurface = document.createElement("div");
     focusSurface.className = "local-focus-surface";
     nodes.forEach(node => {
-      const card = createNodeCard(controller, node, "center");
+      const card = createNodeCard(controller, node, "center", hopIndex);
       card.classList.add("focus-node");
       focusSurface.appendChild(card);
     });
@@ -198,7 +571,8 @@ function createStackedColumn(
   emptyLabel: string,
   guides: CenterAlignmentGuides,
   position: "left" | "right",
-  connectionScore: Map<string, number>
+  connectionScore: Map<string, number>,
+  hopIndex?: number
 ): HTMLElement {
   const column = document.createElement("div");
   column.className = `local-column ${direction} local-column--stacked`;
@@ -295,7 +669,7 @@ function createStackedColumn(
     // - "inbound" edges → "downstream" column (dependents — data flows TO these)
     const columnRole: ColumnRole = direction === "outbound" ? "upstream" : "downstream";
     group.nodes.forEach(entry => {
-      const card = createNodeCard(controller, entry.node, columnRole);
+      const card = createNodeCard(controller, entry.node, columnRole, hopIndex);
       card.classList.add("layout-node", "stacked-node");
       card.dataset.direction = direction;
       content.appendChild(card);
@@ -353,12 +727,16 @@ function computeDirectionalAlignmentValue(
 function createNodeCard(
   controller: LocalViewController,
   node: ExplorerNodePayload,
-  columnRole: ColumnRole
+  columnRole: ColumnRole,
+  hopIndex?: number
 ): HTMLElement {
   const card = document.createElement("div");
   card.className = "node-card";
   card.dataset.id = node.id;
   card.dataset.columnRole = columnRole;
+  if (hopIndex !== undefined) {
+    card.dataset.hopIndex = String(hopIndex);
+  }
   card.title = node.codeRelativePath;
   card.tabIndex = 0;
 
@@ -368,7 +746,12 @@ function createNodeCard(
     card.classList.add("selected", "local-focus");
   }
 
-  controller.registerAnchor(node.id, columnRole, "card", card);
+  // Use hop-aware registration when hopIndex is provided
+  const registerAnchor = hopIndex !== undefined
+    ? (key: string, element: HTMLElement) => controller.registerAnchorWithHop(node.id, columnRole, hopIndex, key, element)
+    : (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
+
+  registerAnchor("card", card);
 
   const isAsset = (node.archetype || "").toLowerCase() === "asset";
 
@@ -377,12 +760,12 @@ function createNodeCard(
     const inboundHub = document.createElement("div");
     inboundHub.className = "symbol-anchor hub inbound";
     card.appendChild(inboundHub);
-    controller.registerAnchor(node.id, columnRole, "inbound:*", inboundHub);
+    registerAnchor("inbound:*", inboundHub);
 
     const outboundHub = document.createElement("div");
     outboundHub.className = "symbol-anchor hub outbound";
     card.appendChild(outboundHub);
-    controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
+    registerAnchor("outbound:*", outboundHub);
   }
 
   // For center and upstream columns: add outbound hub for file-level connections
@@ -393,7 +776,7 @@ function createNodeCard(
     const outboundHub = document.createElement("div");
     outboundHub.className = "symbol-anchor hub outbound" + (columnRole === "center" ? " center-hub" : "");
     card.appendChild(outboundHub);
-    controller.registerAnchor(node.id, columnRole, "outbound:*", outboundHub);
+    registerAnchor("outbound:*", outboundHub);
   }
 
   const header = document.createElement("div");
@@ -406,7 +789,7 @@ function createNodeCard(
   pathElement.textContent = node.codeRelativePath;
   card.appendChild(pathElement);
 
-  card.appendChild(createSymbolSection(controller, node, columnRole));
+  card.appendChild(createSymbolSection(controller, node, columnRole, hopIndex));
 
   if (!controller.isTestNode(node) && state.filters.showTests) {
     const backing = testCoverage.get(node.id);
@@ -460,10 +843,16 @@ function createNodeCard(
 function createSymbolSection(
   controller: LocalViewController,
   node: ExplorerNodePayload,
-  columnRole: ColumnRole
+  columnRole: ColumnRole,
+  hopIndex?: number
 ): HTMLElement {
   const wrapper = document.createElement("div");
   wrapper.className = "node-symbols";
+
+  // Use hop-aware registration when hopIndex is provided
+  const registerAnchor = hopIndex !== undefined
+    ? (key: string, element: HTMLElement) => controller.registerAnchorWithHop(node.id, columnRole, hopIndex, key, element)
+    : (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
 
   const hasPublicSymbols = node.publicSymbols && node.publicSymbols.length > 0;
 
@@ -515,7 +904,7 @@ function createSymbolSection(
     inboundAnchor.className = "symbol-anchor dot inbound";
     inboundAnchor.dataset.symbol = symbol;
     symbolRow.appendChild(inboundAnchor);
-    controller.registerAnchor(node.id, columnRole, `inbound:${symbol}`, inboundAnchor);
+    registerAnchor(`inbound:${symbol}`, inboundAnchor);
 
     const labelWrapper = document.createElement("div");
     labelWrapper.className = "symbol-label-wrapper";
@@ -531,20 +920,16 @@ function createSymbolSection(
       labelWrapper.appendChild(typeIndicator);
     }
 
-    // If there are resolved type refs, make the symbol clickable to navigate to the first resolved type
+    // If there are resolved type refs, make the label visually indicate it
+    // But DON'T add a click handler here — badge click will handle navigation
+    // Symbol row click will just toggle the pin (handled by the row's click handler)
     if (hasResolvedTypeRefs) {
       labelWrapper.classList.add("has-type-link");
       const firstResolved = typeRefs.find(ref => ref.isResolved);
       if (firstResolved?.targetId) {
         labelWrapper.dataset.targetId = firstResolved.targetId;
         labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
-        labelWrapper.addEventListener("click", _event => {
-          // Don't stop propagation - let the row's click handler also fire to toggle pin
-          const targetNode = controller.options.nodesById.get(firstResolved.targetId);
-          if (targetNode) {
-            void controller.focusSidebar(targetNode);
-          }
-        });
+        // Double-click still recenters on the target node
         labelWrapper.addEventListener("dblclick", event => {
           event.stopPropagation();
           const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
@@ -561,7 +946,7 @@ function createSymbolSection(
     outboundAnchor.className = "symbol-anchor dot outbound";
     outboundAnchor.dataset.symbol = symbol;
     symbolRow.appendChild(outboundAnchor);
-    controller.registerAnchor(node.id, columnRole, `outbound:${symbol}`, outboundAnchor);
+    registerAnchor(`outbound:${symbol}`, outboundAnchor);
 
     grid.appendChild(symbolRow);
   });
@@ -594,8 +979,8 @@ function createSymbolSection(
     internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
     internalsInbound.dataset.symbol = "__internals__";
     internalsRow.appendChild(internalsInbound);
-    controller.registerAnchor(node.id, columnRole, "inbound:__internals__", internalsInbound);
-    controller.registerAnchor(node.id, columnRole, "inbound:*", internalsInbound);
+    registerAnchor("inbound:__internals__", internalsInbound);
+    registerAnchor("inbound:*", internalsInbound);
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";

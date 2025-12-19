@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/rendering.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-rendering-ts
-- Generated At: 2025-12-11T02:38:02.182Z
+- Generated At: 2025-12-19T04:50:48.269Z
 
 ## Authored
 ### Purpose
@@ -20,12 +20,12 @@ Markdown rendering for Live Documentation. Generates the markdown content for ge
 - Type references are resolved via `WorkspaceSymbolIndex` and rendered as markdown links
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.182Z","inputHash":"1ffb795efc6e1406"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:48.269Z","inputHash":"86779faaa1371c33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L52)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L53)
 - Returns: [`PublicSymbolHeadingInfo`](./core.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
 - Parameters: `symbols`: [`PublicSymbolEntry`](./core.ts.mdmd.md#symbol-publicsymbolentry)[]
 
@@ -44,7 +44,7 @@ Array of heading info with display names and slugs
 
 #### `renderPublicSymbolLines` {#symbol-renderpublicsymbollines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L199)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L200)
 
 ##### `renderPublicSymbolLines` — Summary
 Renders the markdown lines that populate the `Public Symbols` section for a Live Doc.
@@ -73,7 +73,7 @@ An array of markdown lines ready to insert beneath the `Public Symbols` heading.
 
 #### `renderDependencyLines` {#symbol-renderdependencylines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L657)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L669)
 
 ##### `renderDependencyLines` — Summary
 Renders the markdown bullet list for a Live Doc's `Dependencies` section.
@@ -99,7 +99,7 @@ Markdown lines suitable for the `Dependencies` section, or an empty array when n
 
 #### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L806)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L818)
 
 ##### `renderReExportedAnchorLines` — Summary
 Renders the markdown for the Re-Exported Symbol Anchors section.
@@ -126,6 +126,7 @@ Markdown lines for re-exported anchors, or empty array if none
 - [`coreTypes.SourceAnalysisResult`](./coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`coreTypes.TypeReference`](./coreTypes.ts.mdmd.md#symbol-typereference) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`coreUtils.compareSymbolLocationsPreferOrigin`](./coreUtils.ts.mdmd.md#symbol-comparesymbollocationspreferorigin)
 - [`coreUtils.createSymbolSlug`](./coreUtils.ts.mdmd.md#symbol-createsymbolslug)
 - [`coreUtils.displayDependencyKey`](./coreUtils.ts.mdmd.md#symbol-displaydependencykey)
 - [`coreUtils.formatDependencyQualifier`](./coreUtils.ts.mdmd.md#symbol-formatdependencyqualifier)

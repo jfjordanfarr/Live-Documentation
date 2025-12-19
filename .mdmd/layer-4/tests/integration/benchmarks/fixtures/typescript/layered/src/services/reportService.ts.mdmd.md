@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/services/reportService.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-services-reportservice-ts
-- Generated At: 2025-12-06T22:49:48.689Z
+- Generated At: 2025-12-19T04:50:48.693Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Coordinates the service layer for the `ts-layered` benchmark so the analyzer pro
 - Keeps dependencies explicit (`loadWidgetMetrics`, `formatReport`) to highlight transitive edges the oracle compares against analyzer output.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.689Z","inputHash":"d4eb6cda6f0668d9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:48.693Z","inputHash":"d4eb6cda6f0668d9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `generateReport` {#symbol-generatereport}
 - Type: function
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/layered/src/services/reportService.ts#L5)
-- Parameters: `widget`: [`Widget`](../../../basic/src/types.ts.mdmd.md#symbol-widget)
+- Parameters: `widget`: [`Widget`](../models/widget.ts.mdmd.md#symbol-widget)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

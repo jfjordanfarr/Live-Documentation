@@ -172,3 +172,77 @@ export function getNodeLocation(node: ts.Node, sourceFile: ts.SourceFile): Locat
 export function displayDependencyKey(entry: DependencyEntry): string {
   return entry.resolvedPath ?? entry.specifier;
 }
+
+// ============================================================================
+// Barrel File Detection
+// ============================================================================
+
+/**
+ * Well-known barrel file base names (without extension).
+ *
+ * These patterns are commonly used for index/barrel files that re-export
+ * symbols from other modules without defining them locally.
+ */
+const BARREL_FILE_BASE_NAMES = new Set(["index", "mod", "barrel", "exports", "public-api"]);
+
+/**
+ * Determines if a file path represents a barrel/index file.
+ *
+ * @remarks
+ * Barrel files (also known as index files) are TypeScript/JavaScript modules
+ * that primarily re-export symbols from other files rather than defining them.
+ * They are commonly used as public API entry points for packages.
+ *
+ * When resolving symbol references, we generally prefer to link to the file
+ * where a symbol is **defined** rather than a barrel that re-exports it.
+ * This produces more accurate dependency graphs and clearer documentation links.
+ *
+ * @param filePath - The file path to check (workspace-relative or absolute)
+ * @returns True if the file appears to be a barrel file based on its name
+ *
+ * @example
+ * ```ts
+ * isBarrelFilePath("packages/foo/index.ts");      // true
+ * isBarrelFilePath("packages/foo/src/utils.ts");  // false
+ * isBarrelFilePath("lib/mod.ts");                 // true
+ * ```
+ */
+export function isBarrelFilePath(filePath: string): boolean {
+  // Extract base name without extension
+  const baseName = path.basename(filePath).replace(/\.[^.]+$/, "").toLowerCase();
+  return BARREL_FILE_BASE_NAMES.has(baseName);
+}
+
+/**
+ * Sorts symbol locations to prefer non-barrel files over barrel files.
+ *
+ * @remarks
+ * When multiple files export the same symbol (e.g., an origin file and a
+ * barrel that re-exports it), we want to resolve links to the origin file
+ * where the symbol is actually defined.
+ *
+ * This comparator:
+ * 1. Puts non-barrel files before barrel files
+ * 2. Among files of the same barrel-ness, prefers deeper paths (more specific)
+ *
+ * @param a - First location to compare
+ * @param b - Second location to compare
+ * @returns Negative if a should come first, positive if b should come first
+ */
+export function compareSymbolLocationsPreferOrigin(
+  a: { sourcePath: string },
+  b: { sourcePath: string }
+): number {
+  const aIsBarrel = isBarrelFilePath(a.sourcePath);
+  const bIsBarrel = isBarrelFilePath(b.sourcePath);
+
+  // Non-barrel files come first
+  if (aIsBarrel !== bIsBarrel) {
+    return aIsBarrel ? 1 : -1;
+  }
+
+  // Among same barrel-ness, prefer deeper paths (more specific modules)
+  const aDepth = a.sourcePath.split(/[\\/]/).length;
+  const bDepth = b.sourcePath.split(/[\\/]/).length;
+  return bDepth - aDepth;
+}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2025-12-07T21:41:17.111Z
+- Generated At: 2025-12-19T04:50:47.341Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.111Z","inputHash":"9e4a4b476f4780c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.341Z","inputHash":"9e4a4b476f4780c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -57,12 +57,12 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L149)
 - Returns: [`DirectoryNode`](../types.ts.mdmd.md#symbol-directorynode)
-- Parameters: `nodes`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)[]
+- Parameters: `nodes`: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]
 
 #### `getDirectoryKey` {#symbol-getdirectorykey}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L176)
-- Parameters: `node`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)
+- Parameters: `node`: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 #### `measureDirectoryTree` {#symbol-measuredirectorytree}
 - Type: function
@@ -79,7 +79,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 #### `findDominantDirectory` {#symbol-finddominantdirectory}
 - Type: function
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts#L543)
-- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../../index.ts.mdmd.md#symbol-explorergraphpayload); `nodes`: [`ExplorerNodePayload`](../../../../index.ts.mdmd.md#symbol-explorernodepayload)[]; `_unnamed_`: [`ExplorerLinkPayload`](../../../../index.ts.mdmd.md#symbol-explorerlinkpayload)
+- Parameters: `graphData`: [`ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `nodes`: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `_unnamed_`: [`ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

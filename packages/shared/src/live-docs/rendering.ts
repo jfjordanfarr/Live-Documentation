@@ -28,7 +28,8 @@ import {
   toModuleLabel,
   formatInlineCode,
   formatDependencyQualifier,
-  displayDependencyKey
+  displayDependencyKey,
+  compareSymbolLocationsPreferOrigin
 } from "./coreUtils";
 
 // ============================================================================
@@ -285,6 +286,16 @@ interface ResolvedTypeLocation {
 /**
  * Resolves a type name to its Live Doc location using the workspace symbol index.
  *
+ * @remarks
+ * When multiple files export the same symbol (e.g., an origin file and a barrel
+ * that re-exports it), this function prefers the **origin** file where the symbol
+ * is actually defined. This produces more accurate documentation links.
+ *
+ * The resolution strategy:
+ * 1. Filter out self-references (types in the current file)
+ * 2. Prefer non-barrel files over barrel files (index.ts, mod.ts, etc.)
+ * 3. Among files of the same barrel-ness, prefer deeper paths (more specific)
+ *
  * @param typeName - The type name to resolve (e.g., "Widget", "Foo.Bar").
  * @param index - The workspace-wide symbol index.
  * @param currentSourcePath - The source path of the file being rendered.
@@ -305,9 +316,10 @@ function resolveTypeToLiveDoc(
   const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
   const selfRefs = locations.filter((loc) => loc.sourcePath === currentSourcePath);
 
-  // Prefer external definitions
+  // Prefer external definitions, sorted to prefer origin files over barrels
   if (external.length > 0) {
-    return { location: external[0], isSelfReference: false };
+    const sorted = external.slice().sort(compareSymbolLocationsPreferOrigin);
+    return { location: sorted[0], isSelfReference: false };
   }
 
   // Fall back to self-reference (intra-file link)
