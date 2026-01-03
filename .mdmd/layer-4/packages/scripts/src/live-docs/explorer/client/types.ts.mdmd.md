@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2025-12-19T04:50:47.323Z
+- Generated At: 2026-01-03T20:41:39.187Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.323Z","inputHash":"a61c4476be8d5faf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.187Z","inputHash":"a61c4476be8d5faf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
@@ -79,3 +79,12 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - [`types.ExplorerLinkKind`](../shared/types.ts.mdmd.md#symbol-explorerlinkkind) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [layout-measure.test.ts](./views/localView/layout-measure.test.ts.mdmd.md)
+- [pan-zoom.test.ts](./views/localView/pan-zoom.test.ts.mdmd.md)
+- [subgraph-builder.test.ts](./views/localView/subgraph-builder.test.ts.mdmd.md)
+- [symbol-highlight.test.ts](./views/localView/symbol-highlight.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

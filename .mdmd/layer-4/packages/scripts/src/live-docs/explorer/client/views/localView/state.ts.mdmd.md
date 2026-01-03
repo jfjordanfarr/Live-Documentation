@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-state-ts
-- Generated At: 2025-12-19T18:42:37.920Z
+- Generated At: 2026-01-03T20:41:39.258Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Observable state container for the Local Map visualization, providing pure-data 
 - 153 unit tests across state.ts, layout-math.ts, connection-geometry.ts validate the extraction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T18:42:37.920Z","inputHash":"6eddd378ea87fc08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.258Z","inputHash":"6eddd378ea87fc08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolPin` {#symbol-symbolpin}
@@ -244,6 +244,10 @@ _No dependencies documented yet_
 ### Observed Evidence
 #### Vitest Unit Tests
 - [layout-math.test.ts](./layout-math.test.ts.mdmd.md)
+- [layout-measure.test.ts](./layout-measure.test.ts.mdmd.md)
+- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
 - [state-integration.test.ts](./state-integration.test.ts.mdmd.md)
 - [state.test.ts](./state.test.ts.mdmd.md)
+- [subgraph-builder.test.ts](./subgraph-builder.test.ts.mdmd.md)
+- [symbol-highlight.test.ts](./symbol-highlight.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-sources-view-ts
-- Generated At: 2025-12-19T21:55:44.428Z
+- Generated At: 2026-01-03T21:58:16.452Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Renders the Knowledge Sources panel showing graph health warnings and data sourc
 Extracted from client/index.ts during Dev Day 50 (12/19). The `renderSourcesView()` function populates the sidebar with graph statistics, while `renderHealthWarnings()` surfaces actionable issues.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.428Z","inputHash":"5b2830c30bd97cb6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T21:58:16.452Z","inputHash":"887493753295012b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticDocsMap` {#symbol-staticdocsmap}
@@ -32,16 +32,23 @@ Static docs map type (nodeId → markdown content)
 ##### `NavigateToNodeCallback` — Summary
 Callback for navigating to a node from health warnings
 
+#### `DownloadAllCallback` {#symbol-downloadallcallback}
+- Type: type
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L23)
+
+##### `DownloadAllCallback` — Summary
+Callback for bulk download
+
 #### `SourcesViewConfig` {#symbol-sourcesviewconfig}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L23)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L26)
 
 ##### `SourcesViewConfig` — Summary
 Sources view configuration
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L92)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L96)
 - Parameters: `config`: [`SourcesViewConfig`](./index.ts.mdmd.md#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary

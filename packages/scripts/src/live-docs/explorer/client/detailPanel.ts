@@ -19,6 +19,10 @@ export interface DetailPanelApi {
   showNode(node: ExplorerNodePayload): Promise<void>;
   setLoading(node: ExplorerNodePayload): void;
   hide(): void;
+  /** Download the current node's markdown file */
+  downloadCurrentDoc(): Promise<void>;
+  /** Get the current node (if any) */
+  getCurrentNode(): ExplorerNodePayload | null;
 }
 
 export interface DetailPanelOptions {
@@ -122,7 +126,49 @@ export function createDetailPanel(
     }
   }
 
-  return { showNode, setLoading, hide };
+  async function downloadCurrentDoc(): Promise<void> {
+    if (!currentNode) return;
+    
+    try {
+      let markdown: string;
+      
+      if (isStaticMode && staticDocs) {
+        // Static mode: use embedded markdown
+        markdown = staticDocs[currentNode.id] ?? "";
+      } else {
+        // Server mode: fetch from doc endpoint
+        const response = await fetch(`/doc?docPath=${encodeURIComponent(currentNode.docPath)}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch markdown");
+        }
+        markdown = await response.text();
+      }
+      
+      if (!markdown) {
+        console.warn("No markdown content available for download");
+        return;
+      }
+      
+      // Create download
+      const blob = new Blob([markdown], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${currentNode.name}.mdmd.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download markdown:", error);
+    }
+  }
+
+  function getCurrentNode(): ExplorerNodePayload | null {
+    return currentNode;
+  }
+
+  return { showNode, setLoading, hide, downloadCurrentDoc, getCurrentNode };
 }
 
 /**
@@ -186,8 +232,9 @@ function renderDocumentation(
   const parsed = parseLiveDocSections(markdown);
   const parts: string[] = [];
   
-  // 1. Metadata section - terse badge rendering
-  parts.push(renderNodeMetadata(node));
+  // 1. Metadata section - terse badge rendering with generated timestamp
+  const generatedAt = parsed.metadata["Generated At"];
+  parts.push(renderNodeMetadata(node, generatedAt));
   
   // 2. Authored section - full markdown rendering
   if (parsed.authored) {
@@ -341,18 +388,53 @@ function attachNodeLinkHandlers(
 }
 
 /**
- * Render node metadata badges (archetype, paths).
+ * Render node metadata badges (archetype, paths, generated timestamp).
  */
-function renderNodeMetadata(node: ExplorerNodePayload): string {
+function renderNodeMetadata(node: ExplorerNodePayload, generatedAt?: string): string {
+  const archetypeIcon = getArchetypeIcon(node.archetype);
+  const archetypeClass = `archetype-${node.archetype.toLowerCase()}`;
+  
+  let generatedAtHtml = "";
+  if (generatedAt) {
+    const date = new Date(generatedAt);
+    const formatted = isNaN(date.getTime()) 
+      ? generatedAt 
+      : date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    generatedAtHtml = `
+      <div class="metadata-row generated-row">
+        <span class="metadata-icon">⏱</span>
+        <span class="metadata-label">Generated:</span>
+        <span class="metadata-value">${formatted}</span>
+      </div>
+    `;
+  }
+  
   return `
-    <div class="metadata-row">
-      <span class="pill accent">${node.archetype}</span>
+    <div class="metadata-row archetype-row">
+      <span class="archetype-badge ${archetypeClass}">
+        <span class="archetype-icon">${archetypeIcon}</span>
+        <span class="archetype-label">${node.archetype}</span>
+      </span>
     </div>
     <div class="metadata-row path-row">
-      <span class="path-label">Code:</span>
+      <span class="path-label">CODE:</span>
       <code class="path-value">${node.codeRelativePath}</code>
     </div>
+    ${generatedAtHtml}
   `;
+}
+
+/**
+ * Get icon for archetype (using CSS-safe Unicode symbols, not emojis).
+ */
+function getArchetypeIcon(archetype: string): string {
+  switch (archetype.toLowerCase()) {
+    case "implementation": return "◆"; // diamond
+    case "test": return "✓"; // checkmark
+    case "asset": return "◎"; // bullseye
+    case "stub": return "○"; // circle
+    default: return "◇"; // empty diamond
+  }
 }
 
 /**
@@ -392,7 +474,8 @@ function renderFallbackDetails(
 }
 
 /**
- * Render details from server API response (legacy format).
+ * Render details from server API response.
+ * Uses the new 'authored' field if available, falls back to 'purpose' for backward compatibility.
  */
 function renderServerDetails(
   node: ExplorerNodePayload,
@@ -402,13 +485,14 @@ function renderServerDetails(
 ): string {
   const parts: string[] = [];
   
-  // Metadata section
-  parts.push(`<div class="doc-metadata">${renderNodeMetadata(node)}</div>`);
+  // Metadata section with Generated At timestamp
+  parts.push(`<div class="doc-metadata">${renderNodeMetadata(node, details.generatedAt)}</div>`);
   
-  // Purpose section (authored content) - render as markdown
-  if (details.purpose) {
-    const purposeHtml = renderMarkdown(details.purpose, {});
-    parts.push(`<div class="doc-authored markdown-body"><h3>Purpose</h3>${purposeHtml}</div>`);
+  // Authored section - use full 'authored' field if available, otherwise fall back to 'purpose'
+  const authoredContent = details.authored || details.purpose;
+  if (authoredContent) {
+    const authoredHtml = renderAuthoredContent(authoredContent, node, nodesById, onNodeClick);
+    parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
   }
   
   // Generated content section

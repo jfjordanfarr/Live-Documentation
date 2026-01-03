@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-types-ts
-- Generated At: 2025-12-19T21:19:50.833Z
+- Generated At: 2026-01-03T20:41:39.274Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Type definitions for the Local Map view. Centralises interfaces for view options
 - `CenterAlignmentGuides` tracks vertical positions for connection line rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.833Z","inputHash":"e713aac477dadf53"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.274Z","inputHash":"e713aac477dadf53"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}
@@ -87,3 +87,12 @@ to future-proof for multi-hop graph expansion.
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [layout-measure.test.ts](./layout-measure.test.ts.mdmd.md)
+- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
+- [subgraph-builder.test.ts](./subgraph-builder.test.ts.mdmd.md)
+- [symbol-highlight.test.ts](./symbol-highlight.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

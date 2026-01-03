@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-runtime-ts
-- Generated At: 2025-12-18T21:24:41.324Z
+- Generated At: 2026-01-03T20:41:39.250Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Runtime state management for the Local Map. Maintains the anchor registry, drag 
 - `LocalViewRuntime` bundles the registry, DOM refs, and drag state.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T21:24:41.324Z","inputHash":"f336bf8b6eb5a3c5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.250Z","inputHash":"f336bf8b6eb5a3c5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorRegistry` {#symbol-anchorregistry}
@@ -97,3 +97,9 @@ Gets an anchor using hop-aware lookup for multi-hop visualization.
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

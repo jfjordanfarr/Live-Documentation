@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/detailPanel.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-detailpanel-ts
-- Generated At: 2025-12-07T21:41:17.044Z
+- Generated At: 2026-01-03T21:58:16.430Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Manages the Explorer's right-hand detail panel. Fetches and displays Live Doc me
 - Populates the sidebar with "Open in Editor", "Open in Local View", and dependency links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.044Z","inputHash":"802be60f654199da"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T21:58:16.430Z","inputHash":"d55d546613406932"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailPanelApi` {#symbol-detailpanelapi}
@@ -26,11 +26,11 @@ Manages the Explorer's right-hand detail panel. Fetches and displays Live Doc me
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L24)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L28)
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L43)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L47)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 <!-- LIVE-DOC:END Public Symbols -->

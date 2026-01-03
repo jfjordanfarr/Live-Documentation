@@ -97,6 +97,11 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
                 return;
             }
 
+            if (requestUrl.pathname === "/doc") {
+                await handleDoc(requestUrl, workspaceRoot, res);
+                return;
+            }
+
             if (requestUrl.pathname === "/local-map") {
                 await handleLocalMap(requestUrl, context, res);
                 return;
@@ -230,9 +235,12 @@ async function handleDetails(
 
     try {
         const content = await fs.readFile(absoluteDocPath, "utf8");
+        const extracted = extractLiveDocSections(content);
         const payload: ExplorerDetailPayload = {
             archetype: node.archetype,
-            purpose: extractPurposeSection(content),
+            purpose: extracted.purpose, // backward compatibility
+            authored: extracted.authored,
+            generatedAt: extracted.generatedAt,
             publicSymbols: node.publicSymbols,
             dependencies: node.dependencies,
             dependents: node.dependents,
@@ -250,9 +258,80 @@ async function handleDetails(
     }
 }
 
-function extractPurposeSection(content: string): string {
-    const purposeMatch = content.match(/##\s+Purpose\s+([\s\S]*?)(?=##|$)/);
-    return purposeMatch ? purposeMatch[1].trim() : "No purpose defined.";
+/**
+ * Handle the /doc endpoint for raw markdown download.
+ * Returns the raw markdown content of a Live Documentation file.
+ * 
+ * @example GET /doc?docPath=.mdmd/layer-4/packages/server/src/main.ts.mdmd.md
+ */
+async function handleDoc(
+    url: URL,
+    workspaceRoot: string,
+    res: ServerResponse
+): Promise<void> {
+    const docPathParam = url.searchParams.get("docPath");
+    if (!docPathParam) {
+        res.writeHead(400, { "Content-Type": "text/plain" });
+        res.end("Missing docPath parameter");
+        return;
+    }
+
+    const absoluteDocPath = path.resolve(workspaceRoot, docPathParam);
+    if (!isPathInsideWorkspace(workspaceRoot, absoluteDocPath)) {
+        res.writeHead(400, { "Content-Type": "text/plain" });
+        res.end("Invalid docPath");
+        return;
+    }
+
+    try {
+        const content = await fs.readFile(absoluteDocPath, "utf8");
+        const filename = path.basename(absoluteDocPath);
+        
+        res.writeHead(200, {
+            "Content-Type": "text/markdown; charset=utf-8",
+            "Content-Disposition": `attachment; filename="${filename}"`
+        });
+        res.end(content);
+    } catch {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("File not found");
+    }
+}
+
+/**
+ * Extracted sections from a Live Documentation file.
+ */
+interface ExtractedLiveDoc {
+    purpose: string;
+    authored: string;
+    generatedAt?: string;
+}
+
+/**
+ * Extract sections from a Live Documentation markdown file.
+ * Returns the full Authored section and the Generated At timestamp.
+ */
+function extractLiveDocSections(content: string): ExtractedLiveDoc {
+    // Extract Purpose for backward compatibility
+    const purposeMatch = content.match(/###\s+Purpose\s*\n([\s\S]*?)(?=###|##|$)/);
+    const purpose = purposeMatch ? purposeMatch[1].trim() : "No purpose defined.";
+    
+    // Extract full Authored section - find the index positions and slice
+    const authoredStart = content.indexOf("\n## Authored\n");
+    const generatedStart = content.indexOf("\n## Generated\n");
+    
+    let authored = "";
+    if (authoredStart !== -1) {
+        const contentStart = authoredStart + "\n## Authored\n".length;
+        const contentEnd = generatedStart !== -1 ? generatedStart : content.length;
+        authored = content.slice(contentStart, contentEnd).trim();
+    }
+    
+    // Extract Generated At from metadata
+    const generatedAtMatch = content.match(/- Generated At:\s*(.+)$/m);
+    const generatedAt = generatedAtMatch ? generatedAtMatch[1].trim() : undefined;
+    
+    return { purpose, authored, generatedAt };
 }
 
 /**

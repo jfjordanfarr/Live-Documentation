@@ -313,6 +313,76 @@
     margin-bottom: 8px;
 }
 
+.archetype-row {
+    margin-bottom: 12px;
+}
+
+.archetype-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+}
+
+.archetype-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.archetype-label {
+    text-transform: capitalize;
+}
+
+.archetype-implementation {
+    color: var(--color-implementation);
+    border-color: var(--color-implementation);
+    background: rgba(100, 200, 100, 0.1);
+}
+
+.archetype-test {
+    color: var(--color-test);
+    border-color: var(--color-test);
+    background: rgba(100, 150, 255, 0.1);
+}
+
+.archetype-asset {
+    color: var(--color-asset);
+    border-color: var(--color-asset);
+    background: rgba(200, 150, 100, 0.1);
+}
+
+.archetype-stub {
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+.generated-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.metadata-icon {
+    font-size: 12px;
+}
+
+.metadata-label {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metadata-value {
+    color: var(--text);
+}
+
 .path-row {
     display: flex;
     align-items: baseline;

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-test-ts
-- Generated At: 2025-12-19T21:19:50.829Z
+- Generated At: 2026-01-03T20:41:39.269Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for symbol highlight computation. Covers edge-symbol matching, `__int
 Created during Dev Day 50 (12/19). Tests `computeSymbolHighlight()` with various subgraph configurations to ensure correct related symbol/edge/node set computation without DOM involvement.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.829Z","inputHash":"a22ec5858136c115"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.269Z","inputHash":"a22ec5858136c115"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -34,7 +34,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views: [symbolAnchors.ts](../symbolAnchors.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md), [symbol-highlight.ts](./symbol-highlight.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

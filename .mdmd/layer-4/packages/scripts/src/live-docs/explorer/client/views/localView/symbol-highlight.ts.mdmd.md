@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-ts
-- Generated At: 2025-12-19T21:19:50.831Z
+- Generated At: 2026-01-03T20:41:39.272Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for computing symbol hover/pin highlighting in the Local Map. Det
 Extracted from controller.ts during Dev Day 50 (12/19). The `computeSymbolHighlight()` function is pure computation; `applySymbolHighlight()` handles DOM mutations. This separation enables comprehensive unit testing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.831Z","inputHash":"a7129c4e962bdd54"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.272Z","inputHash":"a7129c4e962bdd54"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolHighlightResult` {#symbol-symbolhighlightresult}
@@ -62,3 +62,9 @@ Clears all symbol highlighting from the DOM.
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [symbol-highlight.test.ts](./symbol-highlight.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

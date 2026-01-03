@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 18, 2025\)*
+*Status: Active Development (Dec 19, 2025\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -508,6 +508,23 @@ The Local Map evolved from a static "Three-Column" view into a dynamic **"Path M
 * **Dual-Direction Pathfinder (Commit 183):** The CLI pathfinder was upgraded to support simultaneous **Outbound** (Dependency) and **Inbound** (Dependent) tracing. This allows developers to answer both "What does this break?" and "What breaks this?" in a single query.  
 * **Precision Signal (Commit 184):** The team implemented a **Barrel File Resolution** fix. The resolution engine now intelligently prefers the "Origin Definition" over the "Re-export" when linking symbols, significantly reducing noise in the graph.
 
+### **Phase XXXIV: The Great Decoupling (Dec 19\)**
+
+Date: December 19, 2025
+
+Scope: Commits 185–186
+
+The project executed its largest-ever frontend refactor, breaking the monolithic Explorer client into focused, independent modules. This was coupled with a comprehensive audit and update of the documentation to match the current reality.
+
+* **Frontend Extraction (Commit 186):** The explorer client was systematically decomposed to improve maintainability and testability.  
+  * **CLI Logic:** inspect.ts was split into 11 modules (72% reduction in file size).  
+  * **Viewer Client:** index.ts, render.ts, and controller.ts were exploded into specialized domains: bootstrap, persistence, panels, card-factory, layout-factory, and interaction-handlers.  
+  * **Test Coverage:** This decoupling enabled the addition of **72 new unit tests** for the extracted pure functions, significantly increasing frontend reliability.  
+* **Documentation Refresh (Commit 185):** A massive "Chat Archaeology" effort reconciled the public docs with the private code.  
+  * **README Rewrite:** The project's "front door" was updated with a new tagline ("Universal Map for Any Codebase") and detailed sections on the Explorer's three views (Circuit, Local, Force).  
+  * **Spec-Kit Verification:** The team used chat history to audit the completion status of 10+ major tasks (US1-3, CAP-030) and mark them as DONE in the tracking files.  
+  * **Authored Content Injection:** "Purpose" and "Notes" sections were populated for 13+ Layer-4 files, ensuring that the generated documentation carries human context.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -527,7 +544,8 @@ The Local Map evolved from a static "Three-Column" view into a dynamic **"Path M
 * **Dec 15 (Phase XXIX):** "Network Isolation & Pre-Publish." (Security guarantees and npm readiness).  
 * **Dec 16 (Phase XXXI):** "The Explorer's Truth." (Self-auditing provenance and health transparency).  
 * **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).  
-* **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).
+* **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).  
+* **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).
 
 ## **Technical Themes & Motifs**
 

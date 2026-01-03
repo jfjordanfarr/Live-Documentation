@@ -66,6 +66,7 @@ declare global {
     openInGraphView: () => void;
     openInCircuitBoard: () => void;
     openOmnisearch: () => void;
+    downloadCurrentDoc: () => void;
     zoomIn: () => void;
     zoomOut: () => void;
     resetZoom: () => void;
@@ -629,6 +630,10 @@ function startExplorer(
     void fetch(`/open?codePath=${encodeURIComponent(target.codePath)}`);
   };
 
+  globalWindow.downloadCurrentDoc = () => {
+    void detailPanel.downloadCurrentDoc();
+  };
+
   globalWindow.openInLocalView = () => {
     // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
     const target = state.focusedNode ?? state.selectedNode;
@@ -1102,6 +1107,9 @@ function startExplorer(
   }
 
   function doRenderSourcesView(): void {
+    // Determine if bulk download is available
+    const canBulkDownload = !!staticDocs || !isStaticMode;
+    
     renderSourcesView({
       graphData,
       viewerConfig: viewerConfig ?? null,
@@ -1117,8 +1125,61 @@ function startExplorer(
           schedulePersistNav();
           void selectNode(node);
         }
-      }
+      },
+      onDownloadAll: canBulkDownload ? () => void downloadAllDocs() : undefined
     });
+  }
+
+  async function downloadAllDocs(): Promise<void> {
+    try {
+      const allDocs: string[] = [];
+      let fetchedCount = 0;
+      
+      for (const node of graphData.nodes) {
+        let markdown: string | undefined;
+        
+        if (isStaticMode && staticDocs) {
+          // Static mode: use embedded markdown
+          markdown = staticDocs[node.id];
+        } else {
+          // Server mode: fetch from doc endpoint
+          try {
+            const response = await fetch(`/doc?docPath=${encodeURIComponent(node.docPath)}`);
+            if (response.ok) {
+              markdown = await response.text();
+            }
+          } catch {
+            console.warn(`Failed to fetch doc for ${node.id}`);
+          }
+        }
+        
+        if (markdown) {
+          // Add separator and header for each doc
+          allDocs.push(`\n\n---\n\n<!-- SOURCE: ${node.docRelativePath || node.name} -->\n\n${markdown}`);
+          fetchedCount++;
+        }
+      }
+      
+      if (allDocs.length === 0) {
+        alert("No documentation content available to download.");
+        return;
+      }
+      
+      const combined = `# Live Documentation Export\n\nExported ${fetchedCount} documents on ${new Date().toISOString()}\n\n${allDocs.join("")}`;
+      
+      const blob = new Blob([combined], { type: "text/markdown; charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "live-documentation-export.md";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to create documentation archive:", error);
+      alert("Failed to download documentation. Check the console for details.");
+    }
   }
 
   function renderGraph(): void {

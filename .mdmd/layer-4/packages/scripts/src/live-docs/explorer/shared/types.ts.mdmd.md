@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-types-ts
-- Generated At: 2025-12-07T01:16:51.708Z
+- Generated At: 2026-01-03T20:41:39.307Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Shared type definitions used by both the Explorer server and client. Defines the
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T01:16:51.708Z","inputHash":"5b15e3e8aeb6de08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.307Z","inputHash":"5b15e3e8aeb6de08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerLinkKind` {#symbol-explorerlinkkind}
@@ -71,3 +71,12 @@ Extended symbol information including type references.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [layout-measure.test.ts](../client/views/localView/layout-measure.test.ts.mdmd.md)
+- [pan-zoom.test.ts](../client/views/localView/pan-zoom.test.ts.mdmd.md)
+- [subgraph-builder.test.ts](../client/views/localView/subgraph-builder.test.ts.mdmd.md)
+- [symbol-highlight.test.ts](../client/views/localView/symbol-highlight.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

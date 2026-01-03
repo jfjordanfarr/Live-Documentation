@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-subgraph-builder-ts
-- Generated At: 2025-12-19T21:55:44.552Z
+- Generated At: 2026-01-03T20:41:39.265Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for building local subgraphs from the full Explorer graph. Create
 Extracted from controller.ts during Dev Day 50 (12/19). The `createLocalSubgraph()` function builds exploration-mode subgraphs; `buildPathSubgraph()` handles path-mode with adjacent-only edge filtering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.552Z","inputHash":"dac6631af4cd14a9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.265Z","inputHash":"dac6631af4cd14a9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NodeFilter` {#symbol-nodefilter}
@@ -96,3 +96,9 @@ For a path [A, B, C]:
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [subgraph-builder.test.ts](./subgraph-builder.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

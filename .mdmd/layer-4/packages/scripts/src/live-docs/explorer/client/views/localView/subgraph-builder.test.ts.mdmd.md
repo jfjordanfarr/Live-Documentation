@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-subgraph-builder-test-ts
-- Generated At: 2025-12-19T21:19:50.823Z
+- Generated At: 2026-01-03T20:41:39.262Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for subgraph construction functions. Validates inbound/outbound class
 Created during Dev Day 50 (12/19). Uses mock graph data to verify `createLocalSubgraph()`, `buildSelfLoopEdges()`, and `buildPathSubgraph()` produce correct graph subsets.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.823Z","inputHash":"7e241ab4b43e5ed0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.262Z","inputHash":"7e241ab4b43e5ed0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -39,7 +39,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md), [subgraph-builder.ts](./subgraph-builder.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

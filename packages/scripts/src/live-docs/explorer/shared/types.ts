@@ -89,7 +89,12 @@ export interface ExplorerGraphPayload {
 
 export interface ExplorerDetailPayload {
     archetype: string;
+    /** @deprecated Use authored instead. Kept for backward compatibility. */
     purpose: string;
+    /** Full authored section markdown (Purpose, Notes, etc.) */
+    authored: string;
+    /** ISO timestamp when the Live Doc was generated */
+    generatedAt?: string;
     publicSymbols: string[];
     dependencies: ExplorerDependencyReference[];
     dependents: string[];

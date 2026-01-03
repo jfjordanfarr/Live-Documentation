@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-layout-measure-test-ts
-- Generated At: 2025-12-19T21:19:50.794Z
+- Generated At: 2026-01-03T20:41:39.231Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for layout measurement pure functions. Validates clamp behavior, fit-
 Created during Dev Day 50 (12/19). Tests the mathematical aspects of `computeFitTransform()` without requiring DOM; DOM-dependent measurement is validated via integration tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.794Z","inputHash":"887730f5038d7932"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.231Z","inputHash":"887730f5038d7932"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,7 +33,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views/localView: [layout-measure.ts](./layout-measure.ts.mdmd.md), [state.ts](./state.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

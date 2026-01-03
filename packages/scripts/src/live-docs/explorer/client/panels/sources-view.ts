@@ -19,6 +19,9 @@ export type StaticDocsMap = Map<string, string> | undefined;
 /** Callback for navigating to a node from health warnings */
 export type NavigateToNodeCallback = (nodeId: string) => void;
 
+/** Callback for bulk download */
+export type DownloadAllCallback = () => void;
+
 /** Sources view configuration */
 export interface SourcesViewConfig {
   graphData: ExplorerGraphPayload;
@@ -27,6 +30,7 @@ export interface SourcesViewConfig {
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   nodesById: Map<string, ExplorerNodePayload>;
   onNavigateToNode: NavigateToNodeCallback;
+  onDownloadAll?: DownloadAllCallback;
 }
 
 /** Thresholds for health warnings */
@@ -90,7 +94,7 @@ function renderHealthWarnings(
  * Render the Sources view panel showing graph statistics and health information.
  */
 export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode } = config;
+  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownloadAll } = config;
 
   const container = requireElement<HTMLDivElement>("sources-container");
 
@@ -192,6 +196,25 @@ export function renderSourcesView(config: SourcesViewConfig): void {
         <p><strong>Barrel files</strong> (index.ts re-exporters) can obscure original symbol sources. If you see high fan-out warnings above, consider whether those files are masking the true dependency structure.</p>
       </div>
     </div>
+
+    <div class="sources-panel">
+      <h2><span class="panel-icon">📥</span> Export Documentation</h2>
+      <div class="sources-guidance">
+        <p>Download all Live Documentation as a ZIP archive. This bundle includes every markdown file rendered in this explorer.</p>
+        <p>Use this to:</p>
+        <ul>
+          <li>Share documentation with team members who don't have workspace access</li>
+          <li>Create offline backups of your documentation</li>
+          <li>Publish documentation to wikis or static sites</li>
+        </ul>
+      </div>
+      <div class="sources-actions">
+        <button id="download-all-btn" class="action-btn primary" ${onDownloadAll ? "" : "disabled"}>
+          Download All (${nodeCount} docs)
+        </button>
+        ${onDownloadAll ? "" : '<span class="sources-note">Bulk download requires server mode or static bundle with embedded docs.</span>'}
+      </div>
+    </div>
   `;
 
   // Attach click handlers for warning nodes
@@ -203,4 +226,14 @@ export function renderSourcesView(config: SourcesViewConfig): void {
       }
     });
   });
+
+  // Attach click handler for download all button
+  if (onDownloadAll) {
+    const downloadBtn = container.querySelector<HTMLButtonElement>("#download-all-btn");
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", () => {
+        onDownloadAll();
+      });
+    }
+  }
 }

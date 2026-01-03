@@ -2210,6 +2210,10 @@
             "context": "inline-code"
           },
           {
+            "symbol": "DownloadAllCallback",
+            "context": "inline-code"
+          },
+          {
             "symbol": "SourcesViewConfig",
             "context": "inline-code"
           },
@@ -2228,6 +2232,7 @@
           "sectionSymbols": [
             "StaticDocsMap",
             "NavigateToNodeCallback",
+            "DownloadAllCallback",
             "SourcesViewConfig",
             "renderSourcesView"
           ]
@@ -22174,6 +22179,10 @@
             "kind": "type"
           },
           {
+            "name": "DownloadAllCallback",
+            "kind": "type"
+          },
+          {
             "name": "SourcesViewConfig",
             "kind": "interface"
           },
@@ -40592,9 +40601,9 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-b60da939",
+      "id": "orchestrated-link-ae393b96",
       "sourceId": "orchestrated-artifact-7ba2f1cc",
-      "targetId": "orchestrated-artifact-c0824b1a",
+      "targetId": "orchestrated-artifact-7ec91dd5",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
