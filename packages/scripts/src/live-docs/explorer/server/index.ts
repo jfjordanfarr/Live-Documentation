@@ -35,7 +35,12 @@ interface InternalContext {
 
 export async function startExplorerServer(options: ExplorerServerOptions): Promise<ExplorerServerInstance> {
     const { workspaceRoot } = options;
-    const port = options.port ?? 3000;
+    // Validate port is a safe integer in valid range (1-65535) to prevent injection
+    const rawPort = options.port ?? 3000;
+    if (!Number.isInteger(rawPort) || rawPort < 1 || rawPort > 65535) {
+        throw new Error(`Invalid port number: ${rawPort}`);
+    }
+    const port = rawPort;
     const logger = options.logger ?? console;
 
     const assets = await buildExplorerAssets({ workspaceRoot });
