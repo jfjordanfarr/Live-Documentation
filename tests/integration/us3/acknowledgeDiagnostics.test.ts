@@ -49,7 +49,9 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
   });
 
   test("Lead acknowledges diagnostic to clear until next change", async function (this: Mocha.Context) {
-    this.timeout(60000);
+    // Increase timeout to accommodate CI slowness:
+    // 2s sleep + 30s wait + 10s absence + 2s sleep + 30s wait = 74s worst case
+    this.timeout(90000);
 
     await clearDiagnostics();
 
@@ -61,7 +63,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     // Allow debounce + server processing time before waiting for diagnostic
     await sleep(2000);
 
-    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 45000);
+    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
     assert.ok(initial.recordId, "Diagnostic should include persistent record identifier");
 
     const acknowledgementPayload =
@@ -115,7 +117,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     // Allow debounce + server processing time before waiting for diagnostic
     await sleep(2000);
 
-    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 45000);
+    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
     assert.ok(subsequent.recordId, "Subsequent diagnostic should include persistent record identifier");
     assert.notStrictEqual(subsequent.recordId, initial.recordId, "New change event should emit new diagnostic record");
   });
