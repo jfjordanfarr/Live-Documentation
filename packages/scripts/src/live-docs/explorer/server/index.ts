@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import * as fs from "fs/promises";
 import { createServer, type IncomingMessage, type ServerResponse } from "http";
 import * as path from "path";
@@ -127,8 +127,11 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
     logger.log(`Explorer running at http://localhost:${port}`);
 
     if (options.openBrowser !== false) {
-        const startCommand = process.platform === "win32" ? "start" : "open";
-        exec(`${startCommand} http://localhost:${port}`);
+        if (process.platform === "win32") {
+            execFile('cmd', ['/c', 'start', `http://localhost:${port}`]);
+        } else {
+            execFile('open', [`http://localhost:${port}`]);
+        }
     }
 
     const stop = async () =>
@@ -198,9 +201,7 @@ function handleOpen(url: URL, workspaceRoot: string, res: ServerResponse, logger
     }
 
     logger.log(`Opening file: ${absoluteCodePath}`);
-    const quoted = `"${absoluteCodePath.replace(/"/g, '\\"')}"`;
-    const command = process.platform === "win32" ? `code ${quoted}` : `code ${quoted}`;
-    exec(command);
+    execFile('code', [absoluteCodePath]);
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("OK");
 }

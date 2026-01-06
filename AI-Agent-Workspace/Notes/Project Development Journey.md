@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Dec 19, 2025\)*
+*Status: Active Development (Jan 3, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -525,6 +525,24 @@ The project executed its largest-ever frontend refactor, breaking the monolithic
   * **Spec-Kit Verification:** The team used chat history to audit the completion status of 10+ major tasks (US1-3, CAP-030) and mark them as DONE in the tracking files.  
   * **Authored Content Injection:** "Purpose" and "Notes" sections were populated for 13+ Layer-4 files, ensuring that the generated documentation carries human context.
 
+## **Part VI: The New Year (January 2026\)**
+
+*The project returns from the holiday break. Focus shifts to data portability and visual hierarchy.*
+
+### **Phase XXXV: The Export Era & Visual Identity (Jan 3\)**
+
+Date: January 3, 2026
+
+Scope: Commit 189
+
+After a two-week holiday hiatus, the team returned with a focus on **Data Portability**—ensuring the "Live Documentation" wasn't trapped inside the tool.
+
+* **The "Take It With You" Feature:** The Explorer received a massive capability upgrade: **Markdown Export**.  
+  * **Single File:** A "Download Markdown" button in the detail panel allows users to extract the raw documentation for any specific node.  
+  * **Bulk Export:** A new "Export Documentation" panel in the Knowledge Sources view creates a combined markdown file of the entire system, turning the graph back into a linear book.  
+* **Archetype Badges:** The visual language was refined with **Archetype Badges**. Nodes now display Unicode icons (●/✔/◆) with color-coded borders to instantly denote their role (e.g., Test, Implementation, Specification) without reading text.  
+* **Full Context Rendering:** A regex bug that limited the Detail Panel to showing only the "Purpose" section was fixed. The panel now renders the full \#\# Authored block (including "Notes"), ensuring no human context is hidden from the user.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -545,7 +563,8 @@ The project executed its largest-ever frontend refactor, breaking the monolithic
 * **Dec 16 (Phase XXXI):** "The Explorer's Truth." (Self-auditing provenance and health transparency).  
 * **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).  
 * **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).  
-* **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).
+* **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).  
+* **Jan 3 (Phase XXXV):** "Portable Knowledge." (Exportable docs and archetype badges).
 
 ## **Technical Themes & Motifs**
 

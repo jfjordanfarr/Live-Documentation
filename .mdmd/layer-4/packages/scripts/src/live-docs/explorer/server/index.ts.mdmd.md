@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2025-12-15T00:38:06.082Z
+- Generated At: 2026-01-06T20:05:23.194Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.082Z","inputHash":"ae3ad7773d3ef1f2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.194Z","inputHash":"398b6f142d45c775"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
@@ -36,7 +36,7 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `child_process` - `exec`
+- `child_process` - `execFile`
 - `fs/promises` - `fs`
 - `http` - `IncomingMessage`, `ServerResponse`, `createServer`
 - [`buildAssets.buildExplorerAssets`](./buildAssets.ts.mdmd.md#symbol-buildexplorerassets)

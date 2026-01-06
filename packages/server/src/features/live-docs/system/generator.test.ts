@@ -185,7 +185,7 @@ describe("generateSystemLiveDocs", () => {
     );
     expect(interactionRecord).toBeDefined();
     const interactionDoc = await fs.readFile(path.join(workspaceRoot, interactionRecord!.docPath), "utf8");
-  expect(interactionDoc).toMatch(new RegExp(`# ${interactionRecord!.id} – Generate(\.ts)? Interaction`));
+  expect(interactionDoc).toMatch(new RegExp(`# ${interactionRecord!.id} – Generate(\\.ts)? Interaction`));
   expect(interactionDoc).toContain("scripts/live-docs/generate.ts");
   expect(interactionDoc).toContain("packages/server/src/features/live-docs/generator.ts");
 
@@ -194,7 +194,7 @@ describe("generateSystemLiveDocs", () => {
     );
     expect(workflowRecord).toBeDefined();
     const workflowDoc = await fs.readFile(path.join(workspaceRoot, workflowRecord!.docPath), "utf8");
-  expect(workflowDoc).toMatch(new RegExp(`# ${workflowRecord!.id} – Run All(\.ts)? Workflow`));
+  expect(workflowDoc).toMatch(new RegExp(`# ${workflowRecord!.id} – Run All(\\.ts)? Workflow`));
     expect(workflowDoc).toContain("click");
 
     const testingRecord = result.files.find((record) => record.archetype === "testing");

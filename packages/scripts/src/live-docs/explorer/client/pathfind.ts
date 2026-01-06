@@ -398,7 +398,7 @@ export function initPathfind(
           <div class="pathfind-result-name">${escapeHtml(node.name)}</div>
           <div class="pathfind-result-path">${escapeHtml(node.codeRelativePath)}</div>
         </div>
-        <span class="pathfind-result-badge">${node.archetype}</span>
+        <span class="pathfind-result-badge">${escapeHtml(node.archetype)}</span>
       </div>
     `
       )

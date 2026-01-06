@@ -17,9 +17,14 @@ export function normalizeSymbolIdentifier(raw: string | null | undefined): strin
         // Drop common TypeScript export syntax noise.
         .replace(/export\s+/gi, "")
         // Remove trailing call signatures and optional return type annotations.
-        .replace(/\([^)]*\)\s*(?::.+)?$/u, "")
-        // Remove generic annotations like <T>, <A, B>.
-        .replace(/<[^>]*>/g, "")
+        .replace(/\([^)]*\)\s*(?::.+)?$/u, "");
+    // Remove generic annotations like <T>, <A, B> - loop until stable for nested generics
+    let prevValue: string;
+    do {
+        prevValue = value;
+        value = value.replace(/<[^>]*>/g, "");
+    } while (value !== prevValue);
+    value = value
         // Strip surrounding quotes or backticks.
         .replace(/^['"`]/, "")
         .replace(/['"`]$/, "")

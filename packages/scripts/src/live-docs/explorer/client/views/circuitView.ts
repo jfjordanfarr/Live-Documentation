@@ -16,6 +16,13 @@ import {
 } from "./layoutUtils";
 import type { DirectoryLayoutPlan } from "./layoutUtils";
 
+/** Escape HTML special characters to prevent XSS */
+function escapeHtml(str: string): string {
+  return str.replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c] || c));
+}
+
 export interface CircuitViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
@@ -340,9 +347,9 @@ export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
         card.classList.add("selected");
       }
       card.innerHTML = [
-        `<div class="node-title">${node.name}</div>`,
-        `<div class="node-path">${node.codeRelativePath}</div>`,
-        `<div class="node-meta"><span class="badge">${node.archetype}</span><span class="badge">${node.publicSymbols.length} symbols</span></div>`,
+        `<div class="node-title">${escapeHtml(node.name)}</div>`,
+        `<div class="node-path">${escapeHtml(node.codeRelativePath)}</div>`,
+        `<div class="node-meta"><span class="badge">${escapeHtml(node.archetype)}</span><span class="badge">${node.publicSymbols.length} symbols</span></div>`,
         '<div class="pin top"></div><div class="pin bottom"></div><div class="pin left"></div><div class="pin right"></div>'
       ].join("");
       card.addEventListener("click", event => {

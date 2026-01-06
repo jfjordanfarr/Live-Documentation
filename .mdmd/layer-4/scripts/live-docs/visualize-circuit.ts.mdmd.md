@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-circuit.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-circuit-ts
-- Generated At: 2025-11-20T20:35:25.703Z
+- Generated At: 2026-01-06T20:05:23.827Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Render the Live Docs graph as a circuit-board style canvas, grouping markdown mi
 The CLI snapshots the workspace graph, serves an HTML dashboard on port 3002, and reuses `snapshotWorkspace` to stay aligned with the canonical dependency graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T20:35:25.703Z","inputHash":"2f8db587ca35611a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.827Z","inputHash":"1e8935972fcd9c7f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `child_process` - `exec`
+- `child_process` - `execFile`
 - `fs/promises` - `fs`
 - `http` - `createServer`
 - `path` - `path`

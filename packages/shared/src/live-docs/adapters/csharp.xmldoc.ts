@@ -413,7 +413,12 @@ export function normalizeXmlText(value: string): string {
       return `\n\n\`\`\`\n${trimmed}\n\`\`\`\n\n`;
     });
 
-  working = working.replace(/<\/?[^>]+>/g, "");
+  // Loop until no more tags are found (prevents bypasses like <scr<script>ipt>)
+  let prev: string;
+  do {
+    prev = working;
+    working = working.replace(/<\/?[^>]+>/g, "");
+  } while (working !== prev);
 
   working = decodeXmlEntities(working);
 
@@ -434,12 +439,13 @@ export function normalizeXmlText(value: string): string {
  * @returns Decoded string
  */
 export function decodeXmlEntities(value: string): string {
+  // Decode &amp; LAST to prevent double-unescaping (e.g., &amp;lt; -> &lt; -> <)
   return value
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'");
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, "&");
 }
 
 /**

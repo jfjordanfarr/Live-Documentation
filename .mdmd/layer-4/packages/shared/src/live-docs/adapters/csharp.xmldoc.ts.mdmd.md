@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.xmldoc.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-xmldoc-ts
-- Generated At: 2025-12-11T01:40:49.399Z
+- Generated At: 2026-01-06T20:05:23.580Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Parses C# XML documentation comments (`///` lines) into structured `SymbolDocume
 - **Companion Tests:** See [csharp.xmldoc.unit.test.ts](./csharp.xmldoc.unit.test.ts.mdmd.md) for 70 unit tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T01:40:49.399Z","inputHash":"61fb53dc73fad55b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.580Z","inputHash":"4fc173896421dea3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RECOGNIZED_DOC_TAGS` {#symbol-recognized_doc_tags}
@@ -183,7 +183,7 @@ Cleaned, normalized text
 
 #### `decodeXmlEntities` {#symbol-decodexmlentities}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L436)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L441)
 
 ##### `decodeXmlEntities` — Summary
 Decodes common XML entities to their character equivalents.
@@ -196,7 +196,7 @@ Decoded string
 
 #### `normalizeCrefTarget` {#symbol-normalizecreftarget}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L451)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L457)
 
 ##### `normalizeCrefTarget` — Summary
 Normalizes a cref target by stripping prefixes and converting syntax.
@@ -209,7 +209,7 @@ Normalized reference (e.g., "MyNamespace.MyClass")
 
 #### `renderCrefText` {#symbol-rendercreftext}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L475)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L481)
 
 ##### `renderCrefText` — Summary
 Renders a cref target as display text, optionally with custom inner text.
@@ -223,7 +223,7 @@ Formatted reference text
 
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L490)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.xmldoc.ts#L496)
 - Parameters: `doc`: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary

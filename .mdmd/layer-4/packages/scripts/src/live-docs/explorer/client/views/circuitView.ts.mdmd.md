@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-ts
-- Generated At: 2025-12-07T21:41:17.100Z
+- Generated At: 2026-01-06T20:05:23.111Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,20 @@ Circuit Board view for the Explorer. Renders the entire Live Doc graph as a tree
 - Click events update `ExplorerState.selectedNode` and can trigger Local Map view switches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.100Z","inputHash":"c5948c4ba853fbb2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.111Z","inputHash":"dece94784984dd4e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L19)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L26)
 
 #### `CircuitViewApi` {#symbol-circuitviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L29)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L36)
 
 #### `createCircuitView` {#symbol-createcircuitview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L41)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView.ts#L48)
 - Returns: [`CircuitViewApi`](#symbol-circuitviewapi)
 - Parameters: `options`: [`CircuitViewOptions`](#symbol-circuitviewoptions)
 <!-- LIVE-DOC:END Public Symbols -->

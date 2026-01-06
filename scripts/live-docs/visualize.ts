@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { exec } from "node:child_process";
+import { execFile } from "node:child_process";
 import * as fs from "node:fs/promises";
 import { createServer } from "node:http";
 import * as path from "node:path";
@@ -207,8 +207,11 @@ async function main() {
       console.log(`Visualization server running at ${url}`);
 
       // 5. Open Browser
-      const startCommand = process.platform === "win32" ? "start" : "open";
-      exec(`${startCommand} ${url}`);
+      if (process.platform === "win32") {
+        execFile('cmd', ['/c', 'start', url]);
+      } else {
+        execFile('open', [url]);
+      }
     }
   });
 }

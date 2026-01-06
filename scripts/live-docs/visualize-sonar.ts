@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import { createServer } from "http";
 import * as path from "path";
 
@@ -313,8 +313,19 @@ async function main() {
         let realPath = filePath.replace("file:///", "").replace("file://", "");
         realPath = realPath.replace(/\.mdmd\.md$/, "");
         realPath = realPath.replace(".mdmd/layer-4/", "");
-        console.log(`Opening file: ${realPath}`);
-        exec(`code "${realPath}"`);
+        
+        // Resolve to absolute path and validate it's within workspace
+        const absolutePath = path.resolve(process.cwd(), realPath);
+        const workspaceRoot = process.cwd();
+        if (!absolutePath.startsWith(workspaceRoot + path.sep) && absolutePath !== workspaceRoot) {
+          console.error(`Rejected path outside workspace: ${absolutePath}`);
+          res.writeHead(400);
+          res.end("Invalid path");
+          return;
+        }
+        
+        console.log(`Opening file: ${absolutePath}`);
+        execFile('code', [absolutePath]);
       }
       res.writeHead(200);
       res.end("OK");
@@ -327,8 +338,11 @@ async function main() {
 
   server.listen(PORT, () => {
     console.log(`Sonar server running at http://localhost:${PORT}`);
-    const startCommand = process.platform === "win32" ? "start" : "open";
-    exec(`${startCommand} http://localhost:${PORT}`);
+    if (process.platform === "win32") {
+      execFile('cmd', ['/c', 'start', `http://localhost:${PORT}`]);
+    } else {
+      execFile('open', [`http://localhost:${PORT}`]);
+    }
   });
 }
 

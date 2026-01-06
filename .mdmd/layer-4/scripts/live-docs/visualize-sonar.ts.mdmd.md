@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-sonar.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-sonar-ts
-- Generated At: 2025-11-20T20:35:25.718Z
+- Generated At: 2026-01-06T20:05:23.833Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Project Live Docs relationships onto a radial “sonar” scan so reviewers can 
 The tool replays the snapshot graph, limits the view to three hops from the target, and serves the animated radar interface on port 3003.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T20:35:25.718Z","inputHash":"f3434a5e42e830bf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.833Z","inputHash":"55132166e6cb6236"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `child_process` - `exec`
+- `child_process` - `execFile`
 - `http` - `createServer`
 - `path` - `path`
 - [`snapshot-workspace.snapshotWorkspace`](../graph-tools/snapshot-workspace.ts.mdmd.md#symbol-snapshotworkspace)

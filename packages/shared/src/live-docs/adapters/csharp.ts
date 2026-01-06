@@ -159,7 +159,14 @@ function extractTypeReferencesFromInheritance(
   for (let i = 0; i < baseTypes.length; i++) {
     const typeName = baseTypes[i];
     // Strip generic parameters for the name (e.g., "List<T>" → "List")
-    const cleanName = typeName.replace(/<[^>]+>/g, "").trim();
+    // Loop until stable to handle nested generics like Dictionary<string, List<T>>
+    let cleanName = typeName;
+    let prevClean: string;
+    do {
+      prevClean = cleanName;
+      cleanName = cleanName.replace(/<[^>]+>/g, "");
+    } while (cleanName !== prevClean);
+    cleanName = cleanName.trim();
     if (!cleanName) {
       continue;
     }

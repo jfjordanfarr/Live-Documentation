@@ -119,7 +119,7 @@ export function initOmnisearch(config: OmnisearchConfig): { open: () => void; cl
           <div class="omnisearch-result-name">${escapeHtml(node.name)}</div>
           <div class="omnisearch-result-path">${escapeHtml(node.codeRelativePath)}</div>
         </div>
-        <span class="omnisearch-result-badge">${node.archetype}</span>
+        <span class="omnisearch-result-badge">${escapeHtml(node.archetype)}</span>
       </div>
     `).join("");
   };

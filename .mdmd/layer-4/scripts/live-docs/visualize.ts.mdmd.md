@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-ts
-- Generated At: 2025-11-20T20:35:25.730Z
+- Generated At: 2026-01-06T20:05:23.837Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provide a CLI that snapshots the workspace graph and renders an interactive 3D f
 Launches an ephemeral HTTP server, opens the default browser, and colours/weights nodes by archetype and induced dependency intensity (docs are linked when their underlying code artifacts interact).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T20:35:25.730Z","inputHash":"a3629c6974f4f0a2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.837Z","inputHash":"973fb1b4dc4c18a0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `exec`
+- `node:child_process` - `execFile`
 - `node:fs/promises` - `fs`
 - `node:http` - `createServer`
 - `node:path` - `path`

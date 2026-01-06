@@ -272,8 +272,15 @@ export interface BuildLocalMapOptions {
  * Mirrors the client-side `normalizeSymbolIdentifier` function.
  */
 export function normalizeSymbolIdentifier(raw: string): string {
-    return raw
-        .replace(/<[^>]*>/g, "") // Strip generic parameters
+    // Strip generic parameters - loop until stable to handle nested generics
+    let result = raw;
+    let prev: string;
+    do {
+        prev = result;
+        result = result.replace(/<[^>]*>/g, "");
+    } while (result !== prev);
+    
+    return result
         .replace(/\([^)]*\)/g, "") // Strip function parameters
         .replace(/\s+/g, "") // Remove whitespace
         .toLowerCase()
