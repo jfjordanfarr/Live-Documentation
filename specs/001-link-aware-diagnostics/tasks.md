@@ -195,8 +195,42 @@ description: "Task list for Live Documentation"
 - **Phase5 → Phase6**: Migration waits for drift tools to avoid regressions.
 - **Phase6 → Phase7**: Enrichers build on canonical Live Docs.
 - **Stage8 → Stage9**: Hosted showcase depends on the Layer distribution pipeline so the stateless runner can reuse proven generator assets and publishing guides.
+- **Phase7 → Stage10**: LLM enrichment depends on canonical Live Docs and System analytics infrastructure.
+- **Stage10 → Stage11**: Brownfield integration can proceed independently but benefits from LLM synthesis for legacy context.
 
 Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/203, LD-302/303). Evidence and consumption phases split across teams by surface (CLI vs diagnostics) once generator stabilises.
+
+## Stage 10 – LLM Enrichment (Extractive & Generative)
+
+**Purpose**: Deliver explicit, user-invoked LLM capabilities that discover missed relationships (extractive) and synthesize human-readable prose from statistical artifacts (generative), with budget controls, diff previews, and audit trails.
+
+- [ ] LD-1000 Define LLM enrichment configuration schema (budget caps, model preferences, scope filters) in `.live-docs.config.json` and `packages/shared/src/config/llmEnrichmentConfig.ts`
+- [ ] LD-1001 Implement extractive graph edge discovery pipeline extending `LlmIngestionOrchestrator` with provenance metadata (model, prompt version, confidence) and human promotion gates
+- [ ] LD-1002 [P] Wire CLI (`scripts/live-docs/enrich.ts`) and extension command (`Live Documentation: Enrich Graph`) with configurable scope (file, folder, workspace)
+- [ ] LD-1003 Implement generative document synthesis pipeline filling `_Pending authored purpose_` placeholders while preserving deterministic generated sections
+- [ ] LD-1004 [P] Wire CLI (`scripts/live-docs/synthesize.ts`) and extension command (`Live Documentation: Synthesize Authored Section`) with diff previews before write
+- [ ] LD-1005 Implement budget enforcement (token limits, spend thresholds) with graceful abort and actionable guidance
+- [ ] LD-1006 [P] Add stale edge invalidation when source files change, prompting re-extraction rather than silently serving outdated relationships
+- [ ] LD-1007 Capture telemetry for invocation counts, token usage, promotion/rejection rates without logging prompt/response content
+- [ ] LD-1008 Add integration tests `tests/integration/live-docs/llm-enrichment.test.ts` covering extraction, synthesis, budget enforcement, and provenance
+- [ ] LD-1009 Document LLM enrichment workflow in `specs/001-link-aware-diagnostics/quickstart.md` and update Layer‑1/Layer‑2 docs
+
+**Checkpoint**: LLM enrichment commands ship with budget controls, diff previews, and audit trails; no background LLM calls occur without explicit user invocation.
+
+## Stage 11 – Brownfield Documentation Integration
+
+**Purpose**: Enable Live Documentation to coexist with pre-existing markdown documentation in brownfield workspaces through a "bridge, don't replace" strategy that respects legacy context without overwriting or tracking it.
+
+- [ ] LD-1100 Validate that `live-docs:generate` leaves brownfield markdown byte-for-byte unchanged via integration test `tests/integration/live-docs/brownfield-respect.test.ts`
+- [ ] LD-1101 Extend graph builder to discover link-connected brownfield docs and include them as read-only nodes with distinct metadata (isGenerated: false, isBrownfield: true)
+- [ ] LD-1102 [P] Render brownfield docs in Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status
+- [ ] LD-1103 Implement single "Show Related Documentation" checkbox in Force Graph controlling visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history)
+- [ ] LD-1104 [P] Document layer mapping: brownfield docs conceptually map to Layers 1–3 and never to Layer 4
+- [ ] LD-1105 Implement optional semantic indexing for brownfield markdown (title, headings, first paragraph) so search surfaces legacy context without mutating files
+- [ ] LD-1106 Add integration tests `tests/integration/live-docs/brownfield-discovery.test.ts` covering link-driven discovery, Force Graph rendering, and search indexing
+- [ ] LD-1107 Document brownfield integration workflow in `specs/001-link-aware-diagnostics/quickstart.md` and update Layer‑1/Layer‑2 docs
+
+**Checkpoint**: Brownfield documentation coexists peacefully with Live Docs; existing markdown is never overwritten and appears in the Force Graph when link-connected.
 
 ## Implementation Traceability
 - Generator + bridges live under `packages/server/src/features/live-docs/` and `packages/shared/src/live-docs/`
@@ -206,8 +240,7 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 
 ## Summary Metrics
 **Summary Metrics**
-- **Total Tasks**: 85 (13 closed, 72 open)
-- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open)
-- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`
-- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801)
-
+- **Total Tasks**: 102 (13 closed, 89 open)
+- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (8 open)
+- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`, `llm-enrichment.test.ts`, `brownfield-respect.test.ts`, `brownfield-discovery.test.ts`
+- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801), LLM Enrichment (WI-LD1001), Brownfield Integration (WI-LD1101)

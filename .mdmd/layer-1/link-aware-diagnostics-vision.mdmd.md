@@ -2,7 +2,7 @@
 
 ## Metadata
 - Layer: 1
-- Capability IDs: CAP-001, CAP-002, CAP-003, CAP-004, CAP-005, CAP-006, CAP-007, CAP-008
+- Capability IDs: CAP-001, CAP-002, CAP-003, CAP-004, CAP-005, CAP-006, CAP-007, CAP-008, CAP-009, CAP-010
 
 ## Capabilities
 
@@ -34,9 +34,31 @@ Deliver a stateless, Cloudflare-hosted showcase that clones public GitHub reposi
 Deliver a unified `npm run live-docs:visualize` surface that merges the “circuit board” workspace view, the local symbol explorer, and the force-directed graph into a single command center grounded in Layer‑4 Live Docs. Maintainers should pan across file-level clusters, hover or click to expand a file into its public symbols, and optionally hide unrelated nodes to focus on inbound/outbound relationships. The detail panel must surface the relevant Live Doc metadata, provide “open in editor” affordances, and set the stage for future text editing so authors can scaffold code or docstrings bidirectionally. The visualization must stay in **data parity** with the headless Live Doc graph—no inferred edges or metadata beyond what Live Docs encode, and no omissions of symbol-level relationships once anchors are emitted—so CLI, diagnostics, and UI surfaces remain interchangeable views over the same facts. This primary view is expected to meet WCAG AA accessibility (keyboard navigation, high-contrast palettes, screen-reader announcements), while the force-directed explorer may prioritise spatial discovery over full accessibility. Requirements are captured across the 2025-11-20 Antigravity UX sessions ([AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md](../../AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining%20UI%20Interactions.md)).
 
 The Local Map view is the natural home for non-headless inspection: it should be able to “sprawl” beyond the current one-hop neighbor columns when `From` and `To` are provided, rendering the hop-by-hop chain (including where paths join) as a readable impact narrative in the same window. The rendering updates automatically as `From`/`To` change so users can iteratively refine endpoints without leaving the view.
+### CAP-009 – LLM Enrichment (Extractive & Generative)
+Live Documentation distinguishes two complementary LLM tasks, both requiring explicit user invocation:
 
+**Task A – Graph Edge Enrichment (Extractive)**: LLMs discover relationships that heuristic analyzers miss—semantic coupling, cross-file invariants, implicit contracts. These edges populate generated sections only after human promotion and must never run proactively in the background. The existing `LlmIngestionOrchestrator` and `LlmInvoker` infrastructure supports batch and interactive extraction, gated behind opt-in commands.
+
+**Task B – Document Synthesis (Generative)**: LLMs transform statistical artifacts (System-layer clustered component docs, pending authored sections) into human-readable prose. System-layer docs are currently structurally correct but terse (co-activation p-values, Mermaid topologies, component lists) without meaningful `Purpose` or `Notes`. Synthesis fills `_Pending authored purpose_` placeholders while preserving deterministic generated sections. This capability is explicitly opt-in, budget-capped, and auditable—users invoke `live-docs synthesize` (CLI) or `Live Documentation: Synthesize Authored Section` (command) rather than expecting background enrichment.
+
+Both tasks honour the same trust boundary: LLM outputs are staged, diff-previewed, and recorded with provenance before promotion. Runaway spend, hallucination propagation, and silent mutation are prevented by requiring explicit confirmation for every LLM-touched artifact ([AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md)).
+
+### CAP-010 – Brownfield Documentation Integration
+Live Documentation coexists with pre-existing markdown documentation in brownfield workspaces through a **"bridge, don't replace"** strategy:
+
+**Read-Only Respect**: Existing docs (READMEs, architecture diagrams, design notes, ADRs) remain untouched and untracked by the Live Doc generator. They are never overwritten, migrated, or merged into the Live Doc corpus.
+
+**Link-Driven Discovery**: Brownfield docs that link to Live Documentation (or are linked from it) become read-only graph citizens. The Force Graph visualisation renders them as peers alongside Live Docs, using distinct styling (dashed borders, muted palette) to signal their non-generated status.
+
+**Layer Mapping**: Existing docs map conceptually to Layers 1–3 (Vision, Requirements, Architecture) and never to the Base/Source layer (Layer 4). This preserves the Live Doc generator's claim to canonical implementation truth while respecting legacy context.
+
+**UI Simplification**: A single "Show Related Documentation" checkbox in the Force Graph view controls visibility of all link-connected markdown—System-layer docs, brownfield docs, chat history references, and any other markdown meeting the link criteria. This avoids a proliferation of toggles while giving maintainers discoverable context.
+
+**Indexing Scope**: The exploration index may optionally ingest brownfield markdown (title, headings, first paragraph) so semantic search returns legacy context without violating read-only guarantees. This is additive and never destructive ([AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md)).
 ## Desired Outcomes
 - Layer‑4 Live Docs regenerate deterministically; authored content stays small, intentional, and easy to review.
+- LLM enrichment (graph edges and document synthesis) remains explicitly opt-in with budget caps, diff previews, and audit trails; no background LLM calls occur without user initiation.
+- Brownfield documentation coexists peacefully: existing markdown stays read-only, appears in the Force Graph when link-connected, and never competes with generated Live Docs for canonical status.
 - Implementation Live Docs list their public surface, structured docstring fields, dependencies, and observed evidence so ripple impact and test coverage are auditable in markdown alone.
 - Test and asset archetypes expose their relationships through generated sections (`Targets`, `Supporting Fixtures`, `Consumers`), enabling cross-language AST traversal without bespoke parsers.
 - Ephemeral System views spin up from the Layer‑4 corpus on demand (markdown, JSON, graph exports) and can safely incorporate statistical analytics or local history without committing churn to the repo.
@@ -118,6 +140,8 @@ The Local Map view is the natural home for non-headless inspection: it should be
 - **Consumption Surfaces (near term)**: deliver CLI, diagnostics, and LLM exports backed by the Live Doc graph.
 - **Layer Distribution (mid term)**: stand up the public site pipeline, formalise Spec-Kit/issue tracker delegation for Layer 2, and ship the on-demand System CLI so no architecture docs linger in the repo.
 - **Metadata Enrichers (mid term)**: add churn metrics, reference counts, and change history as optional generated sections; experiment with higher-layer docs (releases, work items, architecture) generated from Layer‑4 facts.
+- **LLM Synthesis (mid term)**: offer opt-in commands that transform statistical System-layer artifacts into human-readable prose, filling `_Pending authored purpose_` placeholders while preserving deterministic generated sections.
+- **Brownfield Bridge (mid term)**: extend the Force Graph to render link-connected external markdown as read-only graph citizens, with optional semantic indexing for discovery.
 - **Ecosystem Expansion (long term)**: share MIT-licensed tooling, integrate alternative knowledge feeds, and explore IDE-agnostic adapters.
 
 ## Adoption Path

@@ -178,7 +178,43 @@ The Local Map view also acts as a non-headless equivalent of `live-docs inspect`
 7. **Given** the maintainer provides a `From` artifact and a `To` artifact that have no connection, **When** pathfinding runs, **Then** the UI reports a deterministic “no connection” outcome rather than showing unrelated neighbor columns.
 
 ---
+### User Story 10 – LLM Enrichment (Extractive & Generative) (Priority: P2)
 
+**Status**: Planned — depends on REQ-LLM1 and CAP-009 infrastructure.
+
+Maintainers invoke explicit commands to enrich the Live Doc graph with LLM-discovered relationships (extractive) or synthesize human-readable prose from statistical artifacts (generative). Both capabilities require user initiation, diff previews, and budget controls to prevent runaway spend and hallucination propagation.
+
+**Why this priority**: Deterministic analyzers miss semantic coupling, cross-file invariants, and implicit contracts. LLMs can surface these relationships when explicitly invoked, while synthesis transforms terse System-layer docs (co-activation p-values, component lists) into readable prose that fills `_Pending authored purpose_` placeholders.
+
+**Independent Test**: Run `live-docs enrich --scope packages/server/` and confirm extracted edges are staged with provenance, requiring explicit promotion. Run `live-docs synthesize --file .mdmd/system/...` and confirm the `Purpose` section is filled while generated sections remain unchanged.
+
+**Acceptance Scenarios**:
+
+1. **Given** a folder scope, **When** the maintainer runs `live-docs enrich`, **Then** the CLI batch-extracts semantic relationships, stages them with provenance metadata (model, prompt version, confidence), and requires explicit promotion before they appear in diagnostics or generated sections.
+2. **Given** a System-layer doc with `_Pending authored purpose_`, **When** the maintainer runs `live-docs synthesize`, **Then** the CLI generates human-readable prose, shows a diff preview, and writes only after explicit confirmation—leaving deterministic generated sections untouched.
+3. **Given** workspace budget caps (token limits) are configured, **When** an LLM command would exceed the budget, **Then** the CLI aborts gracefully with guidance on adjusting limits or narrowing scope.
+4. **Given** an extracted edge whose source file has changed, **When** the maintainer runs diagnostics, **Then** the stale edge is flagged for re-extraction rather than silently served.
+
+---
+
+### User Story 11 – Brownfield Documentation Integration (Priority: P2)
+
+**Status**: Planned — depends on REQ-B1 and CAP-010 infrastructure.
+
+Teams adopting Live Documentation in brownfield workspaces expect existing markdown (READMEs, ADRs, design notes) to coexist peacefully without being overwritten, migrated, or merged. Link-connected brownfield docs appear in the Force Graph as read-only graph citizens, giving maintainers discoverable context alongside generated Live Docs.
+
+**Why this priority**: Enterprise adoption stalls when existing documentation is threatened. The "bridge, don't replace" strategy respects legacy context while demonstrating Live Documentation's value without migration friction.
+
+**Independent Test**: Run `live-docs:generate` in a workspace with existing `docs/architecture.md` that links to a Live Doc. Confirm the brownfield doc is unchanged byte-for-byte. Open the Force Graph, enable "Show Related Documentation", and confirm `docs/architecture.md` appears with distinct styling.
+
+**Acceptance Scenarios**:
+
+1. **Given** a brownfield workspace with existing markdown, **When** `live-docs:generate` runs, **Then** no brownfield files are modified, migrated, or tracked—only the Live Documentation mirror tree changes.
+2. **Given** a brownfield doc that links to a Live Doc, **When** the Force Graph loads with "Show Related Documentation" enabled, **Then** the brownfield doc appears as a read-only node with distinct styling (dashed border, muted palette) signalling its non-generated status.
+3. **Given** the "Show Related Documentation" checkbox, **When** toggled, **Then** it controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history) without requiring multiple toggles.
+4. **Given** optional semantic indexing is enabled, **When** a maintainer searches the workspace, **Then** brownfield content (title, headings, first paragraph) appears in results with clear provenance distinguishing it from generated Live Docs.
+
+---
 ### Edge Cases
 
 - Newly created files without exports still receive stub Live Docs; generated sections display `_No data available_` until analyzers detect symbols.
@@ -226,8 +262,8 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **FR-LD13**: Layer distribution tooling MUST publish Layer 1 capabilities via a scripted static site, reconcile Layer 2 requirement status with Spec-Kit/issue trackers, and keep System analytics as CLI materialized views that leave no tracked artefacts unless explicitly promoted.
 - **FR-LD14**: Docstring tooling MUST surface drift diagnostics and preserve provenance for unmapped tags. Any future write-back (preview/apply) MUST remain feature-flagged, explicitly confirmed, and auditable, and scaffolds MUST emit into scratch locations without modifying tracked files until humans promote them.
 - **FR-LD15**: The hosted showcase pipeline MUST reuse the standard generator to process public GitHub repositories headlessly, emit provenance metadata, produce a downloadable bundle (Live Docs, SQLite cache, README, prompt guide), and delete cloned data immediately after the bundle is created.
-- **FR-LD16**: The visualization command center MUST merge circuit-board and local symbol exploration into a single UI backed by Live Docs, maintain state across force-directed and 2D views, expose “open in editor” affordances, provide focus-mode filtering, and satisfy WCAG AA keyboard/contrast/screen-reader expectations while preparing the detail panel for future inline editing. The UI MUST operate purely on the Live Doc graph payload—displaying every dependency, symbol anchor, and evidence field available headlessly without inventing additional heuristics—and distinguish inbound versus outbound relationships with directional treatments that stay aligned with CLI diagnostics.
-
+- **FR-LD16**: The visualization command center MUST merge circuit-board and local symbol exploration into a single UI backed by Live Docs, maintain state across force-directed and 2D views, expose “open in editor” affordances, provide focus-mode filtering, and satisfy WCAG AA keyboard/contrast/screen-reader expectations while preparing the detail panel for future inline editing. The UI MUST operate purely on the Live Doc graph payload—displaying every dependency, symbol anchor, and evidence field available headlessly without inventing additional heuristics—and distinguish inbound versus outbound relationships with directional treatments that stay aligned with CLI diagnostics.- **FR-LD17**: LLM enrichment MUST distinguish extractive (graph edge discovery) from generative (document synthesis) tasks. Both MUST require explicit user invocation via CLI or extension command, stage outputs with provenance metadata, support diff previews before write, and enforce configurable budget caps (token limits, spend thresholds) that abort gracefully when exceeded. Extracted edges MUST require human promotion before appearing in diagnostics or generated sections; synthesis MUST fill `_Pending authored purpose_` placeholders while preserving deterministic generated sections.
+- **FR-LD18**: Brownfield documentation integration MUST leave existing markdown (READMEs, ADRs, design notes) byte-for-byte unchanged during `live-docs:generate`. Link-connected brownfield docs MUST appear in the Force Graph as read-only nodes with distinct styling (dashed borders, muted palette). A single "Show Related Documentation" checkbox MUST control visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history). Optional semantic indexing MAY ingest brownfield content (title, headings, first paragraph) for search without mutating files.
 ### Key Entities *(include if feature involves data)*
 - **Live Doc Artifact**: Markdown file containing Metadata, Authored, and Generated sections for a single source asset; stores archetype, timestamps, and provenance summary.
 - **Analyzer Output**: Structured description of symbols, dependencies, and coverage emitted by tooling; includes hash for determinism checks.
@@ -265,6 +301,8 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **SC-LD11**: Docstring drift diagnostics cover ≥95% of documented public symbols in supported fixtures and resolve within one regeneration cycle when docstrings are updated manually; any future write-back remains opt-in and auditable.
 - **SC-LD12**: Hosted showcase runs finish within ≤3 minutes for repos under 5k files, emit bundles whose hashes match local regeneration, and delete temporary clones/caches within 60 seconds of completion.
 - **SC-LD13**: Visualization command center focus-mode interactions resolve within two steps, keyboard/screen-reader audits pass WCAG AA checks (2.1, 1.4.3, 4.1.2), and detail panels render within ≤500 ms for repos under 5k files while logging telemetry for view toggles and accessibility overrides.
+- **SC-LD14**: LLM enrichment commands (`live-docs enrich`, `live-docs synthesize`) complete within configurable budget caps, stage outputs with provenance metadata requiring human promotion, and emit telemetry for invocation counts and token usage without logging prompt/response content.
+- **SC-LD15**: Brownfield documentation remains byte-for-byte unchanged after `live-docs:generate`. Link-connected brownfield docs appear in the Force Graph with distinct styling when "Show Related Documentation" is enabled, and optional semantic indexing surfaces brownfield content in search results with clear provenance.
 
 
 ## Clarifications
@@ -287,6 +325,8 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **WI-LD501** – Build System analytics CLI (clusters, workflows, coverage) that defaults to streaming output and includes cleanup guarantees.
 - **WI-LD601** – Stand up the layer distribution surfaces (static site pipeline, Spec-Kit/issue tracker reconciliation, and the guardrailed `live-docs:system` CLI).
 - **WI-LD701** – Launch the hosted showcase pipeline (Cloudflare or equivalent) that clones public repositories into ephemeral storage, runs the standard generator, zips Live Docs + SQLite + README + prompt guide, emits provenance metadata, and proves all artefacts are deleted after the bundle is signed.
+- **WI-LD1001** – Implement LLM enrichment infrastructure: extractive graph edge discovery (`live-docs enrich`) and generative document synthesis (`live-docs synthesize`) with budget caps, diff previews, provenance metadata, and human promotion gates.
+- **WI-LD1101** – Implement brownfield documentation integration: read-only respect, link-driven Force Graph discovery, "Show Related Documentation" toggle, and optional semantic indexing for search.
 
 
 ## Implementation Traceability

@@ -319,6 +319,19 @@ Use the Explorer to identify:
 | `npm run graph:audit` | Flag files missing Live Docs or evidence |
 | `npm run graph:snapshot` | Rebuild SQLite cache and JSON fixture |
 
+### LLM Enrichment (Planned)
+
+| Command | Purpose |
+|---------|---------|
+| `npm run live-docs:enrich -- --scope <path>` | Extract semantic relationships via LLM (requires explicit invocation, budget-capped) |
+| `npm run live-docs:synthesize -- --file <path>` | Generate human-readable prose for `_Pending authored purpose_` placeholders |
+
+Both commands stage outputs with provenance metadata and require human promotion. No background LLM calls occur without explicit user invocation.
+
+### Brownfield Integration
+
+Existing markdown (READMEs, ADRs, design notes) is never overwritten by `live-docs:generate`. Link-connected brownfield docs appear in the Force Graph as read-only nodes when "Show Related Documentation" is enabled. This single checkbox controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history).
+
 For the full catalogue, see [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md).
 
 ---

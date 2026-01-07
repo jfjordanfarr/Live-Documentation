@@ -2,7 +2,7 @@
 
 ## Metadata
 - Layer: 2
-- Requirement IDs: REQ-L1, REQ-L2, REQ-L3, REQ-V1, REQ-G1, REQ-E1, REQ-D1, REQ-H1
+- Requirement IDs: REQ-L1, REQ-L2, REQ-L3, REQ-V1, REQ-G1, REQ-E1, REQ-D1, REQ-H1, REQ-LLM1, REQ-B1
 
 ## Requirements
 
@@ -167,7 +167,44 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 - Require explicit acknowledgement that only public repositories are supported, log repo/ref metadata for abuse mitigation, and document how rate limits apply.
 - Emit telemetry covering request lifecycle (received, clone complete, generation success/failure, bundle download) with correlation IDs so support can trace incidents without retaining code.
 - Signpost privacy, offline-first positioning, and a “Replay Locally” CTA in every hosted response so prospects immediately understand that the Cloudflare run mirrors the installable workflow.
+### REQ-LLM1 LLM Enrichment (Extractive & Generative)
+Supports CAP-009 by delivering explicit, user-invoked LLM capabilities that discover missed relationships (extractive) and synthesize human-readable prose from statistical artifacts (generative), with budget controls, diff previews, and audit trails that prevent runaway spend and hallucination propagation.
 
+#### Stream LLM1-A – Graph Edge Extraction *(planned)*
+- Extend `LlmIngestionOrchestrator` to batch-extract semantic relationships (coupling, invariants, implicit contracts) that heuristic analyzers miss.
+- Stage extracted edges with provenance metadata (model, prompt version, confidence) and require human promotion before they appear in generated sections or diagnostics.
+- Wire CLI (`live-docs enrich`) and extension command (`Live Documentation: Enrich Graph`) that invoke extraction with configurable scope (file, folder, workspace).
+- Invalidate stale edges when underlying source files change, prompting re-extraction rather than silently serving outdated relationships.
+
+#### Stream LLM1-B – Document Synthesis *(planned)*
+- Implement synthesis pipeline that transforms terse System-layer artifacts (co-activation p-values, Mermaid topologies, component lists) into human-readable `Purpose` and `Notes` prose.
+- Fill `_Pending authored purpose_` placeholders while preserving deterministic generated sections; output diffs for review before write.
+- Wire CLI (`live-docs synthesize`) and extension command (`Live Documentation: Synthesize Authored Section`) with scope controls.
+- Ensure synthesis never modifies deterministic generated sections or overwrites existing authored content without explicit confirmation.
+
+#### Stream LLM1-C – Budget & Governance *(planned)*
+- Implement per-workspace budget caps (token limits, spend thresholds) configurable via `.live-docs.config.json` or workspace settings.
+- Abort LLM calls gracefully when budgets are exceeded, emitting actionable guidance rather than silent failures.
+- Capture telemetry for invocation counts, token usage, promotion/rejection rates without logging prompt/response content.
+- Document trust boundaries: LLM outputs are staged, diff-previewed, and recorded with provenance before promotion.
+
+### REQ-B1 Brownfield Documentation Integration
+Supports CAP-010 by enabling Live Documentation to coexist with pre-existing markdown documentation in brownfield workspaces through a "bridge, don't replace" strategy that respects legacy context without overwriting or tracking it.
+
+#### Stream B1-A – Read-Only Respect *(planned)*
+- Ensure the Live Doc generator never overwrites, migrates, or tracks existing markdown (READMEs, ADRs, design notes) outside the Live Documentation mirror tree.
+- Document clear boundaries: brownfield docs are read-only graph citizens, never candidates for generated section injection.
+- Validate via integration tests that running `live-docs:generate` leaves brownfield markdown byte-for-byte unchanged.
+
+#### Stream B1-B – Link-Driven Discovery *(planned)*
+- Extend the graph builder to discover brownfield docs that link to Live Documentation (or are linked from it) and include them as read-only nodes.
+- Render brownfield docs in the Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status.
+- Implement a single "Show Related Documentation" checkbox in the Force Graph that controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history references).
+
+#### Stream B1-C – Layer Mapping & Indexing *(planned)*
+- Document that brownfield docs conceptually map to Layers 1–3 (Vision, Requirements, Architecture) and never to the Base/Source layer (Layer 4).
+- Optionally ingest brownfield markdown (title, headings, first paragraph) into the exploration index so semantic search surfaces legacy context without mutating files.
+- Ensure indexing is additive and never destructive; brownfield content appears in search results with clear provenance distinguishing it from generated Live Docs.
 ## Acceptance Criteria
 
 ### REQ-L1 Acceptance Criteria
@@ -216,6 +253,20 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 - Bundles include a README that highlights offline-first steps plus compatibility guidance for VS Code, Windsurf, Cursor, and other forks; telemetry confirms the link back to local workflows is shown on every run.
 - Workspace archives are deleted automatically after bundle creation, with audit logs recording completion timestamps and correlation IDs.
 - Marketing copy and telemetry dashboards explicitly label the hosted surface as a demo-only experience and block private repositories by design.
+
+### REQ-LLM1 Acceptance Criteria
+- LLM enrichment (graph edge extraction and document synthesis) requires explicit user invocation via CLI (`live-docs enrich`, `live-docs synthesize`) or extension commands; no background LLM calls occur.
+- Extracted edges are staged with provenance metadata and require human promotion before appearing in generated sections or diagnostics.
+- Document synthesis fills `_Pending authored purpose_` placeholders while preserving deterministic generated sections; outputs are diff-previewed before write.
+- Budget caps (token limits, spend thresholds) are configurable per workspace and enforced before LLM calls execute; exceeded budgets abort gracefully with guidance.
+- Telemetry captures LLM invocation counts, token usage, promotion rates, and rejection reasons without logging prompt/response content.
+
+### REQ-B1 Acceptance Criteria
+- Brownfield markdown (READMEs, ADRs, existing design docs) is never overwritten, migrated, or tracked by the Live Doc generator.
+- Link-connected brownfield docs appear in the Force Graph with distinct styling (dashed borders, muted palette) signalling their read-only, non-generated status.
+- A single "Show Related Documentation" checkbox controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history) in the Force Graph.
+- Optional semantic indexing ingests brownfield markdown (title, headings, first paragraph) so search surfaces legacy context without mutating files.
+- Layer mapping documentation clarifies that brownfield docs conceptually map to Layers 1–3 and never to the Base/Source layer (Layer 4).
 
 
 

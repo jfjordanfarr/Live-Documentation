@@ -127,6 +127,19 @@ TBD — populate if future scope deviates from Constitution constraints.
 - Build a pipeline that accepts GitHub repo references, clones to ephemeral storage, executes `npm run live-docs:generate`, embeds provenance metadata, and zips the resulting Live Docs + SQLite cache + README + prompt guide.
 - Ship consent + privacy messaging, rate limiting, and telemetry that prove repositories are public-only and that all temporary artefacts are deleted immediately after bundles are created.
 
+### Phase 10 – LLM Enrichment (Extractive & Generative)
+- Deliver explicit, user-invoked LLM capabilities that discover missed relationships (extractive graph edge discovery) and synthesize human-readable prose from statistical artifacts (generative document synthesis).
+- Implement budget caps, diff previews, provenance metadata, and human promotion gates for all LLM-touched outputs.
+- Wire CLI (`live-docs enrich`, `live-docs synthesize`) and extension commands with configurable scope and graceful budget enforcement.
+- Ensure no background LLM calls occur without explicit user invocation; stale edges prompt re-extraction when source files change.
+
+### Phase 11 – Brownfield Documentation Integration
+- Enable Live Documentation to coexist with pre-existing markdown documentation through a "bridge, don't replace" strategy.
+- Ensure `live-docs:generate` leaves brownfield markdown (READMEs, ADRs, design notes) byte-for-byte unchanged.
+- Extend the graph builder to discover link-connected brownfield docs and render them as read-only Force Graph nodes with distinct styling.
+- Implement a single "Show Related Documentation" checkbox controlling visibility of all link-connected markdown.
+- Document layer mapping: brownfield docs conceptually map to Layers 1–3, never to Layer 4.
+
 ## Implementation Traceability
 - [`packages/server/src/runtime/changeProcessor.ts`](../../packages/server/src/runtime/changeProcessor.ts) orchestrates analyzer execution feeding Live Doc regeneration.
 - [`packages/shared/src/tooling/documentationLinks.ts`](../../packages/shared/src/tooling/documentationLinks.ts) and upcoming `liveDocumentationGenerator` module emit staged markdown.

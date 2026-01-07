@@ -715,6 +715,17 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L~450-L500` — **Honest Failure over Spin**: Explicitly called out "gaslighting" when claiming success by disabling broken features. "I think we need to throw out and discard everything but the chat history from this changeset and start over."
 - `L~950-L1000` — **LLM Edit Accuracy Threshold**: 1000 lines identified as the threshold where LLM edit accuracy degrades. "Files that will struggle to intake LLM-driven edits."
 
+## 2026-01-06 (Dev Day 52)
+
+### Chat 1 (2026-01-06.1.md) — Strategic Vision Codification
+
+- `2026-01-06.1.md` — **LLM Enrichment Distinction (CAP-009)**: Two distinct LLM tasks requiring explicit invocation: (A) Graph Edge Enrichment (extractive) — LLMs discover relationships heuristics miss; (B) Document Synthesis (generative) — LLMs transform statistical System-layer artifacts into human-readable prose. Both require explicit user invocation, budget caps, diff previews, and human promotion gates. No background LLM calls.
+- `2026-01-06.1.md` — **Brownfield Integration Strategy (CAP-010)**: "Bridge, don't replace" — existing docs remain read-only, link-connected brownfield docs appear in Force Graph with distinct styling (dashed borders, muted palette). Single "Show Related Documentation" checkbox controls all link-connected markdown visibility. Brownfield docs conceptually map to Layers 1–3, never Layer 4.
+- `2026-01-06.1.md` — **Diagnostics Philosophy**: Diagnostics are informational-only for deterministic layers (Base/Source, System). Gating and approval required for LLM-invoking layers where runaway spend, hallucination propagation, and silent mutation are risks.
+- `2026-01-06.1.md` — **System Layer as Statistical Artifacts**: System-layer docs are currently structurally correct but humanly useless without authored sections (co-activation p-values, Mermaid topologies, component lists but `_Pending authored purpose_` placeholders). LLM synthesis would fill these gaps.
+- `2026-01-06.1.md` — **Extension Scope**: Thin wrapper with explicit LLM commands (`live-docs enrich`, `live-docs synthesize`); no proactive background LLM calls during file saves or diagnostics.
+- `2026-01-06.1.md` — **Document strategic decisions before implementation**: "We need to document our enhanced vision... otherwise they will be lost rapidly to shifting context windows and fallible human memory."
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.
