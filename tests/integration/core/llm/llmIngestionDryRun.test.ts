@@ -6,7 +6,7 @@ const { tmpdir } = require("node:os");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 
-const repoRoot = path.resolve(__dirname, "../../../..");
+const repoRoot = path.resolve(__dirname, "../../../../..");
 const { GraphStore } = require(path.join(repoRoot, "packages/shared/dist"));
 const {
   ProviderGuard

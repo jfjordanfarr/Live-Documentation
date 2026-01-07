@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 3, 2026\)*
+*Status: Active Development (Jan 6, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -543,6 +543,27 @@ After a two-week holiday hiatus, the team returned with a focus on **Data Portab
 * **Archetype Badges:** The visual language was refined with **Archetype Badges**. Nodes now display Unicode icons (●/✔/◆) with color-coded borders to instantly denote their role (e.g., Test, Implementation, Specification) without reading text.  
 * **Full Context Rendering:** A regex bug that limited the Detail Panel to showing only the "Purpose" section was fixed. The panel now renders the full \#\# Authored block (including "Notes"), ensuring no human context is hidden from the user.
 
+### **Phase XXXVI: Security Hardening & The Generative Gate (Jan 6\)**
+
+Date: January 6, 2026
+
+Scope: Commits 194–198
+
+The team returned to work with a focus on security hardening, resolving a subtle race condition in the test suite, and formally defining the strategic role of Generative AI.
+
+* **Security Audit (Commits 194, 195):** The team proactively resolved multiple CodeQL security alerts.  
+  * **Command Injection:** Replaced exec() with execFile() in all visualizer scripts to prevent shell injection, and added strict port validation (1–65535) to the server startup logic.  
+  * **XSS Prevention:** Implemented rigorous HTML escaping for node names and archetype badges in the visualizer to prevent DOM injection attacks.  
+* **The "Race Condition" Saga (Commits 196, 197):** A classic debugging narrative unfolded.  
+  * *The Symptom:* Integration tests for diagnostics were flaking on CI.  
+  * *The Band-Aid:* The team initially blamed "CI slowness" and bumped test timeouts from 60s to 90s (Commit 196).  
+  * *The Root Cause:* A deeper investigation revealed that knowledgeFeedController.initialize() was being called without await in the settings sync logic. This meant tests were querying the system before it had finished re-indexing.  
+  * *The Fix:* The team properly awaited the initialization promise, eliminating the race condition and allowing test timeouts to be reduced back to 45s (Commit 197).  
+* **The Generative Gate (Commit 198):** The project codified its strategy for LLM integration, defining two distinct roles for AI:  
+  * **Extractive AI (CAP-009):** Allowed to discover relationships (edges) between existing artifacts.  
+  * **Generative AI (CAP-009):** Allowed to synthesize new documentation, but *only* under strict budget caps and with explicit user invocation.  
+  * **Brownfield Respect (CAP-010):** The system adopted a "Bridge, Don't Replace" philosophy, ensuring that existing documentation is respected and linked, rather than overwritten.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -564,7 +585,8 @@ After a two-week holiday hiatus, the team returned with a focus on **Data Portab
 * **Dec 17 (Phase XXXII):** "Pathfinding & Stewardship." (A to B navigation and automated debt monitoring).  
 * **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).  
 * **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).  
-* **Jan 3 (Phase XXXV):** "Portable Knowledge." (Exportable docs and archetype badges).
+* **Jan 3 (Phase XXXV):** "Portable Knowledge." (Exportable docs and archetype badges).  
+* **Jan 6 (Phase XXXVI):** "The Generative Gate." (Security hardening and codified LLM strategy).
 
 ## **Technical Themes & Motifs**
 

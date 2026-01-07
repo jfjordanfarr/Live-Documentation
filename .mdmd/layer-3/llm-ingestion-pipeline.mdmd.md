@@ -59,7 +59,7 @@ Transforms raw confidences into diagnostics eligibility signals. [Confidence Cal
 Provides deterministic local model responses when no provider is registered. [Local Ollama Bridge](../../.mdmd/layer-4/packages/extension/src/services/localOllamaBridge.ts.mdmd.md)
 
 ## Evidence
-- Dry-run snapshot fixtures under `tests/integration/us5/llm-ingestion-snapshots` validate orchestration determinism, with Stage-0 coverage captured in [`dry-run.sample.json`](../../.mdmd/layer-4/tests/integration/us5/__fixtures__/llm-ingestion/dry-run.sample.json.mdmd.md).
+- Dry-run snapshot fixtures under `tests/integration/core/llm/__fixtures__/llm-ingestion/` validate orchestration determinism, with Stage-0 coverage captured in [`dry-run.sample.json`](../../.mdmd/layer-4/tests/integration/core/llm/__fixtures__/llm-ingestion/dry-run.sample.json.mdmd.md).
 - Unit suites for `relationshipExtractor`, `confidenceCalibrator`, and `llmIngestionManager` (planned) will capture prompt schema adherence and queue behaviour.
 - Integration suite US5 exercises the pipeline with mocked providers, ensuring diagnostics remain stable.
 

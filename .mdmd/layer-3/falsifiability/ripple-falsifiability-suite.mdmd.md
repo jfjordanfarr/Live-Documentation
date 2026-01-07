@@ -35,20 +35,20 @@ Supports REQ-F1 to REQ-F5 by providing deterministic integration suites that exp
 
 ## Linked Implementations
 
-### IMP-403 us1ThroughUs5 Suites
-Scenario implementations verifying falsifiability coverage. [US1 Code Impact Suite](../../../.mdmd/layer-4/tests/integration/us1/codeImpact.test.ts.mdmd.md)
+### IMP-403 codeImpact Suite
+Scenario implementations verifying falsifiability coverage. [Code Impact Suite](../../../.mdmd/layer-4/tests/integration/core/graph/codeImpact.test.ts.mdmd.md)
 
-### IMP-406 markdownDrift Suite
-Dedicated falsifiability run for markdown drift. [US2 Markdown Drift Suite](../../../.mdmd/layer-4/tests/integration/us2/markdownDrift.test.ts.mdmd.md)
+### IMP-406 broken-links Suite
+Dedicated falsifiability run for markdown link drift. [Broken Links Suite](../../../.mdmd/layer-4/tests/integration/integrity/hygiene/broken-links.test.ts.mdmd.md)
 
 ### IMP-407 acknowledgement Suite
-Ensures acknowledgement flows remain stable under drift. [US3 Acknowledge Diagnostics Suite](../../../.mdmd/layer-4/tests/integration/us3/acknowledgeDiagnostics.test.ts.mdmd.md)
+Ensures acknowledgement flows remain stable under drift. [Acknowledge Diagnostics Suite](../../../.mdmd/layer-4/tests/integration/extension/acknowledgement/acknowledgeDiagnostics.test.ts.mdmd.md)
 
 ### IMP-408 scopeCollision Suite
-Confirms duplicate symbols do not emit diagnostics. [US4 Scope Collision Suite](../../../.mdmd/layer-4/tests/integration/us4/inspectSymbolNeighbors.test.ts.mdmd.md)
+Confirms duplicate symbols do not emit diagnostics. [Scope Collision Suite](../../../.mdmd/layer-4/tests/integration/integrity/collision/scopeCollision.test.ts.mdmd.md)
 
-### IMP-409 transformRipple Suite
-Validates template-driven ripple depth metadata. [US5 LLM Ingestion Suite](../../../.mdmd/layer-4/tests/integration/us5/llmIngestionDryRun.test.ts.mdmd.md)
+### IMP-409 llmIngestion Suite
+Validates template-driven ripple depth metadata. [LLM Ingestion Suite](../../../.mdmd/layer-4/tests/integration/core/llm/llmIngestionDryRun.test.ts.mdmd.md)
 
 ## Evidence
 - Integration suites US3–US5 run under `npm run test:integration` and safe-to-commit, producing falsifiability coverage reports.

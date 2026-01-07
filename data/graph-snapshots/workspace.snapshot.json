@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1142,
-    "links": 1897
+    "artifacts": 1136,
+    "links": 1894
   },
   "artifacts": [
     {
@@ -23,7 +23,9 @@
             "CAP-005",
             "CAP-006",
             "CAP-007",
-            "CAP-008"
+            "CAP-008",
+            "CAP-009",
+            "CAP-010"
           ],
           "codePaths": [],
           "exports": [],
@@ -35,7 +37,9 @@
             "CAP-005",
             "CAP-006",
             "CAP-007",
-            "CAP-008"
+            "CAP-008",
+            "CAP-009",
+            "CAP-010"
           ]
         }
       }
@@ -102,7 +106,9 @@
             "REQ-G1",
             "REQ-E1",
             "REQ-D1",
-            "REQ-H1"
+            "REQ-H1",
+            "REQ-LLM1",
+            "REQ-B1"
           ],
           "codePaths": [],
           "exports": [],
@@ -115,6 +121,8 @@
             "REQ-E1",
             "REQ-D1",
             "REQ-H1",
+            "REQ-LLM1",
+            "REQ-B1",
             "COMP-001",
             "COMP-002",
             "COMP-003",
@@ -19154,6 +19162,91 @@
       }
     },
     {
+      "id": "orchestrated-artifact-15131f1e",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/core/graph/codeImpact.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/core/graph/codeImpact.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-cec06076",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/core/llm/__fixtures__/llm-ingestion/dry-run.sample.json.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/core/llm/__fixtures__/llm-ingestion/dry-run.sample.json"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-d4d60e03",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/core/llm/llmIngestionDryRun.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/core/llm/llmIngestionDryRun.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-bd744807",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/core/ripple/transformRipple.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/core/ripple/transformRipple.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-8f881be7",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/extension/acknowledgement/acknowledgeDiagnostics.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/extension/acknowledgement/acknowledgeDiagnostics.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-9786d369",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json.mdmd.md",
       "layer": "implementation",
@@ -20918,6 +21011,40 @@
       }
     },
     {
+      "id": "orchestrated-artifact-1ca1242f",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/integrity/collision/scopeCollision.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/integrity/collision/scopeCollision.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-e4429d3b",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/integrity/hygiene/broken-links.test.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "tests/integration/integrity/hygiene/broken-links.test.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": []
+        }
+      }
+    },
+    {
       "id": "orchestrated-artifact-412eaa7c",
       "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/live-docs/evidence.test.ts.mdmd.md",
       "layer": "implementation",
@@ -21064,176 +21191,6 @@
           "identifiers": [],
           "codePaths": [
             "tests/integration/tsconfig.json"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-5d74c5c1",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us1/codeImpact.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us1/codeImpact.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-e03b17f8",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us1/markdownDrift.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us1/markdownDrift.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-f523e039",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us2/markdownDrift.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us2/markdownDrift.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-c2449d5c",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us3/acknowledgeDiagnostics.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us3/acknowledgeDiagnostics.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-15865320",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us3/markdownLinkDrift.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us3/markdownLinkDrift.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-ea7cc320",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us4/inspectSymbolNeighbors.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us4/inspectSymbolNeighbors.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-6d1a5909",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us4/scopeCollision.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us4/scopeCollision.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-58d00394",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us5/__fixtures__/llm-ingestion/dry-run.sample.json.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us5/__fixtures__/llm-ingestion/dry-run.sample.json"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-8093ec21",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us5/llmIngestionDryRun.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us5/llmIngestionDryRun.test.ts"
-          ],
-          "exports": [],
-          "sectionSymbols": []
-        }
-      }
-    },
-    {
-      "id": "orchestrated-artifact-77e6eebe",
-      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/tests/integration/us5/transformRipple.test.ts.mdmd.md",
-      "layer": "implementation",
-      "language": "markdown",
-      "metadata": {
-        "mdmd": {
-          "layer": "4",
-          "identifiers": [],
-          "codePaths": [
-            "tests/integration/us5/transformRipple.test.ts"
           ],
           "exports": [],
           "sectionSymbols": []
@@ -31985,6 +31942,30 @@
       "language": "javascript"
     },
     {
+      "id": "orchestrated-artifact-8007edff",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/core/graph/codeImpact.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-23b9e264",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/core/llm/llmIngestionDryRun.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-96a46068",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/core/ripple/transformRipple.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-09864574",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/extension/acknowledgement/acknowledgeDiagnostics.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-ec97900d",
       "uri": "file:///D:/Projects/Live-Documentation/tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml.cs",
       "layer": "code",
@@ -32367,6 +32348,18 @@
       }
     },
     {
+      "id": "orchestrated-artifact-8680ac3c",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/integrity/collision/scopeCollision.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
+      "id": "orchestrated-artifact-70c47c48",
+      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/integrity/hygiene/broken-links.test.ts",
+      "layer": "code",
+      "language": "typescript"
+    },
+    {
       "id": "orchestrated-artifact-f646fb89",
       "uri": "file:///D:/Projects/Live-Documentation/tests/integration/live-docs/evidence.test.ts",
       "layer": "code",
@@ -32411,60 +32404,6 @@
     {
       "id": "orchestrated-artifact-9353eae4",
       "uri": "file:///D:/Projects/Live-Documentation/tests/integration/slopcop/symbolsAudit.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-3683b6ce",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us1/codeImpact.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-db72f5d9",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us1/markdownDrift.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-25a48f1a",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us2/markdownDrift.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-0cf53869",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us3/acknowledgeDiagnostics.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-faa84401",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us3/markdownLinkDrift.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-8701622d",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us4/inspectSymbolNeighbors.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-153c8716",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us4/scopeCollision.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-d7aba72e",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us5/llmIngestionDryRun.test.ts",
-      "layer": "code",
-      "language": "typescript"
-    },
-    {
-      "id": "orchestrated-artifact-4062d81f",
-      "uri": "file:///D:/Projects/Live-Documentation/tests/integration/us5/transformRipple.test.ts",
       "layer": "code",
       "language": "typescript"
     },
@@ -33041,9 +32980,9 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-85ec3b44",
+      "id": "orchestrated-link-f3bcf537",
       "sourceId": "orchestrated-artifact-0683f32d",
-      "targetId": "orchestrated-artifact-269f7d1f",
+      "targetId": "orchestrated-artifact-269f7d24",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -33608,6 +33547,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-8a355487",
+      "sourceId": "orchestrated-artifact-15131f1e",
+      "targetId": "orchestrated-artifact-8007edff",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-efd321c3",
       "sourceId": "orchestrated-artifact-1531aa4f",
       "targetId": "orchestrated-artifact-3d128fdc",
@@ -33759,15 +33707,6 @@
       "confidence": 0.85,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
-    },
-    {
-      "id": "orchestrated-link-c254d2ad",
-      "sourceId": "orchestrated-artifact-15865320",
-      "targetId": "orchestrated-artifact-faa84401",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-aaf7d562",
@@ -34344,6 +34283,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "relationship-rules"
+    },
+    {
+      "id": "orchestrated-link-b42f5168",
+      "sourceId": "orchestrated-artifact-1ca1242f",
+      "targetId": "orchestrated-artifact-8680ac3c",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-ff5af547",
@@ -37280,15 +37228,6 @@
       "createdBy": "relationship-rules"
     },
     {
-      "id": "orchestrated-link-0426c8e6",
-      "sourceId": "orchestrated-artifact-48131d28",
-      "targetId": "orchestrated-artifact-58d00394",
-      "kind": "documents",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
       "id": "orchestrated-link-61df0e2a",
       "sourceId": "orchestrated-artifact-48131d28",
       "targetId": "orchestrated-artifact-5fd38e48",
@@ -37314,6 +37253,15 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "relationship-rules"
+    },
+    {
+      "id": "orchestrated-link-3cb753c1",
+      "sourceId": "orchestrated-artifact-48131d28",
+      "targetId": "orchestrated-artifact-cec06076",
+      "kind": "documents",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
     },
     {
       "id": "orchestrated-link-67ebf3ba",
@@ -38684,15 +38632,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-4e677580",
-      "sourceId": "orchestrated-artifact-5d74c5c1",
-      "targetId": "orchestrated-artifact-3683b6ce",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-dd1bbcb2",
       "sourceId": "orchestrated-artifact-5dfcf2b1",
       "targetId": "orchestrated-artifact-34720621",
@@ -39503,15 +39442,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-99f522c5",
-      "sourceId": "orchestrated-artifact-6d1a5909",
-      "targetId": "orchestrated-artifact-153c8716",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-af3eaf8b",
       "sourceId": "orchestrated-artifact-6d285fff",
       "targetId": "orchestrated-artifact-19956c29",
@@ -40304,15 +40234,6 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-892c6125",
-      "sourceId": "orchestrated-artifact-77e6eebe",
-      "targetId": "orchestrated-artifact-4062d81f",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-600a2fb1",
       "sourceId": "orchestrated-artifact-781273e4",
       "targetId": "orchestrated-artifact-ea0e14c5",
@@ -40349,45 +40270,45 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-fbe69d19",
+      "id": "orchestrated-link-bead953c",
       "sourceId": "orchestrated-artifact-79536b76",
-      "targetId": "orchestrated-artifact-5d74c5c1",
+      "targetId": "orchestrated-artifact-15131f1e",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-76a993fc",
+      "id": "orchestrated-link-bdb31b45",
       "sourceId": "orchestrated-artifact-79536b76",
-      "targetId": "orchestrated-artifact-8093ec21",
+      "targetId": "orchestrated-artifact-1ca1242f",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-56a49915",
+      "id": "orchestrated-link-9065c53e",
       "sourceId": "orchestrated-artifact-79536b76",
-      "targetId": "orchestrated-artifact-c2449d5c",
+      "targetId": "orchestrated-artifact-8f881be7",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-79a083e3",
+      "id": "orchestrated-link-a7f7d667",
       "sourceId": "orchestrated-artifact-79536b76",
-      "targetId": "orchestrated-artifact-ea7cc320",
+      "targetId": "orchestrated-artifact-d4d60e03",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
     },
     {
-      "id": "orchestrated-link-5bf16a2e",
+      "id": "orchestrated-link-291d4754",
       "sourceId": "orchestrated-artifact-79536b76",
-      "targetId": "orchestrated-artifact-f523e039",
+      "targetId": "orchestrated-artifact-e4429d3b",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -40511,6 +40432,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-7b3aa9c0",
+      "sourceId": "orchestrated-artifact-7b405de6",
+      "targetId": "orchestrated-artifact-15131f1e",
+      "kind": "documents",
+      "confidence": 0.8,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "heuristic"
+    },
+    {
       "id": "orchestrated-link-7976086d",
       "sourceId": "orchestrated-artifact-7b405de6",
       "targetId": "orchestrated-artifact-20386b7d",
@@ -40550,15 +40480,6 @@
       "id": "orchestrated-link-31de02f8",
       "sourceId": "orchestrated-artifact-7b405de6",
       "targetId": "orchestrated-artifact-4b835795",
-      "kind": "documents",
-      "confidence": 0.8,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "heuristic"
-    },
-    {
-      "id": "orchestrated-link-b873b19d",
-      "sourceId": "orchestrated-artifact-7b405de6",
-      "targetId": "orchestrated-artifact-5d74c5c1",
       "kind": "documents",
       "confidence": 0.8,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -40878,15 +40799,6 @@
       "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "relationship-rules"
-    },
-    {
-      "id": "orchestrated-link-3f6e2886",
-      "sourceId": "orchestrated-artifact-8093ec21",
-      "targetId": "orchestrated-artifact-d7aba72e",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-9feeb5b9",
@@ -42053,6 +41965,15 @@
       "id": "orchestrated-link-63fe5a40",
       "sourceId": "orchestrated-artifact-8f24bf9f",
       "targetId": "orchestrated-artifact-67e04980",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-7e2ad6cc",
+      "sourceId": "orchestrated-artifact-8f881be7",
+      "targetId": "orchestrated-artifact-09864574",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -45173,6 +45094,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-c534301a",
+      "sourceId": "orchestrated-artifact-bd744807",
+      "targetId": "orchestrated-artifact-96a46068",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-bf550da5",
       "sourceId": "orchestrated-artifact-bd7f83be",
       "targetId": "orchestrated-artifact-9740b64b",
@@ -45392,15 +45322,6 @@
       "id": "orchestrated-link-79f17a63",
       "sourceId": "orchestrated-artifact-c1ed065d",
       "targetId": "orchestrated-artifact-211e31ea",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
-      "id": "orchestrated-link-ca014a5a",
-      "sourceId": "orchestrated-artifact-c2449d5c",
-      "targetId": "orchestrated-artifact-0cf53869",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -46478,6 +46399,15 @@
       "createdBy": "hint"
     },
     {
+      "id": "orchestrated-link-1532f4a1",
+      "sourceId": "orchestrated-artifact-d4d60e03",
+      "targetId": "orchestrated-artifact-23b9e264",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-af97023b",
       "sourceId": "orchestrated-artifact-d4ee9715",
       "targetId": "orchestrated-artifact-d2673922",
@@ -47072,15 +47002,6 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-79a217c3",
-      "sourceId": "orchestrated-artifact-e03b17f8",
-      "targetId": "orchestrated-artifact-db72f5d9",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-e7d41143",
       "sourceId": "orchestrated-artifact-e06edcf1",
       "targetId": "orchestrated-artifact-6516dad2",
@@ -47126,9 +47047,9 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-4765ca1d",
+      "id": "orchestrated-link-b5368410",
       "sourceId": "orchestrated-artifact-e181ef3f",
-      "targetId": "orchestrated-artifact-269f7d1f",
+      "targetId": "orchestrated-artifact-269f7d24",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -47201,6 +47122,15 @@
       "id": "orchestrated-link-8ddfcc2f",
       "sourceId": "orchestrated-artifact-e38587a3",
       "targetId": "orchestrated-artifact-3f69e4b0",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-3a98c5ab",
+      "sourceId": "orchestrated-artifact-e4429d3b",
+      "targetId": "orchestrated-artifact-70c47c48",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -47547,15 +47477,6 @@
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "heuristic"
-    },
-    {
-      "id": "orchestrated-link-f6309f50",
-      "sourceId": "orchestrated-artifact-ea7cc320",
-      "targetId": "orchestrated-artifact-8701622d",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
     },
     {
       "id": "orchestrated-link-5bcd29d4",
@@ -48710,15 +48631,6 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-771d852b",
-      "sourceId": "orchestrated-artifact-f523e039",
-      "targetId": "orchestrated-artifact-25a48f1a",
-      "kind": "documents",
-      "confidence": 0.9,
-      "createdAt": "2025-01-01T00:00:00.000Z",
-      "createdBy": "hint"
-    },
-    {
       "id": "orchestrated-link-ccf19525",
       "sourceId": "orchestrated-artifact-f571af9e",
       "targetId": "orchestrated-artifact-f571afa3",
@@ -49569,8 +49481,8 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1195,
-      "hintCount": 754,
+      "seedCount": 1189,
+      "hintCount": 750,
       "evidenceCount": 822
     },
     {
