@@ -324,14 +324,16 @@ connection.onShutdown(() => {
 connection.onDidChangeConfiguration((change: DidChangeConfigurationParams) => {
   const settingsCandidate = extractExtensionSettings(change.settings);
   providerGuard.apply(settingsCandidate);
-  syncRuntimeSettings();
-  connection.console.info("settings updated");
+  void syncRuntimeSettings().then(() => {
+    connection.console.info("settings updated");
+  });
 });
 
 connection.onNotification(SETTINGS_NOTIFICATION, (settings: ExtensionSettings) => {
   providerGuard.apply(settings);
-  syncRuntimeSettings();
-  connection.console.info("settings forwarded from client");
+  void syncRuntimeSettings().then(() => {
+    connection.console.info("settings forwarded from client");
+  });
 });
 
 connection.onNotification(FILE_DELETED_NOTIFICATION, (payload: { uri: string }) => {
@@ -562,13 +564,13 @@ documents.onDidSave((event: TextDocumentChangeEvent<TextDocument>) => {
 documents.listen(connection);
 void connection.listen();
 
-function syncRuntimeSettings(): void {
+async function syncRuntimeSettings(): Promise<void> {
   runtimeSettings = deriveRuntimeSettings(providerGuard.getSettings());
   changeQueue?.updateDebounceWindow(runtimeSettings.debounceMs);
   changeProcessor.updateContext({ runtimeSettings });
   acknowledgementService?.updateRuntimeSettings(runtimeSettings);
 
-  void knowledgeFeedController.initialize({
+  await knowledgeFeedController.initialize({
     graphStore,
     artifactWatcher,
     storageDirectory,

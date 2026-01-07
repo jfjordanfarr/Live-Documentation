@@ -49,9 +49,8 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
   });
 
   test("Lead acknowledges diagnostic to clear until next change", async function (this: Mocha.Context) {
-    // Increase timeout to accommodate CI slowness:
-    // 2s sleep + 30s wait + 10s absence + 2s sleep + 30s wait = 74s worst case
-    this.timeout(90000);
+    // Timeout calculation: 1s sleep + 15s wait + 5s absence + 1s sleep + 15s wait = 37s worst case
+    this.timeout(45000);
 
     await clearDiagnostics();
 
@@ -61,9 +60,9 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     await appendText(sourceDoc, "\n\n## Acknowledgement Flow\nInitial change to trigger diagnostics.");
     await sourceDoc.save();
     // Allow debounce + server processing time before waiting for diagnostic
-    await sleep(2000);
+    await sleep(1000);
 
-    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
+    const initial = await waitForDiagnosticWithRecord(_targetCodeUri, 15000);
     assert.ok(initial.recordId, "Diagnostic should include persistent record identifier");
 
     const acknowledgementPayload =
@@ -77,7 +76,7 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
       uri: _targetCodeUri
     });
 
-    await waitForDiagnosticAbsence(_targetCodeUri, initial.recordId, 10000);
+    await waitForDiagnosticAbsence(_targetCodeUri, initial.recordId, 5000);
 
     const changeEventId = extractChangeEventId(initial.diagnostic);
     if (!changeEventId) {
@@ -115,9 +114,9 @@ suite("US3: Diagnostics acknowledgement workflow", () => {
     await appendText(sourceDoc, "\n\n## Follow-up Change\nSubsequent edit to re-trigger diagnostics.");
     await sourceDoc.save();
     // Allow debounce + server processing time before waiting for diagnostic
-    await sleep(2000);
+    await sleep(1000);
 
-    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 30000);
+    const subsequent = await waitForDiagnosticWithRecord(_targetCodeUri, 15000);
     assert.ok(subsequent.recordId, "Subsequent diagnostic should include persistent record identifier");
     assert.notStrictEqual(subsequent.recordId, initial.recordId, "New change event should emit new diagnostic record");
   });
