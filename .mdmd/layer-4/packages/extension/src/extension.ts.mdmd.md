@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2025-12-15T00:38:05.913Z
+- Generated At: 2026-01-07T22:00:43.252Z
 
 ## Authored
 ### Purpose
@@ -17,17 +17,17 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.913Z","inputHash":"5a745e71d8a41514"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-07T22:00:43.252Z","inputHash":"a0b77e41fe5f1f5e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L45)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L44)
 - Parameters: `context`: `vscode.ExtensionContext`
 
 #### `deactivate` {#symbol-deactivate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L285)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L283)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -35,7 +35,6 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - [`acknowledgeDiagnostic.registerAcknowledgementWorkflow`](./commands/acknowledgeDiagnostic.ts.mdmd.md#symbol-registeracknowledgementworkflow)
 - [`analyzeWithAI.registerAnalyzeWithAICommand`](./commands/analyzeWithAI.ts.mdmd.md#symbol-registeranalyzewithaicommand)
 - [`exportDiagnostics.registerExportDiagnosticsCommand`](./commands/exportDiagnostics.ts.mdmd.md#symbol-registerexportdiagnosticscommand)
-- [`inspectSymbolNeighbors.registerInspectSymbolNeighborsCommand`](./commands/inspectSymbolNeighbors.ts.mdmd.md#symbol-registerinspectsymbolneighborscommand)
 - [`latencySummary.registerLatencyTelemetryCommands`](./commands/latencySummary.ts.mdmd.md#symbol-registerlatencytelemetrycommands)
 - [`overrideLink.registerOverrideLinkCommand`](./commands/overrideLink.ts.mdmd.md#symbol-registeroverridelinkcommand)
 - [`dependencyQuickPick.registerDependencyQuickPick`](./diagnostics/dependencyQuickPick.ts.mdmd.md#symbol-registerdependencyquickpick)

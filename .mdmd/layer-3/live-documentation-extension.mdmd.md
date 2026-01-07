@@ -22,11 +22,10 @@ Explain how the VS Code extension manifests Live Documentation inside the editor
 ## System References
 ### Components
 - [packages/extension/src/extension.ts](../layer-4/packages/extension/src/extension.ts.mdmd.md)
-- [packages/extension/src/commands/inspectSymbolNeighbors.ts](../layer-4/packages/extension/src/commands/inspectSymbolNeighbors.ts.mdmd.md)
 - [packages/extension/src/diagnostics/docDiagnosticProvider.ts](../layer-4/packages/extension/src/diagnostics/docDiagnosticProvider.ts.mdmd.md)
 - [packages/extension/src/services/symbolBridge.ts](../layer-4/packages/extension/src/services/symbolBridge.ts.mdmd.md)
 - [packages/extension/src/watchers/fileMaintenance.ts](../layer-4/packages/extension/src/watchers/fileMaintenance.ts.mdmd.md)
 
 ## Evidence
 - Extension unit suites (`docDiagnosticProvider.test.ts`, `dependencyQuickPick.test.ts`, `analyzeWithAI.test.ts`) cover diagnostics rendering, command routing, and symbol bridge requests.
-- Integration harness (`tests/integration/us1`–`us5`) exercises ripple diagnostics and ensures extension/server eventing stays stable during regeneration-heavy flows.
+- Integration harness (`tests/integration/core`, `tests/integration/integrity`, `tests/integration/extension`) exercises ripple diagnostics and ensures extension/server eventing stays stable during regeneration-heavy flows.

@@ -36,11 +36,6 @@
         "icon": "$(repo)"
       },
       {
-        "command": "linkDiagnostics.inspectSymbolNeighbors",
-        "title": "Live Documentation: Inspect Symbol Neighbors",
-        "icon": "$(symbol-structure)"
-      },
-      {
         "command": "linkDiagnostics.analyzeWithAI",
         "title": "Live Documentation: Analyze Impact with AI",
         "icon": "$(sparkle)"

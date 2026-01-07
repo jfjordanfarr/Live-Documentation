@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/shared/artifactSchemas.ts
 - Live Doc ID: LD-implementation-packages-extension-src-shared-artifactschemas-ts
-- Generated At: 2025-12-05T04:16:17.221Z
+- Generated At: 2026-01-07T22:04:53.484Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralises Zod schemas for artifact layers, knowledge artifacts, and relationsh
 When we added Live Doc metadata to the quick pick outputs on 2025-11-01 ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L5908-L6070](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L5908-L6070)), these schemas kept the client aligned with the shared contracts—extend them in tandem with `packages/shared/src/contracts/diagnostics.ts` anytime new relationship kinds appear.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T04:16:17.221Z","inputHash":"e368cdc68ed83707"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-07T22:04:53.484Z","inputHash":"e368cdc68ed83707"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactLayerSchema` {#symbol-artifactlayerschema}
@@ -54,6 +54,5 @@ When we added Live Doc metadata to the quick pick outputs on 2025-11-01 ([AI-Age
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [inspectSymbolNeighbors.test.ts](../commands/inspectSymbolNeighbors.test.ts.mdmd.md)
 - [dependencyQuickPick.test.ts](../diagnostics/dependencyQuickPick.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

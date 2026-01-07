@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-index-ts
-- Generated At: 2025-12-15T23:36:39.933Z
+- Generated At: 2026-01-07T22:04:53.912Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:36:39.933Z","inputHash":"c1bf0c8e5f4f3312"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-07T22:04:53.912Z","inputHash":"c1bf0c8e5f4f3312"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipExtractor` {#symbol-relationshipextractor}
@@ -137,7 +137,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### Vitest Unit Tests
 - [analyzeWithAI.test.ts](../../extension/src/commands/analyzeWithAI.test.ts.mdmd.md)
 - [exportDiagnostics.test.ts](../../extension/src/commands/exportDiagnostics.test.ts.mdmd.md)
-- [inspectSymbolNeighbors.test.ts](../../extension/src/commands/inspectSymbolNeighbors.test.ts.mdmd.md)
 - [dependencyQuickPick.test.ts](../../extension/src/diagnostics/dependencyQuickPick.test.ts.mdmd.md)
 - [docDiagnosticProvider.test.ts](../../extension/src/diagnostics/docDiagnosticProvider.test.ts.mdmd.md)
 - [localOllamaBridge.test.ts](../../extension/src/services/localOllamaBridge.test.ts.mdmd.md)
