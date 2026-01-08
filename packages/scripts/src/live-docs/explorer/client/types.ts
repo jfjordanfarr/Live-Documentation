@@ -8,6 +8,7 @@ export type ViewName = "circuit" | "map" | "graph" | "sources";
 export interface ExplorerFilters {
   showTests: boolean;
   showAssets: boolean;
+  showRelatedDocs: boolean;
 }
 
 export interface BezierTuning {

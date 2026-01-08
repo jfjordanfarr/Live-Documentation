@@ -22,7 +22,7 @@ import {
 import type { ExplorerState, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createLocalView } from "./views/localView";
-import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode } from "../shared/staticExplorerData";
+import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode, RelatedDocLink } from "../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkPayload,
@@ -35,10 +35,13 @@ import type { PathResult } from "./views/localView/state";
 interface ForceGraphLink {
   source: string;
   target: string;
-  kind: ExplorerLinkPayload["kind"];
+  kind: ExplorerLinkPayload["kind"] | "related-doc";
 }
 
-type ForceGraphNode = ExplorerNodePayload;
+type ForceGraphNode = ExplorerNodePayload & {
+  /** Archetype for Related Documentation nodes */
+  archetype?: string;
+};
 
 interface ForceGraphData {
   nodes: ForceGraphNode[];
@@ -50,6 +53,8 @@ interface ForceGraphInstance {
   graphData(data: ForceGraphData): ForceGraphInstance;
   nodeLabel(labelAccessor: string | ((node: ForceGraphNode) => string)): ForceGraphInstance;
   nodeColor(colorAccessor: (node: ForceGraphNode) => string): ForceGraphInstance;
+  linkColor(colorAccessor: (link: ForceGraphLink) => string): ForceGraphInstance;
+  linkWidth(widthAccessor: (link: ForceGraphLink) => number): ForceGraphInstance;
   onNodeClick(handler: (node: ForceGraphNode) => void): ForceGraphInstance;
 }
 
@@ -88,6 +93,7 @@ interface StaticBundle {
   docs?: Record<string, string>;
   bundledMarkdown?: Record<string, string>;
   bundledMarkdownTree?: BundledMarkdownTreeNode;
+  relatedDocLinks?: RelatedDocLink[];
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -99,6 +105,7 @@ interface LoadedExplorerData {
   staticDocs?: Record<string, string>;
   bundledMarkdown?: Record<string, string>;
   bundledMarkdownTree?: BundledMarkdownTreeNode;
+  relatedDocLinks?: RelatedDocLink[];
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -113,8 +120,8 @@ interface LoadedExplorerData {
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const { graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, viewerConfig } = await loadExplorerData();
-    startExplorer(graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, viewerConfig);
+    const { graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, relatedDocLinks, viewerConfig } = await loadExplorerData();
+    startExplorer(graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, relatedDocLinks, viewerConfig);
   } catch (error) {
     reportFatalExplorerError(error);
   }
@@ -132,6 +139,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
         staticDocs: staticData.docs,
         bundledMarkdown: staticData.bundledMarkdown,
         bundledMarkdownTree: staticData.bundledMarkdownTree,
+        relatedDocLinks: staticData.relatedDocLinks,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -154,6 +162,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
         staticDocs: staticData.docs,
         bundledMarkdown: staticData.bundledMarkdown,
         bundledMarkdownTree: staticData.bundledMarkdownTree,
+        relatedDocLinks: staticData.relatedDocLinks,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -172,6 +181,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
           staticDocs: staticData.docs,
           bundledMarkdown: staticData.bundledMarkdown,
           bundledMarkdownTree: staticData.bundledMarkdownTree,
+          relatedDocLinks: staticData.relatedDocLinks,
           viewerConfig: staticData.viewerConfig
         };
       }
@@ -195,6 +205,7 @@ function startExplorer(
   staticDocs?: Record<string, string>,
   bundledMarkdown?: Record<string, string>,
   bundledMarkdownTree?: BundledMarkdownTreeNode,
+  relatedDocLinks?: RelatedDocLink[],
   viewerConfig?: StaticExplorerViewerConfig
 ): void {
   console.log("Live Docs Explorer graph loaded", graphData);
@@ -225,12 +236,14 @@ function startExplorer(
     tree?: BundledMarkdownTreeNode;
     paths?: string[];
     count?: number;
+    relatedDocLinks?: RelatedDocLink[];
     error?: string;
   };
 
   const serverBundledDocs: ServerBundledDocsState = {
     loaded: isStaticMode, // Static mode already has embedded data
-    loading: false
+    loading: false,
+    relatedDocLinks: relatedDocLinks // Store static mode links
   };
 
   /**
@@ -265,10 +278,11 @@ function startExplorer(
       if (!response.ok) {
         throw new Error(`Failed to load bundled docs (${response.status})`);
       }
-      const data = await response.json() as { tree: BundledMarkdownTreeNode; paths: string[]; count: number };
+      const data = await response.json() as { tree: BundledMarkdownTreeNode; paths: string[]; count: number; relatedDocLinks?: RelatedDocLink[] };
       serverBundledDocs.tree = data.tree;
       serverBundledDocs.paths = data.paths;
       serverBundledDocs.count = data.count;
+      serverBundledDocs.relatedDocLinks = data.relatedDocLinks;
       serverBundledDocs.loaded = true;
       serverBundledDocs.loading = false;
       return { tree: data.tree, count: data.count };
@@ -669,6 +683,7 @@ function startExplorer(
 
   const filterToggleTests = getInputById("filter-toggle-tests");
   const filterToggleAssets = getInputById("filter-toggle-assets");
+  const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
   const statsLine = document.getElementById("stats-line");
 
   if (statsLine instanceof HTMLElement) {
@@ -721,6 +736,27 @@ function startExplorer(
       state.filters.showAssets = event.target.checked;
       schedulePersistUi();
       renderCurrentView();
+    });
+  }
+
+  if (filterToggleRelatedDocs) {
+    filterToggleRelatedDocs.addEventListener("change", event => {
+      if (!(event.target instanceof HTMLInputElement)) {
+        return;
+      }
+      state.filters.showRelatedDocs = event.target.checked;
+      schedulePersistUi();
+      // Only re-render Force Graph (Related Docs only affect that view)
+      if (state.view === "graph") {
+        // In server mode, ensure bundled docs (including relatedDocLinks) are loaded first
+        if (!isStaticMode && event.target.checked && !serverBundledDocs.loaded) {
+          void loadServerBundledDocs().then(() => {
+            renderGraph();
+          });
+        } else {
+          renderGraph();
+        }
+      }
     });
   }
 
@@ -1368,13 +1404,125 @@ function startExplorer(
       return sourceId !== "" && targetId !== "" && allowedIds.has(sourceId) && allowedIds.has(targetId);
     });
 
+    // Build base graph data
+    const graphNodes: ForceGraphNode[] = filteredNodes.map(node => ({ ...node }));
+    const graphLinks: ForceGraphLink[] = filteredLinks.map(link => ({
+      source: resolveLinkEndpoint(link.source),
+      target: resolveLinkEndpoint(link.target),
+      kind: link.kind
+    }));
+
+    // Add Related Documentation nodes and links when enabled
+    if (state.filters.showRelatedDocs) {
+      const links = isStaticMode ? relatedDocLinks : serverBundledDocs.relatedDocLinks;
+      if (links && links.length > 0) {
+        // Build a set of existing node IDs to avoid duplicates
+        // (e.g., .mdmd.md files are already Live Doc nodes)
+        const existingNodeIds = new Set(graphNodes.map(n => n.id));
+        
+        // Also build a set of existing node paths to detect Live Doc duplicates
+        // Live Doc paths typically end in .mdmd.md and their IDs correspond to the source file
+        const liveDocPaths = new Set<string>();
+        for (const node of graphData.nodes) {
+          if (node.docPath) {
+            liveDocPaths.add(node.docPath.replace(/\\/g, "/"));
+          }
+        }
+
+        // Collect unique bundled doc paths that should become nodes
+        const bundledDocPaths = new Set<string>();
+        // Track which related:xxx source paths we need to create nodes for
+        const relatedSourcePaths = new Set<string>();
+        const relatedLinks: Array<{ source: string; target: string }> = [];
+
+        for (const link of links) {
+          // Skip targets that are Live Documentation files (already in graph as implementation nodes)
+          // These are .mdmd.md files that shouldn't be duplicated as purple "related" nodes
+          const normalizedTarget = link.targetPath.replace(/\\/g, "/");
+          if (normalizedTarget.endsWith(".mdmd.md") || liveDocPaths.has(normalizedTarget)) {
+            continue;
+          }
+
+          // Resolve source: could be a Live Doc node ID or a bundled doc (related:path)
+          const sourceId = link.sourceId.startsWith("related:") 
+            ? link.sourceId  // Bundled doc source
+            : link.sourceId; // Live Doc source
+          
+          // For Live Doc sources, check if they're in the allowed set
+          if (!link.sourceId.startsWith("related:") && !allowedIds.has(sourceId)) {
+            continue;
+          }
+
+          // For related: sources, track them for node creation
+          if (link.sourceId.startsWith("related:")) {
+            const sourcePath = link.sourceId.slice("related:".length);
+            // Skip if source is a Live Doc path
+            if (!sourcePath.endsWith(".mdmd.md") && !liveDocPaths.has(sourcePath)) {
+              relatedSourcePaths.add(sourcePath);
+            } else {
+              // Source is a Live Doc - skip this link since we don't create related nodes for Live Docs
+              continue;
+            }
+          }
+
+          const targetId = `related:${link.targetPath}`;
+          bundledDocPaths.add(link.targetPath);
+          relatedLinks.push({ source: sourceId, target: targetId });
+        }
+
+        // Create nodes for bundled doc sources (related: prefix sources that aren't Live Docs)
+        for (const docPath of relatedSourcePaths) {
+          const nodeId = `related:${docPath}`;
+          if (!existingNodeIds.has(nodeId)) {
+            const fileName = docPath.split("/").pop() ?? docPath;
+            graphNodes.push({
+              id: nodeId,
+              name: fileName,
+              archetype: "related-doc",
+              docPath: docPath,
+              publicSymbols: [],
+              dependencies: [],
+              dependents: []
+            } as unknown as ForceGraphNode);
+            existingNodeIds.add(nodeId);
+          }
+        }
+
+        // Create nodes for bundled doc targets
+        for (const docPath of bundledDocPaths) {
+          const nodeId = `related:${docPath}`;
+          if (!existingNodeIds.has(nodeId)) {
+            const fileName = docPath.split("/").pop() ?? docPath;
+            graphNodes.push({
+              id: nodeId,
+              name: fileName,
+              archetype: "related-doc",
+              docPath: docPath,
+              publicSymbols: [],
+              dependencies: [],
+              dependents: []
+            } as unknown as ForceGraphNode);
+            existingNodeIds.add(nodeId);
+          }
+        }
+
+        // Add links (only if both source and target nodes exist)
+        const finalNodeIds = new Set(graphNodes.map(n => n.id));
+        for (const link of relatedLinks) {
+          if (finalNodeIds.has(link.source) && finalNodeIds.has(link.target)) {
+            graphLinks.push({
+              source: link.source,
+              target: link.target,
+              kind: "related-doc"
+            });
+          }
+        }
+      }
+    }
+
     const dataForGraph: ForceGraphData = {
-      nodes: filteredNodes.map(node => ({ ...node })),
-      links: filteredLinks.map(link => ({
-        source: resolveLinkEndpoint(link.source),
-        target: resolveLinkEndpoint(link.target),
-        kind: link.kind
-      }))
+      nodes: graphNodes,
+      links: graphLinks
     };
 
     if (forceGraphInstance) {
@@ -1404,11 +1552,34 @@ function startExplorer(
             return "#6c757d";
           case "script":
             return "#17a2b8";
+          case "related-doc":
+            return "#9966cc"; // Purple for related documentation
           default:
             return "#888";
         }
       })
+      .linkColor((link: ForceGraphLink) => {
+        // Muted gray for related doc links
+        if (link.kind === "related-doc") {
+          return "rgba(153, 102, 204, 0.4)"; // Muted purple
+        }
+        return "rgba(255, 255, 255, 0.2)"; // Default link color
+      })
+      .linkWidth((link: ForceGraphLink) => {
+        // Thinner links for related docs
+        if (link.kind === "related-doc") {
+          return 0.5;
+        }
+        return 1;
+      })
       .onNodeClick(node => {
+        // Handle Related Documentation node clicks
+        if (node.id.startsWith("related:")) {
+          const docPath = node.id.slice("related:".length);
+          void showBundledDocInDetailPanel(docPath);
+          return;
+        }
+
         const original = nodesById.get(node.id);
         if (!original) {
           return;
@@ -1425,6 +1596,9 @@ function startExplorer(
     }
     if (filterToggleAssets) {
       filterToggleAssets.checked = state.filters.showAssets;
+    }
+    if (filterToggleRelatedDocs) {
+      filterToggleRelatedDocs.checked = state.filters.showRelatedDocs;
     }
   }
 }

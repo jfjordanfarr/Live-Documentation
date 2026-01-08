@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 6, 2026\)*
+*Status: Active Development (Jan 7, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -564,6 +564,19 @@ The team returned to work with a focus on security hardening, resolving a subtle
   * **Generative AI (CAP-009):** Allowed to synthesize new documentation, but *only* under strict budget caps and with explicit user invocation.  
   * **Brownfield Respect (CAP-010):** The system adopted a "Bridge, Don't Replace" philosophy, ensuring that existing documentation is respected and linked, rather than overwritten.
 
+### **Phase XXXVII: The Knowledge Bundle & Semantic Cleanup (Jan 7\)**
+
+Date: January 7, 2026
+
+Scope: Commits 199–205
+
+The team dedicated a day to deep cleaning the repository structure and expanding the "Knowledge" concept.
+
+* **Semantic Test Reorganization (Commit 199):** The test suite was completely reorganized. Deprecated "User Story" folders (us1/, us2/) were replaced with semantic domains: core/graph, core/ripple, and integrity/hygiene. This renaming reflects the transition from "active development" to "long-term maintenance."  
+* **Deprecation (Commits 200, 201):** The team purged vestigial code, including the inspectSymbolNeighbors extension command (superseded by the CLI) and obsolete migration scripts.  
+* **The Knowledge Bundle (Commits 204, 205):** The Explorer now recursively scans for linked markdown files (READMEs, Chat Logs, Specs) and **bundles them** into the static export and server view. This means the "Static Site" isn't just the graph; it's the *entire* relevant documentation tree, fully navigable offline.  
+* **Parity & Polish (Commits 202, 203):** Fixed a critical "multiline regex gotcha" that was hiding authored "Notes" sections, and ensured that features like "Download All" work identically in both Server Mode and Static Mode.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -586,7 +599,8 @@ The team returned to work with a focus on security hardening, resolving a subtle
 * **Dec 18 (Phase XXXIII):** "Narrative Pathfinding." (Multi-hop visual storytelling).  
 * **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).  
 * **Jan 3 (Phase XXXV):** "Portable Knowledge." (Exportable docs and archetype badges).  
-* **Jan 6 (Phase XXXVI):** "The Generative Gate." (Security hardening and codified LLM strategy).
+* **Jan 6 (Phase XXXVI):** "The Generative Gate." (Security hardening and codified LLM strategy).  
+* **Jan 7 (Phase XXXVII):** "Contextual Bundling." (Including referenced docs in the graph explorer).
 
 ## **Technical Themes & Motifs**
 

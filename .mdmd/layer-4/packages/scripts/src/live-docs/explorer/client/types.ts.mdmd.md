@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2026-01-03T20:41:39.187Z
+- Generated At: 2026-01-08T19:09:21.567Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.187Z","inputHash":"a61c4476be8d5faf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.567Z","inputHash":"dc8811b6f4ce8529"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
@@ -30,47 +30,47 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L13)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L14)
 
 #### `ClickBehaviorTuning` {#symbol-clickbehaviortuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L20)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L21)
 
 #### `VisualTuning` {#symbol-visualtuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L25)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L26)
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L30)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L31)
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L42)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L43)
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L49)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L50)
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L57)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L58)
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L59)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L60)
 
 #### `DragPosition` {#symbol-dragposition}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L65)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L66)
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L71)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L72)
 
 #### `ConnectionKind` {#symbol-connectionkind}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L78)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L79)
 - Returns: [`ExplorerLinkKind`](../shared/types.ts.mdmd.md#symbol-explorerlinkkind)
 <!-- LIVE-DOC:END Public Symbols -->
 

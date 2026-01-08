@@ -8,7 +8,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 
-import type { BundledMarkdownTreeNode } from "./staticExplorerData";
+import type { BundledMarkdownTreeNode, RelatedDocLink } from "./staticExplorerData";
 
 export type { BundledMarkdownTreeNode };
 
@@ -18,6 +18,8 @@ export type { BundledMarkdownTreeNode };
 export interface BundledMarkdownResult {
     bundledMarkdown: Record<string, string>;
     bundledMarkdownTree: BundledMarkdownTreeNode;
+    /** Links from source docs to bundled markdown files (for Force Graph Related Docs). */
+    relatedDocLinks: RelatedDocLink[];
 }
 
 /**
@@ -157,7 +159,7 @@ export interface ScanBundledMarkdownOptions {
 
 /**
  * Scan Live Docs for markdown links and bundle the referenced files.
- * Uses breadth-first traversal with depth limit to avoid infinite recursion.
+ * Single-hop only: bundles files directly linked from Live Docs, no nested traversal.
  */
 export async function scanAndBundleMarkdown(
     options: ScanBundledMarkdownOptions
@@ -166,35 +168,38 @@ export async function scanAndBundleMarkdown(
         docs,
         workspaceRoot,
         liveDocPaths,
-        maxDepth = 2,
+        // maxDepth is now ignored - we only do single-hop
         logger = console
     } = options;
 
     const bundledMarkdown: Record<string, string> = {};
+    const relatedDocLinks: RelatedDocLink[] = [];
     const visited = new Set<string>();
-    const queue: Array<{ path: string; depth: number }> = [];
 
-    // Seed the queue with links from Live Docs
+    // Collect all links from Live Docs (single hop only)
+    const linksToProcess: Array<{ path: string; sourceId: string }> = [];
+
     for (const [nodeId, content] of Object.entries(docs)) {
         const docPath = liveDocPaths.get(nodeId);
         if (!docPath) continue;
 
         const links = extractMarkdownLinks(content, docPath, workspaceRoot);
         for (const link of links) {
+            // Track the link from this Live Doc to the bundled doc
+            relatedDocLinks.push({ sourceId: nodeId, targetPath: link });
+            
             if (!visited.has(link)) {
                 visited.add(link);
-                queue.push({ path: link, depth: 0 });
+                linksToProcess.push({ path: link, sourceId: nodeId });
             }
         }
     }
 
-    logger.log(`Found ${queue.length} unique markdown links in Live Docs`);
+    logger.log(`Found ${linksToProcess.length} unique markdown links in Live Docs`);
 
-    // Process the queue
+    // Process each link - single hop, no nested traversal
     let processedCount = 0;
-    while (queue.length > 0) {
-        const item = queue.shift()!;
-
+    for (const item of linksToProcess) {
         // Skip if it's a Live Doc (already in docs)
         const normalizedItemPath = item.path.replace(/\\/g, "/");
         let isLiveDoc = false;
@@ -213,17 +218,7 @@ export async function scanAndBundleMarkdown(
             const content = await fs.readFile(absolutePath, "utf-8");
             bundledMarkdown[item.path] = content;
             processedCount++;
-
-            // Scan for nested links if within depth limit
-            if (item.depth < maxDepth) {
-                const nestedLinks = extractMarkdownLinks(content, item.path, workspaceRoot);
-                for (const link of nestedLinks) {
-                    if (!visited.has(link)) {
-                        visited.add(link);
-                        queue.push({ path: link, depth: item.depth + 1 });
-                    }
-                }
-            }
+            // No nested link scanning - single hop only
         } catch {
             // File doesn't exist or can't be read - skip silently
         }
@@ -235,5 +230,5 @@ export async function scanAndBundleMarkdown(
     const allPaths = Object.keys(bundledMarkdown);
     const bundledMarkdownTree = buildMarkdownTree(allPaths);
 
-    return { bundledMarkdown, bundledMarkdownTree };
+    return { bundledMarkdown, bundledMarkdownTree, relatedDocLinks };
 }

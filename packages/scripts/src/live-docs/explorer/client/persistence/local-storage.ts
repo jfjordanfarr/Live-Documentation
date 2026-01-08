@@ -22,7 +22,8 @@ export type PersistedUiV1 = {
 
 export const getDefaultFilters = (): ExplorerFilters => ({
   showTests: true,
-  showAssets: false
+  showAssets: false,
+  showRelatedDocs: false
 });
 
 export const getDefaultTuning = (): TuningConfig => ({
@@ -89,9 +90,11 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
     if (parsedFilters) {
       const showTests = readBoolean(parsedFilters.showTests);
       const showAssets = readBoolean(parsedFilters.showAssets);
+      const showRelatedDocs = readBoolean(parsedFilters.showRelatedDocs);
       result.filters = {
         ...(showTests !== undefined ? { showTests } : null),
-        ...(showAssets !== undefined ? { showAssets } : null)
+        ...(showAssets !== undefined ? { showAssets } : null),
+        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null)
       };
     }
 

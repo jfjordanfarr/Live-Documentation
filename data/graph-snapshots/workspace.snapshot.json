@@ -3,7 +3,7 @@
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
     "artifacts": 1132,
-    "links": 1886
+    "links": 1887
   },
   "artifacts": [
     {
@@ -4380,6 +4380,10 @@
             "context": "section-heading"
           },
           {
+            "symbol": "RelatedDocLink",
+            "context": "section-heading"
+          },
+          {
             "symbol": "StaticExplorerBuildOptions",
             "context": "section-heading"
           },
@@ -4412,6 +4416,7 @@
             "StaticExplorerTreemapNode",
             "StaticExplorerData",
             "BundledMarkdownTreeNode",
+            "RelatedDocLink",
             "StaticExplorerBuildOptions",
             "buildSymbolIndex",
             "STATIC_EXPLORER_SCHEMA_VERSION",
@@ -23737,6 +23742,10 @@
             "kind": "interface"
           },
           {
+            "name": "RelatedDocLink",
+            "kind": "interface"
+          },
+          {
             "name": "StaticExplorerBuildOptions",
             "kind": "interface"
           },
@@ -32982,9 +32991,9 @@
       "createdBy": "workspace-index"
     },
     {
-      "id": "orchestrated-link-85ec3b44",
+      "id": "orchestrated-link-f3bcf537",
       "sourceId": "orchestrated-artifact-0683f32d",
-      "targetId": "orchestrated-artifact-269f7d1f",
+      "targetId": "orchestrated-artifact-269f7d24",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -36713,6 +36722,15 @@
       "targetId": "orchestrated-artifact-9ea8b65a",
       "kind": "references",
       "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
+      "id": "orchestrated-link-1d171ac1",
+      "sourceId": "orchestrated-artifact-462ec578",
+      "targetId": "orchestrated-artifact-d9e812c8",
+      "kind": "depends_on",
+      "confidence": 0.95,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "workspace-index"
     },
@@ -46986,9 +47004,9 @@
       "createdBy": "hint"
     },
     {
-      "id": "orchestrated-link-4765ca1d",
+      "id": "orchestrated-link-b5368410",
       "sourceId": "orchestrated-artifact-e181ef3f",
-      "targetId": "orchestrated-artifact-269f7d1f",
+      "targetId": "orchestrated-artifact-269f7d24",
       "kind": "depends_on",
       "confidence": 0.6,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -49413,7 +49431,7 @@
       "label": "Workspace Implementation Index",
       "seedCount": 1184,
       "hintCount": 749,
-      "evidenceCount": 817
+      "evidenceCount": 818
     },
     {
       "id": "relationship-rules",

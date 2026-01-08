@@ -1165,3 +1165,19 @@
     flex-shrink: 0;
 }
 
+/* Force Graph Only Filter (Show Related Docs checkbox) */
+/* Hidden by default, shown when Force Graph view is active */
+.sidebar-checkbox.force-graph-only {
+    display: none;
+}
+
+/* Show when body has force-graph-active class (set by JS when view is "graph") */
+body.force-graph-active .sidebar-checkbox.force-graph-only {
+    display: flex;
+}
+
+/* Related Documentation node styling in legend */
+.legend-row .legend-swatch--related-doc {
+    background: #9966cc;
+}
+

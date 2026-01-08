@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticbuilder-ts
-- Generated At: 2026-01-08T03:26:19.718Z
+- Generated At: 2026-01-08T19:09:21.684Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Core builder module for creating fully static Live Documentation Explorer bundle
 - Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T03:26:19.718Z","inputHash":"b1af743afeb8f144"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.684Z","inputHash":"5cc22ed7fc630cad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
@@ -40,7 +40,7 @@ Build a complete static explorer bundle.
 
 #### `buildLocalMapJson` {#symbol-buildlocalmapjson}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L280)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L281)
 
 ##### `buildLocalMapJson` — Summary
 Build a single Local Map JSON for a focus node.
@@ -50,10 +50,10 @@ This is the headless API that LLMs and scripts can consume.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `fs/promises` - `fs`
+- [`bundledMarkdownScanner.scanAndBundleMarkdown`](./bundledMarkdownScanner.ts.mdmd.md#symbol-scanandbundlemarkdown)
 - [`localMapBuilder.buildLocalMapData`](./localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
 - [`localMapBuilder.buildTestCoverageMap`](./localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`localMapData.LocalMapData`](./localMapData.ts.mdmd.md#symbol-localmapdata) (type-only)
-- [`staticExplorerData.BundledMarkdownTreeNode`](./staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode)
 - [`staticExplorerData.STATIC_EXPLORER_SCHEMA_VERSION`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_schema_version)
 - [`staticExplorerData.STATIC_EXPLORER_VERSION`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_version)
 - [`staticExplorerData.StaticExplorerBuildOptions`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerbuildoptions)

@@ -292,6 +292,17 @@ export interface StaticExplorerData {
      * Enables rendering a navigable tree in the Knowledge Sources view.
      */
     bundledMarkdownTree?: BundledMarkdownTreeNode;
+
+    /**
+     * Links from Live Docs (and bundled docs) to bundled markdown files.
+     * Enables rendering Related Documentation edges in the Force Graph view.
+     * 
+     * @remarks
+     * Each link records which document references which bundled markdown file.
+     * The Force Graph uses these to create edges between nodes when
+     * "Show Related Documentation" is enabled.
+     */
+    relatedDocLinks?: RelatedDocLink[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -316,6 +327,23 @@ export interface BundledMarkdownTreeNode {
 
     /** Children for folder nodes. */
     children?: BundledMarkdownTreeNode[];
+}
+
+/**
+ * A link from a Live Doc (or bundled doc) to a bundled markdown file.
+ * Used to render Related Documentation edges in the Force Graph view.
+ * 
+ * @remarks
+ * These links are directional: a Live Doc references a bundled document.
+ * However, the Force Graph renders them as undirected edges for visual clarity.
+ * The `related:` prefix on target IDs distinguishes bundled docs from Live Doc nodes.
+ */
+export interface RelatedDocLink {
+    /** Source node ID (Live Doc code path, or bundled doc path). */
+    sourceId: string;
+
+    /** Target bundled doc path (becomes node ID with `related:` prefix in Force Graph). */
+    targetPath: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

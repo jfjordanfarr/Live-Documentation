@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2026-01-08T03:26:19.721Z
+- Generated At: 2026-01-08T19:09:21.687Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ The viewer supports three loading modes:
 3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T03:26:19.721Z","inputHash":"c0920a1cfd0804fe"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.687Z","inputHash":"a10d96b102a5dea5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
@@ -143,21 +143,34 @@ The viewer supports three loading modes:
 
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L304)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L315)
 
 ##### `BundledMarkdownTreeNode` — Summary
 A node in the bundled markdown directory tree.
 
+#### `RelatedDocLink` {#symbol-relateddoclink}
+- Type: interface
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L341)
+
+##### `RelatedDocLink` — Summary
+A link from a Live Doc (or bundled doc) to a bundled markdown file.
+Used to render Related Documentation edges in the Force Graph view.
+
+##### `RelatedDocLink` — Remarks
+These links are directional: a Live Doc references a bundled document.
+However, the Force Graph renders them as undirected edges for visual clarity.
+The `related:` prefix on target IDs distinguishes bundled docs from Live Doc nodes.
+
 #### `StaticExplorerBuildOptions` {#symbol-staticexplorerbuildoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L328)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L356)
 
 ##### `StaticExplorerBuildOptions` — Summary
 Options for building a static explorer bundle.
 
 #### `buildSymbolIndex` {#symbol-buildsymbolindex}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L348)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L376)
 - Returns: [`StaticExplorerSymbolIndex`](#symbol-staticexplorersymbolindex)
 - Parameters: `nodes`: [`ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload)[]
 
@@ -172,14 +185,14 @@ A complete symbol index ready for client-side search.
 
 #### `STATIC_EXPLORER_SCHEMA_VERSION` {#symbol-static_explorer_schema_version}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L430)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L458)
 
 ##### `STATIC_EXPLORER_SCHEMA_VERSION` — Summary
 Current schema version. Increment on breaking changes.
 
 #### `STATIC_EXPLORER_VERSION` {#symbol-static_explorer_version}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L435)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L463)
 
 ##### `STATIC_EXPLORER_VERSION` — Summary
 Current bundle format version.

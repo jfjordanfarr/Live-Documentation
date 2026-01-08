@@ -27,6 +27,7 @@ import * as path from "path";
 
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
 
+import { scanAndBundleMarkdown } from "./bundledMarkdownScanner";
 import {
     buildLocalMapData,
     buildTestCoverageMap
@@ -38,7 +39,6 @@ import {
     STATIC_EXPLORER_VERSION
 } from "./staticExplorerData";
 import type {
-    BundledMarkdownTreeNode,
     StaticExplorerBuildOptions,
     StaticExplorerData,
     StaticExplorerProvenance
@@ -179,13 +179,13 @@ export async function buildStaticExplorer(
     for (const node of graph.nodes) {
         liveDocPaths.set(node.id, node.docPath);
     }
-    const { bundledMarkdown, bundledMarkdownTree } = await scanAndBundleMarkdown(
+    const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = await scanAndBundleMarkdown({
         docs,
         workspaceRoot,
         liveDocPaths,
-        2, // maxDepth
+        maxDepth: 2,
         logger
-    );
+    });
 
     // Build the main static data
     const staticData: StaticExplorerData = {
@@ -197,6 +197,7 @@ export async function buildStaticExplorer(
         docs,
         bundledMarkdown: Object.keys(bundledMarkdown).length > 0 ? bundledMarkdown : undefined,
         bundledMarkdownTree: Object.keys(bundledMarkdown).length > 0 ? bundledMarkdownTree : undefined,
+        relatedDocLinks: relatedDocLinks.length > 0 ? relatedDocLinks : undefined,
         viewerConfig: buildOptions.viewerConfig as StaticExplorerData["viewerConfig"]
     };
 
@@ -430,201 +431,4 @@ function buildStaticViewerHtml(serverTemplate: string): string {
     );
 
     return modified;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Bundled Markdown Scanning
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Regex to match markdown links: [text](path)
- * Captures the path portion, filtering for .md files.
- */
-const MARKDOWN_LINK_REGEX = /\[([^\]]*)\]\(([^)]+\.md(?:#[^)]*)?)\)/gi;
-
-/**
- * Scan markdown content for links to other markdown files.
- * Returns workspace-relative paths (without anchors).
- */
-function extractMarkdownLinks(content: string, docPath: string, workspaceRoot: string): string[] {
-    const links: string[] = [];
-    let match: RegExpExecArray | null;
-
-    while ((match = MARKDOWN_LINK_REGEX.exec(content)) !== null) {
-        const rawPath = match[2];
-        // Remove anchor fragments
-        const pathWithoutAnchor = rawPath.split("#")[0];
-
-        // Skip external URLs
-        if (pathWithoutAnchor.startsWith("http://") || pathWithoutAnchor.startsWith("https://")) {
-            continue;
-        }
-
-        // Resolve relative path from the doc's location
-        const docDir = path.dirname(path.join(workspaceRoot, docPath));
-        const absolutePath = path.resolve(docDir, pathWithoutAnchor);
-
-        // Convert back to workspace-relative
-        const relativePath = path.relative(workspaceRoot, absolutePath);
-
-        // Normalize to forward slashes
-        const normalizedPath = relativePath.replace(/\\/g, "/");
-
-        // Skip paths that escape the workspace
-        if (normalizedPath.startsWith("..")) {
-            continue;
-        }
-
-        links.push(normalizedPath);
-    }
-
-    return links;
-}
-
-/**
- * Categorize a markdown file path.
- * Currently returns 'markdown' for all files - no special categorization.
- */
-function categorizeMarkdownPath(_filePath: string): BundledMarkdownTreeNode["category"] {
-    return "markdown";
-}
-
-/**
- * Build a directory tree from a flat list of file paths.
- */
-function buildMarkdownTree(filePaths: string[]): BundledMarkdownTreeNode {
-    const root: BundledMarkdownTreeNode = {
-        name: "Bundled Docs",
-        path: "",
-        type: "folder",
-        children: []
-    };
-
-    for (const filePath of filePaths) {
-        const parts = filePath.split("/");
-        let current = root;
-
-        // Navigate/create folder structure
-        for (let i = 0; i < parts.length - 1; i++) {
-            const part = parts[i];
-            let child = current.children?.find(c => c.name === part && c.type === "folder");
-            if (!child) {
-                child = {
-                    name: part,
-                    path: parts.slice(0, i + 1).join("/"),
-                    type: "folder",
-                    children: []
-                };
-                current.children = current.children || [];
-                current.children.push(child);
-            }
-            current = child;
-        }
-
-        // Add the file
-        const fileName = parts[parts.length - 1];
-        current.children = current.children || [];
-        current.children.push({
-            name: fileName,
-            path: filePath,
-            type: "file",
-            category: categorizeMarkdownPath(filePath)
-        });
-    }
-
-    // Sort children: folders first, then alphabetically
-    const sortChildren = (node: BundledMarkdownTreeNode): void => {
-        if (node.children) {
-            node.children.sort((a, b) => {
-                if (a.type !== b.type) {
-                    return a.type === "folder" ? -1 : 1;
-                }
-                return a.name.localeCompare(b.name);
-            });
-            node.children.forEach(sortChildren);
-        }
-    };
-    sortChildren(root);
-
-    return root;
-}
-
-/**
- * Scan Live Docs for markdown links and bundle the referenced files.
- * Uses breadth-first traversal with depth limit to avoid infinite recursion.
- */
-async function scanAndBundleMarkdown(
-    docs: Record<string, string>,
-    workspaceRoot: string,
-    liveDocPaths: Map<string, string>, // nodeId -> docPath
-    maxDepth: number = 2,
-    logger: Pick<Console, "log" | "error"> = console
-): Promise<{ bundledMarkdown: Record<string, string>; bundledMarkdownTree: BundledMarkdownTreeNode }> {
-    const bundledMarkdown: Record<string, string> = {};
-    const visited = new Set<string>();
-    const queue: Array<{ path: string; depth: number }> = [];
-
-    // Seed the queue with links from Live Docs
-    for (const [nodeId, content] of Object.entries(docs)) {
-        const docPath = liveDocPaths.get(nodeId);
-        if (!docPath) continue;
-
-        const links = extractMarkdownLinks(content, docPath, workspaceRoot);
-        for (const link of links) {
-            if (!visited.has(link)) {
-                visited.add(link);
-                queue.push({ path: link, depth: 0 });
-            }
-        }
-    }
-
-    logger.log(`Found ${queue.length} unique markdown links in Live Docs`);
-
-    // Process the queue
-    let processedCount = 0;
-    while (queue.length > 0) {
-        const item = queue.shift()!;
-
-        // Skip if it's a Live Doc (already in docs)
-        // Normalize path for comparison
-        const normalizedItemPath = item.path.replace(/\\/g, "/");
-        let isLiveDoc = false;
-        for (const docPath of liveDocPaths.values()) {
-            if (docPath.replace(/\\/g, "/") === normalizedItemPath) {
-                isLiveDoc = true;
-                break;
-            }
-        }
-        if (isLiveDoc) {
-            continue;
-        }
-
-        try {
-            const absolutePath = path.join(workspaceRoot, item.path);
-            const content = await fs.readFile(absolutePath, "utf-8");
-            bundledMarkdown[item.path] = content;
-            processedCount++;
-
-            // Scan for nested links if within depth limit
-            if (item.depth < maxDepth) {
-                const nestedLinks = extractMarkdownLinks(content, item.path, workspaceRoot);
-                for (const link of nestedLinks) {
-                    if (!visited.has(link)) {
-                        visited.add(link);
-                        queue.push({ path: link, depth: item.depth + 1 });
-                    }
-                }
-            }
-        } catch {
-            // File doesn't exist or can't be read - skip silently
-        }
-    }
-
-    logger.log(`Bundled ${processedCount} referenced markdown files`);
-
-    // Build the directory tree
-    const allPaths = Object.keys(bundledMarkdown);
-    const bundledMarkdownTree = buildMarkdownTree(allPaths);
-
-    return { bundledMarkdown, bundledMarkdownTree };
 }

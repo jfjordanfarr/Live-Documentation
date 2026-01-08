@@ -24,4 +24,11 @@ export function setActiveView(view: ViewName): void {
       container.classList.remove("active");
     }
   });
+
+  // Toggle force-graph-active class on body for Force Graph-only UI elements
+  if (view === "graph") {
+    document.body.classList.add("force-graph-active");
+  } else {
+    document.body.classList.remove("force-graph-active");
+  }
 }

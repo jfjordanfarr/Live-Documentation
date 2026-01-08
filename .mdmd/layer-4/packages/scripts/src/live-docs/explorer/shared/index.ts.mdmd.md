@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-index-ts
-- Generated At: 2026-01-08T03:26:19.707Z
+- Generated At: 2026-01-08T19:09:21.673Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Barrel export for the Explorer shared module. Re-exports types, Local Map builde
 - Shared by server (HTTP endpoints) and client (browser rendering)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T03:26:19.707Z","inputHash":"6d4754b7693dc97a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.673Z","inputHash":"6d4754b7693dc97a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -117,6 +117,9 @@ _No public symbols detected_
 
 #### `normalizeSymbolIdentifier` {#symbol-normalizesymbolidentifier}
 - Re-exported from [`localMapData`](./localMapData.ts.mdmd.md#symbol-normalizesymbolidentifier)
+
+#### `RelatedDocLink` {#symbol-relateddoclink}
+- Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-relateddoclink)
 
 #### `STATIC_EXPLORER_SCHEMA_VERSION` {#symbol-static_explorer_schema_version}
 - Re-exported from [`staticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_schema_version)

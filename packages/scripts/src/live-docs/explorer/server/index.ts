@@ -438,7 +438,8 @@ async function handleBundledDocs(
             logger.error("Failed to scan bundled markdown", error);
             context.bundledDocs = {
                 bundledMarkdown: {},
-                bundledMarkdownTree: { name: "Related Documentation", path: "", type: "folder", children: [] }
+                bundledMarkdownTree: { name: "Related Documentation", path: "", type: "folder", children: [] },
+                relatedDocLinks: []
             };
         }
     }
@@ -460,12 +461,13 @@ async function handleBundledDocs(
         return;
     }
 
-    // Return the full bundle metadata (tree + paths, without full content for initial load)
+    // Return the full bundle metadata (tree + paths + relatedDocLinks, without full content for initial load)
     const prettyPrint = url.searchParams.get("pretty") === "1";
     const response = {
         tree: context.bundledDocs.bundledMarkdownTree,
         paths: Object.keys(context.bundledDocs.bundledMarkdown),
-        count: Object.keys(context.bundledDocs.bundledMarkdown).length
+        count: Object.keys(context.bundledDocs.bundledMarkdown).length,
+        relatedDocLinks: context.bundledDocs.relatedDocLinks
     };
 
     res.writeHead(200, {

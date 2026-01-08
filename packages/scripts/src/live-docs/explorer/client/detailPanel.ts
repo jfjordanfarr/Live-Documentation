@@ -117,6 +117,16 @@ export function createDetailPanel(
   async function showNode(node: ExplorerNodePayload): Promise<void> {
     setLoading(node);
 
+    // Show Circuit Board and Local Map buttons (these are graph nodes)
+    const circuitBoardBtn = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
+    const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
+    if (circuitBoardBtn) {
+      circuitBoardBtn.style.display = "";
+    }
+    if (localViewBtn) {
+      localViewBtn.style.display = "";
+    }
+
     try {
       if (isStaticMode && staticDocs) {
         // Static mode: use embedded markdown
@@ -214,6 +224,16 @@ export function createDetailPanel(
     // Extract filename from path for title
     const fileName = docPath.split("/").pop() ?? docPath;
     title.textContent = `📄 ${fileName}`;
+    
+    // Hide Circuit Board and Local Map buttons (bundled docs aren't graph nodes)
+    const circuitBoardBtn = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
+    const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
+    if (circuitBoardBtn) {
+      circuitBoardBtn.style.display = "none";
+    }
+    if (localViewBtn) {
+      localViewBtn.style.display = "none";
+    }
     
     // Create link handler for bundled doc content
     const linkHandler = createBundledDocLinkHandler(docPath);
