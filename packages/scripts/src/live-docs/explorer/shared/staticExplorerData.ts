@@ -311,8 +311,8 @@ export interface BundledMarkdownTreeNode {
     /** Whether this is a folder or file. */
     type: "folder" | "file";
 
-    /** Category for grouping (liveDocs, mdmd, chatHistory, other). */
-    category?: "liveDocs" | "mdmd" | "chatHistory" | "readme" | "other";
+    /** Category for grouping (currently just 'markdown' for all files). */
+    category?: "markdown";
 
     /** Children for folder nodes. */
     children?: BundledMarkdownTreeNode[];

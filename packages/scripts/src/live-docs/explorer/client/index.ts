@@ -4,7 +4,7 @@ import { requireElement, setActiveView } from "./dom";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { initOmnisearch } from "./panels/omnisearch";
-import { renderSourcesView } from "./panels/sources-view";
+import { renderSourcesView, type BundledDocsData } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
 import { parseExplorerGraphPayload } from "./parsers";
 import {
@@ -22,7 +22,7 @@ import {
 import type { ExplorerState, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createLocalView } from "./views/localView";
-import type { StaticExplorerViewerConfig } from "../shared/staticExplorerData";
+import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode } from "../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkPayload,
@@ -87,6 +87,7 @@ interface StaticBundle {
   graph?: unknown;
   docs?: Record<string, string>;
   bundledMarkdown?: Record<string, string>;
+  bundledMarkdownTree?: BundledMarkdownTreeNode;
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -97,6 +98,7 @@ interface LoadedExplorerData {
   graphData: ExplorerGraphPayload;
   staticDocs?: Record<string, string>;
   bundledMarkdown?: Record<string, string>;
+  bundledMarkdownTree?: BundledMarkdownTreeNode;
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -111,8 +113,8 @@ interface LoadedExplorerData {
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const { graphData, staticDocs, bundledMarkdown, viewerConfig } = await loadExplorerData();
-    startExplorer(graphData, staticDocs, bundledMarkdown, viewerConfig);
+    const { graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, viewerConfig } = await loadExplorerData();
+    startExplorer(graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, viewerConfig);
   } catch (error) {
     reportFatalExplorerError(error);
   }
@@ -129,6 +131,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
         graphData: parseExplorerGraphPayload(staticData.graph),
         staticDocs: staticData.docs,
         bundledMarkdown: staticData.bundledMarkdown,
+        bundledMarkdownTree: staticData.bundledMarkdownTree,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -150,6 +153,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
         graphData: parseExplorerGraphPayload(staticData.graph),
         staticDocs: staticData.docs,
         bundledMarkdown: staticData.bundledMarkdown,
+        bundledMarkdownTree: staticData.bundledMarkdownTree,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -167,6 +171,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
           graphData: parseExplorerGraphPayload(staticData.graph),
           staticDocs: staticData.docs,
           bundledMarkdown: staticData.bundledMarkdown,
+          bundledMarkdownTree: staticData.bundledMarkdownTree,
           viewerConfig: staticData.viewerConfig
         };
       }
@@ -189,6 +194,7 @@ function startExplorer(
   graphData: ExplorerGraphPayload,
   staticDocs?: Record<string, string>,
   bundledMarkdown?: Record<string, string>,
+  bundledMarkdownTree?: BundledMarkdownTreeNode,
   viewerConfig?: StaticExplorerViewerConfig
 ): void {
   console.log("Live Docs Explorer graph loaded", graphData);
@@ -202,8 +208,96 @@ function startExplorer(
   if (bundledMarkdown) {
     console.log(`Bundled markdown: ${Object.keys(bundledMarkdown).length} referenced files`);
   }
+  if (bundledMarkdownTree) {
+    console.log("Bundled markdown tree loaded");
+  }
   if (viewerConfig) {
     console.log("Viewer config loaded:", viewerConfig);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Server Mode Bundled Docs (lazy-loaded from /bundled-docs endpoint)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  type ServerBundledDocsState = {
+    loaded: boolean;
+    loading: boolean;
+    tree?: BundledMarkdownTreeNode;
+    paths?: string[];
+    count?: number;
+    error?: string;
+  };
+
+  const serverBundledDocs: ServerBundledDocsState = {
+    loaded: isStaticMode, // Static mode already has embedded data
+    loading: false
+  };
+
+  /**
+   * Load bundled docs tree from server endpoint (server mode only).
+   * Returns the tree if already loaded, or fetches it lazily.
+   */
+  async function loadServerBundledDocs(): Promise<BundledDocsData | undefined> {
+    if (isStaticMode && bundledMarkdownTree) {
+      // Static mode: build from embedded data
+      return {
+        tree: bundledMarkdownTree,
+        count: bundledMarkdown ? Object.keys(bundledMarkdown).length : 0
+      };
+    }
+    
+    if (serverBundledDocs.loaded) {
+      if (serverBundledDocs.tree) {
+        return { tree: serverBundledDocs.tree, count: serverBundledDocs.count ?? 0 };
+      }
+      return undefined;
+    }
+    
+    if (serverBundledDocs.loading) {
+      // Wait for in-flight request
+      await new Promise(resolve => setTimeout(resolve, 100));
+      return loadServerBundledDocs();
+    }
+    
+    serverBundledDocs.loading = true;
+    try {
+      const response = await fetch("/bundled-docs");
+      if (!response.ok) {
+        throw new Error(`Failed to load bundled docs (${response.status})`);
+      }
+      const data = await response.json() as { tree: BundledMarkdownTreeNode; paths: string[]; count: number };
+      serverBundledDocs.tree = data.tree;
+      serverBundledDocs.paths = data.paths;
+      serverBundledDocs.count = data.count;
+      serverBundledDocs.loaded = true;
+      serverBundledDocs.loading = false;
+      return { tree: data.tree, count: data.count };
+    } catch (error) {
+      serverBundledDocs.error = error instanceof Error ? error.message : "Unknown error";
+      serverBundledDocs.loaded = true;
+      serverBundledDocs.loading = false;
+      console.error("Failed to load bundled docs:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Fetch a specific bundled doc content from server (server mode only).
+   */
+  async function fetchBundledDocContent(docPath: string): Promise<string | undefined> {
+    if (isStaticMode && bundledMarkdown) {
+      return bundledMarkdown[docPath];
+    }
+    
+    try {
+      const response = await fetch(`/bundled-docs?path=${encodeURIComponent(docPath)}`);
+      if (!response.ok) {
+        return undefined;
+      }
+      return await response.text();
+    } catch {
+      return undefined;
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -560,7 +654,12 @@ function startExplorer(
 
   const detailPanel = createDetailPanel(nodesById, {
     staticDocs,
+    bundledMarkdown,
     onNodeClick: handleDocNodeClick,
+    onBundledDocClick: (docPath: string) => {
+      // Show the bundled doc in the detail panel
+      void showBundledDocInDetailPanel(docPath);
+    },
     onOpenInCircuitBoard: openInCircuitBoardView
   });
 
@@ -1104,7 +1203,7 @@ function startExplorer(
 
   function renderCurrentView(): void {
     if (state.view === "sources") {
-      doRenderSourcesView();
+      void doRenderSourcesView();
       return;
     }
     if (graphData.nodes.length === 0) {
@@ -1119,9 +1218,12 @@ function startExplorer(
     }
   }
 
-  function doRenderSourcesView(): void {
+  async function doRenderSourcesView(): Promise<void> {
     // Bulk download is always available: static mode has embedded docs, server mode can fetch
     const canBulkDownload = true;
+    
+    // Load bundled docs (lazy for server mode)
+    const bundledDocsData = await loadServerBundledDocs();
     
     renderSourcesView({
       graphData,
@@ -1129,6 +1231,7 @@ function startExplorer(
       staticDocs: staticDocs ? new Map(Object.entries(staticDocs)) : undefined,
       resolveLinkEndpoint,
       nodesById,
+      bundledDocs: bundledDocsData,
       onNavigateToNode: (nodeId: string) => {
         const node = nodesById.get(nodeId);
         if (node) {
@@ -1139,8 +1242,20 @@ function startExplorer(
           void selectNode(node);
         }
       },
+      onViewBundledDoc: (docPath: string) => {
+        void showBundledDocInDetailPanel(docPath);
+      },
       onDownloadAll: canBulkDownload ? () => void downloadAllDocs() : undefined
     });
+  }
+
+  async function showBundledDocInDetailPanel(docPath: string): Promise<void> {
+    const content = await fetchBundledDocContent(docPath);
+    if (content) {
+      detailPanel.showBundledDoc(docPath, content);
+    } else {
+      console.error(`Failed to load bundled doc: ${docPath}`);
+    }
   }
 
   async function downloadAllDocs(): Promise<void> {
@@ -1174,12 +1289,32 @@ function startExplorer(
         }
       }
 
-      // Then, include bundled markdown (referenced docs like READMEs, chat history, etc.)
-      const bundledMarkdownPaths = bundledMarkdown ? Object.keys(bundledMarkdown).sort() : [];
-      for (const docPath of bundledMarkdownPaths) {
-        const markdown = bundledMarkdown![docPath];
-        allDocs.push(`\n\n---\n\n<!-- BUNDLED: ${docPath} -->\n\n${markdown}`);
-        fetchedCount++;
+      // Then, include bundled markdown (referenced docs like READMEs, specs, etc.)
+      let bundledPaths: string[] = [];
+      
+      if (isStaticMode && bundledMarkdown) {
+        // Static mode: use embedded bundled markdown
+        bundledPaths = Object.keys(bundledMarkdown).sort();
+        for (const docPath of bundledPaths) {
+          const markdown = bundledMarkdown[docPath];
+          allDocs.push(`\n\n---\n\n<!-- BUNDLED: ${docPath} -->\n\n${markdown}`);
+          fetchedCount++;
+        }
+      } else if (!isStaticMode && serverBundledDocs.paths && serverBundledDocs.paths.length > 0) {
+        // Server mode: fetch bundled docs from server
+        bundledPaths = serverBundledDocs.paths.sort();
+        for (const docPath of bundledPaths) {
+          try {
+            const response = await fetch(`/bundled-docs?path=${encodeURIComponent(docPath)}`);
+            if (response.ok) {
+              const markdown = await response.text();
+              allDocs.push(`\n\n---\n\n<!-- BUNDLED: ${docPath} -->\n\n${markdown}`);
+              fetchedCount++;
+            }
+          } catch {
+            console.warn(`Failed to fetch bundled doc: ${docPath}`);
+          }
+        }
       }
       
       if (allDocs.length === 0) {
@@ -1187,8 +1322,8 @@ function startExplorer(
         return;
       }
 
-      const bundledNote = bundledMarkdownPaths.length > 0
-        ? `\n\nIncludes ${bundledMarkdownPaths.length} referenced markdown files (READMEs, chat history, specs, etc.)`
+      const bundledNote = bundledPaths.length > 0
+        ? `\n\nIncludes ${bundledPaths.length} referenced markdown files.`
         : "";
       
       const combined = `# Live Documentation Export\n\nExported ${fetchedCount} documents on ${new Date().toISOString()}${bundledNote}\n\n${allDocs.join("")}`;

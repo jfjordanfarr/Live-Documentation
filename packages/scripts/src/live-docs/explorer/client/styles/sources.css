@@ -194,3 +194,108 @@
   color: var(--text-muted);
   font-style: italic;
 }
+
+/* Bundled Docs Tree */
+.sources-panel-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.bundled-tree-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+}
+
+.bundled-tree-folder {
+  user-select: none;
+}
+
+.bundled-tree-folder-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 13px;
+  transition: background 0.15s ease;
+}
+
+.bundled-tree-folder-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bundled-tree-toggle {
+  font-size: 10px;
+  color: var(--text-muted);
+  width: 14px;
+  text-align: center;
+}
+
+.bundled-tree-icon {
+  flex-shrink: 0;
+}
+
+.bundled-tree-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bundled-tree-children {
+  /* controlled by JS display toggle */
+}
+
+.bundled-tree-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  padding-left: calc(12px + 20px); /* extra padding for toggle space */
+  cursor: pointer;
+  color: var(--text);
+  font-size: 13px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.bundled-tree-file:hover {
+  background: rgba(0, 200, 150, 0.1);
+  color: var(--accent);
+}
+
+.bundled-tree-file .bundled-tree-icon {
+  flex-shrink: 0;
+}
+
+/* Bundled Doc Path Indicator (in detail panel) */
+.bundled-doc-path-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+}
+
+.bundled-doc-path {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: "Fira Code", "Consolas", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.bundled-doc-content {
+  /* Inherits from detail-doc-content but with minor tweaks */
+}

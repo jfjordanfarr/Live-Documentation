@@ -483,23 +483,10 @@ function extractMarkdownLinks(content: string, docPath: string, workspaceRoot: s
 
 /**
  * Categorize a markdown file path.
+ * Currently returns 'markdown' for all files - no special categorization.
  */
-function categorizeMarkdownPath(filePath: string): BundledMarkdownTreeNode["category"] {
-    const lowerPath = filePath.toLowerCase();
-
-    if (lowerPath.includes(".mdmd/layer-4/") || lowerPath.includes(".live-documentation/")) {
-        return "liveDocs";
-    }
-    if (lowerPath.includes(".mdmd/")) {
-        return "mdmd";
-    }
-    if (lowerPath.includes("chathistory/") || lowerPath.includes("chat-history/")) {
-        return "chatHistory";
-    }
-    if (lowerPath.includes("readme")) {
-        return "readme";
-    }
-    return "other";
+function categorizeMarkdownPath(_filePath: string): BundledMarkdownTreeNode["category"] {
+    return "markdown";
 }
 
 /**

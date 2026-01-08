@@ -17,6 +17,7 @@ import type {
 
 export interface DetailPanelApi {
   showNode(node: ExplorerNodePayload): Promise<void>;
+  showBundledDoc(docPath: string, content: string): void;
   setLoading(node: ExplorerNodePayload): void;
   hide(): void;
   /** Download the current node's markdown file */
@@ -33,10 +34,22 @@ export interface DetailPanelOptions {
   staticDocs?: Record<string, string>;
 
   /**
+   * Embedded bundled markdown from static bundle (keyed by path).
+   * Used to check if a link target is available as a bundled doc.
+   */
+  bundledMarkdown?: Record<string, string>;
+
+  /**
    * Callback when user clicks a node link in the documentation.
    * Used for navigation within the explorer.
    */
   onNodeClick?: (nodeId: string) => void;
+
+  /**
+   * Callback when user clicks a bundled doc link (e.g., README, spec).
+   * Used to show the bundled doc in the detail panel.
+   */
+  onBundledDocClick?: (docPath: string) => void;
 
   /**
    * Callback when user clicks "Open in Circuit Board".
@@ -48,7 +61,7 @@ export function createDetailPanel(
   nodesById: Map<string, ExplorerNodePayload>,
   options: DetailPanelOptions = {}
 ): DetailPanelApi {
-  const { staticDocs, onNodeClick, onOpenInCircuitBoard } = options;
+  const { staticDocs, bundledMarkdown: _bundledMarkdown, onNodeClick, onBundledDocClick, onOpenInCircuitBoard } = options;
   const isStaticMode = staticDocs !== undefined;
 
   const panel = requireElement<HTMLDivElement>("detail-panel");
@@ -66,10 +79,13 @@ export function createDetailPanel(
 
   // Track current node for action buttons
   let currentNode: ExplorerNodePayload | null = null;
+  // Track current bundled doc (for non-graph markdown files)
+  let currentBundledDoc: { path: string; content: string } | null = null;
 
   const hide = (): void => {
     panel.classList.remove("visible");
     currentNode = null;
+    currentBundledDoc = null;
   };
 
   closeButton.addEventListener("click", hide);
@@ -95,6 +111,7 @@ export function createDetailPanel(
     title.textContent = node.name;
     body.innerHTML = '<p class="loading-indicator">Loading documentation...</p>';
     currentNode = node;
+    currentBundledDoc = null; // Clear bundled doc state when showing a graph node
   }
 
   async function showNode(node: ExplorerNodePayload): Promise<void> {
@@ -120,6 +137,8 @@ export function createDetailPanel(
       }
       // Attach delegated click handler for node-link elements
       attachNodeLinkHandlers(body, onNodeClick);
+      // Attach delegated click handler for bundled doc links
+      attachBundledDocLinkHandlers(body, onBundledDocClick);
     } catch (error) {
       console.error(error);
       body.innerHTML = '<p class="error-message">Failed to load documentation for this node.</p>';
@@ -127,6 +146,21 @@ export function createDetailPanel(
   }
 
   async function downloadCurrentDoc(): Promise<void> {
+    // Handle bundled doc download (non-graph markdown files)
+    if (currentBundledDoc) {
+      const fileName = currentBundledDoc.path.split("/").pop() ?? "document.md";
+      const blob = new Blob([currentBundledDoc.content], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      return;
+    }
+    
     if (!currentNode) return;
     
     try {
@@ -168,7 +202,39 @@ export function createDetailPanel(
     return currentNode;
   }
 
-  return { showNode, setLoading, hide, downloadCurrentDoc, getCurrentNode };
+  /**
+   * Show a bundled markdown document in the detail panel.
+   * Used for READMEs, chat history, specs, etc. linked from Live Docs.
+   */
+  function showBundledDoc(docPath: string, content: string): void {
+    panel.classList.add("visible");
+    currentNode = null; // Clear current node since this is not a graph node
+    currentBundledDoc = { path: docPath, content }; // Track for download button
+    
+    // Extract filename from path for title
+    const fileName = docPath.split("/").pop() ?? docPath;
+    title.textContent = `📄 ${fileName}`;
+    
+    // Create link handler for bundled doc content
+    const linkHandler = createBundledDocLinkHandler(docPath);
+    
+    // Render the markdown content with file path indicator
+    const renderedHtml = renderMarkdown(content, { linkHandler });
+    
+    body.innerHTML = `
+      <div class="bundled-doc-path-indicator">
+        <span class="bundled-doc-path">${escapeHtml(docPath)}</span>
+      </div>
+      <div class="detail-doc-content bundled-doc-content">
+        ${renderedHtml}
+      </div>
+    `;
+    
+    // Attach click handlers for bundled doc links within this content
+    attachBundledDocLinkHandlers(body, onBundledDocClick);
+  }
+
+  return { showNode, showBundledDoc, setLoading, hide, downloadCurrentDoc, getCurrentNode };
 }
 
 /**
@@ -285,8 +351,16 @@ function renderAuthoredContent(
       return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
     }
     
-    // Workspace file (not a Live Doc) - render as external link for now
-    // TODO: In server mode, this could open in VS Code; in static mode, use repo URL prefix
+    // Check if this is a markdown file (potential bundled doc)
+    // Strip fragment identifier for the .md check (e.g., "file.md#L100" → "file.md")
+    const hrefWithoutFragment = href.split("#")[0];
+    if (hrefWithoutFragment.endsWith(".md")) {
+      // Resolve the relative path to workspace-relative (keep fragment for display, but path resolution uses the file path)
+      const resolvedPath = resolveRelativePathToWorkspace(hrefWithoutFragment, node.docPath);
+      return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(resolvedPath)}">${text}</a>`;
+    }
+    
+    // Workspace file (not markdown) - render as external link
     return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener" class="workspace-link">${text}</a>`;
   };
 
@@ -561,6 +635,133 @@ function resolveRelativePath(
     }
   }
   return null;
+}
+
+/**
+ * Resolve a relative path from a doc to a workspace-relative path.
+ * Used for linking to bundled markdown files.
+ */
+function resolveRelativePathToWorkspace(
+  relativePath: string,
+  fromDocPath: string
+): string {
+  // Handle absolute paths (starting with /)
+  if (relativePath.startsWith("/")) {
+    return relativePath.slice(1); // Remove leading slash
+  }
+  
+  // Get the directory of the source doc (remove .mdmd.md folder prefix if present)
+  // e.g., ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md" → "packages/server/src"
+  let sourceDir = fromDocPath;
+  
+  // Remove the Live Doc filename
+  const lastSlash = sourceDir.lastIndexOf("/");
+  if (lastSlash !== -1) {
+    sourceDir = sourceDir.substring(0, lastSlash);
+  }
+  
+  // Remove .mdmd/layer-4 prefix if present (Live Docs are in this folder but link to workspace root)
+  sourceDir = sourceDir.replace(/^\.mdmd\/layer-\d+\//, "");
+  
+  // Resolve the relative path
+  const parts = sourceDir.split("/").filter(Boolean);
+  const targetParts = relativePath.split("/");
+  
+  for (const part of targetParts) {
+    if (part === "..") {
+      parts.pop();
+    } else if (part !== ".") {
+      parts.push(part);
+    }
+  }
+  
+  return parts.join("/");
+}
+
+/**
+ * Attach click handlers for bundled doc links in the detail panel.
+ */
+function attachBundledDocLinkHandlers(
+  container: HTMLElement,
+  onBundledDocClick?: (docPath: string) => void
+): void {
+  if (!onBundledDocClick) return;
+
+  // Find all bundled-doc-link elements and attach click handlers
+  const docLinks = container.querySelectorAll<HTMLAnchorElement>("a.bundled-doc-link[data-doc-path]");
+  docLinks.forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      const docPath = link.dataset.docPath;
+      if (docPath) {
+        onBundledDocClick(docPath);
+      }
+    });
+  });
+}
+
+/**
+ * Create a link handler for bundled doc content.
+ * Used when rendering markdown content from non-Live-Doc files (READMEs, chat history, etc.)
+ */
+function createBundledDocLinkHandler(
+  fromDocPath: string
+): (href: string, text: string) => string {
+  return (href: string, text: string): string => {
+    // External URLs - open in new tab
+    if (href.startsWith("http://") || href.startsWith("https://")) {
+      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
+    }
+    
+    // Check if this is a markdown file (potential bundled doc)
+    // Strip fragment identifier for the .md check (e.g., "file.md#L100" → "file.md")
+    const hrefWithoutFragment = href.split("#")[0];
+    if (hrefWithoutFragment.endsWith(".md")) {
+      // Resolve the relative path from the bundled doc's location
+      const resolvedPath = resolveRelativePathFromBundledDoc(hrefWithoutFragment, fromDocPath);
+      return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(resolvedPath)}">${text}</a>`;
+    }
+    
+    // Other workspace files - render as external link (won't work in static mode)
+    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener" class="workspace-link">${text}</a>`;
+  };
+}
+
+/**
+ * Resolve a relative path from a bundled doc to a workspace-relative path.
+ * Similar to resolveRelativePathToWorkspace but doesn't strip .mdmd/layer-4 prefix.
+ */
+function resolveRelativePathFromBundledDoc(
+  relativePath: string,
+  fromDocPath: string
+): string {
+  // Handle absolute paths (starting with /)
+  if (relativePath.startsWith("/")) {
+    return relativePath.slice(1); // Remove leading slash
+  }
+  
+  // Get the directory of the source doc
+  let sourceDir = fromDocPath;
+  const lastSlash = sourceDir.lastIndexOf("/");
+  if (lastSlash !== -1) {
+    sourceDir = sourceDir.substring(0, lastSlash);
+  } else {
+    sourceDir = "";
+  }
+  
+  // Resolve the relative path
+  const parts = sourceDir.split("/").filter(Boolean);
+  const targetParts = relativePath.split("/");
+  
+  for (const part of targetParts) {
+    if (part === "..") {
+      parts.pop();
+    } else if (part !== ".") {
+      parts.push(part);
+    }
+  }
+  
+  return parts.join("/");
 }
 
 function escapeHtml(text: string): string {

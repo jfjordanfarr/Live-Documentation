@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2026-01-06T20:05:23.194Z
+- Generated At: 2026-01-08T04:09:01.545Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,20 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.194Z","inputHash":"398b6f142d45c775"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T04:09:01.545Z","inputHash":"d79eeb00b9eeaa8a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L14)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L15)
 
 #### `ExplorerServerInstance` {#symbol-explorerserverinstance}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L22)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L23)
 
 #### `startExplorerServer` {#symbol-startexplorerserver}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L36)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L38)
 - Parameters: `options`: [`ExplorerServerOptions`](../../../index.ts.mdmd.md#symbol-explorerserveroptions)
 <!-- LIVE-DOC:END Public Symbols -->
 
@@ -42,6 +42,8 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - [`buildAssets.buildExplorerAssets`](./buildAssets.ts.mdmd.md#symbol-buildexplorerassets)
 - [`graph.buildExplorerGraph`](./graph.ts.mdmd.md#symbol-buildexplorergraph)
 - [`graph.normalizeDocPath`](./graph.ts.mdmd.md#symbol-normalizedocpath)
+- [`bundledMarkdownScanner.BundledMarkdownResult`](../shared/bundledMarkdownScanner.ts.mdmd.md#symbol-bundledmarkdownresult)
+- [`bundledMarkdownScanner.scanAndBundleMarkdown`](../shared/bundledMarkdownScanner.ts.mdmd.md#symbol-scanandbundlemarkdown)
 - [`localMapBuilder.buildLocalMapData`](../shared/localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
 - [`localMapBuilder.buildTestCoverageMap`](../shared/localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`types.ExplorerDetailPayload`](../shared/types.ts.mdmd.md#symbol-explorerdetailpayload) (type-only)

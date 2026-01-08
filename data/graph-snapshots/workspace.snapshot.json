@@ -2,8 +2,8 @@
   "generatedAt": "2025-01-01T00:00:00.000Z",
   "workspace": "D:\\Projects\\Live-Documentation",
   "totals": {
-    "artifacts": 1130,
-    "links": 1881
+    "artifacts": 1132,
+    "links": 1886
   },
   "artifacts": [
     {
@@ -2160,6 +2160,14 @@
             "context": "inline-code"
           },
           {
+            "symbol": "ViewBundledDocCallback",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BundledDocsData",
+            "context": "inline-code"
+          },
+          {
             "symbol": "SourcesViewConfig",
             "context": "inline-code"
           },
@@ -2179,6 +2187,8 @@
             "StaticDocsMap",
             "NavigateToNodeCallback",
             "DownloadAllCallback",
+            "ViewBundledDocCallback",
+            "BundledDocsData",
             "SourcesViewConfig",
             "renderSourcesView"
           ]
@@ -4104,6 +4114,61 @@
             "ExplorerServerOptions",
             "ExplorerServerInstance",
             "startExplorerServer"
+          ]
+        }
+      }
+    },
+    {
+      "id": "orchestrated-artifact-7854dfbb",
+      "uri": "file:///D:/Projects/Live-Documentation/.mdmd/layer-4/packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts.mdmd.md",
+      "layer": "implementation",
+      "language": "markdown",
+      "metadata": {
+        "symbolReferences": [
+          {
+            "symbol": "BundledMarkdownTreeNode",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "BundledMarkdownResult",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "extractMarkdownLinks",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "categorizeMarkdownPath",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "buildMarkdownTree",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "ScanBundledMarkdownOptions",
+            "context": "inline-code"
+          },
+          {
+            "symbol": "scanAndBundleMarkdown",
+            "context": "inline-code"
+          }
+        ],
+        "mdmd": {
+          "layer": "4",
+          "identifiers": [],
+          "codePaths": [
+            "packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts"
+          ],
+          "exports": [],
+          "sectionSymbols": [
+            "BundledMarkdownTreeNode",
+            "BundledMarkdownResult",
+            "extractMarkdownLinks",
+            "categorizeMarkdownPath",
+            "buildMarkdownTree",
+            "ScanBundledMarkdownOptions",
+            "scanAndBundleMarkdown"
           ]
         }
       }
@@ -22028,6 +22093,14 @@
             "kind": "type"
           },
           {
+            "name": "ViewBundledDocCallback",
+            "kind": "type"
+          },
+          {
+            "name": "BundledDocsData",
+            "kind": "interface"
+          },
+          {
             "name": "SourcesViewConfig",
             "kind": "interface"
           },
@@ -23461,6 +23534,49 @@
           },
           {
             "name": "startExplorerServer",
+            "kind": "function",
+            "isDefault": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "orchestrated-artifact-d9e812c8",
+      "uri": "file:///D:/Projects/Live-Documentation/packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts",
+      "layer": "code",
+      "language": "typescript",
+      "metadata": {
+        "exportedSymbols": [
+          {
+            "name": "BundledMarkdownTreeNode",
+            "kind": "unknown",
+            "isTypeOnly": false
+          },
+          {
+            "name": "BundledMarkdownResult",
+            "kind": "interface"
+          },
+          {
+            "name": "extractMarkdownLinks",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "categorizeMarkdownPath",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "buildMarkdownTree",
+            "kind": "function",
+            "isDefault": false
+          },
+          {
+            "name": "ScanBundledMarkdownOptions",
+            "kind": "interface"
+          },
+          {
+            "name": "scanAndBundleMarkdown",
             "kind": "function",
             "isDefault": false
           }
@@ -37915,6 +38031,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-90a09990",
+      "sourceId": "orchestrated-artifact-521602b5",
+      "targetId": "orchestrated-artifact-d9e812c8",
+      "kind": "depends_on",
+      "confidence": 0.95,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-05b59bf8",
       "sourceId": "orchestrated-artifact-521602b5",
       "targetId": "orchestrated-artifact-e4798816",
@@ -39292,6 +39417,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-57d89e7e",
+      "sourceId": "orchestrated-artifact-6c77ec75",
+      "targetId": "orchestrated-artifact-5a9956ac",
+      "kind": "documents",
+      "confidence": 0.75,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
       "id": "orchestrated-link-7ae4ab09",
       "sourceId": "orchestrated-artifact-6c77ec75",
       "targetId": "orchestrated-artifact-f68deb56",
@@ -40096,6 +40230,15 @@
       "id": "orchestrated-link-600a2fb1",
       "sourceId": "orchestrated-artifact-781273e4",
       "targetId": "orchestrated-artifact-ea0e14c5",
+      "kind": "documents",
+      "confidence": 0.9,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-bad50c94",
+      "sourceId": "orchestrated-artifact-7854dfbb",
+      "targetId": "orchestrated-artifact-d9e812c8",
       "kind": "documents",
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
@@ -45592,6 +45735,15 @@
       "createdBy": "workspace-index"
     },
     {
+      "id": "orchestrated-link-768467ea",
+      "sourceId": "orchestrated-artifact-ca8284c5",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
+    },
+    {
       "id": "orchestrated-link-b469a842",
       "sourceId": "orchestrated-artifact-ca8284c5",
       "targetId": "orchestrated-artifact-773a86cc",
@@ -46400,6 +46552,15 @@
       "confidence": 0.9,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "createdBy": "hint"
+    },
+    {
+      "id": "orchestrated-link-cc673f82",
+      "sourceId": "orchestrated-artifact-d9e812c8",
+      "targetId": "orchestrated-artifact-715c85fe",
+      "kind": "references",
+      "confidence": 0.85,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "createdBy": "workspace-index"
     },
     {
       "id": "orchestrated-link-4676f6cb",
@@ -49250,9 +49411,9 @@
     {
       "id": "workspace-index",
       "label": "Workspace Implementation Index",
-      "seedCount": 1182,
-      "hintCount": 747,
-      "evidenceCount": 814
+      "seedCount": 1184,
+      "hintCount": 749,
+      "evidenceCount": 817
     },
     {
       "id": "relationship-rules",

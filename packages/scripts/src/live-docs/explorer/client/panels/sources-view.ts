@@ -5,6 +5,7 @@
  * data provenance, and health warnings (high fan-out/fan-in nodes).
  */
 
+import type { BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkPayload,
@@ -22,6 +23,15 @@ export type NavigateToNodeCallback = (nodeId: string) => void;
 /** Callback for bulk download */
 export type DownloadAllCallback = () => void;
 
+/** Callback for viewing a bundled doc in the detail panel */
+export type ViewBundledDocCallback = (docPath: string) => void;
+
+/** Bundled docs tree data */
+export interface BundledDocsData {
+  tree: BundledMarkdownTreeNode;
+  count: number;
+}
+
 /** Sources view configuration */
 export interface SourcesViewConfig {
   graphData: ExplorerGraphPayload;
@@ -31,6 +41,8 @@ export interface SourcesViewConfig {
   nodesById: Map<string, ExplorerNodePayload>;
   onNavigateToNode: NavigateToNodeCallback;
   onDownloadAll?: DownloadAllCallback;
+  bundledDocs?: BundledDocsData;
+  onViewBundledDoc?: ViewBundledDocCallback;
 }
 
 /** Thresholds for health warnings */
@@ -91,10 +103,77 @@ function renderHealthWarnings(
 }
 
 /**
+ * Render a bundled docs tree node recursively.
+ */
+function renderBundledTreeNode(node: BundledMarkdownTreeNode, depth: number = 0): string {
+  const indent = depth * 16;
+  
+  if (node.type === "folder") {
+    const hasChildren = node.children && node.children.length > 0;
+    const childrenHtml = hasChildren
+      ? node.children!.map(child => renderBundledTreeNode(child, depth + 1)).join("")
+      : "";
+    
+    return `
+      <div class="bundled-tree-folder" style="padding-left: ${indent}px;">
+        <div class="bundled-tree-folder-header" data-expanded="false">
+          <span class="bundled-tree-toggle">▶</span>
+          <span class="bundled-tree-icon">📁</span>
+          <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
+        </div>
+        <div class="bundled-tree-children" style="display: none;">
+          ${childrenHtml}
+        </div>
+      </div>
+    `;
+  }
+  
+  // File node - use simple file icon for all markdown files
+  return `
+    <div class="bundled-tree-file" style="padding-left: ${indent}px;" data-doc-path="${escapeHtml(node.path)}">
+      <span class="bundled-tree-icon">📄</span>
+      <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
+    </div>
+  `;
+}
+
+/**
+ * Render the bundled docs tree panel.
+ */
+function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): string {
+  if (!bundledDocs || bundledDocs.count === 0) {
+    return `
+      <div class="sources-panel">
+        <h2><span class="panel-icon">📚</span> Related Documentation</h2>
+        <div class="sources-empty">No referenced markdown files found. Live Docs may not contain links to READMEs, specs, or other documentation.</div>
+      </div>
+    `;
+  }
+
+  const tree = bundledDocs.tree;
+  const childrenHtml = tree.children
+    ? tree.children.map(child => renderBundledTreeNode(child, 0)).join("")
+    : "";
+
+  return `
+    <div class="sources-panel">
+      <h2><span class="panel-icon">📚</span> Related Documentation</h2>
+      <p class="sources-panel-desc">
+        ${bundledDocs.count} markdown files referenced from Live Docs (READMEs, chat history, specs, etc.).
+        Click any file to view it in the detail panel.
+      </p>
+      <div class="bundled-tree-container">
+        ${childrenHtml}
+      </div>
+    </div>
+  `;
+}
+
+/**
  * Render the Sources view panel showing graph statistics and health information.
  */
 export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownloadAll } = config;
+  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownloadAll, bundledDocs, onViewBundledDoc } = config;
 
   const container = requireElement<HTMLDivElement>("sources-container");
 
@@ -183,6 +262,8 @@ export function renderSourcesView(config: SourcesViewConfig): void {
       ${renderHealthWarnings(highFanoutNodes, highFaninNodes, outboundCounts, inboundCounts)}
     </div>
 
+    ${renderBundledDocsPanel(bundledDocs)}
+
     <div class="sources-panel">
       <h2><span class="panel-icon">💡</span> How to Improve</h2>
       <div class="sources-guidance">
@@ -235,5 +316,37 @@ export function renderSourcesView(config: SourcesViewConfig): void {
         onDownloadAll();
       });
     }
+  }
+
+  // Attach click handlers for bundled tree folders (expand/collapse)
+  container.querySelectorAll<HTMLElement>(".bundled-tree-folder-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const folder = header.parentElement;
+      if (!folder) return;
+      
+      const isExpanded = header.dataset.expanded === "true";
+      const toggle = header.querySelector<HTMLSpanElement>(".bundled-tree-toggle");
+      const childrenContainer = folder.querySelector<HTMLDivElement>(".bundled-tree-children");
+      
+      if (toggle) {
+        toggle.textContent = isExpanded ? "▶" : "▼";
+      }
+      if (childrenContainer) {
+        childrenContainer.style.display = isExpanded ? "none" : "block";
+      }
+      header.dataset.expanded = isExpanded ? "false" : "true";
+    });
+  });
+
+  // Attach click handlers for bundled tree files (view doc)
+  if (onViewBundledDoc) {
+    container.querySelectorAll<HTMLElement>(".bundled-tree-file").forEach(fileEl => {
+      fileEl.addEventListener("click", () => {
+        const docPath = fileEl.dataset.docPath;
+        if (docPath) {
+          onViewBundledDoc(docPath);
+        }
+      });
+    });
   }
 }

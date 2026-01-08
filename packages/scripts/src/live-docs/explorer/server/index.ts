@@ -8,6 +8,7 @@ import type { LiveDocumentationConfig } from "@live-documentation/shared/config/
 
 import { buildExplorerAssets } from "./buildAssets";
 import { buildExplorerGraph, normalizeDocPath } from "./graph";
+import { scanAndBundleMarkdown, type BundledMarkdownResult } from "../shared/bundledMarkdownScanner";
 import { buildLocalMapData, buildTestCoverageMap } from "../shared/localMapBuilder";
 import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
@@ -31,6 +32,7 @@ interface InternalContext {
     nodesByDocPath: Map<string, ExplorerNodePayload>;
     testCoverage: Map<string, string[]>;
     resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
+    bundledDocs: BundledMarkdownResult | null;
 }
 
 export async function startExplorerServer(options: ExplorerServerOptions): Promise<ExplorerServerInstance> {
@@ -58,7 +60,8 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
         graph: initialGraph,
         nodesByDocPath: new Map(),
         testCoverage: buildTestCoverageMap(initialGraph, resolveLinkEndpoint),
-        resolveLinkEndpoint
+        resolveLinkEndpoint,
+        bundledDocs: null
     };
     refreshNodeLookup(context, workspaceRoot);
 
@@ -109,6 +112,11 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
 
             if (requestUrl.pathname === "/local-map") {
                 await handleLocalMap(requestUrl, context, res);
+                return;
+            }
+
+            if (requestUrl.pathname === "/bundled-docs") {
+                await handleBundledDocs(requestUrl, workspaceRoot, context, res, logger);
                 return;
             }
 
@@ -387,6 +395,84 @@ function refreshNodeLookup(context: InternalContext, workspaceRoot: string): voi
     for (const node of context.graph.nodes) {
         context.nodesByDocPath.set(normalizeDocPath(workspaceRoot, node.docPath), node);
     }
+}
+
+/**
+ * Handle request for bundled markdown documentation.
+ * Lazily scans Live Docs for referenced markdown files on first request.
+ */
+async function handleBundledDocs(
+    url: URL,
+    workspaceRoot: string,
+    context: InternalContext,
+    res: ServerResponse,
+    logger: Pick<Console, "log" | "error">
+): Promise<void> {
+    // Lazy-load bundled docs on first request
+    if (!context.bundledDocs) {
+        try {
+            // Read all Live Docs content
+            const docs: Record<string, string> = {};
+            const liveDocPaths = new Map<string, string>();
+
+            for (const node of context.graph.nodes) {
+                try {
+                    const content = await fs.readFile(node.docPath, "utf-8");
+                    docs[node.id] = content;
+                    // Store the workspace-relative path
+                    const relativePath = path.relative(workspaceRoot, node.docPath).replace(/\\/g, "/");
+                    liveDocPaths.set(node.id, relativePath);
+                } catch {
+                    // Skip unreadable files
+                }
+            }
+
+            context.bundledDocs = await scanAndBundleMarkdown({
+                docs,
+                workspaceRoot,
+                liveDocPaths,
+                maxDepth: 2,
+                logger
+            });
+        } catch (error) {
+            logger.error("Failed to scan bundled markdown", error);
+            context.bundledDocs = {
+                bundledMarkdown: {},
+                bundledMarkdownTree: { name: "Related Documentation", path: "", type: "folder", children: [] }
+            };
+        }
+    }
+
+    // Check if requesting a specific doc
+    const docPath = url.searchParams.get("path");
+    if (docPath) {
+        const content = context.bundledDocs.bundledMarkdown[docPath];
+        if (content) {
+            res.writeHead(200, {
+                "Content-Type": "text/markdown; charset=utf-8",
+                "Cache-Control": "no-store"
+            });
+            res.end(content);
+        } else {
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.end("Bundled document not found");
+        }
+        return;
+    }
+
+    // Return the full bundle metadata (tree + paths, without full content for initial load)
+    const prettyPrint = url.searchParams.get("pretty") === "1";
+    const response = {
+        tree: context.bundledDocs.bundledMarkdownTree,
+        paths: Object.keys(context.bundledDocs.bundledMarkdown),
+        count: Object.keys(context.bundledDocs.bundledMarkdown).length
+    };
+
+    res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store"
+    });
+    res.end(prettyPrint ? JSON.stringify(response, null, 2) : JSON.stringify(response));
 }
 
 function getMimeType(filePath: string): string {
