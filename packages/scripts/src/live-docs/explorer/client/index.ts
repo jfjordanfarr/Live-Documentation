@@ -86,6 +86,7 @@ void bootstrapExplorer();
 interface StaticBundle {
   graph?: unknown;
   docs?: Record<string, string>;
+  bundledMarkdown?: Record<string, string>;
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -95,6 +96,7 @@ interface StaticBundle {
 interface LoadedExplorerData {
   graphData: ExplorerGraphPayload;
   staticDocs?: Record<string, string>;
+  bundledMarkdown?: Record<string, string>;
   viewerConfig?: StaticExplorerViewerConfig;
 }
 
@@ -109,8 +111,8 @@ interface LoadedExplorerData {
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const { graphData, staticDocs, viewerConfig } = await loadExplorerData();
-    startExplorer(graphData, staticDocs, viewerConfig);
+    const { graphData, staticDocs, bundledMarkdown, viewerConfig } = await loadExplorerData();
+    startExplorer(graphData, staticDocs, bundledMarkdown, viewerConfig);
   } catch (error) {
     reportFatalExplorerError(error);
   }
@@ -126,6 +128,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
       return {
         graphData: parseExplorerGraphPayload(staticData.graph),
         staticDocs: staticData.docs,
+        bundledMarkdown: staticData.bundledMarkdown,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -146,6 +149,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
       return {
         graphData: parseExplorerGraphPayload(staticData.graph),
         staticDocs: staticData.docs,
+        bundledMarkdown: staticData.bundledMarkdown,
         viewerConfig: staticData.viewerConfig
       };
     }
@@ -162,6 +166,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
         return {
           graphData: parseExplorerGraphPayload(staticData.graph),
           staticDocs: staticData.docs,
+          bundledMarkdown: staticData.bundledMarkdown,
           viewerConfig: staticData.viewerConfig
         };
       }
@@ -183,6 +188,7 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
 function startExplorer(
   graphData: ExplorerGraphPayload,
   staticDocs?: Record<string, string>,
+  bundledMarkdown?: Record<string, string>,
   viewerConfig?: StaticExplorerViewerConfig
 ): void {
   console.log("Live Docs Explorer graph loaded", graphData);
@@ -192,6 +198,9 @@ function startExplorer(
   
   if (staticDocs) {
     console.log(`Static mode: ${Object.keys(staticDocs).length} docs embedded`);
+  }
+  if (bundledMarkdown) {
+    console.log(`Bundled markdown: ${Object.keys(bundledMarkdown).length} referenced files`);
   }
   if (viewerConfig) {
     console.log("Viewer config loaded:", viewerConfig);
@@ -1139,6 +1148,7 @@ function startExplorer(
       const allDocs: string[] = [];
       let fetchedCount = 0;
       
+      // First, collect all Live Docs
       for (const node of graphData.nodes) {
         let markdown: string | undefined;
         
@@ -1163,13 +1173,25 @@ function startExplorer(
           fetchedCount++;
         }
       }
+
+      // Then, include bundled markdown (referenced docs like READMEs, chat history, etc.)
+      const bundledMarkdownPaths = bundledMarkdown ? Object.keys(bundledMarkdown).sort() : [];
+      for (const docPath of bundledMarkdownPaths) {
+        const markdown = bundledMarkdown![docPath];
+        allDocs.push(`\n\n---\n\n<!-- BUNDLED: ${docPath} -->\n\n${markdown}`);
+        fetchedCount++;
+      }
       
       if (allDocs.length === 0) {
         alert("No documentation content available to download.");
         return;
       }
+
+      const bundledNote = bundledMarkdownPaths.length > 0
+        ? `\n\nIncludes ${bundledMarkdownPaths.length} referenced markdown files (READMEs, chat history, specs, etc.)`
+        : "";
       
-      const combined = `# Live Documentation Export\n\nExported ${fetchedCount} documents on ${new Date().toISOString()}\n\n${allDocs.join("")}`;
+      const combined = `# Live Documentation Export\n\nExported ${fetchedCount} documents on ${new Date().toISOString()}${bundledNote}\n\n${allDocs.join("")}`;
       
       const blob = new Blob([combined], { type: "text/markdown; charset=utf-8" });
       const url = URL.createObjectURL(blob);

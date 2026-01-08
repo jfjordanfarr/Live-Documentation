@@ -275,6 +275,47 @@ export interface StaticExplorerData {
      * Omit for small workspaces; include for large graphs.
      */
     treemapLayout?: StaticExplorerTreemapLayout;
+
+    /**
+     * Bundled markdown files referenced from Live Docs.
+     * Key is the workspace-relative path, value is the markdown content.
+     * 
+     * @remarks
+     * This enables static bundles to include brownfield documentation
+     * (READMEs, chat history summaries, MDMD specs) that are linked from
+     * Live Docs but are not themselves source code artifacts.
+     */
+    bundledMarkdown?: Record<string, string>;
+
+    /**
+     * Directory tree structure for bundled markdown files.
+     * Enables rendering a navigable tree in the Knowledge Sources view.
+     */
+    bundledMarkdownTree?: BundledMarkdownTreeNode;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Bundled Markdown Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * A node in the bundled markdown directory tree.
+ */
+export interface BundledMarkdownTreeNode {
+    /** Display name (folder or file name). */
+    name: string;
+
+    /** Workspace-relative path. */
+    path: string;
+
+    /** Whether this is a folder or file. */
+    type: "folder" | "file";
+
+    /** Category for grouping (liveDocs, mdmd, chatHistory, other). */
+    category?: "liveDocs" | "mdmd" | "chatHistory" | "readme" | "other";
+
+    /** Children for folder nodes. */
+    children?: BundledMarkdownTreeNode[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

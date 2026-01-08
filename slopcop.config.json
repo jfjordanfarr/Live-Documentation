@@ -1,7 +1,8 @@
 {
   "ignoreGlobs": [
     "AI-Agent-Workspace/ChatHistory/**",
-    "AI-Agent-Workspace/tmp/**"
+    "AI-Agent-Workspace/tmp/**",
+    ".playwright-mcp/**"
   ],
   "markdown": {
     "includeGlobs": [
@@ -10,7 +11,8 @@
       ".live-documentation/**/*.md"
     ],
     "ignoreGlobs": [
-      "AI-Agent-Workspace/tmp/**"
+      "AI-Agent-Workspace/tmp/**",
+      ".playwright-mcp/**"
     ],
     "ignoreTargets": [
       "packages/shared/src/tooling/__fixtures__/documentation-links/sample-tool.mdmd.md"

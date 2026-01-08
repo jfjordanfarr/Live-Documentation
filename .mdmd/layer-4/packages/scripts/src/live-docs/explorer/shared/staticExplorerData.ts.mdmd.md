@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2025-12-19T04:50:47.475Z
+- Generated At: 2026-01-08T03:26:19.721Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ The viewer supports three loading modes:
 3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:47.475Z","inputHash":"64974dc33e28bd3f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T03:26:19.721Z","inputHash":"c0920a1cfd0804fe"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
@@ -141,16 +141,23 @@ The viewer supports three loading modes:
 }
 ```
 
+#### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
+- Type: interface
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L304)
+
+##### `BundledMarkdownTreeNode` — Summary
+A node in the bundled markdown directory tree.
+
 #### `StaticExplorerBuildOptions` {#symbol-staticexplorerbuildoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L287)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L328)
 
 ##### `StaticExplorerBuildOptions` — Summary
 Options for building a static explorer bundle.
 
 #### `buildSymbolIndex` {#symbol-buildsymbolindex}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L307)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L348)
 - Returns: [`StaticExplorerSymbolIndex`](#symbol-staticexplorersymbolindex)
 - Parameters: `nodes`: [`ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload)[]
 
@@ -165,14 +172,14 @@ A complete symbol index ready for client-side search.
 
 #### `STATIC_EXPLORER_SCHEMA_VERSION` {#symbol-static_explorer_schema_version}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L389)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L430)
 
 ##### `STATIC_EXPLORER_SCHEMA_VERSION` — Summary
 Current schema version. Increment on breaking changes.
 
 #### `STATIC_EXPLORER_VERSION` {#symbol-static_explorer_version}
 - Type: const
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L394)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts#L435)
 
 ##### `STATIC_EXPLORER_VERSION` — Summary
 Current bundle format version.
