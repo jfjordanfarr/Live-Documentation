@@ -186,13 +186,20 @@ interface ParsedLiveDoc {
 /**
  * Parse a Live Documentation markdown file into its sections.
  * Live Docs have structure: # Title > ## Metadata > ## Authored > ## Generated
+ * 
+ * IMPORTANT: In multiline mode, $ matches end-of-line (not just end-of-string),
+ * so (?=\n## |$) incorrectly matches after ### subsection headers.
+ * We use (?=\n## \w) to match only level-2 headers (##) not level-3+ (###).
  */
 function parseLiveDocSections(markdown: string): ParsedLiveDoc {
   const result: ParsedLiveDoc = { metadata: {}, authored: "", generated: "" };
   
-  // Find section boundaries using ## headers
-  const metadataMatch = markdown.match(/^## Metadata\s*\n([\s\S]*?)(?=^## |$)/m);
-  const authoredMatch = markdown.match(/^## Authored\s*\n([\s\S]*?)(?=^## |$)/m);
+  // Find section boundaries using ## headers.
+  // Use (?=\n## \w) lookahead to stop at next level-2 header (## Foo) but not
+  // level-3+ headers (### Foo). The \w ensures we match "## G" in "## Generated"
+  // but not "## #" in "### Purpose".
+  const metadataMatch = markdown.match(/^## Metadata\s*\n([\s\S]*?)(?=\n## \w)/m);
+  const authoredMatch = markdown.match(/^## Authored\s*\n([\s\S]*?)(?=\n## \w)/m);
   const generatedMatch = markdown.match(/^## Generated\s*\n([\s\S]*?)$/m);
   
   // Parse metadata as key-value pairs
