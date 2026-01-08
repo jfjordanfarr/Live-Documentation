@@ -186,6 +186,10 @@ function startExplorer(
   viewerConfig?: StaticExplorerViewerConfig
 ): void {
   console.log("Live Docs Explorer graph loaded", graphData);
+  
+  // Determine if we're in static mode (embedded docs) vs server mode (fetch on demand)
+  const isStaticMode = !!staticDocs;
+  
   if (staticDocs) {
     console.log(`Static mode: ${Object.keys(staticDocs).length} docs embedded`);
   }
@@ -1107,8 +1111,8 @@ function startExplorer(
   }
 
   function doRenderSourcesView(): void {
-    // Determine if bulk download is available
-    const canBulkDownload = !!staticDocs || !isStaticMode;
+    // Bulk download is always available: static mode has embedded docs, server mode can fetch
+    const canBulkDownload = true;
     
     renderSourcesView({
       graphData,
