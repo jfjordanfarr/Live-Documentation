@@ -20,8 +20,14 @@ export type StaticDocsMap = Map<string, string> | undefined;
 /** Callback for navigating to a node from health warnings */
 export type NavigateToNodeCallback = (nodeId: string) => void;
 
-/** Callback for bulk download */
-export type DownloadAllCallback = () => void;
+/** Download bundle type */
+export type DownloadBundleType = "live" | "related" | "all";
+
+/** Download format */
+export type DownloadFormat = "markdown" | "zip";
+
+/** Callback for downloading documentation */
+export type DownloadCallback = (bundleType: DownloadBundleType, format: DownloadFormat) => void;
 
 /** Callback for viewing a bundled doc in the detail panel */
 export type ViewBundledDocCallback = (docPath: string) => void;
@@ -40,7 +46,7 @@ export interface SourcesViewConfig {
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   nodesById: Map<string, ExplorerNodePayload>;
   onNavigateToNode: NavigateToNodeCallback;
-  onDownloadAll?: DownloadAllCallback;
+  onDownload?: DownloadCallback;
   bundledDocs?: BundledDocsData;
   onViewBundledDoc?: ViewBundledDocCallback;
 }
@@ -173,7 +179,7 @@ function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): strin
  * Render the Sources view panel showing graph statistics and health information.
  */
 export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownloadAll, bundledDocs, onViewBundledDoc } = config;
+  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownload, bundledDocs, onViewBundledDoc } = config;
 
   const container = requireElement<HTMLDivElement>("sources-container");
 
@@ -281,7 +287,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     <div class="sources-panel">
       <h2><span class="panel-icon">📥</span> Export Documentation</h2>
       <div class="sources-guidance">
-        <p>Download all Live Documentation as a ZIP archive. This bundle includes every markdown file rendered in this explorer.</p>
+        <p>Download documentation as a combined markdown file or a ZIP archive with preserved directory structure.</p>
         <p>Use this to:</p>
         <ul>
           <li>Share documentation with team members who don't have workspace access</li>
@@ -289,11 +295,34 @@ export function renderSourcesView(config: SourcesViewConfig): void {
           <li>Publish documentation to wikis or static sites</li>
         </ul>
       </div>
-      <div class="sources-actions">
-        <button id="download-all-btn" class="action-btn primary" ${onDownloadAll ? "" : "disabled"}>
-          Download All (${nodeCount} docs)
-        </button>
-        ${onDownloadAll ? "" : '<span class="sources-note">Bulk download requires server mode or static bundle with embedded docs.</span>'}
+      <div class="export-options">
+        <div class="export-row">
+          <label class="export-label">Bundle:</label>
+          <select id="export-bundle-type" class="export-select" ${onDownload ? "" : "disabled"}>
+            <option value="live">Live Docs (${nodeCount})</option>
+            <option value="related" ${bundledDocs && bundledDocs.count > 0 ? "" : "disabled"}>Related Docs (${bundledDocs?.count ?? 0})</option>
+            <option value="all">All Documentation (${nodeCount + (bundledDocs?.count ?? 0)})</option>
+          </select>
+        </div>
+        <div class="export-row">
+          <label class="export-label">Format:</label>
+          <div class="export-format-options">
+            <label class="export-format-option">
+              <input type="radio" name="export-format" value="markdown" checked ${onDownload ? "" : "disabled"}>
+              <span>Flattened Markdown</span>
+            </label>
+            <label class="export-format-option">
+              <input type="radio" name="export-format" value="zip" ${onDownload ? "" : "disabled"}>
+              <span>ZIP Archive</span>
+            </label>
+          </div>
+        </div>
+        <div class="export-actions">
+          <button id="download-btn" class="action-btn primary" ${onDownload ? "" : "disabled"}>
+            Download
+          </button>
+          ${onDownload ? "" : '<span class="sources-note">Bulk download requires server mode or static bundle with embedded docs.</span>'}
+        </div>
       </div>
     </div>
   `;
@@ -308,12 +337,22 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     });
   });
 
-  // Attach click handler for download all button
-  if (onDownloadAll) {
-    const downloadBtn = container.querySelector<HTMLButtonElement>("#download-all-btn");
-    if (downloadBtn) {
+  // Attach click handler for download button
+  if (onDownload) {
+    const downloadBtn = container.querySelector<HTMLButtonElement>("#download-btn");
+    const bundleTypeSelect = container.querySelector<HTMLSelectElement>("#export-bundle-type");
+    const formatRadios = container.querySelectorAll<HTMLInputElement>('input[name="export-format"]');
+    
+    if (downloadBtn && bundleTypeSelect) {
       downloadBtn.addEventListener("click", () => {
-        onDownloadAll();
+        const bundleType = bundleTypeSelect.value as DownloadBundleType;
+        let format: DownloadFormat = "markdown";
+        formatRadios.forEach(radio => {
+          if (radio.checked) {
+            format = radio.value as DownloadFormat;
+          }
+        });
+        onDownload(bundleType, format);
       });
     }
   }

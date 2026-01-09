@@ -195,6 +195,108 @@
   font-style: italic;
 }
 
+/* Export Options UI */
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.export-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.export-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 60px;
+}
+
+.export-select {
+  flex: 1;
+  max-width: 280px;
+  padding: 8px 12px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.export-select:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.export-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.export-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.export-select option {
+  background: #1e1e1e;
+  color: var(--text);
+}
+
+.export-select option:disabled {
+  color: var(--text-muted);
+}
+
+.export-format-options {
+  display: flex;
+  gap: 20px;
+}
+
+.export-format-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  transition: color 0.15s ease;
+}
+
+.export-format-option:hover {
+  color: var(--accent);
+}
+
+.export-format-option input[type="radio"] {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.export-format-option input[type="radio"]:disabled {
+  cursor: not-allowed;
+}
+
+.export-format-option input[type="radio"]:disabled + span {
+  color: var(--text-muted);
+}
+
+.export-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.export-actions .action-btn {
+  padding: 10px 24px;
+  font-size: 14px;
+}
+
 /* Bundled Docs Tree */
 .sources-panel-desc {
   font-size: 13px;

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2026-01-08T19:09:21.538Z
+- Generated At: 2026-01-09T20:56:38.554Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.538Z","inputHash":"84fb9f4bbd18ffdd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-09T20:56:38.554Z","inputHash":"bb3137818257de6f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,6 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `jszip` - `JSZip`
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
@@ -36,6 +37,8 @@ _No public symbols detected_
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
 - [`sources-view.BundledDocsData`](./panels/sources-view.ts.mdmd.md#symbol-bundleddocsdata)
+- [`sources-view.DownloadBundleType`](./panels/sources-view.ts.mdmd.md#symbol-downloadbundletype)
+- [`sources-view.DownloadFormat`](./panels/sources-view.ts.mdmd.md#symbol-downloadformat)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
 - [`parsers.parseExplorerGraphPayload`](./parsers.ts.mdmd.md#symbol-parseexplorergraphpayload)

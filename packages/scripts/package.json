@@ -33,6 +33,7 @@
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
     "esbuild": "^0.27.2",
-    "glob": "^13.0.0"
+    "glob": "^13.0.0",
+    "jszip": "^3.10.1"
   }
 }

@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 7, 2026\)*
+*Status: Active Development (Jan 8, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -577,6 +577,19 @@ The team dedicated a day to deep cleaning the repository structure and expanding
 * **The Knowledge Bundle (Commits 204, 205):** The Explorer now recursively scans for linked markdown files (READMEs, Chat Logs, Specs) and **bundles them** into the static export and server view. This means the "Static Site" isn't just the graph; it's the *entire* relevant documentation tree, fully navigable offline.  
 * **Parity & Polish (Commits 202, 203):** Fixed a critical "multiline regex gotcha" that was hiding authored "Notes" sections, and ensured that features like "Download All" work identically in both Server Mode and Static Mode.
 
+### **Phase XXXVIII: The Context Graph (Jan 8\)**
+
+Date: January 8, 2026
+
+Scope: Commit 206
+
+The team merged the "Knowledge Bundle" concept with the "Force Graph," turning the visualizer into a true map of *everything*. Not just code, but the *conversations* about the code.
+
+* **Related Docs Nodes:** Implemented a "Show Related Docs" toggle that projects bundled markdown files (chat history, READMEs, specs) directly into the 3D Force Graph.  
+* **Visual Language:** These context nodes are styled as "Purple Nodes" (related: prefix) to distinguish them from the blue/green code artifacts, creating a visual distinction between "The System" and "The Narrative."  
+* **Brownfield Integration:** This fulfills CAP-010 (Brownfield Integration), allowing the system to map the "Soft Graph" (human intent) alongside the "Hard Graph" (compiler reality).  
+* **Performance:** To prevent graph explosion, the scanner was refined to strictly use single-hop discovery, successfully mapping 452 links to 60 high-relevance bundled files without overwhelming the visualizer.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -600,7 +613,8 @@ The team dedicated a day to deep cleaning the repository structure and expanding
 * **Dec 19 (Phase XXXIV):** "Modular Maturity." (Frontend decoupling and comprehensive documentation sync).  
 * **Jan 3 (Phase XXXV):** "Portable Knowledge." (Exportable docs and archetype badges).  
 * **Jan 6 (Phase XXXVI):** "The Generative Gate." (Security hardening and codified LLM strategy).  
-* **Jan 7 (Phase XXXVII):** "Contextual Bundling." (Including referenced docs in the graph explorer).
+* **Jan 7 (Phase XXXVII):** "Contextual Bundling." (Including referenced docs in the graph explorer).  
+* **Jan 8 (Phase XXXVIII):** "The Context Graph." (Visualizing the soft graph of intent alongside the hard graph of code).
 
 ## **Technical Themes & Motifs**
 
