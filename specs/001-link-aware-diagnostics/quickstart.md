@@ -332,6 +332,18 @@ Both commands stage outputs with provenance metadata and require human promotion
 
 Existing markdown (READMEs, ADRs, design notes) is never overwritten by `live-docs:generate`. Link-connected brownfield docs appear in the Force Graph as read-only nodes when "Show Related Documentation" is enabled. This single checkbox controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history).
 
+**Force Graph visualization** (shipped 2026-01-08):
+- Purple nodes (#9966cc) with smaller size distinguish Related Docs from Live Docs
+- Single-hop link discovery: 452 unique links found, 60 files bundled
+- Click handling opens Related Docs in the Detail Panel
+- Circuit Board/Local Map buttons hidden for non-Live-Doc nodes
+
+**Export options** (shipped 2026-01-09):
+The Knowledge Sources panel includes an "Export Documentation" section with:
+- **Bundle type dropdown**: Live Docs / Related Docs / All Documentation
+- **Format radio buttons**: Flattened Markdown / ZIP Archive
+- ZIP archives preserve directory structure with `live-docs/` and `related-docs/` folders
+
 For the full catalogue, see [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md).
 
 ---

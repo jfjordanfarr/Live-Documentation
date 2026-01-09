@@ -222,9 +222,9 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 **Purpose**: Enable Live Documentation to coexist with pre-existing markdown documentation in brownfield workspaces through a "bridge, don't replace" strategy that respects legacy context without overwriting or tracking it.
 
 - [ ] LD-1100 Validate that `live-docs:generate` leaves brownfield markdown byte-for-byte unchanged via integration test `tests/integration/live-docs/brownfield-respect.test.ts`
-- [ ] LD-1101 Extend graph builder to discover link-connected brownfield docs and include them as read-only nodes with distinct metadata (isGenerated: false, isBrownfield: true)
-- [ ] LD-1102 [P] Render brownfield docs in Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status
-- [ ] LD-1103 Implement single "Show Related Documentation" checkbox in Force Graph controlling visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history)
+- [x] LD-1101 Extend graph builder to discover link-connected brownfield docs and include them as read-only nodes with distinct metadata (isGenerated: false, isBrownfield: true) *(Completed 2026-01-08: bundledMarkdownScanner discovers link-connected docs via single-hop markdown link extraction; 452 links found, 60 files bundled.)*
+- [x] LD-1102 [P] Render brownfield docs in Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status *(Completed 2026-01-08: purple color #9966cc, smaller size 5, thinner edges width 1.)*
+- [x] LD-1103 Implement single "Show Related Documentation" checkbox in Force Graph controlling visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history) *(Completed 2026-01-08: checkbox with localStorage persistence, Force Graph-only visibility via `.force-graph-only` CSS class.)*
 - [ ] LD-1104 [P] Document layer mapping: brownfield docs conceptually map to Layers 1–3 and never to Layer 4
 - [ ] LD-1105 Implement optional semantic indexing for brownfield markdown (title, headings, first paragraph) so search surfaces legacy context without mutating files
 - [ ] LD-1106 Add integration tests `tests/integration/live-docs/brownfield-discovery.test.ts` covering link-driven discovery, Force Graph rendering, and search indexing
@@ -240,7 +240,7 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 
 ## Summary Metrics
 **Summary Metrics**
-- **Total Tasks**: 102 (13 closed, 89 open)
-- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (8 open)
+- **Total Tasks**: 102 (16 closed, 86 open)
+- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (5 open)
 - **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`, `llm-enrichment.test.ts`, `brownfield-respect.test.ts`, `brownfield-discovery.test.ts`
 - **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801), LLM Enrichment (WI-LD1001), Brownfield Integration (WI-LD1101)

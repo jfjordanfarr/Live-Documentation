@@ -199,7 +199,7 @@ Maintainers invoke explicit commands to enrich the Live Doc graph with LLM-disco
 
 ### User Story 11 – Brownfield Documentation Integration (Priority: P2)
 
-**Status**: Planned — depends on REQ-B1 and CAP-010 infrastructure.
+**Status**: Partially complete — Force Graph integration shipped 2026-01-08 with "Show Related Documentation" checkbox, purple styling, and single-hop link discovery (60 bundled files from 452 links). Download export (MD/ZIP) added 2026-01-09. Remaining: integration tests, semantic indexing, documentation.
 
 Teams adopting Live Documentation in brownfield workspaces expect existing markdown (READMEs, ADRs, design notes) to coexist peacefully without being overwritten, migrated, or merged. Link-connected brownfield docs appear in the Force Graph as read-only graph citizens, giving maintainers discoverable context alongside generated Live Docs.
 
