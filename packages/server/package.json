@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
-    "better-sqlite3": "^12.4.1",
+    "better-sqlite3": "^12.6.0",
     "typescript": "^5.4.0",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
