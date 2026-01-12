@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/diagnosticUtils.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-diagnosticutils-ts
-- Generated At: 2025-11-19T15:01:33.806Z
+- Generated At: 2026-01-12T21:47:40.502Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides shared helpers for diagnostic publishers, including a path normaliser u
 - Keeps URIs human-readable in emitted messages while leaving non-file schemes untouched for remote targets.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.806Z","inputHash":"0262fbfa809b693b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.502Z","inputHash":"0262fbfa809b693b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DiagnosticSender` {#symbol-diagnosticsender}
@@ -33,9 +33,3 @@ Provides shared helpers for diagnostic publishers, including a path normaliser u
 - `node:url` - `fileURLToPath`
 - `vscode-languageserver/node` - `Diagnostic`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [publishDocDiagnostics.test.ts](./publishDocDiagnostics.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

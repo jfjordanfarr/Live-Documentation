@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/directoryScanner.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-directoryscanner-ts
-- Generated At: 2025-12-14T00:21:57.634Z
+- Generated At: 2026-01-12T21:47:40.511Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Directory scanning utilities for the knowledge layer. Provides recursive file di
 - Allows UTF-8 multi-byte sequences (0x80-0xF4) so Unicode files aren't falsely flagged as binary
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-14T00:21:57.634Z","inputHash":"0b0adef0bb1fbdb6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.511Z","inputHash":"0b0adef0bb1fbdb6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createGitignoreFilter` {#symbol-creategitignorefilter}
@@ -75,9 +75,3 @@ Checks if a file exists at the given path.
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

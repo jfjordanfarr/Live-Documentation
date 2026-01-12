@@ -273,8 +273,8 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 
 ## Linked Components
 
-### COMP-001 Diagnostics Pipeline
-Supports REQ-301. [Diagnostics Pipeline Architecture](../layer-3/diagnostics-pipeline.mdmd.md)
+### COMP-001 Live Documentation Pipeline
+Supports REQ-301. [Live Documentation Pipeline Architecture](../layer-3/live-documentation-pipeline.mdmd.md)
 
 ### COMP-002 Extension Surfaces
 Supports REQ-301. [Extension Surfaces Architecture](../layer-3/extension-surfaces.mdmd.md)
@@ -285,11 +285,11 @@ Supports REQ-101 and REQ-201. [Language Server Architecture](../layer-3/language
 ### COMP-004 SlopCop Tooling
 Supports REQ-101 and REQ-301. [SlopCop Architecture](../layer-3/slopcop.mdmd.md)
 
-### COMP-005 Knowledge Graph Ingestion
-Supports REQ-201 and REQ-401. [Knowledge Graph Ingestion Architecture](../layer-3/knowledge-graph-ingestion.mdmd.md)
+### COMP-005 Edge Aggregation Pipeline
+Supports REQ-201 and REQ-401. [Edge Aggregation Pipeline Architecture](../layer-3/edge-aggregation-pipeline.mdmd.md)
 
-### COMP-006 LLM Ingestion Pipeline
-Supports REQ-201 and REQ-301. [LLM Ingestion Pipeline](../layer-3/llm-ingestion-pipeline.mdmd.md)
+### COMP-006 Polyglot Oracles and Sampling
+Supports REQ-201 and REQ-301. [Polyglot Oracles and Sampling](../layer-3/polyglot-oracles-and-sampling.mdmd.md)
 
 ### COMP-007 Diagnostics Benchmarking
 Supports REQ-201. [Benchmark Telemetry Pipeline](../layer-3/benchmark-telemetry-pipeline.mdmd.md)
@@ -326,11 +326,11 @@ Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (tr
 ### IMP-101 docDiagnosticProvider
 Supports REQ-301. [Extension Diagnostic Provider](../../.mdmd/layer-4/packages/extension/src/diagnostics/docDiagnosticProvider.ts.mdmd.md)
 
-### IMP-102 publishDocDiagnostics
-Supports REQ-301. [Server Diagnostics Publisher](../../.mdmd/layer-4/packages/server/src/features/diagnostics/publishDocDiagnostics.ts.mdmd.md)
+### IMP-102 liveDocsLint
+Supports REQ-301. [Live Docs Lint CLI](../../.mdmd/layer-4/scripts/live-docs/lint.ts.mdmd.md)
 
-### IMP-103 changeProcessor
-Supports REQ-101 and REQ-201. [Change Processor Runtime](../../.mdmd/layer-4/packages/server/src/runtime/changeProcessor.ts.mdmd.md)
+### IMP-103 liveDocsGenerate
+Supports REQ-101 and REQ-201. [Live Docs Generate CLI](../../.mdmd/layer-4/scripts/live-docs/generate.ts.mdmd.md)
 
 ### IMP-201 slopcopMarkdownLinks CLI
 Supports REQ-101. [SlopCop Markdown Audit](../../.mdmd/layer-4/scripts/slopcop/check-markdown-links.ts.mdmd.md)
@@ -338,23 +338,23 @@ Supports REQ-101. [SlopCop Markdown Audit](../../.mdmd/layer-4/scripts/slopcop/c
 ### IMP-202 slopcopAssetPaths CLI
 Supports REQ-101. [SlopCop Asset Audit](../../.mdmd/layer-4/scripts/slopcop/check-asset-paths.ts.mdmd.md)
 
-### IMP-203 documentationBridge Schema
-Supports REQ-201. [Workspace Graph Snapshot](../../.mdmd/layer-4/scripts/graph-tools/snapshot-workspace.ts.mdmd.md)
+### IMP-203 liveDocsInspect CLI
+Supports REQ-201. [Live Docs Inspect CLI](../../.mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md)
 
 ### IMP-301 safe-to-commit Orchestrator
 Supports REQ-101 and REQ-301. [Safe to Commit Pipeline](../../scripts/safe-to-commit.mjs)
 
-### IMP-302 graphCoverageAudit CLI
-Supports REQ-030. [Graph Coverage Audit](../../.mdmd/layer-4/scripts/graph-tools/audit-doc-coverage.ts.mdmd.md)
+### IMP-302 liveDocsVisualize CLI
+Supports REQ-030. [Live Docs Visualize CLI](../../.mdmd/layer-4/scripts/live-docs/visualize.ts.mdmd.md)
 
-### IMP-303 inspectSymbolNeighbors CLI
-Supports REQ-030. [Inspect Symbol Neighbors CLI](../../.mdmd/layer-4/scripts/graph-tools/inspect-symbol.ts.mdmd.md)
+### IMP-303 liveDocsSystem CLI
+Supports REQ-030. [Live Docs System CLI](../../.mdmd/layer-4/scripts/live-docs/system.ts.mdmd.md)
 
 ### IMP-401 Relationship Rule Engine
 Supports REQ-040. [Relationship Rule Engine](../../.mdmd/layer-4/packages/shared/src/rules/relationshipRuleEngine.ts.mdmd.md)
 
-### IMP-402 Relationship Rule Audit
-Supports REQ-040. [Relationship Rule Audit](../../.mdmd/layer-4/packages/shared/src/rules/relationshipRuleAudit.ts.mdmd.md)
+### IMP-402 Relationship Rule Provider
+Supports REQ-040. [Relationship Rule Provider](../../.mdmd/layer-4/packages/shared/src/rules/relationshipRuleProvider.ts.mdmd.md)
 
 ### IMP-403 Relationship Rule Resolvers
 Supports REQ-040. [Relationship Rule Resolvers](../../.mdmd/layer-4/packages/shared/src/rules/relationshipResolvers.ts.mdmd.md)
@@ -365,8 +365,8 @@ Supports REQ-040. [Relationship Rule Types](../../.mdmd/layer-4/packages/shared/
 ### IMP-480 Symbol Correctness Profiles
 Supports REQ-040. [Symbol Correctness Profiles](../../.mdmd/layer-4/packages/shared/src/rules/symbolCorrectnessProfiles.ts.mdmd.md)
 
-### IMP-481 Symbol Correctness Validator
-Supports REQ-040. [Symbol Correctness Validator](../../.mdmd/layer-4/packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts.mdmd.md)
+### IMP-481 Polyglot Adapters
+Supports REQ-040. [Polyglot Adapters Index](../../.mdmd/layer-4/packages/shared/src/live-docs/adapters/index.ts.mdmd.md)
 
 ### IMP-510 Python Fixture Oracle
 Supports REQ-030. [Python Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts.mdmd.md)

@@ -90,8 +90,6 @@ function runSafeCommitCheck() {
       }
     }
     runNpmScript('Live Docs regeneration', ['run', 'live-docs:generate']);
-    runNpmScript('Graph snapshot', ['run', 'graph:snapshot', '--', '--quiet']);
-    runNpmScript('Graph coverage audit', ['run', 'graph:audit']);
     runNpmScript('Fixture workspace verification', ['run', 'fixtures:verify'], {
       FIXTURES_VERIFY_QUIET: '1'
     });

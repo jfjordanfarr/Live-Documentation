@@ -6,7 +6,7 @@ import {
   type KnowledgeFeed,
   type WorkspaceLinkProvider
 } from "./linkInference";
-import type { ExternalSnapshot } from "../knowledge/knowledgeGraphBridge";
+import type { ExternalSnapshot } from "../knowledge/externalTypes";
 
 const DOC_URI = "file:///repo/docs/feature.md";
 const CODE_URI = "file:///repo/src/core.ts";

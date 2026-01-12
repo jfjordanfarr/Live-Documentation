@@ -37,6 +37,6 @@
 - [x] CHK-LD17 Are decisions about excluding churn metrics, Live Doc ID determinism, and asset coverage documented with follow-up notes? [Spec §Active Questions; Plan §Phase 7; Roadmap §Active Questions]
 
 ## Implementation Traceability
-- [`packages/server/src/runtime/changeProcessor.ts`](/packages/server/src/runtime/changeProcessor.ts) orchestrates analyzer scheduling feeding Live Doc regeneration (LD2, LD3).
-- [`scripts/live-docs/generate.ts`](/scripts/live-docs/generate.ts) (to be implemented) will enforce CLI parity referenced across tasks/checklists.
-- Planned integration suites under `tests/integration/live-docs/` validate generation determinism, evidence mapping, and docstring drift referenced in falsifiability REQ-F2/REQ-F3/REQ-F6.
+- [`scripts/live-docs/generate.ts`](/scripts/live-docs/generate.ts) orchestrates Live Doc regeneration (LD2, LD3).
+- [`scripts/live-docs/lint.ts`](/scripts/live-docs/lint.ts) validates Live Doc structure and link integrity.
+- Integration suites under `tests/integration/live-docs/` validate generation determinism, evidence mapping, and docstring drift referenced in falsifiability REQ-F2/REQ-F3/REQ-F6.

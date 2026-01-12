@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/rules/relationshipRuleProvider.test.ts
 - Live Doc ID: LD-test-packages-shared-src-rules-relationshipruleprovider-test-ts
-- Generated At: 2025-12-11T02:38:02.250Z
+- Generated At: 2026-01-12T21:47:40.797Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the relationship rule provider end-to-end—loading configs, compiling
 - Exercises graph-store integration, heuristic lookups, and rule warnings the day the provider was hardened, catching regressions before they impact graph audits.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.250Z","inputHash":"e4510aaa822dbb9b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.797Z","inputHash":"e4510aaa822dbb9b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -39,11 +39,10 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
 #### Vitest Unit Tests
-- packages/shared/src/db: [graphStore.ts](../db/graphStore.ts.mdmd.md)
 - packages/shared/src/domain: [artifacts.ts](../domain/artifacts.ts.mdmd.md)
 - packages/shared/src/inference: [fallbackHeuristicTypes.ts](../inference/fallbackHeuristicTypes.ts.mdmd.md), [fallbackInference.ts](../inference/fallbackInference.ts.mdmd.md), [linkInference.ts](../inference/linkInference.ts.mdmd.md)
 - packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](../inference/heuristics/artifactLayerUtils.ts.mdmd.md), [heuristics/index.ts](../inference/heuristics/index.ts.mdmd.md), [shared.ts](../inference/heuristics/shared.ts.mdmd.md)
-- packages/shared/src/knowledge: [knowledgeGraphBridge.ts](../knowledge/knowledgeGraphBridge.ts.mdmd.md)
+- packages/shared/src/knowledge: [externalTypes.ts](../knowledge/externalTypes.ts.mdmd.md)
 - packages/shared/src/rules: [relationshipResolvers.ts](./relationshipResolvers.ts.mdmd.md), [relationshipRuleEngine.ts](./relationshipRuleEngine.ts.mdmd.md), [relationshipRuleProvider.ts](./relationshipRuleProvider.ts.mdmd.md), [relationshipRuleTypes.ts](./relationshipRuleTypes.ts.mdmd.md)
 - packages/shared/src/tooling: [markdownShared.ts](../tooling/markdownShared.ts.mdmd.md), [pathUtils.ts](../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->

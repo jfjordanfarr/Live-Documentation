@@ -67,14 +67,14 @@ Registers Live Doc regeneration, inspect, and diff commands. The CLI parity is n
 ### IMP-112 liveDocsAuthoringCommands *(wishlist)*
 If docs → code write-back is pursued, this will register preview/apply and scaffolding surfaces behind explicit opt-in. Implementation intent will live at `.mdmd/layer-4/packages/extension/src/commands/liveDocsAuthoring.ts.mdmd.md` when generated.
 
-### IMP-302 graphCoverageAudit CLI
-Headless audit ensuring code/docs linkage. Operational detail is sourced from [audit-doc-coverage.ts Live Doc](../layer-4/scripts/graph-tools/audit-doc-coverage.ts.mdmd.md).
+### IMP-302 liveDocsLint CLI
+Headless audit ensuring Live Doc linkage and coverage. Operational detail is sourced from [lint.ts Live Doc](../layer-4/scripts/live-docs/lint.ts.mdmd.md).
 
-### IMP-303 inspectSymbolNeighbors CLI
-CLI equivalent of dependency explorer. Refer to [inspect-symbol.ts Live Doc](../layer-4/scripts/graph-tools/inspect-symbol.ts.mdmd.md) for the materialised view.
+### IMP-303 liveDocsInspect CLI
+CLI equivalent of dependency explorer. Refer to [inspect.ts Live Doc](../layer-4/scripts/live-docs/inspect.ts.mdmd.md) for the materialised view.
 
-### IMP-304 graphSnapshot CLI
-Deterministic rebuild of the workspace graph cache. See [snapshot-workspace.ts Live Doc](../layer-4/scripts/graph-tools/snapshot-workspace.ts.mdmd.md).
+### IMP-304 liveDocsGenerate CLI
+Deterministic regeneration of Live Doc mirrors. See [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
 
 ### IMP-305 liveDocsGenerateCli
 Command palette + CLI entry points for regeneration. The generator surface is documented at [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).

@@ -53,7 +53,7 @@ Bootstraps VS Code with compiled artifacts and loads suites. [VS Code Integratio
 Primary workspace assets used across US suites. [Simple Workspace Fixture](../layer-4/tests/integration/fixtures/simple-workspace/scripts/applyTemplate.ts.mdmd.md)
 
 ### IMP-403 Core Suites
-Scenario implementations verifying ripple, writer, developer, scope collision, and transform flows. [Core Integration Suites](../layer-4/tests/integration/core/graph/codeImpact.test.ts.mdmd.md)
+Live Docs integration suites covering generation, evidence, and inspection. [Live Docs Generation Suite](../layer-4/tests/integration/live-docs/generation.test.ts.mdmd.md)
 
 ### IMP-404 cleanDistUtility
 Removes stale bundles before integration runs. [`tests/integration/clean-dist.mjs`](../../tests/integration/clean-dist.mjs)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/verify-fixtures.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-verify-fixtures-ts
-- Generated At: 2025-12-06T22:49:47.195Z
+- Generated At: 2026-01-12T21:29:06.667Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Verifies every benchmark fixture declared in `fixtures.manifest.json` by materia
 - Integrated 2025-10-30 into the broader fixture maintenance guide and safe commit workflow, ensuring `verify-fixtures.ts` executes automatically during pre-commit validation ([safe commit wiring](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L5348-L5453)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:47.195Z","inputHash":"10853f0a4605c212"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:29:06.667Z","inputHash":"880ba4baff50c793"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,7 +27,6 @@ _No public symbols detected_
 ### Dependencies
 - `node:child_process` - `spawn`
 - `node:fs` - `promises`
-- `node:os` - `os`
 - `node:path` - `path`
 - `node:process` - `process`
 - [`benchmark-doc.extractVendorInventory`](./benchmark-doc.ts.mdmd.md#symbol-extractvendorinventory)

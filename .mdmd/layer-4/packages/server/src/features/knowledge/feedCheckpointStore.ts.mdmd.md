@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedCheckpointStore.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feedcheckpointstore-ts
-- Generated At: 2025-12-15T00:38:06.285Z
+- Generated At: 2026-01-12T21:47:40.513Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Persists per-feed stream checkpoints on disk so ingestion can resume without rep
 - Sanitises filenames and validates payloads to defend against malformed checkpoint JSON before committing to disk.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.285Z","inputHash":"f8ca1ec474e56f7b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.513Z","inputHash":"f8ca1ec474e56f7b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedCheckpointStore` {#symbol-feedcheckpointstore}
@@ -34,11 +34,3 @@ Persists per-feed stream checkpoints on disk so ingestion can resume without rep
 - `node:path` - `path`
 - [`index.StreamCheckpoint`](../../../../shared/src/index.ts.mdmd.md#symbol-streamcheckpoint)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [knowledgeFeedManager.test.ts](./knowledgeFeedManager.test.ts.mdmd.md)
-- [knowledgeGraphBridge.test.ts](./knowledgeGraphBridge.test.ts.mdmd.md)
-- [knowledgeGraphIngestor.test.ts](./knowledgeGraphIngestor.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

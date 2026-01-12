@@ -55,11 +55,11 @@ CLI entry for heading and symbol audits. [SlopCop Symbol References](../../.mdmd
 ### IMP-301 safeToCommit Orchestrator
 Chains SlopCop passes alongside verify and graph tooling. [Safe to Commit Pipeline](../../scripts/safe-to-commit.mjs)
 
-### IMP-302 graphCoverageAudit CLI
-Audits documentation coverage to complement lint findings. [Graph Coverage Audit](../../.mdmd/layer-4/scripts/graph-tools/audit-doc-coverage.ts.mdmd.md)
+### IMP-302 liveDocsLint CLI
+Audits Live Doc coverage and link integrity. [Live Docs Lint CLI](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
 
-### IMP-303 inspectSymbolNeighbors CLI
-Provides headless dependency exploration referenced by lint diagnostics. [Inspect Symbol Neighbors CLI](../../.mdmd/layer-4/scripts/graph-tools/inspect-symbol.ts.mdmd.md)
+### IMP-303 liveDocsInspect CLI
+Provides headless dependency exploration referenced by lint diagnostics. [Live Docs Inspect CLI](../layer-4/scripts/live-docs/inspect.ts.mdmd.md)
 
 ## Evidence
 - Shared tooling unit tests (`markdownLinks.test.ts`, `assetPaths.test.ts`, `symbolReferences.test.ts`) validate parsing and diagnostics.

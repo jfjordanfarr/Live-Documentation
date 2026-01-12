@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/scipParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-scipparser-ts
-- Generated At: 2025-12-15T00:38:06.420Z
+- Generated At: 2026-01-12T21:47:40.540Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Converts Sourcegraph SCIP indexes into external snapshot seeds and link evidence
 - Implemented with the LSIF/SCIP ingestion option detailed in [2025-10-22 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md), landing alongside the auto-detection flow and unit coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.420Z","inputHash":"7b581d51a73e801d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.540Z","inputHash":"7b581d51a73e801d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SCIPParserOptions` {#symbol-scipparseroptions}
@@ -36,7 +36,7 @@ Reference: Sourcegraph SCIP protocol repository.
 #### `parseSCIP` {#symbol-parsescip}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/scipParser.ts#L202)
-- Returns: [`ExternalSnapshot`](../../../../shared/src/knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalsnapshot)
+- Returns: [`ExternalSnapshot`](../../../../shared/src/knowledge/externalTypes.ts.mdmd.md#symbol-externalsnapshot)
 - Parameters: `scipIndex`: [`SCIPIndex`](../../../../shared/src/contracts/scip.ts.mdmd.md#symbol-scipindex); `options`: [`SCIPParserOptions`](#symbol-scipparseroptions)
 
 ##### `parseSCIP` — Summary
@@ -57,6 +57,5 @@ Parse SCIP index into an ExternalSnapshot
 ### Observed Evidence
 #### Vitest Unit Tests
 - [feedFormatDetector.test.ts](./feedFormatDetector.test.ts.mdmd.md)
-- [knowledgeGraphBridge.test.ts](./knowledgeGraphBridge.test.ts.mdmd.md)
 - [scipParser.test.ts](./scipParser.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

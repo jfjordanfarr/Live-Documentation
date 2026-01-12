@@ -107,10 +107,10 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 - The Explorer Local Map can render multi-hop dependency paths between a user-specified `From` and `To` using the same hop semantics as `live-docs inspect`, and reports “no connection” deterministically when paths do not exist (SC-LD-008).
 
 ## Evidence
-- US1–US5 integration suites validate ripple diagnostics for code, documentation, acknowledgement, scope collision, and transforms ([tests/integration](/tests/integration)).
-- Graph snapshot and audit CLIs keep deterministic caches and coverage guarantees ([scripts/graph-tools](/scripts/graph-tools)).
+- Integration suites validate Live Docs generation, polyglot analysis, and inspect CLI path-finding ([tests/integration](/tests/integration)).
+- Live Docs CLI provides generation, linting, and inspection commands (`live-docs:generate`, `live-docs:lint`, `live-docs:inspect`).
 - SlopCop markdown lint runs inside the safe-to-commit gate, blocking hallucinated links before commit ([scripts/slopcop/check-markdown-links.ts](/scripts/slopcop/check-markdown-links.ts)).
-- Layer 3 and 4 MDMD catalogues—soon to become Live Docs themselves—document runtime, ingestion, and diagnostics flows that feed CAP-001 through CAP-003.
+- Layer 3 and 4 MDMD catalogues—now Live Docs themselves—document runtime and analysis flows that feed CAP-001 through CAP-003.
 
 ## Target Personas
 - **Implementers**: engineers expect Live Docs to show programmatic surface, dependents, and tests before accepting Copilot suggestions or merging a PR.
@@ -159,12 +159,11 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 - What is the minimal metadata set required for binary assets so generated sections stay useful without bloating the repo?
 
 ## Implementation Touchpoints
-- [Live Documentation Generator](../layer-3/language-server-architecture.mdmd.md) will orchestrate analyzers, docstring bridges, and markdown emitters to refresh generated sections.
-- [Knowledge Feed Manager](../../.mdmd/layer-4/packages/server/src/features/knowledge/knowledgeFeedManager.ts.mdmd.md) keeps optional LSIF/SCIP feeds healthy so generated sections remain accurate.
+- [Live Documentation Generator](../layer-3/live-documentation-pipeline.mdmd.md) orchestrates polyglot analyzers, docstring bridges, and markdown emitters to refresh generated sections.
 - [Diagnostics Tree View](../../.mdmd/layer-4/packages/extension/src/views/diagnosticsTree.ts.mdmd.md) and [Export Diagnostics Command](../../.mdmd/layer-4/packages/extension/src/commands/exportDiagnostics.ts.mdmd.md) consume Live Docs for impact analysis.
-- [SlopCop Markdown Audit](../../.mdmd/layer-4/scripts/slopcop/check-markdown-links.ts.mdmd.md) and future Live Doc-specific lint rules enforce authored/generated boundaries and evidence guarantees.
+- [SlopCop Markdown Audit](../../.mdmd/layer-4/scripts/slopcop/check-markdown-links.ts.mdmd.md) and Live Doc lint rules enforce authored/generated boundaries and evidence guarantees.
 
 ## Code Anchors
-- [`packages/server/src/main.ts`](../../packages/server/src/main.ts) bootstraps the language server runtime that triggers Live Doc regeneration.
-- [`packages/server/src/runtime/changeProcessor.ts`](../../packages/server/src/runtime/changeProcessor.ts) coordinates analyzers that populate generated sections.
-- [`packages/server/src/features/diagnostics/publishCodeDiagnostics.ts`](../../packages/server/src/features/diagnostics/publishCodeDiagnostics.ts) and [`publishDocDiagnostics.ts`](../../packages/server/src/features/diagnostics/publishDocDiagnostics.ts) will source messages from the Live Doc graph to uphold the “definitive answer” promise.
+- [`packages/server/src/main.ts`](../../packages/server/src/main.ts) bootstraps the stateless language server runtime.
+- [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) coordinates polyglot analyzers that populate generated sections.
+- [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts) validates Live Doc structure and link integrity to uphold the "definitive answer" promise.

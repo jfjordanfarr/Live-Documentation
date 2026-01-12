@@ -5,17 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/changeEvents/changeQueue.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-changeevents-changequeue-ts
-- Generated At: 2025-11-19T15:01:33.656Z
+- Generated At: 2026-01-12T21:47:40.500Z
 
 ## Authored
 ### Purpose
-Buffers rapid file edits into debounced batches so the inference pipeline can persist and diagnose changes efficiently, matching the persistence flow landed in [2025-10-17 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md).
+Provides a debounced queue for batching workspace file change events before processing. When files are saved rapidly (e.g., during a large refactor or IDE auto-save), this queue coalesces multiple changes to the same URI and flushes them together after a configurable debounce window.
 
 ### Notes
-- Reconfigurable debounce windows allow runtime hysteresis tuning (added during the latency instrumentation pass in [2025-10-28 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md)) without dropping queued changes.
+- Uses `setTimeout`/`clearTimeout` via globalThis wrappers to remain environment-agnostic.
+- The `onFlush` callback receives the batched changes for downstream processing (e.g., Live Doc regeneration triggers).
+- Debounce window is configurable via `updateDebounceWindow()` and defaults to the value provided at construction.
+- Calling `dispose()` cancels any pending flush and clears the queue.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.656Z","inputHash":"fcfffda7f859eb83"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.500Z","inputHash":"fcfffda7f859eb83"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `QueuedChange` {#symbol-queuedchange}
@@ -31,12 +34,3 @@ Buffers rapid file edits into debounced batches so the inference pipeline can pe
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [saveCodeChange.test.ts](./saveCodeChange.test.ts.mdmd.md)
-- [saveDocumentChange.test.ts](./saveDocumentChange.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](../diagnostics/publishDocDiagnostics.test.ts.mdmd.md)
-- [artifactWatcher.test.ts](../watchers/artifactWatcher.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

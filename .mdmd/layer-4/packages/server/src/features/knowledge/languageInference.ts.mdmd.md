@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/languageInference.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-languageinference-ts
-- Generated At: 2025-12-15T00:38:06.354Z
+- Generated At: 2026-01-12T21:47:40.523Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Language and file type inference for the knowledge layer. Maps file extensions t
 - `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.354Z","inputHash":"7287b4c9b4577372"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.523Z","inputHash":"7287b4c9b4577372"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
@@ -77,9 +77,3 @@ Infers the artifact layer from MDMD metadata or file path conventions.
 - [`index.ArtifactSeed`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactseed)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

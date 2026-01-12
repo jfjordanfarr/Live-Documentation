@@ -103,6 +103,6 @@ See `packages/server/src/features/knowledge/feedFormatDetector.ts` for detection
 
 The ingest schema described above is implemented by:
 
-- [packages/shared/src/knowledge/knowledgeGraphBridge.ts](../../packages/shared/src/knowledge/knowledgeGraphBridge.ts) (canonical snapshot/stream types)
-- [packages/server/src/features/knowledge/knowledgeGraphBridge.ts](../../packages/server/src/features/knowledge/knowledgeGraphBridge.ts) (workspace feed discovery + format parsing)
-- [packages/server/src/features/knowledge/knowledgeGraphIngestor.ts](../../packages/server/src/features/knowledge/knowledgeGraphIngestor.ts) (validation + normalization)
+- [packages/shared/src/knowledge/externalTypes.ts](../../packages/shared/src/knowledge/externalTypes.ts) (canonical snapshot/stream types for external feeds)
+- [packages/server/src/features/knowledge/lsifParser.ts](../../packages/server/src/features/knowledge/lsifParser.ts) (LSIF dump parsing)
+- [packages/server/src/features/knowledge/scipParser.ts](../../packages/server/src/features/knowledge/scipParser.ts) (SCIP index parsing)

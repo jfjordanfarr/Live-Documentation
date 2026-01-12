@@ -43,5 +43,5 @@
 
 ## Implementation Traceability
 - [`packages/extension/src/commands/exportDiagnostics.ts`](/packages/extension/src/commands/exportDiagnostics.ts) and [`packages/extension/src/views/diagnosticsTree.ts`](/packages/extension/src/views/diagnosticsTree.ts) demonstrate Live Doc consumption surfaces validated by this checklist.
-- [`packages/server/src/runtime/changeProcessor.ts`](/packages/server/src/runtime/changeProcessor.ts) and the forthcoming `packages/server/src/features/live-docs/generator.ts` operationalise analyzer-to-Doc flows under review.
-- Upcoming integration suites under `tests/integration/live-docs/` (generation, evidence, docstring drift) will provide falsifiability coverage tied back to these requirements.
+- [`scripts/live-docs/generate.ts`](/scripts/live-docs/generate.ts) and [`scripts/live-docs/lint.ts`](/scripts/live-docs/lint.ts) operationalise analyzer-to-Doc flows.
+- Integration suites under `tests/integration/live-docs/` (generation, evidence, docstring drift) provide falsifiability coverage tied back to these requirements.

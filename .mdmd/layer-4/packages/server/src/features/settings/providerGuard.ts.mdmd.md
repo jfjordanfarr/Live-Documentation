@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/settings/providerGuard.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-settings-providerguard-ts
-- Generated At: 2025-12-15T00:38:06.584Z
+- Generated At: 2026-01-12T21:47:40.582Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Captures extension-scoped consent and configuration flags coming from the client
 - Works in tandem with `settingsBridge` to supply sanitized runtime defaults, a pairing reinforced in [2025-10-21 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.584Z","inputHash":"6f5e27404c3a5c28"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.582Z","inputHash":"6f5e27404c3a5c28"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleExtensionSettings` {#symbol-rippleextensionsettings}
@@ -41,10 +41,7 @@ Captures extension-scoped consent and configuration flags coming from the client
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [acknowledgementService.test.ts](../diagnostics/acknowledgementService.test.ts.mdmd.md)
 - [noiseFilter.test.ts](../diagnostics/noiseFilter.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](../diagnostics/publishDocDiagnostics.test.ts.mdmd.md)
-- [llmIngestionOrchestrator.test.ts](../knowledge/llmIngestionOrchestrator.test.ts.mdmd.md)
 - [environment.test.ts](../../runtime/environment.test.ts.mdmd.md)
 - [settings.test.ts](../../runtime/settings.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

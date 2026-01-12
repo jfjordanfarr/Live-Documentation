@@ -141,9 +141,9 @@ TBD — populate if future scope deviates from Constitution constraints.
 - Document layer mapping: brownfield docs conceptually map to Layers 1–3, never to Layer 4.
 
 ## Implementation Traceability
-- [`packages/server/src/runtime/changeProcessor.ts`](../../packages/server/src/runtime/changeProcessor.ts) orchestrates analyzer execution feeding Live Doc regeneration.
-- [`packages/shared/src/tooling/documentationLinks.ts`](../../packages/shared/src/tooling/documentationLinks.ts) and upcoming `liveDocumentationGenerator` module emit staged markdown.
-- [`packages/extension/src/commands/exportDiagnostics.ts`](../../packages/extension/src/commands/exportDiagnostics.ts) and planned `live-docs` CLI provide human/LLM consumption surfaces.
+- [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) orchestrates Live Doc regeneration from analyzer output.
+- [`packages/shared/src/tooling/documentationLinks.ts`](../../packages/shared/src/tooling/documentationLinks.ts) and the `liveDocGraph` module emit staged markdown.
+- [`packages/extension/src/commands/exportDiagnostics.ts`](../../packages/extension/src/commands/exportDiagnostics.ts) and `live-docs` CLI provide human/LLM consumption surfaces.
 - [`scripts/live-docs/visualize-explorer.ts`](../../scripts/live-docs/visualize-explorer.ts) and its future extension host the command center that unifies circuit-board, local, and force-directed exploration with accessibility hooks.
 - Integration suites under `tests/integration/live-docs` validate regeneration, evidence mapping, and docstring drift; benchmark harnesses in `reports/benchmarks` ensure analyzer accuracy remains above target.
 

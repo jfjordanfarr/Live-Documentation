@@ -1,5 +1,4 @@
 export * from "./domain/artifacts";
-export * from "./db/graphStore";
 export * from "./contracts/maintenance";
 export * from "./contracts/overrides";
 export * from "./contracts/symbols";
@@ -9,7 +8,6 @@ export * from "./contracts/llm";
 export * from "./contracts/lsif";
 export * from "./contracts/scip";
 export * from "./contracts/telemetry";
-export * from "./knowledge/knowledgeGraphBridge";
 export * from "./inference/fallbackInference";
 export * from "./inference/linkInference";
 export * from "./language/typeScriptAstUtils";
@@ -47,8 +45,8 @@ export {
 } from "./inference/llm/confidenceCalibrator";
 export * from "./rules/relationshipRuleEngine";
 export * from "./rules/relationshipRuleProvider";
-export * from "./rules/relationshipRuleAudit";
 export * from "./rules/relationshipRuleTypes";
 export * from "./rules/relationshipResolvers";
 export * from "./rules/symbolCorrectnessProfiles";
 export * from "./tooling/pathUtils";
+export * from "./knowledge/externalTypes";

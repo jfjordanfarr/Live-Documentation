@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedFormatDetector.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feedformatdetector-ts
-- Generated At: 2025-12-15T00:38:06.298Z
+- Generated At: 2026-01-12T21:47:40.518Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Detects and parses static knowledge feed payloads (ExternalSnapshot, LSIF, SCIP)
 - Prefers deterministic snapshot parsing before falling back to language-server formats, reflecting the LSIF/SCIP integration tuning captured in [2025-10-30 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.298Z","inputHash":"526a5ef617f09f99"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.518Z","inputHash":"526a5ef617f09f99"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedFormat` {#symbol-feedformat}
@@ -64,5 +64,4 @@ automatically detecting LSIF, SCIP, or native ExternalSnapshot formats
 ### Observed Evidence
 #### Vitest Unit Tests
 - [feedFormatDetector.test.ts](./feedFormatDetector.test.ts.mdmd.md)
-- [knowledgeGraphBridge.test.ts](./knowledgeGraphBridge.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

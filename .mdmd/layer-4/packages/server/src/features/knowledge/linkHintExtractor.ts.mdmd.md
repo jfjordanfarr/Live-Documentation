@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/linkHintExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-linkhintextractor-ts
-- Generated At: 2025-12-15T00:38:06.361Z
+- Generated At: 2026-01-12T21:47:40.526Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Extracts relationship hints from code files by parsing `@link` directives and st
 - `resolveReferencePath()` handles relative/absolute path resolution and exports for reuse in `mdmdParser.ts`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.361Z","inputHash":"28652f9a6956fcb3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.526Z","inputHash":"28652f9a6956fcb3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkHintContext` {#symbol-linkhintcontext}
@@ -64,9 +64,3 @@ Attempts to resolve a path reference to an absolute file path.
 - [`directoryScanner.fileExists`](./directoryScanner.ts.mdmd.md#symbol-fileexists)
 - [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

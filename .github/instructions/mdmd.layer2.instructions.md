@@ -4,9 +4,15 @@ applyTo: ".mdmd/layer-2/**/*.mdmd.md"
 
 # Layer 2 MDMD Conventions
 
-Layer 2 documents are **unit-layer** records for requirements, roadmaps, or work items.
+Layer 2 documents are **unit-layer** records for requirements, roadmaps, work items, and contributor-facing process documentation.
 
-This workspace originally planned for Layer 2 to expose machine-countable checklists and generated rollups, but in practice the only rigorously-enforced invariant is base-layer (Layer 4 / Live Documentation) coverage. Layer 2 is therefore **authored-only** today.
+This workspace originally planned for Layer 2 to expose machine-countable checklists and generated rollups, but in practice the only rigorously-enforced invariant is base-layer (Layer 4 / Live Documentation) coverage. Layer 2 is therefore **authored-only** today.
+
+## Document Archetypes
+
+### Requirements & Roadmaps
+
+Standard Layer 2 content: requirements, acceptance criteria, work items.
 
 - Begin with a metadata block (add `External Tracker:` when mirroring to Spec-Kit tasks or GitHub Issues):
   ```markdown
@@ -35,3 +41,23 @@ This workspace originally planned for Layer 2 to expose machine-countable chec
   - Keep evidence as curated bullets (docs, test reports, logs).
   - Avoid embedding raw git history inside narrative sections; link to durable artefacts instead when needed.
 - Avoid referencing Git history directly inside authored sections; instead, capture commit evidence under `### Evidence` so tooling can keep the generated summaries clean.
+
+### Contributor Guides
+
+Internal documentation for maintainers and contributors — tooling, workflows, processes that external adopters don't need to know.
+
+- Begin with a metadata block:
+  ```markdown
+  ## Metadata
+  - Layer: 2
+  - Audience: Contributors
+  ```
+- Recommended section order:
+  1. `# <Guide Title>` — e.g., "Internal Tooling Reference"
+  2. `## Metadata`
+  3. Explanatory sections with `###` headings for each tool/workflow
+  4. Optional `## Troubleshooting`, `## When to Use`, `## Related Docs`
+
+- These guides are distinct from Layer 1 User Guides:
+  - **Layer 1 Guides**: External adopters learning to use Live Documentation
+  - **Layer 2 Guides**: Contributors learning to develop Live Documentation

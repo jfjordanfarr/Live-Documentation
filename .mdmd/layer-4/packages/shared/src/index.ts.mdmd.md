@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-index-ts
-- Generated At: 2026-01-07T22:04:53.912Z
+- Generated At: 2026-01-12T21:47:40.646Z
 
 ## Authored
 ### Purpose
@@ -15,68 +15,68 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-07T22:04:53.912Z","inputHash":"c1bf0c8e5f4f3312"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.646Z","inputHash":"2dd992cf70aad3e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipExtractor` {#symbol-relationshipextractor}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L29)
+- Source: [source](../../../../../packages/shared/src/index.ts#L27)
 
 #### `RelationshipExtractorError` {#symbol-relationshipextractorerror}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L30)
+- Source: [source](../../../../../packages/shared/src/index.ts#L28)
 
 #### `RelationshipExtractorLogger` {#symbol-relationshipextractorlogger}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L31)
+- Source: [source](../../../../../packages/shared/src/index.ts#L29)
 
 #### `RelationshipExtractionBatch` {#symbol-relationshipextractionbatch}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L32)
+- Source: [source](../../../../../packages/shared/src/index.ts#L30)
 
 #### `RelationshipExtractionPrompt` {#symbol-relationshipextractionprompt}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L33)
+- Source: [source](../../../../../packages/shared/src/index.ts#L31)
 
 #### `RelationshipExtractionRequest` {#symbol-relationshipextractionrequest}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L34)
+- Source: [source](../../../../../packages/shared/src/index.ts#L32)
 
 #### `RawRelationshipCandidate` {#symbol-rawrelationshipcandidate}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L35)
+- Source: [source](../../../../../packages/shared/src/index.ts#L33)
 
 #### `ModelInvocationRequest` {#symbol-modelinvocationrequest}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L36)
+- Source: [source](../../../../../packages/shared/src/index.ts#L34)
 
 #### `ModelInvocationResult` {#symbol-modelinvocationresult}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L37)
+- Source: [source](../../../../../packages/shared/src/index.ts#L35)
 
 #### `ModelInvoker` {#symbol-modelinvoker}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L38)
+- Source: [source](../../../../../packages/shared/src/index.ts#L36)
 
 #### `ModelUsage` {#symbol-modelusage}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L39)
+- Source: [source](../../../../../packages/shared/src/index.ts#L37)
 
 #### `calibrateConfidence` {#symbol-calibrateconfidence}
 - Type: unknown
-- Source: [source](../../../../../packages/shared/src/index.ts#L43)
+- Source: [source](../../../../../packages/shared/src/index.ts#L41)
 
 #### `CalibratedRelationship` {#symbol-calibratedrelationship}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L44)
+- Source: [source](../../../../../packages/shared/src/index.ts#L42)
 
 #### `LlmConfidenceTier` {#symbol-llmconfidencetier}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L45)
+- Source: [source](../../../../../packages/shared/src/index.ts#L43)
 
 #### `CalibrationContext` {#symbol-calibrationcontext}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/shared/src/index.ts#L46)
+- Source: [source](../../../../../packages/shared/src/index.ts#L44)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -91,7 +91,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - [`scip`](./contracts/scip.ts.mdmd.md) (re-export)
 - [`symbols`](./contracts/symbols.ts.mdmd.md) (re-export)
 - [`telemetry`](./contracts/telemetry.ts.mdmd.md) (re-export)
-- [`graphStore`](./db/graphStore.ts.mdmd.md) (re-export)
 - [`artifacts`](./domain/artifacts.ts.mdmd.md) (re-export)
 - [`fallbackInference`](./inference/fallbackInference.ts.mdmd.md) (re-export)
 - [`linkInference`](./inference/linkInference.ts.mdmd.md) (re-export)
@@ -110,12 +109,11 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - [`relationshipExtractor.RelationshipExtractor`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractor) (re-export)
 - [`relationshipExtractor.RelationshipExtractorError`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractorerror) (re-export)
 - [`relationshipExtractor.RelationshipExtractorLogger`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractorlogger) (re-export)
-- [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md) (re-export)
+- [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md) (re-export)
 - [`typeScriptAstUtils`](./language/typeScriptAstUtils.ts.mdmd.md) (re-export)
 - [`parse`](./live-docs/parse.ts.mdmd.md) (re-export)
 - [`testReport`](./reporting/testReport.ts.mdmd.md) (re-export)
 - [`relationshipResolvers`](./rules/relationshipResolvers.ts.mdmd.md) (re-export)
-- [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md) (re-export)
 - [`relationshipRuleEngine`](./rules/relationshipRuleEngine.ts.mdmd.md) (re-export)
 - [`relationshipRuleProvider`](./rules/relationshipRuleProvider.ts.mdmd.md) (re-export)
 - [`relationshipRuleTypes`](./rules/relationshipRuleTypes.ts.mdmd.md) (re-export)
@@ -141,24 +139,10 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - [docDiagnosticProvider.test.ts](../../extension/src/diagnostics/docDiagnosticProvider.test.ts.mdmd.md)
 - [localOllamaBridge.test.ts](../../extension/src/services/localOllamaBridge.test.ts.mdmd.md)
 - [symbolBridge.test.ts](../../extension/src/services/symbolBridge.test.ts.mdmd.md)
-- [saveCodeChange.test.ts](../../server/src/features/changeEvents/saveCodeChange.test.ts.mdmd.md)
-- [saveDocumentChange.test.ts](../../server/src/features/changeEvents/saveDocumentChange.test.ts.mdmd.md)
-- [inspectDependencies.test.ts](../../server/src/features/dependencies/inspectDependencies.test.ts.mdmd.md)
-- [symbolNeighbors.test.ts](../../server/src/features/dependencies/symbolNeighbors.test.ts.mdmd.md)
-- [acknowledgementService.test.ts](../../server/src/features/diagnostics/acknowledgementService.test.ts.mdmd.md)
-- [listOutstandingDiagnostics.test.ts](../../server/src/features/diagnostics/listOutstandingDiagnostics.test.ts.mdmd.md)
 - [noiseFilter.test.ts](../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](../../server/src/features/diagnostics/publishDocDiagnostics.test.ts.mdmd.md)
 - [feedFormatDetector.test.ts](../../server/src/features/knowledge/feedFormatDetector.test.ts.mdmd.md)
-- [knowledgeFeedManager.test.ts](../../server/src/features/knowledge/knowledgeFeedManager.test.ts.mdmd.md)
-- [knowledgeGraphBridge.test.ts](../../server/src/features/knowledge/knowledgeGraphBridge.test.ts.mdmd.md)
-- [knowledgeGraphIngestor.test.ts](../../server/src/features/knowledge/knowledgeGraphIngestor.test.ts.mdmd.md)
-- [llmIngestionOrchestrator.test.ts](../../server/src/features/knowledge/llmIngestionOrchestrator.test.ts.mdmd.md)
 - [lsifParser.test.ts](../../server/src/features/knowledge/lsifParser.test.ts.mdmd.md)
-- [rippleAnalyzer.test.ts](../../server/src/features/knowledge/rippleAnalyzer.test.ts.mdmd.md)
 - [scipParser.test.ts](../../server/src/features/knowledge/scipParser.test.ts.mdmd.md)
-- [workspaceIndexProvider.test.ts](../../server/src/features/knowledge/workspaceIndexProvider.test.ts.mdmd.md)
-- [artifactWatcher.test.ts](../../server/src/features/watchers/artifactWatcher.test.ts.mdmd.md)
 - [pathReferenceDetector.test.ts](../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [environment.test.ts](../../server/src/runtime/environment.test.ts.mdmd.md)
 - [settings.test.ts](../../server/src/runtime/settings.test.ts.mdmd.md)
@@ -329,15 +313,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `DriftHistoryStatus` {#symbol-drifthistorystatus}
 - Re-exported from [`artifacts`](./domain/artifacts.ts.mdmd.md#symbol-drifthistorystatus)
 
-#### `DriftHistorySummary` {#symbol-drifthistorysummary}
-- Re-exported from [`graphStore`](./db/graphStore.ts.mdmd.md#symbol-drifthistorysummary)
-
-#### `evaluateRelationshipCoverage` {#symbol-evaluaterelationshipcoverage}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-evaluaterelationshipcoverage)
-
-#### `EvaluateRelationshipCoverageOptions` {#symbol-evaluaterelationshipcoverageoptions}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-evaluaterelationshipcoverageoptions)
-
 #### `EXPORT_DIAGNOSTICS_REQUEST` {#symbol-export_diagnostics_request}
 - Re-exported from [`diagnostics`](./contracts/diagnostics.ts.mdmd.md#symbol-export_diagnostics_request)
 
@@ -345,16 +320,16 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Re-exported from [`diagnostics`](./contracts/diagnostics.ts.mdmd.md#symbol-exportdiagnosticsresult)
 
 #### `ExternalArtifact` {#symbol-externalartifact}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalartifact)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-externalartifact)
 
 #### `ExternalLink` {#symbol-externallink}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externallink)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-externallink)
 
 #### `ExternalSnapshot` {#symbol-externalsnapshot}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalsnapshot)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-externalsnapshot)
 
 #### `ExternalStreamEvent` {#symbol-externalstreamevent}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-externalstreamevent)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-externalstreamevent)
 
 #### `extractLocalImportNames` {#symbol-extractlocalimportnames}
 - Re-exported from [`typeScriptAstUtils`](./language/typeScriptAstUtils.ts.mdmd.md#symbol-extractlocalimportnames)
@@ -386,20 +361,11 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `findSymbolReferenceAnomalies` {#symbol-findsymbolreferenceanomalies}
 - Re-exported from [`symbolReferences`](./tooling/symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 
-#### `formatRelationshipDiagnostics` {#symbol-formatrelationshipdiagnostics}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-formatrelationshipdiagnostics)
-
 #### `generateRelationshipEvidences` {#symbol-generaterelationshipevidences}
 - Re-exported from [`relationshipRuleEngine`](./rules/relationshipRuleEngine.ts.mdmd.md#symbol-generaterelationshipevidences)
 
 #### `GenerateRelationshipEvidencesOptions` {#symbol-generaterelationshipevidencesoptions}
 - Re-exported from [`relationshipRuleEngine`](./rules/relationshipRuleEngine.ts.mdmd.md#symbol-generaterelationshipevidencesoptions)
-
-#### `GraphStore` {#symbol-graphstore}
-- Re-exported from [`graphStore`](./db/graphStore.ts.mdmd.md#symbol-graphstore)
-
-#### `GraphStoreOptions` {#symbol-graphstoreoptions}
-- Re-exported from [`graphStore`](./db/graphStore.ts.mdmd.md#symbol-graphstoreoptions)
 
 #### `hasRuntimeUsage` {#symbol-hasruntimeusage}
 - Re-exported from [`typeScriptAstUtils`](./language/typeScriptAstUtils.ts.mdmd.md#symbol-hasruntimeusage)
@@ -488,9 +454,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `KnowledgeFeedSummary` {#symbol-knowledgefeedsummary}
 - Re-exported from [`linkInference`](./inference/linkInference.ts.mdmd.md#symbol-knowledgefeedsummary)
 
-#### `KnowledgeGraphBridge` {#symbol-knowledgegraphbridge}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-knowledgegraphbridge)
-
 #### `KnowledgeSnapshot` {#symbol-knowledgesnapshot}
 - Re-exported from [`artifacts`](./domain/artifacts.ts.mdmd.md#symbol-knowledgesnapshot)
 
@@ -511,9 +474,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 
 #### `LatencySummaryResponse` {#symbol-latencysummaryresponse}
 - Re-exported from [`telemetry`](./contracts/telemetry.ts.mdmd.md#symbol-latencysummaryresponse)
-
-#### `LinkedArtifactSummary` {#symbol-linkedartifactsummary}
-- Re-exported from [`graphStore`](./db/graphStore.ts.mdmd.md#symbol-linkedartifactsummary)
 
 #### `LinkEvidence` {#symbol-linkevidence}
 - Re-exported from [`linkInference`](./inference/linkInference.ts.mdmd.md#symbol-linkevidence)
@@ -547,9 +507,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 
 #### `LIST_OUTSTANDING_DIAGNOSTICS_REQUEST` {#symbol-list_outstanding_diagnostics_request}
 - Re-exported from [`diagnostics`](./contracts/diagnostics.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
-
-#### `ListDriftHistoryOptions` {#symbol-listdrifthistoryoptions}
-- Re-exported from [`graphStore`](./db/graphStore.ts.mdmd.md#symbol-listdrifthistoryoptions)
 
 #### `ListOutstandingDiagnosticsResult` {#symbol-listoutstandingdiagnosticsresult}
 - Re-exported from [`diagnostics`](./contracts/diagnostics.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
@@ -749,24 +706,6 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 #### `RecordOutcomeOptions` {#symbol-recordoutcomeoptions}
 - Re-exported from [`inferenceAccuracy`](./telemetry/inferenceAccuracy.ts.mdmd.md#symbol-recordoutcomeoptions)
 
-#### `RelationshipCoverageChain` {#symbol-relationshipcoveragechain}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoveragechain)
-
-#### `RelationshipCoverageDiagnostic` {#symbol-relationshipcoveragediagnostic}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoveragediagnostic)
-
-#### `RelationshipCoverageIssue` {#symbol-relationshipcoverageissue}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoverageissue)
-
-#### `RelationshipCoverageIssueKind` {#symbol-relationshipcoverageissuekind}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoverageissuekind)
-
-#### `RelationshipCoverageResult` {#symbol-relationshipcoverageresult}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoverageresult)
-
-#### `RelationshipCoverageRuleResult` {#symbol-relationshipcoverageruleresult}
-- Re-exported from [`relationshipRuleAudit`](./rules/relationshipRuleAudit.ts.mdmd.md#symbol-relationshipcoverageruleresult)
-
 #### `RelationshipEvidenceGenerationResult` {#symbol-relationshipevidencegenerationresult}
 - Re-exported from [`relationshipRuleEngine`](./rules/relationshipRuleEngine.ts.mdmd.md#symbol-relationshipevidencegenerationresult)
 
@@ -870,10 +809,10 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Re-exported from [`diagnostics`](./contracts/diagnostics.ts.mdmd.md#symbol-setdiagnosticassessmentresult)
 
 #### `StreamCheckpoint` {#symbol-streamcheckpoint}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-streamcheckpoint)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-streamcheckpoint)
 
 #### `StreamEventKind` {#symbol-streameventkind}
-- Re-exported from [`knowledgeGraphBridge`](./knowledge/knowledgeGraphBridge.ts.mdmd.md#symbol-streameventkind)
+- Re-exported from [`externalTypes`](./knowledge/externalTypes.ts.mdmd.md#symbol-streameventkind)
 
 #### `SymbolAuditOptions` {#symbol-symbolauditoptions}
 - Re-exported from [`symbolReferences`](./tooling/symbolReferences.ts.mdmd.md#symbol-symbolauditoptions)

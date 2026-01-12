@@ -75,8 +75,7 @@
 - **Alternatives Considered**: Jest (less aligned with ESM/TypeScript setup); integration-only manual validation (insufficient coverage).
 
 ## Implementation Traceability
-- [`packages/server/src/runtime/changeProcessor.ts`](../../packages/server/src/runtime/changeProcessor.ts) implements the diagnostic architecture decisions captured above.
-- [`packages/server/src/features/knowledge/workspaceIndexProvider.ts`](../../packages/server/src/features/knowledge/workspaceIndexProvider.ts), [`lsifParser.ts`](../../packages/server/src/features/knowledge/lsifParser.ts), and [`scipParser.ts`](../../packages/server/src/features/knowledge/scipParser.ts) operationalise the symbol ingestion and fallback strategies.
-- [`packages/server/src/features/knowledge/knowledgeGraphIngestor.ts`](../../packages/server/src/features/knowledge/knowledgeGraphIngestor.ts) and [`feedCheckpointStore.ts`](../../packages/server/src/features/knowledge/feedCheckpointStore.ts) cover the feed resilience and schema contract research outcomes.
-- [`packages/server/src/features/knowledge/llmIngestionOrchestrator.ts`](../../packages/server/src/features/knowledge/llmIngestionOrchestrator.ts) translates the LLM augmentation findings into executable pipeline stages.
-- [`tests/integration/core/ripple/transformRipple.test.ts`](../../tests/integration/core/ripple/transformRipple.test.ts) and [`tests/integration/integrity/hygiene/broken-links.test.ts`](../../tests/integration/integrity/hygiene/broken-links.test.ts) validate key hypotheses around ripple analysis and documentation drift surfaced in this research.
+- [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) implements the Live Doc generation pipeline captured in this research.
+- [`packages/server/src/features/knowledge/lsifParser.ts`](../../packages/server/src/features/knowledge/lsifParser.ts) and [`scipParser.ts`](../../packages/server/src/features/knowledge/scipParser.ts) operationalise the symbol ingestion and fallback strategies.
+- [`packages/shared/src/knowledge/externalTypes.ts`](../../packages/shared/src/knowledge/externalTypes.ts) covers the feed schema contracts.
+- [`tests/integration/live-docs/generation.test.ts`](../../tests/integration/live-docs/generation.test.ts) and [`tests/integration/live-docs/evidence.test.ts`](../../tests/integration/live-docs/evidence.test.ts) validate key hypotheses around Live Doc generation and evidence mapping.

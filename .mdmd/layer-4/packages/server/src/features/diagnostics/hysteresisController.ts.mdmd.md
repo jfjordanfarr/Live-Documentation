@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/hysteresisController.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-hysteresiscontroller-ts
-- Generated At: 2025-11-19T15:01:33.822Z
+- Generated At: 2026-01-12T21:47:40.505Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Suppresses reciprocal diagnostics for a short window so change ripples do not bo
 - Keeps state in-memory with explicit acknowledgement hooks, ensuring the controller complements (rather than duplicates) acknowledgement persistence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.822Z","inputHash":"81c1ce74e67e42ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.505Z","inputHash":"81c1ce74e67e42ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HysteresisControllerOptions` {#symbol-hysteresiscontrolleroptions}
@@ -41,7 +41,5 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [acknowledgementService.test.ts](./acknowledgementService.test.ts.mdmd.md)
 - [hysteresisController.test.ts](./hysteresisController.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](./publishDocDiagnostics.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

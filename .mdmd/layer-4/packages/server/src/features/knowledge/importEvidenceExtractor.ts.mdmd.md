@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/importEvidenceExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-importevidenceextractor-ts
-- Generated At: 2025-12-15T00:38:06.303Z
+- Generated At: 2026-01-12T21:47:40.521Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - Module resolution probes multiple extensions via `MODULE_RESOLUTION_EXTENSIONS`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.303Z","inputHash":"8aaf1427460ad19c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.521Z","inputHash":"8aaf1427460ad19c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ImportEvidenceContext` {#symbol-importevidencecontext}
@@ -49,9 +49,3 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - [`index.hasTypeUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-hastypeusage)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

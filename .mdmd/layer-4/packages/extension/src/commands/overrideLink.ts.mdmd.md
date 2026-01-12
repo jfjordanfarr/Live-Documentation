@@ -5,18 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-overridelink-ts
-- Generated At: 2025-12-15T00:38:05.885Z
+- Generated At: 2026-01-12T21:47:40.293Z
 
 ## Authored
 ### Purpose
-Registers the `linkDiagnostics.overrideLink` command so maintainers can manually create or rebind graph edges from VS Code by issuing `OverrideLinkRequest` payloads to the language server, completing T027 as recorded in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2799-L2836](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2799-L2836).
+Registers the `linkDiagnostics.overrideLink` VS Code command, enabling users to manually rebind or override relationships between artifacts when automated inference is incorrect or incomplete. Supports both manual override (user picks source/target/kind) and rebind override (triggered from diagnostics when a referenced artifact moves or is deleted).
 
 ### Notes
-- The Oct 16 implementation added layer/kind pickers, file selection, and rebind progress reporting so rename-driven prompts can reuse the same command surface; see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2802-L2836](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2802-L2836).
-- That change landed without automated coverage because the Node 22 toolchain blocked `npm run lint` and follow-on test runs; the gap is noted in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-16.md#L2804-L2836).
+- Uses Quick Pick UI to let users select artifact layers, relationship kinds, and target URIs.
+- Sends `OverrideLinkRequest` to the language server, which persists the override.
+- Rebind flow is invoked when diagnostics detect a broken reference and offer remediation.
+- The command is intended for power users who need to correct false-positive diagnostics or establish relationships that static analysis cannot infer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.885Z","inputHash":"7d5725dd9a388fd2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.293Z","inputHash":"7d5725dd9a388fd2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerOverrideLinkCommand` {#symbol-registeroverridelinkcommand}

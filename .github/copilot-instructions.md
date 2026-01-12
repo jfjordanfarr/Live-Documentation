@@ -104,7 +104,7 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - `npm run live-docs:visualize:static`: builds a fully static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline.
 - `npm run live-docs:migrate -- --dry-run`: compares staged Live Docs to `.mdmd/layer-4/` and prepares promotion (used during initial migration; now primarily for auditing drift).
 
-Full CLI catalogue (including graph, fixtures, and lint tooling) lives in `docs/tooling/cli-command-catalog.md`; keep that document updated whenever new npm scripts land.
+User-facing CLI documentation lives in `.mdmd/layer-1/guides/cli-reference.mdmd.md`. Internal development tooling (graph:*, slopcop:*, fixtures:*, test:*) is documented below and in copilot-instructions.md only — these commands are not exposed to external adopters.
 
 ### Maintainer Tooling
 - Live Doc graph snapshot: `npm run graph:snapshot` still rebuilds the SQLite cache and JSON fixture, but now Live Docs feed the graph via markdown links.

@@ -1,5 +1,15 @@
 # Quickstart: Live Documentation
 
+> **⚠️ This document has been superseded by the Layer 1 User Guides:**
+> - [Getting Started](../../.mdmd/layer-1/guides/getting-started.mdmd.md) — Installation, configuration, first session
+> - [Tracing Impact](../../.mdmd/layer-1/guides/tracing-impact.mdmd.md) — Dependency pathfinding
+> - [Visualizing Your Codebase](../../.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) — Explorer views and shareability
+> - [CLI Reference](../../.mdmd/layer-1/guides/cli-reference.mdmd.md) — Complete command catalog
+>
+> This file is retained for historical task references but should not be updated. New documentation should be added to the Layer 1 guides.
+
+---
+
 Live Documentation pairs every tracked workspace asset with a markdown artifact that combines an **authored preamble** (`Purpose`, `Notes`) and **generated sections** (`Public Symbols`, `Dependencies`, archetype-specific evidence). This quickstart walks through staging those docs under `/.live-documentation/<baseLayer>/` (default `source/`), exploring them visually, and distributing them as static sites.
 
 ---
@@ -344,7 +354,7 @@ The Knowledge Sources panel includes an "Export Documentation" section with:
 - **Format radio buttons**: Flattened Markdown / ZIP Archive
 - ZIP archives preserve directory structure with `live-docs/` and `related-docs/` folders
 
-For the full catalogue, see [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md).
+For the full catalogue, see [CLI Reference](../../.mdmd/layer-1/guides/cli-reference.mdmd.md).
 
 ---
 
@@ -384,7 +394,7 @@ Copilot instruction files that govern Live Doc authoring:
 
 ## Getting Help
 
-- **Full CLI reference**: [cli-command-catalog.md](../../docs/tooling/cli-command-catalog.md)
+- **Full CLI reference**: [CLI Reference](../../.mdmd/layer-1/guides/cli-reference.mdmd.md)
 - **Architecture**: [.mdmd/layer-3/](../../.mdmd/layer-3/)
 - **Development journey**: [AI-Agent-Workspace/Notes/Project Development Journey.md](../../AI-Agent-Workspace/Notes/Project%20Development%20Journey.md)
 - **Chat history**: [AI-Agent-Workspace/ChatHistory/](../../AI-Agent-Workspace/ChatHistory/) — Fully auditable dev decisions

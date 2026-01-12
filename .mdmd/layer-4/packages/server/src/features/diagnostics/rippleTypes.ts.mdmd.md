@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/rippleTypes.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-rippletypes-ts
-- Generated At: 2025-12-15T00:38:06.270Z
+- Generated At: 2026-01-12T21:47:40.509Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 - Keeps ripple metadata lightweight (depth, traversal path) for noise filtering and publisher fan-out without binding to a specific analyzer implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.270Z","inputHash":"d30eb0a39214cf8f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.509Z","inputHash":"d30eb0a39214cf8f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleHint` {#symbol-ripplehint}
@@ -38,5 +38,4 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 ### Observed Evidence
 #### Vitest Unit Tests
 - [noiseFilter.test.ts](./noiseFilter.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](./publishDocDiagnostics.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

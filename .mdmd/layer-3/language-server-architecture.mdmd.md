@@ -51,45 +51,27 @@ Supports FR-LD1, FR-LD2, and FR-LD5 by orchestrating workspace change ingestion,
 
 ## Linked Implementations
 
-### IMP-102 publishDocDiagnostics
-Diagnostic publisher enforcing hysteresis for markdown ripple. [Server Diagnostics Publisher](../../.mdmd/layer-4/packages/server/src/features/diagnostics/publishDocDiagnostics.ts.mdmd.md)
+### IMP-101 main.ts
+Server entrypoint handling LSP initialisation and request routing. [Server Main Entry](../layer-4/packages/server/src/main.ts.mdmd.md)
 
-### IMP-104 publishCodeDiagnostics
-Diagnostic publisher for code ripple with suppression metrics. [Code Diagnostics Publisher](../../.mdmd/layer-4/packages/server/src/features/diagnostics/publishCodeDiagnostics.ts.mdmd.md)
+### IMP-102 liveDocsGenerate CLI
+CLI-driven Live Doc regeneration that the server delegates to. [Live Docs Generate](../layer-4/scripts/live-docs/generate.ts.mdmd.md)
 
-### IMP-105 acknowledgementService
-Persist acknowledgement state and suppression lookups. [Acknowledgement Service](../../.mdmd/layer-4/packages/server/src/features/diagnostics/acknowledgementService.ts.mdmd.md)
+### IMP-103 liveDocsLint CLI
+Stateless link and evidence validation for Live Docs. [Live Docs Lint](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
 
-### IMP-111 changeQueue
-Manages debounced change intake before processing. [Change Queue Runtime](../../.mdmd/layer-4/packages/server/src/features/changeEvents/changeQueue.ts.mdmd.md)
+### IMP-104 liveDocsInspect CLI
+Dependency pathfinding and inspection for artifacts. [Live Docs Inspect](../layer-4/scripts/live-docs/inspect.ts.mdmd.md)
 
-### IMP-112 knowledgeFeedManager
-Validates and persists external feed updates. [Knowledge Feed Manager](../../.mdmd/layer-4/packages/server/src/features/knowledge/knowledgeFeedManager.ts.mdmd.md)
-
-### IMP-205 knowledgeGraphIngestor
-Applies validated feed payloads to the graph store and maintains checkpoints. [Knowledge Graph Ingestor](../../.mdmd/layer-4/packages/server/src/features/knowledge/knowledgeGraphIngestor.ts.mdmd.md)
-
-### IMP-211 knowledgeGraphBridgeService
-Bootstraps feed discovery, diagnostics propagation, and lifecycle hooks for ingestion collaborators. [Knowledge Graph Bridge Service](../../.mdmd/layer-4/packages/server/src/features/knowledge/knowledgeGraphBridge.ts.mdmd.md)
-
-### IMP-113 providerGuard
-Gates diagnostics until consent is granted. [Provider Guard](../../.mdmd/layer-4/packages/server/src/features/settings/providerGuard.ts.mdmd.md)
-
-### IMP-114 inspectDependencies Handler
-Serves dependency traversal over LSP. [Inspect Dependencies Handler](../../.mdmd/layer-4/packages/server/src/features/dependencies/inspectDependencies.ts.mdmd.md)
-
-### IMP-115 symbolNeighbors Handler
-Returns symbol neighbourhoods for Quick Pick and CLI surfaces. [Symbol Neighbors Handler](../../.mdmd/layer-4/packages/server/src/features/dependencies/symbolNeighbors.ts.mdmd.md)
-
-### IMP-116 artifactWatcher
-Prepares workspace change events, loads content, and kicks off inference. [Artifact Watcher](../../.mdmd/layer-4/packages/server/src/features/watchers/artifactWatcher.ts.mdmd.md)
+### IMP-105 buildLiveDocGraph
+In-memory graph construction from Live Doc markdown. [Live Doc Graph](../layer-4/packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md)
 
 ## Evidence
-- Unit tests cover change queue, provider guard, diagnostics publishers, and feed managers (`changeQueue.test.ts`, `providerGuard.test.ts`, `publishDocDiagnostics.test.ts`, `publishCodeDiagnostics.test.ts`, `knowledgeFeedManager.test.ts`).
-- Integration suites US1–US5 exercise the full language server loop from change intake to diagnostics emission.
-- Safe-to-commit orchestrations rebuild the graph snapshot and run feed audits to confirm deterministic persistence.
-- Planned Live Documentation suites (`tests/integration/live-docs/generation.test.ts`, `inspect-cli.test.ts`) ensure regeneration commands, CLI parity, and diagnostic enrichment stay wired through the runtime.
+- Unit tests for server entrypoint: `main.test.ts`.
+- Live Docs integration suites: `generation.test.ts`, `inspect-cli.test.ts`, `evidence.test.ts`.
+- Safe-to-commit orchestrations run Live Docs lint checks to confirm link integrity.
 
 ## Operational Notes
-- Drift history ledger (`DriftHistoryStore`) records emitted/acknowledged pairs for reporting (FR-009).
-- Pending work includes telemetry streams for suppression counters and LLM inference once `llmProviderMode` expands beyond local-only.
+- The server is now a thin LSP wrapper that delegates heavy lifting to the Live Docs CLI suite.
+- GraphStore and RippleAnalyzer have been eliminated; Live Docs ARE the database for workspace connectivity.
+- Pending work includes wiring LSP diagnostics to surface live-docs:lint errors in the Problems pane.

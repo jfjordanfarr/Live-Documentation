@@ -15,7 +15,7 @@ import type {
   ExternalLink,
   ExternalSnapshot,
   ExternalStreamEvent
-} from "../knowledge/knowledgeGraphBridge";
+} from "../knowledge/externalTypes";
 
 type Uri = string;
 

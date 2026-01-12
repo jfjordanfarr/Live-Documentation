@@ -60,14 +60,14 @@ Evaluates profile contracts that declare the upstream and downstream guarantees 
 ## Linked Implementations
 
 ### IMP-401 relationshipRuleEngine
-Evaluates link-rule chains during graph snapshot generation and produces evidences. [Relationship Rule Engine](../../.mdmd/layer-4/packages/shared/src/rules/relationshipRuleEngine.ts.mdmd.md)
+Evaluates link-rule chains during graph snapshot generation and produces evidences. [Relationship Rule Engine](../layer-4/packages/shared/src/rules/relationshipRuleEngine.ts.mdmd.md)
 
 Code: [`packages/shared/src/rules/relationshipRuleEngine.ts`](../../packages/shared/src/rules/relationshipRuleEngine.ts)
 
-### IMP-402 relationshipRuleAudit
-Loads compiled rules within `graph:audit` and maps unsatisfied chains to actionable diagnostics. [Relationship Rule Audit](../../.mdmd/layer-4/packages/shared/src/rules/relationshipRuleAudit.ts.mdmd.md)
+### IMP-402 liveDocsLint CLI
+Audits Live Doc link integrity, including rule-based relationship validation. [Live Docs Lint CLI](../layer-4/scripts/live-docs/lint.ts.mdmd.md)
 
-Code: [`packages/shared/src/rules/relationshipRuleAudit.ts`](../../packages/shared/src/rules/relationshipRuleAudit.ts)
+Code: [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts)
 
 ### IMP-403 relationshipRuleResolvers
 Ships the built-in resolver catalogue (`markdown-links`, `mdmd-code-paths`) that interprets rule hops. [Relationship Rule Resolvers](../../.mdmd/layer-4/packages/shared/src/rules/relationshipResolvers.ts.mdmd.md)
@@ -94,10 +94,10 @@ Parses profile definitions, validates identifier formats, and emits compiled pro
 
 Code: [`packages/shared/src/rules/symbolCorrectnessProfiles.ts`](../../packages/shared/src/rules/symbolCorrectnessProfiles.ts)
 
-### IMP-481 symbolCorrectnessValidator
-Evaluates compiled profiles against the persisted graph and surfaces diagnostics. [Symbol Correctness Validator](../../.mdmd/layer-4/packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts.mdmd.md)
+### IMP-481 symbolCorrectnessProfiles
+Parses profile definitions and validates identifier formats. [Symbol Correctness Profiles](../layer-4/packages/shared/src/rules/symbolCorrectnessProfiles.ts.mdmd.md)
 
-Code: [`packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts`](../../packages/server/src/features/diagnostics/symbolCorrectnessValidator.ts)
+Code: [`packages/shared/src/rules/symbolCorrectnessProfiles.ts`](../../packages/shared/src/rules/symbolCorrectnessProfiles.ts)
 
 ## Evidence
 - Snapshot + audit pipeline: `npm run graph:snapshot` followed by `npm run graph:audit -- --workspace . --profiles` exercises the engine, provider, and auditor end-to-end.

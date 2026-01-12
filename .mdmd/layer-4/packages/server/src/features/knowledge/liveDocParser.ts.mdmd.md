@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/liveDocParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-livedocparser-ts
-- Generated At: 2025-12-15T01:20:23.006Z
+- Generated At: 2026-01-12T21:47:40.529Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Parses Live Documentation markdown files (originally MDMD format) to extract str
 - The "MDMD" naming persists in function/interface names (`extractMdmdDocumentDetails`, `MdmdDocumentDetails`) as an internal implementation detail; the module itself now uses the public "Live Documentation" branding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T01:20:23.006Z","inputHash":"c2c42bda61b0e05b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.529Z","inputHash":"c2c42bda61b0e05b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
@@ -31,7 +31,7 @@ Parses Live Documentation markdown files (originally MDMD format) to extract str
 #### `extractMdmdDocumentDetails` {#symbol-extractmdmddocumentdetails}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L26)
-- Returns: [`MdmdDocumentDetails`](./workspaceIndexProvider.ts.mdmd.md#symbol-mdmddocumentdetails)
+- Returns: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
 
 ##### `extractMdmdDocumentDetails` — Summary
 Extracts MDMD document details from markdown content.
@@ -39,7 +39,7 @@ Extracts MDMD document details from markdown content.
 #### `createMdmdMetadataHints` {#symbol-createmdmdmetadatahints}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L43)
-- Parameters: `details`: [`MdmdDocumentDetails`](./workspaceIndexProvider.ts.mdmd.md#symbol-mdmddocumentdetails); `context`: [`LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
+- Parameters: `details`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails); `context`: [`LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
 
 ##### `createMdmdMetadataHints` — Summary
 Creates relationship hints from MDMD metadata code paths.
@@ -47,8 +47,8 @@ Creates relationship hints from MDMD metadata code paths.
 #### `extractDocumentSymbolReferences` {#symbol-extractdocumentsymbolreferences}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L74)
-- Returns: [`DocumentSymbolReferenceMetadata`](./workspaceIndexProvider.ts.mdmd.md#symbol-documentsymbolreferencemetadata)[]
-- Parameters: `mdmdDetails`: [`MdmdDocumentDetails`](./workspaceIndexProvider.ts.mdmd.md#symbol-mdmddocumentdetails)
+- Returns: [`DocumentSymbolReferenceMetadata`](#symbol-documentsymbolreferencemetadata)[]
+- Parameters: `mdmdDetails`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
 
 ##### `extractDocumentSymbolReferences` — Summary
 Extracts symbol references from document content.
@@ -126,7 +126,7 @@ Splits a metadata list value, handling markdown links.
 #### `shouldRegisterInlineCode` {#symbol-shouldregisterinlinecode}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L444)
-- Parameters: `details`: [`MdmdDocumentDetails`](./workspaceIndexProvider.ts.mdmd.md#symbol-mdmddocumentdetails)
+- Parameters: `details`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
 
 ##### `shouldRegisterInlineCode` — Summary
 Determines if an inline code snippet should be registered as a symbol reference.
@@ -139,9 +139,3 @@ Determines if an inline code snippet should be registered as a symbol reference.
 - [`linkHintExtractor.resolveReferencePath`](./linkHintExtractor.ts.mdmd.md#symbol-resolvereferencepath)
 - [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [workspaceIndexProvider.test.ts](./workspaceIndexProvider.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

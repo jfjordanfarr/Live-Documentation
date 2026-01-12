@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/noiseFilter.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-noisefilter-ts
-- Generated At: 2025-12-07T21:41:17.533Z
+- Generated At: 2026-01-12T21:47:40.507Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Applies confidence, depth, and per-target budgets to ripple diagnostics so publi
 - Maintains per-change and per-artifact counters to coordinate with acknowledgement and hysteresis layers without duplicating their logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.533Z","inputHash":"5741acedb77b071c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.507Z","inputHash":"5741acedb77b071c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NoiseFilterTotals` {#symbol-noisefiltertotals}
@@ -50,5 +50,4 @@ Applies confidence, depth, and per-target budgets to ripple diagnostics so publi
 ### Observed Evidence
 #### Vitest Unit Tests
 - [noiseFilter.test.ts](./noiseFilter.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](./publishDocDiagnostics.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

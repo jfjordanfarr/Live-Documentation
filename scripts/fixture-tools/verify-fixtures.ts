@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
-import * as os from "node:os";
 import * as path from "node:path";
 import process from "node:process";
 
@@ -38,7 +37,6 @@ interface FixtureContext {
 }
 
 const REPO_ROOT = path.resolve(path.join(__dirname, "..", ".."));
-const FIXTURE_TIMESTAMP = "2025-01-01T00:00:00.000Z";
 const TSX_CLI = path.join(REPO_ROOT, "node_modules", "tsx", "dist", "cli.mjs");
 const DEFAULT_SLOPCOP_SUITES: readonly SlopcopSuite[] = ["markdown", "assets", "symbols"];
 const QUIET_MODE =
@@ -101,21 +99,12 @@ function toContext(repoRoot: string, definition: FixtureDefinition): FixtureCont
 async function verifyFixture(repoRoot: string, context: FixtureContext): Promise<void> {
   await ensureDirectory(context.absolutePath);
 
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), `fixture-${context.definition.id}-`));
-  try {
-    const dbPath = path.join(tempRoot, `${context.definition.id}.db`);
-    const snapshotPath = path.join(tempRoot, `${context.definition.id}.json`);
-
-    await runSnapshot(repoRoot, context.absolutePath, dbPath, snapshotPath);
-    if (context.definition.skipGraphAudit) {
-      console.log("→ graph:audit (skipped)");
-    } else {
-      await runAudit(repoRoot, dbPath, context.absolutePath);
-    }
-    await runSlopcopSuites(repoRoot, context);
-  } finally {
-    await fs.rm(tempRoot, { recursive: true, force: true });
-  }
+  // NOTE: graph:snapshot and graph:audit were removed in the stateless simplification.
+  // Fixture verification now only runs SlopCop suites. Live Docs generation/lint
+  // should be added here once stable.
+  console.log("→ graph:snapshot (skipped - stateless mode)");
+  console.log("→ graph:audit (skipped - stateless mode)");
+  await runSlopcopSuites(repoRoot, context);
 }
 
 async function ensureDirectory(candidate: string): Promise<void> {
@@ -134,61 +123,6 @@ async function assertFileExists(filePath: string, message: string): Promise<void
   } catch {
     throw new Error(message);
   }
-}
-
-async function runSnapshot(
-  repoRoot: string,
-  workspaceRoot: string,
-  dbPath: string,
-  outputPath: string
-): Promise<void> {
-  const tsxCli = TSX_CLI;
-  const tsconfig = path.join(repoRoot, "tsconfig.base.json");
-  const scriptPath = path.join(repoRoot, "scripts", "graph-tools", "snapshot-workspace.ts");
-
-  await runProcess(
-    "graph:snapshot",
-    process.execPath,
-    [
-      tsxCli,
-      "--tsconfig",
-      tsconfig,
-      scriptPath,
-      "--workspace",
-      workspaceRoot,
-      "--db",
-      dbPath,
-      "--output",
-      outputPath,
-      "--timestamp",
-      FIXTURE_TIMESTAMP,
-      "--quiet"
-    ],
-    workspaceRoot
-  );
-}
-
-async function runAudit(repoRoot: string, dbPath: string, workspaceRoot: string): Promise<void> {
-  const tsxCli = TSX_CLI;
-  const tsconfig = path.join(repoRoot, "tsconfig.base.json");
-  const scriptPath = path.join(repoRoot, "scripts", "graph-tools", "audit-doc-coverage.ts");
-
-  const args = [
-    tsxCli,
-    "--tsconfig",
-    tsconfig,
-    scriptPath,
-    "--db",
-    dbPath,
-    "--workspace",
-    workspaceRoot
-  ];
-
-  if (!QUIET_MODE) {
-    args.push("--json");
-  }
-
-  await runProcess("graph:audit", process.execPath, args, workspaceRoot);
 }
 
 async function runSlopcopSuites(repoRoot: string, context: FixtureContext): Promise<void> {

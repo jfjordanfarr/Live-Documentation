@@ -35,20 +35,20 @@ Supports REQ-F1 to REQ-F5 by providing deterministic integration suites that exp
 
 ## Linked Implementations
 
-### IMP-403 codeImpact Suite
-Scenario implementations verifying falsifiability coverage. [Code Impact Suite](../../../.mdmd/layer-4/tests/integration/core/graph/codeImpact.test.ts.mdmd.md)
+### IMP-403 liveDocsGeneration Suite
+Exercises Live Doc regeneration, authored preservation, and deterministic output. Code: [`tests/integration/live-docs/generation.test.ts`](../../../tests/integration/live-docs/generation.test.ts)
 
-### IMP-406 broken-links Suite
-Dedicated falsifiability run for markdown link drift. [Broken Links Suite](../../../.mdmd/layer-4/tests/integration/integrity/hygiene/broken-links.test.ts.mdmd.md)
+### IMP-406 liveDocsEvidence Suite
+Validates evidence ingestion, lint warnings, and placeholder behaviour. Code: [`tests/integration/live-docs/evidence.test.ts`](../../../tests/integration/live-docs/evidence.test.ts)
 
-### IMP-407 acknowledgement Suite
-Ensures acknowledgement flows remain stable under drift. [Acknowledge Diagnostics Suite](../../../.mdmd/layer-4/tests/integration/extension/acknowledgement/acknowledgeDiagnostics.test.ts.mdmd.md)
+### IMP-407 liveDocsInspect Suite
+Exercises CLI inspect commands and pathfinding. Code: [`tests/integration/live-docs/inspect-cli.test.ts`](../../../tests/integration/live-docs/inspect-cli.test.ts)
 
-### IMP-408 scopeCollision Suite
-Confirms duplicate symbols do not emit diagnostics. [Scope Collision Suite](../../../.mdmd/layer-4/tests/integration/integrity/collision/scopeCollision.test.ts.mdmd.md)
+### IMP-408 slopcopAssets Suite
+Validates static asset reference checking. Code: [`tests/integration/slopcop/assetsAudit.test.ts`](../../../tests/integration/slopcop/assetsAudit.test.ts)
 
-### IMP-409 llmIngestion Suite
-Validates template-driven ripple depth metadata. [LLM Ingestion Suite](../../../.mdmd/layer-4/tests/integration/core/llm/llmIngestionDryRun.test.ts.mdmd.md)
+### IMP-409 slopcopSymbols Suite
+Validates heading and symbol audit functionality. Code: [`tests/integration/slopcop/symbolsAudit.test.ts`](../../../tests/integration/slopcop/symbolsAudit.test.ts)
 
 ## Evidence
 - Integration suites US3–US5 run under `npm run test:integration` and safe-to-commit, producing falsifiability coverage reports.

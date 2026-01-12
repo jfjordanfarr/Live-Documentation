@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/feedDiagnosticsGateway.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-feeddiagnosticsgateway-ts
-- Generated At: 2025-12-15T00:38:06.290Z
+- Generated At: 2026-01-12T21:47:40.515Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tracks per-feed health transitions and emits structured status notifications for
 - Logs severity-aware messages while caching the latest status so listeners (bridge service, tests) can observe health changes without re-running ingestion.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.290Z","inputHash":"8581decc23ec3e99"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.515Z","inputHash":"8581decc23ec3e99"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FeedHealthStatus` {#symbol-feedhealthstatus}
@@ -39,11 +39,3 @@ Tracks per-feed health transitions and emits structured status notifications for
 ### Dependencies
 - [`index.KnowledgeFeedSummary`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgefeedsummary)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [knowledgeFeedManager.test.ts](./knowledgeFeedManager.test.ts.mdmd.md)
-- [knowledgeGraphBridge.test.ts](./knowledgeGraphBridge.test.ts.mdmd.md)
-- [knowledgeGraphIngestor.test.ts](./knowledgeGraphIngestor.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

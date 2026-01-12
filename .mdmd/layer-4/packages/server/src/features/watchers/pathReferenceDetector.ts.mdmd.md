@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/watchers/pathReferenceDetector.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-watchers-pathreferencedetector-ts
-- Generated At: 2025-12-15T00:38:06.617Z
+- Generated At: 2026-01-12T21:47:40.589Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Extracts relative-path references from markdown and code so the watcher pipeline
 - When workspace indexing rules change (new script/doc globs or additional path hint sources) update these heuristics in tandem so seed hints continue to mirror the indexer output <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2832-L2864>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.617Z","inputHash":"98d5618e1c8e1340"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.589Z","inputHash":"98d5618e1c8e1340"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactCategory` {#symbol-artifactcategory}
@@ -46,9 +46,5 @@ Extracts relative-path references from markdown and code so the watcher pipeline
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [saveCodeChange.test.ts](../changeEvents/saveCodeChange.test.ts.mdmd.md)
-- [saveDocumentChange.test.ts](../changeEvents/saveDocumentChange.test.ts.mdmd.md)
-- [publishDocDiagnostics.test.ts](../diagnostics/publishDocDiagnostics.test.ts.mdmd.md)
-- [artifactWatcher.test.ts](./artifactWatcher.test.ts.mdmd.md)
 - [pathReferenceDetector.test.ts](./pathReferenceDetector.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -330,11 +330,11 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 
 
 ## Implementation Traceability
-- [`packages/server/src/main.ts`](../../packages/server/src/main.ts) and [`packages/server/src/runtime/changeProcessor.ts`](../../packages/server/src/runtime/changeProcessor.ts) orchestrate analyzer pipelines that feed Live Doc generation.
-- [`packages/server/src/features/diagnostics/publishCodeDiagnostics.ts`](../../packages/server/src/features/diagnostics/publishCodeDiagnostics.ts) and [`publishDocDiagnostics.ts`](../../packages/server/src/features/diagnostics/publishDocDiagnostics.ts) will emit Live Doc-backed diagnostics.
+- [`packages/server/src/main.ts`](../../packages/server/src/main.ts) provides the LSP entrypoint; [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) orchestrates analyzer pipelines that feed Live Doc generation.
+- [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts) will emit Live Doc-backed diagnostics.
 - [`packages/extension/src/commands/exportDiagnostics.ts`](../../packages/extension/src/commands/exportDiagnostics.ts) and forthcoming Live Doc CLI utilities render consumption narratives.
 - [`scripts/live-docs/visualize-explorer.ts`](../../scripts/live-docs/visualize-explorer.ts) hosts the unified visualization command center that merges circuit-board, local, and force-directed views while the extension variant incubates inside Antigravity.
 - [`packages/shared/src/testing/fixtureOracles`](../../packages/shared/src/testing/fixtureOracles) house polyglot analyzers underpinning generated sections.
-- Integration suites under `tests/integration/live-docs` (to be expanded) validate regeneration, evidence mapping, and docstring drift.
+- Integration suites under `tests/integration/live-docs` validate regeneration, evidence mapping, and docstring drift.
 
 

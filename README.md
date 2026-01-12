@@ -10,6 +10,17 @@ Live Documentation is a VS Code extension and CLI suite that transforms any code
 
 ---
 
+## Quick Links
+
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](.mdmd/layer-1/guides/getting-started.mdmd.md) | Installation, configuration, and your first session |
+| [Tracing Impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md) | Dependency pathfinding and "what will this change break?" |
+| [Visualizing Your Codebase](.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) | Explorer views, shareability, and static exports |
+| [CLI Reference](.mdmd/layer-1/guides/cli-reference.mdmd.md) | Complete command catalog |
+
+---
+
 ## The Core Insight
 
 Software is a web of interconnected files. Understanding that web has always required holding complex mental models, reading code line-by-line, or trusting ephemeral AI explanations.

@@ -129,8 +129,8 @@ Guarantee CAP-006: any future feature-flagged authoring loops (docs → code wri
 ### COMP-004 SlopCop Tooling
 Supports REQ-F1, REQ-F3, and REQ-F5. [SlopCop Architecture](../layer-3/slopcop.mdmd.md)
 
-### COMP-005 Knowledge Graph Ingestion
-Supports REQ-F2 and REQ-F6. [Knowledge Graph Ingestion Architecture](../layer-3/knowledge-graph-ingestion.mdmd.md)
+### COMP-005 Edge Aggregation Pipeline
+Supports REQ-F2 and REQ-F6. [Edge Aggregation Pipeline Architecture](../layer-3/edge-aggregation-pipeline.mdmd.md)
 
 ### COMP-009 Falsifiability Suites
 Supports all falsifiability requirements. [Ripple Falsifiability Suite](../layer-3/falsifiability/ripple-falsifiability-suite.mdmd.md)
@@ -146,14 +146,14 @@ Supports REQ-F5. [SlopCop Asset Audit](../../.mdmd/layer-4/scripts/slopcop/check
 ### IMP-204 slopcopSymbols CLI
 Supports REQ-F5. [SlopCop Symbol References](../../.mdmd/layer-4/scripts/slopcop/check-symbols.ts.mdmd.md)
 
-### IMP-103 changeProcessor
-Supports REQ-F2, REQ-F3, and REQ-F4. [Change Processor Runtime](../../.mdmd/layer-4/packages/server/src/runtime/changeProcessor.ts.mdmd.md)
+### IMP-103 liveDocsLint
+Supports REQ-F2, REQ-F3, and REQ-F4. [Live Docs Lint CLI](../../.mdmd/layer-4/scripts/live-docs/lint.ts.mdmd.md)
 
 ### IMP-310 liveDocumentationGenerator
-Supports REQ-F1 and REQ-F2. (Documented in forthcoming Layer‑4 Live Documentation generator files.)
+Supports REQ-F1 and REQ-F2. [Live Docs Generate CLI](../../.mdmd/layer-4/scripts/live-docs/generate.ts.mdmd.md)
 
 ### IMP-410 docstringBridgeAdapters
-Supports REQ-F6. [Docstring Bridge Schema](../../.mdmd/layer-4/scripts/graph-tools/snapshot-workspace.ts.mdmd.md)
+Supports REQ-F6. [Polyglot Adapters](../../.mdmd/layer-4/packages/shared/src/live-docs/adapters/)
 
 ## Evidence
 - Safe-to-commit logs (2025-11-08) capture Live Doc structural lint failures resolved after instruction updates.
