@@ -31,10 +31,8 @@ Document the CLI toolbox that maintains Live Documentation quality—generation,
 - [scripts/live-docs/report-precision.ts](../layer-4/scripts/live-docs/report-precision.ts.mdmd.md)
 - [scripts/live-docs/run-all.ts](../layer-4/scripts/live-docs/run-all.ts.mdmd.md)
 - [scripts/live-docs/system.ts](../layer-4/scripts/live-docs/system.ts.mdmd.md)
-- [scripts/live-docs/visualize.ts](../layer-4/scripts/live-docs/visualize.ts.mdmd.md)
-- [scripts/live-docs/visualize-circuit.ts](../layer-4/scripts/live-docs/visualize-circuit.ts.mdmd.md)
 - [scripts/live-docs/visualize-explorer.ts](../layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md)
-- [scripts/live-docs/visualize-sonar.ts](../layer-4/scripts/live-docs/visualize-sonar.ts.mdmd.md)
+- [scripts/live-docs/visualize-static.ts](../layer-4/scripts/live-docs/visualize-static.ts.mdmd.md)
 - [scripts/live-docs/lib/liveDocGraph.ts](../layer-4/scripts/live-docs/lib/liveDocGraph.ts.mdmd.md)
 
 ## Evidence

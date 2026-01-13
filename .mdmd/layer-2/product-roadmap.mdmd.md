@@ -345,7 +345,7 @@ Supports REQ-201. [Live Docs Inspect CLI](../../.mdmd/layer-4/scripts/live-docs/
 Supports REQ-101 and REQ-301. [Safe to Commit Pipeline](../../scripts/safe-to-commit.mjs)
 
 ### IMP-302 liveDocsVisualize CLI
-Supports REQ-030. [Live Docs Visualize CLI](../../.mdmd/layer-4/scripts/live-docs/visualize.ts.mdmd.md)
+Supports REQ-030. [Live Docs Visualize Explorer CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md)
 
 ### IMP-303 liveDocsSystem CLI
 Supports REQ-030. [Live Docs System CLI](../../.mdmd/layer-4/scripts/live-docs/system.ts.mdmd.md)
