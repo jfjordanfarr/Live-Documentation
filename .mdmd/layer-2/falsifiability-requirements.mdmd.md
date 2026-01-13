@@ -162,11 +162,9 @@ Supports REQ-F6. [Polyglot Adapters](../../.mdmd/layer-4/packages/shared/src/liv
 
 ## Open Dependencies
 - Add integration coverage for rename/move flows impacting Live Docs and ensure waivers propagate downstream.
-- Expand knowledge feed bootstrap fixtures with docstring bridge data and evidence mapping.
 - Finalise waiver taxonomy (evidence, docstring, asset) before enforcing higher lint severities.
 
 ## Implementation Alignment
-- [FeedCheckpointStore](../../.mdmd/layer-4/packages/server/src/features/knowledge/feedCheckpointStore.ts.mdmd.md) and [FeedDiagnosticsGateway](../../.mdmd/layer-4/packages/server/src/features/knowledge/feedDiagnosticsGateway.ts.mdmd.md) keep analyzer results and docstring bridge state consistent for REQ-F2 and REQ-F6.
 - [Dependency Quick Pick](../../.mdmd/layer-4/packages/extension/src/diagnostics/dependencyQuickPick.ts.mdmd.md) consumes Live Doc metadata to satisfy REQ-F4.
 - [Fallback Inference](../../.mdmd/layer-4/packages/shared/src/inference/fallbackInference.ts.mdmd.md) and [Link Inference Orchestrator](../../.mdmd/layer-4/packages/shared/src/inference/linkInference.ts.mdmd.md) supply the analyzer inputs verified by these falsifiability tests.
 - SlopCop tooling docs (`slopcopMarkdownLinks.mdmd.md`, `slopcopAssetPaths.mdmd.md`, `slopcopSymbolReferences.mdmd.md`) capture the lint gates enforced by REQ-F1, REQ-F5, and REQ-F6.

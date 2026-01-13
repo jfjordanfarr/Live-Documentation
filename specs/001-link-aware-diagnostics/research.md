@@ -14,7 +14,7 @@
 
 ## Workspace Indexing & Change Detection
 - **Observation**: VS Code core maintains a file-service index backed by OS-level watchers (fsEvents, inotify, ReadDirectoryChangesW) and delivers incremental events to extensions; language servers receive `didOpen`, `didChange`, `didClose`, and `didSave` notifications for synchronized documents.
-- **Implication**: Our LSP can subscribe to the same incremental feed—no bespoke polling needed. For files outside open editors, we can request symbol/reference data via `workspace.findFiles`, `executeWorkspaceSymbolProvider`, or by consuming LSIF/SCIP indexes emitted by existing tooling.
+- **Implication**: Our LSP can subscribe to the same incremental feed—no bespoke polling needed. For files outside open editors, we can request symbol/reference data via `workspace.findFiles` and `executeWorkspaceSymbolProvider`.
 - **Reference**: Language Server Extension Guide documents incremental sync handlers, confirming that servers only receive deltas after the initial open, limiting reparsing overhead.
 
 ## Link Establishment Strategy
@@ -27,31 +27,16 @@
 - **Rationale**: Ensures the system works in any workspace, with language-server data treated as an optimization that reduces token usage and improves precision. Aligns with open practices for building knowledge graphs directly from source text.
 - **References**: Microsoft GraphRAG research highlights reproducible graph creation via LLM-driven pipelines; we adapt similar staging (chunking, edge extraction, ranking) for local inference.
 
-## Graph Rebuild & Freshness
-- **Decision**: Store graph snapshots as ephemeral cache files alongside the SQLite store. On start or cache miss, rebuild by replaying symbol/reference queries, language-server diagnostics, and external knowledge-graph feeds.
-- **Rationale**: Mimics VS Code’s rebuildable indexes (tsserver project service, LSIF caches). Ensures deleting the cache forces a clean reindex without data loss. Supports offline scenarios and easy migration between machines.
-- **Alternatives Considered**: Treat graph as authoritative user data (rejected: complicates sync, increases risk when schema evolves); full in-memory rebuild on every activation (rejected: slower warm-up for large workspaces).
+## Graph Rebuild & Freshness (Updated 2026-01-12)
+- **Decision**: Live Docs themselves serve as the canonical graph representation. Dependency relationships are encoded as markdown links and can be queried via `live-docs:inspect --from/--to`. No separate SQLite cache or external feeds are needed.
+- **Rationale**: "Live Docs ARE the database" — eliminates cache invalidation complexity.
 
-## Graph Storage Layer
-- **Decision**: Persist artifact and relationship data in an embedded SQLite database with node/edge tables and indexes for typical traversals.
-- **Rationale**: SQLite is lightweight, cross-platform, and proven for property-graph workloads at our target scale. Works offline and simplifies distribution.
-- **Alternatives Considered**: KùzuDB (kept in reserve if queries require richer pattern matching); in-memory store only (rejected: no history/audit, loses data on restart).
-
-## Knowledge Graph Schema Contract
-- **Decision**: Require external feeds to provide artifact identifiers, edge types, directionality, timestamps, and optional confidence scores in a normalized schema that maps directly onto our SQLite tables. Support two ingestion modes—on-demand KnowledgeSnapshot imports and streaming feeds—that share the same contract so payloads can be validated consistently before mutation.
-- **Rationale**: Allows deterministic ingestion regardless of provider (GitLab GKG, LSIF/SCIP exports, custom GraphRAG output) and makes validation straightforward before data mutates the graph store. Shared contracts ensure snapshot payloads can be replayed for reproducibility while streaming feeds can resume after outages by checkpointing the last accepted event.
-- **Alternatives Considered**: Accept provider-specific payloads with on-the-fly mapping (rejected: hard to validate, increases maintenance); mandate a proprietary format (rejected: reduces interoperability).
-
-## Feed Resilience Strategy
-- **Decision**: Treat remote knowledge-graph feeds as optional accelerants—when a source goes stale or unreachable, surface a warning diagnostic, temporarily fence the feed, and revert to local inference until healthy data arrives. Maintain checkpoints so streaming feeds can replay missed messages, while snapshots retain their last approved version.
-- **Rationale**: Keeps diagnostics trustworthy without blocking the core experience on external availability. Mirrors VS Code’s approach of tolerating index rebuilds when caches disappear.
-- **Alternatives Considered**: Hard-fail diagnostics when feeds drop (rejected: harms usability); silently ignore failure (rejected: hides data quality issues).
-
-## GitLab Knowledge Graph (GKG) Integration
-- **Evaluation**: GKG exposes REST endpoints (`/projects/:id/knowledge_graph/nodes`, `/edges`) and webhook-delivered deltas that include stable identifiers, timestamps, edge kinds, and confidence values. Snapshots can be fetched with `include=metadata` to enrich drift analysis, while webhook payloads carry `sequence_id` for replay guarantees.
-- **Approach**: Use authenticated REST pulls for initial snapshot ingestion, mapping GitLab node types to our artifact layers (e.g., `doc_requirement` → `requirements`, `code_module` → `code`). Subscribe to the `knowledge_graph_events` webhook to receive streaming updates; store the last `sequence_id` so the server can request missed events via backfill endpoint on reconnect. Apply provider-specific metadata (project path, labels) under the artifact metadata bag for downstream overrides.
-- **Risks**: Webhooks arrive in project-scoped batches, so multi-project workspaces require deduplication. REST snapshot pagination can be heavy for large repos; recommend chunked ingestion with progress telemetry. Authorization depends on PAT scopes (`read_api`, `read_repository`) and must respect enterprise policies.
-- **Fallback Plan**: When GKG is unavailable, revert to LSIF/SCIP exports produced via GitLab CI pipelines; the ingestion bridge shares the same schema so swapping sources is configuration-only.
+## Link Sources (Updated 2026-01-13)
+- **Decision**: Live Documentation gathers potential relationships from three complementary sources:
+  1. **Polyglot Adapters** — Tree-sitter-based AST parsing for symbols & dependencies (always available)
+  2. **LLM Inference** — Multi-sampled inference with local LLMs (Ollama) or VS Code's configured LLM (opt-in)
+  3. **VS Code Symbols** — IDE workspace symbol index (extension only)
+- **Rationale**: Each source contributes edges the others may miss. External feed ingestion (LSIF/SCIP) was descoped due to high activation energy for typical workspaces.
 
 ## AST Benchmark Strategy
 - **Decision**: Maintain a curated benchmark suite with canonical ASTs (starting with small C programs and expanding to other languages where ground truth is accessible) to validate inferred knowledge graphs during development, while continuing to run multi-pass self-similarity benchmarks for repositories that lack authoritative AST exports.
@@ -76,6 +61,5 @@
 
 ## Implementation Traceability
 - [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) implements the Live Doc generation pipeline captured in this research.
-- [`packages/server/src/features/knowledge/lsifParser.ts`](../../packages/server/src/features/knowledge/lsifParser.ts) and [`scipParser.ts`](../../packages/server/src/features/knowledge/scipParser.ts) operationalise the symbol ingestion and fallback strategies.
-- [`packages/shared/src/knowledge/externalTypes.ts`](../../packages/shared/src/knowledge/externalTypes.ts) covers the feed schema contracts.
+- Symbol ingestion relies on polyglot heuristic adapters under `packages/shared/src/live-docs/adapters/` and the VS Code Workspace Symbols bridge in extension mode.
 - [`tests/integration/live-docs/generation.test.ts`](../../tests/integration/live-docs/generation.test.ts) and [`tests/integration/live-docs/evidence.test.ts`](../../tests/integration/live-docs/evidence.test.ts) validate key hypotheses around Live Doc generation and evidence mapping.

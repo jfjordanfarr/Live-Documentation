@@ -221,7 +221,7 @@ Teams adopting Live Documentation in brownfield workspaces expect existing markd
 - Live Docs remain stable when files move or are renamed; migration scripts update metadata and code path references automatically.
 - Rapid edits triggering regeneration multiple times must coalesce; generated blocks should only change when analyzer output differs.
 - Tests spanning many implementations should not bloat Implementation Live Docs; backlinks flow through the graph instead of duplicating content.
-- External feeds (GitLab Knowledge Graph, LSIF) failing mid-run must not overwrite existing generated sections; provenance markers flag stale data.
+- Analyzer failures mid-run must not overwrite existing generated sections; provenance markers flag stale data.
 - LLM augmentations must remain opt-in and clearly labeled to prevent unverifiable edges sneaking into generated content.
 - Safe-commit must continue to run offline; Live Doc regeneration cannot require cloud calls for deterministic builds.
 - System analytics should never leave behind tracked files by default; generators must clean up temporary exports even when commands error.
@@ -254,7 +254,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **FR-LD5**: Diagnostics, CLI, and Copilot surfaces MUST consume Live Docs as their single source of truth, embedding links back to the originating documents, and the `live-docs inspect` CLI MUST support `--from/--to` path discovery plus single-endpoint root tracing with deterministic hop output.
 - **FR-LD6**: Docstring bridges MUST reconcile inline documentation with Live Doc summaries, map multi-tag payloads into a canonical schema (`summary`, `remarks`, `parameters`, `typeParameters`, `returns`, `exceptions`, `examples`, `links`), render deterministic `##### `Symbol` — Field` subheadings with `_Not documented_` placeholders when data is missing, retain provenance for unmapped fragments, and raise drift diagnostics when mismatches persist beyond one regeneration cycle.
 - **FR-LD7**: Migration tooling MUST compare existing Layer‑4 MDMD docs to generated Live Docs, producing diff reports and updating references (Layer‑3/Layer‑1) once parity is confirmed.
-- **FR-LD8**: External feeds (LSIF, SCIP, GitLab Knowledge Graph) and optional LLM augmentations MUST tag generated sections with confidence tiers; low-confidence edges require manual promotion before appearing in diagnostics.
+- **FR-LD8**: Optional LLM augmentations MUST tag generated sections with confidence tiers; low-confidence edges require manual promotion before appearing in diagnostics.
 - **FR-LD9**: Telemetry MUST report regeneration latency, evidence coverage rates, and waiver counts to evaluate adoption.
 - **FR-LD10**: Live Doc configuration MUST expose glob patterns, archetype overrides, and storage paths while remaining version-controlled and documented for adopters.
 - **FR-LD11**: Generated Live Docs MUST emit workspace-relative markdown links and enforce header slugs according to the configured dialect (GitHub default); violations require explicit waivers surfaced in lint.

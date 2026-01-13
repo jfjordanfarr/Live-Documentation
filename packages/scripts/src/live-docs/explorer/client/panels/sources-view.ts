@@ -277,8 +277,8 @@ export function renderSourcesView(config: SourcesViewConfig): void {
         <p>To enrich the graph:</p>
         <ul>
           <li>Run <code>npm run live-docs:generate</code> to create or update Live Docs for your workspace.</li>
-          <li>Place SCIP or LSIF JSON files in <code>data/knowledge-feeds/</code> for compiler-verified symbol data.</li>
           <li>Use <code>npm run live-docs:inspect -- &lt;path&gt;</code> to trace dependency paths from the command line.</li>
+          <li>Author <code>Purpose</code> and <code>Notes</code> sections in your Live Docs to improve discoverability.</li>
         </ul>
         <p><strong>Barrel files</strong> (index.ts re-exporters) can obscure original symbol sources. If you see high fan-out warnings above, consider whether those files are masking the true dependency structure.</p>
       </div>

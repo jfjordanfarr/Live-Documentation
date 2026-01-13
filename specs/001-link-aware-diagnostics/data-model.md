@@ -123,5 +123,4 @@ Append-only drift history record used for reporting and restart resilience.
 The relationships described above are implemented by:
 
 - [packages/shared/src/domain/artifacts.ts](../../packages/shared/src/domain/artifacts.ts) (domain contracts)
-- [packages/scripts/src/live-docs/graph/liveDocGraph.ts](../../packages/scripts/src/live-docs/graph/liveDocGraph.ts) (in-memory graph from Live Doc markdown — replaces SQLite projection)
-- [packages/shared/src/knowledge/externalTypes.ts](../../packages/shared/src/knowledge/externalTypes.ts) (external feed types for LSIF/SCIP ingestion)
+- [packages/scripts/src/live-docs/graph/liveDocGraph.ts](../../packages/scripts/src/live-docs/graph/liveDocGraph.ts) (in-memory graph from Live Doc markdown)

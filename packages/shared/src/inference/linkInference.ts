@@ -10,20 +10,12 @@ import {
   LinkRelationship,
   LinkRelationshipKind
 } from "../domain/artifacts";
-import type {
-  ExternalArtifact,
-  ExternalLink,
-  ExternalSnapshot,
-  ExternalStreamEvent
-} from "../knowledge/externalTypes";
 
 type Uri = string;
 
 type WorkspaceProviderKind = "workspace-index" | "workspace-symbols" | `workspace:${string}`;
 
-type KnowledgeFeedKind = "knowledge-feed";
-
-export type LinkInferenceTraceOrigin = WorkspaceProviderKind | KnowledgeFeedKind | InferenceTraceEntry["origin"];
+export type LinkInferenceTraceOrigin = WorkspaceProviderKind | InferenceTraceEntry["origin"];
 
 export interface LinkInferenceTraceEntry {
   sourceUri: string;
@@ -68,36 +60,11 @@ export interface WorkspaceProviderSummary {
   evidenceCount: number;
 }
 
-export interface KnowledgeFeedSnapshotSource {
-  label: string;
-  loadSnapshot: () => Promise<ExternalSnapshot | null>;
-}
-
-export interface KnowledgeFeedStreamSource {
-  label: string;
-  loadStreamEvents: () => AsyncIterable<ExternalStreamEvent> | Promise<ExternalStreamEvent[]>;
-}
-
-export interface KnowledgeFeed {
-  id: string;
-  snapshot?: KnowledgeFeedSnapshotSource;
-  stream?: KnowledgeFeedStreamSource;
-}
-
-export interface KnowledgeFeedSummary {
-  id: string;
-  snapshotId?: string;
-  label?: string;
-  artifactCount: number;
-  linkCount: number;
-}
-
 export interface LinkInferenceRunInput {
   seeds: ArtifactSeed[];
   hints?: RelationshipHint[];
   contentProvider?: (uri: string) => Promise<string | undefined>;
   workspaceProviders?: WorkspaceLinkProvider[];
-  knowledgeFeeds?: KnowledgeFeed[];
   llm?: FallbackLLMBridge;
   minContentLengthForLLM?: number;
   now?: () => Date;
@@ -114,19 +81,12 @@ export interface LinkInferenceRunResult {
   links: LinkRelationship[];
   traces: LinkInferenceTraceEntry[];
   providerSummaries: WorkspaceProviderSummary[];
-  feedSummaries: KnowledgeFeedSummary[];
   errors: LinkInferenceError[];
 }
 
 interface ProviderAccumulatorRecord {
   provider: WorkspaceLinkProvider;
   contribution: WorkspaceLinkContribution | null | undefined;
-  error?: LinkInferenceError;
-}
-
-interface FeedAccumulatorRecord {
-  feed: KnowledgeFeed;
-  summary?: KnowledgeFeedSummary;
   error?: LinkInferenceError;
 }
 
@@ -315,27 +275,6 @@ function inferLinkKind(
   return "references";
 }
 
-function convertSnapshotArtifact(artifact: ExternalArtifact): KnowledgeArtifact {
-  return {
-    id: artifact.id,
-    uri: artifact.uri,
-    layer: artifact.layer,
-    language: artifact.language,
-    owner: artifact.owner,
-    lastSynchronizedAt: artifact.lastSynchronizedAt,
-    hash: artifact.hash,
-    metadata: artifact.metadata
-  };
-}
-
-function snapshotLinkRationale(link: ExternalLink, feedLabel: string): string {
-  if (link.metadata && typeof link.metadata.rationale === "string") {
-    return link.metadata.rationale;
-  }
-
-  return `Knowledge feed ${feedLabel} contribution`;
-}
-
 function toLinkInferenceTraceEntries(traces: InferenceTraceEntry[]): LinkInferenceTraceEntry[] {
   return traces.map(trace => ({
     sourceUri: trace.sourceUri,
@@ -367,19 +306,6 @@ function mergeSeeds(primary: Map<Uri, ArtifactSeed>, additional: ArtifactSeed[] 
       uri: normalizedUri,
       metadata: { ...existing.metadata, ...seed.metadata }
     });
-  }
-}
-
-async function* normalizeStream(
-  stream: AsyncIterable<ExternalStreamEvent> | Promise<ExternalStreamEvent[]>
-): AsyncIterable<ExternalStreamEvent> {
-  if (typeof (stream as AsyncIterable<ExternalStreamEvent>)[Symbol.asyncIterator] === "function") {
-    yield* (stream as AsyncIterable<ExternalStreamEvent>);
-    return;
-  }
-  const resolved = (await stream) as ExternalStreamEvent[];
-  for (const event of resolved) {
-    yield event;
   }
 }
 
@@ -435,17 +361,11 @@ export class LinkInferenceOrchestrator {
 
     this.applyWorkspaceEvidences(providerRecords, accumulator, errors);
 
-    const feedRecords = await this.ingestKnowledgeFeeds(input.knowledgeFeeds, accumulator, errors);
-    const feedSummaries = feedRecords
-      .filter(record => !record.error && record.summary)
-      .map(record => record.summary!);
-
     return {
       artifacts: accumulator.getArtifacts(),
       links: accumulator.getLinks(),
       traces: accumulator.getTraces(),
       providerSummaries,
-      feedSummaries,
       errors
     };
   }
@@ -516,127 +436,6 @@ export class LinkInferenceOrchestrator {
         );
       }
     }
-  }
-  private async ingestKnowledgeFeeds(
-    feeds: KnowledgeFeed[] | undefined,
-    accumulator: LinkAccumulator,
-    errors: LinkInferenceError[]
-  ): Promise<FeedAccumulatorRecord[]> {
-    if (!feeds?.length) {
-      return [];
-    }
-
-    const records: FeedAccumulatorRecord[] = [];
-
-    for (const feed of feeds) {
-      const summary: KnowledgeFeedSummary = {
-        id: feed.id,
-        artifactCount: 0,
-        linkCount: 0
-      };
-
-      try {
-        if (feed.snapshot) {
-          const snapshot = await feed.snapshot.loadSnapshot();
-          if (snapshot) {
-            summary.label = feed.snapshot.label;
-            summary.snapshotId = snapshot.id ?? undefined;
-            const feedArtifactById = new Map<string, KnowledgeArtifact>();
-
-            for (const artifact of snapshot.artifacts) {
-              const registered = accumulator.addArtifact(convertSnapshotArtifact(artifact));
-              feedArtifactById.set(artifact.id, registered.artifact);
-              if (registered.added) {
-                summary.artifactCount += 1;
-              }
-            }
-
-            for (const link of snapshot.links) {
-              const sourceArtifact = feedArtifactById.get(link.sourceId);
-              const targetArtifact = feedArtifactById.get(link.targetId);
-              if (!sourceArtifact || !targetArtifact) {
-                errors.push({
-                  source: `feed:${feed.id}`,
-                  message: `Snapshot link skipped because artifacts missing for ${link.sourceId} -> ${link.targetId}`
-                });
-                continue;
-              }
-
-              accumulator.addLink(
-                sourceArtifact,
-                targetArtifact,
-                link.kind,
-                link.confidence ?? 0.9,
-                link.createdBy ?? feed.id,
-                "knowledge-feed",
-                snapshotLinkRationale(link, feed.snapshot.label),
-                link.createdAt
-              );
-              summary.linkCount += 1;
-            }
-          }
-        }
-
-        if (feed.stream) {
-          for await (const event of normalizeStream(feed.stream.loadStreamEvents())) {
-            switch (event.kind) {
-              case "artifact-upsert": {
-                if (event.artifact) {
-                  accumulator.addArtifact(convertSnapshotArtifact(event.artifact));
-                }
-                break;
-              }
-              case "artifact-remove": {
-                // Stream removals are ignored in orchestrator; handled by persistence layer.
-                break;
-              }
-              case "link-upsert": {
-                if (!event.link) {
-                  break;
-                }
-                const sourceArtifact = accumulator.getArtifactById(event.link.sourceId);
-                const targetArtifact = accumulator.getArtifactById(event.link.targetId);
-                if (!sourceArtifact || !targetArtifact) {
-                  errors.push({
-                    source: `feed:${feed.id}`,
-                    message: `Stream link skipped because artifacts unknown for ${event.link.sourceId} -> ${event.link.targetId}`
-                  });
-                  break;
-                }
-                accumulator.addLink(
-                  sourceArtifact,
-                  targetArtifact,
-                  event.link.kind,
-                  event.link.confidence ?? 0.8,
-                  event.link.createdBy ?? feed.id,
-                  "knowledge-feed",
-                  snapshotLinkRationale(event.link, feed.stream.label),
-                  event.link.createdAt
-                );
-                summary.linkCount += 1;
-                break;
-              }
-              case "link-remove": {
-                // Removals deferred to persistence layer.
-                break;
-              }
-            }
-          }
-        }
-
-        records.push({ feed, summary });
-      } catch (cause) {
-        const error: LinkInferenceError = {
-          source: `feed:${feed.id}`,
-          message: `Knowledge feed ${feed.id} failed to load`,
-          cause
-        };
-        errors.push(error);
-        records.push({ feed, error });
-      }
-    }
-
-    return records;
   }
 }
 

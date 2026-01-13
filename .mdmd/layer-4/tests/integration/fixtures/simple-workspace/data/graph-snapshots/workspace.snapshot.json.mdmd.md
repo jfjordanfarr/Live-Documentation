@@ -9,7 +9,7 @@
 
 ## Authored
 ### Purpose
-Baseline graph snapshot for the simple workspace fixture, used to verify that regeneration and knowledge feeds produce consistent relationships.
+Baseline graph snapshot for the simple workspace fixture, used to verify that regeneration produces consistent relationships.
 
 ### Notes
 - Captured after running the full snapshot pipeline against the fixture; integration tests compare future runs against this file to detect drift.

@@ -20,14 +20,13 @@ Supports REQ-F1 to REQ-F5 by providing deterministic integration suites that exp
 - Confirm hysteresis budgets remain untouched when no legitimate ripple exists.
 
 ### Transform Pipeline Validation
-- Drive template → script → generated asset flows (`tests/integration/us5`) using bootstrap knowledge feeds so ripple metadata carries depth/path provenance.
+- Drive template → script → generated asset flows (`tests/integration/us5`) so ripple metadata carries depth/path provenance.
 - Assert `code-ripple` diagnostics include relationship kind and confidence suitable for downstream tooling.
 
 ## Interfaces
 
 ### Inbound Interfaces
 - Integration harness configuration selecting falsifiability suites.
-- Knowledge feed bootstrap fixtures housed alongside scenario workspaces.
 
 ### Outbound Interfaces
 - Diagnostics emitted during suites captured by Problems view snapshots and CLI logs for audit.

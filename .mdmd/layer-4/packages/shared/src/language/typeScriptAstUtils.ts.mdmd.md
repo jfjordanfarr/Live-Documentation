@@ -12,7 +12,7 @@
 Tracks TypeScript identifier usage so fallback inference and workspace indexing can distinguish runtime imports from type-only references, preserving accurate dependency edges. Introduced during the November 3 analyzer hardening pass documented in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L2367](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L2367).
 
 ### Notes
-The ripple semantics review the same day captured why we route TypeScript compiler events through these helpers instead of trusting raw LSIF output—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504) for the rationale that guides future adjustments.
+The ripple semantics review the same day captured why we route TypeScript compiler events through these helpers—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504) for the rationale that guides future adjustments.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.841Z","inputHash":"6b40e5cd7efd33a7"}]} -->

@@ -13,9 +13,23 @@ This document describes the **unified edge aggregation architecture** that conso
 
 1. **Single Source of Truth**: Live Documentation markdown files are the canonical repository of workspace connectivity.
 2. **Streaming Aggregation**: Intermediate edges are stored in NDJSON files, enabling memory-efficient processing of large workspaces.
-3. **Multi-Source Fusion**: Polyglot adapters, LSIF/SCIP feeds, and LLM inference all emit the same `PendingEdge` format.
+3. **Multi-Source Fusion**: Polyglot adapters and LLM inference emit the same `PendingEdge` format.
 4. **Statistical LLM Sampling**: Small local LLMs (e.g., qwen3-coder:30b) are sampled multiple times; edges are accepted based on voting consensus.
 5. **Provenance Tracking**: Every edge retains its source(s), enabling transparency and conflict resolution.
+
+---
+
+## Link Sources
+
+Live Documentation gathers potential relationships from three complementary sources:
+
+| Source | Description | Availability |
+|--------|-------------|--------------|
+| **Polyglot Adapters** | Tree-sitter-based AST parsing for symbols & dependencies | Always (NPM + Extension) |
+| **LLM Inference** | Multi-sampled inference with local LLMs (Ollama) or VS Code's configured LLM | Opt-in (NPM via Ollama, Extension via `vscode.lm`) |
+| **VS Code Symbols** | IDE workspace symbol index | Extension only |
+
+These sources are **complimentary**, not hierarchical — each contributes edges that the others may miss.
 
 ---
 
@@ -36,26 +50,23 @@ Updates the `## Dependencies` section of Live Documentation files with aggregate
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│                         KNOWLEDGE SOURCES                             │
-├──────────────┬──────────────┬──────────────┬──────────────┬──────────┤
-│ Polyglot     │ LSIF         │ SCIP         │ LLM          │ Future   │
-│ Adapters     │ Parser       │ Parser       │ (Ollama)     │ Sources  │
-│ (Ruby, Rust, │              │              │ × N samples  │ (GitLab  │
-│  Python...)  │              │              │              │  KG...)  │
-└──────┬───────┴──────┬───────┴──────┬───────┴──────┬───────┴────┬─────┘
-       │              │              │              │            │
-       ▼              ▼              ▼              ▼            ▼
+│                         LINK SOURCES                                  │
+├──────────────────────┬──────────────────────┬────────────────────────┤
+│ Polyglot Adapters    │ LLM Inference        │ VS Code Symbols        │
+│ (Ruby, Rust, Python, │ (Ollama or vscode.lm)│ (Extension only)       │
+│  C#, Java, C, TS...) │ × N samples          │                        │
+└──────────┬───────────┴──────────┬───────────┴────────────┬───────────┘
+           │                      │                        │
+           ▼                      ▼                        ▼
 ┌──────────────────────────────────────────────────────────────────────┐
 │                        COMP-301: EDGE COLLECTOR                       │
 │                                                                       │
 │  Writes PendingEdge records to NDJSON files:                         │
 │  .live-documentation/pending-edges/                                   │
 │    ├── adapters.ndjson                                                │
-│    ├── lsif-feed.ndjson                                               │
-│    ├── scip-feed.ndjson                                               │
 │    ├── llm-batch-{hash}-001.ndjson                                    │
 │    ├── llm-batch-{hash}-002.ndjson                                    │
-│    └── ...                                                            │
+│    └── vscode-symbols.ndjson                                          │
 └───────────────────────────────┬──────────────────────────────────────┘
                                 │
                                 ▼
@@ -88,7 +99,7 @@ Updates the `## Dependencies` section of Live Documentation files with aggregate
 │  .live-documentation/source/src/app.ts.md                            │
 │                                                                       │
 │  ## Dependencies                                                      │
-│  <!-- edge-provenance: adapter:typescript, lsif, llm:qwen3@4/5 -->   │
+│  <!-- edge-provenance: adapter:typescript, llm:qwen3@4/5 -->         │
 │  - ⟦UserService⟧(./services/userService.ts.md)                       │
 │  - ⟦DatabaseConfig⟧(./config/database.ts.md)                         │
 └──────────────────────────────────────────────────────────────────────┘
@@ -116,7 +127,7 @@ interface PendingEdge {
   kind: 'depends_on' | 'references' | 'implements' | 'calls' | 'uses';
   /** Confidence score 0.0–1.0 */
   confidence: number;
-  /** Source identifier: 'adapter:ruby', 'lsif', 'scip', 'llm:qwen3-coder', etc. */
+  /** Source identifier: 'adapter:ruby', 'vscode-symbols', 'llm:qwen3-coder', etc. */
   provenance: string;
   /** Human-readable explanation (especially for LLM-inferred edges) */
   reason?: string;
@@ -155,8 +166,8 @@ interface ResolvedEdge {
 ### Edge Collection (COMP-301)
 
 - **Polyglot Adapter Emission**: Each language adapter (`rubyAdapter`, `pythonAdapter`, `rustAdapter`, etc.) emits `PendingEdge` records during source analysis.
-- **External Feed Parsing**: LSIF and SCIP parsers transform indexed data into `PendingEdge` format.
-- **LLM Inference**: The Ollama bridge prompts the local model (e.g., qwen3-coder:30b) with source file context and workspace file listings, then parses structured JSON responses into `PendingEdge` records.
+- **LLM Inference**: The Ollama bridge (or VS Code `vscode.lm` API) prompts the local model with source file context and workspace file listings, then parses structured JSON responses into `PendingEdge` records.
+- **VS Code Symbols**: The extension's `symbolBridge.ts` queries VS Code's workspace symbol index and emits `PendingEdge` records for resolved references.
 - **Immediate Persistence**: Each source writes its edges to disk immediately as NDJSON, avoiding memory accumulation.
 
 ### Edge Aggregation (COMP-302)
@@ -174,7 +185,7 @@ interface ResolvedEdge {
 - **Dependencies Merge**: Update the `## Dependencies` section with resolved edges, maintaining link syntax and archetype conventions.
 - **Provenance Markers**: Embed HTML comments with provenance metadata for auditability:
   ```markdown
-  <!-- edge-provenance: adapter:typescript@1.0, lsif@0.95, llm:qwen3@4/5 -->
+  <!-- edge-provenance: adapter:typescript@1.0, llm:qwen3@4/5 -->
   ```
 - **Atomic Writes**: Write via temp file + rename to prevent partial updates.
 
@@ -224,47 +235,13 @@ Small local LLMs are cost-effective for polyglot "common sense" edge detection b
 
 ---
 
-## Migration from GraphStore
-
-This architecture supersedes the SQLite-based `GraphStore` and `RippleAnalyzer`. The migration involves:
-
-### Files to Delete
-
-| Category | Files |
-|----------|-------|
-| **Core SQLite** | `graphStore.ts`, `graphStore.types.ts`, `graphStore.mappers.ts`, `graphStore.test.ts` |
-| **CLI Scripts** | `snapshot-workspace.ts`, `inspect-symbol.ts`, `audit-doc-coverage.ts` |
-| **Runtime** | `rippleAnalyzer.ts`, `workspaceIndexProvider.ts` |
-| **Telemetry** | `driftHistoryStore.ts` |
-
-### Files to Refactor
-
-| File | Current | After |
-|------|---------|-------|
-| `main.ts` | Creates `GraphStore` | Remove; use `buildLiveDocGraph()` |
-| `changeProcessor.ts` | Uses `RippleAnalyzer` | Query `buildLiveDocGraph().inbound` |
-| `knowledgeGraphBridge.ts` | Feed → SQLite | Feed → `PendingEdge` NDJSON |
-| `llmIngestionOrchestrator.ts` | Edges → SQLite | Edges → `PendingEdge` NDJSON |
-
-### Files to Keep
-
-| File | Reason |
-|------|--------|
-| `lsifParser.ts` | Produces `PendingEdge` from LSIF |
-| `scipParser.ts` | Produces `PendingEdge` from SCIP |
-| `feedFormatDetector.ts` | Detects feed format |
-| `feedCheckpointStore.ts` | Resume tracking for feeds |
-| `knowledgeFeedManager.ts` | Feed lifecycle management |
-
----
-
 ## Interfaces
 
 ### Inbound Interfaces
 
 - **Analyzer Outputs**: Language adapters emit `PendingEdge` during `analyzeSourceFile()`.
-- **External Feeds**: LSIF/SCIP files parsed via `parseFeedFile()` → `PendingEdge`.
-- **LLM Responses**: Ollama inference structured JSON → `PendingEdge`.
+- **LLM Responses**: Ollama/vscode.lm inference structured JSON → `PendingEdge`.
+- **VS Code Symbols**: Extension bridge emits `PendingEdge` from workspace symbol queries.
 - **CLI Commands**: `live-docs:generate --with-edges` triggers full pipeline.
 
 ### Outbound Interfaces
@@ -287,12 +264,6 @@ Merges NDJSON files, applies voting, resolves symbols. Will reside at `packages/
 ### IMP-603 liveDocEdgeWriter *(planned)*
 Updates Live Doc markdown with resolved edges. Will integrate with `generator.ts`.
 
-### IMP-213 scipParser *(existing)*
-Transforms SCIP indexes into `PendingEdge` format. See [scipParser.ts Live Doc](../layer-4/packages/server/src/features/knowledge/scipParser.ts.mdmd.md).
-
-### IMP-214 lsifParser *(existing)*
-Transforms LSIF dumps into `PendingEdge` format. See [lsifParser.ts Live Doc](../layer-4/packages/server/src/features/knowledge/lsifParser.ts.mdmd.md).
-
 ### IMP-502 liveDocGraph *(existing)*
 Constructs in-memory graph from Live Doc markdown; LLM-inferred edges are captured via the edge collection format. See [liveDocGraph.ts Live Doc](../layer-4/packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md).
 
@@ -304,8 +275,7 @@ Parses Live Doc markdown to construct in-memory graph. See [liveDocGraph.ts](../
 ## Evidence
 
 - **Polyglot Adapter Tests**: `ruby.typeref.test.ts`, `python.typeref.test.ts`, etc. validate symbol and dependency extraction.
-- **LSIF/SCIP Tests**: `lsifParser.test.ts`, `scipParser.test.ts` ensure feed parsing produces valid `PendingEdge` equivalents.
-- **LLM Integration**: `llmIngestionDryRun.test.ts` exercises prompt construction and response parsing (to be updated for NDJSON output).
+- **LLM Integration**: `llmIngestionDryRun.test.ts` exercises prompt construction and response parsing.
 - **Live Doc Graph Tests**: `inspect-cli.test.ts`, `liveDocGraph.test.ts` validate graph construction from markdown.
 - **Benchmark Reports**: `reports/benchmarks/live-docs/` captures precision/recall for generated Dependencies sections.
 

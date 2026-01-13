@@ -726,6 +726,23 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `2026-01-06.1.md` — **Extension Scope**: Thin wrapper with explicit LLM commands (`live-docs enrich`, `live-docs synthesize`); no proactive background LLM calls during file saves or diagnostics.
 - `2026-01-06.1.md` — **Document strategic decisions before implementation**: "We need to document our enhanced vision... otherwise they will be lost rapidly to shifting context windows and fallible human memory."
 
+## 2026-01-12 (Dev Day 56)
+
+### Chat 1 (2026-01-12.1.md) — Major Architectural Refactoring: Stateless Live Doc-Centric Model
+
+- `2026-01-12.1.md` — **Parsimony Principle ("General Relativity" analogy)**: "Our code should be 'as simple as it can be, **and no simpler**.' That defining line is everything: general relativity is a parsimonious, maximally-simple model of gravitation at large scales, but it is **not** as simple as Newtonian Mechanics." The simplest *fully-functional* implementation is the most correct; oversimplification that loses functionality is wrong.
+- `2026-01-12.1.md` — **Stateless Detection Insight**: Broken link detection should be a pure function of current file state. No database, no acknowledgement persistence, no state machines. "Could detection of link breakages... be **stateless**? If so, the entire question about persistence becomes moot." Live Docs ARE the database.
+- `2026-01-12.1.md` — **Dialogue-Driven Problem Solving**: When hitting roadblocks, pause and ask questions rather than flip-flopping between extremes. "You hit a roadbump, and instead of stopping and asking questions, you reverted. I pushed back and you opted to flip the other direction. The correct path forward is a _dialogue_ against the newfound realizations, yeah?"
+- `2026-01-12.1.md` — **Do It the Right Way — No Suppression of Valid Tooling**: When 83 broken links were detected, Copilot proposed suppressing them. User pushed back: "You want to suppress the noise of the tooling which detects whether our links are valid? Why?" The right way is to fix all 83 links, not suppress the warnings.
+- `2026-01-12.1.md` — **Time Constraints Don't Exist**: "What approach do your copilot instructions say you should take? Furthermore, what time constraints?" Called out invented constraints used to justify workarounds.
+- `2026-01-12.1.md` — **Layer 1 = User Guides for Adopters**: User guides belong in Layer 1 MDMD under a `guides/` subdirectory because they are "most public-facing." Layer 1 can now include Vision Documents AND User Guides as recognized archetypes.
+- `2026-01-12.1.md` — **Layer 2 = Contributor Guides / Internal Tooling**: Internal development tooling (safe:commit, graph:*, slopcop:*, fixtures:*, test:*) should be documented in Layer 2 MDMD because it answers "What must contributors know to accomplish our goals?" — distinct from Layer 1's external adopter focus.
+- `2026-01-12.1.md` — **Ripple Analysis Footprint Decreased**: "The extension tooling and the integration tests for it all predate the fact of us _generating the documentation ourselves_. They come from a time when we were most firmly interested in _detecting_ the impacts of changes, rather than simply documenting the software as it is." The diagnostic feature's importance has decreased now that documentation generation is primary.
+- `2026-01-12.1.md` — **Configuration Duplication is a Code Smell**: When two systems (live-docs:generate and graph:snapshot) require separate configurations to determine what is/isn't a code file, that's a sign of architectural bloat. "...meaning that one would supposedly need _two separate configurations_... one should reasonably expect lint, no?"
+- `2026-01-12.1.md` — **SlopCop Stays Internal**: The user-facing validation is `live-docs:lint`, not SlopCop. SlopCop is insider jargon; bundling general markdown linting would cause scope creep. If external-facing markdown linting is desired later, it should be a separate, properly-branded product.
+
+---
+
 ## Usage Notes
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.

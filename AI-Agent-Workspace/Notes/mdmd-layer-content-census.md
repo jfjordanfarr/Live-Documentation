@@ -370,6 +370,8 @@ graph TD
 - [2025-11-13] Standardise the product name as “Live Documentation” in Layer 1 narratives and plan to stage the future GitHub Pages experience under `docs/site/` so capabilities have a dedicated publication home. (`2025-11-13.md:L1771-L1784`,`2025-11-13.md:L1888-L1998`)
 - [2025-11-15] Keep Layer 1–3 MDMD folders as the only authored sources; any public “handbook” must be a deterministic Astro projection that rewrites links without editing the markdown and treats `.live-documentation/` as the Layer 4 mirror. (`2025-11-15.md:L971-L1004`)
 - [2025-11-15] Schedule the static-site projection alongside the CI/CD rollout so it precedes the hosted demo site but never replaces the offline extension experience. (`2025-11-15.md:L1014-L1044`)
+- [2026-01-12] Layer 1 now includes a `guides/` subdirectory for task-oriented User Guides: getting-started, tracing-impact, visualizing-codebase, cli-reference. These are "most public-facing" and distinct from vision documents. (`2026-01-12.1.md:L168-L280`)
+- [2026-01-12] The Vision Document and User Guide archetypes are both valid Layer 1 content; vision docs describe intent/signals while user guides describe how adopters accomplish tasks with the tooling. (`2026-01-12.1.md:L230-L260`)
 
 ## Layer 2 – Requirements / Work Items
 - Classified as a "unit" layer: each Layer 2 doc corresponds to a concrete work item and must cite acceptance criteria, evidence, and links to the architecture and implementation that fulfil it. (`2025-10-30.md:L420-L512`)
@@ -378,8 +380,8 @@ graph TD
 - Roadmap/plan rewrites on 2025-11-08 aligned Layer 2 terminology with the Live Documentation pivot to keep requirements synchronized with new generator behaviour. (`2025-11-09.md:L99-L130`)
 - [2025-11-10] Treat Layer 2 as human-authored checklists; generated sections should only tally adjacent completion (requirements and acceptance criteria) to keep automation simple. (`2025-11-10.md:L728-L915`)
 - [2025-11-10] Require each requirement doc to name a single upstream capability/release so Capability-layer rollups stay deterministic despite the deliberate upward link exception. (`2025-11-10.md:L1000-L1104`)
-- [2025-11-11] Delegate commitments to Spec-Kit or issue trackers so Layer 2 documentation references those sources rather than duplicating ownership in Live Docs. (`2025-11-11.md:L1878-L1895`)
-
+- [2025-11-11] Delegate commitments to Spec-Kit or issue trackers so Layer 2 documentation references those sources rather than duplicating ownership in Live Docs. (`2025-11-11.md:L1878-L1895`)- [2026-01-12] Layer 2 should include Contributor Guides and internal tooling documentation (safe:commit, graph:*, slopcop:*, fixtures:*, test:* commands). These answer "What must contributors know?" — distinct from Layer 1's external adopter focus. (`2026-01-12.1.md:L350-L440`)
+- [2026-01-12] Internal vs external tooling separation: CLI reference in Layer 1 exposes only adopter-facing commands; contributor commands belong in Layer 2 contributor guides. (`2026-01-12.1.md:L700-L800`)
 ## Layer 3 – Architecture / Solution Components
 - For complex subsystems, author Layer 3 architecture memos before implementation so future work can rely on documented data flow, failure handling, and dependencies. (`2025-10-20.md:L1676-L1744`)
 - Layer 3 functions as a "concept" layer exporting named responsibilities, interfaces, and telemetry expectations that Layer 4 docs must cover; evidence includes referenced implementations and operational proof. (`2025-10-30.md:L420-L512`)
@@ -410,8 +412,8 @@ graph TD
 - [2025-11-02] Enforce a first-line breadcrumb comment in commentable code files (`// mdmd-layer4: .mdmd/...#slug`) paired with matching doc anchors so Layer 4 maintains bidirectional links between source and Live Doc sections. (`2025-11-02.md:L239-L320`)
 - Required generated sections: `Public Symbols` and `Dependencies`; optional analytics (for example, co-activation scores or inbound reference counts) can layer on later. (`2025-11-08.md:L268-L340`)
 - Planned enhancements include linking generated targets to sibling Live Docs, stabilizing provenance timestamps, and adding orphan detection. (`2025-11-09.md:L5079-L5087`)
-- Live Docs regeneration must preserve authored sections, and the Stage 0 mirror must be fully migrated before commits to avoid `.mdmd/` drift. (`2025-11-09.md:L1111-L1160`)
-
+- Live Docs regeneration must preserve authored sections, and the Stage 0 mirror must be fully migrated before commits to avoid `.mdmd/` drift. (`2025-11-09.md:L1111-L1160`)- [2026-01-12] **Stateless Architecture: "Live Docs ARE the database"** — Broken link detection should be a pure function of current file state. No SQLite database, no acknowledgement persistence, no state machines. The GraphStore infrastructure was eliminated; Live Docs themselves become the source of truth for dependency and symbol information. (`2026-01-12.1.md:L1800-L2000`)
+- [2026-01-12] **Parsimony Principle**: "Our code should be 'as simple as it can be, **and no simpler**'" — analogous to General Relativity being maximally simple while retaining full functionality. Oversimplification that loses functionality is wrong; complexity that enables necessary features is right. (`2026-01-12.1.md:L1850-L1950`)
 ## Cross-Layer Linkage & Symbol Correctness Vision
 - Vision calls for rules that ensure every layer references its neighbours (L1↔L2↔L3↔L4), with SlopCop-like tooling flagging missing links or orphaned docs. (`2025-10-30.md:L240-L320`)
 - [2025-10-30] Symbol sections must expose exports via heading-form identifiers (`### CAP-### –`, `### REQ-### –`, `### COMP-### –`, `### IMP-### –`) instead of bullet lists so profiles can link across layers deterministically. (`2025-10-30.md:L626-L668`)
