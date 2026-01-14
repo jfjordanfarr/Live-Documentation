@@ -1,4 +1,6 @@
+import { existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
+import path from "node:path";
 
 import type {
   DependencyEntry,
@@ -11,6 +13,7 @@ import { parseDocstring } from "./python.docstring";
 
 interface DependencyBucket {
   specifier: string;
+  resolvedPath: string | undefined;
   symbols: Set<string>;
 }
 
@@ -29,10 +32,10 @@ const DECORATOR_PATTERN = /^\s*@/;
 export const pythonAdapter: LanguageAdapter = {
   id: "python-basic",
   extensions: [".py"],
-  async analyze({ absolutePath }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
     const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content);
+    const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
 
     if (symbols.length === 0 && dependencies.length === 0) {
       return {
@@ -222,24 +225,310 @@ function normalizeDocstring(raw: string): string {
   return sliced.join("\n");
 }
 
-function extractDependencies(content: string): DependencyEntry[] {
+// ============================================================================
+// Python Import Resolution
+// ============================================================================
+
+/**
+ * Known Python standard library modules that should not be resolved to local files.
+ *
+ * @remarks
+ * This is a representative subset; full stdlib enumeration would be extensive.
+ * We include the most common modules to avoid false positive resolution attempts.
+ */
+const PYTHON_STDLIB_MODULES = new Set([
+  // Built-in modules
+  "abc", "aifc", "argparse", "array", "ast", "asynchat", "asyncio", "asyncore",
+  "atexit", "audioop", "base64", "bdb", "binascii", "binhex", "bisect",
+  "builtins", "bz2", "calendar", "cgi", "cgitb", "chunk", "cmath", "cmd",
+  "code", "codecs", "codeop", "collections", "colorsys", "compileall",
+  "concurrent", "configparser", "contextlib", "contextvars", "copy", "copyreg",
+  "cProfile", "crypt", "csv", "ctypes", "curses", "dataclasses", "datetime",
+  "dbm", "decimal", "difflib", "dis", "distutils", "doctest", "email",
+  "encodings", "enum", "errno", "faulthandler", "fcntl", "filecmp", "fileinput",
+  "fnmatch", "fractions", "ftplib", "functools", "gc", "getopt", "getpass",
+  "gettext", "glob", "graphlib", "grp", "gzip", "hashlib", "heapq", "hmac",
+  "html", "http", "idlelib", "imaplib", "imghdr", "imp", "importlib", "inspect",
+  "io", "ipaddress", "itertools", "json", "keyword", "lib2to3", "linecache",
+  "locale", "logging", "lzma", "mailbox", "mailcap", "marshal", "math",
+  "mimetypes", "mmap", "modulefinder", "multiprocessing", "netrc", "nis",
+  "nntplib", "numbers", "operator", "optparse", "os", "ossaudiodev", "pathlib",
+  "pdb", "pickle", "pickletools", "pipes", "pkgutil", "platform", "plistlib",
+  "poplib", "posix", "posixpath", "pprint", "profile", "pstats", "pty", "pwd",
+  "py_compile", "pyclbr", "pydoc", "queue", "quopri", "random", "re",
+  "readline", "reprlib", "resource", "rlcompleter", "runpy", "sched", "secrets",
+  "select", "selectors", "shelve", "shlex", "shutil", "signal", "site",
+  "smtpd", "smtplib", "sndhdr", "socket", "socketserver", "spwd", "sqlite3",
+  "ssl", "stat", "statistics", "string", "stringprep", "struct", "subprocess",
+  "sunau", "symtable", "sys", "sysconfig", "syslog", "tabnanny", "tarfile",
+  "telnetlib", "tempfile", "termios", "test", "textwrap", "threading", "time",
+  "timeit", "tkinter", "token", "tokenize", "trace", "traceback", "tracemalloc",
+  "tty", "turtle", "turtledemo", "types", "typing", "typing_extensions",
+  "unicodedata", "unittest", "urllib", "uu", "uuid", "venv", "warnings",
+  "wave", "weakref", "webbrowser", "winreg", "winsound", "wsgiref", "xdrlib",
+  "xml", "xmlrpc", "zipapp", "zipfile", "zipimport", "zlib",
+  // Common third-party that we definitely can't resolve
+  "numpy", "pandas", "scipy", "matplotlib", "requests", "flask", "django",
+  "pytest", "setuptools", "pip", "wheel", "six", "certifi", "urllib3",
+  "idna", "charset_normalizer", "packaging", "attrs", "click", "jinja2",
+  "markupsafe", "werkzeug", "pyyaml", "yaml", "toml", "tomli", "sqlalchemy",
+  "pydantic", "fastapi", "starlette", "httpx", "aiohttp", "celery", "redis",
+  "boto3", "botocore", "google", "azure", "aws", "tensorflow", "torch",
+  "sklearn", "cv2", "PIL", "pillow"
+]);
+
+/**
+ * Checks if a module name is a known standard library or common third-party package.
+ *
+ * @param moduleName - The top-level module name (e.g., "os", "typing", "dataclasses")
+ * @returns True if the module is from the standard library or known third-party
+ */
+function isStdlibOrThirdParty(moduleName: string): boolean {
+  const topLevel = moduleName.split(".")[0];
+  return PYTHON_STDLIB_MODULES.has(topLevel);
+}
+
+/**
+ * Resolves a Python import to a workspace-relative file path.
+ *
+ * @remarks
+ * Python import resolution follows these patterns:
+ * - `import util` → look for `util.py` or `util/__init__.py` in same directory
+ * - `from util import func` → same resolution, symbol tracked separately
+ * - `from .helpers import func` → relative import from current package
+ * - `from ..utils import func` → relative import from parent package
+ *
+ * Standard library and known third-party modules are not resolved.
+ *
+ * @param moduleSpec - The module specifier (e.g., "util", ".helpers", "..utils")
+ * @param absolutePath - Absolute path to the importing file
+ * @param workspaceRoot - Workspace root for generating relative paths
+ * @returns Workspace-relative path if resolved, undefined otherwise
+ */
+function resolvePythonImport(
+  moduleSpec: string,
+  absolutePath: string,
+  workspaceRoot: string
+): string | undefined {
+  if (!moduleSpec) {
+    return undefined;
+  }
+
+  // Check for relative import (starts with dots)
+  const relativeMatch = moduleSpec.match(/^(\.+)(.*)$/);
+  if (relativeMatch) {
+    return resolveRelativeImport(relativeMatch[1], relativeMatch[2], absolutePath, workspaceRoot);
+  }
+
+  // Absolute import - check if it's stdlib/third-party first
+  if (isStdlibOrThirdParty(moduleSpec)) {
+    return undefined;
+  }
+
+  // Try to resolve as a local module
+  return resolveLocalModule(moduleSpec, absolutePath, workspaceRoot);
+}
+
+/**
+ * Resolves a relative Python import (one starting with dots).
+ *
+ * @param dots - The leading dots (e.g., ".", "..", "...")
+ * @param remainder - The module path after the dots (e.g., "helpers", "utils.format")
+ * @param absolutePath - Absolute path to the importing file
+ * @param workspaceRoot - Workspace root for generating relative paths
+ * @returns Workspace-relative path if resolved, undefined otherwise
+ */
+function resolveRelativeImport(
+  dots: string,
+  remainder: string,
+  absolutePath: string,
+  workspaceRoot: string
+): string | undefined {
+  const fileDir = path.dirname(absolutePath);
+  const levels = dots.length;
+
+  // Go up (levels - 1) directories from the current file's directory
+  // One dot means current package, two dots means parent package, etc.
+  let targetDir = fileDir;
+  for (let i = 1; i < levels; i++) {
+    targetDir = path.dirname(targetDir);
+  }
+
+  // If there's a remainder, resolve it as a module path
+  if (remainder) {
+    const parts = remainder.split(".");
+    const modulePath = path.join(targetDir, ...parts);
+    return probeModulePath(modulePath, workspaceRoot);
+  }
+
+  // Just dots with no remainder - refers to the package itself
+  // Look for __init__.py in the target directory
+  const initPath = path.join(targetDir, "__init__.py");
+  if (existsSync(initPath)) {
+    return path.relative(workspaceRoot, initPath).replace(/\\/g, "/");
+  }
+
+  return undefined;
+}
+
+/**
+ * Resolves a local (non-relative, non-stdlib) module import.
+ *
+ * @param moduleSpec - The module specifier (e.g., "util", "package.submodule")
+ * @param absolutePath - Absolute path to the importing file
+ * @param workspaceRoot - Workspace root for generating relative paths
+ * @returns Workspace-relative path if resolved, undefined otherwise
+ */
+function resolveLocalModule(
+  moduleSpec: string,
+  absolutePath: string,
+  workspaceRoot: string
+): string | undefined {
+  const fileDir = path.dirname(absolutePath);
+  const parts = moduleSpec.split(".");
+
+  // For simple imports like "util", only take the first segment
+  // (the remaining parts might be submodules or attributes)
+  const moduleName = parts[0];
+
+  // Try resolving from the current directory first
+  const fromCurrentDir = probeModulePath(path.join(fileDir, moduleName), workspaceRoot);
+  if (fromCurrentDir) {
+    return fromCurrentDir;
+  }
+
+  // Try resolving from the package root (if we're in a package)
+  const packageRoot = findPackageRoot(fileDir);
+  if (packageRoot && packageRoot !== fileDir) {
+    const fromPackageRoot = probeModulePath(path.join(packageRoot, moduleName), workspaceRoot);
+    if (fromPackageRoot) {
+      return fromPackageRoot;
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * Probes for a Python module at a given base path.
+ *
+ * @remarks
+ * Checks for:
+ * 1. `{basePath}.py` - single-file module
+ * 2. `{basePath}/__init__.py` - package module
+ *
+ * @param basePath - Base path to probe (without extension)
+ * @param workspaceRoot - Workspace root for generating relative paths
+ * @returns Workspace-relative path if found, undefined otherwise
+ */
+function probeModulePath(basePath: string, workspaceRoot: string): string | undefined {
+  // Try as single file module
+  const asFile = `${basePath}.py`;
+  if (existsSync(asFile)) {
+    return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
+  }
+
+  // Try as package (directory with __init__.py)
+  const asPackage = path.join(basePath, "__init__.py");
+  if (existsSync(asPackage)) {
+    return path.relative(workspaceRoot, asPackage).replace(/\\/g, "/");
+  }
+
+  return undefined;
+}
+
+/**
+ * Finds the root of the Python package containing a given directory.
+ *
+ * @remarks
+ * Walks up the directory tree looking for the topmost directory
+ * that still contains an `__init__.py` file.
+ *
+ * @param startDir - Directory to start searching from
+ * @returns Path to the package root, or undefined if not in a package
+ */
+function findPackageRoot(startDir: string): string | undefined {
+  let currentDir = startDir;
+  let packageRoot: string | undefined;
+
+  // Walk up looking for __init__.py files
+  while (currentDir && currentDir !== path.dirname(currentDir)) {
+    const initPath = path.join(currentDir, "__init__.py");
+    if (existsSync(initPath)) {
+      packageRoot = currentDir;
+      currentDir = path.dirname(currentDir);
+    } else {
+      // No more __init__.py, stop here
+      break;
+    }
+  }
+
+  return packageRoot;
+}
+
+// ============================================================================
+// Dependency Extraction
+// ============================================================================
+
+/**
+ * Extracts import dependencies from Python source code.
+ *
+ * @remarks
+ * Handles both `import X` and `from X import Y` statements.
+ * Resolves local modules to workspace-relative paths while leaving
+ * standard library and third-party imports unresolved.
+ *
+ * @param content - Python source code content
+ * @param absolutePath - Absolute path to the source file
+ * @param workspaceRoot - Workspace root for path resolution
+ * @returns Array of dependency entries
+ */
+function extractDependencies(
+  content: string,
+  absolutePath: string,
+  workspaceRoot: string
+): DependencyEntry[] {
   const lines = content.split(/\r?\n/);
   const dependencies = new Map<string, DependencyBucket>();
 
-  const register = (specifier: string, symbol?: string): void => {
+  /**
+   * Registers a dependency with optional imported symbols.
+   */
+  const register = (
+    specifier: string,
+    resolvedPath: string | undefined,
+    symbols: string[]
+  ): void => {
     const normalized = specifier.trim();
     if (!normalized) {
       return;
     }
+
     const existing = dependencies.get(normalized);
-    const bucket: DependencyBucket = existing ?? {
-      specifier: normalized,
-      symbols: new Set<string>()
-    };
-    if (symbol && symbol.trim()) {
-      bucket.symbols.add(symbol.trim());
+    if (existing) {
+      // Merge symbols into existing bucket
+      for (const sym of symbols) {
+        if (sym && sym.trim()) {
+          existing.symbols.add(sym.trim());
+        }
+      }
+      // Update resolvedPath if we now have one
+      if (resolvedPath && !existing.resolvedPath) {
+        existing.resolvedPath = resolvedPath;
+      }
+    } else {
+      const symbolSet = new Set<string>();
+      for (const sym of symbols) {
+        if (sym && sym.trim()) {
+          symbolSet.add(sym.trim());
+        }
+      }
+      dependencies.set(normalized, {
+        specifier: normalized,
+        resolvedPath,
+        symbols: symbolSet
+      });
     }
-    dependencies.set(normalized, bucket);
   };
 
   for (const rawLine of lines) {
@@ -248,93 +537,57 @@ function extractDependencies(content: string): DependencyEntry[] {
       continue;
     }
 
+    // Handle: import module1, module2 as alias, module3
     if (trimmed.startsWith("import ")) {
       const remainder = trimmed.slice("import ".length);
-      const modules = remainder.split(",").map((segment) => segment.split(/\s+as\s+/)[0]?.trim());
+      const modules = remainder.split(",").map((segment) => {
+        // Handle "module as alias" - extract original module name
+        return segment.split(/\s+as\s+/)[0]?.trim();
+      });
+
       for (const moduleName of modules) {
         if (!moduleName) {
           continue;
         }
-        register(moduleName);
+        const resolvedPath = resolvePythonImport(moduleName, absolutePath, workspaceRoot);
+        register(moduleName, resolvedPath, []);
       }
       continue;
     }
 
+    // Handle: from module import name1, name2 as alias, name3
     if (trimmed.startsWith("from ")) {
       const fromMatch = /^from\s+([.\w]+)\s+import\s+(.+)$/.exec(trimmed);
       if (!fromMatch) {
         continue;
       }
 
-      const moduleSegment = fromMatch[1];
+      const moduleSpec = fromMatch[1];
       const importSegment = fromMatch[2];
+
+      // Parse imported names (handling aliases and wildcards)
       const rawNames = importSegment
         .split(",")
-        .map((segment) => segment.split(/\s+as\s+/)[0]?.trim());
-      const names = rawNames.filter((candidate): candidate is string => Boolean(candidate && candidate.trim()));
+        .map((segment) => segment.split(/\s+as\s+/)[0]?.trim())
+        .filter((name): name is string => Boolean(name && name.trim()));
 
-      for (const name of names) {
-        const combined = buildCombinedModule(moduleSegment, name);
-        if (combined) {
-          register(combined.module, combined.symbol);
-        }
-      }
+      // Filter out wildcards - we can't know what symbols * imports
+      const symbols = rawNames.filter((name) => name !== "*");
 
-      const base = normalizeModuleSegment(moduleSegment);
-      if (base) {
-        register(base);
-      }
+      // Resolve the module path
+      const resolvedPath = resolvePythonImport(moduleSpec, absolutePath, workspaceRoot);
+
+      // Register with the module specifier and imported symbols
+      register(moduleSpec, resolvedPath, symbols);
     }
   }
 
   return Array.from(dependencies.values())
     .map<DependencyEntry>((bucket) => ({
       specifier: bucket.specifier,
-      resolvedPath: undefined,
-      symbols: Array.from(bucket.symbols.values()).sort(),
+      resolvedPath: bucket.resolvedPath,
+      symbols: Array.from(bucket.symbols).sort(),
       kind: "import"
     }))
     .sort((left, right) => left.specifier.localeCompare(right.specifier));
-}
-
-function buildCombinedModule(moduleSegment: string, member: string): { module: string; symbol: string } | undefined {
-  const base = normalizeModuleSegment(moduleSegment);
-  if (!base) {
-    return undefined;
-  }
-
-  if (!member) {
-    return { module: base, symbol: member };
-  }
-
-  if (member === "*") {
-    return { module: base, symbol: "*" };
-  }
-
-  return {
-    module: `${base}.${member}`.replace(/[.]+/g, "."),
-    symbol: member
-  };
-}
-
-function normalizeModuleSegment(segment: string): string | undefined {
-  if (!segment) {
-    return undefined;
-  }
-
-  const trimmed = segment.trim();
-  if (!trimmed) {
-    return undefined;
-  }
-
-  const relativePrefix = trimmed.match(/^([.]+)(.*)$/);
-  if (!relativePrefix) {
-    return trimmed.replace(/[.]+/g, ".").replace(/[.]$/, "");
-  }
-
-  const [, dots, remainder] = relativePrefix;
-  const levels = dots.length;
-  const remainderParts = remainder.split(".").filter(Boolean);
-  const parents = Array.from({ length: levels }, () => "parent");
-  return parents.concat(remainderParts).join(".");
 }

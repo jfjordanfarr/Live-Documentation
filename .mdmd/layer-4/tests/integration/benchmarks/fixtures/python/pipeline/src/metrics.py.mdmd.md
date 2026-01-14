@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/metrics.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-metrics-py
-- Generated At: 2025-12-06T22:49:48.519Z
+- Generated At: 2026-01-14T18:38:50.209Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Calculates aggregate statistics for the Python pipeline benchmark while invoking
 Retain the validation calls ahead of aggregation; they ensure dependency order is visible to the analyzer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.519Z","inputHash":"4248461ae8d9741c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.209Z","inputHash":"51659a3b7ef29f23"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `compute_summary` {#symbol-compute_summary}
@@ -25,9 +25,7 @@ Retain the validation calls ahead of aggregation; they ensure dependency order i
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `typing`
-- `typing.Sequence` - `Sequence`
-- `validators`
-- `validators.ensure_not_empty` - `ensure_not_empty`
-- `validators.ensure_positive` - `ensure_positive`
+- [`validators.ensure_not_empty`](./validators.py.mdmd.md#symbol-ensure_not_empty)
+- [`validators.ensure_positive`](./validators.py.mdmd.md#symbol-ensure_positive)
+- `typing` - `Sequence`
 <!-- LIVE-DOC:END Dependencies -->

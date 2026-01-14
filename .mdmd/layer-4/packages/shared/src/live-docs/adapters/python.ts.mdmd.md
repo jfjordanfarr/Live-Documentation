@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2025-12-11T02:38:02.005Z
+- Generated At: 2026-01-14T18:44:18.638Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Implements the Python adapter that normalizes reST, Google, and NumPy docstrings
 - Guard rails come from `python.docstring.test.ts` and the `safe:commit -- --benchmarks` run that accompanied the rollout; update those fixtures when extending the parser <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.005Z","inputHash":"8f1869a6ba1c617f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:44:18.638Z","inputHash":"87240b458508a4ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L29)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L32)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -35,7 +35,8 @@ on Python runtime introspection.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `./python.docstring` - `parseDocstring`
-- `node:fs` - `promises`
+- `node:fs` - `existsSync`, `promises`
+- `node:path` - `path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
@@ -47,5 +48,6 @@ on Python runtime introspection.
 ### Observed Evidence
 #### Vitest Unit Tests
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
+- [python.resolution.test.ts](./python.resolution.test.ts.mdmd.md)
 - [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

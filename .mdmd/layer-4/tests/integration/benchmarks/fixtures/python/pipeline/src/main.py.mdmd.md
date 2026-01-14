@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/main.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-main-py
-- Generated At: 2025-12-06T22:49:48.515Z
+- Generated At: 2026-01-14T18:38:50.208Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides a runnable wrapper for the Python pipeline benchmark so the analyzer tr
 Keep the status check and exception message stable; tests assert on this behavior during regression runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.515Z","inputHash":"8f9d42c124c2dd0b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.208Z","inputHash":"50333159c2a5b78f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}
@@ -25,8 +25,6 @@ Keep the status check and exception message stable; tests assert on this behavio
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `pipeline`
-- `pipeline.build_report` - `build_report`
-- `validators`
-- `validators.ValidationError` - `ValidationError`
+- [`pipeline.build_report`](./pipeline.py.mdmd.md#symbol-build_report)
+- [`validators.ValidationError`](./validators.py.mdmd.md#symbol-validationerror)
 <!-- LIVE-DOC:END Dependencies -->

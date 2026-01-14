@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/pipeline.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-pipeline-py
-- Generated At: 2025-12-06T22:49:48.522Z
+- Generated At: 2026-01-14T18:38:50.210Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates report construction for the Python pipeline benchmark, tying reposi
 Maintain the dataclass wrapper and sequencing—they model the minimal integration flow the benchmark expects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.522Z","inputHash":"af5603c39fb88052"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.210Z","inputHash":"8879ac4960f2fbf1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}
@@ -29,12 +29,8 @@ Maintain the dataclass wrapper and sequencing—they model the minimal integrati
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `dataclasses`
-- `dataclasses.dataclass` - `dataclass`
-- `metrics`
-- `metrics.compute_summary` - `compute_summary`
-- `repositories`
-- `repositories.load_series` - `load_series`
-- `validators`
-- `validators.ensure_not_empty` - `ensure_not_empty`
+- `dataclasses` - `dataclass`
+- [`metrics.compute_summary`](./metrics.py.mdmd.md#symbol-compute_summary)
+- [`repositories.load_series`](./repositories.py.mdmd.md#symbol-load_series)
+- [`validators.ensure_not_empty`](./validators.py.mdmd.md#symbol-ensure_not_empty)
 <!-- LIVE-DOC:END Dependencies -->

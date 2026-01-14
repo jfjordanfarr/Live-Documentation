@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/repositories.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-repositories-py
-- Generated At: 2025-12-06T22:49:48.526Z
+- Generated At: 2026-01-14T18:38:50.211Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides dataset loading for the Python pipeline benchmark, including error path
 Dataset values are intentionally simple; adjust the structure only when altering expected analyzer edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.526Z","inputHash":"119fada53ac5392b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.211Z","inputHash":"b3b3432e989e5ac3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}
@@ -25,8 +25,6 @@ Dataset values are intentionally simple; adjust the structure only when altering
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `typing`
-- `typing.List` - `List`
-- `validators`
-- `validators.ValidationError` - `ValidationError`
+- [`validators.ValidationError`](./validators.py.mdmd.md#symbol-validationerror)
+- `typing` - `List`
 <!-- LIVE-DOC:END Dependencies -->
