@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/diagnostics/hysteresisController.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-diagnostics-hysteresiscontroller-test-ts
-- Generated At: 2025-11-19T15:01:33.812Z
+- Generated At: 2026-01-14T15:17:48.529Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Asserts the hysteresis controller blocks reciprocal emissions within the configu
 - Covers acknowledgement resets and LRU trimming so the controller remains bounded under noisy change streams.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:33.812Z","inputHash":"7ba1c9bd77a7f916"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.529Z","inputHash":"7ba1c9bd77a7f916"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`hysteresisController.HysteresisController`](./hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller)
+- [`HysteresisController`](./hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

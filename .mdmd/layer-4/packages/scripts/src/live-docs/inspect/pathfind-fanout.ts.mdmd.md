@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-fanout.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-pathfind-fanout-ts
-- Generated At: 2025-12-19T21:55:44.627Z
+- Generated At: 2026-01-14T15:17:48.517Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Enumerates all terminal paths from a starting node when no destination is specif
 Extracted from inspect.ts during Dev Day 50 (12/19). The `enumerateTerminalPaths()` function walks the graph to leaf nodes, useful for understanding the blast radius of changes to foundational utilities.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.627Z","inputHash":"ad135ecdd0ce04ac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.517Z","inputHash":"ad135ecdd0ce04ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MAX_ENUMERATED_PATHS` {#symbol-max_enumerated_paths}
@@ -49,7 +49,7 @@ Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`pathfind.getNeighbors`](./pathfind.ts.mdmd.md#symbol-getneighbors)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath) (type-only)

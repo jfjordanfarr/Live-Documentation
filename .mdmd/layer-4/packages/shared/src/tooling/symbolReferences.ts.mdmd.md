@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/symbolReferences.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-symbolreferences-ts
-- Generated At: 2025-12-11T02:38:02.421Z
+- Generated At: 2026-01-14T15:17:48.870Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 - Relies on the vendored GitHub slugger and shared markdown parsing helpers so reported slugs match GitHub’s anchor rules when we fix MDMD/spec links ([slug alignment plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1089-L1244)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.421Z","inputHash":"493aa765e393ea46"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.870Z","inputHash":"493aa765e393ea46"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolIssueKind` {#symbol-symbolissuekind}
@@ -51,7 +51,7 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 ### Dependencies
 - `node:fs` - `fs`
 - `node:path` - `path`
-- [`githubSlugger.GitHubSlugger`](./githubSlugger.ts.mdmd.md#symbol-githubslugger)
+- [`GitHubSlugger`](./githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`markdownShared.computeLineStarts`](./markdownShared.ts.mdmd.md#symbol-computelinestarts)
 - [`markdownShared.extractReferenceDefinitions`](./markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
 - [`markdownShared.parseLinkTarget`](./markdownShared.ts.mdmd.md#symbol-parselinktarget)

@@ -397,7 +397,8 @@ function buildGeneratedSections(params: {
     workspaceRoot: params.workspaceRoot,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension,
-    headings
+    headings,
+    symbolIndex: params.symbolIndex
   });
 
   const sections: LiveDocRenderSection[] = [

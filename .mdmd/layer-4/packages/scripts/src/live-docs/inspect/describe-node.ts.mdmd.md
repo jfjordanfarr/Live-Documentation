@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/describe-node.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-describe-node-ts
-- Generated At: 2025-12-19T21:19:50.867Z
+- Generated At: 2026-01-14T15:17:48.503Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Generates human-readable descriptions of Live Doc graph nodes for CLI output. Fo
 Extracted from inspect.ts during Dev Day 50 (12/19). The `describeNode()` function is called during result emission to provide context about each hop in a path.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.867Z","inputHash":"903536e66a862327"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.503Z","inputHash":"903536e66a862327"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `describeNode` {#symbol-describenode}
@@ -53,7 +53,7 @@ Array of symbol descriptors with documentation
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`liveDocGraph.LiveDocGraphNode`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraphnode) (type-only)
 - [`types.NodeDescriptor`](./types.ts.mdmd.md#symbol-nodedescriptor) (type-only)
 - [`types.SymbolDescriptor`](./types.ts.mdmd.md#symbol-symboldescriptor) (type-only)

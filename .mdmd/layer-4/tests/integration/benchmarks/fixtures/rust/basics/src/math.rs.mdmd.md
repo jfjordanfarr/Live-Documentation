@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/math.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-math-rs
-- Generated At: 2026-01-14T02:58:08.224Z
+- Generated At: 2026-01-14T16:04:05.604Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Mathematical operations module for the `rust-basics` polyglot benchmark fixture.
 - Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.224Z","inputHash":"ec58175b3b6567ae"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:04:05.604Z","inputHash":"ec58175b3b6567ae"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sum` {#symbol-sum}

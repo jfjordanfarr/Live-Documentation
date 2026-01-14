@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/telemetry/latencyTracker.test.ts
 - Live Doc ID: LD-test-packages-server-src-telemetry-latencytracker-test-ts
-- Generated At: 2025-12-11T02:38:01.503Z
+- Generated At: 2026-01-14T15:17:48.606Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the latency recorder scenarios delivered in [AI-Agent-Workspace/ChatHi
 Coverage ensures queued changes that never persist are ignored and that snapshot resets clear rolling metrics—guardrails the team depended on when wiring the latency command and perf test in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.503Z","inputHash":"f8655427f8758be3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.606Z","inputHash":"f8655427f8758be3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`latencyTracker.LatencyTracker`](./latencyTracker.ts.mdmd.md#symbol-latencytracker)
+- [`LatencyTracker`](./latencyTracker.ts.mdmd.md#symbol-latencytracker)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

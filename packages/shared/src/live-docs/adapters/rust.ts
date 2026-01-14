@@ -735,6 +735,8 @@ function extractDependencies(
     dependencies.push({
       specifier: `mod ${moduleName}`,
       resolvedPath,
+      // mod declarations import the entire module, not specific symbols
+      // Use empty array for clean whole-file links
       symbols: [],
       kind: "import"
     });
@@ -754,16 +756,63 @@ function extractDependencies(
     }
 
     const resolvedPath = resolveUseStatement(clause, absolutePath, workspaceRoot);
+    const symbols = extractRustUseSymbols(clause);
     dependencies.push({
       specifier: clause,
       resolvedPath,
-      symbols: [],
+      symbols,
       kind: "import"
     });
   }
   IMPORT_PATTERN.lastIndex = 0;
 
   return dependencies.sort((left, right) => left.specifier.localeCompare(right.specifier));
+}
+
+/**
+ * Extracts the imported symbol name(s) from a Rust use statement.
+ *
+ * @remarks
+ * Rust use statements can be:
+ * - Module: `use crate::utils` → `[]` (imports module, not a specific symbol)
+ * - Specific item: `use crate::math::add` → `[]` (can't distinguish from module without context)
+ * - Multiple items: `use crate::math::{add, subtract}` → `['add', 'subtract']` (explicit symbols)
+ * - Wildcard: `use crate::prelude::*` → `[]` (cannot determine specific symbols)
+ * - Self: `use crate::math::{self, add}` → `['add']` (self just brings the module into scope)
+ *
+ * Without additional context (like reading the target file), we can only reliably identify
+ * symbols when using braced imports `{...}`. Simple path imports like `use crate::foo`
+ * could be importing a module OR a specific item — we treat them as module imports.
+ *
+ * @param clause - The use clause without the `use` keyword
+ * @returns Array of symbol names imported (only populated for braced imports)
+ */
+function extractRustUseSymbols(clause: string): string[] {
+  // Strip crate/super/self prefix for parsing
+  const normalized = clause
+    .replace(/^crate::/u, "")
+    .replace(/^super::/u, "")
+    .replace(/^self::/u, "");
+
+  // Check for braced import list: `math::{add, subtract}`
+  // This is the ONLY case where we can reliably identify specific symbols
+  const braceMatch = normalized.match(/^(.+)::?\{([^}]+)\}$/u);
+  if (braceMatch) {
+    const items = braceMatch[2]
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item && item !== "*" && item !== "self")
+      .map((item) => {
+        // Handle aliases: `add as addition` → `add`
+        return item.split(/\s+as\s+/u)[0].trim();
+      })
+      .filter((item) => item !== "");
+    return items;
+  }
+
+  // All other patterns: module import, wildcard, or ambiguous single-item import
+  // Return empty to get whole-file links
+  return [];
 }
 
 function toParagraphs(lines: string[]): string[] {

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-index-ts
-- Generated At: 2025-11-24T15:19:58.392Z
+- Generated At: 2026-01-14T15:17:48.344Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Barrel export for the `@live-documentation/scripts` workspace package, exposing 
 - Consumers import `startExplorerServer` and related types from `@live-documentation/scripts` directly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-24T15:19:58.392Z","inputHash":"4794c286c67dd107"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.344Z","inputHash":"4794c286c67dd107"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `startExplorerServer` {#symbol-startexplorerserver}
@@ -79,7 +79,7 @@ Barrel export for the `@live-documentation/scripts` workspace package, exposing 
 - [`types.ExplorerLinkPayload`](./live-docs/explorer/shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (re-export, type-only)
 - [`types.ExplorerNodePayload`](./live-docs/explorer/shared/types.ts.mdmd.md#symbol-explorernodepayload) (re-export, type-only)
 - [`liveDocGraph.BuildLiveDocGraphOptions`](./live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraphoptions) (re-export)
-- [`liveDocGraph.LiveDocGraph`](./live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (re-export)
+- [`LiveDocGraph`](./live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (re-export)
 - [`liveDocGraph.LiveDocGraphNode`](./live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraphnode) (re-export)
 - [`liveDocGraph.buildLiveDocGraph`](./live-docs/graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraph) (re-export)
 <!-- LIVE-DOC:END Dependencies -->

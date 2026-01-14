@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/data/Repository.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-data-repository-java
-- Generated At: 2026-01-14T02:54:35.089Z
+- Generated At: 2026-01-14T15:17:48.978Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Fetches datasets for the Java service benchmark, logging access and routing thro
 Keep the logging call and delegation intact; they ensure both util and registry modules appear in the graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.089Z","inputHash":"d1f4e89497d979cd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.978Z","inputHash":"8ef3684002135315"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository (class)` {#symbol-repository-class}
@@ -33,6 +33,6 @@ Keep the logging call and delegation intact; they ensure both util and registry 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Sample`](../model/Sample.java.mdmd.md)
-- [`Logger`](../util/Logger.java.mdmd.md)
+- [`Sample`](../model/Sample.java.mdmd.md#symbol-sample)
+- [`Logger`](../util/Logger.java.mdmd.md#symbol-logger)
 <!-- LIVE-DOC:END Dependencies -->

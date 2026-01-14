@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/safeFetch.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-safefetch-test-ts
-- Generated At: 2025-12-15T23:41:25.612Z
+- Generated At: 2026-01-14T15:17:48.863Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests validating the safeFetch localhost-only policy across IPv4, IPv6, sub
 - Validates NetworkPolicyViolation is thrown with correct `attemptedHost` property
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:41:25.612Z","inputHash":"e67059a8a49ec3cd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.863Z","inputHash":"e67059a8a49ec3cd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,7 +28,7 @@ _No public symbols detected_
 ### Dependencies
 - [`safeFetch.NetworkPolicyViolation`](./safeFetch.ts.mdmd.md#symbol-networkpolicyviolation)
 - [`safeFetch.isLocalhostHost`](./safeFetch.ts.mdmd.md#symbol-islocalhosthost)
-- [`safeFetch.safeFetch`](./safeFetch.ts.mdmd.md#symbol-safefetch)
+- [`safeFetch`](./safeFetch.ts.mdmd.md#symbol-safefetch)
 - [`safeFetch.validateNetworkPolicy`](./safeFetch.ts.mdmd.md#symbol-validatenetworkpolicy)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/utils.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-utils-ts
-- Generated At: 2025-12-15T00:38:06.564Z
+- Generated At: 2026-01-14T15:17:48.585Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Utility functions for the System-layer generator. Path resolution, file operatio
 - `includeInComponents()` filters out compiled artifacts (.d.ts, .js in dist/node_modules)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.564Z","inputHash":"092faecb844bf7da"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.585Z","inputHash":"092faecb844bf7da"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveOutputDirectory` {#symbol-resolveoutputdirectory}
@@ -73,7 +73,7 @@ Utility functions for the System-layer generator. Path resolution, file operatio
 - [`constants.LIVE_DOCS_SEGMENT`](./constants.ts.mdmd.md#symbol-live_docs_segment)
 - [`constants.SYSTEM_LAYER_NAME`](./constants.ts.mdmd.md#symbol-system_layer_name)
 - [`types.Layer3Archetype`](./types.ts.mdmd.md#symbol-layer3archetype) (type-only)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`githubSlugger.slug`](../../../../../shared/src/tooling/githubSlugger.ts.mdmd.md#symbol-slug)
 - [`pathUtils.normalizeWorkspacePath`](../../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

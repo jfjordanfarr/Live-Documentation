@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/rendering.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-rendering-ts
-- Generated At: 2025-12-19T04:50:48.269Z
+- Generated At: 2026-01-14T16:08:10.629Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Markdown rendering for Live Documentation. Generates the markdown content for ge
 - Type references are resolved via `WorkspaceSymbolIndex` and rendered as markdown links
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:48.269Z","inputHash":"86779faaa1371c33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:08:10.629Z","inputHash":"8578126497bb7b64"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
@@ -73,7 +73,7 @@ An array of markdown lines ready to insert beneath the `Public Symbols` heading.
 
 #### `renderDependencyLines` {#symbol-renderdependencylines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L669)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L670)
 
 ##### `renderDependencyLines` — Summary
 Renders the markdown bullet list for a Live Doc's `Dependencies` section.
@@ -87,8 +87,9 @@ code with optional symbol suffixes.
 - `args.analysis`: Analyzer output describing imported and re-exported modules.
 - `args.docDir`: Directory containing the Live Doc being written.
 - `args.docExtension`: File extension for Live Docs (e.g., ".mdmd.md").
-- `args.headings`: Symbol heading info for anchor resolution.
+- `args.headings`: Symbol heading info for anchor resolution within the current file.
 - `args.liveDocsRootAbsolute`: Absolute path to the Live Docs mirror root.
+- `args.symbolIndex`: Optional workspace-wide symbol index for cross-file anchor resolution.
 - `args.workspaceRoot`: Workspace root used to compute relative links.
 
 ##### `renderDependencyLines` — Returns
@@ -99,7 +100,7 @@ Markdown lines suitable for the `Dependencies` section, or an empty array when n
 
 #### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L818)
+- Source: [source](../../../../../../packages/shared/src/live-docs/rendering.ts#L873)
 
 ##### `renderReExportedAnchorLines` — Summary
 Renders the markdown for the Re-Exported Symbol Anchors section.

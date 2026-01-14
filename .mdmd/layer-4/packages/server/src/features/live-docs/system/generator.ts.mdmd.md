@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-generator-ts
-- Generated At: 2025-12-15T00:38:06.508Z
+- Generated At: 2026-01-14T15:17:48.567Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 - Supports custom `outputDir` and mirror cleanup so headless harness and `npm run live-docs:system` executions materialize ephemeral System docs outside the repo, matching the on-demand plan agreed the same day.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.508Z","inputHash":"2bc727a75e1c55be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.567Z","inputHash":"2bc727a75e1c55be"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GeneratedSystemDocument` {#symbol-generatedsystemdocument}
@@ -83,7 +83,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 - [`utils.stripCodePathLine`](./utils.ts.mdmd.md#symbol-stripcodepathline)
 - [`utils.systemMetadataSourcePath`](./utils.ts.mdmd.md#symbol-systemmetadatasourcepath)
 - [`manifest.loadTargetManifest`](../targets/manifest.ts.mdmd.md#symbol-loadtargetmanifest)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`coActivation.CoActivationReport`](../../../../../shared/src/live-docs/analysis/coActivation.ts.mdmd.md#symbol-coactivationreport) (type-only)
 - [`core.cleanupEmptyParents`](../../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)

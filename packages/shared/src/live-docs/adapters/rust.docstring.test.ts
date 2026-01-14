@@ -111,7 +111,7 @@ describe("rustAdapter docstring bridging", () => {
       {
         specifier: "crate::models::{Sample, Summary}",
         resolvedPath: undefined,
-        symbols: [],
+        symbols: ["Sample", "Summary"],
         kind: "import"
       },
       {

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/llm/relationshipExtractor.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-llm-relationshipextractor-test-ts
-- Generated At: 2025-11-19T15:01:35.081Z
+- Generated At: 2026-01-14T15:17:48.688Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Guards the extractor contract by proving we parse well-formed relationship batch
 - Extend these cases whenever the extractor schema grows (new fields, stricter validation) so the dry-run fixtures and prompt templates stay synchronized with what the pipeline accepts <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2457-L2499>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.081Z","inputHash":"14fbf74d65f2595f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.688Z","inputHash":"14fbf74d65f2595f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,7 +24,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`relationshipExtractor.RelationshipExtractionPrompt`](./relationshipExtractor.ts.mdmd.md#symbol-relationshipextractionprompt)
-- [`relationshipExtractor.RelationshipExtractor`](./relationshipExtractor.ts.mdmd.md#symbol-relationshipextractor)
+- [`RelationshipExtractor`](./relationshipExtractor.ts.mdmd.md#symbol-relationshipextractor)
 - [`relationshipExtractor.RelationshipExtractorError`](./relationshipExtractor.ts.mdmd.md#symbol-relationshipextractorerror)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -253,9 +253,37 @@ function extractDependencies(
     .map((specifier) => ({
       specifier,
       resolvedPath: resolveJavaImport(specifier, sourceRoot, workspaceRoot),
-      symbols: [],
+      symbols: extractImportedSymbols(specifier),
       kind: "import"
     })) as DependencyEntry[];
+}
+
+/**
+ * Extracts the imported symbol name(s) from a Java import specifier.
+ *
+ * @remarks
+ * Java imports can be:
+ * - Single class: `com.example.data.Reader` → `['Reader']`
+ * - Static member: `com.example.Utils.helper` → `['helper']`
+ * - Wildcard: `com.example.data.*` → `[]` (cannot determine specific symbols)
+ *
+ * @param specifier - The fully-qualified import specifier
+ * @returns Array of symbol names imported
+ */
+function extractImportedSymbols(specifier: string): string[] {
+  // Wildcard imports don't specify which symbols are used
+  if (specifier.endsWith(".*")) {
+    return [];
+  }
+
+  // Extract the last segment (class name or static member)
+  const lastDot = specifier.lastIndexOf(".");
+  if (lastDot === -1) {
+    return [specifier]; // No package, just the class name
+  }
+
+  const symbolName = specifier.slice(lastDot + 1);
+  return symbolName ? [symbolName] : [];
 }
 
 function computePosition(content: string, index: number): { line: number; character: number } {

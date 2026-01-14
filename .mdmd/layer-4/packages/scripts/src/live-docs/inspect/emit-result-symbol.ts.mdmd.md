@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result-symbol.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-emit-result-symbol-ts
-- Generated At: 2025-12-19T21:55:44.616Z
+- Generated At: 2026-01-14T15:17:48.509Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats and outputs symbol-level pathfinding results for the inspect CLI. When p
 Extracted from inspect.ts during Dev Day 50 (12/19). Symbol paths include both the file hops and the specific exported symbols at each hop, providing granular impact visibility.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.616Z","inputHash":"c50e857a33f67a6f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.509Z","inputHash":"c50e857a33f67a6f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `emitSymbolPathResult` {#symbol-emitsymbolpathresult}
@@ -51,7 +51,7 @@ Emits a "symbol path not found" result.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`symbol-reference.resolveAnchorToSymbolName`](./symbol-reference.ts.mdmd.md#symbol-resolveanchortosymbolname)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop) (type-only)

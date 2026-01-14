@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/main.ts
 - Live Doc ID: LD-implementation-packages-server-src-main-ts
-- Generated At: 2026-01-12T21:24:48.666Z
+- Generated At: 2026-01-14T15:17:48.596Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Hosts the language server entrypoint, wiring the LSP connection, runtime service
 - Keeps telemetry and ingestion services alive during integration runs, which is why the benchmark and US suites exercise this file whenever the language server boots ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:24:48.666Z","inputHash":"c6bbf38385bf5029"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.596Z","inputHash":"c6bbf38385bf5029"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,12 +25,12 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`changeQueue.ChangeQueue`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-changequeue)
+- [`ChangeQueue`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-changequeue)
 - [`changeQueue.QueuedChange`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-queuedchange)
-- [`diagnosticPublisher.DiagnosticPublisher`](./features/diagnostics/diagnosticPublisher.ts.mdmd.md#symbol-diagnosticpublisher)
-- [`hysteresisController.HysteresisController`](./features/diagnostics/hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller)
+- [`DiagnosticPublisher`](./features/diagnostics/diagnosticPublisher.ts.mdmd.md#symbol-diagnosticpublisher)
+- [`HysteresisController`](./features/diagnostics/hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller)
 - [`providerGuard.ExtensionSettings`](./features/settings/providerGuard.ts.mdmd.md#symbol-extensionsettings)
-- [`providerGuard.ProviderGuard`](./features/settings/providerGuard.ts.mdmd.md#symbol-providerguard)
+- [`ProviderGuard`](./features/settings/providerGuard.ts.mdmd.md#symbol-providerguard)
 - [`settingsBridge.DEFAULT_RUNTIME_SETTINGS`](./features/settings/settingsBridge.ts.mdmd.md#symbol-default_runtime_settings)
 - [`settingsBridge.RuntimeSettings`](./features/settings/settingsBridge.ts.mdmd.md#symbol-runtimesettings)
 - [`settingsBridge.deriveRuntimeSettings`](./features/settings/settingsBridge.ts.mdmd.md#symbol-deriveruntimesettings)

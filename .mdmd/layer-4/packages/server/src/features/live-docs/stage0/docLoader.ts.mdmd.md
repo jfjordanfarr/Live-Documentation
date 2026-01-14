@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/stage0/docLoader.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-stage0-docloader-ts
-- Generated At: 2025-12-15T00:38:06.486Z
+- Generated At: 2026-01-14T15:17:48.559Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Parses the Stage-0 Live Doc mirror into structured records (metadata, symbols, d
 - Warns on missing metadata or malformed sections instead of throwing, keeping generator runs resilient while we iterate on newly migrated docs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.486Z","inputHash":"9cdf65effbc1dbfa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.559Z","inputHash":"9cdf65effbc1dbfa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadStage0Docs` {#symbol-loadstage0docs}
@@ -29,7 +29,7 @@ Parses the Stage-0 Live Doc mirror into structured records (metadata, symbols, d
 - `glob` - `glob`
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`core.directoryExists`](../../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
 - [`markdown.renderBeginMarker`](../../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-renderbeginmarker)
 - [`markdown.renderEndMarker`](../../../../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-renderendmarker)

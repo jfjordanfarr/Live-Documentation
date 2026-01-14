@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-index-ts
-- Generated At: 2026-01-13T18:45:26.258Z
+- Generated At: 2026-01-14T15:17:48.648Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - Carries new Live Documentation configuration exports introduced during the Stage 0 adoption push, letting downstream commands honour the configurable base layer without bespoke wiring ([Stage 0 configuration pass](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-13T18:45:26.258Z","inputHash":"b9547d56178e96ab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.648Z","inputHash":"b9547d56178e96ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipExtractor` {#symbol-relationshipextractor}
@@ -104,7 +104,7 @@ Provides the single `@live-documentation/shared` entrypoint that re-exports infe
 - [`relationshipExtractor.RelationshipExtractionBatch`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractionbatch) (re-export)
 - [`relationshipExtractor.RelationshipExtractionPrompt`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractionprompt) (re-export)
 - [`relationshipExtractor.RelationshipExtractionRequest`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractionrequest) (re-export)
-- [`relationshipExtractor.RelationshipExtractor`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractor) (re-export)
+- [`RelationshipExtractor`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractor) (re-export)
 - [`relationshipExtractor.RelationshipExtractorError`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractorerror) (re-export)
 - [`relationshipExtractor.RelationshipExtractorLogger`](./inference/llm/relationshipExtractor.ts.mdmd.md#symbol-relationshipextractorlogger) (re-export)
 - [`typeScriptAstUtils`](./language/typeScriptAstUtils.ts.mdmd.md) (re-export)

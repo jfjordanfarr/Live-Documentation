@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/AppService.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-appservice-java
-- Generated At: 2026-01-14T02:54:35.086Z
+- Generated At: 2026-01-14T16:08:10.791Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates repository and analyzer dependencies for the Java service benchmark 
 Leave the constructor and `generate` method focused on delegation; additional logic belongs in the collaborators.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.086Z","inputHash":"0c952e51260c1a83"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:08:10.791Z","inputHash":"29b9010662a542e6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AppService (class)` {#symbol-appservice-class}
@@ -33,7 +33,7 @@ Leave the constructor and `generate` method focused on delegation; additional lo
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Analyzer`](./analytics/Analyzer.java.mdmd.md)
-- [`Repository`](./data/Repository.java.mdmd.md)
-- [`Summary`](./model/Summary.java.mdmd.md)
+- [`Analyzer`](./analytics/Analyzer.java.mdmd.md#symbol-analyzer-class)
+- [`Repository`](./data/Repository.java.mdmd.md#symbol-repository-class)
+- [`Summary`](./model/Summary.java.mdmd.md#symbol-summary)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/symbol-reference.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-symbol-reference-ts
-- Generated At: 2025-12-19T21:55:44.637Z
+- Generated At: 2026-01-14T15:17:48.525Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides symbol reference parsing and resolution for the inspect CLI. Enables us
 Extracted from inspect.ts during Dev Day 50 (12/19). The module handles the `parseSymbolReference()` and `resolveSymbolReference()` logic that powers symbol-level pathfinding in `npm run live-docs:inspect -- --from <path>#<symbol> --to <path>#<symbol>`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.637Z","inputHash":"8e06bfa4e99d642f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.525Z","inputHash":"8e06bfa4e99d642f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `symbolToAnchor` {#symbol-symboltoanchor}
@@ -86,8 +86,8 @@ returned to allow partial matches during path search.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`resolve-artifact.resolveArtifactIdentifier`](./resolve-artifact.ts.mdmd.md#symbol-resolveartifactidentifier)
 - [`types.SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference) (type-only)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

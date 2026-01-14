@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/metrics.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-metrics-rs
-- Generated At: 2026-01-14T02:58:08.221Z
+- Generated At: 2026-01-14T15:17:49.001Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the summarization and alert thresholds for the Rust analytics benchma
 Preserve the inline documentation and threshold values—they ensure the analyzer sees rich symbol metadata in this fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.221Z","inputHash":"9bbb84cd555a9b84"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:49.001Z","inputHash":"77df546e5c4c4361"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize` {#symbol-summarize}
@@ -65,5 +65,6 @@ Flags summaries whose average exceeds the alert threshold.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`models`](./models.rs.mdmd.md)
+- [`models.Sample`](./models.rs.mdmd.md#symbol-sample)
+- [`models.Summary`](./models.rs.mdmd.md#symbol-summary)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2026-01-07T22:00:43.252Z
+- Generated At: 2026-01-14T15:17:48.322Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-07T22:00:43.252Z","inputHash":"a0b77e41fe5f1f5e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.322Z","inputHash":"a0b77e41fe5f1f5e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
@@ -42,10 +42,10 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - [`providerGate.ensureProviderSelection`](./onboarding/providerGate.ts.mdmd.md#symbol-ensureproviderselection)
 - [`rebindPrompt.showRebindPrompt`](./prompts/rebindPrompt.ts.mdmd.md#symbol-showrebindprompt)
 - [`llmInvoker.LlmInvocationError`](./services/llmInvoker.ts.mdmd.md#symbol-llminvocationerror)
-- [`llmInvoker.LlmInvoker`](./services/llmInvoker.ts.mdmd.md#symbol-llminvoker)
+- [`LlmInvoker`](./services/llmInvoker.ts.mdmd.md#symbol-llminvoker)
 - [`localOllamaBridge.invokeLocalOllamaBridge`](./services/localOllamaBridge.ts.mdmd.md#symbol-invokelocalollamabridge)
 - [`symbolBridge.registerSymbolBridge`](./services/symbolBridge.ts.mdmd.md#symbol-registersymbolbridge)
-- [`configService.ConfigService`](./settings/configService.ts.mdmd.md#symbol-configservice)
+- [`ConfigService`](./settings/configService.ts.mdmd.md#symbol-configservice)
 - [`diagnosticsTree.registerDiagnosticsTreeView`](./views/diagnosticsTree.ts.mdmd.md#symbol-registerdiagnosticstreeview)
 - [`fileMaintenance.registerFileMaintenanceWatcher`](./watchers/fileMaintenance.ts.mdmd.md#symbol-registerfilemaintenancewatcher)
 - [`index.FEEDS_READY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-feeds_ready_request)

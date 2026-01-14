@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/main.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-main-rs
-- Generated At: 2026-01-14T02:58:08.223Z
+- Generated At: 2026-01-14T16:04:05.603Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Entry point for the `rust-basics` polyglot benchmark fixture. Declares module de
 - The fixture demonstrates the `mod foo;` pattern where Rust looks for `foo.rs` or `foo/mod.rs` relative to the crate source root.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.223Z","inputHash":"03ee216fe2f9a36e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:04:05.603Z","inputHash":"03ee216fe2f9a36e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

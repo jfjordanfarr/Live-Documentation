@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/archetype.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-archetype-ts
-- Generated At: 2025-12-14T00:04:07.231Z
+- Generated At: 2026-01-14T15:17:48.761Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-14T00:04:07.231Z","inputHash":"69cb6c42c1020292"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.761Z","inputHash":"69cb6c42c1020292"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArchetype` {#symbol-resolvearchetype}
@@ -66,6 +66,6 @@ Checks whether an authored markdown block carries information beyond the default
 ### Dependencies
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`coreConstants.IMPLEMENTATION_CODE_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-implementation_code_extensions)
 <!-- LIVE-DOC:END Dependencies -->

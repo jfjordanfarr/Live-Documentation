@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/resolve-artifact.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-resolve-artifact-ts
-- Generated At: 2025-12-19T21:19:50.888Z
+- Generated At: 2026-01-14T15:17:48.523Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Resolves user-provided artifact paths to Live Doc graph nodes. Handles the ambig
 Extracted from inspect.ts during Dev Day 50 (12/19). Works in tandem with symbol-reference.ts to provide the full path resolution pipeline for the inspect CLI.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.888Z","inputHash":"985d3324db155f30"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.523Z","inputHash":"985d3324db155f30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArtifactIdentifier` {#symbol-resolveartifactidentifier}
@@ -70,7 +70,7 @@ The stripped path
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

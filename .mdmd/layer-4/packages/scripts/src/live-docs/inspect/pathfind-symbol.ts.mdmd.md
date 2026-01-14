@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-symbol.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-pathfind-symbol-ts
-- Generated At: 2025-12-19T21:55:44.630Z
+- Generated At: 2026-01-14T15:17:48.519Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Extends pathfinding to symbol-level granularity. When users specify symbol ancho
 Extracted from inspect.ts during Dev Day 50 (12/19). Symbol-level paths are more precise than file-level paths, enabling impact analysis like "which code paths lead from ConfigLoader#loadConfig to Database#query?"
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.630Z","inputHash":"77d85f832d1dc790"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.519Z","inputHash":"77d85f832d1dc790"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `searchSymbolPath` {#symbol-searchsymbolpath}
@@ -71,7 +71,7 @@ Array of neighboring symbol hops
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`liveDocGraph.LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`symbol-reference.symbolMatchesAnchor`](./symbol-reference.ts.mdmd.md#symbol-symbolmatchesanchor)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop) (type-only)

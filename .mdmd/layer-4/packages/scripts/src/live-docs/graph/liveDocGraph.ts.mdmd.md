@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2025-12-15T00:38:06.137Z
+- Generated At: 2026-01-14T15:17:48.500Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files 
 - The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.137Z","inputHash":"537c0cbe86d05b2b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.500Z","inputHash":"537c0cbe86d05b2b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}
@@ -45,7 +45,7 @@ Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files 
 - `node:path` - `path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
-- [`liveDocumentationConfig.LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`parse.ParsedDependency`](../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parseddependency)
 - [`parse.ParsedSymbolDocumentationEntry`](../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parsedsymboldocumentationentry)

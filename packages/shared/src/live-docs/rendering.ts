@@ -660,7 +660,8 @@ function normalizeDocText(value?: string): string[] | undefined {
  * @param args.workspaceRoot - Workspace root used to compute relative links.
  * @param args.liveDocsRootAbsolute - Absolute path to the Live Docs mirror root.
  * @param args.docExtension - File extension for Live Docs (e.g., ".mdmd.md").
- * @param args.headings - Symbol heading info for anchor resolution.
+ * @param args.headings - Symbol heading info for anchor resolution within the current file.
+ * @param args.symbolIndex - Optional workspace-wide symbol index for cross-file anchor resolution.
  *
  * @see renderPublicSymbolLines
  *
@@ -673,6 +674,8 @@ export function renderDependencyLines(args: {
   liveDocsRootAbsolute: string;
   docExtension: string;
   headings: PublicSymbolHeadingInfo[];
+  /** Optional workspace-wide symbol index for resolving imported symbols to correct anchors. */
+  symbolIndex?: WorkspaceSymbolIndex;
 }): string[] {
   if (args.analysis.dependencies.length === 0) {
     return [];
@@ -728,9 +731,20 @@ export function renderDependencyLines(args: {
 
       for (const symbolName of symbols) {
         const anchorName = bucket.targets[symbolName] ?? symbolName;
-        const slug = resolveSymbolSlug(anchorName, slugIndex) ?? createSymbolSlug(anchorName);
+        // Try to resolve slug from workspace-wide index first (cross-file), then fall back to local headings
+        const workspaceSlug = resolveSymbolSlugFromIndex(
+          anchorName,
+          dependency.resolvedPath,
+          args.symbolIndex
+        );
+        const slug =
+          workspaceSlug ?? resolveSymbolSlug(anchorName, slugIndex) ?? createSymbolSlug(anchorName);
         const fragment = slug ? `#${slug}` : "";
-        const label = `${moduleLabel}.${symbolName}`;
+        // Avoid redundancy like "Reader.Reader" when symbol equals module name (common in Java)
+        const label =
+          symbolName.toLowerCase() === moduleLabel.toLowerCase()
+            ? symbolName
+            : `${moduleLabel}.${symbolName}`;
         lines.push(`- [${formatInlineCode(label)}](${docRelative}${fragment})${qualifierSuffix}`);
       }
       continue;
@@ -799,6 +813,47 @@ function resolveSymbolSlug(alias: string | undefined, index: Map<string, string>
   }
 
   return undefined;
+}
+
+/**
+ * Resolves a symbol slug from the workspace-wide symbol index.
+ *
+ * @remarks
+ * This function looks up the correct anchor slug for an imported symbol
+ * by finding it in the workspace symbol index, filtered by source path.
+ * This handles cases where symbols are disambiguated (e.g., `Analyzer`
+ * becomes `symbol-analyzer-class` when the file also has a constructor).
+ *
+ * @param symbolName - The symbol name to look up.
+ * @param targetSourcePath - The workspace-relative source path where the symbol is defined.
+ * @param index - The workspace-wide symbol index.
+ * @returns The resolved anchor slug, or undefined if not found.
+ */
+function resolveSymbolSlugFromIndex(
+  symbolName: string,
+  targetSourcePath: string,
+  index: WorkspaceSymbolIndex | undefined
+): string | undefined {
+  if (!index || !symbolName || !targetSourcePath) {
+    return undefined;
+  }
+
+  // Normalize path separators for comparison
+  const normalizedTarget = targetSourcePath.replace(/\\/gu, "/");
+
+  // Look up all locations for this symbol name
+  const locations = index.get(symbolName) ?? index.get(symbolName.toLowerCase());
+  if (!locations || locations.length === 0) {
+    return undefined;
+  }
+
+  // Find the location matching our target source path
+  const matchingLocation = locations.find((loc) => {
+    const normalizedSource = loc.sourcePath.replace(/\\/gu, "/");
+    return normalizedSource === normalizedTarget;
+  });
+
+  return matchingLocation?.anchor;
 }
 
 // ============================================================================
