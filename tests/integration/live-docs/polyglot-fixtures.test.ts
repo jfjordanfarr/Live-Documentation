@@ -253,9 +253,10 @@ suite("Live Docs polyglot fixtures", () => {
         appDoc,
         /##### `run` — Links[\s\S]*`Reader#load\(String\)`/
       );
+      // Dependencies are now resolved to markdown links pointing to Live Doc files
       assert.match(
         appDoc,
-        /### Dependencies[\s\S]*com\.example\.data\.Reader/
+        /### Dependencies[\s\S]*\[`Reader`\]\(\.\.\/data\/Reader\.java/
       );
 
       const readerDoc = await fs.readFile(

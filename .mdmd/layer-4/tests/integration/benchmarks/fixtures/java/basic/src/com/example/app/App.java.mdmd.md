@@ -5,17 +5,19 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/app/App.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-app-app-java
-- Generated At: 2025-12-06T22:49:48.442Z
+- Generated At: 2026-01-14T02:54:35.081Z
 
 ## Authored
 ### Purpose
-Coordinates the Java basic benchmark by routing datasets through the reader and report writer so package-level edges stay visible.
+Entry point class for the `java-basic` polyglot benchmark fixture. Coordinates dataset loading via `Reader`, formatting via `ReportWriter`, and model classes like `Record`, demonstrating Java package-level imports and cross-package dependency resolution.
 
 ### Notes
-Retain the argument guard and documentation—they help exercise exception paths and Javadoc parsing.
+- Created on [2025-11-01](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md) as part of T060 (curating AST benchmark fixtures), extending the polyglot suite with Java package structure patterns.
+- Java adapter dependency resolution was fixed on [2026-01-13](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md) by adding `extractPackage()`, `computeSourceRoot()`, and `resolveJavaImport()` functions that convert package names like `com.example.data.Reader` to workspace-relative file paths.
+- The fixture uses standard Java package conventions (`com.example.app`, `com.example.data`, etc.) to stress-test import path resolution across nested package hierarchies.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.442Z","inputHash":"5122e401b4d5dabc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.081Z","inputHash":"8f55161824e670ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}
@@ -51,7 +53,7 @@ formatted report summary
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `com.example.data.Reader`
-- `com.example.format.ReportWriter`
-- `com.example.model.Record`
+- [`Reader`](../data/Reader.java.mdmd.md)
+- [`ReportWriter`](../format/ReportWriter.java.mdmd.md)
+- [`Record`](../model/Record.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

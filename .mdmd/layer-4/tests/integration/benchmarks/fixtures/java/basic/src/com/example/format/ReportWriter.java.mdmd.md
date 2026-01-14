@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/format/ReportWriter.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-format-reportwriter-java
-- Generated At: 2025-12-06T22:49:48.455Z
+- Generated At: 2026-01-14T02:54:35.084Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms record collections into summaries for the Java basic benchmark, tying
 Do not reorder the dependency on `Catalog`; it exists to highlight formatter-to-data module edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.455Z","inputHash":"11984193155b950e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.084Z","inputHash":"d276f65d34283dc3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriter` {#symbol-reportwriter}
@@ -44,6 +44,6 @@ catalog description combined with the aggregate value
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `com.example.data.Catalog`
-- `com.example.model.Record`
+- [`Catalog`](../data/Catalog.java.mdmd.md)
+- [`Record`](../model/Record.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/data/Reader.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-data-reader-java
-- Generated At: 2025-12-06T22:49:48.451Z
+- Generated At: 2026-01-14T02:54:35.082Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads synthetic records for the Java basic benchmark, illustrating how data modu
 Keep the sample values predictable; analyzer regressions rely on this deterministic dataset.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.451Z","inputHash":"8c204d80fe422fc5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.082Z","inputHash":"baef76fdb3acb831"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Reader` {#symbol-reader}
@@ -44,5 +44,5 @@ ordered list of synthetic records
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `com.example.model.Record`
+- [`Record`](../model/Record.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

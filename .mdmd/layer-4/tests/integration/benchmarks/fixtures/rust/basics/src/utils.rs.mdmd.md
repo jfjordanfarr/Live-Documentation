@@ -5,17 +5,19 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/utils.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-utils-rs
-- Generated At: 2025-12-06T22:49:48.634Z
+- Generated At: 2026-01-14T02:58:08.225Z
 
 ## Authored
 ### Purpose
-Holds utility helpers for the Rust basics benchmark so the analyzer observes standalone module exports.
+Utility functions module for the `rust-basics` polyglot benchmark fixture. Provides `is_even` and `clamp` helpers with no external dependencies, serving as a leaf node in the dependency graph.
 
 ### Notes
-The functions stay intentionally compact; update them only when adding new dependency edges to the fixture.
+- Created on [2025-10-31](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-31.md) as the foundational leaf module for the `rust-basics` fixture's dependency chain.
+- Being a leaf node (no dependencies), this module is critical for testing that the Live Documentation system correctly identifies terminal nodes in the graph.
+- The `is_even` function is consumed by both `main.rs` and `math.rs`, making it a high-fan-in artifact useful for change impact analysis testing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.634Z","inputHash":"0fc5466dcadc8dde"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.225Z","inputHash":"0fc5466dcadc8dde"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `is_even` {#symbol-is_even}

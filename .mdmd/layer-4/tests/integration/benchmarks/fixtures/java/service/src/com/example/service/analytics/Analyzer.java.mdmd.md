@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/analytics/Analyzer.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-analytics-analyzer-java
-- Generated At: 2025-12-06T22:49:48.470Z
+- Generated At: 2026-01-14T02:54:35.088Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the analytics workflow for the Java service benchmark, logging progress and
 Preserve both logging statements; they provide the analyzer with multiple util dependencies in a single method.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.470Z","inputHash":"c2fc85eafc9e7f4c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:54:35.088Z","inputHash":"1a99177f73d05cf4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Analyzer (class)` {#symbol-analyzer-class}
@@ -33,8 +33,8 @@ Preserve both logging statements; they provide the analyzer with multiple util d
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `com.example.service.metrics.SummaryBuilder`
-- `com.example.service.model.Sample`
-- `com.example.service.model.Summary`
-- `com.example.service.util.Logger`
+- [`SummaryBuilder`](../metrics/SummaryBuilder.java.mdmd.md)
+- [`Sample`](../model/Sample.java.mdmd.md)
+- [`Summary`](../model/Summary.java.mdmd.md)
+- [`Logger`](../util/Logger.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

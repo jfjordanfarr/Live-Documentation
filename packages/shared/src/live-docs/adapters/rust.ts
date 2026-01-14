@@ -1,4 +1,6 @@
+import { existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
+import * as path from "node:path";
 
 import type {
   DependencyEntry,
@@ -26,6 +28,8 @@ const ATTRIBUTE_PATTERN = /^\s*#/;
 const LINE_DOC_PATTERN = /^\s*\/\/\//;
 const BLOCK_DOC_START_PATTERN = /^\s*\/\*\*/;
 const IMPORT_PATTERN = /^\s*use\s+([^;]+);/gm;
+// Captures both `mod foo;` and `pub mod foo;` declarations (but not inline `mod foo { }`)
+const MOD_DECLARATION_PATTERN = /^\s*(?:pub(?:\([^)]*\))?\s+)?mod\s+([A-Za-z_][A-Za-z0-9_]*)\s*;/gm;
 const MARKDOWN_LINK_REGEX = /\[([^\]]+)]\((https?:\/\/[^)\s]+)\)/g;
 const URL_REGEX = /(https?:\/\/[^)\s]+)/g;
 
@@ -38,13 +42,166 @@ const URL_REGEX = /(https?:\/\/[^)\s]+)/g;
  */
 const IMPL_PATTERN = /^(\s*)impl(?:<[^>]*>)?\s+(?:([A-Za-z_][A-Za-z0-9_:]*(?:<[^>]*>)?)\s+for\s+)?([A-Za-z_][A-Za-z0-9_:]*(?:<[^>]*>)?)/;
 
+/**
+ * Resolves a Rust module declaration to its file path.
+ * 
+ * Given `mod foo;` in `/project/src/main.rs`:
+ * - Looks for `/project/src/foo.rs` (module as file)
+ * - Looks for `/project/src/foo/mod.rs` (module as directory)
+ * 
+ * @param moduleName - The module name from `mod foo;`
+ * @param absolutePath - The absolute path of the file containing the declaration
+ * @param workspaceRoot - The workspace root for computing relative paths
+ * @returns Workspace-relative path if found, undefined otherwise
+ */
+function resolveModDeclaration(
+  moduleName: string,
+  absolutePath: string,
+  workspaceRoot: string
+): string | undefined {
+  const fileDir = path.dirname(absolutePath);
+  const fileName = path.basename(absolutePath, ".rs");
+  
+  // For main.rs and lib.rs, sibling modules are in the same directory
+  // For other files (e.g., parent.rs), modules may be in parent/ subdirectory
+  let moduleDir = fileDir;
+  if (fileName !== "main" && fileName !== "lib" && fileName !== "mod") {
+    // Check if there's a sibling directory named after this file
+    const siblingDir = path.join(fileDir, fileName);
+    if (existsSync(siblingDir)) {
+      moduleDir = siblingDir;
+    }
+  }
+  
+  // Try module as file: foo.rs
+  const asFile = path.join(moduleDir, `${moduleName}.rs`);
+  if (existsSync(asFile)) {
+    return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
+  }
+  
+  // Try module as directory: foo/mod.rs
+  const asDir = path.join(moduleDir, moduleName, "mod.rs");
+  if (existsSync(asDir)) {
+    return path.relative(workspaceRoot, asDir).replace(/\\/g, "/");
+  }
+  
+  return undefined;
+}
+
+/**
+ * Determines the crate root directory from a file path.
+ * 
+ * Walks up the directory tree looking for main.rs, lib.rs, or Cargo.toml
+ * to find the crate root's src/ directory.
+ */
+function findCrateRoot(absolutePath: string): string | undefined {
+  let dir = path.dirname(absolutePath);
+  const root = path.parse(dir).root;
+  
+  while (dir !== root) {
+    // Check for crate root markers
+    if (existsSync(path.join(dir, "main.rs")) || 
+        existsSync(path.join(dir, "lib.rs"))) {
+      return dir;
+    }
+    // Check for Cargo.toml in parent (meaning we're in src/)
+    const parent = path.dirname(dir);
+    if (existsSync(path.join(parent, "Cargo.toml"))) {
+      return dir;
+    }
+    dir = parent;
+  }
+  
+  return undefined;
+}
+
+/**
+ * Resolves a `use` statement to a file path.
+ * 
+ * Handles:
+ * - `use crate::foo::bar` → resolve from crate root
+ * - `use super::foo` → resolve from parent module
+ * - `use self::foo` → resolve from current module
+ */
+function resolveUseStatement(
+  specifier: string,
+  absolutePath: string,
+  workspaceRoot: string
+): string | undefined {
+  const fileDir = path.dirname(absolutePath);
+  
+  // Extract the module path (first segment or two that matters for file resolution)
+  const parts = specifier.split("::");
+  
+  if (parts[0] === "crate") {
+    const crateRoot = findCrateRoot(absolutePath);
+    if (!crateRoot || parts.length < 2) {
+      return undefined;
+    }
+    // Resolve from crate root: use crate::utils → src/utils.rs
+    const moduleName = parts[1];
+    const asFile = path.join(crateRoot, `${moduleName}.rs`);
+    if (existsSync(asFile)) {
+      return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
+    }
+    const asDir = path.join(crateRoot, moduleName, "mod.rs");
+    if (existsSync(asDir)) {
+      return path.relative(workspaceRoot, asDir).replace(/\\/g, "/");
+    }
+    return undefined;
+  }
+  
+  if (parts[0] === "super") {
+    if (parts.length < 2) {
+      return undefined;
+    }
+    // Resolve from parent: use super::utils → ../utils.rs
+    const parentDir = path.dirname(fileDir);
+    const moduleName = parts[1];
+    const asFile = path.join(parentDir, `${moduleName}.rs`);
+    if (existsSync(asFile)) {
+      return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
+    }
+    const asDir = path.join(parentDir, moduleName, "mod.rs");
+    if (existsSync(asDir)) {
+      return path.relative(workspaceRoot, asDir).replace(/\\/g, "/");
+    }
+    return undefined;
+  }
+  
+  if (parts[0] === "self") {
+    if (parts.length < 2) {
+      return undefined;
+    }
+    // Resolve from current: use self::helper → ./helper.rs
+    const fileName = path.basename(absolutePath, ".rs");
+    let moduleDir = fileDir;
+    if (fileName !== "main" && fileName !== "lib" && fileName !== "mod") {
+      moduleDir = path.join(fileDir, fileName);
+    }
+    const moduleName = parts[1];
+    const asFile = path.join(moduleDir, `${moduleName}.rs`);
+    if (existsSync(asFile)) {
+      return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
+    }
+    const asDir = path.join(moduleDir, moduleName, "mod.rs");
+    if (existsSync(asDir)) {
+      return path.relative(workspaceRoot, asDir).replace(/\\/g, "/");
+    }
+    return undefined;
+  }
+  
+  // External crate or std library — can't resolve to local file
+  return undefined;
+}
+
 export const rustAdapter: LanguageAdapter = {
   id: "rust-basic",
   extensions: [".rs"],
-  async analyze({ absolutePath }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
     const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content);
+    const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
 
     if (symbols.length === 0 && dependencies.length === 0) {
       return {
@@ -559,10 +716,32 @@ function extractLinks(text: string): SymbolDocumentationLink[] {
   return links;
 }
 
-function extractDependencies(content: string): DependencyEntry[] {
-  const imports = new Map<string, Set<string>>();
+function extractDependencies(
+  content: string,
+  absolutePath: string,
+  workspaceRoot: string
+): DependencyEntry[] {
+  const dependencies: DependencyEntry[] = [];
   let match: RegExpExecArray | null;
 
+  // Extract mod declarations (mod foo;)
+  while ((match = MOD_DECLARATION_PATTERN.exec(content)) !== null) {
+    const moduleName = match[1]?.trim();
+    if (!moduleName) {
+      continue;
+    }
+
+    const resolvedPath = resolveModDeclaration(moduleName, absolutePath, workspaceRoot);
+    dependencies.push({
+      specifier: `mod ${moduleName}`,
+      resolvedPath,
+      symbols: [],
+      kind: "import"
+    });
+  }
+  MOD_DECLARATION_PATTERN.lastIndex = 0;
+
+  // Extract use statements
   while ((match = IMPORT_PATTERN.exec(content)) !== null) {
     let clause = match[1]?.trim();
     if (!clause) {
@@ -574,19 +753,17 @@ function extractDependencies(content: string): DependencyEntry[] {
       continue;
     }
 
-    const symbolSet = imports.get(clause) ?? new Set<string>();
-    imports.set(clause, symbolSet);
+    const resolvedPath = resolveUseStatement(clause, absolutePath, workspaceRoot);
+    dependencies.push({
+      specifier: clause,
+      resolvedPath,
+      symbols: [],
+      kind: "import"
+    });
   }
-
   IMPORT_PATTERN.lastIndex = 0;
 
-  return Array.from(imports.entries())
-    .map(([specifier, symbols]): DependencyEntry => ({
-      specifier,
-      symbols: Array.from(symbols.values()).sort(),
-      kind: "import"
-    }))
-    .sort((left, right) => left.specifier.localeCompare(right.specifier));
+  return dependencies.sort((left, right) => left.specifier.localeCompare(right.specifier));
 }
 
 function toParagraphs(lines: string[]): string[] {

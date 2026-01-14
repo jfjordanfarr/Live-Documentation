@@ -1,4 +1,6 @@
+import { existsSync } from "node:fs";
 import { promises as fs } from "node:fs";
+import * as path from "node:path";
 
 import type {
   DependencyEntry,
@@ -19,15 +21,103 @@ import type { LanguageAdapter } from "./index";
 const TYPE_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:(?:abstract|final|sealed|static)\s+)*(class|interface|enum|record)\s+([A-Za-z_][A-Za-z0-9_$]*)(?:<[^>]+>)?(?:\s+extends\s+([A-Za-z0-9_$.,<>\s]+?))?(?:\s+implements\s+([A-Za-z0-9_$.,<>\s]+?))?(?=\s*[({])/g;
 const MEMBER_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:static\s+|final\s+|abstract\s+|default\s+|synchronized\s+|strictfp\s+)*(?:([^\s(]+)\s+)?([A-Za-z_][A-Za-z0-9_$]*)\s*\(/g;
 const IMPORT_PATTERN = /^\s*import\s+([^;]+);/gm;
+const PACKAGE_PATTERN = /^\s*package\s+([A-Za-z_][A-Za-z0-9_$.]*)\s*;/m;
 const BUILT_IN_PACKAGE_PREFIX = "java.";
+
+/**
+ * Extracts the package declaration from Java source content.
+ * @returns The package name (e.g., "com.example.app") or undefined if none found
+ */
+function extractPackage(content: string): string | undefined {
+  const match = PACKAGE_PATTERN.exec(content);
+  return match?.[1]?.trim();
+}
+
+/**
+ * Computes the source root directory by subtracting the package path from the file path.
+ *
+ * Given:
+ *   - absolutePath: /project/src/com/example/app/App.java
+ *   - packageName: com.example.app
+ *
+ * Returns: /project/src
+ *
+ * This enables resolving other imports like `com.example.data.Reader` to
+ * `/project/src/com/example/data/Reader.java`
+ */
+function computeSourceRoot(absolutePath: string, packageName: string | undefined): string | undefined {
+  if (!packageName) {
+    // No package declaration — file is in the default package
+    // Source root is the directory containing the file
+    return path.dirname(absolutePath);
+  }
+
+  // Convert package name to path segments: com.example.app → com/example/app
+  const packagePath = packageName.replace(/\./g, path.sep);
+
+  // The file path should end with /{packagePath}/{ClassName}.java
+  // We need to find where the package path starts in the file path
+  const normalizedAbsPath = path.normalize(absolutePath);
+  const dirPath = path.dirname(normalizedAbsPath);
+
+  // Check if the directory ends with the package path
+  if (dirPath.endsWith(packagePath)) {
+    return dirPath.slice(0, dirPath.length - packagePath.length - 1); // -1 for trailing separator
+  }
+
+  // Fallback: could not determine source root
+  return undefined;
+}
+
+/**
+ * Resolves a Java import specifier to a workspace-relative file path.
+ *
+ * Given:
+ *   - specifier: com.example.data.Reader
+ *   - sourceRoot: /project/src
+ *   - workspaceRoot: /project
+ *
+ * Returns: src/com/example/data/Reader.java (workspace-relative, if file exists)
+ */
+function resolveJavaImport(
+  specifier: string,
+  sourceRoot: string | undefined,
+  workspaceRoot: string
+): string | undefined {
+  if (!sourceRoot) {
+    return undefined;
+  }
+
+  // Handle wildcard imports (com.example.data.*) — cannot resolve to a specific file
+  if (specifier.endsWith(".*")) {
+    return undefined;
+  }
+
+  // Convert fully-qualified name to path: com.example.data.Reader → com/example/data/Reader.java
+  const relativePath = specifier.replace(/\./g, path.sep) + ".java";
+  const absolutePath = path.join(sourceRoot, relativePath);
+
+  // Verify the file exists
+  if (existsSync(absolutePath)) {
+    // Return workspace-relative path (forward slashes for consistency)
+    return path.relative(workspaceRoot, absolutePath).replace(/\\/g, "/");
+  }
+
+  return undefined;
+}
 
 export const javaAdapter: LanguageAdapter = {
   id: "java-basic",
   extensions: [".java"],
-  async analyze({ absolutePath }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
     const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content);
+
+    // Compute source root from package declaration
+    const packageName = extractPackage(content);
+    const sourceRoot = computeSourceRoot(absolutePath, packageName);
+
+    const dependencies = extractDependencies(content, sourceRoot, workspaceRoot);
 
     if (symbols.length === 0 && dependencies.length === 0) {
       return {
@@ -131,7 +221,11 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   return results;
 }
 
-function extractDependencies(content: string): DependencyEntry[] {
+function extractDependencies(
+  content: string,
+  sourceRoot: string | undefined,
+  workspaceRoot: string
+): DependencyEntry[] {
   const imports = new Set<string>();
   let match: RegExpExecArray | null;
 
@@ -158,7 +252,7 @@ function extractDependencies(content: string): DependencyEntry[] {
     .sort((a, b) => a.localeCompare(b))
     .map((specifier) => ({
       specifier,
-      resolvedPath: undefined,
+      resolvedPath: resolveJavaImport(specifier, sourceRoot, workspaceRoot),
       symbols: [],
       kind: "import"
     })) as DependencyEntry[];

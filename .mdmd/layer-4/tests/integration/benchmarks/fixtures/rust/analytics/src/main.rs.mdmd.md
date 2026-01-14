@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/main.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-main-rs
-- Generated At: 2025-12-06T22:49:48.612Z
+- Generated At: 2026-01-14T02:58:08.220Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the entry point for the Rust analytics benchmark, invoking IO and metric
 Maintain parity with the supporting modules; this file should stay lightweight to keep the dependency graph focused.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.612Z","inputHash":"1d247861a28b0ef6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.220Z","inputHash":"36b40d54877a73f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,4 +25,8 @@ _No public symbols detected_
 ### Dependencies
 - `analytics::run_analysis`
 - `io::load_series`
+- [`analytics`](./analytics.rs.mdmd.md)
+- [`io`](./io.rs.mdmd.md)
+- [`metrics`](./metrics.rs.mdmd.md)
+- [`models`](./models.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

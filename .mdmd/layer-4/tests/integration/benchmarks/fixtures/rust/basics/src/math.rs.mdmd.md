@@ -5,17 +5,18 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/math.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-math-rs
-- Generated At: 2025-12-06T22:49:48.630Z
+- Generated At: 2026-01-14T02:58:08.224Z
 
 ## Authored
 ### Purpose
-Provides the math helpers for the Rust basics benchmark, chaining calls into `utils` to validate cross-module symbol tracking.
+Mathematical operations module for the `rust-basics` polyglot benchmark fixture. Provides `sum` and `describe` functions that depend on `utils::is_even`, demonstrating cross-module Rust dependencies.
 
 ### Notes
-Retain the small API surface so analyzer outputs remain predictable across runs.
+- Created on [2025-10-31](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-31.md) alongside the rest of the `rust-basics` fixture to test multi-hop dependency chains: `main.rs → math.rs → utils.rs`.
+- Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.630Z","inputHash":"00062c8f62cd977b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.224Z","inputHash":"ec58175b3b6567ae"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sum` {#symbol-sum}
@@ -29,5 +30,5 @@ Retain the small API surface so analyzer outputs remain predictable across runs.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `crate::utils`
+- [`utils`](./utils.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
