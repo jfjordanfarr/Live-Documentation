@@ -122,7 +122,6 @@ function runVerify() {
 
   try {
     runNpmScript("Lint", ["run", "lint"], benchmarkEnv);
-    runNpmScript("Rebuild better-sqlite3", ["run", "rebuild:better-sqlite3:force"], benchmarkEnv);
     runNpmScript("Unit tests", ["run", "test:unit"], benchmarkEnv);
     runNpmScript("Integration tests", ["run", "test:integration"], benchmarkEnv);
     runNpmScript("Documentation link enforcement", ["run", "docs:links:enforce"], benchmarkEnv);

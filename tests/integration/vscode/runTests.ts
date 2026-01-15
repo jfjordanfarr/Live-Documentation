@@ -38,13 +38,6 @@ async function main(): Promise<void> {
     }
 
     const vscodeExecutablePath = await downloadAndUnzipVSCode({ version: process.env.VSCODE_VERSION ?? "stable" });
-    const electronVersion = await readElectronVersion(vscodeExecutablePath);
-    console.log(`[integration] Resolved Electron version: ${electronVersion}`);
-    console.log(`[integration] Forcing better-sqlite3 rebuild for Electron (ignoring SKIP_NATIVE_REBUILD)`);
-    // Always perform a deterministic rebuild for Electron to ensure ABI compatibility.
-    console.log(`[integration] Initiating better-sqlite3 rebuild for Electron ${electronVersion}...`);
-    rebuildNativeModules(repoRoot, electronVersion);
-    console.log(`[integration] Rebuild completed for Electron ${electronVersion}.`);
 
     if (!process.env.LINK_AWARE_PROVIDER_MODE) {
       process.env.LINK_AWARE_PROVIDER_MODE = "local-only";
@@ -94,65 +87,6 @@ function buildWorkspace(repoRoot: string): void {
   }
 }
 
-async function readElectronVersion(vscodeExecutablePath: string): Promise<string> {
-  // Try reading from VS Code's application package (may not always include electron info in built dist)
-  try {
-    const appPackagePath = path.resolve(
-      path.dirname(vscodeExecutablePath),
-      "resources",
-      "app",
-      "package.json"
-    );
-    const packageJsonRaw = await fs.promises.readFile(appPackagePath, "utf8");
-    const packageJson = JSON.parse(packageJsonRaw) as { devDependencies?: Record<string, string>; dependencies?: Record<string, string> };
-    const fromDeps = packageJson.devDependencies?.electron ?? packageJson.dependencies?.electron;
-    if (fromDeps) {
-      return fromDeps.replace(/^\^/, "");
-    }
-  } catch {
-    // fall through to CLI parse
-  }
-
-  // Fallback: use Code CLI --version output, which includes an 'Electron X.Y.Z' line
-  const cliPath = resolveVSCodeCliPath(vscodeExecutablePath);
-  const result = spawnSync(cliPath, ["--version"], { stdio: "pipe" });
-  const out = (result.stdout?.toString() ?? "") + (result.stderr?.toString() ?? "");
-  // Emit a short preview for troubleshooting
-  const preview = out.split(/\r?\n/).slice(0, 5).join(" | ");
-  console.log(`[integration] VS Code --version output (preview): ${preview}`);
-  const match = out.split(/\r?\n/).map(l => l.trim()).find(l => /^Electron\s+\d+\.\d+\.\d+/.test(l));
-  if (!match) {
-    throw new Error("Unable to determine Electron version from VS Code CLI --version output");
-  }
-  return match.replace(/^Electron\s+/, "").trim();
-}
-
-function rebuildNativeModules(repoRoot: string, electronVersion: string): void {
-  const scriptPath = path.join(repoRoot, "scripts", "rebuild-better-sqlite3.mjs");
-
-  console.log(
-    `Rebuilding better-sqlite3 for Electron ${electronVersion} via ${path.relative(repoRoot, scriptPath)} ` +
-      "(override with SKIP_NATIVE_REBUILD=1 to skip)."
-  );
-
-  const result = spawnSync(process.execPath, [scriptPath], {
-    cwd: repoRoot,
-    stdio: "inherit",
-    env: {
-      ...process.env,
-      BETTER_SQLITE3_REBUILD_FORCE: "1",
-      VSCODE_ELECTRON_VERSION: electronVersion
-    }
-  });
-
-  if (result.status !== 0) {
-    const detail = result.error ? ` (${result.error.message})` : "";
-    throw new Error(
-      `better-sqlite3 rebuild script failed with exit code ${result.status ?? "unknown"}${detail}`
-    );
-  }
-}
-
 function resolveNpmInvocation(): { command: string; args: string[] } {
   const npmExecPath = process.env.npm_execpath;
   if (npmExecPath && npmExecPath.endsWith("npm-cli.js") && fs.existsSync(npmExecPath)) {
@@ -166,17 +100,6 @@ function resolveNpmInvocation(): { command: string; args: string[] } {
     command: process.platform === "win32" ? "npm.cmd" : "npm",
     args: []
   };
-}
-
-function resolveVSCodeCliPath(vscodeExecutablePath: string): string {
-  const base = path.dirname(vscodeExecutablePath);
-  if (process.platform === "win32") {
-    return path.join(base, "bin", "code.cmd");
-  }
-  if (process.platform === "darwin") {
-    return path.join(base, "..", "..", "MacOS", "Electron");
-  }
-  return path.join(base, "bin", "code");
 }
 
 async function prepareIntegrationWorkspace(

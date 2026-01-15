@@ -86,7 +86,6 @@ On the way to full adoption we continue to land incremental wins that boost obse
 
 ### Primary Tooling/Stack
 - VS Code Extension API with `vscode-languageclient` / `vscode-languageserver`
-- SQLite via `better-sqlite3`
 - Live Documentation generator + lint CLIs under `scripts/live-docs/` (generate, inspect, migrate, lint)
 - `npm run live-docs:inspect` (LD-402) for dependency path finding; ALWAYS consider running this when assessing change impact or tracing value origins. Prefer JSON mode for prompt fuel and keep outbound/inbound searches in mind.
 - Optional LLM access through `vscode.lm`

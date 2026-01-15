@@ -205,16 +205,6 @@ npm run live-docs:visualize  # Explore it visually
 
 ---
 
-## Native Dependencies
-
-Some workflows require native SQLite bindings. If tests fail due to ABI mismatch:
-
-```powershell
-npm run rebuild:better-sqlite3:force
-```
-
----
-
 ## License
 
 MIT — use it, fork it, ship it.
