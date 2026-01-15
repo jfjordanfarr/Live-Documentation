@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/ruby.typeref.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-ruby-typeref-test-ts
-- Generated At: 2025-12-11T02:38:02.031Z
+- Generated At: 2026-01-15T02:41:18.718Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests verifying that the Ruby language adapter correctly extracts `typeRefe
 - Uses temp directories with fixture files to avoid polluting the workspace
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.031Z","inputHash":"4ea4045bc5a42746"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.718Z","inputHash":"8f5c77f38207ee00"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,9 +26,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs/promises`
+- `node:os`
+- `node:path`
 - [`ruby.rubyAdapter`](./ruby.ts.mdmd.md#symbol-rubyadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

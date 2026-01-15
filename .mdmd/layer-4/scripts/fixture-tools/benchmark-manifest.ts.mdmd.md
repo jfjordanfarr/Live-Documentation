@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-manifest.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-manifest-ts
-- Generated At: 2025-12-15T00:38:07.363Z
+- Generated At: 2026-01-15T02:41:18.850Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - Extended 2025-11-06 while onboarding C# fixtures, using `computeIntegrityDigest` to stamp the new `csharp-webforms` hash set and enforce algorithm selection during verification ([C# integrity update](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5520-L5638)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.363Z","inputHash":"d5aed03ee7f11049"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.850Z","inputHash":"9b66e80b2bc55770"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FixtureSummary` {#symbol-fixturesummary}
@@ -32,43 +32,51 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - Type: interface
 - Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L22)
 
+#### `FixtureThresholds` {#symbol-fixturethresholds}
+- Type: interface
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L36)
+
+##### `FixtureThresholds` — Summary
+Per-fixture precision/recall threshold overrides.
+Allows stress-test fixtures to have lower thresholds than the global defaults.
+
 #### `BenchmarkFixtureDefinition` {#symbol-benchmarkfixturedefinition}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L32)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L43)
 
 #### `IntegrityDigest` {#symbol-integritydigest}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L46)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L59)
 
 #### `FixtureFileSetSpec` {#symbol-fixturefilesetspec}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L53)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L66)
 
 #### `FixtureMaterialization` {#symbol-fixturematerialization}
 - Type: type
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L58)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L71)
 - Returns: [`FixtureGitMaterialization`](#symbol-fixturegitmaterialization)
 
 #### `FixtureGitMaterialization` {#symbol-fixturegitmaterialization}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L65)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L78)
 
 #### `BENCHMARK_MANIFEST_SEGMENTS` {#symbol-benchmark_manifest_segments}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L78)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L91)
 
 #### `loadBenchmarkManifest` {#symbol-loadbenchmarkmanifest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L86)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L99)
 
 #### `computeIntegrityDigest` {#symbol-computeintegritydigest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L102)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L115)
 - Parameters: `fixture`: [`BenchmarkFixtureDefinition`](#symbol-benchmarkfixturedefinition)
 
 #### `normalizeRelative` {#symbol-normalizerelative}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L159)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L172)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -76,5 +84,5 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - `glob` - `glob`
 - `node:crypto` - `createHash`
 - `node:fs` - `promises`
-- `node:path` - `path`
+- `node:path`
 <!-- LIVE-DOC:END Dependencies -->

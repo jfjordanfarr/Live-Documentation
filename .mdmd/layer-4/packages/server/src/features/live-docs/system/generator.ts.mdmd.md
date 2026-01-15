@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-generator-ts
-- Generated At: 2026-01-14T15:17:48.567Z
+- Generated At: 2026-01-15T02:41:18.521Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 - Supports custom `outputDir` and mirror cleanup so headless harness and `npm run live-docs:system` executions materialize ephemeral System docs outside the repo, matching the on-demand plan agreed the same day.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.567Z","inputHash":"2bc727a75e1c55be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.521Z","inputHash":"3e12277fb7cc31d7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GeneratedSystemDocument` {#symbol-generatedsystemdocument}
@@ -48,7 +48,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`docLoader.loadStage0Docs`](../stage0/docLoader.ts.mdmd.md#symbol-loadstage0docs)
 - [`constants.DEFAULT_CO_ACTIVATION_RELATIVE_PATH`](./constants.ts.mdmd.md#symbol-default_co_activation_relative_path)

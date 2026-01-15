@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/environment.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-environment-ts
-- Generated At: 2025-12-05T15:37:24.752Z
+- Generated At: 2026-01-15T02:41:18.556Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides shared runtime utilities for the language server—resolving database l
 `describeError` and `fileUriToPath` gained Windows path handling during that pass—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602)—so any future refactor must preserve UNC safety and drive-by evidence in `environment.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:24.752Z","inputHash":"36e367ad273cf6af"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.556Z","inputHash":"8738eca398d6d7e0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveDatabasePath` {#symbol-resolvedatabasepath}
@@ -43,9 +43,9 @@ Provides shared runtime utilities for the language server—resolving database l
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs`
+- `node:os`
+- `node:path`
 - `node:url` - `fileURLToPath`
 - [`providerGuard.ExtensionSettings`](../features/settings/providerGuard.ts.mdmd.md#symbol-extensionsettings)
 - `vscode-languageserver/node` - `InitializeParams`

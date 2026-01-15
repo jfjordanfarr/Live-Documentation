@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/runtime/environment.test.ts
 - Live Doc ID: LD-test-packages-server-src-runtime-environment-test-ts
-- Generated At: 2025-12-11T02:38:01.417Z
+- Generated At: 2026-01-15T02:41:18.554Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the runtime environment helpers so Live Docs staging and graph persist
 The cases cover UNC-style URIs, database path defaults, and directory creation on Windows—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4492-L4588](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4492-L4588) for the bug report that prompted them. Update these expectations whenever `resolveDatabasePath` or `fileUriToPath` change, otherwise Live Docs lint will flag missing evidence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.417Z","inputHash":"5fc5abee29cb94e5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.554Z","inputHash":"c0ce817e7d05d98f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs`
+- `node:os`
+- `node:path`
 - [`environment.describeError`](./environment.ts.mdmd.md#symbol-describeerror)
 - [`environment.ensureDirectory`](./environment.ts.mdmd.md#symbol-ensuredirectory)
 - [`environment.fileUriToPath`](./environment.ts.mdmd.md#symbol-fileuritopath)

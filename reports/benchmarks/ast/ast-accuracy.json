@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2025-12-19T18:42:31.622Z",
+  "recordedAt": "2026-01-14T22:40:20.877Z",
   "environment": {
     "nodeVersion": "v22.14.0",
     "platform": "win32",
@@ -17,13 +17,13 @@
       "recall": 0.95
     },
     "totals": {
-      "totalEvaluated": 1124,
-      "truePositives": 1118,
+      "totalEvaluated": 1183,
+      "truePositives": 1177,
       "falsePositives": 3,
       "falseNegatives": 3,
-      "precision": 0.9973238180196253,
-      "recall": 0.9973238180196253,
-      "f1Score": 0.9973238180196253
+      "precision": 0.997457627118644,
+      "recall": 0.997457627118644,
+      "f1Score": 0.997457627118644
     },
     "fixtures": [
       {
@@ -57,7 +57,7 @@
           {
             "source": "src/util.ts",
             "target": "src/types.ts",
-            "relation": "uses"
+            "relation": "imports"
           }
         ],
         "falsePositives": [],
@@ -78,13 +78,28 @@
         "truePositives": [
           {
             "source": "src/index.ts",
-            "target": "src/services/reportService.ts",
+            "target": "src/models/widget.ts",
             "relation": "imports"
           },
           {
             "source": "src/index.ts",
+            "target": "src/services/reportService.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/repositories/storage.ts",
             "target": "src/models/widget.ts",
-            "relation": "uses"
+            "relation": "imports"
+          },
+          {
+            "source": "src/services/dataService.ts",
+            "target": "src/repositories/storage.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/services/reportService.ts",
+            "target": "src/models/widget.ts",
+            "relation": "imports"
           },
           {
             "source": "src/services/reportService.ts",
@@ -97,24 +112,9 @@
             "relation": "imports"
           },
           {
-            "source": "src/services/reportService.ts",
-            "target": "src/models/widget.ts",
-            "relation": "uses"
-          },
-          {
-            "source": "src/services/dataService.ts",
-            "target": "src/repositories/storage.ts",
-            "relation": "imports"
-          },
-          {
             "source": "src/utils/format.ts",
             "target": "src/models/widget.ts",
-            "relation": "uses"
-          },
-          {
-            "source": "src/repositories/storage.ts",
-            "target": "src/models/widget.ts",
-            "relation": "uses"
+            "relation": "imports"
           }
         ],
         "falsePositives": [],
@@ -5982,6 +5982,420 @@
           {
             "source": "lib/services/data_loader.rb",
             "target": "lib/support/logger.rb",
+            "relation": "requires"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "ts-rosetta",
+        "label": "TypeScript Rosetta Stone (cross-language canonical program)",
+        "language": "typescript",
+        "totals": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/main.ts",
+            "target": "src/models.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/main.ts",
+            "target": "src/processor.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/models.ts",
+            "target": "src/types.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.ts",
+            "target": "src/helpers.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.ts",
+            "target": "src/models.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.ts",
+            "target": "src/types.ts",
+            "relation": "imports"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "python-rosetta",
+        "label": "Python Rosetta Stone (cross-language canonical program)",
+        "language": "python",
+        "totals": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/main.py",
+            "target": "src/models.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/main.py",
+            "target": "src/processor.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/models.py",
+            "target": "src/core_types.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.py",
+            "target": "src/models.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.py",
+            "target": "src/core_types.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.py",
+            "target": "src/helpers.py",
+            "relation": "imports"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "java-rosetta",
+        "label": "Java Rosetta Stone (cross-language canonical program)",
+        "language": "java",
+        "totals": {
+          "truePositives": 9,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/com/rosetta/app/Main.java",
+            "target": "src/com/rosetta/models/ModelFactory.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/app/Main.java",
+            "target": "src/com/rosetta/models/Record.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/app/Main.java",
+            "target": "src/com/rosetta/models/Report.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/app/Main.java",
+            "target": "src/com/rosetta/processor/Processor.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/models/ModelFactory.java",
+            "target": "src/com/rosetta/types/ProcessorConfig.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/models/Record.java",
+            "target": "src/com/rosetta/types/Entry.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/models/Record.java",
+            "target": "src/com/rosetta/types/Status.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/processor/Processor.java",
+            "target": "src/com/rosetta/helpers/Helpers.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/processor/Processor.java",
+            "target": "src/com/rosetta/types/ProcessorConfig.java",
+            "relation": "uses"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "csharp-rosetta",
+        "label": "C# Rosetta Stone (cross-language canonical program)",
+        "language": "csharp",
+        "totals": {
+          "truePositives": 13,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/App/Main.cs",
+            "target": "src/Models/ModelFactory.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/App/Main.cs",
+            "target": "src/Models/Report.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/App/Main.cs",
+            "target": "src/Processor/Processor.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/App/Main.cs",
+            "target": "src/Types/Entry.cs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/Models/ModelFactory.cs",
+            "target": "src/Models/Record.cs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/Models/ModelFactory.cs",
+            "target": "src/Types/ProcessorConfig.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Models/Record.cs",
+            "target": "src/Types/Entry.cs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/Models/Report.cs",
+            "target": "src/Models/Record.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/Processor.cs",
+            "target": "src/Helpers/Helpers.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/Processor.cs",
+            "target": "src/Models/ModelFactory.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/Processor.cs",
+            "target": "src/Models/Record.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/Processor.cs",
+            "target": "src/Models/Report.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/Processor.cs",
+            "target": "src/Types/ProcessorConfig.cs",
+            "relation": "uses"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "rust-rosetta",
+        "label": "Rust Rosetta Stone (cross-language canonical program)",
+        "language": "rust",
+        "totals": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/main.rs",
+            "target": "src/models.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/main.rs",
+            "target": "src/processor.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/models.rs",
+            "target": "src/types.rs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/processor.rs",
+            "target": "src/helpers.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.rs",
+            "target": "src/models.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.rs",
+            "target": "src/types.rs",
+            "relation": "uses"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "c-rosetta",
+        "label": "C Rosetta Stone (cross-language canonical program)",
+        "language": "c",
+        "totals": {
+          "truePositives": 13,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "src/helpers.c",
+            "target": "src/helpers.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/main.c",
+            "target": "src/models.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/main.c",
+            "target": "src/models.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/main.c",
+            "target": "src/processor.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/main.c",
+            "target": "src/processor.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/models.c",
+            "target": "src/models.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/models.h",
+            "target": "src/types.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/processor.c",
+            "target": "src/helpers.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/processor.c",
+            "target": "src/helpers.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/processor.c",
+            "target": "src/models.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/processor.c",
+            "target": "src/processor.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/processor.h",
+            "target": "src/models.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/processor.h",
+            "target": "src/types.h",
+            "relation": "includes"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      {
+        "id": "ruby-rosetta",
+        "label": "Ruby Rosetta Stone (cross-language canonical program)",
+        "language": "ruby",
+        "totals": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1Score": 1
+        },
+        "truePositives": [
+          {
+            "source": "lib/main.rb",
+            "target": "lib/models.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "lib/main.rb",
+            "target": "lib/processor.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "lib/models.rb",
+            "target": "lib/types.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "lib/processor.rb",
+            "target": "lib/helpers.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "lib/processor.rb",
+            "target": "lib/models.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "lib/processor.rb",
+            "target": "lib/types.rb",
             "relation": "requires"
           }
         ],

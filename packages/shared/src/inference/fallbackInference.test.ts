@@ -131,7 +131,9 @@ describe("fallback inference", () => {
     expect(hasEdge(utilArtifact)).toBe(true);
   });
 
-  it("skips TypeScript imports that are only used as types", async () => {
+  it("includes TypeScript imports that are only used as types (for change impact analysis)", async () => {
+    // Type-only imports represent real dependencies - if the type definition changes,
+    // the importing file is impacted and may need updates.
     const result = await inferFallbackGraph({
       seeds: [
         {
@@ -157,8 +159,10 @@ describe("fallback inference", () => {
 
     expect(controllerArtifact).toBeDefined();
     expect(typesArtifact).toBeDefined();
-    expect(result.links).toHaveLength(0);
-    expect(result.traces).toHaveLength(0);
+    // Type-only imports ARE included because they represent real change impact
+    expect(result.links).toHaveLength(1);
+    expect(result.links[0].sourceId).toBe(controllerArtifact!.id);
+    expect(result.links[0].targetId).toBe(typesArtifact!.id);
   });
 
   it("ignores module references that only appear inside comments", async () => {

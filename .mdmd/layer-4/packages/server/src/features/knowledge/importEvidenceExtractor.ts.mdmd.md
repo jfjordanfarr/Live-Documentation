@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/importEvidenceExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-importevidenceextractor-ts
-- Generated At: 2026-01-12T21:47:40.521Z
+- Generated At: 2026-01-15T02:41:18.485Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - Module resolution probes multiple extensions via `MODULE_RESOLUTION_EXTENSIONS`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.521Z","inputHash":"8aaf1427460ad19c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.485Z","inputHash":"3f14b11eea767ce7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ImportEvidenceContext` {#symbol-importevidencecontext}
@@ -36,7 +36,7 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:path` - `path`
+- `node:path`
 - `node:url` - `pathToFileURL`
 - [`directoryScanner.fileExists`](./directoryScanner.ts.mdmd.md#symbol-fileexists)
 - [`languageInference.MODULE_RESOLUTION_EXTENSIONS`](./languageInference.ts.mdmd.md#symbol-module_resolution_extensions)

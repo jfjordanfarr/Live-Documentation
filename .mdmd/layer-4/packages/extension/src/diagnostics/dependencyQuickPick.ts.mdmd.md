@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/diagnostics/dependencyQuickPick.ts
 - Live Doc ID: LD-implementation-packages-extension-src-diagnostics-dependencyquickpick-ts
-- Generated At: 2025-12-15T00:38:05.895Z
+- Generated At: 2026-01-15T02:41:18.262Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the T039 dependency inspection quick pick so the extension can call `
 - The same change set validated lint, unit, and integration runs (`npm run lint`, `npm run test:unit`, `npm run test:integration`), ensuring the quick pick stays regression-tested; see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1500-L1568](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1500-L1568).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.895Z","inputHash":"ba723a6b35e6e929"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.262Z","inputHash":"629a0718389b088d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerDependencyQuickPick` {#symbol-registerdependencyquickpick}
@@ -50,7 +50,7 @@ Implements the T039 dependency inspection quick pick so the extension can call `
 - [`artifactSchemas.LinkRelationshipKindSchema`](../shared/artifactSchemas.ts.mdmd.md#symbol-linkrelationshipkindschema)
 - [`index.INSPECT_DEPENDENCIES_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-inspect_dependencies_request)
 - [`index.InspectDependenciesParams`](../../../shared/src/index.ts.mdmd.md#symbol-inspectdependenciesparams)
-- `vscode` - `vscode`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 - `zod` - `z`
 <!-- LIVE-DOC:END Dependencies -->

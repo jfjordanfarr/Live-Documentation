@@ -1,0 +1,15 @@
+[
+  { "source": "src/App/Main.cs", "target": "src/Models/ModelFactory.cs", "relation": "uses" },
+  { "source": "src/App/Main.cs", "target": "src/Models/Report.cs", "relation": "uses" },
+  { "source": "src/App/Main.cs", "target": "src/Processor/Processor.cs", "relation": "uses" },
+  { "source": "src/App/Main.cs", "target": "src/Types/Entry.cs", "relation": "imports" },
+  { "source": "src/Models/ModelFactory.cs", "target": "src/Models/Record.cs", "relation": "imports" },
+  { "source": "src/Models/ModelFactory.cs", "target": "src/Types/ProcessorConfig.cs", "relation": "uses" },
+  { "source": "src/Models/Record.cs", "target": "src/Types/Entry.cs", "relation": "imports" },
+  { "source": "src/Models/Report.cs", "target": "src/Models/Record.cs", "relation": "uses" },
+  { "source": "src/Processor/Processor.cs", "target": "src/Helpers/Helpers.cs", "relation": "uses" },
+  { "source": "src/Processor/Processor.cs", "target": "src/Models/ModelFactory.cs", "relation": "uses" },
+  { "source": "src/Processor/Processor.cs", "target": "src/Models/Record.cs", "relation": "uses" },
+  { "source": "src/Processor/Processor.cs", "target": "src/Models/Report.cs", "relation": "uses" },
+  { "source": "src/Processor/Processor.cs", "target": "src/Types/ProcessorConfig.cs", "relation": "uses" }
+]

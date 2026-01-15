@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/utils/repoPaths.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-utils-repopaths-ts
-- Generated At: 2025-11-19T15:01:36.387Z
+- Generated At: 2026-01-15T02:41:19.017Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Locates the repository root for benchmark suites so rebuild and AST accuracy tes
 - Accepts both historical and current workspace names so the helper survives the repo rename from Copilot Improvement Experiments to Live Documentation ([rename fix](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L215-L253)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.387Z","inputHash":"c53dc70d3d72d578"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.017Z","inputHash":"9df2a95896ae98eb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `getRepoRoot` {#symbol-getreporoot}
@@ -31,7 +31,7 @@ Locates the repository root for benchmark suites so rebuild and AST accuracy tes
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `existsSync`, `readFileSync`
-- `node:path` - `path`
+- `node:path`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

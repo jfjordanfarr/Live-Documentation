@@ -119,8 +119,9 @@ function extractImportNames(importClause: ts.ImportClause | undefined): string[]
     return names;
   }
 
+  // Namespace imports (import * as X) cannot be mapped to specific symbols
+  // in the target file, so return empty array to produce a whole-file link
   if (ts.isNamespaceImport(importClause.namedBindings)) {
-    names.push(importClause.namedBindings.name.text);
     return names;
   }
 

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/slopcop/symbolsAudit.test.ts
 - Live Doc ID: LD-test-tests-integration-slopcop-symbolsaudit-test-ts
-- Generated At: 2025-11-16T22:34:14.375Z
+- Generated At: 2026-01-15T02:41:19.185Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Runs the SlopCop symbol audit against the healed fixture workspace to prove the 
 - Shared a 20s timeout after Safe Commit uncovered slow spawn/compile phases, keeping the symbol audit reliable across Windows CI runs ([safe commit stabilization](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:14.375Z","inputHash":"1b07784d1301ccc4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.185Z","inputHash":"dae8c5129c7390c9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,9 +25,9 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `spawnSync`
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs/promises`
+- `node:os`
+- `node:path`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 

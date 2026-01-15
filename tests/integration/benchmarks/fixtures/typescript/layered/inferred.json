@@ -1,10 +1,42 @@
 [
-  { "source": "src/index.ts", "target": "src/services/reportService.ts", "relation": "imports" },
-  { "source": "src/index.ts", "target": "src/models/widget.ts", "relation": "uses" },
-  { "source": "src/services/reportService.ts", "target": "src/services/dataService.ts", "relation": "imports" },
-  { "source": "src/services/reportService.ts", "target": "src/utils/format.ts", "relation": "imports" },
-  { "source": "src/services/reportService.ts", "target": "src/models/widget.ts", "relation": "uses" },
-  { "source": "src/services/dataService.ts", "target": "src/repositories/storage.ts", "relation": "imports" },
-  { "source": "src/utils/format.ts", "target": "src/models/widget.ts", "relation": "uses" },
-  { "source": "src/repositories/storage.ts", "target": "src/models/widget.ts", "relation": "uses" }
+  {
+    "source": "src/index.ts",
+    "target": "src/models/widget.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/index.ts",
+    "target": "src/services/reportService.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/repositories/storage.ts",
+    "target": "src/models/widget.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/services/dataService.ts",
+    "target": "src/repositories/storage.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/services/reportService.ts",
+    "target": "src/models/widget.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/services/reportService.ts",
+    "target": "src/services/dataService.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/services/reportService.ts",
+    "target": "src/utils/format.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/utils/format.ts",
+    "target": "src/models/widget.ts",
+    "relation": "imports"
+  }
 ]

@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "self-similarity",
-  "recordedAt": "2026-01-14T18:51:34.725Z",
+  "recordedAt": "2026-01-15T02:44:51.961Z",
   "environment": {
     "nodeVersion": "v22.21.1",
     "platform": "win32",
@@ -57,7 +57,7 @@
           {
             "source": "src/util.ts",
             "target": "src/types.ts",
-            "relation": "uses"
+            "relation": "imports"
           }
         ],
         "falsePositives": [],

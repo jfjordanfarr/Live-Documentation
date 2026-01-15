@@ -1,0 +1,160 @@
+{
+  "$schema": "./rosetta-manifest.schema.json",
+  "schema": "rosetta-1.0",
+  "description": "Cross-language canonical program for adapter validation. Each variant implements the same data processing pipeline to enable symmetrical dependency graph comparison.",
+  
+  "tiers": {
+    "type-safe": {
+      "description": "Languages with symbol-to-symbol connectivity. Adapters should resolve individual imported symbols.",
+      "languages": ["typescript", "java", "csharp", "rust", "c", "go"]
+    },
+    "dynamic": {
+      "description": "Languages with file-to-file connectivity. Adapters resolve module imports without individual symbols.",
+      "languages": ["python", "ruby"]
+    }
+  },
+
+  "canonicalProgram": {
+    "description": "A data processing pipeline that transforms records into reports.",
+    "nodes": [
+      {
+        "id": "main",
+        "role": "Entry point that orchestrates the pipeline",
+        "files": ["main.*"]
+      },
+      {
+        "id": "processor", 
+        "role": "Core processing logic that transforms data",
+        "files": ["processor.*", "Processor.*"]
+      },
+      {
+        "id": "models",
+        "role": "Domain model definitions and factories",
+        "files": ["models.*", "Models/*", "model/*"]
+      },
+      {
+        "id": "types",
+        "role": "Shared type definitions (enums, configs)",
+        "files": ["types.*", "Types/*"]
+      },
+      {
+        "id": "helpers",
+        "role": "Pure utility functions with no dependencies",
+        "files": ["helpers.*", "Helpers.*"]
+      }
+    ],
+    "edges": [
+      { "from": "main", "to": "processor", "via": ["run", "summarize"] },
+      { "from": "main", "to": "models", "via": ["createRecord", "Report"] },
+      { "from": "processor", "to": "models", "via": ["Record", "Report", "validateConfig"] },
+      { "from": "processor", "to": "types", "via": ["ProcessorConfig"] },
+      { "from": "processor", "to": "helpers", "via": ["format", "sum", "average"] },
+      { "from": "models", "to": "types", "via": ["Entry", "Status", "ProcessorConfig"] }
+    ],
+    "importPatterns": {
+      "description": "Import patterns exercised by this fixture to stress-test adapters",
+      "patterns": [
+        {
+          "name": "Namespace/Wildcard Import",
+          "examples": [
+            "import * as Models from './models'",
+            "import com.rosetta.models.*",
+            "use crate::models::{self, Record, Report}"
+          ]
+        },
+        {
+          "name": "Type Alias",
+          "examples": [
+            "import type { ProcessorConfig } from './types'",
+            "using RTypes = Rosetta.Types"
+          ]
+        },
+        {
+          "name": "Selective Import",
+          "examples": [
+            "import { format, sum } from './helpers'",
+            "from helpers import format_value, sum_values",
+            "use crate::helpers::{format, sum, average}"
+          ]
+        },
+        {
+          "name": "Module Alias",
+          "examples": [
+            "import models as Models",
+            "use crate::models as m"
+          ]
+        }
+      ]
+    }
+  },
+
+  "variants": [
+    {
+      "language": "typescript",
+      "path": "typescript/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "src",
+      "entryPoint": "src/main.ts",
+      "notes": "Reference implementation. Exercises namespace imports and type-only imports."
+    },
+    {
+      "language": "java",
+      "path": "java/rosetta", 
+      "tier": "type-safe",
+      "sourceDir": "src/com/rosetta",
+      "entryPoint": "src/com/rosetta/app/Main.java",
+      "notes": "Package structure with wildcard imports (com.rosetta.models.*)."
+    },
+    {
+      "language": "csharp",
+      "path": "csharp/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "src",
+      "entryPoint": "src/App/Main.cs",
+      "notes": "Namespace structure with using aliases (using RTypes = Rosetta.Types)."
+    },
+    {
+      "language": "rust",
+      "path": "rust/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "src",
+      "entryPoint": "src/main.rs",
+      "notes": "Module system with mod declarations and use statements."
+    },
+    {
+      "language": "c",
+      "path": "c/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "src",
+      "entryPoint": "src/main.c",
+      "notes": "Header file includes with implementation files."
+    },
+    {
+      "language": "python",
+      "path": "python/rosetta",
+      "tier": "dynamic",
+      "sourceDir": "src",
+      "entryPoint": "src/main.py",
+      "notes": "Module imports with aliasing (import models as Models)."
+    },
+    {
+      "language": "ruby",
+      "path": "ruby/rosetta",
+      "tier": "dynamic",
+      "sourceDir": "lib",
+      "entryPoint": "lib/main.rb",
+      "notes": "require_relative for local module loading."
+    }
+  ],
+
+  "validation": {
+    "description": "Validation criteria for cross-language equivalence",
+    "rules": [
+      "All variants must produce identical dependency graph shapes (node count, edge patterns)",
+      "Type-safe variants should resolve symbol-level imports where applicable",
+      "Dynamic variants should produce file-level connectivity",
+      "helpers module must appear as a leaf node with no outgoing dependencies",
+      "types module must appear as a foundation with no outgoing dependencies (except standard library)"
+    ]
+  }
+}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-01-14T15:17:48.776Z
+- Generated At: 2026-01-15T02:41:18.745Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.776Z","inputHash":"370d920a840e1f15"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.745Z","inputHash":"f4c3c99ebffa948b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -124,7 +124,7 @@ The resolved location, or undefined if not found.
 ### Dependencies
 - `glob` - `glob`
 - `ignore` - `Ignore`, `ignore`
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)

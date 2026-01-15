@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/heuristics/dom.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-heuristics-dom-ts
-- Generated At: 2025-12-11T02:38:02.139Z
+- Generated At: 2026-01-15T02:41:18.751Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Infers markup dependencies for JavaScript that queries the DOM by element id, al
 - The heuristic complements `aspNetMarkupAdapter` by flowing the opposite direction (script → markup), which is why the LD-402 integration tests assert end-to-end paths rather than relying on this module in isolation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.139Z","inputHash":"56dd51a5ec8a53c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.751Z","inputHash":"c374ec6b92926f04"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `inferDomDependencies` {#symbol-inferdomdependencies}
@@ -28,7 +28,7 @@ Infers markup dependencies for JavaScript that queries the DOM by element id, al
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `Dirent` (type-only)
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-bundledmarkdownscanner-ts
-- Generated At: 2026-01-08T19:09:21.662Z
+- Generated At: 2026-01-15T02:41:18.431Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Scans Live Documentation files for markdown links and bundles referenced files (
 - File categorization simplified to generic "markdown" type — no workspace-specific icons
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.662Z","inputHash":"16a67ee10a6f329a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.431Z","inputHash":"4664792030c3fc74"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
@@ -77,8 +77,8 @@ Single-hop only: bundles files directly linked from Live Docs, no nested travers
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `fs/promises` - `fs`
+- `fs/promises`
 - [`staticExplorerData.BundledMarkdownTreeNode`](./staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 - [`staticExplorerData.RelatedDocLink`](./staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
-- `path` - `path`
+- `path`
 <!-- LIVE-DOC:END Dependencies -->

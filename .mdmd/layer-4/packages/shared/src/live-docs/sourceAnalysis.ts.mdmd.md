@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/sourceAnalysis.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-sourceanalysis-ts
-- Generated At: 2025-12-11T02:38:02.198Z
+- Generated At: 2026-01-15T02:41:18.768Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 - Returns `EMPTY_ANALYSIS_RESULT` for unsupported file extensions
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.198Z","inputHash":"8e15498aa6a21576"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.768Z","inputHash":"168c42186484774b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
@@ -52,7 +52,7 @@ if (analysis.symbols.length === 0) {
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)

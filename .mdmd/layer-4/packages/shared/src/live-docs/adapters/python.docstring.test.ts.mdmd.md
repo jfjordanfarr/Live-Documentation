@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-docstring-test-ts
-- Generated At: 2025-12-11T02:38:01.977Z
+- Generated At: 2026-01-15T02:41:18.696Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the Python adapter’s handling of reST, Google, and NumPy-style docst
 - Executed during the Nov 14 `safe:commit -- --benchmarks` run; expand its fixtures whenever the adapter learns new docstring dialect features <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.977Z","inputHash":"5789d56d8dce7774"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.696Z","inputHash":"0a5a7616e077dd09"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs/promises`
+- `node:os`
+- `node:path`
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
 - [`core.computePublicSymbolHeadingInfo`](../core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`core.renderPublicSymbolLines`](../core.ts.mdmd.md#symbol-renderpublicsymbollines)

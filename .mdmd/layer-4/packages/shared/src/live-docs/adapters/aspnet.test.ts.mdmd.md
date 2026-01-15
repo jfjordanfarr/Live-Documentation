@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/aspnet.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-aspnet-test-ts
-- Generated At: 2025-12-11T02:38:01.845Z
+- Generated At: 2026-01-15T02:41:18.650Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies that the ASP.NET markup adapter links Blazor `.razor` pages to both the
 - Runs against a temporary workspace so we can assert filesystem-driven heuristics (like `~/` resolution) without polluting the repo fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.845Z","inputHash":"c9ede42ba097b282"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.650Z","inputHash":"02c9b122ee1510d9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs/promises`
+- `node:os`
+- `node:path`
 - [`aspnet.aspNetMarkupAdapter`](./aspnet.ts.mdmd.md#symbol-aspnetmarkupadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

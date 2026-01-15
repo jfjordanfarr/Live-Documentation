@@ -8,7 +8,9 @@
     },
     "chat.tools.terminal.autoApprove": {
         ".specify/scripts/bash/": true,
-        ".specify/scripts/powershell/": true
+        ".specify/scripts/powershell/": true,
+        "Push-Location": true,
+        "Pop-Location": true
     },
     "github.copilot.chat.byok.ollamaModel": "qwen3-coder:30b",
     "typescript.tsserver.watchOptions": {

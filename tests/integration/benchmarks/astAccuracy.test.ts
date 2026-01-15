@@ -40,6 +40,10 @@ interface BenchmarkFixtureDefinition {
     root?: string;
     manualOverrides?: string;
   };
+  thresholds?: {
+    precision?: number;
+    recall?: number;
+  };
 }
 
 interface MaterializeResult {
@@ -155,21 +159,30 @@ suite("T061: AST accuracy benchmark", () => {
       }
     }
 
+    // Build a lookup map for per-fixture thresholds
+    const fixtureById = new Map(fixtures.map(f => [f.id, f]));
+
     const failingFixtures = fixtureResults.filter(result => {
       const { precision, recall } = result.totals;
-      const precisionTooLow = precision !== null && precision < PRECISION_THRESHOLD;
-      const recallTooLow = recall !== null && recall < RECALL_THRESHOLD;
+      const fixture = fixtureById.get(result.id);
+      const precisionThreshold = fixture?.thresholds?.precision ?? PRECISION_THRESHOLD;
+      const recallThreshold = fixture?.thresholds?.recall ?? RECALL_THRESHOLD;
+      const precisionTooLow = precision !== null && precision < precisionThreshold;
+      const recallTooLow = recall !== null && recall < recallThreshold;
       return precisionTooLow || recallTooLow;
     });
 
     if (failingFixtures.length > 0) {
       const lines = failingFixtures.map(result => {
         const { id, label, totals } = result;
+        const fixture = fixtureById.get(id);
+        const precisionThreshold = fixture?.thresholds?.precision ?? PRECISION_THRESHOLD;
+        const recallThreshold = fixture?.thresholds?.recall ?? RECALL_THRESHOLD;
         const name = label ? `${id} (${label})` : id;
-        return `${name}: precision=${renderMetric(totals.precision)}, recall=${renderMetric(totals.recall)}`;
+        return `${name}: precision=${renderMetric(totals.precision)} (threshold=${precisionThreshold}), recall=${renderMetric(totals.recall)} (threshold=${recallThreshold})`;
       });
       assert.fail(
-        `One or more fixtures fell below precision/recall thresholds ${PRECISION_THRESHOLD}/${RECALL_THRESHOLD}:
+        `One or more fixtures fell below precision/recall thresholds:
 ${lines.join("\n")}`
       );
     }

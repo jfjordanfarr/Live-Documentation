@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-ts
-- Generated At: 2026-01-14T02:58:07.998Z
+- Generated At: 2026-01-15T02:41:18.723Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Parses Rust sources to collect public symbols, structured Rustdoc sections, and 
 - Keep new Rustdoc heading or tag support aligned with the regression tests before re-running the Live Docs generator <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:07.998Z","inputHash":"b5b5565bf4dffe6e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.723Z","inputHash":"1b5c9d16355affd1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
@@ -28,7 +28,7 @@ Parses Rust sources to collect public symbols, structured Rustdoc sections, and 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `existsSync`, `promises`
-- `node:path` - `path`
+- `node:path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

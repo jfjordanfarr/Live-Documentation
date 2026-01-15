@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/utils.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-utils-ts
-- Generated At: 2026-01-14T15:17:48.585Z
+- Generated At: 2026-01-15T02:41:18.540Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Utility functions for the System-layer generator. Path resolution, file operatio
 - `includeInComponents()` filters out compiled artifacts (.d.ts, .js in dist/node_modules)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.585Z","inputHash":"092faecb844bf7da"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.540Z","inputHash":"6a60908e43e199ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveOutputDirectory` {#symbol-resolveoutputdirectory}
@@ -68,7 +68,7 @@ Utility functions for the System-layer generator. Path resolution, file operatio
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`constants.LIVE_DOCS_SEGMENT`](./constants.ts.mdmd.md#symbol-live_docs_segment)
 - [`constants.SYSTEM_LAYER_NAME`](./constants.ts.mdmd.md#symbol-system_layer_name)

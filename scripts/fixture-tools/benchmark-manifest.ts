@@ -29,6 +29,17 @@ export interface FixtureIntegritySpec {
   fileCount?: number;
 }
 
+/**
+ * Per-fixture precision/recall threshold overrides.
+ * Allows stress-test fixtures to have lower thresholds than the global defaults.
+ */
+export interface FixtureThresholds {
+  /** Minimum acceptable precision (0.0 to 1.0). If omitted, uses global threshold. */
+  precision?: number;
+  /** Minimum acceptable recall (0.0 to 1.0). If omitted, uses global threshold. */
+  recall?: number;
+}
+
 export interface BenchmarkFixtureDefinition {
   id: string;
   label?: string;
@@ -41,6 +52,8 @@ export interface BenchmarkFixtureDefinition {
   provenance?: FixtureProvenance;
   integrity?: FixtureIntegritySpec;
   materialization?: FixtureMaterialization;
+  /** Per-fixture threshold overrides. Allows stress-test fixtures to pass with lower metrics. */
+  thresholds?: FixtureThresholds;
 }
 
 export interface IntegrityDigest {

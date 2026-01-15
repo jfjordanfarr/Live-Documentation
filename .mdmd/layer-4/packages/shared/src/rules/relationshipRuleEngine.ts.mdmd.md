@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipRuleEngine.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipruleengine-ts
-- Generated At: 2025-12-11T02:38:02.243Z
+- Generated At: 2026-01-15T02:41:18.779Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads, compiles, and executes relationship rules to produce link evidence that s
 - Introduced alongside symbol correctness work so graph audits could reason about rule provenance and warn on malformed configs before they reach the provider.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.243Z","inputHash":"b52507ea53a86b21"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.779Z","inputHash":"5f11b4c8a1d71038"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadRelationshipRuleConfig` {#symbol-loadrelationshipruleconfig}
@@ -47,8 +47,8 @@ Loads, compiles, and executes relationship rules to produce link evidence that s
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `minimatch` - `Minimatch`
-- `node:fs` - `fs`
-- `node:path` - `path`
+- `node:fs`
+- `node:path`
 - [`fallbackInference.ArtifactSeed`](../inference/fallbackInference.ts.mdmd.md#symbol-artifactseed) (type-only)
 - [`linkInference.LinkEvidence`](../inference/linkInference.ts.mdmd.md#symbol-linkevidence) (type-only)
 - [`relationshipResolvers.createBuiltInResolvers`](./relationshipResolvers.ts.mdmd.md#symbol-createbuiltinresolvers)

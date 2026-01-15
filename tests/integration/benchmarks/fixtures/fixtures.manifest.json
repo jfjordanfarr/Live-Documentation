@@ -584,6 +584,111 @@
         "root": ".",
         "manualOverrides": "oracle.overrides.json"
       }
+    },
+    {
+      "id": "ts-rosetta",
+      "label": "TypeScript Rosetta Stone (cross-language canonical program)",
+      "language": "typescript",
+      "path": "typescript/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "typescript",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
+    },
+    {
+      "id": "python-rosetta",
+      "label": "Python Rosetta Stone (cross-language canonical program)",
+      "language": "python",
+      "path": "python/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "python",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json",
+        "include": ["src/**/*.py"],
+        "exclude": ["**/__pycache__/**"],
+        "packageRoots": ["src"]
+      }
+    },
+    {
+      "id": "java-rosetta",
+      "label": "Java Rosetta Stone (cross-language canonical program)",
+      "language": "java",
+      "path": "java/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "java",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
+    },
+    {
+      "id": "csharp-rosetta",
+      "label": "C# Rosetta Stone (cross-language canonical program)",
+      "language": "csharp",
+      "path": "csharp/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "csharp",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
+    },
+    {
+      "id": "rust-rosetta",
+      "label": "Rust Rosetta Stone (cross-language canonical program)",
+      "language": "rust",
+      "path": "rust/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "rust",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
+    },
+    {
+      "id": "c-rosetta",
+      "label": "C Rosetta Stone (cross-language canonical program)",
+      "language": "c",
+      "path": "c/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "c",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json",
+        "include": [
+          "src/**/*.c",
+          "src/**/*.h"
+        ]
+      }
+    },
+    {
+      "id": "ruby-rosetta",
+      "label": "Ruby Rosetta Stone (cross-language canonical program)",
+      "language": "ruby",
+      "path": "ruby/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "ruby",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
     }
   ]
 }

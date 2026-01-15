@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/update-fixture-hashes.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-update-fixture-hashes-ts
-- Generated At: 2025-12-15T18:07:30.920Z
+- Generated At: 2026-01-15T02:41:18.862Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Materializes each vendored benchmark fixture, computes its integrity digest usin
 - Invoked via `npm run fixtures:update-hashes`; supports `--dry-run` for preview mode before modifying the manifest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T18:07:30.920Z","inputHash":"41bcfb23e4cbddf8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.862Z","inputHash":"b81537ff51dcc069"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,7 +26,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `promises`
-- `node:path` - `path`
+- `node:path`
 - `node:process` - `process`
 - [`benchmark-manifest.computeIntegrityDigest`](./benchmark-manifest.ts.mdmd.md#symbol-computeintegritydigest)
 - [`benchmark-manifest.loadBenchmarkManifest`](./benchmark-manifest.ts.mdmd.md#symbol-loadbenchmarkmanifest)

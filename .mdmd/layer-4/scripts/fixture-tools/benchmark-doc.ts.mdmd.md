@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-doc.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-doc-ts
-- Generated At: 2025-12-12T16:10:25.673Z
+- Generated At: 2026-01-15T02:41:18.848Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 - Repointed 2025-11-16 to emit into `.live-documentation/source/benchmarks/astAccuracyFixtures.md`, preserving the Stage-0 `.md` mirror while keeping sync-ast-doc.ts and verify-fixtures.ts aligned with the new location ([mirror alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2700-L2820)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:25.673Z","inputHash":"608c14fe8ebc42ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.848Z","inputHash":"9468f20f46d78775"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `VENDOR_SECTION_START` {#symbol-vendor_section_start}
@@ -57,7 +57,7 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:fs` - `existsSync`, `promises`
-- `node:path` - `path`
+- `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`benchmark-manifest.BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)
 - [`benchmark-manifest.FixtureFileSetSpec`](./benchmark-manifest.ts.mdmd.md#symbol-fixturefilesetspec)

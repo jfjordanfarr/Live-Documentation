@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/evidence.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-evidence-test-ts
-- Generated At: 2025-11-16T22:34:14.317Z
+- Generated At: 2026-01-15T02:41:19.174Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Exercises the evidence bridge end to end so coverage manifests, fixtures, and wa
 - Confirms waiver files emit explanatory comments so reviewers can trace manual evidence waivers inside the rendered doc ([integration rerun](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-09.md#L930-L1004)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:14.317Z","inputHash":"456e25336b41d89d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.174Z","inputHash":"83c7568233cc3723"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,10 +25,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:assert` - `assert`
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:assert`
+- `node:fs/promises`
+- `node:os`
+- `node:path`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

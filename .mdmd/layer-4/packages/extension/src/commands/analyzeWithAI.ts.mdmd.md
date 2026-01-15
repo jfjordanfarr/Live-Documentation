@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/analyzeWithAI.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-analyzewithai-ts
-- Generated At: 2026-01-14T15:17:48.301Z
+- Generated At: 2026-01-15T02:41:18.245Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers the `linkDiagnostics.analyzeWithAI` command so reviewers can run an LL
 - Spec tracking on Oct 28 confirmed T047 was fully implemented and unit-tested even though tasks.md still needed its checkbox flipped, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475); keep this command aligned with that spec entry.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.301Z","inputHash":"2c893cf2a9aa383c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.245Z","inputHash":"d4f400f64befd9dd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerAnalyzeWithAICommand` {#symbol-registeranalyzewithaicommand}
@@ -39,7 +39,7 @@ Registers the `linkDiagnostics.analyzeWithAI` command so reviewers can run an LL
 - [`index.SET_DIAGNOSTIC_ASSESSMENT_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-set_diagnostic_assessment_request)
 - [`index.SetDiagnosticAssessmentParams`](../../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentparams)
 - [`index.SetDiagnosticAssessmentResult`](../../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentresult)
-- `vscode` - `vscode`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->
 

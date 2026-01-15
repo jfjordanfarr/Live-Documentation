@@ -51,7 +51,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/util.ts",
         target: "src/types.ts",
-        relation: "uses",
+        relation: "imports",
         provenance: "type-import"
       }
     ]);
@@ -64,7 +64,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/models/widget.ts",
-        relation: "uses",
+        relation: "imports",
         provenance: "type-import"
       },
       {
@@ -76,7 +76,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/repositories/storage.ts",
         target: "src/models/widget.ts",
-        relation: "uses",
+        relation: "imports",
         provenance: "type-import"
       },
       {
@@ -88,7 +88,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/services/reportService.ts",
         target: "src/models/widget.ts",
-        relation: "uses",
+        relation: "imports",
         provenance: "type-import"
       },
       {
@@ -106,7 +106,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/utils/format.ts",
         target: "src/models/widget.ts",
-        relation: "uses",
+        relation: "imports",
         provenance: "type-import"
       }
     ]);

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/rules/relationshipRuleProvider.test.ts
 - Live Doc ID: LD-test-packages-shared-src-rules-relationshipruleprovider-test-ts
-- Generated At: 2026-01-13T18:45:26.417Z
+- Generated At: 2026-01-15T02:41:18.781Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the relationship rule provider end-to-end—loading configs, compiling
 - Exercises graph-store integration, heuristic lookups, and rule warnings the day the provider was hardened, catching regressions before they impact graph audits.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-13T18:45:26.417Z","inputHash":"e4510aaa822dbb9b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.781Z","inputHash":"67c1309dd427efc5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:os` - `tmpdir`
-- `node:path` - `path`
+- `node:path`
 - `node:url` - `pathToFileURL`
 - [`fallbackInference.ArtifactSeed`](../inference/fallbackInference.ts.mdmd.md#symbol-artifactseed) (type-only)
 - [`relationshipRuleEngine.compileRelationshipRules`](./relationshipRuleEngine.ts.mdmd.md#symbol-compilerelationshiprules)

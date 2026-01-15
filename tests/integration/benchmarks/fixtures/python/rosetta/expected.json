@@ -1,0 +1,8 @@
+[
+  { "source": "src/main.py", "target": "src/models.py", "relation": "imports" },
+  { "source": "src/main.py", "target": "src/processor.py", "relation": "imports" },
+  { "source": "src/models.py", "target": "src/core_types.py", "relation": "imports" },
+  { "source": "src/processor.py", "target": "src/models.py", "relation": "imports" },
+  { "source": "src/processor.py", "target": "src/core_types.py", "relation": "imports" },
+  { "source": "src/processor.py", "target": "src/helpers.py", "relation": "imports" }
+]

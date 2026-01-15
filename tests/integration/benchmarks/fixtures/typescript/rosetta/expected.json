@@ -1,0 +1,32 @@
+[
+  {
+    "source": "src/main.ts",
+    "target": "src/models.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/main.ts",
+    "target": "src/processor.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/models.ts",
+    "target": "src/types.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/processor.ts",
+    "target": "src/helpers.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/processor.ts",
+    "target": "src/models.ts",
+    "relation": "imports"
+  },
+  {
+    "source": "src/processor.ts",
+    "target": "src/types.ts",
+    "relation": "imports"
+  }
+]

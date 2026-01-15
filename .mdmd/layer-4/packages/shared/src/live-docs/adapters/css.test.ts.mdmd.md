@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/css.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-css-test-ts
-- Generated At: 2025-12-11T02:38:01.919Z
+- Generated At: 2026-01-15T02:41:18.676Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Unit test suite for the CSS language adapter, validating dependency extraction f
 - Tests external URL filtering and missing file handling (unresolved dependencies)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.919Z","inputHash":"335d1aa101220496"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.676Z","inputHash":"41829193d0424975"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,9 +28,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `fs`
-- `node:os` - `os`
-- `node:path` - `path`
+- `node:fs`
+- `node:os`
+- `node:path`
 - [`css.cssAdapter`](./css.ts.mdmd.md#symbol-cssadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

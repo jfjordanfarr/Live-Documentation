@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2026-01-14T15:17:48.474Z
+- Generated At: 2026-01-15T02:41:18.429Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.474Z","inputHash":"d79eeb00b9eeaa8a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.429Z","inputHash":"47ecbd22181332e2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
@@ -37,7 +37,7 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `child_process` - `execFile`
-- `fs/promises` - `fs`
+- `fs/promises`
 - `http` - `IncomingMessage`, `ServerResponse`, `createServer`
 - [`buildAssets.buildExplorerAssets`](./buildAssets.ts.mdmd.md#symbol-buildexplorerassets)
 - [`graph.buildExplorerGraph`](./graph.ts.mdmd.md#symbol-buildexplorergraph)
@@ -51,6 +51,6 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- `path` - `path`
+- `path`
 - `url` - `URL`
 <!-- LIVE-DOC:END Dependencies -->

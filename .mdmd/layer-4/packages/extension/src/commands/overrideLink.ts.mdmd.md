@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-overridelink-ts
-- Generated At: 2026-01-12T21:47:40.293Z
+- Generated At: 2026-01-15T02:41:18.257Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Registers the `linkDiagnostics.overrideLink` VS Code command, enabling users to 
 - The command is intended for power users who need to correct false-positive diagnostics or establish relationships that static analysis cannot infer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.293Z","inputHash":"7d5725dd9a388fd2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.257Z","inputHash":"daa4ed2e8833b571"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerOverrideLinkCommand` {#symbol-registeroverridelinkcommand}
@@ -38,7 +38,7 @@ Registers the `linkDiagnostics.overrideLink` VS Code command, enabling users to 
 - [`index.RebindImpactedArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindimpactedartifact)
 - [`index.RebindReason`](../../../shared/src/index.ts.mdmd.md#symbol-rebindreason)
 - [`index.RebindRequiredArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredartifact)
-- `path` - `path`
-- `vscode` - `vscode`
+- `path`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->

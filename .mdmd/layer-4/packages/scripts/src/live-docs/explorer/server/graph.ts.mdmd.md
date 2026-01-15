@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/graph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-graph-ts
-- Generated At: 2026-01-14T15:17:48.469Z
+- Generated At: 2026-01-15T02:41:18.426Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with i
 - Contains the barrel-file deprioritisation heuristic (`isBarrelFile`) to prefer origin files for inheritance links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.469Z","inputHash":"621fb0637675f083"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.426Z","inputHash":"86854a70f1ee9537"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}
@@ -32,7 +32,7 @@ Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with i
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `fs/promises` - `fs`
+- `fs/promises`
 - [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
@@ -44,5 +44,5 @@ Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with i
 - [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`coreUtils.isBarrelFilePath`](../../../../../shared/src/live-docs/coreUtils.ts.mdmd.md#symbol-isbarrelfilepath)
 - [`parse.ParsedTypeReference`](../../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parsedtypereference) (type-only)
-- `path` - `path`
+- `path`
 <!-- LIVE-DOC:END Dependencies -->

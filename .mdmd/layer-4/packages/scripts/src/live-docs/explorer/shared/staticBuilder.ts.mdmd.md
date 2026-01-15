@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticbuilder-ts
-- Generated At: 2026-01-14T15:17:48.495Z
+- Generated At: 2026-01-15T02:41:18.449Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Core builder module for creating fully static Live Documentation Explorer bundle
 - Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.495Z","inputHash":"5cc22ed7fc630cad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.449Z","inputHash":"e2c02d9a37adcdf4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
@@ -49,7 +49,7 @@ This is the headless API that LLMs and scripts can consume.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `fs/promises` - `fs`
+- `fs/promises`
 - [`bundledMarkdownScanner.scanAndBundleMarkdown`](./bundledMarkdownScanner.ts.mdmd.md#symbol-scanandbundlemarkdown)
 - [`localMapBuilder.buildLocalMapData`](./localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
 - [`localMapBuilder.buildTestCoverageMap`](./localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
@@ -62,5 +62,5 @@ This is the headless API that LLMs and scripts can consume.
 - [`staticExplorerData.buildSymbolIndex`](./staticExplorerData.ts.mdmd.md#symbol-buildsymbolindex)
 - [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- `path` - `path`
+- `path`
 <!-- LIVE-DOC:END Dependencies -->

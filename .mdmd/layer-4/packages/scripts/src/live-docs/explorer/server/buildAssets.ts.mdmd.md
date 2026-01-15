@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/buildAssets.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-buildassets-ts
-- Generated At: 2025-12-07T21:41:17.173Z
+- Generated At: 2026-01-15T02:41:18.422Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the Explorer's client-side assets (HTML, CSS, JavaScript) from the modula
 - Injects the compiled CSS and JS into the `template.html` to produce the final `index.html`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.173Z","inputHash":"bb03dd79bc4beec3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.422Z","inputHash":"097ac44b1a08f48d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildExplorerAssetsOptions` {#symbol-buildexplorerassetsoptions}
@@ -37,6 +37,6 @@ Builds the Explorer's client-side assets (HTML, CSS, JavaScript) from the modula
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `esbuild` - `build`
-- `fs/promises` - `fs`
-- `path` - `path`
+- `fs/promises`
+- `path`
 <!-- LIVE-DOC:END Dependencies -->

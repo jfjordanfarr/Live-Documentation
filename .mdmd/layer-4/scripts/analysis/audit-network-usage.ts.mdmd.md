@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/analysis/audit-network-usage.ts
 - Live Doc ID: LD-implementation-scripts-analysis-audit-network-usage-ts
-- Generated At: 2025-12-15T23:36:40.310Z
+- Generated At: 2026-01-15T02:41:18.840Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Static analysis script that scans the codebase for network-related API usage (fe
 - Exit code 1 on unaccounted network usage forces pipeline failure until resolved
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T23:36:40.310Z","inputHash":"3840231b2af03c06"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.840Z","inputHash":"10c30ebf6feb153b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -30,5 +30,5 @@ _No public symbols detected_
 ### Dependencies
 - `glob` - `globSync`
 - `node:fs` - `promises`
-- `node:path` - `path`
+- `node:path`
 <!-- LIVE-DOC:END Dependencies -->

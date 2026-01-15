@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/powershell.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-powershell-test-ts
-- Generated At: 2025-12-11T02:38:01.963Z
+- Generated At: 2026-01-15T02:41:18.692Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercise the PowerShell adapter against the compendium fixtures to confirm symbo
 The suite mirrors the fixtures into a temporary workspace, skips automatically when no PowerShell runtime is available, and expects Export-ModuleMember to gate public surface area.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.963Z","inputHash":"a7e70f9a364421f1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.692Z","inputHash":"ce7238402b658d1a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,8 +24,8 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `spawnSync`
-- `node:fs/promises` - `fs`
-- `node:os` - `os`
+- `node:fs/promises`
+- `node:os`
 - `node:path` - `path`
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`

@@ -65,7 +65,9 @@ export function createImportHeuristic(): FallbackHeuristic {
         const isImportOrExport = Boolean(match[1]);
         if (isImportOrExport && runtimeInfo) {
           const runtime = runtimeInfo.get(reference);
-          if (runtime && (!runtime.hasRuntimeUsage || runtime.isTypeOnly)) {
+          // Skip only if the import is completely unused (no runtime AND no type usage)
+          // Type-only imports ARE included because they represent real change impact
+          if (runtime && !runtime.hasRuntimeUsage && !runtime.isTypeOnly) {
             continue;
           }
         }

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2026-01-14T15:17:48.322Z
+- Generated At: 2026-01-15T02:41:18.270Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.322Z","inputHash":"a0b77e41fe5f1f5e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.270Z","inputHash":"9d1b5720316cc7fb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
@@ -55,8 +55,8 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - [`index.InvokeLlmResult`](../../shared/src/index.ts.mdmd.md#symbol-invokellmresult)
 - [`index.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/index.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
 - [`index.RebindRequiredPayload`](../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredpayload)
-- `path` - `path`
+- `path`
 - `process` - `process`
-- `vscode` - `vscode`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`, `LanguageClientOptions`, `ServerOptions`, `TransportKind`
 <!-- LIVE-DOC:END Dependencies -->

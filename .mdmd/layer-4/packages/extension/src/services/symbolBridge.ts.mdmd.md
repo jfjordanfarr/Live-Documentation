@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/symbolBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-symbolbridge-ts
-- Generated At: 2025-12-15T00:38:05.946Z
+- Generated At: 2026-01-15T02:41:18.285Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 - Maintain the MAX_* limits and workspace-symbols provenance to stay aligned with the ripple diagnostics gating discussed there - future tuning should coordinate with the server's symbolBridgeProvider before widening caps.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.946Z","inputHash":"f06fdbd5363e96ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.285Z","inputHash":"0d3e17cd3095cfa2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerSymbolBridge` {#symbol-registersymbolbridge}
@@ -37,7 +37,7 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 - [`index.LinkEvidence`](../../../shared/src/index.ts.mdmd.md#symbol-linkevidence)
 - [`index.RelationshipHint`](../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
 - [`index.WorkspaceLinkContribution`](../../../shared/src/index.ts.mdmd.md#symbol-workspacelinkcontribution)
-- `vscode` - `vscode`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 - `zod` - `z`
 <!-- LIVE-DOC:END Dependencies -->

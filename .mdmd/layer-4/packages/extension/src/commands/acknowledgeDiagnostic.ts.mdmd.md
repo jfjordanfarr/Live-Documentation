@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/acknowledgeDiagnostic.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-acknowledgediagnostic-ts
-- Generated At: 2025-12-15T00:38:05.825Z
+- Generated At: 2026-01-15T02:41:18.235Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - Keep the command signature aligned with the acknowledgement service contract so integration tests continue to assert end-to-end pruning, per [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.825Z","inputHash":"4a95e5fbf2b94031"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.235Z","inputHash":"7a61f28494addd1b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ACKNOWLEDGE_DIAGNOSTIC_COMMAND` {#symbol-acknowledge_diagnostic_command}
@@ -41,7 +41,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - [`index.AcknowledgeDiagnosticResult`](../../../shared/src/index.ts.mdmd.md#symbol-acknowledgediagnosticresult)
 - [`index.DIAGNOSTIC_ACKNOWLEDGED_NOTIFICATION`](../../../shared/src/index.ts.mdmd.md#symbol-diagnostic_acknowledged_notification)
 - [`index.DiagnosticAcknowledgedPayload`](../../../shared/src/index.ts.mdmd.md#symbol-diagnosticacknowledgedpayload)
-- `vscode` - `vscode`
+- `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->
 

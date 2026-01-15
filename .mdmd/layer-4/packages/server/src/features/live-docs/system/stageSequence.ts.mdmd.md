@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/stageSequence.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-stagesequence-ts
-- Generated At: 2025-12-15T00:38:06.554Z
+- Generated At: 2026-01-15T02:41:18.536Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow sys
 - `extractRunAllStageDescriptors()` parses `run-all.ts` to discover script references
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.554Z","inputHash":"4785a28205f98a6b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.536Z","inputHash":"79eb180d8f5dc509"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildStageSequence` {#symbol-buildstagesequence}
@@ -37,7 +37,7 @@ Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow sys
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`types.RunAllStageDescriptor`](./types.ts.mdmd.md#symbol-runallstagedescriptor) (type-only)
 - [`types.StageSequence`](./types.ts.mdmd.md#symbol-stagesequence) (type-only)

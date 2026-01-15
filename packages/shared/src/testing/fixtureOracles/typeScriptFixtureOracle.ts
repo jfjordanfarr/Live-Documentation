@@ -304,13 +304,13 @@ function classifyImportUsage(input: {
 
   if (typeUsage) {
     return {
-      relation: "uses",
+      relation: "imports",
       provenance: "type-import"
     };
   }
 
   return {
-    relation: "uses",
+    relation: "imports",
     provenance: "type-import"
   };
 }
@@ -318,7 +318,7 @@ function classifyImportUsage(input: {
 function classifyExportUsage(input: { isTypeOnly: boolean }): ImportExportClassification {
   if (input.isTypeOnly) {
     return {
-      relation: "uses",
+      relation: "imports",
       provenance: "type-import"
     };
   }
@@ -360,7 +360,7 @@ function handleModuleReference(context: ModuleReferenceContext): void {
 
   // If the resolution leads to a declaration file, force type-only provenance.
   const isDeclaration = DECLARATION_EXTENSIONS.has(path.extname(resolution));
-  const effectiveRelation = isDeclaration ? "uses" : relation;
+  const effectiveRelation = isDeclaration ? "imports" : relation;
   const effectiveProvenance = isDeclaration ? "type-import" : provenance;
 
   edges.set(key, {

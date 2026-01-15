@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/evidenceBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-evidencebridge-ts
-- Generated At: 2025-12-15T00:38:06.452Z
+- Generated At: 2026-01-15T02:41:18.498Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 - Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.452Z","inputHash":"12c2d14c2cec8f5f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.498Z","inputHash":"8114734f66830eb9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EvidenceKind` {#symbol-evidencekind}
@@ -52,7 +52,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`pathUtils.normalizeWorkspacePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

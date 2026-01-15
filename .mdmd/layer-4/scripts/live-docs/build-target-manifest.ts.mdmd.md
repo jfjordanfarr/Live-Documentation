@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/build-target-manifest.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-build-target-manifest-ts
-- Generated At: 2025-12-15T00:38:07.434Z
+- Generated At: 2026-01-15T02:41:18.868Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Generates `data/live-docs/targets.json`, mapping every test to the implementatio
 We introduced the manifest-builder while bootstrapping the evidence bridge (Sep 2024) to keep the Live Docs pipeline deterministic. It understands TS path aliases and recursively expands dependencies, which is why it runs inside `npm run livedocs` before linting or the precision report.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.434Z","inputHash":"02e73eae8013bd10"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.868Z","inputHash":"25180306cd0553e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -24,7 +24,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - `node:process` - `process`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)

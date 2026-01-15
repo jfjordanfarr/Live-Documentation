@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-dependencies-ts
-- Generated At: 2025-12-11T02:41:27.795Z
+- Generated At: 2026-01-15T02:41:18.741Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:41:27.795Z","inputHash":"fc2a3e4a7a81d479"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.741Z","inputHash":"fb53da7fe31046a6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}
@@ -47,7 +47,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L148)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L149)
 - Returns: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -63,7 +63,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L237)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L238)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -81,14 +81,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L369)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L370)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L393)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L394)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.
@@ -108,7 +108,7 @@ Object containing augmented symbols and re-export info
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`coreConstants.MODULE_RESOLUTION_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-module_resolution_extensions)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)

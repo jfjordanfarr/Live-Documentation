@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-01-14T16:08:10.394Z
+- Generated At: 2026-01-15T02:41:18.505Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:08:10.394Z","inputHash":"6824a8910ca9b548"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.505Z","inputHash":"72b76b506606a347"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
@@ -43,7 +43,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 ### Dependencies
 - `glob` - `glob`
 - `node:crypto` - `createHash`
-- `node:fs/promises` - `fs`
+- `node:fs/promises`
 - `node:path` - `path`
 - [`evidenceBridge.CoverageSummary`](./evidenceBridge.ts.mdmd.md#symbol-coveragesummary)
 - [`evidenceBridge.EvidenceSnapshot`](./evidenceBridge.ts.mdmd.md#symbol-evidencesnapshot)

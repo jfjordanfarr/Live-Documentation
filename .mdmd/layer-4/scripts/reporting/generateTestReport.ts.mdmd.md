@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/reporting/generateTestReport.ts
 - Live Doc ID: LD-implementation-scripts-reporting-generatetestreport-ts
-- Generated At: 2025-12-15T00:38:07.511Z
+- Generated At: 2026-01-15T02:41:18.898Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the human-readable benchmark report (`reports/test-report*.md`) by combin
 - Accepts `--mode`, `--benchmarks`, and `--output` so CI and maintainers can produce ad-hoc reports; defaults keep Markdown under `reports/` while leaving JSON sources untouched for follow-up analysis.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.511Z","inputHash":"3f517bfc021caca5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.898Z","inputHash":"14d5271c109ab86b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,7 +27,7 @@ _No public symbols detected_
 ### Dependencies
 - `node:child_process` - `execSync`
 - `node:fs` - `promises`, `readdirSync`
-- `node:path` - `path`
+- `node:path`
 - [`testReport.BenchmarkEnvironment`](../../packages/shared/src/reporting/testReport.ts.mdmd.md#symbol-benchmarkenvironment)
 - [`testReport.BenchmarkRecord`](../../packages/shared/src/reporting/testReport.ts.mdmd.md#symbol-benchmarkrecord)
 - [`testReport.buildTestReportMarkdown`](../../packages/shared/src/reporting/testReport.ts.mdmd.md#symbol-buildtestreportmarkdown)
