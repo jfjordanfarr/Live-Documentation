@@ -51,7 +51,9 @@ const LANGUAGE_ALIASES = new Map<string, string>([
   ["ruby", "ruby"],
   ["cs", "csharp"],
   ["csharp", "csharp"],
-  ["dotnet", "csharp"]
+  ["dotnet", "csharp"],
+  ["go", "go"],
+  ["golang", "go"]
 ]);
 
 const LANGUAGE_DEFAULT_GLOBS = new Map<string, string[]>([
@@ -61,7 +63,8 @@ const LANGUAGE_DEFAULT_GLOBS = new Map<string, string[]>([
   ["rust", ["**/*.rs"]],
   ["java", ["**/*.java"]],
   ["ruby", ["**/*.rb"]],
-  ["csharp", ["**/*.cs"]]
+  ["csharp", ["**/*.cs"]],
+  ["go", ["**/*.go"]]
 ]);
 
 const SUPPORTED_LANGUAGES = Array.from(new Set(LANGUAGE_ALIASES.values())).sort();
@@ -91,7 +94,8 @@ const EXTENSION_LANGUAGE_HINT = new Map<string, string>([
   [".rs", "rust"],
   [".java", "java"],
   [".rb", "ruby"],
-  [".cs", "csharp"]
+  [".cs", "csharp"],
+  [".go", "go"]
 ]);
 
 export async function runCli(argv: string[]): Promise<void> {

@@ -689,6 +689,20 @@
         "root": ".",
         "manualOverrides": "oracle.overrides.json"
       }
+    },
+    {
+      "id": "go-rosetta",
+      "label": "Go Rosetta Stone (cross-language canonical program)",
+      "language": "go",
+      "path": "go/rosetta",
+      "modes": ["ast"],
+      "expected": "expected.json",
+      "inferred": "inferred.json",
+      "oracle": {
+        "kind": "go",
+        "root": ".",
+        "manualOverrides": "oracle.overrides.json"
+      }
     }
   ]
 }

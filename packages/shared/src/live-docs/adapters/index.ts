@@ -5,6 +5,7 @@ import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
 import { csharpAdapter } from "./csharp";
 import { cssAdapter } from "./css";
+import { goAdapter } from "./go";
 import { htmlAdapter } from "./html";
 import { javaAdapter } from "./java";
 import { powershellAdapter } from "./powershell";
@@ -23,6 +24,7 @@ const ADAPTERS: readonly LanguageAdapter[] = [
   csharpAdapter,
   aspNetMarkupAdapter,
   cssAdapter,
+  goAdapter,
   htmlAdapter,
   javaAdapter,
   powershellAdapter,

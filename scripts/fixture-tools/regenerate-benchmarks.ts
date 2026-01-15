@@ -27,6 +27,14 @@ import {
   type CSharpOracleOverrideConfig
 } from "../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle";
 import {
+  generateGoFixtureGraph,
+  mergeGoOracleEdges,
+  serializeGoOracleEdges,
+  type GoFixtureOracleOptions,
+  type GoOracleEdgeRecord,
+  type GoOracleOverrideConfig
+} from "../../packages/shared/src/testing/fixtureOracles/goFixtureOracle";
+import {
   generateJavaFixtureGraph,
   mergeJavaOracleEdges,
   serializeJavaOracleEdges,
@@ -66,7 +74,7 @@ import {
   type OracleOverrideConfig as TypeScriptOverrideConfig
 } from "../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle";
 
-type OracleKind = "typescript" | "python" | "c" | "rust" | "java" | "ruby" | "csharp";
+type OracleKind = "typescript" | "python" | "c" | "rust" | "java" | "ruby" | "csharp" | "go";
 
 type OracleFixtureDefinition = ManifestFixtureDefinition & {
   oracle?: OracleFixtureConfig;
@@ -79,7 +87,8 @@ type OracleFixtureConfig =
   | RustOracleConfig
   | JavaOracleConfig
   | RubyOracleConfig
-  | CSharpOracleConfig;
+  | CSharpOracleConfig
+  | GoOracleConfig;
 
 interface TypeScriptOracleConfig {
   kind: "typescript";
@@ -141,6 +150,14 @@ interface CSharpOracleConfig {
   exclude?: string[];
 }
 
+interface GoOracleConfig {
+  kind: "go";
+  root?: string;
+  manualOverrides?: string;
+  include?: string[];
+  exclude?: string[];
+}
+
 interface CliOptions {
   fixtureIds: Set<string>;
   languages: Set<OracleKind>;
@@ -174,7 +191,9 @@ const LANGUAGE_ALIASES = new Map<string, OracleKind>([
   ["ruby", "ruby"],
   ["cs", "csharp"],
   ["csharp", "csharp"],
-  ["dotnet", "csharp"]
+  ["dotnet", "csharp"],
+  ["go", "go"],
+  ["golang", "go"]
 ]);
 
 const SUPPORTED_LANGUAGES = Array.from(new Set(LANGUAGE_ALIASES.values())).sort();
@@ -430,6 +449,16 @@ async function regenerateFixture(
       });
     } else if (oracle.kind === "ruby") {
       await regenerateRubyFixture({
+        fixture,
+        oracle,
+        workspaceRoot,
+        overridesPath,
+        expectedEdges,
+        expectedPath,
+        writeExpected: options.writeExpected
+      });
+    } else if (oracle.kind === "go") {
+      await regenerateGoFixture({
         fixture,
         oracle,
         workspaceRoot,
@@ -850,6 +879,63 @@ async function regenerateRubyFixture(input: {
   });
 }
 
+async function regenerateGoFixture(input: {
+  fixture: OracleFixtureDefinition;
+  oracle: GoOracleConfig;
+  workspaceRoot: string;
+  overridesPath: string;
+  expectedEdges: EdgeRecord[];
+  expectedPath: string;
+  writeExpected: boolean;
+}): Promise<void> {
+  const {
+    fixture,
+    oracle,
+    workspaceRoot,
+    overridesPath,
+    expectedEdges,
+    expectedPath,
+    writeExpected
+  } = input;
+
+  const overrides = await readOverrideConfig<GoOracleOverrideConfig>(overridesPath);
+  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
+  const oracleOptions: GoFixtureOracleOptions = {
+    fixtureRoot: oracleRoot,
+    include: oracle.include,
+    exclude: oracle.exclude
+  };
+
+  const autoEdges = generateGoFixtureGraph(oracleOptions);
+  const merge = mergeGoOracleEdges(autoEdges, overrides);
+
+  const autoRecords = merge.autoRecords.map(toEdgeRecordFromGo);
+  const manualRecords = merge.manualRecords.map(toEdgeRecordFromGo);
+  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromGo);
+  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromGo);
+
+  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
+  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
+
+  await writeOracleArtifacts({
+    fixture,
+    oracleFileContents: serializeGoOracleEdges(autoEdges),
+    mergedRecords,
+    expectedEdges,
+    overridesPath,
+    expectedPath,
+    additions,
+    removals,
+    writeExpected,
+    summary: {
+      autoRecords,
+      manualRecords,
+      matchedManualRecords,
+      missingManualEntries: merge.missingManualEntries
+    }
+  });
+}
+
 async function writeOracleArtifacts(input: {
   fixture: OracleFixtureDefinition;
   oracleFileContents: string;
@@ -1057,6 +1143,14 @@ function toEdgeRecordFromCSharp(record: CSharpOracleEdgeRecord): EdgeRecord {
 }
 
 function toEdgeRecordFromRuby(record: RubyOracleEdgeRecord): EdgeRecord {
+  return {
+    source: record.source,
+    target: record.target,
+    relation: record.relation
+  } satisfies EdgeRecord;
+}
+
+function toEdgeRecordFromGo(record: GoOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,

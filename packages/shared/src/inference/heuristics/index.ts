@@ -2,6 +2,7 @@ import type { FallbackHeuristic } from "../fallbackHeuristicTypes";
 import { createCFunctionHeuristic } from "./cFunctions";
 import { createCSharpHeuristic } from "./csharp";
 import { createDirectiveHeuristic } from "./directives";
+import { createGoHeuristic } from "./go";
 import { createImportHeuristic } from "./imports";
 import { createIncludeHeuristic } from "./includes";
 import { createJavaHeuristic } from "./java";
@@ -18,6 +19,7 @@ export function createDefaultHeuristics(): FallbackHeuristic[] {
     createImportHeuristic(),
     createIncludeHeuristic(),
     createCFunctionHeuristic(),
+    createGoHeuristic(),
     createRustHeuristic(),
     createJavaHeuristic(),
     createCSharpHeuristic(),

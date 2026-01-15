@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/regenerate-benchmarks.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-regenerate-benchmarks-ts
-- Generated At: 2025-11-19T15:01:35.817Z
+- Generated At: 2026-01-15T16:26:54.056Z
 
 ## Authored
 ### Purpose
@@ -18,12 +18,12 @@ Regenerates benchmark fixtures across all supported languages by invoking their 
 - By 2025-11-06 the CLI regenerated every fixture (including libuv) end-to-end, confirming cross-language oracles, manifest cloning, and benchmark pipeline integration held together during full-suite execution ([full-suite verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1160-L1258)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.817Z","inputHash":"c9c7f4489f43476c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:26:54.056Z","inputHash":"6e6ac14989034a86"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `runRegenerationCli` {#symbol-runregenerationcli}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L182)
+- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L201)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -44,6 +44,12 @@ Regenerates benchmark fixtures across all supported languages by invoking their 
 - [`csharpFixtureOracle.generateCSharpFixtureGraph`](../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts.mdmd.md#symbol-generatecsharpfixturegraph)
 - [`csharpFixtureOracle.mergeCSharpOracleEdges`](../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts.mdmd.md#symbol-mergecsharporacleedges)
 - [`csharpFixtureOracle.serializeCSharpOracleEdges`](../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts.mdmd.md#symbol-serializecsharporacleedges)
+- [`goFixtureOracle.GoFixtureOracleOptions`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-gofixtureoracleoptions)
+- [`goFixtureOracle.GoOracleEdgeRecord`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-gooracleedgerecord)
+- [`goFixtureOracle.GoOracleOverrideConfig`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-gooracleoverrideconfig)
+- [`goFixtureOracle.generateGoFixtureGraph`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-generategofixturegraph)
+- [`goFixtureOracle.mergeGoOracleEdges`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-mergegooracleedges)
+- [`goFixtureOracle.serializeGoOracleEdges`](../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts.mdmd.md#symbol-serializegooracleedges)
 - [`javaFixtureOracle.JavaFixtureOracleOptions`](../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts.mdmd.md#symbol-javafixtureoracleoptions)
 - [`javaFixtureOracle.JavaOracleEdgeRecord`](../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts.mdmd.md#symbol-javaoracleedgerecord)
 - [`javaFixtureOracle.JavaOracleOverrideConfig`](../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts.mdmd.md#symbol-javaoracleoverrideconfig)

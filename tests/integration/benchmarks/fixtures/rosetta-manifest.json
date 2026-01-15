@@ -130,6 +130,14 @@
       "notes": "Header file includes with implementation files."
     },
     {
+      "language": "go",
+      "path": "go/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "src",
+      "entryPoint": "src/main/main.go",
+      "notes": "Package-per-directory structure with module imports (rosetta/src/models)."
+    },
+    {
       "language": "python",
       "path": "python/rosetta",
       "tier": "dynamic",

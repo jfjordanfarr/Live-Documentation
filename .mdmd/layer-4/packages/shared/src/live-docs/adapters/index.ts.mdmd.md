@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-01-14T18:44:18.614Z
+- Generated At: 2026-01-15T16:26:53.884Z
 
 ## Authored
 ### Purpose
@@ -16,16 +16,16 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:44:18.614Z","inputHash":"c63109d5ace5aad3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:26:53.884Z","inputHash":"8727f360c9531d39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L15)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L16)
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L42)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L44)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -45,6 +45,7 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
 - [`csharp.csharpAdapter`](./csharp.ts.mdmd.md#symbol-csharpadapter)
 - [`css.cssAdapter`](./css.ts.mdmd.md#symbol-cssadapter)
+- [`go.goAdapter`](./go.ts.mdmd.md#symbol-goadapter)
 - [`html.htmlAdapter`](./html.ts.mdmd.md#symbol-htmladapter)
 - [`java.javaAdapter`](./java.ts.mdmd.md#symbol-javaadapter)
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)

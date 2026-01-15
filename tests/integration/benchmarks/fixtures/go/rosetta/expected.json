@@ -1,0 +1,8 @@
+[
+  { "source": "src/main/main.go", "target": "src/models/models.go", "relation": "imports" },
+  { "source": "src/main/main.go", "target": "src/processor/processor.go", "relation": "imports" },
+  { "source": "src/models/models.go", "target": "src/types/types.go", "relation": "uses" },
+  { "source": "src/processor/processor.go", "target": "src/helpers/helpers.go", "relation": "uses" },
+  { "source": "src/processor/processor.go", "target": "src/models/models.go", "relation": "uses" },
+  { "source": "src/processor/processor.go", "target": "src/types/types.go", "relation": "uses" }
+]
