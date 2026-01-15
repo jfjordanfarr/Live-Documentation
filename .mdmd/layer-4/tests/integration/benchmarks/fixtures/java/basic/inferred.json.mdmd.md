@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-inferred-json
-- Generated At: 2025-11-18T20:51:24.511Z
+- Generated At: 2026-01-15T18:39:07.024Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records the analyzer's observed graph for the Java basic benchmark to verify it 
 Refresh with `npm run fixtures:record-fallback -- --fixture java-basic --write` whenever the analyzer or fixture sources change.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.511Z","inputHash":"36e900bcef329f53"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.024Z","inputHash":"61b6f2abbe5b5ca8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`App`](./src/com/example/app/App.java.mdmd.md)
+- [`Catalog`](./src/com/example/data/Catalog.java.mdmd.md)
+- [`Reader`](./src/com/example/data/Reader.java.mdmd.md)
+- [`ReportWriter`](./src/com/example/format/ReportWriter.java.mdmd.md)
+- [`Record`](./src/com/example/model/Record.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

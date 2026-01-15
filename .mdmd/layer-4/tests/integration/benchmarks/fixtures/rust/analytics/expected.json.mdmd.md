@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-analytics-expected-json
-- Generated At: 2025-11-18T20:51:25.025Z
+- Generated At: 2026-01-15T18:39:07.077Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Stores the golden dependency graph for the Rust analytics benchmark so analyzer 
 Regenerate via `npm run fixtures:regenerate -- --fixture rust-analytics --write` or include the fixture in `npm run safe:commit -- --benchmarks` before making manual adjustments.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.025Z","inputHash":"cf2032d2d7bf1dca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.077Z","inputHash":"355ca9a9005c8051"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`analytics`](./src/analytics.rs.mdmd.md)
+- [`io`](./src/io.rs.mdmd.md)
+- [`main`](./src/main.rs.mdmd.md)
+- [`metrics`](./src/metrics.rs.mdmd.md)
+- [`models`](./src/models.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

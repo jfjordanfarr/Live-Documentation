@@ -95,6 +95,8 @@
       "tier": "type-safe",
       "sourceDir": "src",
       "entryPoint": "src/main.ts",
+      "expected": "typescript/rosetta/expected.json",
+      "inferred": "typescript/rosetta/inferred.json",
       "notes": "Reference implementation. Exercises namespace imports and type-only imports."
     },
     {
@@ -103,6 +105,8 @@
       "tier": "type-safe",
       "sourceDir": "src/com/rosetta",
       "entryPoint": "src/com/rosetta/app/Main.java",
+      "expected": "java/rosetta/expected.json",
+      "inferred": "java/rosetta/inferred.json",
       "notes": "Package structure with wildcard imports (com.rosetta.models.*)."
     },
     {
@@ -111,6 +115,8 @@
       "tier": "type-safe",
       "sourceDir": "src",
       "entryPoint": "src/App/Main.cs",
+      "expected": "csharp/rosetta/expected.json",
+      "inferred": "csharp/rosetta/inferred.json",
       "notes": "Namespace structure with using aliases (using RTypes = Rosetta.Types)."
     },
     {
@@ -119,6 +125,8 @@
       "tier": "type-safe",
       "sourceDir": "src",
       "entryPoint": "src/main.rs",
+      "expected": "rust/rosetta/expected.json",
+      "inferred": "rust/rosetta/inferred.json",
       "notes": "Module system with mod declarations and use statements."
     },
     {
@@ -127,6 +135,8 @@
       "tier": "type-safe",
       "sourceDir": "src",
       "entryPoint": "src/main.c",
+      "expected": "c/rosetta/expected.json",
+      "inferred": "c/rosetta/inferred.json",
       "notes": "Header file includes with implementation files."
     },
     {
@@ -135,6 +145,8 @@
       "tier": "type-safe",
       "sourceDir": "src",
       "entryPoint": "src/main/main.go",
+      "expected": "go/rosetta/expected.json",
+      "inferred": "go/rosetta/inferred.json",
       "notes": "Package-per-directory structure with module imports (rosetta/src/models)."
     },
     {
@@ -143,6 +155,8 @@
       "tier": "dynamic",
       "sourceDir": "src",
       "entryPoint": "src/main.py",
+      "expected": "python/rosetta/expected.json",
+      "inferred": "python/rosetta/inferred.json",
       "notes": "Module imports with aliasing (import models as Models)."
     },
     {
@@ -151,6 +165,8 @@
       "tier": "dynamic",
       "sourceDir": "lib",
       "entryPoint": "lib/main.rb",
+      "expected": "ruby/rosetta/expected.json",
+      "inferred": "ruby/rosetta/inferred.json",
       "notes": "require_relative for local module loading."
     }
   ],

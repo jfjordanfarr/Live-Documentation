@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-01-15T02:41:18.505Z
+- Generated At: 2026-01-15T17:00:39.050Z
 
 ## Authored
 ### Purpose
@@ -16,25 +16,25 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.505Z","inputHash":"72b76b506606a347"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.050Z","inputHash":"1976c9186265b516"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L72)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L73)
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L95)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L96)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 #### `__testUtils` {#symbol-__testutils}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L781)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L791)
 
 #### `withDefaultConfig` {#symbol-withdefaultconfig}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L790)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L800)
 - Returns: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 <!-- LIVE-DOC:END Public Symbols -->
@@ -55,6 +55,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.SourceAnalysisResult`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
+- [`core.WorkspaceFileIndex`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
 - [`core.WorkspaceSymbolIndex`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
 - [`core.analyzeSourceFile`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceSymbolIndex`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)

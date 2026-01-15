@@ -26,6 +26,7 @@ import {
   renderPublicSymbolLines,
   resolveArchetype,
   type SourceAnalysisResult,
+  type WorkspaceFileIndex,
   type WorkspaceSymbolIndex
 } from "@live-documentation/shared/live-docs/core";
 import {
@@ -126,6 +127,14 @@ export async function generateLiveDocs(
     logger
   });
 
+  // Build workspace file index for cross-file reference resolution (e.g., JSON adapters)
+  const fileIndex: WorkspaceFileIndex = new Set(
+    targetFiles.map((absPath) =>
+      normalizeWorkspacePath(path.relative(workspaceRoot, absPath))
+    )
+  );
+  logger.info(`Built file index with ${fileIndex.size} workspace paths`);
+
   // Build workspace-wide symbol index for cross-Live-Doc type reference resolution
   const liveDocsRoot = normalizeWorkspacePath(
     path.join(normalizedConfig.root, normalizedConfig.baseLayer)
@@ -134,7 +143,8 @@ export async function generateLiveDocs(
     targetFiles,
     workspaceRoot,
     liveDocsRoot,
-    docExtension: normalizedConfig.extension
+    docExtension: normalizedConfig.extension,
+    fileIndex
   });
   logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names`);
 
@@ -179,7 +189,7 @@ export async function generateLiveDocs(
       liveDocId
     };
 
-    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot);
+    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex);
 
     const docPaths = resolveLiveDocPaths(
       workspaceRoot,

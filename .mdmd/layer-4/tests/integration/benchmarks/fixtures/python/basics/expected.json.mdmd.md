@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/python/basics/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-basics-expected-json
-- Generated At: 2025-11-18T20:51:24.705Z
+- Generated At: 2026-01-15T18:39:07.045Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks the expected import graph for the Python basics benchmark so foundational 
 Run `npm run fixtures:regenerate -- --fixture python-basics --write` before accepting analyzer changes that affect this snapshot.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.705Z","inputHash":"b64ac13164cd77be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.045Z","inputHash":"65c36eaebcba75fb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](./src/helpers.py.mdmd.md)
+- [`main`](./src/main.py.mdmd.md)
+- [`util`](./src/util.py.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

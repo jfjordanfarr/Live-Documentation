@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreConstants.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreconstants-ts
-- Generated At: 2025-12-11T02:38:02.084Z
+- Generated At: 2026-01-15T17:57:36.887Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Central repository of file extension constants for Live Documentation. Defines w
 - `RESERVED_HEADING_NAMES`: Prevents user-authored sections from colliding with generated sections
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.084Z","inputHash":"ed56de8a29669ab7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:57:36.887Z","inputHash":"029d09e406cfb68b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SUPPORTED_SCRIPT_EXTENSIONS` {#symbol-supported_script_extensions}
@@ -39,14 +39,14 @@ These files contain analyzable source code with symbols and dependencies.
 
 #### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreConstants.ts#L55)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreConstants.ts#L57)
 
 ##### `MODULE_RESOLUTION_EXTENSIONS` — Summary
 Extensions tried in order during module resolution (TypeScript-style).
 
 #### `RESERVED_HEADING_NAMES` {#symbol-reserved_heading_names}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreConstants.ts#L71)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreConstants.ts#L73)
 
 ##### `RESERVED_HEADING_NAMES` — Summary
 Reserved heading names that cannot be used as user-authored sections.

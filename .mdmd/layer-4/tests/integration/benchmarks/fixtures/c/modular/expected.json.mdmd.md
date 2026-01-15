@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-modular-expected-json
-- Generated At: 2025-11-18T20:51:24.310Z
+- Generated At: 2026-01-15T18:39:06.979Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Stores the expected dependency network for the C modular benchmark so multi-file
 Regenerate with `npm run fixtures:regenerate -- --fixture c-modular --write` before accepting graph changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.310Z","inputHash":"289726ad739d4b5c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.979Z","inputHash":"5cd67024af711fe0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`logger`](./src/logger.c.mdmd.md)
+- [`logger`](./src/logger.h.mdmd.md)
+- [`main`](./src/main.c.mdmd.md)
+- [`metrics`](./src/metrics.c.mdmd.md)
+- [`metrics`](./src/metrics.h.mdmd.md)
+- [`pipeline`](./src/pipeline.c.mdmd.md)
+- [`pipeline`](./src/pipeline.h.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

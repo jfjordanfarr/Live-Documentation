@@ -40,18 +40,39 @@ export interface FixtureThresholds {
   recall?: number;
 }
 
+/**
+ * Oracle configuration for expected.json regeneration and validation.
+ */
+export interface OracleConfig {
+  /** Type of oracle (e.g., "typescript", "python") */
+  kind: string;
+  /** Optional root path within fixture for oracle analysis */
+  root?: string;
+  /** Full fixture-relative path to manual overrides JSON (e.g., "typescript/basic/oracle.overrides.json") */
+  manualOverrides?: string;
+}
+
 export interface BenchmarkFixtureDefinition {
+  /** Unique identifier for this fixture (e.g., "ts-basic", "go-rosetta") */
   id: string;
+  /** Human-readable label for reporting */
   label?: string;
+  /** Programming language of the fixture (e.g., "typescript", "go") */
   language?: string;
+  /** Fixture-relative path within FIXTURE_ROOT (e.g., "typescript/basic") */
   path: string;
+  /** Benchmark modes this fixture participates in */
   modes?: string[];
+  /** Full fixture-relative path to expected.json (e.g., "typescript/basic/expected.json") */
   expected: string;
+  /** Full fixture-relative path to inferred.json (e.g., "typescript/basic/inferred.json") */
   inferred: string;
   summary?: FixtureSummary;
   provenance?: FixtureProvenance;
   integrity?: FixtureIntegritySpec;
   materialization?: FixtureMaterialization;
+  /** Oracle configuration for expected.json regeneration. */
+  oracle?: OracleConfig;
   /** Per-fixture threshold overrides. Allows stress-test fixtures to pass with lower metrics. */
   thresholds?: FixtureThresholds;
 }

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-basics-expected-json
-- Generated At: 2025-11-18T20:51:24.260Z
+- Generated At: 2026-01-15T18:39:06.971Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the expected include graph for the C basics benchmark so translation-uni
 Run `npm run fixtures:regenerate -- --fixture c-basics --write` prior to accepting analyzer-driven changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.260Z","inputHash":"655e3ce48b7a1ba5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.971Z","inputHash":"80c983eed492e75f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](./src/main.c.mdmd.md)
+- [`util`](./src/util.c.mdmd.md)
+- [`util`](./src/util.h.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -46,6 +46,8 @@ export type {
   PublicSymbolHeadingInfo
 } from "./coreTypes";
 
+export type { WorkspaceFileIndex } from "./adapters";
+
 // ============================================================================
 // Constant Exports
 // ============================================================================

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-rosetta-expected-json
-- Generated At: 2026-01-14T22:47:33.854Z
+- Generated At: 2026-01-15T18:39:07.103Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ground-truth dependency graph for the TypeScript Rosetta Stone fixture. Generate
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for Rosetta Stone fixture creation. This file is regenerated automatically by `npm run fixtures:regenerate`; do not hand-edit.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.854Z","inputHash":"fe82b70c7442d191"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.103Z","inputHash":"c9097171a14265a8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](./src/helpers.ts.mdmd.md)
+- [`main`](./src/main.ts.mdmd.md)
+- [`models`](./src/models.ts.mdmd.md)
+- [`processor`](./src/processor.ts.mdmd.md)
+- [`types`](./src/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

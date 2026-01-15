@@ -43,6 +43,8 @@ export const IMPLEMENTATION_CODE_EXTENSIONS = new Set([
   ".rb",
   // Rust
   ".rs",
+  // Go
+  ".go",
   // PowerShell
   ".ps1", ".psm1", ".psd1",
   // ASP.NET Markup (code-behind)

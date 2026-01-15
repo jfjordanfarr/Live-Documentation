@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-01-15T02:41:18.745Z
+- Generated At: 2026-01-15T17:00:39.293Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.745Z","inputHash":"f4c3c99ebffa948b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.293Z","inputHash":"d757e82f683681f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -99,7 +99,7 @@ const index = await buildWorkspaceSymbolIndex({
 
 #### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L276)
+- Source: [source](../../../../../../packages/shared/src/live-docs/discovery.ts#L278)
 - Returns: [`ResolvedSymbolLocation`](./core.ts.mdmd.md#symbol-resolvedsymbollocation)
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./core.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -127,6 +127,7 @@ The resolved location, or undefined if not found.
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)

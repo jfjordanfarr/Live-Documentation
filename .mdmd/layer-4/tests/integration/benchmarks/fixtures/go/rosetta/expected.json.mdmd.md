@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-rosetta-expected-json
-- Generated At: 2026-01-15T16:26:54.135Z
+- Generated At: 2026-01-15T18:39:07.016Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Canonical ground-truth dependency graph for the go-rosetta benchmark fixture. Co
 - Graph shape mirrors other Rosetta variants: main → models/processor, processor → helpers/models/types, models → types
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:26:54.135Z","inputHash":"e98b19587f60814f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.016Z","inputHash":"c445f6e72de99520"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,5 +26,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](./src/helpers/helpers.go.mdmd.md)
+- [`main`](./src/main/main.go.mdmd.md)
+- [`models`](./src/models/models.go.mdmd.md)
+- [`processor`](./src/processor/processor.go.mdmd.md)
+- [`types`](./src/types/types.go.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

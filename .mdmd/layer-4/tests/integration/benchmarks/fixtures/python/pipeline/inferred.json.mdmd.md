@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-inferred-json
-- Generated At: 2025-11-18T20:51:24.754Z
+- Generated At: 2026-01-15T18:39:07.049Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Archives the analyzer's captured graph for the Python pipeline benchmark to spot
 Refresh via `npm run fixtures:record-fallback -- --fixture python-pipeline --write` when the validator pipeline or analyzer evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.754Z","inputHash":"62de07b37bd287fd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.049Z","inputHash":"defed26a10f0a1d2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](./src/main.py.mdmd.md)
+- [`metrics`](./src/metrics.py.mdmd.md)
+- [`pipeline`](./src/pipeline.py.mdmd.md)
+- [`repositories`](./src/repositories.py.mdmd.md)
+- [`validators`](./src/validators.py.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

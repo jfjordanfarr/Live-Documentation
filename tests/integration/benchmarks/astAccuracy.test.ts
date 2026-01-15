@@ -227,7 +227,7 @@ async function evaluateFixture(
   workspaceRoot: string
 ): Promise<FixtureDiffReport> {
   const root = path.join(FIXTURE_ROOT, fixture.path);
-  const expected = await loadEdges(path.join(root, fixture.expected));
+  const expected = await loadEdges(path.join(FIXTURE_ROOT, fixture.expected));
 
   await verifyTypeScriptOracleAlignment({
     fixture,
@@ -236,7 +236,7 @@ async function evaluateFixture(
     workspaceRoot
   });
 
-  const inferred = await loadEdges(path.join(root, fixture.inferred));
+  const inferred = await loadEdges(path.join(FIXTURE_ROOT, fixture.inferred));
 
   const expectedMap = new Map<string, EdgeRecord>();
   const inferredSet = new Set<string>();

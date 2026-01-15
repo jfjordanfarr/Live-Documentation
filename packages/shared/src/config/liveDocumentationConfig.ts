@@ -101,6 +101,7 @@ export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "tests/**/*.c",
   "tests/**/*.h",
   "tests/**/*.cpp",
+  "tests/**/*.go",
   "tests/**/*.html",
   "tests/**/*.css",
   "tests/**/*.json",

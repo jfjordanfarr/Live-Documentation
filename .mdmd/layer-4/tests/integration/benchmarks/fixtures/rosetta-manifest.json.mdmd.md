@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/rosetta-manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rosetta-manifest-json
-- Generated At: 2026-01-14T22:47:33.814Z
+- Generated At: 2026-01-15T18:52:04.149Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Registry of Rosetta Stone cross-language benchmark fixtures. Each language imple
 Created during Dev Day 58; see [2026-01-14.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for design rationale. The Rosetta Stone concept ensures each language fixture exercises identical dependency patterns (namespace imports, selective imports, type-only imports) so precision/recall metrics are comparable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.814Z","inputHash":"de6d9d7ffa4b7b3f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:52:04.149Z","inputHash":"3ade681b5754c492"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,20 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`expected`](./c/rosetta/expected.json.mdmd.md)
+- [`inferred`](./c/rosetta/inferred.json.mdmd.md)
+- [`expected`](./csharp/rosetta/expected.json.mdmd.md)
+- [`inferred`](./csharp/rosetta/inferred.json.mdmd.md)
+- [`expected`](./go/rosetta/expected.json.mdmd.md)
+- [`inferred`](./go/rosetta/inferred.json.mdmd.md)
+- [`expected`](./java/rosetta/expected.json.mdmd.md)
+- [`inferred`](./java/rosetta/inferred.json.mdmd.md)
+- [`expected`](./python/rosetta/expected.json.mdmd.md)
+- [`inferred`](./python/rosetta/inferred.json.mdmd.md)
+- [`expected`](./ruby/rosetta/expected.json.mdmd.md)
+- [`inferred`](./ruby/rosetta/inferred.json.mdmd.md)
+- [`expected`](./rust/rosetta/expected.json.mdmd.md)
+- [`inferred`](./rust/rosetta/inferred.json.mdmd.md)
+- [`expected`](./typescript/rosetta/expected.json.mdmd.md)
+- [`inferred`](./typescript/rosetta/inferred.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

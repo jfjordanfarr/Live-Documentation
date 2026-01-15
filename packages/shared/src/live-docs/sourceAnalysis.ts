@@ -12,7 +12,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
-import { analyzeWithLanguageAdapters } from "./adapters";
+import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type { SourceAnalysisResult, PublicSymbolEntry } from "./coreTypes";
 import {
@@ -47,6 +47,7 @@ const EMPTY_ANALYSIS_RESULT: SourceAnalysisResult = {
  *
  * @param absolutePath - Absolute filesystem path to the source file under inspection.
  * @param workspaceRoot - Workspace root used to normalise relative dependency paths.
+ * @param fileIndex - Optional set of workspace file paths for cross-file reference resolution.
  *
  * @returns Analyzer output describing exported symbols and detected dependencies.
  *
@@ -60,13 +61,15 @@ const EMPTY_ANALYSIS_RESULT: SourceAnalysisResult = {
  */
 export async function analyzeSourceFile(
   absolutePath: string,
-  workspaceRoot: string
+  workspaceRoot: string,
+  fileIndex?: WorkspaceFileIndex
 ): Promise<SourceAnalysisResult> {
   const extension = path.extname(absolutePath).toLowerCase();
 
   const adapterResult = await analyzeWithLanguageAdapters({
     absolutePath,
-    workspaceRoot
+    workspaceRoot,
+    fileIndex
   });
 
   if (adapterResult) {

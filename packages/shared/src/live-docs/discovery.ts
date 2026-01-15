@@ -14,7 +14,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
 
-import { analyzeWithLanguageAdapters } from "./adapters";
+import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import type {
   PublicSymbolEntry,
   ResolvedSymbolLocation,
@@ -180,6 +180,7 @@ export async function buildWorkspaceSymbolIndex(options: {
   workspaceRoot: string;
   liveDocsRoot: string;
   docExtension: string;
+  fileIndex?: WorkspaceFileIndex;
 }): Promise<WorkspaceSymbolIndex> {
   const index: WorkspaceSymbolIndex = new Map();
 
@@ -214,7 +215,8 @@ export async function buildWorkspaceSymbolIndex(options: {
         // Try language-specific adapters for other file types (C#, Java, Python, etc.)
         const adapterResult = await analyzeWithLanguageAdapters({
           absolutePath,
-          workspaceRoot: options.workspaceRoot
+          workspaceRoot: options.workspaceRoot,
+          fileIndex: options.fileIndex
         });
         if (adapterResult) {
           symbols = adapterResult.symbols;

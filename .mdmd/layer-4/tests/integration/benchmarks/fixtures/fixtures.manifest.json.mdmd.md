@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/fixtures.manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-fixtures-manifest-json
-- Generated At: 2025-11-18T20:51:24.495Z
+- Generated At: 2026-01-15T18:39:07.015Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Master manifest enumerating every benchmark repository and fixture scenario the 
 - Update entries when refreshing vendored repositories or adding new language scenarios, and regenerate fixtures plus reports to keep precision/recall metrics honest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.495Z","inputHash":"3a8010c470e6f9a0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.015Z","inputHash":"0822cff2e7e2f1d4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,5 +25,68 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`expected`](./c/basics/expected.json.mdmd.md)
+- [`inferred`](./c/basics/inferred.json.mdmd.md)
+- [`expected`](./c/libuv/expected.json.mdmd.md)
+- [`inferred`](./c/libuv/inferred.json.mdmd.md)
+- [`expected`](./c/modular/expected.json.mdmd.md)
+- [`inferred`](./c/modular/inferred.json.mdmd.md)
+- [`expected`](./c/rosetta/expected.json.mdmd.md)
+- [`inferred`](./c/rosetta/inferred.json.mdmd.md)
+- [`expected`](./csharp/basic/expected.json.mdmd.md)
+- [`inferred`](./csharp/basic/inferred.json.mdmd.md)
+- [`expected`](./csharp/rosetta/expected.json.mdmd.md)
+- [`inferred`](./csharp/rosetta/inferred.json.mdmd.md)
+- [`expected`](./csharp/roslyn-compilers/expected.json.mdmd.md)
+- [`inferred`](./csharp/roslyn-compilers/inferred.json.mdmd.md)
+- [`oracle.overrides`](./csharp/roslyn-compilers/oracle.overrides.json.mdmd.md)
+- [`expected`](./csharp/webforms/expected.json.mdmd.md)
+- [`inferred`](./csharp/webforms/inferred.json.mdmd.md)
+- [`oracle.overrides`](./csharp/webforms/oracle.overrides.json.mdmd.md)
+- [`expected`](./go/rosetta/expected.json.mdmd.md)
+- [`inferred`](./go/rosetta/inferred.json.mdmd.md)
+- [`oracle.overrides`](./go/rosetta/oracle.overrides.json.mdmd.md)
+- [`expected`](./java/basic/expected.json.mdmd.md)
+- [`inferred`](./java/basic/inferred.json.mdmd.md)
+- [`expected`](./java/okhttp/expected.json.mdmd.md)
+- [`inferred`](./java/okhttp/inferred.json.mdmd.md)
+- [`expected`](./java/rosetta/expected.json.mdmd.md)
+- [`inferred`](./java/rosetta/inferred.json.mdmd.md)
+- [`expected`](./java/service/expected.json.mdmd.md)
+- [`inferred`](./java/service/inferred.json.mdmd.md)
+- [`expected`](./python/basics/expected.json.mdmd.md)
+- [`inferred`](./python/basics/inferred.json.mdmd.md)
+- [`oracle.overrides`](./python/basics/oracle.overrides.json.mdmd.md)
+- [`expected`](./python/pipeline/expected.json.mdmd.md)
+- [`inferred`](./python/pipeline/inferred.json.mdmd.md)
+- [`oracle.overrides`](./python/pipeline/oracle.overrides.json.mdmd.md)
+- [`expected`](./python/requests/expected.json.mdmd.md)
+- [`inferred`](./python/requests/inferred.json.mdmd.md)
+- [`oracle.overrides`](./python/requests/oracle.overrides.json.mdmd.md)
+- [`expected`](./python/rosetta/expected.json.mdmd.md)
+- [`inferred`](./python/rosetta/inferred.json.mdmd.md)
+- [`expected`](./ruby/basic/expected.json.mdmd.md)
+- [`inferred`](./ruby/basic/inferred.json.mdmd.md)
+- [`expected`](./ruby/cli/expected.json.mdmd.md)
+- [`inferred`](./ruby/cli/inferred.json.mdmd.md)
+- [`expected`](./ruby/rosetta/expected.json.mdmd.md)
+- [`inferred`](./ruby/rosetta/inferred.json.mdmd.md)
+- [`expected`](./rust/analytics/expected.json.mdmd.md)
+- [`inferred`](./rust/analytics/inferred.json.mdmd.md)
+- [`expected`](./rust/basics/expected.json.mdmd.md)
+- [`inferred`](./rust/basics/inferred.json.mdmd.md)
+- [`expected`](./rust/log/expected.json.mdmd.md)
+- [`inferred`](./rust/log/inferred.json.mdmd.md)
+- [`expected`](./rust/rosetta/expected.json.mdmd.md)
+- [`inferred`](./rust/rosetta/inferred.json.mdmd.md)
+- [`expected`](./typescript/basic/expected.json.mdmd.md)
+- [`inferred`](./typescript/basic/inferred.json.mdmd.md)
+- [`oracle.overrides`](./typescript/basic/oracle.overrides.json.mdmd.md)
+- [`expected`](./typescript/ky/expected.json.mdmd.md)
+- [`inferred`](./typescript/ky/inferred.json.mdmd.md)
+- [`expected`](./typescript/layered/expected.json.mdmd.md)
+- [`inferred`](./typescript/layered/inferred.json.mdmd.md)
+- [`oracle.overrides`](./typescript/layered/oracle.overrides.json.mdmd.md)
+- [`expected`](./typescript/rosetta/expected.json.mdmd.md)
+- [`inferred`](./typescript/rosetta/inferred.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

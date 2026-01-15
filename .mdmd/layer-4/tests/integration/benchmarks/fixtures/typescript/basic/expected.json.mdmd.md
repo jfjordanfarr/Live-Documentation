@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-basic-expected-json
-- Generated At: 2025-11-18T20:51:25.163Z
+- Generated At: 2026-01-15T18:39:07.091Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks the curated dependency graph for the TypeScript basic benchmark so module 
 Regenerate with `npm run fixtures:regenerate -- --fixture ts-basic --write` before accepting analyzer or fixture edits.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.163Z","inputHash":"2c1bb66c70fc141c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.091Z","inputHash":"79b9be352eed3de4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`index`](./src/index.ts.mdmd.md)
+- [`models`](./src/models.ts.mdmd.md)
+- [`types`](./src/types.ts.mdmd.md)
+- [`util`](./src/util.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/sourceAnalysis.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-sourceanalysis-ts
-- Generated At: 2026-01-15T02:41:18.768Z
+- Generated At: 2026-01-15T17:00:39.316Z
 
 ## Authored
 ### Purpose
@@ -19,12 +19,13 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 - Returns `EMPTY_ANALYSIS_RESULT` for unsupported file extensions
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.768Z","inputHash":"168c42186484774b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.316Z","inputHash":"88e3733b59159040"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/sourceAnalysis.ts#L61)
+- Source: [source](../../../../../../packages/shared/src/live-docs/sourceAnalysis.ts#L62)
+- Parameters: `fileIndex`: [`WorkspaceFileIndex`](./core.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `analyzeSourceFile` — Summary
 Produces symbol and dependency analysis for a single source artifact.
@@ -36,6 +37,7 @@ without requiring the TypeScript compiler to understand those languages.
 
 ##### `analyzeSourceFile` — Parameters
 - `absolutePath`: Absolute filesystem path to the source file under inspection.
+- `fileIndex`: Optional set of workspace file paths for cross-file reference resolution.
 - `workspaceRoot`: Workspace root used to normalise relative dependency paths.
 
 ##### `analyzeSourceFile` — Returns
@@ -54,6 +56,7 @@ if (analysis.symbols.length === 0) {
 ### Dependencies
 - `node:fs/promises`
 - `node:path` - `path`
+- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

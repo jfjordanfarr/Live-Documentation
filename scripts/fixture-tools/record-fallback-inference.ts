@@ -262,8 +262,7 @@ function resolveTargetFixtures(
 }
 
 async function recordFixture(fixture: BenchmarkFixtureDefinition, writeInPlace: boolean): Promise<void> {
-  const fixtureRoot = path.join(FIXTURE_ROOT, fixture.path);
-  const inferredPath = path.join(fixtureRoot, fixture.inferred);
+  const inferredPath = path.join(FIXTURE_ROOT, fixture.inferred);
 
   const workspaceMode = process.env.FIXTURE_PERSIST === "1" ? "persistent" : "ephemeral";
   const { workspaceRoot, dispose } = await materializeFixture(REPO_ROOT, fixture, {

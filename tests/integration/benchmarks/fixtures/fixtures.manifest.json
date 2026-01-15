@@ -5,13 +5,16 @@
       "label": "TypeScript module graph smoke sample",
       "language": "typescript",
       "path": "typescript/basic",
-      "modes": ["self-similarity", "ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "self-similarity",
+        "ast"
+      ],
+      "expected": "typescript/basic/expected.json",
+      "inferred": "typescript/basic/inferred.json",
       "oracle": {
         "kind": "typescript",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "typescript/basic/oracle.overrides.json"
       }
     },
     {
@@ -19,13 +22,15 @@
       "label": "TypeScript layered reporting service",
       "language": "typescript",
       "path": "typescript/layered",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "typescript/layered/expected.json",
+      "inferred": "typescript/layered/inferred.json",
       "oracle": {
         "kind": "typescript",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "typescript/layered/oracle.overrides.json"
       }
     },
     {
@@ -33,9 +38,11 @@
       "label": "Ky HTTP client repository",
       "language": "typescript",
       "path": "typescript/ky",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "typescript/ky/expected.json",
+      "inferred": "typescript/ky/inferred.json",
       "provenance": {
         "kind": "vendor",
         "repository": "sindresorhus/ky",
@@ -81,13 +88,15 @@
       "label": "C translation unit with header inclusion",
       "language": "c",
       "path": "c/basics",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "c/basics/expected.json",
+      "inferred": "c/basics/inferred.json",
       "oracle": {
         "kind": "c",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
+        "manualOverrides": "c/basics/oracle.overrides.json",
         "include": [
           "src/**/*.c",
           "src/**/*.h"
@@ -99,13 +108,15 @@
       "label": "C pipeline spanning multiple headers",
       "language": "c",
       "path": "c/modular",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "c/modular/expected.json",
+      "inferred": "c/modular/inferred.json",
       "oracle": {
         "kind": "c",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
+        "manualOverrides": "c/modular/oracle.overrides.json",
         "include": [
           "src/**/*.c",
           "src/**/*.h"
@@ -117,9 +128,11 @@
       "label": "libuv repository",
       "language": "c",
       "path": "c/libuv",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "c/libuv/expected.json",
+      "inferred": "c/libuv/inferred.json",
       "provenance": {
         "kind": "vendor",
         "repository": "libuv/libuv",
@@ -145,7 +158,7 @@
       "oracle": {
         "kind": "c",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
+        "manualOverrides": "c/libuv/oracle.overrides.json",
         "include": [
           "src/**/*.c",
           "src/**/*.h",
@@ -187,16 +200,24 @@
       "label": "Python module imports and validation",
       "language": "python",
       "path": "python/basics",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "python/basics/expected.json",
+      "inferred": "python/basics/inferred.json",
       "oracle": {
         "kind": "python",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
-        "include": ["src/**/*.py"],
-        "exclude": ["**/__pycache__/**"],
-        "packageRoots": ["src"]
+        "manualOverrides": "python/basics/oracle.overrides.json",
+        "include": [
+          "src/**/*.py"
+        ],
+        "exclude": [
+          "**/__pycache__/**"
+        ],
+        "packageRoots": [
+          "src"
+        ]
       }
     },
     {
@@ -204,16 +225,24 @@
       "label": "Python reporting pipeline with validators",
       "language": "python",
       "path": "python/pipeline",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "python/pipeline/expected.json",
+      "inferred": "python/pipeline/inferred.json",
       "oracle": {
         "kind": "python",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
-        "include": ["src/**/*.py"],
-        "exclude": ["**/__pycache__/**"],
-        "packageRoots": ["src"]
+        "manualOverrides": "python/pipeline/oracle.overrides.json",
+        "include": [
+          "src/**/*.py"
+        ],
+        "exclude": [
+          "**/__pycache__/**"
+        ],
+        "packageRoots": [
+          "src"
+        ]
       }
     },
     {
@@ -221,17 +250,27 @@
       "label": "Requests HTTP client repository",
       "language": "python",
       "path": "python/requests",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "python/requests/expected.json",
+      "inferred": "python/requests/inferred.json",
       "oracle": {
         "kind": "python",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
-        "include": ["src/requests/**/*.py"],
-        "exclude": ["**/__pycache__/**"],
-        "packageRoots": ["src"],
-        "entryPackages": ["requests"]
+        "manualOverrides": "python/requests/oracle.overrides.json",
+        "include": [
+          "src/requests/**/*.py"
+        ],
+        "exclude": [
+          "**/__pycache__/**"
+        ],
+        "packageRoots": [
+          "src"
+        ],
+        "entryPackages": [
+          "requests"
+        ]
       },
       "provenance": {
         "kind": "vendor",
@@ -270,9 +309,11 @@
       "label": "Rust logging facade (rust-lang/log)",
       "language": "rust",
       "path": "rust/log",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "rust/log/expected.json",
+      "inferred": "rust/log/inferred.json",
       "provenance": {
         "kind": "vendor",
         "repository": "rust-lang/log",
@@ -318,13 +359,15 @@
       "label": "Rust crate with helper modules",
       "language": "rust",
       "path": "rust/basics",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "rust/basics/expected.json",
+      "inferred": "rust/basics/inferred.json",
       "oracle": {
         "kind": "rust",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "rust/basics/oracle.overrides.json"
       }
     },
     {
@@ -332,13 +375,15 @@
       "label": "Rust analytics crate with IO and metrics",
       "language": "rust",
       "path": "rust/analytics",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "rust/analytics/expected.json",
+      "inferred": "rust/analytics/inferred.json",
       "oracle": {
         "kind": "rust",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "rust/analytics/oracle.overrides.json"
       }
     },
     {
@@ -346,13 +391,15 @@
       "label": "Java reporting application",
       "language": "java",
       "path": "java/basic",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "java/basic/expected.json",
+      "inferred": "java/basic/inferred.json",
       "oracle": {
         "kind": "java",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "java/basic/oracle.overrides.json"
       }
     },
     {
@@ -360,13 +407,15 @@
       "label": "Java analytics service with layered modules",
       "language": "java",
       "path": "java/service",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "java/service/expected.json",
+      "inferred": "java/service/inferred.json",
       "oracle": {
         "kind": "java",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "java/service/oracle.overrides.json"
       }
     },
     {
@@ -374,13 +423,15 @@
       "label": "C# diagnostics reporting sample",
       "language": "csharp",
       "path": "csharp/basic",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "csharp/basic/expected.json",
+      "inferred": "csharp/basic/inferred.json",
       "oracle": {
         "kind": "csharp",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "csharp/basic/oracle.overrides.json"
       }
     },
     {
@@ -388,9 +439,11 @@
       "label": "C# WebForms hidden field propagation sample",
       "language": "csharp",
       "path": "csharp/webforms",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "csharp/webforms/expected.json",
+      "inferred": "csharp/webforms/inferred.json",
       "integrity": {
         "algorithm": "sha256",
         "generatedAt": "2025-11-06T00:00:00.000Z",
@@ -408,7 +461,7 @@
       "oracle": {
         "kind": "csharp",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "csharp/webforms/oracle.overrides.json"
       }
     },
     {
@@ -416,9 +469,11 @@
       "label": "Roslyn flow analysis slice",
       "language": "csharp",
       "path": "csharp/roslyn-compilers",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "csharp/roslyn-compilers/expected.json",
+      "inferred": "csharp/roslyn-compilers/inferred.json",
       "provenance": {
         "kind": "vendor",
         "repository": "dotnet/roslyn",
@@ -465,7 +520,7 @@
           "src/Compilers/CSharp/Portable/FlowAnalysis/**/*.cs",
           "src/Compilers/CSharp/Portable/Utilities/**/*.cs"
         ],
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "csharp/roslyn-compilers/oracle.overrides.json"
       }
     },
     {
@@ -473,9 +528,11 @@
       "label": "OkHttp client repository",
       "language": "java",
       "path": "java/okhttp",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "java/okhttp/expected.json",
+      "inferred": "java/okhttp/inferred.json",
       "provenance": {
         "kind": "vendor",
         "repository": "square/okhttp",
@@ -518,7 +575,7 @@
       "oracle": {
         "kind": "java",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
+        "manualOverrides": "java/okhttp/oracle.overrides.json",
         "include": [
           "okhttp/src/main/java",
           "mockwebserver/src/main/java",
@@ -562,13 +619,15 @@
       "label": "Ruby module graph for summary reporting",
       "language": "ruby",
       "path": "ruby/basic",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "ruby/basic/expected.json",
+      "inferred": "ruby/basic/inferred.json",
       "oracle": {
         "kind": "ruby",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "ruby/basic/oracle.overrides.json"
       }
     },
     {
@@ -576,13 +635,15 @@
       "label": "Ruby CLI with layered services",
       "language": "ruby",
       "path": "ruby/cli",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "ruby/cli/expected.json",
+      "inferred": "ruby/cli/inferred.json",
       "oracle": {
         "kind": "ruby",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "ruby/cli/oracle.overrides.json"
       }
     },
     {
@@ -590,13 +651,15 @@
       "label": "TypeScript Rosetta Stone (cross-language canonical program)",
       "language": "typescript",
       "path": "typescript/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "typescript/rosetta/expected.json",
+      "inferred": "typescript/rosetta/inferred.json",
       "oracle": {
         "kind": "typescript",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "typescript/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -604,16 +667,24 @@
       "label": "Python Rosetta Stone (cross-language canonical program)",
       "language": "python",
       "path": "python/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "python/rosetta/expected.json",
+      "inferred": "python/rosetta/inferred.json",
       "oracle": {
         "kind": "python",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
-        "include": ["src/**/*.py"],
-        "exclude": ["**/__pycache__/**"],
-        "packageRoots": ["src"]
+        "manualOverrides": "python/rosetta/oracle.overrides.json",
+        "include": [
+          "src/**/*.py"
+        ],
+        "exclude": [
+          "**/__pycache__/**"
+        ],
+        "packageRoots": [
+          "src"
+        ]
       }
     },
     {
@@ -621,13 +692,15 @@
       "label": "Java Rosetta Stone (cross-language canonical program)",
       "language": "java",
       "path": "java/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "java/rosetta/expected.json",
+      "inferred": "java/rosetta/inferred.json",
       "oracle": {
         "kind": "java",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "java/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -635,13 +708,15 @@
       "label": "C# Rosetta Stone (cross-language canonical program)",
       "language": "csharp",
       "path": "csharp/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "csharp/rosetta/expected.json",
+      "inferred": "csharp/rosetta/inferred.json",
       "oracle": {
         "kind": "csharp",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "csharp/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -649,13 +724,15 @@
       "label": "Rust Rosetta Stone (cross-language canonical program)",
       "language": "rust",
       "path": "rust/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "rust/rosetta/expected.json",
+      "inferred": "rust/rosetta/inferred.json",
       "oracle": {
         "kind": "rust",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "rust/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -663,13 +740,15 @@
       "label": "C Rosetta Stone (cross-language canonical program)",
       "language": "c",
       "path": "c/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "c/rosetta/expected.json",
+      "inferred": "c/rosetta/inferred.json",
       "oracle": {
         "kind": "c",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json",
+        "manualOverrides": "c/rosetta/oracle.overrides.json",
         "include": [
           "src/**/*.c",
           "src/**/*.h"
@@ -681,13 +760,15 @@
       "label": "Ruby Rosetta Stone (cross-language canonical program)",
       "language": "ruby",
       "path": "ruby/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "ruby/rosetta/expected.json",
+      "inferred": "ruby/rosetta/inferred.json",
       "oracle": {
         "kind": "ruby",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "ruby/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -695,13 +776,15 @@
       "label": "Go Rosetta Stone (cross-language canonical program)",
       "language": "go",
       "path": "go/rosetta",
-      "modes": ["ast"],
-      "expected": "expected.json",
-      "inferred": "inferred.json",
+      "modes": [
+        "ast"
+      ],
+      "expected": "go/rosetta/expected.json",
+      "inferred": "go/rosetta/inferred.json",
       "oracle": {
         "kind": "go",
         "root": ".",
-        "manualOverrides": "oracle.overrides.json"
+        "manualOverrides": "go/rosetta/oracle.overrides.json"
       }
     }
   ]

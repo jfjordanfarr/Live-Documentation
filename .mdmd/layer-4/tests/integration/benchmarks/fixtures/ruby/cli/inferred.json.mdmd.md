@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-inferred-json
-- Generated At: 2025-11-18T20:51:24.960Z
+- Generated At: 2026-01-15T18:39:07.067Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records the analyzer snapshot for the Ruby CLI benchmark so we can detect diverg
 Re-run `npm run fixtures:record-fallback -- --fixture ruby-cli --write` when the command-layer fixture or analyzer logic evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.960Z","inputHash":"747ca4f8552e47b1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.067Z","inputHash":"ff4f4a0fbb28972a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`cli`](./lib/cli.rb.mdmd.md)
+- [`report`](./lib/commands/report.rb.mdmd.md)
+- [`analyzer`](./lib/services/analyzer.rb.mdmd.md)
+- [`cache`](./lib/services/cache.rb.mdmd.md)
+- [`data_loader`](./lib/services/data_loader.rb.mdmd.md)
+- [`logger`](./lib/support/logger.rb.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

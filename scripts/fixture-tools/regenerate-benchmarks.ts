@@ -374,11 +374,10 @@ async function regenerateFixture(
   }
 
   const fixtureRoot = path.join(FIXTURE_ROOT, fixture.path);
-  const expectedPath = path.join(fixtureRoot, fixture.expected);
-  const overridesPath = path.join(
-    fixtureRoot,
-    oracle.manualOverrides ?? "oracle.overrides.json"
-  );
+  const expectedPath = path.join(FIXTURE_ROOT, fixture.expected);
+  const overridesPath = oracle.manualOverrides
+    ? path.join(FIXTURE_ROOT, oracle.manualOverrides)
+    : path.join(fixtureRoot, "oracle.overrides.json");
 
   const expectedEdges = await loadEdgeRecords(expectedPath);
 

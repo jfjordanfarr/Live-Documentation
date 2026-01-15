@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-basics-inferred-json
-- Generated At: 2025-11-18T20:51:24.273Z
+- Generated At: 2026-01-15T18:39:06.972Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the analyzer's include graph for the C basics benchmark to ensure align
 Re-record using `npm run fixtures:record-fallback -- --fixture c-basics --write` once analyzer or fixture sources change.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.273Z","inputHash":"c540222c09478782"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.972Z","inputHash":"e58cbe81de8c7f4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](./src/main.c.mdmd.md)
+- [`util`](./src/util.c.mdmd.md)
+- [`util`](./src/util.h.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

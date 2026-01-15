@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-basics-expected-json
-- Generated At: 2025-11-18T20:51:25.107Z
+- Generated At: 2026-01-15T18:39:07.081Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the reference dependency graph for the Rust basics benchmark so simple m
 Regenerate via `npm run fixtures:regenerate -- --fixture rust-basics --write` before accepting analyzer changes that alter the expected edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.107Z","inputHash":"e9406e24ce792fa8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.081Z","inputHash":"8a7a1977a64d938b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,5 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](./src/main.rs.mdmd.md)
+- [`math`](./src/math.rs.mdmd.md)
+- [`utils`](./src/utils.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

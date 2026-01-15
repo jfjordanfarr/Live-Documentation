@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-manifest.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-manifest-ts
-- Generated At: 2026-01-15T02:41:18.850Z
+- Generated At: 2026-01-15T18:29:00.595Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - Extended 2025-11-06 while onboarding C# fixtures, using `computeIntegrityDigest` to stamp the new `csharp-webforms` hash set and enforce algorithm selection during verification ([C# integrity update](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5520-L5638)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.850Z","inputHash":"9b66e80b2bc55770"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:29:00.595Z","inputHash":"506bf0c5caec2a1b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FixtureSummary` {#symbol-fixturesummary}
@@ -40,43 +40,50 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 Per-fixture precision/recall threshold overrides.
 Allows stress-test fixtures to have lower thresholds than the global defaults.
 
+#### `OracleConfig` {#symbol-oracleconfig}
+- Type: interface
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L46)
+
+##### `OracleConfig` — Summary
+Oracle configuration for expected.json regeneration and validation.
+
 #### `BenchmarkFixtureDefinition` {#symbol-benchmarkfixturedefinition}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L43)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L55)
 
 #### `IntegrityDigest` {#symbol-integritydigest}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L59)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L80)
 
 #### `FixtureFileSetSpec` {#symbol-fixturefilesetspec}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L66)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L87)
 
 #### `FixtureMaterialization` {#symbol-fixturematerialization}
 - Type: type
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L71)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L92)
 - Returns: [`FixtureGitMaterialization`](#symbol-fixturegitmaterialization)
 
 #### `FixtureGitMaterialization` {#symbol-fixturegitmaterialization}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L78)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L99)
 
 #### `BENCHMARK_MANIFEST_SEGMENTS` {#symbol-benchmark_manifest_segments}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L91)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L112)
 
 #### `loadBenchmarkManifest` {#symbol-loadbenchmarkmanifest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L99)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L120)
 
 #### `computeIntegrityDigest` {#symbol-computeintegritydigest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L115)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L136)
 - Parameters: `fixture`: [`BenchmarkFixtureDefinition`](#symbol-benchmarkfixturedefinition)
 
 #### `normalizeRelative` {#symbol-normalizerelative}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L172)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L193)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

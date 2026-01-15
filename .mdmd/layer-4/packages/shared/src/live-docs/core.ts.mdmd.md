@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-01-14T18:44:18.663Z
+- Generated At: 2026-01-15T17:04:38.888Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:44:18.663Z","inputHash":"10f1f54b670f254f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:04:38.888Z","inputHash":"0aa7430decd8a703"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -84,169 +84,174 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L46)
 
+#### `WorkspaceFileIndex` {#symbol-workspacefileindex}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L49)
+
 #### `SUPPORTED_SCRIPT_EXTENSIONS` {#symbol-supported_script_extensions}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L54)
-
-#### `IMPLEMENTATION_CODE_EXTENSIONS` {#symbol-implementation_code_extensions}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L55)
-
-#### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L56)
 
-#### `RESERVED_HEADING_NAMES` {#symbol-reserved_heading_names}
+#### `IMPLEMENTATION_CODE_EXTENSIONS` {#symbol-implementation_code_extensions}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L57)
 
+#### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L58)
+
+#### `RESERVED_HEADING_NAMES` {#symbol-reserved_heading_names}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L59)
+
 #### `formatSourceLink` {#symbol-formatsourcelink}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L65)
-
-#### `formatRelativePathFromDoc` {#symbol-formatrelativepathfromdoc}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L66)
-
-#### `createSymbolSlug` {#symbol-createsymbolslug}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L67)
 
-#### `toModuleLabel` {#symbol-tomodulelabel}
+#### `formatRelativePathFromDoc` {#symbol-formatrelativepathfromdoc}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L68)
 
-#### `formatInlineCode` {#symbol-formatinlinecode}
+#### `createSymbolSlug` {#symbol-createsymbolslug}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L69)
 
-#### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
+#### `toModuleLabel` {#symbol-tomodulelabel}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L70)
 
-#### `resolveExportAssignmentName` {#symbol-resolveexportassignmentname}
+#### `formatInlineCode` {#symbol-formatinlinecode}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L71)
 
-#### `hasExportModifier` {#symbol-hasexportmodifier}
+#### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L72)
 
-#### `hasDefaultModifier` {#symbol-hasdefaultmodifier}
+#### `resolveExportAssignmentName` {#symbol-resolveexportassignmentname}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L73)
 
-#### `getNodeLocation` {#symbol-getnodelocation}
+#### `hasExportModifier` {#symbol-hasexportmodifier}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L74)
 
-#### `displayDependencyKey` {#symbol-displaydependencykey}
+#### `hasDefaultModifier` {#symbol-hasdefaultmodifier}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L75)
 
-#### `isBarrelFilePath` {#symbol-isbarrelfilepath}
+#### `getNodeLocation` {#symbol-getnodelocation}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L76)
 
-#### `compareSymbolLocationsPreferOrigin` {#symbol-comparesymbollocationspreferorigin}
+#### `displayDependencyKey` {#symbol-displaydependencykey}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L77)
 
+#### `isBarrelFilePath` {#symbol-isbarrelfilepath}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L78)
+
+#### `compareSymbolLocationsPreferOrigin` {#symbol-comparesymbollocationspreferorigin}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L79)
+
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L85)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L87)
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L86)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L88)
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L94)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L96)
 
 #### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L95)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L97)
 
 #### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L96)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L98)
 
 #### `inferScriptKind` {#symbol-inferscriptkind}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L104)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L106)
 
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L105)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L107)
 
 #### `collectDependencies` {#symbol-collectdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L113)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L115)
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L114)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L116)
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L115)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L117)
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L116)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L118)
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L117)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L119)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L125)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L127)
 
 #### `renderPublicSymbolLines` {#symbol-renderpublicsymbollines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L126)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L128)
 
 #### `renderDependencyLines` {#symbol-renderdependencylines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L127)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L129)
 
 #### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L128)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L130)
 
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L135)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L137)
 
 #### `detectChangedFiles` {#symbol-detectchangedfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L142)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L144)
 
 #### `parsePorcelainLine` {#symbol-parseporcelainline}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L143)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L145)
 
 #### `execFileAsync` {#symbol-execfileasync}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L144)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L146)
 
 #### `directoryExists` {#symbol-directoryexists}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L152)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L154)
 
 #### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L153)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L155)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L160)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L162)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (re-export, type-only)
 - [`archetype.hasMeaningfulAuthoredContent`](./archetype.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent) (re-export)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype) (re-export)
 - [`coreConstants.IMPLEMENTATION_CODE_EXTENSIONS`](./coreConstants.ts.mdmd.md#symbol-implementation_code_extensions) (re-export)
@@ -317,6 +322,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [css.test.ts](./adapters/css.test.ts.mdmd.md)
 - [html.test.ts](./adapters/html.test.ts.mdmd.md)
 - [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
+- [json.test.ts](./adapters/json.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./adapters/python.docstring.test.ts.mdmd.md)
 - [python.resolution.test.ts](./adapters/python.resolution.test.ts.mdmd.md)

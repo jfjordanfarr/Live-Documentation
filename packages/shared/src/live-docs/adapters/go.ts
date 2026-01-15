@@ -30,6 +30,10 @@ const GROUPED_IMPORT_LINE = /^\s*(?:([a-zA-Z_][a-zA-Z0-9_]*)\s+)?"([^"]+)"\s*$/;
 const FUNC_PATTERN = /((?:\/\/[^\n]*\n)*)\s*func\s+(?:\([^)]*\)\s+)?([A-Z][A-Za-z0-9_]*)\s*\(/g;
 const TYPE_PATTERN = /((?:\/\/[^\n]*\n)*)\s*type\s+([A-Z][A-Za-z0-9_]*)\s+(struct|interface|[^\s{]+)/g;
 const CONST_VAR_PATTERN = /((?:\/\/[^\n]*\n)*)\s*(?:const|var)\s+([A-Z][A-Za-z0-9_]*)\s+/g;
+// Grouped const/var blocks: const ( ... ) or var ( ... )
+const CONST_VAR_BLOCK_START = /(?:const|var)\s*\(\s*/g;
+// Constants/vars inside blocks: Name Type = value (with optional preceding comment)
+const CONST_VAR_BLOCK_ENTRY = /((?:\/\/[^\n]*\n)*)\s*([A-Z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
 
 // Standard library packages (partial list - major ones)
 const GO_STDLIB_PACKAGES = new Set([
@@ -182,15 +186,42 @@ function resolveGoImport(
  * Import paths like "rosetta/models" import a package, and Go imports 
  * the package as a whole - you access symbols via packageName.Symbol.
  * 
- * Since Go doesn't have selective imports (import { specific } from),
- * we return an empty array to indicate whole-package import.
+ * This function scans the file content for `packageName.Symbol` usage patterns
+ * to determine which specific symbols are actually used from the imported package.
+ * 
+ * @param importPath - The Go import path (e.g., "rosetta/models")
+ * @param alias - Optional alias used for the import (e.g., "m" in `import m "rosetta/models"`)
+ * @param content - The full source file content to scan for symbol usage
+ * @returns Array of symbol names actually used from the package
  */
-function extractImportedSymbols(_importPath: string, _alias: string | undefined): string[] {
-  // Go imports entire packages, not individual symbols
-  // If there's an alias, the code uses alias.Symbol
-  // If no alias, the code uses packageName.Symbol
-  // Either way, we can't determine which specific symbols are used from the import alone
-  return [];
+function extractImportedSymbols(importPath: string, alias: string | undefined, content: string): string[] {
+  // Determine the package accessor name:
+  // - If aliased: use the alias (e.g., `m.Record`)
+  // - Otherwise: use the last segment of the import path (e.g., `models.Record`)
+  const packageName = alias || importPath.split("/").pop() || "";
+  
+  if (!packageName) {
+    return [];
+  }
+  
+  // Scan for packageName.Symbol patterns
+  // Go exported symbols start with uppercase letters
+  const usagePattern = new RegExp(`\\b${escapeRegExp(packageName)}\\.([A-Z][a-zA-Z0-9_]*)`, "g");
+  const symbols = new Set<string>();
+  
+  let match: RegExpExecArray | null;
+  while ((match = usagePattern.exec(content)) !== null) {
+    symbols.add(match[1]);
+  }
+  
+  return Array.from(symbols).sort();
+}
+
+/**
+ * Escapes special regex characters in a string.
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export const goAdapter: LanguageAdapter = {
@@ -266,7 +297,7 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   }
   TYPE_PATTERN.lastIndex = 0;
   
-  // Extract constants and variables
+  // Extract constants and variables (standalone)
   while ((match = CONST_VAR_PATTERN.exec(content)) !== null) {
     const docComment = match[1]?.trim();
     const name = match[2];
@@ -281,6 +312,39 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     });
   }
   CONST_VAR_PATTERN.lastIndex = 0;
+  
+  // Extract constants and variables from grouped blocks: const ( ... ) or var ( ... )
+  let blockMatch: RegExpExecArray | null;
+  while ((blockMatch = CONST_VAR_BLOCK_START.exec(content)) !== null) {
+    const blockStartIndex = blockMatch.index + blockMatch[0].length;
+    const blockEndIndex = content.indexOf(")", blockStartIndex);
+    if (blockEndIndex === -1) continue;
+    
+    const blockContent = content.slice(blockStartIndex, blockEndIndex);
+    // Offset for computing positions within the block
+    const blockOffset = blockStartIndex;
+    
+    // Reset the entry pattern for each block
+    CONST_VAR_BLOCK_ENTRY.lastIndex = 0;
+    let entryMatch: RegExpExecArray | null;
+    while ((entryMatch = CONST_VAR_BLOCK_ENTRY.exec(blockContent)) !== null) {
+      const docComment = entryMatch[1]?.trim();
+      const name = entryMatch[2];
+      // Check if this name was already extracted (avoid duplicates)
+      if (results.some(r => r.name === name)) continue;
+      
+      const declarationIndex = blockOffset + entryMatch.index + (entryMatch[1]?.length ?? 0);
+      const { line, character } = computePosition(content, declarationIndex);
+      
+      results.push({
+        name,
+        kind: "constant",
+        location: { line, character },
+        documentation: parseGoDoc(docComment)
+      });
+    }
+  }
+  CONST_VAR_BLOCK_START.lastIndex = 0;
   
   // Sort by location
   results.sort((a, b) => {
@@ -338,7 +402,7 @@ function extractDependencies(
     .map(([importPath, { alias }]) => ({
       specifier: importPath,
       resolvedPath: resolveGoImport(importPath, moduleName, moduleRoot, workspaceRoot),
-      symbols: extractImportedSymbols(importPath, alias),
+      symbols: extractImportedSymbols(importPath, alias, content),
       kind: "import" as const
     }));
 }
