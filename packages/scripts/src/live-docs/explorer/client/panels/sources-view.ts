@@ -45,7 +45,10 @@ export interface SourcesViewConfig {
   staticDocs: StaticDocsMap;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   nodesById: Map<string, ExplorerNodePayload>;
+  /** Navigate to node in Local Map view (for health warnings) */
   onNavigateToNode: NavigateToNodeCallback;
+  /** Focus node in detail panel without navigating away (for islands) */
+  onFocusNode?: NavigateToNodeCallback;
   onDownload?: DownloadCallback;
   bundledDocs?: BundledDocsData;
   onViewBundledDoc?: ViewBundledDocCallback;
@@ -54,6 +57,9 @@ export interface SourcesViewConfig {
 /** Thresholds for health warnings */
 const HIGH_FANOUT_THRESHOLD = 50;
 const HIGH_FANIN_THRESHOLD = 30;
+
+/** Maximum islands to display before truncating */
+const MAX_ISLAND_DISPLAY = 20;
 
 /**
  * Escape HTML special characters
@@ -102,10 +108,69 @@ function renderHealthWarnings(
   });
 
   if (warnings.length === 0) {
-    return '<div class="sources-empty">✅ No high fan-out or fan-in nodes detected. Graph looks healthy!</div>';
+    return '<div class="sources-empty">No high fan-out or fan-in nodes detected.</div>';
   }
 
   return `<ul class="sources-warnings">${warnings.join("")}</ul>`;
+}
+
+/**
+ * Render warnings for disconnected "island" nodes (no dependencies and no dependents).
+ */
+function renderIslandWarnings(
+  islands: ExplorerNodePayload[]
+): string {
+  if (islands.length === 0) {
+    return '<div class="sources-empty sources-positive">No disconnected nodes detected. All nodes are connected!</div>';
+  }
+
+  // Group islands by directory prefix for readability
+  const byDirectory = new Map<string, ExplorerNodePayload[]>();
+  for (const node of islands) {
+    const parts = node.id.split("/");
+    const dir = parts.length > 1 ? parts.slice(0, -1).join("/") : "(root)";
+    if (!byDirectory.has(dir)) {
+      byDirectory.set(dir, []);
+    }
+    byDirectory.get(dir)!.push(node);
+  }
+
+  // Sort directories alphabetically
+  const sortedDirs = [...byDirectory.keys()].sort();
+
+  // Build display list with truncation
+  const items: string[] = [];
+  let displayedCount = 0;
+
+  for (const dir of sortedDirs) {
+    if (displayedCount >= MAX_ISLAND_DISPLAY) break;
+    
+    const nodes = byDirectory.get(dir)!.sort((a, b) => a.name.localeCompare(b.name));
+    for (const node of nodes) {
+      if (displayedCount >= MAX_ISLAND_DISPLAY) break;
+      
+      items.push(`
+        <li>
+          <span class="warning-icon">⊘</span>
+          <span class="warning-text">
+            <span class="warning-node island-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
+            <span class="island-path">${escapeHtml(dir)}</span>
+          </span>
+        </li>
+      `);
+      displayedCount++;
+    }
+  }
+
+  const remaining = islands.length - displayedCount;
+  const suffix = remaining > 0 
+    ? `<li class="island-truncated">...and ${remaining} more disconnected node(s)</li>` 
+    : "";
+
+  return `
+    <ul class="sources-warnings sources-islands">${items.join("")}${suffix}</ul>
+    <p class="sources-note">Disconnected nodes may indicate missing adapter detection, stale files, or legitimately standalone utilities.</p>
+  `;
 }
 
 /**
@@ -179,7 +244,7 @@ function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): strin
  * Render the Sources view panel showing graph statistics and health information.
  */
 export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onDownload, bundledDocs, onViewBundledDoc } = config;
+  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onFocusNode, onDownload, bundledDocs, onViewBundledDoc } = config;
 
   const container = requireElement<HTMLDivElement>("sources-container");
 
@@ -213,6 +278,15 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     .filter(node => (inboundCounts.get(node.id) ?? 0) >= HIGH_FANIN_THRESHOLD)
     .sort((a, b) => (inboundCounts.get(b.id) ?? 0) - (inboundCounts.get(a.id) ?? 0))
     .slice(0, 5);
+
+  // Island nodes (no outbound and no inbound links)
+  const islandNodes = graphData.nodes
+    .filter(node => {
+      const outCount = outboundCounts.get(node.id) ?? 0;
+      const inCount = inboundCounts.get(node.id) ?? 0;
+      return outCount === 0 && inCount === 0;
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
 
   // Determine data source
   const isStaticMode = !!staticDocs || document.getElementById("explorer-data")?.textContent;
@@ -266,6 +340,11 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     <div class="sources-panel">
       <h2><span class="panel-icon">⚠️</span> Graph Health Warnings</h2>
       ${renderHealthWarnings(highFanoutNodes, highFaninNodes, outboundCounts, inboundCounts)}
+    </div>
+
+    <div class="sources-panel">
+      <h2><span class="panel-icon">⊘</span> Disconnected Nodes (${islandNodes.length})</h2>
+      ${renderIslandWarnings(islandNodes)}
     </div>
 
     ${renderBundledDocsPanel(bundledDocs)}
@@ -327,12 +406,23 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     </div>
   `;
 
-  // Attach click handlers for warning nodes
-  container.querySelectorAll<HTMLElement>(".warning-node").forEach(el => {
+  // Attach click handlers for warning nodes (navigate to Local Map)
+  container.querySelectorAll<HTMLElement>(".warning-node:not(.island-node)").forEach(el => {
     el.addEventListener("click", () => {
       const nodeId = el.dataset.nodeId;
       if (nodeId) {
         onNavigateToNode(nodeId);
+      }
+    });
+  });
+
+  // Attach click handlers for island nodes (focus in detail panel without navigating)
+  const focusCallback = onFocusNode ?? onNavigateToNode;
+  container.querySelectorAll<HTMLElement>(".island-node").forEach(el => {
+    el.addEventListener("click", () => {
+      const nodeId = el.dataset.nodeId;
+      if (nodeId) {
+        focusCallback(nodeId);
       }
     });
   });

@@ -142,6 +142,34 @@
   border-radius: 8px;
 }
 
+.sources-empty.sources-positive {
+  background: rgba(0, 200, 150, 0.08);
+  border-color: rgba(0, 200, 150, 0.25);
+  color: var(--accent);
+}
+
+/* Island/disconnected node warnings */
+.sources-islands li {
+  background: rgba(150, 150, 180, 0.08);
+  border-color: rgba(150, 150, 180, 0.2);
+}
+
+.sources-islands .island-path {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-family: "Fira Code", "Consolas", monospace;
+}
+
+.sources-islands .island-truncated {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 8px 14px;
+}
+
 /* Guidance section */
 .sources-guidance {
   font-size: 13px;

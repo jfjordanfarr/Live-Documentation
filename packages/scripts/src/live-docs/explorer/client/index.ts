@@ -1280,6 +1280,15 @@ function startExplorer(
           void selectNode(node);
         }
       },
+      onFocusNode: (nodeId: string) => {
+        // Focus node in detail panel without navigating away from Knowledge Sources
+        const node = nodesById.get(nodeId);
+        if (node) {
+          updateUrlState(state.view, node.id);
+          schedulePersistNav();
+          void selectNode(node);
+        }
+      },
       onViewBundledDoc: (docPath: string) => {
         void showBundledDocInDetailPanel(docPath);
       },

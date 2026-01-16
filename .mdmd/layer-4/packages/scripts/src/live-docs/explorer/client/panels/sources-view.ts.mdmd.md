@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-sources-view-ts
-- Generated At: 2026-01-09T20:56:38.565Z
+- Generated At: 2026-01-16T18:02:35.373Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Renders the Knowledge Sources panel showing graph health warnings and data sourc
 Extracted from client/index.ts during Dev Day 50 (12/19). The `renderSourcesView()` function populates the sidebar with graph statistics, while `renderHealthWarnings()` surfaces actionable issues.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-09T20:56:38.565Z","inputHash":"f89ea52242e6f95e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T18:02:35.373Z","inputHash":"ccad7769a9eef661"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticDocsMap` {#symbol-staticdocsmap}
@@ -77,7 +77,7 @@ Sources view configuration
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L181)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts#L246)
 - Parameters: `config`: [`SourcesViewConfig`](./index.ts.mdmd.md#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary
