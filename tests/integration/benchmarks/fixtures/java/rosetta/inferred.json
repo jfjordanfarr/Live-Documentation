@@ -40,6 +40,16 @@
     "relation": "uses"
   },
   {
+    "source": "src/com/rosetta/helpers/HelpersTest.java",
+    "target": "src/com/rosetta/helpers/Helpers.java",
+    "relation": "imports"
+  },
+  {
+    "source": "src/com/rosetta/models/ModelFactory.java",
+    "target": "src/com/rosetta/models/Record.java",
+    "relation": "uses"
+  },
+  {
     "source": "src/com/rosetta/models/ModelFactory.java",
     "target": "src/com/rosetta/types/ProcessorConfig.java",
     "relation": "uses"
@@ -73,5 +83,10 @@
     "source": "src/com/rosetta/processor/ProcessorTest.java",
     "target": "src/com/rosetta/models/Report.java",
     "relation": "uses"
+  },
+  {
+    "source": "src/com/rosetta/processor/ProcessorTest.java",
+    "target": "src/com/rosetta/processor/Processor.java",
+    "relation": "imports"
   }
 ]

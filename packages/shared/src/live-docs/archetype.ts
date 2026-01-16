@@ -48,9 +48,25 @@ export function resolveArchetype(
   }
 
   // Check for test files FIRST - these always take precedence
-  // Matches: *.test.ts, *.spec.ts, *.test.js, etc.
+  // Polyglot test file patterns:
+  //   *.test.ts, *.spec.ts     (TypeScript/JavaScript)
+  //   *_test.go, *_test.rs     (Go, Rust)
+  //   test_*.py, test_*.c      (Python, C)
+  //   *Test.java, *Tests.cs    (Java, C#)
+  //   *_spec.rb                (Ruby)
   const basename = path.basename(sourcePath);
-  if (/\.(test|spec)\.[^.]+$/.test(basename)) {
+  if (
+    /\.(test|spec)\.[^.]+$/.test(basename) ||   // foo.test.ts, foo.spec.js
+    /_test\.[^.]+$/.test(basename) ||            // foo_test.go, foo_test.rs
+    /^test_[^.]+\.[^.]+$/.test(basename) ||      // test_foo.py, test_foo.c
+    /Tests?\.[^.]+$/.test(basename) ||           // FooTest.java, FooTests.cs
+    /_spec\.[^.]+$/.test(basename)               // foo_spec.rb
+  ) {
+    return "test";
+  }
+
+  // Check if file is in a spec/ directory (Ruby convention)
+  if (/\bspec\b/.test(sourcePath) && basename.endsWith(".rb")) {
     return "test";
   }
 

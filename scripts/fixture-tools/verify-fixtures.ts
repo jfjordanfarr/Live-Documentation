@@ -99,11 +99,8 @@ function toContext(repoRoot: string, definition: FixtureDefinition): FixtureCont
 async function verifyFixture(repoRoot: string, context: FixtureContext): Promise<void> {
   await ensureDirectory(context.absolutePath);
 
-  // NOTE: graph:snapshot and graph:audit were removed in the stateless simplification.
-  // Fixture verification now only runs SlopCop suites. Live Docs generation/lint
-  // should be added here once stable.
-  console.log("→ graph:snapshot (skipped - stateless mode)");
-  console.log("→ graph:audit (skipped - stateless mode)");
+  // Fixture verification runs SlopCop suites. Live Docs generation/lint
+  // is handled by the main pipeline, not per-fixture verification.
   await runSlopcopSuites(repoRoot, context);
 }
 

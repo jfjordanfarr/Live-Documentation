@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
+- Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs
-- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-processor-processortests-cs
-- Generated At: 2026-01-16T19:17:00.057Z
+- Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-processor-processortests-cs
+- Generated At: 2026-01-16T21:21:09.666Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ xUnit tests for the C# Rosetta Processor class. Part of the polyglot Rosetta Sto
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:17:00.057Z","inputHash":"9c134d64c084cd69"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.666Z","inputHash":"9c134d64c084cd69"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTests` {#symbol-processortests}
@@ -55,3 +55,13 @@ ProcessorTests.cs should automatically back Processor.cs.
 - `Rosetta.Processor`
 - `Xunit`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

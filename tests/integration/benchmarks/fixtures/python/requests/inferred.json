@@ -41,7 +41,17 @@
   },
   {
     "source": "src/requests/_internal_utils.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/_internal_utils.py",
     "target": "src/requests/compat.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/adapters.py",
+    "target": "src/requests/__init__.py",
     "relation": "imports"
   },
   {
@@ -86,6 +96,11 @@
   },
   {
     "source": "src/requests/auth.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/auth.py",
     "target": "src/requests/_internal_utils.py",
     "relation": "imports"
   },
@@ -105,6 +120,26 @@
     "relation": "imports"
   },
   {
+    "source": "src/requests/certs.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/compat.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/compat.py",
+    "target": "src/requests/cookies.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/cookies.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
     "source": "src/requests/cookies.py",
     "target": "src/requests/_internal_utils.py",
     "relation": "imports"
@@ -116,12 +151,27 @@
   },
   {
     "source": "src/requests/exceptions.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/exceptions.py",
     "target": "src/requests/compat.py",
     "relation": "imports"
   },
   {
     "source": "src/requests/help.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/help.py",
     "target": "src/requests/__version__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/models.py",
+    "target": "src/requests/__init__.py",
     "relation": "imports"
   },
   {
@@ -171,7 +221,17 @@
   },
   {
     "source": "src/requests/packages.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/packages.py",
     "target": "src/requests/compat.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/sessions.py",
+    "target": "src/requests/__init__.py",
     "relation": "imports"
   },
   {
@@ -231,12 +291,27 @@
   },
   {
     "source": "src/requests/status_codes.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/status_codes.py",
     "target": "src/requests/structures.py",
     "relation": "imports"
   },
   {
     "source": "src/requests/structures.py",
+    "target": "src/requests/__init__.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/structures.py",
     "target": "src/requests/compat.py",
+    "relation": "imports"
+  },
+  {
+    "source": "src/requests/utils.py",
+    "target": "src/requests/__init__.py",
     "relation": "imports"
   },
   {

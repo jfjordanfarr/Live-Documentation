@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
+- Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/test_helpers.py
-- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-test-helpers-py
-- Generated At: 2026-01-16T19:17:00.118Z
+- Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-python-rosetta-src-test-helpers-py
+- Generated At: 2026-01-16T21:21:09.724Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta helpers module (format_value, sum_values, av
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:17:00.118Z","inputHash":"2afe8586e64e01f8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.724Z","inputHash":"2afe8586e64e01f8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestFormatValue` {#symbol-testformatvalue}
@@ -58,3 +58,13 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - [`helpers.format_value`](./helpers.py.mdmd.md#symbol-format_value)
 - [`helpers.sum_values`](./helpers.py.mdmd.md#symbol-sum_values)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

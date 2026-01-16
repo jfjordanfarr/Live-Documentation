@@ -20,61 +20,6 @@
     "relation": "includes"
   },
   {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/aix.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/bsd.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/darwin.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/linux.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/os390.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/posix.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/sunos.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/unix.h",
-    "target": "include/uv/threadpool.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/win.h",
-    "target": "include/uv/threadpool.h",
-    "relation": "includes"
-  },
-  {
-    "source": "include/uv/win.h",
-    "target": "include/uv/tree.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/fs-poll.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
     "source": "src/fs-poll.c",
     "target": "src/unix/internal.h",
     "relation": "includes"
@@ -96,11 +41,6 @@
   },
   {
     "source": "src/idna.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/idna.c",
     "target": "src/idna.h",
     "relation": "includes"
   },
@@ -111,17 +51,7 @@
   },
   {
     "source": "src/inet.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/inet.c",
     "target": "src/uv-common.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/random.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -145,18 +75,8 @@
     "relation": "includes"
   },
   {
-    "source": "src/strscpy.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
     "source": "src/strtok.c",
     "target": "src/strtok.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/thread-common.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -172,11 +92,6 @@
   {
     "source": "src/threadpool.c",
     "target": "src/uv-common.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/timer.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -191,17 +106,7 @@
   },
   {
     "source": "src/unix/aix-common.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/aix-common.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/aix.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -211,17 +116,7 @@
   },
   {
     "source": "src/unix/async.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/async.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/bsd-ifaddrs.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -231,22 +126,7 @@
   },
   {
     "source": "src/unix/bsd-proctitle.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/bsd-proctitle.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/core.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/core.c",
-    "target": "src/strtok.h",
     "relation": "includes"
   },
   {
@@ -256,17 +136,7 @@
   },
   {
     "source": "src/unix/cygwin.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/cygwin.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/darwin-proctitle.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -281,17 +151,7 @@
   },
   {
     "source": "src/unix/darwin.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/darwin.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/dl.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -301,27 +161,12 @@
   },
   {
     "source": "src/unix/freebsd.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/freebsd.c",
     "target": "src/unix/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/unix/fs.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/fs.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/fsevents.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -336,22 +181,7 @@
   },
   {
     "source": "src/unix/getaddrinfo.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/getaddrinfo.c",
-    "target": "src/idna.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/getaddrinfo.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/getnameinfo.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -361,27 +191,12 @@
   },
   {
     "source": "src/unix/haiku.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/haiku.c",
     "target": "src/unix/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/unix/hurd.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/hurd.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/ibmi.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -400,23 +215,8 @@
     "relation": "includes"
   },
   {
-    "source": "src/unix/internal.h",
-    "target": "src/uv-common.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/kqueue.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
     "source": "src/unix/kqueue.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/linux.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -426,27 +226,7 @@
   },
   {
     "source": "src/unix/loop-watcher.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/loop-watcher.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/loop.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/loop.c",
-    "target": "include/uv/tree.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/loop.c",
-    "target": "src/heap-inl.h",
     "relation": "includes"
   },
   {
@@ -456,17 +236,7 @@
   },
   {
     "source": "src/unix/netbsd.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/netbsd.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/no-fsevents.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -476,27 +246,12 @@
   },
   {
     "source": "src/unix/no-proctitle.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/no-proctitle.c",
     "target": "src/unix/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/unix/openbsd.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/openbsd.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/os390-proctitle.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -511,17 +266,7 @@
   },
   {
     "source": "src/unix/os390-syscalls.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/os390-syscalls.h",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/os390.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -531,17 +276,7 @@
   },
   {
     "source": "src/unix/pipe.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/pipe.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/poll.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -551,17 +286,7 @@
   },
   {
     "source": "src/unix/posix-hrtime.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/posix-hrtime.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/posix-poll.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -571,17 +296,7 @@
   },
   {
     "source": "src/unix/process.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/process.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/procfs-exepath.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -591,17 +306,7 @@
   },
   {
     "source": "src/unix/proctitle.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/proctitle.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/qnx.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -611,17 +316,7 @@
   },
   {
     "source": "src/unix/random-devurandom.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/random-devurandom.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/random-getentropy.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -631,17 +326,7 @@
   },
   {
     "source": "src/unix/random-getrandom.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/random-getrandom.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/random-sysctl-linux.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -651,17 +336,7 @@
   },
   {
     "source": "src/unix/signal.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/signal.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/stream.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -671,17 +346,7 @@
   },
   {
     "source": "src/unix/sunos.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/sunos.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/sysinfo-loadavg.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -691,17 +356,7 @@
   },
   {
     "source": "src/unix/sysinfo-memory.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/sysinfo-memory.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/tcp.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -711,17 +366,7 @@
   },
   {
     "source": "src/unix/thread.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/thread.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/tty.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -731,32 +376,12 @@
   },
   {
     "source": "src/unix/udp.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/unix/udp.c",
     "target": "src/unix/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/uv-common.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
     "source": "src/uv-common.c",
     "target": "src/uv-common.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/uv-common.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/uv-common.h",
-    "target": "include/uv/tree.h",
     "relation": "includes"
   },
   {
@@ -770,21 +395,6 @@
     "relation": "includes"
   },
   {
-    "source": "src/uv-data-getter-setters.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/version.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/async.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
     "source": "src/win/async.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
@@ -801,21 +411,6 @@
   },
   {
     "source": "src/win/core.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/core.c",
-    "target": "src/heap-inl.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/core.c",
-    "target": "src/queue.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/core.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
@@ -827,11 +422,6 @@
   {
     "source": "src/win/core.c",
     "target": "src/win/req-inl.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/detect-wakeup.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -846,27 +436,12 @@
   },
   {
     "source": "src/win/dl.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/dl.c",
     "target": "src/win/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/win/error.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/error.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/fs-event.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -886,17 +461,7 @@
   },
   {
     "source": "src/win/fs-fd-hash-inl.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/fs-fd-hash-inl.h",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/fs.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -921,27 +486,12 @@
   },
   {
     "source": "src/win/getaddrinfo.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/getaddrinfo.c",
-    "target": "src/idna.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/getaddrinfo.c",
     "target": "src/win/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/win/getaddrinfo.c",
     "target": "src/win/req-inl.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/getnameinfo.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -956,17 +506,7 @@
   },
   {
     "source": "src/win/handle-inl.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/handle-inl.h",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/handle.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -977,16 +517,6 @@
   {
     "source": "src/win/handle.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/internal.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/internal.h",
-    "target": "include/uv/tree.h",
     "relation": "includes"
   },
   {
@@ -1006,27 +536,12 @@
   },
   {
     "source": "src/win/loop-watcher.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/loop-watcher.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
   {
     "source": "src/win/loop-watcher.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/pipe.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/pipe.c",
-    "target": "src/uv-common.h",
     "relation": "includes"
   },
   {
@@ -1051,11 +566,6 @@
   },
   {
     "source": "src/win/poll.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/poll.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
@@ -1071,22 +581,12 @@
   },
   {
     "source": "src/win/process-stdio.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/process-stdio.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
   {
     "source": "src/win/process-stdio.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/process.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -1106,17 +606,7 @@
   },
   {
     "source": "src/win/req-inl.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/req-inl.h",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/signal.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -1136,11 +626,6 @@
   },
   {
     "source": "src/win/stream-inl.h",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/stream-inl.h",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
@@ -1156,11 +641,6 @@
   },
   {
     "source": "src/win/stream.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/stream.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
@@ -1172,11 +652,6 @@
   {
     "source": "src/win/stream.c",
     "target": "src/win/req-inl.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/tcp.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -1201,17 +676,7 @@
   },
   {
     "source": "src/win/thread.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/thread.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/tty.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {
@@ -1236,11 +701,6 @@
   },
   {
     "source": "src/win/udp.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/udp.c",
     "target": "src/win/handle-inl.h",
     "relation": "includes"
   },
@@ -1261,27 +721,12 @@
   },
   {
     "source": "src/win/util.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/util.c",
     "target": "src/win/internal.h",
     "relation": "includes"
   },
   {
     "source": "src/win/winapi.c",
-    "target": "include/uv.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/winapi.c",
     "target": "src/win/internal.h",
-    "relation": "includes"
-  },
-  {
-    "source": "src/win/winsock.c",
-    "target": "include/uv.h",
     "relation": "includes"
   },
   {

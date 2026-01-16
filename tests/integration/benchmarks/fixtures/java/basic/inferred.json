@@ -1,8 +1,32 @@
 [
-  { "source": "src/com/example/app/App.java", "target": "src/com/example/data/Reader.java", "relation": "imports" },
-  { "source": "src/com/example/app/App.java", "target": "src/com/example/format/ReportWriter.java", "relation": "imports" },
-  { "source": "src/com/example/app/App.java", "target": "src/com/example/model/Record.java", "relation": "uses" },
-  { "source": "src/com/example/data/Reader.java", "target": "src/com/example/model/Record.java", "relation": "uses" },
-  { "source": "src/com/example/format/ReportWriter.java", "target": "src/com/example/data/Catalog.java", "relation": "imports" },
-  { "source": "src/com/example/format/ReportWriter.java", "target": "src/com/example/model/Record.java", "relation": "uses" }
+  {
+    "source": "src/com/example/app/App.java",
+    "target": "src/com/example/data/Reader.java",
+    "relation": "imports"
+  },
+  {
+    "source": "src/com/example/app/App.java",
+    "target": "src/com/example/format/ReportWriter.java",
+    "relation": "imports"
+  },
+  {
+    "source": "src/com/example/app/App.java",
+    "target": "src/com/example/model/Record.java",
+    "relation": "uses"
+  },
+  {
+    "source": "src/com/example/data/Reader.java",
+    "target": "src/com/example/model/Record.java",
+    "relation": "uses"
+  },
+  {
+    "source": "src/com/example/format/ReportWriter.java",
+    "target": "src/com/example/data/Catalog.java",
+    "relation": "imports"
+  },
+  {
+    "source": "src/com/example/format/ReportWriter.java",
+    "target": "src/com/example/model/Record.java",
+    "relation": "uses"
+  }
 ]

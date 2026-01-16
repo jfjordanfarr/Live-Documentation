@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-javafixtureoracle-ts
-- Generated At: 2025-12-07T21:41:19.537Z
+- Generated At: 2026-01-16T21:46:15.112Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Analyzes Java fixtures to emit import and inheritance edges, giving our polyglot
 - Verified within the Nov 16 unit sweep; rerun `npm run test:unit -- javaFixtureOracle` after parser or override changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.537Z","inputHash":"40e991d7b0eceffb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:46:15.112Z","inputHash":"543ee2f06f6cb023"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `JavaOracleEdgeRelation` {#symbol-javaoracleedgerelation}
@@ -63,18 +63,18 @@ Analyzes Java fixtures to emit import and inheritance edges, giving our polyglot
 
 #### `serializeJavaOracleEdges` {#symbol-serializejavaoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L86)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L93)
 - Parameters: `edges`: [`JavaOracleEdge`](#symbol-javaoracleedge)[]
 
 #### `partitionJavaOracleSegments` {#symbol-partitionjavaoraclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L91)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L98)
 - Returns: [`JavaOracleSegmentPartition`](#symbol-javaoraclesegmentpartition)
 - Parameters: `edges`: [`JavaOracleEdge`](#symbol-javaoracleedge)[]; `overrides`: [`JavaOracleOverrideConfig`](#symbol-javaoracleoverrideconfig)
 
 #### `mergeJavaOracleEdges` {#symbol-mergejavaoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L127)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts#L134)
 - Returns: [`JavaOracleMergeResult`](#symbol-javaoraclemergeresult)
 - Parameters: `edges`: [`JavaOracleEdge`](#symbol-javaoracleedge)[]; `overrides`: [`JavaOracleOverrideConfig`](#symbol-javaoracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

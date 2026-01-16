@@ -1,7 +1,27 @@
 [
-  { "source": "lib/formatter.rb", "target": "lib/templates.rb", "relation": "requires" },
-  { "source": "lib/main.rb", "target": "lib/data_store.rb", "relation": "requires" },
-  { "source": "lib/main.rb", "target": "lib/reporter.rb", "relation": "requires" },
-  { "source": "lib/reporter.rb", "target": "lib/data_store.rb", "relation": "requires" },
-  { "source": "lib/reporter.rb", "target": "lib/formatter.rb", "relation": "requires" }
+  {
+    "source": "lib/formatter.rb",
+    "target": "lib/templates.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/main.rb",
+    "target": "lib/data_store.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/main.rb",
+    "target": "lib/reporter.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/reporter.rb",
+    "target": "lib/data_store.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/reporter.rb",
+    "target": "lib/formatter.rb",
+    "relation": "requires"
+  }
 ]

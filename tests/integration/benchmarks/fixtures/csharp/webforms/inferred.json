@@ -20,8 +20,8 @@
     "relation": "uses"
   },
   {
-    "source": "src/Pages/Default.aspx.cs",
-    "target": "src/Pages/Default.aspx.designer.cs",
+    "source": "src/Pages/Default.aspx.designer.cs",
+    "target": "src/Pages/Default.aspx.cs",
     "relation": "uses"
   },
   {

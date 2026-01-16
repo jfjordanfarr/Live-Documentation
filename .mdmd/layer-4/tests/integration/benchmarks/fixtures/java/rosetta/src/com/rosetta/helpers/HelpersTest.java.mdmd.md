@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: implementation
+- Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/helpers/HelpersTest.java
-- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-helpers-helperstest-java
-- Generated At: 2026-01-16T19:17:00.091Z
+- Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-helpers-helperstest-java
+- Generated At: 2026-01-16T21:21:09.699Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ JUnit 5 tests for the Java Rosetta Helpers class (format, sum, average utilities
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses `@Nested` classes for `FormatTests`, `SumTests`, and `AverageTests`. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:17:00.091Z","inputHash":"b23ea1a4bffa0ad4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.699Z","inputHash":"b23ea1a4bffa0ad4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HelpersTest` {#symbol-helperstest}
@@ -37,3 +37,13 @@ HelpersTest.java should automatically back Helpers.java.
 - `org.junit.jupiter.api.Nested` - `Nested`
 - `org.junit.jupiter.api.Test` - `Test`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

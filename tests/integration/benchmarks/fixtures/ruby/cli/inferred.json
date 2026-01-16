@@ -1,9 +1,37 @@
 [
-  { "source": "lib/cli.rb", "target": "lib/commands/report.rb", "relation": "requires" },
-  { "source": "lib/cli.rb", "target": "lib/support/logger.rb", "relation": "requires" },
-  { "source": "lib/commands/report.rb", "target": "lib/services/analyzer.rb", "relation": "requires" },
-  { "source": "lib/commands/report.rb", "target": "lib/services/data_loader.rb", "relation": "requires" },
-  { "source": "lib/services/analyzer.rb", "target": "lib/services/cache.rb", "relation": "requires" },
-  { "source": "lib/services/analyzer.rb", "target": "lib/support/logger.rb", "relation": "requires" },
-  { "source": "lib/services/data_loader.rb", "target": "lib/support/logger.rb", "relation": "requires" }
+  {
+    "source": "lib/cli.rb",
+    "target": "lib/commands/report.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/cli.rb",
+    "target": "lib/support/logger.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/commands/report.rb",
+    "target": "lib/services/analyzer.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/commands/report.rb",
+    "target": "lib/services/data_loader.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/services/analyzer.rb",
+    "target": "lib/services/cache.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/services/analyzer.rb",
+    "target": "lib/support/logger.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/services/data_loader.rb",
+    "target": "lib/support/logger.rb",
+    "relation": "requires"
+  }
 ]

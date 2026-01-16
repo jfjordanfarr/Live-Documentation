@@ -68,6 +68,7 @@ export function generateJavaFixtureGraph(options: JavaFixtureOracleOptions): Jav
   const fixtureRoot = path.resolve(options.fixtureRoot);
   const fileMap = collectSourceFiles(fixtureRoot, options.include, options.exclude);
   const packageIndex = buildPackageIndex(fileMap, fixtureRoot);
+  const samePackageIndex = buildSamePackageIndex(fileMap, fixtureRoot);
   const edges = new Map<string, JavaOracleEdge>();
 
   for (const [absolutePath, content] of fileMap) {
@@ -76,6 +77,12 @@ export function generateJavaFixtureGraph(options: JavaFixtureOracleOptions): Jav
       content,
       sourceRelativePath: relativePath,
       packageIndex,
+      edges
+    });
+    collectSamePackageEdges({
+      content,
+      sourceRelativePath: relativePath,
+      samePackageIndex,
       edges
     });
   }
@@ -241,6 +248,66 @@ function collectImportEdges(input: {
       relation,
       provenance: "import-statement"
     });
+  }
+}
+
+interface SamePackageEntry {
+  className: string;
+  relativePath: string;
+  packageName: string;
+}
+
+function buildSamePackageIndex(
+  fileMap: Map<string, string>,
+  fixtureRoot: string
+): Map<string, SamePackageEntry[]> {
+  const index = new Map<string, SamePackageEntry[]>();
+  for (const [absolutePath, content] of fileMap) {
+    const relativePath = toFixtureRelative(absolutePath, fixtureRoot);
+    const packageName = inferPackageName(content);
+    if (!packageName) continue;
+    const className = inferClassName(relativePath);
+    const entries = index.get(packageName) ?? [];
+    entries.push({ className, relativePath, packageName });
+    index.set(packageName, entries);
+  }
+  return index;
+}
+
+function collectSamePackageEdges(input: {
+  content: string;
+  sourceRelativePath: string;
+  samePackageIndex: Map<string, SamePackageEntry[]>;
+  edges: Map<string, JavaOracleEdge>;
+}): void {
+  const { content, sourceRelativePath, samePackageIndex, edges } = input;
+  const sourcePackage = inferPackageName(content);
+  if (!sourcePackage) return;
+  
+  const samePackageClasses = samePackageIndex.get(sourcePackage) ?? [];
+  
+  for (const entry of samePackageClasses) {
+    // Skip self-references
+    if (entry.relativePath === sourceRelativePath) continue;
+    
+    // Look for unqualified references to this class name
+    // Match: ClassName. or ClassName:: or new ClassName or extends ClassName
+    const escaped = escapeRegExp(entry.className);
+    const usagePattern = new RegExp(
+      `\\b${escaped}\\s*\\.|\\b${escaped}::|\\bnew\\s+${escaped}\\b|\\bextends\\s+${escaped}\\b|\\bimplements\\s+${escaped}\\b`,
+      "g"
+    );
+    
+    if (usagePattern.test(content)) {
+      const relation = classifyJavaRelation(entry.className, content);
+      addEdge({
+        edges,
+        source: sourceRelativePath,
+        target: entry.relativePath,
+        relation,
+        provenance: "import-statement" // Same-package refs are implicit imports
+      });
+    }
   }
 }
 

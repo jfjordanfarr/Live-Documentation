@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/archetype.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-archetype-ts
-- Generated At: 2026-01-14T15:17:48.761Z
+- Generated At: 2026-01-16T21:22:41.470Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.761Z","inputHash":"69cb6c42c1020292"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:22:41.470Z","inputHash":"15eb155c092d63c6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArchetype` {#symbol-resolvearchetype}
@@ -50,7 +50,7 @@ const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/archetype.ts#L85)
+- Source: [source](../../../../../../packages/shared/src/live-docs/archetype.ts#L101)
 
 ##### `hasMeaningfulAuthoredContent` — Summary
 Checks whether an authored markdown block carries information beyond the default placeholders.
