@@ -1,15 +1,107 @@
 [
-  { "source": "src/helpers.c", "target": "src/helpers.h", "relation": "includes" },
-  { "source": "src/main.c", "target": "src/models.c", "relation": "calls" },
-  { "source": "src/main.c", "target": "src/models.h", "relation": "includes" },
-  { "source": "src/main.c", "target": "src/processor.c", "relation": "calls" },
-  { "source": "src/main.c", "target": "src/processor.h", "relation": "includes" },
-  { "source": "src/models.c", "target": "src/models.h", "relation": "includes" },
-  { "source": "src/models.h", "target": "src/types.h", "relation": "includes" },
-  { "source": "src/processor.c", "target": "src/helpers.c", "relation": "calls" },
-  { "source": "src/processor.c", "target": "src/helpers.h", "relation": "includes" },
-  { "source": "src/processor.c", "target": "src/models.c", "relation": "calls" },
-  { "source": "src/processor.c", "target": "src/processor.h", "relation": "includes" },
-  { "source": "src/processor.h", "target": "src/models.h", "relation": "includes" },
-  { "source": "src/processor.h", "target": "src/types.h", "relation": "includes" }
+  {
+    "source": "src/helpers.c",
+    "target": "src/helpers.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/main.c",
+    "target": "src/models.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/main.c",
+    "target": "src/models.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/main.c",
+    "target": "src/processor.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/main.c",
+    "target": "src/processor.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/models.c",
+    "target": "src/models.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/models.h",
+    "target": "src/types.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/processor.c",
+    "target": "src/helpers.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/processor.c",
+    "target": "src/helpers.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/processor.c",
+    "target": "src/models.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/processor.c",
+    "target": "src/processor.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/processor.h",
+    "target": "src/models.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/processor.h",
+    "target": "src/types.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_helpers.c",
+    "target": "src/helpers.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_pipeline.c",
+    "target": "src/models.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/test_pipeline.c",
+    "target": "src/models.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_pipeline.c",
+    "target": "src/processor.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_pipeline.c",
+    "target": "src/types.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_processor.c",
+    "target": "src/models.c",
+    "relation": "calls"
+  },
+  {
+    "source": "src/test_processor.c",
+    "target": "src/models.h",
+    "relation": "includes"
+  },
+  {
+    "source": "src/test_processor.c",
+    "target": "src/processor.h",
+    "relation": "includes"
+  }
 ]

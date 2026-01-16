@@ -731,8 +731,7 @@
       "inferred": "rust/rosetta/inferred.json",
       "oracle": {
         "kind": "rust",
-        "root": ".",
-        "manualOverrides": "rust/rosetta/oracle.overrides.json"
+        "root": "."
       }
     },
     {
@@ -783,8 +782,7 @@
       "inferred": "go/rosetta/inferred.json",
       "oracle": {
         "kind": "go",
-        "root": ".",
-        "manualOverrides": "go/rosetta/oracle.overrides.json"
+        "root": "."
       }
     }
   ]

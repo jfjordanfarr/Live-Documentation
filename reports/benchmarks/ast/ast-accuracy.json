@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2026-01-15T16:23:09.436Z",
+  "recordedAt": "2026-01-16T20:21:01.260Z",
   "environment": {
     "nodeVersion": "v22.14.0",
     "platform": "win32",
@@ -17,13 +17,13 @@
       "recall": 0.95
     },
     "totals": {
-      "totalEvaluated": 1189,
-      "truePositives": 1183,
+      "totalEvaluated": 1239,
+      "truePositives": 1233,
       "falsePositives": 3,
       "falseNegatives": 3,
-      "precision": 0.9974704890387859,
-      "recall": 0.9974704890387859,
-      "f1Score": 0.9974704890387859
+      "precision": 0.9975728155339806,
+      "recall": 0.9975728155339806,
+      "f1Score": 0.9975728155339806
     },
     "fixtures": [
       {
@@ -5993,7 +5993,7 @@
         "label": "TypeScript Rosetta Stone (cross-language canonical program)",
         "language": "typescript",
         "totals": {
-          "truePositives": 6,
+          "truePositives": 12,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6001,6 +6001,11 @@
           "f1Score": 1
         },
         "truePositives": [
+          {
+            "source": "src/helpers.test.ts",
+            "target": "src/helpers.ts",
+            "relation": "imports"
+          },
           {
             "source": "src/main.ts",
             "target": "src/models.ts",
@@ -6014,6 +6019,31 @@
           {
             "source": "src/models.ts",
             "target": "src/types.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline.test.ts",
+            "target": "src/models.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline.test.ts",
+            "target": "src/processor.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline.test.ts",
+            "target": "src/types.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.test.ts",
+            "target": "src/models.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.test.ts",
+            "target": "src/processor.ts",
             "relation": "imports"
           },
           {
@@ -6040,7 +6070,7 @@
         "label": "Python Rosetta Stone (cross-language canonical program)",
         "language": "python",
         "totals": {
-          "truePositives": 6,
+          "truePositives": 12,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6065,17 +6095,47 @@
           },
           {
             "source": "src/processor.py",
-            "target": "src/models.py",
-            "relation": "imports"
-          },
-          {
-            "source": "src/processor.py",
             "target": "src/core_types.py",
             "relation": "imports"
           },
           {
             "source": "src/processor.py",
             "target": "src/helpers.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/processor.py",
+            "target": "src/models.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_helpers.py",
+            "target": "src/helpers.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_pipeline.py",
+            "target": "src/core_types.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_pipeline.py",
+            "target": "src/models.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_pipeline.py",
+            "target": "src/processor.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_processor.py",
+            "target": "src/models.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/test_processor.py",
+            "target": "src/processor.py",
             "relation": "imports"
           }
         ],
@@ -6087,7 +6147,7 @@
         "label": "Java Rosetta Stone (cross-language canonical program)",
         "language": "java",
         "totals": {
-          "truePositives": 9,
+          "truePositives": 15,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6116,6 +6176,26 @@
             "relation": "imports"
           },
           {
+            "source": "src/com/rosetta/app/PipelineTest.java",
+            "target": "src/com/rosetta/models/Record.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/app/PipelineTest.java",
+            "target": "src/com/rosetta/models/Report.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/app/PipelineTest.java",
+            "target": "src/com/rosetta/processor/Processor.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/app/PipelineTest.java",
+            "target": "src/com/rosetta/types/ProcessorConfig.java",
+            "relation": "uses"
+          },
+          {
             "source": "src/com/rosetta/models/ModelFactory.java",
             "target": "src/com/rosetta/types/ProcessorConfig.java",
             "relation": "uses"
@@ -6139,6 +6219,16 @@
             "source": "src/com/rosetta/processor/Processor.java",
             "target": "src/com/rosetta/types/ProcessorConfig.java",
             "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/processor/ProcessorTest.java",
+            "target": "src/com/rosetta/models/Record.java",
+            "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/processor/ProcessorTest.java",
+            "target": "src/com/rosetta/models/Report.java",
+            "relation": "uses"
           }
         ],
         "falsePositives": [],
@@ -6149,7 +6239,7 @@
         "label": "C# Rosetta Stone (cross-language canonical program)",
         "language": "csharp",
         "totals": {
-          "truePositives": 13,
+          "truePositives": 21,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6176,6 +6266,31 @@
             "source": "src/App/Main.cs",
             "target": "src/Types/Entry.cs",
             "relation": "imports"
+          },
+          {
+            "source": "src/App/PipelineTests.cs",
+            "target": "src/Models/Record.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/App/PipelineTests.cs",
+            "target": "src/Models/Report.cs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/App/PipelineTests.cs",
+            "target": "src/Processor/Processor.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/App/PipelineTests.cs",
+            "target": "src/Types/ProcessorConfig.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Helpers/HelpersTests.cs",
+            "target": "src/Helpers/Helpers.cs",
+            "relation": "uses"
           },
           {
             "source": "src/Models/ModelFactory.cs",
@@ -6221,6 +6336,21 @@
             "source": "src/Processor/Processor.cs",
             "target": "src/Types/ProcessorConfig.cs",
             "relation": "uses"
+          },
+          {
+            "source": "src/Processor/ProcessorTests.cs",
+            "target": "src/Models/Record.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/ProcessorTests.cs",
+            "target": "src/Models/Report.cs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/Processor/ProcessorTests.cs",
+            "target": "src/Processor/Processor.cs",
+            "relation": "uses"
           }
         ],
         "falsePositives": [],
@@ -6231,7 +6361,7 @@
         "label": "Rust Rosetta Stone (cross-language canonical program)",
         "language": "rust",
         "totals": {
-          "truePositives": 6,
+          "truePositives": 12,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6239,6 +6369,11 @@
           "f1Score": 1
         },
         "truePositives": [
+          {
+            "source": "src/helpers_test.rs",
+            "target": "src/helpers.rs",
+            "relation": "imports"
+          },
           {
             "source": "src/main.rs",
             "target": "src/models.rs",
@@ -6253,6 +6388,31 @@
             "source": "src/models.rs",
             "target": "src/types.rs",
             "relation": "uses"
+          },
+          {
+            "source": "src/pipeline_test.rs",
+            "target": "src/models.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline_test.rs",
+            "target": "src/processor.rs",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline_test.rs",
+            "target": "src/types.rs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/processor_test.rs",
+            "target": "src/models.rs",
+            "relation": "uses"
+          },
+          {
+            "source": "src/processor_test.rs",
+            "target": "src/processor.rs",
+            "relation": "imports"
           },
           {
             "source": "src/processor.rs",
@@ -6278,7 +6438,7 @@
         "label": "C Rosetta Stone (cross-language canonical program)",
         "language": "c",
         "totals": {
-          "truePositives": 13,
+          "truePositives": 21,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6350,6 +6510,46 @@
             "source": "src/processor.h",
             "target": "src/types.h",
             "relation": "includes"
+          },
+          {
+            "source": "src/test_helpers.c",
+            "target": "src/helpers.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/test_pipeline.c",
+            "target": "src/models.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/test_pipeline.c",
+            "target": "src/models.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/test_pipeline.c",
+            "target": "src/processor.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/test_pipeline.c",
+            "target": "src/types.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/test_processor.c",
+            "target": "src/models.c",
+            "relation": "calls"
+          },
+          {
+            "source": "src/test_processor.c",
+            "target": "src/models.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/test_processor.c",
+            "target": "src/processor.h",
+            "relation": "includes"
           }
         ],
         "falsePositives": [],
@@ -6360,7 +6560,7 @@
         "label": "Ruby Rosetta Stone (cross-language canonical program)",
         "language": "ruby",
         "totals": {
-          "truePositives": 6,
+          "truePositives": 12,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6397,6 +6597,36 @@
             "source": "lib/processor.rb",
             "target": "lib/types.rb",
             "relation": "requires"
+          },
+          {
+            "source": "spec/helpers_spec.rb",
+            "target": "lib/helpers.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "spec/pipeline_spec.rb",
+            "target": "lib/models.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "spec/pipeline_spec.rb",
+            "target": "lib/processor.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "spec/pipeline_spec.rb",
+            "target": "lib/types.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "spec/processor_spec.rb",
+            "target": "lib/models.rb",
+            "relation": "requires"
+          },
+          {
+            "source": "spec/processor_spec.rb",
+            "target": "lib/processor.rb",
+            "relation": "requires"
           }
         ],
         "falsePositives": [],
@@ -6407,7 +6637,7 @@
         "label": "Go Rosetta Stone (cross-language canonical program)",
         "language": "go",
         "totals": {
-          "truePositives": 6,
+          "truePositives": 10,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6426,8 +6656,28 @@
             "relation": "imports"
           },
           {
+            "source": "src/main/pipeline_test.go",
+            "target": "src/models/models.go",
+            "relation": "uses"
+          },
+          {
+            "source": "src/main/pipeline_test.go",
+            "target": "src/processor/processor.go",
+            "relation": "uses"
+          },
+          {
+            "source": "src/main/pipeline_test.go",
+            "target": "src/types/types.go",
+            "relation": "uses"
+          },
+          {
             "source": "src/models/models.go",
             "target": "src/types/types.go",
+            "relation": "uses"
+          },
+          {
+            "source": "src/processor/processor_test.go",
+            "target": "src/models/models.go",
             "relation": "uses"
           },
           {

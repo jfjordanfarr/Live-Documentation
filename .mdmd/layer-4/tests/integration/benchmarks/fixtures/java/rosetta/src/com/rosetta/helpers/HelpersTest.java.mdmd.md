@@ -1,0 +1,39 @@
+# tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/helpers/HelpersTest.java
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/helpers/HelpersTest.java
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-helpers-helperstest-java
+- Generated At: 2026-01-16T19:17:00.091Z
+
+## Authored
+### Purpose
+JUnit 5 tests for the Java Rosetta Helpers class (format, sum, average utilities).
+
+### Notes
+Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses `@Nested` classes for `FormatTests`, `SumTests`, and `AverageTests`. Exercises name-matched test detection.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:17:00.091Z","inputHash":"b23ea1a4bffa0ad4"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `HelpersTest` {#symbol-helperstest}
+- Type: class
+- Source: [source](../../../../../../../../../../../../tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/helpers/HelpersTest.java#L15)
+
+##### `HelpersTest` — Summary
+Unit tests for the Helpers class.
+
+##### `HelpersTest` — Remarks
+This test file exercises name-matched test detection:
+HelpersTest.java should automatically back Helpers.java.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `org.junit.jupiter.api.Assertions.*`
+- `org.junit.jupiter.api.DisplayName` - `DisplayName`
+- `org.junit.jupiter.api.Nested` - `Nested`
+- `org.junit.jupiter.api.Test` - `Test`
+<!-- LIVE-DOC:END Dependencies -->

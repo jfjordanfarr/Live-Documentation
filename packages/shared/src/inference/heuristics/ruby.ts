@@ -4,7 +4,7 @@ import { isImplementationLayer } from "./artifactLayerUtils";
 import { normalizePath } from "./shared";
 import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicTypes";
 
-const RUBY_REQUIRE_RELATIVE_PATTERN = "require_relative\\s+\"([^\"'\\s]+)\"";
+const RUBY_REQUIRE_RELATIVE_PATTERN = "require_relative\\s+[\"']([^\"'\\s]+)[\"']";
 
 export function createRubyHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];

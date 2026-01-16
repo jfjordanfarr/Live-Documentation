@@ -65,8 +65,7 @@ export function createGoHeuristic(): FallbackHeuristic {
     appliesTo(source) {
       return (
         isImplementationLayer(source.artifact.layer) &&
-        source.comparablePath.endsWith(".go") &&
-        !source.basename.endsWith("_test.go")
+        source.comparablePath.endsWith(".go")
       );
     },
     evaluate(source, emit) {

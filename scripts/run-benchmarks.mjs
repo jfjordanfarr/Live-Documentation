@@ -15,8 +15,7 @@ const DIST_ROOT = path.join(REPO_ROOT, "tests", "integration", "dist");
 const MOCHA_BIN = path.join(REPO_ROOT, "node_modules", "mocha", "bin", "mocha.js");
 
 const SUITES = new Map([
-  ["ast", "benchmarks/astAccuracy.test.js"],
-  ["rebuild", "benchmarks/rebuildStability.test.js"]
+  ["ast", "benchmarks/astAccuracy.test.js"]
 ]);
 
 const MAX_FAILURES_PER_FIXTURE = 20;
@@ -36,8 +35,7 @@ function printUsage() {
 
 Options:
   --ast-only              Run only the AST accuracy benchmark suite.
-  --rebuild-only          Run only the rebuild stability benchmark suite.
-  --suite <name>          Run a named suite (ast, rebuild). Can be repeated.
+  --suite <name>          Run a named suite (ast). Can be repeated.
   --mode <name>           Override BENCHMARK_MODE (ast, self-similarity, all).
   --all                   Run all benchmark suites (default).
   --no-regenerate         Skip regenerating benchmark fixtures before running.
@@ -67,10 +65,6 @@ function parseArgs(argv) {
     if (!mode) {
       mode = "ast";
     }
-  }
-
-  if (isTruthyConfig(process.env.npm_config_rebuild_only)) {
-    suites = new Set(["rebuild"]);
   }
 
   if (isTruthyConfig(process.env.npm_config_all)) {
@@ -132,11 +126,6 @@ function parseArgs(argv) {
       if (!mode) {
         mode = "ast";
       }
-      continue;
-    }
-
-    if (token === "--rebuild-only") {
-      suites = new Set(["rebuild"]);
       continue;
     }
 
@@ -337,9 +326,6 @@ function surfaceBenchmarkFindings(mode, suites) {
     if (suites.has("ast")) {
       reportAstFailures(mode);
     }
-    if (suites.has("rebuild")) {
-      reportRebuildFindings(mode);
-    }
   } catch (error) {
     if (error instanceof Error) {
       console.warn(`\n[benchmarks] Unable to summarize failures: ${error.message}`);
@@ -427,29 +413,6 @@ function reportAstFailures(mode) {
   }
 }
 
-function reportRebuildFindings(mode) {
-  const slug = slugifyMode(mode);
-  const reportPath = path.join(
-    REPO_ROOT,
-    "reports",
-    "benchmarks",
-    slug === "ast" ? "ast" : "self-similarity",
-    "rebuild-stability.json"
-  );
-  if (!existsSync(reportPath)) {
-    return;
-  }
-  const report = readJson(reportPath);
-  const drift = Boolean(report?.data?.driftDetected);
-  const averageDuration = report?.data?.averageDurationMs;
-  const maxDuration = report?.data?.maxDurationMs;
-  console.log(
-    `\nRebuild stability: drift ${drift ? "detected" : "not detected"}, avg ${formatDuration(
-      averageDuration
-    )}, max ${formatDuration(maxDuration)}`
-  );
-}
-
 function countType(entries, type) {
   return entries.reduce((total, entry) => (entry.type === type ? total + 1 : total), 0);
 }
@@ -474,11 +437,4 @@ function formatMetric(value) {
     return "n/a";
   }
   return Number.parseFloat(value).toFixed(3);
-}
-
-function formatDuration(value) {
-  if (value === null || value === undefined) {
-    return "n/a";
-  }
-  return `${value}ms`;
 }

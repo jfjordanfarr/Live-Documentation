@@ -10,8 +10,28 @@
     "relation": "imports"
   },
   {
+    "source": "src/main/pipeline_test.go",
+    "target": "src/models/models.go",
+    "relation": "uses"
+  },
+  {
+    "source": "src/main/pipeline_test.go",
+    "target": "src/processor/processor.go",
+    "relation": "uses"
+  },
+  {
+    "source": "src/main/pipeline_test.go",
+    "target": "src/types/types.go",
+    "relation": "uses"
+  },
+  {
     "source": "src/models/models.go",
     "target": "src/types/types.go",
+    "relation": "uses"
+  },
+  {
+    "source": "src/processor/processor_test.go",
+    "target": "src/models/models.go",
     "relation": "uses"
   },
   {

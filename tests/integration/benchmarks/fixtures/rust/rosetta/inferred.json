@@ -1,5 +1,10 @@
 [
   {
+    "source": "src/helpers_test.rs",
+    "target": "src/helpers.rs",
+    "relation": "imports"
+  },
+  {
     "source": "src/main.rs",
     "target": "src/models.rs",
     "relation": "imports"
@@ -13,6 +18,31 @@
     "source": "src/models.rs",
     "target": "src/types.rs",
     "relation": "uses"
+  },
+  {
+    "source": "src/pipeline_test.rs",
+    "target": "src/models.rs",
+    "relation": "imports"
+  },
+  {
+    "source": "src/pipeline_test.rs",
+    "target": "src/processor.rs",
+    "relation": "imports"
+  },
+  {
+    "source": "src/pipeline_test.rs",
+    "target": "src/types.rs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/processor_test.rs",
+    "target": "src/models.rs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/processor_test.rs",
+    "target": "src/processor.rs",
+    "relation": "imports"
   },
   {
     "source": "src/processor.rs",

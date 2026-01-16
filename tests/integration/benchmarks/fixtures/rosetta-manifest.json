@@ -41,6 +41,12 @@
         "id": "helpers",
         "role": "Pure utility functions with no dependencies",
         "files": ["helpers.*", "Helpers.*"]
+      },
+      {
+        "id": "test",
+        "role": "Test files that exercise production code",
+        "files": ["*.test.*", "test_*.*", "*Test.*", "*Tests.*", "*_test.*", "*_spec.*"],
+        "notes": "Deliberately excludes main, types, and models to demonstrate 'no evidence' state"
       }
     ],
     "edges": [
@@ -49,7 +55,11 @@
       { "from": "processor", "to": "models", "via": ["Record", "Report", "validateConfig"] },
       { "from": "processor", "to": "types", "via": ["ProcessorConfig"] },
       { "from": "processor", "to": "helpers", "via": ["format", "sum", "average"] },
-      { "from": "models", "to": "types", "via": ["Entry", "Status", "ProcessorConfig"] }
+      { "from": "models", "to": "types", "via": ["Entry", "Status", "ProcessorConfig"] },
+      { "from": "test", "to": "processor", "via": ["run", "summarize"], "notes": "processor.test.* tests processor.*" },
+      { "from": "test", "to": "models", "via": ["Record", "Report", "createRecord"], "notes": "processor.test.* and pipeline.test.* import models" },
+      { "from": "test", "to": "helpers", "via": ["format", "sum", "average"], "notes": "helpers.test.* tests helpers.*" },
+      { "from": "test", "to": "types", "via": ["ProcessorConfig"], "notes": "pipeline.test.* imports types for config validation" }
     ],
     "importPatterns": {
       "description": "Import patterns exercised by this fixture to stress-test adapters",

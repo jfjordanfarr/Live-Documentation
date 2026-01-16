@@ -228,7 +228,8 @@ function collectUseEdges(input: {
 }): void {
   const { content, sourceRelativePath, moduleIndex, edges } = input;
   const sanitized = stripDocComments(content);
-  const pattern = /^use\s+([^;]+);/gm;
+  // Match use statements at any indentation level (handles #[cfg(test)] mod tests { use ... })
+  const pattern = /^\s*use\s+([^;]+);/gm;
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(sanitized)) !== null) {
     const statement = match[0];
@@ -256,7 +257,8 @@ function parseUseStatement(statement: string): {
   moduleName: string;
   symbols: string[];
 } | null {
-  const trimmed = statement.replace(/^use\s+/, "").replace(/;$/, "").trim();
+  // Strip leading whitespace then the 'use' keyword
+  const trimmed = statement.trim().replace(/^use\s+/, "").replace(/;$/, "").trim();
   if (!trimmed) {
     return null;
   }

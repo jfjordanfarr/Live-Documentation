@@ -20,6 +20,31 @@
     "relation": "imports"
   },
   {
+    "source": "src/App/PipelineTests.cs",
+    "target": "src/Models/Record.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/App/PipelineTests.cs",
+    "target": "src/Models/Report.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "src/App/PipelineTests.cs",
+    "target": "src/Processor/Processor.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/App/PipelineTests.cs",
+    "target": "src/Types/ProcessorConfig.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/Helpers/HelpersTests.cs",
+    "target": "src/Helpers/Helpers.cs",
+    "relation": "uses"
+  },
+  {
     "source": "src/Models/ModelFactory.cs",
     "target": "src/Models/Record.cs",
     "relation": "imports"
@@ -62,6 +87,21 @@
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Types/ProcessorConfig.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/Processor/ProcessorTests.cs",
+    "target": "src/Models/Record.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/Processor/ProcessorTests.cs",
+    "target": "src/Models/Report.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "src/Processor/ProcessorTests.cs",
+    "target": "src/Processor/Processor.cs",
     "relation": "uses"
   }
 ]

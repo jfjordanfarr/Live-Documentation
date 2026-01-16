@@ -1,8 +1,62 @@
 [
-  { "source": "lib/main.rb", "target": "lib/models.rb", "relation": "requires" },
-  { "source": "lib/main.rb", "target": "lib/processor.rb", "relation": "requires" },
-  { "source": "lib/models.rb", "target": "lib/types.rb", "relation": "requires" },
-  { "source": "lib/processor.rb", "target": "lib/helpers.rb", "relation": "requires" },
-  { "source": "lib/processor.rb", "target": "lib/models.rb", "relation": "requires" },
-  { "source": "lib/processor.rb", "target": "lib/types.rb", "relation": "requires" }
+  {
+    "source": "lib/main.rb",
+    "target": "lib/models.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/main.rb",
+    "target": "lib/processor.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/models.rb",
+    "target": "lib/types.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/processor.rb",
+    "target": "lib/helpers.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/processor.rb",
+    "target": "lib/models.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "lib/processor.rb",
+    "target": "lib/types.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/helpers_spec.rb",
+    "target": "lib/helpers.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/pipeline_spec.rb",
+    "target": "lib/models.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/pipeline_spec.rb",
+    "target": "lib/processor.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/pipeline_spec.rb",
+    "target": "lib/types.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/processor_spec.rb",
+    "target": "lib/models.rb",
+    "relation": "requires"
+  },
+  {
+    "source": "spec/processor_spec.rb",
+    "target": "lib/processor.rb",
+    "relation": "requires"
+  }
 ]

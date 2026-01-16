@@ -197,11 +197,7 @@ function collectSourceFiles(
         continue;
       }
 
-      // Skip test files
-      if (entry.name.endsWith("_test.go")) {
-        continue;
-      }
-
+      // Note: We include _test.go files so test dependencies are captured in the oracle graph
       const absolutePath = path.join(current, entry.name);
       if (excludePatterns.some(pattern => absolutePath.startsWith(pattern))) {
         continue;
