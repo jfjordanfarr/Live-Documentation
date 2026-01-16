@@ -4,13 +4,18 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { buildLiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
+  type LiveDocumentationConfig,
   type LiveDocumentationConfigInput,
   type LiveDocumentationEvidenceStrictMode
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
+
+/** Maximum number of islands to display before truncating */
+const MAX_ISLAND_DISPLAY = 30;
 
 interface LintIssue {
   file: string;
@@ -208,6 +213,9 @@ async function main(): Promise<void> {
       validateRelativeLinks(relativePath, content, issues);
     })
   );
+
+  // Validate graph connectivity (detect islands)
+  await validateConnectivity(workspaceRoot, config, warnings);
 
   if (warnings.length > 0) {
     console.warn("\nLive Doc lint warnings:");
@@ -441,6 +449,74 @@ function validateRelativeLinks(file: string, content: string, issues: LintIssue[
       });
     }
   }
+}
+
+/**
+ * Validate graph connectivity: detect "islands" (nodes with no dependencies and no dependents).
+ * Islands may indicate:
+ * - Missing adapter detection for the file's language
+ * - Cruft from deleted infrastructure
+ * - Truly standalone utility files (rare)
+ */
+async function validateConnectivity(
+  workspaceRoot: string,
+  config: LiveDocumentationConfig,
+  warnings: LintWarning[]
+): Promise<void> {
+  const graph = await buildLiveDocGraph({ workspaceRoot, config });
+  const islands: string[] = [];
+
+  for (const [codePath, node] of graph.nodes) {
+    const hasDependencies = node.dependencies.size > 0;
+    const hasDependents = (graph.inbound.get(codePath)?.size ?? 0) > 0;
+    
+    if (!hasDependencies && !hasDependents) {
+      islands.push(codePath);
+    }
+  }
+
+  if (islands.length === 0) {
+    return;
+  }
+
+  // Group islands by directory prefix for readability
+  const byDirectory = new Map<string, string[]>();
+  for (const island of islands) {
+    const dir = path.dirname(island);
+    if (!byDirectory.has(dir)) {
+      byDirectory.set(dir, []);
+    }
+    byDirectory.get(dir)!.push(path.basename(island));
+  }
+
+  // Sort directories alphabetically
+  const sortedDirs = [...byDirectory.keys()].sort();
+
+  // Build grouped output
+  let displayedCount = 0;
+  const groupedIslands: string[] = [];
+  
+  for (const dir of sortedDirs) {
+    const files = byDirectory.get(dir)!.sort();
+    for (const file of files) {
+      if (displayedCount >= MAX_ISLAND_DISPLAY) {
+        break;
+      }
+      groupedIslands.push(`${dir}/${file}`);
+      displayedCount++;
+    }
+    if (displayedCount >= MAX_ISLAND_DISPLAY) {
+      break;
+    }
+  }
+
+  const remaining = islands.length - displayedCount;
+  const suffix = remaining > 0 ? ` ...and ${remaining} more` : "";
+
+  warnings.push({
+    file: "(graph)",
+    message: `${islands.length} disconnected node(s) detected (no dependencies and no dependents):\n    - ${groupedIslands.join("\n    - ")}${suffix}`
+  });
 }
 
 function hasSection(content: string, section: string): boolean {

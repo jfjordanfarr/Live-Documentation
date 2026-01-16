@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 14, 2026\)*
+*Status: Active Development (Jan 15, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -649,6 +649,18 @@ The team focused on closing the "Accuracy Gap" across all supported languages, e
   * **Purpose:** To calibrate the detection heuristics so that the *same* code structure produces the *same* graph shape, regardless of the language.  
   * **Outcome:** The TypeScript implementation achieved 100% precision/recall, setting the gold standard for the other language adapters to match.
 
+### **Phase XLIII: The Go Expansion & Supply Chain Cleanup (Jan 15\)**
+
+Date: January 15, 2026
+
+Scope: Commits 216–218
+
+The team expanded the polyglot engine to support Go, improved configuration file connectivity, and finalized the architectural cleanup by purging native binary dependencies.
+
+* **Go Support (Commit 216):** Added the **Go Adapter**, Heuristic, and Oracle. The go-rosetta fixture was implemented, ensuring Go projects now enjoy the same deep dependency analysis as TypeScript and Java.  
+* **JSON Path Resolution (Commit 217):** Introduced a smart JSON adapter that resolves file paths within configuration files relative to the JSON file itself. This instantly connected the rosetta-manifest.json to its referenced source files in the Explorer graph.  
+* **The Final Purge (Commit 218):** With the SQLite database removed in Phase XL, the better-sqlite3 dependency and its complex native build scripts were deleted. This creates a purely JS/TS runtime, significantly reducing the supply chain attack surface and simplifying cross-platform CI.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -677,7 +689,8 @@ The team focused on closing the "Accuracy Gap" across all supported languages, e
 * **Jan 9 (Phase XXXIX):** "Structured Export." (Client-side ZIP archiving of the knowledge base).  
 * **Jan 12 (Phase XL):** "The Great Simplification." (Removing SQLite to make files the database).  
 * **Jan 13 (Phase XLI):** "The Three-Source Truth." (Descoping LSIF/SCIP to focus on AST/LLM/Symbols).  
-* **Jan 14 (Phase XLII):** "The Polyglot Connectivity." (Rosetta Stone benchmarks and symbol-level resolution for Java/Python/Rust).
+* **Jan 14 (Phase XLII):** "The Polyglot Connectivity." (Rosetta Stone benchmarks and symbol-level resolution for Java/Python/Rust).  
+* **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).
 
 ## **Technical Themes & Motifs**
 
