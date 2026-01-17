@@ -166,7 +166,8 @@ function parseDependencyLinks(args: {
   stage0Root: string;
   docExtension: string;
 }): { stage0Paths: string[]; externalModules: string[] } {
-  const stage0Paths = new Set<string>();
+  // Use arrays to preserve symbol-level multiplicity (MEME-style: 2 symbols = 2 edges)
+  const stage0Paths: string[] = [];
   const externalModules = new Set<string>();
 
   const lines = args.block.split(/\r?\n/);
@@ -184,7 +185,8 @@ function parseDependencyLinks(args: {
         if (targetAbsolute.startsWith(args.stage0Root)) {
           const stage0Relative = targetAbsolute.slice(args.stage0Root.length + 1).replace(/\\/g, "/");
           const sourcePath = stage0Relative.slice(0, -args.docExtension.length);
-          stage0Paths.add(normalizeWorkspacePath(sourcePath));
+          // Push instead of add — allows duplicates for symbol-level edge counting
+          stage0Paths.push(normalizeWorkspacePath(sourcePath));
           continue;
         }
       }
@@ -196,8 +198,9 @@ function parseDependencyLinks(args: {
     }
   }
 
+  // Sort but preserve duplicates for proper edge weight computation
   return {
-    stage0Paths: Array.from(stage0Paths).sort(),
+    stage0Paths: stage0Paths.sort(),
     externalModules: Array.from(externalModules).sort()
   };
 }

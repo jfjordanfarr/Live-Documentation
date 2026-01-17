@@ -4,6 +4,19 @@ const DEFAULT_EDGE_ALPHA = 0.01;
 const DEFAULT_CLUSTER_ALPHA = 0.01;
 const EDGE_KEY_SEPARATOR = "|||";
 
+/**
+ * Degree distribution computed from all observed dependency edges.
+ * Used as the background model for significance testing.
+ */
+export interface DegreeDistribution {
+  /** Map from node ID to its degree (sum of edge weights). */
+  degrees: Map<string, number>;
+  /** Total edge weight across the entire graph (sum of all dependency weights). */
+  totalEdgeWeight: number;
+  /** Mean degree across all nodes. */
+  meanDegree: number;
+}
+
 export interface CoActivationBuildArgs {
   stage0Docs: Stage0Doc[];
   manifest?: TargetManifest;
@@ -64,6 +77,10 @@ export interface CoActivationReport {
     edgeAlpha: number;
     clusterAlpha: number;
     totalTests: number;
+    /** Total dependency edge weight used as background for degree-corrected model. */
+    totalDependencyEdgeWeight: number;
+    /** Mean node degree in the dependency graph. */
+    meanDegree: number;
   };
   nodes: CoActivationNode[];
   edges: CoActivationEdge[];
@@ -104,6 +121,13 @@ export function buildCoActivationReport(args: CoActivationBuildArgs & { now?: ()
     docMap.set(doc.sourcePath, doc);
     docTestMap.set(doc.sourcePath, new Set());
   }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Phase 1: Build degree distribution from all dependency edges.
+  // This forms the background model for degree-corrected significance testing.
+  // Each symbol import counts as a separate edge (MEME-style: 2 motifs = 2 hits).
+  // ─────────────────────────────────────────────────────────────────────────
+  const degreeDistribution = buildDegreeDistribution(args.stage0Docs, docMap, dependencyWeight);
 
   const allTests = new Set<string>();
   const edgeAccumulator = new Map<string, EdgeAccumulator>();
@@ -266,15 +290,15 @@ export function buildCoActivationReport(args: CoActivationBuildArgs & { now?: ()
     node.zScore = stdDev > 0 ? (node.strength - meanStrength) / stdDev : 0;
   }
 
-  const totalPossibleEdges = nodes.length <= 1 ? 0 : (nodes.length * (nodes.length - 1)) / 2;
-  const globalEdgeProbability =
-    totalPossibleEdges === 0 ? 0 : Math.min(1, significantEdges.length / totalPossibleEdges);
-
+  // ─────────────────────────────────────────────────────────────────────────
+  // Phase 3: Build clusters using degree-corrected expected edge counts.
+  // Instead of uniform probability, we use: E[edge(i,j)] = deg(i) * deg(j) / (2 * totalEdges)
+  // ─────────────────────────────────────────────────────────────────────────
   const clusters = buildClusters({
     nodes,
     edges: significantEdges,
     adjacency,
-    globalEdgeProbability,
+    degreeDistribution,
     clusterAlpha
   });
 
@@ -293,7 +317,9 @@ export function buildCoActivationReport(args: CoActivationBuildArgs & { now?: ()
       minWeight,
       edgeAlpha,
       clusterAlpha,
-      totalTests
+      totalTests,
+      totalDependencyEdgeWeight: degreeDistribution.totalEdgeWeight,
+      meanDegree: degreeDistribution.meanDegree
     },
     nodes,
     edges,
@@ -407,14 +433,19 @@ function logSumExp(a: number, b: number): number {
   return a + Math.log1p(Math.exp(b - a));
 }
 
+/**
+ * Build connected components from the significant edge graph.
+ * Uses degree-corrected expected edge counts: E[edge(i,j)] = deg(i) * deg(j) / (2E)
+ * This prevents hub nodes from making clusters appear artificially significant.
+ */
 function buildClusters(args: {
   nodes: CoActivationNode[];
   edges: CoActivationEdge[];
   adjacency: Map<string, Set<string>>;
-  globalEdgeProbability: number;
+  degreeDistribution: DegreeDistribution;
   clusterAlpha: number;
 }): CoActivationCluster[] {
-  const { nodes, edges, adjacency, globalEdgeProbability, clusterAlpha } = args;
+  const { nodes, edges, adjacency, degreeDistribution, clusterAlpha } = args;
   const clusters: CoActivationCluster[] = [];
   const visited = new Set<string>();
   const edgeIndex = new Map<string, CoActivationEdge>();
@@ -469,8 +500,13 @@ function buildClusters(args: {
     const totalWeight = clusterEdges.reduce((sum, edge) => sum + edge.weight, 0);
     const possibleEdges = (memberList.length * (memberList.length - 1)) / 2;
     const density = possibleEdges === 0 ? 0 : clusterEdges.length / possibleEdges;
-    const expectedEdges = possibleEdges * globalEdgeProbability;
-    const pValue = binomialTail(possibleEdges, globalEdgeProbability, clusterEdges.length);
+
+    // Degree-corrected expected edge count: sum over all pairs of deg(i)*deg(j)/(2E)
+    const expectedEdges = computeDegreeCorrectedExpectedEdges(memberList, degreeDistribution);
+
+    // Use Poisson approximation for significance testing when expected count is small
+    // For larger expected counts, binomial approximation with degree-corrected probability
+    const pValue = computeDegreeCorrectedPValue(clusterEdges.length, expectedEdges, possibleEdges);
 
     clusters.push({
       id: `cluster-${String(clusters.length + 1).padStart(3, "0")}`,
@@ -551,4 +587,130 @@ function applyClusterBenjaminiHochberg(clusters: CoActivationCluster[]): void {
     sorted[index].qValue = bounded;
     minAdjusted = bounded;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Degree-Corrected Background Model
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Builds the degree distribution from all dependency edges.
+ * Each dependency link (not deduplicated by target) counts as a separate edge.
+ * This mirrors the MEME bioinformatics approach: 2 motif instances = 2 hits.
+ */
+function buildDegreeDistribution(
+  stage0Docs: Stage0Doc[],
+  docMap: Map<string, Stage0Doc>,
+  dependencyWeight: number
+): DegreeDistribution {
+  const degrees = new Map<string, number>();
+  let totalEdgeWeight = 0;
+
+  // Initialize all nodes with degree 0
+  for (const doc of stage0Docs) {
+    degrees.set(doc.sourcePath, 0);
+  }
+
+  // Count edges: each dependency link contributes to both source and target degree
+  for (const doc of stage0Docs) {
+    if (!doc.dependencies?.length) {
+      continue;
+    }
+
+    for (const dependency of doc.dependencies) {
+      // Only count edges to documents we know about (internal dependencies)
+      if (!docMap.has(dependency)) {
+        continue;
+      }
+
+      // Each dependency occurrence adds weight to both nodes
+      const sourceWeight = dependencyWeight;
+      degrees.set(doc.sourcePath, (degrees.get(doc.sourcePath) ?? 0) + sourceWeight);
+      degrees.set(dependency, (degrees.get(dependency) ?? 0) + sourceWeight);
+      totalEdgeWeight += sourceWeight;
+    }
+  }
+
+  // Compute mean degree
+  const nodeCount = stage0Docs.length;
+  const meanDegree = nodeCount > 0 ? (2 * totalEdgeWeight) / nodeCount : 0;
+
+  return {
+    degrees,
+    totalEdgeWeight,
+    meanDegree
+  };
+}
+
+/**
+ * Computes degree-corrected expected edge count for a cluster.
+ * Uses the configuration model: E[edge(i,j)] = deg(i) * deg(j) / (2E)
+ * where E is total edge weight in the graph.
+ */
+function computeDegreeCorrectedExpectedEdges(
+  members: string[],
+  distribution: DegreeDistribution
+): number {
+  if (distribution.totalEdgeWeight === 0) {
+    return 0;
+  }
+
+  let expected = 0;
+  const denominator = 2 * distribution.totalEdgeWeight;
+
+  for (let i = 0; i < members.length; i += 1) {
+    for (let j = i + 1; j < members.length; j += 1) {
+      const degI = distribution.degrees.get(members[i]) ?? 0;
+      const degJ = distribution.degrees.get(members[j]) ?? 0;
+      expected += (degI * degJ) / denominator;
+    }
+  }
+
+  return expected;
+}
+
+/**
+ * Computes p-value for degree-corrected cluster significance.
+ * Uses Poisson approximation when expected count is reasonable,
+ * which is appropriate for sparse graphs where edge events are approximately independent.
+ */
+function computeDegreeCorrectedPValue(
+  observedEdges: number,
+  expectedEdges: number,
+  _possibleEdges: number
+): number {
+  if (expectedEdges <= 0) {
+    // No edges expected: any observed edges are maximally significant
+    return observedEdges > 0 ? 0 : 1;
+  }
+
+  // Poisson tail: P(X >= observed) where X ~ Poisson(expected)
+  // This is 1 - P(X < observed) = 1 - sum_{k=0}^{observed-1} e^(-λ) λ^k / k!
+  return poissonTail(expectedEdges, observedEdges);
+}
+
+/**
+ * Computes Poisson tail probability: P(X >= observed) where X ~ Poisson(lambda).
+ * Uses log-space computation for numerical stability.
+ */
+function poissonTail(lambda: number, observed: number): number {
+  if (lambda <= 0) {
+    return observed === 0 ? 1 : 0;
+  }
+
+  // Compute P(X < observed) = sum_{k=0}^{observed-1} e^(-λ) λ^k / k!
+  // Then return 1 - P(X < observed)
+  let logCdf = Number.NEGATIVE_INFINITY;
+  let logFactorial = 0; // log(0!) = 0
+
+  for (let k = 0; k < observed; k += 1) {
+    if (k > 0) {
+      logFactorial += Math.log(k);
+    }
+    const logTerm = -lambda + k * Math.log(lambda) - logFactorial;
+    logCdf = logSumExp(logCdf, logTerm);
+  }
+
+  const cdf = Math.exp(logCdf);
+  return Math.max(0, Math.min(1, 1 - cdf));
 }

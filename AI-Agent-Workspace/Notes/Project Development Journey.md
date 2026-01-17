@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 15, 2026\)*
+*Status: Active Development (Jan 16, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -661,6 +661,21 @@ The team expanded the polyglot engine to support Go, improved configuration file
 * **JSON Path Resolution (Commit 217):** Introduced a smart JSON adapter that resolves file paths within configuration files relative to the JSON file itself. This instantly connected the rosetta-manifest.json to its referenced source files in the Explorer graph.  
 * **The Final Purge (Commit 218):** With the SQLite database removed in Phase XL, the better-sqlite3 dependency and its complex native build scripts were deleted. This creates a purely JS/TS runtime, significantly reducing the supply chain attack surface and simplifying cross-platform CI.
 
+### **Phase XLIV: The Orphan Hunt & Rosetta Perfection (Jan 16\)**
+
+Date: January 16, 2026
+
+Scope: Commits 219–223
+
+The team focused on identifying "Islands" (disconnected nodes) to improve graph hygiene and finalizing the Rosetta Stone benchmarks.
+
+* **Orphan Detection (Commits 219, 220):** Implemented a two-pronged strategy to find nodes with zero dependencies and zero dependents.  
+  * **CLI:** live-docs:lint now warns about "Islands," flagging potential dead code or adapter gaps.  
+  * **GUI:** A new "Disconnected Nodes" panel in the Explorer visualizes these islands, allowing users to inspect them without losing context.  
+* **Rosetta Completion (Commit 221):** Added test files to all 8 Rosetta fixtures (TS, Py, Java, C\#, Rust, C, Go, Ruby). This exercise exposed and fixed subtle heuristic bugs in Ruby (single quotes), C (function defs), and Go (\_test.go exclusion).  
+* **Java Casing Fix (Commit 222):** Fixed a critical bug in Java same-package detection where class names were being lowercased, breaking links to PascalCase files. Java Rosetta recall hit 100%.  
+* **The 100% Milestone:** With these fixes, **all 8 language fixtures** in the Rosetta suite achieved **100% Precision and Recall**, proving that the regex-based heuristics are robust enough for standard architectural patterns across the polyglot stack.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -690,7 +705,8 @@ The team expanded the polyglot engine to support Go, improved configuration file
 * **Jan 12 (Phase XL):** "The Great Simplification." (Removing SQLite to make files the database).  
 * **Jan 13 (Phase XLI):** "The Three-Source Truth." (Descoping LSIF/SCIP to focus on AST/LLM/Symbols).  
 * **Jan 14 (Phase XLII):** "The Polyglot Connectivity." (Rosetta Stone benchmarks and symbol-level resolution for Java/Python/Rust).  
-* **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).
+* **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).  
+* **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).
 
 ## **Technical Themes & Motifs**
 

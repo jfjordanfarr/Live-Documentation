@@ -90,10 +90,10 @@ describe("buildCoActivationReport", () => {
         members: ["packages/a.ts", "packages/b.ts"],
         weight: 1,
         edgeCount: 1,
-        expectedEdgeCount: 1,
+        expectedEdgeCount: 0.5,  // Degree-corrected: deg(a)*deg(b)/(2*E) = 1*1/(2*1) = 0.5
         density: 1,
-        pValue: 1,
-        qValue: 1,
+        pValue: expect.closeTo(0.3935, 2),  // Poisson p-value for observing 1 edge when expecting 0.5
+        qValue: expect.closeTo(0.3935, 2),  // Single test so q = p
         isSignificant: false
       }
     ]);

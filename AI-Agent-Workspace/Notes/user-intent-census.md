@@ -747,6 +747,18 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L~3200-L3400` — **better-sqlite3 Removal Verification**: User questioned whether `better-sqlite3` was still used: "Do we still, anywhere in our project, make use of `better-sqlite3`? If not, can we change our README.md?" Copilot confirmed GraphStore infrastructure was fully removed in favor of Live Doc-based analysis.
 - `L~3600-L4000` — **Combined Commit Message Request**: User requested combined commit message for dependency cleanup work spanning multiple conversation segments, noting the earlier proposed message had not been committed yet.
 
+## 2026-01-16 (Dev Day 60)
+
+### Chat 1 (2026-01-16.1.md) — Orphan Detection + Rosetta Tests + Analyzer Fixes
+
+- `2026-01-16.1.md:L~200-L250` — **Anti-Sycophancy Mandate Reinforcement**: User emphasized the critical lesson from 1/15: "The one thing I was hoping that you would extract from that exchange -- the very most important thing -- is that I can propose things **that are wrong**, and that the result of our back-and-forth exchange was a highly elegant refinement which _actually_ fit into the architecture." Honest critical dialogue produces better solutions than deference.
+- `L~400-L450` — **Exclusion Patterns Enable "Cheating"**: User explicitly warned against adding path exclusion rules: "These little 'exclude paths' open a window for 'LLM laziness': A simpler path to green tests is open with these and it is highly common for even the best LLMs to realize that the 'cheat' window is open, and will climb right through it." Island detection surfacing real problems (adapter gaps, cruft) not reasons for exclusion.
+- `L~500-L550` — **Evidence-Based Skepticism**: User demanded proof before accepting proposed exclusions: "What `*main.*` files have no dependencies and no dependents from a Live Documentation perspective? I want to see hard evidence." Result: zero main files are islands — skepticism was warranted.
+- `L~2800-L3000` — **Total Rejection of Workarounds**: User rejected threshold-lowering, manual overrides, and idiomatic shortcuts with emphatic clarity: "This is NOWHERE NEAR ready to commit. ABSOLUTELY NOT." The response was called a "masterclass in exactly what the copilot-instructions warn against."
+- `L~3000-L3100` — **"Every Mess Is Our Mess" Principle Applied**: "Every mess is our mess! It is only us in this workspace. You have no concept of time, no permanent memory! Do it _the right way!_ Solve problems and solve them completely!" Applied to: Ruby heuristic (single-quote fix), Go oracle (test file skip removal), C heuristic (function body scoping), Rust oracle (indented use statements), Java heuristic (PascalCase class names).
+- `L~4400-L4500` — **Compiler-Backed Oracles for Third-Party Fixtures**: User acknowledged future need: "In the future, I think we may have to go all the way down that road of pulling in a sh*tload of compilers." Context: Only TypeScript oracle is truly compiler-backed; others are sophisticated regex parsers. For third-party benchmark fixtures (okhttp, ky, libuv), hand-authoring expected.json is unsustainable.
+- `L~3600-L3700` — **Archetype Detection Must Be Polyglot**: Test file detection patterns must cover all language conventions (`*_test.*`, `test_*.*`, `*Test.*`, `*Tests.*`, `*_spec.*`), not just TypeScript conventions.
+
 ## 2026-01-12 (Dev Day 56)
 
 ### Chat 1 (2026-01-12.1.md) — Major Architectural Refactoring: Stateless Live Doc-Centric Model
