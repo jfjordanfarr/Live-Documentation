@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/settings.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-settings-ts
-- Generated At: 2025-12-15T00:38:06.672Z
+- Generated At: 2026-01-17T18:11:29.531Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Parses user/workspace configuration into runtime-ready settings, a responsibilit
 Noise suppression thresholds, ripple depth caps, and test-mode overrides were added during the T046 noise-filter work in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-06-publisher-integration--runtime-wiring-lines-701-880](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-06-publisher-integration--runtime-wiring-lines-701-880); adjust `providerGuard` and diagnostic publishers in tandem when evolving these shapes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.672Z","inputHash":"33089fe8a5c4880a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.531Z","inputHash":"32824d03d539f359"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `extractExtensionSettings` {#symbol-extractextensionsettings}
@@ -38,7 +38,7 @@ Noise suppression thresholds, ripple depth caps, and test-mode overrides were ad
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`providerGuard.ExtensionSettings`](../features/settings/providerGuard.ts.mdmd.md#symbol-extensionsettings)
-- [`index.LinkRelationshipKind`](../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
+- [`artifacts.LinkRelationshipKind`](../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

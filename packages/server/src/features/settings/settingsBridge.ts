@@ -1,4 +1,4 @@
-import type { LinkRelationshipKind } from "@live-documentation/shared";
+import type { LinkRelationshipKind } from "@live-documentation/shared/domain/artifacts";
 
 import { ExtensionSettings } from "./providerGuard";
 

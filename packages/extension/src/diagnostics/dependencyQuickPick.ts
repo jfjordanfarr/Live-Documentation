@@ -5,7 +5,7 @@ import { z } from "zod";
 import {
   INSPECT_DEPENDENCIES_REQUEST,
   type InspectDependenciesParams
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/dependencies";
 
 import { KnowledgeArtifactSchema, LinkRelationshipKindSchema } from "../shared/artifactSchemas";
 

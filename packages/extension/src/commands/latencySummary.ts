@@ -7,7 +7,7 @@ import {
   type LatencySummary,
   type LatencySummaryRequest,
   type LatencySummaryResponse
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/telemetry";
 
 const SHOW_LATENCY_SUMMARY_COMMAND = "linkDiagnostics.showLatencySummary";
 const GET_LATENCY_SUMMARY_COMMAND = "linkDiagnostics.getLatencySummary";

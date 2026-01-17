@@ -2,14 +2,14 @@ import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import ts from "typescript";
 
+import { LinkRelationshipKind } from "@live-documentation/shared/domain/artifacts";
+import { LinkEvidence } from "@live-documentation/shared/inference/linkInference";
 import {
   collectIdentifierUsage,
   extractLocalImportNames,
   hasTypeUsage,
-  hasRuntimeUsage,
-  LinkRelationshipKind,
-  LinkEvidence
-} from "@live-documentation/shared";
+  hasRuntimeUsage
+} from "@live-documentation/shared/language/typeScriptAstUtils";
 
 import { fileExists } from "./directoryScanner";
 import { MODULE_RESOLUTION_EXTENSIONS, inferScriptKind } from "./languageInference";

@@ -9,7 +9,7 @@ import {
   type OutstandingDiagnosticSummary,
   type SetDiagnosticAssessmentParams,
   type SetDiagnosticAssessmentResult
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/diagnostics";
 
 import { LlmInvocationError, LlmInvoker, type InvokeChatResult } from "../services/llmInvoker";
 import type { LinkDiagnosticsSettings } from "../settings/configService";

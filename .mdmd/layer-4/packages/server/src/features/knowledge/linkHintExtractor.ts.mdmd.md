@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/linkHintExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-linkhintextractor-ts
-- Generated At: 2026-01-15T02:41:18.491Z
+- Generated At: 2026-01-17T18:11:29.459Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Extracts relationship hints from code files by parsing `@link` directives and st
 - `resolveReferencePath()` handles relative/absolute path resolution and exports for reuse in `mdmdParser.ts`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.491Z","inputHash":"c9f61b487fb274d4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.459Z","inputHash":"33adf697023887cf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkHintContext` {#symbol-linkhintcontext}
@@ -62,5 +62,5 @@ Attempts to resolve a path reference to an absolute file path.
 - `node:path`
 - `node:url` - `pathToFileURL`
 - [`directoryScanner.fileExists`](./directoryScanner.ts.mdmd.md#symbol-fileexists)
-- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
+- [`fallbackInference.RelationshipHint`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint)
 <!-- LIVE-DOC:END Dependencies -->

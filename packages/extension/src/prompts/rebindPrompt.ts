@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { RebindRequiredPayload } from "@live-documentation/shared";
+import { RebindRequiredPayload } from "@live-documentation/shared/contracts/maintenance";
 
 const REBIND_COMMAND = "linkDiagnostics.overrideLink";
 

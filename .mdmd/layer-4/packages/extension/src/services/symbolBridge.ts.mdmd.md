@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/services/symbolBridge.ts
 - Live Doc ID: LD-implementation-packages-extension-src-services-symbolbridge-ts
-- Generated At: 2026-01-15T02:41:18.285Z
+- Generated At: 2026-01-17T18:11:29.227Z
 
 ## Authored
 ### Purpose
@@ -16,27 +16,27 @@ Implements the T035 workspace-symbol bridge so the extension can satisfy `COLLEC
 - Maintain the MAX_* limits and workspace-symbols provenance to stay aligned with the ripple diagnostics gating discussed there - future tuning should coordinate with the server's symbolBridgeProvider before widening caps.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.285Z","inputHash":"0d3e17cd3095cfa2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.227Z","inputHash":"d2d05c0cbd542f24"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerSymbolBridge` {#symbol-registersymbolbridge}
 - Type: function
-- Source: [source](../../../../../../packages/extension/src/services/symbolBridge.ts#L69)
+- Source: [source](../../../../../../packages/extension/src/services/symbolBridge.ts#L65)
 - Returns: `vscode.Disposable`
 - Parameters: `client`: `LanguageClient`
 
 #### `SymbolBridgeAnalyzer` {#symbol-symbolbridgeanalyzer}
 - Type: class
-- Source: [source](../../../../../../packages/extension/src/services/symbolBridge.ts#L80)
+- Source: [source](../../../../../../packages/extension/src/services/symbolBridge.ts#L76)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ArtifactSeed`](../../../shared/src/index.ts.mdmd.md#symbol-artifactseed)
-- [`index.COLLECT_WORKSPACE_SYMBOLS_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-collect_workspace_symbols_request)
-- [`index.LinkEvidence`](../../../shared/src/index.ts.mdmd.md#symbol-linkevidence)
-- [`index.RelationshipHint`](../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
-- [`index.WorkspaceLinkContribution`](../../../shared/src/index.ts.mdmd.md#symbol-workspacelinkcontribution)
+- [`symbols.COLLECT_WORKSPACE_SYMBOLS_REQUEST`](../../../shared/src/contracts/symbols.ts.mdmd.md#symbol-collect_workspace_symbols_request)
+- [`fallbackInference.ArtifactSeed`](../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed) (type-only)
+- [`fallbackInference.RelationshipHint`](../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint) (type-only)
+- [`linkInference.LinkEvidence`](../../../shared/src/inference/linkInference.ts.mdmd.md#symbol-linkevidence) (type-only)
+- [`linkInference.WorkspaceLinkContribution`](../../../shared/src/inference/linkInference.ts.mdmd.md#symbol-workspacelinkcontribution) (type-only)
 - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 - `zod` - `z`

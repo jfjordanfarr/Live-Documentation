@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/fallbackHeuristicTypes.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-fallbackheuristictypes-ts
-- Generated At: 2025-12-11T02:38:01.694Z
+- Generated At: 2026-01-17T19:21:10.016Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared `FallbackHeuristic` contract—match contexts, emitters, and 
 Serves as the hub each language module implements post-refactor (see [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-07.SUMMARIZED.md#turn-12-rebuild-fallback-orchestrator-lines-2381-2740](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-07.SUMMARIZED.md#turn-12-rebuild-fallback-orchestrator-lines-2381-2740)), keeping new heuristics—like the WebForms signals from [2025-11-06](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520)—consistent.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.694Z","inputHash":"45d196bfa8ee3de7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.016Z","inputHash":"45d196bfa8ee3de7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MatchContext` {#symbol-matchcontext}
@@ -48,6 +48,9 @@ Serves as the hub each language module implements post-refactor (see [AI-Agent-W
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
+- [noiseFilter.test.ts](../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
+- [pathReferenceDetector.test.ts](../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](./fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](./fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](./linkInference.test.ts.mdmd.md)

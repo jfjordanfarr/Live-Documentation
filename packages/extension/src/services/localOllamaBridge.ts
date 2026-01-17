@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 
+import type { InvokeLlmResult } from "@live-documentation/shared/contracts/llm";
 import {
   invokeOllamaChat,
-  resolveOllamaEndpoint,
-  OllamaInvocationError,
-  createMockOllamaResponse,
-  type InvokeLlmResult
-} from "@live-documentation/shared";
+  OllamaInvocationError
+} from "@live-documentation/shared/tooling/ollamaClient";
+import { resolveOllamaEndpoint } from "@live-documentation/shared/tooling/ollamaEndpoint";
+import { createMockOllamaResponse } from "@live-documentation/shared/tooling/ollamaMock";
 
 interface LocalInvocationOptions {
   prompt: string;

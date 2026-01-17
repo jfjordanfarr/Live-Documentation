@@ -1,7 +1,7 @@
 import * as path from "node:path";
 import ts from "typescript";
 
-import { ArtifactSeed } from "@live-documentation/shared";
+import { ArtifactSeed } from "@live-documentation/shared/inference/fallbackInference";
 
 export const DEFAULT_CODE_EXTENSIONS = new Set([
   ".ts",

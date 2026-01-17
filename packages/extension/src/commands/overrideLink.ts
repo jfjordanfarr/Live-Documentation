@@ -3,15 +3,19 @@ import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient/node";
 
 import {
-  ArtifactLayer,
-  LinkRelationshipKind,
-  OVERRIDE_LINK_REQUEST,
-  OverrideLinkRequest,
-  OverrideLinkResponse,
   RebindImpactedArtifact,
   RebindReason,
   RebindRequiredArtifact
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/maintenance";
+import {
+  OVERRIDE_LINK_REQUEST,
+  OverrideLinkRequest,
+  OverrideLinkResponse
+} from "@live-documentation/shared/contracts/overrides";
+import {
+  ArtifactLayer,
+  LinkRelationshipKind
+} from "@live-documentation/shared/domain/artifacts";
 
 interface OverrideCommandPayload {
   removed?: RebindRequiredArtifact;

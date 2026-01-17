@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/liveDocParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-livedocparser-ts
-- Generated At: 2026-01-12T21:47:40.529Z
+- Generated At: 2026-01-17T18:11:29.462Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Parses Live Documentation markdown files (originally MDMD format) to extract str
 - The "MDMD" naming persists in function/interface names (`extractMdmdDocumentDetails`, `MdmdDocumentDetails`) as an internal implementation detail; the module itself now uses the public "Live Documentation" branding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.529Z","inputHash":"c2c42bda61b0e05b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.462Z","inputHash":"b8f7518e21526034"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
@@ -137,5 +137,5 @@ Determines if an inline code snippet should be registered as a symbol reference.
 - `node:url` - `pathToFileURL`
 - [`linkHintExtractor.LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
 - [`linkHintExtractor.resolveReferencePath`](./linkHintExtractor.ts.mdmd.md#symbol-resolvereferencepath)
-- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint)
+- [`fallbackInference.RelationshipHint`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint)
 <!-- LIVE-DOC:END Dependencies -->

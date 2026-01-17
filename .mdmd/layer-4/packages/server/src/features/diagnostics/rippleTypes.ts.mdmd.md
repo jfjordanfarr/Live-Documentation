@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/rippleTypes.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-rippletypes-ts
-- Generated At: 2026-01-12T21:47:40.509Z
+- Generated At: 2026-01-17T18:11:29.449Z
 
 ## Authored
 ### Purpose
@@ -15,23 +15,23 @@ Defines the shared hint/impact payloads exchanged across diagnostics ripple anal
 - Keeps ripple metadata lightweight (depth, traversal path) for noise filtering and publisher fan-out without binding to a specific analyzer implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.509Z","inputHash":"d30eb0a39214cf8f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.449Z","inputHash":"6cde133c3faf5f0b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RippleHint` {#symbol-ripplehint}
 - Type: type
-- Source: [source](../../../../../../../packages/server/src/features/diagnostics/rippleTypes.ts#L3)
+- Source: [source](../../../../../../../packages/server/src/features/diagnostics/rippleTypes.ts#L4)
 - Returns: [`RelationshipHint`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint)
 
 #### `RippleImpact` {#symbol-rippleimpact}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/diagnostics/rippleTypes.ts#L8)
+- Source: [source](../../../../../../../packages/server/src/features/diagnostics/rippleTypes.ts#L9)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.KnowledgeArtifact`](../../../../shared/src/index.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
-- [`index.RelationshipHint`](../../../../shared/src/index.ts.mdmd.md#symbol-relationshiphint) (type-only)
+- [`artifacts.KnowledgeArtifact`](../../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-knowledgeartifact) (type-only)
+- [`fallbackInference.RelationshipHint`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-relationshiphint) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

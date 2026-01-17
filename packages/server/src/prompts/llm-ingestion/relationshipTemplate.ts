@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-import type { ArtifactLayer, LinkRelationshipKind } from "@live-documentation/shared";
+import type { ArtifactLayer, LinkRelationshipKind } from "@live-documentation/shared/domain/artifacts";
 
 export type ConfidenceLabel = "high" | "medium" | "low";
 

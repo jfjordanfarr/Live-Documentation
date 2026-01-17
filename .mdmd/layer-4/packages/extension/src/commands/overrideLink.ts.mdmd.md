@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-overridelink-ts
-- Generated At: 2026-01-15T02:41:18.257Z
+- Generated At: 2026-01-17T19:15:45.519Z
 
 ## Authored
 ### Purpose
@@ -18,26 +18,26 @@ Registers the `linkDiagnostics.overrideLink` VS Code command, enabling users to 
 - The command is intended for power users who need to correct false-positive diagnostics or establish relationships that static analysis cannot infer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.257Z","inputHash":"daa4ed2e8833b571"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:15:45.519Z","inputHash":"b45f9e933a4557cc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerOverrideLinkCommand` {#symbol-registeroverridelinkcommand}
 - Type: function
-- Source: [source](../../../../../../packages/extension/src/commands/overrideLink.ts#L39)
+- Source: [source](../../../../../../packages/extension/src/commands/overrideLink.ts#L43)
 - Returns: `vscode.Disposable`
 - Parameters: `client`: `LanguageClient`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ArtifactLayer`](../../../shared/src/index.ts.mdmd.md#symbol-artifactlayer)
-- [`index.LinkRelationshipKind`](../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.OVERRIDE_LINK_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-override_link_request)
-- [`index.OverrideLinkRequest`](../../../shared/src/index.ts.mdmd.md#symbol-overridelinkrequest)
-- [`index.OverrideLinkResponse`](../../../shared/src/index.ts.mdmd.md#symbol-overridelinkresponse)
-- [`index.RebindImpactedArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindimpactedartifact)
-- [`index.RebindReason`](../../../shared/src/index.ts.mdmd.md#symbol-rebindreason)
-- [`index.RebindRequiredArtifact`](../../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredartifact)
+- [`maintenance.RebindImpactedArtifact`](../../../shared/src/contracts/maintenance.ts.mdmd.md#symbol-rebindimpactedartifact)
+- [`maintenance.RebindReason`](../../../shared/src/contracts/maintenance.ts.mdmd.md#symbol-rebindreason)
+- [`maintenance.RebindRequiredArtifact`](../../../shared/src/contracts/maintenance.ts.mdmd.md#symbol-rebindrequiredartifact)
+- [`overrides.OVERRIDE_LINK_REQUEST`](../../../shared/src/contracts/overrides.ts.mdmd.md#symbol-override_link_request)
+- [`overrides.OverrideLinkRequest`](../../../shared/src/contracts/overrides.ts.mdmd.md#symbol-overridelinkrequest)
+- [`overrides.OverrideLinkResponse`](../../../shared/src/contracts/overrides.ts.mdmd.md#symbol-overridelinkresponse)
+- [`artifacts.ArtifactLayer`](../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-artifactlayer)
+- [`artifacts.LinkRelationshipKind`](../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-linkrelationshipkind)
 - `path`
 - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`

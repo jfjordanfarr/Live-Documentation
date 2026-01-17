@@ -10,7 +10,7 @@ import {
   workspace
 } from "vscode";
 
-import type { ArtifactSeed } from "@live-documentation/shared";
+import type { ArtifactSeed } from "@live-documentation/shared/inference/fallbackInference";
 
 import { SymbolBridgeAnalyzer } from "./symbolBridge";
 

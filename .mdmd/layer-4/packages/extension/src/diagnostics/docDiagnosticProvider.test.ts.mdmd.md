@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/diagnostics/docDiagnosticProvider.test.ts
 - Live Doc ID: LD-test-packages-extension-src-diagnostics-docdiagnosticprovider-test-ts
-- Generated At: 2025-12-11T02:37:59.851Z
+- Generated At: 2026-01-17T19:21:09.696Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the doc diagnostic provider’s helper utilities so the Problems quick
 - Added alongside the ripple metadata regression fix and runs in the same unit/integration sweep captured at [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1380-L1460](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1380-L1460), keeping the quick-fix labels and summaries under regression test.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:37:59.851Z","inputHash":"b6d8d5cd32902a18"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.696Z","inputHash":"b6d8d5cd32902a18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -34,7 +34,8 @@ _No public symbols detected_
 - packages/extension/src/commands: [acknowledgeDiagnostic.ts](../commands/acknowledgeDiagnostic.ts.mdmd.md)
 - packages/extension/src/diagnostics: [docDiagnosticProvider.ts](./docDiagnosticProvider.ts.mdmd.md)
 - packages/extension/src/testUtils: [vscodeMock.ts](../testUtils/vscodeMock.ts.mdmd.md)
-- packages/shared/src: [src/index.ts](../../../shared/src/index.ts.mdmd.md)
+- packages/shared/src/contracts: [diagnostics.ts](../../../shared/src/contracts/diagnostics.ts.mdmd.md)
+- packages/shared/src/domain: [artifacts.ts](../../../shared/src/domain/artifacts.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

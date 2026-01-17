@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/languageInference.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-languageinference-ts
-- Generated At: 2026-01-15T02:41:18.488Z
+- Generated At: 2026-01-17T18:11:29.456Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Language and file type inference for the knowledge layer. Maps file extensions t
 - `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.488Z","inputHash":"5e4b097d363c493a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.456Z","inputHash":"834c5e5609a40f0d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
@@ -74,6 +74,6 @@ Infers the artifact layer from MDMD metadata or file path conventions.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path`
-- [`index.ArtifactSeed`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactseed)
+- [`fallbackInference.ArtifactSeed`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

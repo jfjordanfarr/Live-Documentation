@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/analyzeWithAI.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-analyzewithai-ts
-- Generated At: 2026-01-15T02:41:18.245Z
+- Generated At: 2026-01-17T18:11:29.185Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers the `linkDiagnostics.analyzeWithAI` command so reviewers can run an LL
 - Spec tracking on Oct 28 confirmed T047 was fully implemented and unit-tested even though tasks.md still needed its checkbox flipped, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475); keep this command aligned with that spec entry.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.245Z","inputHash":"d4f400f64befd9dd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.185Z","inputHash":"096b0b5f450c0652"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerAnalyzeWithAICommand` {#symbol-registeranalyzewithaicommand}
@@ -33,12 +33,12 @@ Registers the `linkDiagnostics.analyzeWithAI` command so reviewers can run an LL
 - [`llmInvoker.LlmInvocationError`](../services/llmInvoker.ts.mdmd.md#symbol-llminvocationerror)
 - [`LlmInvoker`](../services/llmInvoker.ts.mdmd.md#symbol-llminvoker)
 - [`configService.LinkDiagnosticsSettings`](../settings/configService.ts.mdmd.md#symbol-linkdiagnosticssettings) (type-only)
-- [`index.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
-- [`index.ListOutstandingDiagnosticsResult`](../../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
-- [`index.OutstandingDiagnosticSummary`](../../../shared/src/index.ts.mdmd.md#symbol-outstandingdiagnosticsummary)
-- [`index.SET_DIAGNOSTIC_ASSESSMENT_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-set_diagnostic_assessment_request)
-- [`index.SetDiagnosticAssessmentParams`](../../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentparams)
-- [`index.SetDiagnosticAssessmentResult`](../../../shared/src/index.ts.mdmd.md#symbol-setdiagnosticassessmentresult)
+- [`diagnostics.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
+- [`diagnostics.ListOutstandingDiagnosticsResult`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
+- [`diagnostics.OutstandingDiagnosticSummary`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-outstandingdiagnosticsummary)
+- [`diagnostics.SET_DIAGNOSTIC_ASSESSMENT_REQUEST`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-set_diagnostic_assessment_request)
+- [`diagnostics.SetDiagnosticAssessmentParams`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-setdiagnosticassessmentparams)
+- [`diagnostics.SetDiagnosticAssessmentResult`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-setdiagnosticassessmentresult)
 - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/prompts/llm-ingestion/relationshipTemplate.ts
 - Live Doc ID: LD-implementation-packages-server-src-prompts-llm-ingestion-relationshiptemplate-ts
-- Generated At: 2026-01-12T21:47:40.593Z
+- Generated At: 2026-01-17T18:11:29.525Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Renders the versioned relationship-extraction prompt and JSON schema that power 
 - Keep the prompt text, response schema, and `dry-run.sample.json` fixture in lockstep—our orchestrator and integration tests treat that sample as the canonical contract <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2457-L2499> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6045-L6052>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.593Z","inputHash":"34719e4b9ea66a51"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.525Z","inputHash":"124df3d18148a3dd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConfidenceLabel` {#symbol-confidencelabel}
@@ -52,6 +52,6 @@ Renders the versioned relationship-extraction prompt and JSON schema that power 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:crypto` - `createHash`
-- [`index.ArtifactLayer`](../../../../shared/src/index.ts.mdmd.md#symbol-artifactlayer) (type-only)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
+- [`artifacts.ArtifactLayer`](../../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-artifactlayer) (type-only)
+- [`artifacts.LinkRelationshipKind`](../../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-linkrelationshipkind) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

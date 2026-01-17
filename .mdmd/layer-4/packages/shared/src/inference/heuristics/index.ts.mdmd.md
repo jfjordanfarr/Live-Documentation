@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-index-ts
-- Generated At: 2026-01-15T16:26:53.824Z
+- Generated At: 2026-01-17T19:21:10.035Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Turns the per-language builders into the default heuristic suite that replaced t
 - When adding a new heuristic module, export it through this registry and update `fallbackInference.languages.test.ts` so the regression suite exercises the new behavior <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L600-L676>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:26:53.824Z","inputHash":"79d0e2af93232397"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.035Z","inputHash":"79d0e2af93232397"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDefaultHeuristics` {#symbol-createdefaultheuristics}
@@ -45,6 +45,9 @@ Turns the per-language builders into the default heuristic suite that replaced t
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [symbolBridge.test.ts](../../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
+- [noiseFilter.test.ts](../../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
+- [pathReferenceDetector.test.ts](../../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](../fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../linkInference.test.ts.mdmd.md)

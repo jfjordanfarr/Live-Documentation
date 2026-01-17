@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/artifactLayerUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-artifactlayerutils-ts
-- Generated At: 2025-12-11T02:38:01.718Z
+- Generated At: 2026-01-17T19:21:10.024Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the layer guards (`isDocumentLayer`, `isImplementationLayer`) that the N
 - Shared by all language heuristics after the modularization commit that landed on Nov 8; keep these helpers stable unless roadmap updates redefine the layer taxonomy consumed by `FallbackHeuristic` ordering <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L60-L140>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.718Z","inputHash":"e5d17f480037adaf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.024Z","inputHash":"e5d17f480037adaf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `isDocumentLayer` {#symbol-isdocumentlayer}
@@ -37,6 +37,9 @@ Defines the layer guards (`isDocumentLayer`, `isImplementationLayer`) that the N
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [symbolBridge.test.ts](../../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
+- [noiseFilter.test.ts](../../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
+- [pathReferenceDetector.test.ts](../../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](../fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../linkInference.test.ts.mdmd.md)

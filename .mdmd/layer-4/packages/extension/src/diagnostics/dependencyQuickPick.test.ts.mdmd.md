@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/diagnostics/dependencyQuickPick.test.ts
 - Live Doc ID: LD-test-packages-extension-src-diagnostics-dependencyquickpick-test-ts
-- Generated At: 2025-12-11T02:37:59.828Z
+- Generated At: 2026-01-17T19:21:09.692Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks down the dependency quick pick helpers—`describeEdgePath`, `ParsedEdge`,
 - Uses a lightweight `vscode` mock to run under Vitest and participates in the lint/unit/build gate that preceded the quick-pick commit; see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1400-L1520](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L1400-L1520).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:37:59.828Z","inputHash":"38ac2aa21b6e659a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.692Z","inputHash":"38ac2aa21b6e659a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -34,7 +34,8 @@ _No public symbols detected_
 #### Vitest Unit Tests
 - packages/extension/src/diagnostics: [dependencyQuickPick.ts](./dependencyQuickPick.ts.mdmd.md)
 - packages/extension/src/shared: [artifactSchemas.ts](../shared/artifactSchemas.ts.mdmd.md)
-- packages/shared/src: [src/index.ts](../../../shared/src/index.ts.mdmd.md)
+- packages/shared/src/contracts: [dependencies.ts](../../../shared/src/contracts/dependencies.ts.mdmd.md)
+- packages/shared/src/domain: [artifacts.ts](../../../shared/src/domain/artifacts.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

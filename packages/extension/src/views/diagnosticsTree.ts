@@ -5,7 +5,7 @@ import {
   LIST_OUTSTANDING_DIAGNOSTICS_REQUEST,
   type ListOutstandingDiagnosticsResult,
   type OutstandingDiagnosticSummary
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/diagnostics";
 
 import { ACKNOWLEDGE_DIAGNOSTIC_COMMAND } from "../commands/acknowledgeDiagnostic";
 

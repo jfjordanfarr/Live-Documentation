@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/contracts/llm.ts
 - Live Doc ID: LD-implementation-packages-shared-src-contracts-llm-ts
-- Generated At: 2025-12-11T02:38:01.538Z
+- Generated At: 2026-01-17T19:21:10.008Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Declares the `linkDiagnostics/llm/invoke` contract that lets the extension trigg
 `InvokeLlmResult.usage` mirrors the confidence calibration work from [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460), so any schema changes must stay aligned with the inference accuracy tracker and ingestion orchestrator expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.538Z","inputHash":"8d0605ea52731c7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.008Z","inputHash":"8d0605ea52731c7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `INVOKE_LLM_REQUEST` {#symbol-invoke_llm_request}
@@ -35,3 +35,9 @@ Declares the `linkDiagnostics/llm/invoke` contract that lets the extension trigg
 ### Dependencies
 - [`relationshipExtractor.ModelUsage`](../inference/llm/relationshipExtractor.ts.mdmd.md#symbol-modelusage) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [localOllamaBridge.test.ts](../../../extension/src/services/localOllamaBridge.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

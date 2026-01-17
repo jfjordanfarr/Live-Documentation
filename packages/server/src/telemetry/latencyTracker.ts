@@ -1,4 +1,4 @@
-import { LatencyChangeKind, LatencySample, LatencySummary } from "@live-documentation/shared";
+import { LatencyChangeKind, LatencySample, LatencySummary } from "@live-documentation/shared/contracts/telemetry";
 
 import { normalizeFileUri } from "../features/utils/uri";
 

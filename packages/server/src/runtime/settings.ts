@@ -1,5 +1,5 @@
 // Live Documentation: .mdmd/layer-4/language-server-runtime/languageServerRuntime.mdmd.md#source-breadcrumbs
-import type { LinkRelationshipKind } from "@live-documentation/shared";
+import type { LinkRelationshipKind } from "@live-documentation/shared/domain/artifacts";
 
 import { ExtensionSettings } from "../features/settings/providerGuard";
 

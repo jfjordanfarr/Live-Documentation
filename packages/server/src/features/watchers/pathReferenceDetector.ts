@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import type { RelationshipHint } from "@live-documentation/shared";
+import type { RelationshipHint } from "@live-documentation/shared/inference/fallbackInference";
 
 import { normalizeFileUri } from "../utils/uri";
 

@@ -9,14 +9,16 @@ import {
 } from "vscode-languageclient/node";
 
 import {
-  RebindRequiredPayload,
   FEEDS_READY_REQUEST,
-  INVOKE_LLM_REQUEST,
   RESET_DIAGNOSTIC_STATE_NOTIFICATION,
-  type FeedsReadyResult,
+  type FeedsReadyResult
+} from "@live-documentation/shared/contracts/diagnostics";
+import {
+  INVOKE_LLM_REQUEST,
   type InvokeLlmRequest,
   type InvokeLlmResult
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/llm";
+import { RebindRequiredPayload } from "@live-documentation/shared/contracts/maintenance";
 
 import { registerAcknowledgementWorkflow } from "./commands/acknowledgeDiagnostic";
 import { registerAnalyzeWithAICommand } from "./commands/analyzeWithAI";

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { ListOutstandingDiagnosticsResult } from "@live-documentation/shared";
+import type { ListOutstandingDiagnosticsResult } from "@live-documentation/shared/contracts/diagnostics";
 import { createVscodeMock, type SharedVscodeMock } from "../testUtils/vscodeMock";
 
 const TEST_TIMEOUT_MS = 15000;

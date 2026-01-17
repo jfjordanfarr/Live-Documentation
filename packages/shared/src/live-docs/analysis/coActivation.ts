@@ -549,7 +549,7 @@ function collectClusterEdges(members: string[], edgeIndex: Map<string, CoActivat
   return result;
 }
 
-function binomialTail(trials: number, probability: number, observed: number): number {
+function _binomialTail(trials: number, probability: number, observed: number): number {
   if (trials <= 0) {
     return 1;
   }

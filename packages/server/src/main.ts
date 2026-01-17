@@ -20,7 +20,7 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   FEEDS_READY_REQUEST,
   type FeedsReadyResult
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/diagnostics";
 
 import { ChangeQueue, QueuedChange } from "./features/changeEvents/changeQueue";
 import { DiagnosticPublisher } from "./features/diagnostics/diagnosticPublisher";

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/main.ts
 - Live Doc ID: LD-implementation-packages-server-src-main-ts
-- Generated At: 2026-01-14T15:17:48.596Z
+- Generated At: 2026-01-17T18:11:29.523Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Hosts the language server entrypoint, wiring the LSP connection, runtime service
 - Keeps telemetry and ingestion services alive during integration runs, which is why the benchmark and US suites exercise this file whenever the language server boots ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.596Z","inputHash":"c6bbf38385bf5029"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.523Z","inputHash":"73adccadd166061e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -38,8 +38,8 @@ _No public symbols detected_
 - [`settings.extractExtensionSettings`](./runtime/settings.ts.mdmd.md#symbol-extractextensionsettings)
 - [`settings.extractTestModeOverrides`](./runtime/settings.ts.mdmd.md#symbol-extracttestmodeoverrides)
 - [`settings.mergeExtensionSettings`](./runtime/settings.ts.mdmd.md#symbol-mergeextensionsettings)
-- [`index.FEEDS_READY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-feeds_ready_request)
-- [`index.FeedsReadyResult`](../../shared/src/index.ts.mdmd.md#symbol-feedsreadyresult)
+- [`diagnostics.FEEDS_READY_REQUEST`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feeds_ready_request)
+- [`diagnostics.FeedsReadyResult`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feedsreadyresult)
 - `vscode-languageserver-textdocument` - `TextDocument`
 - `vscode-languageserver/node` - `Connection`, `DidChangeConfigurationNotification`, `DidChangeConfigurationParams`, `DocumentDiagnosticParams`, `DocumentDiagnosticRequest`, `InitializeParams`, `InitializeResult`, `ProposedFeatures`, `TextDocumentChangeEvent`, `TextDocumentSyncKind`, `TextDocuments`, `TextDocumentsConfiguration`, `createConnection`
 <!-- LIVE-DOC:END Dependencies -->

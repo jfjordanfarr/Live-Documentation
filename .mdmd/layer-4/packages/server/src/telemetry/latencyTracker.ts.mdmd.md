@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/telemetry/latencyTracker.ts
 - Live Doc ID: LD-implementation-packages-server-src-telemetry-latencytracker-ts
-- Generated At: 2025-12-15T00:38:06.692Z
+- Generated At: 2026-01-17T18:11:29.537Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the server-side latency recorder introduced in [AI-Agent-Workspace/Ch
 The tracker normalizes URIs before emitting `LatencySample`s and brokers its summaries through the shared telemetry contract documented in [packages/shared/src/contracts/telemetry.ts.mdmd.md](../../../shared/src/contracts/telemetry.ts.mdmd.md); downstream consumers include the latency summary command and perf spec described in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.692Z","inputHash":"26cc944b86cbae8b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.537Z","inputHash":"69d3ec85e461d355"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LatencyTrackerOptions` {#symbol-latencytrackeroptions}
@@ -30,9 +30,9 @@ The tracker normalizes URIs before emitting `LatencySample`s and brokers its sum
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`uri.normalizeFileUri`](../features/utils/uri.ts.mdmd.md#symbol-normalizefileuri)
-- [`index.LatencyChangeKind`](../../../shared/src/index.ts.mdmd.md#symbol-latencychangekind)
-- [`index.LatencySample`](../../../shared/src/index.ts.mdmd.md#symbol-latencysample)
-- [`index.LatencySummary`](../../../shared/src/index.ts.mdmd.md#symbol-latencysummary)
+- [`telemetry.LatencyChangeKind`](../../../shared/src/contracts/telemetry.ts.mdmd.md#symbol-latencychangekind)
+- [`telemetry.LatencySample`](../../../shared/src/contracts/telemetry.ts.mdmd.md#symbol-latencysample)
+- [`telemetry.LatencySummary`](../../../shared/src/contracts/telemetry.ts.mdmd.md#symbol-latencysummary)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

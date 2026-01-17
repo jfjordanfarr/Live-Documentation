@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/importEvidenceExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-importevidenceextractor-ts
-- Generated At: 2026-01-15T02:41:18.485Z
+- Generated At: 2026-01-17T19:15:45.764Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - Module resolution probes multiple extensions via `MODULE_RESOLUTION_EXTENSIONS`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.485Z","inputHash":"3f14b11eea767ce7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:15:45.764Z","inputHash":"3424d0ebdbb49b43"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ImportEvidenceContext` {#symbol-importevidencecontext}
@@ -41,11 +41,11 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - [`directoryScanner.fileExists`](./directoryScanner.ts.mdmd.md#symbol-fileexists)
 - [`languageInference.MODULE_RESOLUTION_EXTENSIONS`](./languageInference.ts.mdmd.md#symbol-module_resolution_extensions)
 - [`languageInference.inferScriptKind`](./languageInference.ts.mdmd.md#symbol-inferscriptkind)
-- [`index.LinkEvidence`](../../../../shared/src/index.ts.mdmd.md#symbol-linkevidence)
-- [`index.LinkRelationshipKind`](../../../../shared/src/index.ts.mdmd.md#symbol-linkrelationshipkind)
-- [`index.collectIdentifierUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-collectidentifierusage)
-- [`index.extractLocalImportNames`](../../../../shared/src/index.ts.mdmd.md#symbol-extractlocalimportnames)
-- [`index.hasRuntimeUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-hasruntimeusage)
-- [`index.hasTypeUsage`](../../../../shared/src/index.ts.mdmd.md#symbol-hastypeusage)
+- [`artifacts.LinkRelationshipKind`](../../../../shared/src/domain/artifacts.ts.mdmd.md#symbol-linkrelationshipkind)
+- [`linkInference.LinkEvidence`](../../../../shared/src/inference/linkInference.ts.mdmd.md#symbol-linkevidence)
+- [`typeScriptAstUtils.collectIdentifierUsage`](../../../../shared/src/language/typeScriptAstUtils.ts.mdmd.md#symbol-collectidentifierusage)
+- [`typeScriptAstUtils.extractLocalImportNames`](../../../../shared/src/language/typeScriptAstUtils.ts.mdmd.md#symbol-extractlocalimportnames)
+- [`typeScriptAstUtils.hasRuntimeUsage`](../../../../shared/src/language/typeScriptAstUtils.ts.mdmd.md#symbol-hasruntimeusage)
+- [`typeScriptAstUtils.hasTypeUsage`](../../../../shared/src/language/typeScriptAstUtils.ts.mdmd.md#symbol-hastypeusage)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

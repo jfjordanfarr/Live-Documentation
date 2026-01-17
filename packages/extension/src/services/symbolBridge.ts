@@ -2,13 +2,9 @@ import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient/node";
 import { z } from "zod";
 
-import {
-  COLLECT_WORKSPACE_SYMBOLS_REQUEST,
-  type ArtifactSeed,
-  type LinkEvidence,
-  type RelationshipHint,
-  type WorkspaceLinkContribution
-} from "@live-documentation/shared";
+import { COLLECT_WORKSPACE_SYMBOLS_REQUEST } from "@live-documentation/shared/contracts/symbols";
+import type { ArtifactSeed, RelationshipHint } from "@live-documentation/shared/inference/fallbackInference";
+import type { LinkEvidence, WorkspaceLinkContribution } from "@live-documentation/shared/inference/linkInference";
 
 const SUPPORTED_LANGUAGES = new Set([
   "typescript",

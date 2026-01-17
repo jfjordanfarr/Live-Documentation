@@ -7,7 +7,7 @@ import {
   type AcknowledgeDiagnosticParams,
   type AcknowledgeDiagnosticResult,
   type DiagnosticAcknowledgedPayload
-} from "@live-documentation/shared";
+} from "@live-documentation/shared/contracts/diagnostics";
 
 export const ACKNOWLEDGE_DIAGNOSTIC_COMMAND = "linkDiagnostics.acknowledgeDiagnostic";
 

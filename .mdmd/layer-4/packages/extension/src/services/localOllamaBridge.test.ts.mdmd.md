@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/services/localOllamaBridge.test.ts
 - Live Doc ID: LD-test-packages-extension-src-services-localollamabridge-test-ts
-- Generated At: 2025-12-11T02:37:59.903Z
+- Generated At: 2026-01-17T19:21:09.709Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the local Ollama bridge happy paths, config overrides, and mock fallba
 - Gained a 30 second `beforeAll` timeout on Nov 16 to mask the initial dynamic import cost and stop flaky safe-commit runs, per [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3140-L3175](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3140-L3175).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:37:59.903Z","inputHash":"9a57b7d2f703c151"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.709Z","inputHash":"9a57b7d2f703c151"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,7 +31,10 @@ _No public symbols detected_
 ### Targets
 #### Vitest Unit Tests
 - packages/extension/src/services: [localOllamaBridge.ts](./localOllamaBridge.ts.mdmd.md)
-- packages/shared/src: [src/index.ts](../../../shared/src/index.ts.mdmd.md)
+- packages/shared/src/contracts: [llm.ts](../../../shared/src/contracts/llm.ts.mdmd.md)
+- packages/shared/src/domain: [artifacts.ts](../../../shared/src/domain/artifacts.ts.mdmd.md)
+- packages/shared/src/inference/llm: [relationshipExtractor.ts](../../../shared/src/inference/llm/relationshipExtractor.ts.mdmd.md)
+- packages/shared/src/tooling: [ollamaClient.ts](../../../shared/src/tooling/ollamaClient.ts.mdmd.md), [ollamaEndpoint.ts](../../../shared/src/tooling/ollamaEndpoint.ts.mdmd.md), [ollamaMock.ts](../../../shared/src/tooling/ollamaMock.ts.mdmd.md), [safeFetch.ts](../../../shared/src/tooling/safeFetch.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

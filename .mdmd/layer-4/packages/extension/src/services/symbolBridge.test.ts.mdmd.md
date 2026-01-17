@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/services/symbolBridge.test.ts
 - Live Doc ID: LD-test-packages-extension-src-services-symbolbridge-test-ts
-- Generated At: 2025-12-15T00:38:05.938Z
+- Generated At: 2026-01-17T19:21:09.714Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercised `SymbolBridgeAnalyzer` with mocked VS Code symbol and reference provid
 - Coverage reports must stay above the ~80 percent threshold captured that day; if analyzer behaviour changes, extend these tests before relying on integration harness updates to catch regressions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.938Z","inputHash":"0b03a15f8681c56e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.714Z","inputHash":"7ff981c2576cda2c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,7 +25,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`symbolBridge.SymbolBridgeAnalyzer`](./symbolBridge.ts.mdmd.md#symbol-symbolbridgeanalyzer)
-- [`index.ArtifactSeed`](../../../shared/src/index.ts.mdmd.md#symbol-artifactseed) (type-only)
+- [`fallbackInference.ArtifactSeed`](../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed) (type-only)
 - `vitest` - `Mock`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 - `vscode` - `DocumentSymbol`, `Location`, `Position`, `Range`, `SymbolKind`, `Uri`, `commands`, `workspace`
 <!-- LIVE-DOC:END Dependencies -->
@@ -34,7 +34,10 @@ _No public symbols detected_
 ### Targets
 #### Vitest Unit Tests
 - packages/extension/src/services: [symbolBridge.ts](./symbolBridge.ts.mdmd.md)
-- packages/shared/src: [src/index.ts](../../../shared/src/index.ts.mdmd.md)
+- packages/shared/src/contracts: [symbols.ts](../../../shared/src/contracts/symbols.ts.mdmd.md)
+- packages/shared/src/domain: [artifacts.ts](../../../shared/src/domain/artifacts.ts.mdmd.md)
+- packages/shared/src/inference: [fallbackHeuristicTypes.ts](../../../shared/src/inference/fallbackHeuristicTypes.ts.mdmd.md), [fallbackInference.ts](../../../shared/src/inference/fallbackInference.ts.mdmd.md), [linkInference.ts](../../../shared/src/inference/linkInference.ts.mdmd.md)
+- packages/shared/src/inference/heuristics: [artifactLayerUtils.ts](../../../shared/src/inference/heuristics/artifactLayerUtils.ts.mdmd.md), [heuristics/index.ts](../../../shared/src/inference/heuristics/index.ts.mdmd.md), [shared.ts](../../../shared/src/inference/heuristics/shared.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 
-import { RelationshipHint } from "@live-documentation/shared";
+import { RelationshipHint } from "@live-documentation/shared/inference/fallbackInference";
 
 import { LinkHintContext, resolveReferencePath } from "./linkHintExtractor";
 

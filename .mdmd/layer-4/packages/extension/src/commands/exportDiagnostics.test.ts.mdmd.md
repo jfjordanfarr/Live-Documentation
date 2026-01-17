@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/commands/exportDiagnostics.test.ts
 - Live Doc ID: LD-test-packages-extension-src-commands-exportdiagnostics-test-ts
-- Generated At: 2025-12-15T00:38:05.849Z
+- Generated At: 2026-01-17T19:21:09.684Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the export diagnostics command so CSV/JSON generation, cancellation ha
 - Pending work to include acknowledgement metadata in exports should extend this suite once the feature lands, matching the open acceptance criteria referenced later that day in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:05.849Z","inputHash":"c296482c5933f3e0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.684Z","inputHash":"c93e47fafc4f07f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,7 +26,7 @@ _No public symbols detected_
 ### Dependencies
 - [`vscodeMock.SharedVscodeMock`](../testUtils/vscodeMock.ts.mdmd.md#symbol-sharedvscodemock)
 - [`vscodeMock.createVscodeMock`](../testUtils/vscodeMock.ts.mdmd.md#symbol-createvscodemock)
-- [`index.ListOutstandingDiagnosticsResult`](../../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult) (type-only)
+- [`diagnostics.ListOutstandingDiagnosticsResult`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult) (type-only)
 - `vitest` - `afterAll`, `beforeAll`, `beforeEach`, `describe`, `expect`, `it`, `vi`
 <!-- LIVE-DOC:END Dependencies -->
 
@@ -35,7 +35,8 @@ _No public symbols detected_
 #### Vitest Unit Tests
 - packages/extension/src/commands: [exportDiagnostics.ts](./exportDiagnostics.ts.mdmd.md)
 - packages/extension/src/testUtils: [vscodeMock.ts](../testUtils/vscodeMock.ts.mdmd.md)
-- packages/shared/src: [src/index.ts](../../../shared/src/index.ts.mdmd.md)
+- packages/shared/src/contracts: [diagnostics.ts](../../../shared/src/contracts/diagnostics.ts.mdmd.md)
+- packages/shared/src/domain: [artifacts.ts](../../../shared/src/domain/artifacts.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/contracts/symbols.ts
 - Live Doc ID: LD-implementation-packages-shared-src-contracts-symbols-ts
-- Generated At: 2025-12-11T02:38:01.556Z
+- Generated At: 2026-01-17T19:21:10.011Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared LSP contracts (`collectWorkspaceSymbols`, `inspectSymbolNeigh
 Later symbol-neighbor work (server provider + quick pick) depends on these shapes—see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-24-lsp--command-implementation-kickoff-lines-2701-3000](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-24-lsp--command-implementation-kickoff-lines-2701-3000)—so any schema changes must ripple through both the server handlers and extension consumers in lockstep.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.556Z","inputHash":"6fde1f6f0e360794"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.011Z","inputHash":"6fde1f6f0e360794"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `COLLECT_WORKSPACE_SYMBOLS_REQUEST` {#symbol-collect_workspace_symbols_request}
@@ -70,3 +70,9 @@ Later symbol-neighbor work (server provider + quick pick) depends on these shape
 - [`fallbackInference.ArtifactSeed`](../inference/fallbackInference.ts.mdmd.md#symbol-artifactseed) (type-only)
 - [`linkInference.WorkspaceLinkContribution`](../inference/linkInference.ts.mdmd.md#symbol-workspacelinkcontribution) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

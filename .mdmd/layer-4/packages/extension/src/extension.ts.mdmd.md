@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2026-01-15T02:41:18.270Z
+- Generated At: 2026-01-17T19:15:45.532Z
 
 ## Authored
 ### Purpose
@@ -17,17 +17,17 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.270Z","inputHash":"9d1b5720316cc7fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:15:45.532Z","inputHash":"754676fd74539dc3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L44)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L46)
 - Parameters: `context`: `vscode.ExtensionContext`
 
 #### `deactivate` {#symbol-deactivate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L283)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L285)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -48,13 +48,13 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - [`ConfigService`](./settings/configService.ts.mdmd.md#symbol-configservice)
 - [`diagnosticsTree.registerDiagnosticsTreeView`](./views/diagnosticsTree.ts.mdmd.md#symbol-registerdiagnosticstreeview)
 - [`fileMaintenance.registerFileMaintenanceWatcher`](./watchers/fileMaintenance.ts.mdmd.md#symbol-registerfilemaintenancewatcher)
-- [`index.FEEDS_READY_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-feeds_ready_request)
-- [`index.FeedsReadyResult`](../../shared/src/index.ts.mdmd.md#symbol-feedsreadyresult)
-- [`index.INVOKE_LLM_REQUEST`](../../shared/src/index.ts.mdmd.md#symbol-invoke_llm_request)
-- [`index.InvokeLlmRequest`](../../shared/src/index.ts.mdmd.md#symbol-invokellmrequest)
-- [`index.InvokeLlmResult`](../../shared/src/index.ts.mdmd.md#symbol-invokellmresult)
-- [`index.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/index.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
-- [`index.RebindRequiredPayload`](../../shared/src/index.ts.mdmd.md#symbol-rebindrequiredpayload)
+- [`diagnostics.FEEDS_READY_REQUEST`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feeds_ready_request)
+- [`diagnostics.FeedsReadyResult`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feedsreadyresult)
+- [`diagnostics.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
+- [`llm.INVOKE_LLM_REQUEST`](../../shared/src/contracts/llm.ts.mdmd.md#symbol-invoke_llm_request)
+- [`llm.InvokeLlmRequest`](../../shared/src/contracts/llm.ts.mdmd.md#symbol-invokellmrequest)
+- [`llm.InvokeLlmResult`](../../shared/src/contracts/llm.ts.mdmd.md#symbol-invokellmresult)
+- [`maintenance.RebindRequiredPayload`](../../shared/src/contracts/maintenance.ts.mdmd.md#symbol-rebindrequiredpayload)
 - `path`
 - `process` - `process`
 - `vscode`

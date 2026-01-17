@@ -1,6 +1,6 @@
 import { Connection } from "vscode-languageserver";
 
-import type { LinkRelationshipKind } from "@live-documentation/shared";
+import type { LinkRelationshipKind } from "@live-documentation/shared/domain/artifacts";
 
 export interface RippleExtensionSettings {
   maxDepth?: number;

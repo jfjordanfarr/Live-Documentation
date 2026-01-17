@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/exportDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-exportdiagnostics-ts
-- Generated At: 2026-01-15T02:41:18.251Z
+- Generated At: 2026-01-17T18:11:29.190Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exports outstanding diagnostics to CSV or JSON so leads can archive triage statu
 - Pending acceptance criteria still call for acknowledgement metadata in exports, as highlighted later that day - track completion against [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.251Z","inputHash":"038b6cce67844bb8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.190Z","inputHash":"47ee763edaf4e29b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EXPORT_DIAGNOSTICS_COMMAND` {#symbol-export_diagnostics_command}
@@ -34,8 +34,8 @@ Exports outstanding diagnostics to CSV or JSON so leads can archive triage statu
 ### Dependencies
 - `node:fs/promises`
 - `node:path`
-- [`index.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../../shared/src/index.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
-- [`index.ListOutstandingDiagnosticsResult`](../../../shared/src/index.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
+- [`diagnostics.LIST_OUTSTANDING_DIAGNOSTICS_REQUEST`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-list_outstanding_diagnostics_request)
+- [`diagnostics.ListOutstandingDiagnosticsResult`](../../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-listoutstandingdiagnosticsresult)
 - `vscode`
 - `vscode-languageclient/node` - `LanguageClient`
 <!-- LIVE-DOC:END Dependencies -->
