@@ -2,14 +2,19 @@
 
 ## Metadata
 - Layer: 2
-- Status: Planned
-- Priority: High
-- Estimated Effort: 4-6 dev sessions
+- Status: **Partially Complete** (Phase 6 done; Phases 1-5 deferred)
+- Priority: Medium (downgraded from High — change detection is nice-to-have, not mission-critical)
+- Estimated Effort: 4-6 dev sessions (for remaining phases)
 - Architecture: [Edge Aggregation Pipeline](../../layer-3/edge-aggregation-pipeline.mdmd.md)
 
 ## Overview
 
 This work item tracks the migration from SQLite-based `GraphStore` to the unified edge aggregation pipeline where **Live Docs ARE the database**. The architecture is fully specified in the linked Layer 3 document.
+
+**Current Status (Updated 2026-01-18)**:
+- ✅ **Phase 6 (Cleanup) is COMPLETE**: GraphStore, RippleAnalyzer, and graph:* scripts have been deleted.
+- ⏸️ **Phases 1-5 are DEFERRED**: The PendingEdge/NDJSON staging infrastructure was never built. Polyglot adapters write directly to Live Doc markdown.
+- The change-detection diagnostics (ripple analysis) are a legacy feature from before Live Doc generation existed. Type-safe languages already have their own lint/intellisense; polyglot change detection remains useful but is not mission-critical.
 
 ## Motivation
 
@@ -33,7 +38,7 @@ This duplication creates maintenance burden, configuration divergence, and unnec
 
 ## Phased Implementation Plan
 
-### Phase 1: Live Doc Graph Query Parity
+### Phase 1: Live Doc Graph Query Parity *(Deferred)*
 **Goal**: Ensure `buildLiveDocGraph()` supports all query patterns currently served by `RippleAnalyzer`.
 
 - [ ] Add `inboundBFS(uri, maxDepth)` method to Live Doc graph
@@ -41,7 +46,7 @@ This duplication creates maintenance burden, configuration divergence, and unnec
 - [ ] Add `getArtifactByUri(uri)` equivalent using node lookup
 - [ ] Write unit tests comparing BFS results against known fixture graphs
 
-### Phase 2: PendingEdge Infrastructure
+### Phase 2: PendingEdge Infrastructure *(Deferred)*
 **Goal**: Create the NDJSON staging infrastructure for edge aggregation.
 
 - [ ] Define `PendingEdge` and `ResolvedEdge` types in `packages/shared/`
@@ -50,21 +55,21 @@ This duplication creates maintenance burden, configuration divergence, and unnec
 - [ ] Create `liveDocEdgeWriter.ts` to update `## Dependencies` sections
 - [ ] Write integration tests for the full collect → aggregate → write pipeline
 
-### Phase 3: Adapter Migration
+### Phase 3: Adapter Migration *(Deferred)*
 **Goal**: Refactor polyglot adapters to emit `PendingEdge` via collector.
 
 - [ ] Update `rubyAdapter`, `pythonAdapter`, `rustAdapter`, etc.
 - [ ] Ensure existing benchmark precision/recall is maintained
 - [ ] Remove any direct GraphStore writes from adapters
 
-### Phase 4: Feed Parser Migration
+### Phase 4: Feed Parser Migration *(Deferred)*
 **Goal**: Refactor LSIF/SCIP parsers to emit `PendingEdge`.
 
 - [ ] Update `lsifParser.ts` to call `edgeCollector.appendEdge()`
 - [ ] Update `scipParser.ts` to call `edgeCollector.appendEdge()`
 - [ ] Update `knowledgeGraphBridge.ts` to coordinate feed → collector flow
 
-### Phase 5: Runtime Refactoring
+### Phase 5: Runtime Refactoring *(Deferred)*
 **Goal**: Replace `RippleAnalyzer` + `GraphStore` with Live Doc graph.
 
 - [ ] Update `changeProcessor.ts` to use `buildLiveDocGraph()` for ripple
@@ -72,19 +77,19 @@ This duplication creates maintenance burden, configuration divergence, and unnec
 - [ ] Update diagnostic publishing to use Live Doc graph nodes
 - [ ] Verify extension runtime works end-to-end
 
-### Phase 6: Cleanup
+### Phase 6: Cleanup ✅ **COMPLETE** (2026-01-12)
 **Goal**: Remove all deprecated infrastructure.
 
-- [ ] Delete `graphStore.ts`, `graphStore.types.ts`, `graphStore.mappers.ts`, `graphStore.test.ts`
-- [ ] Delete `rippleAnalyzer.ts`, `rippleAnalyzer.test.ts`
-- [ ] Delete `scripts/graph-tools/` folder
-- [ ] Delete `data/graph-snapshots/` folder
-- [ ] Remove `graph:*` scripts from `package.json`
-- [ ] Update `safe-to-commit.mjs` to remove `graph:snapshot` call
-- [ ] Update or remove dependent tests (`llmIngestionDryRun.test.ts`, `rebuildStability.test.ts`)
-- [ ] Update copilot-instructions.md to remove `graph:*` command references
+- [x] Delete `graphStore.ts`, `graphStore.types.ts`, `graphStore.mappers.ts`, `graphStore.test.ts`
+- [x] Delete `rippleAnalyzer.ts`, `rippleAnalyzer.test.ts`
+- [x] Delete `scripts/graph-tools/` folder
+- [x] Delete `data/graph-snapshots/` folder
+- [x] Remove `graph:*` scripts from `package.json`
+- [x] Update `safe-to-commit.mjs` to remove `graph:snapshot` call
+- [x] Update or remove dependent tests (`llmIngestionDryRun.test.ts`, `rebuildStability.test.ts`)
+- [x] Update copilot-instructions.md to remove `graph:*` command references
 
-## Files to Delete (Phase 6)
+## Files Deleted (Phase 6 — Complete)
 
 | File | Reason |
 |------|--------|

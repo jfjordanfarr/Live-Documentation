@@ -4,6 +4,20 @@
 - Layer: 3
 - Component IDs: COMP-301, COMP-302, COMP-303
 - Supersedes: COMP-005 (Knowledge Graph Ingestion), portions of COMP-006 (LLM Ingestion Pipeline)
+- **Implementation Status**: Partially complete (see below)
+
+## Implementation Status
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| Phase 6 | Cleanup (delete GraphStore, RippleAnalyzer, graph:* scripts) | ✅ **Complete** (2026-01-12) |
+| Phase 1-5 | PendingEdge infrastructure, NDJSON staging, multi-source aggregation | ⏸️ **Deferred** |
+
+**Current State**: The SQLite-based GraphStore and RippleAnalyzer have been deleted. Live Docs are the database. However, the intermediate PendingEdge/NDJSON staging layer was never implemented—polyglot adapters write dependencies directly to Live Doc markdown. The multi-source aggregation (LLM voting, NDJSON staging) remains aspirational.
+
+See [edge-aggregation-consolidation.mdmd.md](../layer-2/work-items/edge-aggregation-consolidation.mdmd.md) for the phased implementation plan.
+
+---
 
 ## Overview
 

@@ -33,7 +33,13 @@ Document the visualization command center that renders the Live Doc graph as int
 - [packages/scripts/src/live-docs/explorer/server/buildAssets.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/buildAssets.ts.mdmd.md)
 
 #### Shared
+- [packages/scripts/src/live-docs/explorer/shared/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/index.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/shared/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/types.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/localMapData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/localMapData.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — Schema for JSON bundles with provenance and symbol index
 
 #### Client Core
 - [packages/scripts/src/live-docs/explorer/client/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/index.ts.mdmd.md)
@@ -42,6 +48,24 @@ Document the visualization command center that renders the Live Doc graph as int
 - [packages/scripts/src/live-docs/explorer/client/dom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/dom.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/errors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/errors.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/detailPanel.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/detailPanel.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/markdown.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/markdown.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/pathfind.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/pathfind.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/graph-helpers.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/graph-helpers.ts.mdmd.md)
+
+#### Bootstrap (entry point heuristics)
+- [packages/scripts/src/live-docs/explorer/client/bootstrap/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/bootstrap/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts.mdmd.md)
+
+#### Panels (UI controls)
+- [packages/scripts/src/live-docs/explorer/client/panels/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/panels/tuning.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/tuning.ts.mdmd.md)
+
+#### Persistence (state management)
+- [packages/scripts/src/live-docs/explorer/client/persistence/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/index.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts.mdmd.md)
 
 #### Views
 - [packages/scripts/src/live-docs/explorer/client/views/circuitView.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView.ts.mdmd.md)
@@ -54,10 +78,21 @@ Document the visualization command center that renders the Live Doc graph as int
 - [packages/scripts/src/live-docs/explorer/client/views/localView/render.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/render.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/state.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/views/localView/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/types.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/card-factory.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/card-factory.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/column-factory.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/column-factory.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-renderer.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-renderer.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts.mdmd.md)
 
-#### Static Distribution (planned)
+#### Static Distribution
 - [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — Schema for JSON bundles with provenance and symbol index
+- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md) — Builds static explorer bundles
 
 ## Evidence
 - `npm run live-docs:visualize` launches the HTTP server and opens the browser; manual smoke tests validate view switching and connection rendering.
