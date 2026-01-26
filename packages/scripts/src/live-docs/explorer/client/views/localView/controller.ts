@@ -269,7 +269,8 @@ export class LocalViewController implements LocalViewApi {
       currentSubgraph.center.id,
       dimSymbols,
       dimConnections,
-      () => this.drawConnections()
+      () => this.drawConnections(),
+      () => this.reapplyVerticalCentering()
     );
   }
 
@@ -288,7 +289,12 @@ export class LocalViewController implements LocalViewApi {
     this.localMapState.update(s => setHoveredSymbol(s, null));
 
     // Clear the DOM highlight using pure function
-    clearSymbolHighlightDOM(this.container, this.overlay, () => this.drawConnections());
+    clearSymbolHighlightDOM(
+      this.container,
+      this.overlay,
+      () => this.drawConnections(),
+      () => this.reapplyVerticalCentering()
+    );
   }
 
   /**
@@ -625,6 +631,16 @@ export class LocalViewController implements LocalViewApi {
 
   scheduleConnectionRedraw(): void {
     requestAnimationFrame(() => this.drawConnections());
+  }
+
+  /**
+   * Reapplies vertical centering to columns after symbol collapse/uncollapse.
+   * Called when pinning/unpinning causes cards to change height.
+   */
+  private reapplyVerticalCentering(): void {
+    if (this.contentRoot) {
+      this.applyColumnVerticalCentering(this.contentRoot);
+    }
   }
 
   shouldIncludeNode(node: ExplorerNodePayload): boolean {

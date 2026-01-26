@@ -176,7 +176,8 @@ export function applySymbolHighlight(
   centerId: string,
   dimSymbols: number,
   dimConnections: number,
-  drawConnections: () => void
+  drawConnections: () => void,
+  reapplyCentering?: () => void
 ): void {
   // Apply CSS custom properties for dimming
   container.style.setProperty("--hover-dim-symbols", String(dimSymbols));
@@ -217,8 +218,10 @@ export function applySymbolHighlight(
     }
   });
 
-  // If we collapsed any symbols, redraw connections
+  // If we collapsed any symbols, reapply centering first, then redraw connections
+  // (centering changes element positions, so connectors must be drawn after)
   if (didCollapse) {
+    reapplyCentering?.();
     drawConnections();
   }
 
@@ -240,7 +243,8 @@ export function applySymbolHighlight(
 export function clearSymbolHighlightDOM(
   container: HTMLElement,
   overlay: HTMLElement,
-  drawConnections: () => void
+  drawConnections: () => void,
+  reapplyCentering?: () => void
 ): void {
   const hadCollapsed = container.querySelector(".symbol-collapsed") !== null;
 
@@ -263,8 +267,10 @@ export function clearSymbolHighlightDOM(
     el.classList.remove("symbol-pinned");
   });
 
-  // If we had collapsed symbols, redraw connections to restore all paths
+  // If we had collapsed symbols, reapply centering first, then redraw connections
+  // (centering changes element positions, so connectors must be drawn after)
   if (hadCollapsed) {
+    reapplyCentering?.();
     drawConnections();
   }
 }
