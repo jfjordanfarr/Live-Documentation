@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 16, 2026\)*
+*Status: Active Development (Jan 18, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -676,6 +676,18 @@ The team focused on identifying "Islands" (disconnected nodes) to improve graph 
 * **Java Casing Fix (Commit 222):** Fixed a critical bug in Java same-package detection where class names were being lowercased, breaking links to PascalCase files. Java Rosetta recall hit 100%.  
 * **The 100% Milestone:** With these fixes, **all 8 language fixtures** in the Rosetta suite achieved **100% Precision and Recall**, proving that the regex-based heuristics are robust enough for standard architectural patterns across the polyglot stack.
 
+### **Phase XLV: The Hub-Busting & Statistical Rigor (Jan 17-18)**
+
+Date: January 17–18, 2026
+
+Scope: Commits 224–226
+
+The team matured the system's analytical engine from simple connectivity to **Network Science** and fixed long-standing topological distortions.
+
+* **Degree-Corrected Co-Activation (Commit 224):** Implemented a statistical background model ($E\_{ij} \= \\frac{d\_i d\_j}{2E}$) to normalize edge weights. This prevents "Hub Nodes" (like barrel files) from creating false-positive semantic clusters just because they have high connectivity.  
+* **The De-Barreling (Commit 225):** The team deleted the packages/shared/src/index.ts mega-barrel. This artificial "Star Topology" was obscuring the natural clustering of the codebase. By forcing direct subpath imports, the graph instantly relaxed into distinct, logical clusters (e.g., the Oracle cluster decoupled from the Core).  
+* **Architectural Documentation (Commit 226):** Formalized these complex concepts into Layer 3 documentation (co-activation-clustering.mdmd.md and polyglot-adapters.mdmd.md), ensuring the math and the inventory of 16 language adapters are permanently recorded.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -706,7 +718,8 @@ The team focused on identifying "Islands" (disconnected nodes) to improve graph 
 * **Jan 13 (Phase XLI):** "The Three-Source Truth." (Descoping LSIF/SCIP to focus on AST/LLM/Symbols).  
 * **Jan 14 (Phase XLII):** "The Polyglot Connectivity." (Rosetta Stone benchmarks and symbol-level resolution for Java/Python/Rust).  
 * **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).  
-* **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).
+* **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).  
+* **Jan 17 (Phase XLV):** "Topological Hygiene." (Statistical normalization and removing barrel file distortion).
 
 ## **Technical Themes & Motifs**
 

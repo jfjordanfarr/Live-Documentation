@@ -3,10 +3,25 @@
 .sources-view {
   padding: 40px;
   max-width: 900px;
+  width: 100%;
   margin: 0 auto;
+  overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
   box-sizing: border-box;
+}
+
+/* Responsive: reduce padding on narrower viewports */
+@media (max-width: 768px) {
+  .sources-view {
+    padding: 24px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sources-view {
+    padding: 16px 12px;
+  }
 }
 
 .sources-header {

@@ -275,9 +275,14 @@
     position: absolute;
     bottom: 20px;
     left: 20px;
-    display: flex;
+    display: none;
     gap: 10px;
     z-index: 100;
+}
+
+/* Show zoom controls only for Circuit Board and Local Map views */
+body.zoom-controls-active #controls {
+    display: flex;
 }
 
 #legend-panel {
