@@ -2,6 +2,7 @@ import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge, LocalSubgraph } from "./types";
 import type { BezierTuning, ExplorerState } from "../../types";
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
  * Represents a hop in the multi-hop visualization chain.
@@ -350,8 +351,9 @@ function appendConnectionPath(
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.classList.add("connection-path", renderDirection);
   path.dataset.kind = edge.kind;
-  path.dataset.sourceSymbol = edge.sourceSymbol ?? "";
-  path.dataset.targetSymbol = edge.targetSymbol ?? "";
+  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
+  path.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+  path.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
   path.dataset.sourceId = edge.sourceId;
   path.dataset.targetId = edge.targetId;
   svg.appendChild(path);
@@ -441,8 +443,9 @@ function appendSelfLoopPath(
   providerPolygon.dataset.kind = edge.kind;
   providerPolygon.dataset.sourceId = edge.sourceId;
   providerPolygon.dataset.targetId = edge.targetId;
-  providerPolygon.dataset.sourceSymbol = edge.sourceSymbol ?? "";
-  providerPolygon.dataset.targetSymbol = edge.targetSymbol ?? "";
+  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
+  providerPolygon.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+  providerPolygon.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
   svg.appendChild(providerPolygon);
 
   // === Render consumer stub as filled polygon (true taper) ===
@@ -455,8 +458,9 @@ function appendSelfLoopPath(
   consumerPolygon.dataset.kind = edge.kind;
   consumerPolygon.dataset.sourceId = edge.sourceId;
   consumerPolygon.dataset.targetId = edge.targetId;
-  consumerPolygon.dataset.sourceSymbol = edge.sourceSymbol ?? "";
-  consumerPolygon.dataset.targetSymbol = edge.targetSymbol ?? "";
+  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
+  consumerPolygon.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+  consumerPolygon.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
   svg.appendChild(consumerPolygon);
 }
 

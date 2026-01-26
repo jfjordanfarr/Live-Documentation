@@ -223,9 +223,10 @@ export function applySymbolHighlight(
   }
 
   // Mark related connection paths as highlighted
+  // Use normalized symbols to match paths (which also use normalized data attributes)
   highlight.relatedEdges.forEach(edge => {
-    const sourceSymbol = edge.sourceSymbol ?? "";
-    const targetSymbol = edge.targetSymbol ?? "";
+    const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+    const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
     const selector = `.connection-path[data-source-id="${edge.sourceId}"][data-target-id="${edge.targetId}"][data-source-symbol="${sourceSymbol}"][data-target-symbol="${targetSymbol}"]`;
     overlay.querySelectorAll<SVGPathElement>(selector).forEach(path => {
       path.classList.add("connection-highlighted");

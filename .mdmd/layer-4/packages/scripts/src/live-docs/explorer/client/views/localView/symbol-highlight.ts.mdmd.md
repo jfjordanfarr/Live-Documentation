@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-ts
-- Generated At: 2026-01-03T20:41:39.272Z
+- Generated At: 2026-01-26T20:59:57.395Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for computing symbol hover/pin highlighting in the Local Map. Det
 Extracted from controller.ts during Dev Day 50 (12/19). The `computeSymbolHighlight()` function is pure computation; `applySymbolHighlight()` handles DOM mutations. This separation enables comprehensive unit testing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.272Z","inputHash":"a7129c4e962bdd54"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-26T20:59:57.395Z","inputHash":"f094e85c7d842c6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolHighlightResult` {#symbol-symbolhighlightresult}
@@ -49,7 +49,7 @@ This is the side-effectful part of symbol highlighting.
 
 #### `clearSymbolHighlightDOM` {#symbol-clearsymbolhighlightdom}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts#L239)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts#L240)
 
 ##### `clearSymbolHighlightDOM` — Summary
 Clears all symbol highlighting from the DOM.

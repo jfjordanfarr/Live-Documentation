@@ -148,10 +148,10 @@ export class LocalViewController implements LocalViewApi {
       if (lengthChanged && (state.pinnedPath.length > 1 || prevState.pinnedPath.length > 1)) {
         // Defer render to avoid recursive updates
         requestAnimationFrame(() => this.render());
-      } else if (state.pinnedPath !== prevState.pinnedPath) {
-        // Pin content changed but layout structure is the same - just redraw connections
-        this.scheduleConnectionRedraw();
       }
+      // Note: We intentionally do NOT scheduleConnectionRedraw when pinnedPath changes for single-hop pins.
+      // The togglePinnedSymbol method already handles the full highlight flow including drawConnections.
+      // Scheduling an async redraw here would overwrite the path highlights applied by highlightSymbolConnections.
       // Could add more reactive updates here (e.g., hover state changes)
     });
   }
