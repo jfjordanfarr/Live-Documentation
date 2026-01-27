@@ -2,66 +2,66 @@
   {
     "source": "src/Diagnostics/App.cs",
     "target": "src/Diagnostics/Data/Repository.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/App.cs",
     "target": "src/Diagnostics/Models/FormattedReport.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/App.cs",
     "target": "src/Diagnostics/Models/Formatter.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/App.cs",
     "target": "src/Diagnostics/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/App.cs",
     "target": "src/Diagnostics/Services/ReportService.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Data/Repository.cs",
     "target": "src/Diagnostics/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Models/FormattedReport.cs",
     "target": "src/Diagnostics/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Models/Formatter.cs",
     "target": "src/Diagnostics/Models/FormattedReport.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Models/Formatter.cs",
     "target": "src/Diagnostics/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Services/ReportService.cs",
     "target": "src/Diagnostics/Data/Repository.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Services/ReportService.cs",
     "target": "src/Diagnostics/Models/FormattedReport.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Services/ReportService.cs",
     "target": "src/Diagnostics/Models/Formatter.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Diagnostics/Services/ReportService.cs",
     "target": "src/Diagnostics/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   }
 ]

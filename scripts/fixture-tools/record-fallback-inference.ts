@@ -428,9 +428,9 @@ function buildEdgeRecords(result: FallbackInferenceResult, workspaceRoot: string
   }
 
   const deduped = dedupeRecords(edges);
-  const filtered = deduped.filter(record => record.relation !== "references");
-  // Drop low-signal reference edges to avoid inflating benchmark false positives.
-  return sortRecords(filtered);
+  // With SCIP-grounded taxonomy (references | extends | implements),
+  // all edges are meaningful - no filtering needed
+  return sortRecords(deduped);
 }
 
 function compareContextPriority(candidate: string | undefined, baseline: string | undefined): number {
@@ -439,33 +439,21 @@ function compareContextPriority(candidate: string | undefined, baseline: string 
   return candidateScore - baselineScore;
 }
 
+/**
+ * Map internal LinkRelationshipKind to SCIP-grounded taxonomy: references | extends | implements
+ * This aligns heuristic output with compiler-backed ground truth from SCIP indexers.
+ */
 function mapRelation(
   kind: LinkRelationshipKind,
-  context: string | undefined,
-  rationale: string | undefined
+  _context: string | undefined,
+  _rationale: string | undefined
 ): string {
-  switch (context) {
-    case "include":
-      return "includes";
-    case "call":
-      return "calls";
-    case "require":
-      return "requires";
-    case "use":
-      return "uses";
-    case "import":
-      return "imports";
-  }
-
+  // SCIP-grounded taxonomy: only 3 relation types
+  // "implements" is preserved for interface implementation
+  // Everything else maps to "references" (the general case)
   switch (kind) {
-    case "includes":
-      return "includes";
     case "implements":
       return "implements";
-    case "documents":
-      return "documents";
-    case "depends_on":
-      return rationale?.startsWith("java usage") ? "uses" : "depends_on";
     default:
       return "references";
   }

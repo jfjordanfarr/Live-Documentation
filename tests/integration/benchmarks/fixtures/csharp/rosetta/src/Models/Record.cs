@@ -16,4 +16,17 @@ public class Record : Entry
         Value = value;
         Tags = new List<string>();
     }
+
+    /// <summary>
+    /// Factory method for creating records with sensible defaults.
+    /// </summary>
+    public static Record Create(int id, string name, double value) => 
+        new($"{name}-{id}", value);
+
+    /// <summary>
+    /// Validates configuration is within acceptable bounds.
+    /// Delegates to ModelFactory.ValidateConfig for actual validation.
+    /// </summary>
+    public static bool ValidateConfig(ProcessorConfig config) =>
+        ModelFactory.ValidateConfig(config);
 }

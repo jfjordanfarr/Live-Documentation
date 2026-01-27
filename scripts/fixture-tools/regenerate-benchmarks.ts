@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -74,7 +75,7 @@ import {
   type OracleOverrideConfig as TypeScriptOverrideConfig
 } from "../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle";
 
-type OracleKind = "typescript" | "python" | "c" | "rust" | "java" | "ruby" | "csharp" | "go";
+type OracleKind = "typescript" | "python" | "c" | "rust" | "java" | "ruby" | "csharp" | "go" | "scip";
 
 type OracleFixtureDefinition = ManifestFixtureDefinition & {
   oracle?: OracleFixtureConfig;
@@ -88,7 +89,30 @@ type OracleFixtureConfig =
   | JavaOracleConfig
   | RubyOracleConfig
   | CSharpOracleConfig
-  | GoOracleConfig;
+  | GoOracleConfig
+  | ScipOracleConfig;
+
+/**
+ * SCIP oracle configuration - uses compiler-backed SCIP indexers for ground truth
+ * Supported indexers: scip-typescript, scip-dotnet, scip-java, etc.
+ */
+interface ScipOracleConfig {
+  kind: "scip";
+  /**
+   * The SCIP indexer to use: "typescript" | "csharp" | "java" | etc.
+   * Maps to the external tool: scip-{indexer}
+   */
+  indexer: "typescript" | "csharp" | "java" | "python" | "go" | "rust";
+  /**
+   * Subdirectory within the fixture to index (e.g., "source" for ky repo)
+   */
+  root?: string;
+  /**
+   * Path to manual overrides JSON for edges that SCIP cannot detect
+   * (e.g., cross-format dependencies like aspx → cs)
+   */
+  manualOverrides?: string;
+}
 
 interface TypeScriptOracleConfig {
   kind: "typescript";
@@ -193,7 +217,8 @@ const LANGUAGE_ALIASES = new Map<string, OracleKind>([
   ["csharp", "csharp"],
   ["dotnet", "csharp"],
   ["go", "go"],
-  ["golang", "go"]
+  ["golang", "go"],
+  ["scip", "scip"]
 ]);
 
 const SUPPORTED_LANGUAGES = Array.from(new Set(LANGUAGE_ALIASES.values())).sort();
@@ -463,6 +488,15 @@ async function regenerateFixture(
         workspaceRoot,
         overridesPath,
         expectedEdges,
+        expectedPath,
+        writeExpected: options.writeExpected
+      });
+    } else if (oracle.kind === "scip") {
+      await regenerateScipFixture({
+        fixture,
+        oracle,
+        workspaceRoot,
+        overridesPath,
         expectedPath,
         writeExpected: options.writeExpected
       });
@@ -1232,6 +1266,153 @@ function contextualizeError(fixtureId: string, error: unknown): Error {
     return new Error(`Fixture ${fixtureId}: ${error.message}`);
   }
   return new Error(`Fixture ${fixtureId}: ${String(error)}`);
+}
+
+/**
+ * Regenerate expected.json using SCIP compiler-backed indexer.
+ * This invokes the external SCIP indexer (scip-typescript, scip-dotnet, etc.)
+ * and then converts the output to expected.json format.
+ */
+async function regenerateScipFixture(input: {
+  fixture: OracleFixtureDefinition;
+  oracle: ScipOracleConfig;
+  workspaceRoot: string;
+  overridesPath: string;
+  expectedPath: string;
+  writeExpected: boolean;
+}): Promise<void> {
+  const { oracle, workspaceRoot, overridesPath, expectedPath, writeExpected } = input;
+  
+  const indexRoot = oracle.root ? path.join(workspaceRoot, oracle.root) : workspaceRoot;
+  const indexPath = path.join(indexRoot, "index.scip");
+  
+  // Step 1: Invoke the SCIP indexer based on the indexer type
+  console.log(`  Invoking scip-${oracle.indexer} indexer...`);
+  
+  let indexerCmd: string;
+  switch (oracle.indexer) {
+    case "typescript":
+      indexerCmd = `npx scip-typescript index --infer-tsconfig --output index.scip`;
+      break;
+    case "csharp":
+      indexerCmd = `scip-dotnet index --output index.scip`;
+      break;
+    case "java":
+      indexerCmd = `scip-java index --output index.scip`;
+      break;
+    case "python":
+      indexerCmd = `scip-python index --output index.scip`;
+      break;
+    case "go":
+      indexerCmd = `scip-go index --output index.scip`;
+      break;
+    case "rust":
+      indexerCmd = `rust-analyzer scip .`;
+      break;
+    default:
+      throw new Error(`Unsupported SCIP indexer: ${oracle.indexer}`);
+  }
+  
+  try {
+    execSync(indexerCmd, {
+      cwd: indexRoot,
+      stdio: ["ignore", "pipe", "pipe"],
+      timeout: 120000 // 2 minute timeout for large codebases
+    });
+    console.log(`  ✓ SCIP index generated: ${indexPath}`);
+  } catch (err) {
+    const error = err as { message?: string; stderr?: Buffer };
+    const stderr = error.stderr?.toString() || error.message || "Unknown error";
+    throw new Error(`SCIP indexer failed: ${stderr.split("\\n")[0]}`);
+  }
+  
+  // Step 2: Convert SCIP index to expected.json using scip-to-expected.ts
+  console.log(`  Converting SCIP index to expected.json...`);
+  
+  const scipToExpectedPath = path.join(REPO_ROOT, "scripts", "fixture-tools", "scip-to-expected.ts");
+  const convertCmd = `npx tsx ${scipToExpectedPath} --input "${indexPath}"`;
+  
+  let expectedJson: string;
+  try {
+    const result = execSync(convertCmd, {
+      cwd: REPO_ROOT,
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "pipe"],
+      timeout: 60000
+    });
+    expectedJson = result;
+  } catch (err) {
+    const error = err as { message?: string; stderr?: Buffer };
+    const stderr = error.stderr?.toString() || error.message || "Unknown error";
+    throw new Error(`SCIP to expected.json conversion failed: ${stderr}`);
+  }
+  
+  // Parse and count edges
+  let edges = JSON.parse(expectedJson) as EdgeRecord[];
+  console.log(`  Generated ${edges.length} edges from compiler analysis`);
+  
+  // Step 3: Merge manual overrides if present
+  interface ScipOverrideConfig {
+    manualEdges?: EdgeRecord[];
+    removals?: Array<{ source: string; target: string; reason?: string }>;
+  }
+  const overrides = await readOverrideConfig<ScipOverrideConfig>(overridesPath);
+  
+  // Handle removals first
+  if (overrides?.removals && overrides.removals.length > 0) {
+    const removalKeys = new Set(
+      overrides.removals.map(r => `${r.source}|${r.target}`)
+    );
+    const beforeCount = edges.length;
+    edges = edges.filter(e => !removalKeys.has(`${e.source}|${e.target}`));
+    const removedCount = beforeCount - edges.length;
+    if (removedCount > 0) {
+      console.log(`  Removed ${removedCount} edges per override removals`);
+    }
+  }
+  
+  // Handle additions
+  if (overrides?.manualEdges && overrides.manualEdges.length > 0) {
+    const manualEdges = overrides.manualEdges;
+    console.log(`  Merging ${manualEdges.length} manual override edges`);
+    
+    // Create a set of existing edge keys for deduplication
+    const existingEdges = new Set(edges.map(e => `${e.source}|${e.target}|${e.relation}`));
+    
+    // Add manual edges that don't already exist
+    let addedCount = 0;
+    for (const manual of manualEdges) {
+      const key = `${manual.source}|${manual.target}|${manual.relation}`;
+      if (!existingEdges.has(key)) {
+        edges.push(manual);
+        existingEdges.add(key);
+        addedCount++;
+      }
+    }
+    
+    console.log(`  ✓ Added ${addedCount} manual edges (total: ${edges.length})`);
+  }
+  
+  // Sort by source then target for stable output
+  edges = edges.sort((a, b) => {
+    const srcCmp = a.source.localeCompare(b.source);
+    return srcCmp !== 0 ? srcCmp : a.target.localeCompare(b.target);
+  });
+  
+  // Step 4: Write expected.json if in write mode
+  if (writeExpected) {
+    await fs.writeFile(expectedPath, JSON.stringify(edges, null, 2) + "\n", "utf-8");
+    console.log(`  ✓ Wrote ${edges.length} edges to ${path.relative(REPO_ROOT, expectedPath)}`);
+  } else {
+    console.log(`  [dry-run] Would write ${edges.length} edges to ${path.relative(REPO_ROOT, expectedPath)}`);
+  }
+  
+  // Step 5: Clean up the index.scip file (it's gitignored but good hygiene)
+  try {
+    await fs.unlink(indexPath);
+  } catch {
+    // Ignore if file doesn't exist
+  }
 }
 
 void runRegenerationCli(process.argv.slice(2)).catch(error => {

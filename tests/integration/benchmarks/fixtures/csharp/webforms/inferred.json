@@ -2,31 +2,31 @@
   {
     "source": "src/App_Code/Globals.cs",
     "target": "src/Web.config",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Pages/Default.aspx",
     "target": "src/Pages/Default.aspx.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Pages/Default.aspx",
     "target": "src/Scripts/appConfig.js",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/Pages/Default.aspx.cs",
     "target": "src/App_Code/Globals.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Pages/Default.aspx.designer.cs",
     "target": "src/Pages/Default.aspx.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Scripts/appConfig.js",
     "target": "src/Pages/Default.aspx",
-    "relation": "uses"
+    "relation": "references"
   }
 ]

@@ -444,9 +444,9 @@
       "expected": "csharp/basic/expected.json",
       "inferred": "csharp/basic/inferred.json",
       "oracle": {
-        "kind": "csharp",
-        "root": ".",
-        "manualOverrides": "csharp/basic/oracle.overrides.json"
+        "kind": "scip",
+        "indexer": "csharp",
+        "root": "."
       }
     },
     {
@@ -478,7 +478,8 @@
         "fileCount": 6
       },
       "oracle": {
-        "kind": "csharp",
+        "kind": "scip",
+        "indexer": "csharp",
         "root": ".",
         "manualOverrides": "csharp/webforms/oracle.overrides.json"
       }
@@ -711,9 +712,9 @@
       "expected": "csharp/rosetta/expected.json",
       "inferred": "csharp/rosetta/inferred.json",
       "oracle": {
-        "kind": "csharp",
-        "root": ".",
-        "manualOverrides": "csharp/rosetta/oracle.overrides.json"
+        "kind": "scip",
+        "indexer": "csharp",
+        "root": "."
       }
     },
     {

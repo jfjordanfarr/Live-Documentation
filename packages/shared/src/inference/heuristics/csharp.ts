@@ -3,7 +3,7 @@ import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicT
 
 const CSHARP_USING_DIRECTIVE_PATTERN = "^\\s*using\\s+(static\\s+)?([^=;]+);";
 const CSHARP_NAMESPACE_DECLARATION_PATTERN = "\\bnamespace\\s+([A-Za-z_][A-Za-z0-9_.]*)\\s*(?:;|\\{)";
-const CSHARP_TYPE_DECLARATION_PATTERN = "(partial\\s+)?(class|struct|interface|record)\\s+([A-Za-z_][A-Za-z0-9_]*)";
+const CSHARP_TYPE_DECLARATION_PATTERN = "(partial\\s+)?(class|struct|interface|record|enum|delegate)\\s+([A-Za-z_][A-Za-z0-9_]*)";
 const CSHARP_IDENTIFIER_PATTERN = "\\b([A-Z][A-Za-z0-9_]*)\\b";
 const CSHARP_BUILT_INS = new Set([
   "Task",
@@ -26,6 +26,20 @@ const CSHARP_BUILT_INS = new Set([
   "Nullable",
   "CultureInfo",
 ]);
+
+/**
+ * Strips C# comments from source code to avoid false positive type matches
+ * from words appearing in comments (e.g., "Entry point" matching Entry type).
+ */
+function stripCSharpComments(content: string): string {
+  // Remove single-line comments (// ...)
+  let result = content.replace(/\/\/.*$/gm, "");
+  // Remove multi-line comments (/* ... */)
+  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
+  // Remove XML doc comments (/// ...)
+  result = result.replace(/\/\/\/.*$/gm, "");
+  return result;
+}
 
 interface CSharpContext {
   fileMetadata: Map<string, CSharpFileMetadata>;
@@ -78,7 +92,10 @@ export function createCSharpHeuristic(): FallbackHeuristic {
       const seenTargets = new Set<string>();
       const identifierPattern = new RegExp(CSHARP_IDENTIFIER_PATTERN, "gm");
 
-      for (const match of source.content.matchAll(identifierPattern)) {
+      // Strip comments to avoid false positives from type names in documentation
+      const codeContent = stripCSharpComments(source.content);
+
+      for (const match of codeContent.matchAll(identifierPattern)) {
         const symbol = match[1];
         if (!symbol || definedNames.has(symbol) || CSHARP_BUILT_INS.has(symbol)) {
           continue;
@@ -99,7 +116,7 @@ export function createCSharpHeuristic(): FallbackHeuristic {
         }
 
         seenTargets.add(target.artifact.artifact.id);
-        const relation = classifyCSharpRelation(symbol, source.content ?? "");
+        const relation = classifyCSharpRelation(symbol, codeContent);
         const rationale = relation === "uses" ? `csharp usage ${symbol}` : `csharp import ${symbol}`;
         const confidence = relation === "uses" ? 0.8 : 0.65;
 

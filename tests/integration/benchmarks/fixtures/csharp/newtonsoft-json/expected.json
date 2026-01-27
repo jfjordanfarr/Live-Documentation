@@ -11,7 +11,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonBinaryWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonBinaryWriter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonBinaryWriter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -21,12 +31,37 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonBinaryWriter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonBinaryWriter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MathUtils.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonObjectId.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonObjectId.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonBinaryType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
     "relation": "uses"
   },
   {
@@ -36,13 +71,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonTextReader.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonReader.cs",
@@ -56,8 +101,33 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonToken.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonBinaryType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonToken.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonToken.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonToken.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonType.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonBinaryType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
@@ -71,12 +141,32 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Bson/BsonType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
     "target": "Src/Newtonsoft.Json/JsonWriterException.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -86,7 +176,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Bson/BsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -95,13 +185,8 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/ConstructorHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Converters/BinaryConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -116,7 +201,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/BinaryConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/BinaryConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -146,7 +236,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/BsonObjectIdConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -161,13 +251,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/BsonObjectIdConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
-    "relation": "imports"
+    "source": "Src/Newtonsoft.Json/Converters/BsonObjectIdConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs",
@@ -181,7 +271,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -196,7 +291,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataSetConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -206,8 +301,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataSetConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/DataSetConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataSetConverter.cs",
@@ -216,7 +316,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataTableConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -231,8 +331,18 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataTableConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/DataTableConverter.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/DataTableConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DataTableConverter.cs",
@@ -240,13 +350,8 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -261,8 +366,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
@@ -281,7 +391,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/EntityKeyMemberConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -296,8 +406,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/EntityKeyMemberConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/EntityKeyMemberConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/EntityKeyMemberConverter.cs",
@@ -316,7 +431,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/ExpandoObjectConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -331,7 +446,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/ExpandoObjectConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/ExpandoObjectConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -346,6 +466,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/IsoDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/IsoDateTimeConverter.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
     "relation": "uses"
   },
@@ -356,7 +481,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/IsoDateTimeConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/IsoDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -381,6 +511,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/JavaScriptDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/JavaScriptDateTimeConverter.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
     "relation": "uses"
   },
@@ -391,12 +526,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/JavaScriptDateTimeConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/JavaScriptDateTimeConverter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/JavaScriptDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -411,7 +551,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/KeyValuePairConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -426,8 +566,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/KeyValuePairConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/KeyValuePairConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/KeyValuePairConverter.cs",
@@ -461,7 +606,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/RegexConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -476,8 +621,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/RegexConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/RegexConverter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/RegexConverter.cs",
@@ -486,11 +636,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
     "relation": "uses"
   },
@@ -501,12 +646,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
     "relation": "uses"
   },
   {
@@ -556,6 +701,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/UnixDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/UnixDateTimeConverter.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
     "relation": "uses"
   },
@@ -566,7 +716,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/UnixDateTimeConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/UnixDateTimeConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -576,7 +731,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/VersionConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -591,12 +746,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/VersionConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Converters/VersionConverter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
-    "target": "Src/Newtonsoft.Json/Converters/DateTimeConverterBase.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -611,18 +771,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
     "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
@@ -656,32 +811,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
     "target": "Src/Newtonsoft.Json/JsonNameTable.cs",
     "relation": "imports"
   },
   {
-    "source": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Formatting.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/IArrayPool.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "source": "Src/Newtonsoft.Json/FormatterAssemblyStyle.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameAssemblyFormatHandling.cs",
     "relation": "imports"
   },
   {
@@ -690,23 +830,13 @@
     "relation": "imports"
   },
   {
+    "source": "Src/Newtonsoft.Json/IArrayPool.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/JsonArrayAttribute.cs",
     "target": "Src/Newtonsoft.Json/JsonContainerAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonArrayAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonObjectAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonArrayAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonConstructorAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "relation": "imports"
   },
   {
@@ -716,7 +846,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonContainerAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
     "relation": "imports"
   },
   {
@@ -735,8 +865,33 @@
     "relation": "imports"
   },
   {
+    "source": "Src/Newtonsoft.Json/JsonContainerAttribute.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "imports"
+  },
+  {
     "source": "Src/Newtonsoft.Json/JsonConvert.cs",
     "target": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonConvert.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonConvert.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonConvert.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonConvert.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
     "relation": "uses"
   },
   {
@@ -756,12 +911,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConvert.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConvert.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
     "relation": "uses"
   },
   {
@@ -806,27 +961,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConverter.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConverter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonConverterAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonConverterAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
@@ -836,17 +981,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonConverterAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonDictionaryAttribute.cs",
     "target": "Src/Newtonsoft.Json/JsonContainerAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonDictionaryAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "relation": "imports"
   },
   {
@@ -861,17 +1001,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonExtensionDataAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonExtensionDataAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonIgnoreAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "relation": "imports"
   },
   {
@@ -886,7 +1016,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonObjectAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/MemberSerialization.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonObjectAttribute.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonObjectAttribute.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonObjectAttribute.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
     "relation": "imports"
   },
   {
@@ -896,7 +1041,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonPosition.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPosition.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPosition.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -911,17 +1066,32 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
     "relation": "imports"
   },
   {
@@ -931,13 +1101,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.Async.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.Async.cs",
@@ -947,6 +1117,26 @@
   {
     "source": "Src/Newtonsoft.Json/JsonReader.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/JsonTokenUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonReader.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonReader.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonReader.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
     "relation": "uses"
   },
   {
@@ -966,13 +1156,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.cs",
@@ -983,6 +1173,11 @@
     "source": "Src/Newtonsoft.Json/JsonReader.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonReader.cs",
@@ -1026,11 +1221,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonRequiredAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonRequiredAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "imports"
   },
@@ -1051,6 +1241,56 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/ConstructorHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/FormatterAssemblyStyle.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "target": "Src/Newtonsoft.Json/JsonConvert.cs",
     "relation": "uses"
   },
@@ -1061,18 +1301,43 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/MetadataPropertyHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/PreserveReferencesHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
@@ -1146,6 +1411,26 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameAssemblyFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
   },
@@ -1161,13 +1446,83 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
-    "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "target": "Src/Newtonsoft.Json/ConstructorHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/FormatterAssemblyStyle.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/MetadataPropertyHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/PreserveReferencesHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
@@ -1205,6 +1560,31 @@
     "relation": "imports"
   },
   {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameAssemblyFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
     "target": "Src/Newtonsoft.Json/JsonConvert.cs",
     "relation": "uses"
@@ -1216,13 +1596,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
@@ -1242,6 +1632,26 @@
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/StringUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
     "relation": "uses"
   },
   {
@@ -1271,7 +1681,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -1293,11 +1708,6 @@
     "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextReader.cs",
@@ -1326,7 +1736,27 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
     "target": "Src/Newtonsoft.Json/JsonConvert.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonPosition.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
@@ -1336,7 +1766,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
     "relation": "imports"
   },
   {
@@ -1356,11 +1791,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonTextWriter.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
     "relation": "uses"
   },
@@ -1376,6 +1806,21 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
     "target": "Src/Newtonsoft.Json/IArrayPool.cs",
     "relation": "imports"
   },
@@ -1386,8 +1831,28 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/JsonPosition.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
     "target": "Src/Newtonsoft.Json/JsonWriterException.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
@@ -1398,11 +1863,6 @@
     "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonTextWriter.cs",
@@ -1425,9 +1885,9 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/JsonToken.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
@@ -1443,6 +1903,21 @@
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
@@ -1471,18 +1946,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
     "target": "Src/Newtonsoft.Json/Schema/ValidationEventArgs.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
@@ -1496,8 +1976,33 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonPosition.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
     "target": "Src/Newtonsoft.Json/JsonWriterException.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
@@ -1506,13 +2011,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.Async.cs",
@@ -1531,6 +2036,31 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
     "target": "Src/Newtonsoft.Json/JsonPosition.cs",
     "relation": "uses"
   },
@@ -1541,8 +2071,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
@@ -1551,12 +2081,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
     "relation": "uses"
   },
   {
@@ -1573,11 +2103,6 @@
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/JsonWriter.cs",
@@ -1605,6 +2130,11 @@
     "relation": "uses"
   },
   {
+    "source": "Src/Newtonsoft.Json/JsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/WriteState.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/JsonWriterException.cs",
     "target": "Src/Newtonsoft.Json/JsonException.cs",
     "relation": "imports"
@@ -1615,8 +2145,8 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Linq/DuplicatePropertyNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "source": "Src/Newtonsoft.Json/Linq/Extensions.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -1631,7 +2161,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/Extensions.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/Extensions.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
   {
@@ -1642,6 +2177,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/Extensions.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/IJEnumerable.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
   {
@@ -1656,12 +2196,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.Async.cs",
-    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
     "relation": "imports"
   },
   {
@@ -1686,8 +2226,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.cs",
@@ -1706,12 +2246,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JArray.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JArray.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -1726,12 +2271,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
@@ -1741,13 +2296,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Linq/JConstructor.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
@@ -1757,6 +2312,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
@@ -1776,12 +2336,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JConstructor.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -1796,12 +2356,27 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.Async.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.Async.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.Async.cs",
+    "target": "Src/Newtonsoft.Json/Linq/CommentHandling.cs",
     "relation": "uses"
   },
   {
@@ -1826,6 +2401,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "imports"
   },
@@ -1837,6 +2417,21 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/Linq/CommentHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/Linq/DuplicatePropertyNameHandling.cs",
     "relation": "uses"
   },
   {
@@ -1861,13 +2456,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/Linq/MergeArrayHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JContainer.cs",
@@ -1886,6 +2491,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JEnumerable.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JEnumerable.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JEnumerable.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
     "relation": "uses"
   },
@@ -1901,12 +2516,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.Async.cs",
-    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
     "relation": "imports"
   },
   {
@@ -1917,6 +2532,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "uses"
   },
   {
@@ -1932,6 +2552,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
@@ -1966,12 +2591,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
+    "target": "Src/Newtonsoft.Json/Linq/MergeNullValueHandling.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -1986,8 +2621,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JObject.cs",
@@ -2001,6 +2636,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JProperty.Async.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "imports"
   },
@@ -2011,18 +2651,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.Async.cs",
-    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
@@ -2037,6 +2682,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
     "target": "Src/Newtonsoft.Json/JsonReaderException.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
@@ -2056,12 +2706,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JProperty.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -2075,9 +2725,14 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Linq/JPropertyDescriptor.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "source": "Src/Newtonsoft.Json/Linq/JPropertyKeyedCollection.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JPropertyKeyedCollection.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JRaw.cs",
@@ -2085,6 +2740,36 @@
     "relation": "imports"
   },
   {
+    "source": "Src/Newtonsoft.Json/Linq/JRaw.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
+    "target": "Src/Newtonsoft.Json/Linq/CommentHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
+    "target": "Src/Newtonsoft.Json/Linq/DuplicatePropertyNameHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
+    "target": "Src/Newtonsoft.Json/Linq/LineInfoHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonMergeSettings.cs",
+    "target": "Src/Newtonsoft.Json/Linq/MergeArrayHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonMergeSettings.cs",
+    "target": "Src/Newtonsoft.Json/Linq/MergeNullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/ArrayIndexFilter.cs",
     "target": "Src/Newtonsoft.Json/JsonException.cs",
     "relation": "uses"
@@ -2122,6 +2807,11 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/ArraySliceFilter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonSelectSettings.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/FieldFilter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -2241,6 +2931,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonPath/JPath.cs",
     "relation": "uses"
   },
@@ -2256,8 +2956,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
@@ -2268,6 +2968,11 @@
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/QueryExpression.cs",
@@ -2321,6 +3026,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/ScanFilter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/ScanFilter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonPath/PathFilter.cs",
     "relation": "imports"
   },
@@ -2331,12 +3041,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/ScanMultipleFilter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JsonPath/ScanMultipleFilter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonPath/PathFilter.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JsonPath/ScanMultipleFilter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonSelectSettings.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -2351,6 +3071,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
+    "target": "Src/Newtonsoft.Json/Linq/CommentHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonLoadSettings.cs",
     "relation": "imports"
   },
@@ -2358,11 +3088,6 @@
     "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.Async.cs",
@@ -2378,6 +3103,11 @@
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
     "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
@@ -2411,8 +3141,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
+    "target": "Src/Newtonsoft.Json/Linq/CommentHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
@@ -2461,13 +3196,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
+    "target": "Src/Newtonsoft.Json/Linq/LineInfoHandling.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
@@ -2491,6 +3236,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JToken.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
@@ -2511,18 +3261,43 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
@@ -2540,8 +3315,8 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.Async.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "source": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -2556,13 +3331,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
@@ -2571,7 +3356,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -2586,8 +3371,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.Async.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.Async.cs",
@@ -2596,8 +3381,18 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.Async.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JValue.Async.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
@@ -2606,18 +3401,18 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
     "target": "Src/Newtonsoft.Json/Linq/JsonCloneSettings.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
@@ -2641,8 +3436,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Linq/JValue.cs",
@@ -2662,71 +3457,6 @@
   {
     "source": "Src/Newtonsoft.Json/Linq/MergeArrayHandling.cs",
     "target": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MemberSerialization.cs",
-    "target": "Src/Newtonsoft.Json/JsonIgnoreAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MemberSerialization.cs",
-    "target": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MemberSerialization.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MemberSerialization.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MemberSerialization.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MetadataPropertyHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/NullValueHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/PreserveReferencesHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializationException.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "relation": "imports"
   },
   {
@@ -2741,11 +3471,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/Extensions.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Schema/Extensions.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
@@ -2753,6 +3478,16 @@
     "source": "Src/Newtonsoft.Json/Schema/Extensions.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
@@ -2766,12 +3501,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
     "target": "Src/Newtonsoft.Json/Schema/JsonSchemaWriter.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -2786,8 +3526,23 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
     "target": "Src/Newtonsoft.Json/JsonException.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
@@ -2811,8 +3566,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
@@ -2821,13 +3576,33 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaBuilder.cs",
     "target": "Src/Newtonsoft.Json/Utilities/StringUtils.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaConstants.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaConstants.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaException.cs",
     "target": "Src/Newtonsoft.Json/JsonException.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
@@ -2846,12 +3621,32 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
     "target": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
     "target": "Src/Newtonsoft.Json/Schema/JsonSchemaResolver.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/Schema/UndefinedSchemaIdHandling.cs",
     "relation": "uses"
   },
   {
@@ -2891,7 +3686,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
     "relation": "uses"
   },
   {
@@ -2926,12 +3731,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModel.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModel.cs",
     "target": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModel.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModel.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "imports"
   },
   {
@@ -2942,6 +3757,11 @@
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModelBuilder.cs",
     "target": "Src/Newtonsoft.Json/Converters/DiscriminatedUnionConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaModelBuilder.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -2986,7 +3806,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
-    "target": "Src/Newtonsoft.Json/Schema/JsonSchema.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaWriter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Schema/JsonSchemaWriter.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
     "relation": "imports"
   },
   {
@@ -3011,7 +3841,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Schema/JsonSchemaWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaType.cs",
     "relation": "uses"
   },
   {
@@ -3035,11 +3865,6 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Schema/UndefinedSchemaIdHandling.cs",
-    "target": "Src/Newtonsoft.Json/Schema/JsonSchemaGenerator.cs",
-    "relation": "imports"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Schema/ValidationEventArgs.cs",
     "target": "Src/Newtonsoft.Json/Schema/JsonSchemaException.cs",
     "relation": "uses"
@@ -3056,11 +3881,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "imports"
   },
@@ -3071,11 +3891,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
@@ -3083,16 +3898,6 @@
     "source": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ThreadSafeStore.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
@@ -3118,11 +3923,6 @@
     "source": "Src/Newtonsoft.Json/Serialization/CamelCasePropertyNamesContractResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/CamelCasePropertyNamesContractResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/CamelCasePropertyNamesContractResolver.cs",
@@ -3191,12 +3991,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "target": "Src/Newtonsoft.Json/Converters/XmlNodeConverter.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "target": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
     "relation": "uses"
   },
   {
@@ -3261,8 +4071,33 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/MemberSerialization.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
@@ -3361,6 +4196,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/OnErrorAttribute.cs",
     "relation": "imports"
   },
@@ -3373,6 +4213,11 @@
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ReflectionValueProvider.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
@@ -3431,11 +4276,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultReferenceResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DefaultReferenceResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
     "relation": "uses"
   },
@@ -3443,11 +4283,6 @@
     "source": "Src/Newtonsoft.Json/Serialization/DefaultReferenceResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DefaultReferenceResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultReferenceResolver.cs",
@@ -3467,11 +4302,6 @@
   {
     "source": "Src/Newtonsoft.Json/Serialization/DefaultSerializationBinder.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DefaultSerializationBinder.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
@@ -3506,18 +4336,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DiagnosticsTraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DiagnosticsTraceWriter.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ITraceWriter.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DiagnosticsTraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DynamicValueProvider.cs",
@@ -3526,17 +4351,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/DynamicValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DynamicValueProvider.cs",
     "target": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/DynamicValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
@@ -3565,29 +4380,9 @@
     "relation": "imports"
   },
   {
-    "source": "Src/Newtonsoft.Json/Serialization/ErrorContext.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ErrorContext.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Serialization/ErrorEventArgs.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ErrorContext.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ErrorEventArgs.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ErrorEventArgs.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ExpressionValueProvider.cs",
@@ -3596,17 +4391,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ExpressionValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ExpressionValueProvider.cs",
     "target": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ExpressionValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
@@ -3646,33 +4431,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/IAttributeProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IAttributeProvider.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IAttributeProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IContractResolver.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/IContractResolver.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IContractResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/IContractResolver.cs",
@@ -3680,69 +4445,19 @@
     "relation": "imports"
   },
   {
-    "source": "Src/Newtonsoft.Json/Serialization/IContractResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IReferenceResolver.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IReferenceResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IReferenceResolver.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
     "source": "Src/Newtonsoft.Json/Serialization/ITraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ITraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
@@ -3761,11 +4476,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
   },
@@ -3773,6 +4483,11 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionWrapper.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs",
@@ -3806,18 +4521,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContainerContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContainerContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonContainerContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContainerContract.cs",
@@ -3831,7 +4541,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContainerContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
     "relation": "imports"
   },
   {
@@ -3841,13 +4551,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
@@ -3861,17 +4566,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
     "relation": "uses"
   },
   {
@@ -3891,18 +4596,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
@@ -3921,11 +4616,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
   },
@@ -3933,6 +4623,11 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DictionaryWrapper.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs",
@@ -3961,18 +4656,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
@@ -3981,13 +4666,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonDynamicContract.cs",
@@ -4011,13 +4696,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonFormatterConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonFormatterConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonFormatterConverter.cs",
@@ -4036,11 +4721,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonFormatterConverter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonFormatterConverter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
@@ -4051,18 +4731,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
@@ -4071,8 +4741,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonISerializableContract.cs",
@@ -4081,32 +4751,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonLinqContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
     "relation": "uses"
   },
   {
@@ -4116,23 +4776,28 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
+    "target": "Src/Newtonsoft.Json/MemberSerialization.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
@@ -4161,7 +4826,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonObjectContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   },
   {
@@ -4171,8 +4836,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/JsonTextReader.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
@@ -4181,18 +4846,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
@@ -4202,6 +4857,31 @@
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
     "relation": "uses"
   },
   {
@@ -4216,11 +4896,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
     "target": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
     "relation": "imports"
   },
@@ -4231,8 +4906,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
@@ -4266,18 +4946,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonProperty.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
@@ -4316,6 +4986,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ErrorContext.cs",
     "relation": "uses"
   },
@@ -4323,11 +5003,6 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ErrorEventArgs.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
@@ -4361,8 +5036,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalBase.cs",
@@ -4376,7 +5051,37 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/ConstructorHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "target": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
     "relation": "imports"
   },
   {
@@ -4411,7 +5116,42 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "target": "Src/Newtonsoft.Json/Linq/JTokenReader.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/Linq/JTokenType.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/MetadataPropertyHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
     "relation": "uses"
   },
   {
@@ -4496,6 +5236,21 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
     "relation": "uses"
   },
@@ -4556,8 +5311,28 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
     "target": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
@@ -4583,6 +5358,26 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
     "target": "Src/Newtonsoft.Json/Linq/JTokenWriter.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/PreserveReferencesHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/Required.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
@@ -4666,8 +5461,18 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
@@ -4678,6 +5483,11 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionWrapper.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
@@ -4705,6 +5515,56 @@
     "relation": "uses"
   },
   {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalWriter.cs",
+    "target": "Src/Newtonsoft.Json/WriteState.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/ConstructorHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/DateParseHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/DefaultValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/FloatParseHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/FormatterAssemblyStyle.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "imports"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
     "target": "Src/Newtonsoft.Json/JsonConverterCollection.cs",
     "relation": "uses"
@@ -4713,6 +5573,36 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
     "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
     "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/MetadataPropertyHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/MissingMemberHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/NullValueHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/ObjectCreationHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/PreserveReferencesHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/ReferenceLoopHandling.cs",
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
@@ -4761,12 +5651,22 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/SerializationBinder.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
-    "target": "Src/Newtonsoft.Json/SerializationBinder.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameAssemblyFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonSerializerProxy.cs",
+    "target": "Src/Newtonsoft.Json/TypeNameHandling.cs",
     "relation": "imports"
   },
   {
@@ -4781,27 +5681,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonStringContract.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonStringContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonStringContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Serialization/JsonContract.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonStringContract.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonPrimitiveContract.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonStringContract.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
@@ -4831,6 +5721,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
+    "target": "Src/Newtonsoft.Json/MemberSerialization.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "target": "Src/Newtonsoft.Json/Serialization/CachedAttributeGetter.cs",
     "relation": "imports"
   },
@@ -4841,11 +5736,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "imports"
   },
@@ -4853,6 +5743,11 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
@@ -4868,11 +5763,6 @@
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
     "target": "Src/Newtonsoft.Json/Utilities/LateBoundReflectionDelegateFactory.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/LinqBridge.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
@@ -4901,16 +5791,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/KebabCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/KebabCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/KebabCaseNamingStrategy.cs",
     "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
@@ -4921,67 +5801,27 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/MemoryTraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/MemoryTraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/MemoryTraceWriter.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ITraceWriter.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/MemoryTraceWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/TraceLevel.cs",
+    "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
+    "source": "Src/Newtonsoft.Json/Serialization/MemoryTraceWriter.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/OnErrorAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/OnErrorAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/OnErrorAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/OnErrorAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ReflectionAttributeProvider.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
     "relation": "imports"
   },
   {
@@ -4996,18 +5836,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ReflectionAttributeProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ReflectionAttributeProvider.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ReflectionAttributeProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ReflectionAttributeProvider.cs",
@@ -5026,17 +5856,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/ReflectionValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ReflectionValueProvider.cs",
     "target": "Src/Newtonsoft.Json/Serialization/IValueProvider.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/ReflectionValueProvider.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
@@ -5061,23 +5881,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/SerializationBinderAdapter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/SerializationBinderAdapter.cs",
     "target": "Src/Newtonsoft.Json/SerializationBinder.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/SnakeCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/JsonPropertyAttribute.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/SnakeCaseNamingStrategy.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/SnakeCaseNamingStrategy.cs",
@@ -5091,72 +5896,57 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
     "target": "Src/Newtonsoft.Json/IJsonLineInfo.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonReader.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/TraceJsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Serialization/TraceJsonWriter.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/NamingStrategy.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
     "relation": "imports"
   },
   {
-    "source": "Src/Newtonsoft.Json/SerializationBinder.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/FloatFormatHandling.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/Formatting.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Serialization/TraceJsonWriter.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/SerializationBinder.cs",
     "target": "Src/Newtonsoft.Json/Serialization/ISerializationBinder.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TraceLevel.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/ITraceWriter.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TypeNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonConvert.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TypeNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializer.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TypeNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/JsonSerializerSettings.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TypeNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/TypeNameHandling.cs",
-    "target": "Src/Newtonsoft.Json/SerializationBinder.cs",
     "relation": "imports"
   },
   {
@@ -5181,7 +5971,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5201,6 +5996,11 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/CollectionWrapper.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/CollectionWrapper.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
     "relation": "uses"
   },
@@ -5211,8 +6011,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
@@ -5221,8 +6026,13 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
@@ -5250,9 +6060,19 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
+    "source": "Src/Newtonsoft.Json/Utilities/DateTimeParser.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
+    "target": "Src/Newtonsoft.Json/DateFormatHandling.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
+    "target": "Src/Newtonsoft.Json/DateTimeZoneHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DateTimeUtils.cs",
@@ -5281,7 +6101,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DictionaryWrapper.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DictionaryWrapper.cs",
     "target": "Src/Newtonsoft.Json/DefaultJsonNameTable.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DictionaryWrapper.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5296,22 +6126,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMembersAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMembersAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMembersAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "imports"
   },
   {
-    "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMembersAttribute.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMembersAttribute.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
     "relation": "imports"
   },
   {
@@ -5326,13 +6151,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
@@ -5343,6 +6163,11 @@
     "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
     "target": "Src/Newtonsoft.Json/Utilities/DynamicProxy.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
@@ -5363,6 +6188,16 @@
     "source": "Src/Newtonsoft.Json/Utilities/DynamicReflectionDelegateFactory.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicReflectionDelegateFactory.cs",
@@ -5396,6 +6231,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/DynamicUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicProxyMetaObject.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/DynamicUtils.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
@@ -5405,24 +6250,19 @@
     "relation": "uses"
   },
   {
+    "source": "Src/Newtonsoft.Json/Utilities/EnumInfo.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "imports"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/CamelCaseNamingStrategy.cs",
     "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
-    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
@@ -5437,6 +6277,16 @@
   {
     "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "target": "Src/Newtonsoft.Json/Utilities/EnumInfo.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
     "relation": "uses"
   },
   {
@@ -5456,12 +6306,27 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
     "target": "Src/Newtonsoft.Json/Utilities/CollectionUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5486,11 +6351,6 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/FeatureGuardAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/FeatureGuardAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
     "relation": "imports"
   },
@@ -5501,12 +6361,27 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5525,6 +6400,11 @@
     "relation": "uses"
   },
   {
+    "source": "Src/Newtonsoft.Json/Utilities/FSharpUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Utilities/ILGeneratorExtensions.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
@@ -5535,6 +6415,11 @@
     "relation": "imports"
   },
   {
+    "source": "Src/Newtonsoft.Json/Utilities/ILGeneratorExtensions.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Utilities/ImmutableCollectionsUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
     "relation": "uses"
@@ -5542,6 +6427,11 @@
   {
     "source": "Src/Newtonsoft.Json/Utilities/ImmutableCollectionsUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ImmutableCollectionsUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5561,13 +6451,28 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
     "target": "Src/Newtonsoft.Json/IArrayPool.cs",
     "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonPropertyCollection.cs",
     "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
+    "target": "Src/Newtonsoft.Json/StringEscapeHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/JavaScriptUtils.cs",
@@ -5590,8 +6495,18 @@
     "relation": "uses"
   },
   {
+    "source": "Src/Newtonsoft.Json/Utilities/JsonTokenUtils.cs",
+    "target": "Src/Newtonsoft.Json/JsonToken.cs",
+    "relation": "uses"
+  },
+  {
     "source": "Src/Newtonsoft.Json/Utilities/LateBoundReflectionDelegateFactory.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/LateBoundReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5621,12 +6536,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/LinqBridge.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/LinqBridge.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Converters/StringEnumConverter.cs",
     "relation": "imports"
   },
   {
@@ -5641,17 +6551,17 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/MethodBinder.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/MethodBinder.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ReflectionDelegateFactory.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
+    "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Utilities/MethodBinder.cs",
-    "target": "Src/Newtonsoft.Json/Utilities/ValidationUtils.cs",
+    "source": "Src/Newtonsoft.Json/Utilities/MethodCall.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/MiscellaneousUtils.cs",
     "relation": "uses"
   },
   {
@@ -5676,7 +6586,12 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionDelegateFactory.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ReflectionDelegateFactory.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5692,6 +6607,16 @@
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionObject.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonTypeReflector.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ReflectionObject.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ReflectionObject.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5717,7 +6642,7 @@
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
     "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "uses"
+    "relation": "imports"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
@@ -5731,8 +6656,8 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
-    "target": "Src/Newtonsoft.Json/SerializationBinder.cs",
-    "relation": "imports"
+    "target": "Src/Newtonsoft.Json/TypeNameAssemblyFormatHandling.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
@@ -5742,6 +6667,16 @@
   {
     "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
     "target": "Src/Newtonsoft.Json/Utilities/ConvertUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
     "relation": "uses"
   },
   {
@@ -5766,17 +6701,7 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/RequiresDynamicCodeAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/RequiresDynamicCodeAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
-    "relation": "imports"
-  },
-  {
-    "source": "Src/Newtonsoft.Json/Utilities/RequiresUnreferencedCodeAttribute.cs",
-    "target": "Src/Newtonsoft.Json/JsonValidatingReader.cs",
     "relation": "imports"
   },
   {
@@ -5821,6 +6746,16 @@
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/TypeExtensions.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/DynamicallyAccessedMemberTypes.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/TypeExtensions.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/EnumUtils.cs",
+    "relation": "uses"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/Utilities/TypeExtensions.cs",
     "target": "Src/Newtonsoft.Json/Utilities/MethodBinder.cs",
     "relation": "uses"
   },
@@ -5830,13 +6765,18 @@
     "relation": "uses"
   },
   {
-    "source": "Src/Newtonsoft.Json/Utilities/UnconditionalSuppressMessageAttribute.cs",
-    "target": "Src/Newtonsoft.Json/Serialization/DefaultContractResolver.cs",
-    "relation": "imports"
+    "source": "Src/Newtonsoft.Json/Utilities/TypeExtensions.cs",
+    "target": "Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs",
+    "relation": "uses"
   },
   {
     "source": "Src/Newtonsoft.Json/Utilities/UnconditionalSuppressMessageAttribute.cs",
     "target": "Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs",
+    "relation": "imports"
+  },
+  {
+    "source": "Src/Newtonsoft.Json/WriteState.cs",
+    "target": "Src/Newtonsoft.Json/Serialization/ObjectConstructor.cs",
     "relation": "imports"
   }
 ]

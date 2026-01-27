@@ -2,106 +2,121 @@
   {
     "source": "src/App/Main.cs",
     "target": "src/Models/ModelFactory.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/App/Main.cs",
     "target": "src/Models/Report.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/App/Main.cs",
     "target": "src/Processor/Processor.cs",
-    "relation": "uses"
-  },
-  {
-    "source": "src/App/Main.cs",
-    "target": "src/Types/Entry.cs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/App/PipelineTests.cs",
     "target": "src/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/App/PipelineTests.cs",
     "target": "src/Models/Report.cs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/App/PipelineTests.cs",
     "target": "src/Processor/Processor.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/App/PipelineTests.cs",
     "target": "src/Types/ProcessorConfig.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Helpers/HelpersTests.cs",
     "target": "src/Helpers/Helpers.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Models/ModelFactory.cs",
     "target": "src/Models/Record.cs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/Models/ModelFactory.cs",
     "target": "src/Types/ProcessorConfig.cs",
-    "relation": "uses"
+    "relation": "references"
+  },
+  {
+    "source": "src/Models/Record.cs",
+    "target": "src/Models/ModelFactory.cs",
+    "relation": "references"
   },
   {
     "source": "src/Models/Record.cs",
     "target": "src/Types/Entry.cs",
-    "relation": "imports"
+    "relation": "implements"
+  },
+  {
+    "source": "src/Models/Record.cs",
+    "target": "src/Types/ProcessorConfig.cs",
+    "relation": "references"
+  },
+  {
+    "source": "src/Models/Record.cs",
+    "target": "src/Types/Status.cs",
+    "relation": "references"
   },
   {
     "source": "src/Models/Report.cs",
     "target": "src/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Helpers/Helpers.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Models/ModelFactory.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Models/Report.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/Processor.cs",
     "target": "src/Types/ProcessorConfig.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/ProcessorTests.cs",
     "target": "src/Models/Record.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/ProcessorTests.cs",
     "target": "src/Models/Report.cs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/Processor/ProcessorTests.cs",
     "target": "src/Processor/Processor.cs",
-    "relation": "uses"
+    "relation": "references"
+  },
+  {
+    "source": "src/Types/Entry.cs",
+    "target": "src/Types/Status.cs",
+    "relation": "references"
   }
 ]

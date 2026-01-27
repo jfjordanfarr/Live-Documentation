@@ -108,6 +108,20 @@ const RELATION_PRECEDENCE: Record<CSharpOracleEdgeRelation, number> = {
   imports: 0
 };
 
+/**
+ * Strips C# comments from source code to avoid false positive type matches
+ * from words appearing in comments (e.g., "Entry point" matching Entry type).
+ */
+function stripComments(content: string): string {
+  // Remove single-line comments (// ...)
+  let result = content.replace(/\/\/.*$/gm, "");
+  // Remove multi-line comments (/* ... */)
+  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
+  // Remove XML doc comments (/// ...)
+  result = result.replace(/\/\/\/.*$/gm, "");
+  return result;
+}
+
 export function generateCSharpFixtureGraph(options: CSharpFixtureOracleOptions): CSharpOracleEdge[] {
   const fixtureRoot = path.resolve(options.fixtureRoot);
   const fileMap = collectSourceFiles(fixtureRoot, options.include, options.exclude);
@@ -318,7 +332,8 @@ function extractTypeDefinitions(input: {
   relativePath: string;
 }): CSharpTypeDefinition[] {
   const { content, namespaceName, relativePath } = input;
-  const pattern = /(partial\s+)?(class|struct|interface|record)\s+([A-Za-z_][A-Za-z0-9_]*)/g;
+  // Include enum and delegate alongside class/struct/interface/record to capture all type definitions
+  const pattern = /(partial\s+)?(class|struct|interface|record|enum|delegate)\s+([A-Za-z_][A-Za-z0-9_]*)/g;
   const definitions: CSharpTypeDefinition[] = [];
   let match: RegExpExecArray | null;
 
@@ -353,7 +368,10 @@ function collectTypeUsageEdges(input: {
   const namespaceName = metadata.namespaceName?.toLowerCase() ?? null;
   let match: RegExpExecArray | null;
 
-  while ((match = candidatePattern.exec(metadata.content)) !== null) {
+  // Strip comments to avoid false positives from type names appearing in documentation
+  const codeContent = stripComments(metadata.content);
+
+  while ((match = candidatePattern.exec(codeContent)) !== null) {
     const symbol = match[1];
     if (!symbol || definedNames.has(symbol) || BUILT_IN_IDENTIFIERS.has(symbol)) {
       continue;
@@ -374,7 +392,7 @@ function collectTypeUsageEdges(input: {
       continue;
     }
 
-    const relation = classifyRelation(symbol, metadata.content);
+    const relation = classifyRelation(symbol, codeContent);
     const key = `${metadata.relativePath}::${target.relativePath}`;
     const existing = edges.get(key);
     if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {

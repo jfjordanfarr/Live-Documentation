@@ -88,21 +88,26 @@ interface ScipRelationship {
   is_definition?: boolean;
 }
 
-// Our expected.json edge format
+// Our expected.json edge format - SCIP-grounded relation taxonomy
+// These are the ONLY relation types we use, derived from compiler analysis:
+// - "references": symbol A references symbol B (type usage, function call, etc.)
+// - "extends": class/type inheritance (is_type_definition in SCIP)
+// - "implements": interface implementation (is_implementation in SCIP)
 interface ExpectedEdge {
   source: string;
   target: string;
-  relation: "imports" | "exports" | "references" | "implements";
+  relation: "references" | "extends" | "implements";
 }
 
 /**
  * Parse command line arguments
  */
-function parseArgs(): { input: string; output: string | null; verbose: boolean } {
+function parseArgs(): { input: string; output: string | null; verbose: boolean; normalizeRelations: boolean } {
   const args = process.argv.slice(2);
   let input: string | null = null;
   let output: string | null = null;
   let verbose = false;
+  let normalizeRelations = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--input" || args[i] === "-i") {
@@ -111,15 +116,18 @@ function parseArgs(): { input: string; output: string | null; verbose: boolean }
       output = args[++i];
     } else if (args[i] === "--verbose" || args[i] === "-v") {
       verbose = true;
+    } else if (args[i] === "--normalize-relations" || args[i] === "-n") {
+      normalizeRelations = true;
     } else if (args[i] === "--help" || args[i] === "-h") {
       console.log(`
 Usage: npx tsx scripts/fixture-tools/scip-to-expected.ts [options]
 
 Options:
-  --input, -i   Path to SCIP index file (required)
-  --output, -o  Path to output expected.json (default: stdout)
-  --verbose, -v Print debug information
-  --help, -h    Show this help message
+  --input, -i             Path to SCIP index file (required)
+  --output, -o            Path to output expected.json (default: stdout)
+  --verbose, -v           Print debug information
+  --normalize-relations   Collapse all relations to "imports" for backward compatibility
+  --help, -h              Show this help message
 `);
       process.exit(0);
     }
@@ -130,7 +138,7 @@ Options:
     process.exit(1);
   }
 
-  return { input, output, verbose };
+  return { input, output, verbose, normalizeRelations };
 }
 
 /**
@@ -143,9 +151,19 @@ function isDefinition(symbolRoles: number): boolean {
 /**
  * Check if a symbol_roles bitmask includes the Import role
  */
-function isImport(symbolRoles: number): boolean {
+function _isImport(symbolRoles: number): boolean {
   return (symbolRoles & scip.SymbolRole.Import) !== 0;
 }
+
+/**
+ * Relation precedence: more specific relations take priority
+ * Higher number = higher precedence
+ */
+const RELATION_PRECEDENCE: Record<ExpectedEdge["relation"], number> = {
+  references: 0,
+  extends: 1,
+  implements: 2
+};
 
 /**
  * Normalize a file path to forward slashes and remove leading ./
@@ -167,8 +185,9 @@ function isLocalSymbol(symbol: string): boolean {
 
 /**
  * Main conversion logic
+ * @param normalizeRelations If true, collapse all relations to "imports" for backward compatibility
  */
-function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdge[] {
+function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRelations: boolean): ExpectedEdge[] {
   // Read and deserialize the SCIP index
   const indexBytes = readFileSync(indexPath);
   const index: ScipIndex = scip.Index.deserialize(new Uint8Array(indexBytes));
@@ -176,6 +195,9 @@ function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdg
   if (verbose) {
     console.error(`Loaded SCIP index with ${index.documents.length} documents`);
     console.error(`Project root: ${index.metadata?.project_root || "(not set)"}`);
+    if (normalizeRelations) {
+      console.error(`Relation normalization: enabled (all relations → "imports")`);
+    }
     console.error(`Tool: ${index.metadata?.tool_info?.name} v${index.metadata?.tool_info?.version}`);
   }
 
@@ -198,12 +220,53 @@ function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdg
     console.error(`Found ${symbolToDefiningFile.size} symbol definitions`);
   }
 
-  // Phase 2: For each file, find all symbol references and map to edges
-  const edgeSet = new Set<string>();
-  const edges: ExpectedEdge[] = [];
+  // Phase 2: Build symbol → relationships map for extends/implements classification
+  // Relationships capture inheritance (is_implementation, is_type_definition)
+  const symbolRelationships = new Map<string, { targetSymbol: string; isImplementation: boolean; isTypeDefinition: boolean }[]>();
+
+  for (const doc of index.documents) {
+    for (const sym of doc.symbols ?? []) {
+      if (sym.relationships && sym.relationships.length > 0) {
+        const rels = sym.relationships.map((rel: ScipRelationship) => ({
+          targetSymbol: rel.symbol,
+          isImplementation: rel.is_implementation ?? false,
+          isTypeDefinition: rel.is_type_definition ?? false
+        }));
+        symbolRelationships.set(sym.symbol, rels);
+      }
+    }
+  }
+
+  if (verbose) {
+    console.error(`Found ${symbolRelationships.size} symbols with inheritance relationships`);
+  }
+
+  // Phase 3: For each file, find all symbol references and map to edges
+  // Use source|target as key (without relation) to track best relation per pair
+  const edgeMap = new Map<string, ExpectedEdge>();
   
   // Track edge provenance for debugging
   const edgeProvenance = new Map<string, string[]>();
+
+  /**
+   * Try to add or upgrade an edge. If an edge already exists for this pair,
+   * only upgrade if the new relation has higher precedence.
+   */
+  function addOrUpgradeEdge(source: string, target: string, relation: ExpectedEdge["relation"], provenanceSymbol?: string): void {
+    const pairKey = `${source}|${target}`;
+    const existing = edgeMap.get(pairKey);
+    
+    if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {
+      edgeMap.set(pairKey, { source, target, relation });
+    }
+    
+    // Track provenance regardless of whether we upgraded
+    if (provenanceSymbol) {
+      const provList = edgeProvenance.get(pairKey) ?? [];
+      provList.push(provenanceSymbol);
+      edgeProvenance.set(pairKey, provList);
+    }
+  }
 
   for (const doc of index.documents) {
     const sourceFile = normalizePath(doc.relative_path);
@@ -230,35 +293,39 @@ function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdg
         continue;
       }
 
-      // Determine the relation type
-      let relation: ExpectedEdge["relation"];
-      if (isImport(occ.symbol_roles)) {
-        relation = "imports";
-      } else {
-        // Could be ReadAccess or WriteAccess - both are "references"
-        // For now, we treat imports specially, everything else is "imports"
-        // since that's what our expected.json format primarily uses
-        relation = "imports";
-      }
+      // Determine the relation type - default is "references" for all symbol references
+      const relation: ExpectedEdge["relation"] = "references";
 
-      // Create a unique edge key to avoid duplicates
-      const edgeKey = `${sourceFile}|${targetFile}|${relation}`;
-      if (!edgeSet.has(edgeKey)) {
-        edgeSet.add(edgeKey);
-        edges.push({
-          source: sourceFile,
-          target: targetFile,
-          relation
-        });
-        edgeProvenance.set(edgeKey, []);
-      }
+      // Add or upgrade the edge
+      addOrUpgradeEdge(sourceFile, targetFile, relation, verbose ? occ.symbol : undefined);
+    }
+  }
+
+  // Phase 4: Add edges from inheritance relationships (extends/implements)
+  // These are captured in symbolRelationships from doc.symbols
+  for (const [symbol, rels] of symbolRelationships) {
+    const sourceFile = symbolToDefiningFile.get(symbol);
+    if (!sourceFile) continue;
+
+    for (const rel of rels) {
+      const targetFile = symbolToDefiningFile.get(rel.targetSymbol);
+      if (!targetFile || sourceFile === targetFile) continue;
+
+      // Classify: is_implementation means "implements", is_type_definition means "extends"
+      // Note: In practice, scip-dotnet uses is_implementation for both class inheritance
+      // and interface implementation. We could distinguish via symbol analysis but for now
+      // treat all as "implements" (the more general case)
+      const relation: ExpectedEdge["relation"] = rel.isImplementation ? "implements" : "extends";
       
-      // Track which symbols contribute to this edge
+      addOrUpgradeEdge(sourceFile, targetFile, relation, verbose ? symbol : undefined);
       if (verbose) {
-        edgeProvenance.get(edgeKey)!.push(occ.symbol);
+        console.error(`  Inheritance edge: ${sourceFile} -> ${targetFile} [${relation}]`);
       }
     }
   }
+
+  // Convert edge map to sorted array
+  const edges = Array.from(edgeMap.values());
   
   // In verbose mode, print edge provenance
   if (verbose) {
@@ -288,6 +355,13 @@ function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdg
     console.error(`Generated ${edges.length} file-to-file edges`);
   }
 
+  // If normalizing relations, collapse all to "references" (for backward compat during migration)
+  if (normalizeRelations) {
+    for (const edge of edges) {
+      edge.relation = "references";
+    }
+  }
+
   return edges;
 }
 
@@ -295,10 +369,10 @@ function convertScipToExpected(indexPath: string, verbose: boolean): ExpectedEdg
  * Main entry point
  */
 function main(): void {
-  const { input, output, verbose } = parseArgs();
+  const { input, output, verbose, normalizeRelations } = parseArgs();
 
   const inputPath = path.resolve(input);
-  const edges = convertScipToExpected(inputPath, verbose);
+  const edges = convertScipToExpected(inputPath, verbose, normalizeRelations);
 
   const jsonOutput = JSON.stringify(edges, null, 2) + "\n";
 

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-app-pipelinetests-cs
-- Generated At: 2026-01-16T21:21:09.660Z
+- Generated At: 2026-01-27T20:06:00.077Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ xUnit integration tests for the C# Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through `using Rosetta.Models` and `using Rosetta.Processor` namespace imports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.660Z","inputHash":"10fe7834f139f6cb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T20:06:00.077Z","inputHash":"50e8634b2de56162"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PipelineTests` {#symbol-pipelinetests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L16)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L17)
 
 ##### `PipelineTests` — Summary
 Integration tests for the complete data processing pipeline.
@@ -32,19 +32,19 @@ a directly name-matched test file.
 
 #### `PipelineIntegration` {#symbol-pipelineintegration}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L18)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L19)
 
 #### `ProcessesRecordsThroughCompletePipeline` {#symbol-processesrecordsthroughcompletepipeline}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L22)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L23)
 
 #### `ValidatesConfigurationBeforeProcessing` {#symbol-validatesconfigurationbeforeprocessing}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L46)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L47)
 
 #### `HandlesEdgeCasesInPipeline` {#symbol-handlesedgecasesinpipeline}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L56)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs#L57)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

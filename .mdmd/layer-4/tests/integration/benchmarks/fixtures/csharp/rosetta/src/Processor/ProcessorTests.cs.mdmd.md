@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-processor-processortests-cs
-- Generated At: 2026-01-16T21:21:09.666Z
+- Generated At: 2026-01-27T20:06:00.083Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ xUnit tests for the C# Rosetta Processor class. Part of the polyglot Rosetta Sto
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.666Z","inputHash":"9c134d64c084cd69"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T20:06:00.083Z","inputHash":"cf7779b7e1a87361"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTests` {#symbol-processortests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L13)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L14)
 
 ##### `ProcessorTests` — Summary
 Unit tests for the Processor class.
@@ -30,23 +30,23 @@ ProcessorTests.cs should automatically back Processor.cs.
 
 #### `RunTests` {#symbol-runtests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L15)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L16)
 
 #### `ProcessesRecordsAndReturnsReport` {#symbol-processesrecordsandreturnsreport}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L19)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L20)
 
 #### `HandlesEmptyRecordSet` {#symbol-handlesemptyrecordset}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L36)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L37)
 
 #### `SummarizeTests` {#symbol-summarizetests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L43)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L44)
 
 #### `FormatsReportAsHumanReadableString` {#symbol-formatsreportashumanreadablestring}
 - Type: method
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L48)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L49)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

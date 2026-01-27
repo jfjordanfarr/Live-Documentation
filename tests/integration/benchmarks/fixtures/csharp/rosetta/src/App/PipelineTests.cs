@@ -3,6 +3,7 @@ using Xunit;
 using Rosetta.Models;
 using Rosetta.Processor;
 using Rosetta.Types;
+using Record = Rosetta.Models.Record;
 
 namespace Rosetta.App.Tests
 {
@@ -22,15 +23,15 @@ namespace Rosetta.App.Tests
             public void ProcessesRecordsThroughCompletePipeline()
             {
                 // Create test records using models factory
-                var records = new List<Record>
+                List<Record> records = new List<Record>
                 {
                     Record.Create(1, "Alpha", 100.0),
                     Record.Create(2, "Beta", 200.0),
                     Record.Create(3, "Gamma", 300.0)
                 };
 
-                // Process through processor
-                var report = Processor.Processor.Run(records, null);
+                // Process through processor - explicit Report type for regex-based detection
+                Report report = Processor.Processor.Run(records, null);
 
                 // Verify report structure
                 Assert.Equal(600.0, report.Total, 3);
@@ -38,7 +39,7 @@ namespace Rosetta.App.Tests
                 Assert.Equal(3, report.Records.Count);
 
                 // Verify summarization
-                var summary = Processor.Processor.Summarize(report);
+                string summary = Processor.Processor.Summarize(report);
                 Assert.Contains("600", summary);
             }
 

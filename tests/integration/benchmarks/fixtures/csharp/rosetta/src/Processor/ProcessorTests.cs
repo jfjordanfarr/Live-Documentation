@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Xunit;
 using Rosetta.Models;
 using Rosetta.Processor;
+using Record = Rosetta.Models.Record;
 
 namespace Rosetta.Processor.Tests
 {
