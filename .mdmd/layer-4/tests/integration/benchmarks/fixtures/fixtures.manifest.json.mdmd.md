@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/fixtures.manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-fixtures-manifest-json
-- Generated At: 2026-01-16T20:21:06.770Z
+- Generated At: 2026-01-27T18:07:43.282Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Master manifest enumerating every benchmark repository and fixture scenario the 
 - Update entries when refreshing vendored repositories or adding new language scenarios, and regenerate fixtures plus reports to keep precision/recall metrics honest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T20:21:06.770Z","inputHash":"ca0bca41b23af9db"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.282Z","inputHash":"d0291eebaea6d52e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,11 +35,10 @@ _No public symbols detected_
 - [`inferred`](./c/rosetta/inferred.json.mdmd.md)
 - [`expected`](./csharp/basic/expected.json.mdmd.md)
 - [`inferred`](./csharp/basic/inferred.json.mdmd.md)
+- [`expected`](./csharp/newtonsoft-json/expected.json.mdmd.md)
+- [`inferred`](./csharp/newtonsoft-json/inferred.json.mdmd.md)
 - [`expected`](./csharp/rosetta/expected.json.mdmd.md)
 - [`inferred`](./csharp/rosetta/inferred.json.mdmd.md)
-- [`expected`](./csharp/roslyn-compilers/expected.json.mdmd.md)
-- [`inferred`](./csharp/roslyn-compilers/inferred.json.mdmd.md)
-- [`oracle.overrides`](./csharp/roslyn-compilers/oracle.overrides.json.mdmd.md)
 - [`expected`](./csharp/webforms/expected.json.mdmd.md)
 - [`inferred`](./csharp/webforms/inferred.json.mdmd.md)
 - [`oracle.overrides`](./csharp/webforms/oracle.overrides.json.mdmd.md)

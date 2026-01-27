@@ -53,12 +53,6 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 - **Integrity**: `sha256` root `1133cd7078de2076079aa81f4c70727f9fe8ff77f1f50782aed467053a2b5676` (10 files)
 - **File Selection**: include `src/**/*.rs`, `Cargo.toml`; exclude `tests/**`, `benches/**`, `examples/**`, `rfcs/**` (resolved 10 files)
 
-#### `csharp-roslyn-compilers` (Roslyn flow analysis slice)
-
-- **Source**: `dotnet/roslyn` @ `fa2ab851c437a345b2302a85021b59fe3c0ce0db` — MIT
-- **Integrity**: `sha256` root `9d99d3fe61dcb5a428941f8a1b80c6831d8ded688a70264698c2d1114d34e8ae` (72 files)
-- **File Selection**: include `src/Compilers/CSharp/Portable/FlowAnalysis/**/*.cs`, `src/Compilers/CSharp/Portable/Utilities/**/*.cs`; exclude `**/*Tests.cs`, `**/*.Tests.cs` (resolved 72 files)
-
 #### `java-okhttp` (OkHttp client repository)
 
 - **Source**: `square/okhttp` @ `ad97bd3df34376eec85aa187dc8f45cfde8a2c01` — Apache-2.0
