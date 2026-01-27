@@ -1,12 +1,12 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "self-similarity",
-  "recordedAt": "2026-01-26T21:32:53.524Z",
+  "recordedAt": "2026-01-27T16:08:06.059Z",
   "environment": {
-    "nodeVersion": "v22.21.1",
+    "nodeVersion": "v22.14.0",
     "platform": "win32",
     "arch": "x64",
-    "providerMode": "local-only",
+    "providerMode": null,
     "ollamaModel": "qwen3-coder:30b",
     "ollamaEndpoint": null
   },

@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 18, 2026\)*
+*Status: Active Development (Jan 26, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -684,9 +684,22 @@ Scope: Commits 224–226
 
 The team matured the system's analytical engine from simple connectivity to **Network Science** and fixed long-standing topological distortions.
 
-* **Degree-Corrected Co-Activation (Commit 224):** Implemented a statistical background model ($E\_{ij} \= \\frac{d\_i d\_j}{2E}$) to normalize edge weights. This prevents "Hub Nodes" (like barrel files) from creating false-positive semantic clusters just because they have high connectivity.  
+* **Degree-Corrected Co-Activation (Commit 224):** Implemented a statistical background model (![][image1]) to normalize edge weights. This prevents "Hub Nodes" (like barrel files) from creating false-positive semantic clusters just because they have high connectivity.  
 * **The De-Barreling (Commit 225):** The team deleted the packages/shared/src/index.ts mega-barrel. This artificial "Star Topology" was obscuring the natural clustering of the codebase. By forcing direct subpath imports, the graph instantly relaxed into distinct, logical clusters (e.g., the Oracle cluster decoupled from the Core).  
 * **Architectural Documentation (Commit 226):** Formalized these complex concepts into Layer 3 documentation (co-activation-clustering.mdmd.md and polyglot-adapters.mdmd.md), ensuring the math and the inventory of 16 language adapters are permanently recorded.
+
+### **Phase XLVI: Interaction Fidelity (Jan 26\)**
+
+Date: January 26, 2026
+
+Scope: Commits 227–230
+
+After a week-long hiatus, the team returned to focus exclusively on the tactile feel of the Explorer—fixing jarring layout shifts, ensuring controls only appear when relevant, and solving a normalization bug that broke symbol highlighting.
+
+* **Context-Aware Controls (Commit 227):** The zoom controls (+/-/Γƒ▓) were hidden for the Knowledge Sources and Force Graph views, where they were irrelevant or redundant. They now appear only in the Circuit Board and Local Map via dynamic body class toggling.  
+* **Pin Highlighting Fix (Commit 228):** Resolved a critical bug where pinning a symbol failed to highlight its connections due to a format mismatch (slug symbol-name vs. display name SymbolName). A normalization layer now ensures consistent matching across all graph edges.  
+* **Vertical Centering Stability (Commit 229):** Fixed a visual glitch where collapsing symbols (during pinning) caused the column layout to jump. The system now dynamically re-centers the column *before* redrawing connections, ensuring a smooth, stable transition.  
+* **Research Conclusion (Commit 230):** The team finalized the "Compiler Truth" strategy, deciding to adopt SCIP indexers for non-TS languages and replacing the sparse Roslyn fixture with a full Newtonsoft.Json clone for C\# benchmarking.
 
 ## **Vision Evolution Log**
 
@@ -719,7 +732,8 @@ The team matured the system's analytical engine from simple connectivity to **Ne
 * **Jan 14 (Phase XLII):** "The Polyglot Connectivity." (Rosetta Stone benchmarks and symbol-level resolution for Java/Python/Rust).  
 * **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).  
 * **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).  
-* **Jan 17 (Phase XLV):** "Topological Hygiene." (Statistical normalization and removing barrel file distortion).
+* **Jan 17 (Phase XLV):** "Topological Hygiene." (Statistical normalization and removing barrel file distortion).  
+* **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).
 
 ## **Technical Themes & Motifs**
 
@@ -733,3 +747,5 @@ The team matured the system's analytical engine from simple connectivity to **Ne
 * **Prescriptive vs. Descriptive:** A key architectural separation. Tools like SpecKit are *Prescriptive* (Plans/Design), while Live Documentation is *Descriptive* (Mirrors/Implementation). This distinction prevents the system from confusing "what we want" with "what we have."  
 * **Cybernetic Feedback Loops:** The project actively uses AI (like NotebookLM) to critique its own architecture, creating a feedback loop where the AI acts as a "Red Team" to challenge the team's assumptions.  
 * **Stateless Architecture:** As of Jan 12, 2026, the system operates without a separate database, treating the file system as the sole source of truth to guarantee synchronization.
+
+[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAaCAYAAADPELCZAAAED0lEQVR4Xu1ZTUhUURSeIYOiP6Ns0vl548yU2D9MBEG0qIhc1MagoLbVotokFQhtAtdBhgsTokUJERSEEOlCMEKyRYuCqIQMQQhMWuQmdPq+eedOt+NzZgRHn70++Hj3nnPee/ed+3POmQmFAoZkMlkdjUY3aLkXstnsctiv0PLAw3GcSfCMlnsgDLsHiURivVYEHnDMTzgmq+UadB5sh9AMa10gwW0Zj8ePYhvH4Jx7oSKOqa+vj8DmOHiWDtf6QAKOOAR+AlvAYZxxF7SNQSQSWQWbZ9zu4HfwvbYJHFKp1Do4YpBXdMNchXV1dRuNHv3Dpg3nnobttOlzFWqHc4Xa/UAAH30EzmiTtj7jqoyOQLsHHLP6+uz8y35WMPzDsBb8AeZisdhO6ecps9XNGeMA9f1+A8Z4HWfcbrYdd4tO4htO4doMdoA3jS3aI2CX3EeH5yNzJpNZK/q7YKuxLwkY/wJzWi5g6Nez5EvAYcfMOHH9KI5qR3sbnYv2K2ML2XNu95C77a9xAqDfTx0DEon+G2NfCly2Ocda2hrQDTQ0NKzRcj/CTq4lcc5vZ3zDQ+4s29ZOrnmPaRM8H8XJpcEQL07sM7J0Or0JD3hq+tD12C9YisA3DCLt2REqku7YoAOd8pL0/MOviBObLFlf2bOwRMBFMJeFAB/08ozUci9wKz8Gp8EnYCdedF+cWt4szBE1NTWrHSt4laJszbJWz3xA/NAKtmidJ+DpA44bVOxQzkAyNNsswMmbSS1HbraVyauW//OQiJRLqPTFkdBPcCXwjLR12l4y/z6w0ZYvJPgdlaR+XwFQfqHBbGeFVACFtOA/POAUzw+5UlmUF+pJRPKDJpm1AZsmlFdxLfcCbFvw3K/lEva95f4euODg6pOl6pkfwlm7oJuQtCCfN6GiiXL1Ght85Hb074CN4HjhZv9gmeNWKh0Y+0pbIandsPhgBkud72E8YB8ML8oNH+goXGsph2NOot0rum7YV5Fo30i6ZeCkeRBXqjyrCZz684rFBxNpjKkd35bGOM+h/Q5jdbSdfGchsErS/ShUqYwALxsHL3nIWcz3aPliIiFB0/TRHgWHbRsJiGOwTbGP1bqF10Qlf70RJzbiJeeVfMyeTT8AK3AvxvTW9B23jh6xbeg8yPqZu6LLGvoW5ViJe2y7eQVe+DlhlYOWfJQFu5b7BbK1J3j02HJOPPhNAtgUeNvWVwSYoWqZtQJkS/i6tsb4mhMqt5XKqd9sZcetUvJV2oL92JJ0y0MGlC75JdmXwPhe4qzLoFnFQGjk2O4nHI/0DrKrDKBaXhHQgXjZawzsstb5BYzGJiLzbwKMudPoZCvPcCK+6QXTHy0PJEx0VmxjCYvrgJHxPJQzMd83eXEx/Abem0YEVukXMQAAAABJRU5ErkJggg==>

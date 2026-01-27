@@ -772,6 +772,14 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `2026-01-17.1.md:L~1650-L1700` — **Total Certainty Before Documentation Deletions**: When the audit suggested edge-aggregation-pipeline.mdmd.md might be obsolete, user demanded: "Arrive at total certainty before action on this." Investigation revealed Phase 6 was completed but Phases 1-5 were never implemented — the doc describes valid aspirational architecture, not obsolete code. Status annotations are preferable to deletion.
 - `2026-01-17.1.md:L~1750-L1800` — **Verify All Claims Against Workspace Reality**: Initial audit claimed fallback-inference-heuristics.mdmd.md was stale because `packages/shared/src/inference/heuristics/*` "doesn't exist." Deeper investigation proved ALL referenced files exist. Always verify claims about file existence by actually checking the filesystem, not inferring from partial searches.
 
+## 2026-01-26 (Dev Day 62)
+
+### Chat 1 (2026-01-26.1.md) — Local Map Pin Fixes + Compiler Truth Research
+
+- `2026-01-26.1.md:L~1050-L1100` — **Circular Validation Smell**: User flagged that `java-okhttp: 496 → 545 edges` with unchanged accuracy metrics revealed "an improper grading system" — when oracle and heuristic implementations are both regex-based, they move together proportionally rather than independently validating each other. "Fixture oracles are virtually impossible to author for large nontrivial third-party repo benchmarks, which is precisely why we have them." Compiler-backed ground truth (SCIP indexers) eliminates this circular validation.
+- `L~1300-L1400` — **SCIP/LSIF as Development-Only Tooling**: User clarified the scope question: "Why can we not just have the compilers/tooling for those fixtures here in our project (and not ship them as part of our software offering)?" Answer: Install indexers locally, run once per fixture, commit resulting `expected.json`. No compilers in CI or shipped product.
+- `L~1800-L1900` — **Fixture Repository Selection Criteria**: User rejected Roslyn as fixture ("lumbering gigantic beast") in favor of buildable, MIT-licensed, appropriately-sized repos. Newtonsoft.Json (11k stars, ~100-150 files, MIT, has `.sln`) selected as replacement. Criteria: universally known, clean license, right size for scip-dotnet, stable/mature.
+
 ## 2026-01-12 (Dev Day 56)
 
 ### Chat 1 (2026-01-12.1.md) — Major Architectural Refactoring: Stateless Live Doc-Centric Model

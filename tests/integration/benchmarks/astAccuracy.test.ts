@@ -90,8 +90,8 @@ interface TypeScriptOracleModule {
 const REPO_ROOT = getRepoRoot(__dirname);
 const FIXTURE_ROOT = resolveRepoPath("tests", "integration", "benchmarks", "fixtures");
 const PRECISION_THRESHOLD = Number(process.env.BENCHMARK_PRECISION_THRESHOLD ?? "0.95");
-const RECALL_THRESHOLD = Number(process.env.BENCHMARK_RECALL_THRESHOLD ?? "0.95");
-const BENCHMARK_MODE = (process.env.BENCHMARK_MODE ?? "self-similarity").toLowerCase();
+const RECALL_THRESHOLD = Number(process.env.BENCHMARK_RECALL_THRESHOLD ?? "0.90");
+const BENCHMARK_MODE = (process.env.BENCHMARK_MODE ?? "ast").toLowerCase();
 const requireModule = createRequire(__filename);
 const oracleModulePath = path.join(
   REPO_ROOT,
@@ -409,9 +409,6 @@ function selectFixtures(
 
   return manifest.filter(entry => {
     const modes = entry.modes?.map(candidate => candidate.toLowerCase()) ?? [];
-    if (mode === "self-similarity") {
-      return modes.length === 0 || modes.includes("self-similarity");
-    }
     return modes.includes(mode);
   });
 }

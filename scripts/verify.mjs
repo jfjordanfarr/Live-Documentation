@@ -34,7 +34,7 @@ function runNpmScript(label, args, env) {
 function parseFlags(argv) {
   let mode =
     normalizeMode(process.env.BENCHMARK_MODE ?? process.env.npm_config_mode) ??
-    "self-similarity";
+    "ast";
   let generateReport = coerceBoolean(process.env.npm_config_report) ?? false;
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -42,7 +42,7 @@ function parseFlags(argv) {
     if (token === "--mode") {
       const value = argv[index + 1];
       if (!value) {
-        throw new Error("--mode requires a value (self-similarity, ast, all)");
+        throw new Error("--mode requires a value (ast, all)");
       }
       const resolved = normalizeMode(value);
       if (!resolved) {
@@ -56,7 +56,7 @@ function parseFlags(argv) {
     if (token.startsWith("--mode=")) {
       const [, value] = token.split("=", 2);
       if (!value) {
-        throw new Error("--mode requires a value (self-similarity, ast, all)");
+        throw new Error("--mode requires a value (ast, all)");
       }
       const resolved = normalizeMode(value);
       if (!resolved) {
@@ -96,7 +96,7 @@ function normalizeMode(candidate) {
     return undefined;
   }
   const normalized = String(candidate).toLowerCase();
-  if (["self-similarity", "ast", "all"].includes(normalized)) {
+  if (["ast", "all"].includes(normalized)) {
     return normalized;
   }
   return undefined;
@@ -159,14 +159,11 @@ function runVerify() {
 runVerify();
 
 function resolveReportModes(mode) {
-  if (!mode || mode === "self-similarity") {
-    return ["self-similarity"];
-  }
-  if (mode === "ast") {
+  if (!mode || mode === "ast") {
     return ["ast"];
   }
   if (mode === "all") {
-    return ["self-similarity", "ast"];
+    return ["ast"];
   }
   return [mode];
 }

@@ -36,7 +36,7 @@ function printUsage() {
 Options:
   --ast-only              Run only the AST accuracy benchmark suite.
   --suite <name>          Run a named suite (ast). Can be repeated.
-  --mode <name>           Override BENCHMARK_MODE (ast, self-similarity, all).
+  --mode <name>           Override BENCHMARK_MODE (ast, all).
   --all                   Run all benchmark suites (default).
   --no-regenerate         Skip regenerating benchmark fixtures before running.
   --show-suites, --list   List available suites and exit.
@@ -214,7 +214,7 @@ function normalizeMode(candidate) {
     return undefined;
   }
   const normalized = String(candidate).toLowerCase();
-  if (["ast", "self-similarity", "all"].includes(normalized)) {
+  if (["ast", "all"].includes(normalized)) {
     return normalized;
   }
   return undefined;
@@ -235,14 +235,11 @@ function runStep(label, command, args, options = {}) {
   }
 }
 
-function resolveMode(requestedMode, suites) {
+function resolveMode(requestedMode, _suites) {
   if (requestedMode) {
     return requestedMode;
   }
-  if (suites.size === 1 && suites.has("ast")) {
-    return "ast";
-  }
-  return "self-similarity";
+  return "ast";
 }
 
 function ensureArtifacts(paths) {

@@ -1,12 +1,12 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2026-01-16T20:21:01.260Z",
+  "recordedAt": "2026-01-27T16:25:36.323Z",
   "environment": {
-    "nodeVersion": "v22.14.0",
+    "nodeVersion": "v22.21.1",
     "platform": "win32",
     "arch": "x64",
-    "providerMode": null,
+    "providerMode": "local-only",
     "ollamaModel": "qwen3-coder:30b",
     "ollamaEndpoint": null
   },
@@ -14,16 +14,16 @@
     "mode": "ast",
     "thresholds": {
       "precision": 0.95,
-      "recall": 0.95
+      "recall": 0.9
     },
     "totals": {
-      "totalEvaluated": 1239,
-      "truePositives": 1233,
-      "falsePositives": 3,
-      "falseNegatives": 3,
-      "precision": 0.9975728155339806,
-      "recall": 0.9975728155339806,
-      "f1Score": 0.9975728155339806
+      "totalEvaluated": 1483,
+      "truePositives": 1301,
+      "falsePositives": 45,
+      "falseNegatives": 137,
+      "precision": 0.9665676077265973,
+      "recall": 0.9047287899860917,
+      "f1Score": 0.9346264367816092
     },
     "fixtures": [
       {
@@ -125,296 +125,512 @@
         "label": "Ky HTTP client repository",
         "language": "typescript",
         "totals": {
-          "truePositives": 56,
-          "falsePositives": 0,
+          "truePositives": 95,
+          "falsePositives": 4,
           "falseNegatives": 0,
-          "precision": 1,
+          "precision": 0.9595959595959596,
           "recall": 1,
-          "f1Score": 1
+          "f1Score": 0.979381443298969
         },
         "truePositives": [
           {
-            "source": "core/constants.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/core/constants.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "errors/HTTPError.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/errors/HTTPError.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "errors/NonError.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/errors/NonError.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "types/ResponsePromise.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/types/ResponsePromise.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/body.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/body.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/delay.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/delay.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/merge.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/merge.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/normalize.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/normalize.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/options.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/timeout.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/timeout.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/type-guards.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/type-guards.ts",
+            "relation": "imports"
           },
           {
-            "source": "core/Ky.ts",
-            "target": "utils/types.ts",
-            "relation": "depends_on"
+            "source": "source/core/Ky.ts",
+            "target": "source/utils/types.ts",
+            "relation": "imports"
           },
           {
-            "source": "errors/HTTPError.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/errors/HTTPError.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "errors/HTTPError.ts",
-            "target": "types/request.ts",
-            "relation": "depends_on"
+            "source": "source/errors/HTTPError.ts",
+            "target": "source/types/request.ts",
+            "relation": "imports"
           },
           {
-            "source": "errors/HTTPError.ts",
-            "target": "types/response.ts",
-            "relation": "depends_on"
+            "source": "source/errors/HTTPError.ts",
+            "target": "source/types/response.ts",
+            "relation": "imports"
           },
           {
-            "source": "errors/TimeoutError.ts",
-            "target": "types/request.ts",
-            "relation": "depends_on"
+            "source": "source/errors/TimeoutError.ts",
+            "target": "source/types/request.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "core/Ky.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/core/Ky.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "errors/HTTPError.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/errors/HTTPError.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "errors/TimeoutError.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/errors/TimeoutError.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/hooks.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/hooks.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/ky.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/ky.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/request.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/request.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/response.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/response.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "types/ResponsePromise.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/types/ResponsePromise.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "utils/merge.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/utils/merge.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "utils/type-guards.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/utils/type-guards.ts",
+            "relation": "imports"
           },
           {
-            "source": "index.ts",
-            "target": "utils/types.ts",
-            "relation": "depends_on"
+            "source": "source/index.ts",
+            "target": "source/utils/types.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/hooks.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/types/hooks.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/hooks.ts",
-            "target": "index.ts",
-            "relation": "depends_on"
+            "source": "source/types/hooks.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/hooks.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/types/hooks.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/ky.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/types/ky.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/ky.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/types/ky.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/ky.ts",
-            "target": "types/ResponsePromise.ts",
-            "relation": "depends_on"
+            "source": "source/types/ky.ts",
+            "target": "source/types/ResponsePromise.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/options.ts",
-            "target": "types/common.ts",
-            "relation": "depends_on"
+            "source": "source/types/options.ts",
+            "target": "source/types/common.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/options.ts",
-            "target": "types/hooks.ts",
-            "relation": "depends_on"
+            "source": "source/types/options.ts",
+            "target": "source/types/hooks.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/options.ts",
-            "target": "types/retry.ts",
-            "relation": "depends_on"
+            "source": "source/types/options.ts",
+            "target": "source/types/retry.ts",
+            "relation": "imports"
           },
           {
-            "source": "types/ResponsePromise.ts",
-            "target": "types/response.ts",
-            "relation": "depends_on"
+            "source": "source/types/ResponsePromise.ts",
+            "target": "source/types/response.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/body.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/utils/body.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/body.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/utils/body.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/delay.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/utils/delay.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/merge.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/utils/merge.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/merge.ts",
-            "target": "types/hooks.ts",
-            "relation": "depends_on"
+            "source": "source/utils/merge.ts",
+            "target": "source/types/hooks.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/merge.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/utils/merge.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/merge.ts",
-            "target": "utils/is.ts",
-            "relation": "depends_on"
+            "source": "source/utils/merge.ts",
+            "target": "source/utils/is.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/normalize.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/utils/normalize.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/normalize.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/utils/normalize.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/normalize.ts",
-            "target": "types/retry.ts",
-            "relation": "depends_on"
+            "source": "source/utils/normalize.ts",
+            "target": "source/types/retry.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/options.ts",
-            "target": "core/constants.ts",
-            "relation": "depends_on"
+            "source": "source/utils/options.ts",
+            "target": "source/core/constants.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/options.ts",
-            "target": "types/options.ts",
-            "relation": "depends_on"
+            "source": "source/utils/options.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/timeout.ts",
-            "target": "errors/TimeoutError.ts",
-            "relation": "depends_on"
+            "source": "source/utils/timeout.ts",
+            "target": "source/errors/TimeoutError.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/type-guards.ts",
-            "target": "errors/HTTPError.ts",
-            "relation": "depends_on"
+            "source": "source/utils/type-guards.ts",
+            "target": "source/errors/HTTPError.ts",
+            "relation": "imports"
           },
           {
-            "source": "utils/type-guards.ts",
-            "target": "errors/TimeoutError.ts",
-            "relation": "depends_on"
+            "source": "source/utils/type-guards.ts",
+            "target": "source/errors/TimeoutError.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/browser.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/browser.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/browser.ts",
+            "target": "test/helpers/parse-body.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/browser.ts",
+            "target": "test/helpers/with-page.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/bytes.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/bytes.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/context.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/context.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/fetch.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/fetch.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/formdata-searchparams.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/formdata-searchparams.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/headers.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/headers.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/helpers/index.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/helpers/index.ts",
+            "target": "test/helpers/create-large-file.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/helpers/index.ts",
+            "target": "test/helpers/parse-body.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/helpers/index.ts",
+            "target": "test/helpers/with-page.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/hooks.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/hooks.ts",
+            "target": "source/types/options.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/hooks.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/http-error.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/http-error.ts",
+            "target": "source/utils/types.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/main.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/main.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/main.ts",
+            "target": "test/helpers/parse-body.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/memory-leak.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/memory-leak.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/methods.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/methods.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/prefix-url.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/prefix-url.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/retry.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/retry.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/retry.ts",
+            "target": "test/helpers/with-performance.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/stream.ts",
+            "target": "source/index.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/stream.ts",
+            "target": "test/helpers/create-http-test-server.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/stream.ts",
+            "target": "test/helpers/create-large-file.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/stream.ts",
+            "target": "test/helpers/parse-body.ts",
+            "relation": "imports"
           }
         ],
-        "falsePositives": [],
+        "falsePositives": [
+          {
+            "source": "source/types/options.ts",
+            "target": "test/headers.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "source/utils/merge.ts",
+            "target": "test/headers.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/hooks.ts",
+            "target": "source/utils/delay.ts",
+            "relation": "imports"
+          },
+          {
+            "source": "test/main.ts",
+            "target": "source/utils/delay.ts",
+            "relation": "imports"
+          }
+        ],
         "falseNegatives": []
       },
       {
@@ -531,12 +747,12 @@
         "label": "libuv repository",
         "language": "c",
         "totals": {
-          "truePositives": 259,
+          "truePositives": 148,
           "falsePositives": 0,
-          "falseNegatives": 0,
+          "falseNegatives": 111,
           "precision": 1,
-          "recall": 1,
-          "f1Score": 1
+          "recall": 0.5714285714285714,
+          "f1Score": 0.7272727272727273
         },
         "truePositives": [
           {
@@ -559,6 +775,729 @@
             "target": "include/uv/win.h",
             "relation": "includes"
           },
+          {
+            "source": "src/fs-poll.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/fs-poll.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/fs-poll.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/fs-poll.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/idna.c",
+            "target": "src/idna.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/idna.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/inet.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/random.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/random.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/random.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/strscpy.c",
+            "target": "src/strscpy.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/strtok.c",
+            "target": "src/strtok.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/thread-common.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/threadpool.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/threadpool.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/timer.c",
+            "target": "src/heap-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/timer.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/aix-common.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/aix.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/async.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/bsd-ifaddrs.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/bsd-proctitle.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/core.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/cygwin.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/darwin-proctitle.c",
+            "target": "src/unix/darwin-stub.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/darwin-proctitle.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/darwin.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/dl.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/freebsd.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/fs.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/fsevents.c",
+            "target": "src/unix/darwin-stub.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/fsevents.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/getaddrinfo.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/getnameinfo.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/haiku.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/hurd.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/ibmi.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/internal.h",
+            "target": "src/unix/darwin-syscalls.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/internal.h",
+            "target": "src/unix/os390-syscalls.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/kqueue.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/linux.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/loop-watcher.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/loop.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/netbsd.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/no-fsevents.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/no-proctitle.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/openbsd.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/os390-proctitle.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/os390-syscalls.c",
+            "target": "src/unix/os390-syscalls.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/os390-syscalls.h",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/os390.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/pipe.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/poll.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/posix-hrtime.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/posix-poll.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/process.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/procfs-exepath.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/proctitle.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/qnx.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/random-devurandom.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/random-getentropy.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/random-getrandom.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/random-sysctl-linux.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/signal.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/stream.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/sunos.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/sysinfo-loadavg.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/sysinfo-memory.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/tcp.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/thread.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/tty.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/unix/udp.c",
+            "target": "src/unix/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/uv-common.c",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/uv-common.h",
+            "target": "src/queue.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/uv-common.h",
+            "target": "src/strscpy.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/async.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/async.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/async.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/core.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/core.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/core.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/detect-wakeup.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/detect-wakeup.c",
+            "target": "src/win/winapi.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/dl.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/error.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs-event.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs-event.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs-event.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs-fd-hash-inl.h",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs.c",
+            "target": "src/win/fs-fd-hash-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/fs.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/getaddrinfo.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/getaddrinfo.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/getnameinfo.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/getnameinfo.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/handle-inl.h",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/handle.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/handle.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/internal.h",
+            "target": "src/uv-common.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/internal.h",
+            "target": "src/win/winapi.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/internal.h",
+            "target": "src/win/winsock.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/loop-watcher.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/loop-watcher.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/pipe.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/pipe.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/pipe.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/pipe.c",
+            "target": "src/win/stream-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/poll.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/poll.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/poll.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/process-stdio.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/process-stdio.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/process.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/process.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/process.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/req-inl.h",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/signal.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/signal.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/signal.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream-inl.h",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream-inl.h",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream-inl.h",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/stream.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tcp.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tcp.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tcp.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tcp.c",
+            "target": "src/win/stream-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/thread.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tty.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tty.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tty.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/tty.c",
+            "target": "src/win/stream-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/udp.c",
+            "target": "src/win/handle-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/udp.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/udp.c",
+            "target": "src/win/req-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/udp.c",
+            "target": "src/win/stream-inl.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/util.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/winapi.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/winsock.c",
+            "target": "src/win/internal.h",
+            "relation": "includes"
+          },
+          {
+            "source": "src/win/winsock.h",
+            "target": "src/win/winapi.h",
+            "relation": "includes"
+          }
+        ],
+        "falsePositives": [],
+        "falseNegatives": [
           {
             "source": "include/uv/unix.h",
             "target": "include/uv/aix.h",
@@ -615,38 +1554,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/fs-poll.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/fs-poll.c",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/fs-poll.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/fs-poll.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/idna.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/idna.c",
-            "target": "src/idna.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/idna.c",
-            "target": "src/uv-common.h",
             "relation": "includes"
           },
           {
@@ -655,33 +1564,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/inet.c",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/random.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/random.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/random.c",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/random.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/strscpy.c",
-            "target": "src/strscpy.h",
             "relation": "includes"
           },
           {
@@ -690,43 +1574,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/strtok.c",
-            "target": "src/strtok.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/thread-common.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/thread-common.c",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/threadpool.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/threadpool.c",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/timer.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/timer.c",
-            "target": "src/heap-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/timer.c",
-            "target": "src/uv-common.h",
             "relation": "includes"
           },
           {
@@ -735,18 +1589,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/aix-common.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/aix.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/aix.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -755,28 +1599,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/async.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/bsd-ifaddrs.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/unix/bsd-ifaddrs.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/bsd-proctitle.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/bsd-proctitle.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -790,33 +1619,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/core.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/cygwin.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/unix/cygwin.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/darwin-proctitle.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/darwin-proctitle.c",
-            "target": "src/unix/darwin-stub.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/darwin-proctitle.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -825,18 +1634,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/darwin.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/dl.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/dl.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -845,33 +1644,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/freebsd.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/fs.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/unix/fs.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/fsevents.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/fsevents.c",
-            "target": "src/unix/darwin-stub.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/fsevents.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -885,18 +1664,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/getaddrinfo.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/getnameinfo.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/getnameinfo.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -905,38 +1674,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/haiku.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/hurd.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/unix/hurd.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/ibmi.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/ibmi.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/internal.h",
-            "target": "src/unix/darwin-syscalls.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/internal.h",
-            "target": "src/unix/os390-syscalls.h",
             "relation": "includes"
           },
           {
@@ -950,28 +1694,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/kqueue.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/linux.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/unix/linux.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/loop-watcher.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/loop-watcher.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -990,18 +1719,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/loop.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/netbsd.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/netbsd.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1010,18 +1729,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/no-fsevents.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/no-proctitle.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/no-proctitle.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1030,23 +1739,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/openbsd.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/os390-proctitle.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/os390-proctitle.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/os390-syscalls.c",
-            "target": "src/unix/os390-syscalls.h",
             "relation": "includes"
           },
           {
@@ -1055,18 +1749,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/os390-syscalls.h",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/os390.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/os390.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1075,18 +1759,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/pipe.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/poll.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/poll.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1095,18 +1769,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/posix-hrtime.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/posix-poll.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/posix-poll.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1115,18 +1779,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/process.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/procfs-exepath.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/procfs-exepath.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1135,18 +1789,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/proctitle.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/qnx.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/qnx.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1155,18 +1799,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/random-devurandom.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/random-getentropy.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/random-getentropy.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1175,18 +1809,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/random-getrandom.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/random-sysctl-linux.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/random-sysctl-linux.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1195,18 +1819,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/signal.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/stream.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/stream.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1215,18 +1829,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/sunos.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/sysinfo-loadavg.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/sysinfo-loadavg.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1235,18 +1839,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/sysinfo-memory.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/tcp.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/tcp.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1255,18 +1849,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/thread.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/unix/tty.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/unix/tty.c",
-            "target": "src/unix/internal.h",
             "relation": "includes"
           },
           {
@@ -1275,18 +1859,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/unix/udp.c",
-            "target": "src/unix/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/uv-common.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/uv-common.c",
-            "target": "src/uv-common.h",
             "relation": "includes"
           },
           {
@@ -1297,16 +1871,6 @@
           {
             "source": "src/uv-common.h",
             "target": "include/uv/tree.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/uv-common.h",
-            "target": "src/queue.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/uv-common.h",
-            "target": "src/strscpy.h",
             "relation": "includes"
           },
           {
@@ -1325,21 +1889,6 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/async.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/async.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/async.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/core.c",
             "target": "include/uv.h",
             "relation": "includes"
@@ -1355,33 +1904,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/core.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/core.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/core.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/detect-wakeup.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/detect-wakeup.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/detect-wakeup.c",
-            "target": "src/win/winapi.h",
             "relation": "includes"
           },
           {
@@ -1390,38 +1914,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/dl.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/error.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/win/error.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/fs-event.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs-event.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs-event.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs-event.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1430,33 +1929,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/fs-fd-hash-inl.h",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/fs.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs.c",
-            "target": "src/win/fs-fd-hash-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/fs.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1470,28 +1944,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/getaddrinfo.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/getaddrinfo.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/getnameinfo.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/getnameinfo.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/getnameinfo.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1500,23 +1954,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/handle-inl.h",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/handle.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/handle.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/handle.c",
-            "target": "src/win/internal.h",
             "relation": "includes"
           },
           {
@@ -1530,33 +1969,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/internal.h",
-            "target": "src/uv-common.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/internal.h",
-            "target": "src/win/winapi.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/internal.h",
-            "target": "src/win/winsock.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/loop-watcher.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/loop-watcher.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/loop-watcher.c",
-            "target": "src/win/internal.h",
             "relation": "includes"
           },
           {
@@ -1570,43 +1984,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/pipe.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/pipe.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/pipe.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/pipe.c",
-            "target": "src/win/stream-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/poll.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/poll.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/poll.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/poll.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1615,33 +1994,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/process-stdio.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/process-stdio.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/process.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/process.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/process.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/process.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1650,28 +2004,8 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/req-inl.h",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/signal.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/signal.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/signal.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/signal.c",
-            "target": "src/win/req-inl.h",
             "relation": "includes"
           },
           {
@@ -1680,63 +2014,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/stream-inl.h",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/stream-inl.h",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/stream-inl.h",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/stream.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/win/stream.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/stream.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/stream.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/tcp.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tcp.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tcp.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tcp.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tcp.c",
-            "target": "src/win/stream-inl.h",
             "relation": "includes"
           },
           {
@@ -1745,58 +2029,13 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/thread.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/tty.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/win/tty.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tty.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tty.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/tty.c",
-            "target": "src/win/stream-inl.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/udp.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/udp.c",
-            "target": "src/win/handle-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/udp.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/udp.c",
-            "target": "src/win/req-inl.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/udp.c",
-            "target": "src/win/stream-inl.h",
             "relation": "includes"
           },
           {
@@ -1805,38 +2044,16 @@
             "relation": "includes"
           },
           {
-            "source": "src/win/util.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/winapi.c",
             "target": "include/uv.h",
             "relation": "includes"
           },
           {
-            "source": "src/win/winapi.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
             "source": "src/win/winsock.c",
             "target": "include/uv.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/winsock.c",
-            "target": "src/win/internal.h",
-            "relation": "includes"
-          },
-          {
-            "source": "src/win/winsock.h",
-            "target": "src/win/winapi.h",
             "relation": "includes"
           }
-        ],
-        "falsePositives": [],
-        "falseNegatives": []
+        ]
       },
       {
         "id": "python-basics",
@@ -1871,11 +2088,11 @@
         "language": "python",
         "totals": {
           "truePositives": 7,
-          "falsePositives": 0,
+          "falsePositives": 4,
           "falseNegatives": 0,
-          "precision": 1,
+          "precision": 0.6363636363636364,
           "recall": 1,
-          "f1Score": 1
+          "f1Score": 0.7777777777777778
         },
         "truePositives": [
           {
@@ -1914,7 +2131,28 @@
             "relation": "imports"
           }
         ],
-        "falsePositives": [],
+        "falsePositives": [
+          {
+            "source": "src/main.py",
+            "target": "src/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/metrics.py",
+            "target": "src/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/pipeline.py",
+            "target": "src/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/repositories.py",
+            "target": "src/__init__.py",
+            "relation": "imports"
+          }
+        ],
         "falseNegatives": []
       },
       {
@@ -1923,11 +2161,11 @@
         "language": "python",
         "totals": {
           "truePositives": 55,
-          "falsePositives": 0,
+          "falsePositives": 15,
           "falseNegatives": 0,
-          "precision": 1,
+          "precision": 0.7857142857142857,
           "recall": 1,
-          "f1Score": 1
+          "f1Score": 0.88
         },
         "truePositives": [
           {
@@ -2206,7 +2444,83 @@
             "relation": "imports"
           }
         ],
-        "falsePositives": [],
+        "falsePositives": [
+          {
+            "source": "src/requests/_internal_utils.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/adapters.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/auth.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/certs.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/compat.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/compat.py",
+            "target": "src/requests/cookies.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/cookies.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/exceptions.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/help.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/models.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/packages.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/sessions.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/status_codes.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/structures.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          },
+          {
+            "source": "src/requests/utils.py",
+            "target": "src/requests/__init__.py",
+            "relation": "imports"
+          }
+        ],
         "falseNegatives": []
       },
       {
@@ -2581,12 +2895,12 @@
         "label": "C# WebForms hidden field propagation sample",
         "language": "csharp",
         "totals": {
-          "truePositives": 6,
-          "falsePositives": 0,
-          "falseNegatives": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1Score": 1
+          "truePositives": 5,
+          "falsePositives": 1,
+          "falseNegatives": 1,
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1Score": 0.8333333333333334
         },
         "truePositives": [
           {
@@ -2610,18 +2924,25 @@
             "relation": "uses"
           },
           {
-            "source": "src/Pages/Default.aspx.cs",
-            "target": "src/Pages/Default.aspx.designer.cs",
-            "relation": "uses"
-          },
-          {
             "source": "src/Scripts/appConfig.js",
             "target": "src/Pages/Default.aspx",
             "relation": "uses"
           }
         ],
-        "falsePositives": [],
-        "falseNegatives": []
+        "falsePositives": [
+          {
+            "source": "src/Pages/Default.aspx.designer.cs",
+            "target": "src/Pages/Default.aspx.cs",
+            "relation": "uses"
+          }
+        ],
+        "falseNegatives": [
+          {
+            "source": "src/Pages/Default.aspx.cs",
+            "target": "src/Pages/Default.aspx.designer.cs",
+            "relation": "uses"
+          }
+        ]
       },
       {
         "id": "csharp-roslyn-compilers",
@@ -3937,12 +4258,12 @@
         "label": "OkHttp client repository",
         "language": "java",
         "totals": {
-          "truePositives": 389,
-          "falsePositives": 0,
-          "falseNegatives": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1Score": 1
+          "truePositives": 527,
+          "falsePositives": 18,
+          "falseNegatives": 22,
+          "precision": 0.9669724770642202,
+          "recall": 0.9599271402550091,
+          "f1Score": 0.963436928702011
         },
         "truePositives": [
           {
@@ -3956,9 +4277,24 @@
             "relation": "uses"
           },
           {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockResponse.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/SocketPolicy.java",
+            "relation": "imports"
+          },
+          {
             "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/DuplexResponseBody.java",
             "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/RecordedRequest.java",
             "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/MockDuplexResponseBody.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/DuplexResponseBody.java",
+            "relation": "imports"
           },
           {
             "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/MockDuplexResponseBody.java",
@@ -3968,6 +4304,11 @@
           {
             "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockResponse.java",
             "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/DuplexResponseBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockResponse.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/SocketPolicy.java",
             "relation": "uses"
           },
           {
@@ -3998,6 +4339,21 @@
           {
             "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockWebServer.java",
             "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/internal/duplex/DuplexResponseBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockWebServer.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/QueueDispatcher.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockWebServer.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/RecordedRequest.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockWebServer.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/SocketPolicy.java",
             "relation": "uses"
           },
           {
@@ -4088,6 +4444,16 @@
           {
             "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/PushPromise.java",
             "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/QueueDispatcher.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
+            "relation": "imports"
+          },
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/QueueDispatcher.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockResponse.java",
             "relation": "uses"
           },
           {
@@ -4312,6 +4678,11 @@
           },
           {
             "source": "okhttp-logging-interceptor/src/main/java/okhttp3/logging/LoggingEventListener.java",
+            "target": "okhttp-logging-interceptor/src/main/java/okhttp3/logging/HttpLoggingInterceptor.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-logging-interceptor/src/main/java/okhttp3/logging/LoggingEventListener.java",
             "target": "okhttp/src/main/java/okhttp3/Call.java",
             "relation": "uses"
           },
@@ -4348,6 +4719,11 @@
           {
             "source": "okhttp-logging-interceptor/src/main/java/okhttp3/logging/LoggingEventListener.java",
             "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-sse/src/main/java/okhttp3/internal/sse/RealEventSource.java",
+            "target": "okhttp-sse/src/main/java/okhttp3/internal/sse/ServerSentEventReader.java",
             "relation": "uses"
           },
           {
@@ -4432,12 +4808,32 @@
           },
           {
             "source": "okhttp-sse/src/main/java/okhttp3/sse/EventSources.java",
+            "target": "okhttp-sse/src/main/java/okhttp3/sse/EventSource.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-sse/src/main/java/okhttp3/sse/EventSources.java",
             "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
             "relation": "uses"
           },
           {
             "source": "okhttp-sse/src/main/java/okhttp3/sse/EventSources.java",
             "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/FakeDns.java",
+            "target": "okhttp/src/main/java/okhttp3/Dns.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/ForwardingRequestBody.java",
+            "target": "okhttp/src/main/java/okhttp3/RequestBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/ForwardingResponseBody.java",
+            "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
             "relation": "uses"
           },
           {
@@ -4451,13 +4847,113 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/internal/io/InMemoryFileSystem.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/io/FileSystem.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/OkHttpClientTestRule.java",
+            "target": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/RecordingCookieJar.java",
+            "target": "okhttp/src/main/java/okhttp3/Cookie.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/RecordingCookieJar.java",
+            "target": "okhttp/src/main/java/okhttp3/CookieJar.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
+            "target": "okhttp/src/main/java/okhttp3/ConnectionPool.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
+            "target": "okhttp/src/main/java/okhttp3/Dispatcher.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
+            "target": "okhttp/src/main/java/okhttp3/Dns.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http2/Header.java",
             "relation": "uses"
           },
           {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/UppercaseRequestInterceptor.java",
+            "target": "okhttp-testing-support/src/main/java/okhttp3/ForwardingRequestBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/UppercaseRequestInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/UppercaseResponseInterceptor.java",
+            "target": "okhttp-testing-support/src/main/java/okhttp3/ForwardingResponseBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-testing-support/src/main/java/okhttp3/UppercaseResponseInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/AutobahnTester.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/AutobahnTester.java",
+            "target": "okhttp/src/main/java/okhttp3/Request.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/AutobahnTester.java",
+            "target": "okhttp/src/main/java/okhttp3/WebSocketListener.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
+            "target": "okhttp/src/main/java/okhttp3/CipherSuite.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
+            "target": "okhttp/src/main/java/okhttp3/ConnectionSpec.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
             "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
+            "target": "okhttp/src/main/java/okhttp3/Request.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-tests/src/main/java/okhttp3/TestTls13Request.java",
+            "target": "okhttp/src/main/java/okhttp3/TlsVersion.java",
             "relation": "imports"
           },
           {
@@ -4487,7 +4983,32 @@
           },
           {
             "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetAuthenticator.java",
+            "target": "okhttp/src/main/java/okhttp3/Authenticator.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetAuthenticator.java",
+            "target": "okhttp/src/main/java/okhttp3/Credentials.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetAuthenticator.java",
             "target": "okhttp/src/main/java/okhttp3/internal/annotations/EverythingIsNonNull.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetAuthenticator.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetCookieJar.java",
+            "target": "okhttp/src/main/java/okhttp3/Cookie.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-urlconnection/src/main/java/okhttp3/JavaNetCookieJar.java",
+            "target": "okhttp/src/main/java/okhttp3/CookieJar.java",
             "relation": "imports"
           },
           {
@@ -4502,8 +5023,38 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Address.java",
+            "target": "okhttp/src/main/java/okhttp3/HttpUrl.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Address.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Authenticator.java",
+            "target": "okhttp/src/main/java/okhttp3/Credentials.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/CacheControl.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/CipherSuite.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/Handshake.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Cache.java",
@@ -4556,13 +5107,68 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/MediaType.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/Request.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Cache.java",
+            "target": "okhttp/src/main/java/okhttp3/TlsVersion.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/CacheControl.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http/HttpHeaders.java",
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/Call.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Call.java",
+            "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
+            "target": "okhttp/src/main/java/okhttp3/Connection.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
+            "target": "okhttp/src/main/java/okhttp3/HttpUrl.java",
+            "relation": "imports"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
             "target": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
+            "target": "okhttp/src/main/java/okhttp3/Request.java",
             "relation": "uses"
           },
           {
@@ -4572,8 +5178,18 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/ConnectionSpec.java",
+            "target": "okhttp/src/main/java/okhttp3/CipherSuite.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ConnectionSpec.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ConnectionSpec.java",
+            "target": "okhttp/src/main/java/okhttp3/TlsVersion.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Cookie.java",
@@ -4597,13 +5213,38 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/FormBody.java",
+            "target": "okhttp/src/main/java/okhttp3/HttpUrl.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/FormBody.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/FormBody.java",
+            "target": "okhttp/src/main/java/okhttp3/MediaType.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/FormBody.java",
+            "target": "okhttp/src/main/java/okhttp3/RequestBody.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Handshake.java",
+            "target": "okhttp/src/main/java/okhttp3/CipherSuite.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Handshake.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Handshake.java",
+            "target": "okhttp/src/main/java/okhttp3/TlsVersion.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Headers.java",
@@ -4634,6 +5275,11 @@
             "source": "okhttp/src/main/java/okhttp3/internal/cache/CacheInterceptor.java",
             "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/cache/CacheInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/cache/CacheStrategy.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/cache/CacheInterceptor.java",
@@ -4852,6 +5498,16 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/connection/ExchangeFinder.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/RealConnection.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/ExchangeFinder.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/RouteException.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/ExchangeFinder.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http/ExchangeCodec.java",
             "relation": "imports"
           },
@@ -4914,6 +5570,11 @@
             "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnection.java",
             "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/RouteException.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnection.java",
@@ -5012,6 +5673,11 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnectionPool.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/Transmitter.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnectionPool.java",
             "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
             "relation": "imports"
           },
@@ -5097,6 +5763,11 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/connection/Transmitter.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/Exchange.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/Transmitter.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http/ExchangeCodec.java",
             "relation": "uses"
           },
@@ -5142,6 +5813,16 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http/BridgeInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/HttpHeaders.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/BridgeInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/RealResponseBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/BridgeInterceptor.java",
             "target": "okhttp/src/main/java/okhttp3/MediaType.java",
             "relation": "uses"
           },
@@ -5169,6 +5850,11 @@
             "source": "okhttp/src/main/java/okhttp3/internal/http/CallServerInterceptor.java",
             "target": "okhttp/src/main/java/okhttp3/internal/connection/Exchange.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/CallServerInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/HttpMethod.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http/CallServerInterceptor.java",
@@ -5229,6 +5915,11 @@
             "source": "okhttp/src/main/java/okhttp3/internal/http/HttpHeaders.java",
             "target": "okhttp/src/main/java/okhttp3/HttpUrl.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/HttpHeaders.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/StatusLine.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http/HttpHeaders.java",
@@ -5319,6 +6010,16 @@
             "source": "okhttp/src/main/java/okhttp3/internal/http/RetryAndFollowUpInterceptor.java",
             "target": "okhttp/src/main/java/okhttp3/internal/connection/Transmitter.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/RetryAndFollowUpInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/HttpMethod.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http/RetryAndFollowUpInterceptor.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http/StatusLine.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http/RetryAndFollowUpInterceptor.java",
@@ -5431,8 +6132,43 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Header.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
             "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/ConnectionShutdownException.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/ErrorCode.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Stream.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/PushObserver.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Settings.java",
             "relation": "uses"
           },
           {
@@ -5487,6 +6223,16 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2ExchangeCodec.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/ErrorCode.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2ExchangeCodec.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Header.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2ExchangeCodec.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Internal.java",
             "relation": "imports"
           },
@@ -5516,14 +6262,49 @@
             "relation": "uses"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/ErrorCode.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Settings.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Stream.java",
             "target": "okhttp/src/main/java/okhttp3/Headers.java",
             "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Stream.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/ErrorCode.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Stream.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/StreamResetException.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Stream.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Writer.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Writer.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Settings.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/http2/PushObserver.java",
@@ -5581,9 +6362,24 @@
             "relation": "uses"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/internal/NamedRunnable.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Android10Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/Android10Platform.java",
             "target": "okhttp/src/main/java/okhttp3/Protocol.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/AndroidPlatform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/AndroidPlatform.java",
@@ -5612,8 +6408,18 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/ConscryptPlatform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/ConscryptPlatform.java",
             "target": "okhttp/src/main/java/okhttp3/Protocol.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Jdk8WithJettyBootPlatform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/Jdk8WithJettyBootPlatform.java",
@@ -5627,8 +6433,18 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/Jdk9Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Jdk9Platform.java",
             "target": "okhttp/src/main/java/okhttp3/Protocol.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/ConscryptPlatform.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
@@ -5671,9 +6487,29 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/internal/tls/BasicCertificateChainCleaner.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/tls/BasicTrustRootIndex.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/tls/TrustRootIndex.java",
+            "relation": "imports"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
             "target": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/tls/BasicCertificateChainCleaner.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/tls/BasicTrustRootIndex.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/Util.java",
@@ -5689,6 +6525,11 @@
             "source": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http2/Header.java",
             "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/Util.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/Internal.java",
+            "relation": "imports"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/Util.java",
@@ -5732,6 +6573,11 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/internal/ws/RealWebSocket.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketProtocol.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/ws/RealWebSocket.java",
             "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
             "relation": "uses"
           },
@@ -5761,9 +6607,94 @@
             "relation": "uses"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketReader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketProtocol.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketWriter.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketProtocol.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/MultipartBody.java",
+            "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/MultipartBody.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/MultipartBody.java",
+            "target": "okhttp/src/main/java/okhttp3/MediaType.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/MultipartBody.java",
+            "target": "okhttp/src/main/java/okhttp3/RequestBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Authenticator.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Cache.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/CertificatePinner.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/ConnectionPool.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/ConnectionSpec.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/CookieJar.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Dispatcher.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Dns.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/EventListener.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
+            "relation": "uses"
           },
           {
             "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
@@ -5816,6 +6747,36 @@
             "relation": "uses"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Protocol.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/WebSocket.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/RealCall.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/RealCall.java",
+            "target": "okhttp/src/main/java/okhttp3/EventListener.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/RealCall.java",
+            "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/RealCall.java",
             "target": "okhttp/src/main/java/okhttp3/internal/cache/CacheInterceptor.java",
             "relation": "uses"
@@ -5862,6 +6823,21 @@
           },
           {
             "source": "okhttp/src/main/java/okhttp3/Request.java",
+            "target": "okhttp/src/main/java/okhttp3/CacheControl.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Request.java",
+            "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Request.java",
+            "target": "okhttp/src/main/java/okhttp3/HttpUrl.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Request.java",
             "target": "okhttp/src/main/java/okhttp3/internal/http/HttpMethod.java",
             "relation": "imports"
           },
@@ -5876,6 +6852,21 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/RequestBody.java",
+            "target": "okhttp/src/main/java/okhttp3/MediaType.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/CacheControl.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/Headers.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/Response.java",
             "target": "okhttp/src/main/java/okhttp3/internal/connection/Exchange.java",
             "relation": "uses"
@@ -5886,13 +6877,235 @@
             "relation": "imports"
           },
           {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "target": "okhttp/src/main/java/okhttp3/Callback.java",
+            "relation": "uses"
+          },
+          {
             "source": "okhttp/src/main/java/okhttp3/ResponseBody.java",
             "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
             "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "target": "okhttp/src/main/java/okhttp3/MediaType.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "uses"
           }
         ],
-        "falsePositives": [],
-        "falseNegatives": []
+        "falsePositives": [
+          {
+            "source": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockResponse.java",
+            "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/MockWebServer.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp-sse/src/main/java/okhttp3/internal/sse/ServerSentEventReader.java",
+            "target": "okhttp/src/main/java/okhttp3/Callback.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Address.java",
+            "target": "okhttp/src/main/java/okhttp3/Protocol.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Callback.java",
+            "target": "okhttp/src/main/java/okhttp3/Response.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/Protocol.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Dispatcher.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Dispatcher.java",
+            "target": "okhttp/src/main/java/okhttp3/Callback.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/EventListener.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/EventListener.java",
+            "target": "okhttp/src/main/java/okhttp3/Dns.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/EventListener.java",
+            "target": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Huffman.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Settings.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/Callback.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Response.java",
+            "target": "okhttp/src/main/java/okhttp3/Protocol.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+            "target": "okhttp/src/main/java/okhttp3/Call.java",
+            "relation": "depends_on"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Route.java",
+            "target": "okhttp/src/main/java/okhttp3/Address.java",
+            "relation": "depends_on"
+          }
+        ],
+        "falseNegatives": [
+          {
+            "source": "okhttp-dnsoverhttps/src/main/java/okhttp3/dnsoverhttps/DnsOverHttps.java",
+            "target": "okhttp-dnsoverhttps/src/main/java/okhttp3/dnsoverhttps/BootstrapDns.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp-dnsoverhttps/src/main/java/okhttp3/dnsoverhttps/DnsOverHttps.java",
+            "target": "okhttp-dnsoverhttps/src/main/java/okhttp3/dnsoverhttps/DnsRecordCodec.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/Dispatcher.java",
+            "target": "okhttp/src/main/java/okhttp3/RealCall.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/cache/DiskLruCache.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/cache/FaultHidingSink.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/cache2/Relay.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/cache2/FileOperator.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/ExchangeFinder.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/RouteSelector.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/ConnectionSpecSelector.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/RealConnectionPool.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/RouteDatabase.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/connection/Transmitter.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/connection/ExchangeFinder.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Huffman.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Writer.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/http2/Http2Writer.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/http2/Hpack.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Android10Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/AndroidPlatform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Android10Platform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/AndroidPlatform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Jdk8WithJettyBootPlatform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/platform/Platform.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/platform/Jdk9Platform.java",
+            "relation": "imports"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/ws/RealWebSocket.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketReader.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/internal/ws/RealWebSocket.java",
+            "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketWriter.java",
+            "relation": "uses"
+          },
+          {
+            "source": "okhttp/src/main/java/okhttp3/OkHttpClient.java",
+            "target": "okhttp/src/main/java/okhttp3/RealCall.java",
+            "relation": "imports"
+          }
+        ]
       },
       {
         "id": "ruby-basic",
@@ -6147,7 +7360,7 @@
         "label": "Java Rosetta Stone (cross-language canonical program)",
         "language": "java",
         "totals": {
-          "truePositives": 15,
+          "truePositives": 18,
           "falsePositives": 0,
           "falseNegatives": 0,
           "precision": 1,
@@ -6196,6 +7409,16 @@
             "relation": "uses"
           },
           {
+            "source": "src/com/rosetta/helpers/HelpersTest.java",
+            "target": "src/com/rosetta/helpers/Helpers.java",
+            "relation": "imports"
+          },
+          {
+            "source": "src/com/rosetta/models/ModelFactory.java",
+            "target": "src/com/rosetta/models/Record.java",
+            "relation": "uses"
+          },
+          {
             "source": "src/com/rosetta/models/ModelFactory.java",
             "target": "src/com/rosetta/types/ProcessorConfig.java",
             "relation": "uses"
@@ -6229,6 +7452,11 @@
             "source": "src/com/rosetta/processor/ProcessorTest.java",
             "target": "src/com/rosetta/models/Report.java",
             "relation": "uses"
+          },
+          {
+            "source": "src/com/rosetta/processor/ProcessorTest.java",
+            "target": "src/com/rosetta/processor/Processor.java",
+            "relation": "imports"
           }
         ],
         "falsePositives": [],

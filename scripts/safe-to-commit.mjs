@@ -74,20 +74,6 @@ function runSafeCommitCheck() {
         benchmarkEnv.BENCHMARK_MODE = flags.mode;
       }
       runNpmScript('Benchmarks', benchmarkArgs, benchmarkEnv);
-
-      if (
-        flags.benchmarkArgs.length === 0 &&
-        (!flags.mode || flags.mode === 'self-similarity')
-      ) {
-        runNpmScript(
-          'Benchmarks (AST mode)',
-          ['run', 'test:benchmarks', '--', '--suite', 'ast'],
-          {
-            BENCHMARK_MODE: 'ast',
-            BENCHMARK_SKIP_REGENERATE: '1'
-          }
-        );
-      }
     }
     runNpmScript('Live Docs regeneration', ['run', 'live-docs:generate']);
     runNpmScript('Fixture workspace verification', ['run', 'fixtures:verify'], {
@@ -167,7 +153,7 @@ function parseFlags(argv) {
   let skipGitStatus = coerceBoolean(process.env.npm_config_skip_git_status) ?? false;
   let mode =
     normalizeMode(process.env.BENCHMARK_MODE ?? process.env.npm_config_mode) ??
-    'self-similarity';
+    'ast';
   let generateReport = coerceBoolean(process.env.npm_config_report) ?? false;
   let includeBenchmarks = coerceBoolean(process.env.npm_config_benchmarks) ?? false;
   const benchmarkArgs = [];
@@ -282,21 +268,18 @@ function normalizeMode(candidate) {
     return undefined;
   }
   const normalized = String(candidate).toLowerCase();
-  if (['self-similarity', 'ast', 'all'].includes(normalized)) {
+  if (['ast', 'all'].includes(normalized)) {
     return normalized;
   }
   return undefined;
 }
 
 function resolveReportModes(mode) {
-  if (!mode || mode === 'self-similarity') {
-    return ['self-similarity'];
-  }
-  if (mode === 'ast') {
+  if (!mode || mode === 'ast') {
     return ['ast'];
   }
   if (mode === 'all') {
-    return ['self-similarity', 'ast'];
+    return ['ast'];
   }
   return [mode];
 }
