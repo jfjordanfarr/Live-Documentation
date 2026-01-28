@@ -53,11 +53,23 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 - **Integrity**: `sha256` root `1133cd7078de2076079aa81f4c70727f9fe8ff77f1f50782aed467053a2b5676` (10 files)
 - **File Selection**: include `src/**/*.rs`, `Cargo.toml`; exclude `tests/**`, `benches/**`, `examples/**`, `rfcs/**` (resolved 10 files)
 
+#### `csharp-newtonsoft-json` (Newtonsoft.Json serialization library)
+
+- **Source**: `JamesNK/Newtonsoft.Json` @ `e5f67150a0a2cd6fafcee483add00c1bb0fae306` — MIT
+- **Integrity**: `sha256` root `0949e8bdf2e9223194f7fb5b9cf47c6ad0fe6e863c27817ed9086cddf8e8ddf8` (240 files)
+- **File Selection**: include `Src/Newtonsoft.Json/**/*.cs`; exclude `**/*Tests*.cs`, `**/obj/**`, `**/bin/**` (resolved 240 files)
+
 #### `java-okhttp` (OkHttp client repository)
 
 - **Source**: `square/okhttp` @ `ad97bd3df34376eec85aa187dc8f45cfde8a2c01` — Apache-2.0
 - **Integrity**: `sha256` root `3a25221f8b880369a43ff52714391991896837a330707aedb8807cbd8daf315c` (151 files)
 - **File Selection**: include `okhttp/src/main/java/**/*.java`, `mockwebserver/src/main/java/**/*.java`, `okcurl/src/main/java/**/*.java`, `okhttp-dnsoverhttps/src/main/java/**/*.java`, `okhttp-logging-interceptor/src/main/java/**/*.java`, `okhttp-sse/src/main/java/**/*.java`, `okhttp-testing-support/src/main/java/**/*.java`, `okhttp-tests/src/main/java/**/*.java`, `okhttp-tls/src/main/java/**/*.java`, `okhttp-urlconnection/src/main/java/**/*.java`; exclude `**/src/test/**`, `samples/**` (resolved 151 files)
+
+#### `go-mux` (gorilla/mux HTTP router)
+
+- **Source**: `gorilla/mux` @ `db9d1d0073d27a0a2d9a8c1bc52aa0af4374d265` — BSD-3-Clause
+- **Integrity**: `sha256` root `cb12a6d87473d9ee8fa9b11fed40e022c158c1e448fabc6a70fb5b03859f7303` (17 files)
+- **File Selection**: include `**/*.go` (resolved 17 files)
 <!-- benchmark-vendor-inventory:end -->
 
 #### TypeScript Fixtures

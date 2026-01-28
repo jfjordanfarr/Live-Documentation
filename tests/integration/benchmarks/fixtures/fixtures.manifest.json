@@ -519,6 +519,22 @@
         "include": [
           "Src/Newtonsoft.Json/**/*.cs"
         ]
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "generatedAt": "2026-01-27T00:00:00.000Z",
+        "fileSet": {
+          "include": [
+            "Src/Newtonsoft.Json/**/*.cs"
+          ],
+          "exclude": [
+            "**/*Tests*.cs",
+            "**/obj/**",
+            "**/bin/**"
+          ]
+        },
+        "rootHash": "0949e8bdf2e9223194f7fb5b9cf47c6ad0fe6e863c27817ed9086cddf8e8ddf8",
+        "fileCount": 240
       }
     },
     {
@@ -779,8 +795,57 @@
       "expected": "go/rosetta/expected.json",
       "inferred": "go/rosetta/inferred.json",
       "oracle": {
-        "kind": "go",
+        "kind": "scip",
+        "indexer": "go",
         "root": "."
+      }
+    },
+    {
+      "id": "go-mux",
+      "label": "gorilla/mux HTTP router",
+      "language": "go",
+      "path": "go/mux",
+      "modes": [
+        "ast"
+      ],
+      "expected": "go/mux/expected.json",
+      "inferred": "go/mux/inferred.json",
+      "provenance": {
+        "kind": "vendor",
+        "repository": "gorilla/mux",
+        "commit": "db9d1d0073d27a0a2d9a8c1bc52aa0af4374d265",
+        "license": "BSD-3-Clause"
+      },
+      "materialization": {
+        "kind": "git",
+        "repository": "gorilla/mux",
+        "commit": "db9d1d0073d27a0a2d9a8c1bc52aa0af4374d265",
+        "include": [
+          "**/*.go"
+        ],
+        "exclude": []
+      },
+      "oracle": {
+        "kind": "scip",
+        "indexer": "go",
+        "root": "."
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "generatedAt": "2026-01-27T00:00:00.000Z",
+        "fileSet": {
+          "include": [
+            "**/*.go"
+          ],
+          "exclude": []
+        },
+        "rootHash": "cb12a6d87473d9ee8fa9b11fed40e022c158c1e448fabc6a70fb5b03859f7303",
+        "fileCount": 17
+      },
+      "thresholds": {
+        "precision": 0.70,
+        "recall": 0.05,
+        "rationale": "Single-package Go libraries cannot be analyzed by import heuristics; only filename matching (foo_test.go→foo.go) works. One edge has relation mismatch (implements vs references). This fixture demonstrates the value of SCIP compiler analysis."
       }
     }
   ]

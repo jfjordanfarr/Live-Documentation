@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/fixtures.manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-fixtures-manifest-json
-- Generated At: 2026-01-27T18:07:43.282Z
+- Generated At: 2026-01-28T02:55:35.639Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Master manifest enumerating every benchmark repository and fixture scenario the 
 - Update entries when refreshing vendored repositories or adding new language scenarios, and regenerate fixtures plus reports to keep precision/recall metrics honest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.282Z","inputHash":"d0291eebaea6d52e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.639Z","inputHash":"619a49fe4ca692a5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -42,6 +42,8 @@ _No public symbols detected_
 - [`expected`](./csharp/webforms/expected.json.mdmd.md)
 - [`inferred`](./csharp/webforms/inferred.json.mdmd.md)
 - [`oracle.overrides`](./csharp/webforms/oracle.overrides.json.mdmd.md)
+- [`expected`](./go/mux/expected.json.mdmd.md)
+- [`inferred`](./go/mux/inferred.json.mdmd.md)
 - [`expected`](./go/rosetta/expected.json.mdmd.md)
 - [`inferred`](./go/rosetta/inferred.json.mdmd.md)
 - [`expected`](./java/basic/expected.json.mdmd.md)

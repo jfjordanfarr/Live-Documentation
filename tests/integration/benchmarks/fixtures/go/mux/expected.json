@@ -1,0 +1,302 @@
+[
+  {
+    "source": "bench_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "bench_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_authentication_middleware_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_authentication_middleware_test.go",
+    "target": "example_route_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_authentication_middleware_test.go",
+    "target": "middleware.go",
+    "relation": "implements"
+  },
+  {
+    "source": "example_authentication_middleware_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "example_route_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "middleware.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_vars_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_vars_test.go",
+    "target": "example_route_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_vars_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_vars_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "middleware.go",
+    "relation": "implements"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "mux_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "old_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_httpserver_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_httpserver_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_httpserver_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "old_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "regexp.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux_test.go",
+    "target": "test_helpers.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux.go",
+    "target": "middleware.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux.go",
+    "target": "regexp.go",
+    "relation": "references"
+  },
+  {
+    "source": "mux.go",
+    "target": "route.go",
+    "relation": "implements"
+  },
+  {
+    "source": "old_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "old_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "old_test.go",
+    "target": "regexp.go",
+    "relation": "references"
+  },
+  {
+    "source": "old_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "regexp_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "regexp_test.go",
+    "target": "regexp.go",
+    "relation": "references"
+  },
+  {
+    "source": "regexp.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "regexp.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "regexp.go",
+    "target": "route.go",
+    "relation": "implements"
+  },
+  {
+    "source": "route_test.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "route_test.go",
+    "target": "mux_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "route_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "route_test.go",
+    "target": "old_test.go",
+    "relation": "references"
+  },
+  {
+    "source": "route_test.go",
+    "target": "route.go",
+    "relation": "references"
+  },
+  {
+    "source": "route.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "route.go",
+    "target": "middleware.go",
+    "relation": "references"
+  },
+  {
+    "source": "route.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "route.go",
+    "target": "regexp.go",
+    "relation": "references"
+  },
+  {
+    "source": "test_helpers.go",
+    "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "test_helpers.go",
+    "target": "mux.go",
+    "relation": "references"
+  }
+]

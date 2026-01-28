@@ -106,6 +106,58 @@ export function createGoHeuristic(): FallbackHeuristic {
           });
         }
       }
+
+      // For test files, emit edges to implementation files in the same package.
+      // In Go, test files can call functions from implementation files without
+      // explicit imports because they share the package namespace.
+      //
+      // We use two strategies:
+      // 1. Matching filename: foo_test.go → foo.go (high confidence)
+      // 2. Multi-package layout: if only 1-2 impl files in directory, emit to all (moderate confidence)
+      //
+      // For single-package libraries with many impl files, we avoid emitting
+      // blanket edges since precision would suffer greatly.
+      if (source.basename.endsWith("_test.go")) {
+        const sourceDir = path.dirname(source.comparablePath);
+        const packageFiles = context.packageIndex.get(sourceDir);
+        if (packageFiles) {
+          // Get non-test files in the same package
+          const implFiles = packageFiles.filter(f => 
+            !f.basename.endsWith("_test.go") && f.artifact.id !== source.artifact.id
+          );
+          
+          // Strategy 1: Look for matching impl file (foo_test.go → foo.go)
+          const baseName = source.basename.replace(/_test\.go$/, ".go");
+          const matchingImpl = implFiles.find(f => f.basename === baseName);
+          
+          if (matchingImpl && !seenTargets.has(matchingImpl.artifact.id)) {
+            seenTargets.add(matchingImpl.artifact.id);
+            emit({
+              target: matchingImpl,
+              confidence: 0.75,
+              rationale: "go test file tests matching implementation",
+              context: "use",
+            });
+          }
+          
+          // Strategy 2: For small packages (1-2 impl files), emit to all
+          // This handles cases like a single module with helper files
+          if (implFiles.length <= 2) {
+            for (const implFile of implFiles) {
+              if (seenTargets.has(implFile.artifact.id)) {
+                continue;
+              }
+              seenTargets.add(implFile.artifact.id);
+              emit({
+                target: implFile,
+                confidence: 0.6,
+                rationale: "go test file references package implementation",
+                context: "use",
+              });
+            }
+          }
+        }
+      }
     },
   };
 }

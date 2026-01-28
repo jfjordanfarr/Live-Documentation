@@ -32,6 +32,9 @@ async function main(): Promise<void> {
 
   console.log(dryRun ? "=== Dry Run: Fixture Hash Update ===" : "=== Updating Fixture Hashes ===");
 
+  const manifestPath = path.join(REPO_ROOT, "tests/integration/benchmarks/fixtures/fixtures.manifest.json");
+  const manifestContent = await fs.readFile(manifestPath, "utf8");
+  
   const fixtures = await loadBenchmarkManifest(REPO_ROOT);
   const candidates = fixtures.filter(f => f.integrity);
 

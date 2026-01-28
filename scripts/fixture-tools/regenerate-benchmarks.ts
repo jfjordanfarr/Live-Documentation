@@ -1304,7 +1304,8 @@ async function regenerateScipFixture(input: {
       indexerCmd = `scip-python index --output index.scip`;
       break;
     case "go":
-      indexerCmd = `scip-go index --output index.scip`;
+      // Note: scip-go uses --output flag directly; "index" as first arg is treated as package pattern
+      indexerCmd = `scip-go --output index.scip`;
       break;
     case "rust":
       indexerCmd = `rust-analyzer scip .`;
@@ -1330,7 +1331,8 @@ async function regenerateScipFixture(input: {
   console.log(`  Converting SCIP index to expected.json...`);
   
   const scipToExpectedPath = path.join(REPO_ROOT, "scripts", "fixture-tools", "scip-to-expected.ts");
-  const convertCmd = `npx tsx ${scipToExpectedPath} --input "${indexPath}"`;
+  // Pass the language so the normalizer can filter language-specific artifact paths
+  const convertCmd = `npx tsx ${scipToExpectedPath} --input "${indexPath}" --language ${oracle.indexer}`;
   
   let expectedJson: string;
   try {

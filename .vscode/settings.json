@@ -19,7 +19,9 @@
         ]
     },
     "java.project.import.exclusions": [
-        "**/tests/integration/benchmarks/fixtures/java/**"
+        "**/tests/integration/benchmarks/fixtures/java/**",
+        "**/AI-Agent-Workspace/tmp/**",
+        "**/node_modules/**"
     ],
     "problems.exclude": {
         "**/tests/integration/benchmarks/fixtures/**": true

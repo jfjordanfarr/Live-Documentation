@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-rosetta-expected-json
-- Generated At: 2026-01-16T20:21:06.772Z
+- Generated At: 2026-01-28T02:24:04.407Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Canonical ground-truth dependency graph for the go-rosetta benchmark fixture. Co
 - Graph shape mirrors other Rosetta variants: main → models/processor, processor → helpers/models/types, models → types
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T20:21:06.772Z","inputHash":"350128cff6b0d138"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:24:04.407Z","inputHash":"0f7fa43c0f41c718"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,6 +27,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`helpers`](./src/helpers/helpers.go.mdmd.md)
+- [`helpers_test`](./src/helpers/helpers_test.go.mdmd.md)
 - [`main`](./src/main/main.go.mdmd.md)
 - [`pipeline_test`](./src/main/pipeline_test.go.mdmd.md)
 - [`models`](./src/models/models.go.mdmd.md)

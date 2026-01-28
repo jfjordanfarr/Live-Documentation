@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-rosetta-inferred-json
-- Generated At: 2026-01-16T20:21:06.773Z
+- Generated At: 2026-01-28T02:24:04.408Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Inferred dependency graph produced by the Go heuristic for the go-rosetta benchm
 - Uses the Go heuristic from [go.ts](../../../../../../packages/shared/src/inference/heuristics/go.ts.mdmd.md)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T20:21:06.773Z","inputHash":"70e6dba8d0f809a9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:24:04.408Z","inputHash":"ad3c3c7b6de0403c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,6 +27,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`helpers`](./src/helpers/helpers.go.mdmd.md)
+- [`helpers_test`](./src/helpers/helpers_test.go.mdmd.md)
 - [`main`](./src/main/main.go.mdmd.md)
 - [`pipeline_test`](./src/main/pipeline_test.go.mdmd.md)
 - [`models`](./src/models/models.go.mdmd.md)

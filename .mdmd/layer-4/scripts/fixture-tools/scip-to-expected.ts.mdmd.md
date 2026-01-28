@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/scip-to-expected.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-scip-to-expected-ts
-- Generated At: 2026-01-27T18:07:43.180Z
+- Generated At: 2026-01-28T02:55:35.544Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.180Z","inputHash":"4cdd3a927beceba5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.544Z","inputHash":"76d21609e6c8dc2b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,4 +26,6 @@ _No public symbols detected_
 - `node:fs` - `readFileSync`, `writeFileSync`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`ScipNormalizer`](../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- [`scipNormalizer.getScipNormalizer`](../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-getscipnormalizer)
 <!-- LIVE-DOC:END Dependencies -->

@@ -24,6 +24,8 @@ import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { getScipNormalizer, type ScipNormalizer } from "../../packages/shared/src/testing/fixtureOracles/scipNormalizer";
+
 // Import the SCIP protobuf bindings from scip-typescript
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { scip } = require("@sourcegraph/scip-typescript/dist/src/scip") as {
@@ -102,12 +104,13 @@ interface ExpectedEdge {
 /**
  * Parse command line arguments
  */
-function parseArgs(): { input: string; output: string | null; verbose: boolean; normalizeRelations: boolean } {
+function parseArgs(): { input: string; output: string | null; verbose: boolean; normalizeRelations: boolean; language: string | null } {
   const args = process.argv.slice(2);
   let input: string | null = null;
   let output: string | null = null;
   let verbose = false;
   let normalizeRelations = false;
+  let language: string | null = null;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--input" || args[i] === "-i") {
@@ -118,6 +121,8 @@ function parseArgs(): { input: string; output: string | null; verbose: boolean; 
       verbose = true;
     } else if (args[i] === "--normalize-relations" || args[i] === "-n") {
       normalizeRelations = true;
+    } else if (args[i] === "--language" || args[i] === "-l") {
+      language = args[++i];
     } else if (args[i] === "--help" || args[i] === "-h") {
       console.log(`
 Usage: npx tsx scripts/fixture-tools/scip-to-expected.ts [options]
@@ -127,6 +132,7 @@ Options:
   --output, -o            Path to output expected.json (default: stdout)
   --verbose, -v           Print debug information
   --normalize-relations   Collapse all relations to "imports" for backward compatibility
+  --language, -l          Language for SCIP normalization (go, csharp, typescript, java, python)
   --help, -h              Show this help message
 `);
       process.exit(0);
@@ -138,7 +144,7 @@ Options:
     process.exit(1);
   }
 
-  return { input, output, verbose, normalizeRelations };
+  return { input, output, verbose, normalizeRelations, language };
 }
 
 /**
@@ -186,8 +192,9 @@ function isLocalSymbol(symbol: string): boolean {
 /**
  * Main conversion logic
  * @param normalizeRelations If true, collapse all relations to "imports" for backward compatibility
+ * @param normalizer Language-specific normalizer for filtering artifact paths
  */
-function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRelations: boolean): ExpectedEdge[] {
+function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRelations: boolean, normalizer: ScipNormalizer | null): ExpectedEdge[] {
   // Read and deserialize the SCIP index
   const indexBytes = readFileSync(indexPath);
   const index: ScipIndex = scip.Index.deserialize(new Uint8Array(indexBytes));
@@ -253,6 +260,19 @@ function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRel
    * only upgrade if the new relation has higher precedence.
    */
   function addOrUpgradeEdge(source: string, target: string, relation: ExpectedEdge["relation"], provenanceSymbol?: string): void {
+    // Skip edges with empty source - these come from package-level symbols that
+    // have no file location (e.g., Go package imports reference the package, not a file)
+    if (!source) {
+      return;
+    }
+
+    // Apply language-specific artifact filtering via normalizer
+    if (normalizer) {
+      if (normalizer.isArtifactPath(source) || normalizer.isArtifactPath(target)) {
+        return;
+      }
+    }
+    
     const pairKey = `${source}|${target}`;
     const existing = edgeMap.get(pairKey);
     
@@ -369,10 +389,17 @@ function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRel
  * Main entry point
  */
 function main(): void {
-  const { input, output, verbose, normalizeRelations } = parseArgs();
+  const { input, output, verbose, normalizeRelations, language } = parseArgs();
 
   const inputPath = path.resolve(input);
-  const edges = convertScipToExpected(inputPath, verbose, normalizeRelations);
+  
+  // Get language-specific normalizer if language is specified
+  const normalizer = language ? getScipNormalizer(language) : null;
+  if (verbose && normalizer) {
+    console.error(`Using ${normalizer.language} SCIP normalizer for artifact filtering`);
+  }
+  
+  const edges = convertScipToExpected(inputPath, verbose, normalizeRelations, normalizer);
 
   const jsonOutput = JSON.stringify(edges, null, 2) + "\n";
 
