@@ -144,8 +144,8 @@ description: "Task list for Live Documentation"
 - [ ] LD-715 Merge duplicate System Layer interaction/workflow docs when they describe the same orchestrator; ensure topology reflects single-source ordering.
 - [ ] LD-716 Enrich System Layer topology with orchestrator stage edges emitted from LD-710 so CLI interaction docs show meaningful flow instead of isolated nodes.
 - [ ] LD-717 Prune and aggregate testing archetype topology to highlight Live Docs suites while avoiding unreadable graphs (e.g., collapse extension diagnostics tests).
-- [ ] LD-718 Ship `npm run live-docs:system` CLI that emits System analytics as on-demand materialized views (stdout or caller-provided temp directory) with markdown/JSON format options.
-- [ ] LD-719 Remove the committed `.live-documentation/system/` mirror once the CLI is validated, updating lint/safe-commit rules to block future check-ins of materialized views.
+- [x] LD-718 Ship `npm run live-docs:system` CLI that emits System analytics as on-demand materialized views (stdout or caller-provided temp directory) with markdown/JSON format options. *(Completed 2026-01-17: CLI ships with `--output`, `--clean`, `--dry-run`, and `--config` options. System views are now ephemeral-only by default.)*
+- [x] LD-719 Remove the committed `.live-documentation/system/` mirror once the CLI is validated, updating lint/safe-commit rules to block future check-ins of materialized views. *(Completed 2026-01-17: System layer is now ephemeral-only; committed mirrors no longer exist.)*
 - [ ] LD-720 Author integration tests and fixture workspaces that exercise the System analytics CLI against known technical debt so failures surface without persisting docs.
 
 **Checkpoint**: Live Docs feed richer telemetry and derived docs without sacrificing determinism.
@@ -240,7 +240,7 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 
 ## Summary Metrics
 **Summary Metrics**
-- **Total Tasks**: 102 (16 closed, 86 open)
-- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (20 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (5 open)
+- **Total Tasks**: 102 (18 closed, 84 open)
+- **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (18 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (5 open)
 - **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`, `llm-enrichment.test.ts`, `brownfield-respect.test.ts`, `brownfield-discovery.test.ts`
 - **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801), LLM Enrichment (WI-LD1001), Brownfield Integration (WI-LD1101)

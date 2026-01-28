@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 26, 2026\)*
+*Status: Active Development (Jan 27, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -202,6 +202,7 @@ Scope: Commits 56–57, 68–70, 74, 80–83, 90, 101, 103
 The project outgrew its "Experiments" moniker. The vision shifted from "Diagnostics" to "Live Documentation"—a system that proactively generates docs rather than just linting them.
 
 * **The "Stage 0" Pivot:** The team implemented a split between *ephemeral* docs (generated from code) and *persistent* docs (authored metadata). The .live-documentation/ folder is now a generated mirror of the repo, but it preserves "Purpose/Notes" blocks written by humans (Commit 11/15).  
+* **The 11/15 Work Loss Incident:** During a routine cleanup, an overly broad `git checkout --` command wiped several hours of uncommitted work. This painful lesson led directly to new safeguards in the Copilot instructions: "Git Commands Need Extra Care" (prune surgically, never bulk-restore without stashing) and "Safeguard In-Flight Work" (keep explicit awareness of uncommitted changes). The incident reinforced that in a single-contributor LLM-driven workspace, *every mess is our mess*—there is no one else to blame.  
 * **The LiveDocsGenerator (Commit 68):** This component was implemented to enable the **"Code Like Clay" methodology**. It reads the previous file, extracts the human sections using regex markers, and injects them into the new generation. This allows documentation to be both automated and authored, fulfilling the "molding" vision described in the governance docs.  
 * **System Scaffolding (Commit 69):** The "Stage 0" concept was formalized with the scaffolding of the System Layer generator. This commit also updated the task list to reflect the massive scope expansion (13 closed tasks, 45 open tasks across 7 phases), cementing the new direction.  
 * **System Mirroring (Commit 70):** The generator was extended to create a full directory mirror of the codebase in .live-documentation/system/. The team also hardened the anchor cleaning logic in audit-doc-coverage.ts to ensure "SlopCop" compliance for these new generated files.  
@@ -701,6 +702,23 @@ After a week-long hiatus, the team returned to focus exclusively on the tactile 
 * **Vertical Centering Stability (Commit 229):** Fixed a visual glitch where collapsing symbols (during pinning) caused the column layout to jump. The system now dynamically re-centers the column *before* redrawing connections, ensuring a smooth, stable transition.  
 * **Research Conclusion (Commit 230):** The team finalized the "Compiler Truth" strategy, deciding to adopt SCIP indexers for non-TS languages and replacing the sparse Roslyn fixture with a full Newtonsoft.Json clone for C\# benchmarking.
 
+### **Phase XLVII: The SCIP Standard (Jan 27\)**
+
+Date: January 27, 2026
+
+Scope: Commits 231–235
+
+This phase represents a critical maturity milestone: the team stopped "grading their own homework" (using regex oracles to test regex heuristics) and adopted **Compiler-Backed Ground Truth** using the Source Code Indexing Protocol (SCIP). This officially breaks the circular validation loop for TypeScript, C\#, and Go.
+
+* **The SCIP Pivot (Commit 233):** Introduced scip-to-expected.ts, a tool that generates expected.json files by reading SCIP indexes produced by real compilers.  
+  * **TypeScript:** Validated basic, layered, and rosetta fixtures against the TypeScript compiler's own understanding.  
+  * **C\#:** Replaced the heuristic oracle with a SCIP-based oracle using scip-dotnet.  
+  * **Go:** Added SCIP support for the new gorilla/mux benchmark fixture.  
+* **New Benchmarks:**  
+  * **C\#:** Swapped the sparse Roslyn checkout for a full clone of Newtonsoft.Json (Commit 232).  
+  * **Go:** Added gorilla/mux as a real-world vendor fixture (Commit 235).  
+* **Cleanup (Commit 231):** Removed the "self-similarity" benchmarking mode, a vestige of the database era, making ast (accuracy) the sole default mode for all tests.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -733,7 +751,8 @@ After a week-long hiatus, the team returned to focus exclusively on the tactile 
 * **Jan 15 (Phase XLIII):** "The Go Expansion." (Go language support and final database dependency purge).  
 * **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).  
 * **Jan 17 (Phase XLV):** "Topological Hygiene." (Statistical normalization and removing barrel file distortion).  
-* **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).
+* **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).  
+* **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).
 
 ## **Technical Themes & Motifs**
 
@@ -742,10 +761,13 @@ After a week-long hiatus, the team returned to focus exclusively on the tactile 
 * **Squiggle-Driven Development:** The methodology relies on "Falsifiability First"—creating diagnostics (squiggly lines) that fail when documentation drifts from code, forcing the developer to fix the docs to clear the error.  
 * **Prompt Engineering as Source Code:** The .prompt.md files remain the "operating system" for the development process.  
 * **Documentation-Driven Development (DDD):** The discipline of spec \-\> plan \-\> task never wavered, allowing the project to scale to 100+ commits without collapsing under complexity.  
+* **"Code Like Clay":** For large features, the team creates MDMD documentation for what they *think* they'll build, then iterates between docs and implementation until both harmonize. This preserves intent across context windows and enables auditable design evolution.  
 * **"SlopCop" & Data Hygiene:** The project consistently prioritized *cleaning* input data (whether markdown links or chat logs) to ensure high-quality output.  
 * **The "Living" Repository:** The repository is now a complete holographic record of its own birth—Code, Docs, Tests, and *Conversations* are all inextricably linked.  
 * **Prescriptive vs. Descriptive:** A key architectural separation. Tools like SpecKit are *Prescriptive* (Plans/Design), while Live Documentation is *Descriptive* (Mirrors/Implementation). This distinction prevents the system from confusing "what we want" with "what we have."  
 * **Cybernetic Feedback Loops:** The project actively uses AI (like NotebookLM) to critique its own architecture, creating a feedback loop where the AI acts as a "Red Team" to challenge the team's assumptions.  
-* **Stateless Architecture:** As of Jan 12, 2026, the system operates without a separate database, treating the file system as the sole source of truth to guarantee synchronization.
+* **Stateless Architecture:** As of Jan 12, 2026, the system operates without a separate database, treating the file system as the sole source of truth to guarantee synchronization.  
+* **"Every Mess Is Our Mess":** In a single-contributor LLM-driven workspace, every workaround, every lowered threshold, every manual override is something the team will have to maintain. Fix root causes, not symptoms.  
+* **"Roadblocks Are Opportunities":** When the team bumps into a problem—a failing test, a type mismatch, an unexpected edge case—they pause and get *excited*. These moments are where real development happens, not occasions for workarounds.
 
 [image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAaCAYAAADPELCZAAAED0lEQVR4Xu1ZTUhUURSeIYOiP6Ns0vl548yU2D9MBEG0qIhc1MagoLbVotokFQhtAtdBhgsTokUJERSEEOlCMEKyRYuCqIQMQQhMWuQmdPq+eedOt+NzZgRHn70++Hj3nnPee/ed+3POmQmFAoZkMlkdjUY3aLkXstnsctiv0PLAw3GcSfCMlnsgDLsHiURivVYEHnDMTzgmq+UadB5sh9AMa10gwW0Zj8ePYhvH4Jx7oSKOqa+vj8DmOHiWDtf6QAKOOAR+AlvAYZxxF7SNQSQSWQWbZ9zu4HfwvbYJHFKp1Do4YpBXdMNchXV1dRuNHv3Dpg3nnobttOlzFWqHc4Xa/UAAH30EzmiTtj7jqoyOQLsHHLP6+uz8y35WMPzDsBb8AeZisdhO6ecps9XNGeMA9f1+A8Z4HWfcbrYdd4tO4htO4doMdoA3jS3aI2CX3EeH5yNzJpNZK/q7YKuxLwkY/wJzWi5g6Nez5EvAYcfMOHH9KI5qR3sbnYv2K2ML2XNu95C77a9xAqDfTx0DEon+G2NfCly2Ocda2hrQDTQ0NKzRcj/CTq4lcc5vZ3zDQ+4s29ZOrnmPaRM8H8XJpcEQL07sM7J0Or0JD3hq+tD12C9YisA3DCLt2REqku7YoAOd8pL0/MOviBObLFlf2bOwRMBFMJeFAB/08ozUci9wKz8Gp8EnYCdedF+cWt4szBE1NTWrHSt4laJszbJWz3xA/NAKtmidJ+DpA44bVOxQzkAyNNsswMmbSS1HbraVyauW//OQiJRLqPTFkdBPcCXwjLR12l4y/z6w0ZYvJPgdlaR+XwFQfqHBbGeFVACFtOA/POAUzw+5UlmUF+pJRPKDJpm1AZsmlFdxLfcCbFvw3K/lEva95f4euODg6pOl6pkfwlm7oJuQtCCfN6GiiXL1Ght85Hb074CN4HjhZv9gmeNWKh0Y+0pbIandsPhgBkud72E8YB8ML8oNH+goXGsph2NOot0rum7YV5Fo30i6ZeCkeRBXqjyrCZz684rFBxNpjKkd35bGOM+h/Q5jdbSdfGchsErS/ShUqYwALxsHL3nIWcz3aPliIiFB0/TRHgWHbRsJiGOwTbGP1bqF10Qlf70RJzbiJeeVfMyeTT8AK3AvxvTW9B23jh6xbeg8yPqZu6LLGvoW5ViJe2y7eQVe+DlhlYOWfJQFu5b7BbK1J3j02HJOPPhNAtgUeNvWVwSYoWqZtQJkS/i6tsb4mhMqt5XKqd9sZcetUvJV2oL92JJ0y0MGlC75JdmXwPhe4qzLoFnFQGjk2O4nHI/0DrKrDKBaXhHQgXjZawzsstb5BYzGJiLzbwKMudPoZCvPcCK+6QXTHy0PJEx0VmxjCYvrgJHxPJQzMd83eXEx/Abem0YEVukXMQAAAABJRU5ErkJggg==>

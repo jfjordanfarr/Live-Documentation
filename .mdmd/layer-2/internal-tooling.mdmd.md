@@ -54,50 +54,37 @@ Aggregates lint + unit + integration without full SlopCop or graph auditing. Fas
 
 ---
 
-## Graph Tooling
+## Graph Tooling *(Deprecated — Removed 2026-01-12)*
 
-The "graph" tooling operates on a **legacy SQLite/JSON snapshot** used for relationship rule validation and symbol coverage analysis. This is **distinct from** the Live Doc markdown graph used by `live-docs:*` commands.
+> **Note**: The `graph:*` commands were removed during the Edge Aggregation Consolidation (Phase 6). Their functionality has been replaced by `live-docs:*` commands that operate directly on the Live Doc markdown graph. See [edge-aggregation-consolidation.mdmd.md](work-items/edge-aggregation-consolidation.mdmd.md) for migration details.
+>
+> - `graph:snapshot` → replaced by `live-docs:generate`
+> - `graph:audit` → replaced by `live-docs:lint`
+> - `graph:inspect` → replaced by `live-docs:inspect`
 
-### `npm run graph:snapshot`
+The legacy SQLite/JSON snapshot infrastructure (`GraphStore`, `RippleAnalyzer`, `scripts/graph-tools/`) was deleted to reduce maintenance burden. Live Docs now serve as the canonical graph database.
 
-Rebuilds the workspace graph (SQLite database + JSON fixture).
+~~### `npm run graph:snapshot`~~ *(removed)*
 
-```powershell
-npm run graph:snapshot -- --workspace /path/to/repo
-```
+~~Rebuilds the workspace graph (SQLite database + JSON fixture).~~
 
-**Output:**
-- `.live-documentation/live-documentation.db` — SQLite database
-- `data/graph-snapshots/workspace.snapshot.json` — JSON fixture
+~~### `npm run graph:audit`~~ *(removed)*
 
-**When to run:** Usually not needed manually — `graph:audit` runs it internally.
+~~Flags files missing Live Docs, orphan documents, and symbol coverage gaps.~~
 
-### `npm run graph:audit`
+~~### `npm run graph:inspect`~~ *(removed)*
 
-Flags files missing Live Docs, orphan documents, and symbol coverage gaps. Automatically runs `graph:snapshot` first.
+~~Low-level querying of the graph database.~~
 
-```powershell
-npm run graph:audit -- --workspace . --json
-```
+---
 
-**What it checks:**
-- Code files without Live Docs
-- Live Docs without corresponding source files (orphans)
-- Exported symbols without documentation
-- Relationship rule violations
+## Live Doc Replacements
 
-### `npm run graph:inspect`
-
-Low-level querying of the graph database. Useful for debugging.
-
-```powershell
-# List all symbol kinds in the graph
-npm run graph:inspect -- -- --list-kinds
-
-# Inspect a specific file
-npm run graph:inspect -- --file packages/server/src/main.ts
-
-# Inspect by symbol ID
+| Removed Command | Replacement | Notes |
+|-----------------|-------------|-------|
+| `graph:snapshot` | `live-docs:generate` | Live Docs are now the graph |
+| `graph:audit` | `live-docs:lint` | Validates Live Doc structure and coverage |
+| `graph:inspect` | `live-docs:inspect` | Queries the Live Doc graph with `--from`/`--to` pathfinding |
 npm run graph:inspect -- --id <symbol-id>
 ```
 

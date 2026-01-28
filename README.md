@@ -163,7 +163,7 @@ npm run live-docs:visualize:static   # Static export for GitHub Pages
 
 - `npm run safe:commit` — full readiness gate (lint + tests + audits)
 - `npm run slopcop:markdown` — verify every markdown link is valid
-- `npm run graph:audit` — audit documentation coverage
+- `npm run live-docs:lint` — validate Live Doc structure and coverage
 
 ---
 

@@ -76,10 +76,11 @@ Supports CAP-003 by making Live Documentation the backbone of diagnostics, CLI t
 ### REQ-V1 Live Visualization Command Center
 Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local explorer, and force-directed discovery view into a single `npm run live-docs:visualize` experience that remains grounded in Layer‑4 Live Docs and ready for future bidirectional authoring. The explorer must maintain parity with the Live Doc graph: every dependency, symbol anchor, and evidence field available headlessly must surface in the UI without lossy aggregation or speculative heuristics, and visual affordances should colour or otherwise distinguish inbound versus outbound relationships to match CLI diagnostics.
 
-#### Stream LV1-A – Unified Explorer *(in progress)*
-- Refactor `visualize-explorer.ts` so the circuit-board and local views share a data model sourced from Live Docs, letting users pan globally, expand a file into its symbols, and toggle focus-mode filters that hide unrelated nodes.
-- Ensure hover/click events update the detail panel, highlight inbound/outbound edges, and keep the force-directed graph in sync when switching modes.
-- Provide explicit affordances (toolbar button, keyboard shortcut) to open the selected Live Doc or source file in the editor, matching the Antigravity prototype walkthroughs.
+#### Stream LV1-A – Unified Explorer *(complete — MVP)*
+- [x] Refactor `visualize-explorer.ts` so the circuit-board and local views share a data model sourced from Live Docs, letting users pan globally, expand a file into its symbols, and toggle focus-mode filters that hide unrelated nodes. *(Explorer ships with Circuit Board, Local Map, and Force Graph views.)*
+- [x] Ensure hover/click events update the detail panel, highlight inbound/outbound edges, and keep the force-directed graph in sync when switching modes.
+- [x] Provide explicit affordances (toolbar button, keyboard shortcut) to open the selected Live Doc or source file in the editor, matching the Antigravity prototype walkthroughs.
+- [x] Static distribution (`npm run live-docs:visualize:static`) shipped 2026-01-26 with provenance display (generatedAt, commitHash, generatorVersion).
 
 #### Stream LV1-B – Accessibility & Interaction *(planned)*
 - Audit the merged view for WCAG AA compliance: keyboard navigation, focus outlines, ARIA labelling, contrast palette, and motion reduction options for the force view.
@@ -96,10 +97,10 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 - Add smoke tests that launch the explorer in CI (headless browser or Playwright) to validate data binding, focus management, and “open in editor” deep links.
 - Document manual QA scripts for Antigravity/Windsurf to ensure non-VS Code forks keep parity.
 
-#### Stream LV1-E – Non-Headless Inspect (Local Map From/To) *(planned)*
-- Add `From` and `To` inputs to the Local Map view so maintainers can run `live-docs inspect`-equivalent pathfinding without leaving the explorer.
-- When both endpoints are provided, run pathfinding automatically (debounced) and expand the Local Map beyond one hop to render the multi-hop chain (including join points) using the same hop semantics the CLI emits.
-- When no path exists, provide deterministic “no connection” feedback rather than silently showing unrelated neighbors.
+#### Stream LV1-E – Non-Headless Inspect (Local Map From/To) *(complete)*
+- [x] Add `From` and `To` inputs to the Local Map view so maintainers can run `live-docs inspect`-equivalent pathfinding without leaving the explorer. *(Shipped 2025-12-18, commit `a0cc5de2`.)*
+- [x] When both endpoints are provided, run pathfinding automatically (debounced) and expand the Local Map beyond one hop to render the multi-hop chain (including join points) using the same hop semantics the CLI emits.
+- [x] When no path exists, provide deterministic "no connection" feedback rather than silently showing unrelated neighbors.
 
 ### REQ-G1 Docstring Drift & Optional Authoring (Wishlist)
 Supports CAP-006 by keeping docstring extraction and drift visibility reliable (code → docs), while explicitly deferring docs → code write-back and scaffolding to an opt-in wishlist item.
@@ -145,10 +146,10 @@ Supports CAP-005 by anchoring each MDMD layer to the surface where it excels: La
 - Provide guidance for synchronising completion state between Spec-Kit checklists and Layer‑2 markdown, highlighting deltas during safe-commit.
 - Ensure roadmap docs link to a single source of truth for each requirement (MDMD summary) while referencing the execution system in `### Integration`.
 
-#### Stream LD8-C – Materialized View CLI *(planned)*
-- Ship `npm run live-docs:system` that streams System analytics (markdown/JSON) to stdout or a caller-provided temp directory without committing artefacts.
-- Remove the committed `.live-documentation/system/` mirror once the CLI is validated; update lint/safe-commit rules to block stray System files.
-- Author integration tests and fixture workspaces that prove messy repos surface debt via the CLI output alone.
+#### Stream LD8-C – Materialized View CLI *(complete — MVP)*
+- [x] Ship `npm run live-docs:system` that streams System analytics (markdown/JSON) to stdout or a caller-provided temp directory without committing artefacts. *(Shipped 2026-01-17 with `--output`, `--clean`, `--dry-run`, and `--config` options.)*
+- [x] Remove the committed `.live-documentation/system/` mirror once the CLI is validated; update lint/safe-commit rules to block stray System files. *(System layer is now ephemeral-only.)*
+- [ ] Author integration tests and fixture workspaces that prove messy repos surface debt via the CLI output alone. *(Planned for future polish; LLM synthesis for richer descriptions is a potential enhancement.)*
 
 ### REQ-H1 Hosted Showcase Pipeline
 Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner that clones public GitHub repositories, executes the existing Live Docs generator, and returns a downloadable bundle while preserving the offline-first guarantee.

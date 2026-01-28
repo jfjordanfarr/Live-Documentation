@@ -51,7 +51,7 @@ Developers run regeneration or save a file; the Live Doc generator updates `Publ
 
 ### User Story 3 – Teams consume Live Doc intelligence on demand (Priority: P2)
 
-**Status**: Substantially complete — `npm run live-docs:inspect` ships with `--from`/`--to` pathfinding, `--direction` (outbound/inbound/both), and fan-out enumeration. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). System analytics CLI (LD-718) and evidence feeds remain pending.
+**Status**: Complete (MVP) — `npm run live-docs:inspect` ships with `--from`/`--to` pathfinding, `--direction` (outbound/inbound/both), and fan-out enumeration. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). System analytics CLI (`npm run live-docs:system`) shipped 2026-01-17 with ephemeral materialized views. Evidence feeds remain planned for future enrichment.
 
 Leads export impact reports, Copilot prompts, or diagnostics sourced from the Live Doc graph, seeing the same metadata (generated timestamp, evidence count, dependency depth) regardless of surface. System-level analytics (clusters, workflows, coverage gaps) remain ephemeral views that can be regenerated whenever needed.
 
@@ -157,7 +157,7 @@ Prospective adopters visit a Cloudflare-backed site, enter a public GitHub repos
 
 ### User Story 9 – Visualize Live Docs in a Command Center (Priority: P1)
 
-**Status**: Substantially complete — Explorer ships with Circuit Board, Local Map, and Force Graph views. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). Accessibility audits (LD-408) and unified explorer refactoring (LD-406) remain outstanding.
+**Status**: Complete (MVP) — Explorer ships with Circuit Board, Local Map, and Force Graph views. Local Map From/To pathfinding committed 2025-12-18 (`a0cc5de2`). Static distribution (`npm run live-docs:visualize:static`) shipped 2026-01-26 with provenance display. Accessibility audits (LD-408) and unified explorer refactoring (LD-406) remain planned for polish.
 
 Maintainers run `npm run live-docs:visualize` (or launch the Antigravity panel) to explore the repository: the primary view presents a circuit-board layout of Live Docs, clicking or hovering a file expands its public symbols, and focus mode hides unrelated nodes so inbound/outbound relationships stand out. The detail panel reveals the Live Doc metadata, links back to the source, and previews authored sections that will eventually become editable. A complementary force-directed graph remains available for discovery but may relax accessibility compared to the primary surface.
 
