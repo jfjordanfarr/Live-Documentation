@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 27, 2026\)*
+*Status: Active Development (Jan 29, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -58,8 +58,7 @@ The "Live Documentation" platform is designed to be used in four distinct "Loops
 
 * **Action:** The user prepares a pull request.  
 * **System Response:** The **"SlopCop"** engine runs as a git hook.  
-* **Checks:**  
-  * Are all links valid?  
+* **Checks:** \* Are all links valid?  
   * Do all exported symbols have documentation?  
   * Are all referenced assets (images) present?  
 * **Outcome:** The build fails if "Slop" is detected, ensuring the Knowledge Graph remains pristine.
@@ -202,12 +201,13 @@ Scope: Commits 56–57, 68–70, 74, 80–83, 90, 101, 103
 The project outgrew its "Experiments" moniker. The vision shifted from "Diagnostics" to "Live Documentation"—a system that proactively generates docs rather than just linting them.
 
 * **The "Stage 0" Pivot:** The team implemented a split between *ephemeral* docs (generated from code) and *persistent* docs (authored metadata). The .live-documentation/ folder is now a generated mirror of the repo, but it preserves "Purpose/Notes" blocks written by humans (Commit 11/15).  
-* **The 11/15 Work Loss Incident:** During a routine cleanup, an overly broad `git checkout --` command wiped several hours of uncommitted work. This painful lesson led directly to new safeguards in the Copilot instructions: "Git Commands Need Extra Care" (prune surgically, never bulk-restore without stashing) and "Safeguard In-Flight Work" (keep explicit awareness of uncommitted changes). The incident reinforced that in a single-contributor LLM-driven workspace, *every mess is our mess*—there is no one else to blame.  
+* **The 11/15 Work Loss Incident:** During a routine cleanup, an overly broad git checkout \-- command wiped several hours of uncommitted work. This painful lesson led directly to new safeguards in the Copilot instructions: "Git Commands Need Extra Care" (prune surgically, never bulk-restore without stashing) and "Safeguard In-Flight Work" (keep explicit awareness of uncommitted changes). The incident reinforced that in a single-contributor LLM-driven workspace, *every mess is our mess*—there is no one else to blame.  
 * **The LiveDocsGenerator (Commit 68):** This component was implemented to enable the **"Code Like Clay" methodology**. It reads the previous file, extracts the human sections using regex markers, and injects them into the new generation. This allows documentation to be both automated and authored, fulfilling the "molding" vision described in the governance docs.  
 * **System Scaffolding (Commit 69):** The "Stage 0" concept was formalized with the scaffolding of the System Layer generator. This commit also updated the task list to reflect the massive scope expansion (13 closed tasks, 45 open tasks across 7 phases), cementing the new direction.  
 * **System Mirroring (Commit 70):** The generator was extended to create a full directory mirror of the codebase in .live-documentation/system/. The team also hardened the anchor cleaning logic in audit-doc-coverage.ts to ensure "SlopCop" compliance for these new generated files.  
 * **Core Refactor (Commit 81):** As the Live Docs logic grew, the team refactored the monolithic core.ts into parse.ts (extraction) and generate.ts (rendering), introducing a **Headless Harness** for faster, disk-free unit testing.  
 * **MDMD Unification (Commit 82):** The team formalized **"Membrane Design MarkDown (MDMD)"** in the Copilot instructions. Crucially, they configured the generator to produce .mdmd files for the system mirror, effectively treating the generated artifacts as "Layer 4" specifications. This unifies "Authored Specs" and "Generated Docs" into a single, continuous hierarchy. The code also hardened configuration by replacing hardcoded paths with constants (DEFAULT\_LIVE\_DOC\_ROOT).  
+* **Content Injection (Commit 83):** The team systematically populated hundreds of generated docs with authored "Purpose" and "Notes" sections, citing specific chat logs. This completed the "Stage 0" vision, turning the skeleton mirror into a rich, navigable document set.  
 * **The Rename:** The repository was renamed to Live-Documentation to reflect this new identity. Commit 101 finally updated all internal package references (@copilot-improvement/shared \-\> @live-documentation/shared), resolving the long-standing "identity crisis" in the monorepo configuration.  
 * **The Hosted Vision (Commit 80):** The team refactored file extensions from .mdmd.md to .md and updated the roadmap (CAP-007) to explicitly target **GitHub Pages** hosting. This established the goal that Live Docs should be a deployable static site, not just a VS Code feature.  
 * **Workspace Migration (Commit 74):** A massive housekeeping commit updated all internal references to match the new repository structure, regenerated snapshots with new IDs, and cleaned up legacy chat artifacts.  
@@ -298,7 +298,7 @@ The Visualizer evolved from a working prototype into a robust, architected appli
 * **Interactive Polish (Commit 112):** The frontend received a "Phase A/B/C" upgrade including a **Tuning Panel** (live physics sliders), single-click sidebar focus, and clickable Type Reference badges.  
 * **Viewport Refactor (Commit 114):** A technical debt cleanup creating a .viewport-layer to ensure HTML and SVG layers scale and pan in perfect unison, solving alignment drift.
 
-### **Phase XIX: The Grand Refactor & Polyglot Depth (Dec 6\)**
+### **Phase XIX: The Grand Refactor & Systems Depth (Dec 6\)**
 
 Date: December 6, 2025
 
@@ -307,11 +307,9 @@ Scope: Commits 12/6.1–12/6.3, 109–111, 125, 121, 123
 The system underwent a massive refactor to pay down technical debt and pushed into deep symbol analysis for systems languages.
 
 * **The "Core" Refactor (Commit 125):** The shared core.ts file had ballooned to 3,254 lines. It was exploded into **14 focused modules** (rendering.ts, symbolExtraction.ts, dependencies.ts, etc.), decisively enforcing the "500-line limit" rule across the entire stack.  
-* **The "Generator" Refactor (Commit 126):** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.). *Note: Committed early Dec 7 but represents the culmination of the Dec 6 refactor.*  
-* **Type Reference Extraction (Commit 109):** The typeScriptAdapter was upgraded to extract complex types (extends, implements, function return types, parameter types). It includes an isPrimitiveOrBuiltin filter to ignore noise (e.g., string, Promise). This is the backend logic that powers the "Cyan Lines" visualization.  
+* **The "Generator" Refactor (Commit 126):** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.). *Note: Committed early Dec 7 but represents the culmination of the Dec 6 refactor.* \* **Type Reference Extraction (Commit 109):** The typeScriptAdapter was upgraded to extract complex types (extends, implements, function return types, parameter types). It includes an isPrimitiveOrBuiltin filter to ignore noise (e.g., string, Promise). This is the backend logic that powers the "Cyan Lines" visualization.  
 * **Type Resolution Engine (Commit 110):** The LiveDocsGenerator now builds a symbolIndex to resolve type names (e.g., returns: Promise\<Widget\>) to concrete file paths, creating clickable links instead of just text strings.  
-* **Systems Language Depth (C):** The cAdapter was upgraded to parse specific function declarations and macro usages, enabling the graph to trace individual C function calls across files (Commit 123). (Note: This also enables C++ support via common syntax features).  
-* **C\# Inheritance Visualization:** The C\# adapter was upgraded to parse inheritance (: BaseClass). The graph now shows class hierarchies, not just file imports.  
+* **Systems Language Depth (C/C++):** The cAdapter was upgraded to parse specific function declarations and macro usages, enabling the graph to trace individual C function calls across files (Commit 123). *Note: While the intent was C-focused, the implementation incidentally enables deep C++ support due to shared syntax.* \* **C\# Inheritance Visualization:** The C\# adapter was upgraded to parse inheritance (: BaseClass). The graph now shows class hierarchies, not just file imports.  
 * **Chat Archaeology (Commit 121):** The team performed a massive documentation sweep, updating 30 Layer 3 docs to match the implemented reality and filling in "Purpose/Notes" sections by referencing historical chat logs.
 
 ### **Phase XX: The Static Era & System Stewardship (Dec 7\)**
@@ -395,8 +393,7 @@ After 141 commits of linear, local-only development, the team established a robu
 * **The Linux Reality Check (Commits 144, 146):** The integration test harness—developed on Windows—failed on Linux CI runners. The team fixed hardcoded assumptions about npm-cli.js paths and relaxed timeouts (5s → 15s) to accommodate slower cloud environments.  
 * **Diagnostic Logic Fix (Commit 147):** A critical flake in US1 tests revealed a flaw: clearDiagnostics was waiting for *all* global diagnostics to clear. On CI, unrelated extensions (like TypeScript) kept this non-empty. The logic was aligned with US2 to simply wait for the command to execute.  
 * **Static Site Hosting (Commit 145):** Fixed asset pathing (/static/ → ./static/) to allow the Live Docs Explorer to run when hosted on a GitHub Pages subpath.  
-* **Pipeline Logic & Renaming (Commit 148):**  
-  * **Gitignore Parity:** Updated the Live Docs generator to respect .gitignore, preventing the generation of stale docs for build artifacts (.d.ts, .js).  
+* **Pipeline Logic & Renaming (Commit 148):** \* **Gitignore Parity:** Updated the Live Docs generator to respect .gitignore, preventing the generation of stale docs for build artifacts (.d.ts, .js).  
   * **Pipeline Reorder:** Moved live-docs:generate *before* graph:audit in the safe:commit pipeline to prevent false positives.  
   * **Identity Sync:** Finally renamed the root package from copilot-improvement-experiments to live-documentation.
 
@@ -615,8 +612,7 @@ In a radical architectural pivot, the team deleted the SQLite database that had 
 
 * **"Live Docs ARE the Database":** The GraphStore and RippleAnalyzer were completely removed. The system now treats the file system (Live Docs) as the single source of truth for the graph.  
 * **Stateless Architecture:** Broken link detection and diagnostics are now pure functions of the current file state, eliminating synchronization bugs where the database would drift from disk.  
-* **Massive Cleanup:**  
-  * **Deleted \~50+ files:** Including the entire SQLite layer and associated complexity.  
+* **Massive Cleanup:** \* **Deleted \~50+ files:** Including the entire SQLite layer and associated complexity.  
   * **Code Reduction:** Simplified the main server entry point from \~587 lines to \~160 lines (a 72% reduction).  
   * **Link Repair:** Fixed 83 broken internal links in documentation that were discovered during the rigorous audit accompanying this refactor.  
 * **Strategic Implication:** This move solidifies the project's identity. It is not a database that *indexes* code; it is a tool that *reads* code and docs directly, enforcing the "Source is Truth" philosophy.
@@ -645,7 +641,7 @@ Scope: Commits 213–215
 The team focused on closing the "Accuracy Gap" across all supported languages, enabling symbol-to-symbol connectivity for non-JS languages and establishing a rigorous benchmark standard.
 
 * **Symbol-to-Symbol Linking (Commit 213):** The Live Docs engine was upgraded to support precise anchor resolution for **Java** and **Rust**. The Explorer now links directly to specific methods or structs (e.g., \#Analyzer) instead of just pointing to the file "Internals" bucket.  
-* **Python Resolution (Commit 214):** Added sophisticated Python import resolution logic, handling relative imports (from . import x), package roots (\_\_init\_\_.py detection), and standard library filtering. This brings Python parity with TypeScript for graph traversal.  
+* **Python Resolution (Commit 214):** Added sophisticated Python import resolution logic, handling relative imports (from . import x), package roots (\_*init*\_.py detection), and standard library filtering. This brings Python parity with TypeScript for graph traversal.  
 * **The Rosetta Stone Initiative (Commit 215):** To prove that the graph is truly "Universal," the team created a set of **Rosetta Stone Fixtures**—isomorphic programs implemented identically in TypeScript, Python, Java, C\#, Rust, C, and Ruby.  
   * **Purpose:** To calibrate the detection heuristics so that the *same* code structure produces the *same* graph shape, regardless of the language.  
   * **Outcome:** The TypeScript implementation achieved 100% precision/recall, setting the gold standard for the other language adapters to match.
@@ -685,7 +681,7 @@ Scope: Commits 224–226
 
 The team matured the system's analytical engine from simple connectivity to **Network Science** and fixed long-standing topological distortions.
 
-* **Degree-Corrected Co-Activation (Commit 224):** Implemented a statistical background model (![][image1]) to normalize edge weights. This prevents "Hub Nodes" (like barrel files) from creating false-positive semantic clusters just because they have high connectivity.  
+* **Degree-Corrected Co-Activation (Commit 224):** Implemented a statistical background model () to normalize edge weights. This prevents "Hub Nodes" (like barrel files) from creating false-positive semantic clusters just because they have high connectivity.  
 * **The De-Barreling (Commit 225):** The team deleted the packages/shared/src/index.ts mega-barrel. This artificial "Star Topology" was obscuring the natural clustering of the codebase. By forcing direct subpath imports, the graph instantly relaxed into distinct, logical clusters (e.g., the Oracle cluster decoupled from the Core).  
 * **Architectural Documentation (Commit 226):** Formalized these complex concepts into Layer 3 documentation (co-activation-clustering.mdmd.md and polyglot-adapters.mdmd.md), ensuring the math and the inventory of 16 language adapters are permanently recorded.
 
@@ -714,10 +710,31 @@ This phase represents a critical maturity milestone: the team stopped "grading t
   * **TypeScript:** Validated basic, layered, and rosetta fixtures against the TypeScript compiler's own understanding.  
   * **C\#:** Replaced the heuristic oracle with a SCIP-based oracle using scip-dotnet.  
   * **Go:** Added SCIP support for the new gorilla/mux benchmark fixture.  
-* **New Benchmarks:**  
-  * **C\#:** Swapped the sparse Roslyn checkout for a full clone of Newtonsoft.Json (Commit 232).  
+* **New Benchmarks:** \* **C\#:** Swapped the sparse Roslyn checkout for a full clone of Newtonsoft.Json (Commit 232).  
   * **Go:** Added gorilla/mux as a real-world vendor fixture (Commit 235).  
 * **Cleanup (Commit 231):** Removed the "self-similarity" benchmarking mode, a vestige of the database era, making ast (accuracy) the sole default mode for all tests.
+
+### **Phase XLVIII: The Narrative Sync (Jan 28\)**
+
+Date: January 28, 2026
+
+Scope: Commit 236
+
+The team paused feature work to perform a comprehensive audit of the project's history against the Project Development Journey. This wasn't just copy-editing; it was a "Truth Reconciliation" exercise, ensuring that the documented history (themes, incidents like the 11/15 data loss) matched the raw chat logs. This reinforced the "Living Repository" principle.
+
+* **Narrative Synchronization:** The audit confirmed the alignment of the project's vision with its execution, leading to the formal adoption of themes like "Code Like Clay" and "Roadblocks Are Opportunities."  
+* **Tooling Cleanup:** The team marked the end of an era by formally deprecating the graph:\* suite of commands in favor of the unified live-docs:\* CLI, cleaning up technical debt accumulated during the prototyping phases.
+
+### **Phase XLIX: The Go Refinement (Jan 29\)**
+
+Date: January 29, 2026
+
+Scope: Commit 237
+
+The team returned to the "Polyglot Accuracy" campaign, specifically targeting Go. By fixing ASCII sorting bugs and intra-package symbol detection, the go-mux benchmark jumped to 76.8% precision.
+
+* **Heuristic Precision:** Improvements to localeCompare logic and symbol detection allowed the system to accurately map complex Go package structures, resolving false positives in the benchmark suite.  
+* **Tree-Sitter Foreshadowing:** The commit laid the scaffolding for a **Tree-Sitter** module, hinting at the next major architectural leap: fusing the regex heuristics with a true CST (Concrete Syntax Tree) parser for even greater accuracy.
 
 ## **Vision Evolution Log**
 
@@ -752,7 +769,9 @@ This phase represents a critical maturity milestone: the team stopped "grading t
 * **Jan 16 (Phase XLIV):** "Orphan Detection & Benchmark Perfection." (100% score on all 8 Rosetta languages).  
 * **Jan 17 (Phase XLV):** "Topological Hygiene." (Statistical normalization and removing barrel file distortion).  
 * **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).  
-* **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).
+* **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).  
+* **Jan 28 (Phase XLVIII):** "Narrative Synchronization." (Aligning the story with the chat logs).  
+* **Jan 29 (Phase XLIX):** "Heuristic Refinement." (Pushing Go precision & prepping Tree-Sitter).
 
 ## **Technical Themes & Motifs**
 
@@ -769,5 +788,3 @@ This phase represents a critical maturity milestone: the team stopped "grading t
 * **Stateless Architecture:** As of Jan 12, 2026, the system operates without a separate database, treating the file system as the sole source of truth to guarantee synchronization.  
 * **"Every Mess Is Our Mess":** In a single-contributor LLM-driven workspace, every workaround, every lowered threshold, every manual override is something the team will have to maintain. Fix root causes, not symptoms.  
 * **"Roadblocks Are Opportunities":** When the team bumps into a problem—a failing test, a type mismatch, an unexpected edge case—they pause and get *excited*. These moments are where real development happens, not occasions for workarounds.
-
-[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAaCAYAAADPELCZAAAED0lEQVR4Xu1ZTUhUURSeIYOiP6Ns0vl548yU2D9MBEG0qIhc1MagoLbVotokFQhtAtdBhgsTokUJERSEEOlCMEKyRYuCqIQMQQhMWuQmdPq+eedOt+NzZgRHn70++Hj3nnPee/ed+3POmQmFAoZkMlkdjUY3aLkXstnsctiv0PLAw3GcSfCMlnsgDLsHiURivVYEHnDMTzgmq+UadB5sh9AMa10gwW0Zj8ePYhvH4Jx7oSKOqa+vj8DmOHiWDtf6QAKOOAR+AlvAYZxxF7SNQSQSWQWbZ9zu4HfwvbYJHFKp1Do4YpBXdMNchXV1dRuNHv3Dpg3nnobttOlzFWqHc4Xa/UAAH30EzmiTtj7jqoyOQLsHHLP6+uz8y35WMPzDsBb8AeZisdhO6ecps9XNGeMA9f1+A8Z4HWfcbrYdd4tO4htO4doMdoA3jS3aI2CX3EeH5yNzJpNZK/q7YKuxLwkY/wJzWi5g6Nez5EvAYcfMOHH9KI5qR3sbnYv2K2ML2XNu95C77a9xAqDfTx0DEon+G2NfCly2Ocda2hrQDTQ0NKzRcj/CTq4lcc5vZ3zDQ+4s29ZOrnmPaRM8H8XJpcEQL07sM7J0Or0JD3hq+tD12C9YisA3DCLt2REqku7YoAOd8pL0/MOviBObLFlf2bOwRMBFMJeFAB/08ozUci9wKz8Gp8EnYCdedF+cWt4szBE1NTWrHSt4laJszbJWz3xA/NAKtmidJ+DpA44bVOxQzkAyNNsswMmbSS1HbraVyauW//OQiJRLqPTFkdBPcCXwjLR12l4y/z6w0ZYvJPgdlaR+XwFQfqHBbGeFVACFtOA/POAUzw+5UlmUF+pJRPKDJpm1AZsmlFdxLfcCbFvw3K/lEva95f4euODg6pOl6pkfwlm7oJuQtCCfN6GiiXL1Ght85Hb074CN4HjhZv9gmeNWKh0Y+0pbIandsPhgBkud72E8YB8ML8oNH+goXGsph2NOot0rum7YV5Fo30i6ZeCkeRBXqjyrCZz684rFBxNpjKkd35bGOM+h/Q5jdbSdfGchsErS/ShUqYwALxsHL3nIWcz3aPliIiFB0/TRHgWHbRsJiGOwTbGP1bqF10Qlf70RJzbiJeeVfMyeTT8AK3AvxvTW9B23jh6xbeg8yPqZu6LLGvoW5ViJe2y7eQVe+DlhlYOWfJQFu5b7BbK1J3j02HJOPPhNAtgUeNvWVwSYoWqZtQJkS/i6tsb4mhMqt5XKqd9sZcetUvJV2oL92JJ0y0MGlC75JdmXwPhe4qzLoFnFQGjk2O4nHI/0DrKrDKBaXhHQgXjZawzsstb5BYzGJiLzbwKMudPoZCvPcCK+6QXTHy0PJEx0VmxjCYvrgJHxPJQzMd83eXEx/Abem0YEVukXMQAAAABJRU5ErkJggg==>

@@ -44,6 +44,31 @@ const GO_PRIVATE_TYPE_PATTERN = /(?:^|\n)\s*type\s+([a-z][A-Za-z0-9_]*)\s+(?:str
 const GO_PRIVATE_CONST_VAR_PATTERN = /(?:^|\n)\s*(?:const|var)\s+([a-z][A-Za-z0-9_]*)\s+/g;
 const GO_PRIVATE_BLOCK_ENTRY_PATTERN = /(?:^|\n)\s*([a-z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
 
+/**
+ * Common Go variable/parameter names that should be excluded from symbol matching.
+ * These are frequently used as local variables and matching them across files
+ * produces false positives.
+ */
+const GO_COMMON_VARIABLE_NAMES = new Set([
+  // Standard error handling
+  "err", "error",
+  // Common iteration/result variables
+  "match", "matches", "result", "results", "value", "values",
+  "key", "keys", "data", "item", "items",
+  // Index/loop variables  
+  "idx", "index", "len", "size", "count",
+  // HTTP/request related
+  "req", "res", "resp", "request", "response",
+  // Context
+  "ctx", "context",
+  // IO related
+  "buf", "buffer", "reader", "writer",
+  // Boolean flags
+  "ok", "found", "done", "valid",
+  // String processing
+  "str", "text", "name", "path", "url",
+]);
+
 // Note: GO_PACKAGE_PATTERN could be used in future to extract package names
 // const GO_PACKAGE_PATTERN = /^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)/m;
 
@@ -553,22 +578,92 @@ function extractAllSymbols(content: string): string[] {
     symbols.add(match[1]);
   }
   
-  // Filter out common false positives (very short identifiers likely to be false positives)
-  const filtered = Array.from(symbols).filter(s => s.length > 2);
+  // Filter out:
+  // 1. Very short identifiers (likely false positives)
+  // 2. Common Go variable names that are used everywhere as locals
+  const filtered = Array.from(symbols).filter(s => 
+    s.length > 2 && !GO_COMMON_VARIABLE_NAMES.has(s)
+  );
   
   return filtered.sort();
+}
+
+/**
+ * Strips comments and string literals from Go source code.
+ * This prevents false positives from symbol matches in comments/strings
+ * (e.g., "Use" in "// Use of this source code is governed by...").
+ */
+function stripCommentsAndStrings(content: string): string {
+  let result = "";
+  let i = 0;
+  
+  while (i < content.length) {
+    // Check for line comment
+    if (content[i] === "/" && content[i + 1] === "/") {
+      // Skip to end of line
+      while (i < content.length && content[i] !== "\n") {
+        i++;
+      }
+      continue;
+    }
+    
+    // Check for block comment
+    if (content[i] === "/" && content[i + 1] === "*") {
+      i += 2;
+      while (i < content.length - 1 && !(content[i] === "*" && content[i + 1] === "/")) {
+        i++;
+      }
+      i += 2; // Skip closing */
+      continue;
+    }
+    
+    // Check for string literal
+    if (content[i] === '"') {
+      i++; // Skip opening quote
+      while (i < content.length && content[i] !== '"') {
+        if (content[i] === "\\" && i + 1 < content.length) {
+          i += 2; // Skip escaped character
+        } else {
+          i++;
+        }
+      }
+      i++; // Skip closing quote
+      continue;
+    }
+    
+    // Check for raw string literal (backtick)
+    if (content[i] === "`") {
+      i++; // Skip opening backtick
+      while (i < content.length && content[i] !== "`") {
+        i++;
+      }
+      i++; // Skip closing backtick
+      continue;
+    }
+    
+    result += content[i];
+    i++;
+  }
+  
+  return result;
 }
 
 /**
  * Checks if a symbol is referenced in the content without a package qualifier.
  * In Go, `http.NewRequest` should not match local `newRequest`.
  * We look for uses of the symbol that are NOT preceded by a dot.
+ * 
+ * This function strips comments and string literals first to prevent
+ * false positives from matches in non-code contexts (e.g., license comments).
  */
 function isSymbolReferencedLocally(content: string, symbolName: string): boolean {
+  // Strip comments and strings to avoid false positives
+  const codeOnly = stripCommentsAndStrings(content);
+  
   // Pattern: symbol not preceded by a dot (package qualifier)
   // We use a negative lookbehind to exclude package-qualified references
   const pattern = new RegExp(`(?<![.])\\b${escapeRegExp(symbolName)}\\b`, "g");
-  return pattern.test(content);
+  return pattern.test(codeOnly);
 }
 
 /**
