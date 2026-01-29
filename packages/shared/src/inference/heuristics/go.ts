@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { isImplementationLayer } from "./artifactLayerUtils";
 import { isWithinComment } from "./shared";
+import { goSyntax } from "../../languages";
 import type { FallbackHeuristic, HeuristicArtifact, MatchContext } from "../fallbackHeuristicTypes";
 
 /**
@@ -43,31 +44,6 @@ const GO_PRIVATE_FUNC_PATTERN = /(?:^|\n)\s*func\s+(?:\([^)]*\)\s+)?([a-z][A-Za-
 const GO_PRIVATE_TYPE_PATTERN = /(?:^|\n)\s*type\s+([a-z][A-Za-z0-9_]*)\s+(?:struct|interface|[^\s{]+)/g;
 const GO_PRIVATE_CONST_VAR_PATTERN = /(?:^|\n)\s*(?:const|var)\s+([a-z][A-Za-z0-9_]*)\s+/g;
 const GO_PRIVATE_BLOCK_ENTRY_PATTERN = /(?:^|\n)\s*([a-z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
-
-/**
- * Common Go variable/parameter names that should be excluded from symbol matching.
- * These are frequently used as local variables and matching them across files
- * produces false positives.
- */
-const GO_COMMON_VARIABLE_NAMES = new Set([
-  // Standard error handling
-  "err", "error",
-  // Common iteration/result variables
-  "match", "matches", "result", "results", "value", "values",
-  "key", "keys", "data", "item", "items",
-  // Index/loop variables  
-  "idx", "index", "len", "size", "count",
-  // HTTP/request related
-  "req", "res", "resp", "request", "response",
-  // Context
-  "ctx", "context",
-  // IO related
-  "buf", "buffer", "reader", "writer",
-  // Boolean flags
-  "ok", "found", "done", "valid",
-  // String processing
-  "str", "text", "name", "path", "url",
-]);
 
 // Note: GO_PACKAGE_PATTERN could be used in future to extract package names
 // const GO_PACKAGE_PATTERN = /^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)/m;
@@ -580,71 +556,77 @@ function extractAllSymbols(content: string): string[] {
   
   // Filter out:
   // 1. Very short identifiers (likely false positives)
-  // 2. Common Go variable names that are used everywhere as locals
+  // 2. Common Go variable names that are used everywhere as locals (from shared syntax)
   const filtered = Array.from(symbols).filter(s => 
-    s.length > 2 && !GO_COMMON_VARIABLE_NAMES.has(s)
+    s.length > 2 && !goSyntax.isIgnoredIdentifier(s)
   );
   
   return filtered.sort();
 }
 
 /**
- * Strips comments and string literals from Go source code.
- * This prevents false positives from symbol matches in comments/strings
- * (e.g., "Use" in "// Use of this source code is governed by...").
+ * Internal cache for stripped content.
+ * The goSyntax.stripCommentsAndStrings returns a Promise, but we need sync access.
+ * For Go, the implementation is synchronous, so we can use this cache pattern.
  */
-function stripCommentsAndStrings(content: string): string {
+let _strippedContentCache: Map<string, string> | null = null;
+
+function getStrippedContent(content: string): string {
+  if (!_strippedContentCache) {
+    _strippedContentCache = new Map();
+  }
+  const cached = _strippedContentCache.get(content);
+  if (cached !== undefined) {
+    return cached;
+  }
+  // goSyntax uses a sync implementation internally, so this resolves immediately
+  let result: string | undefined;
+  void goSyntax.stripCommentsAndStrings(content).then(r => { result = r; });
+  if (result === undefined) {
+    // Fallback: synchronous implementation for safety
+    result = stripCommentsAndStringsSync(content);
+  }
+  _strippedContentCache.set(content, result);
+  return result;
+}
+
+/**
+ * Synchronous fallback for stripping comments and strings from Go source.
+ * This is used when the async promise doesn't resolve immediately.
+ */
+function stripCommentsAndStringsSync(content: string): string {
   let result = "";
   let i = 0;
   
   while (i < content.length) {
-    // Check for line comment
     if (content[i] === "/" && content[i + 1] === "/") {
-      // Skip to end of line
-      while (i < content.length && content[i] !== "\n") {
-        i++;
-      }
+      while (i < content.length && content[i] !== "\n") i++;
       continue;
     }
-    
-    // Check for block comment
     if (content[i] === "/" && content[i + 1] === "*") {
       i += 2;
-      while (i < content.length - 1 && !(content[i] === "*" && content[i + 1] === "/")) {
-        i++;
-      }
-      i += 2; // Skip closing */
+      while (i < content.length - 1 && !(content[i] === "*" && content[i + 1] === "/")) i++;
+      i += 2;
       continue;
     }
-    
-    // Check for string literal
     if (content[i] === '"') {
-      i++; // Skip opening quote
+      i++;
       while (i < content.length && content[i] !== '"') {
-        if (content[i] === "\\" && i + 1 < content.length) {
-          i += 2; // Skip escaped character
-        } else {
-          i++;
-        }
+        if (content[i] === "\\" && i + 1 < content.length) i += 2;
+        else i++;
       }
-      i++; // Skip closing quote
+      i++;
       continue;
     }
-    
-    // Check for raw string literal (backtick)
     if (content[i] === "`") {
-      i++; // Skip opening backtick
-      while (i < content.length && content[i] !== "`") {
-        i++;
-      }
-      i++; // Skip closing backtick
+      i++;
+      while (i < content.length && content[i] !== "`") i++;
+      i++;
       continue;
     }
-    
     result += content[i];
     i++;
   }
-  
   return result;
 }
 
@@ -657,8 +639,8 @@ function stripCommentsAndStrings(content: string): string {
  * false positives from matches in non-code contexts (e.g., license comments).
  */
 function isSymbolReferencedLocally(content: string, symbolName: string): boolean {
-  // Strip comments and strings to avoid false positives
-  const codeOnly = stripCommentsAndStrings(content);
+  // Strip comments and strings to avoid false positives (using shared syntax)
+  const codeOnly = getStrippedContent(content);
   
   // Pattern: symbol not preceded by a dot (package qualifier)
   // We use a negative lookbehind to exclude package-qualified references

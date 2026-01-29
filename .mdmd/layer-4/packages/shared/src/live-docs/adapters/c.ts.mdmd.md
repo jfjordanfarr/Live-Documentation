@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-c-ts
-- Generated At: 2025-12-11T02:38:01.865Z
+- Generated At: 2026-01-29T20:42:58.597Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,12 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 - Extend both the parser and its test scenarios when onboarding new Doxygen tags, following the coverage matrix captured in the adapter plan <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.865Z","inputHash":"b57711b81f72e25d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-29T20:42:58.597Z","inputHash":"3585d61c997dfcf0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cAdapter` {#symbol-cadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/c.ts#L30)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/c.ts#L31)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 <!-- LIVE-DOC:END Public Symbols -->
 
@@ -29,6 +29,7 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 ### Dependencies
 - `node:fs` - `promises`, `statSync`
 - `node:path` - `path`
+- [`index.cSyntax`](../../languages/index.ts.mdmd.md#symbol-csyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

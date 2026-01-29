@@ -1,6 +1,7 @@
 import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
 
+import { cSyntax } from "../../languages";
 import type {
   DependencyEntry,
   PublicSymbolEntry,
@@ -245,7 +246,7 @@ async function extractDependenciesWithSymbols(
   }
 
   // Third pass: scan current file body for usages of header symbols
-  const usedSymbols = detectSymbolUsages(content, headerSymbolsMap);
+  const usedSymbols = await detectSymbolUsages(content, headerSymbolsMap);
 
   // Build final dependency entries with symbol information
   for (const include of includes) {
@@ -274,14 +275,14 @@ async function extractDependenciesWithSymbols(
  * @param headerSymbolsMap - Map of header path to set of symbol names defined in that header
  * @returns Map of header path to set of symbol names used from that header
  */
-function detectSymbolUsages(
+async function detectSymbolUsages(
   content: string,
   headerSymbolsMap: Map<string, Set<string>>
-): Map<string, Set<string>> {
+): Promise<Map<string, Set<string>>> {
   const usedSymbols = new Map<string, Set<string>>();
 
-  // Strip comments and string literals to avoid false positives
-  const strippedContent = stripCommentsAndStrings(content);
+  // Strip comments and string literals to avoid false positives (using shared syntax)
+  const strippedContent = await cSyntax.stripCommentsAndStrings(content);
 
   for (const [headerPath, symbolNames] of headerSymbolsMap) {
     const used = new Set<string>();
@@ -289,6 +290,11 @@ function detectSymbolUsages(
     for (const symbolName of symbolNames) {
       // Skip include guards (typically FILENAME_H patterns)
       if (/^[A-Z_]+_H$/.test(symbolName)) {
+        continue;
+      }
+
+      // Skip ignored identifiers from shared syntax
+      if (cSyntax.isIgnoredIdentifier(symbolName)) {
         continue;
       }
 
@@ -312,24 +318,6 @@ function detectSymbolUsages(
   }
 
   return usedSymbols;
-}
-
-/**
- * Strips C/C++ comments and string literals from source content.
- * This prevents false positive symbol matches inside comments or strings.
- */
-function stripCommentsAndStrings(content: string): string {
-  // Remove block comments /* ... */
-  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
-
-  // Remove line comments // ...
-  result = result.replace(/\/\/[^\n]*/g, " ");
-
-  // Remove string literals "..." and '...'
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
-  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
-
-  return result;
 }
 
 /**

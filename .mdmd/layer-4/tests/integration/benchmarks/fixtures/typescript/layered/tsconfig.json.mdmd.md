@@ -9,10 +9,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript compiler configuration for the `layered` benchmark fixture — a synthetic multi-layer architecture (domain, service, API) to stress-test transitive dependency resolution.
 
 ### Notes
-_Pending notes_
+This is a supporting asset for benchmark accuracy testing. The layered fixture validates that heuristics correctly propagate changes across architectural boundaries.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.378Z","inputHash":"ea807b3283aeb99c"}]} -->

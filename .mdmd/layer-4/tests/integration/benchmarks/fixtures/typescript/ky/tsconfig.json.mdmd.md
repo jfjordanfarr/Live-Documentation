@@ -9,10 +9,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+TypeScript compiler configuration for the `ky` benchmark fixture — a snapshot of the `sindresorhus/ky` HTTP client library used to validate Live Docs inference against a real-world TypeScript project.
 
 ### Notes
-_Pending notes_
+This fixture is cloned from upstream at a pinned commit during `npm run fixtures:verify`. The tsconfig is part of the upstream project structure.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.371Z","inputHash":"40a84152d5dcf32e"}]} -->

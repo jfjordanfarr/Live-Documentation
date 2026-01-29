@@ -9,10 +9,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Batch script that invokes external SCIP indexers (e.g., `scip-typescript`) across benchmark fixture directories to generate `index.scip` files. Intended for developer-machine use in preparing ground-truth oracles.
 
 ### Notes
-_Pending notes_
+Origin: [2026-01-27.2.SUMMARIZED.md](../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-27.2.SUMMARIZED.md) — companion to `scip-to-expected.ts`. Requires language-specific SCIP indexers installed globally. Not run in CI; indexes are committed as fixtures.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.169Z","inputHash":"35504dd781b83782"}]} -->
