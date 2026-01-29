@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2026-01-28T03:26:15.834Z",
+  "recordedAt": "2026-01-29T15:13:56.577Z",
   "environment": {
     "nodeVersion": "v22.21.1",
     "platform": "win32",
@@ -17,13 +17,13 @@
       "recall": 0.9
     },
     "totals": {
-      "totalEvaluated": 2658,
-      "truePositives": 2404,
-      "falsePositives": 53,
-      "falseNegatives": 201,
-      "precision": 0.9784289784289785,
-      "recall": 0.9228406909788868,
-      "f1Score": 0.9498222046621889
+      "totalEvaluated": 2670,
+      "truePositives": 2444,
+      "falsePositives": 65,
+      "falseNegatives": 161,
+      "precision": 0.9740932642487047,
+      "recall": 0.9381957773512476,
+      "f1Score": 0.9558075870160344
     },
     "fixtures": [
       {
@@ -13502,39 +13502,15 @@
         "label": "gorilla/mux HTTP router",
         "language": "go",
         "totals": {
-          "truePositives": 3,
-          "falsePositives": 1,
-          "falseNegatives": 57,
-          "precision": 0.75,
-          "recall": 0.05,
-          "f1Score": 0.09375000000000001
+          "truePositives": 43,
+          "falsePositives": 13,
+          "falseNegatives": 17,
+          "precision": 0.7678571428571429,
+          "recall": 0.7166666666666667,
+          "f1Score": 0.7413793103448276
         },
         "truePositives": [
           {
-            "source": "mux_test.go",
-            "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "regexp_test.go",
-            "target": "regexp.go",
-            "relation": "references"
-          },
-          {
-            "source": "route_test.go",
-            "target": "route.go",
-            "relation": "references"
-          }
-        ],
-        "falsePositives": [
-          {
-            "source": "middleware_test.go",
-            "target": "middleware.go",
-            "relation": "references"
-          }
-        ],
-        "falseNegatives": [
-          {
             "source": "bench_test.go",
             "target": "doc.go",
             "relation": "references"
@@ -13550,43 +13526,13 @@
             "relation": "references"
           },
           {
-            "source": "example_authentication_middleware_test.go",
-            "target": "example_route_test.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_authentication_middleware_test.go",
-            "target": "middleware.go",
-            "relation": "implements"
-          },
-          {
-            "source": "example_authentication_middleware_test.go",
-            "target": "mux.go",
-            "relation": "references"
-          },
-          {
             "source": "example_cors_method_middleware_test.go",
             "target": "doc.go",
             "relation": "references"
           },
           {
             "source": "example_cors_method_middleware_test.go",
-            "target": "example_route_test.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_cors_method_middleware_test.go",
-            "target": "middleware.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_cors_method_middleware_test.go",
             "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_cors_method_middleware_test.go",
-            "target": "route.go",
             "relation": "references"
           },
           {
@@ -13597,21 +13543,11 @@
           {
             "source": "example_route_test.go",
             "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_route_test.go",
-            "target": "route.go",
             "relation": "references"
           },
           {
             "source": "example_route_vars_test.go",
             "target": "doc.go",
-            "relation": "references"
-          },
-          {
-            "source": "example_route_vars_test.go",
-            "target": "example_route_test.go",
             "relation": "references"
           },
           {
@@ -13631,22 +13567,7 @@
           },
           {
             "source": "middleware_test.go",
-            "target": "middleware.go",
-            "relation": "implements"
-          },
-          {
-            "source": "middleware_test.go",
-            "target": "mux_test.go",
-            "relation": "references"
-          },
-          {
-            "source": "middleware_test.go",
             "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "middleware_test.go",
-            "target": "old_test.go",
             "relation": "references"
           },
           {
@@ -13677,11 +13598,6 @@
           {
             "source": "mux_httpserver_test.go",
             "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "mux_httpserver_test.go",
-            "target": "route.go",
             "relation": "references"
           },
           {
@@ -13691,7 +13607,7 @@
           },
           {
             "source": "mux_test.go",
-            "target": "old_test.go",
+            "target": "mux.go",
             "relation": "references"
           },
           {
@@ -13725,11 +13641,6 @@
             "relation": "references"
           },
           {
-            "source": "mux.go",
-            "target": "route.go",
-            "relation": "implements"
-          },
-          {
             "source": "old_test.go",
             "target": "doc.go",
             "relation": "references"
@@ -13755,6 +13666,11 @@
             "relation": "references"
           },
           {
+            "source": "regexp_test.go",
+            "target": "regexp.go",
+            "relation": "references"
+          },
+          {
             "source": "regexp.go",
             "target": "doc.go",
             "relation": "references"
@@ -13765,28 +13681,18 @@
             "relation": "references"
           },
           {
-            "source": "regexp.go",
+            "source": "route_test.go",
+            "target": "doc.go",
+            "relation": "references"
+          },
+          {
+            "source": "route_test.go",
+            "target": "mux.go",
+            "relation": "references"
+          },
+          {
+            "source": "route_test.go",
             "target": "route.go",
-            "relation": "implements"
-          },
-          {
-            "source": "route_test.go",
-            "target": "doc.go",
-            "relation": "references"
-          },
-          {
-            "source": "route_test.go",
-            "target": "mux_test.go",
-            "relation": "references"
-          },
-          {
-            "source": "route_test.go",
-            "target": "mux.go",
-            "relation": "references"
-          },
-          {
-            "source": "route_test.go",
-            "target": "old_test.go",
             "relation": "references"
           },
           {
@@ -13817,6 +13723,160 @@
           {
             "source": "test_helpers.go",
             "target": "mux.go",
+            "relation": "references"
+          }
+        ],
+        "falsePositives": [
+          {
+            "source": "bench_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_route_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_route_test.go",
+            "target": "regexp.go",
+            "relation": "references"
+          },
+          {
+            "source": "middleware_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "mux_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "mux.go",
+            "target": "route.go",
+            "relation": "references"
+          },
+          {
+            "source": "old_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "regexp_test.go",
+            "target": "mux.go",
+            "relation": "references"
+          },
+          {
+            "source": "regexp.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "regexp.go",
+            "target": "route.go",
+            "relation": "references"
+          },
+          {
+            "source": "route_test.go",
+            "target": "regexp.go",
+            "relation": "references"
+          },
+          {
+            "source": "test_helpers.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "test_helpers.go",
+            "target": "route.go",
+            "relation": "references"
+          }
+        ],
+        "falseNegatives": [
+          {
+            "source": "example_authentication_middleware_test.go",
+            "target": "example_route_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_authentication_middleware_test.go",
+            "target": "middleware.go",
+            "relation": "implements"
+          },
+          {
+            "source": "example_authentication_middleware_test.go",
+            "target": "mux.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_cors_method_middleware_test.go",
+            "target": "example_route_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_cors_method_middleware_test.go",
+            "target": "middleware.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_cors_method_middleware_test.go",
+            "target": "route.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_route_test.go",
+            "target": "route.go",
+            "relation": "references"
+          },
+          {
+            "source": "example_route_vars_test.go",
+            "target": "example_route_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "middleware_test.go",
+            "target": "middleware.go",
+            "relation": "implements"
+          },
+          {
+            "source": "middleware_test.go",
+            "target": "mux_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "middleware_test.go",
+            "target": "old_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "mux_httpserver_test.go",
+            "target": "route.go",
+            "relation": "references"
+          },
+          {
+            "source": "mux_test.go",
+            "target": "old_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "mux.go",
+            "target": "route.go",
+            "relation": "implements"
+          },
+          {
+            "source": "regexp.go",
+            "target": "route.go",
+            "relation": "implements"
+          },
+          {
+            "source": "route_test.go",
+            "target": "mux_test.go",
+            "relation": "references"
+          },
+          {
+            "source": "route_test.go",
+            "target": "old_test.go",
             "relation": "references"
           }
         ]

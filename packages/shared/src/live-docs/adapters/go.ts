@@ -230,19 +230,41 @@ export const goAdapter: LanguageAdapter = {
   
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
+    const isTestFile = absolutePath.endsWith("_test.go");
     
-    // Skip test files
-    if (absolutePath.endsWith("_test.go")) {
-      return null;
-    }
-    
-    const symbols = extractSymbols(content);
+    // Test files export no public symbols but do have dependencies
+    const symbols = isTestFile ? [] : extractSymbols(content);
     
     // Find module info for import resolution
     const moduleName = await findModuleName(absolutePath);
     const moduleRoot = findModuleRoot(absolutePath);
     
-    const dependencies = extractDependencies(content, moduleName, moduleRoot, workspaceRoot);
+    // Extract cross-package import dependencies
+    const importDependencies = extractDependencies(content, moduleName, moduleRoot, workspaceRoot);
+    
+    // Extract same-package symbol reference dependencies
+    const samePackageDependencies = await extractSamePackageDependencies(
+      absolutePath,
+      content,
+      workspaceRoot
+    );
+    
+    // Merge dependencies, preferring import-based edges for duplicates
+    const dependencyMap = new Map<string, DependencyEntry>();
+    for (const dep of [...samePackageDependencies, ...importDependencies]) {
+      const key = dep.resolvedPath || dep.specifier;
+      const existing = dependencyMap.get(key);
+      if (!existing) {
+        dependencyMap.set(key, dep);
+      } else {
+        // Merge symbols
+        const mergedSymbols = new Set([...existing.symbols, ...dep.symbols]);
+        existing.symbols = Array.from(mergedSymbols).sort();
+      }
+    }
+    
+    const dependencies = Array.from(dependencyMap.values())
+      .sort((a, b) => (a.resolvedPath || a.specifier).localeCompare(b.resolvedPath || b.specifier));
     
     return {
       symbols,
@@ -354,6 +376,98 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   });
   
   return results;
+}
+
+/**
+ * Builds an index of exported symbols to their defining files within a package directory.
+ * 
+ * Go packages can span multiple files in the same directory. This function:
+ * 1. Finds all .go files in the same directory (excluding _test.go)
+ * 2. Extracts exported symbols (capitalized identifiers) from each
+ * 3. Returns a map of symbol name → workspace-relative file path
+ */
+async function buildPackageSymbolIndex(
+  packageDir: string,
+  excludeFile: string,
+  workspaceRoot: string
+): Promise<Map<string, string>> {
+  const index = new Map<string, string>();
+  
+  try {
+    const entries = readdirSync(packageDir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      if (!entry.isFile()) continue;
+      if (!entry.name.endsWith(".go")) continue;
+      if (entry.name.endsWith("_test.go")) continue;
+      
+      const filePath = path.join(packageDir, entry.name);
+      if (filePath === excludeFile) continue;
+      
+      const content = await fs.readFile(filePath, "utf8");
+      const symbols = extractSymbols(content);
+      const relativePath = path.relative(workspaceRoot, filePath).replace(/\\/g, "/");
+      
+      for (const symbol of symbols) {
+        // First definition wins (consistent with Go's single-package namespace)
+        if (!index.has(symbol.name)) {
+          index.set(symbol.name, relativePath);
+        }
+      }
+    }
+  } catch {
+    // Directory read failed, return empty index
+  }
+  
+  return index;
+}
+
+/**
+ * Extracts dependencies from same-package symbol references.
+ * 
+ * In Go, files in the same directory share a package namespace. When file A
+ * references an exported symbol defined in file B, we create a dependency edge.
+ * 
+ * @example
+ * // bench_test.go contains: router := NewRouter()
+ * // mux.go exports: func NewRouter() *Router
+ * // → Edge: bench_test.go → mux.go (symbols: ["NewRouter"])
+ */
+async function extractSamePackageDependencies(
+  absolutePath: string,
+  content: string,
+  workspaceRoot: string
+): Promise<DependencyEntry[]> {
+  const packageDir = path.dirname(absolutePath);
+  const symbolIndex = await buildPackageSymbolIndex(packageDir, absolutePath, workspaceRoot);
+  
+  if (symbolIndex.size === 0) {
+    return [];
+  }
+  
+  // Build a map of target file → symbols referenced from this file
+  const targetSymbols = new Map<string, Set<string>>();
+  
+  for (const [symbolName, targetPath] of symbolIndex) {
+    // Check if this symbol is referenced in the current file
+    // Match word boundaries to avoid partial matches
+    const pattern = new RegExp(`\\b${escapeRegExp(symbolName)}\\b`);
+    if (pattern.test(content)) {
+      const existing = targetSymbols.get(targetPath) ?? new Set<string>();
+      existing.add(symbolName);
+      targetSymbols.set(targetPath, existing);
+    }
+  }
+  
+  // Convert to DependencyEntry array
+  return Array.from(targetSymbols.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([targetPath, symbols]) => ({
+      specifier: targetPath,
+      resolvedPath: targetPath,
+      symbols: Array.from(symbols).sort(),
+      kind: "import" as const
+    }));
 }
 
 function extractDependencies(

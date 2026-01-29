@@ -13,7 +13,7 @@ This document catalogs CLI commands and workflows used for **developing** Live D
 | Situation | Relevant Section |
 |-----------|------------------|
 | Preparing a commit | [Pre-Commit Pipeline](#precommit-pipeline) |
-| Debugging graph issues | [Graph Tooling](#graph-tooling) |
+| Debugging graph issues | [Graph Tooling](#graph-tooling-deprecated--removed-20260112) |
 | Validating markdown quality | [SlopCop Audits](#slopcop-audits) |
 | Running benchmarks | [Testing & Benchmarks](#testing--benchmarks) |
 | Managing test fixtures | [Fixture Management](#fixture-management) |
@@ -85,8 +85,6 @@ The legacy SQLite/JSON snapshot infrastructure (`GraphStore`, `RippleAnalyzer`, 
 | `graph:snapshot` | `live-docs:generate` | Live Docs are now the graph |
 | `graph:audit` | `live-docs:lint` | Validates Live Doc structure and coverage |
 | `graph:inspect` | `live-docs:inspect` | Queries the Live Doc graph with `--from`/`--to` pathfinding |
-npm run graph:inspect -- --id <symbol-id>
-```
 
 ---
 

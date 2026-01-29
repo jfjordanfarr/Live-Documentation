@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/helpers/helpers_test.go
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-go-rosetta-src-helpers-helpers-test-go
-- Generated At: 2026-01-16T21:21:09.679Z
+- Generated At: 2026-01-28T23:22:02.150Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the Go Rosetta helpers package (Format, Sum, Average utilities).
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's same-package test pattern which doesn't require explicit imports for internal symbols.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.679Z","inputHash":"114964c9809474fc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:02.150Z","inputHash":"ad2c8958e5b53a37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,7 +23,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers.Average`](./helpers.go.mdmd.md#symbol-average)
+- [`helpers.Format`](./helpers.go.mdmd.md#symbol-format)
+- [`helpers.Sum`](./helpers.go.mdmd.md#symbol-sum)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

@@ -22,6 +22,28 @@ const GO_GROUPED_IMPORT_PATTERN = /^\s*import\s+\(([\s\S]*?)\)/gm;
  */
 const GO_IMPORT_LINE_PATTERN = /^\s*(?:([A-Za-z_][A-Za-z0-9_]*)\s+)?"([^"]+)"/gm;
 
+/**
+ * Matches Go exported symbol declarations (capitalized identifiers are public).
+ * Handles:
+ * - func FunctionName(...)
+ * - type TypeName struct/interface/...
+ * - const/var ConstName = ...
+ */
+const GO_FUNC_PATTERN = /(?:^|\n)\s*func\s+(?:\([^)]*\)\s+)?([A-Z][A-Za-z0-9_]*)\s*\(/g;
+const GO_TYPE_PATTERN = /(?:^|\n)\s*type\s+([A-Z][A-Za-z0-9_]*)\s+(?:struct|interface|[^\s{]+)/g;
+const GO_CONST_VAR_PATTERN = /(?:^|\n)\s*(?:const|var)\s+([A-Z][A-Za-z0-9_]*)\s+/g;
+const GO_BLOCK_ENTRY_PATTERN = /(?:^|\n)\s*([A-Z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
+
+/**
+ * Matches Go private (unexported) symbol declarations (lowercase identifiers).
+ * In single-package Go libraries, files reference private symbols from other files.
+ * We use these patterns for same-package detection only.
+ */
+const GO_PRIVATE_FUNC_PATTERN = /(?:^|\n)\s*func\s+(?:\([^)]*\)\s+)?([a-z][A-Za-z0-9_]*)\s*\(/g;
+const GO_PRIVATE_TYPE_PATTERN = /(?:^|\n)\s*type\s+([a-z][A-Za-z0-9_]*)\s+(?:struct|interface|[^\s{]+)/g;
+const GO_PRIVATE_CONST_VAR_PATTERN = /(?:^|\n)\s*(?:const|var)\s+([a-z][A-Za-z0-9_]*)\s+/g;
+const GO_PRIVATE_BLOCK_ENTRY_PATTERN = /(?:^|\n)\s*([a-z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
+
 // Note: GO_PACKAGE_PATTERN could be used in future to extract package names
 // const GO_PACKAGE_PATTERN = /^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)/m;
 
@@ -39,6 +61,19 @@ interface GoContext {
   importPathIndex: Map<string, string>;
   
   /**
+   * Maps exported symbol names to the artifact that defines them (per package directory).
+   * Structure: packageDir → symbolName → definingArtifact
+   */
+  symbolIndex: Map<string, Map<string, HeuristicArtifact>>;
+  
+  /**
+   * Maps package directory paths to their doc.go file (if exists).
+   * In Go, doc.go contains package-level documentation and every file in the
+   * package implicitly references it.
+   */
+  docIndex: Map<string, HeuristicArtifact>;
+  
+  /**
    * The module name from go.mod (e.g., "rosetta").
    */
   moduleName: string | undefined;
@@ -53,6 +88,8 @@ export function createGoHeuristic(): FallbackHeuristic {
   let context: GoContext = {
     packageIndex: new Map(),
     importPathIndex: new Map(),
+    symbolIndex: new Map(),
+    docIndex: new Map(),
     moduleName: undefined,
     moduleRoot: undefined,
   };
@@ -72,6 +109,10 @@ export function createGoHeuristic(): FallbackHeuristic {
       if (!source.content) {
         return;
       }
+      
+      // Skip doc.go files for same-package symbol detection
+      // doc.go is package documentation that mentions symbols without using them
+      const isDocFile = source.basename === "doc.go";
 
       const seenTargets = new Set<string>();
       const importPaths = extractImportPaths(source.content);
@@ -111,12 +152,10 @@ export function createGoHeuristic(): FallbackHeuristic {
       // In Go, test files can call functions from implementation files without
       // explicit imports because they share the package namespace.
       //
-      // We use two strategies:
-      // 1. Matching filename: foo_test.go → foo.go (high confidence)
-      // 2. Multi-package layout: if only 1-2 impl files in directory, emit to all (moderate confidence)
-      //
-      // For single-package libraries with many impl files, we avoid emitting
-      // blanket edges since precision would suffer greatly.
+      // We use three strategies:
+      // 1. Same-package symbol reference detection (highest precision)
+      // 2. Matching filename: foo_test.go → foo.go (high confidence)
+      // 3. Multi-package layout: if only 1-2 impl files in directory, emit to all (moderate confidence)
       if (source.basename.endsWith("_test.go")) {
         const sourceDir = path.dirname(source.comparablePath);
         const packageFiles = context.packageIndex.get(sourceDir);
@@ -126,7 +165,41 @@ export function createGoHeuristic(): FallbackHeuristic {
             !f.basename.endsWith("_test.go") && f.artifact.id !== source.artifact.id
           );
           
-          // Strategy 1: Look for matching impl file (foo_test.go → foo.go)
+          // Strategy 1: Same-package symbol reference detection
+          // Check which exported symbols from this package are referenced in the test file
+          // Note: We only emit edges to implementation files here. While Go tests CAN
+          // reference other test files' symbols, detecting these via regex is too
+          // imprecise (common helper symbols cause false positives). SCIP can detect
+          // these accurately; heuristics trade recall for precision here.
+          const packageSymbols = context.symbolIndex.get(sourceDir);
+          if (packageSymbols) {
+            for (const [symbolName, definingArtifact] of packageSymbols) {
+              // Skip self-references
+              if (definingArtifact.artifact.id === source.artifact.id) {
+                continue;
+              }
+              // Skip test files as targets to avoid false positives from shared symbols
+              if (definingArtifact.basename.endsWith("_test.go")) {
+                continue;
+              }
+              if (seenTargets.has(definingArtifact.artifact.id)) {
+                continue;
+              }
+              // Check if this symbol is referenced without a package qualifier
+              // This prevents matching http.NewRequest against local newRequest
+              if (isSymbolReferencedLocally(source.content, symbolName)) {
+                seenTargets.add(definingArtifact.artifact.id);
+                emit({
+                  target: definingArtifact,
+                  confidence: 0.8,
+                  rationale: `go test uses symbol ${symbolName}`,
+                  context: "use",
+                });
+              }
+            }
+          }
+          
+          // Strategy 2: Look for matching impl file (foo_test.go → foo.go)
           const baseName = source.basename.replace(/_test\.go$/, ".go");
           const matchingImpl = implFiles.find(f => f.basename === baseName);
           
@@ -140,7 +213,7 @@ export function createGoHeuristic(): FallbackHeuristic {
             });
           }
           
-          // Strategy 2: For small packages (1-2 impl files), emit to all
+          // Strategy 3: For small packages (1-2 impl files), emit to all
           // This handles cases like a single module with helper files
           if (implFiles.length <= 2) {
             for (const implFile of implFiles) {
@@ -158,6 +231,56 @@ export function createGoHeuristic(): FallbackHeuristic {
           }
         }
       }
+      
+      // For all Go files (including non-test files), detect same-package symbol references
+      // This handles cases where impl file A uses symbols from impl file B in the same package
+      // Skip doc.go files which document symbols without using them
+      if (!source.basename.endsWith("_test.go") && !isDocFile) {
+        const sourceDir = path.dirname(source.comparablePath);
+        const packageSymbols = context.symbolIndex.get(sourceDir);
+        if (packageSymbols) {
+          for (const [symbolName, definingArtifact] of packageSymbols) {
+            // Skip self-references
+            if (definingArtifact.artifact.id === source.artifact.id) {
+              continue;
+            }
+            if (seenTargets.has(definingArtifact.artifact.id)) {
+              continue;
+            }
+            // For non-test source files, only emit edges to other non-test files
+            // This prevents spurious impl→test edges from shared symbol names
+            if (definingArtifact.basename.endsWith("_test.go")) {
+              continue;
+            }
+            // Check if this symbol is referenced without a package qualifier
+            // This prevents matching http.NewRequest against local newRequest
+            if (isSymbolReferencedLocally(source.content, symbolName)) {
+              seenTargets.add(definingArtifact.artifact.id);
+              emit({
+                target: definingArtifact,
+                confidence: 0.7,
+                rationale: `go file uses symbol ${symbolName}`,
+                context: "use",
+              });
+            }
+          }
+        }
+      }
+      
+      // Emit edges to doc.go for all files in the package
+      // In Go, doc.go contains package-level documentation that applies to all files
+      // Every file in the package implicitly references the doc.go documentation
+      const sourceDir = path.dirname(source.comparablePath);
+      const docFile = context.docIndex.get(sourceDir);
+      if (docFile && docFile.artifact.id !== source.artifact.id && !seenTargets.has(docFile.artifact.id)) {
+        seenTargets.add(docFile.artifact.id);
+        emit({
+          target: docFile,
+          confidence: 0.6,
+          rationale: "go file references package documentation",
+          context: "use",
+        });
+      }
     },
   };
 }
@@ -165,6 +288,7 @@ export function createGoHeuristic(): FallbackHeuristic {
 function buildGoContext(artifacts: readonly HeuristicArtifact[]): GoContext {
   const packageIndex = new Map<string, HeuristicArtifact[]>();
   const importPathIndex = new Map<string, string>();
+  const docIndex = new Map<string, HeuristicArtifact>();
   let moduleName: string | undefined;
   let moduleRoot: string | undefined;
 
@@ -180,32 +304,61 @@ function buildGoContext(artifacts: readonly HeuristicArtifact[]): GoContext {
     }
   }
 
-  // Second pass: index Go files by their package directory
+  // Second pass: index Go files by their package directory and extract symbols
+  // We include ALL Go files (including tests) in the package index so we can
+  // detect edges from test files to other test files and doc.go.
+  const symbolIndex = new Map<string, Map<string, HeuristicArtifact>>();
+  
   for (const artifact of artifacts) {
     if (!artifact.comparablePath.endsWith(".go")) {
       continue;
     }
-    if (artifact.basename.endsWith("_test.go")) {
-      continue;
-    }
 
     const dir = path.dirname(artifact.comparablePath);
+    const isTestFile = artifact.basename.endsWith("_test.go");
+    
+    // Add ALL Go files to the package index (including tests)
     let existing = packageIndex.get(dir);
     if (!existing) {
       existing = [];
       packageIndex.set(dir, existing);
     }
     existing.push(artifact);
-
-    // Build import path index if we know the module
-    if (moduleName && moduleRoot) {
+    
+    // Track doc.go files for package-level documentation edges
+    if (artifact.basename === "doc.go") {
+      docIndex.set(dir, artifact);
+    }
+    
+    // Build import path index for non-test files only
+    // (test files aren't imported from outside the package)
+    if (!isTestFile && moduleName && moduleRoot) {
       const relativePath = path.relative(moduleRoot, dir).replace(/\\/g, "/");
       const importPath = relativePath ? `${moduleName}/${relativePath}` : moduleName;
       importPathIndex.set(importPath, dir);
     }
+    
+    // Extract ALL symbols (public and private) and add to symbol index
+    // For same-package detection, private symbols are also visible.
+    // Include test files since they can define helper types/functions.
+    // (skip doc.go as it documents but doesn't define symbols)
+    if (artifact.content && artifact.basename !== "doc.go") {
+      const symbols = extractAllSymbols(artifact.content);
+      let packageSymbols = symbolIndex.get(dir);
+      if (!packageSymbols) {
+        packageSymbols = new Map();
+        symbolIndex.set(dir, packageSymbols);
+      }
+      for (const symbolName of symbols) {
+        // First definition wins (consistent with Go's single-package namespace)
+        if (!packageSymbols.has(symbolName)) {
+          packageSymbols.set(symbolName, artifact);
+        }
+      }
+    }
   }
 
-  return { packageIndex, importPathIndex, moduleName, moduleRoot };
+  return { packageIndex, importPathIndex, symbolIndex, docIndex, moduleName, moduleRoot };
 }
 
 function extractImportPaths(content: string): string[] {
@@ -245,15 +398,25 @@ function resolveGoImportTargets(
 ): HeuristicArtifact[] {
   const targets: HeuristicArtifact[] = [];
 
+  // Helper: pick the best representative from a package
+  // Prioritizes implementation files over test files, using ASCII sort for determinism
+  const pickRepresentative = (files: HeuristicArtifact[]): HeuristicArtifact | undefined => {
+    // Filter to implementation files (non-test)
+    const implFiles = files.filter(f => !f.basename.endsWith("_test.go"));
+    // Use ASCII comparison (not localeCompare) for deterministic cross-locale ordering
+    const candidates = implFiles.length > 0 ? implFiles : files;
+    const sorted = [...candidates].sort((a, b) => (a.basename < b.basename ? -1 : a.basename > b.basename ? 1 : 0));
+    return sorted[0];
+  };
+
   // Try direct import path lookup
   const dir = context.importPathIndex.get(importPath);
   if (dir) {
     const files = context.packageIndex.get(dir);
     if (files) {
-      // Emit one representative file per package (the first alphabetically)
-      const sorted = [...files].sort((a, b) => a.basename.localeCompare(b.basename));
-      if (sorted.length > 0) {
-        targets.push(sorted[0]);
+      const rep = pickRepresentative(files);
+      if (rep) {
+        targets.push(rep);
       }
     }
     return targets;
@@ -262,12 +425,12 @@ function resolveGoImportTargets(
   // Fallback: try to match by package suffix
   const suffix = importPath.split("/").pop();
   if (suffix) {
-    for (const [dir, files] of context.packageIndex) {
-      const dirSuffix = path.basename(dir);
+    for (const [pkgDir, files] of context.packageIndex) {
+      const dirSuffix = path.basename(pkgDir);
       if (dirSuffix === suffix) {
-        const sorted = [...files].sort((a, b) => a.basename.localeCompare(b.basename));
-        if (sorted.length > 0) {
-          targets.push(sorted[0]);
+        const rep = pickRepresentative(files);
+        if (rep) {
+          targets.push(rep);
         }
       }
     }
@@ -299,4 +462,118 @@ function isStdlibPackage(importPath: string): boolean {
 
   const firstSegment = importPath.split("/")[0];
   return stdlibPrefixes.has(firstSegment);
+}
+
+/**
+ * Extracts exported symbol names from Go source code.
+ * In Go, exported symbols are capitalized identifiers.
+ */
+function _extractExportedSymbols(content: string): string[] {
+  const symbols = new Set<string>();
+  
+  // Extract function names
+  const funcPattern = new RegExp(GO_FUNC_PATTERN.source, "g");
+  for (const match of content.matchAll(funcPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract type names
+  const typePattern = new RegExp(GO_TYPE_PATTERN.source, "g");
+  for (const match of content.matchAll(typePattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract const/var names
+  const constVarPattern = new RegExp(GO_CONST_VAR_PATTERN.source, "g");
+  for (const match of content.matchAll(constVarPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract block entries (const/var blocks)
+  const blockEntryPattern = new RegExp(GO_BLOCK_ENTRY_PATTERN.source, "g");
+  for (const match of content.matchAll(blockEntryPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  return Array.from(symbols).sort();
+}
+
+/**
+ * Extracts all symbols (both public and private) from Go source code.
+ * Used for same-package detection where private symbols are also visible.
+ */
+function extractAllSymbols(content: string): string[] {
+  const symbols = new Set<string>();
+  
+  // Extract public function names
+  const funcPattern = new RegExp(GO_FUNC_PATTERN.source, "g");
+  for (const match of content.matchAll(funcPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract private function names
+  const privateFuncPattern = new RegExp(GO_PRIVATE_FUNC_PATTERN.source, "g");
+  for (const match of content.matchAll(privateFuncPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract public type names
+  const typePattern = new RegExp(GO_TYPE_PATTERN.source, "g");
+  for (const match of content.matchAll(typePattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract private type names
+  const privateTypePattern = new RegExp(GO_PRIVATE_TYPE_PATTERN.source, "g");
+  for (const match of content.matchAll(privateTypePattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract public const/var names
+  const constVarPattern = new RegExp(GO_CONST_VAR_PATTERN.source, "g");
+  for (const match of content.matchAll(constVarPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract private const/var names
+  const privateConstVarPattern = new RegExp(GO_PRIVATE_CONST_VAR_PATTERN.source, "g");
+  for (const match of content.matchAll(privateConstVarPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract public block entries (const/var blocks)
+  const blockEntryPattern = new RegExp(GO_BLOCK_ENTRY_PATTERN.source, "g");
+  for (const match of content.matchAll(blockEntryPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Extract private block entries (const/var blocks)
+  const privateBlockEntryPattern = new RegExp(GO_PRIVATE_BLOCK_ENTRY_PATTERN.source, "g");
+  for (const match of content.matchAll(privateBlockEntryPattern)) {
+    symbols.add(match[1]);
+  }
+  
+  // Filter out common false positives (very short identifiers likely to be false positives)
+  const filtered = Array.from(symbols).filter(s => s.length > 2);
+  
+  return filtered.sort();
+}
+
+/**
+ * Checks if a symbol is referenced in the content without a package qualifier.
+ * In Go, `http.NewRequest` should not match local `newRequest`.
+ * We look for uses of the symbol that are NOT preceded by a dot.
+ */
+function isSymbolReferencedLocally(content: string, symbolName: string): boolean {
+  // Pattern: symbol not preceded by a dot (package qualifier)
+  // We use a negative lookbehind to exclude package-qualified references
+  const pattern = new RegExp(`(?<![.])\\b${escapeRegExp(symbolName)}\\b`, "g");
+  return pattern.test(content);
+}
+
+/**
+ * Escapes special regex characters in a string.
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
