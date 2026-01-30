@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-pythonfixtureoracle-ts
-- Generated At: 2025-12-07T21:41:19.546Z
+- Generated At: 2026-01-30T00:04:21.263Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Executes Python fixtures through the CPython interpreter to emit ground-truth de
 - Continues to run under the full unit suite (Nov 16) to guard subprocess handling and override merging <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:19.546Z","inputHash":"ff8dca64da8aba99"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.263Z","inputHash":"ff8dca64da8aba99"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PythonOracleEdgeRelation` {#symbol-pythonoracleedgerelation}
@@ -58,24 +58,24 @@ Executes Python fixtures through the CPython interpreter to emit ground-truth de
 #### `generatePythonFixtureGraph` {#symbol-generatepythonfixturegraph}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L71)
-- Parameters: `options`: [`PythonFixtureOracleOptions`](#symbol-pythonfixtureoracleoptions)
+- Parameters: `options`: [`PythonFixtureOracleOptions`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonfixtureoracleoptions)
 
 #### `serializePythonOracleEdges` {#symbol-serializepythonoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L93)
-- Parameters: `edges`: [`PythonOracleEdge`](#symbol-pythonoracleedge)[]
+- Parameters: `edges`: [`PythonOracleEdge`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoracleedge)[]
 
 #### `partitionPythonOracleSegments` {#symbol-partitionpythonoraclesegments}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L98)
-- Returns: [`PythonOracleSegmentPartition`](#symbol-pythonoraclesegmentpartition)
-- Parameters: `edges`: [`PythonOracleEdge`](#symbol-pythonoracleedge)[]; `overrides`: [`PythonOracleOverrideConfig`](#symbol-pythonoracleoverrideconfig)
+- Returns: [`PythonOracleSegmentPartition`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoraclesegmentpartition)
+- Parameters: `edges`: [`PythonOracleEdge`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoracleedge)[]; `overrides`: [`PythonOracleOverrideConfig`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoracleoverrideconfig)
 
 #### `mergePythonOracleEdges` {#symbol-mergepythonoracleedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts#L134)
-- Returns: [`PythonOracleMergeResult`](#symbol-pythonoraclemergeresult)
-- Parameters: `edges`: [`PythonOracleEdge`](#symbol-pythonoracleedge)[]; `overrides`: [`PythonOracleOverrideConfig`](#symbol-pythonoracleoverrideconfig)
+- Returns: [`PythonOracleMergeResult`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoraclemergeresult)
+- Parameters: `edges`: [`PythonOracleEdge`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoracleedge)[]; `overrides`: [`PythonOracleOverrideConfig`](../../../../testing/src/fixtureOracles/pythonFixtureOracle.ts.mdmd.md#symbol-pythonoracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

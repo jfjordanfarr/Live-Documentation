@@ -293,8 +293,8 @@ async function detectSymbolUsages(
         continue;
       }
 
-      // Skip ignored identifiers from shared syntax
-      if (cSyntax.isIgnoredIdentifier(symbolName)) {
+      // Skip fundamental framework types from shared syntax
+      if (cSyntax.isFrameworkType(symbolName)) {
         continue;
       }
 

@@ -17,39 +17,20 @@ const C_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common C identifiers to ignore when detecting symbol references.
- *
- * Includes:
- * - Standard library functions
- * - Common variable names
- * - Built-in types
+ * Fundamental C/C++ types that appear in virtually every file.
+ * Conservative list — only built-in types and standard library fundamentals.
  */
-const C_IGNORED_IDENTIFIERS = new Set([
-  // Single letters
-  "i", "j", "k", "x", "y", "n", "c", "s", "p",
-
-  // Common variable names
-  "buf", "buffer", "ptr", "len", "size", "count", "index", "offset",
-  "result", "ret", "rc", "status", "err", "error",
-  "data", "value", "key", "name", "path", "str", "tmp",
-
-  // Common pointer/loop variables
-  "next", "prev", "curr", "current", "node", "head", "tail",
-
-  // File/IO related
-  "fd", "fp", "file", "stream", "input", "output",
-
-  // Function parameter patterns
-  "argc", "argv", "arg", "args",
-
-  // Standard library functions (commonly referenced but not project symbols)
-  "malloc", "calloc", "realloc", "free",
-  "printf", "fprintf", "sprintf", "snprintf",
-  "scanf", "fscanf", "sscanf",
-  "memcpy", "memset", "memmove", "memcmp",
-  "strcpy", "strncpy", "strcat", "strncat", "strcmp", "strncmp", "strlen",
-  "fopen", "fclose", "fread", "fwrite", "fgets", "fputs",
-  "exit", "abort", "assert",
+const C_FRAMEWORK_TYPES = new Set([
+  // Built-in types
+  "void", "char", "short", "int", "long", "float", "double",
+  "signed", "unsigned", "bool", "size_t", "ssize_t",
+  "int8_t", "int16_t", "int32_t", "int64_t",
+  "uint8_t", "uint16_t", "uint32_t", "uint64_t",
+  "ptrdiff_t", "intptr_t", "uintptr_t",
+  // Standard library memory functions
+  "NULL", "nullptr",
+  // Common type qualifiers (not types but commonly filtered)
+  "const", "static", "extern", "volatile", "inline",
 ]);
 
 /**
@@ -80,14 +61,14 @@ export const cSyntax: LanguageSyntax = {
   extensions: [".c", ".h", ".cpp", ".hpp", ".cc", ".cxx"],
   comments: C_COMMENTS,
   strings: C_STRINGS,
-  ignoredIdentifiers: C_IGNORED_IDENTIFIERS,
+  frameworkTypes: C_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripCCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return C_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return C_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

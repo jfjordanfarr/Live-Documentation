@@ -6,6 +6,49 @@ import { goSyntax } from "../../languages";
 import type { FallbackHeuristic, HeuristicArtifact, MatchContext } from "../fallbackHeuristicTypes";
 
 /**
+ * Common Go variable/parameter names that cause false positives in heuristic matching.
+ * These are local variables that appear across many files but are not actual cross-file references.
+ * 
+ * NOTE: This is separate from goSyntax.frameworkTypes which only contains fundamental types.
+ * Heuristics need aggressive filtering to avoid false positives; tree-sitter doesn't.
+ */
+const GO_COMMON_VARIABLE_NAMES = new Set([
+  // Single letters (common loop/temp variables)
+  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+  // Standard error handling
+  "err", "error",
+  // Common iteration/result variables
+  "match", "matches", "result", "results", "value", "values",
+  "key", "keys", "data", "item", "items",
+  // Index/loop variables
+  "idx", "index", "len", "size", "count",
+  // HTTP/request related
+  "req", "res", "resp", "request", "response",
+  // Context
+  "ctx", "context",
+  // IO related
+  "buf", "buffer", "reader", "writer", "in", "out",
+  // Boolean flags
+  "ok", "found", "done", "valid",
+  // String processing
+  "str", "text", "name", "path", "url", "uri", "msg",
+  // Common Go variable names
+  "log", "tmp", "old", "new", "got", "want",
+  "rv", "wg", "mu", "id", "fn", "tc", "tt", "ts",
+  "route", "query",
+  // Go stdlib types that cause false positives in heuristic matching
+  "Handler", "HandlerFunc", "Header", "Request", "Response", "ResponseWriter",
+  "Client", "Server", "Transport", "Cookie", "Error",
+  "URL", "Values",
+  "NewRecorder", "NewRequest", "NewServer",
+  "Print", "Printf", "Println", "Sprint", "Sprintf", "Sprintln",
+  "Builder", "Reader", "Writer", "Closer", "ReadWriter",
+  "Context", "Background", "TODO", "WithCancel", "WithTimeout", "WithValue",
+  "New", "Is", "As", "Unwrap",
+]);
+
+/**
  * Matches a single-line Go import: import "module/path"
  * Captures: (1) the import path
  */
@@ -556,9 +599,9 @@ function extractAllSymbols(content: string): string[] {
   
   // Filter out:
   // 1. Very short identifiers (likely false positives)
-  // 2. Common Go variable names that are used everywhere as locals (from shared syntax)
+  // 2. Common Go variable names that are used everywhere as locals
   const filtered = Array.from(symbols).filter(s => 
-    s.length > 2 && !goSyntax.isIgnoredIdentifier(s)
+    s.length > 2 && !GO_COMMON_VARIABLE_NAMES.has(s)
   );
   
   return filtered.sort();

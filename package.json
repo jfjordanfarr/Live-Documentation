@@ -33,7 +33,8 @@
     "packages/server",
     "packages/shared",
     "packages/scripts",
-    "packages/cli"
+    "packages/cli",
+    "packages/testing"
   ],
   "scripts": {
     "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/server && npm run compile -w packages/extension",

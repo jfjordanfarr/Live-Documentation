@@ -55,14 +55,17 @@ export interface LanguageSyntax {
   readonly strings: StringDelimiters;
 
   /**
-   * Identifiers to ignore when detecting symbol references.
+   * Fundamental framework/standard library types that every file typically uses.
    *
-   * Includes:
-   * - Standard library types and functions
-   * - Common variable names that cause false positives
-   * - Built-in language keywords/types
+   * This is a **conservative** list containing ONLY ubiquitous types like
+   * `string`, `int`, `bool`, `Task`, etc. Used to filter obvious noise when
+   * detecting dependencies.
+   *
+   * **Note**: This is NOT for filtering tree-sitter results (tree-sitter has
+   * zero false positives). This is only for C-style header dependency detection
+   * where type references are heuristically matched.
    */
-  readonly ignoredIdentifiers: ReadonlySet<string>;
+  readonly frameworkTypes: ReadonlySet<string>;
 
   /**
    * Strips comments and string literals from source code.
@@ -81,12 +84,12 @@ export interface LanguageSyntax {
   stripCommentsAndStrings(content: string): Promise<string>;
 
   /**
-   * Checks if an identifier should be ignored for symbol matching.
+   * Checks if an identifier is a fundamental framework/standard library type.
    *
    * @param identifier - The identifier to check
-   * @returns True if the identifier is in the ignored set
+   * @returns True if the identifier is a fundamental type to filter as noise
    */
-  isIgnoredIdentifier(identifier: string): boolean;
+  isFrameworkType(identifier: string): boolean;
 }
 
 /**

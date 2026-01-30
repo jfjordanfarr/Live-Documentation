@@ -17,58 +17,22 @@ const GO_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common Go variable/parameter names that should be excluded from symbol matching.
- * These are frequently used as local variables and matching them across files
- * produces false positives.
- *
- * Combined from:
- * - packages/shared/src/inference/heuristics/go.ts (GO_COMMON_VARIABLE_NAMES)
- * - packages/shared/src/inference/treeSitter/languages.ts (GO_IGNORED)
+ * Fundamental Go types that appear in virtually every file.
+ * These are conservative — only built-in types, not stdlib types.
  */
-const GO_IGNORED_IDENTIFIERS = new Set([
-  // Single letters (common loop/temp variables)
-  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-
-  // Standard error handling
-  "err", "error",
-
-  // Common iteration/result variables
-  "match", "matches", "result", "results", "value", "values",
-  "key", "keys", "data", "item", "items",
-
-  // Index/loop variables
-  "idx", "index", "len", "size", "count",
-
-  // HTTP/request related
-  "req", "res", "resp", "request", "response",
-
-  // Context
-  "ctx", "context",
-
-  // IO related
-  "buf", "buffer", "reader", "writer", "in", "out",
-
-  // Boolean flags
-  "ok", "found", "done", "valid",
-
-  // String processing
-  "str", "text", "name", "path", "url", "uri", "msg",
-
-  // Common Go variable names from tree-sitter config
-  "log", "tmp", "old", "new", "got", "want",
-  "rv", "wg", "mu", "id", "fn", "tc", "tt", "ts",
-  "route", "query",
-
-  // Go stdlib types that cause false positives
-  "Handler", "HandlerFunc", "Header", "Request", "Response", "ResponseWriter",
-  "Client", "Server", "Transport", "Cookie", "Error",
-  "URL", "Values",
-  "NewRecorder", "NewRequest", "NewServer",
-  "Print", "Printf", "Println", "Sprint", "Sprintf", "Sprintln",
-  "Builder", "Reader", "Writer", "Closer", "ReadWriter",
-  "Context", "Background", "TODO", "WithCancel", "WithTimeout", "WithValue",
-  "New", "Is", "As", "Unwrap",
+const GO_FRAMEWORK_TYPES = new Set([
+  // Built-in types
+  "bool", "byte", "complex64", "complex128",
+  "error", "float32", "float64",
+  "int", "int8", "int16", "int32", "int64",
+  "rune", "string",
+  "uint", "uint8", "uint16", "uint32", "uint64", "uintptr",
+  // Built-in functions
+  "append", "cap", "close", "complex", "copy", "delete",
+  "imag", "len", "make", "new", "panic", "print", "println",
+  "real", "recover",
+  // Constants
+  "true", "false", "nil", "iota",
 ]);
 
 /**
@@ -140,7 +104,7 @@ export const goSyntax: LanguageSyntax = {
   extensions: [".go"],
   comments: GO_COMMENTS,
   strings: GO_STRINGS,
-  ignoredIdentifiers: GO_IGNORED_IDENTIFIERS,
+  frameworkTypes: GO_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     // Regex-based implementation is synchronous but exposed as async
@@ -148,8 +112,8 @@ export const goSyntax: LanguageSyntax = {
     return await Promise.resolve(stripGoCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return GO_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return GO_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

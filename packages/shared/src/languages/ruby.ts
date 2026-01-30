@@ -17,27 +17,17 @@ const RUBY_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common Ruby identifiers to ignore.
+ * Fundamental Ruby types that appear in virtually every file.
+ * Conservative list — only built-in classes for primitives.
  */
-const RUBY_IGNORED_IDENTIFIERS = new Set([
-  // Common local names
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w",
-
-  // Common variable names
-  "value", "result", "item", "index", "count", "length", "size",
-  "key", "data", "name", "type", "options", "args",
-
-  // Built-in classes
-  "Object", "Class", "Module", "String", "Integer", "Float", "Array", "Hash",
-  "Symbol", "Range", "Regexp", "Proc", "Lambda", "Method",
+const RUBY_FRAMEWORK_TYPES = new Set([
+  // Core classes for primitive-like values
+  "String", "Integer", "Float", "Numeric",
+  "Array", "Hash", "Symbol", "Range",
   "TrueClass", "FalseClass", "NilClass",
-  "Enumerable", "Enumerator", "Comparable",
-  "Exception", "StandardError", "RuntimeError", "ArgumentError",
-
-  // Common methods that look like references
-  "new", "initialize", "to_s", "to_i", "to_a", "to_h",
-  "each", "map", "select", "reject", "find", "reduce",
-  "puts", "print", "p", "pp", "require", "require_relative",
+  "Object", "BasicObject",
+  // Constants
+  "true", "false", "nil",
 ]);
 
 /**
@@ -67,14 +57,14 @@ export const rubySyntax: LanguageSyntax = {
   extensions: [".rb", ".rake", ".gemspec"],
   comments: RUBY_COMMENTS,
   strings: RUBY_STRINGS,
-  ignoredIdentifiers: RUBY_IGNORED_IDENTIFIERS,
+  frameworkTypes: RUBY_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripRubyCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return RUBY_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return RUBY_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

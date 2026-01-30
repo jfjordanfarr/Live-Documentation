@@ -17,24 +17,15 @@ const POWERSHELL_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common PowerShell identifiers to ignore.
+ * Fundamental PowerShell types that appear in virtually every file.
+ * Conservative list — only .NET primitives commonly used in PS.
  */
-const POWERSHELL_IGNORED_IDENTIFIERS = new Set([
-  // Common local names
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w",
-
-  // Common variable names
-  "value", "result", "item", "index", "count", "length", "size",
-  "key", "data", "name", "type", "path", "file", "args",
-
-  // Automatic variables
-  "_", "PSItem", "null", "true", "false",
-  "Error", "ErrorActionPreference", "VerbosePreference",
-  "PSScriptRoot", "PSCommandPath", "MyInvocation",
-
-  // Common cmdlet nouns (as identifiers)
-  "Object", "Item", "Content", "ChildItem", "Process", "Service",
-  "Module", "Command", "Variable", "Function", "Alias",
+const POWERSHELL_FRAMEWORK_TYPES = new Set([
+  // .NET type accelerators (common in PowerShell)
+  "string", "int", "long", "bool", "double", "decimal", "float",
+  "byte", "char", "object", "array", "void",
+  // Common automatic variables (these are truly everywhere)
+  "null", "true", "false",
 ]);
 
 /**
@@ -69,14 +60,14 @@ export const powershellSyntax: LanguageSyntax = {
   extensions: [".ps1", ".psm1", ".psd1"],
   comments: POWERSHELL_COMMENTS,
   strings: POWERSHELL_STRINGS,
-  ignoredIdentifiers: POWERSHELL_IGNORED_IDENTIFIERS,
+  frameworkTypes: POWERSHELL_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripPowerShellCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return POWERSHELL_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return POWERSHELL_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

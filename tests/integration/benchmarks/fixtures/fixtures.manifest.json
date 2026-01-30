@@ -489,9 +489,7 @@
       "label": "Newtonsoft.Json serialization library",
       "language": "csharp",
       "path": "csharp/newtonsoft-json",
-      "modes": [
-        "ast"
-      ],
+      "modes": [],
       "expected": "csharp/newtonsoft-json/expected.json",
       "inferred": "csharp/newtonsoft-json/inferred.json",
       "provenance": {
@@ -514,11 +512,9 @@
         ]
       },
       "oracle": {
-        "kind": "csharp",
-        "root": ".",
-        "include": [
-          "Src/Newtonsoft.Json/**/*.cs"
-        ]
+        "kind": "scip",
+        "indexer": "csharp",
+        "root": "Src/Newtonsoft.Json"
       },
       "integrity": {
         "algorithm": "sha256",
@@ -535,6 +531,11 @@
         },
         "rootHash": "0949e8bdf2e9223194f7fb5b9cf47c6ad0fe6e863c27817ed9086cddf8e8ddf8",
         "fileCount": 240
+      },
+      "thresholds": {
+        "precision": 0.70,
+        "recall": 0.65,
+        "rationale": "C# heuristic inference cannot detect 'implements' relationships (127/1463 edges) and has some false positives from type name disambiguation. Tree-sitter C# integration (Part B) will improve these metrics once wired up."
       }
     },
     {

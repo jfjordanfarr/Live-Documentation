@@ -104,13 +104,14 @@ interface ExpectedEdge {
 /**
  * Parse command line arguments
  */
-function parseArgs(): { input: string; output: string | null; verbose: boolean; normalizeRelations: boolean; language: string | null } {
+function parseArgs(): { input: string; output: string | null; verbose: boolean; normalizeRelations: boolean; language: string | null; pathPrefix: string | null } {
   const args = process.argv.slice(2);
   let input: string | null = null;
   let output: string | null = null;
   let verbose = false;
   let normalizeRelations = false;
   let language: string | null = null;
+  let pathPrefix: string | null = null;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--input" || args[i] === "-i") {
@@ -123,6 +124,8 @@ function parseArgs(): { input: string; output: string | null; verbose: boolean; 
       normalizeRelations = true;
     } else if (args[i] === "--language" || args[i] === "-l") {
       language = args[++i];
+    } else if (args[i] === "--path-prefix" || args[i] === "-p") {
+      pathPrefix = args[++i];
     } else if (args[i] === "--help" || args[i] === "-h") {
       console.log(`
 Usage: npx tsx scripts/fixture-tools/scip-to-expected.ts [options]
@@ -133,6 +136,7 @@ Options:
   --verbose, -v           Print debug information
   --normalize-relations   Collapse all relations to "imports" for backward compatibility
   --language, -l          Language for SCIP normalization (go, csharp, typescript, java, python)
+  --path-prefix, -p       Prefix to prepend to all paths (for SCIP indexes from subdirectories)
   --help, -h              Show this help message
 `);
       process.exit(0);
@@ -144,7 +148,7 @@ Options:
     process.exit(1);
   }
 
-  return { input, output, verbose, normalizeRelations, language };
+  return { input, output, verbose, normalizeRelations, language, pathPrefix };
 }
 
 /**
@@ -193,8 +197,9 @@ function isLocalSymbol(symbol: string): boolean {
  * Main conversion logic
  * @param normalizeRelations If true, collapse all relations to "imports" for backward compatibility
  * @param normalizer Language-specific normalizer for filtering artifact paths
+ * @param pathPrefix Optional prefix to prepend to all paths (for SCIP indexes from subdirectories)
  */
-function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRelations: boolean, normalizer: ScipNormalizer | null): ExpectedEdge[] {
+function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRelations: boolean, normalizer: ScipNormalizer | null, pathPrefix: string | null): ExpectedEdge[] {
   // Read and deserialize the SCIP index
   const indexBytes = readFileSync(indexPath);
   const index: ScipIndex = scip.Index.deserialize(new Uint8Array(indexBytes));
@@ -208,12 +213,15 @@ function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRel
     console.error(`Tool: ${index.metadata?.tool_info?.name} v${index.metadata?.tool_info?.version}`);
   }
 
+  // Normalize the path prefix (ensure it ends with / if set)
+  const normalizedPrefix = pathPrefix ? normalizePath(pathPrefix).replace(/\/?$/, "/") : "";
+
   // Phase 1: Build symbol → defining-file map
   // A symbol is "defined" in a file if there's an occurrence with Definition role
   const symbolToDefiningFile = new Map<string, string>();
 
   for (const doc of index.documents) {
-    const filePath = normalizePath(doc.relative_path);
+    const filePath = normalizedPrefix + normalizePath(doc.relative_path);
 
     for (const occ of doc.occurrences) {
       if (isDefinition(occ.symbol_roles) && occ.symbol) {
@@ -289,7 +297,7 @@ function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRel
   }
 
   for (const doc of index.documents) {
-    const sourceFile = normalizePath(doc.relative_path);
+    const sourceFile = normalizedPrefix + normalizePath(doc.relative_path);
 
     for (const occ of doc.occurrences) {
       // Skip definitions - we only want references
@@ -389,7 +397,7 @@ function convertScipToExpected(indexPath: string, verbose: boolean, normalizeRel
  * Main entry point
  */
 function main(): void {
-  const { input, output, verbose, normalizeRelations, language } = parseArgs();
+  const { input, output, verbose, normalizeRelations, language, pathPrefix } = parseArgs();
 
   const inputPath = path.resolve(input);
   
@@ -398,8 +406,11 @@ function main(): void {
   if (verbose && normalizer) {
     console.error(`Using ${normalizer.language} SCIP normalizer for artifact filtering`);
   }
+  if (verbose && pathPrefix) {
+    console.error(`Path prefix: ${pathPrefix}`);
+  }
   
-  const edges = convertScipToExpected(inputPath, verbose, normalizeRelations, normalizer);
+  const edges = convertScipToExpected(inputPath, verbose, normalizeRelations, normalizer, pathPrefix);
 
   const jsonOutput = JSON.stringify(edges, null, 2) + "\n";
 

@@ -143,17 +143,17 @@ export async function stripCommentsAndStringsForPath(
 }
 
 /**
- * Checks if an identifier should be ignored for the given file's language.
+ * Checks if an identifier is a fundamental framework type for the given file's language.
  *
  * @param filePath - Path to the file (used to determine language)
  * @param identifier - The identifier to check
- * @returns True if the identifier should be ignored, false otherwise
+ * @returns True if the identifier is a framework type to filter as noise, false otherwise
  */
-export function isIgnoredIdentifierForPath(filePath: string, identifier: string): boolean {
+export function isFrameworkTypeForPath(filePath: string, identifier: string): boolean {
   const syntax = getSyntaxByPath(filePath);
   if (!syntax) {
     return false;
   }
-  return syntax.isIgnoredIdentifier(identifier);
+  return syntax.isFrameworkType(identifier);
 }
 

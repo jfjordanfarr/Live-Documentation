@@ -5,6 +5,16 @@ const CSHARP_USING_DIRECTIVE_PATTERN = "^\\s*using\\s+(static\\s+)?([^=;]+);";
 const CSHARP_NAMESPACE_DECLARATION_PATTERN = "\\bnamespace\\s+([A-Za-z_][A-Za-z0-9_.]*)\\s*(?:;|\\{)";
 const CSHARP_TYPE_DECLARATION_PATTERN = "(partial\\s+)?(class|struct|interface|record|enum|delegate)\\s+([A-Za-z_][A-Za-z0-9_]*)";
 const CSHARP_IDENTIFIER_PATTERN = "\\b([A-Z][A-Za-z0-9_]*)\\b";
+
+/**
+ * Built-in .NET types to ignore when detecting cross-file references.
+ *
+ * Note: This is more conservative than csharpSyntax.ignoredIdentifiers because
+ * the heuristic needs to detect project-specific types like ValidationUtils,
+ * ObjectConstructor, etc. The LanguageSyntax blocklist is tuned for tree-sitter
+ * noise reduction and includes common variable names that would cause too many
+ * false negatives here.
+ */
 const CSHARP_BUILT_INS = new Set([
   "Task",
   "ValueTask",
@@ -28,16 +38,38 @@ const CSHARP_BUILT_INS = new Set([
 ]);
 
 /**
- * Strips C# comments from source code to avoid false positive type matches
- * from words appearing in comments (e.g., "Entry point" matching Entry type).
+ * Synchronous cache for stripped C# content.
+ * Only strips comments (not strings) to avoid false positives from type names
+ * in documentation while preserving type references in code.
  */
-function stripCSharpComments(content: string): string {
-  // Remove single-line comments (// ...)
+let _strippedContentCache: Map<string, string> | null = null;
+
+function getStrippedContent(content: string): string {
+  if (!_strippedContentCache) {
+    _strippedContentCache = new Map();
+  }
+  const cached = _strippedContentCache.get(content);
+  if (cached !== undefined) {
+    return cached;
+  }
+  const result = stripCSharpCommentsOnly(content);
+  _strippedContentCache.set(content, result);
+  return result;
+}
+
+/**
+ * Strips only comments from C# source code.
+ *
+ * Note: We intentionally do NOT strip strings here because type references
+ * (e.g., nameof(MyType), typeof(MyType)) appear in code that may be near strings
+ * and stripping strings can accidentally remove valid type references.
+ * The goal is just to filter out type names mentioned in documentation comments.
+ */
+function stripCSharpCommentsOnly(content: string): string {
+  // Remove single-line comments (// ...) including XML doc comments (/// ...)
   let result = content.replace(/\/\/.*$/gm, "");
   // Remove multi-line comments (/* ... */)
   result = result.replace(/\/\*[\s\S]*?\*\//g, "");
-  // Remove XML doc comments (/// ...)
-  result = result.replace(/\/\/\/.*$/gm, "");
   return result;
 }
 
@@ -92,8 +124,8 @@ export function createCSharpHeuristic(): FallbackHeuristic {
       const seenTargets = new Set<string>();
       const identifierPattern = new RegExp(CSHARP_IDENTIFIER_PATTERN, "gm");
 
-      // Strip comments to avoid false positives from type names in documentation
-      const codeContent = stripCSharpComments(source.content);
+      // Strip comments and strings to avoid false positives from type names in documentation
+      const codeContent = getStrippedContent(source.content);
 
       for (const match of codeContent.matchAll(identifierPattern)) {
         const symbol = match[1];

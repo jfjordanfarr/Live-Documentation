@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/typescript.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-typescript-ts
-- Generated At: 2026-01-29T20:42:58.590Z
+- Generated At: 2026-01-30T00:04:21.107Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Provides TypeScript/JavaScript-specific syntax configuration implementing `Langu
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — covers `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs` extensions. Template literal (backtick) stripping uses a simplified regex that may miss nested expressions; tree-sitter will handle these accurately.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-29T20:42:58.590Z","inputHash":"3c69f5a5f1c83aa1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.107Z","inputHash":"23fcdd7ff5ab1928"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `typescriptSyntax` {#symbol-typescriptsyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/typescript.ts#L75)
+- Source: [source](../../../../../../packages/shared/src/languages/typescript.ts#L61)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 <!-- LIVE-DOC:END Public Symbols -->
 

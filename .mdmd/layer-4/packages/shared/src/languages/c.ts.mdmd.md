@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-c-ts
-- Generated At: 2026-01-29T20:42:58.570Z
+- Generated At: 2026-01-30T00:04:21.089Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Provides C-specific syntax configuration implementing `LanguageSyntax`. Defines 
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — extracted from the C adapter's local `stripCommentsAndStrings()` function. Enables the adapter to use the shared async interface while maintaining identical stripping behavior.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-29T20:42:58.570Z","inputHash":"c914e61e8397eb8c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.089Z","inputHash":"de37c8da1edb4a51"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cSyntax` {#symbol-csyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/c.ts#L78)
+- Source: [source](../../../../../../packages/shared/src/languages/c.ts#L59)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 <!-- LIVE-DOC:END Public Symbols -->
 

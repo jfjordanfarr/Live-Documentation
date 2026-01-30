@@ -1332,7 +1332,9 @@ async function regenerateScipFixture(input: {
   
   const scipToExpectedPath = path.join(REPO_ROOT, "scripts", "fixture-tools", "scip-to-expected.ts");
   // Pass the language so the normalizer can filter language-specific artifact paths
-  const convertCmd = `npx tsx ${scipToExpectedPath} --input "${indexPath}" --language ${oracle.indexer}`;
+  // Pass path prefix if the oracle.root is not "." to align paths with materialization root
+  const pathPrefixArg = oracle.root && oracle.root !== "." ? ` --path-prefix "${oracle.root}"` : "";
+  const convertCmd = `npx tsx ${scipToExpectedPath} --input "${indexPath}" --language ${oracle.indexer}${pathPrefixArg}`;
   
   let expectedJson: string;
   try {

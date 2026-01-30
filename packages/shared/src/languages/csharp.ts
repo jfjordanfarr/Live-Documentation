@@ -17,32 +17,22 @@ const CSHARP_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common C# identifiers to ignore when detecting symbol references.
- *
- * Combined from:
- * - packages/shared/src/inference/treeSitter/languages.ts (CSHARP_IGNORED)
- * - Common .NET Framework types
+ * Fundamental C# types that appear in virtually every file.
+ * Conservative list — only built-in types and core BCL types.
  */
-const CSHARP_IGNORED_IDENTIFIERS = new Set([
-  // Single letters
-  "i", "j", "k", "x", "y", "n", "s", "c", "t", "e", "o", "v", "r", "w",
-
-  // Common variable names
-  "value", "result", "item", "index", "count", "length", "type", "name",
-  "key", "text", "data", "list", "array", "reader", "writer",
-
-  // .NET Framework types (commonly used but not project-specific)
-  "String", "Int32", "Int64", "Boolean", "Object", "Type", "Array",
-  "Exception", "List", "Dictionary", "IEnumerable", "IList", "IDictionary",
-  "Task", "Action", "Func", "Nullable", "DateTime", "TimeSpan", "Guid",
-  "StringBuilder", "StringComparer", "StringComparison", "CultureInfo",
-  "Stream", "TextReader", "TextWriter", "IDisposable", "IEquatable",
-  "IComparable", "IFormatProvider", "IFormattable", "IConvertible",
-  "EventArgs", "EventHandler", "Attribute", "Enum",
-
-  // ASP.NET types
-  "HttpContext", "HttpRequest", "HttpResponse", "Controller", "ActionResult",
-  "ViewResult", "JsonResult", "IActionResult",
+const CSHARP_FRAMEWORK_TYPES = new Set([
+  // C# keywords/aliases for BCL types
+  "bool", "byte", "sbyte", "char", "decimal", "double", "float",
+  "int", "uint", "long", "ulong", "short", "ushort",
+  "object", "string", "void", "dynamic", "var",
+  // Core BCL types (capitalized versions)
+  "Boolean", "Byte", "SByte", "Char", "Decimal", "Double", "Single",
+  "Int16", "Int32", "Int64", "UInt16", "UInt32", "UInt64",
+  "Object", "String", "Void",
+  // Fundamental async/nullable
+  "Task", "ValueTask", "Nullable",
+  // Constants
+  "true", "false", "null",
 ]);
 
 /**
@@ -76,14 +66,14 @@ export const csharpSyntax: LanguageSyntax = {
   extensions: [".cs"],
   comments: CSHARP_COMMENTS,
   strings: CSHARP_STRINGS,
-  ignoredIdentifiers: CSHARP_IGNORED_IDENTIFIERS,
+  frameworkTypes: CSHARP_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripCSharpCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return CSHARP_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return CSHARP_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

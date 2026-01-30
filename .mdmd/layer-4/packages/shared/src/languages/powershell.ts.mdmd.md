@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-powershell-ts
-- Generated At: 2026-01-29T20:42:58.583Z
+- Generated At: 2026-01-30T00:04:21.099Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Provides PowerShell-specific syntax configuration implementing `LanguageSyntax`.
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — here-strings (`@"..."@`) are stripped via multiline regex. Variable sigils (`$`) are not stripped from identifiers; they appear as-is in symbol matching.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-29T20:42:58.583Z","inputHash":"1d11d585f94eb876"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.099Z","inputHash":"2fd84daf514d208f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellSyntax` {#symbol-powershellsyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/powershell.ts#L67)
+- Source: [source](../../../../../../packages/shared/src/languages/powershell.ts#L58)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 <!-- LIVE-DOC:END Public Symbols -->
 

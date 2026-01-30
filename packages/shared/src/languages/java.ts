@@ -17,28 +17,20 @@ const JAVA_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common Java identifiers to ignore.
- *
- * Combined from:
- * - packages/shared/src/inference/treeSitter/languages.ts (JAVA_IGNORED)
- * - Common JDK types
+ * Fundamental Java types that appear in virtually every file.
+ * Conservative list — only primitives and their boxed types.
  */
-const JAVA_IGNORED_IDENTIFIERS = new Set([
-  // Common local names
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w",
-  "value", "result", "item", "index", "count", "length", "type", "name",
-  "key", "data", "list", "array", "map", "set",
-
-  // Built-in types
-  "String", "Integer", "Long", "Double", "Float", "Boolean", "Character",
-  "Object", "Class", "Enum", "Number", "Void",
-  "List", "Map", "Set", "Collection", "Iterable", "Iterator",
-  "ArrayList", "HashMap", "HashSet", "LinkedList", "TreeMap", "TreeSet",
-  "Optional", "Stream", "Collectors",
-  "Exception", "RuntimeException", "Error", "Throwable",
-  "IOException", "IllegalArgumentException", "NullPointerException",
-  "Thread", "Runnable", "Callable", "Future", "CompletableFuture",
-  "StringBuilder", "StringBuffer", "Comparable", "Comparator",
+const JAVA_FRAMEWORK_TYPES = new Set([
+  // Primitive types
+  "boolean", "byte", "char", "short", "int", "long", "float", "double",
+  "void",
+  // Boxed types
+  "Boolean", "Byte", "Character", "Short", "Integer", "Long", "Float", "Double",
+  "Void", "Number",
+  // Fundamental reference type
+  "String", "Object",
+  // Constants
+  "true", "false", "null",
 ]);
 
 /**
@@ -72,14 +64,14 @@ export const javaSyntax: LanguageSyntax = {
   extensions: [".java"],
   comments: JAVA_COMMENTS,
   strings: JAVA_STRINGS,
-  ignoredIdentifiers: JAVA_IGNORED_IDENTIFIERS,
+  frameworkTypes: JAVA_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripJavaCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return JAVA_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return JAVA_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

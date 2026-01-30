@@ -17,31 +17,17 @@ const PYTHON_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common Python identifiers to ignore.
- *
- * Combined from:
- * - packages/shared/src/inference/treeSitter/languages.ts (PYTHON_IGNORED)
- * - packages/shared/src/live-docs/adapters/python.ts (PYTHON_STDLIB_MODULES)
+ * Fundamental Python types that appear in virtually every file.
+ * Conservative list — only built-in type names.
  */
-const PYTHON_IGNORED_IDENTIFIERS = new Set([
-  // Common local names
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w", "f",
-  "self", "cls", "args", "kwargs",
-  "value", "result", "item", "index", "count", "length", "type", "name",
-  "key", "data",
-
-  // Built-in types (as identifiers, not module names)
-  "str", "int", "float", "bool", "list", "dict", "set", "tuple",
-  "None", "True", "False", "object", "type", "super",
-
-  // Built-in functions
-  "print", "len", "range", "enumerate", "zip", "map", "filter",
-  "open", "input", "isinstance", "issubclass", "hasattr", "getattr", "setattr",
-  "abs", "min", "max", "sum", "sorted", "reversed",
-
-  // Exception types
-  "Exception", "ValueError", "TypeError", "KeyError", "IndexError",
-  "AttributeError", "ImportError", "RuntimeError", "StopIteration",
+const PYTHON_FRAMEWORK_TYPES = new Set([
+  // Built-in types
+  "str", "int", "float", "bool", "complex",
+  "list", "dict", "set", "frozenset", "tuple",
+  "bytes", "bytearray", "memoryview",
+  "object", "type",
+  // Constants
+  "None", "True", "False", "Ellipsis", "NotImplemented",
 ]);
 
 /**
@@ -72,14 +58,14 @@ export const pythonSyntax: LanguageSyntax = {
   extensions: [".py", ".pyw"],
   comments: PYTHON_COMMENTS,
   strings: PYTHON_STRINGS,
-  ignoredIdentifiers: PYTHON_IGNORED_IDENTIFIERS,
+  frameworkTypes: PYTHON_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripPythonCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return PYTHON_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return PYTHON_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

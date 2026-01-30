@@ -17,30 +17,23 @@ const RUST_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common Rust identifiers to ignore.
+ * Fundamental Rust types that appear in virtually every file.
+ * Conservative list — only primitive types and core prelude.
  */
-const RUST_IGNORED_IDENTIFIERS = new Set([
-  // Common local names
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w",
-  "self", "Self",
-
-  // Common variable names
-  "value", "result", "item", "index", "count", "len", "size",
-  "key", "data", "buf", "buffer", "err", "error", "ok",
-  "input", "output", "reader", "writer",
-
-  // Standard library types
-  "String", "Vec", "Box", "Rc", "Arc", "Cell", "RefCell",
+const RUST_FRAMEWORK_TYPES = new Set([
+  // Primitive types
+  "bool", "char",
+  "i8", "i16", "i32", "i64", "i128", "isize",
+  "u8", "u16", "u32", "u64", "u128", "usize",
+  "f32", "f64",
+  "str",
+  // Core prelude fundamentals
+  "String", "Vec", "Box",
   "Option", "Result", "Some", "None", "Ok", "Err",
-  "HashMap", "HashSet", "BTreeMap", "BTreeSet",
-  "Iterator", "IntoIterator", "FromIterator",
-  "Clone", "Copy", "Default", "Debug", "Display",
-  "Eq", "PartialEq", "Ord", "PartialOrd", "Hash",
-  "From", "Into", "TryFrom", "TryInto",
-  "AsRef", "AsMut", "Borrow", "BorrowMut",
-  "Drop", "Deref", "DerefMut",
-  "Fn", "FnMut", "FnOnce",
-  "Send", "Sync", "Sized", "Unpin",
+  // Constants
+  "true", "false",
+  // Self references
+  "self", "Self",
 ]);
 
 /**
@@ -75,14 +68,14 @@ export const rustSyntax: LanguageSyntax = {
   extensions: [".rs"],
   comments: RUST_COMMENTS,
   strings: RUST_STRINGS,
-  ignoredIdentifiers: RUST_IGNORED_IDENTIFIERS,
+  frameworkTypes: RUST_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripRustCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return RUST_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return RUST_FRAMEWORK_TYPES.has(identifier);
   },
 };
 

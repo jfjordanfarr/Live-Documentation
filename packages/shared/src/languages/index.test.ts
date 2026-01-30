@@ -140,24 +140,25 @@ package main`;
     });
   });
 
-  describe("isIgnoredIdentifier", () => {
-    it("ignores common variable names", () => {
-      expect(goSyntax.isIgnoredIdentifier("err")).toBe(true);
-      expect(goSyntax.isIgnoredIdentifier("ctx")).toBe(true);
-      expect(goSyntax.isIgnoredIdentifier("ok")).toBe(true);
-      expect(goSyntax.isIgnoredIdentifier("value")).toBe(true);
+  describe("isFrameworkType", () => {
+    it("identifies built-in types", () => {
+      expect(goSyntax.isFrameworkType("string")).toBe(true);
+      expect(goSyntax.isFrameworkType("int")).toBe(true);
+      expect(goSyntax.isFrameworkType("bool")).toBe(true);
+      expect(goSyntax.isFrameworkType("error")).toBe(true);
     });
 
-    it("ignores stdlib types", () => {
-      expect(goSyntax.isIgnoredIdentifier("Handler")).toBe(true);
-      expect(goSyntax.isIgnoredIdentifier("Request")).toBe(true);
-      expect(goSyntax.isIgnoredIdentifier("Context")).toBe(true);
+    it("identifies built-in functions and constants", () => {
+      expect(goSyntax.isFrameworkType("make")).toBe(true);
+      expect(goSyntax.isFrameworkType("append")).toBe(true);
+      expect(goSyntax.isFrameworkType("nil")).toBe(true);
     });
 
-    it("does not ignore user-defined symbols", () => {
-      expect(goSyntax.isIgnoredIdentifier("MyHandler")).toBe(false);
-      expect(goSyntax.isIgnoredIdentifier("ProcessData")).toBe(false);
-      expect(goSyntax.isIgnoredIdentifier("UserService")).toBe(false);
+    it("does not match user-defined or stdlib types", () => {
+      expect(goSyntax.isFrameworkType("MyHandler")).toBe(false);
+      expect(goSyntax.isFrameworkType("Handler")).toBe(false);
+      expect(goSyntax.isFrameworkType("Request")).toBe(false);
+      expect(goSyntax.isFrameworkType("UserService")).toBe(false);
     });
   });
 });

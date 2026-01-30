@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-01-29T20:55:08.264Z
+- Generated At: 2026-01-30T00:04:21.096Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-29T20:55:08.264Z","inputHash":"0a43fb5c93a6151c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.096Z","inputHash":"444000a6c6e38c18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -153,19 +153,19 @@ Strips comments and strings from content using the appropriate language syntax.
 ##### `stripCommentsAndStringsForPath` — Returns
 Stripped content, or original content if language not supported
 
-#### `isIgnoredIdentifierForPath` {#symbol-isignoredidentifierforpath}
+#### `isFrameworkTypeForPath` {#symbol-isframeworktypeforpath}
 - Type: function
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L152)
 
-##### `isIgnoredIdentifierForPath` — Summary
-Checks if an identifier should be ignored for the given file's language.
+##### `isFrameworkTypeForPath` — Summary
+Checks if an identifier is a fundamental framework type for the given file's language.
 
-##### `isIgnoredIdentifierForPath` — Parameters
+##### `isFrameworkTypeForPath` — Parameters
 - `filePath`: Path to the file (used to determine language)
 - `identifier`: The identifier to check
 
-##### `isIgnoredIdentifierForPath` — Returns
-True if the identifier should be ignored, false otherwise
+##### `isFrameworkTypeForPath` — Returns
+True if the identifier is a framework type to filter as noise, false otherwise
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

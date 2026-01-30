@@ -17,31 +17,17 @@ const TS_STRINGS: StringDelimiters = {
 };
 
 /**
- * Common TypeScript/JavaScript identifiers to ignore.
- *
- * Combined from:
- * - packages/shared/src/inference/treeSitter/languages.ts (TYPESCRIPT_IGNORED)
- * - Built-in types and DOM globals
+ * Fundamental TypeScript/JavaScript types that appear in virtually every file.
+ * Conservative list — only built-in primitives and core globals.
  */
-const TS_IGNORED_IDENTIFIERS = new Set([
-  // Single letters (common loop/temp variables)
-  "i", "j", "k", "x", "y", "n", "s", "e", "v", "r", "w",
-
-  // Common variable names
-  "value", "result", "item", "index", "count", "length", "type", "name",
-  "key", "data", "list", "array", "options", "config", "props", "state",
-  "err", "error", "callback", "cb", "fn", "handler",
-
-  // Built-in types
-  "String", "Number", "Boolean", "Object", "Array", "Function",
-  "Promise", "Map", "Set", "WeakMap", "WeakSet", "Symbol",
-  "Error", "TypeError", "ReferenceError", "SyntaxError",
-  "Date", "RegExp", "JSON", "Math", "console",
-  "undefined", "null", "true", "false", "NaN", "Infinity",
-
-  // DOM types (common in browser code)
-  "HTMLElement", "Element", "Node", "Document", "Window", "Event",
-  "NodeList", "HTMLCollection", "EventTarget",
+const TS_FRAMEWORK_TYPES = new Set([
+  // Primitive type names
+  "string", "number", "boolean", "symbol", "bigint",
+  "undefined", "null", "void", "never", "unknown", "any", "object",
+  // Boxed types
+  "String", "Number", "Boolean", "Symbol", "BigInt", "Object",
+  // Constants
+  "true", "false", "NaN", "Infinity",
 ]);
 
 /**
@@ -77,14 +63,14 @@ export const typescriptSyntax: LanguageSyntax = {
   extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"],
   comments: TS_COMMENTS,
   strings: TS_STRINGS,
-  ignoredIdentifiers: TS_IGNORED_IDENTIFIERS,
+  frameworkTypes: TS_FRAMEWORK_TYPES,
 
   async stripCommentsAndStrings(content: string): Promise<string> {
     return await Promise.resolve(stripTsCommentsAndStrings(content));
   },
 
-  isIgnoredIdentifier(identifier: string): boolean {
-    return TS_IGNORED_IDENTIFIERS.has(identifier);
+  isFrameworkType(identifier: string): boolean {
+    return TS_FRAMEWORK_TYPES.has(identifier);
   },
 };
 
