@@ -31,29 +31,22 @@ const TS_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from TypeScript/JavaScript source code.
+ * Strips comments from TypeScript/JavaScript source code, preserving string literals.
  *
  * Handles:
  * - Line comments (//)
- * - Block comments (/* ... *\/)
- * - JSDoc comments (/** ... *\/)
- * - Single-quoted strings ('...')
- * - Double-quoted strings ("...")
- * - Template literals (`...`)
+ * - Block comments (slash-star ... star-slash)
+ * - JSDoc comments (slash-star-star ... star-slash)
+ *
+ * String literals (including template literals) are preserved to avoid destroying
+ * code in template expressions (e.g., `Value: ${expression}`).
  */
-function stripTsCommentsAndStrings(content: string): string {
+function stripTsComments(content: string): string {
   // Remove block comments /* ... */ (including JSDoc)
   let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
 
   // Remove line comments // ...
   result = result.replace(/\/\/[^\n]*/g, " ");
-
-  // Remove template literals `...` (simplified - doesn't handle ${} nesting)
-  result = result.replace(/`(?:[^`\\]|\\.)*`/g, '""');
-
-  // Remove string literals "..." and '...'
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
-  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
 
   return result;
 }
@@ -65,8 +58,8 @@ export const typescriptSyntax: LanguageSyntax = {
   strings: TS_STRINGS,
   frameworkTypes: TS_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripTsCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripTsComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

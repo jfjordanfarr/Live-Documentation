@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-python-ts
-- Generated At: 2026-01-30T00:04:21.101Z
+- Generated At: 2026-01-30T21:01:45.978Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,23 @@ Provides Python-specific syntax configuration implementing `LanguageSyntax`. Def
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — triple-quoted strings are stripped first to avoid false partial matches. The regex approach may mishandle raw strings (`r"..."`); tree-sitter integration will resolve edge cases.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.101Z","inputHash":"f9615ea7e94e63fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.978Z","inputHash":"5808aa044cce45ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `PYTHON_STDLIB_MODULES` {#symbol-python_stdlib_modules}
+- Type: const
+- Source: [source](../../../../../../packages/shared/src/languages/python.ts#L26)
+
+##### `PYTHON_STDLIB_MODULES` — Summary
+Known Python standard library modules that should not be resolved to local files.
+
+##### `PYTHON_STDLIB_MODULES` — Remarks
+This is a representative subset; full stdlib enumeration would be extensive.
+We include the most common modules to avoid false positive resolution attempts.
+
 #### `pythonSyntax` {#symbol-pythonsyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/python.ts#L56)
+- Source: [source](../../../../../../packages/shared/src/languages/python.ts#L161)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 <!-- LIVE-DOC:END Public Symbols -->
 

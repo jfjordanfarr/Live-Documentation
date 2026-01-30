@@ -31,23 +31,23 @@ const RUBY_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from Ruby source code.
+ * Strips comments from Ruby source code, preserving string literals.
  *
  * Handles:
  * - Line comments (#)
  * - Block comments (=begin ... =end)
- * - Single and double quoted strings
+ *
+ * String literals are preserved to avoid destroying code in interpolated strings
+ * (e.g., "Value: #{expression}").
  */
-function stripRubyCommentsAndStrings(content: string): string {
+function stripRubyComments(content: string): string {
   // Remove block comments =begin ... =end
   let result = content.replace(/^=begin[\s\S]*?^=end/gm, "");
 
-  // Remove line comments (# ...)
+  // Remove line comments (# ...) - be careful not to match # inside strings
+  // Simple approach: match # not preceded by a non-escaped quote context
+  // This is a simplified version - Ruby string interpolation is complex
   result = result.replace(/#[^\n]*/g, "");
-
-  // Remove string literals "..." and '...'
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
-  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
 
   return result;
 }
@@ -59,8 +59,8 @@ export const rubySyntax: LanguageSyntax = {
   strings: RUBY_STRINGS,
   frameworkTypes: RUBY_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripRubyCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripRubyComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

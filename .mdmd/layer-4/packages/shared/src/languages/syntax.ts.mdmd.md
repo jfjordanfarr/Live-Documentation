@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/syntax.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-syntax-ts
-- Generated At: 2026-01-30T00:04:21.105Z
+- Generated At: 2026-01-30T21:01:45.981Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the `LanguageSyntax` interface — the unified contract for language-spe
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — created as part of the LanguageSyntax module to unify duplicated comment-stripping logic across Go heuristics and C adapters. The async interface anticipates tree-sitter WASM integration; `createSyncStripper()` provides backward compatibility for sync callers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.105Z","inputHash":"9ab56ea766934a49"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.981Z","inputHash":"2c2132e462b7a2f8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CommentDelimiters` {#symbol-commentdelimiters}
@@ -46,11 +46,11 @@ WASM integration in the future.
 
 #### `createSyncStripper` {#symbol-createsyncstripper}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L108)
+- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L113)
 - Parameters: `syntax`: [`LanguageSyntax`](./index.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `createSyncStripper` — Summary
-Creates a synchronous wrapper around the async stripCommentsAndStrings method.
+Creates a synchronous wrapper around the async stripComments method.
 
 This is provided for backward compatibility with existing synchronous code.
 New code should prefer the async version when possible.

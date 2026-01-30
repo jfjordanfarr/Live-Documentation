@@ -281,8 +281,9 @@ async function detectSymbolUsages(
 ): Promise<Map<string, Set<string>>> {
   const usedSymbols = new Map<string, Set<string>>();
 
-  // Strip comments and string literals to avoid false positives (using shared syntax)
-  const strippedContent = await cSyntax.stripCommentsAndStrings(content);
+  // Strip comments to avoid false positives (using shared syntax)
+  // String literals are preserved to avoid destroying code in templates
+  const strippedContent = await cSyntax.stripComments(content);
 
   for (const [headerPath, symbolNames] of headerSymbolsMap) {
     const used = new Set<string>();

@@ -68,20 +68,25 @@ export interface LanguageSyntax {
   readonly frameworkTypes: ReadonlySet<string>;
 
   /**
-   * Strips comments and string literals from source code.
+   * Strips comments from source code, preserving string literals.
    *
    * This is the primary utility for preventing false positive symbol matches
-   * in comments, documentation, or string literals.
+   * in comments and documentation. String literals are preserved because:
+   * - Interpolated strings (e.g., `$"...{Code}..."`, `f"...{code}..."`, `` `...${code}...` ``)
+   *   contain executable code that would be destroyed by naive string stripping
+   * - Tree-sitter and SCIP have zero false positives and don't need stripping
+   * - Heuristics/oracles need comment stripping to avoid doc comments, but
+   *   strings rarely contain symbol-like patterns that cause false positives
    *
    * @param content - The source code content
-   * @returns Content with comments and strings removed (async-compatible)
+   * @returns Content with comments removed, strings preserved (async-compatible)
    *
    * @remarks
    * The returned string may have different length than input due to removal.
    * For position-preserving stripping (e.g., for diagnostics), use a
    * space-replacement variant.
    */
-  stripCommentsAndStrings(content: string): Promise<string>;
+  stripComments(content: string): Promise<string>;
 
   /**
    * Checks if an identifier is a fundamental framework/standard library type.
@@ -93,7 +98,7 @@ export interface LanguageSyntax {
 }
 
 /**
- * Creates a synchronous wrapper around the async stripCommentsAndStrings method.
+ * Creates a synchronous wrapper around the async stripComments method.
  *
  * This is provided for backward compatibility with existing synchronous code.
  * New code should prefer the async version when possible.
@@ -116,7 +121,7 @@ export function createSyncStripper(
     let error: Error | undefined;
     
     // Start the promise chain and capture result synchronously
-    void syntax.stripCommentsAndStrings(content)
+    void syntax.stripComments(content)
       .then((r) => { result = r; })
       .catch((e: Error) => { error = e; });
     
@@ -126,7 +131,7 @@ export function createSyncStripper(
     }
     if (result === undefined) {
       throw new Error(
-        `LanguageSyntax '${syntax.id}' stripCommentsAndStrings is truly async. ` +
+        `LanguageSyntax '${syntax.id}' stripComments is truly async. ` +
           `Use the async version or await initialization.`
       );
     }

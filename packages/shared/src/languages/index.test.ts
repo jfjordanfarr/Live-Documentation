@@ -88,12 +88,12 @@ describe("Language Syntax Registry", () => {
 });
 
 describe("Go Syntax", () => {
-  describe("stripCommentsAndStrings", () => {
+  describe("stripComments", () => {
     it("removes line comments", async () => {
       const content = `package main // this is a comment
 func main() { // another comment
 }`;
-      const result = await goSyntax.stripCommentsAndStrings(content);
+      const result = await goSyntax.stripComments(content);
       expect(result).not.toContain("this is a comment");
       expect(result).not.toContain("another comment");
       expect(result).toContain("package main");
@@ -108,25 +108,27 @@ func example() {
      comment */
   return
 }`;
-      const result = await goSyntax.stripCommentsAndStrings(content);
+      const result = await goSyntax.stripComments(content);
       expect(result).not.toContain("Block comment");
       expect(result).not.toContain("multi");
       expect(result).toContain("func example()");
     });
 
-    it("removes string literals", async () => {
+    it("preserves string literals", async () => {
       const content = `const msg = "Hello world"
 const path = "/path/to/file"`;
-      const result = await goSyntax.stripCommentsAndStrings(content);
-      expect(result).not.toContain("Hello world");
-      expect(result).not.toContain("/path/to/file");
+      const result = await goSyntax.stripComments(content);
+      // Strings should now be preserved
+      expect(result).toContain("Hello world");
+      expect(result).toContain("/path/to/file");
       expect(result).toContain("const msg");
     });
 
-    it("removes raw string literals", async () => {
+    it("preserves raw string literals", async () => {
       const content = "const sql = `SELECT * FROM users WHERE name = 'test'`";
-      const result = await goSyntax.stripCommentsAndStrings(content);
-      expect(result).not.toContain("SELECT");
+      const result = await goSyntax.stripComments(content);
+      // Raw strings should now be preserved
+      expect(result).toContain("SELECT");
       expect(result).toContain("const sql");
     });
 
@@ -134,7 +136,7 @@ const path = "/path/to/file"`;
       const content = `// Copyright 2025. All rights reserved.
 // Use of this source code is governed by a BSD-style license.
 package main`;
-      const result = await goSyntax.stripCommentsAndStrings(content);
+      const result = await goSyntax.stripComments(content);
       expect(result).not.toContain("Use");  // The word "Use" should be stripped
       expect(result).toContain("package main");
     });
@@ -164,48 +166,50 @@ package main`;
 });
 
 describe("C Syntax", () => {
-  describe("stripCommentsAndStrings", () => {
+  describe("stripComments", () => {
     it("removes C-style comments", async () => {
       const content = `/* Header comment */
 int main() {
   // line comment
   return 0;
 }`;
-      const result = await cSyntax.stripCommentsAndStrings(content);
+      const result = await cSyntax.stripComments(content);
       expect(result).not.toContain("Header comment");
       expect(result).not.toContain("line comment");
       expect(result).toContain("int main()");
     });
 
-    it("removes string literals", async () => {
+    it("preserves string literals", async () => {
       const content = `printf("Hello %s", name);
 char c = 'x';`;
-      const result = await cSyntax.stripCommentsAndStrings(content);
-      expect(result).not.toContain("Hello");
+      const result = await cSyntax.stripComments(content);
+      // Strings should now be preserved
+      expect(result).toContain("Hello");
       expect(result).toContain("printf");
     });
   });
 });
 
 describe("C# Syntax", () => {
-  describe("stripCommentsAndStrings", () => {
+  describe("stripComments", () => {
     it("removes XML doc comments", async () => {
       const content = `/// <summary>
 /// This is documentation
 /// </summary>
 public class MyClass { }`;
-      const result = await csharpSyntax.stripCommentsAndStrings(content);
+      const result = await csharpSyntax.stripComments(content);
       expect(result).not.toContain("summary");
       expect(result).not.toContain("documentation");
       expect(result).toContain("public class MyClass");
     });
 
-    it("removes verbatim strings", async () => {
+    it("preserves verbatim strings", async () => {
       const content = `var path = @"C:\\Users\\test";
 var sql = @"SELECT * FROM users";`;
-      const result = await csharpSyntax.stripCommentsAndStrings(content);
-      expect(result).not.toContain("Users");
-      expect(result).not.toContain("SELECT");
+      const result = await csharpSyntax.stripComments(content);
+      // Strings should now be preserved (important for interpolated strings)
+      expect(result).toContain("Users");
+      expect(result).toContain("SELECT");
     });
   });
 });

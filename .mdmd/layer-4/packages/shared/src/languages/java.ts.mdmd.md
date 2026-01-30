@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-java-ts
-- Generated At: 2026-01-30T00:04:21.098Z
+- Generated At: 2026-01-30T21:01:45.975Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Provides Java-specific syntax configuration implementing `LanguageSyntax`. Defin
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — text blocks (Java 15+) are not yet handled by the regex stripper; tree-sitter integration will address this gap.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.098Z","inputHash":"f8b7724aa95bc2c2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.975Z","inputHash":"7d07dc7f08662fc8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaSyntax` {#symbol-javasyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/java.ts#L62)
+- Source: [source](../../../../../../packages/shared/src/languages/java.ts#L57)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 <!-- LIVE-DOC:END Public Symbols -->
 

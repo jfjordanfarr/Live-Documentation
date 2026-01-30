@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-01-30T00:04:21.096Z
+- Generated At: 2026-01-30T21:06:49.950Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.096Z","inputHash":"444000a6c6e38c18"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:06:49.950Z","inputHash":"c049dda7a6bf7a02"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -46,6 +46,10 @@ Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
 
+#### `GO_STDLIB_PACKAGES` {#symbol-go_stdlib_packages}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
+
 #### `javaSyntax` {#symbol-javasyntax}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
@@ -55,6 +59,10 @@ Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L33)
 
 #### `pythonSyntax` {#symbol-pythonsyntax}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
+
+#### `PYTHON_STDLIB_MODULES` {#symbol-python_stdlib_modules}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
 
@@ -139,23 +147,24 @@ Checks if a file extension is supported.
 ##### `isExtensionSupported` — Parameters
 - `extension`: The file extension including dot
 
-#### `stripCommentsAndStringsForPath` {#symbol-stripcommentsandstringsforpath}
+#### `stripCommentsForPath` {#symbol-stripcommentsforpath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L134)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L135)
 
-##### `stripCommentsAndStringsForPath` — Summary
-Strips comments and strings from content using the appropriate language syntax.
+##### `stripCommentsForPath` — Summary
+Strips comments from content using the appropriate language syntax.
+String literals are preserved to avoid destroying code in interpolated strings.
 
-##### `stripCommentsAndStringsForPath` — Parameters
+##### `stripCommentsForPath` — Parameters
 - `content`: The source code content
 - `filePath`: Path to the file (used to determine language)
 
-##### `stripCommentsAndStringsForPath` — Returns
+##### `stripCommentsForPath` — Returns
 Stripped content, or original content if language not supported
 
 #### `isFrameworkTypeForPath` {#symbol-isframeworktypeforpath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L152)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L153)
 
 ##### `isFrameworkTypeForPath` — Summary
 Checks if an identifier is a fundamental framework type for the given file's language.
@@ -172,9 +181,11 @@ True if the identifier is a framework type to filter as noise, false otherwise
 ### Dependencies
 - [`c.cSyntax`](./c.ts.mdmd.md#symbol-csyntax)
 - [`csharp.csharpSyntax`](./csharp.ts.mdmd.md#symbol-csharpsyntax)
+- [`go.GO_STDLIB_PACKAGES`](./go.ts.mdmd.md#symbol-go_stdlib_packages)
 - [`go.goSyntax`](./go.ts.mdmd.md#symbol-gosyntax)
 - [`java.javaSyntax`](./java.ts.mdmd.md#symbol-javasyntax)
 - [`powershell.powershellSyntax`](./powershell.ts.mdmd.md#symbol-powershellsyntax)
+- [`python.PYTHON_STDLIB_MODULES`](./python.ts.mdmd.md#symbol-python_stdlib_modules)
 - [`python.pythonSyntax`](./python.ts.mdmd.md#symbol-pythonsyntax)
 - [`ruby.rubySyntax`](./ruby.ts.mdmd.md#symbol-rubysyntax)
 - [`rust.rustSyntax`](./rust.ts.mdmd.md#symbol-rustsyntax)
@@ -190,4 +201,7 @@ True if the identifier is a framework type to filter as noise, false otherwise
 #### Vitest Unit Tests
 - [index.test.ts](./index.test.ts.mdmd.md)
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
+- [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
+- [python.resolution.test.ts](../live-docs/adapters/python.resolution.test.ts.mdmd.md)
+- [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

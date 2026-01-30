@@ -17,6 +17,54 @@ const PYTHON_STRINGS: StringDelimiters = {
 };
 
 /**
+ * Known Python standard library modules that should not be resolved to local files.
+ *
+ * @remarks
+ * This is a representative subset; full stdlib enumeration would be extensive.
+ * We include the most common modules to avoid false positive resolution attempts.
+ */
+export const PYTHON_STDLIB_MODULES = new Set([
+  // Built-in modules
+  "abc", "aifc", "argparse", "array", "ast", "asynchat", "asyncio", "asyncore",
+  "atexit", "audioop", "base64", "bdb", "binascii", "binhex", "bisect",
+  "builtins", "bz2", "calendar", "cgi", "cgitb", "chunk", "cmath", "cmd",
+  "code", "codecs", "codeop", "collections", "colorsys", "compileall",
+  "concurrent", "configparser", "contextlib", "contextvars", "copy", "copyreg",
+  "cProfile", "crypt", "csv", "ctypes", "curses", "dataclasses", "datetime",
+  "dbm", "decimal", "difflib", "dis", "distutils", "doctest", "email",
+  "encodings", "enum", "errno", "faulthandler", "fcntl", "filecmp", "fileinput",
+  "fnmatch", "fractions", "ftplib", "functools", "gc", "getopt", "getpass",
+  "gettext", "glob", "graphlib", "grp", "gzip", "hashlib", "heapq", "hmac",
+  "html", "http", "idlelib", "imaplib", "imghdr", "imp", "importlib", "inspect",
+  "io", "ipaddress", "itertools", "json", "keyword", "lib2to3", "linecache",
+  "locale", "logging", "lzma", "mailbox", "mailcap", "marshal", "math",
+  "mimetypes", "mmap", "modulefinder", "multiprocessing", "netrc", "nis",
+  "nntplib", "numbers", "operator", "optparse", "os", "ossaudiodev", "pathlib",
+  "pdb", "pickle", "pickletools", "pipes", "pkgutil", "platform", "plistlib",
+  "poplib", "posix", "posixpath", "pprint", "profile", "pstats", "pty", "pwd",
+  "py_compile", "pyclbr", "pydoc", "queue", "quopri", "random", "re",
+  "readline", "reprlib", "resource", "rlcompleter", "runpy", "sched", "secrets",
+  "select", "selectors", "shelve", "shlex", "shutil", "signal", "site",
+  "smtpd", "smtplib", "sndhdr", "socket", "socketserver", "spwd", "sqlite3",
+  "ssl", "stat", "statistics", "string", "stringprep", "struct", "subprocess",
+  "sunau", "symtable", "sys", "sysconfig", "syslog", "tabnanny", "tarfile",
+  "telnetlib", "tempfile", "termios", "test", "textwrap", "threading", "time",
+  "timeit", "tkinter", "token", "tokenize", "trace", "traceback", "tracemalloc",
+  "tty", "turtle", "turtledemo", "types", "typing", "typing_extensions",
+  "unicodedata", "unittest", "urllib", "uu", "uuid", "venv", "warnings",
+  "wave", "weakref", "webbrowser", "winreg", "winsound", "wsgiref", "xdrlib",
+  "xml", "xmlrpc", "zipapp", "zipfile", "zipimport", "zlib",
+  // Common third-party that we definitely can't resolve
+  "numpy", "pandas", "scipy", "matplotlib", "requests", "flask", "django",
+  "pytest", "setuptools", "pip", "wheel", "six", "certifi", "urllib3",
+  "idna", "charset_normalizer", "packaging", "attrs", "click", "jinja2",
+  "markupsafe", "werkzeug", "pyyaml", "yaml", "toml", "tomli", "sqlalchemy",
+  "pydantic", "fastapi", "starlette", "httpx", "aiohttp", "celery", "redis",
+  "boto3", "botocore", "google", "azure", "aws", "tensorflow", "torch",
+  "sklearn", "cv2", "PIL", "pillow"
+]);
+
+/**
  * Fundamental Python types that appear in virtually every file.
  * Conservative list — only built-in type names.
  */
@@ -31,26 +79,83 @@ const PYTHON_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from Python source code.
+ * Strips comments from Python source code, preserving string literals.
  *
  * Handles:
  * - Line comments (#)
- * - Triple-quoted strings ('''...''' and """...""")
- * - Single and double quoted strings
+ *
+ * String literals (including f-strings) are preserved to avoid destroying
+ * code in formatted strings (e.g., f"Value: {expression}").
+ *
+ * Note: Triple-quoted strings used as docstrings are preserved because they
+ * are technically string literals and may contain code examples.
  */
-function stripPythonCommentsAndStrings(content: string): string {
-  // Remove triple-quoted strings first (docstrings)
-  let result = content.replace(/'''[\s\S]*?'''/g, '""');
-  result = result.replace(/"""[\s\S]*?"""/g, '""');
-
+function stripPythonComments(content: string): string {
   // Remove line comments (# ...)
-  result = result.replace(/#[^\n]*/g, "");
-
-  // Remove string literals "..." and '...'
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
-  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
-
-  return result;
+  // Be careful not to match # inside strings - use a simple approach
+  // that splits by lines and handles each line
+  const lines = content.split('\n');
+  const result = lines.map(line => {
+    // Find # that's not inside a string
+    let inString = false;
+    let stringChar = '';
+    let tripleQuote = false;
+    let i = 0;
+    
+    while (i < line.length) {
+      // Check for triple quotes
+      if (!inString && (line.slice(i, i + 3) === '"""' || line.slice(i, i + 3) === "'''")) {
+        inString = true;
+        tripleQuote = true;
+        stringChar = line.slice(i, i + 3);
+        i += 3;
+        continue;
+      }
+      
+      // Check for closing triple quotes
+      if (inString && tripleQuote && line.slice(i, i + 3) === stringChar) {
+        inString = false;
+        tripleQuote = false;
+        i += 3;
+        continue;
+      }
+      
+      // Check for single/double quotes (not triple)
+      if (!inString && (line[i] === '"' || line[i] === "'")) {
+        // Make sure it's not a triple quote
+        if (line.slice(i, i + 3) !== '"""' && line.slice(i, i + 3) !== "'''") {
+          inString = true;
+          stringChar = line[i];
+          i++;
+          continue;
+        }
+      }
+      
+      // Check for closing single quote
+      if (inString && !tripleQuote && line[i] === stringChar) {
+        inString = false;
+        i++;
+        continue;
+      }
+      
+      // Handle escapes inside strings
+      if (inString && line[i] === '\\' && i + 1 < line.length) {
+        i += 2;
+        continue;
+      }
+      
+      // Check for comment start
+      if (!inString && line[i] === '#') {
+        return line.slice(0, i);
+      }
+      
+      i++;
+    }
+    
+    return line;
+  });
+  
+  return result.join('\n');
 }
 
 export const pythonSyntax: LanguageSyntax = {
@@ -60,8 +165,8 @@ export const pythonSyntax: LanguageSyntax = {
   strings: PYTHON_STRINGS,
   frameworkTypes: PYTHON_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripPythonCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripPythonComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

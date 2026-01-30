@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/scipNormalizer.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-scipnormalizer-ts
-- Generated At: 2026-01-30T00:04:21.273Z
+- Generated At: 2026-01-30T21:04:52.699Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Key design decisions:
 The Go normalizer was the first to be fully exercised (go-rosetta and go-mux fixtures). C# normalizer was developed earlier during Newtonsoft.Json migration. TypeScript, Java, and Python normalizers exist but await their respective SCIP indexers working on Windows.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.273Z","inputHash":"335c91a626437749"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.699Z","inputHash":"335c91a626437749"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RawScipEdge` {#symbol-rawscipedge}
@@ -57,7 +57,7 @@ to handle its specific quirks:
 #### `createBaseNormalizer` {#symbol-createbasenormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L73)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 ##### `createBaseNormalizer` — Summary
 Creates a base normalizer with common filtering logic.
@@ -66,32 +66,32 @@ Language-specific normalizers can extend this.
 #### `createGoScipNormalizer` {#symbol-creategoscipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L116)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 #### `createCSharpScipNormalizer` {#symbol-createcsharpscipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L140)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 #### `createTypeScriptScipNormalizer` {#symbol-createtypescriptscipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L164)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 #### `createJavaScipNormalizer` {#symbol-createjavascipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L187)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 #### `createPythonScipNormalizer` {#symbol-createpythonscipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L210)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 #### `getScipNormalizer` {#symbol-getscipnormalizer}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L248)
-- Returns: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 ##### `getScipNormalizer` — Summary
 Get the SCIP normalizer for a given language.
@@ -100,8 +100,8 @@ Falls back to base normalizer for unsupported languages.
 #### `normalizeScipEdges` {#symbol-normalizescipedges}
 - Type: function
 - Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/scipNormalizer.ts#L260)
-- Returns: [`NormalizedScipEdge`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-normalizedscipedge)[]
-- Parameters: `edges`: [`RawScipEdge`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-rawscipedge)[]; `normalizer`: [`ScipNormalizer`](../../../../testing/src/fixtureOracles/scipNormalizer.ts.mdmd.md#symbol-scipnormalizer)
+- Returns: [`NormalizedScipEdge`](#symbol-normalizedscipedge)[]
+- Parameters: `edges`: [`RawScipEdge`](#symbol-rawscipedge)[]; `normalizer`: [`ScipNormalizer`](#symbol-scipnormalizer)
 
 ##### `normalizeScipEdges` — Summary
 Process a batch of raw SCIP edges through a normalizer.

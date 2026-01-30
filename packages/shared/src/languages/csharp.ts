@@ -36,27 +36,22 @@ const CSHARP_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from C# source code.
+ * Strips comments from C# source code, preserving string literals.
  *
  * Handles:
  * - Single-line comments (//)
  * - XML doc comments (///)
- * - Block comments (/* ... *\/)
- * - Standard strings ("...")
- * - Verbatim strings (@"...")
+ * - Block comments (slash-star ... star-slash)
+ *
+ * String literals are preserved to avoid destroying code in interpolated strings
+ * (e.g., $"Value: {expression}").
  */
-function stripCSharpCommentsAndStrings(content: string): string {
+function stripCSharpComments(content: string): string {
   // Remove single-line comments (// ...) including XML doc comments (/// ...)
   let result = content.replace(/\/\/.*$/gm, "");
 
   // Remove multi-line comments (/* ... */)
   result = result.replace(/\/\*[\s\S]*?\*\//g, "");
-
-  // Remove verbatim strings (@"...") - these can span multiple lines
-  result = result.replace(/@"(?:[^"]|"")*"/g, '""');
-
-  // Remove standard strings "..." (handling escapes)
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
 
   return result;
 }
@@ -68,8 +63,8 @@ export const csharpSyntax: LanguageSyntax = {
   strings: CSHARP_STRINGS,
   frameworkTypes: CSHARP_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripCSharpCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripCSharpComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

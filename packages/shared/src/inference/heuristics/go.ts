@@ -609,7 +609,7 @@ function extractAllSymbols(content: string): string[] {
 
 /**
  * Internal cache for stripped content.
- * The goSyntax.stripCommentsAndStrings returns a Promise, but we need sync access.
+ * The goSyntax.stripComments returns a Promise, but we need sync access.
  * For Go, the implementation is synchronous, so we can use this cache pattern.
  */
 let _strippedContentCache: Map<string, string> | null = null;
@@ -624,20 +624,21 @@ function getStrippedContent(content: string): string {
   }
   // goSyntax uses a sync implementation internally, so this resolves immediately
   let result: string | undefined;
-  void goSyntax.stripCommentsAndStrings(content).then(r => { result = r; });
+  void goSyntax.stripComments(content).then(r => { result = r; });
   if (result === undefined) {
     // Fallback: synchronous implementation for safety
-    result = stripCommentsAndStringsSync(content);
+    result = stripCommentsSync(content);
   }
   _strippedContentCache.set(content, result);
   return result;
 }
 
 /**
- * Synchronous fallback for stripping comments and strings from Go source.
+ * Synchronous fallback for stripping comments from Go source.
+ * Preserves string literals to avoid destroying code in template strings.
  * This is used when the async promise doesn't resolve immediately.
  */
-function stripCommentsAndStringsSync(content: string): string {
+function stripCommentsSync(content: string): string {
   let result = "";
   let i = 0;
   
@@ -652,19 +653,38 @@ function stripCommentsAndStringsSync(content: string): string {
       i += 2;
       continue;
     }
+    // Preserve string literals (don't strip them)
     if (content[i] === '"') {
+      result += content[i];
       i++;
       while (i < content.length && content[i] !== '"') {
-        if (content[i] === "\\" && i + 1 < content.length) i += 2;
-        else i++;
+        if (content[i] === "\\" && i + 1 < content.length) {
+          result += content[i];
+          result += content[i + 1];
+          i += 2;
+        } else {
+          result += content[i];
+          i++;
+        }
       }
-      i++;
+      if (i < content.length) {
+        result += content[i];
+        i++;
+      }
       continue;
     }
+    // Preserve raw string literals
     if (content[i] === "`") {
+      result += content[i];
       i++;
-      while (i < content.length && content[i] !== "`") i++;
-      i++;
+      while (i < content.length && content[i] !== "`") {
+        result += content[i];
+        i++;
+      }
+      if (i < content.length) {
+        result += content[i];
+        i++;
+      }
       continue;
     }
     result += content[i];

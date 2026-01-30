@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2026-01-14T18:44:18.638Z
+- Generated At: 2026-01-30T21:01:46.042Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Implements the Python adapter that normalizes reST, Google, and NumPy docstrings
 - Guard rails come from `python.docstring.test.ts` and the `safe:commit -- --benchmarks` run that accompanied the rollout; update those fixtures when extending the parser <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:44:18.638Z","inputHash":"87240b458508a4ef"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:46.042Z","inputHash":"a920b6aaf0765153"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L32)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/python.ts#L33)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
@@ -37,6 +37,7 @@ on Python runtime introspection.
 - `./python.docstring` - `parseDocstring`
 - `node:fs` - `existsSync`, `promises`
 - `node:path` - `path`
+- [`index.PYTHON_STDLIB_MODULES`](../../languages/index.ts.mdmd.md#symbol-python_stdlib_modules)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

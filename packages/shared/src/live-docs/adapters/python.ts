@@ -10,6 +10,7 @@ import type {
 } from "../core";
 import type { LanguageAdapter } from "./index";
 import { parseDocstring } from "./python.docstring";
+import { PYTHON_STDLIB_MODULES } from "../../languages";
 
 interface DependencyBucket {
   specifier: string;
@@ -228,54 +229,6 @@ function normalizeDocstring(raw: string): string {
 // ============================================================================
 // Python Import Resolution
 // ============================================================================
-
-/**
- * Known Python standard library modules that should not be resolved to local files.
- *
- * @remarks
- * This is a representative subset; full stdlib enumeration would be extensive.
- * We include the most common modules to avoid false positive resolution attempts.
- */
-const PYTHON_STDLIB_MODULES = new Set([
-  // Built-in modules
-  "abc", "aifc", "argparse", "array", "ast", "asynchat", "asyncio", "asyncore",
-  "atexit", "audioop", "base64", "bdb", "binascii", "binhex", "bisect",
-  "builtins", "bz2", "calendar", "cgi", "cgitb", "chunk", "cmath", "cmd",
-  "code", "codecs", "codeop", "collections", "colorsys", "compileall",
-  "concurrent", "configparser", "contextlib", "contextvars", "copy", "copyreg",
-  "cProfile", "crypt", "csv", "ctypes", "curses", "dataclasses", "datetime",
-  "dbm", "decimal", "difflib", "dis", "distutils", "doctest", "email",
-  "encodings", "enum", "errno", "faulthandler", "fcntl", "filecmp", "fileinput",
-  "fnmatch", "fractions", "ftplib", "functools", "gc", "getopt", "getpass",
-  "gettext", "glob", "graphlib", "grp", "gzip", "hashlib", "heapq", "hmac",
-  "html", "http", "idlelib", "imaplib", "imghdr", "imp", "importlib", "inspect",
-  "io", "ipaddress", "itertools", "json", "keyword", "lib2to3", "linecache",
-  "locale", "logging", "lzma", "mailbox", "mailcap", "marshal", "math",
-  "mimetypes", "mmap", "modulefinder", "multiprocessing", "netrc", "nis",
-  "nntplib", "numbers", "operator", "optparse", "os", "ossaudiodev", "pathlib",
-  "pdb", "pickle", "pickletools", "pipes", "pkgutil", "platform", "plistlib",
-  "poplib", "posix", "posixpath", "pprint", "profile", "pstats", "pty", "pwd",
-  "py_compile", "pyclbr", "pydoc", "queue", "quopri", "random", "re",
-  "readline", "reprlib", "resource", "rlcompleter", "runpy", "sched", "secrets",
-  "select", "selectors", "shelve", "shlex", "shutil", "signal", "site",
-  "smtpd", "smtplib", "sndhdr", "socket", "socketserver", "spwd", "sqlite3",
-  "ssl", "stat", "statistics", "string", "stringprep", "struct", "subprocess",
-  "sunau", "symtable", "sys", "sysconfig", "syslog", "tabnanny", "tarfile",
-  "telnetlib", "tempfile", "termios", "test", "textwrap", "threading", "time",
-  "timeit", "tkinter", "token", "tokenize", "trace", "traceback", "tracemalloc",
-  "tty", "turtle", "turtledemo", "types", "typing", "typing_extensions",
-  "unicodedata", "unittest", "urllib", "uu", "uuid", "venv", "warnings",
-  "wave", "weakref", "webbrowser", "winreg", "winsound", "wsgiref", "xdrlib",
-  "xml", "xmlrpc", "zipapp", "zipfile", "zipimport", "zlib",
-  // Common third-party that we definitely can't resolve
-  "numpy", "pandas", "scipy", "matplotlib", "requests", "flask", "django",
-  "pytest", "setuptools", "pip", "wheel", "six", "certifi", "urllib3",
-  "idna", "charset_normalizer", "packaging", "attrs", "click", "jinja2",
-  "markupsafe", "werkzeug", "pyyaml", "yaml", "toml", "tomli", "sqlalchemy",
-  "pydantic", "fastapi", "starlette", "httpx", "aiohttp", "celery", "redis",
-  "boto3", "botocore", "google", "azure", "aws", "tensorflow", "torch",
-  "sklearn", "cv2", "PIL", "pillow"
-]);
 
 /**
  * Checks if a module name is a known standard library or common third-party package.

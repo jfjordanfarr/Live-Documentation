@@ -729,12 +729,26 @@ The team paused feature work to perform a comprehensive audit of the project's h
 
 Date: January 29, 2026
 
-Scope: Commit 237
+Scope: Commits 237–238
 
-The team returned to the "Polyglot Accuracy" campaign, specifically targeting Go. By fixing ASCII sorting bugs and intra-package symbol detection, the go-mux benchmark jumped to 76.8% precision.
+The team returned to the "Polyglot Accuracy" campaign, specifically targeting Go. By fixing ASCII sorting bugs and intra-package symbol detection, the go-mux benchmark jumped to 76.8% precision, and later 90.9% precision after stripping comments and strings.
 
-* **Heuristic Precision:** Improvements to localeCompare logic and symbol detection allowed the system to accurately map complex Go package structures, resolving false positives in the benchmark suite.  
-* **Tree-Sitter Foreshadowing:** The commit laid the scaffolding for a **Tree-Sitter** module, hinting at the next major architectural leap: fusing the regex heuristics with a true CST (Concrete Syntax Tree) parser for even greater accuracy.
+* **Heuristic Precision (Commit 237):** Improvements to localeCompare logic and symbol detection allowed the system to accurately map complex Go package structures, resolving false positives in the benchmark suite.  
+* **Tree-Sitter Foreshadowing:** The commit laid the scaffolding for a **Tree-Sitter** module, hinting at the next major architectural leap: fusing the regex heuristics with a true CST (Concrete Syntax Tree) parser for even greater accuracy.  
+* **Aggressive Filtering (Commit 238):** The team implemented stripCommentsAndStrings and a common variable blocklist for Go, reducing false positives from 13 to 4 edges and pushing go-mux precision to **90.9%**.
+
+### **Phase L: The Syntax Unification (Jan 29\)**
+
+Date: January 29, 2026
+
+Scope: Commits 239–240
+
+The team consolidated the scattered regex utilities into a unified LanguageSyntax module, preparing the codebase for the future Tree-sitter integration and removing duplicated logic across adapters and heuristics.
+
+* **The Shared Interface (Commit 239):** Created packages/shared/src/languages/, implementing a unified LanguageSyntax interface for 9 languages (Go, C, C\#, TypeScript, Python, Rust, Ruby, Java, PowerShell).  
+* **Async-First:** The new interface was designed to be async-compatible from the start (stripCommentsAndStrings returns a Promise), ensuring no breaking changes will be needed when WASM-based Tree-sitter parsers are integrated.  
+* **Refinement & Conservatism (Commit 240):** The team renamed ignoredIdentifiers to frameworkTypes and adopted a conservative approach. They realized that heuristics need aggressive filtering (to avoid noise) while parsers need minimal filtering (to avoid false negatives), leading to a cleaner separation of concerns.  
+* **SCIP Pathing:** Fixed a critical path resolution bug in the SCIP oracle for C\# (\--path-prefix), allowing csharp-newtonsoft-json to be validated against a true compiler-backed ground truth.
 
 ## **Vision Evolution Log**
 
@@ -771,7 +785,7 @@ The team returned to the "Polyglot Accuracy" campaign, specifically targeting Go
 * **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).  
 * **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).  
 * **Jan 28 (Phase XLVIII):** "Narrative Synchronization." (Aligning the story with the chat logs).  
-* **Jan 29 (Phase XLIX):** "Heuristic Refinement." (Pushing Go precision & prepping Tree-Sitter).
+* **Jan 29 (Phase XLIX/L):** "Syntax Unification." (Consolidating regex patterns and preparing for Tree-Sitter).
 
 ## **Technical Themes & Motifs**
 

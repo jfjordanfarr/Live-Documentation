@@ -9,6 +9,7 @@ import type {
   SymbolDocumentation
 } from "../core";
 import type { LanguageAdapter } from "./index";
+import { GO_STDLIB_PACKAGES } from "../../languages";
 
 // Package declaration: package main
 // Note: PACKAGE_PATTERN could be used for future package-level analysis
@@ -34,21 +35,6 @@ const CONST_VAR_PATTERN = /((?:\/\/[^\n]*\n)*)\s*(?:const|var)\s+([A-Z][A-Za-z0-
 const CONST_VAR_BLOCK_START = /(?:const|var)\s*\(\s*/g;
 // Constants/vars inside blocks: Name Type = value (with optional preceding comment)
 const CONST_VAR_BLOCK_ENTRY = /((?:\/\/[^\n]*\n)*)\s*([A-Z][A-Za-z0-9_]*)\s+[^=\s]+\s*=/g;
-
-// Standard library packages (partial list - major ones)
-const GO_STDLIB_PACKAGES = new Set([
-  "fmt", "os", "io", "bufio", "bytes", "strings", "strconv",
-  "errors", "log", "time", "math", "rand", "sort", "sync",
-  "context", "net", "http", "json", "xml", "html", "template",
-  "regexp", "path", "filepath", "flag", "testing", "reflect",
-  "runtime", "unsafe", "syscall", "encoding", "crypto", "hash",
-  "compress", "archive", "database", "image", "text", "unicode",
-  // Common subpackages
-  "net/http", "net/url", "io/ioutil", "io/fs", "path/filepath",
-  "encoding/json", "encoding/xml", "encoding/base64", "encoding/hex",
-  "crypto/sha256", "crypto/md5", "crypto/tls", "crypto/rand",
-  "database/sql", "html/template", "text/template", "log/slog"
-]);
 
 /**
  * Determines if a Go import path is from the standard library.

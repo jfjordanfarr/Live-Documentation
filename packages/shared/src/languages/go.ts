@@ -17,6 +17,24 @@ const GO_STRINGS: StringDelimiters = {
 };
 
 /**
+ * Standard library packages (partial list - major ones).
+ * Used to distinguish stdlib imports from local/third-party imports.
+ */
+export const GO_STDLIB_PACKAGES = new Set([
+  "fmt", "os", "io", "bufio", "bytes", "strings", "strconv",
+  "errors", "log", "time", "math", "rand", "sort", "sync",
+  "context", "net", "http", "json", "xml", "html", "template",
+  "regexp", "path", "filepath", "flag", "testing", "reflect",
+  "runtime", "unsafe", "syscall", "encoding", "crypto", "hash",
+  "compress", "archive", "database", "image", "text", "unicode",
+  // Common subpackages
+  "net/http", "net/url", "io/ioutil", "io/fs", "path/filepath",
+  "encoding/json", "encoding/xml", "encoding/base64", "encoding/hex",
+  "crypto/sha256", "crypto/md5", "crypto/tls", "crypto/rand",
+  "database/sql", "html/template", "text/template", "log/slog"
+]);
+
+/**
  * Fundamental Go types that appear in virtually every file.
  * These are conservative — only built-in types, not stdlib types.
  */
@@ -36,15 +54,15 @@ const GO_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from Go source code.
+ * Strips comments from Go source code, preserving string literals.
  *
  * Handles:
  * - Line comments (//)
- * - Block comments (/* ... *\/)
- * - Standard strings ("...")
- * - Raw strings (`...`)
+ * - Block comments (slash-star ... star-slash)
+ *
+ * String literals are preserved to avoid destroying code in template strings.
  */
-function stripGoCommentsAndStrings(content: string): string {
+function stripGoComments(content: string): string {
   let result = "";
   let i = 0;
 
@@ -68,27 +86,39 @@ function stripGoCommentsAndStrings(content: string): string {
       continue;
     }
 
-    // Check for string literal
+    // Skip over string literals (preserve them in output)
     if (content[i] === '"') {
+      result += content[i];
       i++; // Skip opening quote
       while (i < content.length && content[i] !== '"') {
         if (content[i] === "\\" && i + 1 < content.length) {
+          result += content[i];
+          result += content[i + 1];
           i += 2; // Skip escaped character
         } else {
+          result += content[i];
           i++;
         }
       }
-      i++; // Skip closing quote
+      if (i < content.length) {
+        result += content[i]; // closing quote
+        i++;
+      }
       continue;
     }
 
-    // Check for raw string literal (backtick)
+    // Skip over raw string literals (preserve them in output)
     if (content[i] === "`") {
+      result += content[i];
       i++; // Skip opening backtick
       while (i < content.length && content[i] !== "`") {
+        result += content[i];
         i++;
       }
-      i++; // Skip closing backtick
+      if (i < content.length) {
+        result += content[i]; // closing backtick
+        i++;
+      }
       continue;
     }
 
@@ -106,10 +136,10 @@ export const goSyntax: LanguageSyntax = {
   strings: GO_STRINGS,
   frameworkTypes: GO_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
+  async stripComments(content: string): Promise<string> {
     // Regex-based implementation is synchronous but exposed as async
     // for tree-sitter compatibility
-    return await Promise.resolve(stripGoCommentsAndStrings(content));
+    return await Promise.resolve(stripGoComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

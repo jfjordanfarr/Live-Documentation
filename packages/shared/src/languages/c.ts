@@ -34,24 +34,21 @@ const C_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from C/C++ source code.
+ * Strips comments from C/C++ source code, preserving string literals.
  *
  * Handles:
  * - Line comments (//)
- * - Block comments (/* ... *\/)
- * - Double-quoted strings ("...")
- * - Single-quoted chars ('...')
+ * - Block comments (slash-star ... star-slash)
+ *
+ * String literals are preserved (C doesn't have interpolated strings,
+ * but preserving strings is harmless and maintains consistency).
  */
-function stripCCommentsAndStrings(content: string): string {
+function stripCComments(content: string): string {
   // Remove block comments /* ... */
   let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
 
   // Remove line comments // ...
   result = result.replace(/\/\/[^\n]*/g, " ");
-
-  // Remove string literals "..." and '...'
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
-  result = result.replace(/'(?:[^'\\]|\\.)*'/g, "''");
 
   return result;
 }
@@ -63,8 +60,8 @@ export const cSyntax: LanguageSyntax = {
   strings: C_STRINGS,
   frameworkTypes: C_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripCCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripCComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

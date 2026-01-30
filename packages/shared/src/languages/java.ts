@@ -34,27 +34,22 @@ const JAVA_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from Java source code.
+ * Strips comments from Java source code, preserving string literals.
  *
  * Handles:
  * - Line comments (//)
- * - Block comments (/* ... *\/)
- * - Javadoc comments (/** ... *\/)
- * - Standard strings ("...")
- * - Text blocks ("""...""" - Java 15+)
+ * - Block comments (slash-star ... star-slash)
+ * - Javadoc comments (slash-star-star ... star-slash)
+ *
+ * String literals (including text blocks) are preserved. Java doesn't have
+ * interpolated strings, but preserving strings is harmless and maintains consistency.
  */
-function stripJavaCommentsAndStrings(content: string): string {
-  // Remove text blocks first (Java 15+)
-  let result = content.replace(/"""[\s\S]*?"""/g, '""');
-
+function stripJavaComments(content: string): string {
   // Remove block comments /* ... */ (including Javadoc)
-  result = result.replace(/\/\*[\s\S]*?\*\//g, " ");
+  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
 
   // Remove line comments // ...
   result = result.replace(/\/\/[^\n]*/g, " ");
-
-  // Remove string literals "..."
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
 
   return result;
 }
@@ -66,8 +61,8 @@ export const javaSyntax: LanguageSyntax = {
   strings: JAVA_STRINGS,
   frameworkTypes: JAVA_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripJavaCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripJavaComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {

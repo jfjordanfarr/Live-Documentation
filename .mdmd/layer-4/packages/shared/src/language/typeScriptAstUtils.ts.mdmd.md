@@ -54,5 +54,4 @@ The ripple semantics review the same day captured why we route TypeScript compil
 ### Observed Evidence
 #### Vitest Unit Tests
 - [typeScriptFixtureOracle.test.ts](../testing/fixtureOracles/typeScriptFixtureOracle.test.ts.mdmd.md)
-- [typeScriptFixtureOracle.test.ts](../../../testing/src/fixtureOracles/typeScriptFixtureOracle.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -28,10 +28,10 @@ export { createSyncStripper } from "./syntax";
 
 export { cSyntax } from "./c";
 export { csharpSyntax } from "./csharp";
-export { goSyntax } from "./go";
+export { goSyntax, GO_STDLIB_PACKAGES } from "./go";
 export { javaSyntax } from "./java";
 export { powershellSyntax } from "./powershell";
-export { pythonSyntax } from "./python";
+export { pythonSyntax, PYTHON_STDLIB_MODULES } from "./python";
 export { rubySyntax } from "./ruby";
 export { rustSyntax } from "./rust";
 export { typescriptSyntax } from "./typescript";
@@ -125,13 +125,14 @@ export function isExtensionSupported(extension: string): boolean {
 }
 
 /**
- * Strips comments and strings from content using the appropriate language syntax.
+ * Strips comments from content using the appropriate language syntax.
+ * String literals are preserved to avoid destroying code in interpolated strings.
  *
  * @param filePath - Path to the file (used to determine language)
  * @param content - The source code content
  * @returns Stripped content, or original content if language not supported
  */
-export async function stripCommentsAndStringsForPath(
+export async function stripCommentsForPath(
   filePath: string,
   content: string
 ): Promise<string> {
@@ -139,7 +140,7 @@ export async function stripCommentsAndStringsForPath(
   if (!syntax) {
     return content;
   }
-  return syntax.stripCommentsAndStrings(content);
+  return syntax.stripComments(content);
 }
 
 /**

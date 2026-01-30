@@ -1,6 +1,6 @@
 # User Intent Census – Link-Aware Diagnostics
 
-Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
+Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–65. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
 
 ## 2025-10-16 (Dev Day 1)
 - `2025-10-16.md:L1-L32` — Mandate: build a system that raises IntelliSense-style diagnostics between linked markdown layers and implementation files; adopt the four-layer MDMD documentation model.
@@ -795,6 +795,24 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–11
 - `L~3100-L3200` — **Third-Party Fixtures as Stress Tests**: User explicitly endorsed gorilla/mux (and future large vendor fixtures) as "stress tests" for heuristic quality: "I actually really like the idea of having very large fixture repos... The idea that any result represents the **starting point** rather than some plateau of quality we've achieved is powerful."
 - `L~3400-L3500` — **Fixture Integrity Blocks for Vendor Fixtures**: New `integrityCheck` manifest field required for third-party fixtures where hand-authored expected.json is infeasible. Records commit SHA and generation command so future regeneration is reproducible.
 - `L~4600-L4700` — **Honest Commit Message Framing**: User corrected commit message phrasing from "worst-case stress test" to "starting point": "I don't want to call it a 'worst-case stress test' at all. That implies that it's intentionally low quality. It's not. It's just a large, real-world repo. 'Starting point' is the right framing."
+
+## 2026-01-28 (Dev Day 64)
+
+### Chat 1 (2026-01-28.1.md) — Tree-sitter WASM Discovery + Oracle Fusion Architecture
+
+- `2026-01-28.1.md:L~2800-L3000` — **Tree-sitter WASM as Solved Problem**: User discovered `@vscode/tree-sitter-wasm` (22MB, MIT, Microsoft, 15+ languages) exists and has existed for ~2 years. "There exists a full foundational vscode tree-sitter wasm bundle that we could've used this entire time... Good god, that is a solved problem if I've ever seen one." The previous aversion to tree-sitter stemmed from `better-sqlite3` native binding trauma (October 2025); WASM has no native compilation required.
+- `L~3200-L3400` — **Oracle Fusion Architecture**: `expected.json = SCIP ∪ tree-sitter` for benchmark oracles (zero false positives, complementary false negative profiles). `heuristics ∪ tree-sitter` for runtime (what we ship). Neither SCIP nor tree-sitter produces false positives — union gives richer ground truth, not noise.
+- `L~2000-L2300` — **"Public Symbol" = "Crosses File Boundaries"**: Clarified that Live Documentation's concept of "public symbol" is semantic, not language-syntactic. Go's lowercase symbols that cross package-internal file boundaries ARE public for our purposes. "If a symbol does not cross file boundaries, we let it lie. If a symbol _does_ cross file boundaries, we want to know about that crossing!"
+- `L~1800-L2000` — **Pattern Recognition: Comment Stripping in Oracle AND Heuristic**: When the same `stripComments()` fix was needed in both oracle and heuristic, User identified architectural smell: "Am I crazy that a `LanguageSyntax` interface would be used for the _adapters_ (the part we ship which runs alongside the WASM tree-sitter), not (just) the _Oracles_?"
+
+## 2026-01-29 (Dev Day 65)
+
+### Chat 1 (2026-01-29.1.md) — LanguageSyntax Interface + Async Compatibility
+
+- `2026-01-29.1.md:L~800-L1000` — **Priority Inversion Correction**: User corrected priority ordering: (1) Tree-sitter ∪ heuristics (adapters) = what we **ship**, (2) SCIP ∪ tree-sitter oracles = dev-time only, requires devcontainer for Windows-blocked SCIP tooling. "Getting tree-sitter outputs unioned with our heuristics (language adapters) is top priority only insofar as it is the lowest-hanging fruit on the tree."
+- `L~1000-L1200` — **LanguageSyntax Interface for Adapters**: User mandated common interface for language adapters: "I just thought that having a common interface for those adapters would be wise." This addresses the 6+ independent `stripCommentsAndStrings()` implementations discovered across adapters and heuristics.
+- `L~1200-L1400` — **Async Compatibility Mandate**: "Please make sure that we're building in async compatibility (or just async functionality outright) so that we don't have to have any blockers when it's time to union with tree-sitter." The synchronous `FallbackHeuristic` interface was identified as a blocker for tree-sitter WASM integration.
+- `L~600-L800` — **Chat Archaeology for System Narrative**: User requested comprehensive Chat Archaeology before implementing interface changes: "Do a bit of Chat Archaeology and try to understand the cumulative _narrative_ of these elements. Why do they exist, what do they do, what are their issues, what are our aims for them, and how far along are we?" Understanding the evolution of adapters/heuristics/oracles is prerequisite to good interface design.
 
 ## 2026-01-26 (Dev Day 62)
 

@@ -37,28 +37,22 @@ const RUST_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments and string literals from Rust source code.
+ * Strips comments from Rust source code, preserving string literals.
  *
  * Handles:
  * - Line comments (// and ///)
- * - Block comments (/* ... *\/)
- * - Doc comments (//! and /*! ... *\/)
- * - Standard strings ("...")
- * - Raw strings (r"..." and r#"..."#)
+ * - Block comments (slash-star ... star-slash)
+ * - Doc comments (//! and inner doc comments)
+ *
+ * String literals (including raw strings) are preserved. Rust doesn't have
+ * interpolated strings like other languages, but preserving strings is harmless.
  */
-function stripRustCommentsAndStrings(content: string): string {
+function stripRustComments(content: string): string {
   // Remove block comments /* ... */ (including doc comments)
   let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
 
   // Remove line comments // ... (including /// and //!)
   result = result.replace(/\/\/[^\n]*/g, " ");
-
-  // Remove raw strings r#"..."# (simplified - single hash level)
-  result = result.replace(/r#"[^"]*"#/g, '""');
-  result = result.replace(/r"[^"]*"/g, '""');
-
-  // Remove standard strings "..."
-  result = result.replace(/"(?:[^"\\]|\\.)*"/g, '""');
 
   return result;
 }
@@ -70,8 +64,8 @@ export const rustSyntax: LanguageSyntax = {
   strings: RUST_STRINGS,
   frameworkTypes: RUST_FRAMEWORK_TYPES,
 
-  async stripCommentsAndStrings(content: string): Promise<string> {
-    return await Promise.resolve(stripRustCommentsAndStrings(content));
+  async stripComments(content: string): Promise<string> {
+    return await Promise.resolve(stripRustComments(content));
   },
 
   isFrameworkType(identifier: string): boolean {
