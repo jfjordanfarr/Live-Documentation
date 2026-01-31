@@ -2,41 +2,41 @@
   {
     "source": "src/index.ts",
     "target": "src/models/widget.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/index.ts",
     "target": "src/services/reportService.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/repositories/storage.ts",
     "target": "src/models/widget.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/services/dataService.ts",
     "target": "src/repositories/storage.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/services/reportService.ts",
     "target": "src/models/widget.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/services/reportService.ts",
     "target": "src/services/dataService.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/services/reportService.ts",
     "target": "src/utils/format.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/utils/format.ts",
     "target": "src/models/widget.ts",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

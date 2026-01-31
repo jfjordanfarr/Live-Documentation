@@ -2,7 +2,11 @@ import { spawn, spawnSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 
-export type PythonOracleEdgeRelation = "imports";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All import relationships map to "references" in the canonical taxonomy.
+ */
+export type PythonOracleEdgeRelation = "references";
 export type PythonOracleProvenance = "module-import" | "runtime-import" | "type-hint";
 
 export interface PythonOracleEdge {
@@ -193,7 +197,7 @@ function parseWorkerResponse(raw: string): PythonOracleEdge[] {
       const relation =
         typeof candidate.relation === "string" && candidate.relation.length > 0
           ? candidate.relation
-          : "imports";
+          : "references";
       const provenance =
         typeof candidate.provenance === "string" && candidate.provenance.length > 0
           ? candidate.provenance

@@ -2,7 +2,11 @@ import { globSync } from "glob";
 import fs from "node:fs";
 import path from "node:path";
 
-export type COracleEdgeRelation = "includes" | "calls";
+/**
+ * SCIP-grounded relation taxonomy.
+ * Both includes and function calls map to "references" in the canonical taxonomy.
+ */
+export type COracleEdgeRelation = "references";
 
 export type COracleProvenance = "source-include" | "function-call" | "manual-override";
 
@@ -23,7 +27,6 @@ export interface CFixtureOracleOptions {
   fixtureRoot: string;
   include?: string[];
   exclude?: string[];
-  relations?: COracleEdgeRelation[];
 }
 
 export interface COracleOverrideEntry {
@@ -97,9 +100,6 @@ export function generateCFixtureGraph(options: CFixtureOracleOptions): COracleEd
     }
   }
 
-  const relationSet = new Set(options.relations ?? ["includes", "calls"]);
-  const shouldCollectIncludes = relationSet.has("includes");
-  const shouldCollectCalls = relationSet.has("calls");
   const functionIndex = buildFunctionIndex(fileMap, fixtureRoot);
 
   const edges = new Map<string, COracleEdge>();
@@ -110,7 +110,7 @@ export function generateCFixtureGraph(options: CFixtureOracleOptions): COracleEd
     const isTranslationUnit = extension === ".c";
     const isHeaderFile = extension === ".h";
 
-    if (shouldCollectIncludes && (isTranslationUnit || isHeaderFile)) {
+    if (isTranslationUnit || isHeaderFile) {
       for (const includeTarget of discoverIncludes(
         absolutePath,
         content,
@@ -119,30 +119,30 @@ export function generateCFixtureGraph(options: CFixtureOracleOptions): COracleEd
         relativeIndex,
         basenameIndex
       )) {
-        const key = edgeKey(relativePath, includeTarget, "includes");
+        const key = edgeKey(relativePath, includeTarget, "references");
         if (!edges.has(key)) {
           edges.set(key, {
             source: relativePath,
             target: includeTarget,
-            relation: "includes",
+            relation: "references",
             provenance: "source-include"
           });
         }
       }
     }
 
-    if (!shouldCollectCalls || !isTranslationUnit) {
+    if (!isTranslationUnit) {
       continue;
     }
 
     const calls = discoverCalls(content, functionIndex, relativePath);
     for (const target of calls) {
-      const key = edgeKey(relativePath, target, "calls");
+      const key = edgeKey(relativePath, target, "references");
       if (!edges.has(key)) {
         edges.set(key, {
           source: relativePath,
           target,
-          relation: "calls",
+          relation: "references",
           provenance: "function-call"
         });
       }
@@ -505,7 +505,7 @@ function toFixtureRelative(candidate: string, root: string): string {
 }
 
 function edgeKey(source: string, target: string, relation: string): string {
-  return `${source}→${target}#${relation}`;
+  return `${source}â†’${target}#${relation}`;
 }
 
 function toRecordFromEdge(edge: COracleEdge): COracleEdgeRecord {

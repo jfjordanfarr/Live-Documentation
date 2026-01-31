@@ -132,7 +132,7 @@
       "language": "c",
       "path": "c/libuv",
       "modes": [
-        "ast"
+        "stress"
       ],
       "thresholds": {
         "precision": 0.95,
@@ -329,6 +329,10 @@
       ],
       "expected": "rust/log/expected.json",
       "inferred": "rust/log/inferred.json",
+      "oracle": {
+        "kind": "rust",
+        "root": "."
+      },
       "provenance": {
         "kind": "vendor",
         "repository": "rust-lang/log",

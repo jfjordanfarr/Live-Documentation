@@ -2,31 +2,31 @@
   {
     "source": "src/com/example/app/App.java",
     "target": "src/com/example/data/Reader.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/example/app/App.java",
     "target": "src/com/example/format/ReportWriter.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/example/app/App.java",
     "target": "src/com/example/model/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/example/data/Reader.java",
     "target": "src/com/example/model/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/example/format/ReportWriter.java",
     "target": "src/com/example/data/Catalog.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/example/format/ReportWriter.java",
     "target": "src/com/example/model/Record.java",
-    "relation": "uses"
+    "relation": "references"
   }
 ]

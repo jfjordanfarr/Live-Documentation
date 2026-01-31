@@ -2,16 +2,16 @@
   {
     "source": "src/main.c",
     "target": "src/util.c",
-    "relation": "calls"
+    "relation": "references"
   },
   {
     "source": "src/main.c",
     "target": "src/util.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/util.c",
     "target": "src/util.h",
-    "relation": "includes"
+    "relation": "references"
   }
 ]

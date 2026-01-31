@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-gofixtureoracle-ts
-- Generated At: 2026-01-30T21:04:52.681Z
+- Generated At: 2026-01-30T23:50:04.283Z
 
 ## Authored
 ### Purpose
@@ -19,48 +19,52 @@ Ground-truth edge generator for Go benchmark fixtures. Analyzes Go source files 
 - Uses "imports" for main.go and "uses" for library files to match heuristic behavior
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.681Z","inputHash":"78878d53de479bf7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.283Z","inputHash":"3d63862efdadd423"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GoOracleEdgeRelation` {#symbol-gooracleedgerelation}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L4)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L8)
+
+##### `GoOracleEdgeRelation` — Summary
+SCIP-grounded relation taxonomy.
+All import relationships map to "references" in the canonical taxonomy.
 
 #### `GoOracleProvenance` {#symbol-gooracleprovenance}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L6)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L10)
 
 #### `GoOracleEdge` {#symbol-gooracleedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L8)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L12)
 
 #### `GoOracleEdgeRecord` {#symbol-gooracleedgerecord}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L15)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L19)
 
 #### `GoFixtureOracleOptions` {#symbol-gofixtureoracleoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L21)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L25)
 
 #### `GoOracleOverrideEntry` {#symbol-gooracleoverrideentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L27)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L31)
 
 #### `GoOracleOverrideConfig` {#symbol-gooracleoverrideconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L33)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L37)
 
 #### `GoOracleSegmentPartition` {#symbol-gooraclesegmentpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L37)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L41)
 
 #### `GoOracleMergeResult` {#symbol-gooraclemergeresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L44)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L48)
 
 #### `generateGoFixtureGraph` {#symbol-generategofixturegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L77)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L76)
 - Returns: [`GoOracleEdge`](#symbol-gooracleedge)[]
 - Parameters: `options`: [`GoFixtureOracleOptions`](#symbol-gofixtureoracleoptions)
 
@@ -76,18 +80,18 @@ Go packages can span multiple files. This oracle:
 
 #### `serializeGoOracleEdges` {#symbol-serializegooracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L98)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L97)
 - Parameters: `edges`: [`GoOracleEdge`](#symbol-gooracleedge)[]
 
 #### `partitionGoOracleSegments` {#symbol-partitiongooraclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L103)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L102)
 - Returns: [`GoOracleSegmentPartition`](#symbol-gooraclesegmentpartition)
 - Parameters: `edges`: [`GoOracleEdge`](#symbol-gooracleedge)[]; `overrides`: [`GoOracleOverrideConfig`](#symbol-gooracleoverrideconfig)
 
 #### `mergeGoOracleEdges` {#symbol-mergegooracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L139)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/goFixtureOracle.ts#L138)
 - Returns: [`GoOracleMergeResult`](#symbol-gooraclemergeresult)
 - Parameters: `edges`: [`GoOracleEdge`](#symbol-gooracleedge)[]; `overrides`: [`GoOracleOverrideConfig`](#symbol-gooracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

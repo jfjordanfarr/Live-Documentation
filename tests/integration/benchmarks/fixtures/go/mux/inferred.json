@@ -15,13 +15,28 @@
     "relation": "references"
   },
   {
+    "source": "example_authentication_middleware_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
     "source": "example_cors_method_middleware_test.go",
     "target": "doc.go",
     "relation": "references"
   },
   {
+    "source": "example_cors_method_middleware_test.go",
+    "target": "mux.go",
+    "relation": "references"
+  },
+  {
     "source": "example_route_test.go",
     "target": "doc.go",
+    "relation": "references"
+  },
+  {
+    "source": "example_route_test.go",
+    "target": "mux.go",
     "relation": "references"
   },
   {
@@ -52,6 +67,11 @@
   {
     "source": "middleware_test.go",
     "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "middleware_test.go",
+    "target": "route.go",
     "relation": "references"
   },
   {
@@ -182,6 +202,11 @@
   {
     "source": "route_test.go",
     "target": "mux.go",
+    "relation": "references"
+  },
+  {
+    "source": "route_test.go",
+    "target": "regexp.go",
     "relation": "references"
   },
   {

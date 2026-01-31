@@ -2,476 +2,496 @@
   {
     "source": "source/core/constants.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/errors/HTTPError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/errors/NonError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/types/ResponsePromise.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/body.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/delay.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/merge.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/normalize.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/timeout.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/type-guards.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/utils/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/errors/HTTPError.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/errors/HTTPError.ts",
     "target": "source/types/request.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/errors/HTTPError.ts",
     "target": "source/types/response.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/errors/TimeoutError.ts",
     "target": "source/types/request.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/core/Ky.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/errors/HTTPError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/errors/TimeoutError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/hooks.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/ky.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/request.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/response.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/types/ResponsePromise.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/utils/merge.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/utils/type-guards.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/index.ts",
     "target": "source/utils/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/hooks.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/hooks.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/hooks.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/ky.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/ky.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/ky.ts",
     "target": "source/types/ResponsePromise.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/options.ts",
     "target": "source/types/common.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/options.ts",
     "target": "source/types/hooks.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/types/options.ts",
     "target": "source/types/retry.ts",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "source/types/options.ts",
+    "target": "test/headers.ts",
+    "relation": "references"
   },
   {
     "source": "source/types/ResponsePromise.ts",
     "target": "source/types/response.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/body.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/body.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/delay.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/merge.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/merge.ts",
     "target": "source/types/hooks.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/merge.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/merge.ts",
     "target": "source/utils/is.ts",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "source/utils/merge.ts",
+    "target": "test/headers.ts",
+    "relation": "references"
   },
   {
     "source": "source/utils/normalize.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/normalize.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/normalize.ts",
     "target": "source/types/retry.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/options.ts",
     "target": "source/core/constants.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/options.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/timeout.ts",
     "target": "source/errors/TimeoutError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/type-guards.ts",
     "target": "source/errors/HTTPError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "source/utils/type-guards.ts",
     "target": "source/errors/TimeoutError.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/browser.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/browser.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/browser.ts",
     "target": "test/helpers/parse-body.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/browser.ts",
     "target": "test/helpers/with-page.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/bytes.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/bytes.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/context.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/context.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/fetch.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/fetch.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/formdata-searchparams.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/formdata-searchparams.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/headers.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/headers.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/helpers/index.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/helpers/index.ts",
     "target": "test/helpers/create-large-file.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/helpers/index.ts",
     "target": "test/helpers/parse-body.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/helpers/index.ts",
     "target": "test/helpers/with-page.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/hooks.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/hooks.ts",
     "target": "source/types/options.ts",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "test/hooks.ts",
+    "target": "source/utils/delay.ts",
+    "relation": "references"
   },
   {
     "source": "test/hooks.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/http-error.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/http-error.ts",
     "target": "source/utils/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/main.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "test/main.ts",
+    "target": "source/utils/delay.ts",
+    "relation": "references"
   },
   {
     "source": "test/main.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/main.ts",
     "target": "test/helpers/parse-body.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/memory-leak.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/memory-leak.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/methods.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/methods.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/prefix-url.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/prefix-url.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/retry.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/retry.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/retry.ts",
     "target": "test/helpers/with-performance.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/stream.ts",
     "target": "source/index.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/stream.ts",
     "target": "test/helpers/create-http-test-server.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/stream.ts",
     "target": "test/helpers/create-large-file.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "test/stream.ts",
     "target": "test/helpers/parse-body.ts",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

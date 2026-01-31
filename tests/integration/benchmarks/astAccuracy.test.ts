@@ -334,13 +334,14 @@ async function verifyTypeScriptOracleAlignment(options: {
 
   const expectedKeySet = new Set(expectedEdges.map(edgeKey));
   const mergedRecords = merge.mergedRecords.map(toEdgeRecord);
-  const mergedKeySet = new Set(mergedRecords.map(edgeKey));
 
+  // Only check for additions (oracle edges not in expected).
+  // We don't check for removals because expected.json = oracle ∪ tree-sitter,
+  // so expected is expected to have more edges than oracle alone.
   const additions = mergedRecords.filter(record => !expectedKeySet.has(edgeKey(record)));
-  const removals = expectedEdges.filter(record => !mergedKeySet.has(edgeKey(record)));
 
-  if (additions.length > 0 || removals.length > 0) {
-    const message = renderOracleMismatchMessage(fixture.id, additions, removals, overridesPath);
+  if (additions.length > 0) {
+    const message = renderOracleMismatchMessage(fixture.id, additions, [], overridesPath);
     throw new Error(message);
   }
 
@@ -374,6 +375,7 @@ function toEdgeRecord(record: OracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
+    // Oracle now emits SCIP-grounded relations directly
     relation: record.relation
   };
 }

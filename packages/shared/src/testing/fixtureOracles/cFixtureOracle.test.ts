@@ -38,19 +38,19 @@ describe("C fixture oracle", () => {
       {
         source: "src/main.c",
         target: "src/util.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       },
       {
         source: "src/main.c",
         target: "src/util.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/util.c",
         target: "src/util.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       }
     ]);
@@ -63,73 +63,73 @@ describe("C fixture oracle", () => {
       {
         source: "src/logger.c",
         target: "src/logger.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/main.c",
         target: "src/logger.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       },
       {
         source: "src/main.c",
         target: "src/logger.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/main.c",
         target: "src/pipeline.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       },
       {
         source: "src/main.c",
         target: "src/pipeline.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/metrics.c",
         target: "src/metrics.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/pipeline.c",
         target: "src/logger.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       },
       {
         source: "src/pipeline.c",
         target: "src/logger.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/pipeline.c",
         target: "src/metrics.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       },
       {
         source: "src/pipeline.c",
         target: "src/metrics.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/pipeline.c",
         target: "src/pipeline.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/pipeline.h",
         target: "src/metrics.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       }
     ]);
@@ -140,13 +140,13 @@ describe("C fixture oracle", () => {
       {
         source: "c.c",
         target: "d.c",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "a.c",
         target: "b.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       }
     ];
@@ -157,12 +157,12 @@ describe("C fixture oracle", () => {
         "  {",
         '    "source": "a.c",',
         '    "target": "b.c",',
-        '    "relation": "calls"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "c.c",',
         '    "target": "d.c",',
-        '    "relation": "includes"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -174,13 +174,13 @@ describe("C fixture oracle", () => {
       {
         source: "src/source.c",
         target: "src/header.h",
-        relation: "includes",
+        relation: "references",
         provenance: "source-include"
       },
       {
         source: "src/source.c",
         target: "src/runtime.c",
-        relation: "calls",
+        relation: "references",
         provenance: "function-call"
       }
     ];
@@ -190,12 +190,12 @@ describe("C fixture oracle", () => {
         {
           source: "src/source.c",
           target: "src/manual.c",
-          relation: "calls"
+          relation: "references"
         },
         {
           source: "src/source.c",
           target: "src/runtime.c",
-          relation: "calls"
+          relation: "references"
         }
       ]
     };
@@ -206,7 +206,7 @@ describe("C fixture oracle", () => {
     expect(partition.missingManualEntries).toEqual([{
       source: "src/source.c",
       target: "src/manual.c",
-      relation: "calls"
+      relation: "references"
     }]);
 
     const result = mergeCOracleEdges(edges, overrides);
@@ -217,26 +217,26 @@ describe("C fixture oracle", () => {
     });
 
     expect(result.autoRecords).toEqual([
-      toRecord("src/source.c", "src/header.h", "includes"),
-      toRecord("src/source.c", "src/runtime.c", "calls")
+      toRecord("src/source.c", "src/header.h", "references"),
+      toRecord("src/source.c", "src/runtime.c", "references")
     ]);
 
     expect(result.manualRecords).toEqual([
-      toRecord("src/source.c", "src/manual.c", "calls"),
-      toRecord("src/source.c", "src/runtime.c", "calls")
+      toRecord("src/source.c", "src/manual.c", "references"),
+      toRecord("src/source.c", "src/runtime.c", "references")
     ]);
 
     expect(result.mergedRecords).toEqual([
-      toRecord("src/source.c", "src/header.h", "includes"),
-      toRecord("src/source.c", "src/manual.c", "calls"),
-      toRecord("src/source.c", "src/runtime.c", "calls")
+      toRecord("src/source.c", "src/header.h", "references"),
+      toRecord("src/source.c", "src/manual.c", "references"),
+      toRecord("src/source.c", "src/runtime.c", "references")
     ]);
 
     expect(result.missingManualEntries).toEqual([
       {
         source: "src/source.c",
         target: "src/manual.c",
-        relation: "calls"
+        relation: "references"
       }
     ]);
   });

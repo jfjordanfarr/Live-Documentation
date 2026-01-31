@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/regenerate-benchmarks.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-regenerate-benchmarks-ts
-- Generated At: 2026-01-27T20:39:29.366Z
+- Generated At: 2026-01-30T23:50:04.353Z
 
 ## Authored
 ### Purpose
@@ -18,20 +18,24 @@ Regenerates benchmark fixtures across all supported languages by invoking their 
 - By 2025-11-06 the CLI regenerated every fixture (including libuv) end-to-end, confirming cross-language oracles, manifest cloning, and benchmark pipeline integration held together during full-suite execution ([full-suite verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1160-L1258)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T20:39:29.366Z","inputHash":"965c31bc4a899b9f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.353Z","inputHash":"5f1559c6ef56b0b3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `runRegenerationCli` {#symbol-runregenerationcli}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L226)
+- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L232)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `glob` - `glob`
 - `node:child_process` - `execSync`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - `node:process` - `process`
+- `node:url` - `pathToFileURL`
+- [`fallbackInference.ArtifactSeed`](../../packages/shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed)
+- [`fallbackInference.inferFallbackGraph`](../../packages/shared/src/inference/fallbackInference.ts.mdmd.md#symbol-inferfallbackgraph)
 - [`cFixtureOracle.CFixtureOracleOptions`](../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts.mdmd.md#symbol-cfixtureoracleoptions)
 - [`cFixtureOracle.COracleEdgeRecord`](../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts.mdmd.md#symbol-coracleedgerecord)
 - [`cFixtureOracle.COracleEdgeRelation`](../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts.mdmd.md#symbol-coracleedgerelation)

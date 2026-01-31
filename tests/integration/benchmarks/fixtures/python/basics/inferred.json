@@ -2,11 +2,11 @@
   {
     "source": "src/main.py",
     "target": "src/helpers.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.py",
     "target": "src/util.py",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

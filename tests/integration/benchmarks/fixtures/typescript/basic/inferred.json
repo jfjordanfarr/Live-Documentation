@@ -2,21 +2,21 @@
   {
     "source": "src/index.ts",
     "target": "src/models.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/index.ts",
     "target": "src/util.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/models.ts",
     "target": "src/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/util.ts",
     "target": "src/types.ts",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

@@ -2,16 +2,16 @@
   {
     "source": "src/main.rs",
     "target": "src/math.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.rs",
     "target": "src/utils.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/math.rs",
     "target": "src/utils.rs",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

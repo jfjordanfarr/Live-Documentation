@@ -2,61 +2,61 @@
   {
     "source": "src/logger.c",
     "target": "src/logger.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/main.c",
     "target": "src/logger.c",
-    "relation": "calls"
+    "relation": "references"
   },
   {
     "source": "src/main.c",
     "target": "src/logger.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/main.c",
     "target": "src/pipeline.c",
-    "relation": "calls"
+    "relation": "references"
   },
   {
     "source": "src/main.c",
     "target": "src/pipeline.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/metrics.c",
     "target": "src/metrics.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.c",
     "target": "src/logger.c",
-    "relation": "calls"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.c",
     "target": "src/logger.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.c",
     "target": "src/metrics.c",
-    "relation": "calls"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.c",
     "target": "src/metrics.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.c",
     "target": "src/pipeline.h",
-    "relation": "includes"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.h",
     "target": "src/metrics.h",
-    "relation": "includes"
+    "relation": "references"
   }
 ]

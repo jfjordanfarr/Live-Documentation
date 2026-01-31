@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-index-ts
-- Generated At: 2026-01-17T19:21:10.035Z
+- Generated At: 2026-01-30T23:50:04.075Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,22 @@ Turns the per-language builders into the default heuristic suite that replaced t
 - When adding a new heuristic module, export it through this registry and update `fallbackInference.languages.test.ts` so the regression suite exercises the new behavior <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L600-L676>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.035Z","inputHash":"79d0e2af93232397"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.075Z","inputHash":"988a210b0202bc83"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDefaultHeuristics` {#symbol-createdefaultheuristics}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/index.ts#L15)
-- Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)[]
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/index.ts#L26)
+
+##### `createDefaultHeuristics` — Summary
+Creates the default set of fallback heuristics.
+
+Includes tree-sitter for high-precision AST-based extraction plus
+language-specific regex heuristics for broader coverage.
+
+Tree-sitter runs first and provides 100% precision edges.
+Regex heuristics fill in gaps where tree-sitter might miss patterns
+(e.g., dynamic imports, macro-based includes).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -40,6 +49,7 @@ Turns the per-language builders into the default heuristic suite that replaced t
 - [`ruby.createRubyHeuristic`](./ruby.ts.mdmd.md#symbol-createrubyheuristic)
 - [`rust.createRustHeuristic`](./rust.ts.mdmd.md#symbol-createrustheuristic)
 - [`webforms.createWebFormsHeuristic`](./webforms.ts.mdmd.md#symbol-createwebformsheuristic)
+- [`index.createTreeSitterHeuristic`](../treeSitter/index.ts.mdmd.md#symbol-createtreesitterheuristic)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->

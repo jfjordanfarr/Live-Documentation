@@ -35,19 +35,19 @@ describe("Rust fixture oracle", () => {
       {
         source: "src/main.rs",
         target: "src/math.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "module-declaration"
       },
       {
         source: "src/main.rs",
         target: "src/utils.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "module-declaration"
       },
       {
         source: "src/math.rs",
         target: "src/utils.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "use-statement"
       }
     ]);
@@ -56,41 +56,55 @@ describe("Rust fixture oracle", () => {
   it("collects layered edges across the analytics crate", () => {
     const edges = generateRustFixtureGraph(buildOptions("analytics"));
 
+    // The analytics crate has 4 mod declarations in main.rs (analytics, io, metrics, models)
+    // plus internal use-statement edges between the modules
     expect(edges).toEqual<RustOracleEdge[]>([
       {
         source: "src/analytics.rs",
         target: "src/metrics.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "use-statement"
       },
       {
         source: "src/analytics.rs",
         target: "src/models.rs",
-        relation: "uses",
+        relation: "references",
         provenance: "use-statement"
       },
       {
         source: "src/io.rs",
         target: "src/models.rs",
-        relation: "uses",
+        relation: "references",
         provenance: "use-statement"
       },
       {
         source: "src/main.rs",
         target: "src/analytics.rs",
-        relation: "imports",
-        provenance: "use-statement"
+        relation: "references",
+        provenance: "module-declaration"
       },
       {
         source: "src/main.rs",
         target: "src/io.rs",
-        relation: "imports",
-        provenance: "use-statement"
+        relation: "references",
+        provenance: "module-declaration"
+      },
+      {
+        source: "src/main.rs",
+        target: "src/metrics.rs",
+        relation: "references",
+        provenance: "module-declaration"
+      },
+      {
+        source: "src/main.rs",
+        target: "src/models.rs",
+        relation: "references",
+        provenance: "module-declaration"
       },
       {
         source: "src/metrics.rs",
         target: "src/models.rs",
-        relation: "uses",
+        relation: "references",
         provenance: "use-statement"
       }
     ]);
@@ -101,13 +115,13 @@ describe("Rust fixture oracle", () => {
       {
         source: "src/b.rs",
         target: "src/c.rs",
-        relation: "uses",
+        relation: "references",
         provenance: "module-declaration"
       },
       {
         source: "src/a.rs",
         target: "src/b.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "use-statement"
       }
     ];
@@ -118,12 +132,12 @@ describe("Rust fixture oracle", () => {
         "  {",
         '    "source": "src/a.rs",',
         '    "target": "src/b.rs",',
-        '    "relation": "imports"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "src/b.rs",',
         '    "target": "src/c.rs",',
-        '    "relation": "uses"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -135,7 +149,7 @@ describe("Rust fixture oracle", () => {
       {
         source: "src/lib.rs",
         target: "src/macros.rs",
-        relation: "imports",
+        relation: "references",
         provenance: "use-statement"
       }
     ];
@@ -145,7 +159,7 @@ describe("Rust fixture oracle", () => {
         {
           source: "src/lib.rs",
           target: "src/runtime.rs",
-          relation: "uses"
+          relation: "references"
         }
       ]
     };
@@ -157,7 +171,7 @@ describe("Rust fixture oracle", () => {
       {
         source: "src/lib.rs",
         target: "src/runtime.rs",
-        relation: "uses"
+        relation: "references"
       }
     ]);
 
@@ -169,14 +183,14 @@ describe("Rust fixture oracle", () => {
     ): RustOracleEdgeRecord => ({ source, target, relation });
 
     expect(result.autoRecords).toEqual([
-      toRecord("src/lib.rs", "src/macros.rs", "imports")
+      toRecord("src/lib.rs", "src/macros.rs", "references")
     ]);
     expect(result.manualRecords).toEqual([
-      toRecord("src/lib.rs", "src/runtime.rs", "uses")
+      toRecord("src/lib.rs", "src/runtime.rs", "references")
     ]);
     expect(result.mergedRecords).toEqual([
-      toRecord("src/lib.rs", "src/macros.rs", "imports"),
-      toRecord("src/lib.rs", "src/runtime.rs", "uses")
+      toRecord("src/lib.rs", "src/macros.rs", "references"),
+      toRecord("src/lib.rs", "src/runtime.rs", "references")
     ]);
   });
 });

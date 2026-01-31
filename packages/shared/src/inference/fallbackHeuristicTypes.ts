@@ -29,7 +29,7 @@ export type MatchEmitter = (candidate: MatchCandidate) => void;
 
 export interface FallbackHeuristic {
   readonly id: string;
-  initialize?(artifacts: readonly HeuristicArtifact[]): void;
+  initialize?(artifacts: readonly HeuristicArtifact[]): void | Promise<void>;
   appliesTo(source: HeuristicArtifact): boolean;
-  evaluate(source: HeuristicArtifact, emit: MatchEmitter): void;
+  evaluate(source: HeuristicArtifact, emit: MatchEmitter): void | Promise<void>;
 }

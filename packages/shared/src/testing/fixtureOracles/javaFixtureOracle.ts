@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type JavaOracleEdgeRelation = "imports" | "uses";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All import relationships map to "references" in the canonical taxonomy.
+ */
+export type JavaOracleEdgeRelation = "references";
 
 export type JavaOracleProvenance = "import-statement" | "manual-override";
 
@@ -58,11 +62,6 @@ const DEFAULT_IGNORE_DIRS = new Set([
   "build",
   "out"
 ]);
-
-const RELATION_PRECEDENCE: Record<JavaOracleEdgeRelation, number> = {
-  uses: 1,
-  imports: 0
-};
 
 export function generateJavaFixtureGraph(options: JavaFixtureOracleOptions): JavaOracleEdge[] {
   const fixtureRoot = path.resolve(options.fixtureRoot);
@@ -311,23 +310,9 @@ function collectSamePackageEdges(input: {
   }
 }
 
-function classifyJavaRelation(symbol: string, content: string): JavaOracleEdgeRelation {
-  const escaped = escapeRegExp(symbol);
-  const constructorPattern = new RegExp(`new\\s+${escaped}\\b`);
-  const genericPattern = new RegExp(`<\\s*${escaped}\\b`);
-  const declarationPattern = new RegExp(`\\b${escaped}\\s+[A-Za-z_$][\\w$]*\\s*(=|;|,|\\))`);
-  const methodReferencePattern = new RegExp(`\\b${escaped}::`);
-
-  if (
-    constructorPattern.test(content) ||
-    genericPattern.test(content) ||
-    declarationPattern.test(content) ||
-    methodReferencePattern.test(content)
-  ) {
-    return "uses";
-  }
-
-  return "imports";
+function classifyJavaRelation(_symbol: string, _content: string): JavaOracleEdgeRelation {
+  // All relationships map to 'references' in SCIP-grounded taxonomy
+  return "references";
 }
 
 function addEdge(input: {
@@ -339,8 +324,8 @@ function addEdge(input: {
 }): void {
   const { edges, source, target, relation, provenance } = input;
   const key = `${source}::${target}`;
-  const existing = edges.get(key);
-  if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {
+  // With single relation type, we just check if edge exists
+  if (!edges.has(key)) {
     edges.set(key, { source, target, relation, provenance });
   }
 }
@@ -366,9 +351,7 @@ function compareEdges(left: JavaOracleEdge, right: JavaOracleEdge): number {
   if (left.target !== right.target) {
     return left.target.localeCompare(right.target);
   }
-  if (left.relation !== right.relation) {
-    return left.relation.localeCompare(right.relation);
-  }
+  // Relation is always 'references' now, skip comparison
   return left.provenance.localeCompare(right.provenance);
 }
 

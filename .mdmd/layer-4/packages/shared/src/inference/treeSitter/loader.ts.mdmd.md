@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/loader.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-loader-ts
-- Generated At: 2026-01-28T23:22:01.825Z
+- Generated At: 2026-01-30T23:50:04.108Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Provides the WASM loading infrastructure for tree-sitter, enabling AST-based sym
 - **Singleton Pattern**: `loadTreeSitter()` caches the module to avoid repeated WASM loading overhead (~22 MB bundle)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:01.825Z","inputHash":"ad437c08a0e52c13"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.108Z","inputHash":"e5a87b420b5baa5b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TreeSitterParser` {#symbol-treesitterparser}
@@ -51,14 +51,14 @@ A node in the syntax tree.
 
 #### `TreeSitterModule` {#symbol-treesittermodule}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L55)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L56)
 
 ##### `TreeSitterModule` — Summary
 The tree-sitter module interface after loading.
 
 #### `loadTreeSitter` {#symbol-loadtreesitter}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L126)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L127)
 
 ##### `loadTreeSitter` — Summary
 Loads and initializes the tree-sitter module.
@@ -67,21 +67,21 @@ This is a singleton - subsequent calls return the cached module.
 
 #### `getLanguageWasmPath` {#symbol-getlanguagewasmpath}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L154)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L155)
 
 ##### `getLanguageWasmPath` — Summary
 Gets the path to a language WASM file.
 
 #### `LANGUAGE_GRAMMAR_MAP` {#symbol-language_grammar_map}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L172)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L173)
 
 ##### `LANGUAGE_GRAMMAR_MAP` — Summary
 Maps common language identifiers to tree-sitter grammar names.
 
 #### `isLanguageSupported` {#symbol-islanguagesupported}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L204)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L205)
 
 ##### `isLanguageSupported` — Summary
 Checks if a language is supported by tree-sitter.

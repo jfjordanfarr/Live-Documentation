@@ -2,31 +2,41 @@
   {
     "source": "src/analytics.rs",
     "target": "src/metrics.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/analytics.rs",
     "target": "src/models.rs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/io.rs",
     "target": "src/models.rs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/main.rs",
     "target": "src/analytics.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.rs",
     "target": "src/io.rs",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "src/main.rs",
+    "target": "src/metrics.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/main.rs",
+    "target": "src/models.rs",
+    "relation": "references"
   },
   {
     "source": "src/metrics.rs",
     "target": "src/models.rs",
-    "relation": "uses"
+    "relation": "references"
   }
 ]

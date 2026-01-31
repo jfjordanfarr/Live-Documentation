@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-csharpfixtureoracle-ts
-- Generated At: 2026-01-30T21:04:52.677Z
+- Generated At: 2026-01-30T23:50:04.279Z
 
 ## Authored
 ### Purpose
@@ -16,65 +16,69 @@ Uses Roslyn-style parsing via regex and include analysis to map `using` directiv
 - Continues to pass under the Nov 16 unit sweep, so re-run `npm run test:unit -- csharpFixtureOracle` after parser updates <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.677Z","inputHash":"4df5c1b6689f4e34"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.279Z","inputHash":"3362fa11e1796b7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CSharpOracleEdgeRelation` {#symbol-csharporacleedgerelation}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L5)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L9)
+
+##### `CSharpOracleEdgeRelation` — Summary
+SCIP-grounded relation taxonomy.
+All type usage relationships map to "references" in the canonical taxonomy.
 
 #### `CSharpOracleProvenance` {#symbol-csharporacleprovenance}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L7)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L11)
 
 #### `CSharpOracleEdge` {#symbol-csharporacleedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L9)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L13)
 
 #### `CSharpOracleEdgeRecord` {#symbol-csharporacleedgerecord}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L16)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L20)
 
 #### `CSharpFixtureOracleOptions` {#symbol-csharpfixtureoracleoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L22)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L26)
 
 #### `CSharpOracleOverrideEntry` {#symbol-csharporacleoverrideentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L28)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L32)
 
 #### `CSharpOracleOverrideConfig` {#symbol-csharporacleoverrideconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L34)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L38)
 
 #### `CSharpOracleSegmentPartition` {#symbol-csharporaclesegmentpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L38)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L42)
 
 #### `CSharpOracleMergeResult` {#symbol-csharporaclemergeresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L45)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L49)
 
 #### `generateCSharpFixtureGraph` {#symbol-generatecsharpfixturegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L125)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L124)
 - Returns: [`CSharpOracleEdge`](#symbol-csharporacleedge)[]
 - Parameters: `options`: [`CSharpFixtureOracleOptions`](#symbol-csharpfixtureoracleoptions)
 
 #### `serializeCSharpOracleEdges` {#symbol-serializecsharporacleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L156)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L155)
 - Parameters: `edges`: [`CSharpOracleEdge`](#symbol-csharporacleedge)[]
 
 #### `partitionCSharpOracleSegments` {#symbol-partitioncsharporaclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L161)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L160)
 - Returns: [`CSharpOracleSegmentPartition`](#symbol-csharporaclesegmentpartition)
 - Parameters: `edges`: [`CSharpOracleEdge`](#symbol-csharporacleedge)[]; `overrides`: [`CSharpOracleOverrideConfig`](#symbol-csharporacleoverrideconfig)
 
 #### `mergeCSharpOracleEdges` {#symbol-mergecsharporacleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L197)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts#L196)
 - Returns: [`CSharpOracleMergeResult`](#symbol-csharporaclemergeresult)
 - Parameters: `edges`: [`CSharpOracleEdge`](#symbol-csharporacleedge)[]; `overrides`: [`CSharpOracleOverrideConfig`](#symbol-csharporacleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

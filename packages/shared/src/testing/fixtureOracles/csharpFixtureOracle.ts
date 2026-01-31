@@ -2,7 +2,11 @@ import { minimatch } from "minimatch";
 import fs from "node:fs";
 import path from "node:path";
 
-export type CSharpOracleEdgeRelation = "imports" | "uses";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All type usage relationships map to "references" in the canonical taxonomy.
+ */
+export type CSharpOracleEdgeRelation = "references";
 
 export type CSharpOracleProvenance = "using-directive" | "type-usage" | "manual-override";
 
@@ -102,11 +106,6 @@ const BUILT_IN_IDENTIFIERS = new Set([
   "Nullable",
   "CultureInfo"
 ]);
-
-const RELATION_PRECEDENCE: Record<CSharpOracleEdgeRelation, number> = {
-  uses: 1,
-  imports: 0
-};
 
 /**
  * Strips C# comments from source code to avoid false positive type matches
@@ -394,8 +393,8 @@ function collectTypeUsageEdges(input: {
 
     const relation = classifyRelation(symbol, codeContent);
     const key = `${metadata.relativePath}::${target.relativePath}`;
-    const existing = edges.get(key);
-    if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {
+    // With single relation type, we just check if edge exists
+    if (!edges.has(key)) {
       edges.set(key, {
         source: metadata.relativePath,
         target: target.relativePath,
@@ -448,10 +447,10 @@ function classifyRelation(symbol: string, content: string): CSharpOracleEdgeRela
     genericPattern.test(content) ||
     staticPattern.test(content)
   ) {
-    return "uses";
+    return "references";
   }
 
-  return "imports";
+  return "references";
 }
 
 function toFixtureRelative(absolutePath: string, fixtureRoot: string): string {
@@ -465,9 +464,7 @@ function compareEdges(left: CSharpOracleEdge, right: CSharpOracleEdge): number {
   if (left.target !== right.target) {
     return left.target.localeCompare(right.target);
   }
-  if (left.relation !== right.relation) {
-    return left.relation.localeCompare(right.relation);
-  }
+  // Relation is always 'references' now, skip comparison
   return left.provenance.localeCompare(right.provenance);
 }
 

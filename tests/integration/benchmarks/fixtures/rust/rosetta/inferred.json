@@ -2,61 +2,71 @@
   {
     "source": "src/helpers_test.rs",
     "target": "src/helpers.rs",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "src/main.rs",
+    "target": "src/helpers.rs",
+    "relation": "references"
   },
   {
     "source": "src/main.rs",
     "target": "src/models.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.rs",
     "target": "src/processor.rs",
-    "relation": "imports"
+    "relation": "references"
+  },
+  {
+    "source": "src/main.rs",
+    "target": "src/types.rs",
+    "relation": "references"
   },
   {
     "source": "src/models.rs",
     "target": "src/types.rs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/pipeline_test.rs",
     "target": "src/models.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline_test.rs",
     "target": "src/processor.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline_test.rs",
     "target": "src/types.rs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/processor_test.rs",
     "target": "src/models.rs",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/processor_test.rs",
     "target": "src/processor.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.rs",
     "target": "src/helpers.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.rs",
     "target": "src/models.rs",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.rs",
     "target": "src/types.rs",
-    "relation": "uses"
+    "relation": "references"
   }
 ]

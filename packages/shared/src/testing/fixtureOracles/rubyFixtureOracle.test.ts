@@ -35,31 +35,31 @@ describe("Ruby fixture oracle", () => {
       {
         source: "lib/formatter.rb",
         target: "lib/templates.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/main.rb",
         target: "lib/data_store.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/main.rb",
         target: "lib/reporter.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/reporter.rb",
         target: "lib/data_store.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/reporter.rb",
         target: "lib/formatter.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       }
     ]);
@@ -72,43 +72,43 @@ describe("Ruby fixture oracle", () => {
       {
         source: "lib/cli.rb",
         target: "lib/commands/report.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/cli.rb",
         target: "lib/support/logger.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/commands/report.rb",
         target: "lib/services/analyzer.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/commands/report.rb",
         target: "lib/services/data_loader.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/services/analyzer.rb",
         target: "lib/services/cache.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/services/analyzer.rb",
         target: "lib/support/logger.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/services/data_loader.rb",
         target: "lib/support/logger.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       }
     ]);
@@ -119,13 +119,13 @@ describe("Ruby fixture oracle", () => {
       {
         source: "lib/b.rb",
         target: "lib/c.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       },
       {
         source: "lib/a.rb",
         target: "lib/b.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       }
     ];
@@ -136,12 +136,12 @@ describe("Ruby fixture oracle", () => {
         "  {",
         '    "source": "lib/a.rb",',
         '    "target": "lib/b.rb",',
-        '    "relation": "requires"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "lib/b.rb",',
         '    "target": "lib/c.rb",',
-        '    "relation": "requires"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -153,7 +153,7 @@ describe("Ruby fixture oracle", () => {
       {
         source: "lib/app.rb",
         target: "lib/runtime.rb",
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       }
     ];
@@ -163,7 +163,7 @@ describe("Ruby fixture oracle", () => {
         {
           source: "lib/app.rb",
           target: "lib/bridge.rb",
-          relation: "requires"
+          relation: "references"
         }
       ]
     };
@@ -175,7 +175,7 @@ describe("Ruby fixture oracle", () => {
       {
         source: "lib/app.rb",
         target: "lib/bridge.rb",
-        relation: "requires"
+        relation: "references"
       }
     ]);
 
@@ -187,14 +187,14 @@ describe("Ruby fixture oracle", () => {
     ): RubyOracleEdgeRecord => ({ source, target, relation });
 
     expect(result.autoRecords).toEqual([
-      toRecord("lib/app.rb", "lib/runtime.rb", "requires")
+      toRecord("lib/app.rb", "lib/runtime.rb", "references")
     ]);
     expect(result.manualRecords).toEqual([
-      toRecord("lib/app.rb", "lib/bridge.rb", "requires")
+      toRecord("lib/app.rb", "lib/bridge.rb", "references")
     ]);
     expect(result.mergedRecords).toEqual([
-      toRecord("lib/app.rb", "lib/bridge.rb", "requires"),
-      toRecord("lib/app.rb", "lib/runtime.rb", "requires")
+      toRecord("lib/app.rb", "lib/bridge.rb", "references"),
+      toRecord("lib/app.rb", "lib/runtime.rb", "references")
     ]);
   });
 });

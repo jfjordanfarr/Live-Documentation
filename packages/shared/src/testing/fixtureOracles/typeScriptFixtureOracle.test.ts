@@ -33,25 +33,25 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/models.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/index.ts",
         target: "src/util.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/models.ts",
         target: "src/types.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/util.ts",
         target: "src/types.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "type-import"
       }
     ]);
@@ -64,49 +64,49 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/models/widget.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "type-import"
       },
       {
         source: "src/index.ts",
         target: "src/services/reportService.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/repositories/storage.ts",
         target: "src/models/widget.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "type-import"
       },
       {
         source: "src/services/dataService.ts",
         target: "src/repositories/storage.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/services/reportService.ts",
         target: "src/models/widget.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "type-import"
       },
       {
         source: "src/services/reportService.ts",
         target: "src/services/dataService.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/services/reportService.ts",
         target: "src/utils/format.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/utils/format.ts",
         target: "src/models/widget.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "type-import"
       }
     ]);
@@ -117,13 +117,13 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "b.ts",
         target: "c.ts",
-        relation: "uses",
+        relation: "references",
         provenance: "type-import"
       },
       {
         source: "a.ts",
         target: "b.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       }
     ];
@@ -134,12 +134,12 @@ describe("TypeScript fixture oracle", () => {
         "  {",
         '    "source": "a.ts",',
         '    "target": "b.ts",',
-        '    "relation": "imports"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "b.ts",',
         '    "target": "c.ts",',
-        '    "relation": "uses"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -151,13 +151,13 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/util.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/index.ts",
         target: "src/manual.ts",
-        relation: "uses",
+        relation: "references",
         provenance: "type-import"
       }
     ];
@@ -167,7 +167,7 @@ describe("TypeScript fixture oracle", () => {
         {
           source: "src/index.ts",
           target: "src/manual.ts",
-          relation: "uses"
+          relation: "references"
         },
         {
           source: "docs/spec.md",
@@ -186,19 +186,19 @@ describe("TypeScript fixture oracle", () => {
     });
 
     expect(result.autoRecords).toEqual([
-      toRecord("src/index.ts", "src/manual.ts", "uses"),
-      toRecord("src/index.ts", "src/util.ts", "imports")
+      toRecord("src/index.ts", "src/manual.ts", "references"),
+      toRecord("src/index.ts", "src/util.ts", "references")
     ]);
 
     expect(result.manualRecords).toEqual([
       toRecord("docs/spec.md", "src/index.ts", "documents"),
-      toRecord("src/index.ts", "src/manual.ts", "uses")
+      toRecord("src/index.ts", "src/manual.ts", "references")
     ]);
 
     expect(result.mergedRecords).toEqual([
       toRecord("docs/spec.md", "src/index.ts", "documents"),
-      toRecord("src/index.ts", "src/manual.ts", "uses"),
-      toRecord("src/index.ts", "src/util.ts", "imports")
+      toRecord("src/index.ts", "src/manual.ts", "references"),
+      toRecord("src/index.ts", "src/util.ts", "references")
     ]);
 
     expect(result.missingManualEntries).toEqual([
@@ -215,13 +215,13 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/util.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       },
       {
         source: "src/index.ts",
         target: "src/manual.ts",
-        relation: "uses",
+        relation: "references",
         provenance: "type-import"
       }
     ];
@@ -231,7 +231,7 @@ describe("TypeScript fixture oracle", () => {
         {
           source: "src/index.ts",
           target: "src/manual.ts",
-          relation: "uses"
+          relation: "references"
         },
         {
           source: "docs/spec.md",
@@ -247,7 +247,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/util.ts",
-        relation: "imports",
+        relation: "references",
         provenance: "runtime-import"
       }
     ]);
@@ -256,7 +256,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/manual.ts",
-        relation: "uses",
+        relation: "references",
         provenance: "type-import"
       }
     ]);
@@ -265,7 +265,7 @@ describe("TypeScript fixture oracle", () => {
       {
         source: "src/index.ts",
         target: "src/manual.ts",
-        relation: "uses"
+        relation: "references"
       },
       {
         source: "docs/spec.md",

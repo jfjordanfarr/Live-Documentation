@@ -1,8 +1,10 @@
 #!/usr/bin/env node
+import { glob } from "glob";
 import { execSync } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 
 import {
   BENCHMARK_MANIFEST_SEGMENTS,
@@ -10,6 +12,10 @@ import {
 } from "./benchmark-manifest";
 import type { BenchmarkFixtureDefinition as ManifestFixtureDefinition } from "./benchmark-manifest";
 import { materializeFixture } from "./fixtureMaterializer";
+import {
+  inferFallbackGraph,
+  type ArtifactSeed
+} from "../../packages/shared/src/inference/fallbackInference";
 import {
   generateCFixtureGraph,
   mergeCOracleEdges,
@@ -534,8 +540,7 @@ async function regenerateCFixture(input: {
   const oracleOptions: CFixtureOracleOptions = {
     fixtureRoot: oracleRoot,
     include: oracle.include,
-    exclude: oracle.exclude,
-    relations: oracle.relations
+    exclude: oracle.exclude
   };
 
   const autoEdges = generateCFixtureGraph(oracleOptions);
@@ -543,8 +548,22 @@ async function regenerateCFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromC);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromC);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromC);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromC);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromC);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "c");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "c",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -597,8 +616,22 @@ async function regenerateTypeScriptFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromTypeScript);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromTypeScript);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromTypeScript);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromTypeScript);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromTypeScript);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "typescript");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "typescript",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -659,8 +692,22 @@ async function regeneratePythonFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromPython);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromPython);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromPython);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromPython);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromPython);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "python");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "python",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -716,8 +763,23 @@ async function regenerateRustFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromRust);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromRust);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromRust);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromRust);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromRust);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  // Use fixture include/exclude patterns, not oracle patterns, to match materialization
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "rust");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "rust",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -773,8 +835,22 @@ async function regenerateJavaFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromJava);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromJava);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromJava);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromJava);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromJava);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "java");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "java",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -830,8 +906,22 @@ async function regenerateCSharpFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromCSharp);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromCSharp);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromCSharp);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromCSharp);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromCSharp);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "csharp");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "csharp",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -887,8 +977,22 @@ async function regenerateRubyFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromRuby);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromRuby);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromRuby);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromRuby);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromRuby);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "ruby");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "ruby",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -944,8 +1048,22 @@ async function regenerateGoFixture(input: {
 
   const autoRecords = merge.autoRecords.map(toEdgeRecordFromGo);
   const manualRecords = merge.manualRecords.map(toEdgeRecordFromGo);
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecordFromGo);
+  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromGo);
   const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromGo);
+
+  // Union with tree-sitter edges for comprehensive ground truth
+  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "go");
+  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
+  const treeSitterEdges = await extractTreeSitterEdges(
+    oracleRoot,
+    "go",
+    fixtureInclude,
+    fixtureExclude
+  );
+  if (treeSitterEdges.length > 0) {
+    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
+    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
+  }
 
   const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
   const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
@@ -1023,13 +1141,15 @@ async function writeOracleArtifacts(input: {
   await fs.writeFile(path.join(outputRoot, "diff.md"), diffReport, "utf8");
 
   if (writeExpected) {
+    // Always write to ensure relation taxonomy normalization is applied
+    // (legacy relations like "imports"/"uses"/"calls" → SCIP-grounded "references")
+    const serialized = JSON.stringify(sortRecords(mergedRecords), null, 2) + "\n";
+    await fs.writeFile(expectedPath, serialized, "utf8");
     const hasChanges = additions.length > 0 || removals.length > 0;
     if (hasChanges) {
-      const serialized = JSON.stringify(sortRecords(mergedRecords), null, 2) + "\n";
-      await fs.writeFile(expectedPath, serialized, "utf8");
       console.log(`→ expected.json updated (${path.relative(REPO_ROOT, expectedPath)})`);
     } else {
-      console.log("→ expected.json already aligned (no changes written)");
+      console.log(`→ expected.json normalized (${path.relative(REPO_ROOT, expectedPath)})`);
     }
   }
 
@@ -1084,18 +1204,53 @@ function normalizeEdgeRecord(entry: unknown): EdgeRecord {
     throw new Error("Edge entries must include 'source' and 'target'");
   }
 
+  const rawRelation =
+    typeof candidate.relation === "string" && candidate.relation.length > 0
+      ? candidate.relation
+      : "default";
+
   return {
     source: normalizePath(candidate.source),
     target: normalizePath(candidate.target),
-    relation:
-      typeof candidate.relation === "string" && candidate.relation.length > 0
-        ? candidate.relation
-        : "default"
+    relation: normalizeRelationToScipTaxonomy(rawRelation)
   } satisfies EdgeRecord;
 }
 
 function normalizePath(candidate: string): string {
   return candidate.replace(/\\/g, "/");
+}
+
+/**
+ * Normalize relation types to SCIP-grounded taxonomy.
+ *
+ * Legacy heuristic oracles output fine-grained relations (imports, uses, calls, includes).
+ * SCIP indexers output coarser semantic relations (references, extends, implements).
+ *
+ * This normalization aligns all fixtures to the SCIP taxonomy so that:
+ * - inferred.json (from heuristics + tree-sitter) uses "references"
+ * - expected.json (from oracles) uses "references", "extends", "implements"
+ *
+ * The mapping:
+ * - imports, uses, calls, includes → references (general symbol usage)
+ * - extends → extends (class/type inheritance)
+ * - implements → implements (interface implementation)
+ * - default, references → references (pass-through)
+ */
+function normalizeRelationToScipTaxonomy(relation: string): string {
+  switch (relation.toLowerCase()) {
+    case "extends":
+      return "extends";
+    case "implements":
+      return "implements";
+    case "imports":
+    case "uses":
+    case "calls":
+    case "includes":
+    case "references":
+    case "default":
+    default:
+      return "references";
+  }
 }
 
 function dedupeRecords(records: EdgeRecord[]): EdgeRecord[] {
@@ -1123,6 +1278,200 @@ function computeEdgeDifferences(left: EdgeRecord[], right: EdgeRecord[]): EdgeRe
   return left.filter(record => !rightKeys.has(edgeKey(record.source, record.target, record.relation)));
 }
 
+/**
+ * Extract edges from tree-sitter parsing for union with oracle edges.
+ * This ensures expected.json = oracle ∪ tree-sitter for comprehensive ground truth.
+ */
+async function extractTreeSitterEdges(
+  workspaceRoot: string,
+  language: string,
+  include?: string[],
+  exclude?: string[]
+): Promise<EdgeRecord[]> {
+  // Build glob patterns for the language
+  const languageGlobs = getLanguageGlobs(language);
+  if (languageGlobs.length === 0) {
+    return [];
+  }
+
+  // Use include patterns if provided, otherwise use default language globs
+  const patterns = include && include.length > 0 ? include : languageGlobs;
+  const excludePatterns = exclude ?? [];
+
+  // Collect all source files
+  const allFiles: string[] = [];
+  for (const pattern of patterns) {
+    const matches = await glob(pattern, {
+      cwd: workspaceRoot,
+      ignore: excludePatterns,
+      nodir: true,
+      absolute: false
+    });
+    allFiles.push(...matches);
+  }
+
+  if (allFiles.length === 0) {
+    return [];
+  }
+
+  // Build seeds for inference
+  const seeds: ArtifactSeed[] = [];
+  for (const relativePath of allFiles) {
+    const absolutePath = path.join(workspaceRoot, relativePath);
+    try {
+      const content = await fs.readFile(absolutePath, "utf-8");
+      seeds.push({
+        uri: pathToFileURL(absolutePath).href,
+        content,
+        layer: "code",
+        language
+      });
+    } catch {
+      // Skip files that can't be read
+    }
+  }
+
+  if (seeds.length === 0) {
+    return [];
+  }
+
+  // Run inference to get edges
+  const result = await inferFallbackGraph({ seeds });
+
+  // Convert to edge records
+  const edges: EdgeRecord[] = [];
+
+  for (const link of result.links) {
+    const source = result.artifacts.find(a => a.id === link.sourceId);
+    const target = result.artifacts.find(a => a.id === link.targetId);
+    if (!source || !target) continue;
+
+    const sourcePath = toRelativePathFromUri(source.uri, workspaceRoot);
+    const targetPath = toRelativePathFromUri(target.uri, workspaceRoot);
+    if (!sourcePath || !targetPath) continue;
+
+    edges.push({
+      source: sourcePath,
+      target: targetPath,
+      relation: mapLinkKindToRelation(link.kind)
+    });
+  }
+
+  // Deduplicate and return
+  return dedupeEdgeRecords(edges);
+}
+
+function getLanguageGlobs(language: string): string[] {
+  const LANGUAGE_GLOBS: Record<string, string[]> = {
+    typescript: ["**/*.ts", "**/*.tsx"],
+    javascript: ["**/*.js", "**/*.jsx"],
+    python: ["**/*.py"],
+    go: ["**/*.go"],
+    rust: ["**/*.rs"],
+    java: ["**/*.java"],
+    csharp: ["**/*.cs"],
+    c: ["**/*.c", "**/*.h"],
+    ruby: ["**/*.rb"]
+  };
+  return LANGUAGE_GLOBS[language.toLowerCase()] ?? [];
+}
+
+function toRelativePathFromUri(uri: string, workspaceRoot: string): string | null {
+  try {
+    const absolutePath = uri.startsWith("file://")
+      ? decodeURIComponent(uri.replace("file:///", "").replace("file://", ""))
+      : uri;
+    // Normalize slashes for Windows
+    const normalized = absolutePath.replace(/\//g, path.sep);
+    const relative = path.relative(workspaceRoot, normalized);
+    // Convert to forward slashes for consistency
+    return relative.replace(/\\/g, "/");
+  } catch {
+    return null;
+  }
+}
+
+function mapLinkKindToRelation(kind: string): string {
+  // Map to SCIP taxonomy: references | extends | implements
+  if (kind === "extends") return "extends";
+  if (kind === "implements") return "implements";
+  return "references";
+}
+
+/**
+ * Resolves include patterns for a fixture, checking integrity.fileSet first,
+ * then materialization, then falling back to language defaults.
+ */
+function resolveFixtureIncludePatterns(
+  fixture: OracleFixtureDefinition,
+  language: string
+): string[] {
+  if (fixture.integrity?.fileSet?.include?.length) {
+    return fixture.integrity.fileSet.include;
+  }
+  if (fixture.materialization && fixture.materialization.kind === "git") {
+    const include = fixture.materialization.include;
+    if (include?.length) {
+      return include;
+    }
+  }
+  return getLanguageGlobs(language);
+}
+
+/**
+ * Resolves exclude patterns for a fixture.
+ */
+function resolveFixtureExcludePatterns(fixture: OracleFixtureDefinition): string[] {
+  if (fixture.integrity?.fileSet?.exclude?.length) {
+    return fixture.integrity.fileSet.exclude;
+  }
+  if (fixture.materialization && fixture.materialization.kind === "git") {
+    const exclude = fixture.materialization.exclude;
+    if (exclude?.length) {
+      return exclude;
+    }
+  }
+  return [];
+}
+
+function dedupeEdgeRecords(edges: EdgeRecord[]): EdgeRecord[] {
+  const seen = new Set<string>();
+  const result: EdgeRecord[] = [];
+  for (const edge of edges) {
+    const key = edgeKey(edge.source, edge.target, edge.relation);
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push(edge);
+    }
+  }
+  return result;
+}
+
+/**
+ * Union oracle edges with tree-sitter edges for comprehensive ground truth.
+ * Deduplicates by (source, target, relation) key.
+ */
+function unionEdges(oracleEdges: EdgeRecord[], treeSitterEdges: EdgeRecord[]): EdgeRecord[] {
+  const seen = new Set<string>();
+  const result: EdgeRecord[] = [];
+  
+  for (const edge of [...oracleEdges, ...treeSitterEdges]) {
+    const key = edgeKey(edge.source, edge.target, edge.relation);
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push(edge);
+    }
+  }
+  
+  return result.sort((a, b) => {
+    const srcCmp = a.source.localeCompare(b.source);
+    if (srcCmp !== 0) return srcCmp;
+    const tgtCmp = a.target.localeCompare(b.target);
+    if (tgtCmp !== 0) return tgtCmp;
+    return a.relation.localeCompare(b.relation);
+  });
+}
+
 function edgeKey(source: string, target: string, relation: string): string {
   return `${source}→${target}#${relation}`;
 }
@@ -1131,7 +1480,7 @@ function toEdgeRecordFromTypeScript(record: TypeScriptEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1139,7 +1488,7 @@ function toEdgeRecordFromPython(record: PythonOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1147,7 +1496,7 @@ function toEdgeRecordFromC(record: COracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1155,7 +1504,7 @@ function toEdgeRecordFromRust(record: RustOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1163,7 +1512,7 @@ function toEdgeRecordFromJava(record: JavaOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1171,7 +1520,7 @@ function toEdgeRecordFromCSharp(record: CSharpOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1179,7 +1528,7 @@ function toEdgeRecordFromRuby(record: RubyOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 
@@ -1187,7 +1536,7 @@ function toEdgeRecordFromGo(record: GoOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
-    relation: record.relation
+    relation: normalizeRelationToScipTaxonomy(record.relation)
   } satisfies EdgeRecord;
 }
 

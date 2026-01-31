@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type RustOracleEdgeRelation = "uses" | "imports";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All module/use relationships map to "references" in the canonical taxonomy.
+ */
+export type RustOracleEdgeRelation = "references";
 
 export type RustOracleProvenance = "module-declaration" | "use-statement" | "manual-override";
 
@@ -59,11 +63,6 @@ const DEFAULT_IGNORE_DIRS = new Set([
   "build"
 ]);
 
-const RELATION_PRECEDENCE: Record<RustOracleEdgeRelation, number> = {
-  uses: 0,
-  imports: 1
-};
-
 export function generateRustFixtureGraph(options: RustFixtureOracleOptions): RustOracleEdge[] {
   const fixtureRoot = path.resolve(options.fixtureRoot);
   const fileMap = collectSourceFiles(fixtureRoot, options.include, options.exclude);
@@ -72,6 +71,12 @@ export function generateRustFixtureGraph(options: RustFixtureOracleOptions): Rus
 
   for (const [absolutePath, content] of fileMap) {
     const relativePath = toFixtureRelative(absolutePath, fixtureRoot);
+    collectModDeclarations({
+      content,
+      sourceRelativePath: relativePath,
+      moduleIndex,
+      edges
+    });
     collectUseEdges({
       content,
       sourceRelativePath: relativePath,
@@ -228,32 +233,102 @@ function collectUseEdges(input: {
 }): void {
   const { content, sourceRelativePath, moduleIndex, edges } = input;
   const sanitized = stripDocComments(content);
-  // Match use statements at any indentation level (handles #[cfg(test)] mod tests { use ... })
-  const pattern = /^\s*use\s+([^;]+);/gm;
+  
+  // Strategy: Match all use statements and filter by moduleIndex to determine locality.
+  // If the first segment of the path matches a known module in moduleIndex, it's local.
+  // This handles:
+  // - use crate::module::* (explicit crate path)
+  // - use self::module::* (relative to current module)
+  // - use super::module::* (parent module)
+  // - use module::* (bare path that matches a local mod declaration)
+  
+  // First, handle explicit crate/self/super paths
+  const explicitPattern = /^\s*use\s+(crate|self|super)::([^;]+);/gm;
   let match: RegExpExecArray | null;
-  while ((match = pattern.exec(sanitized)) !== null) {
-    const statement = match[0];
-    const parsed = parseUseStatement(statement);
-    if (!parsed) {
+  while ((match = explicitPattern.exec(sanitized)) !== null) {
+    const rest = match[2];   // module path after the prefix
+    
+    // Extract the first module name from the path
+    const moduleName = rest.split("::")[0].split("{")[0].trim();
+    if (!moduleName) {
       continue;
     }
-    const { moduleName, symbols } = parsed;
+    
     const target = moduleIndex.get(moduleName);
     if (!target || target === sourceRelativePath) {
       continue;
     }
-    const relation = classifyUseRelation(symbols, moduleName, moduleIndex);
     addEdge({
       edges,
       source: sourceRelativePath,
       target,
-      relation,
+      relation: "references",
+      provenance: "use-statement"
+    });
+  }
+  
+  // Second, handle bare paths that match known modules (declared via `mod foo;`)
+  // Pattern: `use foo::*` where foo is NOT crate/self/super
+  const barePattern = /^\s*use\s+([a-zA-Z_][a-zA-Z0-9_]*)::([^;]+);/gm;
+  while ((match = barePattern.exec(sanitized)) !== null) {
+    const firstSegment = match[1];
+    // Skip if this is an explicit path (already handled above)
+    if (firstSegment === "crate" || firstSegment === "self" || firstSegment === "super") {
+      continue;
+    }
+    
+    // Check if this bare path refers to a known local module
+    const target = moduleIndex.get(firstSegment);
+    if (!target || target === sourceRelativePath) {
+      continue;
+    }
+    addEdge({
+      edges,
+      source: sourceRelativePath,
+      target,
+      relation: "references",
       provenance: "use-statement"
     });
   }
 }
 
-function parseUseStatement(statement: string): {
+/**
+ * Collects edges for `mod foo;` declarations.
+ * 
+ * When a file contains `mod foo;`, it declares that `foo` is a submodule.
+ * This creates an edge from the declaring file to the module file (foo.rs or foo/mod.rs).
+ */
+function collectModDeclarations(input: {
+  content: string;
+  sourceRelativePath: string;
+  moduleIndex: Map<string, string>;
+  edges: Map<string, RustOracleEdge>;
+}): void {
+  const { content, sourceRelativePath, moduleIndex, edges } = input;
+  const sanitized = stripDocComments(content);
+  
+  // Match `mod foo;` declarations (not `mod foo { ... }` inline modules)
+  // This pattern captures: mod modulename;
+  const pattern = /^\s*(?:pub\s+)?mod\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*;/gm;
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(sanitized)) !== null) {
+    const moduleName = match[1];
+    
+    const target = moduleIndex.get(moduleName);
+    if (!target || target === sourceRelativePath) {
+      continue;
+    }
+    addEdge({
+      edges,
+      source: sourceRelativePath,
+      target,
+      relation: "references",
+      provenance: "module-declaration"
+    });
+  }
+}
+
+function _parseUseStatement(statement: string): {
   moduleName: string;
   symbols: string[];
 } | null {
@@ -299,21 +374,13 @@ function parseUseStatement(statement: string): {
   return { moduleName, symbols: [symbol] };
 }
 
-function classifyUseRelation(
-  symbols: string[],
-  moduleName: string,
-  moduleIndex: Map<string, string>
+function _classifyUseRelation(
+  _symbols: string[],
+  _moduleName: string,
+  _moduleIndex: Map<string, string>
 ): RustOracleEdgeRelation {
-  if (symbols.length === 0) {
-    return moduleIndex.has(moduleName) ? "imports" : "uses";
-  }
-  if (symbols.every(symbol => /^\p{Lu}/u.test(symbol))) {
-    return "uses";
-  }
-  if (!moduleIndex.has(moduleName)) {
-    return "imports";
-  }
-  return symbols.some(symbol => symbol.includes("::")) ? "uses" : "imports";
+  // All relationships map to 'references' in SCIP-grounded taxonomy
+  return "references";
 }
 
 function collectModuleReferences(input: {
@@ -324,10 +391,21 @@ function collectModuleReferences(input: {
 }): void {
   const { content, sourceRelativePath, moduleIndex, edges } = input;
   const sanitized = stripDocComments(content);
-  const pattern = /\b([a-zA-Z_][a-zA-Z0-9_]*)::[a-zA-Z_][a-zA-Z0-9_]*/g;
+  
+  // Only match qualified paths that are DEFINITELY local:
+  // - crate::module::symbol
+  // - self::module::symbol
+  // - super::module::symbol
+  // 
+  // We do NOT match bare `module::symbol` patterns because those could refer to:
+  // - External crates (e.g., serde::Serialize)
+  // - Types in the current scope (e.g., Value::from_serde)
+  //
+  // This prevents false positives when an external crate has the same name as a local module.
+  const pattern = /\b(crate|self|super)::([a-zA-Z_][a-zA-Z0-9_]*)/g;
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(sanitized)) !== null) {
-    const moduleName = match[1];
+    const moduleName = match[2];
     const target = moduleIndex.get(moduleName);
     if (!target || target === sourceRelativePath) {
       continue;
@@ -336,7 +414,7 @@ function collectModuleReferences(input: {
       edges,
       source: sourceRelativePath,
       target,
-      relation: "imports",
+      relation: "references",
       provenance: "module-declaration"
     });
   }
@@ -371,8 +449,8 @@ function addEdge(input: {
 }): void {
   const { edges, source, target, relation, provenance } = input;
   const key = `${source}::${target}`;
-  const existing = edges.get(key);
-  if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {
+  // With single relation type, we just check if edge exists
+  if (!edges.has(key)) {
     edges.set(key, { source, target, relation, provenance });
   }
 }
@@ -399,9 +477,7 @@ function compareEdges(left: RustOracleEdge, right: RustOracleEdge): number {
   if (left.target !== right.target) {
     return left.target.localeCompare(right.target);
   }
-  if (left.relation !== right.relation) {
-    return left.relation.localeCompare(right.relation);
-  }
+  // Relation is always 'references' now, skip comparison
   return left.provenance.localeCompare(right.provenance);
 }
 

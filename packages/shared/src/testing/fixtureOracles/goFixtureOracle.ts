@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type GoOracleEdgeRelation = "imports" | "uses";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All import relationships map to "references" in the canonical taxonomy.
+ */
+export type GoOracleEdgeRelation = "references";
 
 export type GoOracleProvenance = "import-statement" | "manual-override";
 
@@ -58,11 +62,6 @@ const DEFAULT_IGNORE_DIRS = new Set([
   "bin",
   "pkg"
 ]);
-
-const RELATION_PRECEDENCE: Record<GoOracleEdgeRelation, number> = {
-  uses: 0,
-  imports: 1
-};
 
 /**
  * Generates the fixture graph by analyzing Go source files.
@@ -236,8 +235,8 @@ function readModuleName(fixtureRoot: string): string | undefined {
  *   src/processor.go  (package processor)
  *
  * The index maps:
- *   "rosetta/models"    → "src/models.go"
- *   "rosetta/processor" → "src/processor.go"
+ *   "rosetta/models"    â†’ "src/models.go"
+ *   "rosetta/processor" â†’ "src/processor.go"
  *
  * @remarks
  * Go packages can span multiple files in the same directory.
@@ -296,9 +295,8 @@ function collectImportEdges(input: {
   }
 
   const imports = parseImports(content);
-  const basename = path.basename(sourceRelativePath);
-  // Match heuristic behavior: main.go uses "imports", other files use "uses"
-  const relation: GoOracleEdgeRelation = basename === "main.go" ? "imports" : "uses";
+  // Use SCIP-grounded relation for all imports
+  const relation: GoOracleEdgeRelation = "references";
   
   for (const importPath of imports) {
     // Only consider imports from our module
@@ -367,8 +365,8 @@ function addEdge(input: {
 }): void {
   const { edges, source, target, relation, provenance } = input;
   const key = `${source}::${target}`;
-  const existing = edges.get(key);
-  if (!existing || RELATION_PRECEDENCE[relation] > RELATION_PRECEDENCE[existing.relation]) {
+  // With single relation type, we just check if edge exists
+  if (!edges.has(key)) {
     edges.set(key, { source, target, relation, provenance });
   }
 }
@@ -384,9 +382,7 @@ function compareEdges(left: GoOracleEdge, right: GoOracleEdge): number {
   if (left.target !== right.target) {
     return left.target.localeCompare(right.target);
   }
-  if (left.relation !== right.relation) {
-    return left.relation.localeCompare(right.relation);
-  }
+  // Relation is always 'references' now, skip comparison
   return left.provenance.localeCompare(right.provenance);
 }
 

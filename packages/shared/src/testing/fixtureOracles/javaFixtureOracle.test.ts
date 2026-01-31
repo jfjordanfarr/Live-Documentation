@@ -35,37 +35,37 @@ describe("Java fixture oracle", () => {
       {
         source: "src/com/example/app/App.java",
         target: "src/com/example/data/Reader.java",
-        relation: "imports",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/app/App.java",
         target: "src/com/example/format/ReportWriter.java",
-        relation: "imports",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/app/App.java",
         target: "src/com/example/model/Record.java",
-        relation: "uses",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/data/Reader.java",
         target: "src/com/example/model/Record.java",
-        relation: "uses",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/format/ReportWriter.java",
         target: "src/com/example/data/Catalog.java",
-        relation: "imports",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/format/ReportWriter.java",
         target: "src/com/example/model/Record.java",
-        relation: "uses",
+        relation: "references",
         provenance: "import-statement"
       }
     ]);
@@ -76,13 +76,13 @@ describe("Java fixture oracle", () => {
       {
         source: "src/com/example/a/A.java",
         target: "src/com/example/b/B.java",
-        relation: "imports",
+        relation: "references",
         provenance: "import-statement"
       },
       {
         source: "src/com/example/a/A.java",
         target: "src/com/example/c/C.java",
-        relation: "uses",
+        relation: "references",
         provenance: "import-statement"
       }
     ];
@@ -93,12 +93,12 @@ describe("Java fixture oracle", () => {
         "  {",
         '    "source": "src/com/example/a/A.java",',
         '    "target": "src/com/example/b/B.java",',
-        '    "relation": "imports"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "src/com/example/a/A.java",',
         '    "target": "src/com/example/c/C.java",',
-        '    "relation": "uses"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -110,7 +110,7 @@ describe("Java fixture oracle", () => {
       {
         source: "src/com/example/App.java",
         target: "src/com/example/runtime/Bootstrap.java",
-        relation: "imports",
+        relation: "references",
         provenance: "import-statement"
       }
     ];
@@ -120,7 +120,7 @@ describe("Java fixture oracle", () => {
         {
           source: "src/com/example/App.java",
           target: "src/com/example/plugins/Registry.java",
-          relation: "uses"
+          relation: "references"
         }
       ]
     };
@@ -132,7 +132,7 @@ describe("Java fixture oracle", () => {
       {
         source: "src/com/example/App.java",
         target: "src/com/example/plugins/Registry.java",
-        relation: "uses"
+        relation: "references"
       }
     ]);
 
@@ -147,26 +147,26 @@ describe("Java fixture oracle", () => {
       toRecord(
         "src/com/example/App.java",
         "src/com/example/runtime/Bootstrap.java",
-        "imports"
+        "references"
       )
     ]);
     expect(result.manualRecords).toEqual([
       toRecord(
         "src/com/example/App.java",
         "src/com/example/plugins/Registry.java",
-        "uses"
+        "references"
       )
     ]);
     expect(result.mergedRecords).toEqual([
       toRecord(
         "src/com/example/App.java",
         "src/com/example/plugins/Registry.java",
-        "uses"
+        "references"
       ),
       toRecord(
         "src/com/example/App.java",
         "src/com/example/runtime/Bootstrap.java",
-        "imports"
+        "references"
       )
     ]);
   });

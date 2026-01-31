@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-rustfixtureoracle-ts
-- Generated At: 2026-01-30T21:04:52.697Z
+- Generated At: 2026-01-30T23:50:04.300Z
 
 ## Authored
 ### Purpose
@@ -16,65 +16,69 @@ Scans Rust fixture crates to emit `use` and module edges so benchmarks can compa
 - Covered by the Nov 16 unit suite alongside the other oracles; rerun `npm run test:unit -- rustFixtureOracle` after structural changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.697Z","inputHash":"948f61b78beaa552"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.300Z","inputHash":"66bfaf5648d00c2e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RustOracleEdgeRelation` {#symbol-rustoracleedgerelation}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L4)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L8)
+
+##### `RustOracleEdgeRelation` — Summary
+SCIP-grounded relation taxonomy.
+All module/use relationships map to "references" in the canonical taxonomy.
 
 #### `RustOracleProvenance` {#symbol-rustoracleprovenance}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L6)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L10)
 
 #### `RustOracleEdge` {#symbol-rustoracleedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L8)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L12)
 
 #### `RustOracleEdgeRecord` {#symbol-rustoracleedgerecord}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L15)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L19)
 
 #### `RustFixtureOracleOptions` {#symbol-rustfixtureoracleoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L21)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L25)
 
 #### `RustOracleOverrideEntry` {#symbol-rustoracleoverrideentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L27)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L31)
 
 #### `RustOracleOverrideConfig` {#symbol-rustoracleoverrideconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L33)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L37)
 
 #### `RustOracleSegmentPartition` {#symbol-rustoraclesegmentpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L37)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L41)
 
 #### `RustOracleMergeResult` {#symbol-rustoraclemergeresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L44)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L48)
 
 #### `generateRustFixtureGraph` {#symbol-generaterustfixturegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L67)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L66)
 - Returns: [`RustOracleEdge`](#symbol-rustoracleedge)[]
 - Parameters: `options`: [`RustFixtureOracleOptions`](#symbol-rustfixtureoracleoptions)
 
 #### `serializeRustOracleEdges` {#symbol-serializerustoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L92)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L97)
 - Parameters: `edges`: [`RustOracleEdge`](#symbol-rustoracleedge)[]
 
 #### `partitionRustOracleSegments` {#symbol-partitionrustoraclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L97)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L102)
 - Returns: [`RustOracleSegmentPartition`](#symbol-rustoraclesegmentpartition)
 - Parameters: `edges`: [`RustOracleEdge`](#symbol-rustoracleedge)[]; `overrides`: [`RustOracleOverrideConfig`](#symbol-rustoracleoverrideconfig)
 
 #### `mergeRustOracleEdges` {#symbol-mergerustoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L133)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts#L138)
 - Returns: [`RustOracleMergeResult`](#symbol-rustoraclemergeresult)
 - Parameters: `edges`: [`RustOracleEdge`](#symbol-rustoracleedge)[]; `overrides`: [`RustOracleOverrideConfig`](#symbol-rustoracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

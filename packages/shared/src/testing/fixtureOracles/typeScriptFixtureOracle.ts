@@ -10,7 +10,11 @@ import {
   isLikelyTypeDefinitionSpecifier
 } from "../../language/typeScriptAstUtils";
 
-export type OracleEdgeRelation = "imports" | "uses";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All import/export relationships map to "references" in the canonical taxonomy.
+ */
+export type OracleEdgeRelation = "references";
 
 export type OracleEdgeProvenance = "runtime-import" | "type-import";
 
@@ -178,9 +182,7 @@ export function generateTypeScriptFixtureGraph(
     if (left.target !== right.target) {
       return left.target.localeCompare(right.target);
     }
-    if (left.relation !== right.relation) {
-      return left.relation.localeCompare(right.relation);
-    }
+    // Relation is always 'references' now, skip comparison
     return left.provenance.localeCompare(right.provenance);
   });
 }
@@ -290,27 +292,27 @@ function classifyImportUsage(input: {
 
   if (!hasNames) {
     return {
-      relation: "imports",
+      relation: "references",
       provenance: "runtime-import"
     };
   }
 
   if (runtimeUsage) {
     return {
-      relation: "imports",
+      relation: "references",
       provenance: "runtime-import"
     };
   }
 
   if (typeUsage) {
     return {
-      relation: "imports",
+      relation: "references",
       provenance: "type-import"
     };
   }
 
   return {
-    relation: "imports",
+    relation: "references",
     provenance: "type-import"
   };
 }
@@ -318,12 +320,12 @@ function classifyImportUsage(input: {
 function classifyExportUsage(input: { isTypeOnly: boolean }): ImportExportClassification {
   if (input.isTypeOnly) {
     return {
-      relation: "imports",
+      relation: "references",
       provenance: "type-import"
     };
   }
   return {
-    relation: "imports",
+    relation: "references",
     provenance: "runtime-import"
   };
 }
@@ -360,7 +362,7 @@ function handleModuleReference(context: ModuleReferenceContext): void {
 
   // If the resolution leads to a declaration file, force type-only provenance.
   const isDeclaration = DECLARATION_EXTENSIONS.has(path.extname(resolution));
-  const effectiveRelation = isDeclaration ? "imports" : relation;
+  const effectiveRelation = isDeclaration ? "references" : relation;
   const effectiveProvenance = isDeclaration ? "type-import" : provenance;
 
   edges.set(key, {
@@ -505,7 +507,7 @@ function isWithinRoot(candidate: string, root: string): boolean {
 }
 
 function edgeKey(source: string, target: string, relation: string): string {
-  return `${source}→${target}#${relation}`;
+  return `${source}â†’${target}#${relation}`;
 }
 
 function toRecordFromEdge(edge: OracleEdge): OracleEdgeRecord {

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-expected-json
-- Generated At: 2026-01-15T18:39:07.048Z
+- Generated At: 2026-01-30T23:50:04.501Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the expected dependency map for the Python pipeline benchmark so validat
 Use `npm run fixtures:regenerate -- --fixture python-pipeline --write` prior to accepting analyzer or fixture edits.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.048Z","inputHash":"4c22b325a419732d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.501Z","inputHash":"89dba05584470a9b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,6 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`__init__`](./src/__init__.py.mdmd.md)
 - [`main`](./src/main.py.mdmd.md)
 - [`metrics`](./src/metrics.py.mdmd.md)
 - [`pipeline`](./src/pipeline.py.mdmd.md)

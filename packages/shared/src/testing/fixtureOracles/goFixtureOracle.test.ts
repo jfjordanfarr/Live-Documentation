@@ -70,7 +70,7 @@ func CreateRecord() string {
     expect(edges[0]).toEqual({
       source: "src/main.go",
       target: "src/models/models.go",
-      relation: "imports",
+      relation: "references",
       provenance: "import-statement"
     });
   });
@@ -198,32 +198,32 @@ func TestMain(t *testing.T) {}
 
   it("serializes edges to JSON", () => {
     const edges = [
-      { source: "src/main.go", target: "src/models/models.go", relation: "imports" as const, provenance: "import-statement" as const }
+      { source: "src/main.go", target: "src/models/models.go", relation: "references" as const, provenance: "import-statement" as const }
     ];
 
     const serialized = serializeGoOracleEdges(edges);
     const parsed = JSON.parse(serialized);
 
     expect(parsed).toEqual([
-      { source: "src/main.go", target: "src/models/models.go", relation: "imports" }
+      { source: "src/main.go", target: "src/models/models.go", relation: "references" }
     ]);
   });
 
   it("merges edges with overrides", () => {
     const edges = [
-      { source: "src/a.go", target: "src/b.go", relation: "imports" as const, provenance: "import-statement" as const }
+      { source: "src/a.go", target: "src/b.go", relation: "references" as const, provenance: "import-statement" as const }
     ];
 
     const overrides = {
       manualEdges: [
-        { source: "src/a.go", target: "src/c.go", relation: "uses" }
+        { source: "src/a.go", target: "src/c.go", relation: "references" }
       ]
     };
 
     const result = mergeGoOracleEdges(edges, overrides);
 
     expect(result.mergedRecords).toHaveLength(2);
-    expect(result.mergedRecords).toContainEqual({ source: "src/a.go", target: "src/b.go", relation: "imports" });
-    expect(result.mergedRecords).toContainEqual({ source: "src/a.go", target: "src/c.go", relation: "uses" });
+    expect(result.mergedRecords).toContainEqual({ source: "src/a.go", target: "src/b.go", relation: "references" });
+    expect(result.mergedRecords).toContainEqual({ source: "src/a.go", target: "src/c.go", relation: "references" });
   });
 });

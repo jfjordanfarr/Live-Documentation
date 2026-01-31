@@ -2,91 +2,91 @@
   {
     "source": "src/com/rosetta/app/Main.java",
     "target": "src/com/rosetta/models/ModelFactory.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/Main.java",
     "target": "src/com/rosetta/models/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/Main.java",
     "target": "src/com/rosetta/models/Report.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/Main.java",
     "target": "src/com/rosetta/processor/Processor.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/PipelineTest.java",
     "target": "src/com/rosetta/models/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/PipelineTest.java",
     "target": "src/com/rosetta/models/Report.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/PipelineTest.java",
     "target": "src/com/rosetta/processor/Processor.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/app/PipelineTest.java",
     "target": "src/com/rosetta/types/ProcessorConfig.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/helpers/HelpersTest.java",
     "target": "src/com/rosetta/helpers/Helpers.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/models/ModelFactory.java",
     "target": "src/com/rosetta/models/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/models/ModelFactory.java",
     "target": "src/com/rosetta/types/ProcessorConfig.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/models/Record.java",
     "target": "src/com/rosetta/types/Entry.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/models/Record.java",
     "target": "src/com/rosetta/types/Status.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/processor/Processor.java",
     "target": "src/com/rosetta/helpers/Helpers.java",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/processor/Processor.java",
     "target": "src/com/rosetta/types/ProcessorConfig.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/processor/ProcessorTest.java",
     "target": "src/com/rosetta/models/Record.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/processor/ProcessorTest.java",
     "target": "src/com/rosetta/models/Report.java",
-    "relation": "uses"
+    "relation": "references"
   },
   {
     "source": "src/com/rosetta/processor/ProcessorTest.java",
     "target": "src/com/rosetta/processor/Processor.java",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

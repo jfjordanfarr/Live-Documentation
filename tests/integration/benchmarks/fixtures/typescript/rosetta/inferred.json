@@ -2,61 +2,61 @@
   {
     "source": "src/helpers.test.ts",
     "target": "src/helpers.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.ts",
     "target": "src/models.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.ts",
     "target": "src/processor.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/models.ts",
     "target": "src/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.test.ts",
     "target": "src/models.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.test.ts",
     "target": "src/processor.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.test.ts",
     "target": "src/types.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.test.ts",
     "target": "src/models.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.test.ts",
     "target": "src/processor.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.ts",
     "target": "src/helpers.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.ts",
     "target": "src/models.ts",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.ts",
     "target": "src/types.ts",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

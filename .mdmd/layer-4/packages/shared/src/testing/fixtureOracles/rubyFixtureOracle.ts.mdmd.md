@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-rubyfixtureoracle-ts
-- Generated At: 2026-01-30T21:04:52.693Z
+- Generated At: 2026-01-30T23:50:04.296Z
 
 ## Authored
 ### Purpose
@@ -16,65 +16,69 @@ Parses Ruby fixtures with a lightweight AST walk to extract `require` and `inclu
 - Verified in the Nov 16 unit sweep alongside the other fixture oracles, so rerun `npm run test:unit -- rubyFixtureOracle` after meaningful parser changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.693Z","inputHash":"211c1bdfd6a40300"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.296Z","inputHash":"8a7ebf922b422e29"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RubyOracleEdgeRelation` {#symbol-rubyoracleedgerelation}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L4)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L8)
+
+##### `RubyOracleEdgeRelation` — Summary
+SCIP-grounded relation taxonomy.
+All require relationships map to "references" in the canonical taxonomy.
 
 #### `RubyOracleProvenance` {#symbol-rubyoracleprovenance}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L6)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L10)
 
 #### `RubyOracleEdge` {#symbol-rubyoracleedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L8)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L12)
 
 #### `RubyOracleEdgeRecord` {#symbol-rubyoracleedgerecord}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L15)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L19)
 
 #### `RubyFixtureOracleOptions` {#symbol-rubyfixtureoracleoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L21)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L25)
 
 #### `RubyOracleOverrideEntry` {#symbol-rubyoracleoverrideentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L27)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L31)
 
 #### `RubyOracleOverrideConfig` {#symbol-rubyoracleoverrideconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L33)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L37)
 
 #### `RubyOracleSegmentPartition` {#symbol-rubyoraclesegmentpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L37)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L41)
 
 #### `RubyOracleMergeResult` {#symbol-rubyoraclemergeresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L44)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L48)
 
 #### `generateRubyFixtureGraph` {#symbol-generaterubyfixturegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L61)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L65)
 - Returns: [`RubyOracleEdge`](#symbol-rubyoracleedge)[]
 - Parameters: `options`: [`RubyFixtureOracleOptions`](#symbol-rubyfixtureoracleoptions)
 
 #### `serializeRubyOracleEdges` {#symbol-serializerubyoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L80)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L84)
 - Parameters: `edges`: [`RubyOracleEdge`](#symbol-rubyoracleedge)[]
 
 #### `partitionRubyOracleSegments` {#symbol-partitionrubyoraclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L85)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L89)
 - Returns: [`RubyOracleSegmentPartition`](#symbol-rubyoraclesegmentpartition)
 - Parameters: `edges`: [`RubyOracleEdge`](#symbol-rubyoracleedge)[]; `overrides`: [`RubyOracleOverrideConfig`](#symbol-rubyoracleoverrideconfig)
 
 #### `mergeRubyOracleEdges` {#symbol-mergerubyoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L121)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts#L125)
 - Returns: [`RubyOracleMergeResult`](#symbol-rubyoraclemergeresult)
 - Parameters: `edges`: [`RubyOracleEdge`](#symbol-rubyoracleedge)[]; `overrides`: [`RubyOracleOverrideConfig`](#symbol-rubyoracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

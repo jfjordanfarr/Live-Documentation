@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type RubyOracleEdgeRelation = "requires";
+/**
+ * SCIP-grounded relation taxonomy.
+ * All require relationships map to "references" in the canonical taxonomy.
+ */
+export type RubyOracleEdgeRelation = "references";
 
 export type RubyOracleProvenance = "require" | "manual-override";
 
@@ -218,7 +222,7 @@ function collectRequireEdges(input: {
       edges.set(key, {
         source: sourceRelativePath,
         target: targetRelative,
-        relation: "requires",
+        relation: "references",
         provenance: "require"
       });
     }

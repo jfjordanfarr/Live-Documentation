@@ -13,19 +13,19 @@ describe("pythonFixtureOracle", () => {
     {
       source: "src/main.py",
       target: "src/helpers.py",
-      relation: "imports",
+      relation: "references",
       provenance: "module-import"
     },
     {
       source: "src/main.py",
       target: "src/util.py",
-      relation: "imports",
+      relation: "references",
       provenance: "module-import"
     },
     {
       source: "src/util.py",
       target: "src/helpers.py",
-      relation: "imports",
+      relation: "references",
       provenance: "module-import"
     }
   ];
@@ -35,17 +35,17 @@ describe("pythonFixtureOracle", () => {
       {
         source: "src/main.py",
         target: "src/util.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/main.py",
         target: "src/manual.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/missing.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       }
     ]
   };
@@ -59,12 +59,12 @@ describe("pythonFixtureOracle", () => {
       {
         source: "src/main.py",
         target: "src/manual.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/missing.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       }
     ]);
   });
@@ -79,12 +79,12 @@ describe("pythonFixtureOracle", () => {
       {
         source: "src/main.py",
         target: "src/manual.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/missing.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       }
     ]);
 
@@ -92,27 +92,27 @@ describe("pythonFixtureOracle", () => {
       {
         source: "src/main.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/main.py",
         target: "src/manual.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/main.py",
         target: "src/util.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/missing.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/util.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       }
     ]);
   });
@@ -130,17 +130,17 @@ describe("pythonFixtureOracle", () => {
       {
         source: "src/main.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/main.py",
         target: "src/util.py",
-        relation: "imports"
+        relation: "references"
       },
       {
         source: "src/util.py",
         target: "src/helpers.py",
-        relation: "imports"
+        relation: "references"
       }
     ]);
   });

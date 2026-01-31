@@ -186,9 +186,9 @@ export async function inferFallbackGraph(
     } satisfies HeuristicArtifact;
   });
 
-  const heuristics = createDefaultHeuristics();
+  const heuristics = await createDefaultHeuristics();
   for (const heuristic of heuristics) {
-    heuristic.initialize?.(heuristicArtifacts);
+    await heuristic.initialize?.(heuristicArtifacts);
   }
 
   const knowledgeArtifacts = heuristicArtifacts.map((entry) => ({ ...entry.artifact }));
@@ -207,7 +207,7 @@ export async function inferFallbackGraph(
       if (!heuristic.appliesTo(source)) {
         continue;
       }
-      heuristic.evaluate(source, (candidate) => {
+      await heuristic.evaluate(source, (candidate) => {
         accumulator.addHeuristicMatch(source, candidate, heuristic.id);
       });
     }

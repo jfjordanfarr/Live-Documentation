@@ -2,61 +2,61 @@
   {
     "source": "src/main.py",
     "target": "src/models.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.py",
     "target": "src/processor.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/models.py",
     "target": "src/core_types.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.py",
     "target": "src/core_types.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.py",
     "target": "src/helpers.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/processor.py",
     "target": "src/models.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_helpers.py",
     "target": "src/helpers.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_pipeline.py",
     "target": "src/core_types.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_pipeline.py",
     "target": "src/models.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_pipeline.py",
     "target": "src/processor.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_processor.py",
     "target": "src/models.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/test_processor.py",
     "target": "src/processor.py",
-    "relation": "imports"
+    "relation": "references"
   }
 ]

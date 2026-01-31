@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-typescriptfixtureoracle-ts
-- Generated At: 2026-01-30T21:04:52.703Z
+- Generated At: 2026-01-30T23:50:04.306Z
 
 ## Authored
 ### Purpose
@@ -16,65 +16,69 @@ Builds compiler-derived dependency edges for TypeScript benchmark fixtures so re
 - Regularly re-run via `npm run test:unit -- typeScriptFixtureOracle` and the broader unit sweep (latest on Nov 16) to guard the classification logic and serialization contract <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.703Z","inputHash":"69397f21adbfce18"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.306Z","inputHash":"9c66f2f3f9af8084"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OracleEdgeRelation` {#symbol-oracleedgerelation}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L13)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L17)
+
+##### `OracleEdgeRelation` — Summary
+SCIP-grounded relation taxonomy.
+All import/export relationships map to "references" in the canonical taxonomy.
 
 #### `OracleEdgeProvenance` {#symbol-oracleedgeprovenance}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L15)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L19)
 
 #### `OracleEdge` {#symbol-oracleedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L17)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L21)
 
 #### `OracleEdgeRecord` {#symbol-oracleedgerecord}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L24)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L28)
 
 #### `TypeScriptFixtureOracleOptions` {#symbol-typescriptfixtureoracleoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L30)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L34)
 
 #### `OracleOverrideEntry` {#symbol-oracleoverrideentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L36)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L40)
 
 #### `OracleOverrideConfig` {#symbol-oracleoverrideconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L42)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L46)
 
 #### `OracleSegmentPartition` {#symbol-oraclesegmentpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L46)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L50)
 
 #### `OracleMergeResult` {#symbol-oraclemergeresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L53)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L57)
 
 #### `generateTypeScriptFixtureGraph` {#symbol-generatetypescriptfixturegraph}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L75)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L79)
 - Returns: [`OracleEdge`](#symbol-oracleedge)[]
 - Parameters: `options`: [`TypeScriptFixtureOracleOptions`](#symbol-typescriptfixtureoracleoptions)
 
 #### `serializeOracleEdges` {#symbol-serializeoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L188)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L190)
 - Parameters: `edges`: [`OracleEdge`](#symbol-oracleedge)[]
 
 #### `partitionOracleSegments` {#symbol-partitionoraclesegments}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L193)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L195)
 - Returns: [`OracleSegmentPartition`](#symbol-oraclesegmentpartition)
 - Parameters: `edges`: [`OracleEdge`](#symbol-oracleedge)[]; `overrides`: [`OracleOverrideConfig`](#symbol-oracleoverrideconfig)
 
 #### `mergeOracleEdges` {#symbol-mergeoracleedges}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L229)
+- Source: [source](../../../../../../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.ts#L231)
 - Returns: [`OracleMergeResult`](#symbol-oraclemergeresult)
 - Parameters: `edges`: [`OracleEdge`](#symbol-oracleedge)[]; `overrides`: [`OracleOverrideConfig`](#symbol-oracleoverrideconfig)
 <!-- LIVE-DOC:END Public Symbols -->

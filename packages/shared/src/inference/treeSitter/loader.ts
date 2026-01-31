@@ -46,6 +46,7 @@ export interface TreeSitterNode {
   childForFieldName(name: string): TreeSitterNode | null;
   descendantsOfType(types: string | string[]): TreeSitterNode[];
   children: TreeSitterNode[];
+  namedChildren: TreeSitterNode[];
   parent: TreeSitterNode | null;
 }
 

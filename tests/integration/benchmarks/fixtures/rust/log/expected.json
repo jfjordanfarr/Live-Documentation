@@ -1,15 +1,77 @@
 [
-  { "source": "src/lib.rs", "target": "src/macros.rs", "relation": "uses" },
-  { "source": "src/lib.rs", "target": "src/serde.rs", "relation": "uses" },
-  { "source": "src/lib.rs", "target": "src/kv/mod.rs", "relation": "uses" },
-  { "source": "src/lib.rs", "target": "src/__private_api.rs", "relation": "uses" },
-  { "source": "src/macros.rs", "target": "src/__private_api.rs", "relation": "uses" },
-  { "source": "src/__private_api.rs", "target": "src/lib.rs", "relation": "uses" },
-  { "source": "src/__private_api.rs", "target": "src/kv/mod.rs", "relation": "uses" },
-  { "source": "src/kv/mod.rs", "target": "src/kv/error.rs", "relation": "uses" },
-  { "source": "src/kv/mod.rs", "target": "src/kv/key.rs", "relation": "uses" },
-  { "source": "src/kv/mod.rs", "target": "src/kv/source.rs", "relation": "uses" },
-  { "source": "src/kv/mod.rs", "target": "src/kv/value.rs", "relation": "uses" },
-  { "source": "src/serde.rs", "target": "src/lib.rs", "relation": "uses" },
-  { "source": "src/kv/value.rs", "target": "src/kv/error.rs", "relation": "uses" }
+  {
+    "source": "src/__private_api.rs",
+    "target": "src/kv/mod.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/__private_api.rs",
+    "target": "src/lib.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/mod.rs",
+    "target": "src/kv/error.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/mod.rs",
+    "target": "src/kv/key.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/mod.rs",
+    "target": "src/kv/source.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/mod.rs",
+    "target": "src/kv/value.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/source.rs",
+    "target": "src/kv/mod.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/value.rs",
+    "target": "src/kv/error.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/kv/value.rs",
+    "target": "src/kv/mod.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/lib.rs",
+    "target": "src/__private_api.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/lib.rs",
+    "target": "src/kv/mod.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/lib.rs",
+    "target": "src/macros.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/lib.rs",
+    "target": "src/serde.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/macros.rs",
+    "target": "src/__private_api.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/serde.rs",
+    "target": "src/lib.rs",
+    "relation": "references"
+  }
 ]

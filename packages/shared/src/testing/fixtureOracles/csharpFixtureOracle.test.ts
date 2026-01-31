@@ -35,79 +35,79 @@ describe("C# fixture oracle", () => {
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Data/Repository.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Models/FormattedReport.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Models/Formatter.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Models/Record.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Services/ReportService.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Data/Repository.cs",
         target: "src/Diagnostics/Models/Record.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Models/FormattedReport.cs",
         target: "src/Diagnostics/Models/Record.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Models/Formatter.cs",
         target: "src/Diagnostics/Models/FormattedReport.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Models/Formatter.cs",
         target: "src/Diagnostics/Models/Record.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Services/ReportService.cs",
         target: "src/Diagnostics/Data/Repository.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Services/ReportService.cs",
         target: "src/Diagnostics/Models/FormattedReport.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Services/ReportService.cs",
         target: "src/Diagnostics/Models/Formatter.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/Services/ReportService.cs",
         target: "src/Diagnostics/Models/Record.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       }
     ]);
@@ -118,13 +118,13 @@ describe("C# fixture oracle", () => {
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Models/Formatter.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       },
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Services/ReportService.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       }
     ];
@@ -135,12 +135,12 @@ describe("C# fixture oracle", () => {
         "  {",
         '    "source": "src/Diagnostics/App.cs",',
         '    "target": "src/Diagnostics/Models/Formatter.cs",',
-        '    "relation": "uses"',
+        '    "relation": "references"',
         "  },",
         "  {",
         '    "source": "src/Diagnostics/App.cs",',
         '    "target": "src/Diagnostics/Services/ReportService.cs",',
-        '    "relation": "uses"',
+        '    "relation": "references"',
         "  }",
         "]\n"
       ].join("\n")
@@ -152,7 +152,7 @@ describe("C# fixture oracle", () => {
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/Services/ReportService.cs",
-        relation: "uses",
+        relation: "references",
         provenance: "type-usage"
       }
     ];
@@ -162,7 +162,7 @@ describe("C# fixture oracle", () => {
         {
           source: "src/Diagnostics/App.cs",
           target: "src/Diagnostics/DiagnosticsHost.cs",
-          relation: "imports"
+          relation: "references"
         }
       ]
     };
@@ -174,7 +174,7 @@ describe("C# fixture oracle", () => {
       {
         source: "src/Diagnostics/App.cs",
         target: "src/Diagnostics/DiagnosticsHost.cs",
-        relation: "imports"
+        relation: "references"
       }
     ]);
 
@@ -189,7 +189,7 @@ describe("C# fixture oracle", () => {
       toRecord(
         "src/Diagnostics/App.cs",
         "src/Diagnostics/Services/ReportService.cs",
-        "uses"
+        "references"
       )
     ]);
 
@@ -197,7 +197,7 @@ describe("C# fixture oracle", () => {
       toRecord(
         "src/Diagnostics/App.cs",
         "src/Diagnostics/DiagnosticsHost.cs",
-        "imports"
+        "references"
       )
     ]);
 
@@ -205,12 +205,12 @@ describe("C# fixture oracle", () => {
       toRecord(
         "src/Diagnostics/App.cs",
         "src/Diagnostics/DiagnosticsHost.cs",
-        "imports"
+        "references"
       ),
       toRecord(
         "src/Diagnostics/App.cs",
         "src/Diagnostics/Services/ReportService.cs",
-        "uses"
+        "references"
       )
     ]);
   });

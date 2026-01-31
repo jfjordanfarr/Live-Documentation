@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-index-ts
-- Generated At: 2026-01-28T23:22:01.819Z
+- Generated At: 2026-01-30T23:50:04.104Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Barrel export for the tree-sitter module, exposing the extraction APIs and a `Fa
 - **Sync Limitation**: The `FallbackHeuristic` interface is synchronous, but tree-sitter WASM loading is async. The `evaluate()` method is a no-op stub; use `findCrossFileEdges()` for actual edge detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:01.819Z","inputHash":"7c6bc55ac069b512"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.104Z","inputHash":"ee24888338785e82"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadTreeSitter` {#symbol-loadtreesitter}
@@ -77,31 +77,32 @@ Barrel export for the tree-sitter module, exposing the extraction APIs and a `Fa
 
 #### `createTreeSitterHeuristic` {#symbol-createtreesitterheuristic}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L93)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L88)
 
 ##### `createTreeSitterHeuristic` — Summary
 Creates a tree-sitter-based fallback heuristic.
 
-This heuristic uses tree-sitter to parse source files and extract
-actual symbol definitions and references. It achieves 100% precision
-(no false positives) because it relies on AST parsing rather than regex.
+This heuristic uses tree-sitter to parse import/use statements from source
+files and resolve them to target files in the workspace. Unlike naive symbol
+matching, this achieves 100% precision by only emitting edges for explicitly
+imported dependencies.
 
 **Important**: This factory function is async because tree-sitter WASM
 modules must be loaded before the heuristic can be used.
 
 ##### `createTreeSitterHeuristic` — Returns
-A FallbackHeuristic that uses tree-sitter for symbol extraction
+A FallbackHeuristic that uses tree-sitter for import extraction
 
 #### `isExtensionSupported` {#symbol-isextensionsupported}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L139)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L426)
 
 ##### `isExtensionSupported` — Summary
 Checks if a file extension is supported by tree-sitter.
 
 #### `getLanguageFromFilePath` {#symbol-getlanguagefromfilepath}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L147)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/index.ts#L434)
 
 ##### `getLanguageFromFilePath` — Summary
 Gets the language ID for a file path.
@@ -122,7 +123,9 @@ Gets the language ID for a file path.
 - [`languages.getLanguageConfig`](./languages.ts.mdmd.md#symbol-getlanguageconfig) (re-export)
 - [`languages.getSupportedLanguages`](./languages.ts.mdmd.md#symbol-getsupportedlanguages) (re-export)
 - [`loader.LANGUAGE_GRAMMAR_MAP`](./loader.ts.mdmd.md#symbol-language_grammar_map) (re-export)
+- [`loader.TreeSitterNode`](./loader.ts.mdmd.md#symbol-treesitternode) (re-export)
 - [`loader.getLanguageWasmPath`](./loader.ts.mdmd.md#symbol-getlanguagewasmpath) (re-export)
 - [`loader.isLanguageSupported`](./loader.ts.mdmd.md#symbol-islanguagesupported) (re-export)
 - [`loader.loadTreeSitter`](./loader.ts.mdmd.md#symbol-loadtreesitter) (re-export)
+- `path` - `path`
 <!-- LIVE-DOC:END Dependencies -->

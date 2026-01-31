@@ -2,56 +2,56 @@
   {
     "source": "src/main.py",
     "target": "src/__init__.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.py",
     "target": "src/pipeline.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/main.py",
     "target": "src/validators.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/metrics.py",
     "target": "src/__init__.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/metrics.py",
     "target": "src/validators.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.py",
     "target": "src/__init__.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.py",
     "target": "src/metrics.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.py",
     "target": "src/repositories.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/pipeline.py",
     "target": "src/validators.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/repositories.py",
     "target": "src/__init__.py",
-    "relation": "imports"
+    "relation": "references"
   },
   {
     "source": "src/repositories.py",
     "target": "src/validators.py",
-    "relation": "imports"
+    "relation": "references"
   }
 ]
