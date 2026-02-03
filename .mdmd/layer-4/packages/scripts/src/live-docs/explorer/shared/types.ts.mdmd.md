@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-types-ts
-- Generated At: 2026-01-03T20:41:39.307Z
+- Generated At: 2026-02-03T21:55:37.176Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Shared type definitions used by both the Explorer server and client. Defines the
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.307Z","inputHash":"5b15e3e8aeb6de08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.176Z","inputHash":"9fc4a5d99a803655"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerLinkKind` {#symbol-explorerlinkkind}

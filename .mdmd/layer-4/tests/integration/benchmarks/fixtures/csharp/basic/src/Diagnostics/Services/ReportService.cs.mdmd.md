@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/Services/ReportService.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-services-reportservice-cs
-- Generated At: 2025-12-06T22:49:48.401Z
+- Generated At: 2026-02-03T21:55:42.885Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Creates formatted diagnostics reports for the C# basic benchmark, bridging repos
 Both `Process` methods intentionally exist to exercise overload analysis; keep their signatures stable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.401Z","inputHash":"89598895f06f8667"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.885Z","inputHash":"1967f2912e7114d3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportService (class)` {#symbol-reportservice-class}

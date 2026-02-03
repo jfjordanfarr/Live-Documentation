@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-rubyfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.539Z
+- Generated At: 2026-02-03T21:55:41.081Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Asserts the Ruby oracle’s ability to recover `require`/`include` edges and hon
 - Guards against the doc-comment regression called out on Nov 14 and was revalidated in the Nov 16 unit run; rerun this suite whenever the parser or fixture fixtures shift <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3008-L3040> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.539Z","inputHash":"c2e2ef52fe4c19a5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.081Z","inputHash":"1f6b0ca980007435"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

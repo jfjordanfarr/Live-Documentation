@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/basic/lib/formatter.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-basic-lib-formatter-rb
-- Generated At: 2025-12-06T22:49:48.552Z
+- Generated At: 2026-02-03T21:55:45.272Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Routes formatting calls for the Ruby basic benchmark, intentionally exposing a l
 Preserve the embedded documentation and module function style—they help exercise the analyzer's comment handling.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.552Z","inputHash":"9f002883746e3c99"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.272Z","inputHash":"bd93d9dcf0f4ff0f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}

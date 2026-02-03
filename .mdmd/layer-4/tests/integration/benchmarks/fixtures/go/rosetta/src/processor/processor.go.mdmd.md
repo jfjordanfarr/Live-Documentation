@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/processor/processor.go
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-go-rosetta-src-processor-processor-go
-- Generated At: 2026-01-15T18:20:23.040Z
+- Generated At: 2026-02-03T21:55:43.680Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Core processing logic for the Go Rosetta Stone benchmark, transforming models us
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:20:23.040Z","inputHash":"c9eaf3fae1be4e93"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.680Z","inputHash":"d55acb3bc4a220e3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DefaultConfig` {#symbol-defaultconfig}

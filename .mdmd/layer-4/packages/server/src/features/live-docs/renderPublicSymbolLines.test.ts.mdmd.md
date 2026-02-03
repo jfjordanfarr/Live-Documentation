@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/live-docs/renderPublicSymbolLines.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-live-docs-renderpublicsymbollines-test-ts
-- Generated At: 2025-12-15T00:38:06.481Z
+- Generated At: 2026-02-03T21:55:37.785Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Ensures the public symbol renderer emits heading blocks with type metadata, sour
 - Expanded again during the docstring normalization push outlined in [2025-11-12 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md) to keep tests aligned with richer metadata.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.481Z","inputHash":"96d2a328854b738e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.785Z","inputHash":"7977a5309aa6c230"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

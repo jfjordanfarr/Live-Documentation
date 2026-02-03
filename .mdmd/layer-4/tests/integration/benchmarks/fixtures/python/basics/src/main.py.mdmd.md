@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/basics/src/main.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-basics-src-main-py
-- Generated At: 2026-01-14T18:38:50.205Z
+- Generated At: 2026-02-03T21:55:44.719Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the entry point for the Python basics benchmark, validating seed input b
 Keep the control flow straightforward; the benchmark depends on this file to surface simple import relationships.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.205Z","inputHash":"2c0d76e9d111a9d7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.719Z","inputHash":"1a74ea9facf3caa5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

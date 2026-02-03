@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/ruby/rosetta/spec/pipeline_spec.rb
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-ruby-rosetta-spec-pipeline-spec-rb
-- Generated At: 2026-01-16T21:21:09.744Z
+- Generated At: 2026-02-03T21:55:45.755Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ RSpec integration tests for the Ruby Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through `require_relative` imports of processor and models.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.744Z","inputHash":"495731efc4bfe95b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.755Z","inputHash":"11f078e86c78ab1e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/simple-workspace/src/dataBeta.ts
 - Live Doc ID: LD-implementation-tests-integration-fixtures-simple-workspace-src-databeta-ts
-- Generated At: 2025-12-06T22:49:55.235Z
+- Generated At: 2026-02-03T21:55:50.523Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Acts as the contrasting “beta” dataset for simple-workspace so integration t
 - Continue validating this generator through `npm run fixtures:verify`, which last confirmed both datasets in the Oct 29 sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5288-L5320>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:55.235Z","inputHash":"5118a3c3972c79ef"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.523Z","inputHash":"21a61c10add7020c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createBetaPayload` {#symbol-createbetapayload}

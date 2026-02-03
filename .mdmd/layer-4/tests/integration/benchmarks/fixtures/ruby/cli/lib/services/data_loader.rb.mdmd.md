@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/lib/services/data_loader.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-cli-lib-services-data-loader-rb
-- Generated At: 2025-12-06T22:49:48.591Z
+- Generated At: 2026-02-03T21:55:45.525Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides dataset loading for the Ruby CLI benchmark, emitting log messages so an
 Keep dataset names and logging intact; they ensure deterministic edges for the fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.591Z","inputHash":"46ad72ebdfea4d16"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.525Z","inputHash":"f96c9411c0ee0bc4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

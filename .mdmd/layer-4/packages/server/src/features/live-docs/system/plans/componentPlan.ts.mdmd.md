@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/componentPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-componentplan-ts
-- Generated At: 2025-12-15T00:38:06.522Z
+- Generated At: 2026-02-03T21:55:37.989Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `component` archetype plans by grouping Live Docs implementa
 - Special handling for `scripts/live-docs` group: injects stage-sequence orchestration edges
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.522Z","inputHash":"2d247579f8363f7d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.989Z","inputHash":"2a723f9888e9be7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildComponentPlans` {#symbol-buildcomponentplans}

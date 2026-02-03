@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/basics/src/util.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-basics-src-util-py
-- Generated At: 2026-01-14T18:38:50.206Z
+- Generated At: 2026-02-03T21:55:44.737Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Summarizes numeric sequences for the Python basics benchmark, providing simple a
 Avoid over-optimizing the list length calculation; the current approach intentionally mixes iterator and list handling.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.206Z","inputHash":"05cbc8bb62124fbb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.737Z","inputHash":"9e98eb7f2fa912b8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize_values` {#symbol-summarize_values}

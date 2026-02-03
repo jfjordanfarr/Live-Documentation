@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/report-precision.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-report-precision-ts
-- Generated At: 2026-01-15T02:41:18.886Z
+- Generated At: 2026-02-03T21:55:41.924Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Evaluates generated Live Docs against the analyzer to calculate symbol and depen
 First built for the Live Docs accuracy benchmark (Sep 2024) and tightened during the 2025 re-export fixes. The script mirrors the metrics enforced during `npm run safe:commit`, emitting non-zero exit codes when precision drops below 0.9 for symbols or dependency recall slips under 0.8.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.886Z","inputHash":"cf4c13ac2eb4fdb8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.924Z","inputHash":"e2cfdfe283378c34"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

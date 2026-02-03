@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/referenceResolver.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-referenceresolver-ts
-- Generated At: 2025-12-11T02:38:01.771Z
+- Generated At: 2026-02-03T21:55:38.985Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Centralizes the artifact lookup logic for fallback heuristics, exposing shared h
 - If a future heuristic needs bespoke variant scoring, add it here so every language continues reusing the same normalization/weighting rules that we introduced alongside the Phase 8 polyglot heuristics on Nov 5 <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L780-L860>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.771Z","inputHash":"d50398065736ae4d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.985Z","inputHash":"efaa6fbedde89718"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReferenceResolution` {#symbol-referenceresolution}

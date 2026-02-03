@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/rosetta/lib/main.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-rosetta-lib-main-rb
-- Generated At: 2026-01-14T22:47:33.826Z
+- Generated At: 2026-02-03T21:55:45.625Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Ruby Rosetta Stone fixture. Demonstrates require_relative pa
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby require and require_relative detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.826Z","inputHash":"60ac7d3fa89f7095"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.625Z","inputHash":"c665f5a0ef8cf852"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Rosetta` {#symbol-rosetta}

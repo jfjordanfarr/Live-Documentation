@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/models/models.go
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-go-rosetta-src-models-models-go
-- Generated At: 2026-01-15T18:20:23.038Z
+- Generated At: 2026-02-03T21:55:43.627Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Data model definitions and factory functions for the Go Rosetta Stone benchmark 
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:20:23.038Z","inputHash":"84938c89a9da1149"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.627Z","inputHash":"b1a7856153aa1200"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}

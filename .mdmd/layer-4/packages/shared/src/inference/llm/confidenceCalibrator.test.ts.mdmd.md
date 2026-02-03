@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/llm/confidenceCalibrator.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-llm-confidencecalibrator-test-ts
-- Generated At: 2025-11-19T15:01:35.069Z
+- Generated At: 2026-02-03T21:55:39.113Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies the calibrator buckets labelled and numeric confidences into the tiers 
 - Expand or adjust these scenarios whenever tier thresholds or shadow/eligibility semantics move so dry-run snapshots keep matching the orchestrator output <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6047-L6052> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6095-L6132>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.069Z","inputHash":"ebf3b3bd2e4b9e8f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.113Z","inputHash":"5612796a692ed4da"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

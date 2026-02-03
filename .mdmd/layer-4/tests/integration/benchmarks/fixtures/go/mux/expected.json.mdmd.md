@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/mux/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-mux-expected-json
-- Generated At: 2026-01-28T02:55:35.640Z
+- Generated At: 2026-02-03T21:55:43.362Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Created during [2026-01-27 Chat 2](../../../../../../../../AI-Agent-Workspace/Ch
 **Integrity:** Generated via `scip-go` from commit `db9d1d0073d27a0a2d9a8c1bc52aa0af4374d265`. Spurious go-build cache edges were filtered by the Go normalizer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.640Z","inputHash":"b6be55e6646185e0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.362Z","inputHash":"45c10132f7bb7bbb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

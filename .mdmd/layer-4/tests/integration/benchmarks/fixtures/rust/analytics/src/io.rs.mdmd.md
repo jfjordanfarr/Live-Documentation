@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/io.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-io-rs
-- Generated At: 2026-01-14T16:04:05.598Z
+- Generated At: 2026-02-03T21:55:45.876Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies deterministic sample data for the Rust analytics benchmark so the analy
 Adjust the shape of the sample sets only when the benchmark needs new dependency edges; keep labels simple for readability.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:04:05.598Z","inputHash":"2e33dfe29fb2cf6e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.876Z","inputHash":"7e23d216632076c2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}

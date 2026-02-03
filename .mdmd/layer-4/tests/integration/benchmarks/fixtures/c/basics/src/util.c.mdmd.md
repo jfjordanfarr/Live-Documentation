@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/src/util.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-basics-src-util-c
-- Generated At: 2025-12-06T23:20:02.986Z
+- Generated At: 2026-02-03T21:55:42.201Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the widget builder for the C basics benchmark, demonstrating how simp
 Keep the example comment and return structure; they are intentionally verbose for analyzer coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:20:02.986Z","inputHash":"474cdc83020aae7d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.201Z","inputHash":"58421dc767a0c15a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `build_widget` {#symbol-build_widget}

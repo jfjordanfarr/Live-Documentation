@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-layout-measure-ts
-- Generated At: 2026-01-03T20:41:39.234Z
+- Generated At: 2026-02-03T21:55:36.516Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for measuring layout extents and computing fit transforms. Calcul
 Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.234Z","inputHash":"73799fccb22df16c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.516Z","inputHash":"c9d3f60f17048928"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Bounds` {#symbol-bounds}

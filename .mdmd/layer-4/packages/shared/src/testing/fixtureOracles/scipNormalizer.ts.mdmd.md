@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/scipNormalizer.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-scipnormalizer-ts
-- Generated At: 2026-01-30T21:04:52.699Z
+- Generated At: 2026-02-03T21:55:41.144Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Key design decisions:
 The Go normalizer was the first to be fully exercised (go-rosetta and go-mux fixtures). C# normalizer was developed earlier during Newtonsoft.Json migration. TypeScript, Java, and Python normalizers exist but await their respective SCIP indexers working on Windows.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:04:52.699Z","inputHash":"335c91a626437749"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.144Z","inputHash":"57956232713f7aee"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RawScipEdge` {#symbol-rawscipedge}

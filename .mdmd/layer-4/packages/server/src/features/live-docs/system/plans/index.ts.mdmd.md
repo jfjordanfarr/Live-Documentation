@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/index.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-index-ts
-- Generated At: 2025-12-07T16:27:06.761Z
+- Generated At: 2026-02-03T21:55:38.019Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Barrel re-export for the System-layer plan builders. Aggregates component, inter
 - Provides a single import point for all plan builder functions
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.761Z","inputHash":"9fc09c79aeb92417"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.019Z","inputHash":"2638e2726be0f7fd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildComponentPlans` {#symbol-buildcomponentplans}

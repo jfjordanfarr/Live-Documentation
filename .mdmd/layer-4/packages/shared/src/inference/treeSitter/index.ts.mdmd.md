@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-index-ts
-- Generated At: 2026-01-30T23:50:04.104Z
+- Generated At: 2026-02-03T21:55:39.242Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Barrel export for the tree-sitter module, exposing the extraction APIs and a `Fa
 - **Sync Limitation**: The `FallbackHeuristic` interface is synchronous, but tree-sitter WASM loading is async. The `evaluate()` method is a no-op stub; use `findCrossFileEdges()` for actual edge detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.104Z","inputHash":"ee24888338785e82"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.242Z","inputHash":"7950841d602eb1d4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadTreeSitter` {#symbol-loadtreesitter}

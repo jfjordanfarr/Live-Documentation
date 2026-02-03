@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/pipeline.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-modular-src-pipeline-h
-- Generated At: 2025-12-06T22:49:48.368Z
+- Generated At: 2026-02-03T21:55:42.440Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the primary analytics entry point for the modular C benchmark, mirroring
 Includes `<stddef.h>` for the `size_t` alias and chains to `metrics.h` so downstream headers stay self-contained during compilation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.368Z","inputHash":"a26b15502ea7d141"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.440Z","inputHash":"7f91994b0f485c74"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PIPELINE_H` {#symbol-pipeline_h}

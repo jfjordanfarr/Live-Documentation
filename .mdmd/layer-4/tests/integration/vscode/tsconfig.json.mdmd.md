@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/vscode/tsconfig.json
 - Live Doc ID: LD-test-tests-integration-vscode-tsconfig-json
-- Generated At: 2025-11-18T20:51:27.150Z
+- Generated At: 2026-02-03T21:55:51.446Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Provide the TypeScript compilation contract for the VS Code harness bootstrap so
 - Shares module resolution targets with [`tests/integration/tsconfig.json`](../tsconfig.json.mdmd.md) while omitting Mocha typing to keep the VS Code runner lean.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:27.150Z","inputHash":"b3a0f440e5f9e796"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.446Z","inputHash":"0bf9a3e8b052cec9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

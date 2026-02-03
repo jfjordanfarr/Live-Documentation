@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/processor.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-rosetta-src-processor-ts
-- Generated At: 2026-01-15T02:41:19.013Z
+- Generated At: 2026-02-03T21:55:46.891Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Core processing logic for the TypeScript Rosetta Stone fixture. Exercises namesp
 Demonstrates multiple import patterns for heuristic testing; see [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). The type-only import from types.ts specifically tests edge detection for "import type" statements.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.013Z","inputHash":"4670de1aad129879"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.891Z","inputHash":"4d9d265ca01ee57f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

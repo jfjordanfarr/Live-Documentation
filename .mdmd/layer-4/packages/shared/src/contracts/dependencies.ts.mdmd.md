@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/contracts/dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-contracts-dependencies-ts
-- Generated At: 2026-01-17T19:21:10.004Z
+- Generated At: 2026-02-03T21:55:38.515Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the shared request/response contract that powers dependency traversal ov
 Server handlers (`packages/server/src/features/dependencies/inspectDependencies.ts`) and the VS Code dependency quick pick share these shapes; later wiring and integration hardening are captured in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-24-lsp--command-implementation-kickoff-lines-2701-3000](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-24-lsp--command-implementation-kickoff-lines-2701-3000), so any schema change requires coordinated updates across those surfaces and their tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.004Z","inputHash":"176dce59cd9be8d3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.515Z","inputHash":"4f946de3894d7046"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `INSPECT_DEPENDENCIES_REQUEST` {#symbol-inspect_dependencies_request}

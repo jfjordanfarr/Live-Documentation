@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/hysteresisController.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-hysteresiscontroller-ts
-- Generated At: 2026-01-12T21:47:40.505Z
+- Generated At: 2026-02-03T21:55:37.502Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Suppresses reciprocal diagnostics for a short window so change ripples do not bo
 - Keeps state in-memory with explicit acknowledgement hooks, ensuring the controller complements (rather than duplicates) acknowledgement persistence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.505Z","inputHash":"81c1ce74e67e42ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.502Z","inputHash":"ebf98009e67749ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HysteresisControllerOptions` {#symbol-hysteresiscontrolleroptions}

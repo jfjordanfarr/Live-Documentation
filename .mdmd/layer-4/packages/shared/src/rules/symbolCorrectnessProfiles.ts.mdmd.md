@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/symbolCorrectnessProfiles.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-symbolcorrectnessprofiles-ts
-- Generated At: 2025-12-11T02:38:02.270Z
+- Generated At: 2026-02-03T21:55:40.884Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Compiles symbol-correctness profiles from relationship-rules config so diagnosti
 - Continuous runs of `npm run graph:audit` after October 30 rely on these compiled profiles to report satisfied vs missing relationships per artifact.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-10.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.270Z","inputHash":"6415f4099bcf581c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.884Z","inputHash":"369dc094c97d96bb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolProfileLoadResult` {#symbol-symbolprofileloadresult}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/test_processor.py
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-python-rosetta-src-test-processor-py
-- Generated At: 2026-01-16T21:21:09.726Z
+- Generated At: 2026-02-03T21:55:45.184Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta processor module. Part of the polyglot Roset
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Python's idiomatic `test_` prefix pattern. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.726Z","inputHash":"b03ca1441201d373"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.184Z","inputHash":"9ea9a6096353d8ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestRun` {#symbol-testrun}

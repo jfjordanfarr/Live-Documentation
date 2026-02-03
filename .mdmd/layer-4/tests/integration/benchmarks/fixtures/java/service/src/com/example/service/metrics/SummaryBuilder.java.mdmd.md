@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/metrics/SummaryBuilder.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-metrics-summarybuilder-java
-- Generated At: 2026-01-14T15:17:48.980Z
+- Generated At: 2026-02-03T21:55:44.548Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Builds summary objects for the Java service benchmark, converting sample collect
 The alert threshold is deliberate; adjust it only when coordinating changes with analyzer expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.980Z","inputHash":"4f5f60a2868eaaf0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.548Z","inputHash":"d40f04402e1b8495"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SummaryBuilder` {#symbol-summarybuilder}

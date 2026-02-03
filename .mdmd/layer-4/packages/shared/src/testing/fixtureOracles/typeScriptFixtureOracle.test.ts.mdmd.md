@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-typescriptfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.567Z
+- Generated At: 2026-02-03T21:55:41.161Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the TypeScript fixture oracle against curated fixture samples and manu
 - Exercises runtime vs. type-only classifications, override merging, and deterministic serialization, and continues to run green in the Nov 16 unit sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.567Z","inputHash":"0ae51e0a6f88a93d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.161Z","inputHash":"56746806e9d4dfc0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-razor-appsettings-workspace-pages-index-cshtml-cs
-- Generated At: 2025-12-06T23:53:00.261Z
+- Generated At: 2026-02-03T21:55:50.408Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Backs the Razor telemetry page by promoting `appsettings.json` values into view 
 - Mirrors the Blazor `_Host` model to keep parity across ASP.NET fixtures; future coverage comparing the two will rely on this doc’s dependency links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:53:00.261Z","inputHash":"78f0ea64d802ea40"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.408Z","inputHash":"6563bd4f4daa3490"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IndexModel (class)` {#symbol-indexmodel-class}

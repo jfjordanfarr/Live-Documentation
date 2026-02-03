@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-webforms-inferred-json
-- Generated At: 2026-01-15T18:39:07.009Z
+- Generated At: 2026-02-03T21:55:43.196Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records the analyzer output for the C# WebForms benchmark to highlight drift fro
 Refresh using `npm run fixtures:record-fallback -- --fixture csharp-webforms --write` after WebForms fixture or analyzer changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.009Z","inputHash":"b44ba42e22b7da6e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.196Z","inputHash":"21e51571f1689d84"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

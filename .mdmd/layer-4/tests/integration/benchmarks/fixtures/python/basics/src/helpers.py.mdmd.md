@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/basics/src/helpers.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-basics-src-helpers-py
-- Generated At: 2025-12-06T22:49:48.497Z
+- Generated At: 2026-02-03T21:55:44.696Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Contains the seed validation helper for the Python basics benchmark so dependenc
 The guard intentionally remains minimal; adjust only if the benchmark needs additional branches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.497Z","inputHash":"d95f5155d023d7cc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.696Z","inputHash":"69d3748acc542cb8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `validate_seed` {#symbol-validate_seed}

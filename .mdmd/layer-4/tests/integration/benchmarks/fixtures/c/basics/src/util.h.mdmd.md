@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/src/util.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-basics-src-util-h
-- Generated At: 2025-12-06T22:49:48.334Z
+- Generated At: 2026-02-03T21:55:42.217Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Declares the widget struct and factory API used by the C basics benchmark so the
 The header intentionally keeps the API tiny—just a value wrapper and its constructor—to ease cross-language comparison in the benchmark suite.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.334Z","inputHash":"174713ff3707c980"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.217Z","inputHash":"1cebb774e9ff2ff1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WIDGET_UTIL_H` {#symbol-widget_util_h}

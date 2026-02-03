@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/rust.typeref.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-rust-typeref-test-ts
-- Generated At: 2025-12-11T02:38:02.051Z
+- Generated At: 2026-02-03T21:55:40.254Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests verifying that the Rust language adapter correctly extracts `typeRefe
 - Uses temp directories with fixture files to avoid polluting the workspace
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.051Z","inputHash":"01003f93f4c12796"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.254Z","inputHash":"0e66131e1cc78a37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

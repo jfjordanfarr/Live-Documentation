@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-url-state-ts
-- Generated At: 2025-12-19T21:19:50.748Z
+- Generated At: 2026-02-03T21:55:36.112Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 Extracted from client/index.ts during Dev Day 50 (12/19). The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL↔state synchronization without page reloads.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.748Z","inputHash":"e9b8794410cb1acb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.112Z","inputHash":"8a240e6a3378cc98"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `viewNameToInternal` {#symbol-viewnametointernal}

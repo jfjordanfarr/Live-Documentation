@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/render.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-render-ts
-- Generated At: 2025-12-19T21:55:44.532Z
+- Generated At: 2026-02-03T21:55:36.642Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ DOM rendering logic for the Local Map view. Lays out inbound/center/outbound col
 - Passes anchor positions to the controller for Bézier spline routing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.532Z","inputHash":"432e5c3e59f130c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.642Z","inputHash":"ca4bfef9052ff142"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderLocalView` {#symbol-renderlocalview}

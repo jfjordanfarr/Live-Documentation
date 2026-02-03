@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/ruby/rosetta/spec/processor_spec.rb
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-ruby-rosetta-spec-processor-spec-rb
-- Generated At: 2026-01-16T21:21:09.745Z
+- Generated At: 2026-02-03T21:55:45.783Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ RSpec tests for the Ruby Rosetta processor module. Part of the polyglot Rosetta 
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Ruby's idiomatic `spec/` directory structure. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.745Z","inputHash":"725edaa92c9f21b1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.783Z","inputHash":"25cbf9b6093617b2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

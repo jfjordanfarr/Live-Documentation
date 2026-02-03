@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/diagnosticUtils.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-diagnosticutils-ts
-- Generated At: 2026-01-12T21:47:40.502Z
+- Generated At: 2026-02-03T21:55:37.473Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides shared helpers for diagnostic publishers, including a path normaliser u
 - Keeps URIs human-readable in emitted messages while leaving non-file schemes untouched for remote targets.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.502Z","inputHash":"0262fbfa809b693b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.473Z","inputHash":"c03f4ea3b08844e6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DiagnosticSender` {#symbol-diagnosticsender}

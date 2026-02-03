@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/llm/relationshipExtractor.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-llm-relationshipextractor-test-ts
-- Generated At: 2026-01-14T15:17:48.688Z
+- Generated At: 2026-02-03T21:55:39.146Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Guards the extractor contract by proving we parse well-formed relationship batch
 - Extend these cases whenever the extractor schema grows (new fields, stricter validation) so the dry-run fixtures and prompt templates stay synchronized with what the pipeline accepts <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L2457-L2499>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.688Z","inputHash":"14fbf74d65f2595f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.146Z","inputHash":"82109bfc132b6357"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

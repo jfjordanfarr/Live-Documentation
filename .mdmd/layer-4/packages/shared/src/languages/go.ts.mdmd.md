@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/go.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-go-ts
-- Generated At: 2026-01-30T21:01:45.969Z
+- Generated At: 2026-02-03T21:55:39.337Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides Go-specific syntax configuration implementing `LanguageSyntax`. Defines
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — consolidates the `GO_COMMON_VARIABLE_NAMES` blocklist that was originally local to the Go heuristic. The ignored identifiers list merges knowledge from heuristic tuning (Dev Day 64-65) and planned tree-sitter integration.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.969Z","inputHash":"6327b5cfc1314ce8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.337Z","inputHash":"56c106ab20c9bb87"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GO_STDLIB_PACKAGES` {#symbol-go_stdlib_packages}

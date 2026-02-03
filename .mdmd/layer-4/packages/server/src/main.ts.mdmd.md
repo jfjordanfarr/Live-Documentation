@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/main.ts
 - Live Doc ID: LD-implementation-packages-server-src-main-ts
-- Generated At: 2026-01-17T18:11:29.523Z
+- Generated At: 2026-02-03T21:55:38.330Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Hosts the language server entrypoint, wiring the LSP connection, runtime service
 - Keeps telemetry and ingestion services alive during integration runs, which is why the benchmark and US suites exercise this file whenever the language server boots ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.523Z","inputHash":"73adccadd166061e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.330Z","inputHash":"34d8a0532cc8a1d0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/markdown.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-markdown-test-ts
-- Generated At: 2025-11-16T22:34:13.201Z
+- Generated At: 2026-02-03T21:55:40.579Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Guards the markdown renderer’s marker and provenance handling so authored sect
 - Continues to validate `.md` output after the Nov 15 migration so lint and generator steps observe the same markers.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-15-shift-live-docs-to-md-outputs-lines-1401-1820]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:13.201Z","inputHash":"5d560c3a7462b88d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.579Z","inputHash":"4c5ce3e91699a119"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

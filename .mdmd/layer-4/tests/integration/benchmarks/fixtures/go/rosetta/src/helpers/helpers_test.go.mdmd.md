@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/helpers/helpers_test.go
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-go-rosetta-src-helpers-helpers-test-go
-- Generated At: 2026-01-28T23:22:02.150Z
+- Generated At: 2026-02-03T21:55:43.482Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the Go Rosetta helpers package (Format, Sum, Average utilities).
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's same-package test pattern which doesn't require explicit imports for internal symbols.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:02.150Z","inputHash":"ad2c8958e5b53a37"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.482Z","inputHash":"13d42819791a4234"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

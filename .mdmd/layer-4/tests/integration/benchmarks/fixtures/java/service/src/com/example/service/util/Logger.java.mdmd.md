@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/service/src/com/example/service/util/Logger.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-service-src-com-example-service-util-logger-java
-- Generated At: 2025-12-06T22:49:48.489Z
+- Generated At: 2026-02-03T21:55:44.621Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides console logging for the Java service benchmark so support utilities app
 The logger intentionally stays minimal; expand it only if the fixture requires richer logging edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.489Z","inputHash":"b2244c06e000e8d8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.621Z","inputHash":"2d2cb0fa5aae87c6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Logger` {#symbol-logger}

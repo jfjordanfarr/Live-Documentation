@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/Main.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-app-main-cs
-- Generated At: 2026-01-14T22:47:33.765Z
+- Generated At: 2026-02-03T21:55:42.969Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.765Z","inputHash":"d00a6aa9fdc8b78d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.969Z","inputHash":"446f495b066bcbb4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main` {#symbol-main}

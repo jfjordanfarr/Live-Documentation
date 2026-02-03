@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-icon-d41d8cd98f00aa11-png
-- Generated At: 2025-12-09T16:36:07.658Z
+- Generated At: 2026-02-03T21:55:50.945Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ SlopCop test fixture content-hashed icon demonstrating that asset dependency tra
 - The hash pattern simulates content-addressed asset naming from build tools
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:36:07.658Z","inputHash":"ff77a4e2bda9dd66"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.945Z","inputHash":"145b38738da7a93e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

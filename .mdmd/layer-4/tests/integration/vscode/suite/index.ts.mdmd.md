@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/vscode/suite/index.ts
 - Live Doc ID: LD-test-tests-integration-vscode-suite-index-ts
-- Generated At: 2026-01-15T02:41:19.192Z
+- Generated At: 2026-02-03T21:55:51.434Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Loads the compiled integration suites inside the VS Code harness so Mocha can ex
 - Filters out nested harness fixtures (vscode/, suite/, slopcop/) to keep the Mocha run focused on real scenarios while CLI-specific Vitest suites run separately ([integration replay](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.192Z","inputHash":"4aeb7267cad93fd0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.434Z","inputHash":"04c7c53b1496f9fa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

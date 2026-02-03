@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/diagnostics/diagnosticPublisher.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-diagnostics-diagnosticpublisher-ts
-- Generated At: 2025-12-05T15:37:23.475Z
+- Generated At: 2026-02-03T21:55:37.460Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Caches and republishes diagnostics over the LSP connection, enabling incremental
 - Tracks result IDs per URI so acknowledgement removals and re-queries stay consistent with VS Code’s diagnostic pull protocol.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.475Z","inputHash":"00c9c30807d5c7f0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.460Z","inputHash":"b708af188f6b196f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DiagnosticPublisher` {#symbol-diagnosticpublisher}

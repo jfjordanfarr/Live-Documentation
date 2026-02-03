@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-explorer.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-explorer-ts
-- Generated At: 2025-12-15T00:38:07.489Z
+- Generated At: 2026-02-03T21:55:41.976Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Serve as a sandbox CLI that snapshots the workspace graph and spins up a lightwe
 - Generates induced/inheritance link data on the fly, writes it to `data/graph-snapshots/explorer-temp.json`, and renders multiple SVG views (circuit, map, force) inside a browser shell.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.489Z","inputHash":"7ca616d4afc8bb09"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.976Z","inputHash":"a46f7de9c1ab6764"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

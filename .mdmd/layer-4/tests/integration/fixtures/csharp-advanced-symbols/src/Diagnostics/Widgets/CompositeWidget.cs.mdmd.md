@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgets-compositewidget-cs
-- Generated At: 2025-12-06T23:59:13.534Z
+- Generated At: 2026-02-03T21:55:47.165Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Explains the `CompositeWidget` base used by the C# advanced symbols fixture to s
 Keep the child traversal logic straightforward; the fixture asserts that inherited `CollectDependencies` results are preserved.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:59:13.534Z","inputHash":"1fa286292becf78d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.165Z","inputHash":"a5d48ec66406b6d5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompositeWidget (class)` {#symbol-compositewidget-class}

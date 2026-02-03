@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-reflection-workspace-services-telemetryhandler-cs
-- Generated At: 2025-12-06T22:49:49.093Z
+- Generated At: 2026-02-03T21:55:48.217Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the reflection-only handler that the LD-402 pathfinder must rediscover w
 - Outbound links expect this anchor when `ReflectionFactory` resolves types dynamically.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:49.093Z","inputHash":"d1dc3f73a0bba280"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.217Z","inputHash":"c9139999c5c35b06"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryHandler` {#symbol-telemetryhandler}

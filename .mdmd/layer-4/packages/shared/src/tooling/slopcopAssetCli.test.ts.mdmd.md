@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/slopcopAssetCli.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-slopcopassetcli-test-ts
-- Generated At: 2025-11-16T22:34:13.654Z
+- Generated At: 2026-02-03T21:55:41.447Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Locks in the SlopCop asset CLI’s fail/repair workflow with a Vitest harness th
 - Restores the fixture to ensure downstream runs stay green, keeping the asset audit opt-in until maintainers flip it on globally ([asset fixture summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L4488-L4554)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:13.654Z","inputHash":"a1efa7d37ba61d9e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.447Z","inputHash":"f64631830c91f98d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

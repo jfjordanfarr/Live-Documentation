@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-index-ts
-- Generated At: 2026-01-08T19:09:21.673Z
+- Generated At: 2026-02-03T21:55:37.063Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Barrel export for the Explorer shared module. Re-exports types, Local Map builde
 - Shared by server (HTTP endpoints) and client (browser rendering)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.673Z","inputHash":"6d4754b7693dc97a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.063Z","inputHash":"143f1b742a3768b1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

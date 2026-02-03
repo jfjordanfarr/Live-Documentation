@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/acknowledgeDiagnostic.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-acknowledgediagnostic-ts
-- Generated At: 2026-01-17T18:11:29.176Z
+- Generated At: 2026-02-03T21:55:35.127Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers `linkDiagnostics.acknowledgeDiagnostic` so leads can clear acknowledge
 - Keep the command signature aligned with the acknowledgement service contract so integration tests continue to assert end-to-end pruning, per [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-21.SUMMARIZED.md#turn-22-integration-test-for-acknowledgement-flow-lines-4101-4585).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.176Z","inputHash":"2522ccb606c84d27"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.127Z","inputHash":"2e8e78621c40f826"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ACKNOWLEDGE_DIAGNOSTIC_COMMAND` {#symbol-acknowledge_diagnostic_command}

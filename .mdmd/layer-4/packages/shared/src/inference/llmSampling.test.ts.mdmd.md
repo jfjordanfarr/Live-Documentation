@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/llmSampling.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-llmsampling-test-ts
-- Generated At: 2025-11-19T15:01:35.057Z
+- Generated At: 2026-02-03T21:55:39.180Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the sampling harness by pinning vote aggregation, thresholding, collec
 Keep these cases in sync with the follow-up wiring into link inference and telemetry sinks noted in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L4679](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L4679) once sampling flows graduate from stub to production usage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.057Z","inputHash":"94bd878fb00b5676"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.180Z","inputHash":"7c86e606e983e6e7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

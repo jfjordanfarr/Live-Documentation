@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/pipeline.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-pipeline-py
-- Generated At: 2026-01-14T18:38:50.210Z
+- Generated At: 2026-02-03T21:55:44.882Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates report construction for the Python pipeline benchmark, tying reposi
 Maintain the dataclass wrapper and sequencing—they model the minimal integration flow the benchmark expects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.210Z","inputHash":"8879ac4960f2fbf1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.882Z","inputHash":"e79780b87bed7e91"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}

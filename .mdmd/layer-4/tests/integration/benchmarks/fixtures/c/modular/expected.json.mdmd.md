@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-modular-expected-json
-- Generated At: 2026-01-15T18:39:06.979Z
+- Generated At: 2026-02-03T21:55:42.263Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Stores the expected dependency network for the C modular benchmark so multi-file
 Regenerate with `npm run fixtures:regenerate -- --fixture c-modular --write` before accepting graph changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.979Z","inputHash":"5cd67024af711fe0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.263Z","inputHash":"defa24eb4784524f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

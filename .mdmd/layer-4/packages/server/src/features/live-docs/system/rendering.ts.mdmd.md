@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/rendering.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-rendering-ts
-- Generated At: 2025-12-15T00:38:06.548Z
+- Generated At: 2026-02-03T21:55:38.128Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Markdown section renderers for System-layer Live Documentation. Produces Compone
 - `renderActivationSection()` summarises co-activation clusters with p-values and edge counts
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.548Z","inputHash":"f2f72218857f2aa4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.128Z","inputHash":"11383242a6d912b5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderComponentsSection` {#symbol-rendercomponentssection}

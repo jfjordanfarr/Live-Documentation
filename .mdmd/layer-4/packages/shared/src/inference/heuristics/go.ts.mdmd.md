@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/go.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-go-ts
-- Generated At: 2026-01-30T00:04:21.051Z
+- Generated At: 2026-02-03T21:55:38.807Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Go heuristic for fallback inference. Enables text-based dependency detection for
 - Registered in [heuristics/index.ts](./index.ts.mdmd.md) alongside other language heuristics
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.051Z","inputHash":"66b2ccc2702222ec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.807Z","inputHash":"8cd91474e6d0862d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createGoHeuristic` {#symbol-creategoheuristic}

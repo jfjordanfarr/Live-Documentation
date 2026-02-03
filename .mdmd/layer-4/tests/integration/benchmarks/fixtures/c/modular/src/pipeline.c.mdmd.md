@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-modular-src-pipeline-c
-- Generated At: 2025-12-06T23:20:03.053Z
+- Generated At: 2026-02-03T21:55:42.418Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates metrics and logging for the C modular benchmark, showcasing static h
 Preserve the clamp helper and logging branches—they ensure the analyzer sees both internal and external symbol usage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:20:03.053Z","inputHash":"09d0482837a1f597"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.418Z","inputHash":"50ade3bcabeb71a5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `normalize` {#symbol-normalize}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/metrics.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-modular-src-metrics-h
-- Generated At: 2025-12-06T22:49:48.359Z
+- Generated At: 2026-02-03T21:55:42.386Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Summarises the statistical helpers exposed to the modular pipeline implementatio
 Exports both averaging and clamping routines so the pipeline can normalise values before logging.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.359Z","inputHash":"a212518f5c4d089b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.386Z","inputHash":"07af6526decd3408"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `METRICS_H` {#symbol-metrics_h}

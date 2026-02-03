@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/main.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-main-c
-- Generated At: 2026-01-14T22:47:33.750Z
+- Generated At: 2026-02-03T21:55:42.536Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the C Rosetta Stone fixture. Demonstrates #include and function 
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C include directive and cross-file call detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.750Z","inputHash":"586899816f202e6c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.536Z","inputHash":"21c30738df48f8cd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rosetta_main` {#symbol-rosetta_main}

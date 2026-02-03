@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-rosetta-src-helpers-ts
-- Generated At: 2026-01-14T22:47:33.856Z
+- Generated At: 2026-02-03T21:55:46.770Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility functions for the TypeScript Rosetta Stone fixture. Provides formatting 
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Imported selectively by processor.ts to test named import detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.856Z","inputHash":"70cae3d4533e1393"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.770Z","inputHash":"cd5f78a5f126993c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format` {#symbol-format}

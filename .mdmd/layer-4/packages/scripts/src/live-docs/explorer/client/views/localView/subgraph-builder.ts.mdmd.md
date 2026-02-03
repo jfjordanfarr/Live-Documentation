@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-subgraph-builder-ts
-- Generated At: 2026-01-03T20:41:39.265Z
+- Generated At: 2026-02-03T21:55:36.787Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for building local subgraphs from the full Explorer graph. Create
 Extracted from controller.ts during Dev Day 50 (12/19). The `createLocalSubgraph()` function builds exploration-mode subgraphs; `buildPathSubgraph()` handles path-mode with adjacent-only edge filtering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.265Z","inputHash":"dac6631af4cd14a9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.787Z","inputHash":"07f1ef7fe1b81c73"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NodeFilter` {#symbol-nodefilter}

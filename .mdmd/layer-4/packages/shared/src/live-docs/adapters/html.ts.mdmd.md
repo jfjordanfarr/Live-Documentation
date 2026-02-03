@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/html.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-html-ts
-- Generated At: 2025-12-11T02:38:01.938Z
+- Generated At: 2026-02-03T21:55:39.849Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Returns empty symbols array since HTML files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.938Z","inputHash":"513f9b870e2fdd7e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.849Z","inputHash":"3379e7e2fb278615"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `htmlAdapter` {#symbol-htmladapter}

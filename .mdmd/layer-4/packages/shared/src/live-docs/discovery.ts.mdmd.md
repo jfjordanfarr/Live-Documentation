@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-01-15T17:00:39.293Z
+- Generated At: 2026-02-03T21:55:40.483Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.293Z","inputHash":"d757e82f683681f5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.483Z","inputHash":"b9e477d4e5883112"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}

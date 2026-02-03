@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-pythonfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.525Z
+- Generated At: 2026-02-03T21:55:41.049Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the Python fixture oracle against curated fixtures and override scenar
 - Keeps asserting perfect precision/recall across python-basic, pipeline, and requests fixtures; Nov 4 reports and the Nov 16 unit sweep confirmed the expectations remain stable <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L2848-L2884> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.525Z","inputHash":"1c50be8525db728b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.049Z","inputHash":"07be0acde34cacf8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

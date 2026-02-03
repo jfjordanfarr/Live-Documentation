@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/vscode/runTests.ts
 - Live Doc ID: LD-test-tests-integration-vscode-runtests-ts
-- Generated At: 2026-01-15T02:41:19.190Z
+- Generated At: 2026-02-03T21:55:51.422Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Launches the full VS Code integration harness against a temporary copy of `simpl
 - On 2025-11-14 we re-enabled the local Ollama bridge by wiring `LINK_AWARE_OLLAMA_MODEL` defaults through this script, yielding real Qwen traces during end-to-end runs ([Ollama reintegration](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-restore-ollama-bridge-for-integration-tests-lines-3301-3600)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.190Z","inputHash":"0b82b3f0e8005c45"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.422Z","inputHash":"c1502d8d1ced33ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

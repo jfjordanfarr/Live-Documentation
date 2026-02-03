@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-inspect-ts
-- Generated At: 2026-01-14T15:17:48.910Z
+- Generated At: 2026-02-03T21:55:41.828Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Trace Live Documentation dependencies from the command line, supporting outbound
 The CLI now emits stable JSON payloads for path, not-found, and fanout searches, flags max-depth cut-offs, and highlights missing documentation so LD-402 scenarios can assert failure diagnostics alongside happy-path chains. Symbol nodes carry any available documentation summaries and parameter notes so comment-based help from sources like PowerShell flows straight into inspect results.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.910Z","inputHash":"c89efa57c75ca521"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.828Z","inputHash":"1e5543cc14269353"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

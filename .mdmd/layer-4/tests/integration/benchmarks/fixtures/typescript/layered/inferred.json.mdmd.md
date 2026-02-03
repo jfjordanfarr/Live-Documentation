@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-layered-inferred-json
-- Generated At: 2026-01-15T18:39:07.098Z
+- Generated At: 2026-02-03T21:55:46.535Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Reflects the analyzer output captured for the TypeScript layered benchmark to ve
 Update with `npm run fixtures:record-fallback -- --fixture ts-layered --write` after altering the analyzer or fixture packages.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.098Z","inputHash":"7fa1dc369f52c3ea"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.535Z","inputHash":"65c505878e2cef70"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

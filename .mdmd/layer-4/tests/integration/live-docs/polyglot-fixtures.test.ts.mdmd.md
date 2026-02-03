@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/polyglot-fixtures.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-polyglot-fixtures-test-ts
-- Generated At: 2026-01-15T02:41:19.180Z
+- Generated At: 2026-02-03T21:55:51.352Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the Live Docs generator across the curated polyglot fixture workspaces so w
 - Expanded iteratively as new adapters landed—first adding Java coverage, then layering in the rest of the Roslyn-era fixtures—so the suite snapshots representative markdown for every supported language ([Java adapter expansion](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-13.SUMMARIZED.md#turn-05-extend-polyglot-integration-test-lines-901-1020)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.180Z","inputHash":"5718f8a91092e1f3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.352Z","inputHash":"ed8c08c0909137be"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

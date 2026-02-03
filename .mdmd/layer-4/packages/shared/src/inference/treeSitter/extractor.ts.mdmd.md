@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/extractor.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-extractor-ts
-- Generated At: 2026-01-28T23:22:01.816Z
+- Generated At: 2026-02-03T21:55:39.214Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Core symbol and reference extraction engine using tree-sitter AST parsing. Provi
 - **Public Symbol Detection**: Uses language conventions (Go: uppercase = exported, Python: underscore prefix = private)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:01.816Z","inputHash":"0758cde3816a4cc5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.214Z","inputHash":"8718bc3cccf1fd37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExtractedSymbol` {#symbol-extractedsymbol}

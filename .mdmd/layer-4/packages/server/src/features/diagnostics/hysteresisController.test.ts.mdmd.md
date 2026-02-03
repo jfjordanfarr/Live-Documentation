@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/diagnostics/hysteresisController.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-diagnostics-hysteresiscontroller-test-ts
-- Generated At: 2026-01-14T15:17:48.529Z
+- Generated At: 2026-02-03T21:55:37.489Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Asserts the hysteresis controller blocks reciprocal emissions within the configu
 - Covers acknowledgement resets and LRU trimming so the controller remains bounded under noisy change streams.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.529Z","inputHash":"7ba1c9bd77a7f916"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.489Z","inputHash":"9f9075304a3a35de"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

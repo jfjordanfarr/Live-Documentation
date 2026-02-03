@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/evidenceBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-evidencebridge-ts
-- Generated At: 2026-01-15T02:41:18.498Z
+- Generated At: 2026-02-03T21:55:37.677Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 - Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.498Z","inputHash":"8114734f66830eb9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.677Z","inputHash":"7f9b3ab7e27c7340"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EvidenceKind` {#symbol-evidencekind}

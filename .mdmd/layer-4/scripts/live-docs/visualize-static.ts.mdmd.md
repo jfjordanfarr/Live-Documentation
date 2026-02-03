@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-static.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-visualize-static-ts
-- Generated At: 2026-01-15T02:41:18.893Z
+- Generated At: 2026-02-03T21:55:41.990Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ CLI entry point for generating fully static Live Documentation Explorer bundles.
 - Invoked via `npm run live-docs:visualize:static`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.893Z","inputHash":"512012f18b2feff5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.990Z","inputHash":"c64dbc00ad0f3cec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

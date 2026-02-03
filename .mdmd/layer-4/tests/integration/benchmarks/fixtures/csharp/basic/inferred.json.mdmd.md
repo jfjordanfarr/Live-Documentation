@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-basic-inferred-json
-- Generated At: 2026-01-15T18:39:06.996Z
+- Generated At: 2026-02-03T21:55:42.767Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the analyzer's observed graph for the C# basic diagnostics benchmark to
 Re-record with `npm run fixtures:record-fallback -- --fixture csharp-basic --write` after modifying the analyzer or fixture code.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.996Z","inputHash":"6f2f95c457f8d71c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.767Z","inputHash":"a0483cb2d30a5ec5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

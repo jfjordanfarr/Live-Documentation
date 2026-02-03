@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.xmldoc.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-xmldoc-ts
-- Generated At: 2026-01-06T20:05:23.580Z
+- Generated At: 2026-02-03T21:55:39.715Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Parses C# XML documentation comments (`///` lines) into structured `SymbolDocume
 - **Companion Tests:** See [csharp.xmldoc.unit.test.ts](./csharp.xmldoc.unit.test.ts.mdmd.md) for 70 unit tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-06T20:05:23.580Z","inputHash":"4fc173896421dea3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.715Z","inputHash":"5d6a0fc8cf2e2161"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RECOGNIZED_DOC_TAGS` {#symbol-recognized_doc_tags}

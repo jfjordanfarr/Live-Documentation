@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/diagnostics/noiseFilter.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-diagnostics-noisefilter-test-ts
-- Generated At: 2026-01-17T19:21:09.921Z
+- Generated At: 2026-02-03T21:55:37.521Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies the ripple noise filter trims low-confidence, deep, and over-budget imp
 - Focuses on deterministic counter increments (confidence/depth/change/artifact) so diagnostics publishers inherit precise telemetry when thresholds shift.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.921Z","inputHash":"08454056f7d7b03b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.521Z","inputHash":"a0a93f24822dcc62"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

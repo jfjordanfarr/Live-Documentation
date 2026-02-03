@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-rosetta-inferred-json
-- Generated At: 2026-01-28T02:24:04.408Z
+- Generated At: 2026-02-03T21:55:43.407Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Inferred dependency graph produced by the Go heuristic for the go-rosetta benchm
 - Uses the Go heuristic from [go.ts](../../../../../../packages/shared/src/inference/heuristics/go.ts.mdmd.md)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:24:04.408Z","inputHash":"ad3c3c7b6de0403c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.407Z","inputHash":"70e36a40d85d486f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

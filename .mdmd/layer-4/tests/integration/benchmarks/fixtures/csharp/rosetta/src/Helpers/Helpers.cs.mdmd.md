@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/Helpers.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-helpers-helpers-cs
-- Generated At: 2026-01-14T22:47:33.766Z
+- Generated At: 2026-02-03T21:55:43.005Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.766Z","inputHash":"bb5e12a1cbd82852"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.005Z","inputHash":"4edbd09809236e30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Helpers` {#symbol-helpers}

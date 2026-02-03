@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/headlessHarness.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-headlessharness-ts
-- Generated At: 2026-01-15T02:41:18.507Z
+- Generated At: 2026-02-03T21:55:37.748Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 - Emits optional container specs and timestamped reports so CI and hosted demos can replay the same runs without manual wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.507Z","inputHash":"6c4736e8277f308e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.748Z","inputHash":"aaf3802fc06bb3f2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessLogger` {#symbol-headlessharnesslogger}

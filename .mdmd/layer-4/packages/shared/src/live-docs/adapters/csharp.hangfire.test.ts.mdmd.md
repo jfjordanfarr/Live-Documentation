@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.hangfire.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-hangfire-test-ts
-- Generated At: 2026-01-15T02:41:18.663Z
+- Generated At: 2026-02-03T21:55:39.648Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verify the C# adapter resolves Hangfire `BackgroundJob.Enqueue<T>` calls to thei
 Exercises the queue pipeline path in an isolated temp workspace to guard the LD-402 dependency hop.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.663Z","inputHash":"2e298483dbfc7fb5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.648Z","inputHash":"01ca69b3f4150d21"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

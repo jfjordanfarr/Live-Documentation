@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/src/index.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-basic-src-index-ts
-- Generated At: 2025-12-06T22:49:48.649Z
+- Generated At: 2026-02-03T21:55:46.388Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ground-truths the runtime entrypoint for the `ts-basic` benchmark so the analyze
 - Keeps the fixture focused on executable dependencies; type-only exports live in `types.ts` so false-positive edges are immediately visible in benchmark diffs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.649Z","inputHash":"1ee0e7b4f57c254a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.388Z","inputHash":"7dad184010ff2824"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}

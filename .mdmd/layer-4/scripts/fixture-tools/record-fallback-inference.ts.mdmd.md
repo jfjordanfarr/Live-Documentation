@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/record-fallback-inference.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-record-fallback-inference-ts
-- Generated At: 2026-01-15T16:26:54.050Z
+- Generated At: 2026-02-03T21:55:41.632Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Captures deterministic fallback-inference graphs for benchmark fixtures by mater
 - Expanded 2025-11-06 with `--lang csharp`, dynamic language listings, and `.cs` defaults so the new C# fixtures slot into the same verification pipeline as other languages ([C# support update](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L3520-L3600)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:26:54.050Z","inputHash":"93894b24d7dd18c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.632Z","inputHash":"2ff97b0e7e8e540c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `runCli` {#symbol-runcli}

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-layered-expected-json
-- Generated At: 2026-01-15T18:39:07.097Z
+- Generated At: 2026-02-03T21:55:46.520Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the expected cross-layer graph for the TypeScript layered benchmark so 
 Regenerate via `npm run fixtures:regenerate -- --fixture ts-layered --write` whenever service boundaries or analyzer rules change.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.097Z","inputHash":"ef56d8662f1e4c12"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.520Z","inputHash":"06f96ae4dd2c46f9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

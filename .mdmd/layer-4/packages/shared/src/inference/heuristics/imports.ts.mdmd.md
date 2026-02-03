@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/imports.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-imports-ts
-- Generated At: 2025-12-11T02:38:01.739Z
+- Generated At: 2026-02-03T21:55:38.834Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Keeps fallback inference aligned with curated JS/TS and Python fixtures by mappi
 - Python module resolution relies on the curated helper introduced while reconciling the basics fixture, so re-run the AST benchmarks after any normalization tweaks to ensure the inferred edges still match the oracle <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L1860-L1920>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.739Z","inputHash":"472dacac67965fa9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.834Z","inputHash":"30e0f344512a29db"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createImportHeuristic` {#symbol-createimportheuristic}

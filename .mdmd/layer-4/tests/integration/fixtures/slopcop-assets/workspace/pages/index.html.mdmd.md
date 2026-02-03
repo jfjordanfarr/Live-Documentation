@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/pages/index.html
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-pages-index-html
-- Generated At: 2025-12-09T16:07:42.343Z
+- Generated At: 2026-02-03T21:55:50.823Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Fixture HTML page that exercises SlopCop asset validation by referencing both va
 - Update alongside configured asset expectations to keep lint behaviour deterministic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:07:42.343Z","inputHash":"868296bcadd654dd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.823Z","inputHash":"d390019c1549954c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

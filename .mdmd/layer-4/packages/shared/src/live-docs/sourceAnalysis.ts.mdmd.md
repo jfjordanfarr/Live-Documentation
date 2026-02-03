@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/sourceAnalysis.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-sourceanalysis-ts
-- Generated At: 2026-01-15T17:00:39.316Z
+- Generated At: 2026-02-03T21:55:40.706Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 - Returns `EMPTY_ANALYSIS_RESULT` for unsupported file extensions
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.316Z","inputHash":"88e3733b59159040"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.706Z","inputHash":"f6862b1ea34c37d0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}

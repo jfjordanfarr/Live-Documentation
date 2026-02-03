@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/run-benchmarks.mjs
 - Live Doc ID: LD-implementation-scripts-run-benchmarks-mjs
-- Generated At: 2025-11-16T22:34:14.087Z
+- Generated At: 2026-02-03T21:55:42.035Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Runs the workspace benchmark suites (AST accuracy, rebuild stability) with consi
 - Subsequent benchmark deep-dives (Nov 6–7) added explicit suite/mode selection, BENCHMARK_MODE propagation, and the failure summarizers that read from `AI-Agent-Workspace/tmp/benchmarks/**` and `reports/benchmarks/**` so false positives/negatives are listed inline.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:14.087Z","inputHash":"3438abeee49dc39d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.035Z","inputHash":"13791d929bc3eb88"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

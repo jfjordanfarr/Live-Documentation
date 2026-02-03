@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/directives.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-directives-ts
-- Generated At: 2025-12-11T02:38:01.733Z
+- Generated At: 2026-02-03T21:55:38.772Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Scans documentation artifacts for `@link` directives so fallback inference can h
 - Part of the Nov 7 modular heuristic refactor; keep alignment with `resolveReference` and the directive taxonomy captured in that pass when expanding the syntax surface <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L972-L1240>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.733Z","inputHash":"f94f88476ab8f7e1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.772Z","inputHash":"8429cef3a68bc235"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDirectiveHeuristic` {#symbol-createdirectiveheuristic}

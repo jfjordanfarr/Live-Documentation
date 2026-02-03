@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/banner@2x.png
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-banner-2x-png
-- Generated At: 2025-12-09T16:36:07.652Z
+- Generated At: 2026-02-03T21:55:50.914Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ SlopCop test fixture high-DPI image used in srcset declarations to validate that
 - Tests the srcset `2x` pixel density descriptor parsing path in the HTML adapter
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:36:07.652Z","inputHash":"fa1f54a1240763d4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.914Z","inputHash":"e2e29458757aa53d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

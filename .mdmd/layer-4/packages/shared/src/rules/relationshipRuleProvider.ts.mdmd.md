@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipRuleProvider.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipruleprovider-ts
-- Generated At: 2025-12-11T02:38:02.256Z
+- Generated At: 2026-02-03T21:55:40.849Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads relationship-rule configs, compiles them, and exposes a workspace link pro
 - Returns structured warnings and contributions consumed by the language server’s graph builders and symbol-correctness checks introduced alongside the profile compiler.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-26-add-symbol-correctness-profiles--wire-them-into-audits-lines-5711-6120]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.256Z","inputHash":"113da85c9def0953"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.849Z","inputHash":"7d11e5333653137a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RelationshipRuleProviderLogger` {#symbol-relationshipruleproviderlogger}

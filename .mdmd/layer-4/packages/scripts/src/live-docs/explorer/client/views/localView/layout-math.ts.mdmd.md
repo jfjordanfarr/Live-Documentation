@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-layout-math-ts
-- Generated At: 2025-12-18T23:59:04.091Z
+- Generated At: 2026-02-03T21:55:36.469Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Pure-function layout computation for the Local Map: column counts, grid template
 - 495 lines of geometry and layout logic, all unit-testable without DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T23:59:04.091Z","inputHash":"c0a59256aec21dad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.469Z","inputHash":"7ca1d1824b961632"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LayoutNode` {#symbol-layoutnode}

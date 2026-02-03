@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lib/liveDocGraph.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-lib-livedocgraph-ts
-- Generated At: 2025-12-15T00:38:07.462Z
+- Generated At: 2026-02-03T21:55:41.892Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Re-export shim providing backwards-compatible access to the `buildLiveDocGraph` 
 - Exists to preserve import paths for scripts that predated the `packages/scripts` workspace package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.462Z","inputHash":"298d04f0115c39a6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.892Z","inputHash":"77851b8afadf9587"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

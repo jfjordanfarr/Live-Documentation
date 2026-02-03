@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/src/Web.config
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-webforms-src-web-config
-- Generated At: 2025-11-20T15:40:19.681Z
+- Generated At: 2026-02-03T21:55:43.332Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Capture the Web.config appSettings that the WebForms benchmark relies on so Live
 The fallback inference suite expects these keys to flow into `Globals.cs`, `Default.aspx.cs`, and `Default.aspx`, so the doc must remain in place to validate Web.config awareness in the analyzer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-20T15:40:19.681Z","inputHash":"1d408950cabd3457"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.332Z","inputHash":"32576b18e9f1c93f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

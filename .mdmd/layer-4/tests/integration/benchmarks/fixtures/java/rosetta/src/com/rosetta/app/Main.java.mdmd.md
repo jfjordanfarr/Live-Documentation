@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/app/Main.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-app-main-java
-- Generated At: 2026-01-14T22:47:33.785Z
+- Generated At: 2026-02-03T21:55:44.020Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Java Rosetta Stone fixture. Demonstrates package imports and
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.785Z","inputHash":"f624bb4fa6d2a2ab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.020Z","inputHash":"5604751286eb9ea6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main (class)` {#symbol-main-class}

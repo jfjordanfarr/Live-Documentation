@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/loader.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-loader-ts
-- Generated At: 2026-02-03T18:06:41.400Z
+- Generated At: 2026-02-03T21:55:39.272Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Provides the WASM loading infrastructure for tree-sitter, enabling AST-based sym
 - **Singleton Pattern**: `loadTreeSitter()` caches the module to avoid repeated WASM loading overhead (~22 MB bundle)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T18:06:41.400Z","inputHash":"624c050364ef3e8b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.272Z","inputHash":"d90ed55adc51a99a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TreeSitterParser` {#symbol-treesitterparser}

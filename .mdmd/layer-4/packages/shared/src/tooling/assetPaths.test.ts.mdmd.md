@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/assetPaths.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-assetpaths-test-ts
-- Generated At: 2025-11-19T15:01:35.586Z
+- Generated At: 2026-02-03T21:55:41.211Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies the asset reference detector against real HTML fixtures so SlopCop flag
 - Uses temporary workspaces to test ignore patterns, alternate root directories, and hashed filenames added during the October 25 asset hardening.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-29-asset-audit-enhancements--fixtures]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.586Z","inputHash":"0cd355582c99c9c8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.211Z","inputHash":"c04028b9c2679d89"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

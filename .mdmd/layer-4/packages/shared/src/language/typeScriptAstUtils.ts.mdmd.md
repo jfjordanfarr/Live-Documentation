@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/language/typeScriptAstUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-language-typescriptastutils-ts
-- Generated At: 2026-01-30T00:07:23.894Z
+- Generated At: 2026-02-03T21:55:39.287Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tracks TypeScript identifier usage so fallback inference and workspace indexing 
 The ripple semantics review the same day captured why we route TypeScript compiler events through these helpers—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L3504) for the rationale that guides future adjustments.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:07:23.894Z","inputHash":"6b40e5cd7efd33a7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.287Z","inputHash":"35a262eea7d1b6bf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IdentifierUsage` {#symbol-identifierusage}

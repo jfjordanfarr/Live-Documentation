@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/build-target-manifest.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-build-target-manifest-ts
-- Generated At: 2026-01-15T02:41:18.868Z
+- Generated At: 2026-02-03T21:55:41.734Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Generates `data/live-docs/targets.json`, mapping every test to the implementatio
 We introduced the manifest-builder while bootstrapping the evidence bridge (Sep 2024) to keep the Live Docs pipeline deterministic. It understands TS path aliases and recursively expands dependencies, which is why it runs inside `npm run livedocs` before linting or the precision report.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.868Z","inputHash":"25180306cd0553e8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.734Z","inputHash":"100222126911a37c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

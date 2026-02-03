@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/describe-node.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-describe-node-ts
-- Generated At: 2026-01-14T15:17:48.503Z
+- Generated At: 2026-02-03T21:55:37.213Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Generates human-readable descriptions of Live Doc graph nodes for CLI output. Fo
 Extracted from inspect.ts during Dev Day 50 (12/19). The `describeNode()` function is called during result emission to provide context about each hop in a path.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.503Z","inputHash":"903536e66a862327"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.213Z","inputHash":"e3a930c56ab0fcff"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `describeNode` {#symbol-describenode}

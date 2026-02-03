@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/languages.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-languages-ts
-- Generated At: 2026-01-28T23:22:01.822Z
+- Generated At: 2026-02-03T21:55:39.256Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Defines per-language configuration for tree-sitter symbol extraction. Each `Lang
 - **Ignored Symbols**: Language-specific noise filtering (e.g., Go's `nil`, `true`, `false`) prevents false edges
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:01.822Z","inputHash":"65a3f83c070b58f3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.256Z","inputHash":"3d0acf13bf289997"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageConfig` {#symbol-languageconfig}

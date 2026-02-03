@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/clean-dist.mjs
 - Live Doc ID: LD-test-tests-integration-clean-dist-mjs
-- Generated At: 2025-11-18T20:51:25.342Z
+- Generated At: 2026-02-03T21:55:46.964Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Remove stale VS Code and server bundles before the integration harness runs so s
 - Keep this script aligned with workspace build outputs—add new paths here whenever packages start emitting compiled artifacts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.342Z","inputHash":"2e51e2160c8388d2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.964Z","inputHash":"50c03876a1777d94"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/src/helpers.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-basic-src-helpers-ts
-- Generated At: 2025-12-06T22:49:48.644Z
+- Generated At: 2026-02-03T21:55:46.367Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the negative-control file for the `ts-basic` benchmark so the analyzer p
 - Remains unreferenced by design; any dependency surfaced here signals fallback heuristics leaking type-only speculation back into runtime accuracy scores.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.644Z","inputHash":"05f77796b235b2cc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.367Z","inputHash":"94d7c63592764b8f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `unusedHelper` {#symbol-unusedhelper}

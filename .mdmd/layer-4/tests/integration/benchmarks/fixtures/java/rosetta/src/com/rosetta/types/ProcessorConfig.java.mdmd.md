@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/types/ProcessorConfig.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-types-processorconfig-java
-- Generated At: 2026-01-14T22:47:33.793Z
+- Generated At: 2026-02-03T21:55:44.323Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definition for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.types package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.793Z","inputHash":"047d480d7daceef6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.323Z","inputHash":"1eae43991bce93c6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorConfig (class)` {#symbol-processorconfig-class}

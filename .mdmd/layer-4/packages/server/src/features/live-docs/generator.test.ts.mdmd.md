@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/live-docs/generator.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-live-docs-generator-test-ts
-- Generated At: 2026-01-15T02:41:18.500Z
+- Generated At: 2026-02-03T21:55:37.694Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates that `generateLiveDocs` prunes stale documents without authored contex
 - Ensures the Stage‑0 pruning safeguards added during the generator refactor (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) remain regression-tested.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.500Z","inputHash":"0af83a54ce6ce9b4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.694Z","inputHash":"eb19f8ed14a47d1f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

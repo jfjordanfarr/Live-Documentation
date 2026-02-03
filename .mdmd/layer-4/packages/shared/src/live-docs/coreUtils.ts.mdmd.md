@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreutils-ts
-- Generated At: 2025-12-19T04:50:48.221Z
+- Generated At: 2026-02-03T21:55:40.421Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 - All functions are pure with no side effects
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T04:50:48.221Z","inputHash":"94c55226486ecbd9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.421Z","inputHash":"2f8fa6f0c8e08794"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatSourceLink` {#symbol-formatsourcelink}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/contracts/maintenance.ts
 - Live Doc ID: LD-implementation-packages-shared-src-contracts-maintenance-ts
-- Generated At: 2025-12-11T02:38:01.546Z
+- Generated At: 2026-02-03T21:55:38.559Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the rebind notification payloads surfaced during the initial maintenance
 Rebind UX and consent documentation rely on these types—see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md#turn-09-documentation--script-polish-lines-4851-5050](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-22.SUMMARIZED.md#turn-09-documentation--script-polish-lines-4851-5050)—so keep the contract stable when updating quickstart guidance or maintenance telemetry.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.546Z","inputHash":"582b4fbc30a8b96d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.559Z","inputHash":"2981f3ed874f4cbe"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RebindReason` {#symbol-rebindreason}

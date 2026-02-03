@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-index-ts
-- Generated At: 2025-12-19T21:19:50.878Z
+- Generated At: 2026-02-03T21:55:37.314Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Barrel file that re-exports the public API of the inspect module. Provides a cle
 Created during Dev Day 50 (12/19) as part of Phase 1 tech-debt reduction. The module exports functions from pathfind.ts, pathfind-symbol.ts, emit-result.ts, and related modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.878Z","inputHash":"057603124a55cf9e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.314Z","inputHash":"797daf34489e0d9e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Direction` {#symbol-direction}

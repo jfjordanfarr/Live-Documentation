@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-01-15T17:00:39.050Z
+- Generated At: 2026-02-03T21:55:37.721Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:00:39.050Z","inputHash":"1976c9186265b516"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.721Z","inputHash":"eb5fe51e4bdb9901"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
@@ -30,11 +30,11 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 
 #### `__testUtils` {#symbol-__testutils}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L791)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L793)
 
 #### `withDefaultConfig` {#symbol-withdefaultconfig}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L800)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L802)
 - Returns: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 <!-- LIVE-DOC:END Public Symbols -->

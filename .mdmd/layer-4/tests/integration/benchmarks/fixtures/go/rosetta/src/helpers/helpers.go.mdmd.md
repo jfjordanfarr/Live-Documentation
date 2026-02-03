@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/helpers/helpers.go
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-go-rosetta-src-helpers-helpers-go
-- Generated At: 2026-01-15T17:57:37.102Z
+- Generated At: 2026-02-03T21:55:43.442Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Utility functions for the Go Rosetta Stone benchmark, providing formatting and s
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:57:37.102Z","inputHash":"56e98d08140b1869"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.442Z","inputHash":"2f69243464d39b2c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Format` {#symbol-format}

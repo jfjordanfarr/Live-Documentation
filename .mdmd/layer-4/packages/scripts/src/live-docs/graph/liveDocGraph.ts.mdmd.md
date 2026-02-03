@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2026-01-14T15:17:48.500Z
+- Generated At: 2026-02-03T21:55:37.194Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files 
 - The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.500Z","inputHash":"537c0cbe86d05b2b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.194Z","inputHash":"d20acf78734d6648"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}

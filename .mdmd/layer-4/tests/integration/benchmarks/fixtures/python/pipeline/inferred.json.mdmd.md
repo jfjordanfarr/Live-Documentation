@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-pipeline-inferred-json
-- Generated At: 2026-01-16T21:46:15.308Z
+- Generated At: 2026-02-03T21:55:44.770Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Archives the analyzer's captured graph for the Python pipeline benchmark to spot
 Refresh via `npm run fixtures:record-fallback -- --fixture python-pipeline --write` when the validator pipeline or analyzer evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:46:15.308Z","inputHash":"aa99977e996da9af"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.770Z","inputHash":"4f007767ce1e6b98"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

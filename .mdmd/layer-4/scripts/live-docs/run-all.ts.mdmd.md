@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/run-all.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-run-all-ts
-- Generated At: 2025-12-12T16:10:25.875Z
+- Generated At: 2026-02-03T21:55:41.934Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates the full Live Documentation pipeline (targets → generate → lint
 Created during the Windows CLI migration (Oct 2025) to replace ad-hoc shell chains. The script normalises partial runs by watching for flags such as `--include`, `--changed`, or explicit stage skips and forwards all remaining arguments to `generate.ts`, keeping behaviour identical whether invoked directly, via the npm script, or inside the MDMD migration tooling.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-12T16:10:25.875Z","inputHash":"60eb7b1488d029b7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.934Z","inputHash":"6c403333d5b5b26c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

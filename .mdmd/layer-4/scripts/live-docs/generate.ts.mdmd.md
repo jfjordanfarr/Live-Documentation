@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/generate.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-generate-ts
-- Generated At: 2026-01-14T15:17:48.906Z
+- Generated At: 2026-02-03T21:55:41.784Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ CLI entry point that applies workspace configuration, resolves include/changed f
 The script wraps `generateLiveDocs` from the server package, wiring in JSON config files and `--system` materialisation toggles added during the Stage‑0 retirement (Oct 2025). It also persists the `data/live-docs/targets.json` manifest used by lint, graph, and evidence tooling so that downstream tasks do not have to re-scan the workspace.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.906Z","inputHash":"dbc491ba540166dd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.784Z","inputHash":"b0581e69b59e7a35"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

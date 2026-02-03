@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/repositories.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-repositories-py
-- Generated At: 2026-01-14T18:38:50.211Z
+- Generated At: 2026-02-03T21:55:44.903Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides dataset loading for the Python pipeline benchmark, including error path
 Dataset values are intentionally simple; adjust the structure only when altering expected analyzer edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.211Z","inputHash":"b3b3432e989e5ac3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.903Z","inputHash":"4332430552815cd2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}

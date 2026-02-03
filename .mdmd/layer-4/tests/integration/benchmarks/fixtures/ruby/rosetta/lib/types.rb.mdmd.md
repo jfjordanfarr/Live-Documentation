@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/rosetta/lib/types.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-rosetta-lib-types-rb
-- Generated At: 2026-01-14T22:47:33.830Z
+- Generated At: 2026-02-03T21:55:45.700Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ruby Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby module dependency graph inference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.830Z","inputHash":"2444724baaf81575"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.700Z","inputHash":"271da4aaeb1b7119"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Rosetta` {#symbol-rosetta}

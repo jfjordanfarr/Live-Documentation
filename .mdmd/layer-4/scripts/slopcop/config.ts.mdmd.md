@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/config.ts
 - Live Doc ID: LD-implementation-scripts-slopcop-config-ts
-- Generated At: 2025-12-07T21:41:20.111Z
+- Generated At: 2026-02-03T21:55:42.093Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Centralises SlopCop configuration parsing so the markdown, asset, and symbol aud
 - `CONFIG_FILE_NAME` remains fixed so `npm run slopcop:*` commands and `safe-to-commit.mjs` can rely on workspace-relative resolution, with `--config` allowing targeted regression tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:20.111Z","inputHash":"280155c050c8f80d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.093Z","inputHash":"feb7043e4f26b10e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SeveritySetting` {#symbol-severitysetting}

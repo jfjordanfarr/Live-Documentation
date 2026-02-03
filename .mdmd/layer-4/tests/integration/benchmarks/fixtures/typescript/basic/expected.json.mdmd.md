@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-basic-expected-json
-- Generated At: 2026-01-15T18:39:07.091Z
+- Generated At: 2026-02-03T21:55:46.321Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks the curated dependency graph for the TypeScript basic benchmark so module 
 Regenerate with `npm run fixtures:regenerate -- --fixture ts-basic --write` before accepting analyzer or fixture edits.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.091Z","inputHash":"79b9be352eed3de4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.321Z","inputHash":"5e40a8a09e5f1f77"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

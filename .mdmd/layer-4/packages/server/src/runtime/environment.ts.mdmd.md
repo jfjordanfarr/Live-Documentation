@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/runtime/environment.ts
 - Live Doc ID: LD-implementation-packages-server-src-runtime-environment-ts
-- Generated At: 2026-01-15T02:41:18.556Z
+- Generated At: 2026-02-03T21:55:38.374Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides shared runtime utilities for the language server—resolving database l
 `describeError` and `fileUriToPath` gained Windows path handling during that pass—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4405-L4602)—so any future refactor must preserve UNC safety and drive-by evidence in `environment.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.556Z","inputHash":"8738eca398d6d7e0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.374Z","inputHash":"aa880ee66477d635"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveDatabasePath` {#symbol-resolvedatabasepath}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/rustFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-rustfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.552Z
+- Generated At: 2026-02-03T21:55:41.112Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Confirms the Rust oracle captures module `use` edges, honors manual overrides, a
 - Includes assertions covering the Nov 14 doc-comment regression fix and remains part of the Nov 16 unit run; re-execute this suite if parser heuristics are tweaked <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2922-L2952> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.552Z","inputHash":"fd90a10aa5b44ee4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.112Z","inputHash":"ce86ba177958d9d8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

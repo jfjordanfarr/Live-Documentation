@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/runtime/environment.test.ts
 - Live Doc ID: LD-test-packages-server-src-runtime-environment-test-ts
-- Generated At: 2026-01-17T19:21:09.990Z
+- Generated At: 2026-02-03T21:55:38.359Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the runtime environment helpers so Live Docs staging and graph persist
 The cases cover UNC-style URIs, database path defaults, and directory creation on Windows—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4492-L4588](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L4492-L4588) for the bug report that prompted them. Update these expectations whenever `resolveDatabasePath` or `fileUriToPath` change, otherwise Live Docs lint will flag missing evidence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.990Z","inputHash":"c0ce817e7d05d98f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.359Z","inputHash":"9472ae618599e12d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

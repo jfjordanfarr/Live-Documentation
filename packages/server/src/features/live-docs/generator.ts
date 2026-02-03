@@ -220,7 +220,9 @@ export async function generateLiveDocs(
       const provenance = composeProvenance({
         toolVersion: process.env.LIVE_DOCS_GENERATOR_VERSION ?? "0.1.0",
         generatedAt,
-        sourceAbsolutePath: absoluteSourcePath,
+        // Use relative path for hashing to ensure cross-platform consistency
+        // (Windows vs Linux paths would produce different hashes)
+        sourceRelativePath: normalizedSourcePath,
         analysis
       });
 
@@ -757,11 +759,11 @@ function extractGeneratedAt(existingContent?: string): string | undefined {
 function composeProvenance(params: {
   toolVersion: string;
   generatedAt: string;
-  sourceAbsolutePath: string;
+  sourceRelativePath: string;
   analysis: SourceAnalysisResult;
 }): LiveDocProvenance {
   const hash = createHash("sha256")
-    .update(params.sourceAbsolutePath)
+    .update(params.sourceRelativePath)
     .update(JSON.stringify(params.analysis.symbols))
     .update(JSON.stringify(params.analysis.dependencies))
     .digest("hex")

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/slopcopSymbolsCli.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-slopcopsymbolscli-test-ts
-- Generated At: 2025-11-16T22:34:13.662Z
+- Generated At: 2026-02-03T21:55:41.461Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the `slopcop:symbols` CLI end to end so healthy workspaces exit cleanl
 - Keeps the audit opt-in by proving the CLI works independently of the root config toggle, supporting the staged rollout we discussed for symbol lint ([rollout plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L6068-L6069)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:13.662Z","inputHash":"81961e9b913adb8b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.461Z","inputHash":"201f9c23dfb69e45"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

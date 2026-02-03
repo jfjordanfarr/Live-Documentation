@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/basics/src/utils.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-basics-src-utils-rs
-- Generated At: 2026-01-14T02:58:08.225Z
+- Generated At: 2026-02-03T21:55:46.050Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Utility functions module for the `rust-basics` polyglot benchmark fixture. Provi
 - The `is_even` function is consumed by both `main.rs` and `math.rs`, making it a high-fan-in artifact useful for change impact analysis testing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T02:58:08.225Z","inputHash":"0fc5466dcadc8dde"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.050Z","inputHash":"e73791c8254f100c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `is_even` {#symbol-is_even}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/css.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-css-ts
-- Generated At: 2025-12-11T02:38:01.926Z
+- Generated At: 2026-02-03T21:55:39.783Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 - Returns empty symbols array since CSS files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.926Z","inputHash":"73cef4855440d40b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.783Z","inputHash":"fda170c4b7976076"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}

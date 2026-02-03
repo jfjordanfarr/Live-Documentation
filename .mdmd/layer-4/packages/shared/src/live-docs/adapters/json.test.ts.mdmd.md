@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/json.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-json-test-ts
-- Generated At: 2026-01-15T17:04:38.843Z
+- Generated At: 2026-02-03T21:55:39.946Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Unit tests for the JSON adapter, verifying file reference detection, non-path fi
 - Created 2026-01-15 alongside the JSON adapter implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T17:04:38.843Z","inputHash":"abb8d92bd5928d7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.946Z","inputHash":"68181fa373f5e2ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

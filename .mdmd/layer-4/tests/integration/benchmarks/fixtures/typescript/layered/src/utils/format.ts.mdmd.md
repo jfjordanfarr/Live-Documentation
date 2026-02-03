@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/utils/format.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-utils-format-ts
-- Generated At: 2026-01-14T15:17:49.016Z
+- Generated At: 2026-02-03T21:55:46.688Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Finishes the `ts-layered` runtime chain by emitting the formatted report string,
 - Uses simple aggregation to keep diffs stable while still demonstrating that value-level dependencies survive the analyzer pipeline.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:49.016Z","inputHash":"9097a068627812d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.688Z","inputHash":"1662704b18ff856e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatReport` {#symbol-formatreport}

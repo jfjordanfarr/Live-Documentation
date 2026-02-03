@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/fonts/awesome.woff2
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-fonts-awesome-woff2
-- Generated At: 2025-12-09T16:36:07.639Z
+- Generated At: 2026-02-03T21:55:50.840Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ SlopCop test fixture web font referenced from `site.css` via `@font-face src`, v
 - Also referenced directly from `index.html` via `<link rel="preload">`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T16:36:07.639Z","inputHash":"9218d37765eb253b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.840Z","inputHash":"ec735a4da9c2ff40"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

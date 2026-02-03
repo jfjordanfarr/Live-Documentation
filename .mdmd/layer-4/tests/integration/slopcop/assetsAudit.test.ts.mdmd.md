@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/slopcop/assetsAudit.test.ts
 - Live Doc ID: LD-test-tests-integration-slopcop-assetsaudit-test-ts
-- Generated At: 2026-01-15T02:41:19.183Z
+- Generated At: 2026-02-03T21:55:51.375Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the SlopCop asset audit CLI against the healed fixture workspace to pr
 - Copies the fixture into a temp workspace before deleting files so diagnostics can be asserted without polluting the curated manifest, keeping `npm run fixtures:verify` healthy ([fixture harness and integration suites](../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-27.SUMMARIZED.md#turn-22-healing-fixtures-documenting-harnesses--tests-lines-6801-7200)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.183Z","inputHash":"c899dc9938f8f70f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.375Z","inputHash":"0649e4e5cc11f2e5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

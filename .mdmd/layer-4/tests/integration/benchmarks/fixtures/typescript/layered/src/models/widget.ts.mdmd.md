@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/models/widget.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-models-widget-ts
-- Generated At: 2025-12-06T22:49:48.676Z
+- Generated At: 2026-02-03T21:55:46.587Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies the shared model definitions for the `ts-layered` benchmark so downstre
 - Remains intentionally dependency-free; any analyzer emitting extra edges here indicates leakage from runtime-bound modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.676Z","inputHash":"f0dfc5321a6eaad2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.587Z","inputHash":"b00f26b26276a185"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Widget` {#symbol-widget}

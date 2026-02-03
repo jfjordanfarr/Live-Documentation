@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/services/symbolBridge.test.ts
 - Live Doc ID: LD-test-packages-extension-src-services-symbolbridge-test-ts
-- Generated At: 2026-01-17T19:21:09.714Z
+- Generated At: 2026-02-03T21:55:35.446Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercised `SymbolBridgeAnalyzer` with mocked VS Code symbol and reference provid
 - Coverage reports must stay above the ~80 percent threshold captured that day; if analyzer behaviour changes, extend these tests before relying on integration harness updates to catch regressions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.714Z","inputHash":"7ff981c2576cda2c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.446Z","inputHash":"fb7773940b1f7a1a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

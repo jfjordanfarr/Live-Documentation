@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/commands/analyzeWithAI.test.ts
 - Live Doc ID: LD-test-packages-extension-src-commands-analyzewithai-test-ts
-- Generated At: 2026-01-17T19:21:09.678Z
+- Generated At: 2026-02-03T21:55:35.148Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Validates the Analyze-with-AI command’s registration, disabled-provider guard,
 - Coverage reports on Oct 28 kept citing this suite when verifying T047 completion, so maintain these tests as the first line of defense before leaning on integration runs; see [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-28.md#L1390-L1475).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.678Z","inputHash":"501af647914b6d9a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.148Z","inputHash":"69e292100f95b309"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

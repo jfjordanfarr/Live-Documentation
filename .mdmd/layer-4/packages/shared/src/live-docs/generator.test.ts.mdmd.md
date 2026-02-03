@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/generator.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-generator-test-ts
-- Generated At: 2025-11-19T15:01:35.342Z
+- Generated At: 2026-02-03T21:55:40.517Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the Live Docs renderer/generator glue to ensure authored blocks, prove
 - Kept in the `.md` migration to confirm extension changes didn’t alter rendered headings or provenance comments.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-15-shift-live-docs-to-md-outputs-lines-1401-1820]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.342Z","inputHash":"0878c7eb8d8e398a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.517Z","inputHash":"107c64f71ea34d7b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

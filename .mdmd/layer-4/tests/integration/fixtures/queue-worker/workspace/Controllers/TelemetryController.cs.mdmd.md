@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-queue-worker-workspace-controllers-telemetrycontroller-cs
-- Generated At: 2026-01-14T15:17:49.096Z
+- Generated At: 2026-02-03T21:55:49.342Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Capture the enqueue boundary for the Hangfire-style telemetry pipeline so LD-402
 Mirrors the fixture-local doc but keeps repository-relative links, making the inspect CLI and graph audit share a single authoritative description while covering both the immediate enqueue and delayed maintenance schedule.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:49.096Z","inputHash":"d888da2db77b2201"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:49.342Z","inputHash":"b74eb6d3cd759894"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryController` {#symbol-telemetrycontroller}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/llm/confidenceCalibrator.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-llm-confidencecalibrator-ts
-- Generated At: 2026-01-17T18:11:29.595Z
+- Generated At: 2026-02-03T21:55:39.130Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Buckets raw model confidences into the discrete `high`/`medium`/`low` tiers we p
 - The thresholds and `rawConfidenceLabel` hand-back keep orchestrator tests green and preserve provenance for review tooling—update them in lockstep with prompt or analytics changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L3122-L3160> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-24.md#L6095-L6132>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.595Z","inputHash":"ffe97d7ab87aba65"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.130Z","inputHash":"0f492253beb11af9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ConfidenceTier` {#symbol-confidencetier}

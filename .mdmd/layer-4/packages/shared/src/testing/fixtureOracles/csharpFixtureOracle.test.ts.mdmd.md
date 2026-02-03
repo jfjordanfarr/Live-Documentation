@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-csharpfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.496Z
+- Generated At: 2026-02-03T21:55:40.947Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Proves the C# oracle correctly distinguishes runtime versus type-only `using` di
 - Captured the Nov 6 failure around duplicate edges and now safeguards the fix; the suite has been green through the Nov 16 unit run <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L3588-L3776> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.496Z","inputHash":"756ac6b2ebf0a0c2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.947Z","inputHash":"44ab989c22d8dc4b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

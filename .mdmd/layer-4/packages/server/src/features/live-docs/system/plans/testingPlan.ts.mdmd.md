@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/testingPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-testingplan-ts
-- Generated At: 2025-12-15T00:38:06.536Z
+- Generated At: 2026-02-03T21:55:38.073Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - Creates virtual nodes for test groups without backing Stage0 docs (e.g., integration tests)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.536Z","inputHash":"2604c052689d719e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.073Z","inputHash":"383c22121b842da6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildTestingPlans` {#symbol-buildtestingplans}

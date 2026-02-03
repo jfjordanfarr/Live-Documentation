@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/generate-scip-indexes.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-generate-scip-indexes-ts
-- Generated At: 2026-01-27T18:07:43.169Z
+- Generated At: 2026-02-03T21:55:41.614Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Batch script that invokes external SCIP indexers (e.g., `scip-typescript`) acros
 Origin: [2026-01-27.2.SUMMARIZED.md](../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-27.2.SUMMARIZED.md) — companion to `scip-to-expected.ts`. Requires language-specific SCIP indexers installed globally. Not run in CI; indexes are committed as fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.169Z","inputHash":"35504dd781b83782"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.614Z","inputHash":"00eedabd9cb0a25d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

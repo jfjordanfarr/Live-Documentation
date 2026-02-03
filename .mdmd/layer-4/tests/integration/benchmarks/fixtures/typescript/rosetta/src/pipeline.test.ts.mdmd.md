@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/pipeline.test.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-typescript-rosetta-src-pipeline-test-ts
-- Generated At: 2026-01-16T19:19:20.831Z
+- Generated At: 2026-02-03T21:55:46.845Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Integration tests for the TypeScript Rosetta data processing pipeline. Validates
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection: `pipeline.test.ts` imports processor/models, so those files appear as "test-backed" without a directly name-matched test file.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:19:20.831Z","inputHash":"0c436c4d00b0e9e3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.845Z","inputHash":"fb063b589e80956e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

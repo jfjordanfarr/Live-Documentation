@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/java/service/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-service-expected-json
-- Generated At: 2026-01-15T18:39:07.039Z
+- Generated At: 2026-02-03T21:55:44.366Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Anchors the expected dependency graph for the Java service benchmark so layered 
 Use `npm run fixtures:regenerate -- --fixture java-service --write` before acknowledging graph updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.039Z","inputHash":"a27720c89063208d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.366Z","inputHash":"907d92e4e9a21875"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

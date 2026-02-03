@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/processor.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-processor-py
-- Generated At: 2026-01-14T22:47:33.813Z
+- Generated At: 2026-02-03T21:55:45.114Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Core processing logic for the Python Rosetta Stone fixture. Exercises various im
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Python's from-import and import-as patterns.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.813Z","inputHash":"10a7ea3258c0872b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.114Z","inputHash":"ee1647ca1f26bbd1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

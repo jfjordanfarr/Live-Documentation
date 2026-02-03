@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-local-storage-ts
-- Generated At: 2026-01-08T19:09:21.564Z
+- Generated At: 2026-02-03T21:55:36.093Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Manages localStorage-based persistence for Explorer UI preferences and navigatio
 Extracted from client/index.ts during Dev Day 50 (12/19). Uses debounced persistence via `schedulePersistUi()` and `schedulePersistNav()` to avoid excessive writes during rapid state changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.564Z","inputHash":"f1f8e9ec6ba2bdca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.093Z","inputHash":"8efc06fb8e2651b9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PERSISTED_UI_KEY` {#symbol-persisted_ui_key}

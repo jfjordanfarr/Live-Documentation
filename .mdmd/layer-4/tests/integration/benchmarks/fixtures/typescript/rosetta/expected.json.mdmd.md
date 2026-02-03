@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-rosetta-expected-json
-- Generated At: 2026-01-16T19:17:00.169Z
+- Generated At: 2026-02-03T21:55:46.719Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ground-truth dependency graph for the TypeScript Rosetta Stone fixture. Generate
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for Rosetta Stone fixture creation. This file is regenerated automatically by `npm run fixtures:regenerate`; do not hand-edit.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T19:17:00.169Z","inputHash":"877f0633a4a5e681"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.719Z","inputHash":"afa9afcb36d7d0f8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

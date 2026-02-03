@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/linkInference.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-linkinference-test-ts
-- Generated At: 2026-01-13T18:45:26.291Z
+- Generated At: 2026-02-03T21:55:39.078Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates that the link inference orchestrator fuses fallback heuristics and wor
 Keeps the orchestrator’s provider summaries and trace outputs aligned with the pipeline expectations that the markdown watcher and diagnostics publisher consume—codified across the US1 plumbing captured in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-12-stand-up-markdown-watcher-lines-658-824](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-17.SUMMARIZED.md#turn-12-stand-up-markdown-watcher-lines-658-824).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-13T18:45:26.291Z","inputHash":"23e07096f3ebe951"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.078Z","inputHash":"1ded5d433837c402"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-expected-json
-- Generated At: 2026-01-15T18:39:07.066Z
+- Generated At: 2026-02-03T21:55:45.371Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the expected dependency fan-out for the Ruby CLI benchmark so layered se
 Use `npm run fixtures:regenerate -- --fixture ruby-cli --write` to refresh this snapshot when the fixture or analyzer changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.066Z","inputHash":"66640c53d5f9b860"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.371Z","inputHash":"f2973bce3fc11aff"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

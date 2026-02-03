@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/goFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-gofixtureoracle-test-ts
-- Generated At: 2026-01-15T16:32:14.068Z
+- Generated At: 2026-02-03T21:55:40.981Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests for the Go fixture oracle. Validates edge generation, grouped import 
 - Follows the pattern established by [rustFixtureOracle.test.ts](./rustFixtureOracle.test.ts.mdmd.md) and other oracle test suites
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T16:32:14.068Z","inputHash":"aaf794ec32584014"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.981Z","inputHash":"300f7b8a4a4f4920"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

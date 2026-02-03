@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/common/logging.ps1
 - Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-common-logging-ps1
-- Generated At: 2025-12-06T22:49:50.098Z
+- Generated At: 2026-02-03T21:55:48.240Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provide a dot-sourced logging helper that the deployment script can import while
 The function body stays intentionally simple so adapter tests can focus on dot-source resolution rather than behavioral output.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:50.098Z","inputHash":"b95fa125830eb874"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.240Z","inputHash":"2d6c54451f3ce7c6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Write-DeploymentLog` {#symbol-writedeploymentlog}

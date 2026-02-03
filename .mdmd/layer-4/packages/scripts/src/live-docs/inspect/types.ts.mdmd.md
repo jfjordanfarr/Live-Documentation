@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-types-ts
-- Generated At: 2025-12-19T21:55:44.640Z
+- Generated At: 2026-02-03T21:55:37.430Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines shared type contracts for the `live-docs:inspect` CLI pathfinding functi
 Extracted from inspect.ts during Dev Day 50 (12/19) as part of the Phase 1 tech-debt reduction. These types are consumed by pathfind.ts, pathfind-symbol.ts, and the emit-result modules to maintain type safety across the modular inspect CLI.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:55:44.640Z","inputHash":"d26a5b0a9785c47f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.430Z","inputHash":"34f3b90f6c15c76a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Direction` {#symbol-direction}

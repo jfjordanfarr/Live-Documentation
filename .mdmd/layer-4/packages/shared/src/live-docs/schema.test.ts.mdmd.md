@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/schema.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-schema-test-ts
-- Generated At: 2025-11-19T15:01:35.375Z
+- Generated At: 2026-02-03T21:55:40.650Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Validates Live Doc metadata normalization so config defaults, provenance merging
 - Continues to back the refactored Stage‑0 toolchain that consumes shared schema utilities during the Nov 11 live-docs system split.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-11.SUMMARIZED.md#turn-08-begin-refactor--stage-0-extraction-lines-961-1100]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.375Z","inputHash":"361b3b1c27f0749d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.650Z","inputHash":"a624bc69704701be"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/formatting.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-formatting-ts
-- Generated At: 2025-12-07T16:27:06.597Z
+- Generated At: 2026-02-03T21:55:37.847Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Number and statistical formatting utilities for System-layer Live Documentation 
 - `formatPValue()` uses scientific notation for very small values, trims trailing zeros for readability
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.597Z","inputHash":"acd02ec5bd59a99b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.847Z","inputHash":"ef26f0f5af5c4897"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatNumber` {#symbol-formatnumber}

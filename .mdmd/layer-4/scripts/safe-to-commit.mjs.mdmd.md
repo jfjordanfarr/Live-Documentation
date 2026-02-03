@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/safe-to-commit.mjs
 - Live Doc ID: LD-implementation-scripts-safe-to-commit-mjs
-- Generated At: 2025-11-16T22:34:14.101Z
+- Generated At: 2026-02-03T21:55:42.044Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Acts as the guarded "safe to commit" gate: chains `npm run verify`, optional ben
 - Since 2025-11-08, also invokes the Live Docs CLI (`npm run livedocs -- --report`) to keep Layer‑4 mirrors and lint outputs current before commits.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-16T22:34:14.101Z","inputHash":"42582e1ed819a56e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.044Z","inputHash":"c94b2f2ee6b8c77f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

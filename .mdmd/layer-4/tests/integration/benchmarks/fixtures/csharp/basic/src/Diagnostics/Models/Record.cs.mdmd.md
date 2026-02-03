@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/Models/Record.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-models-record-cs
-- Generated At: 2025-12-06T22:49:48.397Z
+- Generated At: 2026-02-03T21:55:42.866Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the immutable `Record` type for the C# basic benchmark so analyzer cover
 Keep the signature minimal; additional members belong in the service layer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.397Z","inputHash":"62c92cf4bed30e52"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.866Z","inputHash":"69aab0f2fe1783cc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record (record)` {#symbol-record-record}

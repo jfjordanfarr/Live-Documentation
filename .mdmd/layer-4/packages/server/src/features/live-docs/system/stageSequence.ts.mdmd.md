@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/stageSequence.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-stagesequence-ts
-- Generated At: 2026-01-15T02:41:18.536Z
+- Generated At: 2026-02-03T21:55:38.149Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the ordered stage sequence from `run-all.ts` descriptors for Workflow sys
 - `extractRunAllStageDescriptors()` parses `run-all.ts` to discover script references
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.536Z","inputHash":"79eb180d8f5dc509"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.149Z","inputHash":"92456055e4f91dde"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildStageSequence` {#symbol-buildstagesequence}

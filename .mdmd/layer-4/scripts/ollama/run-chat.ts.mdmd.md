@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/ollama/run-chat.ts
 - Live Doc ID: LD-implementation-scripts-ollama-run-chat-ts
-- Generated At: 2025-11-19T15:01:35.968Z
+- Generated At: 2026-02-03T21:55:42.004Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bridges integration tooling to a local Ollama server by reading the workspace en
 - Subsequent summary captured the regression-fix outcome: integration tests now consume this CLI during local-only provider runs without the “[ollama-bridge] No model configured” warning ([11-14 recap](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-restore-ollama-bridge-for-integration-tests-lines-3301-3600)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.968Z","inputHash":"3a2fb41ca1a7c152"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.004Z","inputHash":"75fc1b8d097358ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

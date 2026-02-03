@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/newtonsoft-json/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-newtonsoft-json-expected-json
-- Generated At: 2026-01-27T18:07:43.260Z
+- Generated At: 2026-02-03T21:55:42.905Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Created during [2026-01-27 Chat 1](../../../../../../../../AI-Agent-Workspace/Ch
 **Note on oracle kind:** Unlike the smaller C# fixtures which use SCIP, Newtonsoft.Json currently uses the heuristic oracle due to the complexity of SCIP integration for large vendor fixtures. This is a known area for future improvement.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.260Z","inputHash":"97b81e3371622cd0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.905Z","inputHash":"19602b819d2b8277"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

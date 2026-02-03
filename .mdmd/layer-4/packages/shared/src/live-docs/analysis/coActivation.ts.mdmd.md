@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/analysis/coActivation.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-analysis-coactivation-ts
-- Generated At: 2026-01-17T16:37:43.536Z
+- Generated At: 2026-02-03T21:55:40.290Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Computes co-activation graphs from Stage‑0 manifests to surface statistically 
 - Later upgraded with statistical testing (p/q/z scores) so generated docs highlight significant clusters instead of heuristic caps.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-11.SUMMARIZED.md#turn-16-implement-statistically-backed-co-activation-lines-1881-2020]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T16:37:43.536Z","inputHash":"34512ca6a8f87655"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.290Z","inputHash":"772a7b7f7b897dd5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DegreeDistribution` {#symbol-degreedistribution}

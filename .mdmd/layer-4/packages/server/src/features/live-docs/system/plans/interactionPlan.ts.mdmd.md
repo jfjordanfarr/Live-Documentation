@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/interactionPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-interactionplan-ts
-- Generated At: 2025-12-15T00:38:06.530Z
+- Generated At: 2026-02-03T21:55:38.045Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `interaction` archetype plans for scripts in `scripts/live-d
 - Edges derive from direct dependencies and stage-sequence before/after neighbours
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.530Z","inputHash":"968ae31876a019c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.045Z","inputHash":"e80f3bf9a66d9fb1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildInteractionPlans` {#symbol-buildinteractionplans}

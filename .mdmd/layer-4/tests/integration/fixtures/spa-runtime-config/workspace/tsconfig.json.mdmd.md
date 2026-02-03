@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json
 - Live Doc ID: LD-asset-tests-integration-fixtures-spa-runtime-config-workspace-tsconfig-json
-- Generated At: 2025-11-18T20:51:26.771Z
+- Generated At: 2026-02-03T21:55:51.192Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Fixture TypeScript configuration used by the SPA runtime configuration suite to 
 - Update alongside fixture source files and document changes in the fixture README to keep regeneration narratives reproducible.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:26.771Z","inputHash":"b54ce7711376ba38"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.192Z","inputHash":"aee568e8cdc2237c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

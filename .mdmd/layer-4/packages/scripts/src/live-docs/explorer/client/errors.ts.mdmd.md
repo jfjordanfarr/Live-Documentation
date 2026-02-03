@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/errors.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-errors-ts
-- Generated At: 2025-12-02T05:07:01.214Z
+- Generated At: 2026-02-03T21:55:35.678Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Global error handling for the Explorer client. Displays a user-friendly error ov
 - Error overlay includes stack traces and a "Reload" button.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-02T05:07:01.214Z","inputHash":"e12a82c737fed29b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.678Z","inputHash":"58ef006bd0671fab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `reportFatalExplorerError` {#symbol-reportfatalexplorererror}

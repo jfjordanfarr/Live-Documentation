@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/main.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-main-py
-- Generated At: 2026-01-14T18:38:50.208Z
+- Generated At: 2026-02-03T21:55:44.835Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides a runnable wrapper for the Python pipeline benchmark so the analyzer tr
 Keep the status check and exception message stable; tests assert on this behavior during regression runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T18:38:50.208Z","inputHash":"50333159c2a5b78f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.835Z","inputHash":"65a0bd67bcae5af7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

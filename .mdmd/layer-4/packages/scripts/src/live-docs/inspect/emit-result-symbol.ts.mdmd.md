@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result-symbol.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-emit-result-symbol-ts
-- Generated At: 2026-01-14T15:17:48.509Z
+- Generated At: 2026-02-03T21:55:37.255Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats and outputs symbol-level pathfinding results for the inspect CLI. When p
 Extracted from inspect.ts during Dev Day 50 (12/19). Symbol paths include both the file hops and the specific exported symbols at each hop, providing granular impact visibility.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.509Z","inputHash":"c50e857a33f67a6f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.255Z","inputHash":"6a4b46e7e620161e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `emitSymbolPathResult` {#symbol-emitsymbolpathresult}

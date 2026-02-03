@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-lint-ts
-- Generated At: 2026-01-16T16:35:27.336Z
+- Generated At: 2026-02-03T21:55:41.909Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Checks every staged Live Doc for structural markers, section completeness, evide
 Introduced alongside the first Live Docs CLI (Aug 2024) and expanded repeatedly through the MDMD migration. In Nov 2025 we added authored-section warnings to surface pending “Purpose/Notes” placeholders without blocking commits, keeping the guardrail lightweight while nudging documentation quality forward.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T16:35:27.336Z","inputHash":"a10b4fc26918018c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.909Z","inputHash":"05a866e9c5feef3c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

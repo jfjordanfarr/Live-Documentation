@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/utils/uri.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-utils-uri-ts
-- Generated At: 2026-01-14T15:17:48.590Z
+- Generated At: 2026-02-03T21:55:38.262Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides a server-scoped re-export of `normalizeFileUri` so every feature import
 - Introduced during the URI canonicalization sweep captured in [2025-10-19 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-19.SUMMARIZED.md) after duplicate nodes surfaced in the graph store.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.590Z","inputHash":"6148d03533780ac6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.262Z","inputHash":"19fe9d6277ddcee3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `normalizeFileUri` {#symbol-normalizefileuri}

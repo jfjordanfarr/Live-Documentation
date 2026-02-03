@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-bootstrap-entry-heuristics-ts
-- Generated At: 2025-12-19T21:19:50.700Z
+- Generated At: 2026-02-03T21:55:35.585Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Infers the best default entry node when launching the Explorer without a specifi
 Extracted from client/index.ts during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. The `inferDefaultEntryNodeId()` function is called during bootstrap when no node ID is in the URL.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.700Z","inputHash":"59180c1e310952eb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.585Z","inputHash":"7e4f5bcad96b88eb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkEndpointResolver` {#symbol-linkendpointresolver}

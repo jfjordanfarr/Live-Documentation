@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/coActivationPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-coactivationplan-ts
-- Generated At: 2025-12-15T00:38:06.516Z
+- Generated At: 2026-02-03T21:55:37.962Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - `deriveClusterIdentity()` picks a descriptive slug from common path segments or highest-degree node
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.516Z","inputHash":"27a598157deba236"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.962Z","inputHash":"9ab7688cc01571df"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildCoActivationPlans` {#symbol-buildcoactivationplans}

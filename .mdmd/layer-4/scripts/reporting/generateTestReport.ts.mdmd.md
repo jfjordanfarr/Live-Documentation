@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/reporting/generateTestReport.ts
 - Live Doc ID: LD-implementation-scripts-reporting-generatetestreport-ts
-- Generated At: 2026-01-15T02:41:18.898Z
+- Generated At: 2026-02-03T21:55:42.023Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds the human-readable benchmark report (`reports/test-report*.md`) by combin
 - Accepts `--mode`, `--benchmarks`, and `--output` so CI and maintainers can produce ad-hoc reports; defaults keep Markdown under `reports/` while leaving JSON sources untouched for follow-up analysis.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.898Z","inputHash":"14d5271c109ab86b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.023Z","inputHash":"c6fe739fdaec2fa1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

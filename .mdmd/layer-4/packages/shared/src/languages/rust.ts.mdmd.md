@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-rust-ts
-- Generated At: 2026-01-30T21:01:45.980Z
+- Generated At: 2026-02-03T21:55:39.471Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides Rust-specific syntax configuration implementing `LanguageSyntax`. Defin
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — raw string literal syntax (`r#"..."#`) is partially supported via regex; deep nesting of `#` delimiters requires tree-sitter for accuracy.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.980Z","inputHash":"462401d0bd280032"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.471Z","inputHash":"d42e4480c311715b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustSyntax` {#symbol-rustsyntax}

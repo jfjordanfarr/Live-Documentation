@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/update-fixture-hashes.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-update-fixture-hashes-ts
-- Generated At: 2026-01-15T02:41:18.862Z
+- Generated At: 2026-02-03T21:55:41.705Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Materializes each vendored benchmark fixture, computes its integrity digest usin
 - Invoked via `npm run fixtures:update-hashes`; supports `--dry-run` for preview mode before modifying the manifest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.862Z","inputHash":"b81537ff51dcc069"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.705Z","inputHash":"a04fd8f68045397e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

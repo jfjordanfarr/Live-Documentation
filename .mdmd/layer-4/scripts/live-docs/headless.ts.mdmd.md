@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/headless.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-headless-ts
-- Generated At: 2025-11-19T15:01:35.922Z
+- Generated At: 2026-02-03T21:55:41.801Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the Live Docs headless harness scenarios (e.g. seed fixtures, run generator
 Created for the 2024 headless smoke tests that reproduce user journeys without the extension UI. Supports multi-scenario runs, container-spec emission, and optional System-layer skips to keep scenario execution aligned with our CI diagnostics flows.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.922Z","inputHash":"42598574f1c6627f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.801Z","inputHash":"d518b87dc5987aac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

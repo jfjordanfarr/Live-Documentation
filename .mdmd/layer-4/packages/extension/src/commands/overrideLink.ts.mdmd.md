@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/overrideLink.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-overridelink-ts
-- Generated At: 2026-01-17T19:15:45.519Z
+- Generated At: 2026-02-03T21:55:35.235Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Registers the `linkDiagnostics.overrideLink` VS Code command, enabling users to 
 - The command is intended for power users who need to correct false-positive diagnostics or establish relationships that static analysis cannot infer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:15:45.519Z","inputHash":"b45f9e933a4557cc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.235Z","inputHash":"65d75cb110cb67f4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerOverrideLinkCommand` {#symbol-registeroverridelinkcommand}

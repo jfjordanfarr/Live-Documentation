@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: scripts/doc-tools/enforce-documentation-links.test.ts
 - Live Doc ID: LD-test-scripts-doc-tools-enforce-documentation-links-test-ts
-- Generated At: 2025-11-19T15:01:35.719Z
+- Generated At: 2026-02-03T21:55:41.551Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Proves the documentation-link CLI flags violations and exits with the correct co
 - Keeps the CLI contract honest whenever we tweak rule resolution or stream fixes, catching several follow-up adjustments (for example, exporting `runCli` and normalising exit codes on 2025-11-05) before they reached the pipeline ([API hardening](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md#L70-L86)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.719Z","inputHash":"2eca0867bd343190"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.551Z","inputHash":"cf1a795a1a2c53d3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

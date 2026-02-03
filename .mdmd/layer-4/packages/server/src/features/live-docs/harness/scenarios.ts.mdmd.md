@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/scenarios.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-scenarios-ts
-- Generated At: 2025-12-15T00:38:06.476Z
+- Generated At: 2026-02-03T21:55:37.764Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the curated headless harness scenarios so automated runs can copy fixtur
 - The initial Ruby, Python, and C# entries cover the multilingual fixtures we committed to exercising headlessly; the `system` flag toggles System doc materialization for scenarios that need co-activation coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.476Z","inputHash":"974b1312e9151e27"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.764Z","inputHash":"ffbc91d522191955"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessScenario` {#symbol-headlessharnessscenario}

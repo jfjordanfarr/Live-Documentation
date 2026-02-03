@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/ollamaClient.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-ollamaclient-ts
-- Generated At: 2026-01-17T19:21:10.260Z
+- Generated At: 2026-02-03T21:55:41.366Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the shared HTTP client for Ollama chat requests—handling timeouts, 
 - Captures raw responses and timing data into per-run traces when `LINK_AWARE_OLLAMA_TRACE_DIR` is set, supporting the telemetry/benchmark reporting workstream called out during the rollout ([runtime hardening](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L5520-L5530)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.260Z","inputHash":"35ae479d7b05a3e6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.366Z","inputHash":"519c7653ebcfd5f0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OllamaChatRequest` {#symbol-ollamachatrequest}

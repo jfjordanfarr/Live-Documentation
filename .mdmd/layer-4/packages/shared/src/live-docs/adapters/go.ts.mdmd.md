@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/go.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-go-ts
-- Generated At: 2026-01-30T21:01:46.010Z
+- Generated At: 2026-02-03T21:55:39.810Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Go language adapter for Live Documentation generation. Analyzes `.go` source fil
 - Part of the ongoing effort to expand Live Documentation's polyglot capabilities
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:46.010Z","inputHash":"0beab12121b32e30"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.810Z","inputHash":"8e0c88bc456fa128"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}

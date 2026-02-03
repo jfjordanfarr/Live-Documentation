@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/fallbackInference.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-fallbackinference-test-ts
-- Generated At: 2025-12-11T02:38:01.705Z
+- Generated At: 2026-02-03T21:55:38.666Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks in the fallback inference contract from T054–T056—heuristic markdown/c
 Later assertions track the TypeScript runtime/type split and regression fixes from [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) while leaving room for the language-specific suites captured in `fallbackInference.languages.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.705Z","inputHash":"a7f27157ee9c9e54"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.666Z","inputHash":"731dd984c3ab2232"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

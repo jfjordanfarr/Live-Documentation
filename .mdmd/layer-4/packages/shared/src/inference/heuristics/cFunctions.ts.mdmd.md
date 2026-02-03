@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/cFunctions.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-cfunctions-ts
-- Generated At: 2025-12-11T02:38:01.722Z
+- Generated At: 2026-02-03T21:55:38.735Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Resolves C call sites back to their declaring headers so fallback inference can 
 - Became part of the modular heuristic suite shipped on Nov 8; any scoring or ordering tweaks need to stay benchmark-neutral as captured in that commit summary <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L60-L140>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.722Z","inputHash":"d21f3308f80576fa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.735Z","inputHash":"290fbf193eb4d651"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createCFunctionHeuristic` {#symbol-createcfunctionheuristic}

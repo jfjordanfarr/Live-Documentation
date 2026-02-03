@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/resolve-artifact.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-resolve-artifact-ts
-- Generated At: 2026-01-14T15:17:48.523Z
+- Generated At: 2026-02-03T21:55:37.395Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Resolves user-provided artifact paths to Live Doc graph nodes. Handles the ambig
 Extracted from inspect.ts during Dev Day 50 (12/19). Works in tandem with symbol-reference.ts to provide the full path resolution pipeline for the inspect CLI.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.523Z","inputHash":"985d3324db155f30"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.395Z","inputHash":"8851440551c52eab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArtifactIdentifier` {#symbol-resolveartifactidentifier}

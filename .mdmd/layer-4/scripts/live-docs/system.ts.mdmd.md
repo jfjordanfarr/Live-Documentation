@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/system.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-system-ts
-- Generated At: 2025-12-15T00:38:07.479Z
+- Generated At: 2026-02-03T21:55:41.948Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ CLI wrapper for `generateSystemLiveDocs`, producing Layer‑3 “System” docum
 We added this helper when commissioning the System doc generator (Nov 2024) to give designers a repeatable way to export markdown to `AI-Agent-Workspace/tmp/system-cli-output`. It supports `--clean` and `--dry-run` flags so CI and human runs can avoid clobbering curated exports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.479Z","inputHash":"c87778778c3ff011"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.948Z","inputHash":"dae09e1d49df5ba3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

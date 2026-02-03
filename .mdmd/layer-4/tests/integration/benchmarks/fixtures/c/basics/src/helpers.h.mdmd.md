@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/basics/src/helpers.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-basics-src-helpers-h
-- Generated At: 2025-12-06T22:49:48.318Z
+- Generated At: 2026-02-03T21:55:42.159Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Include guard header for the C basics benchmark fixture. Defines the `WIDGET_HEL
 - Minimal header content for testing the C analyzer's handling of preprocessor symbols.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.318Z","inputHash":"25e45b6b9aeea5cc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.159Z","inputHash":"e508e5153029ebb1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WIDGET_HELPERS_H` {#symbol-widget_helpers_h}

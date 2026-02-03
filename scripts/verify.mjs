@@ -3,6 +3,25 @@ import { spawnSync } from "node:child_process";
 
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
+/**
+ * Checks if xvfb-run is needed and available for headless VS Code tests.
+ * Returns the wrapper command if needed, or null if not.
+ */
+function getXvfbWrapper() {
+  // Only needed on Linux without a display
+  if (process.platform !== "linux" || process.env.DISPLAY) {
+    return null;
+  }
+
+  // Check if xvfb-run is available
+  const check = spawnSync("which", ["xvfb-run"], { stdio: "pipe" });
+  if (check.status !== 0) {
+    return null;
+  }
+
+  return ["xvfb-run", "-a"];
+}
+
 function runStep(label, command, args, options = {}) {
   console.log(`\n=== ${label} ===`);
   const result = spawnSync(command, args, { stdio: "inherit", ...options });
@@ -123,7 +142,20 @@ function runVerify() {
   try {
     runNpmScript("Lint", ["run", "lint"], benchmarkEnv);
     runNpmScript("Unit tests", ["run", "test:unit"], benchmarkEnv);
-    runNpmScript("Integration tests", ["run", "test:integration"], benchmarkEnv);
+
+    // Integration tests need xvfb on headless Linux (no $DISPLAY)
+    const xvfbWrapper = getXvfbWrapper();
+    if (xvfbWrapper) {
+      runStep(
+        "Integration tests (via xvfb)",
+        xvfbWrapper[0],
+        [...xvfbWrapper.slice(1), npmCommand, "run", "test:integration"],
+        { env: { ...process.env, ...benchmarkEnv } }
+      );
+    } else {
+      runNpmScript("Integration tests", ["run", "test:integration"], benchmarkEnv);
+    }
+
     runNpmScript("Documentation link enforcement", ["run", "docs:links:enforce"], benchmarkEnv);
 
     if (generateReport) {

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/types.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-types-ts
-- Generated At: 2025-11-19T15:01:35.386Z
+- Generated At: 2026-02-03T21:55:40.738Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Centralizes Stage‑0 Live Doc manifest and symbol structures so the generator, 
 - Survived the Nov 15 Stage‑0 recovery by migrating authored content into the new `.md` Live Docs surface and retargeting all diagnostics to this schema file.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-19-automate-the-stage-0-migration-lines-2621-2760]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.386Z","inputHash":"5f9b131ee7fc34a2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.738Z","inputHash":"4ab78162475d9038"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Stage0Symbol` {#symbol-stage0symbol}

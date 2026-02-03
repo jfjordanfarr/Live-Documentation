@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json
 - Live Doc ID: LD-asset-tests-integration-fixtures-blazor-telemetry-workspace-appsettings-json
-- Generated At: 2025-11-18T20:37:09.264Z
+- Generated At: 2026-02-03T21:55:47.018Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Carries the telemetry endpoint and instrumentation key that the Blazor host page
 - `BlazorTelemetry:InstrumentationKey` mirrors the Application Insights key exposed to the JavaScript bootstrapper.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:37:09.264Z","inputHash":"3504adb9d69e794e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.018Z","inputHash":"7b6308e6c454a8de"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

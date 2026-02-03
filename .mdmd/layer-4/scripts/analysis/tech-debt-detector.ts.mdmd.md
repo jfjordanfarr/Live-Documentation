@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/analysis/tech-debt-detector.ts
 - Live Doc ID: LD-implementation-scripts-analysis-tech-debt-detector-ts
-- Generated At: 2025-12-18T00:59:19.177Z
+- Generated At: 2026-02-03T21:55:41.538Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Standalone CLI script that surfaces technical debt heuristics: files exceeding l
 - Immediately validated its own value by surfacing `explorer/client/index.ts` as the largest codebase file
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T00:59:19.177Z","inputHash":"634bfa01b587b4f5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.538Z","inputHash":"73750b6444c23295"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

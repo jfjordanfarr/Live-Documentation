@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/server/src/features/watchers/pathReferenceDetector.test.ts
 - Live Doc ID: LD-test-packages-server-src-features-watchers-pathreferencedetector-test-ts
-- Generated At: 2026-01-17T19:21:09.983Z
+- Generated At: 2026-02-03T21:55:38.281Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Proves the detector surfaces markdown-to-code links, import edges, and ignores e
 - Refresh these scenarios whenever we adjust the hint heuristics or indexer globs—tests should mirror the real templates/docs/assets we expect to resolve <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2832-L2864> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L4504-L4572>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.983Z","inputHash":"8bd67aefe700f7b9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.281Z","inputHash":"4122f59fd3865cbb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/analysis/layer-audit.ts
 - Live Doc ID: LD-implementation-scripts-analysis-layer-audit-ts
-- Generated At: 2025-12-15T00:38:07.334Z
+- Generated At: 2026-02-03T21:55:41.527Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Scans `.mdmd/layer-{n}/` directories to discover canonical heading patterns (e.g
 - Exports `parseArgs`, `collectLayerReport`, `logLayerReport`, and `main` to support both CLI usage (`npx tsx layer-audit.ts --layer 4`) and programmatic invocation by doc validators.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.334Z","inputHash":"35017e82558a0e02"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.527Z","inputHash":"32d6c02510696dff"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectLayerReport` {#symbol-collectlayerreport}

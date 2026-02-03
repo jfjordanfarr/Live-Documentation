@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/mux/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-mux-inferred-json
-- Generated At: 2026-01-28T02:55:35.642Z
+- Generated At: 2026-02-03T21:55:43.377Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ For gorilla/mux (single package with many impl files), only strategy 1 applies.
 **Fundamental limitation:** Single-package Go libraries have no imports to trace. This low recall is inherent — the fixture exists precisely to demonstrate SCIP's value for such codebases.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.642Z","inputHash":"6a9ef92617403357"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.377Z","inputHash":"90d12026576e9ead"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

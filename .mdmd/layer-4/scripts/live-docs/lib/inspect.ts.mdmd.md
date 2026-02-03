@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lib/inspect.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-lib-inspect-ts
-- Generated At: 2025-12-19T21:19:51.481Z
+- Generated At: 2026-02-03T21:55:41.873Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Re-export shim that exposes the inspect module's public API from the `scripts/li
 Created during Dev Day 50 (12/19) to maintain the lib convention while the actual implementation lives in `packages/scripts/src/live-docs/inspect/`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:51.481Z","inputHash":"779a84ae1490f2e8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.873Z","inputHash":"7f019e8cb7dfb7d2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

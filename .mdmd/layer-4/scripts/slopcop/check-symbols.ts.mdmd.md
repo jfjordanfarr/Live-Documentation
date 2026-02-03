@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-symbols.ts
 - Live Doc ID: LD-implementation-scripts-slopcop-check-symbols-ts
-- Generated At: 2025-11-19T15:01:36.017Z
+- Generated At: 2026-02-03T21:55:42.084Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Validates markdown symbol anchors across the workspace, flagging duplicate headi
 - The `--json` flag mirrors what the integration tests expect, allowing fixture runs to assert on specific issues while the human-readable formatter groups results by top-level folder for triage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:36.017Z","inputHash":"ba8f344a5b1a6ed8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.084Z","inputHash":"05428cd4e0245227"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

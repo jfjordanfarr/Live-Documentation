@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/newtonsoft-json/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-newtonsoft-json-inferred-json
-- Generated At: 2026-01-27T18:07:43.263Z
+- Generated At: 2026-02-03T21:55:42.923Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Created during [2026-01-27 Chat 1](../../../../../../../../AI-Agent-Workspace/Ch
 **Fixture purpose:** Newtonsoft.Json serves as a third-party stress test for the C# heuristic, replacing the overly complex Roslyn fixture. The library's straightforward namespace structure and clear file organization make it ideal for validating heuristic accuracy at scale.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-27T18:07:43.263Z","inputHash":"f6673ceea720e602"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.923Z","inputHash":"6006b54d402487ba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

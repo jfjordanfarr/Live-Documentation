@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-docstring-test-ts
-- Generated At: 2026-01-30T21:06:50.008Z
+- Generated At: 2026-02-03T21:55:40.022Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the Python adapter’s handling of reST, Google, and NumPy-style docst
 - Executed during the Nov 14 `safe:commit -- --benchmarks` run; expand its fixtures whenever the adapter learns new docstring dialect features <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:06:50.008Z","inputHash":"0a5a7616e077dd09"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.022Z","inputHash":"cdb343f2b80eda94"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

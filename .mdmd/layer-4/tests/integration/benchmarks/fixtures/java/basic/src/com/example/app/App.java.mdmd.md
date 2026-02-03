@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/app/App.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-app-app-java
-- Generated At: 2026-01-14T15:17:48.970Z
+- Generated At: 2026-02-03T21:55:43.830Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Entry point class for the `java-basic` polyglot benchmark fixture. Coordinates d
 - The fixture uses standard Java package conventions (`com.example.app`, `com.example.data`, etc.) to stress-test import path resolution across nested package hierarchies.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.970Z","inputHash":"97312bceb39b68f0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.830Z","inputHash":"84f1283d170e3a0b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}

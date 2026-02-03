@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/src/Scripts/appConfig.js
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-webforms-src-scripts-appconfig-js
-- Generated At: 2025-12-06T22:49:48.429Z
+- Generated At: 2026-02-03T21:55:43.314Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Mirrors the client-side bootstrap for the WebForms benchmark, reading hidden fie
 Keep the element IDs and shape of `widgetConfig` stable; regression tests assert on these values.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.429Z","inputHash":"f1e505310e6323c7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.314Z","inputHash":"5d25d04de666e6db"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

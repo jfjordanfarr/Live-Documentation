@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/ollamaEndpoint.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-ollamaendpoint-ts
-- Generated At: 2026-01-17T19:21:10.262Z
+- Generated At: 2026-02-03T21:55:41.378Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Resolves the workspace Ollama endpoint with a shared precedence stack (env vars 
 - Captures the VS Code setting uncovered during design (`github.copilot.chat.byok.ollamaEndpoint`) while preserving a deterministic `http://localhost:11434` default when no overrides exist ([design shard](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-29.md#L693-L704)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.262Z","inputHash":"003d7cc67f85ae26"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.378Z","inputHash":"2e6fedfc917d900b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ResolveOllamaEndpointOptions` {#symbol-resolveollamaendpointoptions}

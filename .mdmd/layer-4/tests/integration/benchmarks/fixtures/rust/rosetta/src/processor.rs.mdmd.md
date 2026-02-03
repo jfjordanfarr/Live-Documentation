@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/rosetta/src/processor.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-rosetta-src-processor-rs
-- Generated At: 2026-01-14T22:47:33.842Z
+- Generated At: 2026-02-03T21:55:46.256Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Rust Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust use statement and pub use re-export detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.842Z","inputHash":"cc55556e9f59e9d1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.256Z","inputHash":"1472e70f723592b2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

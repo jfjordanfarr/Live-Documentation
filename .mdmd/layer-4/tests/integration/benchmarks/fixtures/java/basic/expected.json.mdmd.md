@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-java-basic-expected-json
-- Generated At: 2026-01-15T18:39:07.023Z
+- Generated At: 2026-02-03T21:55:43.779Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the curated dependency graph for the Java basic benchmark so standard pa
 Regenerate via `npm run fixtures:regenerate -- --fixture java-basic --write` before accepting expectation changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.023Z","inputHash":"439c0d50869b11b4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.779Z","inputHash":"fd087ce6fb25ec71"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

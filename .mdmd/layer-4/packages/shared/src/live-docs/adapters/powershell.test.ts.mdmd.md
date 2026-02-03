@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/powershell.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-powershell-test-ts
-- Generated At: 2026-01-15T02:41:18.692Z
+- Generated At: 2026-02-03T21:55:39.981Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercise the PowerShell adapter against the compendium fixtures to confirm symbo
 The suite mirrors the fixtures into a temporary workspace, skips automatically when no PowerShell runtime is available, and expects Export-ModuleMember to gate public surface area.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.692Z","inputHash":"ce7238402b658d1a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.981Z","inputHash":"d5f33cb24e61466c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

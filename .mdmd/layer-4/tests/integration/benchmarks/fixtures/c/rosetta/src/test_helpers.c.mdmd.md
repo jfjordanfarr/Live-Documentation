@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/test_helpers.c
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-c-rosetta-src-test-helpers-c
-- Generated At: 2026-01-16T21:21:09.649Z
+- Generated At: 2026-02-03T21:55:42.661Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the C Rosetta helpers module (format, sum, average utilities).
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with C's `#include "helpers.h"` pattern.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.649Z","inputHash":"e9fc016821ab2fd9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.661Z","inputHash":"c15a22cfe8f7e2a9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ASSERT` {#symbol-assert}

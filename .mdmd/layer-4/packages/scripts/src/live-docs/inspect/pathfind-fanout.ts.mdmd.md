@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-fanout.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-pathfind-fanout-ts
-- Generated At: 2026-01-14T15:17:48.517Z
+- Generated At: 2026-02-03T21:55:37.337Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Enumerates all terminal paths from a starting node when no destination is specif
 Extracted from inspect.ts during Dev Day 50 (12/19). The `enumerateTerminalPaths()` function walks the graph to leaf nodes, useful for understanding the blast radius of changes to foundational utilities.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.517Z","inputHash":"ad135ecdd0ce04ac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.337Z","inputHash":"cab63dc7cfdee509"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MAX_ENUMERATED_PATHS` {#symbol-max_enumerated_paths}

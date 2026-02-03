@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-renderer.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-layout-renderer-ts
-- Generated At: 2025-12-19T21:19:50.802Z
+- Generated At: 2026-02-03T21:55:36.551Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates Local Map layout rendering by mode (single-hop, multi-hop, path). D
 Extracted from render.ts during Dev Day 50 (12/19) as part of Phase 3 tech-debt reduction. This is the top-level render orchestrator that calls into card-factory.ts and column-factory.ts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.802Z","inputHash":"43277db878836219"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.551Z","inputHash":"b8d4672338f687d5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderLayoutForNodes` {#symbol-renderlayoutfornodes}

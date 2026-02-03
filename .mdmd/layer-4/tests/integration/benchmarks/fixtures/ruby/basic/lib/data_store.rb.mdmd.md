@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/basic/lib/data_store.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-basic-lib-data-store-rb
-- Generated At: 2025-12-06T22:49:48.546Z
+- Generated At: 2026-02-03T21:55:45.248Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains the static datasets for the Ruby basic benchmark so dependency analysi
 Dataset keys and values are intentionally small; change them only when expanding fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.546Z","inputHash":"0827a5cb082e72b8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.248Z","inputHash":"18185afeea3fed30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}

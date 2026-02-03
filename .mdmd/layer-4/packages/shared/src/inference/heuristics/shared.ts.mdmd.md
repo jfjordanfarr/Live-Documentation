@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/shared.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-shared-ts
-- Generated At: 2026-01-17T19:21:10.047Z
+- Generated At: 2026-02-03T21:55:39.041Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides the cross-language path normalisation, comment filtering, and reference
 - The extension-swapping logic was introduced to keep `.js` specifiers mapped onto `.ts/.tsx` sources; extend the replacement list in this helper instead of reimplementing it in future heuristics <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L2302-L2315>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:10.047Z","inputHash":"a3f4e0d66bbbf22a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.041Z","inputHash":"d75ebf2e26714b73"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cleanupReference` {#symbol-cleanupreference}

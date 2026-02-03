@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/sync-ast-doc.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-sync-ast-doc-ts
-- Generated At: 2026-01-15T02:41:18.861Z
+- Generated At: 2026-02-03T21:55:41.693Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Rebuilds the AST benchmark Live Doc from `fixtures.manifest.json`, ensuring the 
 - Repointed 2025-11-16 to the `.live-documentation/source` mirror after the Stage‑0 cleanup, keeping manifest-driven docs intact without reviving the deprecated `.mdmd/layer-4` tree ([mirror alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2680-L2840)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.861Z","inputHash":"95e0492beae27f56"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.693Z","inputHash":"b2b6c66121947b37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

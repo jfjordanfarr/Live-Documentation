@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-go-rosetta-expected-json
-- Generated At: 2026-01-28T02:24:04.407Z
+- Generated At: 2026-02-03T21:55:43.392Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Canonical ground-truth dependency graph for the go-rosetta benchmark fixture. Co
 - Graph shape mirrors other Rosetta variants: main → models/processor, processor → helpers/models/types, models → types
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:24:04.407Z","inputHash":"0f7fa43c0f41c718"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.392Z","inputHash":"d456d697da2f2f4a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

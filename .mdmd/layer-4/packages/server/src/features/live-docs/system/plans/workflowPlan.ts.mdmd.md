@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/workflowPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-workflowplan-ts
-- Generated At: 2025-12-15T00:38:06.541Z
+- Generated At: 2026-02-03T21:55:38.100Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds System-layer `workflow` archetype plans for orchestrator scripts (e.g., `
 - Combines direct dependencies with stage-sequence edges for complete orchestration topology
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:06.541Z","inputHash":"c8b93526e984153d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.100Z","inputHash":"1770dd277e303aa2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildWorkflowPlans` {#symbol-buildworkflowplans}

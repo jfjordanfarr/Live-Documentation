@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/fixtures.manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-fixtures-manifest-json
-- Generated At: 2026-01-28T02:55:35.639Z
+- Generated At: 2026-02-03T21:55:43.348Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Master manifest enumerating every benchmark repository and fixture scenario the 
 - Update entries when refreshing vendored repositories or adding new language scenarios, and regenerate fixtures plus reports to keep precision/recall metrics honest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.639Z","inputHash":"619a49fe4ca692a5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.348Z","inputHash":"59c70642814b49a7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

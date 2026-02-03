@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-layout-math-test-ts
-- Generated At: 2025-12-18T22:35:34.139Z
+- Generated At: 2026-02-03T21:55:36.445Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests for layout-math.ts covering column counting, grid template generation
 - Part of the 153-test pure-function module validation suite
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T22:35:34.139Z","inputHash":"014ea89ef17b9328"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.445Z","inputHash":"e8c1eddabcce1574"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

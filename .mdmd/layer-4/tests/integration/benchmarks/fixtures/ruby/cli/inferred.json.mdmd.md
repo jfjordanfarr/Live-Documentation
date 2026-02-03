@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-cli-inferred-json
-- Generated At: 2026-01-15T18:39:07.067Z
+- Generated At: 2026-02-03T21:55:45.386Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records the analyzer snapshot for the Ruby CLI benchmark so we can detect diverg
 Re-run `npm run fixtures:record-fallback -- --fixture ruby-cli --write` when the command-layer fixture or analyzer logic evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.067Z","inputHash":"ff4f4a0fbb28972a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.386Z","inputHash":"1db6602522a6f8d7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

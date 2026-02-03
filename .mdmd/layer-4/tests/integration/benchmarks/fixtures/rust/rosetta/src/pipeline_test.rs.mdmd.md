@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/rust/rosetta/src/pipeline_test.rs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-rust-rosetta-src-pipeline-test-rs
-- Generated At: 2026-01-16T21:21:09.758Z
+- Generated At: 2026-02-03T21:55:46.226Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Integration tests for the Rust Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of processor and models modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.758Z","inputHash":"a92e661d6467e53f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.226Z","inputHash":"3d696cdf0f2d7e30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

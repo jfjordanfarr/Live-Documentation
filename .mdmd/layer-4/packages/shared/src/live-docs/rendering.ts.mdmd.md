@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/rendering.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-rendering-ts
-- Generated At: 2026-01-14T16:08:10.629Z
+- Generated At: 2026-02-03T21:55:40.636Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Markdown rendering for Live Documentation. Generates the markdown content for ge
 - Type references are resolved via `WorkspaceSymbolIndex` and rendered as markdown links
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T16:08:10.629Z","inputHash":"8578126497bb7b64"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.636Z","inputHash":"1149c35d89b2fa52"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}

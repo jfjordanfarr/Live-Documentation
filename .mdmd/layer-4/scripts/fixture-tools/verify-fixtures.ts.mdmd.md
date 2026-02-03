@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/verify-fixtures.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-verify-fixtures-ts
-- Generated At: 2026-01-15T02:41:18.865Z
+- Generated At: 2026-02-03T21:55:41.719Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Verifies every benchmark fixture declared in `fixtures.manifest.json` by materia
 - Integrated 2025-10-30 into the broader fixture maintenance guide and safe commit workflow, ensuring `verify-fixtures.ts` executes automatically during pre-commit validation ([safe commit wiring](../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L5348-L5453)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.865Z","inputHash":"3d72af8713e37345"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.719Z","inputHash":"31b590a227535a2c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

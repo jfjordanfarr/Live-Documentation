@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/telemetry/inferenceAccuracy.ts
 - Live Doc ID: LD-implementation-packages-shared-src-telemetry-inferenceaccuracy-ts
-- Generated At: 2026-01-14T15:17:48.818Z
+- Generated At: 2026-02-03T21:55:40.898Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Tracks LLM benchmark outcomes across repos so shared tooling, server telemetry, 
 - Documented during the symbol-coverage remediation pass that pushed telemetry exports to 100 % coverage, confirming audits read the tracker headings.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-34-coverage-scope-trim--graph-audit-remediation-lines-4402-5601]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.818Z","inputHash":"284e500f7cd2e900"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.898Z","inputHash":"1c03740d1264d819"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `InferenceOutcome` {#symbol-inferenceoutcome}

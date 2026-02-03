@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/scip-to-expected.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-scip-to-expected-ts
-- Generated At: 2026-01-28T02:55:35.544Z
+- Generated At: 2026-02-03T21:55:41.680Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ CLI script that converts SCIP protobuf indexes (`index.scip`) into `expected.jso
 Origin: [2026-01-27.1.SUMMARIZED.md](../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-27.1.SUMMARIZED.md) — created to establish a polyglot oracle pipeline. Delegates language-specific normalization to `ScipNormalizer` adapters. Requires external SCIP indexers (scip-typescript, scip-go, etc.) to generate input files.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T02:55:35.544Z","inputHash":"76d21609e6c8dc2b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.680Z","inputHash":"6269d5356ec7f2ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

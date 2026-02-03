@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/src/metrics.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-modular-src-metrics-c
-- Generated At: 2025-12-06T23:20:03.044Z
+- Generated At: 2026-02-03T21:55:42.371Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the averaging and clamping routines for the C modular benchmark so anal
 Function signatures mirror `metrics.h`; keep them aligned to avoid breaking downstream includes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T23:20:03.044Z","inputHash":"82ecfac7f1ecb1c2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.371Z","inputHash":"8be06dfe8ebf1f58"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `compute_average` {#symbol-compute_average}

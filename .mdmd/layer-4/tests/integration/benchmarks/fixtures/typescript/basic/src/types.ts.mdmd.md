@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/src/types.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-basic-src-types-ts
-- Generated At: 2025-12-06T22:49:48.658Z
+- Generated At: 2026-02-03T21:55:46.424Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the type-only surface for the `ts-basic` benchmark so the oracle can pro
 - Remaining intentionally dependency-free to expose any analyzer that incorrectly emits runtime edges from pure type exports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.658Z","inputHash":"3eab20582ee13464"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.424Z","inputHash":"8a2595f9ff312f21"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Widget` {#symbol-widget}

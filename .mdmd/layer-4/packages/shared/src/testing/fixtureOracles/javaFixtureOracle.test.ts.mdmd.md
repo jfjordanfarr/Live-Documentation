@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/javaFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-javafixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.511Z
+- Generated At: 2026-02-03T21:55:41.016Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies the Java oracle’s import and inheritance extraction plus override sup
 - Aligns with the Nov 9 documentation pass and continues to run in the Nov 16 unit sweep, catching regressions when fixture packages change <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-09.md#L4688-L4710> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.511Z","inputHash":"19f5d92199a357b4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.016Z","inputHash":"9360fe04938bc558"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

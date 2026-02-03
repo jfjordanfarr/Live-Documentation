@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/helpers/Helpers.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-helpers-helpers-java
-- Generated At: 2026-01-14T22:47:33.787Z
+- Generated At: 2026-02-03T21:55:44.088Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility class for the Java Rosetta Stone fixture with static helper methods.
 See [2026-01-14.1.md](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.787Z","inputHash":"f890044702e2286a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.088Z","inputHash":"a46e235667576c1a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Helpers` {#symbol-helpers}

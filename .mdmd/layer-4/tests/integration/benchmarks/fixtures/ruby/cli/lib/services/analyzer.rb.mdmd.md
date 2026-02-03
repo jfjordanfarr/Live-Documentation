@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/ruby/cli/lib/services/analyzer.rb
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-ruby-cli-lib-services-analyzer-rb
-- Generated At: 2025-12-06T22:49:48.582Z
+- Generated At: 2026-02-03T21:55:45.479Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Runs the analytics pipeline for the Ruby CLI benchmark, demonstrating caching, l
 Retain the logging and cache calls—they provide the cross-service edges this fixture is designed to exercise.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.582Z","inputHash":"2d4c859f6d591372"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.479Z","inputHash":"9b727d9453b4c052"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

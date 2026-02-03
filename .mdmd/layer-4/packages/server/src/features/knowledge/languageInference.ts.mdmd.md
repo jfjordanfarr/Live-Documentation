@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/languageInference.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-languageinference-ts
-- Generated At: 2026-01-17T18:11:29.456Z
+- Generated At: 2026-02-03T21:55:37.609Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Language and file type inference for the knowledge layer. Maps file extensions t
 - `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.456Z","inputHash":"834c5e5609a40f0d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.609Z","inputHash":"c1b4896d44adad15"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/extension/src/services/localOllamaBridge.test.ts
 - Live Doc ID: LD-test-packages-extension-src-services-localollamabridge-test-ts
-- Generated At: 2026-01-17T19:21:09.709Z
+- Generated At: 2026-02-03T21:55:35.407Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the local Ollama bridge happy paths, config overrides, and mock fallba
 - Gained a 30 second `beforeAll` timeout on Nov 16 to mask the initial dynamic import cost and stop flaky safe-commit runs, per [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3140-L3175](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3140-L3175).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T19:21:09.709Z","inputHash":"9a57b7d2f703c151"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.407Z","inputHash":"34bd9fd4ede2ae52"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

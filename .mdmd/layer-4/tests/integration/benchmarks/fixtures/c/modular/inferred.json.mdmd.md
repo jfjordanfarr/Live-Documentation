@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/modular/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-modular-inferred-json
-- Generated At: 2026-01-15T18:39:06.980Z
+- Generated At: 2026-02-03T21:55:42.277Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Records the analyzer-produced graph for the C modular benchmark to contrast agai
 Use `npm run fixtures:record-fallback -- --fixture c-modular --write` after modifying analyzer behavior or fixture sources.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:06.980Z","inputHash":"001cba8c3a0bc2d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.277Z","inputHash":"e19b2ab3b3dd3d29"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

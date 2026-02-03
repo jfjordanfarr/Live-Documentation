@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/app/PipelineTest.java
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-app-pipelinetest-java
-- Generated At: 2026-01-16T21:21:09.697Z
+- Generated At: 2026-02-03T21:55:44.063Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ JUnit 5 integration tests for the Java Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of `com.rosetta.processor.Processor` and `com.rosetta.models.Record/Report`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.697Z","inputHash":"11accd9ee6904c87"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.063Z","inputHash":"3e63fea06be9b05a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PipelineTest` {#symbol-pipelinetest}

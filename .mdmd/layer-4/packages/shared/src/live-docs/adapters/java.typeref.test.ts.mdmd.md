@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/java.typeref.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-java-typeref-test-ts
-- Generated At: 2025-12-11T02:38:01.959Z
+- Generated At: 2026-02-03T21:55:39.929Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests verifying that the Java language adapter correctly extracts `typeRefe
 - Tests that `role: "extends"` vs `role: "implements"` is correctly assigned based on Java semantics
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.959Z","inputHash":"3bfd080080c89d8c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.929Z","inputHash":"eb8a34d58fed9635"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

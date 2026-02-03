@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/telemetry/latencyTracker.ts
 - Live Doc ID: LD-implementation-packages-server-src-telemetry-latencytracker-ts
-- Generated At: 2026-01-17T18:11:29.537Z
+- Generated At: 2026-02-03T21:55:38.471Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the server-side latency recorder introduced in [AI-Agent-Workspace/Ch
 The tracker normalizes URIs before emitting `LatencySample`s and brokers its summaries through the shared telemetry contract documented in [packages/shared/src/contracts/telemetry.ts.mdmd.md](../../../shared/src/contracts/telemetry.ts.mdmd.md); downstream consumers include the latency summary command and perf spec described in [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-28.SUMMARIZED.md#turn-21-latency-command--perf-test-lines-2321-2385).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.537Z","inputHash":"69d3ec85e461d355"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.471Z","inputHash":"da4552a5b77ba5f3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LatencyTrackerOptions` {#symbol-latencytrackeroptions}

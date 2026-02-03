@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-state-test-ts
-- Generated At: 2025-12-18T22:35:34.164Z
+- Generated At: 2026-02-03T21:55:36.717Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests for the LocalMapState shape, StateStore subscriptions, and pin/hover/
 - No jsdom required — these tests run in pure Node environment
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-18T22:35:34.164Z","inputHash":"7a954bf26966281d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.717Z","inputHash":"500da992666fbabf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

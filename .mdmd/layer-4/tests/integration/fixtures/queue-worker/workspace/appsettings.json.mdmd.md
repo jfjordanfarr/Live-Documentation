@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/queue-worker/workspace/appsettings.json
 - Live Doc ID: LD-asset-tests-integration-fixtures-queue-worker-workspace-appsettings-json
-- Generated At: 2025-11-18T20:37:10.016Z
+- Generated At: 2026-02-03T21:55:50.370Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Single-setting payload keeps inspect-cli assertions stable while we expand to mu
 - `TelemetryQueues:Primary` binds to the worker via `IOptions<HangfireOptions>` so we can validate queue discovery.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:37:10.016Z","inputHash":"626b82ebb8d14f0a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.370Z","inputHash":"4c3db88ef596ea1c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

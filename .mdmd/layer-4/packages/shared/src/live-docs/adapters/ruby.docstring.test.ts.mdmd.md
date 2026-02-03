@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/ruby.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-ruby-docstring-test-ts
-- Generated At: 2026-01-15T02:41:18.713Z
+- Generated At: 2026-02-03T21:55:40.167Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Checks the Ruby adapter’s handling of YARD line and block comments, ensuring s
 - Exercised via repeated `npx vitest run …/ruby.docstring.test.ts` passes and the ruby fixture regeneration noted during the rollout; keep those assets updated when expanding tag coverage <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.713Z","inputHash":"deb34d1d9915618c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.167Z","inputHash":"33579676f6a2d569"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

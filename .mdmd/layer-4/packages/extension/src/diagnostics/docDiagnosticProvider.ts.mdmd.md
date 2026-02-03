@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/diagnostics/docDiagnosticProvider.ts
 - Live Doc ID: LD-implementation-packages-extension-src-diagnostics-docdiagnosticprovider-ts
-- Generated At: 2026-01-15T02:41:18.266Z
+- Generated At: 2026-02-03T21:55:35.303Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Registers the Problems-view diagnostic source that translates server ripple payl
 - Unit tests (`docDiagnosticProvider.test.ts`) landed with that change set, and the same run verified Problems actions end-to-end via `npm run test:integration`, recorded at [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1238-L1276](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L1238-L1276).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.266Z","inputHash":"a8eededef04b0bd9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.303Z","inputHash":"229f2525c8d234fb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OPEN_LINKED_ARTIFACT_COMMAND` {#symbol-open_linked_artifact_command}

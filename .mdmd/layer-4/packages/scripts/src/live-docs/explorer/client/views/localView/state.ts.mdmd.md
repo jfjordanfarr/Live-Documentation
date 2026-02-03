@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-state-ts
-- Generated At: 2026-01-03T20:41:39.258Z
+- Generated At: 2026-02-03T21:55:36.736Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Observable state container for the Local Map visualization, providing pure-data 
 - 153 unit tests across state.ts, layout-math.ts, connection-geometry.ts validate the extraction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.258Z","inputHash":"6eddd378ea87fc08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.736Z","inputHash":"9c6dba44a8bc9f08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolPin` {#symbol-symbolpin}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/test_helpers.py
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-python-rosetta-src-test-helpers-py
-- Generated At: 2026-01-16T21:21:09.724Z
+- Generated At: 2026-02-03T21:55:45.134Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta helpers module (format_value, sum_values, av
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.724Z","inputHash":"2afe8586e64e01f8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.134Z","inputHash":"f670243bc15ef2ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestFormatValue` {#symbol-testformatvalue}

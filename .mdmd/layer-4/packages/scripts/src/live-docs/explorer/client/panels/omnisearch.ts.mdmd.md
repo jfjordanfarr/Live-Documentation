@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-omnisearch-ts
-- Generated At: 2025-12-19T21:19:50.729Z
+- Generated At: 2026-02-03T21:55:35.901Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the Omnisearch bar for fuzzy artifact discovery. Provides keyboard-na
 Extracted from client/index.ts during Dev Day 50 (12/19). The `initOmnisearch()` function sets up the search input handler, result rendering, and keyboard navigation for the Ctrl+P-style search experience.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.729Z","inputHash":"0da97f8635df7c36"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.901Z","inputHash":"2594f08e29e5421a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OmnisearchSelectCallback` {#symbol-omnisearchselectcallback}

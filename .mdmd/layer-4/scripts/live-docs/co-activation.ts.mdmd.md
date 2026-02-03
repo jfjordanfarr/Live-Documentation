@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/co-activation.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-co-activation-ts
-- Generated At: 2025-12-15T00:38:07.440Z
+- Generated At: 2026-02-03T21:55:41.754Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Produces the co-activation graph that correlates implementation files through sh
 Initially written for the Live Docs “Ripple Intelligence” experiments (mid‑2024). It still consumes legacy Stage‑0 docs until the last consumers migrate, which is why it keeps the Stage‑0 loader alongside the modern target manifest.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.440Z","inputHash":"ec5e33e34425e80c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.754Z","inputHash":"50bcc290efdd1ff7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

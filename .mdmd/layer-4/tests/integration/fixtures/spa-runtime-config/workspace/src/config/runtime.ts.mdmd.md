@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/spa-runtime-config/workspace/src/config/runtime.ts
 - Live Doc ID: LD-implementation-tests-integration-fixtures-spa-runtime-config-workspace-src-config-runtime-ts
-- Generated At: 2025-12-06T22:49:55.257Z
+- Generated At: 2026-02-03T21:55:51.177Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Represents the concrete runtime configuration module that SPA bootstrap code sho
 - Intentionally has no outbound dependencies so the inspect CLI path terminates here, matching expectations in `inspect-cli.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:55.257Z","inputHash":"f5b982dfb069d844"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.177Z","inputHash":"80f07446615bdfb9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `getRuntimeConfig` {#symbol-getruntimeconfig}

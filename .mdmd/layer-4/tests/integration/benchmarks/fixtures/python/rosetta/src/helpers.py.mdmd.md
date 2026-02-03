@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/helpers.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-helpers-py
-- Generated At: 2026-01-14T22:47:33.810Z
+- Generated At: 2026-02-03T21:55:45.043Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility functions for the Python Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests selective import detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.810Z","inputHash":"bfa50da0565dc6dc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.043Z","inputHash":"3755562aae417c2a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format_value` {#symbol-format_value}

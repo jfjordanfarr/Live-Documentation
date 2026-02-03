@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-index-ts
-- Generated At: 2025-12-19T21:19:50.743Z
+- Generated At: 2026-02-03T21:55:36.073Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Barrel file that re-exports the persistence module's public API. Provides unifie
 Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups the `url-state.ts` and `local-storage.ts` exports under a single import path.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.743Z","inputHash":"530d679b1451fc8c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.073Z","inputHash":"d4f2844e46a81594"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `viewNameToInternal` {#symbol-viewnametointernal}

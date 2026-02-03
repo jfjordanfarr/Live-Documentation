@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/c/libuv/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-c-libuv-expected-json
-- Generated At: 2025-11-18T20:51:24.302Z
+- Generated At: 2026-02-03T21:55:42.234Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pins the expected dependency graph for the vendor libuv snapshot so large-scale 
 Refresh with `npm run fixtures:regenerate -- --fixture c-libuv --write` when updating the pinned commit or analyzer logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:24.302Z","inputHash":"936ac6ace1382003"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.234Z","inputHash":"811db91627e6cd4b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

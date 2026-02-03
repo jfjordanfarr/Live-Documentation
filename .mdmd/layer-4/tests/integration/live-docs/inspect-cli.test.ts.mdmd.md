@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/inspect-cli.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-inspect-cli-test-ts
-- Generated At: 2026-01-15T02:41:19.178Z
+- Generated At: 2026-02-03T21:55:51.340Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the `npm run live-docs:inspect` CLI against representative workspaces 
 - Blazor coverage was added on 2025-11-18 to lock in the `.razor` → partial class → `appsettings.json` chain discussed during the LD-402 expansion.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.178Z","inputHash":"c78bdc11e6d97c6d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.340Z","inputHash":"1fb0abdd64a14daf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

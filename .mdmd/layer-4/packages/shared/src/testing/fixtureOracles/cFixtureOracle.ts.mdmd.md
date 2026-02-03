@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-cfixtureoracle-ts
-- Generated At: 2026-01-30T23:50:04.274Z
+- Generated At: 2026-02-03T21:55:40.931Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Parses the C benchmark fixtures to infer `#include` and function-call edges so o
 - Still validated in the Nov 16 unit run, so rerun `npm run test:unit -- cFixtureOracle` after parser or glob changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.274Z","inputHash":"d00cfa8edf98b43a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.931Z","inputHash":"6cba0afa7f05ebad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `COracleEdgeRelation` {#symbol-coracleedgerelation}

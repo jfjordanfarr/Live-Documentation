@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/symbol-reference.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-symbol-reference-ts
-- Generated At: 2026-01-14T15:17:48.525Z
+- Generated At: 2026-02-03T21:55:37.417Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides symbol reference parsing and resolution for the inspect CLI. Enables us
 Extracted from inspect.ts during Dev Day 50 (12/19). The module handles the `parseSymbolReference()` and `resolveSymbolReference()` logic that powers symbol-level pathfinding in `npm run live-docs:inspect -- --from <path>#<symbol> --to <path>#<symbol>`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.525Z","inputHash":"8e06bfa4e99d642f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.417Z","inputHash":"7e793ceac07170ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `symbolToAnchor` {#symbol-symboltoanchor}

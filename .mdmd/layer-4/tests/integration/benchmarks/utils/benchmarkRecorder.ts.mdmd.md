@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/utils/benchmarkRecorder.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-utils-benchmarkrecorder-ts
-- Generated At: 2026-01-15T02:41:19.015Z
+- Generated At: 2026-02-03T21:55:46.940Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Serialises benchmark runs into tmp and versioned JSON outputs so rebuild and acc
 - Emits fixture-specific diff bundles with precision/recall tallies to speed up triaging false positives/negatives when the AST suite regresses ([fixture diff bundles](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md#L680-L720)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:19.015Z","inputHash":"16c5ea340ce5c5fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.940Z","inputHash":"5f07d4320d44f882"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EdgeRecord` {#symbol-edgerecord}

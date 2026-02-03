@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/markdown.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-markdown-ts
-- Generated At: 2025-12-07T21:41:17.079Z
+- Generated At: 2026-02-03T21:55:35.843Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Lightweight markdown renderer for the Live Docs Explorer detail panel. Handles h
 - `renderMarkdown()` is the main entry point; supports custom link handlers for relative path resolution
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T21:41:17.079Z","inputHash":"4ee9526b6b521e16"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.843Z","inputHash":"976dc25e42e7297b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderMarkdown` {#symbol-rendermarkdown}

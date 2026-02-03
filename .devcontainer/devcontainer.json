@@ -52,6 +52,12 @@
       "version": "stable"
     },
 
+    // PowerShell 7+
+    // Used by: Live Docs generator for PowerShell fixture analysis
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    },
+
     // GitHub CLI for repository operations
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },

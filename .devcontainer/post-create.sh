@@ -11,6 +11,51 @@ set -e
 echo "=== Live Documentation Devcontainer Setup ==="
 echo ""
 
+echo "=== Installing VS Code/Electron dependencies for integration tests ==="
+# These libraries are required to run VS Code's Electron runtime headlessly
+# Without them, integration tests fail with "cannot open shared object file"
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
+  libdbus-1-3 \
+  libgtk-3-0 \
+  libgbm1 \
+  libnss3 \
+  libasound2 \
+  libxkbcommon0 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libdrm2 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libpango-1.0-0 \
+  libcairo2 \
+  xvfb \
+  xauth
+sudo apt-get clean
+sudo rm -rf /var/lib/apt/lists/*
+
+echo ""
+echo "=== Configuring git safe.directory ==="
+# Devcontainers with bind-mounted workspaces from Windows have file ownership that
+# differs from the container user. Git >= 2.35.2 rejects repos with mismatched
+# ownership as a CVE-2022-24765 mitigation.
+#
+# In a devcontainer context, this protection is semantically meaningless:
+#   - There is no "untrusted other user" who could plant malicious hooks
+#   - The VS Code Dev Containers extension itself auto-adds safe.directory for
+#     the main workspace (see microsoft/vscode-remote-release#7628)
+#   - Our benchmark fixtures clone vendor repos at runtime, creating nested repos
+#     that also need safe.directory entries
+#
+# Using '*' acknowledges that devcontainer ownership semantics are fundamentally
+# different from multi-user systems. This aligns with the VS Code team's own fix.
+git config --global --add safe.directory '*'
+echo "  Set safe.directory = '*' (devcontainer bind-mount ownership workaround)"
+
+echo ""
 echo "=== Installing project dependencies ==="
 npm install
 

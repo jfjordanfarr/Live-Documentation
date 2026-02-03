@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/changeEvents/changeQueue.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-changeevents-changequeue-ts
-- Generated At: 2026-01-12T21:47:40.500Z
+- Generated At: 2026-02-03T21:55:37.444Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Provides a debounced queue for batching workspace file change events before proc
 - Calling `dispose()` cancels any pending flush and clears the queue.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-12T21:47:40.500Z","inputHash":"fcfffda7f859eb83"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.444Z","inputHash":"9d825cef8525e79f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `QueuedChange` {#symbol-queuedchange}

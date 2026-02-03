@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/types.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-types-ts
-- Generated At: 2026-01-14T15:17:48.583Z
+- Generated At: 2026-02-03T21:55:38.170Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Type definitions for the System-layer Live Documentation generator. Defines arch
 - Re-exports `LiveDocRenderSection` and `CoActivationEdge` from shared for convenience
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.583Z","inputHash":"f0385c79ba5c1b53"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.170Z","inputHash":"56e8138b36bb1878"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Layer3Archetype` {#symbol-layer3archetype}

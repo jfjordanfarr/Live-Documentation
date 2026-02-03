@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-dependencies-ts
-- Generated At: 2025-12-11T02:38:01.874Z
+- Generated At: 2026-02-03T21:55:39.600Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracts dependencies from C# source files, including `using` directives, config
 - **Companion Tests:** See [csharp.dependencies.unit.test.ts](./csharp.dependencies.unit.test.ts.mdmd.md) for 36 unit tests including file system operations with temp directory fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:01.874Z","inputHash":"6f7854ae5ec52abc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.600Z","inputHash":"20168989aacf6b7d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExtractDependenciesParams` {#symbol-extractdependenciesparams}

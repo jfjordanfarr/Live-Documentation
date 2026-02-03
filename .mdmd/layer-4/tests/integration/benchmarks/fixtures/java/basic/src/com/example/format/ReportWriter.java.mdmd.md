@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/basic/src/com/example/format/ReportWriter.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-basic-src-com-example-format-reportwriter-java
-- Generated At: 2026-01-14T15:17:48.973Z
+- Generated At: 2026-02-03T21:55:43.902Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms record collections into summaries for the Java basic benchmark, tying
 Do not reorder the dependency on `Catalog`; it exists to highlight formatter-to-data module edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.973Z","inputHash":"36f932edd5a994be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.902Z","inputHash":"77fbcc648a767ab5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriter` {#symbol-reportwriter}

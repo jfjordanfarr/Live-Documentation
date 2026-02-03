@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/ruby/basic/expected.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-ruby-basic-expected-json
-- Generated At: 2026-01-15T18:39:07.061Z
+- Generated At: 2026-02-03T21:55:45.214Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains the expected dependency graph for the Ruby basic benchmark so module-l
 Regenerate via `npm run fixtures:regenerate -- --fixture ruby-basic --write` before accepting changes that shift the graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.061Z","inputHash":"d3d9e2494575b5a7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.214Z","inputHash":"a96e5ad4d797f4f8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

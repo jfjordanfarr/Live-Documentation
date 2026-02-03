@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-rubyfixtureoracle-ts
-- Generated At: 2026-01-30T23:50:04.296Z
+- Generated At: 2026-02-03T21:55:41.096Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Parses Ruby fixtures with a lightweight AST walk to extract `require` and `inclu
 - Verified in the Nov 16 unit sweep alongside the other fixture oracles, so rerun `npm run test:unit -- rubyFixtureOracle` after meaningful parser changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.296Z","inputHash":"8a7ebf922b422e29"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.096Z","inputHash":"cec8e149234f7220"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RubyOracleEdgeRelation` {#symbol-rubyoracleedgerelation}

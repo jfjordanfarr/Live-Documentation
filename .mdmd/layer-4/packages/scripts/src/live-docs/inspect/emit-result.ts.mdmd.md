@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-emit-result-ts
-- Generated At: 2026-01-14T15:17:48.512Z
+- Generated At: 2026-02-03T21:55:37.277Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats and outputs file-level pathfinding results for the inspect CLI. Handles 
 Extracted from inspect.ts during Dev Day 50 (12/19). This module focuses on file-level output; symbol-level output is handled by emit-result-symbol.ts, and bidirectional results by emit-result-dual.ts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.512Z","inputHash":"a06b354d49059a24"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.277Z","inputHash":"58e43e2d92fef321"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `emitPathResult` {#symbol-emitpathresult}

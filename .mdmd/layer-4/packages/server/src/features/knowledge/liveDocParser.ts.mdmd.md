@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/liveDocParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-livedocparser-ts
-- Generated At: 2026-01-17T18:11:29.462Z
+- Generated At: 2026-02-03T21:55:37.644Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Parses Live Documentation markdown files (originally MDMD format) to extract str
 - The "MDMD" naming persists in function/interface names (`extractMdmdDocumentDetails`, `MdmdDocumentDetails`) as an internal implementation detail; the module itself now uses the public "Live Documentation" branding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.462Z","inputHash":"b8f7518e21526034"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.644Z","inputHash":"9b660e6a7c9f4c9d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}

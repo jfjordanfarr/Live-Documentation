@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml
 - Live Doc ID: LD-implementation-tests-integration-fixtures-blazor-telemetry-workspace-pages-host-cshtml
-- Generated At: 2025-12-06T22:49:48.870Z
+- Generated At: 2026-02-03T21:55:46.981Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Models the Blazor Server host page that renders hidden telemetry attributes cons
 - `data-telemetry-instrumentation-key` exposes the App Insights key so the client bootstrapper matches instrumentation boundaries.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.870Z","inputHash":"f5029294f150f116"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.981Z","inputHash":"995ac5cf7c53b7cd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

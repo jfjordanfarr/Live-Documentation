@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/watchers/fileMaintenance.ts
 - Live Doc ID: LD-implementation-packages-extension-src-watchers-filemaintenance-ts
-- Generated At: 2026-01-15T02:41:18.296Z
+- Generated At: 2026-02-03T21:55:35.548Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Registers the extension-side watcher that forwards delete/rename events to the l
 The server-side handlers live in `removeOrphans.ts`; keep the URI serialization (`toString(true)`) aligned with the normalization work captured in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L3048-L3230](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-20.md#L3048-L3230) to ensure Git-ignored temp files and cross-drive paths do not leak stale diagnostics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.296Z","inputHash":"b396afdd4ed342c8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.548Z","inputHash":"4d647c6084ab475c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `registerFileMaintenanceWatcher` {#symbol-registerfilemaintenancewatcher}

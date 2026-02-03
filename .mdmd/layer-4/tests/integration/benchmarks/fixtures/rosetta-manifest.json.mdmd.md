@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/rosetta-manifest.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rosetta-manifest-json
-- Generated At: 2026-01-15T18:52:04.149Z
+- Generated At: 2026-02-03T21:55:45.200Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Registry of Rosetta Stone cross-language benchmark fixtures. Each language imple
 Created during Dev Day 58; see [2026-01-14.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for design rationale. The Rosetta Stone concept ensures each language fixture exercises identical dependency patterns (namespace imports, selective imports, type-only imports) so precision/recall metrics are comparable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:52:04.149Z","inputHash":"3ade681b5754c492"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.200Z","inputHash":"13141f285fa10ba4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

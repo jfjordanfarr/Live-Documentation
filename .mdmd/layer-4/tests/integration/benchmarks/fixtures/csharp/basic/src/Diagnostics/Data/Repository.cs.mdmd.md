@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/Data/Repository.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-data-repository-cs
-- Generated At: 2025-12-06T22:49:48.386Z
+- Generated At: 2026-02-03T21:55:42.804Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains an in-memory record feed for the C# basic benchmark so the analyzer se
 Keep the seeded records lightweight; altering them only makes sense when changing the service contract.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:48.386Z","inputHash":"46ef7ddaa1425c79"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.804Z","inputHash":"bf9ae4a3a231c6ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository` {#symbol-repository}

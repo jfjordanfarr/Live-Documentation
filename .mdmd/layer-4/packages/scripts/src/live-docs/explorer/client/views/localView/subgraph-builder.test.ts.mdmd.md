@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-subgraph-builder-test-ts
-- Generated At: 2026-01-03T20:41:39.262Z
+- Generated At: 2026-02-03T21:55:36.763Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for subgraph construction functions. Validates inbound/outbound class
 Created during Dev Day 50 (12/19). Uses mock graph data to verify `createLocalSubgraph()`, `buildSelfLoopEdges()`, and `buildPathSubgraph()` produce correct graph subsets.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-03T20:41:39.262Z","inputHash":"7e241ab4b43e5ed0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.763Z","inputHash":"c12b71046adcef75"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

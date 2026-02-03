@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/src/analytics.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-analytics-src-analytics-rs
-- Generated At: 2026-01-14T15:17:48.997Z
+- Generated At: 2026-02-03T21:55:45.853Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates the analytics pipeline for the Rust benchmark by combining metrics a
 Keep the orchestrator lean; its job is to surface dependency edges across modules rather than add new logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:48.997Z","inputHash":"981d5d6b2e924d28"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.853Z","inputHash":"198254c67ec90a0b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run_analysis` {#symbol-run_analysis}

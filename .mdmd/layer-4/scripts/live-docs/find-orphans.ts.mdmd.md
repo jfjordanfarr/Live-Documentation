@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/find-orphans.ts
 - Live Doc ID: LD-implementation-scripts-live-docs-find-orphans-ts
-- Generated At: 2025-12-15T00:38:07.444Z
+- Generated At: 2026-02-03T21:55:41.765Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Scans the Layer‑4 mirror and reports Live Docs whose source files have been de
 Added while decommissioning Stage‑0 docs (Oct 2025) to guard against orphaned files during the MDMD migration. The CLI honours custom `--docs-root`/`--base-layer` arguments so teams with non-default mirrors (like this repo’s `.mdmd/layer-4`) can reuse the check in automation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-15T00:38:07.444Z","inputHash":"5ffeef18c80f410d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.765Z","inputHash":"8f32c55358a70b05"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

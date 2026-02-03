@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/tsSymbolExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-tssymbolextractor-ts
-- Generated At: 2026-01-15T02:41:18.496Z
+- Generated At: 2026-02-03T21:55:37.661Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ TypeScript symbol extraction for the knowledge graph. Parses TypeScript/JavaScri
 - Skips C# files (`.cs`) which require a different parser
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.496Z","inputHash":"7d556b8b95cc5ab0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.661Z","inputHash":"137fb0d916e92192"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExportedSymbolKind` {#symbol-exportedsymbolkind}

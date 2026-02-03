@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-generator-ts
-- Generated At: 2026-01-15T02:41:18.521Z
+- Generated At: 2026-02-03T21:55:37.933Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Synthesizes Stage-0 Live Docs, co-activation analytics, and optional target mani
 - Supports custom `outputDir` and mirror cleanup so headless harness and `npm run live-docs:system` executions materialize ephemeral System docs outside the repo, matching the on-demand plan agreed the same day.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.521Z","inputHash":"3e12277fb7cc31d7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.933Z","inputHash":"03a74bb627a3ada0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GeneratedSystemDocument` {#symbol-generatedsystemdocument}

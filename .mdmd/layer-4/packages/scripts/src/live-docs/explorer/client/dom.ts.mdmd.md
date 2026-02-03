@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/dom.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-dom-ts
-- Generated At: 2025-12-05T15:37:23.032Z
+- Generated At: 2026-02-03T21:55:35.648Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ DOM utility functions for the Explorer client. Provides `requireElement` for typ
 - `requireElement` throws if the element is missing, failing fast on template mismatches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-05T15:37:23.032Z","inputHash":"28a969dd26afa0ed"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.648Z","inputHash":"9c955544215f184b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `requireElement` {#symbol-requireelement}

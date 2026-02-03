@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/main/main.go
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-go-rosetta-src-main-main-go
-- Generated At: 2026-01-15T18:20:23.036Z
+- Generated At: 2026-02-03T21:55:43.529Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Entry point for the Go Rosetta Stone benchmark fixture, demonstrating Go's packa
 - Created 2026-01-15 as part of the Go adapter commit; see [2026-01-15.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for implementation context and goFixtureOracle.ts for ground truth generation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:20:23.036Z","inputHash":"46cf6da61e8d6727"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.529Z","inputHash":"ddf970f5146d5522"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main` {#symbol-main}

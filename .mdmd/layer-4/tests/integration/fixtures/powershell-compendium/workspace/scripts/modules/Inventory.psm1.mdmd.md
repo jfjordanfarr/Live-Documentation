@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/modules/Inventory.psm1
 - Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-workspace-scripts-modules-inventory-psm1
-- Generated At: 2025-12-06T22:49:54.357Z
+- Generated At: 2026-02-03T21:55:48.319Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Expose the exported inventory module that the deploy script loads during inspect
 - Only `Get-InventorySnapshot` is exported so the adapter and heuristic coverage can verify module filtering and inter-script edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-06T22:49:54.357Z","inputHash":"c23732f288d3475e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.319Z","inputHash":"1074f24f1573036f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Get-InventorySnapshot` {#symbol-getinventorysnapshot}

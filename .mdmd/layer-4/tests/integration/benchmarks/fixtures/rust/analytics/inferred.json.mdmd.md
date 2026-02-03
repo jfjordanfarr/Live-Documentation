@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/rust/analytics/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-rust-analytics-inferred-json
-- Generated At: 2026-01-15T18:39:07.078Z
+- Generated At: 2026-02-03T21:55:45.824Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the recorded analyzer output for the Rust analytics benchmark to compar
 Refresh with `npm run fixtures:record-fallback -- --fixture rust-analytics --write` after changing the analyzer or the underlying fixture sources.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.078Z","inputHash":"4952ab775283cbcf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.824Z","inputHash":"8bc19aa7d3189fde"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

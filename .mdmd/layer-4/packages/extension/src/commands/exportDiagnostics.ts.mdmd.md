@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/commands/exportDiagnostics.ts
 - Live Doc ID: LD-implementation-packages-extension-src-commands-exportdiagnostics-ts
-- Generated At: 2026-01-17T18:11:29.190Z
+- Generated At: 2026-02-03T21:55:35.200Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exports outstanding diagnostics to CSV or JSON so leads can archive triage statu
 - Pending acceptance criteria still call for acknowledgement metadata in exports, as highlighted later that day - track completion against [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-22.md#L2720-L3410).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-17T18:11:29.190Z","inputHash":"47ee763edaf4e29b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.200Z","inputHash":"7caffe60bc8b1b80"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EXPORT_DIAGNOSTICS_COMMAND` {#symbol-export_diagnostics_command}

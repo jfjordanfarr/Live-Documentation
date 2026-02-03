@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipRuleTypes.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipruletypes-ts
-- Generated At: 2025-12-11T02:38:02.261Z
+- Generated At: 2026-02-03T21:55:40.866Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the configuration and compiled contract types that power relationship ru
 - Shared by both the profile compiler and the relationship rule engine so audits and the language server evaluate identical structures.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.261Z","inputHash":"d4297f1950a27e5c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.866Z","inputHash":"c4b21c48618d0dbd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolProfileRequirementDirection` {#symbol-symbolprofilerequirementdirection}

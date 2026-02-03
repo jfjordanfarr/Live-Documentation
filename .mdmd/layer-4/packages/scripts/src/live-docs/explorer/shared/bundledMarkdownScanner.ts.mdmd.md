@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-bundledmarkdownscanner-ts
-- Generated At: 2026-01-15T02:41:18.431Z
+- Generated At: 2026-02-03T21:55:36.993Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Scans Live Documentation files for markdown links and bundles referenced files (
 - File categorization simplified to generic "markdown" type — no workspace-specific icons
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.431Z","inputHash":"4664792030c3fc74"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.993Z","inputHash":"1d7c9be736a4aa37"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}

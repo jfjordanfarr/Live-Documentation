@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/models.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-models-h
-- Generated At: 2026-01-14T22:47:33.752Z
+- Generated At: 2026-02-03T21:55:42.584Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.752Z","inputHash":"b991af17ee347147"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.584Z","inputHash":"80ea020ab3c1a485"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROSETTA_MODELS_H` {#symbol-rosetta_models_h}

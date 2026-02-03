@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2026-01-08T19:09:21.567Z
+- Generated At: 2026-02-03T21:55:36.131Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-08T19:09:21.567Z","inputHash":"dc8811b6f4ce8529"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.131Z","inputHash":"adaa21794362bb52"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}

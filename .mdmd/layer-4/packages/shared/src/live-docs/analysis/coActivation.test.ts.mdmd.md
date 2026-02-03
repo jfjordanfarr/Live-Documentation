@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/analysis/coActivation.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-analysis-coactivation-test-ts
-- Generated At: 2025-11-19T15:01:35.258Z
+- Generated At: 2026-02-03T21:55:40.273Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the co-activation analytics report so dependency edges, shared test we
 Updated alongside the November 15 telemetry sweep that aligned Live Docs analytics with the canonical `.mdmd.md` extension handling; the same pass re-ran this suite under Vitest 4 to confirm compatibility. Provenance: `AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.258Z","inputHash":"06f168bec8e87dff"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.273Z","inputHash":"f09020072b48114b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

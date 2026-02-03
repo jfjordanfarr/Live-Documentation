@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/csharp.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-csharp-ts
-- Generated At: 2026-01-30T00:04:21.045Z
+- Generated At: 2026-02-03T21:55:38.753Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Analyzes `.cs` artifacts to link `using` directives, symbol usages, and partial 
 - Tailored to the WebForms + analyzer scenarios requested on Nov 6; keep the namespace/partial heuristics in sync with those fixtures whenever we extend legacy coverage <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L3298-L3340>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T00:04:21.045Z","inputHash":"e35042a9a7a0f52a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.753Z","inputHash":"dd29103335a3b602"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createCSharpHeuristic` {#symbol-createcsharpheuristic}

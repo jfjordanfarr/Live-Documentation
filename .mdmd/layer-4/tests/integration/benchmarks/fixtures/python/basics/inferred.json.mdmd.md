@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/python/basics/inferred.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-python-basics-inferred-json
-- Generated At: 2026-01-15T18:39:07.046Z
+- Generated At: 2026-02-03T21:55:44.660Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Captures the analyzer output for the Python basics benchmark so parity with the 
 Re-record with `npm run fixtures:record-fallback -- --fixture python-basics --write` after touching the analyzer or fixture modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T18:39:07.046Z","inputHash":"abe5567362d806e9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.660Z","inputHash":"03c2cef37111cac7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

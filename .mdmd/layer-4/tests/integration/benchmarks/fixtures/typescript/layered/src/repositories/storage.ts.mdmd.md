@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/src/repositories/storage.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-layered-src-repositories-storage-ts
-- Generated At: 2026-01-14T15:17:49.013Z
+- Generated At: 2026-02-03T21:55:46.608Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the repository layer for the `ts-layered` benchmark so the analyzer must
 - Returns hard-coded metric records to isolate dependency traversal from data variability while still proving constructor-level runtime edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T15:17:49.013Z","inputHash":"6a401894dd9b71b3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.608Z","inputHash":"d76957c54b4f1594"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MetricRecord` {#symbol-metricrecord}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/cli/src/index.ts
 - Live Doc ID: LD-implementation-packages-cli-src-index-ts
-- Generated At: 2025-12-16T01:12:51.694Z
+- Generated At: 2026-02-03T21:55:35.112Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Thin dispatcher entry point for the `live-docs` CLI that routes commands (genera
 - Single-package architecture decision: CLI/server/shared tightly coupled, no need for scoped monorepo overhead
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-16T01:12:51.694Z","inputHash":"2debc6434b3d3511"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.112Z","inputHash":"f0f592b1fdc1c04b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/models.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-models-py
-- Generated At: 2026-01-14T22:47:33.812Z
+- Generated At: 2026-02-03T21:55:45.087Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Data models for the Python Rosetta Stone fixture. Defines Record and Report data
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.812Z","inputHash":"10a4d4ab394d0d14"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.087Z","inputHash":"d7d529c540aab5cc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}

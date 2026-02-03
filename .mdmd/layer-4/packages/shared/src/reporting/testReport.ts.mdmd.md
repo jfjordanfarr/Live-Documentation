@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/reporting/testReport.ts
 - Live Doc ID: LD-implementation-packages-shared-src-reporting-testreport-ts
-- Generated At: 2025-12-11T02:38:02.220Z
+- Generated At: 2026-02-03T21:55:40.767Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Formats benchmark telemetry (AST accuracy, rebuild stability, future suites) int
 - Expanded on Nov 3 to support per-mode reports when benchmarks began emitting distinct AST and self-similarity outputs.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-09-implement-per-mode-benchmark-reporting-lines-821-1030]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-11T02:38:02.220Z","inputHash":"3c21d3278707e0a6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.767Z","inputHash":"a3a55dd702379a4c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkEnvironment` {#symbol-benchmarkenvironment}

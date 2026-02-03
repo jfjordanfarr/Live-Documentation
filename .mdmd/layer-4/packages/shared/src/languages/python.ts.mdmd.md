@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-python-ts
-- Generated At: 2026-01-30T21:01:45.978Z
+- Generated At: 2026-02-03T21:55:39.443Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides Python-specific syntax configuration implementing `LanguageSyntax`. Def
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — triple-quoted strings are stripped first to avoid false partial matches. The regex approach may mishandle raw strings (`r"..."`); tree-sitter integration will resolve edge cases.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.978Z","inputHash":"5808aa044cce45ab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.443Z","inputHash":"37eb54e9f711fc21"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PYTHON_STDLIB_MODULES` {#symbol-python_stdlib_modules}

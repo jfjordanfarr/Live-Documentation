@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connection-geometry-ts
-- Generated At: 2025-12-19T18:42:37.870Z
+- Generated At: 2026-02-03T21:55:36.296Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Pure-function SVG geometry for the Local Map: Bézier path computation, self-loo
 - 385 lines of geometry, all unit-testable without DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T18:42:37.870Z","inputHash":"1a167b97f006ecba"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.296Z","inputHash":"685fe5179bc9c4fb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Point` {#symbol-point}

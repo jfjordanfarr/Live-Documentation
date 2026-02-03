@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/pipeline/src/validators.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-pipeline-src-validators-py
-- Generated At: 2025-12-09T00:17:28.558Z
+- Generated At: 2026-02-03T21:55:44.922Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines validation helpers and the custom exception for the Python pipeline benc
 Keep the validators lightweight but explicit; downstream modules rely on these checks to exercise dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-09T00:17:28.558Z","inputHash":"bf6d8656dff05aab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.922Z","inputHash":"755337e478d01472"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ValidationError` {#symbol-validationerror}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
 - Live Doc ID: LD-test-tests-integration-tsconfig-json
-- Generated At: 2025-11-18T20:51:26.971Z
+- Generated At: 2026-02-03T21:55:51.396Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Anchor the shared TypeScript compiler options the integration harness expects so
 - Update this Live Doc alongside harness build changes so the Live Documentation generator and headless harness stay synchronized.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:26.971Z","inputHash":"f48be961b88fefd8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.396Z","inputHash":"e4fb28054ad83533"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-c-ts
-- Generated At: 2026-01-30T21:01:45.966Z
+- Generated At: 2026-02-03T21:55:39.304Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides C-specific syntax configuration implementing `LanguageSyntax`. Defines 
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — extracted from the C adapter's local `stripCommentsAndStrings()` function. Enables the adapter to use the shared async interface while maintaining identical stripping behavior.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T21:01:45.966Z","inputHash":"d0a9864a23184c56"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.304Z","inputHash":"4a19af07486f887c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cSyntax` {#symbol-csyntax}

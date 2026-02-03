@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/typescript/layered/oracle.overrides.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-typescript-layered-oracle-overrides-json
-- Generated At: 2025-11-18T20:51:25.255Z
+- Generated At: 2026-02-03T21:55:46.549Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Lists manual edge overrides for the TypeScript layered benchmark so generated gr
 Audit these overrides alongside the `ts-layered` fixture and rerun the regeneration pipeline whenever the service topology shifts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:25.255Z","inputHash":"119aec332eaa45ff"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.549Z","inputHash":"042cc352535e1b80"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

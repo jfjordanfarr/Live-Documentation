@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/constants.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-constants-ts
-- Generated At: 2025-12-07T16:27:06.592Z
+- Generated At: 2026-02-03T21:55:37.831Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Constants for the System-layer Live Documentation generator. Defines archetype p
 - Threshold constants control clustering (min 4 members), topology (max 80 edges), and activation display limits
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-07T16:27:06.592Z","inputHash":"1d4e986c16eeebdb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.831Z","inputHash":"314fa5a0c017d93b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LAYER3_PREFIX` {#symbol-layer3_prefix}

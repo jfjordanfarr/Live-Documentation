@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/testing/fixtureOracles/cFixtureOracle.test.ts
 - Live Doc ID: LD-test-packages-shared-src-testing-fixtureoracles-cfixtureoracle-test-ts
-- Generated At: 2025-11-19T15:01:35.479Z
+- Generated At: 2026-02-03T21:55:40.914Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises the C oracle against layered fixtures and override scenarios so regene
 - Protects against the Nov 5 regression where multi-target edges diverged from expected graphs, and continues to pass in the Nov 16 unit sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L4240-L4320> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-19T15:01:35.479Z","inputHash":"6936a517b058924a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.914Z","inputHash":"964efcabbb665240"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

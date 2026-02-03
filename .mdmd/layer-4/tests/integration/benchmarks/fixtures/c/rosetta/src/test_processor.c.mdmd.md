@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/test_processor.c
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-c-rosetta-src-test-processor-c
-- Generated At: 2026-01-16T21:21:09.653Z
+- Generated At: 2026-02-03T21:55:42.723Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the C Rosetta processor module. Part of the polyglot Rosetta Ston
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses manual assertion macros (no standard C test framework). Required fix to cFunctions.ts heuristic to avoid matching function definitions as calls.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-16T21:21:09.653Z","inputHash":"00a8ab04e8dfe01e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.723Z","inputHash":"5bde852d5c38cc09"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ASSERT` {#symbol-assert}

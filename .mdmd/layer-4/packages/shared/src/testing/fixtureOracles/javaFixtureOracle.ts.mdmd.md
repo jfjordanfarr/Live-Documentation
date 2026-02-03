@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts
 - Live Doc ID: LD-implementation-packages-shared-src-testing-fixtureoracles-javafixtureoracle-ts
-- Generated At: 2026-01-30T23:50:04.288Z
+- Generated At: 2026-02-03T21:55:41.031Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Analyzes Java fixtures to emit import and inheritance edges, giving our polyglot
 - Verified within the Nov 16 unit sweep; rerun `npm run test:unit -- javaFixtureOracle` after parser or override changes <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2928-L2960>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.288Z","inputHash":"2cb92ac8d5dc876f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.031Z","inputHash":"c6384dc1e7532a17"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `JavaOracleEdgeRelation` {#symbol-javaoracleedgerelation}

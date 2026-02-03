@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/rules/relationshipResolvers.ts
 - Live Doc ID: LD-implementation-packages-shared-src-rules-relationshipresolvers-ts
-- Generated At: 2026-01-15T02:41:18.776Z
+- Generated At: 2026-02-03T21:55:40.784Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides the built-in resolver catalogue (markdown links, MDMD code paths) that 
 - Exercised by the revamped provider tests to ensure both markdown-link and MDMD metadata resolvers return stable targets before rules materialise evidences.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-30.SUMMARIZED.md#turn-27-harden-relationship-rule-provider-tests-lines-6121-6420]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-15T02:41:18.776Z","inputHash":"270735d4783a47aa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.784Z","inputHash":"5545a5781b08e946"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createBuiltInResolvers` {#symbol-createbuiltinresolvers}

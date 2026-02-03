@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/slopcop.config.json
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-slopcop-config-json
-- Generated At: 2025-11-18T20:51:26.709Z
+- Generated At: 2026-02-03T21:55:51.022Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Configuration used by the SlopCop asset audit fixture to trigger intentional pas
 - Update in sync with fixture asset files and record any waiver additions in the fixture README.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-11-18T20:51:26.709Z","inputHash":"586040e50398783c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.022Z","inputHash":"f3bc05b666a1d329"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

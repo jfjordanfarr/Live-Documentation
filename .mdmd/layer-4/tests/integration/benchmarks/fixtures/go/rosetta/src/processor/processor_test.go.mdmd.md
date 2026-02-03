@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/go/rosetta/src/processor/processor_test.go
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-go-rosetta-src-processor-processor-test-go
-- Generated At: 2026-01-28T23:22:02.158Z
+- Generated At: 2026-02-03T21:55:43.726Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the Go Rosetta processor package. Part of the polyglot Rosetta St
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's idiomatic `_test.go` suffix in the same package. Required fix to go.ts heuristic to not skip test files in `appliesTo`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-28T23:22:02.158Z","inputHash":"a95ebd303d907fcf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.726Z","inputHash":"8cca8b7c9e76d9ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/bootstrap/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-bootstrap-index-ts
-- Generated At: 2025-12-19T21:19:50.703Z
+- Generated At: 2026-02-03T21:55:35.605Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Orchestrates Explorer initialization: loads graph data, detects static vs server
 Extracted from client/index.ts during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Consolidates bootstrap logic that was previously scattered across the monolithic index.ts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2025-12-19T21:19:50.703Z","inputHash":"aa76daf7278720fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.605Z","inputHash":"e1310a195a048db6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `inferDefaultEntryNodeId` {#symbol-inferdefaultentrynodeid}

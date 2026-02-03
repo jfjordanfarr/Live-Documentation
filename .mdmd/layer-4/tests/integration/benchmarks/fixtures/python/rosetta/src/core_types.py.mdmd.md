@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/core_types.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-core-types-py
-- Generated At: 2026-01-14T22:47:33.809Z
+- Generated At: 2026-02-03T21:55:45.024Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definitions for the Python Rosetta Stone fixture using TypedDict.
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Named core_types.py (not types.py) to avoid Python stdlib collision.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-14T22:47:33.809Z","inputHash":"e3b8fc9fce2488b9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.024Z","inputHash":"c37cc8bde79f48a0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Status` {#symbol-status}
