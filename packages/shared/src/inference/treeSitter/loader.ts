@@ -12,6 +12,7 @@ import * as path from "node:path";
 
 let treeSitterModule: TreeSitterModule | null = null;
 let patchedLoaderPath: string | null = null;
+let initializationPromise: Promise<TreeSitterModule> | null = null;
 
 /**
  * The tree-sitter Parser class interface.
@@ -99,9 +100,24 @@ function findWasmDirectory(): string {
  * The @vscode/tree-sitter-wasm package has a UMD wrapper bug where the
  * factory function returns an object but doesn't properly export it for
  * CommonJS. This patches the wrapper to work correctly.
+ *
+ * To avoid race conditions when multiple Vitest workers run concurrently,
+ * we check if a valid patched file already exists before writing.
  */
 function createPatchedLoader(wasmDir: string): string {
   const tsFile = path.join(wasmDir, "tree-sitter.js");
+  const patchedFile = path.join(wasmDir, "tree-sitter-patched.cjs");
+
+  // Check if patched file already exists and is valid
+  // This prevents race conditions when multiple test workers start simultaneously
+  if (fs.existsSync(patchedFile)) {
+    const existing = fs.readFileSync(patchedFile, "utf8");
+    // Validate it has our patched signature (starts with module.exports)
+    if (existing.startsWith("module.exports = (function () {")) {
+      return patchedFile;
+    }
+  }
+
   const content = fs.readFileSync(tsFile, "utf8");
 
   // Patch the UMD wrapper to properly export for CommonJS
@@ -113,8 +129,22 @@ function createPatchedLoader(wasmDir: string): string {
     .replace(/\}\)\);$/, "})();");
 
   // Write to a temp location that can be require()'d
-  const patchedFile = path.join(wasmDir, "tree-sitter-patched.cjs");
-  fs.writeFileSync(patchedFile, patched);
+  // Use atomic write pattern: write to temp file then rename
+  const tempFile = path.join(wasmDir, `tree-sitter-patched.${process.pid}.cjs`);
+  fs.writeFileSync(tempFile, patched);
+
+  try {
+    // Atomic rename - if another process already created the file, that's fine
+    fs.renameSync(tempFile, patchedFile);
+  } catch {
+    // Another process may have created the file between our check and rename
+    // Clean up our temp file and use the existing one
+    try {
+      fs.unlinkSync(tempFile);
+    } catch {
+      // Ignore cleanup errors
+    }
+  }
 
   return patchedFile;
 }
@@ -123,15 +153,47 @@ function createPatchedLoader(wasmDir: string): string {
  * Loads and initializes the tree-sitter module.
  *
  * This is a singleton - subsequent calls return the cached module.
+ * Uses a promise-based mutex to prevent race conditions when multiple
+ * tests or callers attempt to initialize tree-sitter concurrently.
  */
 export async function loadTreeSitter(): Promise<TreeSitterModule> {
+  // Fast path: already initialized
   if (treeSitterModule) {
     return treeSitterModule;
   }
 
+  // If initialization is in progress, wait for it
+  if (initializationPromise) {
+    return initializationPromise;
+  }
+
+  // Start initialization and store the promise so concurrent calls wait
+  initializationPromise = initializeTreeSitter();
+
+  try {
+    const module = await initializationPromise;
+    return module;
+  } catch (error) {
+    // Reset on failure so subsequent calls can retry
+    initializationPromise = null;
+    throw error;
+  }
+}
+
+/**
+ * Internal initialization logic. Called only once by loadTreeSitter().
+ *
+ * Note: This function is protected from concurrent calls by the promise-based
+ * mutex in loadTreeSitter(). This ensures the patched loader file is written
+ * and read atomically, preventing race conditions where one test writes the
+ * file while another is reading it.
+ */
+async function initializeTreeSitter(): Promise<TreeSitterModule> {
   const wasmDir = findWasmDirectory();
 
-  // Create patched loader if not already done
+  // Create patched loader if not already done.
+  // This is safe from races because initializeTreeSitter() is only called once
+  // thanks to the promise-based mutex in loadTreeSitter().
   if (!patchedLoaderPath) {
     patchedLoaderPath = createPatchedLoader(wasmDir);
   }
@@ -139,6 +201,14 @@ export async function loadTreeSitter(): Promise<TreeSitterModule> {
   // Load the patched module
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const TreeSitter = require(patchedLoaderPath) as TreeSitterModule;
+
+  // Validate that the module loaded correctly
+  if (!TreeSitter || !TreeSitter.Parser) {
+    throw new Error(
+      `Tree-sitter module failed to load correctly. ` +
+        `The patched loader at ${patchedLoaderPath} may be corrupted.`
+    );
+  }
 
   // Initialize the parser
   await TreeSitter.Parser.init({

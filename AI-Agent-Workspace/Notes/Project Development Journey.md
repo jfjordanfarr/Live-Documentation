@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 29, 2026\)*
+*Status: Active Development (Jan 30, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -748,7 +748,18 @@ The team consolidated the scattered regex utilities into a unified LanguageSynta
 * **The Shared Interface (Commit 239):** Created packages/shared/src/languages/, implementing a unified LanguageSyntax interface for 9 languages (Go, C, C\#, TypeScript, Python, Rust, Ruby, Java, PowerShell).  
 * **Async-First:** The new interface was designed to be async-compatible from the start (stripCommentsAndStrings returns a Promise), ensuring no breaking changes will be needed when WASM-based Tree-sitter parsers are integrated.  
 * **Refinement & Conservatism (Commit 240):** The team renamed ignoredIdentifiers to frameworkTypes and adopted a conservative approach. They realized that heuristics need aggressive filtering (to avoid noise) while parsers need minimal filtering (to avoid false negatives), leading to a cleaner separation of concerns.  
-* **SCIP Pathing:** Fixed a critical path resolution bug in the SCIP oracle for C\# (\--path-prefix), allowing csharp-newtonsoft-json to be validated against a true compiler-backed ground truth.
+* **SCIP Pathing:** Fixed a critical path resolution bug in the SCIP oracle for C\# (--path-prefix), allowing csharp-newtonsoft-json to be validated against a true compiler-backed ground truth.
+
+### **Phase LI: The Union of Truth (Jan 30\)**
+
+Date: January 30, 2026
+
+Scope: Commits 241–242
+
+The team achieved a pivotal integration milestone by fusing the heuristic oracle with Tree-sitter data to create a "Super-Truth."
+
+* **Refactoring for Nuance (Commit 241):** The method stripCommentsAndStrings was renamed to stripComments to reflect a more sophisticated understanding: deleting string literals destroys code in interpreted languages (Python f"", JS backticks, C\# $"..."). Preserving strings prevents false negatives.  
+* **The Union Approach (Commit 242):** The expected.json generation logic was rewritten. Instead of relying solely on the Oracle, the system now computes **Oracle ∪ Tree-Sitter**. This ensures that the "Golden Master" includes high-fidelity edges from the parser while retaining the broader reach of the heuristics, creating a significantly more robust standard for accuracy.
 
 ## **Vision Evolution Log**
 
@@ -785,7 +796,8 @@ The team consolidated the scattered regex utilities into a unified LanguageSynta
 * **Jan 26 (Phase XLVI):** "Interaction Fidelity." (Polishing zoom, pinning, and centering mechanics).  
 * **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).  
 * **Jan 28 (Phase XLVIII):** "Narrative Synchronization." (Aligning the story with the chat logs).  
-* **Jan 29 (Phase XLIX/L):** "Syntax Unification." (Consolidating regex patterns and preparing for Tree-Sitter).
+* **Jan 29 (Phase XLIX/L):** "Syntax Unification." (Consolidating regex patterns and preparing for Tree-Sitter).  
+* **Jan 30 (Phase LI):** "The Union of Truth." (Fusing Oracle and Tree-Sitter for ground truth generation).
 
 ## **Technical Themes & Motifs**
 

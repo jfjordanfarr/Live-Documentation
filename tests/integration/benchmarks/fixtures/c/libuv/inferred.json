@@ -1,1 +1,5477 @@
-[]
+[
+  {
+    "source": "include/uv.h",
+    "target": "include/uv/errno.h",
+    "relation": "references"
+  },
+  {
+    "source": "include/uv.h",
+    "target": "include/uv/unix.h",
+    "relation": "references"
+  },
+  {
+    "source": "include/uv.h",
+    "target": "include/uv/version.h",
+    "relation": "references"
+  },
+  {
+    "source": "include/uv.h",
+    "target": "include/uv/win.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/timer.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/win/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/fs-poll.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/idna.c",
+    "target": "src/idna.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/idna.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/idna.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/inet.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/inet.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/random-devurandom.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/random-getentropy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/random-getrandom.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/random-sysctl-linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/random.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/strscpy.c",
+    "target": "src/strscpy.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/strtok.c",
+    "target": "src/strtok.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/thread-common.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/thread-common.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/thread-common.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/thread-common.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/threadpool.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/timer.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/timer.c",
+    "target": "src/heap-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/timer.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix-common.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix-common.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix-common.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix-common.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/aix.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/async.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-ifaddrs.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-proctitle.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-proctitle.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-proctitle.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/bsd-proctitle.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/strtok.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/timer.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/aix-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/posix-hrtime.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/core.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/cygwin.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin-proctitle.c",
+    "target": "src/unix/darwin-stub.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin-proctitle.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin-proctitle.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin.c",
+    "target": "src/unix/fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/darwin.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/dl.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/dl.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/dl.c",
+    "target": "src/win/dl.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/freebsd.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/win/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fs.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/unix/darwin-stub.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/fsevents.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/win/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getaddrinfo.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getnameinfo.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getnameinfo.c",
+    "target": "src/unix/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getnameinfo.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getnameinfo.c",
+    "target": "src/win/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/getnameinfo.c",
+    "target": "src/win/getnameinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/haiku.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/hurd.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/ibmi.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/internal.h",
+    "target": "src/unix/darwin-syscalls.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/internal.h",
+    "target": "src/unix/os390-syscalls.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/kqueue.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/linux.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop-watcher.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/loop.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/netbsd.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/no-fsevents.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/no-proctitle.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/openbsd.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-proctitle.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-proctitle.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-proctitle.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-proctitle.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/unix/os390-syscalls.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390-syscalls.h",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/os390.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/pipe.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/poll.c",
+    "target": "src/win/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-hrtime.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/posix-poll.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/process.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/procfs-exepath.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/unix/darwin-proctitle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/proctitle.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/qnx.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-devurandom.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-devurandom.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-devurandom.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-devurandom.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getentropy.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getentropy.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getentropy.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getrandom.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getrandom.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getrandom.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-getrandom.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/random-sysctl-linux.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/signal.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/stream.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/posix-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sunos.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sysinfo-loadavg.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/sysinfo-memory.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tcp.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/aix-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/posix-hrtime.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/thread.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/tty.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/inet.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/unix/udp.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/inet.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/bsd-proctitle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/no-proctitle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/os390-proctitle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/os390-syscalls.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/proctitle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.h",
+    "target": "src/queue.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/uv-common.h",
+    "target": "src/strscpy.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/async.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/async.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/async.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/random.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/thread-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/timer.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/aix-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/bsd-ifaddrs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/loop.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/posix-hrtime.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/detect-wakeup.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/fs.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/loop-watcher.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/snprintf.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/winapi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/core.c",
+    "target": "src/win/winsock.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/detect-wakeup.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/detect-wakeup.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/detect-wakeup.c",
+    "target": "src/win/winapi.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/dl.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/dl.c",
+    "target": "src/unix/dl.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/dl.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/error.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/error.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-event.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs-fd-hash-inl.h",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/fs-fd-hash-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/fs.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/unix/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getaddrinfo.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/threadpool.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/unix/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/unix/getnameinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/win/getaddrinfo.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/getnameinfo.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle-inl.h",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/timer.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/kqueue.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/no-fsevents.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/async.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/fs-event.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/handle.c",
+    "target": "src/win/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/internal.h",
+    "target": "src/uv-common.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/internal.h",
+    "target": "src/win/winapi.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/internal.h",
+    "target": "src/win/winsock.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/loop-watcher.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/loop-watcher.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/timer.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/stream-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/pipe.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/fs-poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/unix/poll.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/poll.c",
+    "target": "src/win/winsock.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process-stdio.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process-stdio.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process-stdio.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process-stdio.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/unix/process.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/process-stdio.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/process.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/req-inl.h",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/signal.c",
+    "target": "src/unix/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/signal.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/signal.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/signal.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream-inl.h",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream-inl.h",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream-inl.h",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/unix/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/pipe.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/stream.c",
+    "target": "src/win/tty.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/unix/tcp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/handle.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/stream-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tcp.c",
+    "target": "src/win/winsock.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/thread.c",
+    "target": "src/win/util.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/unix/stream.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/unix/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/signal.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/stream-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/tty.c",
+    "target": "src/win/thread.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/inet.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/unix/udp.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/handle-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/req-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/stream-inl.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/udp.c",
+    "target": "src/win/winsock.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/idna.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/strscpy.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/aix-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/aix.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/darwin.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/freebsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/haiku.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/hurd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/ibmi.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/linux.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/netbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/openbsd.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/os390.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/posix-hrtime.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/qnx.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/sunos.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/unix/sysinfo-memory.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/win/core.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/util.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winapi.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winapi.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winsock.c",
+    "target": "src/uv-common.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winsock.c",
+    "target": "src/win/error.c",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winsock.c",
+    "target": "src/win/internal.h",
+    "relation": "references"
+  },
+  {
+    "source": "src/win/winsock.h",
+    "target": "src/win/winapi.h",
+    "relation": "references"
+  }
+]

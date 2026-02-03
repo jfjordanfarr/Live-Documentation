@@ -1,6 +1,6 @@
 # User Intent Census – Link-Aware Diagnostics
 
-Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–65. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
+Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
 
 ## 2025-10-16 (Dev Day 1)
 - `2025-10-16.md:L1-L32` — Mandate: build a system that raises IntelliSense-style diagnostics between linked markdown layers and implementation files; adopt the four-layer MDMD documentation model.
@@ -813,6 +813,18 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–65
 - `L~1000-L1200` — **LanguageSyntax Interface for Adapters**: User mandated common interface for language adapters: "I just thought that having a common interface for those adapters would be wise." This addresses the 6+ independent `stripCommentsAndStrings()` implementations discovered across adapters and heuristics.
 - `L~1200-L1400` — **Async Compatibility Mandate**: "Please make sure that we're building in async compatibility (or just async functionality outright) so that we don't have to have any blockers when it's time to union with tree-sitter." The synchronous `FallbackHeuristic` interface was identified as a blocker for tree-sitter WASM integration.
 - `L~600-L800` — **Chat Archaeology for System Narrative**: User requested comprehensive Chat Archaeology before implementing interface changes: "Do a bit of Chat Archaeology and try to understand the cumulative _narrative_ of these elements. Why do they exist, what do they do, what are their issues, what are our aims for them, and how far along are we?" Understanding the evolution of adapters/heuristics/oracles is prerequisite to good interface design.
+
+## 2026-01-30 (Dev Day 66)
+
+### Chat 1 (2026-01-30.1.md) — LanguageSyntax Consolidation + Tree-sitter Union + Oracle Taxonomy
+
+- `2026-01-30.1.md:L~770-L830` — **String Stripping Causes False Negatives via Interpolations**: When deciding whether `stripCommentsAndStrings()` → `stripComments()`, Chat Archaeology revealed that stripping strings destroys code inside interpolated strings (`$"...{expression}..."`, `f"..."`, `` `...` ``). "C# interpolated strings (`$"..."`) contain **executable code** inside `{...}` braces. When you naively regex-replace the entire string with `""`, you delete the code expressions inside the interpolations." This is why comment-only stripping is correct.
+- `L~850-L920` — **Interface = Capabilities, Not Usage Recipes**: User pushed for clean architecture thinking: "I just want a holistic clean architecture. I want an interface which proclaims loudly 'hey, language adapters! You should know about XYZ, generally', and each language adapter goes 'okay, here's how I implement XYZ'." Interfaces should declare capabilities; consumers compose behaviors.
+- `L~1420-L1450` — **Tree-sitter Needs No Stripping**: Corrected a self-contradiction: "Filtering tree-sitter outputs? Why would we do that? Did we not, just yesterday, uncover a total absence of false-positives from the tree-sitter (and scip)?" Tree-sitter parses the AST directly and never does text matching — it doesn't need any stripping.
+- `L~1750-L1780` — **Cleanup Opportunities = Technical Debt Accumulation**: "With shifting context windows, cleanup opportunities are missed and technical debt accumulates. If it's right for that folder to be cleaned up, let's do it." Applied to deleting vestigial `packages/testing` folder during Commit B rather than deferring.
+- `L~2510-L2530` — **Update Oracles at Source, Not Late Interception**: When deciding between normalizing relations during comparison vs. updating oracles: "If updating the oracles themselves is correct and aligned with SCIP nomenclature, then that's what we should do." Late interception creates hidden transformations; oracles should emit the correct taxonomy natively.
+- `L~2990-L3020` — **Failures Are Opportunities, Not Workaround Triggers**: "Option 2! You kiddin' me? Option 2! These fails are **opportunities**! Why did we suddenly get a giant jump in false positives? Chat Archaeology would inform you that this is novel. That's worth understanding deeply. We have to resist that urge to accept a lower quality standard and push ourselves to continue developing until it is **correct**." Applies to benchmark failures revealing tree-sitter integration issues.
+- `L~3030-L3050` — **Dense Terminal Commands Don't Work**: PowerShell handles complex multi-line commands poorly: "Those long `npx tsx -e "...loooong strings..."` basically always hang." Per copilot-instructions: prefer bespoke scripts in `AI-Agent-Workspace/tmp/` over terminal tricks.
 
 ## 2026-01-26 (Dev Day 62)
 

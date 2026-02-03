@@ -177,9 +177,6 @@
           "cmake/**",
           "samples/**",
           "deps/**"
-        ],
-        "relations": [
-          "includes"
         ]
       },
       "integrity": {
@@ -331,7 +328,16 @@
       "inferred": "rust/log/inferred.json",
       "oracle": {
         "kind": "rust",
-        "root": "."
+        "root": ".",
+        "include": [
+          "src/**/*.rs"
+        ],
+        "exclude": [
+          "tests/**",
+          "benches/**",
+          "examples/**",
+          "rfcs/**"
+        ]
       },
       "provenance": {
         "kind": "vendor",

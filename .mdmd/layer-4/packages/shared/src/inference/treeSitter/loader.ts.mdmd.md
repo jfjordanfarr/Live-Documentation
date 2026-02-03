@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/loader.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-loader-ts
-- Generated At: 2026-01-30T23:50:04.108Z
+- Generated At: 2026-02-03T18:06:41.400Z
 
 ## Authored
 ### Purpose
@@ -18,70 +18,72 @@ Provides the WASM loading infrastructure for tree-sitter, enabling AST-based sym
 - **Singleton Pattern**: `loadTreeSitter()` caches the module to avoid repeated WASM loading overhead (~22 MB bundle)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-01-30T23:50:04.108Z","inputHash":"e5a87b420b5baa5b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T18:06:41.400Z","inputHash":"624c050364ef3e8b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TreeSitterParser` {#symbol-treesitterparser}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L19)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L20)
 
 ##### `TreeSitterParser` — Summary
 The tree-sitter Parser class interface.
 
 #### `TreeSitterLanguage` {#symbol-treesitterlanguage}
 - Type: type
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L28)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L29)
 
 ##### `TreeSitterLanguage` — Summary
 The tree-sitter Language class interface (opaque handle).
 
 #### `TreeSitterTree` {#symbol-treesittertree}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L33)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L34)
 
 ##### `TreeSitterTree` — Summary
 A parsed syntax tree.
 
 #### `TreeSitterNode` {#symbol-treesitternode}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L41)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L42)
 
 ##### `TreeSitterNode` — Summary
 A node in the syntax tree.
 
 #### `TreeSitterModule` {#symbol-treesittermodule}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L56)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L57)
 
 ##### `TreeSitterModule` — Summary
 The tree-sitter module interface after loading.
 
 #### `loadTreeSitter` {#symbol-loadtreesitter}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L127)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L159)
 
 ##### `loadTreeSitter` — Summary
 Loads and initializes the tree-sitter module.
 
 This is a singleton - subsequent calls return the cached module.
+Uses a promise-based mutex to prevent race conditions when multiple
+tests or callers attempt to initialize tree-sitter concurrently.
 
 #### `getLanguageWasmPath` {#symbol-getlanguagewasmpath}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L155)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L225)
 
 ##### `getLanguageWasmPath` — Summary
 Gets the path to a language WASM file.
 
 #### `LANGUAGE_GRAMMAR_MAP` {#symbol-language_grammar_map}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L173)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L243)
 
 ##### `LANGUAGE_GRAMMAR_MAP` — Summary
 Maps common language identifiers to tree-sitter grammar names.
 
 #### `isLanguageSupported` {#symbol-islanguagesupported}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L205)
+- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/loader.ts#L275)
 
 ##### `isLanguageSupported` — Summary
 Checks if a language is supported by tree-sitter.
