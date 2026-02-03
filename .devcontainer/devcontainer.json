@@ -1,0 +1,113 @@
+// Live Documentation Development Container
+// =========================================
+// This devcontainer provides a fully-configured Linux environment for
+// developing and testing Live Documentation, including all SCIP indexers
+// needed for compiler-backed benchmark fixture generation.
+//
+// Works identically in:
+//   - VS Code Dev Containers (local Docker)
+//   - GitHub Codespaces (cloud)
+//
+// For usage instructions, see .devcontainer/README.md
+{
+  "name": "Live Documentation Dev",
+
+  // Base image: Node.js 22 (matches our .nvmrc)
+  // Using the official Microsoft devcontainers image for best Codespaces compatibility
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+
+  // Language toolchains installed via official devcontainer features
+  // These are the same features GitHub Codespaces uses internally
+  // See: https://containers.dev/features
+  "features": {
+    // .NET 10 (current LTS, released Nov 2025, support until Nov 2028)
+    // Used by: scip-dotnet for C# fixture indexing
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "10.0"
+    },
+
+    // Java 21 (LTS) with Maven and Gradle
+    // Used by: scip-java for Java/Kotlin fixture indexing
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": true,
+      "installGradle": true
+    },
+
+    // Go (latest stable)
+    // Used by: scip-go for Go fixture indexing
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    },
+
+    // Python 3.12
+    // Used by: scip-python for Python fixture indexing
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+
+    // Rust (stable toolchain)
+    // Used by: rust-analyzer for Rust fixture indexing
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "stable"
+    },
+
+    // GitHub CLI for repository operations
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Post-creation setup: install npm dependencies and SCIP indexers
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  // VS Code / Codespaces customizations
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Core development
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+
+        // GitHub Copilot
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+
+        // Language support (for benchmark fixture editing)
+        "ms-dotnettools.csharp",
+        "golang.go",
+        "ms-python.python",
+        "rust-lang.rust-analyzer",
+        "redhat.java"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    },
+
+    // Codespaces-specific settings
+    "codespaces": {
+      // Open these files automatically when codespace starts
+      "openFiles": [
+        "README.md",
+        ".devcontainer/README.md"
+      ]
+    }
+  },
+
+  // Machine requirements for GitHub Codespaces
+  // 4-core recommended for benchmark regeneration (SCIP indexing is CPU-intensive)
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  // Workspace mount configuration for better performance
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // Run as non-root user (standard devcontainer practice)
+  "remoteUser": "node"
+}
