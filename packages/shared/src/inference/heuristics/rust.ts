@@ -18,6 +18,10 @@ interface RustUseTarget {
   origin: "base" | "type";
 }
 
+/**
+ * Creates a heuristic that detects Rust `mod`, `use`, and `path` attribute
+ * references, mapping module paths to workspace `.rs` files.
+ */
 export function createRustHeuristic(): FallbackHeuristic {
   let context: RustContext = { moduleIndex: new Map() };
 

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-ts
-- Generated At: 2026-02-03T21:55:39.697Z
+- Generated At: 2026-02-16T18:46:24.699Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,16 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Extends Hangfire heuristics to capture scheduled and recurring jobs, mirroring the LD-402 queue-worker fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.697Z","inputHash":"d6f72c058e83fa94"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.699Z","inputHash":"131fa2db02c4b007"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.ts#L45)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.ts#L46)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `csharpAdapter` — Summary
+Language adapter for C# (`.cs`). Extracts classes, interfaces, enums, records, structs, and `using` directive dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

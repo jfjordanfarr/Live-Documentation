@@ -3,24 +3,51 @@ import { fileURLToPath } from "node:url";
 
 import type { HeuristicArtifact } from "../fallbackHeuristicTypes";
 
+/**
+ * Trims whitespace from a reference string, returning an empty string for
+ * `undefined` inputs. Used as the first normalisation step in every heuristic
+ * match pipeline.
+ */
 export function cleanupReference(reference: string | undefined): string {
   return (reference ?? "").trim();
 }
 
+/**
+ * Returns `true` when a value is an absolute HTTP(S) URL.
+ *
+ * External links are excluded from workspace-internal dependency resolution
+ * to prevent false-positive matches against local filenames.
+ */
 export function isExternalLink(value: string): boolean {
   return /^https?:\/\//i.test(value);
 }
 
+/**
+ * Normalises a filesystem path to forward slashes and lowercase for
+ * platform-independent comparison during heuristic matching.
+ */
 export function normalizePath(raw: string): string {
   return path.normalize(raw).replace(/\\/g, "/").toLowerCase();
 }
 
+/**
+ * Returns the extensionless basename of a path in lowercase.
+ *
+ * Used to build the lowest-confidence fuzzy match variant: two files
+ * sharing a stem (e.g. `utils.ts` and `utils.py`) are weakly linked.
+ */
 export function stem(value: string): string {
   const basename = path.basename(value).toLowerCase();
   const extension = path.extname(basename);
   return extension ? basename.slice(0, basename.length - extension.length) : basename;
 }
 
+/**
+ * Converts a path or `file://` URI into a comparable normalised form.
+ *
+ * `file://` URIs are decoded via `fileURLToPath` before normalisation;
+ * all other inputs pass through {@link normalizePath} directly.
+ */
 export function toComparablePath(uri: string): string {
   try {
     if (uri.startsWith("file://")) {
@@ -33,6 +60,13 @@ export function toComparablePath(uri: string): string {
   return normalizePath(uri);
 }
 
+/**
+ * Computes the start offset of a raw reference within a regex match.
+ *
+ * When the reference appears as a substring of the full match, the returned
+ * offset points to the reference start rather than the overall match start.
+ * Returns `null` when neither the reference nor the match index is available.
+ */
 export function computeReferenceStart(match: RegExpMatchArray, rawReference: string): number | null {
   if (!match[0]) {
     return null;
@@ -46,6 +80,13 @@ export function computeReferenceStart(match: RegExpMatchArray, rawReference: str
   return (match.index ?? 0) + offset;
 }
 
+/**
+ * Determines whether a character position falls inside a C-style line
+ * or block comment.
+ *
+ * Performs a linear scan from the start of the content — O(n) per call.
+ * Heuristics invoke this to suppress references found in commented-out code.
+ */
 export function isWithinComment(content: string, index: number): boolean {
   let inBlockComment = false;
   let inLineComment = false;
@@ -85,6 +126,15 @@ export function isWithinComment(content: string, index: number): boolean {
   return inBlockComment || inLineComment;
 }
 
+/**
+ * Expands a raw reference string into a set of normalised path variants
+ * that a workspace artifact might match.
+ *
+ * Variants include the literal path, source-directory-resolved forms,
+ * common extension swaps (`.js` → `.ts`), extensionless probes, and
+ * stem/basename fallbacks. The caller then scores each variant against
+ * the workspace artifact list via {@link evaluateVariantMatch}.
+ */
 export function buildReferenceVariants(reference: string, sourceDir: string): string[] {
   const variants = new Set<string>();
   const cleaned = reference.replace(/\\/g, "/");
@@ -129,11 +179,22 @@ export function buildReferenceVariants(reference: string, sourceDir: string): st
   return Array.from(variants);
 }
 
+/**
+ * Confidence score and human-readable rationale for a single variant–artifact
+ * match. Returned by {@link evaluateVariantMatch}.
+ */
 export interface VariantMatchScore {
   confidence: number;
   rationale: string;
 }
 
+/**
+ * Scores a normalised path variant against a workspace artifact.
+ *
+ * Returns a {@link VariantMatchScore} with confidence from 0.5 (weak stem
+ * match) to 0.8 (exact path match), or `null` when no match is found.
+ * Used by every per-language heuristic to rank candidate dependencies.
+ */
 export function evaluateVariantMatch(
   variant: string,
   rawReference: string,

@@ -37,6 +37,7 @@ const BLOCK_COMMENT_BEGIN = /^\s*=begin\b/i;
 const BLOCK_COMMENT_END = /^\s*=end\b/i;
 const DIRECTIVE_PATTERN = /^#\s*(?:frozen_string_literal|rubocop)/i;
 
+/** Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts classes, modules, methods, and `require`/`require_relative` dependencies. */
 export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",
   extensions: [".rb"],

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-ts
-- Generated At: 2026-02-03T21:55:40.238Z
+- Generated At: 2026-02-16T18:46:25.123Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,16 @@ Parses Rust sources to collect public symbols, structured Rustdoc sections, and 
 - Keep new Rustdoc heading or tag support aligned with the regression tests before re-running the Live Docs generator <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.238Z","inputHash":"4f257c183d4317bf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:25.123Z","inputHash":"1a9e442dc20ab3c9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/rust.ts#L198)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/rust.ts#L199)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `rustAdapter` — Summary
+Language adapter for Rust (`.rs`). Extracts functions, structs, enums, traits, type aliases, and `mod`/`use`/`extern crate` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

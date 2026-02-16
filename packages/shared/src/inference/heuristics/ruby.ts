@@ -6,6 +6,10 @@ import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicT
 
 const RUBY_REQUIRE_RELATIVE_PATTERN = "require_relative\\s+[\"']([^\"'\\s]+)[\"']";
 
+/**
+ * Creates a heuristic that detects Ruby `require`, `require_relative`,
+ * and `load` statements, resolving them to workspace `.rb` files.
+ */
 export function createRubyHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

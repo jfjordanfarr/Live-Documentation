@@ -1,4 +1,5 @@
 import { isImplementationLayer } from "./artifactLayerUtils";
+import { stripCStyleComments } from "../../languages/syntax";
 import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicTypes";
 
 const CSHARP_USING_DIRECTIVE_PATTERN = "^\\s*using\\s+(static\\s+)?([^=;]+);";
@@ -38,40 +39,14 @@ const CSHARP_BUILT_INS = new Set([
 ]);
 
 /**
- * Synchronous cache for stripped C# content.
- * Only strips comments (not strings) to avoid false positives from type names
- * in documentation while preserving type references in code.
- */
-let _strippedContentCache: Map<string, string> | null = null;
-
-function getStrippedContent(content: string): string {
-  if (!_strippedContentCache) {
-    _strippedContentCache = new Map();
-  }
-  const cached = _strippedContentCache.get(content);
-  if (cached !== undefined) {
-    return cached;
-  }
-  const result = stripCSharpCommentsOnly(content);
-  _strippedContentCache.set(content, result);
-  return result;
-}
-
-/**
- * Strips only comments from C# source code.
+ * Strips C# comments for type-reference analysis.
  *
- * Note: We intentionally do NOT strip strings here because type references
- * (e.g., nameof(MyType), typeof(MyType)) appear in code that may be near strings
- * and stripping strings can accidentally remove valid type references.
- * The goal is just to filter out type names mentioned in documentation comments.
+ * Delegates to the shared {@link stripCStyleComments} utility which handles
+ * both `// …` line comments (including `///` XML doc comments) and
+ * `/* … * /` block comments. Strings are intentionally preserved — type
+ * references like `nameof(MyType)` can appear adjacent to string literals.
  */
-function stripCSharpCommentsOnly(content: string): string {
-  // Remove single-line comments (// ...) including XML doc comments (/// ...)
-  let result = content.replace(/\/\/.*$/gm, "");
-  // Remove multi-line comments (/* ... */)
-  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
-  return result;
-}
+const getStrippedContent = stripCStyleComments;
 
 interface CSharpContext {
   fileMetadata: Map<string, CSharpFileMetadata>;
@@ -93,6 +68,10 @@ interface CSharpTypeDefinition {
   artifact: HeuristicArtifact;
 }
 
+/**
+ * Creates a heuristic that detects C# `using` directives and namespace
+ * references, mapping them to workspace `.cs` files by namespace convention.
+ */
 export function createCSharpHeuristic(): FallbackHeuristic {
   let context: CSharpContext = {
     fileMetadata: new Map(),

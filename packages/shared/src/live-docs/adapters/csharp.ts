@@ -42,6 +42,7 @@ const FIELD_DECLARATION_PATTERN = new RegExp(
   `^\\s*(?:${ACCESS_MODIFIER_FRAGMENT})\\s+(?:${FIELD_MODIFIER_FRAGMENT}\\s+)*[\\w<>\\[\\],?.]+\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(?:=|;)`
 );
 
+/** Language adapter for C# (`.cs`). Extracts classes, interfaces, enums, records, structs, and `using` directive dependencies. */
 export const csharpAdapter: LanguageAdapter = {
   id: "csharp-basic",
   extensions: [".cs"],

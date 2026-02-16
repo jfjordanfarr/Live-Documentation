@@ -20,6 +20,11 @@ const TYPESCRIPT_EXTENSIONS = new Set([".ts", ".tsx", ".mts", ".cts"]);
 
 type TypeScriptImportRuntimeInfo = Map<string, { hasRuntimeUsage: boolean; isTypeOnly: boolean }>;
 
+/**
+ * Creates a heuristic that detects TypeScript/JavaScript `import` and
+ * `require` statements, resolving module specifiers to workspace files
+ * with `.ts`/`.tsx`/`.js` extension fallback.
+ */
 export function createImportHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

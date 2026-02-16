@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-ruby-ts
-- Generated At: 2026-02-03T21:55:40.186Z
+- Generated At: 2026-02-16T18:46:25.083Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,16 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 - Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.186Z","inputHash":"a00067fbdd19563f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:25.083Z","inputHash":"29dc24aea546e458"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/ruby.ts#L40)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/ruby.ts#L41)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `rubyAdapter` — Summary
+Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts classes, modules, methods, and `require`/`require_relative` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -195,6 +195,7 @@ function resolveUseStatement(
   return undefined;
 }
 
+/** Language adapter for Rust (`.rs`). Extracts functions, structs, enums, traits, type aliases, and `mod`/`use`/`extern crate` dependencies. */
 export const rustAdapter: LanguageAdapter = {
   id: "rust-basic",
   extensions: [".rs"],

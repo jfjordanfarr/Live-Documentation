@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/css.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-css-ts
-- Generated At: 2026-02-03T21:55:39.783Z
+- Generated At: 2026-02-16T18:46:24.761Z
 
 ## Authored
 ### Purpose
@@ -20,13 +20,16 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 - Returns empty symbols array since CSS files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.783Z","inputHash":"fda170c4b7976076"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.761Z","inputHash":"b413f790f83a4fcc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/css.ts#L295)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/css.ts#L296)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `cssAdapter` — Summary
+Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, custom properties, and `@import`/`url()` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

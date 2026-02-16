@@ -298,6 +298,7 @@ function extractHtmlDependencies(params: {
 // Adapter Export
 // ============================================================================
 
+/** Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies. */
 export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],

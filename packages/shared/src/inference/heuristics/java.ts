@@ -15,6 +15,10 @@ interface SamePackageEntry {
   artifact: HeuristicArtifact;
 }
 
+/**
+ * Creates a heuristic that detects Java `import` statements and maps
+ * fully-qualified class names to workspace `.java` files by package path.
+ */
 export function createJavaHeuristic(): FallbackHeuristic {
   let context: JavaContext = { packageIndex: new Map(), samePackageIndex: new Map() };
 

@@ -16,6 +16,11 @@ interface WebFormsContext {
   controlsById: Map<string, HeuristicArtifact[]>;
 }
 
+/**
+ * Creates a heuristic that detects ASP.NET WebForms references:
+ * `appSettings` key lookups, `ConfigurationManager` calls, `.aspx`/`.ascx`
+ * `Inherits` directives, and `runat="server"` `src` attributes.
+ */
 export function createWebFormsHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
   let context: WebFormsContext = { configFiles: [], controlsById: new Map() };

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/referenceResolver.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-referenceresolver-ts
-- Generated At: 2026-02-03T21:55:38.985Z
+- Generated At: 2026-02-16T18:46:24.191Z
 
 ## Authored
 ### Purpose
@@ -16,24 +16,41 @@ Centralizes the artifact lookup logic for fallback heuristics, exposing shared h
 - If a future heuristic needs bespoke variant scoring, add it here so every language continues reusing the same normalization/weighting rules that we introduced alongside the Phase 8 polyglot heuristics on Nov 5 <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L780-L860>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.985Z","inputHash":"efaa6fbedde89718"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.191Z","inputHash":"3756270fc0191e80"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReferenceResolution` {#symbol-referenceresolution}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L12)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L16)
+
+##### `ReferenceResolution` — Summary
+Result of resolving a raw reference string against the workspace artifact list.
+Carries the matched target, a confidence score, and a human-readable rationale.
 
 #### `resolveReference` {#symbol-resolvereference}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L18)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L29)
 - Returns: [`ReferenceResolution`](#symbol-referenceresolution)
 - Parameters: `source`: [`HeuristicArtifact`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-heuristicartifact)
 
+##### `resolveReference` — Summary
+Resolves a raw reference (e.g. an import path, a link target) against
+the workspace artifact list using variant expansion and fuzzy matching.
+
+Returns the highest-confidence {@link ReferenceResolution} or `null`
+when no candidate exceeds the minimum match threshold.
+
 #### `resolveIncludeReference` {#symbol-resolveincludereference}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L59)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/referenceResolver.ts#L76)
 - Returns: [`ReferenceResolution`](#symbol-referenceresolution)
 - Parameters: `source`: [`HeuristicArtifact`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-heuristicartifact)
+
+##### `resolveIncludeReference` — Summary
+Resolves a C/C++ `#include` path against the workspace artifact list.
+
+Unlike {@link resolveReference}, this uses exact path matching (no fuzzy
+variant expansion) since `#include` paths are fully specified.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

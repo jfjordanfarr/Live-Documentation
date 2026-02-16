@@ -3,6 +3,7 @@ import path from "node:path";
 import { isImplementationLayer } from "./artifactLayerUtils";
 import { isWithinComment } from "./shared";
 import { goSyntax } from "../../languages";
+import { createSyncStripper } from "../../languages/syntax";
 import type { FallbackHeuristic, HeuristicArtifact, MatchContext } from "../fallbackHeuristicTypes";
 
 /**
@@ -128,6 +129,10 @@ interface GoContext {
   moduleRoot: string | undefined;
 }
 
+/**
+ * Creates a heuristic that detects Go `import` statements and maps
+ * package paths to workspace `.go` files by directory convention.
+ */
 export function createGoHeuristic(): FallbackHeuristic {
   let context: GoContext = {
     packageIndex: new Map(),
@@ -608,90 +613,11 @@ function extractAllSymbols(content: string): string[] {
 }
 
 /**
- * Internal cache for stripped content.
- * The goSyntax.stripComments returns a Promise, but we need sync access.
- * For Go, the implementation is synchronous, so we can use this cache pattern.
+ * Synchronous comment stripper for Go source. Delegates to
+ * {@link createSyncStripper} wrapping {@link goSyntax}, which uses the
+ * character-by-character walker that preserves string and raw literals.
  */
-let _strippedContentCache: Map<string, string> | null = null;
-
-function getStrippedContent(content: string): string {
-  if (!_strippedContentCache) {
-    _strippedContentCache = new Map();
-  }
-  const cached = _strippedContentCache.get(content);
-  if (cached !== undefined) {
-    return cached;
-  }
-  // goSyntax uses a sync implementation internally, so this resolves immediately
-  let result: string | undefined;
-  void goSyntax.stripComments(content).then(r => { result = r; });
-  if (result === undefined) {
-    // Fallback: synchronous implementation for safety
-    result = stripCommentsSync(content);
-  }
-  _strippedContentCache.set(content, result);
-  return result;
-}
-
-/**
- * Synchronous fallback for stripping comments from Go source.
- * Preserves string literals to avoid destroying code in template strings.
- * This is used when the async promise doesn't resolve immediately.
- */
-function stripCommentsSync(content: string): string {
-  let result = "";
-  let i = 0;
-  
-  while (i < content.length) {
-    if (content[i] === "/" && content[i + 1] === "/") {
-      while (i < content.length && content[i] !== "\n") i++;
-      continue;
-    }
-    if (content[i] === "/" && content[i + 1] === "*") {
-      i += 2;
-      while (i < content.length - 1 && !(content[i] === "*" && content[i + 1] === "/")) i++;
-      i += 2;
-      continue;
-    }
-    // Preserve string literals (don't strip them)
-    if (content[i] === '"') {
-      result += content[i];
-      i++;
-      while (i < content.length && content[i] !== '"') {
-        if (content[i] === "\\" && i + 1 < content.length) {
-          result += content[i];
-          result += content[i + 1];
-          i += 2;
-        } else {
-          result += content[i];
-          i++;
-        }
-      }
-      if (i < content.length) {
-        result += content[i];
-        i++;
-      }
-      continue;
-    }
-    // Preserve raw string literals
-    if (content[i] === "`") {
-      result += content[i];
-      i++;
-      while (i < content.length && content[i] !== "`") {
-        result += content[i];
-        i++;
-      }
-      if (i < content.length) {
-        result += content[i];
-        i++;
-      }
-      continue;
-    }
-    result += content[i];
-    i++;
-  }
-  return result;
-}
+const getStrippedContent = createSyncStripper(goSyntax);
 
 /**
  * Checks if a symbol is referenced in the content without a package qualifier.

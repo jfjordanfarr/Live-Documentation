@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/artifactLayerUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-artifactlayerutils-ts
-- Generated At: 2026-02-16T14:27:56.454Z
+- Generated At: 2026-02-16T18:46:23.917Z
 
 ## Authored
 ### Purpose
@@ -17,18 +17,30 @@ Defines the layer guards (`isDocumentLayer`, `isImplementationLayer`) that the N
 - Shared by all language heuristics after the modularization commit that landed on Nov 8; keep these helpers stable unless roadmap updates redefine the layer taxonomy consumed by `FallbackHeuristic` ordering <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L60-L140>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:56.454Z","inputHash":"9e03d085bd56f86c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:23.917Z","inputHash":"f994fe7e724fbdd6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `isDocumentLayer` {#symbol-isdocumentlayer}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/artifactLayerUtils.ts#L3)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/artifactLayerUtils.ts#L10)
 - Parameters: `layer`: [`ArtifactLayer`](../../../../extension/src/shared/artifactSchemas.ts.mdmd.md#symbol-artifactlayer)
+
+##### `isDocumentLayer` — Summary
+Returns `true` when the artifact layer represents a documentation tier
+(vision, requirements, architecture) rather than code.
+
+Used by document-oriented heuristics (e.g. markdown) to restrict matching
+to non-code artifacts.
 
 #### `isImplementationLayer` {#symbol-isimplementationlayer}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/artifactLayerUtils.ts#L7)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/artifactLayerUtils.ts#L19)
 - Parameters: `layer`: [`ArtifactLayer`](../../../../extension/src/shared/artifactSchemas.ts.mdmd.md#symbol-artifactlayer)
+
+##### `isImplementationLayer` — Summary
+Returns `true` when the artifact layer represents a code tier
+(implementation or code). Used by language heuristics to restrict
+matching to source files.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -9,6 +9,7 @@ const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const PAGE_DIRECTIVE_PATTERN = /<%@\s+Page[^%]*?(?:CodeFile|CodeBehind)\s*=\s*"([^"]+)"[^%]*?%>/i;
 const MARKUP_EXTENSIONS = new Set([".aspx", ".cshtml", ".razor", ".ascx"]);
 
+/** Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`). Extracts `CodeFile`/`CodeBehind` references and model directives. */
 export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
   extensions: [".aspx", ".cshtml", ".razor"],

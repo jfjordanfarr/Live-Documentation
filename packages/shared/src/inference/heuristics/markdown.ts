@@ -6,6 +6,11 @@ import { cleanupReference } from "./shared";
 const MARKDOWN_LINK_PATTERN = "\\[[^\\]]+\\]\\(([^)]+)\\)";
 const MARKDOWN_WIKI_LINK_PATTERN = "\\[\\[([^\\]]+)\\]\\]";
 
+/**
+ * Creates a heuristic that detects relative markdown links and wiki-links,
+ * resolving them to workspace artifacts. Ignores external HTTP(S) URLs
+ * and anchor-only fragments.
+ */
 export function createMarkdownHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

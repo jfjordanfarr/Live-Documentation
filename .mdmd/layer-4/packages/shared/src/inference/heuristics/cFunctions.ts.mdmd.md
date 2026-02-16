@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/cFunctions.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-cfunctions-ts
-- Generated At: 2026-02-03T21:55:38.735Z
+- Generated At: 2026-02-16T19:57:19.123Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,19 @@ Resolves C call sites back to their declaring headers so fallback inference can 
 - Became part of the modular heuristic suite shipped on Nov 8; any scoring or ordering tweaks need to stay benchmark-neutral as captured in that commit summary <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-08.md#L60-L140>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.735Z","inputHash":"290fbf193eb4d651"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T19:57:19.123Z","inputHash":"11af3f9d33434040"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createCFunctionHeuristic` {#symbol-createcfunctionheuristic}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/cFunctions.ts#L23)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/cFunctions.ts#L30)
 - Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
+
+##### `createCFunctionHeuristic` — Summary
+Creates a heuristic that detects C function cross-references.
+
+Builds an index of function definitions from `.c` files, then matches
+call-site identifiers in other C files to infer dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -29,4 +35,5 @@ Resolves C call sites back to their declaring headers so fallback inference can 
 - [`fallbackHeuristicTypes.FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic) (type-only)
 - [`fallbackHeuristicTypes.HeuristicArtifact`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-heuristicartifact) (type-only)
 - [`artifactLayerUtils.isImplementationLayer`](./artifactLayerUtils.ts.mdmd.md#symbol-isimplementationlayer)
+- [`syntax.stripCStyleComments`](../../languages/syntax.ts.mdmd.md#symbol-stripcstylecomments)
 <!-- LIVE-DOC:END Dependencies -->

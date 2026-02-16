@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-c-ts
-- Generated At: 2026-02-03T21:55:39.581Z
+- Generated At: 2026-02-16T18:46:24.598Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,16 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 - Extend both the parser and its test scenarios when onboarding new Doxygen tags, following the coverage matrix captured in the adapter plan <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.581Z","inputHash":"e9afbf5a6f2c889d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.598Z","inputHash":"f14d1ccf20149395"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cAdapter` {#symbol-cadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/c.ts#L31)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/c.ts#L32)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `cAdapter` — Summary
+Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extracts function/struct/typedef symbols and `#include` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

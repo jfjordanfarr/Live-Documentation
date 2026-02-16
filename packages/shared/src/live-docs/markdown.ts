@@ -4,16 +4,29 @@ import type { LiveDocMetadata, LiveDocProvenance } from "./schema";
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
+/** Prefix for HTML comments that mark the start of a generated Live Doc section. */
 export const LIVE_DOC_BEGIN_MARKER_PREFIX = "<!-- LIVE-DOC:BEGIN ";
+/** Prefix for HTML comments that mark the end of a generated Live Doc section. */
 export const LIVE_DOC_END_MARKER_PREFIX = "<!-- LIVE-DOC:END ";
+/** Prefix for the provenance JSON comment embedded in generated Live Docs. */
 export const LIVE_DOC_PROVENANCE_MARKER = "<!-- LIVE-DOC:PROVENANCE ";
 
+/**
+ * A named section of generated content within a Live Doc, rendered between
+ * `LIVE-DOC:BEGIN` and `LIVE-DOC:END` marker comments.
+ */
 export interface LiveDocRenderSection {
   name: string;
   heading?: string;
   lines: string[];
 }
 
+/**
+ * Full set of inputs required to render a single Live Doc markdown document.
+ *
+ * The authored block is preserved across regeneration; generated sections
+ * (Public Symbols, Dependencies, Observed Evidence) are replaced each run.
+ */
 export interface RenderLiveDocOptions {
   title: string;
   metadata: LiveDocMetadata;
@@ -30,6 +43,13 @@ const DEFAULT_AUTHORED_TEMPLATE = [
   "_Pending notes_"
 ].join("\n");
 
+/**
+ * Renders a complete Live Doc markdown document from its constituent parts.
+ *
+ * Produces a deterministic output: Metadata, Authored (preserved), then
+ * Generated sections wrapped in HTML marker comments. A trailing newline
+ * is guaranteed.
+ */
 export function renderLiveDocMarkdown(options: RenderLiveDocOptions): string {
   const lines: string[] = [];
   lines.push(`# ${options.title}`);
@@ -69,19 +89,29 @@ export function renderLiveDocMarkdown(options: RenderLiveDocOptions): string {
   return document.endsWith("\n") ? document : `${document}\n`;
 }
 
+/** Wraps a section name in the `LIVE-DOC:BEGIN` HTML comment marker. */
 export function renderBeginMarker(sectionName: string): string {
   return `${LIVE_DOC_BEGIN_MARKER_PREFIX}${sectionName} -->`;
 }
 
+/** Wraps a section name in the `LIVE-DOC:END` HTML comment marker. */
 export function renderEndMarker(sectionName: string): string {
   return `${LIVE_DOC_END_MARKER_PREFIX}${sectionName} -->`;
 }
 
+/** Serialises a {@link LiveDocProvenance} object into a `LIVE-DOC:PROVENANCE` HTML comment. */
 export function renderProvenanceComment(provenance: LiveDocProvenance): string {
   const payload = JSON.stringify(provenance);
   return `${LIVE_DOC_PROVENANCE_MARKER}${payload} -->`;
 }
 
+/**
+ * Extracts the `## Authored` section from an existing Live Doc.
+ *
+ * Returns the default template (`### Purpose` + `### Notes` placeholders)
+ * when no authored section is found, preserving the regeneration contract
+ * that authored content is never silently lost.
+ */
 export function extractAuthoredBlock(existingContent: string | undefined): string {
   if (!existingContent) {
     return DEFAULT_AUTHORED_TEMPLATE;
@@ -144,10 +174,18 @@ function normaliseAuthoredBlock(block: string): string[] {
   return trimmed.split(/\r?\n/);
 }
 
+/** Returns the default authored-section template with placeholder Purpose and Notes headings. */
 export function defaultAuthoredTemplate(): string {
   return DEFAULT_AUTHORED_TEMPLATE;
 }
 
+/**
+ * Composes the workspace-relative path to a Live Doc markdown file
+ * for a given source artifact.
+ *
+ * Joins root, base layer, source path, and the `.mdmd.md` extension
+ * using forward-slash separators for cross-platform determinism.
+ */
 export function composeLiveDocPath(
   root: string,
   baseLayer: string,
@@ -163,6 +201,12 @@ export function composeLiveDocPath(
     .join("/");
 }
 
+/**
+ * Generates a deterministic Live Doc identifier from an archetype and source path.
+ *
+ * The ID format is `LD-{archetype}-{kebab-path}`, used as the `liveDocId`
+ * metadata field to uniquely identify each document in the Live Doc graph.
+ */
 export function composeLiveDocId(archetype: string | undefined, sourcePath: string): string {
   const prefix = archetype ?? "unknown";
   const normalised = normalizeWorkspacePath(sourcePath)

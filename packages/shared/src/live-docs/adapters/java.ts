@@ -106,6 +106,7 @@ function resolveJavaImport(
   return undefined;
 }
 
+/** Language adapter for Java (`.java`). Extracts classes, interfaces, enums, annotated types, and `import` dependencies. */
 export const javaAdapter: LanguageAdapter = {
   id: "java-basic",
   extensions: [".java"],

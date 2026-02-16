@@ -1,4 +1,5 @@
 import { isImplementationLayer } from "./artifactLayerUtils";
+import { stripCStyleComments } from "../../languages/syntax";
 import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicTypes";
 
 const C_FUNCTION_DEFINITION_PATTERN = /([A-Za-z_][A-Za-z0-9_\s*]*?)\b([A-Za-z_][A-Za-z0-9_]*)\s*\([^;{}]*\)\s*\{/gm;
@@ -20,6 +21,12 @@ const C_RESERVED_IDENTIFIERS = new Set([
 
 type CFunctionIndex = Map<string, HeuristicArtifact[]>;
 
+/**
+ * Creates a heuristic that detects C function cross-references.
+ *
+ * Builds an index of function definitions from `.c` files, then matches
+ * call-site identifiers in other C files to infer dependencies.
+ */
 export function createCFunctionHeuristic(): FallbackHeuristic {
   let functionIndex: CFunctionIndex = new Map();
 
@@ -31,7 +38,7 @@ export function createCFunctionHeuristic(): FallbackHeuristic {
         continue;
       }
 
-      const stripped = stripCComments(artifact.content);
+      const stripped = stripCStyleComments(artifact.content);
       const pattern = new RegExp(C_FUNCTION_DEFINITION_PATTERN.source, "gm");
 
       for (const match of stripped.matchAll(pattern)) {
@@ -62,7 +69,7 @@ export function createCFunctionHeuristic(): FallbackHeuristic {
         return;
       }
 
-      const stripped = stripCComments(source.content);
+      const stripped = stripCStyleComments(source.content);
       const bodies = extractFunctionBodies(stripped);
       const recorded = new Set<string>();
 
@@ -100,11 +107,6 @@ export function createCFunctionHeuristic(): FallbackHeuristic {
       }
     },
   };
-}
-
-function stripCComments(content: string): string {
-  const withoutBlock = content.replace(/\/\*[\s\S]*?\*\//g, " ");
-  return withoutBlock.replace(/\/\/.*$/gm, " ");
 }
 
 /**

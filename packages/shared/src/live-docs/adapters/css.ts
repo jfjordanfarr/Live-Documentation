@@ -292,6 +292,7 @@ function extractCssDependencies(params: {
 // Adapter Export
 // ============================================================================
 
+/** Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, custom properties, and `@import`/`url()` dependencies. */
 export const cssAdapter: LanguageAdapter = {
   id: "css",
   extensions: [".css"],

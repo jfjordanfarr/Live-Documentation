@@ -4,6 +4,11 @@ import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicT
 
 const LINK_DIRECTIVE_PATTERN = "@link\\s+([^\\s]+)";
 
+/**
+ * Creates a heuristic that detects file-path references in preprocessor-style
+ * directives: YAML/Docker `FROM`, `COPY`, Makefiles, and similar patterns
+ * that reference workspace artifacts by relative path.
+ */
 export function createDirectiveHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

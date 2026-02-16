@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-powershell-ts
-- Generated At: 2026-02-03T21:55:40.005Z
+- Generated At: 2026-02-16T18:46:24.948Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,16 @@ Dot-sourced paths are normalized to workspace-relative form so downstream graph 
 Runtime extraction depends on [`scripts/powershell/emit-ast.ps1`](../../../../../scripts/powershell/emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.005Z","inputHash":"b93b2f60bd1b3560"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.948Z","inputHash":"ee8eec8b8914c145"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellAdapter` {#symbol-powershelladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/powershell.ts#L52)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/powershell.ts#L53)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `powershellAdapter` — Summary
+Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

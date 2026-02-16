@@ -210,6 +210,7 @@ function escapeRegExp(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+/** Language adapter for Go (`.go`). Extracts functions, types, constants, variables, and `import` dependencies. */
 export const goAdapter: LanguageAdapter = {
   id: "go-basic",
   extensions: [".go"],

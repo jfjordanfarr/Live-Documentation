@@ -49,6 +49,7 @@ interface PowerShellExtractionPayload {
 
 const cache = new Map<string, Promise<PowerShellExtractionPayload | null>>();
 
+/** Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies. */
 export const powershellAdapter: LanguageAdapter = {
   id: "powershell-basic",
   extensions: [".ps1", ".psm1", ".psd1"],

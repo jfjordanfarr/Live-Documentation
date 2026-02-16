@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/json.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-json-ts
-- Generated At: 2026-02-03T21:55:39.965Z
+- Generated At: 2026-02-16T18:46:24.919Z
 
 ## Authored
 ### Purpose
@@ -19,13 +19,16 @@ Polyglot language adapter for JSON configuration files, enabling Live Documentat
 - Created 2026-01-15 as part of the JSON Adapter commit, following Option B architecture (generic reference detection with file index validation) per the user's architecture guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.965Z","inputHash":"40f02541f76957e3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.919Z","inputHash":"228937e0e1c10a26"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/json.ts#L165)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/json.ts#L166)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `jsonAdapter` — Summary
+Language adapter for JSON and JSONC files. Extracts top-level keys as public symbols and detects file-path references in string values.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

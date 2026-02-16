@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/includes.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-includes-ts
-- Generated At: 2026-02-03T21:55:38.856Z
+- Generated At: 2026-02-16T18:46:24.056Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,17 @@ Follows `#include` directives so the C fixtures (libuv, modular, basics) keep em
 - After editing this heuristic, rerun `npm run fixtures:record-fallback -- --lang c` and the AST benchmarks to confirm c-libuv and c-modular stay in sync with their expected include sets <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-05.md#L3098-L3130>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.856Z","inputHash":"c04423c2ae54f4a8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.056Z","inputHash":"fca00490e96326ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createIncludeHeuristic` {#symbol-createincludeheuristic}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/includes.ts#L8)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/includes.ts#L12)
 - Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
+
+##### `createIncludeHeuristic` — Summary
+Creates a heuristic that detects C/C++ `#include` directives and resolves
+them against the workspace file tree, supporting both quoted and angle-bracket forms.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

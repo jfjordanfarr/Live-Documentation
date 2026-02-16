@@ -11,21 +11,26 @@ import type { ExplorerFilters, TuningConfig, ViewName } from "../types";
 // Persisted UI State (tuning + filters)
 // ─────────────────────────────────────────────────────────────────────────
 
+/** localStorage key for persisted UI state (filters + tuning). Version-suffixed to allow future migration. */
 export const PERSISTED_UI_KEY = "live-docs-explorer:ui:v1";
+/** Schema version tag embedded in persisted UI payloads for forward-compatible deserialisation. */
 export const PERSISTED_UI_VERSION = 1 as const;
 
+/** Shape of the versioned UI state written to localStorage under {@link PERSISTED_UI_KEY}. */
 export type PersistedUiV1 = {
   version: typeof PERSISTED_UI_VERSION;
   filters?: Partial<ExplorerFilters>;
   tuning?: Partial<TuningConfig>;
 };
 
+/** Returns the factory-default filter set (tests visible, assets/docs hidden). */
 export const getDefaultFilters = (): ExplorerFilters => ({
   showTests: true,
   showAssets: false,
   showRelatedDocs: false
 });
 
+/** Returns the factory-default tuning configuration for bezier curves, click behaviour, visual effects, and the local-map layout. */
 export const getDefaultTuning = (): TuningConfig => ({
   bezier: {
     stubFactor: 0.8,
@@ -68,6 +73,12 @@ const readFiniteNumber = (value: unknown): number | undefined => {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 };
 
+/**
+ * Reads and validates persisted UI state from localStorage.
+ *
+ * Returns `null` when no entry exists or the stored version does not match
+ * {@link PERSISTED_UI_VERSION}. Stale/corrupt entries are removed.
+ */
 export const readPersistedUi = (): PersistedUiV1 | null => {
   try {
     const raw = window.localStorage.getItem(PERSISTED_UI_KEY);
@@ -170,6 +181,13 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
   }
 };
 
+/**
+ * Merges persisted UI state onto factory defaults, producing a complete
+ * filters + tuning pair suitable for initialising the Explorer.
+ *
+ * Each tuning sub-object is spread independently so that a partially-
+ * persisted bezier config inherits missing keys from the defaults.
+ */
 export const applyPersistedUi = (
   defaults: { filters: ExplorerFilters; tuning: TuningConfig },
   persisted: PersistedUiV1 | null
@@ -213,15 +231,25 @@ export const applyPersistedUi = (
 // Persisted Navigation State (view + node selection)
 // ─────────────────────────────────────────────────────────────────────────
 
+/** localStorage key for persisted navigation state (active view + focused node). */
 export const PERSISTED_NAV_KEY = "live-docs-explorer:nav:v1";
+/** Schema version tag embedded in persisted navigation payloads. */
 export const PERSISTED_NAV_VERSION = 1 as const;
 
+/** Shape of the versioned navigation state written to localStorage under {@link PERSISTED_NAV_KEY}. */
 export type PersistedNavV1 = {
   version: typeof PERSISTED_NAV_VERSION;
   view?: ViewName;
   nodeId?: string | null;
 };
 
+/**
+ * Reads and validates persisted navigation state from localStorage.
+ *
+ * Returns `null` when no entry exists or the stored version does not match
+ * {@link PERSISTED_NAV_VERSION}. Only known view names are accepted; unknown
+ * values are silently discarded.
+ */
 export const readPersistedNav = (): PersistedNavV1 | null => {
   try {
     const raw = window.localStorage.getItem(PERSISTED_NAV_KEY);

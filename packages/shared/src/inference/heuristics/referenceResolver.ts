@@ -9,12 +9,23 @@ import {
   toComparablePath,
 } from "./shared";
 
+/**
+ * Result of resolving a raw reference string against the workspace artifact list.
+ * Carries the matched target, a confidence score, and a human-readable rationale.
+ */
 export interface ReferenceResolution {
   target: HeuristicArtifact;
   confidence: number;
   rationale: string;
 }
 
+/**
+ * Resolves a raw reference (e.g. an import path, a link target) against
+ * the workspace artifact list using variant expansion and fuzzy matching.
+ *
+ * Returns the highest-confidence {@link ReferenceResolution} or `null`
+ * when no candidate exceeds the minimum match threshold.
+ */
 export function resolveReference(
   rawReference: string,
   source: HeuristicArtifact,
@@ -56,6 +67,12 @@ export function resolveReference(
   return selected;
 }
 
+/**
+ * Resolves a C/C++ `#include` path against the workspace artifact list.
+ *
+ * Unlike {@link resolveReference}, this uses exact path matching (no fuzzy
+ * variant expansion) since `#include` paths are fully specified.
+ */
 export function resolveIncludeReference(
   rawReference: string,
   source: HeuristicArtifact,

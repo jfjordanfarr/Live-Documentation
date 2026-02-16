@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/imports.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-imports-ts
-- Generated At: 2026-02-03T21:55:38.834Z
+- Generated At: 2026-02-16T18:46:24.034Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,18 @@ Keeps fallback inference aligned with curated JS/TS and Python fixtures by mappi
 - Python module resolution relies on the curated helper introduced while reconciling the basics fixture, so re-run the AST benchmarks after any normalization tweaks to ensure the inferred edges still match the oracle <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-04.md#L1860-L1920>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.834Z","inputHash":"30e0f344512a29db"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.034Z","inputHash":"bf7cd4c9b06c1d58"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createImportHeuristic` {#symbol-createimportheuristic}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/imports.ts#L23)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/imports.ts#L28)
 - Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
+
+##### `createImportHeuristic` — Summary
+Creates a heuristic that detects TypeScript/JavaScript `import` and
+`require` statements, resolving module specifiers to workspace files
+with `.ts`/`.tsx`/`.js` extension fallback.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

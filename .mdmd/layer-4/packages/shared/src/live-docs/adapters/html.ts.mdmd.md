@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/html.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-html-ts
-- Generated At: 2026-02-03T21:55:39.849Z
+- Generated At: 2026-02-16T18:46:24.825Z
 
 ## Authored
 ### Purpose
@@ -20,13 +20,16 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Returns empty symbols array since HTML files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.849Z","inputHash":"3379e7e2fb278615"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.825Z","inputHash":"60f93bd2b15ce390"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/html.ts#L301)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/html.ts#L302)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `htmlAdapter` — Summary
+Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

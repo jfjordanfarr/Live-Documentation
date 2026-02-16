@@ -28,6 +28,7 @@ const FUNCTION_PATTERN =
   /^(\s*)(?:static\s+)?(?:inline\s+)?[A-Za-z_][A-Za-z0-9_\s*]*[*\s]+([A-Za-z_][A-Za-z0-9_]*)\s*\([^)]*\)\s*(?:;|\{)/;
 const INCLUDE_PATTERN = /#\s*include\s+([<"])([^>"]+)[>"]/g;
 
+/** Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extracts function/struct/typedef symbols and `#include` dependencies. */
 export const cAdapter: LanguageAdapter = {
   id: "c-basic",
   extensions: [".c", ".h"],

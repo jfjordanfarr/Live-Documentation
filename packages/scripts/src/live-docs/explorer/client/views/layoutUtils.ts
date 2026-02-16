@@ -5,6 +5,7 @@ import type {
 } from "../../shared/types";
 import type { DirectoryNode } from "../types";
 
+/** Sentinel key representing the virtual root directory in the layout tree. */
 export const ROOT_KEY = "__root__";
 
 interface FileGridMetrics {
@@ -26,6 +27,7 @@ interface DirectoryMeasure {
   depth: number;
 }
 
+/** Axis-aligned bounding rectangle used for layout placement. */
 export interface LayoutRect {
   x: number;
   y: number;
@@ -33,12 +35,14 @@ export interface LayoutRect {
   height: number;
 }
 
+/** A single node positioned within a file area grid, with its computed scale factor. */
 export interface NodeLayoutPlan {
   node: ExplorerNodePayload;
   rect: LayoutRect;
   scale: number;
 }
 
+/** Layout geometry for the file-node grid within a directory. */
 export interface FileAreaLayoutPlan {
   rect: LayoutRect;
   scale: number;
@@ -47,6 +51,13 @@ export interface FileAreaLayoutPlan {
   nodes: NodeLayoutPlan[];
 }
 
+/**
+ * Recursive layout plan for a single directory in the Circuit Board treemap.
+ *
+ * Collapsed single-child directories are folded into their parent, tracked
+ * via {@link collapsedAncestors} so the breadcrumb display name remains
+ * accurate (e.g. `"packages > shared > src"`).
+ */
 export interface DirectoryLayoutPlan {
   path: string;
   name: string;
@@ -60,6 +71,7 @@ export interface DirectoryLayoutPlan {
   collapsedAncestors: Array<{ path: string; name: string }>;
 }
 
+/** Top-level output of the directory layout algorithm — a root plan plus overall dimensions. */
 export interface DirectoryLayoutResult {
   root: DirectoryLayoutPlan;
   width: number;
@@ -80,6 +92,7 @@ interface FlowLayoutResult {
   height: number;
 }
 
+/** Exposed layout tuning constants for consumers that need to align calculations with the treemap grid. */
 export interface LayoutConstants {
   targetAspectRatio: number;
   nodeWidth: number;
@@ -136,6 +149,7 @@ function composeDisplayName(
   return uniqueParts.join(" › ");
 }
 
+/** Singleton instance of the layout constants used by the Circuit Board view. */
 export const layoutConstants: LayoutConstants = {
   targetAspectRatio: TARGET_ASPECT_RATIO,
   nodeWidth: NODE_WIDTH,
@@ -146,6 +160,11 @@ export const layoutConstants: LayoutConstants = {
   directoryLabelHeight: DIRECTORY_LABEL_HEIGHT
 };
 
+/**
+ * Builds a directory tree from a flat list of explorer nodes, grouping
+ * them by their `docRelativePath` segments. Nodes without a directory
+ * prefix land at the root.
+ */
 export function buildHierarchy(nodes: ExplorerNodePayload[]): DirectoryNode {
   const root: DirectoryNode = { name: "", path: ROOT_KEY, children: new Map(), nodes: [] };
   nodes.forEach(node => {
@@ -173,6 +192,7 @@ export function buildHierarchy(nodes: ExplorerNodePayload[]): DirectoryNode {
   return root;
 }
 
+/** Returns the directory key for a node by stripping the filename from `docRelativePath`. */
 export function getDirectoryKey(node: ExplorerNodePayload): string {
   const parts = (node.docRelativePath || "").split("/").filter(Boolean);
   if (parts.length <= 1) {
@@ -181,6 +201,12 @@ export function getDirectoryKey(node: ExplorerNodePayload): string {
   return parts.slice(0, -1).join("/");
 }
 
+/**
+ * Recursively measures a directory tree, computing bounding-box dimensions
+ * for each node using a flow-layout algorithm that targets a 4:3 aspect ratio.
+ *
+ * Empty directories are pruned during measurement.
+ */
 export function measureDirectoryTree(root: DirectoryNode, depth = 0): DirectoryMeasure {
   const rawChildren = Array.from(root.children.values())
     .map(child => measureDirectoryTree(child, depth + 1))
@@ -223,6 +249,12 @@ export function measureDirectoryTree(root: DirectoryNode, depth = 0): DirectoryM
   };
 }
 
+/**
+ * Converts a measured directory tree into absolute layout coordinates.
+ *
+ * Single-child directories are collapsed into their parent, placing the
+ * root plan at the origin. Returns the total canvas width and height.
+ */
 export function computeDirectoryLayout(measure: DirectoryMeasure): DirectoryLayoutResult {
   const rootRect: LayoutRect = {
     x: 0,
@@ -540,6 +572,13 @@ function layoutFileArea(
   };
 }
 
+/**
+ * Identifies the directory with the highest aggregate link-degree score
+ * among a set of nodes.
+ *
+ * Used by the Circuit Board view to determine the initial viewport
+ * position — centering on the most-connected directory cluster.
+ */
 export function findDominantDirectory(
   graphData: ExplorerGraphPayload,
   nodes: ExplorerNodePayload[],

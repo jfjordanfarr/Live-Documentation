@@ -5,6 +5,10 @@ import type { FallbackHeuristic, HeuristicArtifact } from "../fallbackHeuristicT
 
 const INCLUDE_DIRECTIVE_PATTERN = "#\\s*include\\s*(?:\"([^\"\\n]+)\"|<([^>\\n]+)>)";
 
+/**
+ * Creates a heuristic that detects C/C++ `#include` directives and resolves
+ * them against the workspace file tree, supporting both quoted and angle-bracket forms.
+ */
 export function createIncludeHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

@@ -162,6 +162,7 @@ function resolveToWorkspaceFile(
 // JSON Adapter
 // ============================================================================
 
+/** Language adapter for JSON and JSONC files. Extracts top-level keys as public symbols and detects file-path references in string values. */
 export const jsonAdapter: LanguageAdapter = {
   id: "json-config",
   extensions: [".json"],

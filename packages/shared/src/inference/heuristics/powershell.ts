@@ -18,6 +18,11 @@ interface PowerShellReference {
   rationale: string;
 }
 
+/**
+ * Creates a heuristic that detects PowerShell dot-sourced scripts
+ * (`. .\path.ps1`) and `Import-Module` references, resolving them
+ * to workspace `.ps1`/`.psm1` files.
+ */
 export function createPowerShellHeuristic(): FallbackHeuristic {
   let candidates: readonly HeuristicArtifact[] = [];
 

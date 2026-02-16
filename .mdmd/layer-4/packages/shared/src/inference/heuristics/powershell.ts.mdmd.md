@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-powershell-ts
-- Generated At: 2026-02-03T21:55:38.967Z
+- Generated At: 2026-02-16T18:46:24.173Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,18 @@ Describe the fallback heuristic that teaches the inference pipeline how to recog
 - Normalises `$PSScriptRoot`, de-duplicates specifiers, and delegates matching to the shared `resolveReference` helper to stay consistent with other language heuristics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.967Z","inputHash":"f4a67839184342ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.173Z","inputHash":"d7739c10640ecb57"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createPowerShellHeuristic` {#symbol-createpowershellheuristic}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/powershell.ts#L21)
+- Source: [source](../../../../../../../packages/shared/src/inference/heuristics/powershell.ts#L26)
 - Returns: [`FallbackHeuristic`](../fallbackHeuristicTypes.ts.mdmd.md#symbol-fallbackheuristic)
+
+##### `createPowerShellHeuristic` — Summary
+Creates a heuristic that detects PowerShell dot-sourced scripts
+(`. .\path.ps1`) and `Import-Module` references, resolving them
+to workspace `.ps1`/`.psm1` files.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

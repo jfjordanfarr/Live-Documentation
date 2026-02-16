@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-java-ts
-- Generated At: 2026-02-03T21:55:39.912Z
+- Generated At: 2026-02-16T18:46:24.881Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,16 @@ Parses Java sources to translate Javadoc summaries, tags, and imports into the L
 - Keep the polyglot integration test and updated Java fixtures in sync with any parser changes; those assets were extended alongside the original rollout to catch regressions <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md#L1488-L1508>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.912Z","inputHash":"2597fdf2080cf6f2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.881Z","inputHash":"2bc40ad46a30be4e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/java.ts#L109)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/java.ts#L110)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
+
+##### `javaAdapter` — Summary
+Language adapter for Java (`.java`). Extracts classes, interfaces, enums, annotated types, and `import` dependencies.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
