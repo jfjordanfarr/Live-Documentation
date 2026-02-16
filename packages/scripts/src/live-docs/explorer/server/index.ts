@@ -45,7 +45,7 @@ export async function startExplorerServer(options: ExplorerServerOptions): Promi
     const port = rawPort;
     const logger = options.logger ?? console;
 
-    const assets = await buildExplorerAssets({ workspaceRoot });
+    const assets = await buildExplorerAssets();
     
     const resolveLinkEndpoint = (endpoint: ExplorerLinkPayload["source"]): string => {
         if (typeof endpoint === "string") return endpoint;

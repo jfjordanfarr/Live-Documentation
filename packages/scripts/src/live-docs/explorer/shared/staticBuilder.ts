@@ -242,7 +242,7 @@ export async function buildStaticExplorer(
 
     // Build the HTML viewer
     logger.log("Building HTML viewer...");
-    const assets = await buildExplorerAssets({ workspaceRoot });
+    const assets = await buildExplorerAssets();
     const viewerHtml = buildStaticViewerHtml(assets.htmlTemplate);
     const viewerFile = path.join(outputDir, "index.html");
     await fs.writeFile(viewerFile, viewerHtml, "utf-8");
@@ -250,6 +250,7 @@ export async function buildStaticExplorer(
 
     // Copy static assets
     const assetsDir = path.join(outputDir, "static");
+    await fs.rm(assetsDir, { recursive: true, force: true });
     await copyDirectory(assets.outDir, assetsDir);
     logger.log(`Copied static assets to ${assetsDir}`);
 

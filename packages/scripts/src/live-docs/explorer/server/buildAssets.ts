@@ -1,10 +1,7 @@
 import { build } from "esbuild";
 import * as fs from "fs/promises";
+import * as os from "node:os";
 import * as path from "path";
-
-export interface BuildExplorerAssetsOptions {
-    workspaceRoot: string;
-}
 
 export interface ExplorerAssets {
     outDir: string;
@@ -16,9 +13,8 @@ const explorerRoot = path.resolve(moduleDirectory, "..", "");
 const clientRoot = path.join(explorerRoot, "client");
 const serverRoot = path.join(explorerRoot, "server");
 
-export async function buildExplorerAssets(options: BuildExplorerAssetsOptions): Promise<ExplorerAssets> {
-    const outDir = path.resolve(options.workspaceRoot, "AI-Agent-Workspace/tmp/live-docs-explorer");
-    await fs.mkdir(outDir, { recursive: true });
+export async function buildExplorerAssets(): Promise<ExplorerAssets> {
+    const outDir = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-explorer-"));
 
     const entryPoint = path.join(clientRoot, "index.ts");
     const outFile = path.join(outDir, "index.js");

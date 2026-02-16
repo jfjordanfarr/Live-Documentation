@@ -1,16 +1,16 @@
-You have been requested to summarize the following dev day conversation file into an auditable, turn-by-turn conversation summary in the same style as the other dev day summaries. 
+You have been requested to summarize the following dev day conversation file into an auditable, turn-by-turn conversation summary in the same style as the other dev day summaries.
 
 **PLEASE READ THE MOST RECENT FIVE SUMMARIES IN FULL BEFORE SUMMARIZING THE CONVERSATION**
 
-[Development Chat History Summary Index](/AI-Agent-Workspace/ChatHistory/README.md)
+[Development Chat History Summary Index](../../AI-Agent-Workspace/ChatHistory/README.md)
 
-Next, extract turn-by-turn conversation summaries, with a preference for direct quotes as practical, **1200 lines at a time**. Emit an update to the summary file after each 1200 lines of conversation history parsed. Please do not collapse multiple conversation turns into a a single entry; all turns must be represented in the summary. A "conversation turn" is defined as a single prompt-response pair. 
+Next, extract turn-by-turn conversation summaries, with a preference for direct quotes as practical, **1200 lines at a time**. Emit an update to the summary file after each 1200 lines of conversation history parsed. Please do not collapse multiple conversation turns into a a single entry; all turns must be represented in the summary. A "conversation turn" is defined as a single prompt-response pair.
 
-[Raw Development Chat History Folder](/AI-Agent-Workspace/ChatHistory/README.md)
+[Raw Development Chat History Folder](../../AI-Agent-Workspace/ChatHistory/README.md)
 
-**Do not check back in until the entire conversation history is parsed.** This means that, before the copilot response is completed, **at least one lossy autosummarization process will likely occur**. In order to maintain continuity, **you must rehydrate from the summary file you have already generated** so that you do not lose progress. 
+**Do not check back in until the entire conversation history is parsed.** This means that, before the copilot response is completed, **at least one lossy autosummarization process will likely occur**. In order to maintain continuity, **you must rehydrate from the summary file you have already generated** so that you do not lose progress.
 
-**You must emit edits to the chat history summary file you are generating for each 1200 lines of conversation history parsed**. 
+**You must emit edits to the chat history summary file you are generating for each 1200 lines of conversation history parsed**.
 **Failure to do so will cause looping repeat work due to autosummarization behaviors and context limits**.
 **If autosummarization occurs during signal extraction, rehydrate with the conversation summary file you have generated so far to avoid losing progress**.
-**To avoid causing needless human-in-the-loop pauses in the agentic runner, please use LLM 'read_file' (or simiar-named equivalent) tool calls rather than terminal commands**. 
+**To avoid causing needless human-in-the-loop pauses in the agentic runner, please use LLM 'read_file' (or simiar-named equivalent) tool calls rather than terminal commands**.

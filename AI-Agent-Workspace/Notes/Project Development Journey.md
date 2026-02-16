@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Jan 30, 2026\)*
+*Status: Active Development (Feb 3, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -761,6 +761,18 @@ The team achieved a pivotal integration milestone by fusing the heuristic oracle
 * **Refactoring for Nuance (Commit 241):** The method stripCommentsAndStrings was renamed to stripComments to reflect a more sophisticated understanding: deleting string literals destroys code in interpreted languages (Python f"", JS backticks, C\# $"..."). Preserving strings prevents false negatives.  
 * **The Union Approach (Commit 242):** The expected.json generation logic was rewritten. Instead of relying solely on the Oracle, the system now computes **Oracle ∪ Tree-Sitter**. This ensures that the "Golden Master" includes high-fidelity edges from the parser while retaining the broader reach of the heuristics, creating a significantly more robust standard for accuracy.
 
+### **Phase LII: The Containerized Pivot (Feb 3\)**
+
+Date: February 3, 2026
+
+Scope: Commits 243–245
+
+The team executed a decisive infrastructure pivot to resolve persistent cross-platform friction in the polyglot toolchain.
+
+* **Tree-Sitter Stability (Commit 243):** Resolved a critical race condition in the WASM loader using a mutex, ensuring stable test execution during parallel runs.  
+* **The Dev Container Strategy (Commit 244):** To support the SCIP indexers (which often fail on Windows due to path/JVM issues), the team introduced a **GitHub Codespaces-compatible Dev Container**. This provides a standardized Linux environment pre-loaded with .NET 10, Java 21, Go, and Python 3.12, eliminating "works on my machine" issues.  
+* **Cross-Platform Hardening (Commit 245):** The new container environment was hardened with xvfb support for headless integration tests and safe.directory fixes. Crucially, the team normalized hash computation to use relative paths, ensuring that documentation checksums are identical across Windows (D:\\...) and Linux (/workspaces/...).
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -797,7 +809,8 @@ The team achieved a pivotal integration milestone by fusing the heuristic oracle
 * **Jan 27 (Phase XLVII):** "The SCIP Standard." (Compiler-backed ground truth for benchmarks).  
 * **Jan 28 (Phase XLVIII):** "Narrative Synchronization." (Aligning the story with the chat logs).  
 * **Jan 29 (Phase XLIX/L):** "Syntax Unification." (Consolidating regex patterns and preparing for Tree-Sitter).  
-* **Jan 30 (Phase LI):** "The Union of Truth." (Fusing Oracle and Tree-Sitter for ground truth generation).
+* **Jan 30 (Phase LI):** "The Union of Truth." (Fusing Oracle and Tree-Sitter for ground truth generation).  
+* **Feb 3 (Phase LII):** "The Containerized Pivot." (Dev Containers for consistent cross-platform tooling).
 
 ## **Technical Themes & Motifs**
 
