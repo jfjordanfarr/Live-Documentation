@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-02-03T21:55:39.398Z
+- Generated At: 2026-02-16T18:25:01.581Z
 
 ## Authored
 ### Purpose
@@ -15,72 +15,84 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.398Z","inputHash":"ab6616443b365c51"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.581Z","inputHash":"b41ebce60fe76325"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L22)
 
-#### `CommentDelimiters` {#symbol-commentdelimiters}
+#### `LanguageSyntaxConfig` {#symbol-languagesyntaxconfig}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L23)
 
-#### `StringDelimiters` {#symbol-stringdelimiters}
+#### `CommentDelimiters` {#symbol-commentdelimiters}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L24)
 
+#### `StringDelimiters` {#symbol-stringdelimiters}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L25)
+
 #### `createSyncStripper` {#symbol-createsyncstripper}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L27)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L28)
+
+#### `createLanguageSyntax` {#symbol-createlanguagesyntax}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L28)
+
+#### `stripCStyleComments` {#symbol-stripcstylecomments}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L28)
 
 #### `cSyntax` {#symbol-csyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L29)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L30)
 
 #### `csharpSyntax` {#symbol-csharpsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L30)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
 
 #### `goSyntax` {#symbol-gosyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
 
 #### `GO_STDLIB_PACKAGES` {#symbol-go_stdlib_packages}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
 
 #### `javaSyntax` {#symbol-javasyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L33)
 
 #### `powershellSyntax` {#symbol-powershellsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L33)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
 
 #### `pythonSyntax` {#symbol-pythonsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L35)
 
 #### `PYTHON_STDLIB_MODULES` {#symbol-python_stdlib_modules}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L35)
 
 #### `rubySyntax` {#symbol-rubysyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L35)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L36)
 
 #### `rustSyntax` {#symbol-rustsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L36)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L37)
 
 #### `typescriptSyntax` {#symbol-typescriptsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L37)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L38)
 
 #### `getSyntaxById` {#symbol-getsyntaxbyid}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L77)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L78)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxById` — Summary
@@ -94,7 +106,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByExtension` {#symbol-getsyntaxbyextension}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L87)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L88)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByExtension` — Summary
@@ -108,7 +120,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByPath` {#symbol-getsyntaxbypath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L97)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L98)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByPath` — Summary
@@ -122,14 +134,14 @@ The syntax configuration, or undefined if not found
 
 #### `getAllSyntaxes` {#symbol-getallsyntaxes}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L105)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L106)
 
 ##### `getAllSyntaxes` — Summary
 Gets all registered language syntax configurations.
 
 #### `isLanguageSupported` {#symbol-islanguagesupported}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L114)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L115)
 
 ##### `isLanguageSupported` — Summary
 Checks if a language is supported.
@@ -139,7 +151,7 @@ Checks if a language is supported.
 
 #### `isExtensionSupported` {#symbol-isextensionsupported}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L123)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L124)
 
 ##### `isExtensionSupported` — Summary
 Checks if a file extension is supported.
@@ -149,7 +161,7 @@ Checks if a file extension is supported.
 
 #### `stripCommentsForPath` {#symbol-stripcommentsforpath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L135)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L136)
 
 ##### `stripCommentsForPath` — Summary
 Strips comments from content using the appropriate language syntax.
@@ -164,7 +176,7 @@ Stripped content, or original content if language not supported
 
 #### `isFrameworkTypeForPath` {#symbol-isframeworktypeforpath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L153)
+- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L154)
 
 ##### `isFrameworkTypeForPath` — Summary
 Checks if an identifier is a fundamental framework type for the given file's language.
@@ -191,8 +203,11 @@ True if the identifier is a framework type to filter as noise, false otherwise
 - [`rust.rustSyntax`](./rust.ts.mdmd.md#symbol-rustsyntax)
 - [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters) (type-only)
 - [`syntax.LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax) (type-only)
+- [`syntax.LanguageSyntaxConfig`](./syntax.ts.mdmd.md#symbol-languagesyntaxconfig) (type-only)
 - [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters) (type-only)
+- [`syntax.createLanguageSyntax`](./syntax.ts.mdmd.md#symbol-createlanguagesyntax) (type-only)
 - [`syntax.createSyncStripper`](./syntax.ts.mdmd.md#symbol-createsyncstripper) (type-only)
+- [`syntax.stripCStyleComments`](./syntax.ts.mdmd.md#symbol-stripcstylecomments) (type-only)
 - [`typescript.typescriptSyntax`](./typescript.ts.mdmd.md#symbol-typescriptsyntax)
 <!-- LIVE-DOC:END Dependencies -->
 

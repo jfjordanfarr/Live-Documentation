@@ -1,10 +1,15 @@
 /**
  * Ruby Language Syntax Configuration
  *
+ * Provides comment delimiters (`#` line + `=begin…=end` block), string
+ * delimiters (including heredocs and interpolated strings), and framework
+ * type filtering for Ruby source files.
+ *
  * @module languages/ruby
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const RUBY_COMMENTS: CommentDelimiters = {
   line: ["#"],
@@ -52,19 +57,19 @@ function stripRubyComments(content: string): string {
   return result;
 }
 
-export const rubySyntax: LanguageSyntax = {
+/**
+ * Ruby language syntax configuration.
+ *
+ * Covers `.rb`, `.rake`, `.gemspec` extensions.  Uses a custom comment
+ * stripper that handles both `=begin…=end` block comments and `#` line
+ * comments.
+ */
+export const rubySyntax = createLanguageSyntax({
   id: "ruby",
   extensions: [".rb", ".rake", ".gemspec"],
   comments: RUBY_COMMENTS,
   strings: RUBY_STRINGS,
   frameworkTypes: RUBY_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripRubyComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return RUBY_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+  stripComments: stripRubyComments,
+});
 

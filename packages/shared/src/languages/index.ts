@@ -20,11 +20,12 @@ import { typescriptSyntax } from "./typescript";
 
 export type {
   LanguageSyntax,
+  LanguageSyntaxConfig,
   CommentDelimiters,
   StringDelimiters,
 } from "./syntax";
 
-export { createSyncStripper } from "./syntax";
+export { createSyncStripper, createLanguageSyntax, stripCStyleComments } from "./syntax";
 
 export { cSyntax } from "./c";
 export { csharpSyntax } from "./csharp";

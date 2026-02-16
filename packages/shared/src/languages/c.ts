@@ -1,10 +1,15 @@
 /**
- * C Language Syntax Configuration
+ * C/C++ Language Syntax Configuration
+ *
+ * Provides comment delimiters, string delimiters, and framework type
+ * filtering for C and C++ source files.  Uses the default C-style
+ * comment stripper from {@link createLanguageSyntax}.
  *
  * @module languages/c
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const C_COMMENTS: CommentDelimiters = {
   line: ["//"],
@@ -34,38 +39,16 @@ const C_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments from C/C++ source code, preserving string literals.
+ * C/C++ language syntax configuration.
  *
- * Handles:
- * - Line comments (//)
- * - Block comments (slash-star ... star-slash)
- *
- * String literals are preserved (C doesn't have interpolated strings,
- * but preserving strings is harmless and maintains consistency).
+ * Covers `.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx` extensions.
+ * Comment stripping uses the shared C-style default.
  */
-function stripCComments(content: string): string {
-  // Remove block comments /* ... */
-  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
-
-  // Remove line comments // ...
-  result = result.replace(/\/\/[^\n]*/g, " ");
-
-  return result;
-}
-
-export const cSyntax: LanguageSyntax = {
+export const cSyntax = createLanguageSyntax({
   id: "c",
   extensions: [".c", ".h", ".cpp", ".hpp", ".cc", ".cxx"],
   comments: C_COMMENTS,
   strings: C_STRINGS,
   frameworkTypes: C_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripCComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return C_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+});
 

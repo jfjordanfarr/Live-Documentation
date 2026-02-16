@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/syntax.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-syntax-ts
-- Generated At: 2026-02-03T21:55:39.484Z
+- Generated At: 2026-02-16T18:25:01.674Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the `LanguageSyntax` interface — the unified contract for language-spe
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — created as part of the LanguageSyntax module to unify duplicated comment-stripping logic across Go heuristics and C adapters. The async interface anticipates tree-sitter WASM integration; `createSyncStripper()` provides backward compatibility for sync callers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.484Z","inputHash":"7bab44fe46ad5ce1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.674Z","inputHash":"c903af43a75e4075"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CommentDelimiters` {#symbol-commentdelimiters}
@@ -44,9 +44,65 @@ Each supported language provides an implementation of this interface.
 The interface is intentionally async-compatible to allow for tree-sitter
 WASM integration in the future.
 
+#### `LanguageSyntaxConfig` {#symbol-languagesyntaxconfig}
+- Type: interface
+- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L109)
+
+##### `LanguageSyntaxConfig` — Summary
+Declarative configuration for creating a {@link LanguageSyntax} via
+the {@link createLanguageSyntax} factory.
+
+All fields are pure data except the optional `stripComments` override.
+When `stripComments` is omitted the factory defaults to C-style regex
+stripping (`// …` line comments + `/* … * /` block comments), which is
+correct for C, C#, Java, TypeScript, and Rust.
+
+#### `stripCStyleComments` {#symbol-stripcstylecomments}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L140)
+
+##### `stripCStyleComments` — Summary
+Strips C-style comments from source code.
+
+Removes:
+- Block comments `/* … * /` (including JSDoc / Javadoc)
+- Line comments `// …`
+
+String literals are **not** individually tracked because the regex
+approach is intentionally coarse — tree-sitter provides the precise
+path.  For heuristic usage the loss is acceptable and the simplicity
+is a feature.
+
+Used as the default `stripComments` by {@link createLanguageSyntax}
+for C, C#, Java, TypeScript, and Rust.
+
+#### `createLanguageSyntax` {#symbol-createlanguagesyntax}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L161)
+- Returns: [`LanguageSyntax`](./index.ts.mdmd.md#symbol-languagesyntax)
+- Parameters: `config`: [`LanguageSyntaxConfig`](./index.ts.mdmd.md#symbol-languagesyntaxconfig)
+
+##### `createLanguageSyntax` — Summary
+Creates a {@link LanguageSyntax} implementation from declarative
+configuration, eliminating per-language boilerplate.
+
+Default behaviours provided by the factory:
+- **`stripComments`** — delegates to {@link stripCStyleComments} unless
+  a custom stripper is supplied via `config.stripComments`.
+- **`isFrameworkType`** — always delegates to
+  `config.frameworkTypes.has(identifier)`.
+- The async `Promise.resolve()` wrapper around the synchronous
+  stripper, required by the interface's tree-sitter-ready signature.
+
+##### `createLanguageSyntax` — Parameters
+- `config`: Pure-data language configuration
+
+##### `createLanguageSyntax` — Returns
+A fully conformant {@link LanguageSyntax} object
+
 #### `createSyncStripper` {#symbol-createsyncstripper}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L113)
+- Source: [source](../../../../../../packages/shared/src/languages/syntax.ts#L191)
 - Parameters: `syntax`: [`LanguageSyntax`](./index.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `createSyncStripper` — Summary

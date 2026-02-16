@@ -1,8 +1,9 @@
 # User Intent Census – Link-Aware Diagnostics
 
-Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
+Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–68. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
 
 ## 2025-10-16 (Dev Day 1)
+
 - `2025-10-16.md:L1-L32` — Mandate: build a system that raises IntelliSense-style diagnostics between linked markdown layers and implementation files; adopt the four-layer MDMD documentation model.
 - `L160-L213` — Request deep research on VS Code vs. LSP backends and polyglot graph strategies; approves pursuing Language Server architecture despite extension tooling friction.
 - `L246-L344` — Emphasizes riding existing language server improvements, leveraging parser tiers, and prioritizing provenance/confidence in the graph.
@@ -10,7 +11,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L693-L716` — Executes `/speckit.clarify`; chooses option **C** (block diagnostics until user explicitly selects an LLM provider) for responsible AI consent.
 - `L1005-L1146` — Redirects link discovery toward VS Code’s workspace indexing model; insists on inference-first graph rebuilds, no manual front matter.
 - `L1707-L1816` — Clarifies AST benchmark use for development-time verification; reaffirms MDMD layering per implementation artifacts.
+
 ## 2025-11-18 (Dev Day 27)
+
 - `2025-11-18.md:L206-L223` — Expand LD-402 coverage into ambiguous signal stacks (Blazor polyglot pages, queued worker pipelines, reflection-heavy ecosystems) so the pathfinder proves fearless-change analysis across messy cross-language workflows.
 - `L222-L229` — Continue operating with high agency and minimal status noise; let diffs narrate progress and only break stride for fork-in-the-road decisions or autosummarisation recovery.
 - `L369-L378` — When introducing new fixtures, author Purpose/Notes for their Layer‑4 Live Docs and land representative tests in the same commit so each day’s narrative remains test-backed.
@@ -21,10 +24,12 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2177-L2765` — Grants high-agency execution of SpecKit tasks T022–T038, stressing continuous checklist audits and documentation alignment.
 
 ## 2025-11-19 (Dev Day 28)
+
 - `2025-11-19.md:L365-L408` — Inspect Gemini’s Antigravity experiment, keep the new `layer4-orphans` enforcement fully configurable (default-off, easy to revert), and reserve Layer-3 system docs for curated human narratives rather than bulk-generated materialized views.
 - `L1535-L1540` — Before staging, reread the refreshed Layer-3 docs and clear all `live-docs:lint` warnings by authoring missing Purpose/Notes so the documentation feels human-edited instead of computer-generated.
 
 ## 2025-11-20 (Dev Day 29)
+
 - `2025-11-20.md:L400-L456` — Land PowerShell support in three chunky commits (baseline adapter, graph/tooling integration, docstring bridge) and finish the day with comment-based help mapped into Live Docs; expand fixtures/tests so the adapter, inspect heuristics, and regeneration pipeline all stay green.
 - `AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md:L32-L124` — Build “circuit board” and “sonar/local” visual modes that read Layer-4 Live Docs, show symbol/file wiring with distinguishable inheritance/coupling cues, and ground UX polish in the doc corpus before iterating.
 - `AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md:L248-L328` — Consolidate the explorers into one in-IDE visualization platform with view toggles instead of bespoke scripts; revisit plans/tasks to reflect that holistic scope and diagnose why inheritance relationships aren’t yet surfaced from existing Live Docs.
@@ -32,12 +37,14 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md:L422-L476` — Dogfood every visualization interactively (click, drag, scroll) in Antigravity, collect evidence of working interactions/screens, and keep refining the circuit board/local panels until selection flow and UI polish make the active context unmistakable.
 
 ## 2025-10-17 (Dev Day 2)
+
 - `2025-10-17.md:L1-L140` — Demands rigorous daily summaries (10:1 compression, turn-by-turn, line ranges) to preserve auditability; verifies LSP decision provenance.
 - `L164-L376` — Orders `/speckit.implement` continuation (T026 onward); expects Copilot to own lint/test setup and resolve Node tooling friction.
 - `L455-L870` — Drives sequential completion of T028–T032 with SpecKit hydration, integration test seeding, and ongoing doc updates.
 - `L1065-L1310` — Coordinates git hygiene, manual cleanup of tool artifacts, and staged commits before machine handoff; insists lint noise be addressed at the configuration level.
 
 ## 2025-10-19 (Dev Day 3)
+
 - `2025-10-19.md:L1-L210` — Repeats summary mandate plus git correlation; praises adherence and reinforces summary-as-source-of-truth credo.
 - `L239-L808` — Pushes for hysteresis implementation (T033) and full integration harness; reports manual onboarding blockers that must be automated.
 - `L1110-L1613` — Flags communication gaps; directs deterministic onboarding, readiness commands, and resilience against integration host crashes.
@@ -45,6 +52,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2399-L2765` — Offers manual file deletions when tooling falls short; expects GraphStore stubs, automation of better-sqlite3 rebuilds, and commits once suites are green.
 
 ## 2025-10-20 (Dev Day 4)
+
 - `2025-10-20.md:L1-L236` — Starts day with recap + commit provenance updates; authorizes T035 once spec hydration reread.
 - `L642-L962` — Greenlights documentation-first practice for new capabilities; approves MDMD layering with explicit links to SpecKit sections.
 - `L1690-L1804` — Reinforces 1:1 mapping between MDMD layers and implementation files; demands double-checks after autosummarization cycles.
@@ -53,6 +61,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3651-L4476` — Updates Copilot instructions regarding large files; authorizes continued T041 execution and expects commits to include chat logs.
 
 ## 2025-10-21 (Dev Day 5)
+
 - `2025-10-21.md:L1-L86` — Opens with summary request for 10/20 and demands concrete planning beyond prior “Next Phase” bullets.
 - `L81-L752` — Embeds previous summaries in chat for persistent grounding; approves implementation of ripple UX/falsifiability remediation.
 - `L987-L1405` — Requests lint/test reruns, rebuilds, prioritization among options (Implementation vs. Falsifiability vs. Documentation); selects **Option B** for falsifiability focus.
@@ -61,222 +70,225 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1854-L1923` — Directs transition toward MDMD crystallization: bottom-up sweep completion followed by top-down census of every `jfjordanfarr:` prompt.
 
 ## 2025-10-22 (Dev Day 6)
-- `2025-10-22.md:L1-L8`  
-	> Hello! Today is 10/22/2025 and it a new dev day. Whenever we start a new dev day, we begin by summarizing the previous dev day into an auditable, line-range-referenced, turn-by-turn summary doc, which can later be used as a compressed reference for user intent and the trajectory of development/the overall vision. Once you've completed that, we'll talk about next concrete development steps. This exercise is performed to keep development aligned and contextualized across many sessions. (Today is dev day six!)
-	> 
-	> Please summarize #file:2025-10-21.md  into #file:2025-10-21.SUMMARIZED.md following the style of the other #file:Summarized chats.
-- `2025-10-22.md:L66-L76`  
-	> I think that the commit history in the summary is a little off, but it's a very good start.
-	> 
-	> ```powershell
-	> (base) PS D:\Projects\Copilot-Improvement-Experiments> cd d:/Projects/Copilot-Improvement-Experiments; git log --since="2025-10-21" --before="2025-10-22" --pretty="%h %ad %s" --date=iso
-	> eb1a75e 2025-10-21 22:25:13 -0400 update history
-	> 81c634a 2025-10-21 22:24:44 -0400 feat: add diagnostics tree view and node 22 harmonization
-	> 3f11c3d 2025-10-21 21:13:13 -0400 T042/T043
-	> 1a215e7 2025-10-21 16:52:37 -0400 add tree_gitignore agent helper script, add current census of project deliverable intents, update history
-	> 5d78e47 2025-10-21 16:39:20 -0400 docs: align layer-4 diagnostics docs
-	> ea84a25 2025-10-21 16:23:23 -0400 docs: add architecture bridge docs
-	> 960482a 2025-10-21 14:12:09 -0400 Add falsifiability suites and improve doc ripple diagnostics
-	> 2c21cda 2025-10-21 12:57:44 -0400 Restore doc ripple diagnostics and metadata
-	> 1ff1485 2025-10-21 10:36:06 -0400 T041
-	> ```
-- `2025-10-22.md:L1100-L1101`  
-	> Option A! You're clear to proceed. :)
-- `2025-10-22.md:L1555-L1555`  
-	> Let's proceed with Option B (Knowledge Feed Enrichment): Expand graph ingestion with LSIF/SCIP support to enrich ripple detection
-- `2025-10-22.md:L1921-L2045`  
-	> Are you sure that's a good idea? Also, I now see many git diffs introduced by the test suite stopping early. 
-	> ```powershell
-	> > copilot-improvement-experiments@0.0.0 test:integration
-	> > tsc -p tests/integration/tsconfig.json && node ./tests/integration/dist/vscode/runTests.js
-	> 
-	> packages/server/src/features/knowledge/feedFormatDetector.ts:3:61 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	>   The file is in the program because:
-	>     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/feedFormatDetector.ts'
-	>     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/lsifParser.ts'
-	>     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/scipParser.ts'
-	> 
-	> 3 import type { ExternalSnapshot, LSIFEntry, SCIPIndex } from "@copilot-improvement/shared";
-	>                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/server/src/features/knowledge/lsifParser.ts:11:8
-	>     11 } from "@copilot-improvement/shared";
-	>               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/server/src/features/knowledge/scipParser.ts:9:8
-	>     9 } from "@copilot-improvement/shared";
-	>              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> packages/server/src/features/knowledge/feedFormatDetector.ts:5:51 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/lsifParser.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 5 import { parseLSIF, type LSIFParserOptions } from "./lsifParser";
-	>                                                     ~~~~~~~~~~~~~~
-	> 
-	> packages/server/src/features/knowledge/feedFormatDetector.ts:6:51 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/scipParser.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 6 import { parseSCIP, type SCIPParserOptions } from "./scipParser";
-	>                                                     ~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/contracts/symbols.ts:1:35 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/fallbackInference.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	>   The file is in the program because:
-	>     Imported via "../inference/fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts'
-	>     Imported via "./fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
-	>     Imported via "./fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
-	>     Imported via "./inference/fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
-	> 
-	> 1 import type { ArtifactSeed } from "../inference/fallbackInference";
-	>                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/shared/src/inference/linkInference.ts:6:8
-	>     6 } from "./fallbackInference";
-	>              ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/inference/linkInference.ts:7:42
-	>     7 import type { InferenceTraceEntry } from "./fallbackInference";
-	>                                                ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/index.ts:11:15
-	>     11 export * from "./inference/fallbackInference";
-	>                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> packages/shared/src/contracts/symbols.ts:2:48 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	>   The file is in the program because:
-	>     Imported via "../inference/linkInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts'
-	>     Imported via "./inference/linkInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
-	> 
-	> 2 import type { WorkspaceLinkContribution } from "../inference/linkInference";
-	>                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/shared/src/index.ts:12:15
-	>     12 export * from "./inference/linkInference";
-	>                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> packages/shared/src/index.ts:1:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/domain/artifacts.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	>   The file is in the program because:
-	>     Imported via "./domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/db/graphStore.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/maintenance.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/overrides.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/fallbackInference.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/knowledge/knowledgeGraphBridge.ts'
-	>     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/dependencies.ts'
-	> 
-	> 1 export * from "./domain/artifacts";
-	>                 ~~~~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/shared/src/db/graphStore.ts:12:8
-	>     12 } from "../domain/artifacts";
-	>               ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/contracts/maintenance.ts:1:53
-	>     1 import { ArtifactLayer, LinkRelationshipKind } from "../domain/artifacts";
-	>                                                           ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/contracts/overrides.ts:1:53
-	>     1 import { ArtifactLayer, LinkRelationshipKind } from "../domain/artifacts";
-	>                                                           ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/inference/fallbackInference.ts:10:8
-	>     10 } from "../domain/artifacts";
-	>               ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/inference/linkInference.ts:12:8
-	>     12 } from "../domain/artifacts";
-	>               ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/knowledge/knowledgeGraphBridge.ts:8:8
-	>     8 } from "../domain/artifacts";
-	>              ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	>   packages/shared/src/contracts/dependencies.ts:1:62
-	>     1 import type { KnowledgeArtifact, LinkRelationshipKind } from "../domain/artifacts";
-	>                                                                    ~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> packages/shared/src/index.ts:2:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/db/graphStore.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 2 export * from "./db/graphStore";
-	>                 ~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/shared/src/knowledge/knowledgeGraphBridge.ts:1:28
-	>     1 import { GraphStore } from "../db/graphStore";
-	>                                  ~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> packages/shared/src/index.ts:3:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/maintenance.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 3 export * from "./contracts/maintenance";
-	>                 ~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:4:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/overrides.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 4 export * from "./contracts/overrides";
-	>                 ~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:5:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 5 export * from "./contracts/symbols";
-	>                 ~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:6:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/dependencies.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 6 export * from "./contracts/dependencies";
-	>                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:7:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/diagnostics.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 7 export * from "./contracts/diagnostics";
-	>                 ~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:8:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/lsif.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 8 export * from "./contracts/lsif";
-	>                 ~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/index.ts:9:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/scip.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 9 export * from "./contracts/scip";
-	>                 ~~~~~~~~~~~~~~~~~~
-	> 
-	> packages/shared/src/inference/linkInference.ts:18:8 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/knowledge/knowledgeGraphBridge.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	>   The file is in the program because:
-	>     Imported via "../knowledge/knowledgeGraphBridge" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
-	>     Imported via "./knowledge/knowledgeGraphBridge" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
-	> 
-	> 18 } from "../knowledge/knowledgeGraphBridge";
-	>           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	>   packages/shared/src/index.ts:10:15
-	>     10 export * from "./knowledge/knowledgeGraphBridge";
-	>                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	>     File is included via import here.
-	> 
-	> tests/integration/knowledge/feedFormatIntegration.test.ts:3:30 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/feedFormatDetector.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
-	> 
-	> 3 import { detectFormat } from "../../../packages/server/src/features/knowledge/feedFormatDetector";
-	>                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	> 
-	> 
-	> Found 16 errors in 5 files.
-	> 
-	> Errors  Files
-	>      3  packages/server/src/features/knowledge/feedFormatDetector.ts:3
-	>      2  packages/shared/src/contracts/symbols.ts:1
-	>      9  packages/shared/src/index.ts:1
-	>      1  packages/shared/src/inference/linkInference.ts:18
-	>      1  tests/integration/knowledge/feedFormatIntegration.test.ts:3
-	> (base) PS D:\Projects\Copilot-Improvement-Experiments> 
-	> ```
-- `2025-10-22.md:L2247-L2247`  
-	> Don't commit until it's safe to (all tests passing, no lints)
-- `2025-10-22.md:L2461-L2531`  
-	> Are we sure this is wise? It wouldn't surprise me if we came up with file type-specific enrichments that could enhance our workspace index, but I would be surprised if the overall shape of our solution involves classifying a bunch of file extensions into either DOCS or CODE. I mean, when you see our MDMD documentation, it's quite a mix, no? We envision using LLMs to help develop pseudocode AST based on plain text files of virtually any type, I would imagine. What file types do we NOT want our system to care about (aside from perhaps gitignored files)?
+
+- `2025-10-22.md:L1-L8`
+  > Hello! Today is 10/22/2025 and it a new dev day. Whenever we start a new dev day, we begin by summarizing the previous dev day into an auditable, line-range-referenced, turn-by-turn summary doc, which can later be used as a compressed reference for user intent and the trajectory of development/the overall vision. Once you've completed that, we'll talk about next concrete development steps. This exercise is performed to keep development aligned and contextualized across many sessions. (Today is dev day six!)
+  >
+  > Please summarize #file:2025-10-21.md into #file:2025-10-21.SUMMARIZED.md following the style of the other #file:Summarized chats.
+- `2025-10-22.md:L66-L76`
+  > I think that the commit history in the summary is a little off, but it's a very good start.
+  >
+  > ```powershell
+  > (base) PS D:\Projects\Copilot-Improvement-Experiments> cd d:/Projects/Copilot-Improvement-Experiments; git log --since="2025-10-21" --before="2025-10-22" --pretty="%h %ad %s" --date=iso
+  > eb1a75e 2025-10-21 22:25:13 -0400 update history
+  > 81c634a 2025-10-21 22:24:44 -0400 feat: add diagnostics tree view and node 22 harmonization
+  > 3f11c3d 2025-10-21 21:13:13 -0400 T042/T043
+  > 1a215e7 2025-10-21 16:52:37 -0400 add tree_gitignore agent helper script, add current census of project deliverable intents, update history
+  > 5d78e47 2025-10-21 16:39:20 -0400 docs: align layer-4 diagnostics docs
+  > ea84a25 2025-10-21 16:23:23 -0400 docs: add architecture bridge docs
+  > 960482a 2025-10-21 14:12:09 -0400 Add falsifiability suites and improve doc ripple diagnostics
+  > 2c21cda 2025-10-21 12:57:44 -0400 Restore doc ripple diagnostics and metadata
+  > 1ff1485 2025-10-21 10:36:06 -0400 T041
+  > ```
+- `2025-10-22.md:L1100-L1101`
+  > Option A! You're clear to proceed. :)
+- `2025-10-22.md:L1555-L1555`
+  > Let's proceed with Option B (Knowledge Feed Enrichment): Expand graph ingestion with LSIF/SCIP support to enrich ripple detection
+- `2025-10-22.md:L1921-L2045`
+  > Are you sure that's a good idea? Also, I now see many git diffs introduced by the test suite stopping early.
+  >
+  > ```powershell
+  > > copilot-improvement-experiments@0.0.0 test:integration
+  > > tsc -p tests/integration/tsconfig.json && node ./tests/integration/dist/vscode/runTests.js
+  >
+  > packages/server/src/features/knowledge/feedFormatDetector.ts:3:61 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >   The file is in the program because:
+  >     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/feedFormatDetector.ts'
+  >     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/lsifParser.ts'
+  >     Imported via "@copilot-improvement/shared" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/scipParser.ts'
+  >
+  > 3 import type { ExternalSnapshot, LSIFEntry, SCIPIndex } from "@copilot-improvement/shared";
+  >                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  >   packages/server/src/features/knowledge/lsifParser.ts:11:8
+  >     11 } from "@copilot-improvement/shared";
+  >               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/server/src/features/knowledge/scipParser.ts:9:8
+  >     9 } from "@copilot-improvement/shared";
+  >              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > packages/server/src/features/knowledge/feedFormatDetector.ts:5:51 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/lsifParser.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 5 import { parseLSIF, type LSIFParserOptions } from "./lsifParser";
+  >                                                     ~~~~~~~~~~~~~~
+  >
+  > packages/server/src/features/knowledge/feedFormatDetector.ts:6:51 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/scipParser.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 6 import { parseSCIP, type SCIPParserOptions } from "./scipParser";
+  >                                                     ~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/contracts/symbols.ts:1:35 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/fallbackInference.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >   The file is in the program because:
+  >     Imported via "../inference/fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts'
+  >     Imported via "./fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
+  >     Imported via "./fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
+  >     Imported via "./inference/fallbackInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
+  >
+  > 1 import type { ArtifactSeed } from "../inference/fallbackInference";
+  >                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  >   packages/shared/src/inference/linkInference.ts:6:8
+  >     6 } from "./fallbackInference";
+  >              ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/inference/linkInference.ts:7:42
+  >     7 import type { InferenceTraceEntry } from "./fallbackInference";
+  >                                                ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/index.ts:11:15
+  >     11 export * from "./inference/fallbackInference";
+  >                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > packages/shared/src/contracts/symbols.ts:2:48 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >   The file is in the program because:
+  >     Imported via "../inference/linkInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts'
+  >     Imported via "./inference/linkInference" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
+  >
+  > 2 import type { WorkspaceLinkContribution } from "../inference/linkInference";
+  >                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  >   packages/shared/src/index.ts:12:15
+  >     12 export * from "./inference/linkInference";
+  >                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > packages/shared/src/index.ts:1:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/domain/artifacts.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >   The file is in the program because:
+  >     Imported via "./domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/db/graphStore.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/maintenance.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/overrides.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/fallbackInference.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/knowledge/knowledgeGraphBridge.ts'
+  >     Imported via "../domain/artifacts" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/dependencies.ts'
+  >
+  > 1 export * from "./domain/artifacts";
+  >                 ~~~~~~~~~~~~~~~~~~~~
+  >
+  >   packages/shared/src/db/graphStore.ts:12:8
+  >     12 } from "../domain/artifacts";
+  >               ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/contracts/maintenance.ts:1:53
+  >     1 import { ArtifactLayer, LinkRelationshipKind } from "../domain/artifacts";
+  >                                                           ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/contracts/overrides.ts:1:53
+  >     1 import { ArtifactLayer, LinkRelationshipKind } from "../domain/artifacts";
+  >                                                           ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/inference/fallbackInference.ts:10:8
+  >     10 } from "../domain/artifacts";
+  >               ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/inference/linkInference.ts:12:8
+  >     12 } from "../domain/artifacts";
+  >               ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/knowledge/knowledgeGraphBridge.ts:8:8
+  >     8 } from "../domain/artifacts";
+  >              ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >   packages/shared/src/contracts/dependencies.ts:1:62
+  >     1 import type { KnowledgeArtifact, LinkRelationshipKind } from "../domain/artifacts";
+  >                                                                    ~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > packages/shared/src/index.ts:2:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/db/graphStore.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 2 export * from "./db/graphStore";
+  >                 ~~~~~~~~~~~~~~~~~
+  >
+  >   packages/shared/src/knowledge/knowledgeGraphBridge.ts:1:28
+  >     1 import { GraphStore } from "../db/graphStore";
+  >                                  ~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > packages/shared/src/index.ts:3:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/maintenance.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 3 export * from "./contracts/maintenance";
+  >                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:4:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/overrides.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 4 export * from "./contracts/overrides";
+  >                 ~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:5:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/symbols.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 5 export * from "./contracts/symbols";
+  >                 ~~~~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:6:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/dependencies.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 6 export * from "./contracts/dependencies";
+  >                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:7:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/diagnostics.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 7 export * from "./contracts/diagnostics";
+  >                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:8:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/lsif.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 8 export * from "./contracts/lsif";
+  >                 ~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/index.ts:9:15 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/contracts/scip.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 9 export * from "./contracts/scip";
+  >                 ~~~~~~~~~~~~~~~~~~
+  >
+  > packages/shared/src/inference/linkInference.ts:18:8 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/knowledge/knowledgeGraphBridge.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >   The file is in the program because:
+  >     Imported via "../knowledge/knowledgeGraphBridge" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/inference/linkInference.ts'
+  >     Imported via "./knowledge/knowledgeGraphBridge" from file 'D:/Projects/Copilot-Improvement-Experiments/packages/shared/src/index.ts'
+  >
+  > 18 } from "../knowledge/knowledgeGraphBridge";
+  >           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  >   packages/shared/src/index.ts:10:15
+  >     10 export * from "./knowledge/knowledgeGraphBridge";
+  >                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >     File is included via import here.
+  >
+  > tests/integration/knowledge/feedFormatIntegration.test.ts:3:30 - error TS6059: File 'D:/Projects/Copilot-Improvement-Experiments/packages/server/src/features/knowledge/feedFormatDetector.ts' is not under 'rootDir' 'D:/Projects/Copilot-Improvement-Experiments/tests/integration'. 'rootDir' is expected to contain all source files.
+  >
+  > 3 import { detectFormat } from "../../../packages/server/src/features/knowledge/feedFormatDetector";
+  >                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  >
+  >
+  > Found 16 errors in 5 files.
+  >
+  > Errors  Files
+  >      3  packages/server/src/features/knowledge/feedFormatDetector.ts:3
+  >      2  packages/shared/src/contracts/symbols.ts:1
+  >      9  packages/shared/src/index.ts:1
+  >      1  packages/shared/src/inference/linkInference.ts:18
+  >      1  tests/integration/knowledge/feedFormatIntegration.test.ts:3
+  > (base) PS D:\Projects\Copilot-Improvement-Experiments>
+  > ```
+- `2025-10-22.md:L2247-L2247`
+  > Don't commit until it's safe to (all tests passing, no lints)
+- `2025-10-22.md:L2461-L2531`
+  > Are we sure this is wise? It wouldn't surprise me if we came up with file type-specific enrichments that could enhance our workspace index, but I would be surprised if the overall shape of our solution involves classifying a bunch of file extensions into either DOCS or CODE. I mean, when you see our MDMD documentation, it's quite a mix, no? We envision using LLMs to help develop pseudocode AST based on plain text files of virtually any type, I would imagine. What file types do we NOT want our system to care about (aside from perhaps gitignored files)?
 
 ## 2025-10-23 (Dev Day 7)
+
 - `2025-10-23.md:L1-L120` — Demands the Dev Day 6 summary (using 1k-line pitons) and a prose recap of the overall development trajectory.
 - `L407-L520` — Greenlights T046 noise suppression and reiterates the MDMD-first design workflow before touching code.
 - `L1146-L1172` — After committing, requests next-step options, a dogfooding plan, and spec updates capturing the new symbol-neighbor story.
@@ -285,6 +297,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3236-L3394` — Warns that Copilot’s partial test reporting is unreliable; requires treating `npm run verify` as running until the full integration transcript is reviewed.
 
 ## 2025-10-24 (Dev Day 8)
+
 - `2025-10-24.md:L1-L126` — Reasserts the 1000-line summary cadence with commit correlations before starting T067.
 - `L297-L329` — Authorizes MDMD-first implementation of T067 after hydrating with all prior summaries.
 - `L1095-L1233` — Presses for automation of the workspace snapshot (“golden fixture”) so Copilot has complete visibility while dogfooding.
@@ -294,6 +307,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L8989-L9094` — Requests commit preparation and questions whether `workspace.snapshot.json` should remain untracked before pushing.
 
 ## 2025-10-25 (Dev Day 9)
+
 - `2025-10-25.md:L1-L120` — Initiates Day 9 with the Dev Day 8 summary request, maintaining the piton process and commit correlation discipline.
 - `L651-L780` — Defines the first SlopCop milestone: detect broken Markdown links, ship a CLI, and integrate it into maintainer workflows.
 - `L881-L940` — Insists the SlopCop effort aligns with Layer-1/Layer-2 vision docs and updates the roadmap accordingly.
@@ -305,6 +319,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L5901-L6260` — After confirming symbol tooling, instructs enabling the audit repo-wide and finishing cleanup so `safe:commit` can enforce it.
 
 ## 2025-10-26 (Dev Day 10)
+
 - `2025-10-26.md:L1-L760` — Reiterates the piton-based summary process and forbids bulk reads that trigger lossy autosummarization.
 - `L861-L1000` — Vetoes manual `<a id>` anchors in specs; symbol coverage must be restored by fixing headings or callers within Markdown norms.
 - `L1121-L1240` — Authorizes sensible heading renames in MDMD, allows ignoring fixture duplicates, and clarifies the symbol-audit backlog (seven MDMD gaps plus duplicate fixtures).
@@ -314,6 +329,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3601-L3914` — Sets the bar at 100% exported-symbol coverage via heading-based docs while emphasizing high-agency execution.
 
 ## 2025-10-27 (Dev Day 11)
+
 - `2025-10-27.md:L1-L716` — Reasserts the 1000-line summary workflow, warns about autosummarization, and demands higher-agency execution before status updates.
 - `L808-L905` — Orders a full re-read of all summaries, a narrative recap, and a prioritized next-step list highlighting symbol orphan detection.
 - `L902-L1374` — Challenges Copilot to verify whether orphan warnings are legitimate, then instructs tightening `extractExportedSymbolsSection` or removing stray backtick literals so audits focus on identifier-shaped tokens.
@@ -321,6 +337,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3016-L3101` — Questions unnecessary doc formatting edits, authorizes finishing the symbol lint fix, and requests commit preparation once coverage stays green.
 
 ## 2025-11-03 (Dev Day 12)
+
 - `2025-11-03.md:L78-L170` — Continue summarizing the 11/02 chat in ~1200-line pitons with commit correlation, then narrate the project’s development story to prep for the next benchmark onboarding.
 - `L391-L470` — Split benchmark reporting into per-mode Markdown artifacts with non-committed verbose failure logs so divergences stay inspectable.
 - `L716-L820` — Update `copilot-instructions.md` and related docs to document the reporting workflow, then investigate benchmark divergences across AST and self-similarity suites.
@@ -330,7 +347,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3448-L3560` — Design and implement a compiler-backed TypeScript oracle via Code Like Clay: document scope, prototype generator, compare against committed expectations, and retain manual graph overlays for cross-language edges (see MAJOR NOTE).
 - `L3622-L3645` — Operate with high agency, escalate blockers, and ground decisions in empirically provable workspace graph correctness.
 - `L3705-L3710` — On subsequent autosummarization, rehydrate over `#file:2025-11-03.md:2840-3703` before resuming analysis.
+
 ## 2025-12-04 (Dev Day 35)
+
 - `2025-12-04.md:L570-L590` — When experimental UI features (like intra-symbol connector lines) cause more visual confusion than clarity, sideline them quickly rather than iterating endlessly; prioritize composition cleanliness over feature density.
 - `2025-12-04.md:L680-L700` — Refactor visualization TypeScript files once they exceed ~1,000 lines; LLM-driven edit tools (believed to use GPT-4.1 Nano under the hood) routinely fail above this threshold, causing partial or incorrect patches.
 - `2025-12-04.md:L1800-L1820` — Refactor monolithic CSS files (~1,135 lines) into domain-specific modules (theme, shell, view-shared, circuit, local, graph) so Copilot can reliably read and edit the full styling context without long-range interaction misses.
@@ -341,6 +360,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `2025-12-04.md:L3400-L3450` — Use Simple Browser or Playwright MCP tools with JavaScript evaluation to inspect computed CSS properties and DOM structure when debugging z-index/stacking issues; screenshots alone are insufficient for diagnosing render order problems.
 
 ## 2025-12-05 (Dev Day 36)
+
 - `2025-12-05.md:L115-L135` — Run `combine-summaries.ts` across dev-day summaries to build a temporary combined history, read it for context, and articulate the project story before starting work.
 - `2025-12-05.md:L262-L270` — Improve cross-file type linkage: sample Layer‑4 Live Docs, review prior docstring-bridge work, and design how Public Symbols reference types defined in other Live Docs.
 - `2025-12-05.md:L1040-L1072` — Treat the full `npm run safe:commit -- --benchmarks --report` as the gate before continuing; rerun it verbatim on request.
@@ -349,6 +369,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `2025-12-05.md:L3744-L3750` — Reroute generic inbound connections to the Internals pin, keep its styling readable while preserving the black-box cue, and validate via Playwright/Simple Browser as needed.
 
 ## 2025-12-02 (Dev Day 33)
+
 - `2025-12-02.md:L199-L207` — Treat the Circuit Board and Local Map as fixed virtual canvases: determine node sizing from canonical metrics, keep layout independent of viewport resizes, and use camera-style transforms for zoom/pan rather than recomputing positions.
 - `2025-12-02.md:L210-L214` — When launching the explorer for validation, start it in a background terminal so the Copilot runner stays responsive while Playwright sessions interact with `localhost:3000`.
 - `2025-12-02.md:L956-L965` — Proactively raise Playwright MCP browsers to inspect Local Map behavior, capture concrete usability issues, and report actionable improvements for dependency-direction clarity before iterating.
@@ -357,6 +378,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L5146-L5208` — Address every automated VS Code code-review comment, confirming or rejecting suggestions with rationale.
 
 ## 2025-11-04 (Dev Day 13)
+
 - `2025-11-04.md:L1-L110` — Begin the day by rehydrating dev-history context, producing the prior-day summary with commit correlations, and updating the intent census so future sessions stay auditably grounded.
 - `L204-L236` — Avoid duplicating compiler toolchains for customers; instead, consume the workspace’s existing compilers or language servers via thin CLI orchestration while keeping the extension itself lean.
 - `L248-L258` — Uphold the docs-first workflow by ensuring new oracle efforts are captured in SpecKit tasks and Layer‑2 MDMD entries before implementation proceeds.
@@ -365,6 +387,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L4756-L4848` — Guard the integrity of Layer‑4 docs—if edits degrade canonical sections, repair them immediately rather than accepting reduced structure or intent capture.
 
 ## 2025-11-05 (Dev Day 14)
+
 - `2025-11-05.md:L2511-L2536` — Regenerate each benchmark fixture’s `expected.json` from the pinned oracle snapshot (layer manual bridges via overrides when needed); avoid treating the files as sacrosanct hand edits because the AST output should stay recomputable.
 - `L2601-L2601` — If `npm run safe:commit --benchmarks` fails to refresh fixtures, fix the pipeline so the command always performs the full regeneration before benchmarks execute.
 - `L3483-L3488` — After safe-commit runs, compare benchmark precision/recall against the previous commit to surface regressions explicitly.
@@ -377,6 +400,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L4141-L4145` — Use the lightweight benchmark loop (`node scripts/run-benchmarks.mjs --suite ast`, Vitest focus runs, targeted fixture regeneration) to iterate on heuristics until all suites meet accuracy thresholds.
 
 ## 2025-11-06 (Dev Day 15)
+
 - `2025-11-06.md:L1-L24` — Follow `devHistory.summarizeDay.prompt.md` for the 11/05 recap, correlate it to commit 536ff11b, and review that commit’s code changes once the summary lands.
 - `L92-L125` — After the summary and commit review finish, provide an explicit check-in and capture fresh directives in `user-intent-census.md` so the audit trail stays current.
 - `L195-L198` — Rehydrate `#file:001-link-aware-diagnostics` and `#file:layer-2` before planning; prioritize regenerating benchmark data and investigating any failures as the first action.
@@ -388,6 +412,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L6684-L6684` — Drive the workspace back to “safe commit-ready” after the C#/Roslyn updates with lint, tests, benchmarks, graph audit, and SlopCop all passing.
 
 ## 2025-11-07 (Dev Day 16)
+
 - `2025-11-07.md:L1-L70` — Begin each day by following `devHistory.summarizeDay.prompt.md` to recap 11/06, explicitly tying the summary to commits dd7e1076, 80d58f7b, a49ac2e3, and ae4a33e2.
 - `L205-L240` — Ensure the summary contains a dedicated commit-correlation section for those changes and review the associated docs/code diffs before starting new work.
 - `L242-L270` — Refresh `user-intent-census.md` with signals from the 11/06 chat once the summary lands so the audit log stays current.
@@ -401,6 +426,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3005-L3055` — When safe-commit passes, craft a comprehensive commit message, tick the completed SpecKit tasks, and capture the test suite invoked.
 
 ## 2025-11-08 (Dev Day 17)
+
 - `2025-11-08.md:L1-L120` — Begin the day by following `devHistory.summarizeDay.prompt.md` for the 11/7 recap; treat this as the standing opener for each dev day while maintaining the autosummarization guard rails.
 - `L72-L210` — Safeguard git history: fix malformed commit messages via cherry-pick/ammend choreography and keep Copilot responsible for surgical git operations when manual mistakes occur.
 - `L202-L240` — Refresh `user-intent-census.md` with every new dev-day signal so autosummarization-resistant context remains accurate.
@@ -423,6 +449,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L5841-L6017` — For test Live Docs (e.g., `fallbackInference.test.ts`), ensure Targets link to Live Docs—not raw sources—and iterate until integration configs accept workspace sources without `rootDir` rejections.
 
 ## 2025-11-09 (Dev Day 18)
+
 - `2025-11-09.md:L149-L233` — Reassess progress against the live-doc refactor plan before coding; “commit-ready” requires being more stable/capable than the prior commit while clearing wasteful artifacts and documenting the remaining checklist.
 - `L373-L395` — Keep the generated `Observed Evidence` block optional; surface it only when coverage or waivers add value, while lint should validate structure only when the section exists.
 - `L792-L804` — Quiet persistent lint by always emitting a `Supporting Fixtures` section for tests, even if it carries a temporary placeholder until smarter metadata lands.
@@ -433,6 +460,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L5079-L5087` — Detect orphaned Live Docs (e.g., stray `.mdmd.md` mirrors without code) so the Stage 0 mirror stays authoritative and free of dead artifacts.
 
 ## 2025-11-10 (Dev Day 19)
+
 - `2025-11-10.md:L236-L340` — Compile a temporary MDMD layer content census by mining chat history so every proposal for Live Documentation layers, archetypes, and constraints is auditable in one place.
 - `L400-L512` — When logging census guidance, tag each directive with its capture date and align entries to the simplified base-layer template (authored Purpose/Notes; generated Public Symbols + Dependencies) to avoid mixing superseded rules.
 - `L728-L915` — Keep upper-layer automation simple: use authored checkboxes for Layer 2 requirements/acceptance criteria, reserve generated sections for adjacent rollups (Components, Topology, Completion snapshots), and preserve downward-only links.
@@ -440,6 +468,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1030-L1120` — Standardise the six System-layer archetypes (Component, Interaction/API, Data Model, Workflow, Integration, Testing) around shared `Purpose`/`Notes` authored sections and generated `Components`/`Topology` blocks so Layer 2 can mix and match them deterministically.
 
 ## 2025-11-21 (Dev Day 30)
+
 - `2025-11-21.md:L142-L214` — Cement the visualization vision: two views total (merged circuit/local workspace surface plus force-directed graph), with the main view exposing inheritance and symbol-level neighborhoods, supporting future text editing, and achieving WCAG AA compliance (force graph exempt due to 3D scope).
 - `2025-11-21.md:L470-L496` — Before rewriting explorers, search the workspace for existing solutions (notably the inspect CLI) and reuse proven building blocks; feel free to keep Playwright handy if it delivers actionable UX telemetry.
 - `2025-11-21.md:L1956-L1985` — Personally raise the explorer, capture evidence via tooling, and run accessibility audits to prove WCAG AA status instead of delegating the manual inspection to the user.
@@ -452,6 +481,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1124-L1185` — Treat Layers 3/4 as the deterministic spine and Layers 1/2 as curated intent: System docs stay machine-derived from Stage‑0 signals, while Capability/Commitment docs remain human-authored with lightweight generated tallies.
 
 ## 2025-12-01 (Dev Day 32)
+
 - `2025-12-01.md:L244-L274` — When driving the workspace back to green, lean on broad chat-history and workspace-wide searches (Layer‑4 Live Docs, `001-link-aware-diagnostics`, etc.), operate with high agency, and escalate only for true blockers while marching `npm run safe:commit -- --benchmarks --report` to green.
 - `2025-12-01.md:L640-L760` — Verify historical evidence before declaring regressions (e.g., check prior chats for successful `npm install` runs) and pick the dependency strategy that keeps the workspace stable long-term, grounding decisions in the full repository structure.
 - `L1222-L1245` — Retain numerical layer identifiers but adopt the alias names (Capability, Commitment, System, Implementation) to clarify the intent of each tier without renumbering.
@@ -462,6 +492,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2392-L2404` — Treat LLM assistance as optional for ambiguous System-doc archetype assignments (sample multiple times, log inputs), ensure every Implementation doc appears in at least one System doc, and resolve dynamic branches by replicating the manual reasoning process before automating it.
 
 ## 2025-11-24 (Dev Day 31)
+
 - `2025-11-24.md:L269-L314` — Tackle explorer overlaps first: center the highest-degree directory, distribute neighbours to minimise connection length, and hide or send non-focused connectors behind nodes unless hovered.
 - `2025-11-24.md:L490-L498` — Enforce strict parity between Live Docs’ headless outputs and the visualization surface so the UI never exposes less (or more) information than the docs encode.
 - `2025-11-24.md:L500-L506` — Before coding, reread Layer‑1/Layer‑2 MDMD and the `001-link-aware-diagnostics` spec to align the visualization roadmap with documented intent.
@@ -474,6 +505,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `2025-11-24.md:L2185-L2193` — Freeze the layout once rendered—no responsive reflow on resize—so only zoom/pan adjust the view and connector routing remains stable.
 
 ## 2025-11-11 (Dev Day 20)
+
 - `2025-11-11.md:L1-L15` — Follow `devHistory.summarizeDay.prompt.md` for the 11/10 recap and tie the summary directly to commit `1da1b96e84bba2966469378ae13751817e7f7435`.
 - `L82-L120` — After any lossy autosummarisation, immediately rehydrate on the latest chat slice and capture the 11/10 directives in the census files before resuming work.
 - `L365-L378` — Operate with high agency while preserving the context window: rehydrate when summaries drop and keep chatter minimal so diffs narrate progress.
@@ -489,6 +521,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2470-L2485` — Maintain a canonical CLI command catalog and update documentation whenever new npm scripts or flags are introduced.
 
 ## 2025-11-12 (Dev Day 21)
+
 - `2025-11-12.md:L1-L84` — Rehydrate the dev-history workflow by following `devHistory.summarizeDay.prompt.md` for the 11/11 recap, correlating it with commit `5a20f2e8ddd8091879492915ee5d79e0668346c0` before starting new work.
 - `L64-L176` — Keep the intent and MDMD layer censuses current (including rereads of both files) and double-check `tasks.md` after the earlier miscue so planning artifacts stay aligned.
 - `L179-L220` — Prioritise polyglot Live Doc emitters against in-repo fixtures first, only expanding to external repositories once local coverage is solid.
@@ -496,6 +529,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L790-L840` — Treat docstring bridging as a structured surface: emit per-symbol `##### \`Name\` — Field` headings so every recommended XML tag has a uniquely addressable slot in Live Docs.
 
 ## 2025-11-14 (Dev Day 23)
+
 - `2025-11-14.md:L2850-L2865` — Evidence for new docstring adapters must be both machine-verifiable (unit/integration/benchmark suites) and manually inspected; always dogfood Live Docs in non-TypeScript languages and finish with `npm run safe:commit -- --benchmarks` before calling the work ready.
 - `L2989-L3045` — Before touching code for another language adapter, walk the relevant files, produce a full implementation plan (syntax coverage, tests, manual inspection, schema impacts), operate with low chatty output, and rehydrate via the cited snippet plus local diffs whenever autosummarization interrupts.
 - `L3332-L3340` — After adapter work, generate Live Docs for the affected fixtures in an isolated workspace, review the Markdown by hand, and only then rerun the full safe-commit pipeline.
@@ -507,6 +541,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L4750-L4760` — Ensure the final commit narrative reflects both the planning/documentation half and the adapter/test implementation so the day’s story stays coherent.
 
 ## 2025-11-13 (Dev Day 22)
+
 - `2025-11-13.md:L1-L36` — Keep the dev-day ritual: summarize 11/12 via `devHistory.summarizeDay.prompt.md` and correlate it to commit `b2b8f7590d928fd356a0df008de17d3e6bfc51e3` before taking on new work.
 - `L1330-L1346` — Sanitize Javadoc block tags (e.g., `<p>`, `<br>`) inside the Java adapter, regenerate the fixture, and rerun the pipeline so Live Docs stay Markdown-native.
 - `L1513-L1565` — Extend Layer 1/Layer 2/Layer 3 docs plus `001-link-aware-diagnostics` to capture the stretch goal of Live Documentation-backed authoring and two-way docstring bridges.
@@ -515,6 +550,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2238-L2244` — Treat historical ChatHistory entries as read-only audit artifacts; do not rewrite or auto-migrate their internal links during tooling passes.
 
 ## 2025-11-15 (Dev Day 24)
+
 - `2025-11-15.md:L372-L385` — Capture the Cloudflare-hosted public showcase plan across vision, roadmap, and spec docs so we can run Live Documentation on OSS repos, return zipped outputs, and still position the extension as the primary offline product.
 - `L698-L788` — Document that the hosted showcase is marketing-only: it must never starve or replace local workflows, and our roadmap should explicitly call out support for VS Code forks (Windsurf, Cursor, etc.) while purging speculative wording that could seed hallucinations.
 - `L900-L1041` — Keep the static site fully DRY by projecting existing Layer 1–3 MDMD files via a deterministic Node/TypeScript builder (Astro is acceptable) and fold the site work into the CI/CD stage before tackling the hosted demo.
@@ -528,6 +564,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `2025-11-15.md:L4229-L4357` — When updating .github/copilot-instructions.md, express the Stage‑0 safeguard as the behaviour bullet “Git Commands Need Extra Care” (linking to `2025-11-15.SUMMARIZED.md`) and add “Safeguard In-Flight Work” so bulk git commands only run after commits/stashes/branches and outstanding work stays staged before destructive actions.
 
 ## 2025-11-17 (Dev Day 26)
+
 - `2025-11-17.md:L433-L505` — Re-scope LD-402 into a dependency pathfinder: accept `--from/--to` (or single-endpoint) inputs, emit the hop-by-hop chain “Oracle of Bacon” style, and default to tracing terminal roots when only one endpoint is provided.
 - `L519-L538` — Document the inspect CLI’s mission across Layer 1, Layer 2, and the spec before continuing implementation so future readers understand the tool’s purpose without reading the chat log.
 - `L593-L606` — Materialise a test fixture that proves the WebForms hidden-field scenario end-to-end (JavaScript variable back to Web.config AppSettings) to validate the CLI’s pathfinding claims.
@@ -536,7 +573,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1901-L1906` — Operate with elevated agency, minimising chatter while escalating only when forks or roadblocks arise, to conserve context for the ongoing inspect CLI expansion.
 
 ## 2025-12-06 (Dev Day 37)
+
 ### Chat 1 (2025-12-06.1.md)
+
 - `2025-12-06.1.md:L822-L830` — Connection lines should continue INSIDE the node card to connect to the specific symbol anchors (colored pins next to symbol names); connectors should render above cards and below pins in the z-index hierarchy.
 - `L909-L915` — Connection paths should stop one radius shy of the centerpoint of their start and end anchor targets so the circular pins remain visually clean and unobscured.
 - `L976-L1010` — Optimal bezier curve tuning values identified: stubFactor=0.8, stubMin=8, stubMaxOffset=8, verticalOffset=0; these maximize readability in the Local Map view.
@@ -545,6 +584,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1622-L1650` — When an `extends` badge (⊲) shows on a symbol, the connection should route to the dependency column (left), not the dependents column (right); connections must reflect the actual inheritance direction.
 
 ### Chat 2 (2025-12-06.2.md)
+
 - `2025-12-06.2.md:L126-L200` — **Chat Archaeology** defined: when authoring Live Documentation Purpose/Notes sections, search the chat history to find when and why files were created; knowing the creation date and original intent transforms placeholder prose into auditable provenance.
 - `L385-L462` — For Chat Archaeology, search the actual chat history files rather than summaries; use increased max results beyond the default 20-result limit threshold across `AI-Agent-Workspace/ChatHistory/`.
 - `L953-L985` — When updating copilot-instructions.md, edits may be rock solid if grounded in comprehensive chat history analysis; the user reserves discretion to fine-tune phrasing but expects high-quality proposals.
@@ -556,6 +596,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2131-L2145` — Ensure archetype assignments are accurate AND symbols are properly interconnected; test files (`.test.ts`) should be "Test" archetype even when under fixtures directories, not "Implementation".
 
 ### Chat 3 (2025-12-06.3.md) — Architectural Stewardship
+
 - `2025-12-06.3.md:L801-L850` — **Barrel exports are correct for library-style modules**: When a module has a defined public API surface, keep the barrel re-export file for encapsulation, deliberate exports, and backward compatibility; downsides (tree-shaking, circular deps, IDE perf) don't apply to small/deliberate/stable barrels.
 - `L851-L920` — **Capability-oriented module splits**: When refactoring large files, ask "what are the independently evolvable capabilities?" rather than "how do we split this file?"; this leads to natural module boundaries that support progressive enhancement.
 - `L921-L980` — **Each plan builder = one capability**: Analytical strategy modules (Component, Interaction, Workflow, Testing, CoActivation) should be separate files because they represent distinct capabilities that can be enhanced, replaced, or A/B tested independently.
@@ -563,7 +604,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1021-L1100` — **UTF-8 awareness in heuristics**: Binary file detection must account for valid UTF-8 multi-byte sequences (bytes 0x80-0xF4) to avoid false positives on files with Unicode characters like box drawings, emoji, and international text.
 
 ## 2025-12-08 (Dev Day 39)
+
 ### Chat 2 (2025-12-08.2.md) — Polyglot typeReferences + Chat Archaeology
+
 - `2025-12-08.2.md:L690-L730` — **Test-backed rigor for new features**: When implementing new adapter capabilities (like typeReferences), formalize the test scripts into unit tests rather than deleting them; claiming work complete without tests is unacceptable.
 - `L800-L860` — **Challenge file-level connection semantics**: If connections originate from "Internals" or card centers, demand justification—how can non-public members emit into other nodes? Defend architectural claims with concrete evidence.
 - `L1050-L1090` — **Polyglot parity is table stakes**: The tool "sells" genuine polyglot workspace-wide intelligence; any language lacking symbol-level connections should be brought up to parity, with fixtures and benchmarks proving correctness.
@@ -573,12 +616,15 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1900-L1950` — **One file at a time for Chat Archaeology**: Do not parallelize Chat Archaeology; focus on getting one file right before moving to the next. Multi-edit batch approaches produce generic placeholder content instead of substantive documentation.
 
 ## 2025-12-09 (Dev Day 40)
+
 ### Chat 1 (2025-12-09.1.md) — CSS Theme Consolidation + Sticky Symbol Highlighting
+
 - `2025-12-09.1.md:L570-L590` — **Emoji indicators are out of fashion**: When designing UI affordances, prefer visual treatments (glows, borders, highlights) over emoji indicators like 📌; emoji-based UI is "rapidly falling out of fashion."
 - `L680-L720` — **`display: contents` CSS workaround**: Elements with `display: contents` don't participate in the box model—target their visible child elements (e.g., `.symbol-label-wrapper`) instead of the phantom parent when applying visual styles like glows.
 - `L750-L780` — **Mobile-friendly exploration**: Sticky symbol highlighting (click-to-pin) enables mobile users to "strike their proverbial piton into a symbol and scroll around to find everything related" without relying on hover states.
 
 ### Chat 2 (2025-12-09.2.md) — HTML/CSS Adapters + Document Root Detection
+
 - `2025-12-09.2.md:L420-L460` — **Solve the actual problem, don't work around**: When facing path resolution issues, reject workarounds (modifying fixtures, documenting limitations) in favor of fixing the underlying resolution logic; "Please read through the user-intent-census.md in full to get a sense for the kind of expectations I have."
 - `L580-L620` — **"Total panopticon visibility" for assets**: Binary assets (images, fonts, videos) need stub Live Docs so graph edges can form TO them; deleting `banner.png` should show that `index.html` would be affected.
 - `L850-L890` — **Document root detection heuristic**: Web projects commonly use `public/`, `wwwroot/`, `static/`, `dist/`, `assets/` as static asset roots; path resolution should check these sibling directories when server-root-relative paths (`/images/...`) don't resolve directly.
@@ -586,7 +632,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1120-L1150` — **Distinguish file creation from Live Doc generation**: Authored content should note when the SOURCE FILE was created (e.g., "Created: 2025-10-27") separately from when the Live Doc was generated (e.g., "Live Doc: 2025-12-09"); accurate provenance requires this distinction.
 
 ## 2025-12-10 (Dev Day 41)
+
 ### Chat 1 (2025-12-10.1.md) — Adapter Refactoring + Barrel File Precision
+
 - `2025-12-10.1.md:L1450-L1490` — **Ownership of ALL messes, including "environmental" ones**: "It is only us on this project. We are the only developers. If something stopped working, it stopped working by your hand. There are no other sources of change in this workspace than your tool calls." Do not blame environment or dependencies—investigate chat history to find the real cause.
 - `L1700-L1750` — **Make it work for more workspace shapes**: When architectural patterns (like barrel files) cause issues, don't immediately remove them—ask "how can we make this work for arbitrary workspaces that use barrel patterns?" Solve the general problem, not just our specific case.
 - `L1850-L1900` — **Precision thresholds are floors to raise progressively**: "92.19% symbol precision for our own workspace, to me, is not good enough. We should make it our business to find our very lowest benchmark scores and begin raising our 'don't let this code go out the door' thresholds to whatever that lowest value is, creeping our bar ever higher."
@@ -595,7 +643,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L2150-L2200` — **Pin loose ends explicitly for follow-up**: Explicitly enumerate unresolved issues before committing (barrel file fixture, precision floor, FN investigation, visualization black holes) so they're not lost across context windows.
 
 ## 2025-12-07 (Dev Day 38)
+
 ### Chat 3 (2025-12-07.3.md) — French Corset Refinements + Audit Fixes
+
 - `2025-12-07.3.md:L165-L185` — **Self-loop tapering**: French Corset connectors should thin from standard line thickness to half as they exit the outbound pin and wrap behind the card, then thicken as they approach the inbound pin; provide a tuning slider to control this effect.
 - `L185-L210` — **Pin color matching for self-loops**: Self-reference connectors must match their pin colors (blue for outbound, green for inbound) rather than using intermediate grayish-blue; equal visual attention across connector types is preferred over accidental emphasis on mundane self-references.
 - `L600-L620` — **Visual intuition is worth the effort**: When refining visualizations, trust that providing accurate visual intuition is worth pixel-level polish; the human eye should be able to intuit things about the codebase at first glance.
@@ -609,13 +659,16 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1750-L1780` — **Update instruction files when patterns emerge**: When a structural mistake (like JSDoc H2 headings) is discovered, update the relevant `.instructions.md` file to prevent recurrence; the Layer 4 instructions now explicitly state H2 is reserved for structural sections.
 
 ## 2025-12-11 (Dev Day 42)
+
 ### Chat 1 (2025-12-11.1.md) — Benchmark Threshold Philosophy + Architecture Vision
+
 - `2025-12-11.1.md:L475-L500` — **Thresholds are sensors, not gates**: "The thresholds are sensors, not gates. Raising them surfaced this bug." High thresholds locate work to be done; never lower thresholds to pass tests—investigate root causes instead.
 - `L520-L560` — **Never lower thresholds to pass**: When Copilot presented options including lowering thresholds, User rejected: "You chose Path 1? ... Every mess is our mess. 'Passing' is not the end goal: being correct is." Thresholds exist to surface work, not to be circumvented.
 - `L1640-L1680` — **VS Code extension as thin UI shell**: "The extension is a thin VS Code UI shell over capabilities that could also run as a standalone NPM package"; this architecture enables CLI-first development and positions the extension as one of several consumption surfaces.
 - `L1720-L1760` — **scip-dotnet for future semantic accuracy**: Research into `scip-dotnet` (LSIF-derived semantic indexing) filed for future polyglot expansion; installed via `dotnet tool install --global scip-dotnet` but not needed for immediate heuristic fixes.
 
 ### Chat 2 (2025-12-11.2.md) — CI Pragmatism + Consumer Defaults + Quickstart Rigor
+
 - `2025-12-11.2.md:L311-L311` — **Scope control**: When Copilot derailed into investigation, User intervened: "Whoa-whoa-whoa what are you doing? Please summarize yesterday's chat first, yeah?" (Summaries-first discipline remains the dev-day ritual.)
 - `L465-L466` — **CI compute realism + main-only workflow is acceptable (for now)**: `safe:commit` is expensive; CI design must be deliberate about what runs when. User explicitly noted single-branch (main-only) development has been “speedy as can be.”
 - `L469-L477` — **Security checks are welcome, but should be right-sized**: Enable GitHub security scanning (Dependabot) and consider pairing it with a blocking `npm audit` step (User: “Perhaps we do both the dependabot scan and the npm audit step?”).
@@ -627,7 +680,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1296-L1296` — **Spec-Kit classification expectations**: Spec artifacts under `specs/001-link-aware-diagnostics/` are “decisively not MDMD layer 4 docs”; audit tooling should have a defensible, explainable reason when treating them as documentation requiring code linkage.
 
 ## 2025-12-12 (Dev Day 43)
+
 ### Chat 1 (2025-12-12.1.md) — Vision Pivot + Non-Headless Inspect + Instruction Reality
+
 - `2025-12-12.1.md:L241-L246` — **Docs→code write-back deferred**: Put “docs → code” docstring bridging on the backburner as a wishlist item; keep “code → docs” docstring bridging as the primary value and revise Layer‑1/Layer‑2/001 spec docs accordingly.
 - `L243-L249` — **Product posture: understanding + drift correction**: Live Documentation’s main value is a “great map” (Explorer) to improve code understanding; prioritize empirically-derived freshness to rectify divergence and use lint (plus optional VS Code alerts) to guide external LLM tools for docs→code changes; for code→docs, regenerate Live Docs.
 - `L245-L245` — **Simplicity principle**: The simplest correct solution is often the most correct; simplification is a major driver of breakthroughs.
@@ -639,12 +694,17 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L1026-L1038` — **Naming clarification**: “Link-Aware Diagnostics” is a legacy Spec-Kit-generated phrase/branch-name artifact; “Live Documentation” is the project’s name.
 
 ## 2025-12-13 (Dev Day 44)
+
 ### Chat 1 (2025-12-13.1.md) — CI/CD + Pages + Security + Fixture Integrity
+
 - `2025-12-13.1.md:L126-L129` — **CI/CD focus**: Stand up GitHub Actions CI/CD that (1) runs `npm run safe:commit` checks “to the best of our ability” but pragmatically adjusted for runner feasibility, (2) builds + deploys the Explorer static site via GitHub Pages, and (3) adds CodeQL + Dependabot (optional/deferrable if spurious) plus `npm audit`.
 - `L133-L137` — **Chat Archaeology as planning prerequisite**: During the CI/CD planning phase, explicitly mine chat history + Layer‑1/Layer‑2 + `001-link-aware-diagnostics` to separate “already agreed to do,” “already agreed not to do,” and “still ambiguous / unresolved.”
 - `L214-L214` — **Auditability requirement**: For authored workflow files, provide an auditable explanation of each file’s purpose/mechanics, plus expected GitHub Actions compute costs and a “cost/security/sanity” posture (avoid noisy, endless issue raising).
+
 ## 2025-12-14 (Dev Day 45)
+
 ### Chat 1 (2025-12-14.1.md) — npm Security Strategy + CLI-First Architecture + MDMD Separation
+
 - `2025-12-14.1.md:L995-L1043` — **CLI-first, not extension-first**: Live Documentation is "portable file analysis software" that runs anywhere (CI, Docker, Cloudflare Workers, local terminal); the VS Code extension is a "UX wrapper around the CLI," not the product itself. This architecture enables CLI-first development and positions the extension as one consumption surface among many.
 - `L1048-L1105` — **MDMD is workspace-specific, not consumer-facing**: Consumers of Live Documentation should not need to care about MDMD conventions; that's an internal workspace documentation strategy, separate from the product itself. Remove MDMD evangelism from consumer-facing docs.
 - `L1295-L1350` — **Dependency minimization over version pinning**: For PCI-DSS security contexts, prefer reducing total dependency count (target: 3 core deps) over aggressive pinning; use Node 22 native APIs (e.g., `fs.glob` instead of `glob` package) and keep the CLI leaner than the extension.
@@ -665,13 +725,16 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L3488-L3488` — **Commit hygiene**: Propose a fitting commit message aligned to the actual work before pushing.
 
 ## 2025-12-15 (Dev Day 46)
+
 ### Chat 1 (2025-12-15.1.md) — CI Durability + README Chat Archaeology + Feature Consolidation
+
 - `2025-12-15.1.md:L~850` — **Durable fixes over fragile ones**: When Copilot proposed a fix that relied on "not regenerating package-lock.json," User pushed back: "What is the _durable_ fix?" Fixes must survive normal developer workflows (npm install, lockfile regeneration, cache invalidation).
 - `L~1050` — **Feature consolidation clarity**: "Oracle of Bacon/Symbol pathfinding and Non-headless Explorer Inspect **are the same thing**." Consolidate roadmap entries and avoid describing them as separate features.
 - `L~1100-L1150` — **Core Philosophy: automatic generation, not nudging**: Corrected README framing: "We do far better than that: we generate Live Documentation from your source code directly... You don't even **need** to get nudged to update your docs. We don't boss you around, we come in and do the job for you, so that the documentation is 100% correct automatically."
 - `L~600-L800` — **Chat Archaeology as README source of truth**: When README updates diverge from prior decisions, Chat Archaeology provides definitive alignment (GitHub Pages link, competitive landscape table, Oracle of Bacon priority, docs→code deferral status). Prior decisions outweigh ad-hoc rewrites.
 
 ### Chat 2 (2025-12-15.2.md) — Security Evidence + Pre-Publish Prep + Explorer Polish
+
 - `2025-12-15.2.md:L~680-L750` — **Scientific rigor for security claims**: "I come from the sciences. I want to give hard evidence." Security posture must be auditably provable (static analysis, runtime enforcement, CI verification), not just README claims.
 - `L~750-L850` — **Multi-layer security evidence**: Implement defense-in-depth: (1) static audit scanning for network patterns, (2) `safeFetch()` runtime wrapper enforcing localhost-only, (3) CI runs the audit on every commit. Each layer provides different evidence quality with explicit limitations.
 - `L~850-L900` — **Ollama cloud mode security concern**: User's reaction to Ollama adding hosted cloud inference: "god I still can't believe they did that — blows such a giant hole in their security guarantees — no way for us to tell if they're using a cloud model either." No mechanism exists to detect local vs. cloud Ollama usage.
@@ -684,7 +747,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L~2000-L2100` — **Explorer mobile/touch polish matters**: Vertical scrolling on short viewports, viewport constraints for mobile, drag text-selection prevention, and touch-action settings are real usability issues worth fixing before publication.
 
 ## 2025-12-16 (Dev Day 47)
+
 ### Chat 1 (2025-12-16.1.md) — NotebookLM Critique Analysis + Explorer UX Refinements + Knowledge Sources View
+
 - `2025-12-16.1.md:L~580-L620` — **External AI critique validation via Chat Archaeology**: When external AI tools with larger context windows (NotebookLM's 1M tokens vs Copilot's ~128k) critique project architecture, validate their claims via Chat Archaeology before accepting or rejecting. Long-context models identify architectural tensions accurately but often propose solutions that ignore prior pivots already executed in the codebase.
 - `L~1080-L1095` — **SCIP/LSIF consumption philosophy**: Compilers in our own workspace are reasonable; "turning a compiler loose on someone else's codebase without their knowledge could be a disaster." System should passively consume pre-generated indexes (never run compilers on external code without explicit consent). Trust ladder: SCIP/LSIF > IDE indexes > heuristics > LLM hints. "Opt-in SCIP generation" is the missing conceptual layer.
 - `L~1330-L1345` — **Explorer entry point + shareable permalinks**: Default the Explorer to Local Map with a heuristic-selected entry point (`main.ts`, `index.ts`, startup-like files), persist navigation in localStorage, and produce deterministic shareable hyperlinks so colleagues can deep-link to specific artifacts. "Why _can't_ I point my colleagues to the static site in GitHub Pages and have it immediately navigate to the Local Map for `confidenceCalibrator.ts`?"
@@ -695,7 +760,9 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L~(summary)` — **Turn numbering semantics for summaries**: A "turn" in chat summaries is defined as a prompt/response pair (User → Copilot), not individual messages. This was clarified after prior summaries used per-message numbering.
 
 ## 2025-12-17 (Dev Day 48)
+
 ### Chat 1 (2025-12-17.1.md) — Symbol Pinning with Connection Highlighting and Collapse
+
 - `2025-12-17.1.md:L~600-L650` — **Simplest solution is most correct**: User proposed collapsing irrelevant symbols within cards instead of hiding entire nodes: "What if... we collapse or hide all Public Symbols which are not salient to the set of connections related to the Pinned symbols? Often, the simplest solution is the most correct." Symbol-level collapse proved simpler than node-level hiding (layout stability, context preservation, automatic recovery on unpin).
 - `L~650-L700` — **Test hover vs pin behavior**: Differentiate hover (temporary, dimming only) from pin (persistent, collapse + highlight). Default config: `collapseOnHover: false`, `collapseOnPin: true`. Hover shows relationships without visual disruption; pin provides focused exploration.
 - `L~700-L750` — **Major Goal 2 framing: Multi-hop Local Maps**: FROM/TO omnisearch for symbol-to-symbol pathfinding across N hops (configurable). When both FROM and TO are specified, find the path and render a multi-column Local Map (more than 3 columns). This is aspirational/deferred work that may take multiple dev days.
@@ -704,11 +771,13 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L~2300-L2350` — **Terminal management for dev servers**: User ran visualization server from their own non-Copilot terminal after Copilot's terminal commands repeatedly stopped/failed to refresh the server. Long-running dev servers benefit from separation from agentic tool control.
 
 ### Chat 2 (2025-12-17.2.md) — Symbol-Level Pathfinding + FROM/TO Pathfind Toolbar
+
 - `2025-12-17.2.md:L~1200-L1300` — **Symbol-level pathfinding in inspect CLI**: Support for `file.ts#SymbolName` syntax in pathfinding queries. Normalization between PascalCase symbols and kebab-case slugs is required for reliable matching.
 - `L~3600-L3800` — **FROM/TO pathfind toolbar**: Implement searchable artifact selection with symbol dropdowns for pathfinding visualization. "We solve problems completely and totally... I expect the omnisearch bars and symbol dropdowns to work like a charm before committing, with zero shortcuts taken."
 - `L~4200-L4400` — **Bidirectional BFS for pathfinding**: Treat the graph as undirected to find any connection path regardless of link direction. This enables finding "how is X related to Y" even if the dependency flow is indirect.
 
 ### Chat 3 (2025-12-17.3.md) — Multi-hop Rejection + Tech Debt Tooling + UX Polish
+
 - `2025-12-17.3.md:L~400-L500` — **Multi-hop visualization rejection**: Rejection of "bolt-on" implementation that breaks core features (connection lines, symbol pinning). "This isn't anywhere close to 'fixed' or 'working'. Not even close."
 - `L~550-L650` — **Architectural Debt Acknowledgment**: Acknowledged that the Local Map was engineered for exactly 3 columns; multi-hop requires a foundational rewrite of connection drawing and anchor registration. "The Local Map was originally engineered for 3 columns... our architecture was nowhere near ready for it."
 - `L~900-L1000` — **Tech Debt Detection Heuristics**: Mandate for a script to detect large files (>1000 lines) and stale files (>30 days). "Examines the codebase and simply emits a warning for any code file longer than 1000 lines... Looks at the last edit date on git-tracked files and flags any files with an 'Info' rather than warning if they have not changed in over 30 days."
@@ -756,7 +825,7 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 - `L~500-L550` — **Evidence-Based Skepticism**: User demanded proof before accepting proposed exclusions: "What `*main.*` files have no dependencies and no dependents from a Live Documentation perspective? I want to see hard evidence." Result: zero main files are islands — skepticism was warranted.
 - `L~2800-L3000` — **Total Rejection of Workarounds**: User rejected threshold-lowering, manual overrides, and idiomatic shortcuts with emphatic clarity: "This is NOWHERE NEAR ready to commit. ABSOLUTELY NOT." The response was called a "masterclass in exactly what the copilot-instructions warn against."
 - `L~3000-L3100` — **"Every Mess Is Our Mess" Principle Applied**: "Every mess is our mess! It is only us in this workspace. You have no concept of time, no permanent memory! Do it _the right way!_ Solve problems and solve them completely!" Applied to: Ruby heuristic (single-quote fix), Go oracle (test file skip removal), C heuristic (function body scoping), Rust oracle (indented use statements), Java heuristic (PascalCase class names).
-- `L~4400-L4500` — **Compiler-Backed Oracles for Third-Party Fixtures**: User acknowledged future need: "In the future, I think we may have to go all the way down that road of pulling in a sh*tload of compilers." Context: Only TypeScript oracle is truly compiler-backed; others are sophisticated regex parsers. For third-party benchmark fixtures (okhttp, ky, libuv), hand-authoring expected.json is unsustainable.
+- `L~4400-L4500` — **Compiler-Backed Oracles for Third-Party Fixtures**: User acknowledged future need: "In the future, I think we may have to go all the way down that road of pulling in a sh\*tload of compilers." Context: Only TypeScript oracle is truly compiler-backed; others are sophisticated regex parsers. For third-party benchmark fixtures (okhttp, ky, libuv), hand-authoring expected.json is unsustainable.
 - `L~3600-L3700` — **Archetype Detection Must Be Polyglot**: Test file detection patterns must cover all language conventions (`*_test.*`, `test_*.*`, `*Test.*`, `*Tests.*`, `*_spec.*`), not just TypeScript conventions.
 
 ## 2026-01-17 (Dev Day 61)
@@ -778,11 +847,11 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 
 - `2026-01-27.1.md:Turn~11` — **Fix Heuristics, Not Workarounds**: When SCIP found 2 edges the heuristic-based oracle missed, User rejected adding manual overrides: "I think that if our heuristics are wrong by 2 edges, then we should fix our heuristics, no? When we bump into a problem, we need not create a workaround. If SCIP genuinely denotes 2 legitimate edges we missed, then we get to improve our heuristics!"
 - `Turn~19` — **Design Around Available Granularity**: When SCIP's relation taxonomy (`references | extends | implements`) didn't match the desired granularity, User mandated pragmatic adaptation: "We've discovered that LSIF does not provide truth at that level of granularity. **Then we should design around the granularity we do get.**" Don't fight the data source — design to its strengths.
-- `Turn~16` — **"Do It the Right Way" — No Incremental SCIP Adoption**: User rejected converting only the new fixture to SCIP while leaving existing C# fixtures on heuristic oracles: "F*ck no! (sorry sorry); let's **do it the right way**! We have a C# compiler on-hand and C# fixtures which need converting to SCIP! Let's use SCIP!" All local C# fixtures were migrated in the same commit.
+- `Turn~16` — **"Do It the Right Way" — No Incremental SCIP Adoption**: User rejected converting only the new fixture to SCIP while leaving existing C# fixtures on heuristic oracles: "F\*ck no! (sorry sorry); let's **do it the right way**! We have a C# compiler on-hand and C# fixtures which need converting to SCIP! Let's use SCIP!" All local C# fixtures were migrated in the same commit.
 - `Turn~17` — **Legacy .NET Framework 4.8 Support Required**: User mandated WebForms fixture compilation with .NET Framework 4.8, not just modern .NET: "Uh-uh, we figure out how to compile with .NET Framework 4.8. In my day job where I plan to use this Live Documentation software... I will run this over **tons** of legacy dotnet framework 4.8 code." Target audience includes brownfield enterprise codebases.
 - `Turn~12` — **Heuristic Grading Heuristic is Circular**: User identified architectural problem when the same regex fix was required in both oracle and heuristic: "The fact that we needed to implement the same heuristic-like fix into both an 'oracle' and a 'heuristic' implies to me that the architectural distinction has yet to fully materialize. Solving the same problem twice is the exact code smell... which we wish to fix." This validated the SCIP migration.
-- `Turn~5` — **Chat Archaeology for Vestigial Code Discovery**: User triggered Chat Archaeology to find prior cleanup requests: "Wasn't 'self-similarity' a function of 'graph:*' functions which we deprecated? I swear Chat Archaeology would show me explicit request to have you clean that up." Found 2026-01-16 directive: "please simplify that command if it no longer needs the extra args." Vestigial code was removed.
-- `Turn~20` — **Orphaned Live Docs Must Be Cleaned Before Commit**: User caught that Copilot forgot work done earlier in the same session (Roslyn→Newtonsoft swap): "Hahahaha do you not remember? *You* replaced Roslyn _today_!" Mandated cleanup of orphaned Live Docs before committing. Copilot must track its own session work.
+- `Turn~5` — **Chat Archaeology for Vestigial Code Discovery**: User triggered Chat Archaeology to find prior cleanup requests: "Wasn't 'self-similarity' a function of 'graph:\*' functions which we deprecated? I swear Chat Archaeology would show me explicit request to have you clean that up." Found 2026-01-16 directive: "please simplify that command if it no longer needs the extra args." Vestigial code was removed.
+- `Turn~20` — **Orphaned Live Docs Must Be Cleaned Before Commit**: User caught that Copilot forgot work done earlier in the same session (Roslyn→Newtonsoft swap): "Hahahaha do you not remember? _You_ replaced Roslyn _today_!" Mandated cleanup of orphaned Live Docs before committing. Copilot must track its own session work.
 - `Turn~10` — **Roadblocks Are Opportunities — Pause and Chat**: User framed roadblocks as exciting pause points for deeper design work: "Let's think about that now, please. It's always exciting and worth pausing when we encounter a decision point like this. This is a great opportunity for us to really think about our design."
 - `Turn~11` — **Redirect LLM "Fix Lint" Instinct Toward Real Development**: "I think that the typical LLM 'instinct' to resolve the immediate problem instead of seeing problems as a wonderful opportunity to refine the underlying software/design is folly. When we bump into a problem, we need not create a workaround... This is why we build out so much rigor into our `safe:commit` and CI pipelines. It's to fixate that 'I must fix lints' instinct of LLM agents onto actual interesting development and design challenges/opportunities."
 - `Turn~18` — **Don't Pass Up Opportunities for Correctness**: "Whoa whoa whoa hold up hold up. This is another opportunity to make our software overall more correct presenting itself. Don't pass up this opportunity. Pause, let's chat about how we want it to work, and then let's **do it the right way**."
@@ -838,20 +907,33 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–66
 
 ### Chat 1 (2026-01-12.1.md) — Major Architectural Refactoring: Stateless Live Doc-Centric Model
 
-- `2026-01-12.1.md` — **Parsimony Principle ("General Relativity" analogy)**: "Our code should be 'as simple as it can be, **and no simpler**.' That defining line is everything: general relativity is a parsimonious, maximally-simple model of gravitation at large scales, but it is **not** as simple as Newtonian Mechanics." The simplest *fully-functional* implementation is the most correct; oversimplification that loses functionality is wrong.
+- `2026-01-12.1.md` — **Parsimony Principle ("General Relativity" analogy)**: "Our code should be 'as simple as it can be, **and no simpler**.' That defining line is everything: general relativity is a parsimonious, maximally-simple model of gravitation at large scales, but it is **not** as simple as Newtonian Mechanics." The simplest _fully-functional_ implementation is the most correct; oversimplification that loses functionality is wrong.
 - `2026-01-12.1.md` — **Stateless Detection Insight**: Broken link detection should be a pure function of current file state. No database, no acknowledgement persistence, no state machines. "Could detection of link breakages... be **stateless**? If so, the entire question about persistence becomes moot." Live Docs ARE the database.
 - `2026-01-12.1.md` — **Dialogue-Driven Problem Solving**: When hitting roadblocks, pause and ask questions rather than flip-flopping between extremes. "You hit a roadbump, and instead of stopping and asking questions, you reverted. I pushed back and you opted to flip the other direction. The correct path forward is a _dialogue_ against the newfound realizations, yeah?"
 - `2026-01-12.1.md` — **Do It the Right Way — No Suppression of Valid Tooling**: When 83 broken links were detected, Copilot proposed suppressing them. User pushed back: "You want to suppress the noise of the tooling which detects whether our links are valid? Why?" The right way is to fix all 83 links, not suppress the warnings.
 - `2026-01-12.1.md` — **Time Constraints Don't Exist**: "What approach do your copilot instructions say you should take? Furthermore, what time constraints?" Called out invented constraints used to justify workarounds.
 - `2026-01-12.1.md` — **Layer 1 = User Guides for Adopters**: User guides belong in Layer 1 MDMD under a `guides/` subdirectory because they are "most public-facing." Layer 1 can now include Vision Documents AND User Guides as recognized archetypes.
-- `2026-01-12.1.md` — **Layer 2 = Contributor Guides / Internal Tooling**: Internal development tooling (safe:commit, graph:*, slopcop:*, fixtures:*, test:*) should be documented in Layer 2 MDMD because it answers "What must contributors know to accomplish our goals?" — distinct from Layer 1's external adopter focus.
+- `2026-01-12.1.md` — **Layer 2 = Contributor Guides / Internal Tooling**: Internal development tooling (safe:commit, graph:_, slopcop:_, fixtures:_, test:_) should be documented in Layer 2 MDMD because it answers "What must contributors know to accomplish our goals?" — distinct from Layer 1's external adopter focus.
 - `2026-01-12.1.md` — **Ripple Analysis Footprint Decreased**: "The extension tooling and the integration tests for it all predate the fact of us _generating the documentation ourselves_. They come from a time when we were most firmly interested in _detecting_ the impacts of changes, rather than simply documenting the software as it is." The diagnostic feature's importance has decreased now that documentation generation is primary.
 - `2026-01-12.1.md` — **Configuration Duplication is a Code Smell**: When two systems (live-docs:generate and graph:snapshot) require separate configurations to determine what is/isn't a code file, that's a sign of architectural bloat. "...meaning that one would supposedly need _two separate configurations_... one should reasonably expect lint, no?"
 - `2026-01-12.1.md` — **SlopCop Stays Internal**: The user-facing validation is `live-docs:lint`, not SlopCop. SlopCop is insider jargon; bundling general markdown linting would cause scope creep. If external-facing markdown linting is desired later, it should be a separate, properly-branded product.
 
+## 2026-02-15 (Dev Day 68)
+
+### Chat 1 (2026-02-15.1.md) — Devcontainer Validation + JSDoc Mandate + Dead Code Discovery
+
+- `2026-02-15.1.md:L691-L750` — **Model Evaluation: GPT 5.3-Codex Cheats**: User switched from GPT 5.3-Codex to Claude Opus 4.6 mid-chat after catching Codex using a `_` prefix lint suppression workaround instead of fixing the underlying unused parameter: "GPT 5.3-Codex, like its predecessors, seems to cheat." Model selection matters for code quality — models that take workaround shortcuts undermine the "Complete Problem Solving" principle.
+- `2026-02-15.1.md:L751-803` — **JSDoc as Dead Code / Complexity Detection Forcing Function**: User explicitly framed JSDoc enforcement as a professional practice for locating unnecessary complexity: "The exercise of requiring documentation on public members is used in my professional life as a tool to locate and remove unnecessary complexity, dead code, and other cruft, as well as to prove that the program is reasonable and correct. More often than not, the method documentation phase is the point at which I must answer the question: 'Can I justify this code?', with an answer, all too often of, 'no, I can't'. This is a practice which forces us to think deeply about why our codebase looks the way it does, whether it needs to, and how we can do what we want more simply, more elegantly, more understandably, more efficiently, more idiomatically, more durably, more parsimoniously, **better**."
+- `2026-02-15.1.md:L803-L904` — **Worklist-Based Procedural JSDoc Strategy**: For large documentation efforts spanning multiple context windows, use a durable worklist file (markdown) that tracks: priority-ordered files by graph centrality, completion status per file, and a "resume at file N" checkpoint. Each file gets a full archaeological loop (read source → chat archaeology → git log → graph inspect → write JSDoc → question existence → mark done). The worklist is the thread that stitches context windows together across autosummarizations.
+- `2026-02-15.1.md:L1148-L1160` — **Depth Over Breadth for Archaeological Documentation**: User pushed back on breadth-first multi-file documentation skimming: "you're spreading your resources a little thin. Not with respect to justifying the code on its own, but with respect to the _history_ of the code. Why it exists, what rakes we have stepped on while making this file... and, in places where we can't figure out why something exists.... perhaps it shouldn't?" One file = one unit of work = one natural summarization boundary.
+- `2026-02-15.1.md:L1534-L1545` — **MDMD Leakage Suspicion Reflex**: User expressed immediate suspicion when `relationshipRuleTypes.ts` appeared to codify MDMD layer conventions into product code: "I am especially suspicious of the idea that MDMD would somehow be codified in this file, as MDMD is a _workspace_ convention that is totally tangential to Live Documentation... we should feel **immediately suspicious** whenever we see 'MDMD' or its conventions making its way directly into the Live Documentation codebase." This reflex led directly to the discovery that the entire `rules/` module was orphaned dead code.
+- `2026-02-15.1.md:L1898-L1910` — **Fix Source, Not Generated Output**: When SlopCop flagged a broken example link in a generated `.mdmd.md` file, user zoomed out: "Is the example markdown link in a docstring itself? Because auto-regeneration of live documentation should cause whatever issue is occurring in the mdmd.md doc to occur again, no?" Fixes to generated Live Docs are pointless — always fix the source (JSDoc in source code) so the fix survives regeneration.
+- `2026-02-15.1.md:L2011-L2050` — **Tech-Debt Detector Performance is Unacceptable**: The `safe:commit` tech-debt detection step ran for approximately 10 uninterrupted minutes: "we REALLY need to make that bit more efficient." This is flagged as a near-term optimisation target.
+
 ---
 
 ## Usage Notes
+
 - Treat this census as the canonical index of stakeholder intent; cross-link relevant bullets into Layer-1/Layer-2 MDMD documents as needed.
 - When future autosummarization truncates context, rehydrate by locating the referenced `ChatHistory/YYYY-MM-DD.md` line ranges.
 - Update this file when new design-shaping prompts appear so MDMD layers remain anchored to explicit guidance.

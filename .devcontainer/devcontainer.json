@@ -105,8 +105,8 @@
   // Machine requirements for GitHub Codespaces
   // 4-core recommended for benchmark regeneration (SCIP indexing is CPU-intensive)
   "hostRequirements": {
-    "cpus": 4,
-    "memory": "8gb",
+    "cpus": 8,
+    "memory": "32gb",
     "storage": "32gb"
   },
 

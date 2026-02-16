@@ -1,14 +1,34 @@
+/**
+ * Benchmark fixture manifest: schema, loader, and integrity verification.
+ *
+ * Created 2025-11-02 (commit `d86df63`) to drive the clone-based fixture
+ * materialisation pipeline. Extended 2025-12-14 for cross-platform integrity
+ * hashing (CRLF normalisation), 2026-01-14 for Rosetta Stone fixtures +
+ * per-fixture threshold overrides, and 2026-01-15 for the JSON adapter
+ * path migration.
+ *
+ * The canonical manifest file lives at
+ * `tests/integration/benchmarks/fixtures/fixtures.manifest.json`.
+ *
+ * @module
+ */
+
 import { glob } from "glob";
 import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
+/** Optional human-written blurb attached to a benchmark fixture definition. */
 export interface FixtureSummary {
   scope?: string;
   intent?: string;
   notes?: string[];
 }
 
+/**
+ * Source-of-truth metadata describing where a fixture's source code
+ * was obtained from (vendor repo, synthetic generation, etc.).
+ */
 export interface FixtureProvenance {
   kind: "vendor" | "synthetic" | "generated";
   repository?: string;
@@ -19,6 +39,13 @@ export interface FixtureProvenance {
   ref?: string;
 }
 
+/**
+ * Declarative integrity specification for a fixture.
+ *
+ * Used by {@link computeIntegrityDigest} to hash the fixture's source
+ * files and compare against the recorded `rootHash`. Files are resolved
+ * via either an explicit `paths` list or a `fileSet` glob specification.
+ */
 export interface FixtureIntegritySpec {
   algorithm: "sha256";
   generatedAt?: string;
@@ -77,6 +104,10 @@ export interface BenchmarkFixtureDefinition {
   thresholds?: FixtureThresholds;
 }
 
+/**
+ * Return type of {@link computeIntegrityDigest}, carrying the per-file
+ * hashes and the aggregate root hash for a single fixture.
+ */
 export interface IntegrityDigest {
   algorithm: "sha256";
   rootHash: string;
@@ -84,11 +115,20 @@ export interface IntegrityDigest {
   files: Array<{ path: string; hash: string }>;
 }
 
+/**
+ * Glob-based file selection for integrity hashing and materialisation.
+ * Used by {@link FixtureIntegritySpec} and {@link FixtureGitMaterialization}.
+ */
 export interface FixtureFileSetSpec {
   include: string[];
   exclude?: string[];
 }
 
+/**
+ * Discriminated union describing how a fixture's source code is
+ * materialised on disk — either already present in the workspace
+ * (`"workspace"`) or cloned from a git repository (`"git"`).
+ */
 export type FixtureMaterialization =
   | {
       kind: "workspace";
@@ -96,6 +136,11 @@ export type FixtureMaterialization =
     }
   | FixtureGitMaterialization;
 
+/**
+ * Git-based materialisation spec used by `fixtureMaterializer.ts`
+ * to clone, sparse-checkout, and pin a vendor fixture at a specific
+ * commit.
+ */
 export interface FixtureGitMaterialization {
   kind: "git";
   repository: string;
@@ -109,6 +154,11 @@ export interface FixtureGitMaterialization {
   entryPoints?: string[];
 }
 
+/**
+ * Path segments from repo root to the canonical fixture manifest file.
+ * Joined with `path.join` by {@link loadBenchmarkManifest} and consumers
+ * like `regenerate-benchmarks.ts`.
+ */
 export const BENCHMARK_MANIFEST_SEGMENTS = [
   "tests",
   "integration",
@@ -117,6 +167,12 @@ export const BENCHMARK_MANIFEST_SEGMENTS = [
   "fixtures.manifest.json"
 ] as const;
 
+/**
+ * Loads and parses the benchmark fixture manifest from disk.
+ *
+ * Accepts either a bare JSON array or an object with a `fixtures` key
+ * (the latter was used in an earlier manifest schema revision).
+ */
 export async function loadBenchmarkManifest(repoRoot: string): Promise<BenchmarkFixtureDefinition[]> {
   const manifestPath = path.join(repoRoot, ...BENCHMARK_MANIFEST_SEGMENTS);
   const raw = await fs.readFile(manifestPath, "utf8");
@@ -133,6 +189,17 @@ export async function loadBenchmarkManifest(repoRoot: string): Promise<Benchmark
   throw new Error("Benchmark fixture manifest must be an array");
 }
 
+/**
+ * Computes a deterministic SHA-256 integrity digest for a fixture.
+ *
+ * Source files are resolved from the fixture's {@link FixtureIntegritySpec}
+ * (via `fileSet` globs or explicit `paths`). Line endings are normalised
+ * to LF before hashing to ensure cross-platform reproducibility
+ * (fix added 2025-12-14, commit `bf1c7ca`).
+ *
+ * @returns An {@link IntegrityDigest} whose `rootHash` can be compared
+ *          against the manifest's declared `integrity.rootHash`.
+ */
 export async function computeIntegrityDigest(
   repoRoot: string,
   fixture: BenchmarkFixtureDefinition,
@@ -190,6 +257,7 @@ export async function computeIntegrityDigest(
   };
 }
 
+/** Normalises backslashes to forward slashes for platform-agnostic path comparison. */
 export function normalizeRelative(candidate: string): string {
   return candidate.replace(/\\/g, "/");
 }

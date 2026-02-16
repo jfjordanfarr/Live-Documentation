@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2026-02-03T21:55:36.131Z
+- Generated At: 2026-02-16T18:24:59.478Z
 
 ## Authored
 ### Purpose
@@ -17,66 +17,101 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `BezierTuning` parameters govern connection line rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.131Z","inputHash":"adaa21794362bb52"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:24:59.478Z","inputHash":"f2920ea3bac5fc81"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L6)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L13)
+
+##### `ViewName` — Summary
+Names of the four main Explorer views.
+
+- `"circuit"` — treemap / circuit-board overview
+- `"map"` — 3-column Local Map (inbound → node → outbound)
+- `"graph"` — force-directed D3 graph
+- `"sources"` — knowledge-sources health list
+
+Created 2025-11-22 with the initial Explorer scaffold.
 
 #### `ExplorerFilters` {#symbol-explorerfilters}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L8)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L16)
+
+##### `ExplorerFilters` — Summary
+Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L14)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L26)
+
+##### `BezierTuning` — Summary
+Cubic-Bézier connection path tuning parameters.
+Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `ClickBehaviorTuning` {#symbol-clickbehaviortuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L21)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L34)
+
+##### `ClickBehaviorTuning` — Summary
+Click/double-click semantic separation tuning.
 
 #### `VisualTuning` {#symbol-visualtuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L26)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L40)
+
+##### `VisualTuning` — Summary
+Visual / aesthetic toggle config for the Explorer.
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L31)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L50)
+
+##### `LocalMapTuning` — Summary
+Tuning knobs specific to the Local Map (3-column) view.
+Includes self-loop rendering and hover/pin collapse behaviour
+added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L43)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L63)
+
+##### `TuningConfig` — Summary
+Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L50)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L74)
+
+##### `ExplorerState` — Summary
+Root state object for the Explorer client, managed by
+`persistence/local-storage.ts` and consumed by every view.
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L58)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L83)
+
+##### `TestCoverageMap` — Summary
+Map from implementation file path → covering test node(s).
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L60)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L86)
 
-#### `DragPosition` {#symbol-dragposition}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L66)
+##### `CircuitTransform` — Summary
+Pan/zoom transform for the Circuit Board (treemap) view.
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L72)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L96)
 
-#### `ConnectionKind` {#symbol-connectionkind}
-- Type: type
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/types.ts#L79)
-- Returns: [`ExplorerLinkKind`](../shared/types.ts.mdmd.md#symbol-explorerlinkkind)
+##### `DirectoryNode` — Summary
+Tree node representing a directory in the workspace.
+Built by the Circuit Board view to lay out the treemap hierarchy.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`types.ExplorerLinkKind`](../shared/types.ts.mdmd.md#symbol-explorerlinkkind) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 

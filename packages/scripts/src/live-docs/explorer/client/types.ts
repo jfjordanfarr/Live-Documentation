@@ -1,16 +1,28 @@
-import type {
-  ExplorerLinkKind,
-  ExplorerNodePayload
-} from "../shared/types";
+import type { ExplorerNodePayload } from "../shared/types";
 
+/**
+ * Names of the four main Explorer views.
+ *
+ * - `"circuit"` — treemap / circuit-board overview
+ * - `"map"` — 3-column Local Map (inbound → node → outbound)
+ * - `"graph"` — force-directed D3 graph
+ * - `"sources"` — knowledge-sources health list
+ *
+ * Created 2025-11-22 with the initial Explorer scaffold.
+ */
 export type ViewName = "circuit" | "map" | "graph" | "sources";
 
+/** Toggle flags for the Explorer filter panel. */
 export interface ExplorerFilters {
   showTests: boolean;
   showAssets: boolean;
   showRelatedDocs: boolean;
 }
 
+/**
+ * Cubic-Bézier connection path tuning parameters.
+ * Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
+ */
 export interface BezierTuning {
   stubFactor: number;
   stubMin: number;
@@ -18,16 +30,23 @@ export interface BezierTuning {
   verticalOffset: number;
 }
 
+/** Click/double-click semantic separation tuning. */
 export interface ClickBehaviorTuning {
   singleClickFocusOnly: boolean;
   doubleClickRecenter: boolean;
 }
 
+/** Visual / aesthetic toggle config for the Explorer. */
 export interface VisualTuning {
   showTypeBadges: boolean;
   alchemyGlow: boolean;
 }
 
+/**
+ * Tuning knobs specific to the Local Map (3-column) view.
+ * Includes self-loop rendering and hover/pin collapse behaviour
+ * added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
+ */
 export interface LocalMapTuning {
   columnGap: number;
   hoverDimSymbols: number;
@@ -40,6 +59,7 @@ export interface LocalMapTuning {
   collapseOnPin: boolean;
 }
 
+/** Aggregate tuning configuration threading through into every Explorer view. */
 export interface TuningConfig {
   bezier: BezierTuning;
   clickBehavior: ClickBehaviorTuning;
@@ -47,6 +67,10 @@ export interface TuningConfig {
   localMap: LocalMapTuning;
 }
 
+/**
+ * Root state object for the Explorer client, managed by
+ * `persistence/local-storage.ts` and consumed by every view.
+ */
 export interface ExplorerState {
   view: ViewName;
   selectedNode: ExplorerNodePayload | null;
@@ -55,25 +79,23 @@ export interface ExplorerState {
   tuning: TuningConfig;
 }
 
+/** Map from implementation file path → covering test node(s). */
 export type TestCoverageMap = Map<string, ExplorerNodePayload[]>;
 
+/** Pan/zoom transform for the Circuit Board (treemap) view. */
 export interface CircuitTransform {
   x: number;
   y: number;
   k: number;
 }
 
-export interface DragPosition {
-  x: number;
-  y: number;
-  time: number;
-}
-
+/**
+ * Tree node representing a directory in the workspace.
+ * Built by the Circuit Board view to lay out the treemap hierarchy.
+ */
 export interface DirectoryNode {
   name: string;
   path: string;
   children: Map<string, DirectoryNode>;
   nodes: ExplorerNodePayload[];
 }
-
-export type ConnectionKind = ExplorerLinkKind;

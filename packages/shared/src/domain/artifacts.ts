@@ -1,3 +1,19 @@
+/**
+ * The four progressive MDMD documentation layers, plus `"code"` for
+ * raw implementation artifacts.
+ *
+ * Values align with the Membrane Design MarkDown (MDMD) layering
+ * convention defined in copilot-instructions:
+ *
+ * - `"vision"` — Layer 1: what we're trying to accomplish
+ * - `"requirements"` — Layer 2: what must be done
+ * - `"architecture"` — Layer 3: how it will be accomplished
+ * - `"implementation"` — Layer 4: what has been accomplished so far
+ * - `"code"` — raw source files tracked by Live Documentation
+ *
+ * Created 2025-10-16 as part of the initial spec-kit scaffolding
+ * (commit `6bccf94`).
+ */
 export type ArtifactLayer =
   | "vision"
   | "requirements"
@@ -5,6 +21,20 @@ export type ArtifactLayer =
   | "implementation"
   | "code";
 
+/**
+ * A single tracked workspace artifact in the knowledge graph.
+ *
+ * Every file the system discovers — code, documentation, config, asset —
+ * becomes a `KnowledgeArtifact`.  The {@link id} is typically a
+ * workspace-relative path, and {@link layer} classifies it within the
+ * MDMD hierarchy.
+ *
+ * @remarks
+ * Originally created 2025-10-16 (commit `6bccf94`).  The `hash` and
+ * `lastSynchronizedAt` fields were added 2025-10-26 for incremental
+ * sync support but are currently unused — they remain as forward hooks
+ * for the planned diffing pipeline.
+ */
 export interface KnowledgeArtifact {
   id: string;
   uri: string;
@@ -16,6 +46,13 @@ export interface KnowledgeArtifact {
   metadata?: Record<string, unknown>;
 }
 
+/**
+ * The set of relationship kinds between two knowledge artifacts.
+ *
+ * Used by {@link LinkRelationship} and downstream edge resolution in
+ * both the Live Documentation generator and the fallback heuristic
+ * inference pipeline.
+ */
 export type LinkRelationshipKind =
   | "documents"
   | "implements"
@@ -23,6 +60,19 @@ export type LinkRelationshipKind =
   | "references"
   | "includes";
 
+/**
+ * A directed edge between two {@link KnowledgeArtifact}s in the
+ * knowledge graph.
+ *
+ * Edges are created by the LLM ingestion pipeline, the fallback
+ * heuristic inference engine, or by explicit link declarations in
+ * Live Documentation markdown.
+ *
+ * @remarks
+ * Created 2025-10-16 (commit `6bccf94`).  The `confidence` field
+ * ranges 0–1 and is set by the creating pipeline (LLM calibrator,
+ * heuristic scorer, or 1.0 for explicit declarations).
+ */
 export interface LinkRelationship {
   id: string;
   sourceId: string;
@@ -33,116 +83,27 @@ export interface LinkRelationship {
   createdBy: string;
 }
 
-export type LlmConfidenceTier = "high" | "medium" | "low";
-
-export interface LlmEdgeProvenance {
-  linkId: string;
-  templateId: string;
-  templateVersion: string;
-  promptHash: string;
-  modelId: string;
-  issuedAt: string;
-  createdAt: string;
-  confidenceTier: LlmConfidenceTier;
-  calibratedConfidence: number;
-  rawConfidence?: number;
-  supportingChunks?: string[];
-  rationale?: string;
-  diagnosticsEligible?: boolean;
-  shadowed?: boolean;
-  promotionCriteria?: string[];
-}
-
-export type ChangeEventType = "content" | "metadata" | "rename" | "delete";
-
-export type ChangeEventProvenance = "save" | "git" | "external";
-
-export interface ChangeEventRange {
-  startLine: number;
-  endLine: number;
-}
-
-export interface ChangeEvent {
-  id: string;
-  artifactId: string;
-  detectedAt: string;
-  summary: string;
-  changeType: ChangeEventType;
-  ranges: ChangeEventRange[];
-  provenance: ChangeEventProvenance;
-}
-
-export type DiagnosticSeverity = "warning" | "info" | "hint";
-
-export type DiagnosticStatus = "active" | "acknowledged" | "suppressed";
-
-export interface LlmModelMetadata {
-  id: string;
-  name?: string;
-  vendor?: string;
-  family?: string;
-  version?: string;
-}
-
+/**
+ * Structured LLM response attached to a diagnostic.
+ *
+ * Captures the model's assessment text, calibrated confidence, and
+ * recommended remediation actions.  Consumed by the diagnostic
+ * contracts layer (`contracts/diagnostics.ts`) and surfaced in the
+ * VS Code diagnostics tree view.
+ */
 export interface LlmAssessment {
   summary: string;
   confidence: number;
   recommendedActions: string[];
   generatedAt?: string;
-  model?: LlmModelMetadata;
+  model?: {
+    id: string;
+    name?: string;
+    vendor?: string;
+    family?: string;
+    version?: string;
+  };
   promptHash?: string;
   rawResponse?: string;
   tags?: Record<string, string>;
-}
-
-export interface DiagnosticRecord {
-  id: string;
-  artifactId: string;
-  triggerArtifactId: string;
-  changeEventId: string;
-  message: string;
-  severity: DiagnosticSeverity;
-  status: DiagnosticStatus;
-  createdAt: string;
-  acknowledgedAt?: string;
-  acknowledgedBy?: string;
-  linkIds: string[];
-  llmAssessment?: LlmAssessment;
-}
-
-export interface KnowledgeSnapshot {
-  id: string;
-  label: string;
-  createdAt: string;
-  artifactCount: number;
-  edgeCount: number;
-  payloadHash: string;
-  metadata?: Record<string, unknown>;
-}
-
-export type AcknowledgementActionType = "acknowledge" | "dismiss" | "reopen";
-
-export interface AcknowledgementAction {
-  id: string;
-  diagnosticId: string;
-  actor: string;
-  action: AcknowledgementActionType;
-  notes?: string;
-  timestamp: string;
-}
-
-export type DriftHistoryStatus = "emitted" | "acknowledged";
-
-export interface DriftHistoryEntry {
-  id: string;
-  diagnosticId: string;
-  changeEventId: string;
-  triggerArtifactId: string;
-  targetArtifactId: string;
-  status: DriftHistoryStatus;
-  severity: DiagnosticSeverity;
-  recordedAt: string;
-  actor?: string;
-  notes?: string;
-  metadata?: Record<string, unknown>;
 }

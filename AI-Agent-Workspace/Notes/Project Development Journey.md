@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Feb 3, 2026\)*
+*Status: Active Development (Feb 15, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -773,6 +773,18 @@ The team executed a decisive infrastructure pivot to resolve persistent cross-pl
 * **The Dev Container Strategy (Commit 244):** To support the SCIP indexers (which often fail on Windows due to path/JVM issues), the team introduced a **GitHub Codespaces-compatible Dev Container**. This provides a standardized Linux environment pre-loaded with .NET 10, Java 21, Go, and Python 3.12, eliminating "works on my machine" issues.  
 * **Cross-Platform Hardening (Commit 245):** The new container environment was hardened with xvfb support for headless integration tests and safe.directory fixes. Crucially, the team normalized hash computation to use relative paths, ensuring that documentation checksums are identical across Windows (D:\\...) and Linux (/workspaces/...).
 
+### **Phase LIII: The JSDoc & Config Hygiene (Feb 15\)**
+
+Date: February 15, 2026
+
+Scope: Commits 246–247
+
+The team focused on "Documentation as Code" enforcement and eliminating dead architectural weight.
+
+* **CLI Defaults Hardening (Commit 246):** Fixed a critical usability gap where live-docs:report and live-docs:orphans ignored the .live-docs.config.json file. This ensures consistent behavior between the CLI and the VS Code extension, especially in the new Dev Container environment.  
+* **JSDoc Enforcement (Commit 247):** Added eslint-plugin-jsdoc to the linting pipeline, enforcing documentation for exported symbols. The team supported this by proactively adding rich, history-backed JSDoc to 36 key symbols, linking them back to their origin chats ("Archaeology-Backed Documentation").  
+* **Dead Code Purge (Commit 247):** Deleted the entire packages/shared/src/rules/ module (6 files). This vestigial code from the old "Rules Engine" (Phase XII) had zero consumers after the stateless refactor (Phase XL), and its removal significantly simplifies the mental model of the shared library.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -810,7 +822,8 @@ The team executed a decisive infrastructure pivot to resolve persistent cross-pl
 * **Jan 28 (Phase XLVIII):** "Narrative Synchronization." (Aligning the story with the chat logs).  
 * **Jan 29 (Phase XLIX/L):** "Syntax Unification." (Consolidating regex patterns and preparing for Tree-Sitter).  
 * **Jan 30 (Phase LI):** "The Union of Truth." (Fusing Oracle and Tree-Sitter for ground truth generation).  
-* **Feb 3 (Phase LII):** "The Containerized Pivot." (Dev Containers for consistent cross-platform tooling).
+* **Feb 3 (Phase LII):** "The Containerized Pivot." (Dev Containers for consistent cross-platform tooling).  
+* **Feb 15 (Phase LIII):** "The JSDoc & Config Hygiene." (Documentation enforcement and dead code purge).
 
 ## **Technical Themes & Motifs**
 

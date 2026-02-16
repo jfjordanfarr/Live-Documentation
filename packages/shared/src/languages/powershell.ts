@@ -1,10 +1,15 @@
 /**
  * PowerShell Language Syntax Configuration
  *
+ * Provides comment delimiters (`#` line + `<# … #>` block), string
+ * delimiters (including here-strings `@'…'@`), and framework type
+ * filtering for PowerShell source files.
+ *
  * @module languages/powershell
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const POWERSHELL_COMMENTS: CommentDelimiters = {
   line: ["#"],
@@ -49,19 +54,18 @@ function stripPowerShellComments(content: string): string {
   return result;
 }
 
-export const powershellSyntax: LanguageSyntax = {
+/**
+ * PowerShell language syntax configuration.
+ *
+ * Covers `.ps1`, `.psm1`, `.psd1` extensions.  Uses a custom comment
+ * stripper that handles `<# … #>` block comments and `#` line comments.
+ */
+export const powershellSyntax = createLanguageSyntax({
   id: "powershell",
   extensions: [".ps1", ".psm1", ".psd1"],
   comments: POWERSHELL_COMMENTS,
   strings: POWERSHELL_STRINGS,
   frameworkTypes: POWERSHELL_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripPowerShellComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return POWERSHELL_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+  stripComments: stripPowerShellComments,
+});
 

@@ -1,10 +1,15 @@
 /**
  * Java Language Syntax Configuration
  *
+ * Provides comment delimiters (including Javadoc), string
+ * delimiters (including text blocks), and framework type filtering
+ * for Java source files.
+ *
  * @module languages/java
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const JAVA_COMMENTS: CommentDelimiters = {
   line: ["//"],
@@ -34,39 +39,16 @@ const JAVA_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments from Java source code, preserving string literals.
+ * Java language syntax configuration.
  *
- * Handles:
- * - Line comments (//)
- * - Block comments (slash-star ... star-slash)
- * - Javadoc comments (slash-star-star ... star-slash)
- *
- * String literals (including text blocks) are preserved. Java doesn't have
- * interpolated strings, but preserving strings is harmless and maintains consistency.
+ * Covers `.java` extensions.  Comment stripping uses the shared C-style
+ * default, which also handles Javadoc blocks.
  */
-function stripJavaComments(content: string): string {
-  // Remove block comments /* ... */ (including Javadoc)
-  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
-
-  // Remove line comments // ...
-  result = result.replace(/\/\/[^\n]*/g, " ");
-
-  return result;
-}
-
-export const javaSyntax: LanguageSyntax = {
+export const javaSyntax = createLanguageSyntax({
   id: "java",
   extensions: [".java"],
   comments: JAVA_COMMENTS,
   strings: JAVA_STRINGS,
   frameworkTypes: JAVA_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripJavaComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return JAVA_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+});
 

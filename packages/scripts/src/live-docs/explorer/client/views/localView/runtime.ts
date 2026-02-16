@@ -1,12 +1,33 @@
+/**
+ * Runtime state and anchor registry for the Local Map (3-column) view.
+ *
+ * Created 2025-12-04 during the Local Map modularisation (commit `4504d36`).
+ * Extended 2025-12-06 with column-role-aware keys (commit `47ea9a9`)
+ * and 2025-12-19 with hop-aware keys for multi-hop path mode (commit `a0cc5de`).
+ *
+ * Pure functions live here (no DOM rendering) so they can be tested
+ * in isolation. The DOM-touching counterpart is `controller.ts`.
+ *
+ * @module
+ */
+
 import type { MultiHopEntry } from "./connections";
 import type { ColumnRole, LocalSubgraph, MapTransform } from "./types";
 
+/**
+ * Two-level map used to store DOM anchor elements keyed by
+ * `registryKey → symbolKey → HTMLElement`.
+ *
+ * The outer key is produced by {@link buildRegistryKey} or
+ * {@link buildRegistryKeyWithHop}; the inner key is a
+ * direction-qualified symbol identifier (e.g. `"inbound:MyClass"`).
+ */
 export type AnchorRegistry = Map<string, Map<string, HTMLElement>>;
 
 /**
  * Builds the composite registry key for anchor storage.
  * Format: `{columnRole}:{nodeId}` to disambiguate nodes appearing in multiple columns.
- * For multi-hop, use buildRegistryKeyWithHop instead.
+ * For multi-hop, use {@link buildRegistryKeyWithHop} instead.
  */
 export function buildRegistryKey(columnRole: ColumnRole, nodeId: string): string {
   return `${columnRole}:${nodeId}`;
@@ -21,18 +42,24 @@ export function buildRegistryKeyWithHop(columnRole: ColumnRole, hopIndex: number
   return `${columnRole}:${hopIndex}:${nodeId}`;
 }
 
+/** Ephemeral pointer position captured during drag interactions. */
 export interface DragPosition {
   x: number;
   y: number;
   time: number;
 }
 
+/**
+ * Mutable runtime bag for the Local Map view, holding references to
+ * the viewport DOM nodes, pan/zoom transform, drag state, and the
+ * current anchor registry. Created by {@link createRuntime}.
+ */
 export interface LocalViewRuntime {
   viewport: HTMLDivElement;
   container: HTMLDivElement;
   overlay: HTMLDivElement;
   currentSubgraph: LocalSubgraph | null;
-  /** Multi-hop subgraphs for rendering and connection drawing */
+  /** Multi-hop subgraphs for rendering and connection drawing. */
   multiHopSubgraphs: MultiHopEntry[] | null;
   mapTransform: MapTransform;
   isDragging: boolean;
@@ -48,6 +75,11 @@ export interface LocalViewRuntime {
   anchorRegistry: AnchorRegistry;
 }
 
+/**
+ * Creates a fresh {@link LocalViewRuntime} with default values.
+ * All transform/drag fields start at zero/null; the anchor registry
+ * starts empty.
+ */
 export function createRuntime(
   viewport: HTMLDivElement,
   container: HTMLDivElement,
@@ -74,6 +106,13 @@ export function createRuntime(
   };
 }
 
+/**
+ * Registers a DOM element as an anchor point for connection drawing.
+ *
+ * The element is stored under both its raw `key` and a normalised
+ * variant (produced by `normalize`) so that callers can look up anchors
+ * by either original or canonical symbol name.
+ */
 export function registerAnchor(
   registry: AnchorRegistry,
   nodeId: string,
@@ -95,7 +134,9 @@ export function registerAnchor(
 }
 
 /**
- * Registers an anchor with hop-aware key for multi-hop visualization.
+ * Registers an anchor with hop-aware key for multi-hop visualisation.
+ * Similar to {@link registerAnchor} but uses {@link buildRegistryKeyWithHop}
+ * to scope the anchor to a specific hop index.
  */
 export function registerAnchorWithHop(
   registry: AnchorRegistry,
@@ -118,6 +159,15 @@ export function registerAnchorWithHop(
   }
 }
 
+/**
+ * Resolves the best-matching anchor element for a connection endpoint.
+ *
+ * Look-up priority:
+ * 1. Exact `{direction}:{symbol}` match
+ * 2. Normalised symbol match (via `buildNormalizedKey`)
+ * 3. Wildcard fallback `{direction}:*`
+ * 4. Card-level fallback `"card"`
+ */
 export function getAnchor(
   registry: AnchorRegistry,
   nodeId: string,
@@ -152,7 +202,9 @@ export function getAnchor(
 }
 
 /**
- * Gets an anchor using hop-aware lookup for multi-hop visualization.
+ * Hop-aware variant of {@link getAnchor} for multi-hop path mode.
+ * Uses {@link buildRegistryKeyWithHop} to scope the look-up to a specific
+ * hop index. Same priority cascade as `getAnchor`.
  */
 export function getAnchorWithHop(
   registry: AnchorRegistry,
@@ -188,6 +240,7 @@ export function getAnchorWithHop(
   return null;
 }
 
+/** Empties every entry in the given anchor registry. */
 export function clearAnchorRegistry(registry: AnchorRegistry): void {
   registry.clear();
 }

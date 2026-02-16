@@ -1,10 +1,15 @@
 /**
  * C# Language Syntax Configuration
  *
+ * Provides comment delimiters (including XML doc `///`), string delimiters
+ * (including verbatim `@"` and raw `"""` literals), and framework type
+ * filtering for C# source files.
+ *
  * @module languages/csharp
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const CSHARP_COMMENTS: CommentDelimiters = {
   line: ["//", "///"],  // Includes XML doc comments
@@ -36,39 +41,16 @@ const CSHARP_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments from C# source code, preserving string literals.
+ * C# language syntax configuration.
  *
- * Handles:
- * - Single-line comments (//)
- * - XML doc comments (///)
- * - Block comments (slash-star ... star-slash)
- *
- * String literals are preserved to avoid destroying code in interpolated strings
- * (e.g., $"Value: {expression}").
+ * Covers `.cs` extensions.  Comment stripping uses the shared C-style
+ * default, which also handles `///` XML doc comments.
  */
-function stripCSharpComments(content: string): string {
-  // Remove single-line comments (// ...) including XML doc comments (/// ...)
-  let result = content.replace(/\/\/.*$/gm, "");
-
-  // Remove multi-line comments (/* ... */)
-  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
-
-  return result;
-}
-
-export const csharpSyntax: LanguageSyntax = {
+export const csharpSyntax = createLanguageSyntax({
   id: "csharp",
   extensions: [".cs"],
   comments: CSHARP_COMMENTS,
   strings: CSHARP_STRINGS,
   frameworkTypes: CSHARP_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripCSharpComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return CSHARP_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+});
 

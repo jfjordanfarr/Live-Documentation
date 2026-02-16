@@ -98,6 +98,84 @@ export interface LanguageSyntax {
 }
 
 /**
+ * Declarative configuration for creating a {@link LanguageSyntax} via
+ * the {@link createLanguageSyntax} factory.
+ *
+ * All fields are pure data except the optional `stripComments` override.
+ * When `stripComments` is omitted the factory defaults to C-style regex
+ * stripping (`// …` line comments + `/* … * /` block comments), which is
+ * correct for C, C#, Java, TypeScript, and Rust.
+ */
+export interface LanguageSyntaxConfig {
+  readonly id: string;
+  readonly extensions: readonly string[];
+  readonly comments: CommentDelimiters;
+  readonly strings: StringDelimiters;
+  readonly frameworkTypes: ReadonlySet<string>;
+  /**
+   * Optional custom comment-stripping function.
+   *
+   * Provide this only for languages whose comment syntax differs from the
+   * standard C-style `//` + `/* * /` pattern (e.g. Python's `#`, Ruby's
+   * `=begin…=end`, PowerShell's `<# … #>`, or Go's string-aware walker).
+   */
+  readonly stripComments?: (content: string) => string;
+}
+
+/**
+ * Strips C-style comments from source code.
+ *
+ * Removes:
+ * - Block comments `/* … * /` (including JSDoc / Javadoc)
+ * - Line comments `// …`
+ *
+ * String literals are **not** individually tracked because the regex
+ * approach is intentionally coarse — tree-sitter provides the precise
+ * path.  For heuristic usage the loss is acceptable and the simplicity
+ * is a feature.
+ *
+ * Used as the default `stripComments` by {@link createLanguageSyntax}
+ * for C, C#, Java, TypeScript, and Rust.
+ */
+export function stripCStyleComments(content: string): string {
+  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
+  result = result.replace(/\/\/[^\n]*/g, " ");
+  return result;
+}
+
+/**
+ * Creates a {@link LanguageSyntax} implementation from declarative
+ * configuration, eliminating per-language boilerplate.
+ *
+ * Default behaviours provided by the factory:
+ * - **`stripComments`** — delegates to {@link stripCStyleComments} unless
+ *   a custom stripper is supplied via `config.stripComments`.
+ * - **`isFrameworkType`** — always delegates to
+ *   `config.frameworkTypes.has(identifier)`.
+ * - The async `Promise.resolve()` wrapper around the synchronous
+ *   stripper, required by the interface's tree-sitter-ready signature.
+ *
+ * @param config - Pure-data language configuration
+ * @returns A fully conformant {@link LanguageSyntax} object
+ */
+export function createLanguageSyntax(config: LanguageSyntaxConfig): LanguageSyntax {
+  const stripper = config.stripComments ?? stripCStyleComments;
+  return {
+    id: config.id,
+    extensions: config.extensions,
+    comments: config.comments,
+    strings: config.strings,
+    frameworkTypes: config.frameworkTypes,
+    async stripComments(content: string): Promise<string> {
+      return await Promise.resolve(stripper(content));
+    },
+    isFrameworkType(identifier: string): boolean {
+      return config.frameworkTypes.has(identifier);
+    },
+  };
+}
+
+/**
  * Creates a synchronous wrapper around the async stripComments method.
  *
  * This is provided for backward compatibility with existing synchronous code.

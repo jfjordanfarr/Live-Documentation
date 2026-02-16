@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-ruby-ts
-- Generated At: 2026-02-03T21:55:39.457Z
+- Generated At: 2026-02-16T18:25:01.645Z
 
 ## Authored
 ### Purpose
@@ -15,18 +15,24 @@ Provides Ruby-specific syntax configuration implementing `LanguageSyntax`. Defin
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — heredoc and percent-literal stripping is best-effort; complex Ruby string interpolation needs tree-sitter for correctness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.457Z","inputHash":"3aa55b2eb35c5b31"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.645Z","inputHash":"bfdb16caca05ed8c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubySyntax` {#symbol-rubysyntax}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/languages/ruby.ts#L55)
-- Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
+- Source: [source](../../../../../../packages/shared/src/languages/ruby.ts#L67)
+
+##### `rubySyntax` — Summary
+Ruby language syntax configuration.
+
+Covers `.rb`, `.rake`, `.gemspec` extensions.  Uses a custom comment
+stripper that handles both `=begin…=end` block comments and `#` line
+comments.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters) (type-only)
-- [`syntax.LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax) (type-only)
-- [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters) (type-only)
+- [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters)
+- [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters)
+- [`syntax.createLanguageSyntax`](./syntax.ts.mdmd.md#symbol-createlanguagesyntax)
 <!-- LIVE-DOC:END Dependencies -->

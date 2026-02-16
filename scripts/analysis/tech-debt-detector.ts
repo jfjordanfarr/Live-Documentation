@@ -119,6 +119,12 @@ function detectTechnicalDebt(
   const largeFiles: LargeFileWarning[] = [];
   const staleFiles: StaleFileInfo[] = [];
 
+  // Build a bulk map of file → last-commit-date in a single git call
+  // instead of spawning one `git log` subprocess per file.
+  const lastCommitDates = args.skipStale
+    ? new Map<string, Date>()
+    : getLastCommitDates(workspaceRoot);
+
   const now = Date.now();
 
   for (const relativePath of gitFiles) {
@@ -144,7 +150,7 @@ function detectTechnicalDebt(
     // Check for stale files (code + docs)
     if (CODE_EXTENSIONS.has(ext) || DOC_EXTENSIONS.has(ext)) {
       if (!args.skipStale) {
-        const lastEditDate = getLastCommitDate(workspaceRoot, relativePath);
+        const lastEditDate = lastCommitDates.get(relativePath) ?? null;
         if (lastEditDate) {
           const daysSinceEdit = Math.floor((now - lastEditDate.getTime()) / (24 * 60 * 60 * 1000));
           if (daysSinceEdit > STALE_DAYS_THRESHOLD) {
@@ -180,20 +186,55 @@ function getGitTrackedFiles(workspaceRoot: string): string[] {
   }
 }
 
-function getLastCommitDate(workspaceRoot: string, file: string): Date | null {
+/**
+ * Build a map of file → last-commit-date using a single `git log` walk.
+ *
+ * Instead of spawning one `git log -1` subprocess per file (~1000+ calls,
+ * 4-10 minutes), we run a single `git log --format --name-only` and parse
+ * the output. Each commit lists its date followed by the files it touched.
+ * We keep only the first (most recent) date seen for each file.
+ */
+function getLastCommitDates(workspaceRoot: string): Map<string, Date> {
+  const dateMap = new Map<string, Date>();
+
   try {
-    const output = execSync(`git log -1 --format=%cI -- "${file}"`, {
-      cwd: workspaceRoot,
-      encoding: "utf-8"
-    });
-    const dateStr = output.trim();
-    if (!dateStr) {
-      return null;
+    const output = execSync(
+      'git log --format="COMMIT_DATE:%cI" --name-only --diff-filter=ACDMRT',
+      {
+        cwd: workspaceRoot,
+        encoding: "utf-8",
+        maxBuffer: 50 * 1024 * 1024
+      }
+    );
+
+    let currentDate: Date | null = null;
+
+    for (const line of output.split("\n")) {
+      if (line.startsWith("COMMIT_DATE:")) {
+        const dateStr = line.slice("COMMIT_DATE:".length).trim();
+        if (dateStr) {
+          currentDate = new Date(dateStr);
+        }
+        continue;
+      }
+
+      // Blank lines separate commits
+      if (!line.trim()) {
+        continue;
+      }
+
+      // This is a filename — record the date only if we haven't seen it yet
+      // (first occurrence = most recent commit, since git log is reverse-chronological)
+      const filePath = line.trim();
+      if (currentDate && !dateMap.has(filePath)) {
+        dateMap.set(filePath, currentDate);
+      }
     }
-    return new Date(dateStr);
   } catch {
-    return null;
+    console.error("Failed to build bulk commit-date map");
   }
+
+  return dateMap;
 }
 
 function countLines(filePath: string): number {

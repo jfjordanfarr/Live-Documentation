@@ -1,10 +1,16 @@
 /**
  * Go Language Syntax Configuration
  *
+ * Provides comment delimiters, string delimiters, framework type filtering,
+ * and a string-aware comment stripper for Go source files.  Unlike C-style
+ * languages, Go's stripper walks character-by-character to avoid stripping
+ * comment-like sequences inside string literals.
+ *
  * @module languages/go
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const GO_COMMENTS: CommentDelimiters = {
   line: ["//"],
@@ -129,21 +135,19 @@ function stripGoComments(content: string): string {
   return result;
 }
 
-export const goSyntax: LanguageSyntax = {
+/**
+ * Go language syntax configuration.
+ *
+ * Covers `.go` extensions.  Uses a character-by-character comment stripper
+ * that preserves string literals (including raw backtick strings) instead
+ * of the C-style regex default.
+ */
+export const goSyntax = createLanguageSyntax({
   id: "go",
   extensions: [".go"],
   comments: GO_COMMENTS,
   strings: GO_STRINGS,
   frameworkTypes: GO_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    // Regex-based implementation is synchronous but exposed as async
-    // for tree-sitter compatibility
-    return await Promise.resolve(stripGoComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return GO_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+  stripComments: stripGoComments,
+});
 

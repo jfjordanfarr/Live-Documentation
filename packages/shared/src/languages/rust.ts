@@ -1,10 +1,15 @@
 /**
  * Rust Language Syntax Configuration
  *
+ * Provides comment delimiters (including `///` and `//!` doc comments),
+ * string delimiters (including raw `r"` / `r#"` literals), and framework
+ * type filtering for Rust source files.
+ *
  * @module languages/rust
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const RUST_COMMENTS: CommentDelimiters = {
   line: ["//", "///", "//!"],  // Includes doc comments
@@ -37,39 +42,17 @@ const RUST_FRAMEWORK_TYPES = new Set([
 ]);
 
 /**
- * Strips comments from Rust source code, preserving string literals.
+ * Rust language syntax configuration.
  *
- * Handles:
- * - Line comments (// and ///)
- * - Block comments (slash-star ... star-slash)
- * - Doc comments (//! and inner doc comments)
- *
- * String literals (including raw strings) are preserved. Rust doesn't have
- * interpolated strings like other languages, but preserving strings is harmless.
+ * Covers `.rs` extensions.  Comment stripping uses the shared C-style
+ * default, which also handles `///` and `//!` doc
+ * comments.
  */
-function stripRustComments(content: string): string {
-  // Remove block comments /* ... */ (including doc comments)
-  let result = content.replace(/\/\*[\s\S]*?\*\//g, " ");
-
-  // Remove line comments // ... (including /// and //!)
-  result = result.replace(/\/\/[^\n]*/g, " ");
-
-  return result;
-}
-
-export const rustSyntax: LanguageSyntax = {
+export const rustSyntax = createLanguageSyntax({
   id: "rust",
   extensions: [".rs"],
   comments: RUST_COMMENTS,
   strings: RUST_STRINGS,
   frameworkTypes: RUST_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripRustComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return RUST_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+});
 

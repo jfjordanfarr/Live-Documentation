@@ -1,10 +1,15 @@
 /**
  * Python Language Syntax Configuration
  *
+ * Provides comment delimiters, string delimiters (including docstrings,
+ * raw strings, and f-strings), framework type filtering, and a
+ * string-aware `#` comment stripper for Python source files.
+ *
  * @module languages/python
  */
 
-import type { LanguageSyntax, CommentDelimiters, StringDelimiters } from "./syntax";
+import { createLanguageSyntax } from "./syntax";
+import type { CommentDelimiters, StringDelimiters } from "./syntax";
 
 const PYTHON_COMMENTS: CommentDelimiters = {
   line: ["#"],
@@ -158,19 +163,19 @@ function stripPythonComments(content: string): string {
   return result.join('\n');
 }
 
-export const pythonSyntax: LanguageSyntax = {
+/**
+ * Python language syntax configuration.
+ *
+ * Covers `.py` and `.pyw` extensions.  Uses a line-by-line
+ * string-aware comment stripper because Python's `#` comment character
+ * can appear inside string literals.
+ */
+export const pythonSyntax = createLanguageSyntax({
   id: "python",
   extensions: [".py", ".pyw"],
   comments: PYTHON_COMMENTS,
   strings: PYTHON_STRINGS,
   frameworkTypes: PYTHON_FRAMEWORK_TYPES,
-
-  async stripComments(content: string): Promise<string> {
-    return await Promise.resolve(stripPythonComments(content));
-  },
-
-  isFrameworkType(identifier: string): boolean {
-    return PYTHON_FRAMEWORK_TYPES.has(identifier);
-  },
-};
+  stripComments: stripPythonComments,
+});
 
