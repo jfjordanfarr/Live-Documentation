@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2026-02-03T21:55:37.194Z
+- Generated At: 2026-02-16T03:54:27.431Z
 
 ## Authored
 ### Purpose
@@ -17,25 +17,67 @@ Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files 
 - The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.194Z","inputHash":"d20acf78734d6648"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:27.431Z","inputHash":"159463a7d59a7a21"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L17)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L25)
+
+##### `LiveDocGraphNode` — Summary
+A single node in the Live Doc dependency graph, representing one tracked
+workspace artifact and its extracted metadata.
+
+Nodes are keyed by `codePath` (workspace-relative source path) and carry
+resolved dependency edges, public symbol names, and per-symbol documentation
+extracted from the corresponding `.mdmd.md` file.
 
 #### `LiveDocGraph` {#symbol-livedocgraph}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L27)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L46)
+
+##### `LiveDocGraph` — Summary
+The complete Live Documentation dependency graph.
+
+Built by {@link buildLiveDocGraph}, this structure powers the Explorer
+visualizations (Circuit Board, Force Graph, Local Map), the `inspect`
+pathfinder CLI, and the lint disconnected-node check.
+
+- `nodes` — forward lookup by source path.
+- `inbound` — reverse index: for a given target, which sources depend on it.
+- `docToCode` — maps `.mdmd.md` doc paths back to their source paths.
 
 #### `BuildLiveDocGraphOptions` {#symbol-buildlivedocgraphoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L33)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L59)
+
+##### `BuildLiveDocGraphOptions` — Summary
+Options accepted by {@link buildLiveDocGraph}.
+
+##### `BuildLiveDocGraphOptions` — Additional Documentation
+- @property config - Optional resolved Live Docs config; defaults to
+{@link DEFAULT_LIVE_DOCUMENTATION_CONFIG} if omitted.
+- @property workspaceRoot - Absolute path to the workspace root directory.
 
 #### `buildLiveDocGraph` {#symbol-buildlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L47)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L85)
 - Parameters: `options`: [`BuildLiveDocGraphOptions`](../../index.ts.mdmd.md#symbol-buildlivedocgraphoptions)
+
+##### `buildLiveDocGraph` — Summary
+Scans all staged Live Doc markdown files, parses their `Dependencies` and
+`Public Symbols` sections, and assembles a complete dependency graph.
+
+The resulting {@link LiveDocGraph} is consumed by the Explorer server/static
+builder, the `inspect` CLI pathfinder, and the lint pipeline's disconnected-
+node check.
+
+##### `buildLiveDocGraph` — Parameters
+- `options`: Workspace root and optional config overrides.
+
+##### `buildLiveDocGraph` — Returns
+A fully-resolved graph with forward edges, reverse (inbound) index,
+and doc-to-code path mapping.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

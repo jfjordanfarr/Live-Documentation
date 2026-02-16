@@ -14,6 +14,14 @@ import {
   type ParsedSymbolDocumentationEntry
 } from "@live-documentation/shared/live-docs/parse";
 
+/**
+ * A single node in the Live Doc dependency graph, representing one tracked
+ * workspace artifact and its extracted metadata.
+ *
+ * Nodes are keyed by `codePath` (workspace-relative source path) and carry
+ * resolved dependency edges, public symbol names, and per-symbol documentation
+ * extracted from the corresponding `.mdmd.md` file.
+ */
 export interface LiveDocGraphNode {
   codePath: string;
   docPath: string;
@@ -24,12 +32,30 @@ export interface LiveDocGraphNode {
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
 
+/**
+ * The complete Live Documentation dependency graph.
+ *
+ * Built by {@link buildLiveDocGraph}, this structure powers the Explorer
+ * visualizations (Circuit Board, Force Graph, Local Map), the `inspect`
+ * pathfinder CLI, and the lint disconnected-node check.
+ *
+ * - `nodes` — forward lookup by source path.
+ * - `inbound` — reverse index: for a given target, which sources depend on it.
+ * - `docToCode` — maps `.mdmd.md` doc paths back to their source paths.
+ */
 export interface LiveDocGraph {
   nodes: Map<string, LiveDocGraphNode>;
   inbound: Map<string, Set<string>>;
   docToCode: Map<string, string>;
 }
 
+/**
+ * Options accepted by {@link buildLiveDocGraph}.
+ *
+ * @property workspaceRoot - Absolute path to the workspace root directory.
+ * @property config - Optional resolved Live Docs config; defaults to
+ *   {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG} if omitted.
+ */
 export interface BuildLiveDocGraphOptions {
   workspaceRoot: string;
   config?: LiveDocumentationConfig;
@@ -44,6 +70,18 @@ interface ParsedDocEntry {
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
 
+/**
+ * Scans all staged Live Doc markdown files, parses their `Dependencies` and
+ * `Public Symbols` sections, and assembles a complete dependency graph.
+ *
+ * The resulting {@link LiveDocGraph} is consumed by the Explorer server/static
+ * builder, the `inspect` CLI pathfinder, and the lint pipeline's disconnected-
+ * node check.
+ *
+ * @param options - Workspace root and optional config overrides.
+ * @returns A fully-resolved graph with forward edges, reverse (inbound) index,
+ *   and doc-to-code path mapping.
+ */
 export async function buildLiveDocGraph(options: BuildLiveDocGraphOptions): Promise<LiveDocGraph> {
   const workspaceRoot = path.resolve(options.workspaceRoot);
   const config = normalizeLiveDocumentationConfig(

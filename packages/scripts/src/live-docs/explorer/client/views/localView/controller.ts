@@ -68,8 +68,30 @@ import type {
   MapTransform
 } from "./types";
 
+/**
+ * Primary controller for the Explorer's Local Map (3-column symbol) view.
+ *
+ * Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
+ * symbol pinning, connection drawing, and multi-hop path visualization.
+ * Delegates DOM measurement to `layout-measure`, gesture handling to
+ * `pan-zoom`, and graph slicing to `subgraph-builder`.
+ *
+ * Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
+ * `isDragging`) are thin pass-throughs to the underlying
+ * {@link createRuntime | runtime} object; they're exposed so that
+ * sibling modules (`render`, `connections`, `pan-zoom`) can read/write
+ * shared state through the controller reference without importing the
+ * runtime directly.
+ *
+ * **Note (tech debt):** At 800+ lines and ~46 public members this class
+ * exceeds the project's 500-line guidance. Candidates for extraction
+ * include the accessor pass-throughs (move to runtime directly), the
+ * anchor registration helpers, and the fit/zoom methods.
+ */
 export class LocalViewController implements LocalViewApi {
+  /** Injected options including graph data, state, and navigation callbacks. */
   readonly options: LocalViewOptions;
+  /** Shared mutable runtime holding DOM refs, transform state, and anchor registry. */
   readonly runtime = createRuntime(
     requireElement<HTMLDivElement>("view-map"),
     requireElement<HTMLDivElement>("map-container"),

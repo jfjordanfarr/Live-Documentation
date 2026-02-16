@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/fallbackInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-fallbackinference-ts
-- Generated At: 2026-02-03T21:55:38.702Z
+- Generated At: 2026-02-16T04:00:24.409Z
 
 ## Authored
 ### Purpose
@@ -15,53 +15,127 @@ Implements the cross-language fallback inference pipeline—seed normalization, 
 Subsequent passes layered in AST-backed type filtering and deeper language heuristics—see [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) for the TypeScript runtime/type split and [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520) for the C#/WebForms heuristics that stabilized benchmark precision.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.702Z","inputHash":"20a481477518fc82"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T04:00:24.409Z","inputHash":"03fa1f6d4ad20040"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactSeed` {#symbol-artifactseed}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L14)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L21)
+
+##### `ArtifactSeed` — Summary
+Seed data for a single workspace artifact before relationship inference.
+
+Seeds are the raw inputs from which {@link inferFallbackGraph} builds
+{@link KnowledgeArtifact} instances and discovers relationships via
+heuristic matching, user-supplied hints, or optional LLM augmentation.
 
 #### `RelationshipHint` {#symbol-relationshiphint}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L26)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L40)
+
+##### `RelationshipHint` — Summary
+A user-supplied or externally-derived relationship hint between two artifacts.
+
+Hints are treated as high-confidence edges during fallback inference and
+bypass heuristic matching. They're typically derived from configuration
+files, manual overrides, or prior LLM runs.
 
 #### `LLMRelationshipSuggestion` {#symbol-llmrelationshipsuggestion}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L36)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L54)
+
+##### `LLMRelationshipSuggestion` — Summary
+A single relationship suggestion returned by an LLM bridge during
+augmented fallback inference.
 
 #### `LLMRelationshipRequest` {#symbol-llmrelationshiprequest}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L44)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L66)
+
+##### `LLMRelationshipRequest` — Summary
+Payload sent to an {@link FallbackLLMBridge} requesting relationship
+suggestions for a source artifact against a set of candidates.
 
 #### `FallbackLLMBridge` {#symbol-fallbackllmbridge}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L51)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L81)
+
+##### `FallbackLLMBridge` — Summary
+Adapter interface for plugging an LLM into the fallback inference pipeline.
+
+When provided via {@link FallbackGraphOptions.llm}, the inference engine
+sends candidate batches to `suggest()` and merges the results with
+heuristic-derived links. The `vscode.lm` API is the primary production
+implementation.
 
 #### `FallbackGraphInput` {#symbol-fallbackgraphinput}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L56)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L91)
+
+##### `FallbackGraphInput` — Summary
+Input bundle for {@link inferFallbackGraph}: the set of artifact seeds
+to analyze plus optional pre-existing relationship hints and a content
+provider for reading file bodies on demand.
 
 #### `FallbackGraphOptions` {#symbol-fallbackgraphoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L62)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L105)
+
+##### `FallbackGraphOptions` — Summary
+Configuration options for {@link inferFallbackGraph}.
+
+##### `FallbackGraphOptions` — Additional Documentation
+- @property llm - Optional LLM bridge for augmented inference.
+- @property minContentLengthForLLM - Minimum source content length to
+trigger an LLM call (default 120 chars).
+- @property now - Clock factory for deterministic timestamps in tests.
 
 #### `InferenceTraceOrigin` {#symbol-inferencetraceorigin}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L68)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L112)
+
+##### `InferenceTraceOrigin` — Summary
+Discriminator indicating how a relationship was discovered.
 
 #### `InferenceTraceEntry` {#symbol-inferencetraceentry}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L70)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L119)
+
+##### `InferenceTraceEntry` — Summary
+Audit record for a single inferred relationship, capturing provenance
+(heuristic ID, LLM rationale, or hint source) for the benchmark/report
+pipeline to evaluate precision and recall.
 
 #### `FallbackInferenceResult` {#symbol-fallbackinferenceresult}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L82)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L135)
+
+##### `FallbackInferenceResult` — Summary
+Complete output of {@link inferFallbackGraph}: the resolved artifact
+graph, inferred link relationships, and per-link audit traces.
 
 #### `inferFallbackGraph` {#symbol-inferfallbackgraph}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L97)
+- Source: [source](../../../../../../packages/shared/src/inference/fallbackInference.ts#L165)
 - Parameters: `input`: [`FallbackGraphInput`](#symbol-fallbackgraphinput); `options`: [`FallbackGraphOptions`](#symbol-fallbackgraphoptions)
+
+##### `inferFallbackGraph` — Summary
+Core fallback inference engine: builds a {@link KnowledgeArtifact} graph
+from seed data, discovers relationships via path/naming heuristics,
+incorporates user-supplied hints, and optionally augments with LLM
+suggestions.
+
+This is the primary entry point for the link-aware diagnostics pipeline
+when SCIP indexes are unavailable (most polyglot workspaces). Results
+feed the benchmark suite, the graph snapshot CLI, and the Live Docs
+dependency sections.
+
+##### `inferFallbackGraph` — Parameters
+- `input`: Artifact seeds, optional hints, and content provider.
+- `options`: LLM bridge and tuning knobs.
+
+##### `inferFallbackGraph` — Returns
+Resolved artifacts, inferred links, and audit traces.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -90,5 +164,4 @@ Subsequent passes layered in AST-backed type filtering and deeper language heuri
 - [fallbackInference.languages.test.ts](./fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](./fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](./linkInference.test.ts.mdmd.md)
-- [relationshipRuleProvider.test.ts](../rules/relationshipRuleProvider.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

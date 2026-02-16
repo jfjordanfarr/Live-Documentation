@@ -5,17 +5,19 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/linkInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-linkinference-ts
-- Generated At: 2026-02-03T21:55:39.098Z
+- Generated At: 2026-02-16T14:27:56.762Z
 
 ## Authored
 ### Purpose
+
 Implements the link inference orchestrator from US1 task T028, unifying fallback heuristics and workspace providers into deduplicated link evidence with provenance as documented in [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-17.md#L645](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-17.md#L645).
 
 ### Notes
+
 The markdown watcher streams saved documents through this orchestrator to capture seeds and hints before diagnostics publish, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.098Z","inputHash":"f99285aa9ce7f08b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:56.762Z","inputHash":"f99285aa9ce7f08b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkInferenceTraceOrigin` {#symbol-linkinferencetraceorigin}
@@ -81,5 +83,4 @@ The markdown watcher streams saved documents through this orchestrator to captur
 #### Vitest Unit Tests
 - [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
 - [linkInference.test.ts](./linkInference.test.ts.mdmd.md)
-- [relationshipRuleProvider.test.ts](../rules/relationshipRuleProvider.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

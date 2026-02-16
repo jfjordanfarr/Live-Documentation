@@ -11,6 +11,13 @@ import type {
   LinkRelationshipKind
 } from "../domain/artifacts";
 
+/**
+ * Seed data for a single workspace artifact before relationship inference.
+ *
+ * Seeds are the raw inputs from which {@link inferFallbackGraph} builds
+ * {@link KnowledgeArtifact} instances and discovers relationships via
+ * heuristic matching, user-supplied hints, or optional LLM augmentation.
+ */
 export interface ArtifactSeed {
   id?: string;
   uri: string;
@@ -23,6 +30,13 @@ export interface ArtifactSeed {
   content?: string;
 }
 
+/**
+ * A user-supplied or externally-derived relationship hint between two artifacts.
+ *
+ * Hints are treated as high-confidence edges during fallback inference and
+ * bypass heuristic matching. They're typically derived from configuration
+ * files, manual overrides, or prior LLM runs.
+ */
 export interface RelationshipHint {
   sourceUri: string;
   targetUri: string;
@@ -33,6 +47,10 @@ export interface RelationshipHint {
   context?: string;
 }
 
+/**
+ * A single relationship suggestion returned by an LLM bridge during
+ * augmented fallback inference.
+ */
 export interface LLMRelationshipSuggestion {
   targetUri: string;
   kind: LinkRelationshipKind;
@@ -41,6 +59,10 @@ export interface LLMRelationshipSuggestion {
   context?: string;
 }
 
+/**
+ * Payload sent to an {@link FallbackLLMBridge} requesting relationship
+ * suggestions for a source artifact against a set of candidates.
+ */
 export interface LLMRelationshipRequest {
   source: KnowledgeArtifact;
   content?: string;
@@ -48,25 +70,52 @@ export interface LLMRelationshipRequest {
   hints: RelationshipHint[];
 }
 
+/**
+ * Adapter interface for plugging an LLM into the fallback inference pipeline.
+ *
+ * When provided via {@link FallbackGraphOptions.llm}, the inference engine
+ * sends candidate batches to `suggest()` and merges the results with
+ * heuristic-derived links. The `vscode.lm` API is the primary production
+ * implementation.
+ */
 export interface FallbackLLMBridge {
   label: string;
   suggest(request: LLMRelationshipRequest): Promise<LLMRelationshipSuggestion[]>;
 }
 
+/**
+ * Input bundle for {@link inferFallbackGraph}: the set of artifact seeds
+ * to analyze plus optional pre-existing relationship hints and a content
+ * provider for reading file bodies on demand.
+ */
 export interface FallbackGraphInput {
   seeds: ArtifactSeed[];
   hints?: RelationshipHint[];
   contentProvider?: (uri: string) => Promise<string | undefined>;
 }
 
+/**
+ * Configuration options for {@link inferFallbackGraph}.
+ *
+ * @property llm - Optional LLM bridge for augmented inference.
+ * @property minContentLengthForLLM - Minimum source content length to
+ *   trigger an LLM call (default 120 chars).
+ * @property now - Clock factory for deterministic timestamps in tests.
+ */
 export interface FallbackGraphOptions {
   llm?: FallbackLLMBridge;
   minContentLengthForLLM?: number;
   now?: () => Date;
 }
 
+/** Discriminator indicating how a relationship was discovered. */
 export type InferenceTraceOrigin = "heuristic" | "hint" | "llm";
 
+/**
+ * Audit record for a single inferred relationship, capturing provenance
+ * (heuristic ID, LLM rationale, or hint source) for the benchmark/report
+ * pipeline to evaluate precision and recall.
+ */
 export interface InferenceTraceEntry {
   sourceUri: string;
   targetUri: string;
@@ -79,6 +128,10 @@ export interface InferenceTraceEntry {
   createdBy?: string;
 }
 
+/**
+ * Complete output of {@link inferFallbackGraph}: the resolved artifact
+ * graph, inferred link relationships, and per-link audit traces.
+ */
 export interface FallbackInferenceResult {
   artifacts: KnowledgeArtifact[];
   links: LinkRelationship[];
@@ -94,6 +147,21 @@ const DEFAULT_MIN_CONTENT_LENGTH_FOR_LLM = 120;
 const HEURISTIC_CREATED_BY = "heuristic";
 const HINT_CREATED_BY = "hint";
 
+/**
+ * Core fallback inference engine: builds a {@link KnowledgeArtifact} graph
+ * from seed data, discovers relationships via path/naming heuristics,
+ * incorporates user-supplied hints, and optionally augments with LLM
+ * suggestions.
+ *
+ * This is the primary entry point for the link-aware diagnostics pipeline
+ * when SCIP indexes are unavailable (most polyglot workspaces). Results
+ * feed the benchmark suite, the graph snapshot CLI, and the Live Docs
+ * dependency sections.
+ *
+ * @param input - Artifact seeds, optional hints, and content provider.
+ * @param options - LLM bridge and tuning knobs.
+ * @returns Resolved artifacts, inferred links, and audit traces.
+ */
 export async function inferFallbackGraph(
   input: FallbackGraphInput,
   options: FallbackGraphOptions = {}

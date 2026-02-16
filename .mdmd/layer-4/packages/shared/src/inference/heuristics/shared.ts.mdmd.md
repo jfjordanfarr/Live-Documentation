@@ -5,18 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/shared.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-shared-ts
-- Generated At: 2026-02-03T21:55:39.041Z
+- Generated At: 2026-02-16T14:27:56.713Z
 
 ## Authored
 ### Purpose
+
 Provides the cross-language path normalisation, comment filtering, and reference scoring helpers that every modular fallback heuristic shares after we split the 2k-line orchestrator into discrete modules on Nov 7 so new languages plug into the same contract without duplicating logic <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L760-L840> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L820-L900>.
 
 ### Notes
+
 - `isWithinComment` and the variant builders preserve the Ky benchmark fix that stopped commented-out imports from emitting edges, so keep tests guarding that regression in place whenever evolving these helpers <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L2108-L2178>.
 - The extension-swapping logic was introduced to keep `.js` specifiers mapped onto `.ts/.tsx` sources; extend the replacement list in this helper instead of reimplementing it in future heuristics <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L2302-L2315>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.041Z","inputHash":"d75ebf2e26714b73"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:56.713Z","inputHash":"d75ebf2e26714b73"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cleanupReference` {#symbol-cleanupreference}
@@ -79,5 +81,4 @@ Provides the cross-language path normalisation, comment filtering, and reference
 - [fallbackInference.languages.test.ts](../fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../linkInference.test.ts.mdmd.md)
-- [relationshipRuleProvider.test.ts](../../rules/relationshipRuleProvider.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

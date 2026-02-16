@@ -5,18 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/markdownShared.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-markdownshared-ts
-- Generated At: 2026-02-03T21:55:41.351Z
+- Generated At: 2026-02-16T14:27:58.193Z
 
 ## Authored
 ### Purpose
+
 Packages the Markdown parsing primitives (reference extraction, line/column math, link target sanitising) that underpin SlopCop’s link and symbol audits so every consumer reports issues with the same coordinates and target strings ([shared helper extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
 
 ### Notes
+
 - Reused by `markdownLinks`, `symbolReferences`, and the SlopCop CLIs to keep lint output consistent during the Oct 2025 symbol-audit rollout ([rollout summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-33-symbol-audit-implementation-lines-5161-5900)).
 - Relationship rule resolvers leverage the same helpers when translating MDMD links into graph edges, preventing divergent parsing logic in doc-to-code inference ([shared helper extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.351Z","inputHash":"9c561fc909cc61a5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:58.193Z","inputHash":"9c561fc909cc61a5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReferenceDefinition` {#symbol-referencedefinition}
@@ -48,7 +50,6 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [relationshipRuleProvider.test.ts](../rules/relationshipRuleProvider.test.ts.mdmd.md)
 - [documentationLinks.test.ts](./documentationLinks.test.ts.mdmd.md)
 - [markdownLinks.test.ts](./markdownLinks.test.ts.mdmd.md)
 - [symbolReferences.test.ts](./symbolReferences.test.ts.mdmd.md)

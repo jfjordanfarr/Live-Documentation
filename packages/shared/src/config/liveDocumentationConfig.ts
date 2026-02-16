@@ -1,7 +1,23 @@
 // Live Documentation: .live-documentation/source/packages/shared/src/config/liveDocumentationConfig.md
 
+/**
+ * Dialect used to generate header-anchor slugs in Live Doc markdown.
+ *
+ * Each platform slugifies `## Heading Text` differently (e.g. GitHub lowercases
+ * and strips punctuation, Azure DevOps preserves casing). The chosen dialect
+ * controls how `{#symbol-...}` anchors are produced so that cross-references
+ * resolve correctly on the target hosting platform.
+ */
 export type LiveDocumentationSlugDialect = "github" | "azure-devops" | "gitlab";
 
+/**
+ * Classifies a tracked workspace artifact into a structural role.
+ *
+ * Archetypes drive how the Live Doc generator emits metadata sections
+ * (e.g. `test` files get an "Observed Evidence" section, `asset` files
+ * get a stub-only doc). The generator infers archetypes from path patterns
+ * but consumers can force a value via {@link LiveDocumentationConfig.archetypeOverrides}.
+ */
 export type LiveDocumentationArchetype =
   | "implementation"
   | "test"
@@ -14,12 +30,35 @@ export type LiveDocumentationArchetype =
   | "integration"
   | "testing";
 
+/**
+ * Controls lint severity when a non-test file lacks observed evidence
+ * (coverage manifests, waivers, or fixture references).
+ *
+ * - `"off"` — no diagnostic emitted.
+ * - `"warning"` — lint emits a warning (default).
+ * - `"error"` — lint treats missing evidence as a hard failure.
+ */
 export type LiveDocumentationEvidenceStrictMode = "off" | "warning" | "error";
 
+/**
+ * Evidence-related settings that control how the Live Docs lint pipeline
+ * reports missing test coverage or waivers on implementation files.
+ */
 export interface LiveDocumentationEvidenceConfig {
   strict: LiveDocumentationEvidenceStrictMode;
 }
 
+/**
+ * Complete, resolved configuration for the Live Documentation pipeline.
+ *
+ * Every CLI command, generator pass, lint rule, and explorer view reads from
+ * this shape. Obtain an instance via {@link normalizeLiveDocumentationConfig}
+ * which fills missing fields from {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
+ *
+ * This interface is the single source of truth for how the pipeline maps
+ * workspace source artifacts to their `.mdmd.md` mirror files, which slug
+ * dialect to use, and how strictly evidence is enforced.
+ */
 export interface LiveDocumentationConfig {
   /** Filesystem root where staged Live Docs are written. */
   root: string;
@@ -41,6 +80,13 @@ export interface LiveDocumentationConfig {
   evidence: LiveDocumentationEvidenceConfig;
 }
 
+/**
+ * Partial input shape accepted by {@link normalizeLiveDocumentationConfig}.
+ *
+ * Consumers (CLI flags, `.live-docs.config.json`) provide only the fields they
+ * want to override; everything else falls back to
+ * {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
+ */
 export type LiveDocumentationConfigInput = Partial<LiveDocumentationConfig> & {
   evidence?: Partial<LiveDocumentationEvidenceConfig>;
 };
@@ -49,9 +95,19 @@ export type LiveDocumentationConfigInput = Partial<LiveDocumentationConfig> & {
 //
 // This repo often overrides these defaults to align with its internal MDMD convention
 // (e.g. root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md").
+/** Default root directory for the Live Docs mirror (`".live-documentation"`). */
 export const LIVE_DOCUMENTATION_DEFAULT_ROOT = ".live-documentation";
+/** Default base-layer subdirectory within the root (`"source"`). */
 export const LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER = "source";
+/** Default file extension for generated Live Doc files (`".md"`). */
 export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".md";
+/**
+ * Default glob patterns selecting workspace artifacts that receive Live Docs.
+ *
+ * Covers TypeScript, JavaScript, PowerShell, C#/.NET view files, Python, Java,
+ * Ruby, Rust, C/C++, Go, HTML/CSS, JSON, and static assets (images, fonts,
+ * media). Static assets receive stub-only Live Docs for graph connectivity.
+ */
 export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "packages/**/src/**/*.ts",
   "packages/**/src/**/*.tsx",
@@ -124,6 +180,14 @@ export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "tests/**/*.ogg"
 ];
 
+/**
+ * Fully-resolved default configuration used when no `.live-docs.config.json`
+ * is present or when individual fields are omitted from the input.
+ *
+ * This workspace typically overrides `root`, `baseLayer`, and `extension` to
+ * `".mdmd"`, `"layer-4"`, and `".mdmd.md"` respectively via its repo-local
+ * config file.
+ */
 export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   root: LIVE_DOCUMENTATION_DEFAULT_ROOT,
   baseLayer: LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER,
@@ -138,6 +202,18 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   }
 };
 
+/**
+ * Merges a partial config input with {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG},
+ * producing a fully-resolved {@link LiveDocumentationConfig}.
+ *
+ * Handles edge cases: blank strings fall back to defaults, globs are deduped,
+ * and file extensions are normalized to start with `"."`. This is the canonical
+ * entry point for every CLI and server path that needs a config object.
+ *
+ * @param input - Partial overrides, typically parsed from `.live-docs.config.json`
+ *   or CLI flags. When `undefined`, returns the default config unchanged.
+ * @returns A complete, immutable configuration ready for pipeline consumption.
+ */
 export function normalizeLiveDocumentationConfig(
   input?: LiveDocumentationConfigInput
 ): LiveDocumentationConfig {

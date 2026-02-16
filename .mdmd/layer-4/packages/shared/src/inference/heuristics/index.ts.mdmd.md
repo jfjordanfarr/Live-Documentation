@@ -5,18 +5,20 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-index-ts
-- Generated At: 2026-02-03T21:55:38.908Z
+- Generated At: 2026-02-16T14:27:56.613Z
 
 ## Authored
 ### Purpose
+
 Turns the per-language builders into the default heuristic suite that replaced the monolithic fallbackInference orchestrator on Nov 7, giving the pipeline a single place to register ordering and hydration logic <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L760-L840> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.SUMMARIZED.md#L50-L70>.
 
 ### Notes
+
 - Maintain the evaluation order here—directive/docs first, then language heuristics—so we preserve the confidence balancing discussed during the modular refactor; shuffle only with a benchmark-backed justification <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L1290-L1485>.
 - When adding a new heuristic module, export it through this registry and update `fallbackInference.languages.test.ts` so the regression suite exercises the new behavior <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md#L600-L676>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.908Z","inputHash":"8f4e1e1fc18a9f6b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:56.613Z","inputHash":"8f4e1e1fc18a9f6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDefaultHeuristics` {#symbol-createdefaultheuristics}
@@ -61,5 +63,4 @@ Regex heuristics fill in gaps where tree-sitter might miss patterns
 - [fallbackInference.languages.test.ts](../fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../linkInference.test.ts.mdmd.md)
-- [relationshipRuleProvider.test.ts](../../rules/relationshipRuleProvider.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

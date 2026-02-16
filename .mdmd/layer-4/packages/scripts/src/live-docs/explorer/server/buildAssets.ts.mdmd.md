@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/buildAssets.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-buildassets-ts
-- Generated At: 2026-02-16T02:02:25.406Z
+- Generated At: 2026-02-16T03:54:27.223Z
 
 ## Authored
 ### Purpose
@@ -17,21 +17,16 @@ Builds the Explorer's client-side assets (HTML, CSS, JavaScript) from the modula
 - Injects the compiled CSS and JS into the `template.html` to produce the final `index.html`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T02:02:25.406Z","inputHash":"e21d6f5b5be4fdb3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:27.223Z","inputHash":"ab6ec1ea206efb3b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `BuildExplorerAssetsOptions` {#symbol-buildexplorerassetsoptions}
+#### `ExplorerAssets` {#symbol-explorerassets}
 - Type: interface
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/buildAssets.ts#L6)
 
-#### `ExplorerAssets` {#symbol-explorerassets}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/buildAssets.ts#L10)
-
 #### `buildExplorerAssets` {#symbol-buildexplorerassets}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/buildAssets.ts#L20)
-- Parameters: `_options`: [`BuildExplorerAssetsOptions`](#symbol-buildexplorerassetsoptions)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/buildAssets.ts#L16)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

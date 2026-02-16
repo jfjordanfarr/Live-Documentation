@@ -1,6 +1,7 @@
 const js = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const eslintPluginImport = require("eslint-plugin-import");
+const eslintPluginJsdoc = require("eslint-plugin-jsdoc");
 const eslintConfigPrettier = require("eslint-config-prettier");
 
 module.exports = tseslint.config(
@@ -99,6 +100,46 @@ module.exports = tseslint.config(
       "@typescript-eslint/no-array-delete": "off",
       "@typescript-eslint/await-thenable": "off",
       "@typescript-eslint/no-misused-promises": "off"
+    }
+  },
+  // Require JSDoc on exported symbols in package source and scripts.
+  // This exercises our JSDoc extraction pipeline and forces justification
+  // of every public API surface — "Can I justify this code?"
+  {
+    files: [
+      "packages/**/src/**/*.ts",
+      "scripts/**/*.ts"
+    ],
+    ignores: [
+      "**/*.test.ts",
+      "**/*.spec.ts"
+    ],
+    plugins: {
+      jsdoc: eslintPluginJsdoc
+    },
+    rules: {
+      "jsdoc/require-jsdoc": [
+        "warn",
+        {
+          publicOnly: true,
+          require: {
+            FunctionDeclaration: true,
+            MethodDefinition: true,
+            ClassDeclaration: true,
+            ArrowFunctionExpression: true,
+            FunctionExpression: true
+          },
+          contexts: [
+            // Exported interface/type/enum declarations
+            "ExportNamedDeclaration > TSInterfaceDeclaration",
+            "ExportNamedDeclaration > TSTypeAliasDeclaration",
+            "ExportNamedDeclaration > TSEnumDeclaration",
+            // Exported const/let variable declarations
+            "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator"
+          ],
+          checkConstructors: false
+        }
+      ]
     }
   }
 );

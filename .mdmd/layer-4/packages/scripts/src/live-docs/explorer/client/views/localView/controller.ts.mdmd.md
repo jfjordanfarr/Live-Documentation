@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-controller-ts
-- Generated At: 2026-02-03T21:55:36.386Z
+- Generated At: 2026-02-16T03:54:26.888Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,33 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - Manages scroll sync, column expansion, and SVG layer updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.386Z","inputHash":"5625a3f3a4e91fd6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:26.888Z","inputHash":"78fd816757881b25"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L71)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L91)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
+
+##### `LocalViewController` — Summary
+Primary controller for the Explorer's Local Map (3-column symbol) view.
+
+Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
+symbol pinning, connection drawing, and multi-hop path visualization.
+Delegates DOM measurement to `layout-measure`, gesture handling to
+`pan-zoom`, and graph slicing to `subgraph-builder`.
+
+Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
+`isDragging`) are thin pass-throughs to the underlying
+{@link createRuntime | runtime} object; they're exposed so that
+sibling modules (`render`, `connections`, `pan-zoom`) can read/write
+shared state through the controller reference without importing the
+runtime directly.
+
+**Note (tech debt):** At 800+ lines and ~46 public members this class
+exceeds the project's 500-line guidance. Candidates for extraction
+include the accessor pass-throughs (move to runtime directly), the
+anchor registration helpers, and the fit/zoom methods.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
