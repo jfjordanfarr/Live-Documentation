@@ -36,6 +36,11 @@
   },
   {
     "source": "src/com/example/service/data/Repository.java",
+    "target": "src/com/example/service/data/SourceRegistry.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/example/service/data/Repository.java",
     "target": "src/com/example/service/model/Sample.java",
     "relation": "references"
   },

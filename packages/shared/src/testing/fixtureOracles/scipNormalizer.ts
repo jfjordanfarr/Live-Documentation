@@ -230,6 +230,30 @@ export function createPythonScipNormalizer(): ScipNormalizer {
 }
 
 // ============================================================================
+// Rust SCIP Normalizer
+// ============================================================================
+
+export function createRustScipNormalizer(): ScipNormalizer {
+  const base = createBaseNormalizer("rust");
+
+  return {
+    ...base,
+
+    isArtifactPath(filePath: string): boolean {
+      // Rust-specific: target/ build output directory
+      if (/\/(target)\//i.test(filePath)) {
+        return true;
+      }
+      // Cargo registry paths
+      if (filePath.includes(".cargo/registry/")) {
+        return true;
+      }
+      return base.isArtifactPath(filePath);
+    },
+  };
+}
+
+// ============================================================================
 // Registry
 // ============================================================================
 
@@ -239,6 +263,7 @@ const NORMALIZER_REGISTRY: Record<string, () => ScipNormalizer> = {
   typescript: createTypeScriptScipNormalizer,
   java: createJavaScipNormalizer,
   python: createPythonScipNormalizer,
+  rust: createRustScipNormalizer,
 };
 
 /**

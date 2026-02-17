@@ -1,6 +1,8 @@
 package com.rosetta.processor;
 
-import com.rosetta.models.*;
+import com.rosetta.models.ModelFactory;
+import com.rosetta.models.Record;
+import com.rosetta.models.Report;
 import com.rosetta.types.ProcessorConfig;
 import com.rosetta.helpers.Helpers;
 
@@ -17,10 +19,10 @@ import java.util.stream.Collectors;
  */
 public final class Processor {
     /** Default configuration for processing. */
-    private static final ProcessorConfig DEFAULT_CONFIG = 
-        new ProcessorConfig(100, 5000, true);
+    private static final ProcessorConfig DEFAULT_CONFIG = new ProcessorConfig(100, 5000, true);
 
-    private Processor() {}
+    private Processor() {
+    }
 
     /**
      * Processes a batch of records and generates a report.
@@ -37,15 +39,15 @@ public final class Processor {
         if (config == null) {
             config = DEFAULT_CONFIG;
         }
-        
+
         if (!ModelFactory.validateConfig(config)) {
             throw new IllegalArgumentException("Invalid processor configuration");
         }
 
         List<Double> values = records.stream()
-            .map(Record::getValue)
-            .collect(Collectors.toList());
-        
+                .map(Record::getValue)
+                .collect(Collectors.toList());
+
         double total = Helpers.sum(values);
         double avg = Helpers.average(values);
 
@@ -60,8 +62,8 @@ public final class Processor {
      */
     public static String summarize(Report report) {
         return String.format("Total: %s, Average: %s, Count: %d",
-            Helpers.format(report.getTotal()),
-            Helpers.format(report.getAverage()),
-            report.getRecords().size());
+                Helpers.format(report.getTotal()),
+                Helpers.format(report.getAverage()),
+                report.getRecords().size());
     }
 }

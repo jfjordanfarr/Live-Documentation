@@ -1,7 +1,7 @@
 [
   {
-    "source": "src/__private_api.rs",
-    "target": "src/kv/mod.rs",
+    "source": "benches/value.rs",
+    "target": "src/lib.rs",
     "relation": "references"
   },
   {
@@ -10,48 +10,8 @@
     "relation": "references"
   },
   {
-    "source": "src/kv/mod.rs",
-    "target": "src/kv/error.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/mod.rs",
-    "target": "src/kv/key.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/mod.rs",
-    "target": "src/kv/source.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/mod.rs",
-    "target": "src/kv/value.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/source.rs",
-    "target": "src/kv/mod.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/value.rs",
-    "target": "src/kv/error.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/kv/value.rs",
-    "target": "src/kv/mod.rs",
-    "relation": "references"
-  },
-  {
     "source": "src/lib.rs",
     "target": "src/__private_api.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/lib.rs",
-    "target": "src/kv/mod.rs",
     "relation": "references"
   },
   {
@@ -60,18 +20,28 @@
     "relation": "references"
   },
   {
-    "source": "src/lib.rs",
-    "target": "src/serde.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/macros.rs",
-    "target": "src/__private_api.rs",
-    "relation": "references"
-  },
-  {
-    "source": "src/serde.rs",
+    "source": "tests/integration.rs",
     "target": "src/lib.rs",
+    "relation": "references"
+  },
+  {
+    "source": "tests/integration.rs",
+    "target": "src/macros.rs",
+    "relation": "references"
+  },
+  {
+    "source": "tests/macros.rs",
+    "target": "src/lib.rs",
+    "relation": "references"
+  },
+  {
+    "source": "tests/macros.rs",
+    "target": "src/macros.rs",
+    "relation": "references"
+  },
+  {
+    "source": "tests/macros.rs",
+    "target": "tests/integration.rs",
     "relation": "references"
   }
 ]

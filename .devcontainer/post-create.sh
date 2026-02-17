@@ -78,17 +78,26 @@ go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 echo "→ Installing scip-dotnet..."
 dotnet tool install --global scip-dotnet || echo "  (scip-dotnet may already be installed)"
 
-# scip-java: Uses Coursier for lazy installation
-# We just verify Coursier is available; scip-java downloads on first use
-echo "→ Verifying Coursier for scip-java..."
-if command -v cs &> /dev/null; then
-  echo "  Coursier available (scip-java will install on first use)"
-else
+# scip-java: Scala/JVM tool distributed via Maven Central
+# Uses Coursier `bootstrap` to create a standalone fat-jar binary.
+# Docs: https://sourcegraph.github.io/scip-java/docs/getting-started.html
+SCIP_JAVA_VERSION="0.11.2"
+echo "→ Installing scip-java v${SCIP_JAVA_VERSION}..."
+
+# Ensure Coursier is available (needed for bootstrap)
+if ! command -v cs &> /dev/null; then
   echo "  Installing Coursier..."
   curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > /tmp/cs
   chmod +x /tmp/cs
   sudo mv /tmp/cs /usr/local/bin/cs
 fi
+
+# Bootstrap a standalone binary from Maven Central
+cs bootstrap --standalone \
+  -o /tmp/scip-java \
+  "com.sourcegraph:scip-java_2.13:${SCIP_JAVA_VERSION}" \
+  --main com.sourcegraph.scip_java.ScipJava
+sudo mv /tmp/scip-java /usr/local/bin/scip-java
 
 # rust-analyzer: Verify it's available (installed via Rust feature)
 echo "→ Verifying rust-analyzer..."
@@ -105,6 +114,7 @@ echo "scip-typescript: $(npx scip-typescript --version 2>/dev/null || echo 'avai
 echo "scip-python:     $(scip-python --version 2>/dev/null || echo 'installed')"
 echo "scip-go:         $(scip-go version 2>/dev/null || echo 'installed')"
 echo "scip-dotnet:     $(dotnet tool list -g | grep scip-dotnet | awk '{print $2}' || echo 'installed')"
+echo "scip-java:       $(scip-java version 2>/dev/null || echo 'installed')"
 echo "rust-analyzer:   $(rust-analyzer --version 2>/dev/null || echo 'available')"
 
 echo ""

@@ -422,7 +422,7 @@ Supports REQ-040. [Polyglot Adapters Index](../../.mdmd/layer-4/packages/shared/
 
 ### IMP-510 Python Fixture Oracle
 
-Supports REQ-030. [Python Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/pythonFixtureOracle.ts.mdmd.md)
+Supports REQ-030. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 
 ### IMP-521 C Fixture Oracle
 
@@ -430,11 +430,11 @@ Supports REQ-030. [C Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/tes
 
 ### IMP-522 Rust Fixture Oracle
 
-Supports REQ-030. [Rust Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/rustFixtureOracle.ts.mdmd.md)
+Supports REQ-030. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 
 ### IMP-523 Java Fixture Oracle
 
-Supports REQ-030. [Java Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/javaFixtureOracle.ts.mdmd.md)
+Supports REQ-030. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 
 ### IMP-524 Ruby Fixture Oracle
 
@@ -442,7 +442,7 @@ Supports REQ-030. [Ruby Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/
 
 ### IMP-541 C# Fixture Oracle
 
-Supports REQ-050. [CSharp Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/csharpFixtureOracle.ts.mdmd.md)
+Supports REQ-050. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 
 ### IMP-530 LLM Sampling Harness
 

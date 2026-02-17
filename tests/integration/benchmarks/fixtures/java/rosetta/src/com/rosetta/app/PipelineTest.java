@@ -1,5 +1,6 @@
 package com.rosetta.app;
 
+import com.rosetta.models.ModelFactory;
 import com.rosetta.models.Record;
 import com.rosetta.models.Report;
 import com.rosetta.processor.Processor;
@@ -33,10 +34,9 @@ public class PipelineTest {
         void processesRecordsThroughCompletePipeline() {
             // Create test records using models factory
             List<Record> records = Arrays.asList(
-                Record.create(1, "Alpha", 100.0),
-                Record.create(2, "Beta", 200.0),
-                Record.create(3, "Gamma", 300.0)
-            );
+                    Record.create(1, "Alpha", 100.0),
+                    Record.create(2, "Beta", 200.0),
+                    Record.create(3, "Gamma", 300.0));
 
             // Process through processor
             Report report = Processor.run(records, null);
@@ -57,8 +57,8 @@ public class PipelineTest {
             ProcessorConfig validConfig = new ProcessorConfig(100, 5000, true);
             ProcessorConfig invalidConfig = new ProcessorConfig(-1, 0, false);
 
-            assertTrue(Record.validateConfig(validConfig));
-            assertFalse(Record.validateConfig(invalidConfig));
+            assertTrue(ModelFactory.validateConfig(validConfig));
+            assertFalse(ModelFactory.validateConfig(invalidConfig));
         }
 
         @Test

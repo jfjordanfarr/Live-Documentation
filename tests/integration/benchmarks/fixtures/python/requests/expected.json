@@ -21,11 +21,6 @@
   },
   {
     "source": "src/requests/__init__.py",
-    "target": "src/requests/packages.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/__init__.py",
     "target": "src/requests/sessions.py",
     "relation": "references"
   },
@@ -35,23 +30,8 @@
     "relation": "references"
   },
   {
-    "source": "src/requests/__init__.py",
-    "target": "src/requests/utils.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/_internal_utils.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
     "source": "src/requests/_internal_utils.py",
     "target": "src/requests/compat.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/adapters.py",
-    "target": "src/requests/__init__.py",
     "relation": "references"
   },
   {
@@ -96,11 +76,6 @@
   },
   {
     "source": "src/requests/auth.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/auth.py",
     "target": "src/requests/_internal_utils.py",
     "relation": "references"
   },
@@ -120,58 +95,13 @@
     "relation": "references"
   },
   {
-    "source": "src/requests/certs.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/compat.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/compat.py",
-    "target": "src/requests/cookies.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/cookies.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
     "source": "src/requests/cookies.py",
     "target": "src/requests/_internal_utils.py",
     "relation": "references"
   },
   {
-    "source": "src/requests/cookies.py",
-    "target": "src/requests/compat.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/exceptions.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/exceptions.py",
-    "target": "src/requests/compat.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/help.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
     "source": "src/requests/help.py",
     "target": "src/requests/__version__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/models.py",
-    "target": "src/requests/__init__.py",
     "relation": "references"
   },
   {
@@ -221,17 +151,7 @@
   },
   {
     "source": "src/requests/packages.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/packages.py",
     "target": "src/requests/compat.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/sessions.py",
-    "target": "src/requests/__init__.py",
     "relation": "references"
   },
   {
@@ -247,11 +167,6 @@
   {
     "source": "src/requests/sessions.py",
     "target": "src/requests/auth.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/sessions.py",
-    "target": "src/requests/compat.py",
     "relation": "references"
   },
   {
@@ -291,27 +206,7 @@
   },
   {
     "source": "src/requests/status_codes.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/status_codes.py",
     "target": "src/requests/structures.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/structures.py",
-    "target": "src/requests/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/structures.py",
-    "target": "src/requests/compat.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/utils.py",
-    "target": "src/requests/__init__.py",
     "relation": "references"
   },
   {
@@ -322,11 +217,6 @@
   {
     "source": "src/requests/utils.py",
     "target": "src/requests/_internal_utils.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/requests/utils.py",
-    "target": "src/requests/certs.py",
     "relation": "references"
   },
   {
@@ -347,6 +237,41 @@
   {
     "source": "src/requests/utils.py",
     "target": "src/requests/structures.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_lowlevel.py",
+    "target": "tests/testserver/server.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_lowlevel.py",
+    "target": "tests/utils.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_requests.py",
+    "target": "tests/compat.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_requests.py",
+    "target": "tests/testserver/server.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_requests.py",
+    "target": "tests/utils.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_testserver.py",
+    "target": "tests/testserver/server.py",
+    "relation": "references"
+  },
+  {
+    "source": "tests/test_utils.py",
+    "target": "tests/compat.py",
     "relation": "references"
   }
 ]

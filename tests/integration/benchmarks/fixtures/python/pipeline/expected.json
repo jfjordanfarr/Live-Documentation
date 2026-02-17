@@ -1,11 +1,6 @@
 [
   {
     "source": "src/main.py",
-    "target": "src/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/main.py",
     "target": "src/pipeline.py",
     "relation": "references"
   },
@@ -16,17 +11,7 @@
   },
   {
     "source": "src/metrics.py",
-    "target": "src/__init__.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/metrics.py",
     "target": "src/validators.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/pipeline.py",
-    "target": "src/__init__.py",
     "relation": "references"
   },
   {
@@ -42,11 +27,6 @@
   {
     "source": "src/pipeline.py",
     "target": "src/validators.py",
-    "relation": "references"
-  },
-  {
-    "source": "src/repositories.py",
-    "target": "src/__init__.py",
     "relation": "references"
   },
   {

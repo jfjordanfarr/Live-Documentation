@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/rust/rosetta/src/main.rs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-rust-rosetta-src-main-rs
-- Generated At: 2026-02-03T21:55:46.175Z
+- Generated At: 2026-02-17T15:49:10.821Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Entry point for the Rust Rosetta Stone fixture. Demonstrates mod declarations an
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust's module system detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.175Z","inputHash":"4fc5e79d1f8f4f3e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T15:49:10.821Z","inputHash":"9a5aa254936613b2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
 - Type: function
-- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/rust/rosetta/src/main.rs#L21)
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/rust/rosetta/src/main.rs#L28)
 
 ##### `main` — Summary
 Executes the Rosetta data pipeline.
@@ -37,7 +37,10 @@ Formatted summary of the processing results
 - `models::{create_record, Report}` - `Report`, `create_record`
 - `processor::{run, summarize}` - `run`, `summarize`
 - [`helpers`](./helpers.rs.mdmd.md)
+- [`helpers_test`](./helpers_test.rs.mdmd.md)
 - [`models`](./models.rs.mdmd.md)
+- [`pipeline_test`](./pipeline_test.rs.mdmd.md)
 - [`processor`](./processor.rs.mdmd.md)
+- [`processor_test`](./processor_test.rs.mdmd.md)
 - [`types`](./types.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

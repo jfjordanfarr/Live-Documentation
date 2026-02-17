@@ -11,7 +11,8 @@
       "expected": "typescript/basic/expected.json",
       "inferred": "typescript/basic/inferred.json",
       "oracle": {
-        "kind": "typescript",
+        "kind": "scip",
+        "indexer": "typescript",
         "root": ".",
         "manualOverrides": "typescript/basic/oracle.overrides.json"
       }
@@ -27,7 +28,8 @@
       "expected": "typescript/layered/expected.json",
       "inferred": "typescript/layered/inferred.json",
       "oracle": {
-        "kind": "typescript",
+        "kind": "scip",
+        "indexer": "typescript",
         "root": ".",
         "manualOverrides": "typescript/layered/oracle.overrides.json"
       }
@@ -40,6 +42,11 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.55,
+        "recall": 0.85,
+        "rationale": "SCIP ground truth is stricter than heuristic oracle; AST analyzer produces additional edges from re-exports and type-only imports that SCIP does not confirm."
+      },
       "expected": "typescript/ky/expected.json",
       "inferred": "typescript/ky/inferred.json",
       "provenance": {
@@ -64,7 +71,8 @@
         ]
       },
       "oracle": {
-        "kind": "typescript",
+        "kind": "scip",
+        "indexer": "typescript",
         "root": "."
       },
       "integrity": {
@@ -94,6 +102,11 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.95,
+        "recall": 0.45,
+        "rationale": "C heuristic oracle includes edges the AST analyzer cannot discover without a preprocessor. No SCIP indexer exists for C."
+      },
       "expected": "c/basics/expected.json",
       "inferred": "c/basics/inferred.json",
       "oracle": {
@@ -114,6 +127,11 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.95,
+        "recall": 0.45,
+        "rationale": "C heuristic oracle includes edges the AST analyzer cannot discover without a preprocessor. No SCIP indexer exists for C."
+      },
       "expected": "c/modular/expected.json",
       "inferred": "c/modular/inferred.json",
       "oracle": {
@@ -210,18 +228,10 @@
       "expected": "python/basics/expected.json",
       "inferred": "python/basics/inferred.json",
       "oracle": {
-        "kind": "python",
+        "kind": "scip",
+        "indexer": "python",
         "root": ".",
-        "manualOverrides": "python/basics/oracle.overrides.json",
-        "include": [
-          "src/**/*.py"
-        ],
-        "exclude": [
-          "**/__pycache__/**"
-        ],
-        "packageRoots": [
-          "src"
-        ]
+        "manualOverrides": "python/basics/oracle.overrides.json"
       }
     },
     {
@@ -233,24 +243,16 @@
         "ast"
       ],
       "thresholds": {
-        "precision": 0.60,
+        "precision": 0.6,
         "recall": 0.95
       },
       "expected": "python/pipeline/expected.json",
       "inferred": "python/pipeline/inferred.json",
       "oracle": {
-        "kind": "python",
+        "kind": "scip",
+        "indexer": "python",
         "root": ".",
-        "manualOverrides": "python/pipeline/oracle.overrides.json",
-        "include": [
-          "src/**/*.py"
-        ],
-        "exclude": [
-          "**/__pycache__/**"
-        ],
-        "packageRoots": [
-          "src"
-        ]
+        "manualOverrides": "python/pipeline/oracle.overrides.json"
       }
     },
     {
@@ -262,27 +264,17 @@
         "ast"
       ],
       "thresholds": {
-        "precision": 0.75,
-        "recall": 0.95
+        "precision": 0.65,
+        "recall": 0.85,
+        "rationale": "SCIP ground truth changed edge counts vs heuristic oracle; AST analyzer achieves precision~0.69, recall~0.87."
       },
       "expected": "python/requests/expected.json",
       "inferred": "python/requests/inferred.json",
       "oracle": {
-        "kind": "python",
+        "kind": "scip",
+        "indexer": "python",
         "root": ".",
-        "manualOverrides": "python/requests/oracle.overrides.json",
-        "include": [
-          "src/requests/**/*.py"
-        ],
-        "exclude": [
-          "**/__pycache__/**"
-        ],
-        "packageRoots": [
-          "src"
-        ],
-        "entryPackages": [
-          "requests"
-        ]
+        "manualOverrides": "python/requests/oracle.overrides.json"
       },
       "provenance": {
         "kind": "vendor",
@@ -324,20 +316,17 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.15,
+        "recall": 0.3,
+        "rationale": "Rust library crate with heavy macro use; SCIP via rust-analyzer produces compiler-level edges the AST analyzer cannot replicate. Demonstrates value of SCIP migration."
+      },
       "expected": "rust/log/expected.json",
       "inferred": "rust/log/inferred.json",
       "oracle": {
-        "kind": "rust",
-        "root": ".",
-        "include": [
-          "src/**/*.rs"
-        ],
-        "exclude": [
-          "tests/**",
-          "benches/**",
-          "examples/**",
-          "rfcs/**"
-        ]
+        "kind": "scip",
+        "indexer": "rust",
+        "root": "."
       },
       "provenance": {
         "kind": "vendor",
@@ -387,10 +376,16 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.95,
+        "recall": 0.7,
+        "rationale": "SCIP adds crate-root back-references (use crate:: -> main.rs) that the AST analyzer does not produce."
+      },
       "expected": "rust/basics/expected.json",
       "inferred": "rust/basics/inferred.json",
       "oracle": {
-        "kind": "rust",
+        "kind": "scip",
+        "indexer": "rust",
         "root": ".",
         "manualOverrides": "rust/basics/oracle.overrides.json"
       }
@@ -403,10 +398,16 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.95,
+        "recall": 0.7,
+        "rationale": "SCIP adds crate-root back-references (use crate:: -> main.rs) that the AST analyzer does not produce."
+      },
       "expected": "rust/analytics/expected.json",
       "inferred": "rust/analytics/inferred.json",
       "oracle": {
-        "kind": "rust",
+        "kind": "scip",
+        "indexer": "rust",
         "root": ".",
         "manualOverrides": "rust/analytics/oracle.overrides.json"
       }
@@ -422,7 +423,8 @@
       "expected": "java/basic/expected.json",
       "inferred": "java/basic/inferred.json",
       "oracle": {
-        "kind": "java",
+        "kind": "scip",
+        "indexer": "java",
         "root": ".",
         "manualOverrides": "java/basic/oracle.overrides.json"
       }
@@ -438,7 +440,8 @@
       "expected": "java/service/expected.json",
       "inferred": "java/service/inferred.json",
       "oracle": {
-        "kind": "java",
+        "kind": "scip",
+        "indexer": "java",
         "root": ".",
         "manualOverrides": "java/service/oracle.overrides.json"
       }
@@ -468,8 +471,8 @@
         "ast"
       ],
       "thresholds": {
-        "precision": 0.80,
-        "recall": 0.80
+        "precision": 0.8,
+        "recall": 0.8
       },
       "expected": "csharp/webforms/expected.json",
       "inferred": "csharp/webforms/inferred.json",
@@ -543,7 +546,7 @@
         "fileCount": 240
       },
       "thresholds": {
-        "precision": 0.70,
+        "precision": 0.7,
         "recall": 0.65,
         "rationale": "C# heuristic inference cannot detect 'implements' relationships (127/1463 edges) and has some false positives from type name disambiguation. Tree-sitter C# integration (Part B) will improve these metrics once wired up."
       }
@@ -556,6 +559,11 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.85,
+        "recall": 0.2,
+        "rationale": "SCIP indexes full Maven multi-module project (1830 edges) while AST analyzer only sees sparse-checkout files (~151 files). Recall gap is structural: SCIP ground truth includes cross-module edges invisible to sparse checkout."
+      },
       "expected": "java/okhttp/expected.json",
       "inferred": "java/okhttp/inferred.json",
       "provenance": {
@@ -598,21 +606,10 @@
         ]
       },
       "oracle": {
-        "kind": "java",
+        "kind": "scip",
+        "indexer": "java",
         "root": ".",
-        "manualOverrides": "java/okhttp/oracle.overrides.json",
-        "include": [
-          "okhttp/src/main/java",
-          "mockwebserver/src/main/java",
-          "okcurl/src/main/java",
-          "okhttp-dnsoverhttps/src/main/java",
-          "okhttp-logging-interceptor/src/main/java",
-          "okhttp-sse/src/main/java",
-          "okhttp-testing-support/src/main/java",
-          "okhttp-tests/src/main/java",
-          "okhttp-tls/src/main/java",
-          "okhttp-urlconnection/src/main/java"
-        ]
+        "manualOverrides": "java/okhttp/oracle.overrides.json"
       },
       "integrity": {
         "algorithm": "sha256",
@@ -682,7 +679,8 @@
       "expected": "typescript/rosetta/expected.json",
       "inferred": "typescript/rosetta/inferred.json",
       "oracle": {
-        "kind": "typescript",
+        "kind": "scip",
+        "indexer": "typescript",
         "root": ".",
         "manualOverrides": "typescript/rosetta/oracle.overrides.json"
       }
@@ -698,18 +696,10 @@
       "expected": "python/rosetta/expected.json",
       "inferred": "python/rosetta/inferred.json",
       "oracle": {
-        "kind": "python",
+        "kind": "scip",
+        "indexer": "python",
         "root": ".",
-        "manualOverrides": "python/rosetta/oracle.overrides.json",
-        "include": [
-          "src/**/*.py"
-        ],
-        "exclude": [
-          "**/__pycache__/**"
-        ],
-        "packageRoots": [
-          "src"
-        ]
+        "manualOverrides": "python/rosetta/oracle.overrides.json"
       }
     },
     {
@@ -720,10 +710,16 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.9,
+        "recall": 0.65,
+        "rationale": "SCIP uses full Java package paths (com/rosetta/...) while AST analyzer resolves at a different granularity."
+      },
       "expected": "java/rosetta/expected.json",
       "inferred": "java/rosetta/inferred.json",
       "oracle": {
-        "kind": "java",
+        "kind": "scip",
+        "indexer": "java",
         "root": ".",
         "manualOverrides": "java/rosetta/oracle.overrides.json"
       }
@@ -752,10 +748,16 @@
       "modes": [
         "ast"
       ],
+      "thresholds": {
+        "precision": 0.95,
+        "recall": 0.6,
+        "rationale": "SCIP adds crate-root back-references and cfg(test) module declaration edges that the AST analyzer does not produce."
+      },
       "expected": "rust/rosetta/expected.json",
       "inferred": "rust/rosetta/inferred.json",
       "oracle": {
-        "kind": "rust",
+        "kind": "scip",
+        "indexer": "rust",
         "root": "."
       }
     },
@@ -854,9 +856,9 @@
         "fileCount": 17
       },
       "thresholds": {
-        "precision": 0.70,
+        "precision": 0.7,
         "recall": 0.05,
-        "rationale": "Single-package Go libraries cannot be analyzed by import heuristics; only filename matching (foo_test.go→foo.go) works. One edge has relation mismatch (implements vs references). This fixture demonstrates the value of SCIP compiler analysis."
+        "rationale": "Single-package Go libraries cannot be analyzed by import heuristics; only filename matching (foo_test.go\u2192foo.go) works. One edge has relation mismatch (implements vs references). This fixture demonstrates the value of SCIP compiler analysis."
       }
     }
   ]

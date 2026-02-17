@@ -21,12 +21,22 @@
   },
   {
     "source": "source/core/Ky.ts",
+    "target": "source/types/hooks.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/core/Ky.ts",
     "target": "source/types/options.ts",
     "relation": "references"
   },
   {
     "source": "source/core/Ky.ts",
     "target": "source/types/ResponsePromise.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/core/Ky.ts",
+    "target": "source/types/retry.ts",
     "relation": "references"
   },
   {
@@ -141,6 +151,11 @@
   },
   {
     "source": "source/index.ts",
+    "target": "source/types/retry.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/index.ts",
     "target": "source/utils/merge.ts",
     "relation": "references"
   },
@@ -161,12 +176,27 @@
   },
   {
     "source": "source/types/hooks.ts",
+    "target": "source/errors/HTTPError.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/types/hooks.ts",
     "target": "source/index.ts",
     "relation": "references"
   },
   {
     "source": "source/types/hooks.ts",
     "target": "source/types/options.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/types/hooks.ts",
+    "target": "source/types/request.ts",
+    "relation": "references"
+  },
+  {
+    "source": "source/types/hooks.ts",
+    "target": "source/types/response.ts",
     "relation": "references"
   },
   {
@@ -197,11 +227,6 @@
   {
     "source": "source/types/options.ts",
     "target": "source/types/retry.ts",
-    "relation": "references"
-  },
-  {
-    "source": "source/types/options.ts",
-    "target": "test/headers.ts",
     "relation": "references"
   },
   {
@@ -245,11 +270,6 @@
     "relation": "references"
   },
   {
-    "source": "source/utils/merge.ts",
-    "target": "test/headers.ts",
-    "relation": "references"
-  },
-  {
     "source": "source/utils/normalize.ts",
     "target": "source/core/constants.ts",
     "relation": "references"
@@ -287,211 +307,6 @@
   {
     "source": "source/utils/type-guards.ts",
     "target": "source/errors/TimeoutError.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/browser.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/browser.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/browser.ts",
-    "target": "test/helpers/parse-body.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/browser.ts",
-    "target": "test/helpers/with-page.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/bytes.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/bytes.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/context.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/context.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/fetch.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/fetch.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/formdata-searchparams.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/formdata-searchparams.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/headers.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/headers.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/helpers/index.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/helpers/index.ts",
-    "target": "test/helpers/create-large-file.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/helpers/index.ts",
-    "target": "test/helpers/parse-body.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/helpers/index.ts",
-    "target": "test/helpers/with-page.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/hooks.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/hooks.ts",
-    "target": "source/types/options.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/hooks.ts",
-    "target": "source/utils/delay.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/hooks.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/http-error.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/http-error.ts",
-    "target": "source/utils/types.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/main.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/main.ts",
-    "target": "source/utils/delay.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/main.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/main.ts",
-    "target": "test/helpers/parse-body.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/memory-leak.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/memory-leak.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/methods.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/methods.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/prefix-url.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/prefix-url.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/retry.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/retry.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/retry.ts",
-    "target": "test/helpers/with-performance.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/stream.ts",
-    "target": "source/index.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/stream.ts",
-    "target": "test/helpers/create-http-test-server.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/stream.ts",
-    "target": "test/helpers/create-large-file.ts",
-    "relation": "references"
-  },
-  {
-    "source": "test/stream.ts",
-    "target": "test/helpers/parse-body.ts",
     "relation": "references"
   }
 ]

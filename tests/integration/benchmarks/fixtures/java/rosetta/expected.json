@@ -21,6 +21,11 @@
   },
   {
     "source": "src/com/rosetta/app/PipelineTest.java",
+    "target": "src/com/rosetta/models/ModelFactory.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/rosetta/app/PipelineTest.java",
     "target": "src/com/rosetta/models/Record.java",
     "relation": "references"
   },
@@ -57,7 +62,7 @@
   {
     "source": "src/com/rosetta/models/Record.java",
     "target": "src/com/rosetta/types/Entry.java",
-    "relation": "references"
+    "relation": "implements"
   },
   {
     "source": "src/com/rosetta/models/Record.java",
@@ -65,8 +70,28 @@
     "relation": "references"
   },
   {
+    "source": "src/com/rosetta/models/Report.java",
+    "target": "src/com/rosetta/models/Record.java",
+    "relation": "references"
+  },
+  {
     "source": "src/com/rosetta/processor/Processor.java",
     "target": "src/com/rosetta/helpers/Helpers.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/rosetta/processor/Processor.java",
+    "target": "src/com/rosetta/models/ModelFactory.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/rosetta/processor/Processor.java",
+    "target": "src/com/rosetta/models/Record.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/rosetta/processor/Processor.java",
+    "target": "src/com/rosetta/models/Report.java",
     "relation": "references"
   },
   {
@@ -87,6 +112,11 @@
   {
     "source": "src/com/rosetta/processor/ProcessorTest.java",
     "target": "src/com/rosetta/processor/Processor.java",
+    "relation": "references"
+  },
+  {
+    "source": "src/com/rosetta/types/Entry.java",
+    "target": "src/com/rosetta/types/Status.java",
     "relation": "references"
   }
 ]

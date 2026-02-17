@@ -8,6 +8,13 @@ mod models;
 mod processor;
 mod types;
 
+#[cfg(test)]
+mod helpers_test;
+#[cfg(test)]
+mod pipeline_test;
+#[cfg(test)]
+mod processor_test;
+
 use models::{create_record, Report};
 use processor::{run, summarize};
 

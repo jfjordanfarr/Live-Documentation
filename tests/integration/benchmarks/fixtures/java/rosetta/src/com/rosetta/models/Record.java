@@ -20,6 +20,18 @@ public class Record extends Entry {
         this.tags = new ArrayList<>();
     }
 
-    public double getValue() { return value; }
-    public List<String> getTags() { return tags; }
+    /**
+     * Static factory for creating records (used by tests).
+     */
+    public static Record create(int index, String id, double value) {
+        return new Record(id, value);
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
 }

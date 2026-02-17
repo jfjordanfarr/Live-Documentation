@@ -4,6 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -34,14 +38,14 @@ public class HelpersTest {
         @Test
         @DisplayName("sums a list of numbers")
         void sumsListOfNumbers() {
-            double[] values = {1.0, 2.0, 3.0, 4.0, 5.0};
+            List<Double> values = Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0);
             assertEquals(15.0, Helpers.sum(values), 0.001);
         }
 
         @Test
         @DisplayName("returns 0 for empty array")
         void returnsZeroForEmptyArray() {
-            assertEquals(0.0, Helpers.sum(new double[]{}), 0.001);
+            assertEquals(0.0, Helpers.sum(Collections.emptyList()), 0.001);
         }
     }
 
@@ -52,14 +56,14 @@ public class HelpersTest {
         @Test
         @DisplayName("calculates average of numbers")
         void calculatesAverageOfNumbers() {
-            double[] values = {10.0, 20.0, 30.0};
+            List<Double> values = Arrays.asList(10.0, 20.0, 30.0);
             assertEquals(20.0, Helpers.average(values), 0.001);
         }
 
         @Test
         @DisplayName("returns 0 for empty array")
         void returnsZeroForEmptyArray() {
-            assertEquals(0.0, Helpers.average(new double[]{}), 0.001);
+            assertEquals(0.0, Helpers.average(Collections.emptyList()), 0.001);
         }
     }
 }

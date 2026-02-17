@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { glob } from "glob";
 import { execSync } from "node:child_process";
-import { promises as fs } from "node:fs";
+import { promises as fs, existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -26,38 +26,6 @@ import {
   type COracleEdgeRelation
 } from "../../packages/shared/src/testing/fixtureOracles/cFixtureOracle";
 import {
-  generateCSharpFixtureGraph,
-  mergeCSharpOracleEdges,
-  serializeCSharpOracleEdges,
-  type CSharpFixtureOracleOptions,
-  type CSharpOracleEdgeRecord,
-  type CSharpOracleOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/csharpFixtureOracle";
-import {
-  generateGoFixtureGraph,
-  mergeGoOracleEdges,
-  serializeGoOracleEdges,
-  type GoFixtureOracleOptions,
-  type GoOracleEdgeRecord,
-  type GoOracleOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/goFixtureOracle";
-import {
-  generateJavaFixtureGraph,
-  mergeJavaOracleEdges,
-  serializeJavaOracleEdges,
-  type JavaFixtureOracleOptions,
-  type JavaOracleEdgeRecord,
-  type JavaOracleOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/javaFixtureOracle";
-import {
-  generatePythonFixtureGraph,
-  mergePythonOracleEdges,
-  serializePythonOracleEdges,
-  type PythonFixtureOracleOptions,
-  type PythonOracleEdgeRecord,
-  type PythonOracleOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/pythonFixtureOracle";
-import {
   generateRubyFixtureGraph,
   mergeRubyOracleEdges,
   serializeRubyOracleEdges,
@@ -65,37 +33,16 @@ import {
   type RubyOracleEdgeRecord,
   type RubyOracleOverrideConfig
 } from "../../packages/shared/src/testing/fixtureOracles/rubyFixtureOracle";
-import {
-  generateRustFixtureGraph,
-  mergeRustOracleEdges,
-  serializeRustOracleEdges,
-  type RustFixtureOracleOptions,
-  type RustOracleEdgeRecord,
-  type RustOracleOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/rustFixtureOracle";
-import {
-  generateTypeScriptFixtureGraph,
-  mergeOracleEdges as mergeTypeScriptOracleEdges,
-  serializeOracleEdges as serializeTypeScriptOracleEdges,
-  type OracleEdgeRecord as TypeScriptEdgeRecord,
-  type OracleOverrideConfig as TypeScriptOverrideConfig
-} from "../../packages/shared/src/testing/fixtureOracles/typeScriptFixtureOracle";
 
-type OracleKind = "typescript" | "python" | "c" | "rust" | "java" | "ruby" | "csharp" | "go" | "scip";
+type OracleKind = "c" | "ruby" | "scip";
 
 type OracleFixtureDefinition = ManifestFixtureDefinition & {
   oracle?: OracleFixtureConfig;
 };
 
 type OracleFixtureConfig =
-  | TypeScriptOracleConfig
-  | PythonOracleConfig
   | COracleConfig
-  | RustOracleConfig
-  | JavaOracleConfig
   | RubyOracleConfig
-  | CSharpOracleConfig
-  | GoOracleConfig
   | ScipOracleConfig;
 
 /**
@@ -120,25 +67,6 @@ interface ScipOracleConfig {
   manualOverrides?: string;
 }
 
-interface TypeScriptOracleConfig {
-  kind: "typescript";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-}
-
-interface PythonOracleConfig {
-  kind: "python";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-  exclude?: string[];
-  packageRoots?: string[];
-  entryPackages?: string[];
-  interpreter?: string;
-  env?: Record<string, string>;
-}
-
 interface COracleConfig {
   kind: "c";
   root?: string;
@@ -148,40 +76,8 @@ interface COracleConfig {
   relations?: COracleEdgeRelation[];
 }
 
-interface RustOracleConfig {
-  kind: "rust";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-  exclude?: string[];
-}
-
-interface JavaOracleConfig {
-  kind: "java";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-  exclude?: string[];
-}
-
 interface RubyOracleConfig {
   kind: "ruby";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-  exclude?: string[];
-}
-
-interface CSharpOracleConfig {
-  kind: "csharp";
-  root?: string;
-  manualOverrides?: string;
-  include?: string[];
-  exclude?: string[];
-}
-
-interface GoOracleConfig {
-  kind: "go";
   root?: string;
   manualOverrides?: string;
   include?: string[];
@@ -206,24 +102,24 @@ const FIXTURE_ROOT = path.join(REPO_ROOT, ...BENCHMARK_MANIFEST_SEGMENTS.slice(0
 const OUTPUT_ROOT = path.join(REPO_ROOT, "AI-Agent-Workspace", "tmp", "fixture-regeneration");
 
 const LANGUAGE_ALIASES = new Map<string, OracleKind>([
-  ["ts", "typescript"],
-  ["typescript", "typescript"],
-  ["py", "python"],
-  ["python", "python"],
+  ["ts", "scip"],
+  ["typescript", "scip"],
+  ["py", "scip"],
+  ["python", "scip"],
   ["c", "c"],
   ["c-lang", "c"],
   ["clang", "c"],
-  ["rs", "rust"],
-  ["rust", "rust"],
-  ["java", "java"],
-  ["javac", "java"],
+  ["rs", "scip"],
+  ["rust", "scip"],
+  ["java", "scip"],
+  ["javac", "scip"],
   ["rb", "ruby"],
   ["ruby", "ruby"],
-  ["cs", "csharp"],
-  ["csharp", "csharp"],
-  ["dotnet", "csharp"],
-  ["go", "go"],
-  ["golang", "go"],
+  ["cs", "scip"],
+  ["csharp", "scip"],
+  ["dotnet", "scip"],
+  ["go", "scip"],
+  ["golang", "scip"],
   ["scip", "scip"]
 ]);
 
@@ -417,58 +313,8 @@ async function regenerateFixture(
   });
 
   try {
-    if (oracle.kind === "typescript") {
-      await regenerateTypeScriptFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "python") {
-      await regeneratePythonFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "c") {
+    if (oracle.kind === "c") {
       await regenerateCFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "rust") {
-      await regenerateRustFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "java") {
-      await regenerateJavaFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "csharp") {
-      await regenerateCSharpFixture({
         fixture,
         oracle,
         workspaceRoot,
@@ -479,16 +325,6 @@ async function regenerateFixture(
       });
     } else if (oracle.kind === "ruby") {
       await regenerateRubyFixture({
-        fixture,
-        oracle,
-        workspaceRoot,
-        overridesPath,
-        expectedEdges,
-        expectedPath,
-        writeExpected: options.writeExpected
-      });
-    } else if (oracle.kind === "go") {
-      await regenerateGoFixture({
         fixture,
         oracle,
         workspaceRoot,
@@ -587,364 +423,6 @@ async function regenerateCFixture(input: {
   });
 }
 
-async function regenerateTypeScriptFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: TypeScriptOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<TypeScriptOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-  const autoEdges = generateTypeScriptFixtureGraph({
-    fixtureRoot: oracleRoot,
-    include: oracle.include
-  });
-  const merge = mergeTypeScriptOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromTypeScript);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromTypeScript);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromTypeScript);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromTypeScript);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "typescript");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "typescript",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializeTypeScriptOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
-async function regeneratePythonFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: PythonOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<PythonOracleOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-
-  const oracleOptions: PythonFixtureOracleOptions = {
-    fixtureRoot: oracleRoot,
-    include: oracle.include,
-    exclude: oracle.exclude,
-    packageRoots: oracle.packageRoots,
-    entryPackages: oracle.entryPackages,
-    interpreter: oracle.interpreter,
-    env: oracle.env
-  };
-
-  const autoEdges = await generatePythonFixtureGraph(oracleOptions);
-  const merge = mergePythonOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromPython);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromPython);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromPython);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromPython);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "python");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "python",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializePythonOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
-async function regenerateRustFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: RustOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<RustOracleOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-  const oracleOptions: RustFixtureOracleOptions = {
-    fixtureRoot: oracleRoot,
-    include: oracle.include,
-    exclude: oracle.exclude
-  };
-
-  const autoEdges = generateRustFixtureGraph(oracleOptions);
-  const merge = mergeRustOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromRust);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromRust);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromRust);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromRust);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  // Use fixture include/exclude patterns, not oracle patterns, to match materialization
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "rust");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "rust",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializeRustOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
-async function regenerateJavaFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: JavaOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<JavaOracleOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-  const oracleOptions: JavaFixtureOracleOptions = {
-    fixtureRoot: oracleRoot,
-    include: oracle.include,
-    exclude: oracle.exclude
-  };
-
-  const autoEdges = generateJavaFixtureGraph(oracleOptions);
-  const merge = mergeJavaOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromJava);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromJava);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromJava);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromJava);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "java");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "java",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializeJavaOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
-async function regenerateCSharpFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: CSharpOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<CSharpOracleOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-  const oracleOptions: CSharpFixtureOracleOptions = {
-    fixtureRoot: oracleRoot,
-    include: oracle.include,
-    exclude: oracle.exclude
-  };
-
-  const autoEdges = generateCSharpFixtureGraph(oracleOptions);
-  const merge = mergeCSharpOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromCSharp);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromCSharp);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromCSharp);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromCSharp);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "csharp");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "csharp",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializeCSharpOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
 async function regenerateRubyFixture(input: {
   fixture: OracleFixtureDefinition;
   oracle: RubyOracleConfig;
@@ -1000,77 +478,6 @@ async function regenerateRubyFixture(input: {
   await writeOracleArtifacts({
     fixture,
     oracleFileContents: serializeRubyOracleEdges(autoEdges),
-    mergedRecords,
-    expectedEdges,
-    overridesPath,
-    expectedPath,
-    additions,
-    removals,
-    writeExpected,
-    summary: {
-      autoRecords,
-      manualRecords,
-      matchedManualRecords,
-      missingManualEntries: merge.missingManualEntries
-    }
-  });
-}
-
-async function regenerateGoFixture(input: {
-  fixture: OracleFixtureDefinition;
-  oracle: GoOracleConfig;
-  workspaceRoot: string;
-  overridesPath: string;
-  expectedEdges: EdgeRecord[];
-  expectedPath: string;
-  writeExpected: boolean;
-}): Promise<void> {
-  const {
-    fixture,
-    oracle,
-    workspaceRoot,
-    overridesPath,
-    expectedEdges,
-    expectedPath,
-    writeExpected
-  } = input;
-
-  const overrides = await readOverrideConfig<GoOracleOverrideConfig>(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracle.root ?? ".");
-  const oracleOptions: GoFixtureOracleOptions = {
-    fixtureRoot: oracleRoot,
-    include: oracle.include,
-    exclude: oracle.exclude
-  };
-
-  const autoEdges = generateGoFixtureGraph(oracleOptions);
-  const merge = mergeGoOracleEdges(autoEdges, overrides);
-
-  const autoRecords = merge.autoRecords.map(toEdgeRecordFromGo);
-  const manualRecords = merge.manualRecords.map(toEdgeRecordFromGo);
-  let mergedRecords = merge.mergedRecords.map(toEdgeRecordFromGo);
-  const matchedManualRecords = merge.matchedManualRecords.map(toEdgeRecordFromGo);
-
-  // Union with tree-sitter edges for comprehensive ground truth
-  const fixtureInclude = resolveFixtureIncludePatterns(fixture, "go");
-  const fixtureExclude = resolveFixtureExcludePatterns(fixture);
-  const treeSitterEdges = await extractTreeSitterEdges(
-    oracleRoot,
-    "go",
-    fixtureInclude,
-    fixtureExclude
-  );
-  if (treeSitterEdges.length > 0) {
-    console.log(`→ tree-sitter edges: ${treeSitterEdges.length}`);
-    mergedRecords = unionEdges(mergedRecords, treeSitterEdges);
-  }
-
-  const additions = computeEdgeDifferences(mergedRecords, expectedEdges);
-  const removals = computeEdgeDifferences(expectedEdges, mergedRecords);
-
-  await writeOracleArtifacts({
-    fixture,
-    oracleFileContents: serializeGoOracleEdges(autoEdges),
     mergedRecords,
     expectedEdges,
     overridesPath,
@@ -1476,22 +883,6 @@ function edgeKey(source: string, target: string, relation: string): string {
   return `${source}→${target}#${relation}`;
 }
 
-function toEdgeRecordFromTypeScript(record: TypeScriptEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
-function toEdgeRecordFromPython(record: PythonOracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
 function toEdgeRecordFromC(record: COracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
@@ -1500,39 +891,7 @@ function toEdgeRecordFromC(record: COracleEdgeRecord): EdgeRecord {
   } satisfies EdgeRecord;
 }
 
-function toEdgeRecordFromRust(record: RustOracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
-function toEdgeRecordFromJava(record: JavaOracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
-function toEdgeRecordFromCSharp(record: CSharpOracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
 function toEdgeRecordFromRuby(record: RubyOracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    relation: normalizeRelationToScipTaxonomy(record.relation)
-  } satisfies EdgeRecord;
-}
-
-function toEdgeRecordFromGo(record: GoOracleEdgeRecord): EdgeRecord {
   return {
     source: record.source,
     target: record.target,
@@ -1635,16 +994,56 @@ async function regenerateScipFixture(input: {
   const indexRoot = oracle.root ? path.join(workspaceRoot, oracle.root) : workspaceRoot;
   const indexPath = path.join(indexRoot, "index.scip");
   
+  // Step 0: For git-materialized fixtures, prepare the workspace for SCIP indexing
+  const hasMaterialization = input.fixture.materialization?.kind === "git";
+  if (hasMaterialization) {
+    // SCIP indexers need full project structure (build files, dependencies, etc.)
+    // but the materializer may use sparse checkout. Disable it for SCIP indexing.
+    const hasSparse = !!(input.fixture.materialization as { sparsePaths?: string[] }).sparsePaths;
+    if (hasSparse) {
+      console.log(`  Disabling sparse checkout for SCIP indexing...`);
+      try {
+        execSync("git sparse-checkout disable", {
+          cwd: workspaceRoot,
+          stdio: ["ignore", "pipe", "pipe"],
+          timeout: 30000
+        });
+      } catch {
+        console.log(`  ⚠ Could not disable sparse checkout`);
+      }
+    }
+    
+    // Install language-specific dependencies
+    const packageJsonPath = path.join(indexRoot, "package.json");
+    if (existsSync(packageJsonPath) && oracle.indexer === "typescript") {
+      console.log(`  Installing dependencies for materialized fixture...`);
+      try {
+        execSync("npm install --ignore-scripts", {
+          cwd: indexRoot,
+          stdio: ["ignore", "pipe", "pipe"],
+          timeout: 120000
+        });
+      } catch {
+        console.log(`  ⚠ npm install failed (continuing anyway)`);
+      }
+    }
+  }
+  
   // Step 1: Invoke the SCIP indexer based on the indexer type
   console.log(`  Invoking scip-${oracle.indexer} indexer...`);
   
   let indexerCmd: string;
   switch (oracle.indexer) {
-    case "typescript":
-      indexerCmd = `npx scip-typescript index --infer-tsconfig --output index.scip`;
+    case "typescript": {
+      // Use the workspace-local scip-typescript binary to avoid npx registry lookup failures
+      // when running in materialized (git-cloned) fixture directories
+      const scipTsBin = path.resolve(__dirname, "../../node_modules/.bin/scip-typescript");
+      indexerCmd = `"${scipTsBin}" index --infer-tsconfig --output index.scip`;
       break;
+    }
     case "csharp":
-      indexerCmd = `scip-dotnet index --output index.scip`;
+      // DOTNET_ROLL_FORWARD allows scip-dotnet (targeting .NET 9) to run on .NET 10+
+      indexerCmd = `DOTNET_ROLL_FORWARD=LatestMajor scip-dotnet index --output index.scip`;
       break;
     case "java":
       indexerCmd = `scip-java index --output index.scip`;
@@ -1667,7 +1066,7 @@ async function regenerateScipFixture(input: {
     execSync(indexerCmd, {
       cwd: indexRoot,
       stdio: ["ignore", "pipe", "pipe"],
-      timeout: 120000 // 2 minute timeout for large codebases
+      timeout: 300000 // 5 minute timeout for large vendor codebases (e.g., OkHttp)
     });
     console.log(`  ✓ SCIP index generated: ${indexPath}`);
   } catch (err) {

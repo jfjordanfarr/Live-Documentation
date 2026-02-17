@@ -1,5 +1,65 @@
 [
   {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/main.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.c",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/main.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/main.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/main.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/metrics.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/metrics.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.c",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/logger.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/metrics.c",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/metrics.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.c",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.h",
+    "relation": "references"
+  },
+  {
+    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/pipeline.h",
+    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/modular/src/metrics.h",
+    "relation": "references"
+  },
+  {
     "source": "src/logger.c",
     "target": "src/logger.h",
     "relation": "references"

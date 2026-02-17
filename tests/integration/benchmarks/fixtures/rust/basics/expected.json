@@ -11,6 +11,11 @@
   },
   {
     "source": "src/math.rs",
+    "target": "src/main.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/math.rs",
     "target": "src/utils.rs",
     "relation": "references"
   }

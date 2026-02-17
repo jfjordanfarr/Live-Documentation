@@ -1,12 +1,22 @@
 [
   {
     "source": "src/analytics.rs",
+    "target": "src/main.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/analytics.rs",
     "target": "src/metrics.rs",
     "relation": "references"
   },
   {
     "source": "src/analytics.rs",
     "target": "src/models.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/io.rs",
+    "target": "src/main.rs",
     "relation": "references"
   },
   {
@@ -32,6 +42,11 @@
   {
     "source": "src/main.rs",
     "target": "src/models.rs",
+    "relation": "references"
+  },
+  {
+    "source": "src/metrics.rs",
+    "target": "src/main.rs",
     "relation": "references"
   },
   {
