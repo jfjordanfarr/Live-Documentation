@@ -15,7 +15,7 @@ paths:
       summary: Serve the Explorer UI shell
       operationId: getExplorerIndex
       responses:
-        '200':
+        "200":
           description: Explorer HTML
           content:
             text/html:
@@ -32,14 +32,14 @@ paths:
           description: When set to `1`, rebuilds the graph before returning it.
           schema:
             type: string
-            enum: ['1']
+            enum: ["1"]
       responses:
-        '200':
+        "200":
           description: Explorer graph
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExplorerGraphPayload'
+                $ref: "#/components/schemas/ExplorerGraphPayload"
   /details:
     get:
       summary: Retrieve detail payload for a single Live Doc
@@ -52,15 +52,15 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Details payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExplorerDetailPayload'
-        '400':
+                $ref: "#/components/schemas/ExplorerDetailPayload"
+        "400":
           description: Missing/invalid docPath
-        '404':
+        "404":
           description: Node not found
   /open:
     get:
@@ -74,13 +74,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             text/plain:
               schema:
                 type: string
-        '400':
+        "400":
           description: Missing/invalid codePath
   /local-map:
     get:
@@ -99,17 +99,17 @@ paths:
           description: When set to `1`, pretty-prints the JSON.
           schema:
             type: string
-            enum: ['1']
+            enum: ["1"]
       responses:
-        '200':
+        "200":
           description: Local Map data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LocalMapData'
-        '400':
+                $ref: "#/components/schemas/LocalMapData"
+        "400":
           description: Missing nodeId
-        '404':
+        "404":
           description: Node not found
 components:
   schemas:
@@ -136,7 +136,7 @@ components:
         resolved:
           type: boolean
         kind:
-          $ref: '#/components/schemas/ExplorerLinkKind'
+          $ref: "#/components/schemas/ExplorerLinkKind"
     ExplorerTypeReference:
       type: object
       additionalProperties: false
@@ -165,7 +165,7 @@ components:
         typeReferences:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerTypeReference'
+            $ref: "#/components/schemas/ExplorerTypeReference"
     ExplorerNodePayload:
       type: object
       additionalProperties: true
@@ -199,7 +199,7 @@ components:
         dependencies:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerDependencyReference'
+            $ref: "#/components/schemas/ExplorerDependencyReference"
         dependents:
           type: array
           items:
@@ -207,7 +207,7 @@ components:
         missingDependencies:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerDependencyReference'
+            $ref: "#/components/schemas/ExplorerDependencyReference"
         publicSymbols:
           type: array
           items:
@@ -215,7 +215,7 @@ components:
         publicSymbolsExtended:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerPublicSymbol'
+            $ref: "#/components/schemas/ExplorerPublicSymbol"
         symbolDocumentation:
           type: object
           additionalProperties: true
@@ -236,7 +236,7 @@ components:
             - type: object
               additionalProperties: true
         kind:
-          $ref: '#/components/schemas/ExplorerLinkKind'
+          $ref: "#/components/schemas/ExplorerLinkKind"
         sourceSymbol:
           type: string
         targetSymbol:
@@ -260,13 +260,13 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerNodePayload'
+            $ref: "#/components/schemas/ExplorerNodePayload"
         links:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerLinkPayload'
+            $ref: "#/components/schemas/ExplorerLinkPayload"
         stats:
-          $ref: '#/components/schemas/ExplorerGraphStats'
+          $ref: "#/components/schemas/ExplorerGraphStats"
     ExplorerDetailPayload:
       type: object
       additionalProperties: true
@@ -291,7 +291,7 @@ components:
         dependencies:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerDependencyReference'
+            $ref: "#/components/schemas/ExplorerDependencyReference"
         dependents:
           type: array
           items:
@@ -299,7 +299,7 @@ components:
         missingDependencies:
           type: array
           items:
-            $ref: '#/components/schemas/ExplorerDependencyReference'
+            $ref: "#/components/schemas/ExplorerDependencyReference"
         docRelativePath:
           type: string
         codeRelativePath:
@@ -354,7 +354,7 @@ components:
           type: string
           enum: [warning, info, hint]
         status:
-          $ref: '#/components/schemas/DiagnosticStatus'
+          $ref: "#/components/schemas/DiagnosticStatus"
         createdAt:
           type: string
           format: date-time
@@ -371,8 +371,10 @@ components:
             type: string
             format: uuid
         llmAssessment:
-          $ref: '#/components/schemas/LLMAssessment'
+          # Descoped 2026-02-17: LLM integration removed from project scope.
+          $ref: "#/components/schemas/LLMAssessment"
           nullable: true
+          deprecated: true
     AcknowledgementInput:
       type: object
       required: [actor]
@@ -395,6 +397,8 @@ components:
           format: date-time
           nullable: true
     LLMEvaluationInput:
+      # Descoped 2026-02-17: LLM integration removed from project scope.
+      deprecated: true
       type: object
       required: [diagnosticIds]
       properties:
@@ -407,6 +411,8 @@ components:
           type: string
           nullable: true
     LLMEvaluationTicket:
+      # Descoped 2026-02-17: LLM integration removed from project scope.
+      deprecated: true
       type: object
       properties:
         ticketId:
@@ -418,6 +424,8 @@ components:
           type: integer
           nullable: true
     LLMAssessment:
+      # Descoped 2026-02-17: LLM integration removed from project scope.
+      deprecated: true
       type: object
       properties:
         summary:

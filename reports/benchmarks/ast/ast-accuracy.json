@@ -1,7 +1,7 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2026-02-17T16:23:16.641Z",
+  "recordedAt": "2026-02-17T20:04:47.671Z",
   "environment": {
     "nodeVersion": "v22.21.1",
     "platform": "linux",

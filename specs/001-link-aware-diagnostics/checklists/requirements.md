@@ -35,7 +35,7 @@
 - [x] Specification requires deterministic regeneration with analyzer provenance metadata
 - [x] Evidence expectations (tests, waivers, diagnostics) are documented
 - [x] Relative markdown links and configurable slug dialect called out for wiki portability
-- [x] CLI/LLM parity captured as requirement for all user-facing interactions
+- [x] CLI/AI-assistant parity captured as requirement for all user-facing interactions
 
 ## Notes
 

@@ -12,11 +12,13 @@ description: "Task list for Live Documentation"
 **Organization**: Tasks align with the adoption stages and phases defined in the implementation plan. IDs follow `LD-<Stage><Sequence>` to track progress against FR-LD requirements and WI-LD work items.
 
 ## Format: `[ID] [P?] [Phase/Story] Description`
+
 - **[P]**: May proceed in parallel once prerequisites finish
 - **Phase/Story**: Stage or user story from the spec (e.g., Stage0, FR-LD1)
 - Include exact file paths or commands when modifying code or tooling
 
 ## Path Conventions
+
 - VS Code extension client: `packages/extension/`
 - Language server: `packages/server/`
 - Shared utilities & domain: `packages/shared/`
@@ -61,7 +63,7 @@ description: "Task list for Live Documentation"
 - [x] LD-204 [P] Stage output into `/.live-documentation/<baseLayer>/` (default `source/`); respect configurable root via workspace settings and CLI flag
 - [x] LD-205 Add diff/dry-run mode so `npm run live-docs:generate -- --dry-run` surfaces changes without writing
 - [x] LD-206 Create integration suite skeleton `tests/integration/live-docs/generation.test.ts` covering authored preservation and deterministic output
-- [x] LD-207 Establish language analyzer adapters for non-TypeScript fixtures so the generator emits `Public Symbols` and `Dependencies` for Python, C#, Java, Ruby, Rust, and C files using repository-hosted benchmark oracles (scope limited to fixtures tracked in this repo). *(Completed via rubyAdapter + cAdapter docstring suites and regenerated fixtures on 2025-11-14.)*
+- [x] LD-207 Establish language analyzer adapters for non-TypeScript fixtures so the generator emits `Public Symbols` and `Dependencies` for Python, C#, Java, Ruby, Rust, and C files using repository-hosted benchmark oracles (scope limited to fixtures tracked in this repo). _(Completed via rubyAdapter + cAdapter docstring suites and regenerated fixtures on 2025-11-14.)_
 - [ ] LD-208 [P] Add integration coverage that runs `live-docs:generate` against the polyglot fixture workspaces and snapshots markdown output under `tests/integration/live-docs/polyglot-fixtures.test.ts`, ensuring regenerated docs stay deterministic before we target external repositories.
 
 **Checkpoint**: Generator CLI produces deterministic staged Live Docs with provenance markers and dry-run diffing.
@@ -128,7 +130,7 @@ description: "Task list for Live Documentation"
 
 - [ ] LD-700 Add co-activation analytics enricher sourced from deterministic Stage-0 signals (`packages/shared/src/live-docs/enrichers/coActivationEnricher.ts`, `referenceEnricher.ts`)
 - [ ] LD-701 Extend telemetry to record regeneration latency, waiver counts, evidence coverage (updates in `packages/shared/src/telemetry/liveDocsTelemetry.ts`)
-- [ ] LD-702 [P] Implement low-confidence edge tagging for external feeds + LLM augmentations with promotion workflow
+- [ ] LD-702 [P] ~~Implement low-confidence edge tagging for external feeds + LLM augmentations with promotion workflow~~ _(Descoped 2026-02-17: LLM integration removed. External feed tagging can proceed independently if needed.)_
 - [ ] LD-703 Generate Layer‑2/Layer‑3 summaries from Live Docs (`scripts/live-docs/derive-roadmap.ts` producing `.mdmd/layer-2/` updates)
 - [ ] LD-704 Add audit dashboard export CLI (`scripts/live-docs/report.ts`) summarising SC-LD metrics
 - [ ] LD-705 Define deterministic derivation rules for System Layer archetypes using Layer‑4 graph data; document expected outputs in `AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md` (see System Layer Signal Catalog) with legacy `.mdmd/layer-3/**` docs serving only as validation references
@@ -138,14 +140,14 @@ description: "Task list for Live Documentation"
 - [ ] LD-709 Validate System Layer renders across VS Code preview, CLI `live-docs inspect`, and markdown export, then schedule MDMD Layer‑3 retirement window
 - [ ] LD-710 Parse workflow orchestrators (e.g., `scripts/live-docs/run-all.ts`) to extract stage ordering when dependencies are expressed via string literals rather than imports
 - [ ] LD-711 Hook System Layer derivation into coverage manifests (`coverage/live-docs/targets.json`) once emitted so testing archetypes reflect bidirectional coverage data
-- [x] LD-712 Refactor `packages/server/src/features/live-docs/generator.ts` to extract shared core utilities (target discovery, analysis, merge/write pipeline) into a reusable module under `packages/shared/src/live-docs`. *(Shared helpers now live in `packages/shared/src/live-docs/core.ts` and the server generator consumes them.)*
+- [x] LD-712 Refactor `packages/server/src/features/live-docs/generator.ts` to extract shared core utilities (target discovery, analysis, merge/write pipeline) into a reusable module under `packages/shared/src/live-docs`. _(Shared helpers now live in `packages/shared/src/live-docs/core.ts` and the server generator consumes them.)_
 - [ ] LD-713 Create layer-specific generator entrypoints (`generator.layer4.ts`, `generator.system.ts`) that compose the shared core with layer rules while keeping existing CLI integrations functional
 - [ ] LD-714 Filter build artefacts (e.g., compiled `.js` siblings) out of System Layer `Components` while preserving canonical TypeScript sources.
 - [ ] LD-715 Merge duplicate System Layer interaction/workflow docs when they describe the same orchestrator; ensure topology reflects single-source ordering.
 - [ ] LD-716 Enrich System Layer topology with orchestrator stage edges emitted from LD-710 so CLI interaction docs show meaningful flow instead of isolated nodes.
 - [ ] LD-717 Prune and aggregate testing archetype topology to highlight Live Docs suites while avoiding unreadable graphs (e.g., collapse extension diagnostics tests).
-- [x] LD-718 Ship `npm run live-docs:system` CLI that emits System analytics as on-demand materialized views (stdout or caller-provided temp directory) with markdown/JSON format options. *(Completed 2026-01-17: CLI ships with `--output`, `--clean`, `--dry-run`, and `--config` options. System views are now ephemeral-only by default.)*
-- [x] LD-719 Remove the committed `.live-documentation/system/` mirror once the CLI is validated, updating lint/safe-commit rules to block future check-ins of materialized views. *(Completed 2026-01-17: System layer is now ephemeral-only; committed mirrors no longer exist.)*
+- [x] LD-718 Ship `npm run live-docs:system` CLI that emits System analytics as on-demand materialized views (stdout or caller-provided temp directory) with markdown/JSON format options. _(Completed 2026-01-17: CLI ships with `--output`, `--clean`, `--dry-run`, and `--config` options. System views are now ephemeral-only by default.)_
+- [x] LD-719 Remove the committed `.live-documentation/system/` mirror once the CLI is validated, updating lint/safe-commit rules to block future check-ins of materialized views. _(Completed 2026-01-17: System layer is now ephemeral-only; committed mirrors no longer exist.)_
 - [ ] LD-720 Author integration tests and fixture workspaces that exercise the System analytics CLI against known technical debt so failures surface without persisting docs.
 
 **Checkpoint**: Live Docs feed richer telemetry and derived docs without sacrificing determinism.
@@ -195,36 +197,38 @@ description: "Task list for Live Documentation"
 - **Phase5 → Phase6**: Migration waits for drift tools to avoid regressions.
 - **Phase6 → Phase7**: Enrichers build on canonical Live Docs.
 - **Stage8 → Stage9**: Hosted showcase depends on the Layer distribution pipeline so the stateless runner can reuse proven generator assets and publishing guides.
-- **Phase7 → Stage10**: LLM enrichment depends on canonical Live Docs and System analytics infrastructure.
-- **Stage10 → Stage11**: Brownfield integration can proceed independently but benefits from LLM synthesis for legacy context.
+- ~~**Phase7 → Stage10**: LLM enrichment depends on canonical Live Docs and System analytics infrastructure.~~ _(Descoped 2026-02-17: LLM integration removed.)_
+- **Phase7 → Stage11**: Brownfield integration can proceed independently once canonical Live Docs and System analytics are in place.
 
 Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/203, LD-302/303). Evidence and consumption phases split across teams by surface (CLI vs diagnostics) once generator stabilises.
 
-## Stage 10 – LLM Enrichment (Extractive & Generative)
+## Stage 10 – ~~LLM Enrichment (Extractive & Generative)~~ _(Descoped 2026-02-17)_
 
-**Purpose**: Deliver explicit, user-invoked LLM capabilities that discover missed relationships (extractive) and synthesize human-readable prose from statistical artifacts (generative), with budget controls, diff previews, and audit trails.
+> **Descoped**: LLM integration has been removed from the project scope. All LLM modules were dormant/speculative with zero production callers. Users bring their own AI assistants and consume Live Docs as structured context. This eliminates trust, safety, cost, and hallucination-propagation concerns from the tool itself.
 
-- [ ] LD-1000 Define LLM enrichment configuration schema (budget caps, model preferences, scope filters) in `.live-docs.config.json` and `packages/shared/src/config/llmEnrichmentConfig.ts`
-- [ ] LD-1001 Implement extractive graph edge discovery pipeline extending `LlmIngestionOrchestrator` with provenance metadata (model, prompt version, confidence) and human promotion gates
-- [ ] LD-1002 [P] Wire CLI (`scripts/live-docs/enrich.ts`) and extension command (`Live Documentation: Enrich Graph`) with configurable scope (file, folder, workspace)
-- [ ] LD-1003 Implement generative document synthesis pipeline filling `_Pending authored purpose_` placeholders while preserving deterministic generated sections
-- [ ] LD-1004 [P] Wire CLI (`scripts/live-docs/synthesize.ts`) and extension command (`Live Documentation: Synthesize Authored Section`) with diff previews before write
-- [ ] LD-1005 Implement budget enforcement (token limits, spend thresholds) with graceful abort and actionable guidance
-- [ ] LD-1006 [P] Add stale edge invalidation when source files change, prompting re-extraction rather than silently serving outdated relationships
-- [ ] LD-1007 Capture telemetry for invocation counts, token usage, promotion/rejection rates without logging prompt/response content
-- [ ] LD-1008 Add integration tests `tests/integration/live-docs/llm-enrichment.test.ts` covering extraction, synthesis, budget enforcement, and provenance
-- [ ] LD-1009 Document LLM enrichment workflow in `specs/001-link-aware-diagnostics/quickstart.md` and update Layer‑1/Layer‑2 docs
+~~**Purpose**: Deliver explicit, user-invoked LLM capabilities that discover missed relationships (extractive) and synthesize human-readable prose from statistical artifacts (generative), with budget controls, diff previews, and audit trails.~~
 
-**Checkpoint**: LLM enrichment commands ship with budget controls, diff previews, and audit trails; no background LLM calls occur without explicit user invocation.
+- [x] ~~LD-1000~~ Descoped
+- [x] ~~LD-1001~~ Descoped
+- [x] ~~LD-1002~~ Descoped
+- [x] ~~LD-1003~~ Descoped
+- [x] ~~LD-1004~~ Descoped
+- [x] ~~LD-1005~~ Descoped
+- [x] ~~LD-1006~~ Descoped
+- [x] ~~LD-1007~~ Descoped
+- [x] ~~LD-1008~~ Descoped
+- [x] ~~LD-1009~~ Descoped
+
+~~**Checkpoint**: LLM enrichment commands ship with budget controls, diff previews, and audit trails; no background LLM calls occur without explicit user invocation.~~
 
 ## Stage 11 – Brownfield Documentation Integration
 
 **Purpose**: Enable Live Documentation to coexist with pre-existing markdown documentation in brownfield workspaces through a "bridge, don't replace" strategy that respects legacy context without overwriting or tracking it.
 
 - [ ] LD-1100 Validate that `live-docs:generate` leaves brownfield markdown byte-for-byte unchanged via integration test `tests/integration/live-docs/brownfield-respect.test.ts`
-- [x] LD-1101 Extend graph builder to discover link-connected brownfield docs and include them as read-only nodes with distinct metadata (isGenerated: false, isBrownfield: true) *(Completed 2026-01-08: bundledMarkdownScanner discovers link-connected docs via single-hop markdown link extraction; 452 links found, 60 files bundled.)*
-- [x] LD-1102 [P] Render brownfield docs in Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status *(Completed 2026-01-08: purple color #9966cc, smaller size 5, thinner edges width 1.)*
-- [x] LD-1103 Implement single "Show Related Documentation" checkbox in Force Graph controlling visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history) *(Completed 2026-01-08: checkbox with localStorage persistence, Force Graph-only visibility via `.force-graph-only` CSS class.)*
+- [x] LD-1101 Extend graph builder to discover link-connected brownfield docs and include them as read-only nodes with distinct metadata (isGenerated: false, isBrownfield: true) _(Completed 2026-01-08: bundledMarkdownScanner discovers link-connected docs via single-hop markdown link extraction; 452 links found, 60 files bundled.)_
+- [x] LD-1102 [P] Render brownfield docs in Force Graph with distinct styling (dashed borders, muted palette) signalling their non-generated status _(Completed 2026-01-08: purple color #9966cc, smaller size 5, thinner edges width 1.)_
+- [x] LD-1103 Implement single "Show Related Documentation" checkbox in Force Graph controlling visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history) _(Completed 2026-01-08: checkbox with localStorage persistence, Force Graph-only visibility via `.force-graph-only` CSS class.)_
 - [ ] LD-1104 [P] Document layer mapping: brownfield docs conceptually map to Layers 1–3 and never to Layer 4
 - [ ] LD-1105 Implement optional semantic indexing for brownfield markdown (title, headings, first paragraph) so search surfaces legacy context without mutating files
 - [ ] LD-1106 Add integration tests `tests/integration/live-docs/brownfield-discovery.test.ts` covering link-driven discovery, Force Graph rendering, and search indexing
@@ -233,14 +237,17 @@ Tasks tagged `[P]` can run concurrently when dependencies agree (e.g., LD-202/20
 **Checkpoint**: Brownfield documentation coexists peacefully with Live Docs; existing markdown is never overwritten and appears in the Force Graph when link-connected.
 
 ## Implementation Traceability
+
 - Generator + bridges live under `packages/server/src/features/live-docs/` and `packages/shared/src/live-docs/`
 - CLI tooling resides in `scripts/live-docs/`
 - Integration suites materialise under `tests/integration/live-docs/`
 - Documentation updates land across `specs/001-link-aware-diagnostics/**` and `.mdmd/layer-*/`
 
 ## Summary Metrics
+
 **Summary Metrics**
+
 - **Total Tasks**: 102 (18 closed, 84 open)
 - **By Phase**: Stage0 (0 open), Phase1 (0 open), Phase2 (7 open), Phase3 (0 open), Phase4 (9 open), Phase5 (10 open), Phase6 (5 open), Phase7 (18 open), Stage8 (13 open), Stage9 (3 open), Stage10 (10 open), Stage11 (5 open)
-- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`, `llm-enrichment.test.ts`, `brownfield-respect.test.ts`, `brownfield-discovery.test.ts`
-- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801), LLM Enrichment (WI-LD1001), Brownfield Integration (WI-LD1101)
+- **Independent Tests**: `generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`, `docstring-drift.test.ts`, `static-explorer.test.ts`, ~~`llm-enrichment.test.ts`~~ _(descoped)_, `brownfield-respect.test.ts`, `brownfield-discovery.test.ts`
+- **Primary Workstreams**: Generator foundations (WI-LD101), Evidence bridges (WI-LD102), Docstring drift (WI-LD201), Consumption parity (WI-LD301), System Layer migration (WI-LD401), Static Explorer distribution (WI-LD801), ~~LLM Enrichment (WI-LD1001)~~ _(descoped)_, Brownfield Integration (WI-LD1101)

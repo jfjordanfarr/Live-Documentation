@@ -1,6 +1,7 @@
 # Quickstart: Live Documentation
 
 > **⚠️ This document has been superseded by the Layer 1 User Guides:**
+>
 > - [Getting Started](../../.mdmd/layer-1/guides/getting-started.mdmd.md) — Installation, configuration, first session
 > - [Tracing Impact](../../.mdmd/layer-1/guides/tracing-impact.mdmd.md) — Dependency pathfinding
 > - [Visualizing Your Codebase](../../.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) — Explorer views and shareability
@@ -18,12 +19,12 @@ Live Documentation pairs every tracked workspace asset with a markdown artifact 
 
 Live Documentation supports four distinct workflows:
 
-| Loop | User | Action | System Response |
-|------|------|--------|-----------------|
-| **Writer's Loop** | Technical Writers, PMs | Edit markdown, reference a moved file | IDE underlines the broken link; Quick Fix heals it |
-| **Developer's Loop** | Engineers | Modify a core utility | "Ripple Effect" shows every impacted file (code + docs) |
-| **Explorer's Loop** | Architects, Onboarders | Run the Visualizer | Interactive Circuit Board / Local Map / Force Graph views |
-| **Maintainer's Loop** | Leads, Ops | Prepare a commit | SlopCop audits block if links, symbols, or assets are broken |
+| Loop                  | User                   | Action                                | System Response                                              |
+| --------------------- | ---------------------- | ------------------------------------- | ------------------------------------------------------------ |
+| **Writer's Loop**     | Technical Writers, PMs | Edit markdown, reference a moved file | IDE underlines the broken link; Quick Fix heals it           |
+| **Developer's Loop**  | Engineers              | Modify a core utility                 | "Ripple Effect" shows every impacted file (code + docs)      |
+| **Explorer's Loop**   | Architects, Onboarders | Run the Visualizer                    | Interactive Circuit Board / Local Map / Force Graph views    |
+| **Maintainer's Loop** | Leads, Ops             | Prepare a commit                      | SlopCop audits block if links, symbols, or assets are broken |
 
 ---
 
@@ -32,7 +33,6 @@ Live Documentation supports four distinct workflows:
 - **Node.js 22.x** (see `.nvmrc`)
 - **VS Code 1.91+** (optional — CLI works standalone)
 - Git tooling for large workspace diffs
-- Optional: local LLM runtime (e.g., Ollama) for docstring summarisation
 
 ---
 
@@ -98,14 +98,14 @@ This repository uses an internal MDMD convention and overrides these defaults vi
 
 **Key Options**
 
-| Setting | Default | Purpose |
-|---------|---------|---------|
-| `root` | `.live-documentation` | Filesystem root for staged docs |
-| `baseLayer` | `source` | Folder mirroring the source tree |
-| `extension` | `.md` | Output extension for Live Docs |
-| `slugDialect` | `github` | Header slug strategy (`github`, `azure-devops`, `gitlab`) |
-| `requireRelativeLinks` | `true` | Forces relative links for repo-backed wikis |
-| `glob` | `[...]` | Glob patterns defining which assets receive Live Docs |
+| Setting                | Default               | Purpose                                                   |
+| ---------------------- | --------------------- | --------------------------------------------------------- |
+| `root`                 | `.live-documentation` | Filesystem root for staged docs                           |
+| `baseLayer`            | `source`              | Folder mirroring the source tree                          |
+| `extension`            | `.md`                 | Output extension for Live Docs                            |
+| `slugDialect`          | `github`              | Header slug strategy (`github`, `azure-devops`, `gitlab`) |
+| `requireRelativeLinks` | `true`                | Forces relative links for repo-backed wikis               |
+| `glob`                 | `[...]`               | Glob patterns defining which assets receive Live Docs     |
 
 ---
 
@@ -122,11 +122,11 @@ npm run live-docs:visualize
 
 ### Three Views
 
-| View | Purpose | Best For |
-|------|---------|----------|
-| **Circuit Board** | Macroscopic "motherboard" map showing clusters and hubs | Architecture overview, identifying hotspots |
-| **Local Map** | 3-column layout: Inbound → Active Node → Outbound (plus an optional From/To pathfinding mode) | Understanding a single file's relationships; tracing multi-hop chains |
-| **Force Graph** | Physics-based network visualization | Discovering unexpected connections |
+| View              | Purpose                                                                                       | Best For                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Circuit Board** | Macroscopic "motherboard" map showing clusters and hubs                                       | Architecture overview, identifying hotspots                           |
+| **Local Map**     | 3-column layout: Inbound → Active Node → Outbound (plus an optional From/To pathfinding mode) | Understanding a single file's relationships; tracing multi-hop chains |
+| **Force Graph**   | Physics-based network visualization                                                           | Discovering unexpected connections                                    |
 
 ### Explorer Features
 
@@ -139,7 +139,7 @@ npm run live-docs:visualize
 
 ### Headless JSON API
 
-For LLM/automation use, query the Local Map data directly:
+For automation and AI-assistant use, query the Local Map data directly:
 
 ```powershell
 # Get structured JSON for any node's neighborhood
@@ -160,11 +160,13 @@ npm run live-docs:visualize:static
 ```
 
 **What's Bundled**:
+
 - `index.html` — Self-contained viewer
 - `explorer-data.json` — Graph (nodes, links), symbol index, all Live Doc markdown
 - Provenance metadata (commit hash, generator version, timestamp)
 
 **Deployment**:
+
 ```powershell
 # Copy to any static host
 Copy-Item dist/explorer/* /path/to/gh-pages/ -Recurse
@@ -231,6 +233,7 @@ npm run live-docs:generate -- --changed
 ```
 
 **What gets created**:
+
 - `Metadata` frontmatter: Live Doc ID, archetype, source path, provenance hash
 - `Purpose` / `Notes` headers seeded from templates — **you write these**
 - `Public Symbols` / `Dependencies` / `Observed Evidence` — **machine-generated** (fenced with HTML markers)
@@ -248,6 +251,7 @@ npm run live-docs:lint
 ```
 
 **What's enforced**:
+
 - Relative links only (no absolute paths)
 - Generated-marker integrity (fences intact)
 - Evidence presence (unless waived)
@@ -273,6 +277,7 @@ npm run live-docs:inspect -- --from <path> --to <path>
 ```
 
 Use the Explorer to identify:
+
 - Architectural hotspots (Circuit Board)
 - Single-file impact (Local Map)
 - Unexpected connections (Force Graph)
@@ -285,13 +290,13 @@ Use the Explorer to identify:
 
 ### Daily Commands
 
-| Task | Command |
-|------|---------|
-| Regenerate after edits | `npm run live-docs:generate -- --changed` |
-| Trace dependencies | `npm run live-docs:inspect -- --from <path>` |
-| Validate before commit | `npm run safe:commit` |
-| Audit coverage gaps | `npm run graph:audit` |
-| Visualize relationships | `npm run live-docs:visualize` |
+| Task                    | Command                                      |
+| ----------------------- | -------------------------------------------- |
+| Regenerate after edits  | `npm run live-docs:generate -- --changed`    |
+| Trace dependencies      | `npm run live-docs:inspect -- --from <path>` |
+| Validate before commit  | `npm run safe:commit`                        |
+| Audit coverage gaps     | `npm run graph:audit`                        |
+| Visualize relationships | `npm run live-docs:visualize`                |
 
 ### CI Integration (Coming Soon)
 
@@ -316,33 +321,36 @@ Use the Explorer to identify:
 
 ## CLI Reference
 
-| Command | Purpose |
-|---------|---------|
-| `npm run live-docs:generate` | Regenerate Live Docs (supports `--dry-run`, `--changed`) |
-| `npm run live-docs:lint` | Validate structural markers, links, slug dialect |
-| `npm run live-docs:inspect -- <path>` | Emit markdown summary for an artifact |
-| `npm run live-docs:inspect -- --from <a> --to <b>` | Find path between two artifacts |
-| `npm run live-docs:visualize` | Launch interactive Explorer server |
-| `npm run live-docs:visualize:static` | Build static bundle for hosting |
-| `npm run live-docs:system` | Materialise System views (default output: `AI-Agent-Workspace/tmp/system-cli-output`) |
-| `npm run live-docs:migrate -- --dry-run` | Audit drift between staged docs and `.mdmd/layer-4/` |
-| `npm run graph:audit` | Flag files missing Live Docs or evidence |
-| `npm run graph:snapshot` | Rebuild SQLite cache and JSON fixture |
+| Command                                            | Purpose                                                                               |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `npm run live-docs:generate`                       | Regenerate Live Docs (supports `--dry-run`, `--changed`)                              |
+| `npm run live-docs:lint`                           | Validate structural markers, links, slug dialect                                      |
+| `npm run live-docs:inspect -- <path>`              | Emit markdown summary for an artifact                                                 |
+| `npm run live-docs:inspect -- --from <a> --to <b>` | Find path between two artifacts                                                       |
+| `npm run live-docs:visualize`                      | Launch interactive Explorer server                                                    |
+| `npm run live-docs:visualize:static`               | Build static bundle for hosting                                                       |
+| `npm run live-docs:system`                         | Materialise System views (default output: `AI-Agent-Workspace/tmp/system-cli-output`) |
+| `npm run live-docs:migrate -- --dry-run`           | Audit drift between staged docs and `.mdmd/layer-4/`                                  |
+| `npm run graph:audit`                              | Flag files missing Live Docs or evidence                                              |
+| `npm run graph:snapshot`                           | Rebuild SQLite cache and JSON fixture                                                 |
 
-### LLM Enrichment (Planned)
+### ~~LLM Enrichment~~ _(Descoped 2026-02-17)_
 
-| Command | Purpose |
-|---------|---------|
-| `npm run live-docs:enrich -- --scope <path>` | Extract semantic relationships via LLM (requires explicit invocation, budget-capped) |
-| `npm run live-docs:synthesize -- --file <path>` | Generate human-readable prose for `_Pending authored purpose_` placeholders |
+> LLM integration has been removed from the project scope. Users bring their own AI assistants and consume Live Docs as structured context. This eliminates trust, safety, and cost concerns from the tool itself.
 
-Both commands stage outputs with provenance metadata and require human promotion. No background LLM calls occur without explicit user invocation.
+~~| Command | Purpose |~~
+~~|---------|---------|~~
+~~| `npm run live-docs:enrich -- --scope <path>` | Extract semantic relationships via LLM (requires explicit invocation, budget-capped) |~~
+~~| `npm run live-docs:synthesize -- --file <path>` | Generate human-readable prose for `_Pending authored purpose_` placeholders |~~
+
+~~Both commands stage outputs with provenance metadata and require human promotion. No background LLM calls occur without explicit user invocation.~~
 
 ### Brownfield Integration
 
 Existing markdown (READMEs, ADRs, design notes) is never overwritten by `live-docs:generate`. Link-connected brownfield docs appear in the Force Graph as read-only nodes when "Show Related Documentation" is enabled. This single checkbox controls visibility of all link-connected markdown (System-layer docs, brownfield docs, chat history).
 
 **Force Graph visualization** (shipped 2026-01-08):
+
 - Purple nodes (#9966cc) with smaller size distinguish Related Docs from Live Docs
 - Single-hop link discovery: 452 unique links found, 60 files bundled
 - Click handling opens Related Docs in the Detail Panel
@@ -350,6 +358,7 @@ Existing markdown (READMEs, ADRs, design notes) is never overwritten by `live-do
 
 **Export options** (shipped 2026-01-09):
 The Knowledge Sources panel includes an "Export Documentation" section with:
+
 - **Bundle type dropdown**: Live Docs / Related Docs / All Documentation
 - **Format radio buttons**: Flattened Markdown / ZIP Archive
 - ZIP archives preserve directory structure with `live-docs/` and `related-docs/` folders
@@ -362,16 +371,16 @@ For the full catalogue, see [CLI Reference](../../.mdmd/layer-1/guides/cli-refer
 
 Live Documentation analyzes multiple languages via its adapter system:
 
-| Language | Adapter | Symbols | Dependencies |
-|----------|---------|---------|--------------|
-| TypeScript/JavaScript | Built-in (TS Compiler API) | ✅ Full | ✅ Full |
-| C# | tree-sitter | ✅ Partial | ✅ Partial |
-| Python | tree-sitter | ✅ Partial | ✅ Partial |
-| Rust | tree-sitter | ✅ Partial | ✅ Partial |
-| C/C++ | tree-sitter | ✅ Partial | ✅ Partial |
-| Java | tree-sitter | ✅ Partial | ✅ Partial |
-| Ruby | tree-sitter | ✅ Partial | ✅ Partial |
-| Go | tree-sitter | 🚧 Planned | 🚧 Planned |
+| Language              | Adapter                    | Symbols    | Dependencies |
+| --------------------- | -------------------------- | ---------- | ------------ |
+| TypeScript/JavaScript | Built-in (TS Compiler API) | ✅ Full    | ✅ Full      |
+| C#                    | tree-sitter                | ✅ Partial | ✅ Partial   |
+| Python                | tree-sitter                | ✅ Partial | ✅ Partial   |
+| Rust                  | tree-sitter                | ✅ Partial | ✅ Partial   |
+| C/C++                 | tree-sitter                | ✅ Partial | ✅ Partial   |
+| Java                  | tree-sitter                | ✅ Partial | ✅ Partial   |
+| Ruby                  | tree-sitter                | ✅ Partial | ✅ Partial   |
+| Go                    | tree-sitter                | 🚧 Planned | 🚧 Planned   |
 
 Tree-sitter adapters extract symbols and dependencies through pattern matching. The benchmark suite (`npm run test:benchmarks -- --mode ast`) validates extraction accuracy.
 

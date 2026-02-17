@@ -2,7 +2,7 @@
 
 ## Metadata
 - Layer: 1
-- Capability IDs: CAP-001, CAP-002, CAP-003, CAP-004, CAP-005, CAP-006, CAP-007, CAP-008, CAP-009, CAP-010
+- Capability IDs: CAP-001, CAP-002, CAP-003, CAP-004, CAP-005, CAP-006, CAP-007, CAP-008, ~~CAP-009~~ *(Descoped 2026-02-17)*, CAP-010
 
 ## Capabilities
 
@@ -34,14 +34,17 @@ Deliver a stateless, Cloudflare-hosted showcase that clones public GitHub reposi
 Deliver a unified `npm run live-docs:visualize` surface that merges the “circuit board” workspace view, the local symbol explorer, and the force-directed graph into a single command center grounded in Layer‑4 Live Docs. Maintainers should pan across file-level clusters, hover or click to expand a file into its public symbols, and optionally hide unrelated nodes to focus on inbound/outbound relationships. The detail panel must surface the relevant Live Doc metadata, provide “open in editor” affordances, and set the stage for future text editing so authors can scaffold code or docstrings bidirectionally. The visualization must stay in **data parity** with the headless Live Doc graph—no inferred edges or metadata beyond what Live Docs encode, and no omissions of symbol-level relationships once anchors are emitted—so CLI, diagnostics, and UI surfaces remain interchangeable views over the same facts. This primary view is expected to meet WCAG AA accessibility (keyboard navigation, high-contrast palettes, screen-reader announcements), while the force-directed explorer may prioritise spatial discovery over full accessibility. Requirements are captured across the 2025-11-20 Antigravity UX sessions ([AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining UI Interactions.md](../../AI-Agent-Workspace/ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining%20UI%20Interactions.md)).
 
 The Local Map view is the natural home for non-headless inspection: it should be able to “sprawl” beyond the current one-hop neighbor columns when `From` and `To` are provided, rendering the hop-by-hop chain (including where paths join) as a readable impact narrative in the same window. The rendering updates automatically as `From`/`To` change so users can iteratively refine endpoints without leaving the view.
-### CAP-009 – LLM Enrichment (Extractive & Generative)
-Live Documentation distinguishes two complementary LLM tasks, both requiring explicit user invocation:
+### ~~CAP-009 – LLM Enrichment (Extractive & Generative)~~ *(Descoped 2026-02-17)*
 
-**Task A – Graph Edge Enrichment (Extractive)**: LLMs discover relationships that heuristic analyzers miss—semantic coupling, cross-file invariants, implicit contracts. These edges populate generated sections only after human promotion and must never run proactively in the background. The existing `LlmIngestionOrchestrator` and `LlmInvoker` infrastructure supports batch and interactive extraction, gated behind opt-in commands.
+> **Rationale**: LLM integration removed from project scope; users bring their own AI assistants and consume Live Docs as structured context, eliminating trust, safety, and cost concerns from the tool itself.
 
-**Task B – Document Synthesis (Generative)**: LLMs transform statistical artifacts (System-layer clustered component docs, pending authored sections) into human-readable prose. System-layer docs are currently structurally correct but terse (co-activation p-values, Mermaid topologies, component lists) without meaningful `Purpose` or `Notes`. Synthesis fills `_Pending authored purpose_` placeholders while preserving deterministic generated sections. This capability is explicitly opt-in, budget-capped, and auditable—users invoke `live-docs synthesize` (CLI) or `Live Documentation: Synthesize Authored Section` (command) rather than expecting background enrichment.
+~~Live Documentation distinguishes two complementary LLM tasks, both requiring explicit user invocation:~~
 
-Both tasks honour the same trust boundary: LLM outputs are staged, diff-previewed, and recorded with provenance before promotion. Runaway spend, hallucination propagation, and silent mutation are prevented by requiring explicit confirmation for every LLM-touched artifact ([AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md)).
+~~**Task A – Graph Edge Enrichment (Extractive)**: LLMs discover relationships that heuristic analyzers miss—semantic coupling, cross-file invariants, implicit contracts. These edges populate generated sections only after human promotion and must never run proactively in the background. The existing `LlmIngestionOrchestrator` and `LlmInvoker` infrastructure supports batch and interactive extraction, gated behind opt-in commands.~~
+
+~~**Task B – Document Synthesis (Generative)**: LLMs transform statistical artifacts (System-layer clustered component docs, pending authored sections) into human-readable prose. System-layer docs are currently structurally correct but terse (co-activation p-values, Mermaid topologies, component lists) without meaningful `Purpose` or `Notes`. Synthesis fills `_Pending authored purpose_` placeholders while preserving deterministic generated sections. This capability is explicitly opt-in, budget-capped, and auditable—users invoke `live-docs synthesize` (CLI) or `Live Documentation: Synthesize Authored Section` (command) rather than expecting background enrichment.~~
+
+~~Both tasks honour the same trust boundary: LLM outputs are staged, diff-previewed, and recorded with provenance before promotion. Runaway spend, hallucination propagation, and silent mutation are prevented by requiring explicit confirmation for every LLM-touched artifact ([AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md)).~~
 
 ### CAP-010 – Brownfield Documentation Integration
 Live Documentation coexists with pre-existing markdown documentation in brownfield workspaces through a **"bridge, don't replace"** strategy:
@@ -57,7 +60,7 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 **Indexing Scope**: The exploration index may optionally ingest brownfield markdown (title, headings, first paragraph) so semantic search returns legacy context without violating read-only guarantees. This is additive and never destructive ([AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md)).
 ## Desired Outcomes
 - Layer‑4 Live Docs regenerate deterministically; authored content stays small, intentional, and easy to review.
-- LLM enrichment (graph edges and document synthesis) remains explicitly opt-in with budget caps, diff previews, and audit trails; no background LLM calls occur without user initiation.
+- ~~LLM enrichment (graph edges and document synthesis) remains explicitly opt-in with budget caps, diff previews, and audit trails; no background LLM calls occur without user initiation.~~ *(Descoped 2026-02-17)*
 - Brownfield documentation coexists peacefully: existing markdown stays read-only, appears in the Force Graph when link-connected, and never competes with generated Live Docs for canonical status.
 - Implementation Live Docs list their public surface, structured docstring fields, dependencies, and observed evidence so ripple impact and test coverage are auditable in markdown alone.
 - Test and asset archetypes expose their relationships through generated sections (`Targets`, `Supporting Fixtures`, `Consumers`), enabling cross-language AST traversal without bespoke parsers.
@@ -65,7 +68,7 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 - Layer‑1 capabilities replicate cleanly into a static site (GitHub Pages or equivalent) so stakeholders consume the same markdown we curate in-repo.
 - Hosted showcase runs reuse the exact generator stack, emit reproducible bundles, and always point participants back to local regeneration so offline workflows remain the authoritative path.
 - Layer‑2 requirement docs cross-link to Spec-Kit tasks or issue trackers while remaining the authoritative summaries for automation.
-- Diagnostics, exports, and LLM prompts rely on the same markdown-as-AST graph, shrinking the gap between human review workflows and autonomous copilots.
+- Diagnostics, exports, and AI-assistant prompts rely on the same markdown-as-AST graph, shrinking the gap between human review workflows and autonomous copilots.
 - The Live Docs visualization command center unifies global file exploration with local symbol drilldowns, supports focus-mode filtering, and provides an accessible path toward inline editing and docstring scaffolding.
 - Markdown links stay relative (slug dialect configurable) so Live Docs double as wiki-friendly artefacts consumers can publish directly.
 - Tooling, instructions, and licensing remain MIT-friendly so adopters can regenerate Layer‑4 docs locally and opt into System analytics when needed.
@@ -137,17 +140,17 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 - **Live Doc Baseline (present)**: converge MDMD Layer‑4 docs onto authored/generated structure and stage generator output in `/.live-documentation/`.
 - **Docstring & Evidence Bridges (near term)**: wire analyzers and coverage tools so generated sections stay accurate across languages and test suites. Canonicalise docstring tags into the shared schema, emit deterministic per-field subheadings, validate against curated polyglot fixtures, and surface drift diagnostics when inline documentation diverges from Live Doc narratives.
 - **Optional Authoring (wishlist)**: explore docstring round-trip preview/apply and scaffolding behind strict feature flags and audit trails, without making docs → code a dependency for the core “map + freshness engine”.
-- **Consumption Surfaces (near term)**: deliver CLI, diagnostics, and LLM exports backed by the Live Doc graph.
+- **Consumption Surfaces (near term)**: deliver CLI, diagnostics, and AI-assistant-consumable exports backed by the Live Doc graph.
 - **Layer Distribution (mid term)**: stand up the public site pipeline, formalise Spec-Kit/issue tracker delegation for Layer 2, and ship the on-demand System CLI so no architecture docs linger in the repo.
 - **Metadata Enrichers (mid term)**: add churn metrics, reference counts, and change history as optional generated sections; experiment with higher-layer docs (releases, work items, architecture) generated from Layer‑4 facts.
-- **LLM Synthesis (mid term)**: offer opt-in commands that transform statistical System-layer artifacts into human-readable prose, filling `_Pending authored purpose_` placeholders while preserving deterministic generated sections.
+- ~~**LLM Synthesis (mid term)**: offer opt-in commands that transform statistical System-layer artifacts into human-readable prose, filling `_Pending authored purpose_` placeholders while preserving deterministic generated sections.~~ *(Descoped 2026-02-17)*
 - **Brownfield Bridge (mid term)**: extend the Force Graph to render link-connected external markdown as read-only graph citizens, with optional semantic indexing for discovery.
 - **Ecosystem Expansion (long term)**: share MIT-licensed tooling, integrate alternative knowledge feeds, and explore IDE-agnostic adapters.
 
 ## Adoption Path
 - **Stage 0 – Observe**: bootstrap Live Docs from existing MDMD content, allow read-only exploration, and collect feedback.
 - **Stage 1 – Guard**: enable lint warnings for missing evidence or stale generated sections; provide regeneration commands in safe-commit.
-- **Stage 2 – Bridge**: enforce docstring and coverage sync, introduce CLI/LLM exports, and activate diagnostics sourced from Live Docs.
+- **Stage 2 – Bridge**: enforce docstring and coverage sync, introduce CLI and AI-assistant-consumable exports, and activate diagnostics sourced from Live Docs.
 - **Stage 3 – Sustain**: require green Live Doc gates before merge; external adopters configure storage and regen workflows mirroring ours.
 - **Stage 4 – Distribute**: publish Layer 1 to the public site, keep Layer 2 synced with Spec-Kit/issue trackers, and rely on CLI materialized views for System intelligence.
 

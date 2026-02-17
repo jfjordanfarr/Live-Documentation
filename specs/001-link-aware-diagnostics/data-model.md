@@ -31,25 +31,27 @@ Storage invariants:
 
 - The SQLite projection enforces uniqueness on `(source_id, target_id, kind)`.
 
-## LlmEdgeProvenance
+## ~~LlmEdgeProvenance~~ _(Descoped 2026-02-17)_
 
-Optional provenance record attached to a stored link (kept in a separate table).
+> **Descoped**: LLM integration has been removed from the project scope. This entity was never populated in production. Users bring their own AI assistants and consume Live Docs as structured context.
 
-- `linkId` (string)
-- `templateId` (string)
-- `templateVersion` (string)
-- `promptHash` (string)
-- `modelId` (string)
-- `issuedAt` (ISO timestamp)
-- `createdAt` (ISO timestamp)
-- `confidenceTier` (enum) — `high` | `medium` | `low`
-- `calibratedConfidence` (number)
-- `rawConfidence` (number, optional)
-- `supportingChunks` (string[], optional)
-- `rationale` (string, optional)
-- `diagnosticsEligible` (boolean, optional)
-- `shadowed` (boolean, optional)
-- `promotionCriteria` (string[], optional)
+~~Optional provenance record attached to a stored link (kept in a separate table).~~
+
+~~- `linkId` (string)~~
+~~- `templateId` (string)~~
+~~- `templateVersion` (string)~~
+~~- `promptHash` (string)~~
+~~- `modelId` (string)~~
+~~- `issuedAt` (ISO timestamp)~~
+~~- `createdAt` (ISO timestamp)~~
+~~- `confidenceTier` (enum) — `high` | `medium` | `low`~~
+~~- `calibratedConfidence` (number)~~
+~~- `rawConfidence` (number, optional)~~
+~~- `supportingChunks` (string[], optional)~~
+~~- `rationale` (string, optional)~~
+~~- `diagnosticsEligible` (boolean, optional)~~
+~~- `shadowed` (boolean, optional)~~
+~~- `promotionCriteria` (string[], optional)~~
 
 ## ChangeEvent
 
@@ -77,7 +79,7 @@ User-facing alert capturing ripple/drift.
 - `createdAt` (ISO timestamp)
 - `acknowledgedAt` / `acknowledgedBy` (optional)
 - `linkIds` (string[]) — edge ids supporting the diagnostic.
-- `llmAssessment` (optional) — structured LLM assessment payload.
+- ~~`llmAssessment` (optional) — structured LLM assessment payload.~~ _(Descoped 2026-02-17: LLM integration removed.)_
 
 Note: the SQLite row shape historically allows `change_event_id` to be null for back-compat, but the current domain model treats `changeEventId` as required.
 

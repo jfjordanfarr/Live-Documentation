@@ -50,33 +50,13 @@ This ensures any new code introducing network calls is immediately flagged. The 
 
 Additionally, unit tests run with all proxy environment variables unset, verifying that tests don't depend on any external network configuration.
 
-## What About LLM Providers?
+## LLM Independence
 
-Live Documentation supports optional LLM-powered features (relationship inference, semantic analysis). Here's how each mode handles network access:
+**Live Documentation does not include any LLM integration.** The tool is fully deterministic—symbol extraction, dependency resolution, and document generation all run locally using static analysis, with no language-model calls of any kind.
 
-### Local Ollama (Default)
+Users who want AI-assisted analysis bring their own AI assistants (GitHub Copilot, Cursor, etc.) and consume Live Docs as structured context. This design eliminates trust boundaries, cost concerns, and hallucination risks from the tool itself.
 
-When configured to use Ollama, requests go **only to localhost**:
-- Default endpoint: `http://localhost:11434`
-- `safeFetch()` blocks any non-localhost endpoint
-- Your code never leaves your machine
-
-### VS Code Language Model API (`vscode.lm`)
-
-When you choose "Prompt me to choose a provider", Live Documentation uses VS Code's built-in language model API. This API may route requests to cloud providers (GitHub Copilot, Azure OpenAI, etc.) based on your VS Code configuration.
-
-**⚠️ Important**: Requests through `vscode.lm` are **not under our control**. They follow your VS Code and GitHub Copilot settings. If you use this mode:
-- Your code snippets may be sent to cloud providers
-- Standard cloud LLM data handling policies apply
-- This is user-initiated and requires explicit opt-in
-
-### Ollama Cloud Warning
-
-Ollama recently introduced cloud-hosted model options. If you configure Ollama to use a cloud endpoint:
-- `safeFetch()` will **block the request** and throw an error
-- You'll see: `"Ollama endpoint violates network policy. Only localhost endpoints are allowed."`
-
-We have **no way to detect** whether Ollama is running locally vs. proxying to cloud services. If you require guaranteed air-gapped operation, verify your Ollama configuration independently.
+The `safeFetch()` runtime enforcement and static network audit described above remain in place to guarantee that **no outbound requests occur**, period—not even to localhost LLM endpoints.
 
 ## Dependency Supply Chain
 

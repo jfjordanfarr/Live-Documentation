@@ -33,7 +33,7 @@ This duplication creates maintenance burden, configuration divergence, and unnec
 - [ ] `data/graph-snapshots/` folder is removed
 - [ ] `safe-to-commit.mjs` no longer calls `graph:snapshot`
 - [ ] LSIF/SCIP feeds emit `PendingEdge` NDJSON instead of SQLite mutations
-- [ ] LLM inference emits `PendingEdge` NDJSON instead of SQLite mutations
+- [ ] ~~LLM inference emits `PendingEdge` NDJSON instead of SQLite mutations~~ *(Descoped 2026-02-17: LLM integration removed.)*
 - [ ] All existing tests pass or are migrated to Live Doc-based assertions
 
 ## Phased Implementation Plan
