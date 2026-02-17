@@ -16,7 +16,7 @@ import type {
  *
  * Seeds are the raw inputs from which {@link inferFallbackGraph} builds
  * {@link KnowledgeArtifact} instances and discovers relationships via
- * heuristic matching, user-supplied hints, or optional LLM augmentation.
+ * heuristic matching and user-supplied hints.
  */
 export interface ArtifactSeed {
   id?: string;
@@ -35,7 +35,7 @@ export interface ArtifactSeed {
  *
  * Hints are treated as high-confidence edges during fallback inference and
  * bypass heuristic matching. They're typically derived from configuration
- * files, manual overrides, or prior LLM runs.
+ * files or manual overrides.
  */
 export interface RelationshipHint {
   sourceUri: string;
@@ -45,42 +45,6 @@ export interface RelationshipHint {
   rationale?: string;
   createdBy?: string;
   context?: string;
-}
-
-/**
- * A single relationship suggestion returned by an LLM bridge during
- * augmented fallback inference.
- */
-export interface LLMRelationshipSuggestion {
-  targetUri: string;
-  kind: LinkRelationshipKind;
-  confidence: number;
-  rationale?: string;
-  context?: string;
-}
-
-/**
- * Payload sent to an {@link FallbackLLMBridge} requesting relationship
- * suggestions for a source artifact against a set of candidates.
- */
-export interface LLMRelationshipRequest {
-  source: KnowledgeArtifact;
-  content?: string;
-  candidates: KnowledgeArtifact[];
-  hints: RelationshipHint[];
-}
-
-/**
- * Adapter interface for plugging an LLM into the fallback inference pipeline.
- *
- * When provided via {@link FallbackGraphOptions.llm}, the inference engine
- * sends candidate batches to `suggest()` and merges the results with
- * heuristic-derived links. The `vscode.lm` API is the primary production
- * implementation.
- */
-export interface FallbackLLMBridge {
-  label: string;
-  suggest(request: LLMRelationshipRequest): Promise<LLMRelationshipSuggestion[]>;
 }
 
 /**
@@ -97,24 +61,19 @@ export interface FallbackGraphInput {
 /**
  * Configuration options for {@link inferFallbackGraph}.
  *
- * @property llm - Optional LLM bridge for augmented inference.
- * @property minContentLengthForLLM - Minimum source content length to
- *   trigger an LLM call (default 120 chars).
  * @property now - Clock factory for deterministic timestamps in tests.
  */
 export interface FallbackGraphOptions {
-  llm?: FallbackLLMBridge;
-  minContentLengthForLLM?: number;
   now?: () => Date;
 }
 
 /** Discriminator indicating how a relationship was discovered. */
-export type InferenceTraceOrigin = "heuristic" | "hint" | "llm";
+export type InferenceTraceOrigin = "heuristic" | "hint";
 
 /**
  * Audit record for a single inferred relationship, capturing provenance
- * (heuristic ID, LLM rationale, or hint source) for the benchmark/report
- * pipeline to evaluate precision and recall.
+ * (heuristic ID or hint source) for the benchmark/report pipeline to
+ * evaluate precision and recall.
  */
 export interface InferenceTraceEntry {
   sourceUri: string;
@@ -143,15 +102,13 @@ interface ArtifactAggregate {
   content?: string;
 }
 
-const DEFAULT_MIN_CONTENT_LENGTH_FOR_LLM = 120;
 const HEURISTIC_CREATED_BY = "heuristic";
 const HINT_CREATED_BY = "hint";
 
 /**
  * Core fallback inference engine: builds a {@link KnowledgeArtifact} graph
- * from seed data, discovers relationships via path/naming heuristics,
- * incorporates user-supplied hints, and optionally augments with LLM
- * suggestions.
+ * from seed data, discovers relationships via path/naming heuristics, and
+ * incorporates user-supplied hints.
  *
  * This is the primary entry point for the link-aware diagnostics pipeline
  * when SCIP indexes are unavailable (most polyglot workspaces). Results
@@ -159,7 +116,7 @@ const HINT_CREATED_BY = "hint";
  * dependency sections.
  *
  * @param input - Artifact seeds, optional hints, and content provider.
- * @param options - LLM bridge and tuning knobs.
+ * @param options - Tuning knobs (clock factory for tests).
  * @returns Resolved artifacts, inferred links, and audit traces.
  */
 export async function inferFallbackGraph(
@@ -285,49 +242,11 @@ export async function inferFallbackGraph(
     accumulator.addHint(hint);
   }
 
-  if (options.llm) {
-    const minContentLength = options.minContentLengthForLLM ?? DEFAULT_MIN_CONTENT_LENGTH_FOR_LLM;
-    await applyLlmSuggestions(heuristicArtifacts, options.llm, hints, minContentLength, accumulator);
-  }
-
   return {
     artifacts: knowledgeArtifacts,
     links: accumulator.getLinks(),
     traces: accumulator.getTraces()
   };
-}
-
-async function applyLlmSuggestions(
-  artifacts: HeuristicArtifact[],
-  llm: FallbackLLMBridge,
-  hints: RelationshipHint[],
-  minContentLength: number,
-  accumulator: RelationshipAccumulator
-): Promise<void> {
-  for (const source of artifacts) {
-    const content = source.content ?? "";
-    if (content.length < minContentLength) {
-      continue;
-    }
-    if (!isDocumentLayer(source.artifact.layer)) {
-      continue;
-    }
-
-    try {
-      const suggestions = await llm.suggest({
-        source: source.artifact,
-        content,
-        candidates: accumulator.getArtifacts(),
-        hints
-      });
-
-      for (const suggestion of suggestions ?? []) {
-        accumulator.addLlmSuggestion(source.artifact, suggestion, llm.label);
-      }
-    } catch {
-      // ignore LLM failures so heuristic results can still surface
-    }
-  }
 }
 
 class RelationshipAccumulator {
@@ -379,25 +298,6 @@ class RelationshipAccumulator {
       "hint",
       hint.rationale ?? "relationship hint",
       hint.context
-    );
-  }
-
-  addLlmSuggestion(source: KnowledgeArtifact, suggestion: LLMRelationshipSuggestion, label: string): void {
-    const target = this.artifactsByUri.get(normalizeUri(suggestion.targetUri));
-    if (!target) {
-      return;
-    }
-
-    const kind = suggestion.kind ?? deriveRelationshipKind(source, target, suggestion.context as MatchContext | undefined);
-    this.upsertLink(
-      source,
-      target,
-      kind,
-      suggestion.confidence,
-      label,
-      "llm",
-      suggestion.rationale ?? `LLM ${label} suggestion`,
-      suggestion.context
     );
   }
 

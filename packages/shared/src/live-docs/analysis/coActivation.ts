@@ -17,52 +17,103 @@ export interface DegreeDistribution {
   meanDegree: number;
 }
 
+/**
+ * Configuration for the co-activation analysis builder.
+ */
 export interface CoActivationBuildArgs {
+  /** Stage-0 Live Doc objects providing dependency and test data. */
   stage0Docs: Stage0Doc[];
+  /** Optional target manifest for filtering. */
   manifest?: TargetManifest;
+  /** Weight multiplier for dependency-derived edges (default 1). */
   dependencyWeight?: number;
+  /** Weight multiplier for shared-test-derived edges (default 1). */
   testWeight?: number;
+  /** Minimum combined weight for an edge to be retained (default 0). */
   minWeight?: number;
+  /** Significance threshold for individual edges (default 0.01). */
   edgeAlpha?: number;
+  /** Significance threshold for cluster detection (default 0.01). */
   clusterAlpha?: number;
 }
 
+/**
+ * A weighted edge between two co-activated artifacts, enriched with
+ * statistical significance and provenance metadata.
+ */
 export interface CoActivationEdge {
   source: string;
   target: string;
+  /** Combined dependency + test weight. */
   weight: number;
+  /** Source paths of dependency relationships contributing to this edge. */
   dependencySources: string[];
+  /** Source paths of shared tests contributing to this edge. */
   testSources: string[];
+  /** Number of tests shared between source and target. */
   sharedTestCount: number;
+  /** Total tests covering the source artifact. */
   sourceTestCount: number;
+  /** Total tests covering the target artifact. */
   targetTestCount: number;
+  /** Statistical p-value from the degree-corrected significance test. */
   pValue: number | null;
+  /** Benjamini–Hochberg corrected q-value. */
   qValue: number | null;
+  /** Whether this edge passes the significance threshold. */
   isSignificant: boolean;
 }
 
+/**
+ * A node in the co-activation graph with degree, strength, and z-score
+ * metrics relative to the background degree distribution.
+ */
 export interface CoActivationNode {
+  /** Live Doc source path identifier. */
   id: string;
+  /** Workspace-relative path of the Live Doc. */
   docRelativePath: string;
+  /** Archetype classification of the source artifact. */
   archetype: string;
+  /** Number of co-activation edges incident on this node. */
   degree: number;
+  /** Sum of edge weights incident on this node. */
   strength: number;
+  /** Number of tests covering this artifact. */
   testCount: number;
+  /** Standard score of this node’s degree relative to the graph mean. */
   zScore: number;
 }
 
+/**
+ * A cluster of tightly co-activated nodes identified by the greedy
+ * modularity algorithm, with statistical significance assessment.
+ */
 export interface CoActivationCluster {
+  /** Unique cluster identifier. */
   id: string;
+  /** Node IDs belonging to this cluster. */
   members: string[];
+  /** Total internal edge weight. */
   weight: number;
+  /** Number of internal edges. */
   edgeCount: number;
+  /** Expected internal edges under the null model. */
   expectedEdgeCount: number;
+  /** Edge density (edgeCount / possible edges). */
   density: number;
+  /** Statistical p-value for cluster significance. */
   pValue: number;
+  /** Benjamini–Hochberg corrected q-value. */
   qValue: number;
+  /** Whether this cluster passes the significance threshold. */
   isSignificant: boolean;
 }
 
+/**
+ * Complete co-activation analysis report including nodes, edges,
+ * clusters, and aggregate metrics.
+ */
 export interface CoActivationReport {
   generatedAt: string;
   metrics: {
@@ -107,6 +158,16 @@ type EdgeReason =
       testWeight: number;
     };
 
+/**
+ * Builds a complete co-activation report from Stage-0 Live Docs.
+ *
+ * The analysis combines dependency-graph edges with shared-test co-occurrence
+ * to produce a weighted graph, then applies degree-corrected significance
+ * testing and greedy modularity clustering.
+ *
+ * @param args - Build configuration including Stage-0 docs and weight/threshold params.
+ * @returns Complete {@link CoActivationReport} with nodes, edges, and clusters.
+ */
 export function buildCoActivationReport(args: CoActivationBuildArgs & { now?: () => Date }): CoActivationReport {
   const dependencyWeight = args.dependencyWeight ?? 1;
   const testWeight = args.testWeight ?? 1;
@@ -327,6 +388,9 @@ export function buildCoActivationReport(args: CoActivationBuildArgs & { now?: ()
   };
 }
 
+/**
+ * Serialises a co-activation report to a deterministic JSON string.
+ */
 export function serializeCoActivationReport(report: CoActivationReport): string {
   return `${JSON.stringify(report, null, 2)}\n`;
 }

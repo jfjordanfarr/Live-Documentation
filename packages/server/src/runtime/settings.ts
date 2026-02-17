@@ -7,12 +7,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function isLlmProviderMode(
-  value: unknown
-): value is NonNullable<ExtensionSettings["llmProviderMode"]> {
-  return value === "prompt" || value === "local-only" || value === "disabled";
-}
-
 function isNoiseSuppressionLevel(value: unknown): value is "low" | "medium" | "high" {
   return value === "low" || value === "medium" || value === "high";
 }
@@ -106,10 +100,6 @@ export function extractExtensionSettings(source: unknown): ExtensionSettings | u
     settings.debounceMs = record.debounceMs;
   }
 
-  if (isLlmProviderMode(record.llmProviderMode)) {
-    settings.llmProviderMode = record.llmProviderMode;
-  }
-
   const noiseSuppression = extractNoiseSuppressionSettings(record.noiseSuppression);
   if (noiseSuppression) {
     settings.noiseSuppression = noiseSuppression;
@@ -167,10 +157,6 @@ export function extractTestModeOverrides(source: unknown): ExtensionSettings | u
 
   if (typeof candidate.enableDiagnostics === "boolean") {
     overrides.enableDiagnostics = candidate.enableDiagnostics;
-  }
-
-  if (isLlmProviderMode(candidate.llmProviderMode)) {
-    overrides.llmProviderMode = candidate.llmProviderMode;
   }
 
   const noiseSuppression = extractNoiseSuppressionSettings(candidate.noiseSuppression);

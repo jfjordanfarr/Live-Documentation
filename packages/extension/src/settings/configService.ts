@@ -1,7 +1,11 @@
 import * as vscode from "vscode";
 
+/**
+ * User-facing configuration for the Link-Aware Diagnostics extension,
+ * read from `linkAwareDiagnostics.*` VS Code settings.
+ */
 export interface LinkDiagnosticsSettings {
-  llmProviderMode: "prompt" | "local-only" | "disabled";
+  /** Noise-suppression thresholds for diagnostic output. */
   noiseSuppression: {
     level: "low" | "medium" | "high";
     minConfidence?: number;
@@ -9,11 +13,21 @@ export interface LinkDiagnosticsSettings {
     maxPerChange?: number;
     maxPerArtifact?: number;
   };
+  /** Persistent storage directory path. */
   storagePath?: string;
+  /** Whether diagnostics are enabled. */
   enableDiagnostics: boolean;
+  /** Debounce interval in milliseconds for diagnostic refresh. */
   debounceMs: number;
 }
 
+/**
+ * Reactive configuration service that reads `linkAwareDiagnostics.*`
+ * settings and fires change events when they update.
+ *
+ * Subscribes to `workspace.onDidChangeConfiguration` on construction
+ * and disposes the subscription when {@link dispose} is called.
+ */
 export class ConfigService implements vscode.Disposable {
   private readonly emitter = new vscode.EventEmitter<LinkDiagnosticsSettings>();
   private readonly subscription: vscode.Disposable;
@@ -31,19 +45,23 @@ export class ConfigService implements vscode.Disposable {
     });
   }
 
+  /** Current snapshot of the extension settings. */
   get settings(): LinkDiagnosticsSettings {
     return this.current;
   }
 
+  /** Registers a listener that fires whenever settings change. */
   onDidChange(listener: (settings: LinkDiagnosticsSettings) => void): vscode.Disposable {
     return this.emitter.event(listener);
   }
 
+  /** Forces a re-read of settings and fires the change event. */
   refresh(): void {
     this.current = this.readSettings();
     this.emitter.fire(this.current);
   }
 
+  /** Disposes the configuration-change subscription and event emitter. */
   dispose(): void {
     this.subscription.dispose();
     this.emitter.dispose();
@@ -52,7 +70,6 @@ export class ConfigService implements vscode.Disposable {
   private readSettings(): LinkDiagnosticsSettings {
     const config = vscode.workspace.getConfiguration(this.section);
     return {
-      llmProviderMode: config.get("llmProviderMode", "prompt"),
       noiseSuppression: {
         level: config.get("noiseSuppression.level", "medium"),
         minConfidence: config.get("noiseSuppression.minConfidence"),

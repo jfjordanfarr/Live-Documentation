@@ -52,8 +52,9 @@ Transforms diagnostics into Problems entries, hovers, and quick actions. See [do
 ### IMP-107 dependencyQuickPick
 Bridges the inspection request into a Quick Pick UX. See [dependencyQuickPick.ts Live Doc](../layer-4/packages/extension/src/diagnostics/dependencyQuickPick.ts.mdmd.md) for the implementation surface.
 
-### IMP-108 analyzeWithAI Command
-Collects LLM assessments for outstanding diagnostics. The command’s Stage‑0 mirror is [analyzeWithAI.ts Live Doc](../layer-4/packages/extension/src/commands/analyzeWithAI.ts.mdmd.md).
+### ~~IMP-108 analyzeWithAI Command~~ *(Descoped 2026-02-17)*
+
+~~Collected LLM assessments for outstanding diagnostics. Source and Live Doc deleted.~~
 
 ### IMP-109 fileMaintenance Watcher
 Debounces rename/delete events and alerts the server. Consult [fileMaintenance.ts Live Doc](../layer-4/packages/extension/src/watchers/fileMaintenance.ts.mdmd.md) for operational detail once generated.

@@ -1,21 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  FallbackLLMBridge,
   inferFallbackGraph,
-  LLMRelationshipRequest,
-  LLMRelationshipSuggestion
 } from "./fallbackInference";
-
-class FakeBridge implements FallbackLLMBridge {
-  constructor(private readonly suggestions: LLMRelationshipSuggestion[]) {}
-
-  label = "test-llm";
-
-  suggest(_request: LLMRelationshipRequest): Promise<LLMRelationshipSuggestion[]> {
-    return Promise.resolve(this.suggestions);
-  }
-}
 
 describe("fallback inference", () => {
   it("creates a documents link when markdown references an implementation artifact", async () => {
@@ -50,43 +37,6 @@ describe("fallback inference", () => {
     expect(result.traces).toHaveLength(1);
     expect(result.traces[0].origin).toBe("heuristic");
     expect(result.traces[0].rationale).toContain("markdown link");
-  });
-
-  it("merges LLM suggestions and keeps the strongest confidence", async () => {
-    const llm = new FakeBridge([
-      {
-        targetUri: "file:///repo/docs/api.md",
-        kind: "references",
-        confidence: 0.85,
-        rationale: "LLM indicates related documentation"
-      }
-    ]);
-
-    const result = await inferFallbackGraph(
-      {
-        seeds: [
-          {
-            uri: "file:///repo/docs/design.md",
-            layer: "architecture",
-            content: "Consider cross-linking important APIs. This document provides comprehensive architectural guidance for the system's REST interface design patterns."
-          },
-          {
-            uri: "file:///repo/docs/api.md",
-            layer: "requirements",
-            content: "REST API surface definition"
-          }
-        ]
-      },
-      { llm }
-    );
-
-    expect(result.links).toHaveLength(1);
-    const [link] = result.links;
-
-    expect(link.createdBy).toBe("test-llm");
-    expect(link.confidence).toBeCloseTo(0.85, 2);
-    expect(result.traces[0].origin).toBe("llm");
-    expect(result.traces[0].rationale).toContain("LLM");
   });
 
   it("detects re-exports and .js specifiers in TypeScript modules", async () => {

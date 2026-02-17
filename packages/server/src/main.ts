@@ -75,8 +75,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
   changeQueue?.dispose();
   changeQueue = new ChangeQueue({
     debounceMs: runtimeSettings.debounceMs,
-    onFlush: changes => processChanges(changes),
-    onEnqueue: () => { /* latency tracking removed */ }
+    onFlush: changes => processChanges(changes)
   });
 
   connection.console.info(

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/safeFetch.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-safefetch-ts
-- Generated At: 2026-02-03T21:55:41.434Z
+- Generated At: 2026-02-17T22:06:09.544Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Localhost-only fetch wrapper that enforces network isolation by blocking any out
 - ollamaClient.ts was immediately refactored to use safeFetch instead of raw fetch
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.434Z","inputHash":"e4210d83187035e1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T22:06:09.544Z","inputHash":"e4210d83187035e1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `NetworkPolicyViolation` {#symbol-networkpolicyviolation}
@@ -106,6 +106,5 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [localOllamaBridge.test.ts](../../../extension/src/services/localOllamaBridge.test.ts.mdmd.md)
 - [safeFetch.test.ts](./safeFetch.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

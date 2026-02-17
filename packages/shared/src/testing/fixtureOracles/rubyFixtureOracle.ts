@@ -7,50 +7,109 @@ import path from "node:path";
  */
 export type RubyOracleEdgeRelation = "references";
 
+/**
+ * Tracks how a Ruby dependency edge was discovered.
+ *
+ * - `"require"` — resolved from a `require_relative` statement
+ * - `"manual-override"` — supplied by a human-authored override entry
+ */
 export type RubyOracleProvenance = "require" | "manual-override";
 
+/**
+ * A directed dependency edge in the Ruby fixture graph.
+ *
+ * Includes provenance metadata so benchmark reports can attribute
+ * each edge to its discovery mechanism (require or override).
+ */
 export interface RubyOracleEdge {
+  /** Workspace-relative path of the source file. */
   source: string;
+  /** Workspace-relative path of the target file. */
   target: string;
+  /** Canonical SCIP relation kind (always `"references"` for Ruby). */
   relation: RubyOracleEdgeRelation;
+  /** How this edge was discovered. */
   provenance: RubyOracleProvenance;
 }
 
+/**
+ * Provenance-free edge record used for serialisation and comparison.
+ *
+ * Matches the shape written to `expected.json` benchmark fixtures.
+ */
 export interface RubyOracleEdgeRecord {
   source: string;
   target: string;
   relation: string;
 }
 
+/**
+ * Configuration for the Ruby fixture oracle graph generator.
+ */
 export interface RubyFixtureOracleOptions {
+  /** Absolute or relative path to the fixture directory root. */
   fixtureRoot: string;
+  /** Optional path patterns restricting which `.rb` files to include. */
   include?: string[];
+  /** Optional path patterns for files to exclude from analysis. */
   exclude?: string[];
 }
 
+/**
+ * A human-authored edge override that supplements auto-detected edges.
+ *
+ * Override entries let benchmark authors declare relationships the
+ * heuristic scanner cannot discover (e.g. dynamic requires, metaprogramming).
+ */
 export interface RubyOracleOverrideEntry {
   source: string;
   target: string;
   relation: string;
 }
 
+/**
+ * Container for manual override edges, typically loaded from an
+ * `overrides.json` file alongside the fixture.
+ */
 export interface RubyOracleOverrideConfig {
   manualEdges?: RubyOracleOverrideEntry[];
 }
 
+/**
+ * Result of partitioning auto-detected edges against manual overrides.
+ *
+ * Used by benchmark harnesses to report which overrides were matched
+ * by heuristic discovery and which remain unmatched.
+ */
 export interface RubyOracleSegmentPartition {
+  /** Edges discovered by heuristic analysis that have no matching override. */
   autoEdges: RubyOracleEdge[];
+  /** Edges discovered by heuristic analysis that also appear in overrides. */
   matchedManualEdges: RubyOracleEdge[];
+  /** All override entries provided. */
   manualEntries: RubyOracleOverrideEntry[];
+  /** Override entries with no corresponding auto-detected edge. */
   missingManualEntries: RubyOracleOverrideEntry[];
 }
 
+/**
+ * Full merge result combining auto-detected and manual override edges.
+ *
+ * `mergedRecords` is the union used as the ground-truth expected output
+ * when comparing against inference engine results in benchmark tests.
+ */
 export interface RubyOracleMergeResult {
+  /** All auto-detected edges (with provenance). */
   autoEdges: RubyOracleEdge[];
+  /** Auto-detected edges as provenance-free records. */
   autoRecords: RubyOracleEdgeRecord[];
+  /** Manual override entries as records. */
   manualRecords: RubyOracleEdgeRecord[];
+  /** Subset of manual records that overlap with auto-detected edges. */
   matchedManualRecords: RubyOracleEdgeRecord[];
+  /** Deduplicated union of auto + manual records (the ground truth). */
   mergedRecords: RubyOracleEdgeRecord[];
+  /** Manual entries that heuristic analysis failed to discover. */
   missingManualEntries: RubyOracleOverrideEntry[];
 }
 
@@ -62,6 +121,16 @@ const DEFAULT_IGNORE_DIRS = new Set([
   "log"
 ]);
 
+/**
+ * Generates a ground-truth dependency graph for a Ruby fixture directory.
+ *
+ * Recursively scans all `.rb` files under `fixtureRoot` and resolves
+ * `require_relative` statements to in-tree targets to produce a
+ * complete set of directed edges.
+ *
+ * @param options - Fixture root path and optional include/exclude path filters.
+ * @returns Sorted array of edges with provenance metadata.
+ */
 export function generateRubyFixtureGraph(options: RubyFixtureOracleOptions): RubyOracleEdge[] {
   const fixtureRoot = path.resolve(options.fixtureRoot);
   const fileMap = collectSourceFiles(fixtureRoot, options.include, options.exclude);
@@ -81,11 +150,27 @@ export function generateRubyFixtureGraph(options: RubyFixtureOracleOptions): Rub
   return Array.from(edges.values()).sort(compareEdges);
 }
 
+/**
+ * Serialises Ruby oracle edges to a deterministic JSON string.
+ *
+ * Strips provenance and sorts by source/target/relation to produce
+ * output suitable for writing to `expected.json` fixture files.
+ */
 export function serializeRubyOracleEdges(edges: RubyOracleEdge[]): string {
   const payload = edges.map(toRecordFromEdge).sort(compareRecords);
   return JSON.stringify(payload, null, 2) + "\n";
 }
 
+/**
+ * Partitions auto-detected edges against manual override entries.
+ *
+ * Identifies which overrides were independently discovered by the
+ * heuristic scanner and which remain unmatched — useful for auditing
+ * override coverage in benchmark reports.
+ *
+ * @param edges - Auto-detected edges from {@link generateRubyFixtureGraph}.
+ * @param overrides - Optional manual override configuration.
+ */
 export function partitionRubyOracleSegments(
   edges: RubyOracleEdge[],
   overrides?: RubyOracleOverrideConfig
@@ -122,6 +207,15 @@ export function partitionRubyOracleSegments(
   };
 }
 
+/**
+ * Merges auto-detected edges with manual overrides into a unified ground truth.
+ *
+ * The resulting `mergedRecords` array is the canonical expected output
+ * that benchmark tests compare against inference engine results.
+ *
+ * @param edges - Auto-detected edges from {@link generateRubyFixtureGraph}.
+ * @param overrides - Optional manual override configuration.
+ */
 export function mergeRubyOracleEdges(
   edges: RubyOracleEdge[],
   overrides?: RubyOracleOverrideConfig

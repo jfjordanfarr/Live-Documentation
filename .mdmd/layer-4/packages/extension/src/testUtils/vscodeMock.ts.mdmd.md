@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/testUtils/vscodeMock.ts
 - Live Doc ID: LD-implementation-packages-extension-src-testutils-vscodemock-ts
-- Generated At: 2026-02-03T21:55:35.504Z
+- Generated At: 2026-02-17T22:06:06.050Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies a shared VS Code mock for command/unit tests so we can simulate tree up
 Keep the shared mock in sync with the command tests added that day—see [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md#L3609-L3858](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-15.md#L3609-L3858)—so that diagnostics tree, Analyze with AI, and Inspect Symbol Neighbors suites keep reusing the same disposables instead of drifting into bespoke fakes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.504Z","inputHash":"b0749ad358da7ad3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T22:06:06.050Z","inputHash":"b0749ad358da7ad3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SharedVscodeMock` {#symbol-sharedvscodemock}
@@ -47,7 +47,6 @@ Keep the shared mock in sync with the command tests added that day—see [AI-Age
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [analyzeWithAI.test.ts](../commands/analyzeWithAI.test.ts.mdmd.md)
 - [exportDiagnostics.test.ts](../commands/exportDiagnostics.test.ts.mdmd.md)
 - [docDiagnosticProvider.test.ts](../diagnostics/docDiagnosticProvider.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

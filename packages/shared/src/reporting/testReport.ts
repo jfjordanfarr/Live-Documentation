@@ -1,39 +1,73 @@
+/**
+ * Runtime environment metadata captured alongside benchmark results.
+ */
 export interface BenchmarkEnvironment {
   nodeVersion?: string | null;
   platform?: string | null;
   arch?: string | null;
-  providerMode?: string | null;
-  ollamaModel?: string | null;
-  ollamaEndpoint?: string | null;
+  /** Allows arbitrary environment keys for forward compatibility. */
   [key: string]: string | null | undefined;
 }
 
+/**
+ * A single benchmark measurement persisted to the versioned JSON archive
+ * under `reports/benchmarks/<mode>/`.
+ *
+ * @typeParam TData - Shape of the benchmark-specific payload
+ *  (e.g. {@link RebuildStabilityData}, {@link AstAccuracyData}).
+ */
 export interface BenchmarkRecord<TData = unknown> {
+  /** Benchmark name (e.g. `"rebuild-stability"`, `"ast-accuracy"`). */
   benchmark: string;
+  /** Optional mode qualifier (e.g. `"self-similarity"`, `"ast"`). */
   mode?: string | null;
+  /** ISO timestamp of when this record was captured. */
   recordedAt: string;
+  /** Environment snapshot at capture time. */
   environment: BenchmarkEnvironment;
+  /** Benchmark-specific payload. */
   data: TData;
+  /** Optional path to the source JSON file for audit trails. */
   sourcePath?: string;
 }
 
+/**
+ * Metadata included in the report header.
+ */
 export interface TestReportContext {
+  /** ISO timestamp of report generation. */
   generatedAt: string;
+  /** Short git commit hash at generation time. */
   gitCommit: string;
+  /** Current git branch, if available. */
   gitBranch?: string;
+  /** Benchmark mode filter applied during generation. */
   benchmarkMode?: string;
 }
 
+/**
+ * Payload for the `"rebuild-stability"` benchmark measuring graph rebuild
+ * duration consistency across repeated iterations.
+ */
 export interface RebuildStabilityData {
   mode?: string;
+  /** Workspace path that was rebuilt. */
   workspace: string;
+  /** Number of rebuild iterations performed. */
   iterations: number;
+  /** Individual iteration durations in milliseconds. */
   durationsMs: number[];
+  /** Arithmetic mean of all durations. */
   averageDurationMs: number;
+  /** Worst-case duration. */
   maxDurationMs: number;
+  /** Whether any inter-iteration drift was detected. */
   driftDetected: boolean;
 }
 
+/**
+ * Aggregate accuracy metrics for an AST-based inference benchmark.
+ */
 export interface AstAccuracyTotals {
   truePositives: number;
   falsePositives: number;
@@ -44,28 +78,54 @@ export interface AstAccuracyTotals {
   totalEvaluated?: number;
 }
 
+/**
+ * Per-fixture accuracy breakdown within an AST accuracy benchmark.
+ */
 export interface AstAccuracyFixture {
+  /** Unique fixture identifier. */
   id: string;
+  /** Optional human-readable label. */
   label?: string;
+  /** Programming language of the fixture (e.g. `"typescript"`, `"ruby"`). */
   language?: string;
+  /** Accuracy totals for this fixture. */
   totals: AstAccuracyTotals;
 }
 
+/**
+ * Payload for the `"ast-accuracy"` benchmark comparing inferred edges
+ * against ground-truth fixture oracles.
+ */
 export interface AstAccuracyData {
   mode?: string;
+  /** Minimum acceptable precision and recall thresholds. */
   thresholds?: {
     precision?: number;
     recall?: number;
   };
+  /** Aggregate totals across all fixtures. */
   totals: AstAccuracyTotals;
+  /** Per-fixture accuracy breakdowns. */
   fixtures: AstAccuracyFixture[];
 }
 
+/** A titled section of markdown content within the test report. */
 export interface ReportSection {
   title: string;
   body: string[];
 }
 
+/**
+ * Renders a complete markdown test report from benchmark records.
+ *
+ * Dispatches each record to a benchmark-specific formatter
+ * (`rebuild-stability`, `ast-accuracy`) or a generic JSON fallback,
+ * and appends environment and artifact summary sections.
+ *
+ * @param context - Report metadata (timestamp, git info, mode).
+ * @param benchmarks - Array of benchmark records to render.
+ * @returns Complete markdown document as a string.
+ */
 export function buildTestReportMarkdown(
   context: TestReportContext,
   benchmarks: BenchmarkRecord[]

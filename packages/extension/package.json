@@ -36,11 +36,6 @@
         "icon": "$(repo)"
       },
       {
-        "command": "linkDiagnostics.analyzeWithAI",
-        "title": "Live Documentation: Analyze Impact with AI",
-        "icon": "$(sparkle)"
-      },
-      {
         "command": "linkDiagnostics.refreshDiagnosticsTree",
         "title": "Live Documentation: Refresh Diagnostics Tree",
         "icon": "$(refresh)"
@@ -54,11 +49,6 @@
         "command": "linkDiagnostics.exportDiagnostics",
         "title": "Live Documentation: Export Diagnostics",
         "icon": "$(cloud-download)"
-      },
-      {
-        "command": "linkDiagnostics.showLatencySummary",
-        "title": "Live Documentation: Show Telemetry Summary",
-        "icon": "$(pulse)"
       },
       {
         "command": "linkDiagnostics.openLinkedArtifact",
@@ -108,12 +98,6 @@
     "configuration": {
       "title": "Live Documentation",
       "properties": {
-        "linkAwareDiagnostics.llmProviderMode": {
-          "type": "string",
-          "enum": ["prompt", "local-only", "disabled"],
-          "default": "prompt",
-          "description": "Control how LLM providers are selected before diagnostics are enabled."
-        },
         "linkAwareDiagnostics.noiseSuppression.level": {
           "type": "string",
           "enum": ["low", "medium", "high"],

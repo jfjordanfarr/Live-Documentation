@@ -30,9 +30,7 @@ Summarise the inference engines and heuristics that infer links, resolve targets
 
 - [packages/shared/src/inference/linkInference.ts](../layer-4/packages/shared/src/inference/linkInference.ts.mdmd.md)
 - [packages/shared/src/inference/fallbackInference.ts](../layer-4/packages/shared/src/inference/fallbackInference.ts.mdmd.md)
-- [packages/shared/src/inference/llm/relationshipExtractor.ts](../layer-4/packages/shared/src/inference/llm/relationshipExtractor.ts.mdmd.md)
 
 ## Evidence
 
 - `npm run graph:audit -- --json` exercises rule chains and symbol profiles, producing gap reports consumed by the diagnostics pipeline.
-- US5 Live Doc ingestion suite (`tests/integration/us5/llmIngestionDryRun.test.ts`) verifies LLM outputs respect calibration thresholds before reaching the graph.

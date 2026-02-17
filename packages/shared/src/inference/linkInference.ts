@@ -1,6 +1,5 @@
 import {
   ArtifactSeed,
-  FallbackLLMBridge,
   RelationshipHint,
   inferFallbackGraph
 } from "./fallbackInference";
@@ -15,72 +14,152 @@ type Uri = string;
 
 type WorkspaceProviderKind = "workspace-index" | "workspace-symbols" | `workspace:${string}`;
 
+/**
+ * Union of origins that can produce trace entries in the link-inference pipeline.
+ *
+ * Extends the fallback engine's `InferenceTraceOrigin` with workspace-provider
+ * origins that identify contributions from external data sources.
+ */
 export type LinkInferenceTraceOrigin = WorkspaceProviderKind | InferenceTraceEntry["origin"];
 
+/**
+ * Trace record produced by the link-inference orchestrator, documenting
+ * how and why a relationship was inferred between two URIs.
+ */
 export interface LinkInferenceTraceEntry {
+  /** URI of the source artifact. */
   sourceUri: string;
+  /** URI of the target artifact. */
   targetUri: string;
+  /** Inferred relationship kind. */
   kind: LinkRelationshipKind;
+  /** Which subsystem originated this trace (heuristic, hint, or provider). */
   origin: LinkInferenceTraceOrigin;
+  /** Confidence score in [0, 1]. */
   confidence: number;
+  /** Human-readable explanation. */
   rationale: string;
+  /** Optional additional context (e.g. matched import path). */
   context?: string;
 }
 
+/**
+ * A single piece of link evidence contributed by a workspace provider.
+ *
+ * Evidence records let external data sources (e.g. a test-coverage bridge
+ * or a git-co-change analyzer) inject relationships into the graph.
+ */
 export interface LinkEvidence {
+  /** URI of the source artifact. */
   sourceUri: string;
+  /** URI of the target artifact. */
   targetUri: string;
+  /** Optional explicit relationship kind; inferred from layers when omitted. */
   kind?: LinkRelationshipKind;
+  /** Confidence score; defaults to 0.7 when omitted. */
   confidence?: number;
+  /** Human-readable explanation of why this evidence exists. */
   rationale?: string;
+  /** Attribution string (e.g. provider ID). */
   createdBy?: string;
 }
 
+/**
+ * Data contributed by a workspace link provider after collection.
+ *
+ * Providers may supply additional seeds (new artifacts to track),
+ * hints (relationship suggestions for the heuristic engine), and/or
+ * evidences (fully formed link assertions).
+ */
 export interface WorkspaceLinkContribution {
+  /** Additional artifact seeds to merge into the graph. */
   seeds?: ArtifactSeed[];
+  /** Relationship hints fed into the fallback heuristic engine. */
   hints?: RelationshipHint[];
+  /** Direct link evidence assertions. */
   evidences?: LinkEvidence[];
 }
 
+/** Context passed to workspace link providers during collection. */
 export interface WorkspaceLinkProviderContext {
+  /** Current set of artifact seeds known to the orchestrator. */
   seeds: ArtifactSeed[];
 }
 
+/**
+ * Extension point for injecting external link data into the inference pipeline.
+ *
+ * Providers are invoked during orchestration and may emit seeds, hints,
+ * and/or evidence records that augment the heuristic-derived graph.
+ */
 export interface WorkspaceLinkProvider {
+  /** Unique identifier for the provider (used in trace origins). */
   id: string;
+  /** Optional human-readable label for reporting. */
   label?: string;
+  /** Collects contributions given the current seed set. */
   collect(context: WorkspaceLinkProviderContext): Promise<WorkspaceLinkContribution | null | undefined>;
 }
 
+/**
+ * Summary statistics for a single workspace provider's contribution,
+ * included in the orchestration result for observability.
+ */
 export interface WorkspaceProviderSummary {
+  /** Provider identifier. */
   id: string;
+  /** Optional human-readable label. */
   label?: string;
+  /** Number of artifact seeds contributed. */
   seedCount: number;
+  /** Number of relationship hints contributed. */
   hintCount: number;
+  /** Number of direct evidence records contributed. */
   evidenceCount: number;
 }
 
+/**
+ * Input for a single link-inference orchestration run.
+ */
 export interface LinkInferenceRunInput {
+  /** Artifact seeds forming the initial graph population. */
   seeds: ArtifactSeed[];
+  /** Optional relationship hints fed to the fallback heuristic engine. */
   hints?: RelationshipHint[];
+  /** Optional async function to load file content by URI. */
   contentProvider?: (uri: string) => Promise<string | undefined>;
+  /** Optional external workspace link providers. */
   workspaceProviders?: WorkspaceLinkProvider[];
-  llm?: FallbackLLMBridge;
-  minContentLengthForLLM?: number;
+  /** Clock factory for deterministic timestamps in tests. */
   now?: () => Date;
 }
 
+/**
+ * An error encountered during link inference, attributed to its source
+ * subsystem (e.g. a failing workspace provider).
+ */
 export interface LinkInferenceError {
+  /** Subsystem that produced the error (e.g. `"provider:my-provider"`). */
   source: string;
+  /** Human-readable error description. */
   message: string;
+  /** Original error object, if available. */
   cause?: unknown;
 }
 
+/**
+ * Complete result of a link-inference orchestration run.
+ */
 export interface LinkInferenceRunResult {
+  /** All artifacts in the graph (seeded + provider-contributed). */
   artifacts: KnowledgeArtifact[];
+  /** All inferred links (heuristic + evidence), deduplicated by key. */
   links: LinkRelationship[];
+  /** Full trace log of how each link was derived. */
   traces: LinkInferenceTraceEntry[];
+  /** Per-provider contribution summaries. */
   providerSummaries: WorkspaceProviderSummary[];
+  /** Errors encountered during provider collection or evidence application. */
   errors: LinkInferenceError[];
 }
 
@@ -309,9 +388,26 @@ function mergeSeeds(primary: Map<Uri, ArtifactSeed>, additional: ArtifactSeed[] 
   }
 }
 
+/**
+ * Top-level orchestrator that combines the fallback heuristic engine,
+ * workspace link providers, and direct evidence into a unified
+ * {@link LinkInferenceRunResult}.
+ *
+ * Pipeline:
+ * 1. Merge seeds and collect workspace provider contributions
+ * 2. Run the fallback heuristic engine ({@link inferFallbackGraph})
+ * 3. Apply provider evidence as additional links
+ * 4. Return deduplicated artifacts, links, traces, and errors
+ */
 export class LinkInferenceOrchestrator {
   constructor() {}
 
+  /**
+   * Executes a full inference run.
+   *
+   * @param input - Seeds, hints, providers, and content accessor.
+   * @returns Unified inference result with artifacts, links, and traces.
+   */
   async run(input: LinkInferenceRunInput): Promise<LinkInferenceRunResult> {
     const nowFactory = input.now ?? (() => new Date());
     const seedMap = new Map<Uri, ArtifactSeed>();
@@ -332,9 +428,7 @@ export class LinkInferenceOrchestrator {
         contentProvider: input.contentProvider
       },
       {
-        now: nowFactory,
-        llm: input.llm,
-        minContentLengthForLLM: input.minContentLengthForLLM
+        now: nowFactory
       }
     );
 

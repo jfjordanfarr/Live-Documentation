@@ -54,7 +54,7 @@ Provides an optional, confidence-gated sampling layer that augments deterministi
 - [IMP-509–523 SCIP Normalizer (TypeScript, Python, Rust, Java, C#, Go)](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 - [IMP-521 C Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts.mdmd.md)
 - [IMP-524 Ruby Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/rubyFixtureOracle.ts.mdmd.md)
-- [IMP-530 LLM Sampling Harness](../../.mdmd/layer-4/packages/shared/src/inference/llmSampling.ts.mdmd.md)
+- ~~IMP-530 LLM Sampling Harness~~ *(Descoped 2026-02-17 — source and Live Doc deleted)*
 - [IMP-510 Benchmark Fixture Regenerator](../../.mdmd/layer-4/scripts/fixture-tools/regenerate-benchmarks.ts.mdmd.md)
 
 ## Evidence
@@ -62,10 +62,10 @@ Provides an optional, confidence-gated sampling layer that augments deterministi
 - `npm run test:benchmarks -- --suite ast` produces precision/recall figures per language, verifying deterministic oracle parity across curated fixtures.
 - `reports/benchmarks/ast/ast-accuracy.json` records oracle coverage deltas, highlighting gaps before new languages ship.
 - Live Documentation parity benchmark (`reports/benchmarks/live-docs/precision.json`) now records precision 100% with recall 98.62% for symbols and precision 100% with recall 99.90% for dependencies, comparing generated `Public Symbols`/`Dependencies` against oracle ground truth.
-- Upcoming sampling reliability suite (Phase 8) will capture agreement metrics between deterministic edges and LLM proposals, providing falsifiable evidence before enabling auto-suggest flows.
+- ~~Upcoming sampling reliability suite (Phase 8) will capture agreement metrics between deterministic edges and LLM proposals, providing falsifiable evidence before enabling auto-suggest flows.~~ *(Descoped 2026-02-17)*
 
 ## Operational Notes
 
 - Polyglot oracles must fail soft when toolchains are unavailable, preserving prior expectations and surfacing actionable remediation guidance.
-- Sampling harness defaults to "observe" mode; promotion to "guard" or "apply" requires explicit product decisions captured in Layer 1/2 roadmaps.
-- Telemetry events for both components should route through existing safe-to-commit reporters so regressions appear during pre-commit validation.
+- ~~Sampling harness defaults to "observe" mode; promotion to "guard" or "apply" requires explicit product decisions captured in Layer 1/2 roadmaps.~~ *(Descoped 2026-02-17)*
+- ~~Telemetry events for both components should route through existing safe-to-commit reporters so regressions appear during pre-commit validation.~~ *(Descoped 2026-02-17)*

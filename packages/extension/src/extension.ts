@@ -13,24 +13,14 @@ import {
   RESET_DIAGNOSTIC_STATE_NOTIFICATION,
   type FeedsReadyResult
 } from "@live-documentation/shared/contracts/diagnostics";
-import {
-  INVOKE_LLM_REQUEST,
-  type InvokeLlmRequest,
-  type InvokeLlmResult
-} from "@live-documentation/shared/contracts/llm";
 import { RebindRequiredPayload } from "@live-documentation/shared/contracts/maintenance";
 
 import { registerAcknowledgementWorkflow } from "./commands/acknowledgeDiagnostic";
-import { registerAnalyzeWithAICommand } from "./commands/analyzeWithAI";
 import { registerExportDiagnosticsCommand } from "./commands/exportDiagnostics";
-import { registerLatencyTelemetryCommands } from "./commands/latencySummary";
 import { registerOverrideLinkCommand } from "./commands/overrideLink";
 import { registerDependencyQuickPick } from "./diagnostics/dependencyQuickPick";
 import { registerDocDiagnosticProvider } from "./diagnostics/docDiagnosticProvider";
-import { ensureProviderSelection } from "./onboarding/providerGate";
 import { showRebindPrompt } from "./prompts/rebindPrompt";
-import { LlmInvoker, LlmInvocationError } from "./services/llmInvoker";
-import { invokeLocalOllamaBridge } from "./services/localOllamaBridge";
 import { registerSymbolBridge } from "./services/symbolBridge";
 import { ConfigService } from "./settings/configService";
 import { registerDiagnosticsTreeView } from "./views/diagnosticsTree";
@@ -47,11 +37,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const serverModule = context.asAbsolutePath(path.join("..", "server", "dist", "main.js"));
 
   configService = new ConfigService();
-  const llmInvoker = new LlmInvoker(() => configService!.settings);
   context.subscriptions.push(configService);
 
-  await ensureProviderSelection(context, configService);
-  console.log("linkAwareDiagnostics configuration after onboarding", configService.settings);
+  console.log("linkAwareDiagnostics configuration", configService.settings);
 
   const isTestMode = context.extensionMode === vscode.ExtensionMode.Test;
 
@@ -69,8 +57,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     settings: configService.settings,
     testModeOverrides: isTestMode
       ? {
-          enableDiagnostics: true,
-          llmProviderMode: "local-only"
+          enableDiagnostics: true
         }
       : undefined
   };
@@ -190,41 +177,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   await activeClient.sendNotification(SETTINGS_NOTIFICATION, activeConfigService.settings);
 
   context.subscriptions.push(
-    activeClient.onRequest(
-      INVOKE_LLM_REQUEST,
-      async (payload: InvokeLlmRequest): Promise<InvokeLlmResult> => {
-        try {
-          const result = await llmInvoker.invoke({
-            prompt: payload.prompt,
-            tags: payload.tags,
-            justification: "Link-Aware Diagnostics ingestion",
-            interactive: false
-          });
-
-          return {
-            response: result.text,
-            modelId: result.model.id
-          } satisfies InvokeLlmResult;
-        } catch (error) {
-          if (error instanceof LlmInvocationError) {
-            if (
-              error.reason === "no-model" &&
-              (activeConfigService.settings.llmProviderMode ?? "prompt") === "local-only"
-            ) {
-              return invokeLocalOllamaBridge({ prompt: payload.prompt });
-            }
-            console.warn(
-              `LLM invocation skipped (${error.reason}): ${error.message}`
-            );
-            throw new Error(error.message);
-          }
-          throw error;
-        }
-      }
-    )
-  );
-
-  context.subscriptions.push(
     activeClient.onNotification(REBIND_NOTIFICATION, (payload: RebindRequiredPayload) => {
       void showRebindPrompt(payload);
     })
@@ -245,15 +197,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   context.subscriptions.push(registerDependencyQuickPick(activeClient));
   context.subscriptions.push(registerSymbolBridge(activeClient));
   context.subscriptions.push(registerExportDiagnosticsCommand(activeClient));
-  context.subscriptions.push(registerLatencyTelemetryCommands(activeClient));
-  context.subscriptions.push(
-    registerAnalyzeWithAICommand({
-      client: activeClient,
-      llmInvoker,
-      getSettings: () => activeConfigService.settings,
-      refreshDiagnosticsTree: () => diagnosticsTree.provider.refresh()
-    })
-  );
 
   context.subscriptions.push(
     vscode.languages.onDidChangeDiagnostics(event => {

@@ -8,12 +8,25 @@
 
 import { GITHUB_SLUG_REMOVE_PATTERN } from "./githubSluggerRegex";
 
+/**
+ * Extended slug result that includes the de-duplicated slug string,
+ * the base slug before collision resolution, and the collision index.
+ */
 export interface SlugContext {
+  /** Final slug string (may have a `-N` suffix for duplicates). */
   slug: string;
+  /** Slug before collision-avoidance suffix was appended. */
   base: string;
+  /** 0-based collision index; 0 means no collision. */
   index: number;
 }
 
+/**
+ * Stateful GitHub-compatible heading slug generator.
+ *
+ * Maintains an internal occurrence map so duplicate headings receive
+ * disambiguating `-N` suffixes, matching GitHub's rendering behaviour.
+ */
 export class GitHubSlugger {
   private occurrences: Record<string, number>;
 
@@ -21,10 +34,21 @@ export class GitHubSlugger {
     this.occurrences = createOccurrences();
   }
 
+  /**
+   * Generates a GitHub-compatible slug, auto-disambiguating duplicates.
+   *
+   * @param value - Raw heading text.
+   * @param maintainCase - If `true`, preserves original casing.
+   * @returns De-duplicated slug string.
+   */
   slug(value: string, maintainCase = false): string {
     return this.slugWithContext(value, maintainCase).slug;
   }
 
+  /**
+   * Like {@link slug} but returns the full {@link SlugContext} with
+   * base slug and collision index.
+   */
   slugWithContext(value: string, maintainCase = false): SlugContext {
     const original = slug(value, maintainCase);
     let result = original;
@@ -46,11 +70,19 @@ export class GitHubSlugger {
     return { slug: result, base: original, index };
   }
 
+  /** Clears the internal occurrence map, resetting collision tracking. */
   reset(): void {
     this.occurrences = createOccurrences();
   }
 }
 
+/**
+ * Stateless slug generation (no duplicate tracking).
+ *
+ * @param value - Raw heading text.
+ * @param maintainCase - If `true`, preserves original casing.
+ * @returns GitHub-compatible slug string.
+ */
 export function slug(value: string, maintainCase = false): string {
   if (typeof value !== "string") {
     return "";
@@ -60,6 +92,7 @@ export function slug(value: string, maintainCase = false): string {
   return source.replace(GITHUB_SLUG_REMOVE_PATTERN, "").replace(/ /g, "-");
 }
 
+/** Creates a fresh {@link GitHubSlugger} instance. */
 export function createSlugger(): GitHubSlugger {
   return new GitHubSlugger();
 }

@@ -2,36 +2,67 @@ import type { LinkRelationshipKind } from "@live-documentation/shared/domain/art
 
 import { ExtensionSettings } from "./providerGuard";
 
+/** Preset intensity level for diagnostic noise suppression. */
 export type NoiseSuppressionLevel = "low" | "medium" | "high";
 
+/**
+ * Concrete noise-filter thresholds applied at runtime.
+ */
 export interface NoiseFilterRuntimeConfig {
+  /** Minimum confidence score for a diagnostic to be emitted. */
   minConfidence: number;
+  /** Maximum graph traversal depth for ripple analysis. */
   maxDepth?: number;
+  /** Maximum diagnostics per single file change. */
   maxPerChange?: number;
+  /** Maximum diagnostics per impacted artifact. */
   maxPerArtifact?: number;
 }
 
+/**
+ * Fully resolved noise-suppression settings including the preset level,
+ * batch limits, hysteresis window, and filter thresholds.
+ */
 export interface NoiseSuppressionRuntime {
   level: NoiseSuppressionLevel;
+  /** Maximum diagnostics published per debounce cycle. */
   maxDiagnosticsPerBatch: number;
+  /** Minimum milliseconds between diagnostic publications. */
   hysteresisMs: number;
+  /** Concrete filter thresholds. */
   filter: NoiseFilterRuntimeConfig;
 }
 
+/**
+ * Resolved ripple (change-impact) traversal settings.
+ */
 export interface RippleRuntimeSettings {
+  /** Maximum hop count for ripple propagation. */
   maxDepth: number;
+  /** Maximum impacted files returned. */
   maxResults: number;
+  /** Relationship kinds eligible for traversal. */
   allowedKinds: LinkRelationshipKind[];
+  /** Subset of allowed kinds used for document-type links. */
   documentKinds: LinkRelationshipKind[];
+  /** Subset of allowed kinds used for code-type links. */
   codeKinds: LinkRelationshipKind[];
 }
 
+/**
+ * Concrete runtime settings used by the language server, derived from
+ * user-facing {@link ExtensionSettings} via {@link deriveRuntimeSettings}.
+ */
 export interface RuntimeSettings {
+  /** Debounce interval in milliseconds before processing changes. */
   debounceMs: number;
+  /** Resolved noise-suppression configuration. */
   noiseSuppression: NoiseSuppressionRuntime;
+  /** Resolved ripple traversal settings. */
   ripple: RippleRuntimeSettings;
 }
 
+/** Sensible defaults applied when no user settings are provided. */
 export const DEFAULT_RUNTIME_SETTINGS: RuntimeSettings = {
   debounceMs: 1000,
   noiseSuppression: {
@@ -144,7 +175,16 @@ function normaliseLinkKinds(
   return filtered.length > 0 ? Array.from(new Set(filtered)) : fallback;
 }
 
-// Normalise extension configuration into concrete runtime settings used by the server.
+/**
+ * Normalises raw {@link ExtensionSettings} from the VS Code client into
+ * concrete {@link RuntimeSettings} used by the language server.
+ *
+ * Applies preset-based defaults for noise suppression, validates and clamps
+ * numeric inputs, and filters link kinds against the allowed set.
+ *
+ * @param settings - Raw extension settings; defaults are used when absent.
+ * @returns Fully resolved runtime settings.
+ */
 export function deriveRuntimeSettings(settings?: ExtensionSettings): RuntimeSettings {
   const debounceOverride =
     typeof settings?.debounceMs === "number" && settings.debounceMs >= 0

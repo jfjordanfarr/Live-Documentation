@@ -448,7 +448,7 @@ Supports REQ-050. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer
 
 ### ~~IMP-530 LLM Sampling Harness~~ *(Descoped 2026-02-17)*
 
-~~Supports REQ-201 and REQ-301. [LLM Sampling Harness](../../.mdmd/layer-4/packages/shared/src/inference/llmSampling.ts.mdmd.md)~~
+~~Supports REQ-201 and REQ-301. Source and Live Doc deleted.~~
 
 ### IMP-610 liveDocsSystemCli _(planned)_
 

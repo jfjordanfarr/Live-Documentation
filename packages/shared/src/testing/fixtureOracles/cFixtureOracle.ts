@@ -8,50 +8,110 @@ import path from "node:path";
  */
 export type COracleEdgeRelation = "references";
 
+/**
+ * Tracks how a C dependency edge was discovered.
+ *
+ * - `"source-include"` — resolved from a `#include` directive
+ * - `"function-call"` — detected via a cross-file function call site
+ * - `"manual-override"` — supplied by a human-authored override entry
+ */
 export type COracleProvenance = "source-include" | "function-call" | "manual-override";
 
+/**
+ * A directed dependency edge in the C fixture graph.
+ *
+ * Includes provenance metadata so benchmark reports can attribute
+ * each edge to its discovery mechanism (include, call, or override).
+ */
 export interface COracleEdge {
+  /** Workspace-relative path of the source file. */
   source: string;
+  /** Workspace-relative path of the target file. */
   target: string;
+  /** Canonical SCIP relation kind (always `"references"` for C). */
   relation: COracleEdgeRelation;
+  /** How this edge was discovered. */
   provenance: COracleProvenance;
 }
 
+/**
+ * Provenance-free edge record used for serialisation and comparison.
+ *
+ * Matches the shape written to `expected.json` benchmark fixtures.
+ */
 export interface COracleEdgeRecord {
   source: string;
   target: string;
   relation: string;
 }
 
+/**
+ * Configuration for the C fixture oracle graph generator.
+ */
 export interface CFixtureOracleOptions {
+  /** Absolute or relative path to the fixture directory root. */
   fixtureRoot: string;
+  /** Optional glob patterns restricting which `.c`/`.h` files to include. */
   include?: string[];
+  /** Optional glob patterns for files to exclude from analysis. */
   exclude?: string[];
 }
 
+/**
+ * A human-authored edge override that supplements auto-detected edges.
+ *
+ * Override entries let benchmark authors declare relationships the
+ * heuristic scanner cannot discover (e.g. dlopen, macro-generated calls).
+ */
 export interface COracleOverrideEntry {
   source: string;
   target: string;
   relation: string;
 }
 
+/**
+ * Container for manual override edges, typically loaded from an
+ * `overrides.json` file alongside the fixture.
+ */
 export interface COracleOverrideConfig {
   manualEdges?: COracleOverrideEntry[];
 }
 
+/**
+ * Result of partitioning auto-detected edges against manual overrides.
+ *
+ * Used by benchmark harnesses to report which overrides were matched
+ * by heuristic discovery and which remain unmatched.
+ */
 export interface COracleSegmentPartition {
+  /** Edges discovered by heuristic analysis that have no matching override. */
   autoEdges: COracleEdge[];
+  /** Edges discovered by heuristic analysis that also appear in overrides. */
   matchedManualEdges: COracleEdge[];
+  /** All override entries provided. */
   manualEntries: COracleOverrideEntry[];
+  /** Override entries with no corresponding auto-detected edge. */
   missingManualEntries: COracleOverrideEntry[];
 }
 
+/**
+ * Full merge result combining auto-detected and manual override edges.
+ *
+ * `mergedRecords` is the union used as the ground-truth expected output
+ * when comparing against inference engine results in benchmark tests.
+ */
 export interface COracleMergeResult {
+  /** All auto-detected edges (with provenance). */
   autoEdges: COracleEdge[];
+  /** Auto-detected edges as provenance-free records. */
   autoRecords: COracleEdgeRecord[];
+  /** Manual override entries as records. */
   manualRecords: COracleEdgeRecord[];
+  /** Subset of manual records that overlap with auto-detected edges. */
   matchedManualRecords: COracleEdgeRecord[];
+  /** Deduplicated union of auto + manual records (the ground truth). */
   mergedRecords: COracleEdgeRecord[];
+  /** Manual entries that heuristic analysis failed to discover. */
   missingManualEntries: COracleOverrideEntry[];
 }
 
@@ -82,6 +142,16 @@ const DEFAULT_IGNORE_DIRECTORIES = new Set([
   "out"
 ]);
 
+/**
+ * Generates a ground-truth dependency graph for a C fixture directory.
+ *
+ * Scans all `.c` and `.h` files under `fixtureRoot`, resolves `#include`
+ * directives to in-tree targets, and detects cross-file function call sites
+ * to produce a complete set of directed edges.
+ *
+ * @param options - Fixture root path and optional include/exclude globs.
+ * @returns Sorted array of edges with provenance metadata.
+ */
 export function generateCFixtureGraph(options: CFixtureOracleOptions): COracleEdge[] {
   const fixtureRoot = path.resolve(options.fixtureRoot);
   const fileMap = collectSourceFiles(fixtureRoot, options.include, options.exclude);
@@ -152,11 +222,27 @@ export function generateCFixtureGraph(options: CFixtureOracleOptions): COracleEd
   return Array.from(edges.values()).sort(compareEdges);
 }
 
+/**
+ * Serialises C oracle edges to a deterministic JSON string.
+ *
+ * Strips provenance and sorts by source/target/relation to produce
+ * output suitable for writing to `expected.json` fixture files.
+ */
 export function serializeCOracleEdges(edges: COracleEdge[]): string {
   const payload = edges.map(toRecordFromEdge).sort(compareRecords);
   return JSON.stringify(payload, null, 2) + "\n";
 }
 
+/**
+ * Partitions auto-detected edges against manual override entries.
+ *
+ * Identifies which overrides were independently discovered by the
+ * heuristic scanner and which remain unmatched — useful for auditing
+ * override coverage in benchmark reports.
+ *
+ * @param edges - Auto-detected edges from {@link generateCFixtureGraph}.
+ * @param overrides - Optional manual override configuration.
+ */
 export function partitionCOracleSegments(
   edges: COracleEdge[],
   overrides?: COracleOverrideConfig
@@ -193,6 +279,15 @@ export function partitionCOracleSegments(
   };
 }
 
+/**
+ * Merges auto-detected edges with manual overrides into a unified ground truth.
+ *
+ * The resulting `mergedRecords` array is the canonical expected output
+ * that benchmark tests compare against inference engine results.
+ *
+ * @param edges - Auto-detected edges from {@link generateCFixtureGraph}.
+ * @param overrides - Optional manual override configuration.
+ */
 export function mergeCOracleEdges(
   edges: COracleEdge[],
   overrides?: COracleOverrideConfig

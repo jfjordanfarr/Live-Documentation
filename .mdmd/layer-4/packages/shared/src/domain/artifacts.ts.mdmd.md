@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/domain/artifacts.ts
 - Live Doc ID: LD-implementation-packages-shared-src-domain-artifacts-ts
-- Generated At: 2026-02-16T18:25:01.061Z
+- Generated At: 2026-02-17T22:06:08.021Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the cross-layer knowledge-graph domain model—artifacts, links, diagnos
 Confidence tiers and drift-history additions arrived alongside the October 23–24 persistence and LLM-ingestion passes, keeping telemetry and ingestion schemas aligned; see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620) and [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.061Z","inputHash":"2034928c1fae1964"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T22:06:08.021Z","inputHash":"2034928c1fae1964"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactLayer` {#symbol-artifactlayer}
@@ -107,11 +107,9 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [analyzeWithAI.test.ts](../../../extension/src/commands/analyzeWithAI.test.ts.mdmd.md)
 - [exportDiagnostics.test.ts](../../../extension/src/commands/exportDiagnostics.test.ts.mdmd.md)
 - [dependencyQuickPick.test.ts](../../../extension/src/diagnostics/dependencyQuickPick.test.ts.mdmd.md)
 - [docDiagnosticProvider.test.ts](../../../extension/src/diagnostics/docDiagnosticProvider.test.ts.mdmd.md)
-- [localOllamaBridge.test.ts](../../../extension/src/services/localOllamaBridge.test.ts.mdmd.md)
 - [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
 - [noiseFilter.test.ts](../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
 - [pathReferenceDetector.test.ts](../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
@@ -120,6 +118,4 @@ _No dependencies documented yet_
 - [fallbackInference.languages.test.ts](../inference/fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../inference/fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../inference/linkInference.test.ts.mdmd.md)
-- [confidenceCalibrator.test.ts](../inference/llm/confidenceCalibrator.test.ts.mdmd.md)
-- [relationshipExtractor.test.ts](../inference/llm/relationshipExtractor.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

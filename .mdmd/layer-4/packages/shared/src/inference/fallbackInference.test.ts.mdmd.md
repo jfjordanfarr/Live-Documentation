@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/inference/fallbackInference.test.ts
 - Live Doc ID: LD-test-packages-shared-src-inference-fallbackinference-test-ts
-- Generated At: 2026-02-03T21:55:38.666Z
+- Generated At: 2026-02-17T21:05:03.118Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Locks in the fallback inference contract from T054–T056—heuristic markdown/c
 Later assertions track the TypeScript runtime/type split and regression fixes from [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) while leaving room for the language-specific suites captured in `fallbackInference.languages.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.666Z","inputHash":"731dd984c3ab2232"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:05:03.118Z","inputHash":"193a3b97bab77ddd"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,9 +23,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`fallbackInference.FallbackLLMBridge`](./fallbackInference.ts.mdmd.md#symbol-fallbackllmbridge)
-- [`fallbackInference.LLMRelationshipRequest`](./fallbackInference.ts.mdmd.md#symbol-llmrelationshiprequest)
-- [`fallbackInference.LLMRelationshipSuggestion`](./fallbackInference.ts.mdmd.md#symbol-llmrelationshipsuggestion)
 - [`fallbackInference.inferFallbackGraph`](./fallbackInference.ts.mdmd.md#symbol-inferfallbackgraph)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

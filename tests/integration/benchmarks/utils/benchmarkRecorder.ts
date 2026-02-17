@@ -60,10 +60,7 @@ export async function writeBenchmarkResult(
     environment: {
       nodeVersion: process.version,
       platform: process.platform,
-      arch: process.arch,
-      providerMode: process.env.LINK_AWARE_PROVIDER_MODE ?? null,
-      ollamaModel: process.env.LINK_AWARE_OLLAMA_MODEL ?? process.env.OLLAMA_MODEL ?? null,
-      ollamaEndpoint: process.env.LINK_AWARE_OLLAMA_ENDPOINT ?? process.env.OLLAMA_ENDPOINT ?? null
+      arch: process.arch
     },
     data: payload
   };

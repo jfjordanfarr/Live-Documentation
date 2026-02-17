@@ -15,7 +15,6 @@ describe("extractExtensionSettings", () => {
           storagePath: "C:/data",
           enableDiagnostics: true,
           debounceMs: 750,
-          llmProviderMode: "local-only",
           noiseSuppression: {
             level: "high",
             minConfidence: 0.25,
@@ -38,7 +37,6 @@ describe("extractExtensionSettings", () => {
       storagePath: "C:/data",
       enableDiagnostics: true,
       debounceMs: 750,
-      llmProviderMode: "local-only",
       noiseSuppression: {
         level: "high",
         minConfidence: 0.25,
@@ -66,7 +64,6 @@ describe("extractTestModeOverrides", () => {
     const overrides = extractTestModeOverrides({
       testModeOverrides: {
         enableDiagnostics: false,
-        llmProviderMode: "prompt",
         noiseSuppression: {
           level: "low",
           minConfidence: 0.15
@@ -80,7 +77,6 @@ describe("extractTestModeOverrides", () => {
 
     expect(overrides).toEqual({
       enableDiagnostics: false,
-      llmProviderMode: "prompt",
       noiseSuppression: {
         level: "low",
         minConfidence: 0.15

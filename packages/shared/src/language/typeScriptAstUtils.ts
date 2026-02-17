@@ -1,10 +1,25 @@
 import ts from "typescript";
 
+/**
+ * Tracks whether an identifier is used in value position, type position, or both.
+ *
+ * Used by the import-pruning heuristic to determine whether a dependency
+ * is a runtime (value) import or a type-only import.
+ */
 export interface IdentifierUsage {
+  /** `true` if the identifier appears in a runtime/value expression context. */
   value: boolean;
+  /** `true` if the identifier appears in a type annotation or declaration context. */
   type: boolean;
 }
 
+/**
+ * Extracts the locally-bound names introduced by an import clause
+ * (default import, named imports, or namespace import).
+ *
+ * @param importClause - The TypeScript AST import clause node.
+ * @returns Array of local binding names.
+ */
 export function extractLocalImportNames(importClause: ts.ImportClause | undefined): string[] {
   if (!importClause) {
     return [];
@@ -31,6 +46,16 @@ export function extractLocalImportNames(importClause: ts.ImportClause | undefine
   return names;
 }
 
+/**
+ * Walks a TypeScript source file AST and records whether each identifier
+ * appears in value position, type position, or both.
+ *
+ * Declaration names and import/export binding names are excluded;
+ * only usage-site occurrences are tracked.
+ *
+ * @param sourceFile - Parsed TypeScript source file.
+ * @returns Map from identifier text to its usage record.
+ */
 export function collectIdentifierUsage(sourceFile: ts.SourceFile): Map<string, IdentifierUsage> {
   const usage = new Map<string, IdentifierUsage>();
 
@@ -61,6 +86,13 @@ export function collectIdentifierUsage(sourceFile: ts.SourceFile): Map<string, I
   return usage;
 }
 
+/**
+ * Returns `true` if any of the given local names appear in a runtime (value)
+ * position in the usage map.
+ *
+ * When `localNames` is empty, returns `true` as a conservative default
+ * (the import *may* have side effects).
+ */
 export function hasRuntimeUsage(
   usage: Map<string, IdentifierUsage>,
   localNames: readonly string[]
@@ -72,6 +104,10 @@ export function hasRuntimeUsage(
   return localNames.some(name => usage.get(name)?.value === true);
 }
 
+/**
+ * Returns `true` if any of the given local names appear in a type-only
+ * position in the usage map.
+ */
 export function hasTypeUsage(
   usage: Map<string, IdentifierUsage>,
   localNames: readonly string[]
@@ -83,6 +119,13 @@ export function hasTypeUsage(
   return localNames.some(name => usage.get(name)?.type === true);
 }
 
+/**
+ * Heuristic check for whether an import specifier points to a
+ * type-definition file (`.d.ts`, `types.ts`, `*-types.ts`, etc.).
+ *
+ * Used to classify imports as type-only when no AST usage data is
+ * available (e.g. unresolved or external modules).
+ */
 export function isLikelyTypeDefinitionSpecifier(specifier: string): boolean {
   const normalized = specifier
     .replace(/\\/g, "/")

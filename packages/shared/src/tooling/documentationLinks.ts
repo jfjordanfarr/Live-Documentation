@@ -13,12 +13,26 @@ const INLINE_LINK_PATTERN = /\[[^\]]+\]\(([^)]+)\)/g;
 const REFERENCE_LINK_PATTERN = /\[[^\]]+\]\[([^\]]*)\]/g;
 const EXTERNAL_SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 
+/**
+ * Declares a bidirectional mapping between documentation files and code files.
+ *
+ * Each rule identifies which doc globs contain `mdmd:code` markers pointing
+ * at files matched by `codeGlobs`, enabling the enforcement bridge to
+ * verify that breadcrumb comments exist in source files.
+ */
 export interface DocumentationRule {
+  /** Human-readable label used in breadcrumb comments (e.g. `"Live Documentation"`). */
   label: string;
+  /** Glob patterns matching documentation files to scan for anchors. */
   docGlobs: string[];
+  /** Glob patterns matching code files eligible for breadcrumb enforcement. */
   codeGlobs: string[];
 }
 
+/**
+ * Built-in rule set mapping MDMD Layer-4 / Live Documentation files
+ * to source code under `packages/` and `scripts/`.
+ */
 export const DEFAULT_RULES: DocumentationRule[] = [
   {
     label: "Live Documentation",
@@ -34,12 +48,22 @@ export const DEFAULT_RULES: DocumentationRule[] = [
   }
 ];
 
+/**
+ * Parsed heading anchor within a documentation file, enriched with
+ * the code paths it covers and backlinks it contains.
+ */
 export interface DocumentationAnchorSummary {
+  /** Raw heading text. */
   heading: string;
+  /** GitHub-compatible slug derived from the heading. */
   slug: string;
+  /** Heading depth (1–6). */
   level: number;
+  /** 1-based line number where the heading appears. */
   startLine: number;
+  /** Workspace-relative paths of code files referenced via `mdmd:code` markers. */
   codePaths: string[];
+  /** Workspace-relative paths of files linked back from beneath this heading. */
   backlinks: string[];
 }
 
@@ -49,28 +73,50 @@ interface ParsedDocumentationAnchors {
   anchors: DocumentationAnchorSummary[];
 }
 
+/**
+ * A parsed documentation file's anchors annotated with the rule that produced them.
+ */
 export interface DocumentationDocumentAnchors extends ParsedDocumentationAnchors {
   rule: DocumentationRule;
 }
 
+/**
+ * A fully resolved mapping from a code file to the documentation section
+ * that describes it, including backlink status.
+ */
 export interface ResolvedDocumentationTarget {
+  /** The rule that produced this mapping. */
   rule: DocumentationRule;
+  /** Human-readable label from the rule. */
   label: string;
+  /** Workspace-relative path to the documentation file. */
   docPath: string;
+  /** Absolute path to the documentation file. */
   docAbsolutePath: string;
+  /** Slug of the heading section covering this code file. */
   slug: string;
+  /** Raw heading text. */
   heading: string;
+  /** Whether the documentation section contains a link back to the code file. */
   hasBacklink: boolean;
 }
 
+/** Maps workspace-relative code file paths to their resolved documentation targets. */
 export type DocumentationTargetMap = Map<string, ResolvedDocumentationTarget>;
 
+/** Options for {@link parseDocumentationAnchors}. */
 export interface ParseDocumentationAnchorsOptions {
+  /** Absolute path to the workspace root for relative-path resolution. */
   workspaceRoot: string;
+  /** Optional pre-loaded file content; read from disk when omitted. */
   content?: string;
 }
 
+/**
+ * A single violation detected by the documentation-link enforcement pass.
+ */
 export interface DocumentationLinkViolation {
+  /** Violation category. */
   kind:
     | "missing-code-file"
     | "unsupported-comment-style"
@@ -78,29 +124,56 @@ export interface DocumentationLinkViolation {
     | "missing-breadcrumb"
     | "mismatched-breadcrumb"
     | "rule-mismatch";
+  /** Workspace-relative path of the code file involved. */
   filePath: string;
+  /** Workspace-relative path of the documentation file. */
   docPath: string;
+  /** Heading slug identifying the relevant documentation section. */
   slug: string;
+  /** Rule label that produced this violation. */
   label: string;
+  /** Expected breadcrumb comment (when applicable). */
   expected?: string;
+  /** Actual comment found in the file (when applicable). */
   actual?: string;
+  /** Human-readable description of the violation. */
   message: string;
 }
 
+/**
+ * Aggregate result from a documentation-link enforcement run.
+ */
 export interface DocumentationLinkEnforcementResult {
+  /** Number of documentation files scanned for anchors. */
   scannedDocuments: number;
+  /** Number of code files checked for breadcrumb comments. */
   scannedFiles: number;
+  /** Number of code files auto-fixed (when `fix` is enabled). */
   fixedFiles: number;
+  /** All violations detected during the run. */
   violations: DocumentationLinkViolation[];
 }
 
+/** Options for {@link runDocumentationLinkEnforcement}. */
 export interface RunDocumentationLinkEnforcementOptions {
+  /** Absolute path to the workspace root. */
   workspaceRoot: string;
+  /** Custom rules; defaults to {@link DEFAULT_RULES} when omitted. */
   rules?: DocumentationRule[];
+  /** When `true`, auto-fix missing or mismatched breadcrumb comments. */
   fix?: boolean;
+  /** Optional allowlist of workspace-relative code paths to check. */
   includeList?: string[];
 }
 
+/**
+ * Parses heading anchors from a documentation file, collecting
+ * `mdmd:code` markers and inline backlinks for each section.
+ *
+ * @param docPath - Workspace-relative path to the documentation file.
+ * @param options - Workspace root and optional pre-loaded content.
+ * @returns Parsed anchors with code paths and backlinks.
+ */
 export function parseDocumentationAnchors(
   docPath: string,
   { workspaceRoot, content }: ParseDocumentationAnchorsOptions
@@ -158,6 +231,16 @@ export function parseDocumentationAnchors(
   return { docPath: normalizeWorkspacePath(docPath), absolutePath, anchors };
 }
 
+/**
+ * Builds a code-file-to-documentation-target map from parsed documents.
+ *
+ * When a code file appears under multiple anchors, the mapping prefers
+ * the anchor that contains a backlink to the code file.
+ *
+ * @param documents - Parsed documentation files with rule metadata.
+ * @param targetMap - Optional existing map to merge into.
+ * @returns The (mutated) target map.
+ */
 export function resolveCodeToDocumentationMap(
   documents: DocumentationDocumentAnchors[],
   targetMap: DocumentationTargetMap = new Map()
@@ -192,6 +275,17 @@ export function resolveCodeToDocumentationMap(
   return targetMap;
 }
 
+/**
+ * Formats a breadcrumb comment string for a given code file and target.
+ *
+ * The comment is intended to appear as the first line of the code file,
+ * pointing back to the documentation section that describes it.
+ *
+ * @param filePath - Workspace-relative path to the code file.
+ * @param target - Resolved documentation target with label and slug.
+ * @returns Formatted comment string (e.g. `// Live Documentation: path.mdmd.md#slug`).
+ * @throws If the file extension does not support line comments.
+ */
 export function formatDocumentationLinkComment(
   filePath: string,
   target: ResolvedDocumentationTarget
@@ -205,6 +299,16 @@ export function formatDocumentationLinkComment(
   return `${prefix} ${target.label}: ${target.docPath}#${target.slug}`;
 }
 
+/**
+ * Runs the full documentation-link enforcement pass across the workspace.
+ *
+ * Scans documentation files for `mdmd:code` markers, resolves them to code
+ * files, and verifies that each code file contains the correct breadcrumb
+ * comment pointing back to its documentation section. Optionally auto-fixes.
+ *
+ * @param options - Workspace root, rules, fix mode, and optional include list.
+ * @returns Aggregate enforcement result with violations.
+ */
 export function runDocumentationLinkEnforcement(
   options: RunDocumentationLinkEnforcementOptions
 ): DocumentationLinkEnforcementResult {

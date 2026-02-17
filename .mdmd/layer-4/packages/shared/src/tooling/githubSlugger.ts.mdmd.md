@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSlugger.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-githubslugger-ts
-- Generated At: 2026-02-03T21:55:41.290Z
+- Generated At: 2026-02-17T21:05:04.664Z
 
 ## Authored
 ### Purpose
@@ -16,25 +16,48 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 - November 7 anchor-audit confirmed the maintainCase flag and unicode handling stay aligned with GitHub after targeting mis-slugged `COMP-003 – Heuristic Suite` references.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.290Z","inputHash":"a10c6f99f8f047cd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:05:04.664Z","inputHash":"8f7b9f1d6137e972"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SlugContext` {#symbol-slugcontext}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L11)
+- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L15)
+
+##### `SlugContext` — Summary
+Extended slug result that includes the de-duplicated slug string,
+the base slug before collision resolution, and the collision index.
 
 #### `GitHubSlugger` {#symbol-githubslugger}
 - Type: class
-- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L17)
+- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L30)
+
+##### `GitHubSlugger` — Summary
+Stateful GitHub-compatible heading slug generator.
+
+Maintains an internal occurrence map so duplicate headings receive
+disambiguating `-N` suffixes, matching GitHub's rendering behaviour.
 
 #### `slug` {#symbol-slug}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L54)
+- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L86)
+
+##### `slug` — Summary
+Stateless slug generation (no duplicate tracking).
+
+##### `slug` — Parameters
+- `maintainCase`: If `true`, preserves original casing.
+- `value`: Raw heading text.
+
+##### `slug` — Returns
+GitHub-compatible slug string.
 
 #### `createSlugger` {#symbol-createslugger}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L63)
+- Source: [source](../../../../../../packages/shared/src/tooling/githubSlugger.ts#L96)
 - Returns: [`GitHubSlugger`](#symbol-githubslugger)
+
+##### `createSlugger` — Summary
+Creates a fresh {@link GitHubSlugger} instance.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
