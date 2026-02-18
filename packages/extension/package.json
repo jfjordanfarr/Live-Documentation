@@ -26,119 +26,18 @@
   "contributes": {
     "commands": [
       {
-        "command": "linkDiagnostics.overrideLink",
-        "title": "Live Documentation: Override Link",
-        "icon": "$(link-external)"
-      },
-      {
-        "command": "linkDiagnostics.inspectDependencies",
-        "title": "Live Documentation: Inspect Dependencies",
-        "icon": "$(repo)"
-      },
-      {
-        "command": "linkDiagnostics.refreshDiagnosticsTree",
-        "title": "Live Documentation: Refresh Diagnostics Tree",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "linkDiagnostics.acknowledgeDiagnosticFromTree",
-        "title": "Live Documentation: Acknowledge Diagnostic",
-        "icon": "$(check)"
-      },
-      {
-        "command": "linkDiagnostics.exportDiagnostics",
-        "title": "Live Documentation: Export Diagnostics",
-        "icon": "$(cloud-download)"
-      },
-      {
-        "command": "linkDiagnostics.openLinkedArtifact",
-        "title": "Live Documentation: Open Linked Artifact",
-        "icon": "$(go-to-file)"
-      },
-      {
-        "command": "linkAwareDiagnostics.isServerReady",
+        "command": "liveDocumentation.isServerReady",
         "title": "Live Documentation: Server Ready",
         "icon": "$(debug-start)"
-      },
-      {
-        "command": "linkAwareDiagnostics.clearAllDiagnostics",
-        "title": "Live Documentation: Clear Diagnostics",
-        "icon": "$(trash)"
       }
     ],
-    "views": {
-      "explorer": [
-        {
-          "id": "linkDiagnostics.diagnosticsTree",
-          "name": "Live Documentation"
-        }
-      ]
-    },
-    "menus": {
-      "view/title": [
-        {
-          "command": "linkDiagnostics.refreshDiagnosticsTree",
-          "when": "view == linkDiagnostics.diagnosticsTree",
-          "group": "navigation@1"
-        },
-        {
-          "command": "linkDiagnostics.exportDiagnostics",
-          "when": "view == linkDiagnostics.diagnosticsTree",
-          "group": "navigation@2"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "linkDiagnostics.acknowledgeDiagnosticFromTree",
-          "when": "view == linkDiagnostics.diagnosticsTree && viewItem == linkDiagnostics.diagnostic",
-          "group": "inline"
-        }
-      ]
-    },
     "configuration": {
       "title": "Live Documentation",
       "properties": {
-        "linkAwareDiagnostics.noiseSuppression.level": {
-          "type": "string",
-          "enum": ["low", "medium", "high"],
-          "default": "medium",
-          "description": "Adjust debounce and batching thresholds for drift diagnostics."
-        },
-        "linkAwareDiagnostics.noiseSuppression.minConfidence": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1,
-          "description": "Override the minimum ripple confidence (0-1) required before diagnostics emit."
-        },
-        "linkAwareDiagnostics.noiseSuppression.maxDepth": {
-          "type": "number",
-          "minimum": 1,
-          "description": "Limit ripple diagnostics to the specified maximum hop depth."
-        },
-        "linkAwareDiagnostics.noiseSuppression.maxPerChange": {
-          "type": "number",
-          "minimum": 1,
-          "description": "Cap how many ripple diagnostics a single change event may emit."
-        },
-        "linkAwareDiagnostics.noiseSuppression.maxPerArtifact": {
-          "type": "number",
-          "minimum": 1,
-          "description": "Restrict how many diagnostics can target the same dependent artifact per change."
-        },
-        "linkAwareDiagnostics.storagePath": {
+        "liveDocumentation.storagePath": {
           "type": "string",
           "default": "",
-          "description": "Optional override for the on-disk cache storing knowledge-graph projections."
-        },
-        "linkAwareDiagnostics.enableDiagnostics": {
-          "type": "boolean",
-          "default": false,
-          "description": "Gate all diagnostics until the user consents to a provider mode."
-        },
-        "linkAwareDiagnostics.debounce.ms": {
-          "type": "number",
-          "default": 1000,
-          "description": "Debounce window (in milliseconds) before change events trigger diagnostics."
+          "description": "Optional override for the on-disk storage path."
         }
       }
     }
@@ -149,8 +48,7 @@
   },
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
-    "vscode-languageclient": "^9.0.1",
-    "zod": "^4.3.4"
+    "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
     "@types/vscode": "^1.107.0"

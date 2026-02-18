@@ -797,6 +797,17 @@ The project achieved a massive validation milestone by replacing hand-coded orac
 * **JSDoc Depth (Commit 249):** Continued the "Archaeology-Backed Documentation" campaign, adding deep JSDoc to 35 critical-tier files to ensure the code explains *itself*.  
 * **The SCIP Migration (Commit 250):** Deleted \~3,600 lines of legacy heuristic oracle code. The system now validates its regex heuristics against the strict, compiler-verified reality produced by scip-java, scip-python, rust-analyzer, etc. This definitively ends the era of "grading our own homework."
 
+### **Phase LV: The Great De-AI (Feb 17\)**
+
+Date: February 17, 2026
+
+Scope: Commits 251–252
+
+In a strategic "pivot to simplicity," the team formally descoped all internal LLM integration, realizing that deterministic tools (Tree-sitter, SCIP) had closed the polyglot gap.
+
+* **Descoping LLM (Commit 251):** Removed all LLM-related goals from the vision and requirements docs. The rationale: users bring their own AI; the tool doesn't need to be one.  
+* **The Purge (Commit 252):** Deleted 24 source files related to Ollama, analyzeWithAI, and confidence calibration. This removed a massive amount of "speculative complexity," leaving a leaner, faster, 100% deterministic core.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -836,7 +847,8 @@ The project achieved a massive validation milestone by replacing hand-coded orac
 * **Jan 30 (Phase LI):** "The Union of Truth." (Fusing Oracle and Tree-Sitter for ground truth generation).  
 * **Feb 3 (Phase LII):** "The Containerized Pivot." (Dev Containers for consistent cross-platform tooling).  
 * **Feb 15 (Phase LIII):** "The JSDoc & Config Hygiene." (Documentation enforcement and dead code purge).  
-* **Feb 17 (Phase LIV):** "The SCIP Migration." (Replacing heuristic oracles with compiler indexers).
+* **Feb 17 (Phase LIV):** "The SCIP Migration." (Replacing heuristic oracles with compiler indexers).  
+* **Feb 17 (Phase LV):** "The Great De-AI." (Removing LLM integration to focus on deterministic tooling).
 
 ## **Technical Themes & Motifs**
 

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/heuristics/shared.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-heuristics-shared-ts
-- Generated At: 2026-02-16T18:46:24.250Z
+- Generated At: 2026-02-18T18:15:12.572Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Provides the cross-language path normalisation, comment filtering, and reference
 - The extension-swapping logic was introduced to keep `.js` specifiers mapped onto `.ts/.tsx` sources; extend the replacement list in this helper instead of reimplementing it in future heuristics <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-01.md#L2302-L2315>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.250Z","inputHash":"7be36448a65be2cf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:15:12.572Z","inputHash":"7be36448a65be2cf"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cleanupReference` {#symbol-cleanupreference}
@@ -136,9 +136,6 @@ Used by every per-language heuristic to rank candidate dependencies.
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [symbolBridge.test.ts](../../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
-- [noiseFilter.test.ts](../../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
-- [pathReferenceDetector.test.ts](../../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](../fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../linkInference.test.ts.mdmd.md)

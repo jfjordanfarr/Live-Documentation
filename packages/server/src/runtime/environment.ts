@@ -5,9 +5,12 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { InitializeParams } from "vscode-languageserver/node";
 
-import { ExtensionSettings } from "../features/settings/providerGuard";
+/** Minimal settings shape needed by environment helpers. */
+interface StorageSettings {
+  storagePath?: string;
+}
 
-export function resolveDatabasePath(params: InitializeParams, settings: ExtensionSettings): string {
+export function resolveDatabasePath(params: InitializeParams, settings: StorageSettings): string {
   if (settings.storagePath) {
     return path.join(settings.storagePath, "live-documentation.db");
   }

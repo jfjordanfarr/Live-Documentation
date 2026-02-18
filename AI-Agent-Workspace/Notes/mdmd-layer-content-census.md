@@ -17,28 +17,36 @@ This mock chain mirrors the "workspace-wide markdown AST" capability while enfor
 # CAP-Workspace-Polyglot-AST – Workspace Markdown AST Mirror
 
 ## Metadata
+
 - Layer: 1
 - Archetype: capability
 - Live Doc ID: CAP-workspace-polyglot-ast
 
 ## Authored
+
 ### Intent
+
 - Promise that every tracked artifact emits a deterministic markdown representation that tools and people can consume interchangeably.
 
 ### Signals
+
 - Publish workspace-wide AST mirror as part of every quarterly release.
 - Maintain CI regeneration success above 95 % across supported workspaces.
 
 ## Generated
+
 ### Completion Snapshot
+
 - Requirements satisfied: 1 / 2 (50 %).
 - Last Layer-2 update: 2025-11-09T22:40Z.
 
 ### Evidence Snapshot
+
 - Latest public demo link: `docs/releases/2025-11.md#polyglot-ast`
 
 ## Dependencies
-- REQ-Live-Docs-Sync *(Layer-2 requirement; Stage-0 doc pending)*
+
+- REQ-Live-Docs-Sync _(Layer-2 requirement; Stage-0 doc pending)_
 ```
 
 ### Layer 2 – REQ-Live-Docs-Sync (unit)
@@ -47,65 +55,82 @@ This mock chain mirrors the "workspace-wide markdown AST" capability while enfor
 # REQ-Live-Docs-Sync – CI Regenerates Workspace AST Mirror
 
 ## Metadata
+
 - Layer: 2
 - Archetype: requirement
 - Live Doc ID: REQ-live-docs-sync
 
 ## Authored
+
 ### Requirement
+
 - [x] CI must regenerate Stage-0 Live Docs within five minutes for workspaces under 5 000 files.
 - [ ] Regeneration pipeline emits progress metrics for human review.
 
 ### Acceptance Criteria
+
 - [x] Two successive dry runs yield identical markdown diffs.
 - [ ] Regeneration telemetry reports duration and failure counts for promotion into Layer-1 signals.
 
 ### Evidence
-- COMP-Live-Docs-Regeneration-Tests *(Layer-3 testing doc; Stage-0 mirror pending)* publishes passing status for the regeneration suite.
+
+- COMP-Live-Docs-Regeneration-Tests _(Layer-3 testing doc; Stage-0 mirror pending)_ publishes passing status for the regeneration suite.
 
 ## Dependencies
-- COMP-Live-Docs-Graph-Ingest *(Layer-3 component doc; Stage-0 mirror pending)*
-- COMP-Live-Docs-Regeneration-Tests *(Layer-3 testing doc; Stage-0 mirror pending)*
+
+- COMP-Live-Docs-Graph-Ingest _(Layer-3 component doc; Stage-0 mirror pending)_
+- COMP-Live-Docs-Regeneration-Tests _(Layer-3 testing doc; Stage-0 mirror pending)_
 
 ## Generated
+
 ### Completion Snapshot
+
 - Requirement checkboxes complete: 1 / 2.
 - Acceptance criteria complete: 1 / 2.
 
 ### Linked Components
-- COMP-Live-Docs-Graph-Ingest *(Layer-3 component doc; Stage-0 mirror pending)*
-- COMP-Live-Docs-Regeneration-Tests *(Layer-3 testing doc; Stage-0 mirror pending)*
+
+- COMP-Live-Docs-Graph-Ingest _(Layer-3 component doc; Stage-0 mirror pending)_
+- COMP-Live-Docs-Regeneration-Tests _(Layer-3 testing doc; Stage-0 mirror pending)_
 
 ### Linked Evidence
+
 - [reports/test-report.ast.md](../../reports/test-report.ast.md)
-- logs/ci/live-docs-regen.log *(capture location proposed; file not yet versioned)*
+- logs/ci/live-docs-regen.log _(capture location proposed; file not yet versioned)_
 ```
 
 ### Layer 3 – COMP-Live-Docs-Graph-Ingest (concept)
 
-```markdown
+````markdown
 # COMP-Live-Docs-Graph-Ingest – Live Doc Graph Synchronizer
 
 ## Metadata
+
 - Layer: 3
 - Archetype: component
 - Live Doc ID: COMP-live-docs-graph-ingest
 
 ## Authored
+
 ### Purpose
+
 - Provide the canonical ingestion architecture that maps Stage-0 Live Docs into the workspace graph and exposes coverage telemetry.
 
 ### Notes
-- Upstream dependency: REQ-Live-Docs-Sync *(Layer-2 requirement; Stage-0 doc pending).*
+
+- Upstream dependency: REQ-Live-Docs-Sync _(Layer-2 requirement; Stage-0 doc pending)._
 - Prefer incremental graph updates; full rebuild fallback must run in <10 minutes on reference hardware.
 
 ## Generated
+
 ### Components
+
 - [`LD-implementation-packages-shared-src-live-docs-markdown-ts`](../../.mdmd/layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md)
 - [`LD-implementation-packages-shared-src-live-docs-schema-ts`](../../.mdmd/layer-4/packages/shared/src/live-docs/schema.ts.mdmd.md)
 - [`LD-test-packages-shared-src-live-docs-generator-test-ts`](../../.mdmd/layer-4/packages/shared/src/live-docs/generator.test.ts.mdmd.md)
 
-### Topology *(generated from Layer-4 dependency graph)*
+### Topology _(generated from Layer-4 dependency graph)_
+
 ```mermaid
 graph TD
 	comp((COMP-Live-Docs-Graph-Ingest))
@@ -119,7 +144,9 @@ graph TD
 	click ld2 "../../.mdmd/layer-4/packages/shared/src/live-docs/schema.ts.mdmd.md" "Open schema doc"
 	click ld3 "../../.mdmd/layer-4/packages/shared/src/live-docs/generator.test.ts.mdmd.md" "Open regeneration tests"
 ```
-```
+````
+
+````
 
 ### Layer 4 – LD-implementation-packages-shared-src-live-docs-markdown-ts (unit)
 
@@ -148,33 +175,40 @@ graph TD
 ### Dependencies
 - [`schema.LiveDocMetadata`](../../.mdmd/layer-4/packages/shared/src/live-docs/schema.ts.mdmd.md)
 - [`pathUtils.normalizeWorkspacePath`](../../.mdmd/layer-4/packages/shared/src/tooling/pathUtils.ts.mdmd.md)
-```
+````
 
 ### Layer 3 – COMP-Live-Docs-Regeneration-Tests (concept)
 
-```markdown
+````markdown
 # COMP-Live-Docs-Regeneration-Tests – Regeneration Testing Architecture
 
 ## Metadata
+
 - Layer: 3
 - Archetype: testing-architecture
 - Live Doc ID: COMP-live-docs-regeneration-tests
 
 ## Authored
+
 ### Purpose
+
 - Capture the regeneration testing architecture that verifies Stage-0 Live Docs stay deterministic across packages.
 
 ### Notes
-- Upstream requirement: REQ-Live-Docs-Sync *(Layer-2 requirement; Stage-0 doc pending).*
+
+- Upstream requirement: REQ-Live-Docs-Sync _(Layer-2 requirement; Stage-0 doc pending)._
 - Ensure Vitest seed remains stable; flaky retries mask regressions.
 
 ## Generated
+
 ### Components
+
 - [`LD-test-packages-shared-src-live-docs-generator-test-ts`](../../.mdmd/layer-4/packages/shared/src/live-docs/generator.test.ts.mdmd.md)
 - [`LD-test-packages-server-src-features-live-docs-renderpublicsymbollines-test-ts`](../../.mdmd/layer-4/packages/server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [`LD-test-packages-extension-src-commands-exportdiagnostics-test-ts`](../../.mdmd/layer-4/packages/extension/src/commands/exportDiagnostics.test.ts.mdmd.md)
+- ~~`LD-test-packages-extension-src-commands-exportdiagnostics-test-ts`~~ _(Deleted 2026-02-18)_
 
 ### Topology
+
 ```mermaid
 graph TD
 	comp((COMP-Live-Docs-Regeneration-Tests))
@@ -188,7 +222,9 @@ graph TD
 	click ld2 "../../.mdmd/layer-4/packages/server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md" "Open server regeneration test"
 	click ld3 "../../.mdmd/layer-4/packages/extension/src/commands/exportDiagnostics.test.ts.mdmd.md" "Open extension regeneration test"
 ```
-```
+````
+
+````
 
 ### Layer 3 – INT-Live-Docs-CLI (interaction)
 
@@ -231,8 +267,9 @@ graph TD
 	click cmdLint "../../.mdmd/layer-4/scripts/live-docs/lint.ts.mdmd.md" "Open lint implementation"
 	click cmdRunAll "../../.mdmd/layer-4/scripts/live-docs/run-all.ts.mdmd.md" "Open run-all implementation"
 	click cmdReport "../../.mdmd/layer-4/scripts/live-docs/report-precision.ts.mdmd.md" "Open report implementation"
-```
-```
+````
+
+````
 
 ### Layer 3 – DATA-Live-Docs-Schema (data model)
 
@@ -273,8 +310,9 @@ graph TD
 	click test "../../.mdmd/layer-4/packages/shared/src/live-docs/schema.test.ts.mdmd.md" "Open schema tests"
 	click consumer1 "../../.mdmd/layer-4/packages/server/src/features/live-docs/generator.ts.mdmd.md" "Open generator implementation"
 	click consumer2 "../../.mdmd/layer-4/scripts/live-docs/generate.ts.mdmd.md" "Open CLI implementation"
-```
-```
+````
+
+````
 
 ### Layer 3 – FLOW-Live-Docs-Regeneration (workflow)
 
@@ -313,8 +351,9 @@ graph LR
 	click stage2 "../../.mdmd/layer-4/scripts/live-docs/build-target-manifest.ts.mdmd.md" "Open manifest builder"
 	click stage3 "../../.mdmd/layer-4/packages/server/src/features/live-docs/generator.ts.mdmd.md" "Open server generator"
 	click stage4 "../../.mdmd/layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md" "Open serializer"
-```
-```
+````
+
+````
 
 ### Layer 3 – INTG-Workspace-Environment (integration)
 
@@ -338,7 +377,7 @@ graph LR
 ### Components
 - [`packages/server/src/runtime/environment.ts`](../../.mdmd/layer-4/packages/server/src/runtime/environment.ts.mdmd.md)
 - [`packages/server/src/runtime/environment.test.ts`](../../.mdmd/layer-4/packages/server/src/runtime/environment.test.ts.mdmd.md)
-- [`packages/server/src/features/settings/providerGuard.ts`](../../.mdmd/layer-4/packages/server/src/features/settings/providerGuard.ts.mdmd.md)
+- ~~`packages/server/src/features/settings/providerGuard.ts`~~ _(Deleted 2026-02-18)_
 
 ### Topology
 ```mermaid
@@ -356,7 +395,8 @@ graph TD
 	click envTest "../../.mdmd/layer-4/packages/server/src/runtime/environment.test.ts.mdmd.md" "Open environment tests"
 	click settings "../../.mdmd/layer-4/packages/server/src/features/settings/providerGuard.ts.mdmd.md" "Open settings provider"
 	click database "../../.mdmd/layer-4/packages/server/src/features/live-docs/generator.ts.mdmd.md" "Open generator"
-```
+````
+
 ```
 
 ## Layer 1 – Vision / Capabilities
@@ -444,3 +484,4 @@ graph TD
 
 ---
 This census should be regenerated as new directives land so upcoming work on Layers 1–3 and post-base Live Documentation remains grounded in stakeholder intent.
+```

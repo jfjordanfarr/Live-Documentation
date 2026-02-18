@@ -82,28 +82,3 @@ export interface LinkRelationship {
   createdAt: string;
   createdBy: string;
 }
-
-/**
- * Structured LLM response attached to a diagnostic.
- *
- * Captures the model's assessment text, calibrated confidence, and
- * recommended remediation actions.  Consumed by the diagnostic
- * contracts layer (`contracts/diagnostics.ts`) and surfaced in the
- * VS Code diagnostics tree view.
- */
-export interface LlmAssessment {
-  summary: string;
-  confidence: number;
-  recommendedActions: string[];
-  generatedAt?: string;
-  model?: {
-    id: string;
-    name?: string;
-    vendor?: string;
-    family?: string;
-    version?: string;
-  };
-  promptHash?: string;
-  rawResponse?: string;
-  tags?: Record<string, string>;
-}

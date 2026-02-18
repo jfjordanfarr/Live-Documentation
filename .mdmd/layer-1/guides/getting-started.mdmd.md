@@ -1,6 +1,7 @@
 # Getting Started with Live Documentation
 
 ## Metadata
+
 - Layer: 1
 - Guide Type: getting-started
 
@@ -70,11 +71,11 @@ npm run live-docs:visualize
 
 You'll see three complementary views:
 
-| View | Purpose |
-|------|---------|
+| View              | Purpose                                                               |
+| ----------------- | --------------------------------------------------------------------- |
 | **Circuit Board** | Macro view — entire workspace as a treemap of interconnected clusters |
-| **Local Map** | Micro view — focus on one file, see its symbols, trace connections |
-| **Force Graph** | Discovery view — physics-based clustering reveals natural groupings |
+| **Local Map**     | Micro view — focus on one file, see its symbols, trace connections    |
+| **Force Graph**   | Discovery view — physics-based clustering reveals natural groupings   |
 
 ### Step 3: Trace a Dependency Path
 
@@ -95,6 +96,7 @@ npm run live-docs:lint
 ```
 
 This validates:
+
 - Relative links (no absolute paths)
 - Generated-marker integrity
 - Slug dialect compliance
@@ -112,23 +114,20 @@ Create a `live-docs.config.json` at your repository root:
   "extension": ".md",
   "slugDialect": "github",
   "requireRelativeLinks": true,
-  "glob": [
-    "src/**/*.{ts,tsx,js,jsx}",
-    "lib/**/*.{ts,tsx,js,jsx}"
-  ]
+  "glob": ["src/**/*.{ts,tsx,js,jsx}", "lib/**/*.{ts,tsx,js,jsx}"]
 }
 ```
 
 ### Key Settings
 
-| Setting | Default | Purpose |
-|---------|---------|---------|
-| `root` | `.live-documentation` | Where Live Docs are materialized |
-| `baseLayer` | `source` | Subfolder mirroring your source tree |
-| `extension` | `.md` | File extension for Live Docs |
-| `slugDialect` | `github` | Header anchor style (`github`, `azure-devops`, `gitlab`) |
-| `requireRelativeLinks` | `true` | Enforce relative links for repo-backed wikis |
-| `glob` | `[...]` | Which files receive Live Docs |
+| Setting                | Default               | Purpose                                                  |
+| ---------------------- | --------------------- | -------------------------------------------------------- |
+| `root`                 | `.live-documentation` | Where Live Docs are materialized                         |
+| `baseLayer`            | `source`              | Subfolder mirroring your source tree                     |
+| `extension`            | `.md`                 | File extension for Live Docs                             |
+| `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`) |
+| `requireRelativeLinks` | `true`                | Enforce relative links for repo-backed wikis             |
+| `glob`                 | `[...]`               | Which files receive Live Docs                            |
 
 Point the generator to your config:
 
@@ -142,23 +141,23 @@ npm run live-docs:generate -- --config live-docs.config.json
 
 Live Documentation supports four distinct workflows depending on your role:
 
-| Loop | User | Action | System Response |
-|------|------|--------|-----------------|
-| **Writer's Loop** | Technical Writers, PMs | Edit markdown, reference a moved file | IDE underlines the broken link; Quick Fix heals it |
-| **Developer's Loop** | Engineers | Modify a core utility | "Ripple Effect" shows every impacted file |
-| **Explorer's Loop** | Architects, Onboarders | Run the Visualizer | Interactive views reveal structure |
-| **Maintainer's Loop** | Leads, Ops | Prepare a release | Lint validates structure before merge |
+| Loop                  | User                   | Action                                | System Response                                                     |
+| --------------------- | ---------------------- | ------------------------------------- | ------------------------------------------------------------------- |
+| **Writer's Loop**     | Technical Writers, PMs | Edit markdown, reference a moved file | `live-docs:lint` flags the broken link in the Problems panel        |
+| **Developer's Loop**  | Engineers              | Modify a core utility                 | `live-docs:inspect --from <file>` traces every downstream dependent |
+| **Explorer's Loop**   | Architects, Onboarders | Run the Visualizer                    | Interactive views reveal structure                                  |
+| **Maintainer's Loop** | Leads, Ops             | Prepare a release                     | Lint validates structure before merge                               |
 
 ---
 
 ## Daily Commands
 
-| Task | Command |
-|------|---------|
-| Regenerate after edits | `npm run live-docs:generate -- --changed` |
-| Trace dependencies | `npm run live-docs:inspect -- --from <path>` |
-| Validate structure | `npm run live-docs:lint` |
-| Visualize relationships | `npm run live-docs:visualize` |
+| Task                    | Command                                      |
+| ----------------------- | -------------------------------------------- |
+| Regenerate after edits  | `npm run live-docs:generate -- --changed`    |
+| Trace dependencies      | `npm run live-docs:inspect -- --from <path>` |
+| Validate structure      | `npm run live-docs:lint`                     |
+| Visualize relationships | `npm run live-docs:visualize`                |
 
 ---
 

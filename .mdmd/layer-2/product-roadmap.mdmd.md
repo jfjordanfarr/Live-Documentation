@@ -3,7 +3,7 @@
 ## Metadata
 
 - Layer: 2
-- Requirement IDs: REQ-L1, REQ-L2, REQ-L3, REQ-V1, REQ-G1, REQ-E1, REQ-D1, REQ-H1, ~~REQ-LLM1~~ *(descoped)*, REQ-B1
+- Requirement IDs: REQ-L1, REQ-L2, REQ-L3, REQ-V1, REQ-G1, REQ-E1, REQ-D1, REQ-H1, ~~REQ-LLM1~~ _(descoped)_, REQ-B1
 
 ## Requirements
 
@@ -58,7 +58,7 @@ Supports CAP-002 by keeping generated sections current through analyzers, docstr
 
 - Maintain deterministic AST benchmarks and regeneration CLIs (TypeScript, Python, C#, Rust, Java, Ruby, C) that feed analyzer confidence scores.
 - Capture drift deltas in `reports/benchmarks/**` and expose them inside Live Docs as optional generated metadata.
-- ~~Layer an LLM sampling harness atop deterministic oracles with strict gating so predictions remain reviewable and reversible.~~ *(Descoped 2026-02-17: LLM integration removed.)*
+- ~~Layer an LLM sampling harness atop deterministic oracles with strict gating so predictions remain reviewable and reversible.~~ _(Descoped 2026-02-17: LLM integration removed.)_
 
 #### Stream LD2-E – Polyglot Live Doc Emitters _(planned)_
 
@@ -70,11 +70,12 @@ Supports CAP-002 by keeping generated sections current through analyzers, docstr
 
 Supports CAP-003 by making Live Documentation the backbone of diagnostics, CLI tooling, and lint enforcement.
 
-#### Stream LD3-A – Diagnostics & Views _(in progress)_
+#### Stream LD3-A – Diagnostics & Views _(in progress — 2026-02-18 rescoped)_
 
-- Pivot diagnostics providers to source their findings from the Live Doc graph, including hover tooltips, Problems entries, and acknowledgement workflows.
-- Refresh tree views and quick pick commands so they display Live Doc metadata (generated timestamps, evidence counts, dependency fan-out).
-- Provide diff previews comparing authored versus generated changes before accepting regeneration.
+- Surface `live-docs:lint` results (broken links, structural violations, missing markers) as VS Code Problems-panel entries via the language server's `DiagnosticPublisher`, providing the simplest viable diagnostic: "your Live Doc at X references Y, but Y doesn't exist."
+- Debounce file-save events through `ChangeQueue` to avoid flooding the linter; notify users via status-bar messaging when files need re-linting or regeneration.
+- Preserve CLI parity: `npm run live-docs:lint` emits the same findings headlessly so CI pipelines and AI assistants consume identical data.
+- ~~Pivot diagnostics providers to source their findings from the Live Doc graph, including hover tooltips, Problems entries, and acknowledgement workflows.~~ _(Descoped 2026-02-18: reactive ripple diagnostics, acknowledgement UX, tree views, quick picks, noise filtering, and symbol bridge harvesting removed. The extension is a thin CLI wrapper with lint-based diagnostics.)_
 
 #### Stream LD3-B – CLI & Export Surfaces _(planned)_
 
@@ -130,6 +131,7 @@ Supports CAP-006 by keeping docstring extraction and drift visibility reliable (
 #### Stream LDG-A – Docstring Drift Diagnostics _(descoped 2026-02-17)_~~
 
 ~~- Extend docstring bridges to compute structured drift signals (missing/changed docstring fields, unmapped tags) between inline docstrings and generated Live Doc schema.
+
 - Provide deterministic, human-readable drift reports (CLI + diagnostics) that point to the affected symbol/field and recommended remediation paths.
 - Harden polyglot fixtures (C#, Java, TypeScript, Python) with multi-paragraph, HTML-rich docstrings to validate sanitisation, canonical tagging, and drift detection coverage.
 
@@ -205,7 +207,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 - Emit telemetry covering request lifecycle (received, clone complete, generation success/failure, bundle download) with correlation IDs so support can trace incidents without retaining code.
 - Signpost privacy, offline-first positioning, and a “Replay Locally” CTA in every hosted response so prospects immediately understand that the Cloudflare run mirrors the installable workflow.
 
-### ~~REQ-LLM1 LLM Enrichment (Extractive & Generative)~~ *(Descoped 2026-02-17)*
+### ~~REQ-LLM1 LLM Enrichment (Extractive & Generative)~~ _(Descoped 2026-02-17)_
 
 > **Descoped**: LLM integration has been removed from the project scope. All LLM modules (FallbackLLMBridge, llmSampling, ollamaClient, analyzeWithAI) were dormant/speculative with zero production callers. Users bring their own AI assistants and consume Live Docs as structured context. This eliminates trust, safety, cost, and hallucination-propagation concerns from the tool itself.
 
@@ -214,6 +216,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 #### ~~Stream LLM1-A – Graph Edge Extraction _(descoped 2026-02-17)_
 
 ~~- Extend `LlmIngestionOrchestrator` to batch-extract semantic relationships (coupling, invariants, implicit contracts) that heuristic analyzers miss.
+
 - Stage extracted edges with provenance metadata (model, prompt version, confidence) and require human promotion before they appear in generated sections or diagnostics.
 - Wire CLI (`live-docs enrich`) and extension command (`Live Documentation: Enrich Graph`) that invoke extraction with configurable scope (file, folder, workspace).
 - Invalidate stale edges when underlying source files change, prompting re-extraction rather than silently serving outdated relationships.~~
@@ -221,6 +224,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 #### ~~Stream LLM1-B – Document Synthesis _(descoped 2026-02-17)_~~
 
 ~~- Implement synthesis pipeline that transforms terse System-layer artifacts (co-activation p-values, Mermaid topologies, component lists) into human-readable `Purpose` and `Notes` prose.
+
 - Fill `_Pending authored purpose_` placeholders while preserving deterministic generated sections; output diffs for review before write.
 - Wire CLI (`live-docs synthesize`) and extension command (`Live Documentation: Synthesize Authored Section`) with scope controls.
 - Ensure synthesis never modifies deterministic generated sections or overwrites existing authored content without explicit confirmation.~~
@@ -228,6 +232,7 @@ Supports CAP-007 by delivering a stateless Cloudflare (or equivalent) runner tha
 #### ~~Stream LLM1-C – Budget & Governance _(descoped 2026-02-17)_~~
 
 ~~- Implement per-workspace budget caps (token limits, spend thresholds) configurable via `.live-docs.config.json` or workspace settings.
+
 - Abort LLM calls gracefully when budgets are exceeded, emitting actionable guidance rather than silent failures.
 - Capture telemetry for invocation counts, token usage, promotion/rejection rates without logging prompt/response content.
 - Document trust boundaries: LLM outputs are staged, diff-previewed, and recorded with provenance before promotion.~~
@@ -278,7 +283,7 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 - Diagnostics, CLI, and narrative commands reference Live Docs as the single source of truth (no bespoke graph queries), and `live-docs:inspect` emits deterministic hop sequences for `--from/--to` queries while surfacing terminal roots when only one endpoint is provided.
 - Safe-commit and CI pipelines block merges when Live Doc regeneration or lint checks fail.
 - CLI exports and diagnostics respond within target latency (≤2 s for repos under 10k files).
-- Every UI interaction (diagnostics, diff previews, tree views) exposes an equivalent CLI or AI-assistant-accessible command so automation matches human capabilities.
+- Extension lint-as-diagnostics surfaces findings from `live-docs:lint` in the Problems panel; CLI and extension consumers see identical results.
 
 ### REQ-V1 Acceptance Criteria
 
@@ -310,9 +315,10 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 - Workspace archives are deleted automatically after bundle creation, with audit logs recording completion timestamps and correlation IDs.
 - Marketing copy and telemetry dashboards explicitly label the hosted surface as a demo-only experience and block private repositories by design.
 
-### ~~REQ-LLM1 Acceptance Criteria~~ *(Descoped 2026-02-17)*
+### ~~REQ-LLM1 Acceptance Criteria~~ _(Descoped 2026-02-17)_
 
 ~~- LLM enrichment (graph edge extraction and document synthesis) requires explicit user invocation via CLI (`live-docs enrich`, `live-docs synthesize`) or extension commands; no background LLM calls occur.
+
 - Extracted edges are staged with provenance metadata and require human promotion before appearing in generated sections or diagnostics.
 - Document synthesis fills `_Pending authored purpose_` placeholders while preserving deterministic generated sections; outputs are diff-previewed before write.
 - Budget caps (token limits, spend thresholds) are configurable per workspace and enforced before LLM calls execute; exceeded budgets abort gracefully with guidance.
@@ -364,7 +370,7 @@ Supports REQ-030. [Integration Testing Architecture](../layer-3/testing-integrat
 
 Supports REQ-030. [Polyglot Oracles & Sampling Architecture](../layer-3/polyglot-oracles-and-sampling.mdmd.md#comp-013-polyglot-fixture-oracles)
 
-### ~~COMP-014 LLM Sampling Harness~~ *(Descoped 2026-02-17)*
+### ~~COMP-014 LLM Sampling Harness~~ _(Descoped 2026-02-17)_
 
 ~~Supports REQ-020 and REQ-030. [Polyglot Oracles & Sampling Architecture](../layer-3/polyglot-oracles-and-sampling.mdmd.md#comp-014-llm-sampling-harness)~~
 
@@ -382,9 +388,11 @@ Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (tr
 
 ## Linked Implementations
 
-### IMP-101 docDiagnosticProvider
+### IMP-101 docDiagnosticProvider _(descoped 2026-02-18)_
 
-Supports REQ-301. [Extension Diagnostic Provider](../../.mdmd/layer-4/packages/extension/src/diagnostics/docDiagnosticProvider.ts.mdmd.md)
+~~Supports REQ-301. Extension Diagnostic Provider (deleted 2026-02-18).~~
+
+Replaced by a thin `DiagnosticPublisher` adapter that surfaces `live-docs:lint` findings in the Problems panel without ripple analysis, acknowledgement workflows, or noise filtering.
 
 ### IMP-102 liveDocsLint
 
@@ -446,7 +454,7 @@ Supports REQ-030. [Ruby Fixture Oracle](../../.mdmd/layer-4/packages/shared/src/
 
 Supports REQ-050. Migrated to SCIP pipeline. [SCIP Normalizer](../../.mdmd/layer-4/packages/shared/src/testing/fixtureOracles/scipNormalizer.ts.mdmd.md)
 
-### ~~IMP-530 LLM Sampling Harness~~ *(Descoped 2026-02-17)*
+### ~~IMP-530 LLM Sampling Harness~~ _(Descoped 2026-02-17)_
 
 ~~Supports REQ-201 and REQ-301. Source and Live Doc deleted.~~
 
@@ -538,7 +546,7 @@ Supports REQ-G1. (If docs → code write-back is pursued, VS Code commands will 
 
 - Which external feed (LSIF, SCIP, GitLab knowledge graph) should open the T05x MVP pipeline?
 - What coverage threshold do we need before promoting SlopCop asset and symbol lint beyond markdown?
-- Do we gate Copilot metadata exposure until acknowledgement UX is complete?
+- ~~Do we gate Copilot metadata exposure until acknowledgement UX is complete?~~ _(Removed 2026-02-18: acknowledgement UX descoped.)_
 - What diff heuristics keep authored block edits readable when generated sections change significantly?
 - How do we package Live Docs inside the extension without inflating download size for adopters who regenerate on demand?
 - Which narrative/diagram presets best serve both humans and copilots while remaining deterministically regenerable?

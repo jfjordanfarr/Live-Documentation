@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/fallbackInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-fallbackinference-ts
-- Generated At: 2026-02-17T21:05:03.150Z
+- Generated At: 2026-02-18T18:15:12.287Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the cross-language fallback inference pipeline—seed normalization, 
 Subsequent passes layered in AST-backed type filtering and deeper language heuristics—see [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-03.SUMMARIZED.md#turn-17-shareable-typescript-ast-utilities-lines-1461-1620) for the TypeScript runtime/type split and [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-06.SUMMARIZED.md#turn-26-benchmarks-fail-on-new-c-fixtures-lines-4121-4520) for the C#/WebForms heuristics that stabilized benchmark precision.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:05:03.150Z","inputHash":"7ca4c42ffc8aab7b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:15:12.287Z","inputHash":"7ca4c42ffc8aab7b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactSeed` {#symbol-artifactseed}
@@ -126,9 +126,6 @@ Resolved artifacts, inferred links, and audit traces.
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
-- [noiseFilter.test.ts](../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
-- [pathReferenceDetector.test.ts](../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](./fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](./fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](./linkInference.test.ts.mdmd.md)

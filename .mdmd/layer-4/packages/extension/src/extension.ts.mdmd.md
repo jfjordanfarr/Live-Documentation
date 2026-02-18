@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/extension/src/extension.ts
 - Live Doc ID: LD-implementation-packages-extension-src-extension-ts
-- Generated At: 2026-02-17T21:50:57.209Z
+- Generated At: 2026-02-18T18:10:34.217Z
 
 ## Authored
 ### Purpose
@@ -17,35 +17,21 @@ Bootstraps the Live Documentation extension by spinning up the language client, 
 - Orchestrates onboarding prompts, file watchers, and diagnostics views that coordinate with the language server, which is why integration suites always touch this module during activation ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:50:57.209Z","inputHash":"2056faa071e9156b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:10:34.217Z","inputHash":"1f41e953deed8ff6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `activate` {#symbol-activate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L36)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L17)
 - Parameters: `context`: `vscode.ExtensionContext`
 
 #### `deactivate` {#symbol-deactivate}
 - Type: function
-- Source: [source](../../../../../packages/extension/src/extension.ts#L228)
+- Source: [source](../../../../../packages/extension/src/extension.ts#L68)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`acknowledgeDiagnostic.registerAcknowledgementWorkflow`](./commands/acknowledgeDiagnostic.ts.mdmd.md#symbol-registeracknowledgementworkflow)
-- [`exportDiagnostics.registerExportDiagnosticsCommand`](./commands/exportDiagnostics.ts.mdmd.md#symbol-registerexportdiagnosticscommand)
-- [`overrideLink.registerOverrideLinkCommand`](./commands/overrideLink.ts.mdmd.md#symbol-registeroverridelinkcommand)
-- [`dependencyQuickPick.registerDependencyQuickPick`](./diagnostics/dependencyQuickPick.ts.mdmd.md#symbol-registerdependencyquickpick)
-- [`docDiagnosticProvider.registerDocDiagnosticProvider`](./diagnostics/docDiagnosticProvider.ts.mdmd.md#symbol-registerdocdiagnosticprovider)
-- [`rebindPrompt.showRebindPrompt`](./prompts/rebindPrompt.ts.mdmd.md#symbol-showrebindprompt)
-- [`symbolBridge.registerSymbolBridge`](./services/symbolBridge.ts.mdmd.md#symbol-registersymbolbridge)
-- [`ConfigService`](./settings/configService.ts.mdmd.md#symbol-configservice)
-- [`diagnosticsTree.registerDiagnosticsTreeView`](./views/diagnosticsTree.ts.mdmd.md#symbol-registerdiagnosticstreeview)
-- [`fileMaintenance.registerFileMaintenanceWatcher`](./watchers/fileMaintenance.ts.mdmd.md#symbol-registerfilemaintenancewatcher)
-- [`diagnostics.FEEDS_READY_REQUEST`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feeds_ready_request)
-- [`diagnostics.FeedsReadyResult`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feedsreadyresult)
-- [`diagnostics.RESET_DIAGNOSTIC_STATE_NOTIFICATION`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-reset_diagnostic_state_notification)
-- [`maintenance.RebindRequiredPayload`](../../shared/src/contracts/maintenance.ts.mdmd.md#symbol-rebindrequiredpayload)
 - `path`
 - `process` - `process`
 - `vscode`

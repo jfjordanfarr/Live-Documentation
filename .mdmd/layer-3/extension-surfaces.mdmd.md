@@ -1,94 +1,107 @@
 # Extension Surfaces Architecture
 
 ## Metadata
+
 - Layer: 3
 - Component IDs: COMP-002
 
 ## Components
 
 ### COMP-002 Extension Surfaces
-Supports FR-LD5, FR-LD7, and SC-LD4 by delivering the VS Code UX and CLI surfaces that expose Live Documentation diagnostics, regeneration flows, and adoption tooling while mirroring the server-side capabilities.
+
+Supports FR-LD5 and SC-LD4 by delivering the VS Code UX that wraps CLI capabilities (generate, lint, inspect, visualize) into editor commands and surfaces `live-docs:lint` findings in the Problems panel.
 
 ## Responsibilities
 
 ### Activation and Settings Sync
-- Bootstrap the extension (`extension.ts`) and ensure diagnostics opt-in flow, runtime configuration propagation, and Live Documentation participation in ripple analysis.
-- Forward `liveDocumentation.*` and `linkAwareDiagnostics.*` configuration updates to the language server and record activation telemetry for troubleshooting.
 
-### Diagnostics Experience
-- Register `docDiagnosticProvider` to render quick fixes, Live Doc hyperlinks, regeneration timestamps, and acknowledgement affordances for `doc-drift` and `code-ripple` diagnostics.
-- Provide Analyze with AI command surfaces so leads can capture LLM-authored assessments directly inside the diagnostics tree.
-- Surface Live Doc regeneration commands (`Live Docs: Regenerate File`, `Live Docs: Open Mirror`) and diff previews alongside diagnostics.
+- Bootstrap the extension (`extension.ts`), forward `liveDocumentation.*` configuration updates to the language server, and register commands.
+- Debounce file-save events through `ChangeQueue` to avoid flooding the linter; notify users via status-bar messaging when files need re-linting or regeneration.
 
-### Dependency Exploration and Maintenance
-- Offer `linkDiagnostics.inspectDependencies` Quick Pick views backed by the `INSPECT_DEPENDENCIES_REQUEST` LSP contract enriched with Live Doc dependency metadata.
-- Maintain file rename/delete awareness via `fileMaintenance.ts`, raising orphan diagnostics, regeneration prompts, and rebind flows in partnership with the server.
-- Inject Live Doc summary panels (authored header + Observed Evidence) into dependency explorers and status bar surfaces.
+### Lint-as-Diagnostics
 
-### Authoring Loop Commands
-- Surface docstring drift diagnostics and remediation guidance (read-only) so authors can keep docs and code aligned.
-- If/when docs → code write-back is pursued, present preview/apply flows behind strict feature flags and audit logging.
-- If/when scaffolding is pursued, emit scratch drafts linked back to the originating Live Documentation file without modifying tracked sources.
+- Surface `live-docs:lint` results (broken links, structural violations, missing markers) as VS Code Problems-panel entries via the language server's `DiagnosticPublisher`.
+- Provide the simplest viable diagnostic: "your Live Doc at X references Y, but Y doesn't exist."
+- ~~Register `docDiagnosticProvider` for ripple diagnostics, acknowledgement workflows, noise filtering, dependency quick picks, and diagnostic tree views.~~ _(Descoped 2026-02-18: replaced by stateless lint-as-diagnostics.)_
+
+### CLI Command Wrappers
+
+- Register commands: `Live Docs: Regenerate`, `Live Docs: Visualize`, `Live Docs: Inspect`, `Live Docs: Lint`.
+- CLI parity: every editor command invokes the same underlying script that `npm run live-docs:*` uses.
 
 ### Headless Tooling Support
-- Ship CLI parity (`graph:inspect`, `graph:audit`, `graph:snapshot`, `live-docs:generate`, `live-docs:inspect`) so automation and shell workflows reuse the same traversal contracts and Live Doc metadata as the extension UI.
-- Expose symbol bridge services that harvest workspace symbols and Live Doc metadata for inference seeding.
+
+- Ship CLI parity (`live-docs:generate`, `live-docs:inspect`, `live-docs:lint`, `live-docs:visualize`) so automation and shell workflows reuse the same contracts as the extension UI.
 
 ## Interfaces
 
 ### Inbound Interfaces
-- VS Code activation pipeline (commands, configuration events, workspace watches).
-- LSP notifications and requests: diagnostics, dependency inspection, maintenance prompts, symbol bridge pulls.
+
+- VS Code activation pipeline (commands, configuration events).
+- File save events debounced through `ChangeQueue`.
 
 ### Outbound Interfaces
-- Quick Pick controller supplying `InspectDependenciesResult` objects enriched with Live Doc summaries and regeneration shortcuts.
-- CLI scripts (`scripts/graph-tools/*.ts`, `scripts/live-docs/*.ts`) invoking shared traversal, regeneration, and inspection APIs for headless environments.
+
+- `DiagnosticPublisher` pushing `live-docs:lint` findings to the Problems panel.
+- CLI script invocations (`scripts/live-docs/*.ts`) for headless environments.
+- Status-bar messaging for regeneration/linting prompts.
 
 ## Linked Implementations
 
-### IMP-101 docDiagnosticProvider
-Transforms diagnostics into Problems entries, hovers, and quick actions. See [docDiagnosticProvider.ts Live Doc](../layer-4/packages/extension/src/diagnostics/docDiagnosticProvider.ts.mdmd.md) for generated details.
+### ~~IMP-101 docDiagnosticProvider~~ _(Descoped 2026-02-18)_
 
-### IMP-107 dependencyQuickPick
-Bridges the inspection request into a Quick Pick UX. See [dependencyQuickPick.ts Live Doc](../layer-4/packages/extension/src/diagnostics/dependencyQuickPick.ts.mdmd.md) for the implementation surface.
+~~Transforms diagnostics into Problems entries, hovers, and quick actions.~~ Replaced by `DiagnosticPublisher` surfacing `live-docs:lint` findings.
 
-### ~~IMP-108 analyzeWithAI Command~~ *(Descoped 2026-02-17)*
+### ~~IMP-107 dependencyQuickPick~~ _(Descoped 2026-02-18)_
+
+~~Bridges the inspection request into a Quick Pick UX.~~ Dependency exploration is now served by `live-docs:inspect` CLI and Explorer Local Map.
+
+### ~~IMP-108 analyzeWithAI Command~~ _(Descoped 2026-02-17)_
 
 ~~Collected LLM assessments for outstanding diagnostics. Source and Live Doc deleted.~~
 
-### IMP-109 fileMaintenance Watcher
-Debounces rename/delete events and alerts the server. Consult [fileMaintenance.ts Live Doc](../layer-4/packages/extension/src/watchers/fileMaintenance.ts.mdmd.md) for operational detail once generated.
+### ~~IMP-109 fileMaintenance Watcher~~ _(Descoped 2026-02-18)_
 
-### IMP-110 symbolBridge Service
-Supplies workspace symbols and references to inference pipelines. Implementation intent is captured in [symbolBridge.ts Live Doc](../layer-4/packages/extension/src/services/symbolBridge.ts.mdmd.md).
+~~Debounces rename/delete events and alerts the server.~~ File watching is now handled by `ChangeQueue` for debounced save events only.
+
+### ~~IMP-110 symbolBridge Service~~ _(Descoped 2026-02-18)_
+
+~~Supplies workspace symbols and references to inference pipelines.~~ Symbol extraction runs headlessly via analyzers during `live-docs:generate`.
 
 ### IMP-111 liveDocsCommands
-Registers Live Doc regeneration, inspect, and diff commands. The CLI parity is now expressed through `npm run live-docs:generate` and `npm run live-docs:system`; inspect [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md) for the generated view.
 
-### IMP-112 liveDocsAuthoringCommands *(wishlist)*
-If docs → code write-back is pursued, this will register preview/apply and scaffolding surfaces behind explicit opt-in. Implementation intent will live at `.mdmd/layer-4/packages/extension/src/commands/liveDocsAuthoring.ts.mdmd.md` when generated.
+Registers Live Doc regeneration, inspect, lint, and visualize commands. CLI parity via `npm run live-docs:*`.
+
+### IMP-112 liveDocsAuthoringCommands _(wishlist)_
+
+If docs → code write-back is pursued, this will register preview/apply surfaces behind explicit opt-in.
 
 ### IMP-302 liveDocsLint CLI
-Headless audit ensuring Live Doc linkage and coverage. Operational detail is sourced from [lint.ts Live Doc](../layer-4/scripts/live-docs/lint.ts.mdmd.md).
+
+Headless audit ensuring Live Doc linkage and coverage. [lint.ts Live Doc](../layer-4/scripts/live-docs/lint.ts.mdmd.md).
 
 ### IMP-303 liveDocsInspect CLI
-CLI equivalent of dependency explorer. Refer to [inspect.ts Live Doc](../layer-4/scripts/live-docs/inspect.ts.mdmd.md) for the materialised view.
+
+CLI equivalent of dependency explorer. [inspect.ts Live Doc](../layer-4/scripts/live-docs/inspect.ts.mdmd.md).
 
 ### IMP-304 liveDocsGenerate CLI
-Deterministic regeneration of Live Doc mirrors. See [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
+
+Deterministic regeneration of Live Doc mirrors. [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
 
 ### IMP-305 liveDocsGenerateCli
-Command palette + CLI entry points for regeneration. The generator surface is documented at [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
+
+Command palette + CLI entry points for regeneration. [generate.ts Live Doc](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
 
 ### IMP-306 liveDocsInspectCli
-Headless inspection of Live Doc metadata mirroring the UI. Legacy references now point to on-demand System outputs (`npm run live-docs:system`); the dedicated inspect CLI will return once its materialised view pipeline stabilises.
+
+Headless inspection of Live Doc metadata. [inspect.ts Live Doc](../layer-4/scripts/live-docs/inspect.ts.mdmd.md).
 
 ## Evidence
-- Extension unit tests: `docDiagnosticProvider.test.ts`, `dependencyQuickPick.test.ts`, `analyzeWithAI.test.ts`, `fileMaintenance.test.ts` (pending rename once watcher tests land).
-- CLI integration suites under `tests/integration/graph-tools` validate audit and inspection parity.
-- Planned Live Doc suites under `tests/integration/live-docs` verify regeneration commands and CLI parity.
-- `npm run graph:audit`, `npm run graph:snapshot`, `npm run live-docs:generate -- --dry-run`, and `npm run safe:commit` capture live adoption telemetry for these surfaces.
+
+- CLI integration suites under `tests/integration/live-docs` validate regeneration, lint, and inspection parity.
+- `npm run live-docs:generate -- --dry-run`, `npm run live-docs:lint`, and `npm run safe:commit` capture live adoption telemetry.
 
 ## Operational Notes
-- Quick Pick controller surfaces schema failures via `showErrorMessage`; analyze command posts toasts when assessments store or fail.
-- Future acknowledgement UX may feed dependency explorer annotations; caching strategies remain open design questions.
+
+- The extension is a thin CLI wrapper: it registers commands, debounces saves, and surfaces lint findings. All heavy lifting happens in the CLI scripts.
+- ~~Quick Pick controller, acknowledgement UX, dependency explorer annotations, and caching strategies for the old diagnostics system have been removed (2026-02-18).~~

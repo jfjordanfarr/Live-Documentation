@@ -61,7 +61,7 @@ Leads export impact reports, Copilot prompts, or diagnostics sourced from the Li
 
 **Acceptance Scenarios**:
 
-1. **Given** a developer saving a file, **When** diagnostics appear, **Then** entries include links to the relevant Live Docs with evidence counts.
+1. **Given** a Live Doc with a broken relative link, **When** the extension runs `live-docs:lint` (triggered by file save or on-demand), **Then** a Problem entry appears in the Problems panel pointing to the broken reference with its source Live Doc path.
 2. **Given** a CLI command `live-docs inspect --from packages/server/src/runtime/environment.ts --to packages/extension/src/commands/exportDiagnostics.ts`, **When** executed, **Then** it emits a deterministic hop-by-hop narrative (edge kind, source, justification) showing the dependency path between the two artifacts.
 3. **Given** a CLI command `live-docs inspect --from packages/server/src/runtime/environment.ts`, **When** executed, **Then** it automatically walks toward the nearest terminal roots (tests, config, docs) and reports the chain so maintainers can see where the signal ultimately originates.
 4. **Given** a CLI command `live-docs system --cluster <id>`, **When** executed, **Then** it streams the analytics to stdout (or a temp file when requested) and leaves `.live-documentation/system/` unchanged.
@@ -86,19 +86,11 @@ Teams rely on Live Docs to surface missing test coverage. When evidence sections
 
 ---
 
-### User Story 5 – Legacy graph workflows remain accessible (Priority: P3)
+### User Story 5 – ~~Legacy graph workflows remain accessible~~ _(Descoped 2026-02-18)_ (Priority: ~~P3~~ Descoped)
 
-**Status**: Sunset planning — ensures current users retain value during migration.
+**Status**: **Descoped (2026-02-18)** — The reactive diagnostics subsystem (ripple analysis, acknowledgement workflows, noise filtering, diagnostic tree views, dependency quick picks, symbol bridge) has been removed. Live Documentation's change-impact analysis is now served entirely by the CLI (`live-docs:inspect --from/--to`) and Explorer Local Map pathfinding, both grounded in the deterministic Live Doc graph. No legacy pipeline coexistence is needed.
 
-Early adopters using change-impact diagnostics and symbol neighborhood tooling continue to receive signals until Live Docs fully replace old surfaces.
-
-**Independent Test**: Run both the legacy diagnostics suite and Live Doc-backed suite in parallel, verifying consistency and measuring deltas.
-
-**Acceptance Scenarios**:
-
-1. **Given** a code edit, **When** both pipelines run, **Then** diagnostics produced from the graph and Live Docs agree on impacted artifacts.
-2. **Given** a symbol neighbourhood query, **When** executed, **Then** results include backlinks to Live Docs for each node.
-3. **Given** a regression in Live Doc generation, **When** safe-commit runs, **Then** the legacy pipeline remains available while regeneration issues are resolved.
+~~Early adopters using change-impact diagnostics and symbol neighborhood tooling continue to receive signals until Live Docs fully replace old surfaces.~~
 
 ---
 
@@ -315,7 +307,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 - **WI-LD102** – Implement coverage ingestion pipeline to populate `Observed Evidence` and ensure lint parity.
 - **WI-LD201** – Deliver docstring bridge adapters for TypeScript, Python, and C#, plus integration tests that validate canonical schema mapping and drift diagnostics across multi-tag docstrings.
 - **WI-LD202** – Extend Live Doc generation to repository-hosted polyglot fixtures (Python, C#, Java, Ruby, Rust, C), snapshotting regeneration output and wiring per-language benchmarks into safe-commit before piloting external repositories.
-- **WI-LD301** – Pivot diagnostics/CLI/export commands to consume Live Docs exclusively and retire legacy graph consumers.
+- **WI-LD301** – ~~Pivot diagnostics/CLI/export commands to consume Live Docs exclusively and retire legacy graph consumers.~~ CLI and inspection commands already consume Live Docs exclusively. Diagnostics are now lint-based: `live-docs:lint` findings surface in the Problems panel via `DiagnosticPublisher`. Legacy graph consumers have been removed (2026-02-18).
 - **WI-LD304** – Consolidate the visualization command center by refactoring `npm run live-docs:visualize` into shared data/interaction layers, integrating focus-mode filtering, and wiring accessibility/telemetry hooks ahead of docstring authoring.
 - **WI-LD401** – Package sample workspace and MIT-licensed release notes for public adoption.
 - **WI-LD501** – Build System analytics CLI (clusters, workflows, coverage) that defaults to streaming output and includes cleanup guarantees.
@@ -327,8 +319,7 @@ Live Docs live alongside the repository (versionable or ignored per configuratio
 ## Implementation Traceability
 
 - [`packages/server/src/main.ts`](../../packages/server/src/main.ts) provides the LSP entrypoint; [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) orchestrates analyzer pipelines that feed Live Doc generation.
-- [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts) will emit Live Doc-backed diagnostics.
-- [`packages/extension/src/commands/exportDiagnostics.ts`](../../packages/extension/src/commands/exportDiagnostics.ts) and forthcoming Live Doc CLI utilities render consumption narratives.
+- [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts) emits Live Doc-backed diagnostics, surfaced in the VS Code Problems panel via the server's `DiagnosticPublisher`.
 - [`scripts/live-docs/visualize-explorer.ts`](../../scripts/live-docs/visualize-explorer.ts) hosts the unified visualization command center that merges circuit-board, local, and force-directed views while the extension variant incubates inside Antigravity.
 - [`packages/shared/src/testing/fixtureOracles`](../../packages/shared/src/testing/fixtureOracles) house polyglot analyzers underpinning generated sections.
 - Integration suites under `tests/integration/live-docs` validate regeneration, evidence mapping, and docstring drift.

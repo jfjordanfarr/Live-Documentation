@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/domain/artifacts.ts
 - Live Doc ID: LD-implementation-packages-shared-src-domain-artifacts-ts
-- Generated At: 2026-02-17T22:06:08.021Z
+- Generated At: 2026-02-18T18:15:12.222Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the cross-layer knowledge-graph domain model—artifacts, links, diagnos
 Confidence tiers and drift-history additions arrived alongside the October 23–24 persistence and LLM-ingestion passes, keeping telemetry and ingestion schemas aligned; see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620) and [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T22:06:08.021Z","inputHash":"2034928c1fae1964"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:15:12.222Z","inputHash":"044d30a6aa43006c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactLayer` {#symbol-artifactlayer}
@@ -85,18 +85,6 @@ Live Documentation markdown.
 Created 2025-10-16 (commit `6bccf94`).  The `confidence` field
 ranges 0–1 and is set by the creating pipeline (LLM calibrator,
 heuristic scorer, or 1.0 for explicit declarations).
-
-#### `LlmAssessment` {#symbol-llmassessment}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L94)
-
-##### `LlmAssessment` — Summary
-Structured LLM response attached to a diagnostic.
-
-Captures the model's assessment text, calibrated confidence, and
-recommended remediation actions.  Consumed by the diagnostic
-contracts layer (`contracts/diagnostics.ts`) and surfaced in the
-VS Code diagnostics tree view.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -107,14 +95,6 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [exportDiagnostics.test.ts](../../../extension/src/commands/exportDiagnostics.test.ts.mdmd.md)
-- [dependencyQuickPick.test.ts](../../../extension/src/diagnostics/dependencyQuickPick.test.ts.mdmd.md)
-- [docDiagnosticProvider.test.ts](../../../extension/src/diagnostics/docDiagnosticProvider.test.ts.mdmd.md)
-- [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
-- [noiseFilter.test.ts](../../../server/src/features/diagnostics/noiseFilter.test.ts.mdmd.md)
-- [pathReferenceDetector.test.ts](../../../server/src/features/watchers/pathReferenceDetector.test.ts.mdmd.md)
-- [environment.test.ts](../../../server/src/runtime/environment.test.ts.mdmd.md)
-- [settings.test.ts](../../../server/src/runtime/settings.test.ts.mdmd.md)
 - [fallbackInference.languages.test.ts](../inference/fallbackInference.languages.test.ts.mdmd.md)
 - [fallbackInference.test.ts](../inference/fallbackInference.test.ts.mdmd.md)
 - [linkInference.test.ts](../inference/linkInference.test.ts.mdmd.md)

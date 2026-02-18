@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/linkInference.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-linkinference-ts
-- Generated At: 2026-02-17T21:05:03.413Z
+- Generated At: 2026-02-18T18:15:12.616Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the link inference orchestrator from US1 task T028, unifying fallback
 The markdown watcher streams saved documents through this orchestrator to capture seeds and hints before diagnostics publish, per [AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-21.md#L343).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:05:03.413Z","inputHash":"957d0d75b822eef2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:15:12.616Z","inputHash":"957d0d75b822eef2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkInferenceTraceOrigin` {#symbol-linkinferencetraceorigin}
@@ -137,6 +137,5 @@ Pipeline:
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [symbolBridge.test.ts](../../../extension/src/services/symbolBridge.test.ts.mdmd.md)
 - [linkInference.test.ts](./linkInference.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

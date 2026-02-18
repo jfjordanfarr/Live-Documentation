@@ -13,7 +13,7 @@ Deliver a reproducible Live Documentation system where every tracked workspace a
 
 - **Stage 0 – Observe**: Generate Live Documentation into `/.live-documentation/<baseLayer>/` (default `source/`) without replacing MDMD; provide read-only viewers and diff tooling so contributors assess fidelity.
 - **Stage 1 – Guard**: Enable lint warnings for structural drift, missing evidence, or stale generated sections; enforce workspace-relative link hygiene and configurable slug dialects for wiki publishing.
-- **Stage 2 – Bridge**: Activate docstring and coverage bridges, wire diagnostics/CLI exports to Live Documentation, and require explicit acknowledgements or waivers when evidence is absent.
+- **Stage 2 – Bridge**: Activate docstring and coverage bridges, wire lint-as-diagnostics and CLI exports to Live Documentation, and require explicit waivers when evidence is absent.
 - **Stage 3 – Sustain**: Treat generated Live Documentation as canonical, flip configuration so Layer‑4 MDMD mirrors the staged tree, and block merges unless regeneration and lint gates pass.
 - **Stage 4 – Author (wishlist)**: If/when explored, introduce opt-in authoring commands that preview markdown → docstring diffs, capture audit trails, and emit scratch scaffolds without touching tracked files until humans promote them.
 
@@ -99,8 +99,8 @@ TBD — populate if future scope deviates from Constitution constraints.
 
 ### Phase 4 – Consumption Surfaces & CLI Parity
 
-- Pivot diagnostics, tree views, and quick pick commands to read from staged Live Docs.
-- Ship CLI counterparts (`live-docs inspect`, `live-docs evidence`, etc.) where `live-docs inspect` traces the dependency path between `--from` and `--to` artifacts (or locates terminal roots when only one endpoint is provided) and emits hop-by-hop markdown/JSON for automation by external AI assistants.
+- Surface `live-docs:lint` findings as VS Code Problems-panel entries via the server's `DiagnosticPublisher`; the extension is a thin CLI wrapper.
+- Ship CLI counterparts (`live-docs inspect`, `live-docs lint`, etc.) where `live-docs inspect` traces the dependency path between `--from` and `--to` artifacts (or locates terminal roots when only one endpoint is provided) and emits hop-by-hop markdown/JSON for automation by external AI assistants.
 - Provide diff and dry-run modes to review regeneration impacts before applying.
 - Consolidate the visualization command center so `npm run live-docs:visualize` (and Antigravity) present a merged circuit-board/local explorer with focus-mode filtering, synchronized force graph, and WCAG AA accessibility groundwork.
 
@@ -158,6 +158,6 @@ TBD — populate if future scope deviates from Constitution constraints.
 
 - [`scripts/live-docs/generate.ts`](../../scripts/live-docs/generate.ts) orchestrates Live Doc regeneration from analyzer output.
 - [`packages/shared/src/tooling/documentationLinks.ts`](../../packages/shared/src/tooling/documentationLinks.ts) and the `liveDocGraph` module emit staged markdown.
-- [`packages/extension/src/commands/exportDiagnostics.ts`](../../packages/extension/src/commands/exportDiagnostics.ts) and `live-docs` CLI provide human and AI-assistant consumption surfaces.
+- [`scripts/live-docs/lint.ts`](../../scripts/live-docs/lint.ts) provides lint-as-diagnostics; the server's `DiagnosticPublisher` surfaces findings in the VS Code Problems panel.
 - [`scripts/live-docs/visualize-explorer.ts`](../../scripts/live-docs/visualize-explorer.ts) and its future extension host the command center that unifies circuit-board, local, and force-directed exploration with accessibility hooks.
 - Integration suites under `tests/integration/live-docs` validate regeneration, evidence mapping, and docstring drift; benchmark harnesses in `reports/benchmarks` ensure analyzer accuracy remains above target.

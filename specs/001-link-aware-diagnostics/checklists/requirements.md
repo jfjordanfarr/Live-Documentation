@@ -42,6 +42,7 @@
 - Items marked incomplete require spec updates before `/speckit.clarify` or `/speckit.plan`
 
 ## Implementation Traceability
-- [`packages/extension/src/commands/exportDiagnostics.ts`](/packages/extension/src/commands/exportDiagnostics.ts) and [`packages/extension/src/views/diagnosticsTree.ts`](/packages/extension/src/views/diagnosticsTree.ts) demonstrate Live Doc consumption surfaces validated by this checklist.
+
+- ~~`packages/extension/src/commands/exportDiagnostics.ts` and `packages/extension/src/views/diagnosticsTree.ts` demonstrated Live Doc consumption surfaces validated by this checklist.~~ _(Descoped 2026-02-18: replaced by lint-as-diagnostics via `DiagnosticPublisher`.)_
 - [`scripts/live-docs/generate.ts`](/scripts/live-docs/generate.ts) and [`scripts/live-docs/lint.ts`](/scripts/live-docs/lint.ts) operationalise analyzer-to-Doc flows.
 - Integration suites under `tests/integration/live-docs/` (generation, evidence, docstring drift) provide falsifiability coverage tied back to these requirements.

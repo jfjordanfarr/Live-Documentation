@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/main.ts
 - Live Doc ID: LD-implementation-packages-server-src-main-ts
-- Generated At: 2026-02-03T21:55:38.330Z
+- Generated At: 2026-02-18T18:10:35.963Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Hosts the language server entrypoint, wiring the LSP connection, runtime service
 - Keeps telemetry and ingestion services alive during integration runs, which is why the benchmark and US suites exercise this file whenever the language server boots ([integration replay](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5200-L5280)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.330Z","inputHash":"34d8a0532cc8a1d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:10:35.963Z","inputHash":"07ae5b216d678f1d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,21 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`ChangeQueue`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-changequeue)
-- [`changeQueue.QueuedChange`](./features/changeEvents/changeQueue.ts.mdmd.md#symbol-queuedchange)
-- [`DiagnosticPublisher`](./features/diagnostics/diagnosticPublisher.ts.mdmd.md#symbol-diagnosticpublisher)
-- [`HysteresisController`](./features/diagnostics/hysteresisController.ts.mdmd.md#symbol-hysteresiscontroller)
-- [`providerGuard.ExtensionSettings`](./features/settings/providerGuard.ts.mdmd.md#symbol-extensionsettings)
-- [`ProviderGuard`](./features/settings/providerGuard.ts.mdmd.md#symbol-providerguard)
-- [`settingsBridge.DEFAULT_RUNTIME_SETTINGS`](./features/settings/settingsBridge.ts.mdmd.md#symbol-default_runtime_settings)
-- [`settingsBridge.RuntimeSettings`](./features/settings/settingsBridge.ts.mdmd.md#symbol-runtimesettings)
-- [`settingsBridge.deriveRuntimeSettings`](./features/settings/settingsBridge.ts.mdmd.md#symbol-deriveruntimesettings)
 - [`environment.resolveWorkspaceRoot`](./runtime/environment.ts.mdmd.md#symbol-resolveworkspaceroot)
-- [`settings.extractExtensionSettings`](./runtime/settings.ts.mdmd.md#symbol-extractextensionsettings)
-- [`settings.extractTestModeOverrides`](./runtime/settings.ts.mdmd.md#symbol-extracttestmodeoverrides)
-- [`settings.mergeExtensionSettings`](./runtime/settings.ts.mdmd.md#symbol-mergeextensionsettings)
-- [`diagnostics.FEEDS_READY_REQUEST`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feeds_ready_request)
-- [`diagnostics.FeedsReadyResult`](../../shared/src/contracts/diagnostics.ts.mdmd.md#symbol-feedsreadyresult)
 - `vscode-languageserver-textdocument` - `TextDocument`
-- `vscode-languageserver/node` - `Connection`, `DidChangeConfigurationNotification`, `DidChangeConfigurationParams`, `DocumentDiagnosticParams`, `DocumentDiagnosticRequest`, `InitializeParams`, `InitializeResult`, `ProposedFeatures`, `TextDocumentChangeEvent`, `TextDocumentSyncKind`, `TextDocuments`, `TextDocumentsConfiguration`, `createConnection`
+- `vscode-languageserver/node` - `Connection`, `DidChangeConfigurationNotification`, `InitializeParams`, `InitializeResult`, `ProposedFeatures`, `TextDocumentChangeEvent`, `TextDocumentSyncKind`, `TextDocuments`, `TextDocumentsConfiguration`, `createConnection`
 <!-- LIVE-DOC:END Dependencies -->
