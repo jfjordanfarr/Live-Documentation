@@ -145,19 +145,24 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
   const headings: HeadingInfo[] = [];
   const lines = content.split(/\r?\n/);
   let inFence = false;
-  let fenceMarker: string | undefined;
+  let fenceChar: string | undefined;
+  let fenceLength = 0;
 
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
-    const fenceMatch = line.match(/^ {0,3}(```+|~~~+)/);
+    const fenceMatch = line.match(/^ {0,3}((`{3,})|(~{3,}))([^`~].*)?$/);
     if (fenceMatch) {
-      const marker = fenceMatch[1][0];
+      const run = fenceMatch[2] ?? fenceMatch[3];
+      const char = run[0];
+      const len = run.length;
       if (!inFence) {
         inFence = true;
-        fenceMarker = marker;
-      } else if (fenceMarker === marker) {
+        fenceChar = char;
+        fenceLength = len;
+      } else if (char === fenceChar && len >= fenceLength) {
         inFence = false;
-        fenceMarker = undefined;
+        fenceChar = undefined;
+        fenceLength = 0;
       }
       continue;
     }

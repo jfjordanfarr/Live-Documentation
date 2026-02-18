@@ -129,6 +129,40 @@ describe("findSymbolReferenceAnomalies", () => {
       });
     });
   });
+
+  it("ignores headings inside nested code fences with different lengths", () => {
+    withWorkspace((workspace) => {
+      writeFile(
+        workspace,
+        "docs/nested.md",
+        [
+          "# Real Heading",
+          "",
+          "````markdown",
+          "# Fenced Heading",
+          "",
+          "```bash",
+          "echo hello",
+          "```",
+          "",
+          "## Still Fenced",
+          "````",
+          "",
+          "## Another Real Heading"
+        ].join("\n")
+      );
+
+      const nested = path.join(workspace, "docs/nested.md");
+
+      const issues = findSymbolReferenceAnomalies({
+        workspaceRoot: workspace,
+        files: [nested]
+      });
+
+      // No duplicates — the fenced headings should be invisible
+      expect(issues).toHaveLength(0);
+    });
+  });
 });
 
 function withWorkspace(callback: (workspace: string) => void): void {

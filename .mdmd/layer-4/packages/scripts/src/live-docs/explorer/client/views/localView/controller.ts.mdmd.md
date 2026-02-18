@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-controller-ts
-- Generated At: 2026-02-16T03:54:26.888Z
+- Generated At: 2026-02-18T19:14:02.689Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,12 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - Manages scroll sync, column expansion, and SVG layer updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:26.888Z","inputHash":"78fd816757881b25"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T19:14:02.689Z","inputHash":"879b5a03f2840b22"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L91)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts#L101)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -31,7 +31,13 @@ Primary controller for the Explorer's Local Map (3-column symbol) view.
 Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
 symbol pinning, connection drawing, and multi-hop path visualization.
 Delegates DOM measurement to `layout-measure`, gesture handling to
-`pan-zoom`, and graph slicing to `subgraph-builder`.
+`pan-zoom`, graph slicing to `subgraph-builder`, and symbol
+highlighting to `symbol-highlight`.
+
+Pin state is managed exclusively through the observable
+{@link localMapState} store (`pinnedPath`, `hoveredSymbol`, etc.).
+The legacy `pinnedSymbol` private field was removed 2026-02-18 after
+multi-hop stabilised (see 2025-12-19 refactoring and Dev Day 71).
 
 Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
 `isDragging`) are thin pass-throughs to the underlying
@@ -40,10 +46,14 @@ sibling modules (`render`, `connections`, `pan-zoom`) can read/write
 shared state through the controller reference without importing the
 runtime directly.
 
-**Note (tech debt):** At 800+ lines and ~46 public members this class
-exceeds the project's 500-line guidance. Candidates for extraction
-include the accessor pass-throughs (move to runtime directly), the
-anchor registration helpers, and the fit/zoom methods.
+**History:** Created 2025-12-04 (commit `4504d36a`).  Reduced from
+1 549 to ~860 lines during the 2025-12-19 Phase 1-4 tech-debt
+extraction (commit `15073e19`).  Further reduced by deprecated-field
+removal on 2026-02-18.
+
+**Tech debt:** At ~860 lines this class still exceeds the project's
+500-line guidance.  The 2025-12-19 plan identified `pin-management`
+extraction and runtime-accessor elimination as next steps.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

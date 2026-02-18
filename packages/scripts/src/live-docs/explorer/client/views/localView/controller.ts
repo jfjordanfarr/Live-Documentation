@@ -74,7 +74,13 @@ import type {
  * Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
  * symbol pinning, connection drawing, and multi-hop path visualization.
  * Delegates DOM measurement to `layout-measure`, gesture handling to
- * `pan-zoom`, and graph slicing to `subgraph-builder`.
+ * `pan-zoom`, graph slicing to `subgraph-builder`, and symbol
+ * highlighting to `symbol-highlight`.
+ *
+ * Pin state is managed exclusively through the observable
+ * {@link localMapState} store (`pinnedPath`, `hoveredSymbol`, etc.).
+ * The legacy `pinnedSymbol` private field was removed 2026-02-18 after
+ * multi-hop stabilised (see 2025-12-19 refactoring and Dev Day 71).
  *
  * Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
  * `isDragging`) are thin pass-throughs to the underlying
@@ -83,10 +89,14 @@ import type {
  * shared state through the controller reference without importing the
  * runtime directly.
  *
- * **Note (tech debt):** At 800+ lines and ~46 public members this class
- * exceeds the project's 500-line guidance. Candidates for extraction
- * include the accessor pass-throughs (move to runtime directly), the
- * anchor registration helpers, and the fit/zoom methods.
+ * **History:** Created 2025-12-04 (commit `4504d36a`).  Reduced from
+ * 1 549 to ~860 lines during the 2025-12-19 Phase 1-4 tech-debt
+ * extraction (commit `15073e19`).  Further reduced by deprecated-field
+ * removal on 2026-02-18.
+ *
+ * **Tech debt:** At ~860 lines this class still exceeds the project's
+ * 500-line guidance.  The 2025-12-19 plan identified `pin-management`
+ * extraction and runtime-accessor elimination as next steps.
  */
 export class LocalViewController implements LocalViewApi {
   /** Injected options including graph data, state, and navigation callbacks. */
@@ -101,12 +111,6 @@ export class LocalViewController implements LocalViewApi {
   private readonly viewport = this.runtime.viewport;
   private readonly container = this.runtime.container;
   private readonly overlay = this.runtime.overlay;
-
-  /** 
-   * Legacy single-pin state for backward compatibility.
-   * @deprecated Use localMapState.pinnedPath instead. Will be removed once multi-hop is stable.
-   */
-  private pinnedSymbol: string | null = null;
 
   /**
    * Observable state store for multi-hop pinned path visualization.
@@ -189,10 +193,12 @@ export class LocalViewController implements LocalViewApi {
     }
   }
 
+  /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
   render(): void {
     renderLocalView(this);
   }
 
+  /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
   drawConnections(): void {
     drawConnections({
       runtime: this.runtime,
@@ -225,6 +231,7 @@ export class LocalViewController implements LocalViewApi {
     }));
   }
 
+  /** Applies or removes the `selected` / `local-focus` CSS classes on node cards to reflect the current selection. */
   highlightSelection(): void {
     const { state } = this.options;
     this.container.querySelectorAll<HTMLElement>(".node-card").forEach(element => {
@@ -269,7 +276,7 @@ export class LocalViewController implements LocalViewApi {
 
     // If a symbol is pinned and this isn't the pin-triggering call, suppress hover
     const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
-    if ((this.pinnedSymbol || hasPinnedPath) && !fromPin) return;
+    if (hasPinnedPath && !fromPin) return;
 
     // Update hover state in the state store (for reactive updates)
     if (!fromPin) {
@@ -303,7 +310,7 @@ export class LocalViewController implements LocalViewApi {
   clearSymbolHighlight(force = false): void {
     // Don't clear if we have a pinned symbol (unless forced)
     const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
-    if ((this.pinnedSymbol || hasPinnedPath) && !force) {
+    if (hasPinnedPath && !force) {
       return;
     }
 
@@ -329,24 +336,17 @@ export class LocalViewController implements LocalViewApi {
    * - If no symbol is pinned: pins the clicked symbol
    */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
-    const key = `${nodeId}:${symbol}`;
     const currentState = this.localMapState.getState();
-    
-    // Check if this symbol is already pinned using the new state
     const alreadyPinned = isSymbolPinned(currentState, nodeId, symbol);
     
-    if (this.pinnedSymbol === key || alreadyPinned) {
+    if (alreadyPinned) {
       // Clicking the same symbol: unpin and clear
-      this.pinnedSymbol = null;
-      // Clear the new state as well
       this.localMapState.update(s => clearPins(s));
       this.clearSymbolHighlight(true);
     } else {
       // Pin the new symbol (clear any previous pin first)
       this.clearSymbolHighlight(true);
-      this.pinnedSymbol = key;
       
-      // Update the new state store with this pin at hop 0 (origin)
       const newPin: SymbolPin = { nodeId, symbol, hopIndex: 0 };
       this.localMapState.update(s => addPin(clearPins(s), newPin));
       
@@ -373,11 +373,6 @@ export class LocalViewController implements LocalViewApi {
     const newPin: SymbolPin = { nodeId, symbol, hopIndex };
     this.localMapState.update(s => addPin(s, newPin));
     
-    // Also update legacy state if this is hop 0
-    if (hopIndex === 0) {
-      this.pinnedSymbol = `${nodeId}:${symbol}`;
-    }
-    
     // Apply visual highlight for the pinned symbol
     this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
       if (row.dataset.nodeId === nodeId && row.dataset.symbol === symbol) {
@@ -394,11 +389,6 @@ export class LocalViewController implements LocalViewApi {
    */
   removePinFromPath(fromHopIndex: number): void {
     this.localMapState.update(s => removePin(s, fromHopIndex));
-    
-    // If removing from hop 0, also clear legacy state
-    if (fromHopIndex === 0) {
-      this.pinnedSymbol = null;
-    }
     
     // Refresh visual state
     this.scheduleConnectionRedraw();
@@ -489,10 +479,7 @@ export class LocalViewController implements LocalViewApi {
    * Checks if a symbol is currently pinned.
    */
   isPinned(nodeId: string, symbol: string): boolean {
-    // Check both legacy and new state for backward compatibility
-    const legacyPinned = this.pinnedSymbol === `${nodeId}:${symbol}`;
-    const newStatePinned = isSymbolPinned(this.localMapState.getState(), nodeId, symbol);
-    return legacyPinned || newStatePinned;
+    return isSymbolPinned(this.localMapState.getState(), nodeId, symbol);
   }
 
   /**
@@ -500,20 +487,22 @@ export class LocalViewController implements LocalViewApi {
    * Called when recentering to a new node.
    */
   clearPinnedSymbol(): void {
-    this.pinnedSymbol = null;
     this.localMapState.update(s => clearPins(s));
     this.clearSymbolHighlight(true);
   }
 
+  /** Zooms the map in by 20%. */
   zoomIn(): void {
     zoomByFactorFn(this.runtime, 1.2, () => this.updateMapTransform());
   }
 
+  /** Zooms the map out by ~17%. */
   zoomOut(): void {
     zoomByFactorFn(this.runtime, 1 / 1.2, () => this.updateMapTransform());
   }
 
 
+  /** Restores the map to its initial (fit-to-content) transform, or re-fits if no initial transform was captured. */
   resetZoom(): void {
     if (!this.runtime.contentRoot) {
       return;
@@ -533,96 +522,119 @@ export class LocalViewController implements LocalViewApi {
     cancelInertiaFn(this.runtime);
   }
 
+  /** The SVG XML namespace URI used when creating connection path elements. */
   get svgNamespace(): string {
     return "http://www.w3.org/2000/svg";
   }
 
+  /** Returns the `map-container` div that hosts node cards and columns. */
   getContainer(): HTMLDivElement {
     return this.container;
   }
 
+  /** Returns the `map-connections` SVG overlay div used for drawing connection lines. */
   getOverlay(): HTMLDivElement {
     return this.overlay;
   }
 
+  /** Returns the `view-map` scrollable viewport wrapper. */
   getViewport(): HTMLDivElement {
     return this.viewport;
   }
 
+  /** Whether the user is currently dragging the map (pointer is down and moving). */
   get isDragging(): boolean {
     return this.runtime.isDragging;
   }
 
+  /** @see isDragging */
   set isDragging(value: boolean) {
     this.runtime.isDragging = value;
   }
 
+  /** Current pan/zoom transform `{ x, y, k }` applied to the viewport. */
   get mapTransform(): MapTransform {
     return this.runtime.mapTransform;
   }
 
+  /** @see mapTransform */
   set mapTransform(transform: MapTransform) {
     this.runtime.mapTransform = transform;
   }
 
+  /** The subgraph currently rendered in the 3-column layout, or `null` before the first render. */
   get currentSubgraph(): LocalSubgraph | null {
     return this.runtime.currentSubgraph;
   }
 
+  /** @see currentSubgraph */
   set currentSubgraph(value: LocalSubgraph | null) {
     this.runtime.currentSubgraph = value;
   }
 
+  /** The `id` of the node most recently placed in the center column, used to avoid redundant renders. */
   get lastCenteredNodeId(): string | null {
     return this.runtime.lastCenteredNodeId;
   }
 
+  /** @see lastCenteredNodeId */
   set lastCenteredNodeId(value: string | null) {
     this.runtime.lastCenteredNodeId = value;
   }
 
+  /** Whether a fit-to-content pass has been applied since the last subgraph change. */
   get mapHasInitialFit(): boolean {
     return this.runtime.mapHasInitialFit;
   }
 
+  /** @see mapHasInitialFit */
   set mapHasInitialFit(value: boolean) {
     this.runtime.mapHasInitialFit = value;
   }
 
+  /** Whether the user has manually panned or zoomed since the last fit. */
   get mapUserAdjusted(): boolean {
     return this.runtime.mapUserAdjusted;
   }
 
+  /** @see mapUserAdjusted */
   set mapUserAdjusted(value: boolean) {
     this.runtime.mapUserAdjusted = value;
   }
 
+  /** The transform captured at the end of the most recent fit-to-content, used by {@link resetZoom}. */
   get mapInitialTransform(): MapTransform | null {
     return this.runtime.mapInitialTransform;
   }
 
+  /** @see mapInitialTransform */
   set mapInitialTransform(value: MapTransform | null) {
     this.runtime.mapInitialTransform = value;
   }
 
+  /** The top-level `local-map-root` element created by the renderer, or `null` before first render. */
   get contentRoot(): HTMLElement | null {
     return this.runtime.contentRoot;
   }
 
+  /** @see contentRoot */
   set contentRoot(value: HTMLElement | null) {
     this.runtime.contentRoot = value;
   }
 
+  /** Registers a DOM element as a connection anchor for a given node/column/direction slot. */
   registerAnchor(nodeId: string, columnRole: ColumnRole, key: string, element: HTMLElement): void {
     storeAnchor(this.runtime.anchorRegistry, nodeId, columnRole, key, element, keyValue =>
       this.tryBuildNormalizedKey(keyValue)
     );
   }
 
+  /** Removes all registered anchor entries, typically called before re-rendering columns. */
   clearAnchors(): void {
     clearAnchorRegistry(this.runtime.anchorRegistry);
   }
 
+  /** Looks up a registered anchor element for a node/column/direction, optionally filtering by symbol. */
   getAnchor(nodeId: string, columnRole: ColumnRole, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
     return fetchAnchor(this.runtime.anchorRegistry, nodeId, columnRole, direction, symbol, (dir, sym) =>
       this.buildNormalizedAnchorKey(dir, sym)
@@ -643,14 +655,20 @@ export class LocalViewController implements LocalViewApi {
     );
   }
 
+  /**
+   * Produces a normalized anchor key string from a direction and symbol,
+   * used to match symbol rows across columns during connection drawing.
+   */
   buildNormalizedAnchorKey(direction: "inbound" | "outbound", symbol: string): string | null {
     return this.options.state ? this.normalizeSymbol(direction, symbol) : null;
   }
 
+  /** Attempts to extract a normalized key from an existing anchor key string. */
   tryBuildNormalizedKey(anchorKey: string): string | null {
     return this.normalizeAnchorKey(anchorKey);
   }
 
+  /** Schedules a connection line redraw on the next animation frame. */
   scheduleConnectionRedraw(): void {
     requestAnimationFrame(() => this.drawConnections());
   }
@@ -665,6 +683,10 @@ export class LocalViewController implements LocalViewApi {
     }
   }
 
+  /**
+   * Returns `true` when the node should appear in the local subgraph
+   * based on current filter settings (test/asset visibility toggles).
+   */
   shouldIncludeNode(node: ExplorerNodePayload): boolean {
     const { state } = this.options;
     const archetype = (node.archetype || "").toLowerCase();
@@ -677,32 +699,39 @@ export class LocalViewController implements LocalViewApi {
     return true;
   }
 
+  /** Returns `true` when the given node has a `"test"` archetype. */
   isTestNode(node: ExplorerNodePayload | null | undefined): boolean {
     return !!node && (node.archetype || "").toLowerCase() === "test";
   }
 
+  /** Builds a {@link LocalSubgraph} centred on the given node (delegates to {@link createLocalSubgraph}). */
   buildLocalSubgraph(center: ExplorerNodePayload): LocalSubgraph {
     return this.createLocalSubgraph(center);
   }
 
+  /** Resolves a node by `id` from the full graph data, or returns `undefined` if not found. */
   resolveNode(id: string): ExplorerNodePayload | undefined {
     return this.options.graphData.nodes.find(node => node.id === id);
   }
 
+  /** Invokes the `onSelectNode` callback to open a node in the detail panel. */
   async selectNode(node: ExplorerNodePayload): Promise<void> {
     await this.options.onSelectNode(node);
   }
 
+  /** Clears any pinned symbol and invokes `onRecenterNode` to re-render with a new centre node. */
   async recenterNode(node: ExplorerNodePayload): Promise<void> {
     // Clear any pinned symbol when recentering to a new node
     this.clearPinnedSymbol();
     await this.options.onRecenterNode(node);
   }
 
+  /** Opens the sidebar detail panel for the given node. */
   async focusSidebar(node: ExplorerNodePayload): Promise<void> {
     await this.options.onFocusSidebar(node);
   }
 
+  /** Measures content and column bounding boxes used for fit-to-content and centering calculations. */
   measureLayoutExtents(): LayoutExtents | null {
     return computeLayoutExtents(this.container, this.contentRoot);
   }
@@ -727,6 +756,7 @@ export class LocalViewController implements LocalViewApi {
     };
   }
 
+  /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */
   updateMapTransform(): void {
     // Apply transform to the viewport wrapper so container and overlay share the same stacking context
     const viewport = this.runtime.container.parentElement;
@@ -760,6 +790,11 @@ export class LocalViewController implements LocalViewApi {
     this.viewport.addEventListener("wheel", this.handleWheel, { passive: false });
   }
 
+  /**
+   * Computes and animates a transform that fits the full content area inside
+   * the viewport, then stores it as {@link mapInitialTransform} for later
+   * {@link resetZoom} calls.
+   */
   fitMapToContent(): void {
     cancelInertiaFn(this.runtime);
     const extents = computeLayoutExtents(this.container, this.contentRoot);
@@ -786,11 +821,13 @@ export class LocalViewController implements LocalViewApi {
     this.scheduleConnectionRedraw();
   }
 
+  /** Scans the center column for symbol row positions and returns alignment guides for vertical centering. */
   collectCenterAlignmentGuides(column: HTMLElement): CenterAlignmentGuides {
     const rootRect = this.container.getBoundingClientRect();
     return collectCenterAlignmentGuidesFn(column, rootRect, symbol => normalizeSymbolIdentifier(symbol));
   }
 
+  /** Returns the vertical position of a center-column anchor for a given node/direction/symbol, or `null` if not found. */
   lookupCenterAnchorPosition(
     guides: CenterAlignmentGuides,
     nodeId: string,
@@ -800,6 +837,7 @@ export class LocalViewController implements LocalViewApi {
     return lookupCenterAnchorPositionFn(guides, nodeId, direction, symbol, sym => normalizeSymbolIdentifier(sym));
   }
 
+  /** Vertically centres dependency and dependent columns relative to the center column within the layout root. */
   applyColumnVerticalCentering(layoutRoot: HTMLElement): void {
     applyColumnVerticalCenteringFn(layoutRoot, this.container);
   }

@@ -24,8 +24,19 @@ import { rustAdapter } from "./rust";
  */
 export type WorkspaceFileIndex = Set<string>;
 
+/**
+ * Contract for a language-specific source analyser.
+ *
+ * Each adapter declares the file extensions it handles and provides an
+ * `analyze` method that extracts public symbols, dependencies, and other
+ * structured metadata from a single source file.  The adapter registry
+ * ({@link analyzeWithLanguageAdapters}) dispatches to the first adapter
+ * whose `extensions` list matches the file under inspection.
+ */
 export interface LanguageAdapter {
+  /** Short identifier for this adapter (e.g. `"csharp"`, `"python"`). */
   readonly id: string;
+  /** Lowercase file extensions this adapter handles, including the dot (e.g. `[".cs"]`). */
   readonly extensions: readonly string[];
   analyze(input: {
     absolutePath: string;

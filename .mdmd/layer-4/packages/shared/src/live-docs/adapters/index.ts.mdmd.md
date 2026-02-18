@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-02-03T21:55:39.891Z
+- Generated At: 2026-02-18T19:14:04.784Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.891Z","inputHash":"3252a282b43d83f3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T19:14:04.784Z","inputHash":"0326b1e4135dbbfc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
@@ -33,11 +33,20 @@ analysis begins.
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L27)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L36)
+
+##### `LanguageAdapter` — Summary
+Contract for a language-specific source analyser.
+
+Each adapter declares the file extensions it handles and provides an
+`analyze` method that extracts public symbols, dependencies, and other
+structured metadata from a single source file.  The adapter registry
+({@link analyzeWithLanguageAdapters}) dispatches to the first adapter
+whose `extensions` list matches the file under inspection.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L66)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/index.ts#L77)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
