@@ -79,6 +79,11 @@ export interface OracleConfig {
   manualOverrides?: string;
 }
 
+/**
+ * Top-level definition for a single benchmark fixture in the manifest.
+ * Carries identity, paths, oracle config, integrity spec, and optional
+ * threshold overrides.
+ */
 export interface BenchmarkFixtureDefinition {
   /** Unique identifier for this fixture (e.g., "ts-basic", "go-rosetta") */
   id: string;

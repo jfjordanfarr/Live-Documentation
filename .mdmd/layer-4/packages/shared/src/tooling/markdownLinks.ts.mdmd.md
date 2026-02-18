@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/markdownLinks.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-markdownlinks-ts
-- Generated At: 2026-02-03T21:55:41.338Z
+- Generated At: 2026-02-18T21:27:54.388Z
 
 ## Authored
 ### Purpose
@@ -16,22 +16,35 @@ Detects broken local markdown links for the SlopCop markdown audit by walking in
 - Feeds MDMD relationship analysis too—relationship resolvers reuse the detected targets to wire documentation ↔ code edges without reimplementing link parsing ([shared helper extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.338Z","inputHash":"20379ceaa09359e5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.388Z","inputHash":"5080a50fb122bd38"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MarkdownLinkIssue` {#symbol-markdownlinkissue}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L11)
+- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L12)
+
+##### `MarkdownLinkIssue` — Summary
+A broken link detected in a markdown file.
 
 #### `MarkdownLinkAuditOptions` {#symbol-markdownlinkauditoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L19)
+- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L21)
+
+##### `MarkdownLinkAuditOptions` — Summary
+Configuration for scanning markdown files for broken local links.
 
 #### `findBrokenMarkdownLinks` {#symbol-findbrokenmarkdownlinks}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L29)
+- Source: [source](../../../../../../packages/shared/src/tooling/markdownLinks.ts#L38)
 - Returns: [`MarkdownLinkIssue`](#symbol-markdownlinkissue)[]
 - Parameters: `options`: [`MarkdownLinkAuditOptions`](#symbol-markdownlinkauditoptions)
+
+##### `findBrokenMarkdownLinks` — Summary
+Scans a markdown file for inline and reference-style links whose local
+targets cannot be resolved on disk.
+
+External URLs, fragment-only links, and targets matching any
+`ignoreTargetPatterns` are skipped.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

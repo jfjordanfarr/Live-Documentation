@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/inference/treeSitter/languages.ts
 - Live Doc ID: LD-implementation-packages-shared-src-inference-treesitter-languages-ts
-- Generated At: 2026-02-03T21:55:39.256Z
+- Generated At: 2026-02-18T21:27:53.302Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Defines per-language configuration for tree-sitter symbol extraction. Each `Lang
 - **Ignored Symbols**: Language-specific noise filtering (e.g., Go's `nil`, `true`, `false`) prevents false edges
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.256Z","inputHash":"3d0acf13bf289997"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:53.302Z","inputHash":"f17b2031a379972a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageConfig` {#symbol-languageconfig}
@@ -27,41 +27,6 @@ Defines per-language configuration for tree-sitter symbol extraction. Each `Lang
 
 ##### `LanguageConfig` — Summary
 Configuration for extracting symbols and references from a language.
-
-#### `GO_CONFIG` {#symbol-go_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L64)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `CSHARP_CONFIG` {#symbol-csharp_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L103)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `TYPESCRIPT_CONFIG` {#symbol-typescript_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L141)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `PYTHON_CONFIG` {#symbol-python_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L177)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `JAVA_CONFIG` {#symbol-java_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L209)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `RUST_CONFIG` {#symbol-rust_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L248)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
-
-#### `RUBY_CONFIG` {#symbol-ruby_config}
-- Type: const
-- Source: [source](../../../../../../../packages/shared/src/inference/treeSitter/languages.ts#L283)
-- Returns: [`LanguageConfig`](./index.ts.mdmd.md#symbol-languageconfig)
 
 #### `getLanguageConfig` {#symbol-getlanguageconfig}
 - Type: function

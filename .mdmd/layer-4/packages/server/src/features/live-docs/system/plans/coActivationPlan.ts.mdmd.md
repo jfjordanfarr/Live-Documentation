@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/coActivationPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-coactivationplan-ts
-- Generated At: 2026-02-03T21:55:37.962Z
+- Generated At: 2026-02-18T21:27:52.665Z
 
 ## Authored
 ### Purpose
@@ -17,23 +17,36 @@ Builds System-layer plans from co-activation report clusters. Converts statistic
 - `deriveClusterIdentity()` picks a descriptive slug from common path segments or highest-degree node
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.962Z","inputHash":"9ab7688cc01571df"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.665Z","inputHash":"299b6a212032977a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildCoActivationPlans` {#symbol-buildcoactivationplans}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L29)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L36)
 - Returns: [`SystemDocPlan`](../types.ts.mdmd.md#symbol-systemdocplan)[]
+
+##### `buildCoActivationPlans` — Summary
+Builds System-layer co-activation plans from clustered edge data.
+
+Each significant cluster above the minimum member/weight thresholds
+produces one {@link SystemDocPlan} with ranked components, edges,
+test sources, and dependency sources.
 
 #### `deriveClusterIdentity` {#symbol-deriveclusteridentity}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L270)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L278)
+
+##### `deriveClusterIdentity` — Summary
+Derives a human-readable slug and display name for a cluster from its top-ranked component path.
 
 #### `collectTopSources` {#symbol-collecttopsources}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L324)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/coActivationPlan.ts#L333)
 - Returns: [`PlanActivationSourceSummary`](../types.ts.mdmd.md#symbol-planactivationsourcesummary)[]
 - Parameters: `edges`: [`CoActivationEdge`](../types.ts.mdmd.md#symbol-coactivationedge)[]
+
+##### `collectTopSources` — Summary
+Tallies test or dependency sources across a set of co-activation edges, returning ranked summaries.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

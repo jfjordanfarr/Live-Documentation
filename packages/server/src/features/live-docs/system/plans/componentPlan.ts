@@ -14,6 +14,11 @@ import { formatDisplayName, includeInComponents, layer3Slug } from "../utils";
 // Component Plan Builder
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Groups Stage-0 implementation docs by directory prefix and produces
+ * one {@link SystemDocPlan} per component with intra-component
+ * dependency and stage-sequence edges.
+ */
 export function buildComponentPlans(args: {
   stage0Docs: Stage0Doc[];
   stage0PathSet: Set<string>;
@@ -107,6 +112,7 @@ export function buildComponentPlans(args: {
 // Helper Functions
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Derives a grouping key from a source path for component clustering. */
 function deriveComponentKey(sourcePath: string): string {
   const segments = sourcePath.split("/");
   const featureIndex = segments.indexOf("features");
@@ -122,6 +128,10 @@ function deriveComponentKey(sourcePath: string): string {
   return segments.slice(0, Math.max(segments.length - 1, 1)).join("/");
 }
 
+// isImplementationDoc and deriveComponentKey are exported for reuse
+// by sibling plan builders that need the same archetype/directory logic.
+
+/** Returns `true` when the doc's archetype is `"implementation"`. */
 function isImplementationDoc(doc: Stage0Doc): boolean {
   return (doc.archetype ?? IMPLEMENTATION_ARCHETYPE).toLowerCase() === IMPLEMENTATION_ARCHETYPE;
 }

@@ -14,6 +14,7 @@ import {
 import { fileExists } from "./directoryScanner";
 import { MODULE_RESOLUTION_EXTENSIONS, inferScriptKind } from "./languageInference";
 
+/** Contextual inputs for the import/require evidence extraction pass. */
 export interface ImportEvidenceContext {
   content: string;
   sourceFile: string;

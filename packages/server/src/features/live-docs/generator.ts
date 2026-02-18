@@ -4,7 +4,6 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import {
-  DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   type LiveDocumentationArchetype,
   type LiveDocumentationConfig,
   normalizeLiveDocumentationConfig
@@ -70,6 +69,12 @@ interface LiveDocGeneratorLogger {
   error(message: string): void;
 }
 
+/**
+ * Summary returned by {@link generateLiveDocs} after processing all target files.
+ *
+ * The caller uses `written` and `deleted` counts for progress reporting, while
+ * the `files` array gives per-file detail for dry-run previews and CI checks.
+ */
 export interface LiveDocGeneratorResult {
   processed: number;
   written: number;
@@ -93,6 +98,23 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
   error: (message) => console.error(`[live-docs] ${message}`)
 };
 
+/**
+ * Entry point for the Live Documentation generation pipeline.
+ *
+ * Discovers all workspace files matching the configured globs, analyses each for
+ * public symbols and dependencies, loads the evidence snapshot (coverage +
+ * targets + waivers), and renders deterministic markdown docs under the
+ * configured base layer directory.
+ *
+ * Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
+ * and `--include` (explicit file subset) modes. Stale Live Docs whose source
+ * files no longer exist are pruned automatically (unless `changedOnly` is set).
+ *
+ * Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
+ * (2026-01-28), and cross-platform hash fix (2026-02-03).
+ *
+ * @param options - Generation configuration including workspace root, config overrides, and logger.
+ */
 export async function generateLiveDocs(
   options: GenerateLiveDocsOptions
 ): Promise<LiveDocGeneratorResult> {
@@ -789,7 +811,14 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
   return existingContent === rendered ? "unchanged" : "updated";
 }
 
-// Exported for unit testing
+/**
+ * Internal re-exports exposed solely for unit testing.
+ *
+ * Consumers: `renderPublicSymbolLines.test.ts`, `report-precision.ts`.
+ * These functions originate in `@live-documentation/shared/live-docs/core`;
+ * re-exporting them here lets tests import a single module for
+ * generator-adjacent assertions without coupling to shared internals.
+ */
 export const __testUtils = {
   collectExportedSymbols,
   collectDependencies,
@@ -798,10 +827,4 @@ export const __testUtils = {
   renderPublicSymbolLines
 };
 
-// Maintain backwards compatibility for callers that expect default config resolution
-export function withDefaultConfig(config?: LiveDocumentationConfig): LiveDocumentationConfig {
-  if (!config) {
-    return { ...DEFAULT_LIVE_DOCUMENTATION_CONFIG };
-  }
-  return normalizeLiveDocumentationConfig(config);
-}
+

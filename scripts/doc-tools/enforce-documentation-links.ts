@@ -29,12 +29,22 @@ const EXIT_SUCCESS = 0;
 const EXIT_VIOLATIONS = 3;
 const EXIT_FAILURE = 4;
 
+/** Numeric exit codes used by the documentation-link enforcement CLI. */
 export const EXIT_CODES = {
   SUCCESS: EXIT_SUCCESS,
   VIOLATIONS: EXIT_VIOLATIONS,
   FAILURE: EXIT_FAILURE
 } as const;
 
+/**
+ * CLI entry point for the documentation-link enforcement tool.
+ *
+ * Parses arguments, discovers workspace rules, runs
+ * {@link runDocumentationLinkEnforcement}, and renders results to stdout.
+ *
+ * @returns Numeric exit code: `0` on success, `3` when violations are found,
+ *          `4` on unexpected failure.
+ */
 export async function runCli(argv: string[]): Promise<number> {
   try {
     const args = parseArgs(argv);

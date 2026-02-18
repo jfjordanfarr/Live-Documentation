@@ -135,11 +135,13 @@ function assertExplorerDetailPayload(value: unknown): asserts value is ExplorerD
   }
 }
 
+/** Validates and casts an unknown value to an {@link ExplorerGraphPayload}. */
 export const parseExplorerGraphPayload = (value: unknown): ExplorerGraphPayload => {
   assertExplorerGraphPayload(value);
   return value;
 };
 
+/** Validates and casts an unknown value to an {@link ExplorerDetailPayload}. */
 export const parseExplorerDetailPayload = (value: unknown): ExplorerDetailPayload => {
   assertExplorerDetailPayload(value);
   return value;

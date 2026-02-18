@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/harness/headlessHarness.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-harness-headlessharness-ts
-- Generated At: 2026-02-03T21:55:37.748Z
+- Generated At: 2026-02-18T21:27:52.489Z
 
 ## Authored
 ### Purpose
@@ -16,25 +16,41 @@ Runs the headless harness pipeline end-to-end—preparing a workspace, invoking 
 - Emits optional container specs and timestamped reports so CI and hosted demos can replay the same runs without manual wiring.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.748Z","inputHash":"aaf3802fc06bb3f2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.489Z","inputHash":"ed4830295e897610"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HeadlessHarnessLogger` {#symbol-headlessharnesslogger}
 - Type: interface
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L18)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L19)
+
+##### `HeadlessHarnessLogger` — Summary
+Logger interface for headless harness output (info required, warn optional).
 
 #### `HeadlessHarnessRunOptions` {#symbol-headlessharnessrunoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L28)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L30)
+
+##### `HeadlessHarnessRunOptions` — Summary
+Options controlling a single headless harness run.
 
 #### `HeadlessHarnessRunResult` {#symbol-headlessharnessrunresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L41)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L44)
+
+##### `HeadlessHarnessRunResult` — Summary
+Outcome of a headless harness run, including paths and generator results.
 
 #### `runHeadlessHarness` {#symbol-runheadlessharness}
 - Type: function
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L56)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/harness/headlessHarness.ts#L66)
 - Parameters: `options`: [`HeadlessHarnessRunOptions`](#symbol-headlessharnessrunoptions)
+
+##### `runHeadlessHarness` — Summary
+Executes a headless Live Docs generation scenario end-to-end.
+
+Prepares a workspace from the scenario fixture, runs the Stage-0
+generator and (optionally) the System-layer generator, writes a
+JSON report, and cleans up unless `keepWorkspace` is set.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

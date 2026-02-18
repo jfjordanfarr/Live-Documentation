@@ -30,6 +30,10 @@ interface ParseStage0DocArgs {
   logger?: Stage0DocLogger;
 }
 
+/**
+ * Reads and parses all Stage-0 Live Documentation files from the configured
+ * base-layer directory into an ordered list of {@link Stage0Doc} objects.
+ */
 export async function loadStage0Docs(args: LoadStage0DocsArgs): Promise<Stage0Doc[]> {
   const stage0Root = path.resolve(args.workspaceRoot, args.config.root, args.config.baseLayer);
   const docExtension = args.config.extension;

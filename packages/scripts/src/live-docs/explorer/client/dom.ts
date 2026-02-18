@@ -1,5 +1,6 @@
 import type { ViewName } from "./types";
 
+/** Looks up an element by `id` and throws if not found. */
 export function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
   if (!element) {
@@ -8,6 +9,7 @@ export function requireElement<T extends HTMLElement>(id: string): T {
   return element as T;
 }
 
+/** Activates the given view tab and its container while deactivating siblings. */
 export function setActiveView(view: ViewName): void {
   document.querySelectorAll<HTMLElement>(".nav-item").forEach(element => {
     if (element.dataset.view === view) {

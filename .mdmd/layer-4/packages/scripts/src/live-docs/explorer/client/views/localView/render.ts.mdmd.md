@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/render.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-render-ts
-- Generated At: 2026-02-03T21:55:36.642Z
+- Generated At: 2026-02-18T21:27:51.803Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,16 @@ DOM rendering logic for the Local Map view. Lays out inbound/center/outbound col
 - Passes anchor positions to the controller for Bézier spline routing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.642Z","inputHash":"ca4bfef9052ff142"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.803Z","inputHash":"9fdf91c2a24d0647"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderLocalView` {#symbol-renderlocalview}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/render.ts#L12)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/render.ts#L13)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller)
+
+##### `renderLocalView` — Summary
+Renders (or re-renders) the Local Map DOM layout from the current controller state.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

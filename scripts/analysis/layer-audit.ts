@@ -51,6 +51,12 @@ async function readFileHeadings(filePath: string): Promise<string[]> {
   return result;
 }
 
+/**
+ * Scans all `.mdmd.md` files in the given MDMD layer, computes heading
+ * frequency, and returns a report listing canonical headings (those
+ * above the `threshold` coverage ratio) plus per-file missing/extra
+ * heading breakdowns.
+ */
 export async function collectLayerReport(layer: LayerId, threshold: number): Promise<LayerReport> {
   const pattern = path.join(repoRoot, ".mdmd", `layer-${layer}`, "**", "*.mdmd.md");
   const files = await glob(pattern, { windowsPathsNoEscape: true });
@@ -106,6 +112,7 @@ export async function collectLayerReport(layer: LayerId, threshold: number): Pro
   };
 }
 
+/** Parses CLI arguments for the layer-audit script. */
 export function parseArgs(): CliOptions {
   const args = process.argv.slice(2);
   const layers = new Set<LayerId>();
@@ -190,6 +197,7 @@ function formatPercentage(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
 
+/** Prints a formatted layer report to stdout. */
 export function logLayerReport(report: LayerReport, limit?: number) {
   console.log(`\nLayer ${report.layer} – ${report.totalFiles} files analysed`);
   if (report.totalFiles === 0) {
@@ -228,6 +236,7 @@ export function logLayerReport(report: LayerReport, limit?: number) {
   });
 }
 
+/** Runs the full layer-audit pipeline: parse CLI args, collect reports, and log results. */
 export async function main() {
   const options = parseArgs();
   const reports: LayerReport[] = [];

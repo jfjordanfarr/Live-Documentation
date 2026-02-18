@@ -4,14 +4,28 @@ import path from "node:path";
 
 import { normalizeWorkspacePath } from "@live-documentation/shared/tooling/pathUtils";
 
+/**
+ * Classification of how a piece of evidence was gathered.
+ *
+ * - `"unit"` / `"integration"` / `"benchmark"` — automated test suites
+ * - `"manual"` — evidence waiver supplied by a human reviewer
+ */
 export type EvidenceKind = "unit" | "integration" | "benchmark" | "manual";
 
+/**
+ * A single coverage metric (e.g. statement coverage) expressed as
+ * a numerator/denominator pair and a pre-computed percentage.
+ */
 export interface CoverageRatio {
   covered: number;
   total: number;
   percent: number;
 }
 
+/**
+ * Aggregated code-coverage metrics from a test provider's
+ * `coverage-summary.json` output (Istanbul/v8 format).
+ */
 export interface CoverageSummary {
   statements?: CoverageRatio;
   branches?: CoverageRatio;
@@ -19,6 +33,12 @@ export interface CoverageSummary {
   lines?: CoverageRatio;
 }
 
+/**
+ * A single piece of evidence that an implementation file is tested.
+ *
+ * Populated from the targets manifest (`coverage/live-docs/targets.json`),
+ * from coverage-summary files, or from manual evidence waivers.
+ */
 export interface ImplementationEvidenceItem {
   suite: string;
   kind: EvidenceKind;
@@ -27,6 +47,10 @@ export interface ImplementationEvidenceItem {
   notes?: string;
 }
 
+/**
+ * Evidence record for a test file, listing the implementation files
+ * it targets and any supporting fixtures it depends on.
+ */
 export interface TestEvidenceItem {
   suite: string;
   kind: EvidenceKind;
@@ -34,6 +58,14 @@ export interface TestEvidenceItem {
   fixtures: string[];
 }
 
+/**
+ * Complete workspace-wide evidence snapshot assembled from coverage summaries,
+ * target manifests, and evidence waivers.
+ *
+ * Consumed by the Live Docs generator to populate `Observed Evidence` sections
+ * on implementation-archetype docs and `Targets` / `Supporting Fixtures` sections
+ * on test-archetype docs. Currently feeds 67+ Live Doc files in this workspace.
+ */
 export interface EvidenceSnapshot {
   implementationEvidence: Map<string, ImplementationEvidenceItem[]>;
   testEvidence: Map<string, TestEvidenceItem>;
@@ -49,6 +81,17 @@ interface LoadEvidenceOptions {
   logger?: EvidenceLogger;
 }
 
+/**
+ * Assembles a workspace-wide evidence snapshot by loading:
+ *
+ * 1. **Coverage summaries** — Istanbul/v8 `coverage-summary.json` files under `coverage/`
+ * 2. **Targets manifest** — `targets.json` mapping test files to the implementations they verify
+ * 3. **Evidence waivers** — `evidence-waivers.json` for manually-reviewed files that lack automated tests
+ *
+ * The snapshot is consumed once per `generateLiveDocs()` invocation.
+ *
+ * @param options - Workspace root and optional logger for diagnostic messages.
+ */
 export async function loadEvidenceSnapshot(
   options: LoadEvidenceOptions
 ): Promise<EvidenceSnapshot> {

@@ -12,6 +12,7 @@ import type { ViewName } from "../types";
  * URL uses: circuit, local, force, sources (matches config schema)
  * Internal uses: circuit, map, graph, sources
  */
+/** Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}. */
 export const viewNameToInternal = (name: string): ViewName => {
   switch (name) {
     case "local": return "map";
@@ -23,6 +24,7 @@ export const viewNameToInternal = (name: string): ViewName => {
   }
 };
 
+/** Maps an internal {@link ViewName} back to the URL-facing string used in query parameters. */
 export const viewNameToUrl = (name: ViewName): string => {
   switch (name) {
     case "map": return "local";
@@ -34,12 +36,14 @@ export const viewNameToUrl = (name: ViewName): string => {
   }
 };
 
+/** State parsed from the initial URL on page load. */
 export interface InitialUrlState {
   view: ViewName;
   nodeId: string | null;
   hasUrlState: boolean;
 }
 
+/** Optional configuration object supplied by the `viewerConfig` JSON block in the HTML template. */
 export interface ViewerConfig {
   defaultView?: string;
   initialFocusNode?: string;

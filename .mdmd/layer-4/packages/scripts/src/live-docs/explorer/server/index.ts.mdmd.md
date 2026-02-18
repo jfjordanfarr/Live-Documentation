@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-index-ts
-- Generated At: 2026-02-03T21:55:36.975Z
+- Generated At: 2026-02-18T21:27:52.021Z
 
 ## Authored
 ### Purpose
@@ -17,21 +17,31 @@ HTTP server entry point for the Live Documentation Explorer. Starts a local serv
 - Automatically opens the browser when `openBrowser: true` is passed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.975Z","inputHash":"5644dc936af2f7c7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.021Z","inputHash":"7d0f36ecea61b2e5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerServerOptions` {#symbol-explorerserveroptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L15)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L16)
+
+##### `ExplorerServerOptions` — Summary
+Options for launching the Explorer HTTP server.
 
 #### `ExplorerServerInstance` {#symbol-explorerserverinstance}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L23)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L25)
+
+##### `ExplorerServerInstance` — Summary
+Handle to a running Explorer server instance.
 
 #### `startExplorerServer` {#symbol-startexplorerserver}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L38)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/index.ts#L44)
 - Parameters: `options`: [`ExplorerServerOptions`](../../../index.ts.mdmd.md#symbol-explorerserveroptions)
+
+##### `startExplorerServer` — Summary
+Starts the Explorer HTTP server, serving the Circuit Board, Local Map,
+Force Graph, and Knowledge Sources views.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

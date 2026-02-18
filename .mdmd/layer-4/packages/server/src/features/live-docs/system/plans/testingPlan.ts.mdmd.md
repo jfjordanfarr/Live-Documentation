@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/testingPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-testingplan-ts
-- Generated At: 2026-02-03T21:55:38.073Z
+- Generated At: 2026-02-18T21:27:52.767Z
 
 ## Authored
 ### Purpose
@@ -17,20 +17,24 @@ Builds System-layer `testing` archetype plans from the target manifest. Groups t
 - Creates virtual nodes for test groups without backing Stage0 docs (e.g., integration tests)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.073Z","inputHash":"383c22121b842da6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.767Z","inputHash":"be70bed7e82c2bad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildTestingPlans` {#symbol-buildtestingplans}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L13)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L17)
+
+##### `buildTestingPlans` — Summary
+Builds testing-focused System-layer plans from the target manifest,
+linking test files to the live-docs implementation artifacts they cover.
 
 #### `deriveTestGroupKey` {#symbol-derivetestgroupkey}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L137)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L143)
 
 #### `createVirtualNodeKey` {#symbol-createvirtualnodekey}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L137)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/testingPlan.ts#L143)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

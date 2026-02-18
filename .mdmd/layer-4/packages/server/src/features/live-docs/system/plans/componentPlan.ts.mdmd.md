@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/componentPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-componentplan-ts
-- Generated At: 2026-02-03T21:55:37.989Z
+- Generated At: 2026-02-18T21:27:52.693Z
 
 ## Authored
 ### Purpose
@@ -17,21 +17,26 @@ Builds System-layer `component` archetype plans by grouping Live Docs implementa
 - Special handling for `scripts/live-docs` group: injects stage-sequence orchestration edges
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.989Z","inputHash":"2a723f9888e9be7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.693Z","inputHash":"b1958f27ad893e58"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildComponentPlans` {#symbol-buildcomponentplans}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L17)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L22)
 - Returns: [`SystemDocPlan`](../types.ts.mdmd.md#symbol-systemdocplan)[]
+
+##### `buildComponentPlans` — Summary
+Groups Stage-0 implementation docs by directory prefix and produces
+one {@link SystemDocPlan} per component with intra-component
+dependency and stage-sequence edges.
 
 #### `isImplementationDoc` {#symbol-isimplementationdoc}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L129)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L139)
 
 #### `deriveComponentKey` {#symbol-derivecomponentkey}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L129)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/componentPlan.ts#L139)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

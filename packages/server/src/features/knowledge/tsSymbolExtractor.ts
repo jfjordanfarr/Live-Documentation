@@ -3,6 +3,7 @@ import ts from "typescript";
 
 import { DEFAULT_CODE_EXTENSIONS, inferScriptKind } from "./languageInference";
 
+/** Discriminant for the kind of TypeScript/JavaScript exported symbol. */
 export type ExportedSymbolKind =
   | "class"
   | "function"
@@ -14,6 +15,7 @@ export type ExportedSymbolKind =
   | "default"
   | "unknown";
 
+/** Metadata for a single exported symbol (name, kind, default/type-only flags). */
 export interface ExportedSymbolMetadata {
   name: string;
   kind: ExportedSymbolKind;

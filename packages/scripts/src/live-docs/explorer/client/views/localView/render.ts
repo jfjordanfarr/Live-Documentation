@@ -9,6 +9,7 @@ import type { PathResult, SymbolPin } from "./state";
 import type { LocalSubgraph } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 
+/** Renders (or re-renders) the Local Map DOM layout from the current controller state. */
 export function renderLocalView(controller: LocalViewController): void {
   const container = controller.getContainer();
   const overlay = controller.getOverlay();

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/server/graph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-server-graph-ts
-- Generated At: 2026-02-03T21:55:36.946Z
+- Generated At: 2026-02-18T21:27:51.992Z
 
 ## Authored
 ### Purpose
@@ -17,17 +17,24 @@ Transforms the raw `LiveDocGraph` into an `ExplorerGraphPayload` enriched with i
 - Contains the barrel-file deprioritisation heuristic (`isBarrelFile`) to prefer origin files for inheritance links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.946Z","inputHash":"baf4b0cc35a64fc7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.992Z","inputHash":"431f5fad76693150"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L35)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L39)
 - Parameters: `config`: [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+
+##### `buildExplorerGraph` — Summary
+Builds the full Explorer graph payload from the Live Doc graph,
+including nodes, dependency/inheritance links, and statistics.
 
 #### `normalizeDocPath` {#symbol-normalizedocpath}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L166)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/server/graph.ts#L171)
+
+##### `normalizeDocPath` — Summary
+Resolves a doc-relative path to an absolute, normalised file-system path.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

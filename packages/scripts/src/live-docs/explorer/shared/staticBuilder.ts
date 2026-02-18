@@ -53,6 +53,7 @@ const buildExplorerGraphModule = async () => (await import("../server/graph")).b
 // Build Options
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Options controlling what is included in a static explorer build. */
 export interface BuildStaticExplorerOptions {
     /** Workspace root directory. */
     workspaceRoot: string;
@@ -82,6 +83,7 @@ export interface BuildStaticExplorerOptions {
     logger?: Pick<Console, "log" | "error">;
 }
 
+/** Outcome of {@link buildStaticExplorer}, including file paths and size statistics. */
 export interface BuildStaticExplorerResult {
     /** Path to the output directory. */
     outputDir: string;

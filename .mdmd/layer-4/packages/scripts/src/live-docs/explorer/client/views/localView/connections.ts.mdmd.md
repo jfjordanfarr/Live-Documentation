@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connections-ts
-- Generated At: 2026-02-03T21:55:36.335Z
+- Generated At: 2026-02-18T21:27:51.589Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ SVG connection drawing for the Local Map. Draws Bézier splines between anchor p
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.335Z","inputHash":"b8ae1f7bbc9e5f91"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.589Z","inputHash":"b246acbc4e52075a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MultiHopEntry` {#symbol-multihopentry}
@@ -30,12 +30,24 @@ Each hop has a center node and its associated subgraph.
 
 #### `ConnectionsContext` {#symbol-connectionscontext}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L20)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L24)
+
+##### `ConnectionsContext` — Summary
+Ambient context required by {@link drawConnections} to measure DOM
+anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L66)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts#L78)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
+
+##### `drawConnections` — Summary
+Main entry point for drawing SVG connection edges in the Local Map view.
+
+Delegates to either multi-hop or single-hop rendering depending on the
+presence of {@link ConnectionsContext.multiHopData}.  Measures DOM anchor
+positions relative to the container, computes Bézier curves, and appends
+`<path>` elements to the SVG overlay.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

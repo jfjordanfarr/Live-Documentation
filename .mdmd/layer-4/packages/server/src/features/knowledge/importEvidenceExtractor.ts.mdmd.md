@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/importEvidenceExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-importevidenceextractor-ts
-- Generated At: 2026-02-03T21:55:37.593Z
+- Generated At: 2026-02-18T21:27:52.344Z
 
 ## Authored
 ### Purpose
@@ -18,16 +18,19 @@ Extracts link evidence from import/require statements in TypeScript/JavaScript f
 - Module resolution probes multiple extensions via `MODULE_RESOLUTION_EXTENSIONS`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.593Z","inputHash":"a1e6d11275790723"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.344Z","inputHash":"746b3a61bb1d6c31"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ImportEvidenceContext` {#symbol-importevidencecontext}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/importEvidenceExtractor.ts#L17)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/importEvidenceExtractor.ts#L18)
+
+##### `ImportEvidenceContext` — Summary
+Contextual inputs for the import/require evidence extraction pass.
 
 #### `extractImportEvidences` {#symbol-extractimportevidences}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/importEvidenceExtractor.ts#L34)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/importEvidenceExtractor.ts#L35)
 - Parameters: `context`: [`ImportEvidenceContext`](#symbol-importevidencecontext)
 
 ##### `extractImportEvidences` — Summary

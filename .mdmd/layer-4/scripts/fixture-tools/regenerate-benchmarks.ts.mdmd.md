@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/regenerate-benchmarks.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-regenerate-benchmarks-ts
-- Generated At: 2026-02-17T15:49:08.362Z
+- Generated At: 2026-02-18T21:27:54.566Z
 
 ## Authored
 ### Purpose
@@ -18,12 +18,15 @@ Regenerates benchmark fixtures across all supported languages by invoking their 
 - By 2025-11-06 the CLI regenerated every fixture (including libuv) end-to-end, confirming cross-language oracles, manifest cloning, and benchmark pipeline integration held together during full-suite execution ([full-suite verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1160-L1258)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T15:49:08.362Z","inputHash":"ee0bc5907f7e19fd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.566Z","inputHash":"001a6dc23e00e0e5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `runRegenerationCli` {#symbol-runregenerationcli}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L128)
+- Source: [source](../../../../scripts/fixture-tools/regenerate-benchmarks.ts#L129)
+
+##### `runRegenerationCli` — Summary
+CLI entry point for regenerating benchmark expected.json oracles from fixture source code.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

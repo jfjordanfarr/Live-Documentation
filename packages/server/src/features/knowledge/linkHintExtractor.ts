@@ -5,6 +5,7 @@ import { RelationshipHint } from "@live-documentation/shared/inference/fallbackI
 
 import { fileExists } from "./directoryScanner";
 
+/** Contextual inputs for the `@link` directive extraction pass. */
 export interface LinkHintContext {
   content: string;
   sourceFile: string;

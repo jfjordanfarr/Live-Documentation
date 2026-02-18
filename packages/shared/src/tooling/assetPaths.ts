@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
+/** A broken asset reference detected in an HTML or CSS file. */
 export interface AssetReferenceIssue {
   file: string;
   line: number;
@@ -10,6 +11,7 @@ export interface AssetReferenceIssue {
   attribute?: string;
 }
 
+/** Configuration for scanning HTML/CSS files for broken asset references. */
 export interface AssetAuditOptions {
   workspaceRoot: string;
   ignoreTargetPatterns?: RegExp[];
@@ -24,6 +26,13 @@ const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 const DATA_URI = /^data:/i;
 const PROTOCOL_RELATIVE = /^\/\//;
 
+/**
+ * Scans an HTML or CSS file for references (`src`, `href`, `url()`, etc.)
+ * whose targets cannot be resolved on disk.
+ *
+ * Supports absolute-from-root paths, relative paths, `srcset` attribute
+ * parsing, and optional alternative `assetRootDirectories`.
+ */
 export function findBrokenAssetReferences(
   filePath: string,
   options: AssetAuditOptions

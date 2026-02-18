@@ -16,6 +16,12 @@ import { layer3Slug } from "./utils";
 // Components Section
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Renders the "Components" section for a System-layer Live Doc.
+ *
+ * Lists each component path as a relative link to its Stage-0 doc, annotated
+ * with strength, degree, test count, z-score, and symbol count metrics.
+ */
 export function renderComponentsSection(args: {
   plan: SystemDocPlan;
   stage0Docs: Map<string, Stage0Doc>;
@@ -64,6 +70,13 @@ export function renderComponentsSection(args: {
 // Topology Section (Mermaid Diagram)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Renders a Mermaid `graph TD` topology section for a System-layer Live Doc.
+ *
+ * Creates labelled nodes for each Stage-0 doc and virtual node, draws directed
+ * edges, and applies archetype-based colour classes (implementation, test, asset,
+ * test-summary).  Node labels are disambiguated via {@link buildDocNodeLabels}.
+ */
 export function renderTopologySection(args: {
   plan: SystemDocPlan;
   stage0Docs: Map<string, Stage0Doc>;
@@ -172,6 +185,15 @@ export function renderTopologySection(args: {
 // Activation Signals Section
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Renders the "Activation Signals" section for a System-layer Live Doc.
+ *
+ * Includes cluster membership, coverage ratio, edge statistics, statistical
+ * significance (p/q values, density), and ranked top components, cohesion
+ * edges, test sources, and dependency sources.
+ *
+ * @returns The rendered section, or `undefined` if no activation data exists.
+ */
 export function renderActivationSection(args: { plan: SystemDocPlan }): LiveDocRenderSection | undefined {
   const activation = args.plan.activation;
   if (!activation) {
@@ -270,6 +292,15 @@ export function renderActivationSection(args: { plan: SystemDocPlan }): LiveDocR
 // Public Symbols Section
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Renders the "Public Surface" section for a System-layer Live Doc.
+ *
+ * Lists components by descending public-symbol count, up to
+ * {@link MAX_PUBLIC_SYMBOL_ENTRIES} entries with {@link MAX_PUBLIC_SYMBOLS_PER_ENTRY}
+ * sample names per line.
+ *
+ * @returns The rendered section, or `undefined` if no components expose symbols.
+ */
 export function renderPublicSymbolsSection(args: {
   plan: SystemDocPlan;
   stage0Docs: Map<string, Stage0Doc>;
@@ -367,4 +398,5 @@ function stripVirtualNodePrefix(candidate: string): string {
   return candidate.slice(VIRTUAL_NODE_PREFIX.length);
 }
 
-export { buildDocNodeLabels, stripVirtualNodePrefix };
+// buildDocNodeLabels and stripVirtualNodePrefix are intentionally module-private;
+// they are only used within this file's render functions.

@@ -61,7 +61,7 @@ const GO_IGNORED = new Set([
   "New", "Is", "As", "Unwrap",
 ]);
 
-export const GO_CONFIG: LanguageConfig = {
+const GO_CONFIG: LanguageConfig = {
   id: "go",
   grammarName: "go",
   declarationTypes: [
@@ -100,7 +100,7 @@ const CSHARP_IGNORED = new Set([
   "EventArgs", "EventHandler", "Attribute", "Enum",
 ]);
 
-export const CSHARP_CONFIG: LanguageConfig = {
+const CSHARP_CONFIG: LanguageConfig = {
   id: "csharp",
   grammarName: "c-sharp",
   declarationTypes: [
@@ -138,7 +138,7 @@ const TYPESCRIPT_IGNORED = new Set([
   "HTMLElement", "Element", "Node", "Document", "Window", "Event",
 ]);
 
-export const TYPESCRIPT_CONFIG: LanguageConfig = {
+const TYPESCRIPT_CONFIG: LanguageConfig = {
   id: "typescript",
   grammarName: "typescript",
   declarationTypes: [
@@ -174,7 +174,7 @@ const PYTHON_IGNORED = new Set([
   "Exception", "ValueError", "TypeError", "KeyError", "IndexError",
 ]);
 
-export const PYTHON_CONFIG: LanguageConfig = {
+const PYTHON_CONFIG: LanguageConfig = {
   id: "python",
   grammarName: "python",
   declarationTypes: [
@@ -206,7 +206,7 @@ const JAVA_IGNORED = new Set([
   "Optional", "Stream", "Consumer", "Supplier", "Function", "Predicate",
 ]);
 
-export const JAVA_CONFIG: LanguageConfig = {
+const JAVA_CONFIG: LanguageConfig = {
   id: "java",
   grammarName: "java",
   declarationTypes: [
@@ -245,7 +245,7 @@ const RUST_IGNORED = new Set([
   "PartialOrd", "Ord", "Hash", "Send", "Sync",
 ]);
 
-export const RUST_CONFIG: LanguageConfig = {
+const RUST_CONFIG: LanguageConfig = {
   id: "rust",
   grammarName: "rust",
   declarationTypes: [
@@ -280,7 +280,7 @@ const RUBY_IGNORED = new Set([
   "Exception", "StandardError", "RuntimeError", "ArgumentError",
 ]);
 
-export const RUBY_CONFIG: LanguageConfig = {
+const RUBY_CONFIG: LanguageConfig = {
   id: "ruby",
   grammarName: "ruby",
   declarationTypes: [

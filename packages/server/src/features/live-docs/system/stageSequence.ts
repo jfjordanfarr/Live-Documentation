@@ -10,6 +10,13 @@ import { includeInComponents } from "./utils";
 // Stage Sequence Building
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Transforms an ordered list of stage descriptors into a doubly-linked
+ * sequence structure recording before/after neighbours for each script.
+ *
+ * Only scripts present in the `stage0PathSet` (via {@link includeInComponents})
+ * are included.
+ */
 export function buildStageSequence(stageDescriptors: RunAllStageDescriptor[], stage0PathSet: Set<string>): StageSequence {
   const order: string[] = [];
   const map = new Map<string, StageSequenceMapEntry>();
@@ -48,6 +55,13 @@ export function buildStageSequence(stageDescriptors: RunAllStageDescriptor[], st
 // Stage Sequence Edge Building
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Converts a stage sequence into a list of directed edges.
+ *
+ * Creates a `from → to` edge for each sequential pair in the stage order,
+ * optionally prefixes the chain with an edge from the orchestrator path
+ * to the first stage.
+ */
 export function buildStageSequenceEdges(args: {
   stageSequence: StageSequence;
   stage0PathSet: Set<string>;
@@ -85,6 +99,13 @@ export function buildStageSequenceEdges(args: {
 // Stage Descriptor Extraction
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Extracts stage descriptors from the `scripts/live-docs/run-all.ts` orchestrator.
+ *
+ * Parses the file with a regex that captures `label` / `script` pairs, deduplicates
+ * by script path, and returns the ordered list.  Returns an empty array when the
+ * orchestrator file does not exist.
+ */
 export async function extractRunAllStageDescriptors(workspaceRoot: string): Promise<RunAllStageDescriptor[]> {
   const runAllPath = path.resolve(workspaceRoot, "scripts", "live-docs", "run-all.ts");
 

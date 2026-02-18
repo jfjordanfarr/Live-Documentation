@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/dom.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-dom-ts
-- Generated At: 2026-02-03T21:55:35.648Z
+- Generated At: 2026-02-18T21:27:51.064Z
 
 ## Authored
 ### Purpose
@@ -16,18 +16,24 @@ DOM utility functions for the Explorer client. Provides `requireElement` for typ
 - `requireElement` throws if the element is missing, failing fast on template mismatches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.648Z","inputHash":"9c955544215f184b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.064Z","inputHash":"7d2d3fe3d916d611"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `requireElement` {#symbol-requireelement}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L3)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L4)
 - Returns: `T`
+
+##### `requireElement` — Summary
+Looks up an element by `id` and throws if not found.
 
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L11)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/dom.ts#L13)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname)
+
+##### `setActiveView` — Summary
+Activates the given view tab and its container while deactivating siblings.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/plans/interactionPlan.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-plans-interactionplan-ts
-- Generated At: 2026-02-03T21:55:38.045Z
+- Generated At: 2026-02-18T21:27:52.739Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,18 @@ Builds System-layer `interaction` archetype plans for scripts in `scripts/live-d
 - Edges derive from direct dependencies and stage-sequence before/after neighbours
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.045Z","inputHash":"e80f3bf9a66d9fb1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.739Z","inputHash":"d3d2f8c15e5cb89b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildInteractionPlans` {#symbol-buildinteractionplans}
 - Type: function
-- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/interactionPlan.ts#L15)
+- Source: [source](../../../../../../../../../packages/server/src/features/live-docs/system/plans/interactionPlan.ts#L20)
 - Returns: [`SystemDocPlan`](../types.ts.mdmd.md#symbol-systemdocplan)[]
+
+##### `buildInteractionPlans` — Summary
+Builds interaction-focused System-layer plans for individual
+`scripts/live-docs/` scripts, linking each to its stage-sequence
+neighbours.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

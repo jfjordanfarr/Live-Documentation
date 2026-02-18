@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/detailPanel.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-detailpanel-ts
-- Generated At: 2026-02-03T21:55:35.630Z
+- Generated At: 2026-02-18T21:27:51.047Z
 
 ## Authored
 ### Purpose
@@ -17,22 +17,32 @@ Manages the Explorer's right-hand detail panel. Fetches and displays Live Doc me
 - Populates the sidebar with "Open in Editor", "Open in Local View", and dependency links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.630Z","inputHash":"6cb824005880216f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.047Z","inputHash":"6457e0f1febe0468"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L18)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L19)
+
+##### `DetailPanelApi` — Summary
+Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L29)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L31)
+
+##### `DetailPanelOptions` — Summary
+Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L60)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L66)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
+
+##### `createDetailPanel` — Summary
+Creates the detail panel component for viewing Live Doc markdown
+and node metadata in server or static mode.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

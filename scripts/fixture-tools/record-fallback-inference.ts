@@ -98,6 +98,7 @@ const EXTENSION_LANGUAGE_HINT = new Map<string, string>([
   [".go", "go"]
 ]);
 
+/** CLI entry point for recording fallback inference baselines from benchmark fixtures. */
 export async function runCli(argv: string[]): Promise<void> {
   const options = parseArgs(argv);
   if (options.helpRequested) {

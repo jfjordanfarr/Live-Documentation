@@ -30,6 +30,11 @@ type Extension = (typeof CANDIDATE_EXTENSIONS)[number];
 
 type FileContentCache = Map<string, string | null>;
 
+/**
+ * Scans a code file for `document.getElementById` / `querySelector('#...')`
+ * calls and attempts to locate nearby markup files (`.html`, `.cshtml`, etc.)
+ * that define those DOM IDs, returning dependency entries.
+ */
 export async function inferDomDependencies(params: DomDependencyParams): Promise<DependencyEntry[]> {
   const ids = collectSelectors(params.content);
   if (ids.size === 0) {

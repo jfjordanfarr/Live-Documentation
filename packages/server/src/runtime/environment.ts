@@ -1,29 +1,16 @@
 // Live Documentation: .mdmd/layer-4/language-server-runtime/languageServerRuntime.mdmd.md#source-breadcrumbs
-import * as fs from "node:fs";
-import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { InitializeParams } from "vscode-languageserver/node";
 
-/** Minimal settings shape needed by environment helpers. */
-interface StorageSettings {
-  storagePath?: string;
-}
-
-export function resolveDatabasePath(params: InitializeParams, settings: StorageSettings): string {
-  if (settings.storagePath) {
-    return path.join(settings.storagePath, "live-documentation.db");
-  }
-
-  const workspaceFolder = params.workspaceFolders?.[0]?.uri;
-  if (workspaceFolder) {
-    const folderPath = fileUriToPath(workspaceFolder);
-    return path.join(folderPath, ".live-documentation", "live-documentation.db");
-  }
-
-  return path.join(os.tmpdir(), "live-documentation", "live-documentation.db");
-}
-
+/**
+ * Extracts the workspace root directory from LSP initialization params.
+ *
+ * Checks, in order: `workspaceFolders[0]`, `rootUri`, `rootPath`.
+ * Returns `undefined` when none of those are available (e.g. untitled workspace).
+ *
+ * @param params - LSP `InitializeParams` received during the handshake.
+ */
 export function resolveWorkspaceRoot(params: InitializeParams): string | undefined {
   if (params.workspaceFolders?.length) {
     return fileUriToPath(params.workspaceFolders[0].uri);
@@ -40,6 +27,14 @@ export function resolveWorkspaceRoot(params: InitializeParams): string | undefin
   return undefined;
 }
 
+/**
+ * Converts a `file://` URI or plain filesystem path to an absolute path.
+ *
+ * Handles both proper `file://` URIs and bare paths, ensuring callers always
+ * receive a resolved absolute path regardless of the input format.
+ *
+ * @param candidate - A `file://` URI string or a filesystem path.
+ */
 export function fileUriToPath(candidate: string): string {
   try {
     if (candidate.startsWith("file://")) {
@@ -58,18 +53,4 @@ export function fileUriToPath(candidate: string): string {
   }
 
   return path.resolve(candidate);
-}
-
-export function ensureDirectory(dir: string): void {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
-
-export function describeError(error: unknown): string {
-  if (error instanceof Error) {
-    return `${error.name}: ${error.message}`;
-  }
-
-  return String(error);
 }

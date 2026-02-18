@@ -11,14 +11,23 @@ import {
 } from "./benchmark-manifest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../packages/shared/src/config/liveDocumentationConfig";
 
+/** HTML comment sentinel marking the start of the vendor-inventory section. */
 export const VENDOR_SECTION_START = "<!-- benchmark-vendor-inventory:start -->";
+/** HTML comment sentinel marking the end of the vendor-inventory section. */
 export const VENDOR_SECTION_END = "<!-- benchmark-vendor-inventory:end -->";
 
+/** Options passed to vendor-inventory rendering functions. */
 export interface RenderOptions {
   repoRoot: string;
   docPath: string;
 }
 
+/**
+ * Resolves the doc path for the AST benchmark-fixtures documentation.
+ *
+ * Prefers the Layer-3 MDMD location (`.mdmd/layer-3/benchmark-fixtures.mdmd.md`)
+ * when present; falls back to the consumer-default Live Docs root.
+ */
 export function resolveAstFixtureDocPath(repoRoot: string): string {
   // benchmark-fixtures is a Layer 3 architectural doc, not a Layer 4 source doc.
   // Prefer this repo's MDMD location when present; otherwise fall back to the
@@ -32,6 +41,10 @@ export function resolveAstFixtureDocPath(repoRoot: string): string {
   return path.join(repoRoot, config.root, "layer-3", `benchmark-fixtures${config.extension}`);
 }
 
+/**
+ * Reads the doc at `docPath`, re-renders the vendor-inventory delimited
+ * section from `fixtures`, and writes back only if content changed.
+ */
 export async function ensureVendorSection(
   docPath: string,
   fixtures: BenchmarkFixtureDefinition[],
@@ -45,6 +58,11 @@ export async function ensureVendorSection(
   }
 }
 
+/**
+ * Renders the markdown body of a vendor-inventory section from benchmark
+ * fixture definitions.  Only fixtures with `provenance.kind === "vendor"`
+ * and an integrity block are included.
+ */
 export function renderVendorInventory(
   fixtures: BenchmarkFixtureDefinition[],
   _options: RenderOptions
@@ -77,6 +95,11 @@ export function renderVendorInventory(
   return lines.join("\n").trimEnd() + "\n";
 }
 
+/**
+ * Extracts the text between the vendor-inventory start/end sentinel comments.
+ *
+ * @throws If the sentinel markers are missing or misordered.
+ */
 export function extractVendorInventory(content: string): string {
   const startIndex = content.indexOf(VENDOR_SECTION_START);
   const endIndex = content.indexOf(VENDOR_SECTION_END);
@@ -90,6 +113,12 @@ export function extractVendorInventory(content: string): string {
   return segment.trimStart().replace(/\r\n/g, "\n").trimEnd();
 }
 
+/**
+ * Replaces content between a matched pair of start/end sentinel comments
+ * in `source` with `replacementContent`.
+ *
+ * @throws If the sentinel markers are missing or misordered.
+ */
 export function replaceDelimitedSection(source: string, replacementContent: string): string {
   const startIndex = source.indexOf(VENDOR_SECTION_START);
   const endIndex = source.indexOf(VENDOR_SECTION_END);

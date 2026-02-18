@@ -17,6 +17,10 @@ export interface MultiHopEntry {
   subgraph: LocalSubgraph;
 }
 
+/**
+ * Ambient context required by {@link drawConnections} to measure DOM
+ * anchors, read explorer state, and emit SVG paths.
+ */
 export interface ConnectionsContext {
   runtime: LocalViewRuntime;
   state: ExplorerState;
@@ -63,6 +67,14 @@ interface AnchorMeasurement {
   columnPosition: "left" | "center" | "right";
 }
 
+/**
+ * Main entry point for drawing SVG connection edges in the Local Map view.
+ *
+ * Delegates to either multi-hop or single-hop rendering depending on the
+ * presence of {@link ConnectionsContext.multiHopData}.  Measures DOM anchor
+ * positions relative to the container, computes Bézier curves, and appends
+ * `<path>` elements to the SVG overlay.
+ */
 export function drawConnections(context: ConnectionsContext): void {
   const { runtime, state } = context;
   const { overlay, container, currentSubgraph, mapTransform } = runtime;

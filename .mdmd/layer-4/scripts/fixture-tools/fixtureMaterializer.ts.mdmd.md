@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/fixtureMaterializer.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-fixturematerializer-ts
-- Generated At: 2026-02-03T21:55:41.604Z
+- Generated At: 2026-02-18T21:27:54.524Z
 
 ## Authored
 ### Purpose
@@ -17,21 +17,31 @@ Creates ephemeral benchmark workspaces by cloning or copying fixtures defined in
 - On 2025-11-06 we validated the helper across new fixtures (e.g., java-okhttp) while computing integrity digests, proving ephemeral mode cleans up after multi-repo clones ([ephemeral verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1910-L1913)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.604Z","inputHash":"42c22bc844476e01"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.524Z","inputHash":"ce9a178a1970fef1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MaterializeResult` {#symbol-materializeresult}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L12)
+- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L13)
+
+##### `MaterializeResult` — Summary
+Paths and optional cleanup handle returned after fixture materialisation.
 
 #### `materializeFixture` {#symbol-materializefixture}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L18)
+- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L23)
 - Parameters: `fixture`: [`BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition); `options`: [`MaterializeOptions`](#symbol-materializeoptions)
+
+##### `materializeFixture` — Summary
+Materialises a benchmark fixture — either resolving a local workspace
+path or cloning a remote git repository into a staging directory.
 
 #### `MaterializeOptions` {#symbol-materializeoptions}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L159)
+- Source: [source](../../../../scripts/fixture-tools/fixtureMaterializer.ts#L165)
+
+##### `MaterializeOptions` — Summary
+Options controlling how a fixture workspace is materialised.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

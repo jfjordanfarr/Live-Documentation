@@ -4,6 +4,7 @@ import { RelationshipHint } from "@live-documentation/shared/inference/fallbackI
 
 import { LinkHintContext, resolveReferencePath } from "./linkHintExtractor";
 
+/** Structured metadata extracted from a `.mdmd.md` document. */
 export interface MdmdDocumentDetails {
   layer?: string;
   identifier?: string;
@@ -13,6 +14,7 @@ export interface MdmdDocumentDetails {
   sectionSymbols: string[];
 }
 
+/** A symbol referenced in backticks within a markdown document. */
 export interface DocumentSymbolReferenceMetadata {
   symbol: string;
   context?: string;

@@ -12,6 +12,11 @@ import { formatDisplayName, includeInComponents, layer3Slug } from "../utils";
 // Interaction Plan Builder
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Builds interaction-focused System-layer plans for individual
+ * `scripts/live-docs/` scripts, linking each to its stage-sequence
+ * neighbours.
+ */
 export function buildInteractionPlans(args: {
   stage0Docs: Stage0Doc[];
   stage0PathSet: Set<string>;

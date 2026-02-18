@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/languageInference.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-languageinference-ts
-- Generated At: 2026-02-03T21:55:37.609Z
+- Generated At: 2026-02-18T21:27:52.359Z
 
 ## Authored
 ### Purpose
@@ -18,38 +18,47 @@ Language and file type inference for the knowledge layer. Maps file extensions t
 - `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.609Z","inputHash":"c1b4896d44adad15"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.359Z","inputHash":"3c8285f60f3e33b4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L6)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L7)
+
+##### `DEFAULT_CODE_EXTENSIONS` — Summary
+File extensions recognised as code artifacts during workspace scanning.
 
 #### `DEFAULT_DOC_EXTENSIONS` {#symbol-default_doc_extensions}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L19)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L21)
+
+##### `DEFAULT_DOC_EXTENSIONS` — Summary
+File extensions recognised as documentation artifacts during workspace scanning.
 
 #### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L21)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L24)
+
+##### `MODULE_RESOLUTION_EXTENSIONS` — Summary
+Extensions to attempt when resolving bare module specifiers.
 
 #### `inferLanguage` {#symbol-inferlanguage}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L36)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L39)
 
 ##### `inferLanguage` — Summary
 Infers the programming language from a code file's extension.
 
 #### `inferDocLanguage` {#symbol-inferdoclanguage}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L61)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L64)
 
 ##### `inferDocLanguage` — Summary
 Infers the document language from a documentation file's extension.
 
 #### `inferScriptKind` {#symbol-inferscriptkind}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L81)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L84)
 - Returns: `ts.ScriptKind`
 
 ##### `inferScriptKind` — Summary
@@ -57,14 +66,14 @@ Infers the TypeScript ScriptKind from a file extension.
 
 #### `looksLikeDocsPath` {#symbol-lookslikedocspath}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L102)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L105)
 
 ##### `looksLikeDocsPath` — Summary
 Returns true if a path looks like it belongs to a documentation folder.
 
 #### `inferDocumentLayer` {#symbol-inferdocumentlayer}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L118)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L121)
 - Returns: [`ArtifactSeed`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed)
 
 ##### `inferDocumentLayer` — Summary

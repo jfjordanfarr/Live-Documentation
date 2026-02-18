@@ -14,6 +14,7 @@ import {
 let client: LanguageClient | undefined;
 let clientReady = false;
 
+/** Activates the Live Documentation VS Code extension and starts the language server. */
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   const serverModule = context.asAbsolutePath(path.join("..", "server", "dist", "main.js"));
 
@@ -65,6 +66,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   clientReady = true;
 }
 
+/** Stops the language server and cleans up the extension resources. */
 export async function deactivate(): Promise<void> {
   if (!client) {
     return;

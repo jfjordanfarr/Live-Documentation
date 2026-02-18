@@ -125,6 +125,7 @@ const LANGUAGE_ALIASES = new Map<string, OracleKind>([
 
 const SUPPORTED_LANGUAGES = Array.from(new Set(LANGUAGE_ALIASES.values())).sort();
 
+/** CLI entry point for regenerating benchmark expected.json oracles from fixture source code. */
 export async function runRegenerationCli(argv: string[]): Promise<void> {
   const options = parseArgs(argv);
   if (options.helpRequested) {

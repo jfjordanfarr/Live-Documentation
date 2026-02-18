@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/linkHintExtractor.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-linkhintextractor-ts
-- Generated At: 2026-02-03T21:55:37.626Z
+- Generated At: 2026-02-18T21:27:52.376Z
 
 ## Authored
 ### Purpose
@@ -18,16 +18,19 @@ Extracts relationship hints from code files by parsing `@link` directives and st
 - `resolveReferencePath()` handles relative/absolute path resolution and exports for reuse in `mdmdParser.ts`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.626Z","inputHash":"576205ac5795fe08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.376Z","inputHash":"ef01d1385d08da82"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkHintContext` {#symbol-linkhintcontext}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L8)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L9)
+
+##### `LinkHintContext` — Summary
+Contextual inputs for the `@link` directive extraction pass.
 
 #### `extractLinkHints` {#symbol-extractlinkhints}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L20)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L21)
 - Parameters: `context`: [`LinkHintContext`](#symbol-linkhintcontext)
 
 ##### `extractLinkHints` — Summary
@@ -35,7 +38,7 @@ Extracts relationship hints from `@link` directives in file content.
 
 #### `extractPathReferenceHints` {#symbol-extractpathreferencehints}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L52)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L53)
 - Parameters: `context`: [`LinkHintContext`](#symbol-linkhintcontext)
 
 ##### `extractPathReferenceHints` — Summary
@@ -43,14 +46,14 @@ Extracts relationship hints from string-literal path references.
 
 #### `isExternalReference` {#symbol-isexternalreference}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L100)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L101)
 
 ##### `isExternalReference` — Summary
 Returns true if the reference appears to be an external URL.
 
 #### `resolveReferencePath` {#symbol-resolvereferencepath}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L107)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/linkHintExtractor.ts#L108)
 - Parameters: `context`: [`LinkHintContext`](#symbol-linkhintcontext)
 
 ##### `resolveReferencePath` — Summary

@@ -9,6 +9,10 @@ import { formatDisplayName, includeInComponents, layer3Slug } from "../utils";
 // Workflow Plan Builder
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Builds workflow System-layer plans centred on `run-all.ts` orchestrators,
+ * wiring up stage-sequence edges and direct dependency edges.
+ */
 export function buildWorkflowPlans(args: {
   stage0Docs: Stage0Doc[];
   stage0PathSet: Set<string>;

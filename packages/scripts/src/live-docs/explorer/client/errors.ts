@@ -43,6 +43,7 @@ const describeError = (error: unknown): { message: string; stack: string } => {
   return { message: "Unknown error", stack: "Unknown error" };
 };
 
+/** Renders a full-page fatal error overlay with encoded stack trace. */
 export function reportFatalExplorerError(error: unknown): void {
   console.error("Live Docs Explorer fatal error", error);
 
@@ -64,6 +65,7 @@ export function reportFatalExplorerError(error: unknown): void {
   (window as Window & { __liveDocsExplorerError?: unknown }).__liveDocsExplorerError = error;
 }
 
+/** Installs a `window.error` listener that delegates to {@link reportFatalExplorerError}. */
 export function attachGlobalErrorHandler(): void {
   window.addEventListener("error", (event: ErrorEvent) => {
     const globalWindow = window as Window & { __liveDocsExplorerError?: unknown };

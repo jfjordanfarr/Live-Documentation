@@ -23,6 +23,7 @@ function escapeHtml(str: string): string {
   }[c] || c));
 }
 
+/** Options passed to the Circuit Board view factory. */
 export interface CircuitViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
@@ -33,6 +34,7 @@ export interface CircuitViewOptions {
   testCoverage: TestCoverageMap;
 }
 
+/** Public API surface of the Circuit Board (treemap) view. */
 export interface CircuitViewApi {
   render(): void;
   highlightSelection(): void;
@@ -45,6 +47,7 @@ export interface CircuitViewApi {
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
+/** Creates the Circuit Board (treemap) view for the Live Docs Explorer. */
 export function createCircuitView(options: CircuitViewOptions): CircuitViewApi {
   const { state, graphData, resolveLinkEndpoint, onSelectNode, onRecenterNode, onOpenLocalView: _onOpenLocalView, testCoverage } = options;
   type NodeConnection = { targetId: string; kind: ExplorerLinkKind; direction: "outbound" | "inbound" };

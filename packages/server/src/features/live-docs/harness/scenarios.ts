@@ -1,5 +1,6 @@
 import type { LiveDocumentationConfigInput } from "@live-documentation/shared/config/liveDocumentationConfig";
 
+/** Describes a single headless harness scenario with its fixture path and generator config. */
 export interface HeadlessHarnessScenario {
   name: string;
   description: string;
@@ -15,6 +16,7 @@ export interface HeadlessHarnessScenario {
   system?: boolean;
 }
 
+/** Built-in headless harness scenarios for polyglot integration testing. */
 export const HEADLESS_HARNESS_SCENARIOS: readonly HeadlessHarnessScenario[] = [
   {
     name: "ruby-cli",
@@ -40,10 +42,12 @@ export const HEADLESS_HARNESS_SCENARIOS: readonly HeadlessHarnessScenario[] = [
   }
 ];
 
+/** Returns a mutable copy of all built-in headless harness scenarios. */
 export function listScenarios(): HeadlessHarnessScenario[] {
   return [...HEADLESS_HARNESS_SCENARIOS];
 }
 
+/** Looks up a built-in scenario by its `name` field. */
 export function getScenarioByName(name: string): HeadlessHarnessScenario | undefined {
   return HEADLESS_HARNESS_SCENARIOS.find((scenario) => scenario.name === name);
 }

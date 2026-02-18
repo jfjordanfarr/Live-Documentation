@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/rendering.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-rendering-ts
-- Generated At: 2026-02-03T21:55:38.128Z
+- Generated At: 2026-02-18T21:27:52.831Z
 
 ## Authored
 ### Purpose
@@ -17,36 +17,61 @@ Markdown section renderers for System-layer Live Documentation. Produces Compone
 - `renderActivationSection()` summarises co-activation clusters with p-values and edge counts
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:38.128Z","inputHash":"11383242a6d912b5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.831Z","inputHash":"610456f9d18c9011"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `renderComponentsSection` {#symbol-rendercomponentssection}
 - Type: function
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L19)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L25)
 - Returns: [`LiveDocRenderSection`](./types.ts.mdmd.md#symbol-livedocrendersection)
+
+##### `renderComponentsSection` — Summary
+Renders the "Components" section for a System-layer Live Doc.
+
+Lists each component path as a relative link to its Stage-0 doc, annotated
+with strength, degree, test count, z-score, and symbol count metrics.
 
 #### `renderTopologySection` {#symbol-rendertopologysection}
 - Type: function
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L67)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L80)
 - Returns: [`LiveDocRenderSection`](./types.ts.mdmd.md#symbol-livedocrendersection)
+
+##### `renderTopologySection` — Summary
+Renders a Mermaid `graph TD` topology section for a System-layer Live Doc.
+
+Creates labelled nodes for each Stage-0 doc and virtual node, draws directed
+edges, and applies archetype-based colour classes (implementation, test, asset,
+test-summary).  Node labels are disambiguated via {@link buildDocNodeLabels}.
 
 #### `renderActivationSection` {#symbol-renderactivationsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L175)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L197)
 - Returns: [`LiveDocRenderSection`](./types.ts.mdmd.md#symbol-livedocrendersection)
+
+##### `renderActivationSection` — Summary
+Renders the "Activation Signals" section for a System-layer Live Doc.
+
+Includes cluster membership, coverage ratio, edge statistics, statistical
+significance (p/q values, density), and ranked top components, cohesion
+edges, test sources, and dependency sources.
+
+##### `renderActivationSection` — Returns
+The rendered section, or `undefined` if no activation data exists.
 
 #### `renderPublicSymbolsSection` {#symbol-renderpublicsymbolssection}
 - Type: function
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L273)
+- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L304)
 - Returns: [`LiveDocRenderSection`](./types.ts.mdmd.md#symbol-livedocrendersection)
 
-#### `buildDocNodeLabels` {#symbol-builddocnodelabels}
-- Type: unknown
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L370)
+##### `renderPublicSymbolsSection` — Summary
+Renders the "Public Surface" section for a System-layer Live Doc.
 
-#### `stripVirtualNodePrefix` {#symbol-stripvirtualnodeprefix}
-- Type: unknown
-- Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/rendering.ts#L370)
+Lists components by descending public-symbol count, up to
+{@link MAX_PUBLIC_SYMBOL_ENTRIES} entries with {@link MAX_PUBLIC_SYMBOLS_PER_ENTRY}
+sample names per line.
+
+##### `renderPublicSymbolsSection` — Returns
+The rendered section, or `undefined` if no components expose symbols.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

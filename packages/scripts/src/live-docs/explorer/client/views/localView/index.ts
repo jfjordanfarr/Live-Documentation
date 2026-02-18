@@ -1,6 +1,7 @@
 import { LocalViewController } from "./controller";
 import type { LocalViewApi, LocalViewOptions } from "./types";
 
+/** Creates a Local Map view backed by a {@link LocalViewController}. */
 export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {

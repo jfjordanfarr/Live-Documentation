@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/errors.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-errors-ts
-- Generated At: 2026-02-03T21:55:35.678Z
+- Generated At: 2026-02-18T21:27:51.093Z
 
 ## Authored
 ### Purpose
@@ -17,16 +17,22 @@ Global error handling for the Explorer client. Displays a user-friendly error ov
 - Error overlay includes stack traces and a "Reload" button.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.678Z","inputHash":"58ef006bd0671fab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.093Z","inputHash":"9b77eae4c2600dba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `reportFatalExplorerError` {#symbol-reportfatalexplorererror}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/errors.ts#L46)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/errors.ts#L47)
+
+##### `reportFatalExplorerError` — Summary
+Renders a full-page fatal error overlay with encoded stack trace.
 
 #### `attachGlobalErrorHandler` {#symbol-attachglobalerrorhandler}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/errors.ts#L67)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/errors.ts#L69)
+
+##### `attachGlobalErrorHandler` — Summary
+Installs a `window.error` listener that delegates to {@link reportFatalExplorerError}.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

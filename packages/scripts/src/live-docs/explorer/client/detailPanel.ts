@@ -15,6 +15,7 @@ import type {
   ExplorerNodePayload
 } from "../shared/types";
 
+/** Public API surface of the Explorer detail panel component. */
 export interface DetailPanelApi {
   showNode(node: ExplorerNodePayload): Promise<void>;
   showBundledDoc(docPath: string, content: string): void;
@@ -26,6 +27,7 @@ export interface DetailPanelApi {
   getCurrentNode(): ExplorerNodePayload | null;
 }
 
+/** Configuration options for the Explorer detail panel. */
 export interface DetailPanelOptions {
   /**
    * Embedded docs from static bundle (keyed by node ID).
@@ -57,6 +59,10 @@ export interface DetailPanelOptions {
   onOpenInCircuitBoard?: (node: ExplorerNodePayload) => void;
 }
 
+/**
+ * Creates the detail panel component for viewing Live Doc markdown
+ * and node metadata in server or static mode.
+ */
 export function createDetailPanel(
   nodesById: Map<string, ExplorerNodePayload>,
   options: DetailPanelOptions = {}

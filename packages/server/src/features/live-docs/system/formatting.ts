@@ -2,6 +2,7 @@
 // Number Formatting
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Rounds a number and formats it with locale-aware thousand separators (`en-US`). */
 export function formatNumber(value: number): string {
   if (!Number.isFinite(value)) {
     return "0";
@@ -9,6 +10,7 @@ export function formatNumber(value: number): string {
   return Math.round(value).toLocaleString("en-US");
 }
 
+/** Formats a number with a fixed number of decimal digits (default 1). */
 export function formatMean(value: number, digits = 1): string {
   if (!Number.isFinite(value)) {
     return "0.0";
@@ -16,6 +18,7 @@ export function formatMean(value: number, digits = 1): string {
   return value.toFixed(digits);
 }
 
+/** Multiplies by 100 and appends `%`, with configurable decimal precision (default 1). */
 export function formatPercent(value: number, digits = 1): string {
   if (!Number.isFinite(value)) {
     return "0%";
@@ -27,6 +30,12 @@ export function formatPercent(value: number, digits = 1): string {
 // P-Value Formatting
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Formats a p-value for human-readable display.
+ *
+ * Values below `1e-4` use scientific notation; values at exactly `0` render
+ * as `<1e-12`; `null` and non-finite inputs yield `"n/a"`.
+ */
 export function formatPValue(value: number | null): string {
   if (value === null || !Number.isFinite(value)) {
     return "n/a";

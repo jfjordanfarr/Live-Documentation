@@ -15,6 +15,7 @@ import { generateLiveDocs } from "../generator";
 import type { SystemLiveDocGeneratorResult } from "../system/generator";
 import { generateSystemLiveDocs } from "../system/generator";
 
+/** Logger interface for headless harness output (info required, warn optional). */
 export interface HeadlessHarnessLogger {
   info(message: string): void;
   warn?(message: string): void;
@@ -25,6 +26,7 @@ const DEFAULT_LOGGER: HeadlessHarnessLogger = {
   warn: (message) => console.warn(`[headless] ${message}`)
 };
 
+/** Options controlling a single headless harness run. */
 export interface HeadlessHarnessRunOptions {
   scenario: HeadlessHarnessScenario;
   repoRoot: string;
@@ -38,6 +40,7 @@ export interface HeadlessHarnessRunOptions {
   now?: () => Date;
 }
 
+/** Outcome of a headless harness run, including paths and generator results. */
 export interface HeadlessHarnessRunResult {
   scenario: HeadlessHarnessScenario;
   workspaceRoot: string;
@@ -53,6 +56,13 @@ interface PreparedWorkspace {
   cleanup(): Promise<void>;
 }
 
+/**
+ * Executes a headless Live Docs generation scenario end-to-end.
+ *
+ * Prepares a workspace from the scenario fixture, runs the Stage-0
+ * generator and (optionally) the System-layer generator, writes a
+ * JSON report, and cleans up unless `keepWorkspace` is set.
+ */
 export async function runHeadlessHarness(options: HeadlessHarnessRunOptions): Promise<HeadlessHarnessRunResult> {
   const logger = options.logger ?? DEFAULT_LOGGER;
   const timestamp = (options.now ?? (() => new Date()))().toISOString();

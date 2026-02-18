@@ -8,6 +8,7 @@ import {
   toLineAndColumn
 } from "./markdownShared";
 
+/** A broken link detected in a markdown file. */
 export interface MarkdownLinkIssue {
   file: string;
   line: number;
@@ -16,6 +17,7 @@ export interface MarkdownLinkIssue {
   target: string;
 }
 
+/** Configuration for scanning markdown files for broken local links. */
 export interface MarkdownLinkAuditOptions {
   workspaceRoot: string;
   ignoreTargetPatterns?: RegExp[];
@@ -26,6 +28,13 @@ const REFERENCE_LINK = /(!?)\[[^\]]*\]\[([^\]]*)\]/g;
 
 const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 
+/**
+ * Scans a markdown file for inline and reference-style links whose local
+ * targets cannot be resolved on disk.
+ *
+ * External URLs, fragment-only links, and targets matching any
+ * `ignoreTargetPatterns` are skipped.
+ */
 export function findBrokenMarkdownLinks(
   filePath: string,
   options: MarkdownLinkAuditOptions

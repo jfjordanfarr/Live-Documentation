@@ -10,6 +10,10 @@ import { formatDisplayName, includeInComponents, layer3Slug } from "../utils";
 // Testing Plan Builder
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Builds testing-focused System-layer plans from the target manifest,
+ * linking test files to the live-docs implementation artifacts they cover.
+ */
 export async function buildTestingPlans(args: {
   workspaceRoot: string;
   stage0Docs: Stage0Doc[];
@@ -119,6 +123,7 @@ export async function buildTestingPlans(args: {
 // Helper Functions
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Derives a short grouping key from a test file path (e.g. `"packages/server"`). */
 function deriveTestGroupKey(testPath: string): string {
   const segments = testPath.split("/").filter(Boolean);
   if (segments.length >= 2 && (segments[0] === "packages" || segments[0] === "tests")) {
@@ -130,6 +135,7 @@ function deriveTestGroupKey(testPath: string): string {
   return testPath;
 }
 
+/** Creates a prefixed virtual-node key from a group key for test suites without Stage-0 docs. */
 function createVirtualNodeKey(groupKey: string): string {
   return `${VIRTUAL_NODE_PREFIX}${layer3Slug(groupKey)}`;
 }

@@ -113,7 +113,7 @@ export function createBaseNormalizer(language: string): ScipNormalizer {
 // Go SCIP Normalizer
 // ============================================================================
 
-export function createGoScipNormalizer(): ScipNormalizer {
+function createGoScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("go");
 
   return {
@@ -137,7 +137,7 @@ export function createGoScipNormalizer(): ScipNormalizer {
 // C# SCIP Normalizer
 // ============================================================================
 
-export function createCSharpScipNormalizer(): ScipNormalizer {
+function createCSharpScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("csharp");
 
   return {
@@ -161,7 +161,7 @@ export function createCSharpScipNormalizer(): ScipNormalizer {
 // TypeScript SCIP Normalizer
 // ============================================================================
 
-export function createTypeScriptScipNormalizer(): ScipNormalizer {
+function createTypeScriptScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("typescript");
 
   return {
@@ -184,7 +184,7 @@ export function createTypeScriptScipNormalizer(): ScipNormalizer {
 // Java SCIP Normalizer
 // ============================================================================
 
-export function createJavaScipNormalizer(): ScipNormalizer {
+function createJavaScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("java");
 
   return {
@@ -207,7 +207,7 @@ export function createJavaScipNormalizer(): ScipNormalizer {
 // Python SCIP Normalizer
 // ============================================================================
 
-export function createPythonScipNormalizer(): ScipNormalizer {
+function createPythonScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("python");
 
   return {
@@ -233,7 +233,7 @@ export function createPythonScipNormalizer(): ScipNormalizer {
 // Rust SCIP Normalizer
 // ============================================================================
 
-export function createRustScipNormalizer(): ScipNormalizer {
+function createRustScipNormalizer(): ScipNormalizer {
   const base = createBaseNormalizer("rust");
 
   return {

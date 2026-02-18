@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/assetPaths.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-assetpaths-ts
-- Generated At: 2026-02-03T21:55:41.224Z
+- Generated At: 2026-02-18T21:27:54.319Z
 
 ## Authored
 ### Purpose
@@ -16,22 +16,35 @@ Detects broken HTML/CSS asset references (images, scripts, stylesheets) across t
 - Regularly exercised through the `slopcop-assets` fixture and repo-wide audits (for example November 3) to ensure new docs or Live Doc outputs never leave dangling asset links.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.224Z","inputHash":"3f07d22d6be82a89"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.319Z","inputHash":"05f2bc0928737a5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AssetReferenceIssue` {#symbol-assetreferenceissue}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L4)
+- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L5)
+
+##### `AssetReferenceIssue` — Summary
+A broken asset reference detected in an HTML or CSS file.
 
 #### `AssetAuditOptions` {#symbol-assetauditoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L13)
+- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L15)
+
+##### `AssetAuditOptions` — Summary
+Configuration for scanning HTML/CSS files for broken asset references.
 
 #### `findBrokenAssetReferences` {#symbol-findbrokenassetreferences}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L27)
+- Source: [source](../../../../../../packages/shared/src/tooling/assetPaths.ts#L36)
 - Returns: [`AssetReferenceIssue`](#symbol-assetreferenceissue)[]
 - Parameters: `options`: [`AssetAuditOptions`](#symbol-assetauditoptions)
+
+##### `findBrokenAssetReferences` — Summary
+Scans an HTML or CSS file for references (`src`, `href`, `url()`, etc.)
+whose targets cannot be resolved on disk.
+
+Supports absolute-from-root paths, relative paths, `srcset` attribute
+parsing, and optional alternative `assetRootDirectories`.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -9,12 +9,17 @@ import {
   FixtureGitMaterialization
 } from "./benchmark-manifest";
 
+/** Paths and optional cleanup handle returned after fixture materialisation. */
 export interface MaterializeResult {
   workspaceRoot: string;
   materialization: FixtureMaterialization | undefined;
   dispose?: () => Promise<void>;
 }
 
+/**
+ * Materialises a benchmark fixture — either resolving a local workspace
+ * path or cloning a remote git repository into a staging directory.
+ */
 export async function materializeFixture(
   repoRoot: string,
   fixture: BenchmarkFixtureDefinition,
@@ -156,6 +161,7 @@ function sanitizeSegment(segment: string): string {
   return segment.replace(/[^a-zA-Z0-9_.-]/g, "-");
 }
 
+/** Options controlling how a fixture workspace is materialised. */
 export interface MaterializeOptions {
   workspaceMode?: WorkspaceMode;
 }

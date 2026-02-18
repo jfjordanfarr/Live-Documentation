@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/analysis/layer-audit.ts
 - Live Doc ID: LD-implementation-scripts-analysis-layer-audit-ts
-- Generated At: 2026-02-03T21:55:41.527Z
+- Generated At: 2026-02-18T21:27:54.463Z
 
 ## Authored
 ### Purpose
@@ -17,27 +17,42 @@ Scans `.mdmd/layer-{n}/` directories to discover canonical heading patterns (e.g
 - Exports `parseArgs`, `collectLayerReport`, `logLayerReport`, and `main` to support both CLI usage (`npx tsx layer-audit.ts --layer 4`) and programmatic invocation by doc validators.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.527Z","inputHash":"32d6c02510696dff"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.463Z","inputHash":"ff4f896b98e91d96"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectLayerReport` {#symbol-collectlayerreport}
 - Type: function
-- Source: [source](../../../../scripts/analysis/layer-audit.ts#L54)
+- Source: [source](../../../../scripts/analysis/layer-audit.ts#L60)
 - Parameters: `layer`: `LayerId`
+
+##### `collectLayerReport` — Summary
+Scans all `.mdmd.md` files in the given MDMD layer, computes heading
+frequency, and returns a report listing canonical headings (those
+above the `threshold` coverage ratio) plus per-file missing/extra
+heading breakdowns.
 
 #### `parseArgs` {#symbol-parseargs}
 - Type: function
-- Source: [source](../../../../scripts/analysis/layer-audit.ts#L109)
+- Source: [source](../../../../scripts/analysis/layer-audit.ts#L116)
 - Returns: `CliOptions`
+
+##### `parseArgs` — Summary
+Parses CLI arguments for the layer-audit script.
 
 #### `logLayerReport` {#symbol-loglayerreport}
 - Type: function
-- Source: [source](../../../../scripts/analysis/layer-audit.ts#L193)
+- Source: [source](../../../../scripts/analysis/layer-audit.ts#L201)
 - Parameters: `report`: `LayerReport`
+
+##### `logLayerReport` — Summary
+Prints a formatted layer report to stdout.
 
 #### `main` {#symbol-main}
 - Type: function
-- Source: [source](../../../../scripts/analysis/layer-audit.ts#L231)
+- Source: [source](../../../../scripts/analysis/layer-audit.ts#L240)
+
+##### `main` — Summary
+Runs the full layer-audit pipeline: parse CLI args, collect reports, and log results.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

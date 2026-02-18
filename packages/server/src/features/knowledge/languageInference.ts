@@ -3,6 +3,7 @@ import ts from "typescript";
 
 import { ArtifactSeed } from "@live-documentation/shared/inference/fallbackInference";
 
+/** File extensions recognised as code artifacts during workspace scanning. */
 export const DEFAULT_CODE_EXTENSIONS = new Set([
   ".ts",
   ".tsx",
@@ -16,8 +17,10 @@ export const DEFAULT_CODE_EXTENSIONS = new Set([
   ".h"
 ]);
 
+/** File extensions recognised as documentation artifacts during workspace scanning. */
 export const DEFAULT_DOC_EXTENSIONS = new Set([".md", ".mdx", ".markdown", ".txt", ".yaml", ".yml"]);
 
+/** Extensions to attempt when resolving bare module specifiers. */
 export const MODULE_RESOLUTION_EXTENSIONS = [
   ".ts",
   ".tsx",

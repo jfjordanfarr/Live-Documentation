@@ -9,10 +9,26 @@ import {
   toLineAndColumn
 } from "./markdownShared";
 
+/**
+ * The category of issue found during symbol/anchor auditing.
+ *
+ * - `"duplicate-heading"` — two headings in the same file produce the same slug
+ * - `"missing-anchor"` — a link references a `#fragment` that doesn't exist in the target file
+ */
 export type SymbolIssueKind = "duplicate-heading" | "missing-anchor";
+
+/** Severity level for a symbol audit issue. */
 export type SymbolIssueSeverity = "warn" | "error";
+
+/** Tri-state rule setting: `"off"` disables the check entirely. */
 export type SymbolRuleSetting = "off" | SymbolIssueSeverity;
 
+/**
+ * A single issue discovered by {@link findSymbolReferenceAnomalies}.
+ *
+ * Contains enough information for the SlopCop CLI to render human-readable
+ * diagnostics with file path, line/column, and actionable message.
+ */
 export interface SymbolReferenceIssue {
   kind: SymbolIssueKind;
   severity: SymbolIssueSeverity;
@@ -26,6 +42,12 @@ export interface SymbolReferenceIssue {
   target?: string;
 }
 
+/**
+ * Options for {@link findSymbolReferenceAnomalies}.
+ *
+ * @param workspaceRoot - Absolute path to the workspace root, used for relative link resolution.
+ * @param files - Absolute paths to the markdown files to audit.
+ */
 export interface SymbolAuditOptions {
   workspaceRoot: string;
   files: string[];
@@ -65,6 +87,20 @@ interface FileAnalysis {
   anchors: AnchorReference[];
 }
 
+/**
+ * Scans a set of markdown files for duplicate heading slugs and broken
+ * anchor references.
+ *
+ * Heading slugs are computed using GitHub-flavour slugging. The fence parser
+ * respects CommonMark nested code fence rules (a closing fence must be at
+ * least as long as the opening fence) so headings inside nested code blocks
+ * are correctly ignored.
+ *
+ * Created 2025-10-25 for the SlopCop symbol auditor; fence parser fixed
+ * 2026-02-18 to handle nested fences.
+ *
+ * @param options - Audit configuration including file list and rule overrides.
+ */
 export function findSymbolReferenceAnomalies(options: SymbolAuditOptions): SymbolReferenceIssue[] {
   const ignorePatterns = options.ignoreSlugPatterns ?? [];
   const duplicateSeverity = toSeverity(options.duplicateHeading ?? DEFAULT_DUPLICATE_RULE);

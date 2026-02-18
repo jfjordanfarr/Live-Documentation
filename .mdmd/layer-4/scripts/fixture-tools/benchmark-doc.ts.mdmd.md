@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-doc.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-doc-ts
-- Generated At: 2026-02-03T21:55:41.581Z
+- Generated At: 2026-02-18T21:27:54.502Z
 
 ## Authored
 ### Purpose
@@ -16,42 +16,79 @@ Regenerates the AST benchmark documentation by rendering manifest-sourced vendor
 - Repointed 2025-11-16 to emit into `.live-documentation/source/benchmarks/astAccuracyFixtures.md`, preserving the Stage-0 `.md` mirror while keeping sync-ast-doc.ts and verify-fixtures.ts aligned with the new location ([mirror alignment](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L2700-L2820)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.581Z","inputHash":"dfaec1bd83520453"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.502Z","inputHash":"9d82c9616b1f4cfb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `VENDOR_SECTION_START` {#symbol-vendor_section_start}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L14)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L15)
+
+##### `VENDOR_SECTION_START` — Summary
+HTML comment sentinel marking the start of the vendor-inventory section.
 
 #### `VENDOR_SECTION_END` {#symbol-vendor_section_end}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L15)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L17)
+
+##### `VENDOR_SECTION_END` — Summary
+HTML comment sentinel marking the end of the vendor-inventory section.
 
 #### `RenderOptions` {#symbol-renderoptions}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L17)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L20)
+
+##### `RenderOptions` — Summary
+Options passed to vendor-inventory rendering functions.
 
 #### `resolveAstFixtureDocPath` {#symbol-resolveastfixturedocpath}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L22)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L31)
+
+##### `resolveAstFixtureDocPath` — Summary
+Resolves the doc path for the AST benchmark-fixtures documentation.
+
+Prefers the Layer-3 MDMD location (`.mdmd/layer-3/benchmark-fixtures.mdmd.md`)
+when present; falls back to the consumer-default Live Docs root.
 
 #### `ensureVendorSection` {#symbol-ensurevendorsection}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L35)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L48)
 - Parameters: `fixtures`: [`BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)[]; `options`: [`RenderOptions`](#symbol-renderoptions)
+
+##### `ensureVendorSection` — Summary
+Reads the doc at `docPath`, re-renders the vendor-inventory delimited
+section from `fixtures`, and writes back only if content changed.
 
 #### `renderVendorInventory` {#symbol-rendervendorinventory}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L48)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L66)
 - Parameters: `fixtures`: [`BenchmarkFixtureDefinition`](./benchmark-manifest.ts.mdmd.md#symbol-benchmarkfixturedefinition)[]; `_options`: [`RenderOptions`](#symbol-renderoptions)
+
+##### `renderVendorInventory` — Summary
+Renders the markdown body of a vendor-inventory section from benchmark
+fixture definitions.  Only fixtures with `provenance.kind === "vendor"`
+and an integrity block are included.
 
 #### `extractVendorInventory` {#symbol-extractvendorinventory}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L80)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L103)
+
+##### `extractVendorInventory` — Summary
+Extracts the text between the vendor-inventory start/end sentinel comments.
+
+##### `extractVendorInventory` — Exceptions
+- _Unknown_: If the sentinel markers are missing or misordered.
 
 #### `replaceDelimitedSection` {#symbol-replacedelimitedsection}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L93)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-doc.ts#L122)
+
+##### `replaceDelimitedSection` — Summary
+Replaces content between a matched pair of start/end sentinel comments
+in `source` with `replacementContent`.
+
+##### `replaceDelimitedSection` — Exceptions
+- _Unknown_: If the sentinel markers are missing or misordered.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

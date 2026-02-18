@@ -32,6 +32,10 @@ interface InheritanceLink {
     targetSymbol?: string;
 }
 
+/**
+ * Builds the full Explorer graph payload from the Live Doc graph,
+ * including nodes, dependency/inheritance links, and statistics.
+ */
 export async function buildExplorerGraph(
     workspaceRoot: string,
     config?: LiveDocumentationConfig
@@ -163,6 +167,7 @@ export async function buildExplorerGraph(
     }
 }
 
+/** Resolves a doc-relative path to an absolute, normalised file-system path. */
 export function normalizeDocPath(workspaceRoot: string, targetPath: string): string {
     const absolute = path.isAbsolute(targetPath)
         ? targetPath

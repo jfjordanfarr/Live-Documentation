@@ -3,6 +3,7 @@ import * as fs from "fs/promises";
 import * as os from "node:os";
 import * as path from "path";
 
+/** Paths and HTML template produced by the Explorer asset build step. */
 export interface ExplorerAssets {
     outDir: string;
     htmlTemplate: string;
@@ -13,6 +14,10 @@ const explorerRoot = path.resolve(moduleDirectory, "..", "");
 const clientRoot = path.join(explorerRoot, "client");
 const serverRoot = path.join(explorerRoot, "server");
 
+/**
+ * Bundles the Explorer client TypeScript + CSS into a temporary directory
+ * and returns the output paths and HTML template.
+ */
 export async function buildExplorerAssets(): Promise<ExplorerAssets> {
     const outDir = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-explorer-"));
 

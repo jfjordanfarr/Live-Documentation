@@ -47,6 +47,7 @@ export interface ParsedTypeReference {
   targetAnchor?: string;
 }
 
+/** A fully parsed Live Doc, including source path, archetype, symbols, and dependencies. */
 export interface ParsedLiveDoc {
   sourcePath: string;
   archetype: string;
@@ -56,6 +57,7 @@ export interface ParsedLiveDoc {
   symbolDocumentation: Record<string, ParsedSymbolDocumentationEntry>;
 }
 
+/** Documentation metadata extracted for a single public symbol within a Live Doc. */
 export interface ParsedSymbolDocumentationEntry {
   summary?: string;
   remarks?: string;
@@ -67,6 +69,7 @@ export interface ParsedSymbolDocumentationEntry {
   typeReferences?: ParsedTypeReference[];
 }
 
+/** A single dependency reference extracted from a Live Doc's Dependencies section. */
 export interface ParsedDependency {
   codePath?: string;
   docPath?: string;
@@ -79,6 +82,13 @@ export interface ParsedDependency {
 
 const DEFAULT_ARCHETYPE = "implementation";
 
+/**
+ * Parses a Live Documentation markdown file into a structured {@link ParsedLiveDoc} object.
+ *
+ * Extracts metadata (code path, archetype, layer), authored and generated sections,
+ * public symbols with their anchors, and dependency links with resolved paths.
+ * Returns `undefined` if the markdown lacks the required `Code Path:` metadata line.
+ */
 export function parseLiveDocMarkdown(
   content: string,
   docAbsolutePath: string,

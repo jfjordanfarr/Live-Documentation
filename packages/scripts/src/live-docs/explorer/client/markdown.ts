@@ -128,6 +128,7 @@ export function renderMarkdown(
     return outputLines.join("\n");
 }
 
+/** Options for the lightweight markdown-to-HTML renderer. */
 export interface RenderMarkdownOptions {
     /**
      * Custom handler for links. Receives the href and link text,

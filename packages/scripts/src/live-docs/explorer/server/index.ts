@@ -12,6 +12,7 @@ import { scanAndBundleMarkdown, type BundledMarkdownResult } from "../shared/bun
 import { buildLocalMapData, buildTestCoverageMap } from "../shared/localMapBuilder";
 import type { ExplorerDetailPayload, ExplorerGraphPayload, ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
+/** Options for launching the Explorer HTTP server. */
 export interface ExplorerServerOptions {
     workspaceRoot: string;
     port?: number;
@@ -20,6 +21,7 @@ export interface ExplorerServerOptions {
     logger?: Pick<Console, "log" | "error">;
 }
 
+/** Handle to a running Explorer server instance. */
 export interface ExplorerServerInstance {
     port: number;
     stop: () => Promise<void>;
@@ -35,6 +37,10 @@ interface InternalContext {
     bundledDocs: BundledMarkdownResult | null;
 }
 
+/**
+ * Starts the Explorer HTTP server, serving the Circuit Board, Local Map,
+ * Force Graph, and Knowledge Sources views.
+ */
 export async function startExplorerServer(options: ExplorerServerOptions): Promise<ExplorerServerInstance> {
     const { workspaceRoot } = options;
     // Validate port is a safe integer in valid range (1-65535) to prevent injection

@@ -26,6 +26,13 @@ import { formatDisplayName, layer3Slug } from "../utils";
 // Co-Activation Plan Builder
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Builds System-layer co-activation plans from clustered edge data.
+ *
+ * Each significant cluster above the minimum member/weight thresholds
+ * produces one {@link SystemDocPlan} with ranked components, edges,
+ * test sources, and dependency sources.
+ */
 export function buildCoActivationPlans(args: {
   stage0Docs: Stage0Doc[];
   stage0PathSet: Set<string>;
@@ -267,6 +274,7 @@ function sortEdgesByWeight(edges: CoActivationEdge[]): CoActivationEdge[] {
   });
 }
 
+/** Derives a human-readable slug and display name for a cluster from its top-ranked component path. */
 export function deriveClusterIdentity(
   componentPaths: string[],
   nodeMetrics: Record<string, NodeMetric>,
@@ -321,6 +329,7 @@ export function deriveClusterIdentity(
   };
 }
 
+/** Tallies test or dependency sources across a set of co-activation edges, returning ranked summaries. */
 export function collectTopSources(
   edges: CoActivationEdge[],
   key: "testSources" | "dependencySources"

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-02-03T21:55:37.721Z
+- Generated At: 2026-02-18T21:36:27.396Z
 
 ## Authored
 ### Purpose
@@ -16,27 +16,53 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.721Z","inputHash":"eb5fe51e4bdb9901"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:36:27.396Z","inputHash":"c37595544bbb55e7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L73)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L78)
+
+##### `LiveDocGeneratorResult` — Summary
+Summary returned by {@link generateLiveDocs} after processing all target files.
+
+The caller uses `written` and `deleted` counts for progress reporting, while
+the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L96)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L118)
 - Parameters: `options`: `GenerateLiveDocsOptions`
+
+##### `generateLiveDocs` — Summary
+Entry point for the Live Documentation generation pipeline.
+
+Discovers all workspace files matching the configured globs, analyses each for
+public symbols and dependencies, loads the evidence snapshot (coverage +
+targets + waivers), and renders deterministic markdown docs under the
+configured base layer directory.
+
+Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
+and `--include` (explicit file subset) modes. Stale Live Docs whose source
+files no longer exist are pruned automatically (unless `changedOnly` is set).
+
+Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
+(2026-01-28), and cross-platform hash fix (2026-02-03).
+
+##### `generateLiveDocs` — Parameters
+- `options`: Generation configuration including workspace root, config overrides, and logger.
 
 #### `__testUtils` {#symbol-__testutils}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L793)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L822)
 
-#### `withDefaultConfig` {#symbol-withdefaultconfig}
-- Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L802)
-- Returns: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+##### `__testUtils` — Summary
+Internal re-exports exposed solely for unit testing.
+
+Consumers: `renderPublicSymbolLines.test.ts`, `report-precision.ts`.
+These functions originate in `@live-documentation/shared/live-docs/core`;
+re-exporting them here lets tests import a single module for
+generator-adjacent assertions without coupling to shared internals.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -50,7 +76,6 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - [`evidenceBridge.ImplementationEvidenceItem`](./evidenceBridge.ts.mdmd.md#symbol-implementationevidenceitem)
 - [`evidenceBridge.TestEvidenceItem`](./evidenceBridge.ts.mdmd.md#symbol-testevidenceitem)
 - [`evidenceBridge.loadEvidenceSnapshot`](./evidenceBridge.ts.mdmd.md#symbol-loadevidencesnapshot)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.LiveDocumentationArchetype`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 - [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)

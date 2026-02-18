@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/benchmark-manifest.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-benchmark-manifest-ts
-- Generated At: 2026-02-16T18:25:02.890Z
+- Generated At: 2026-02-18T21:27:54.513Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Defines the benchmark fixture manifest schema plus helpers to load entries and c
 - Extended 2025-11-06 while onboarding C# fixtures, using `computeIntegrityDigest` to stamp the new `csharp-webforms` hash set and enforce algorithm selection during verification ([C# integrity update](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L5520-L5638)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:02.890Z","inputHash":"d60b27f43652d129"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.513Z","inputHash":"a907209ac4170270"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FixtureSummary` {#symbol-fixturesummary}
@@ -63,11 +63,16 @@ Oracle configuration for expected.json regeneration and validation.
 
 #### `BenchmarkFixtureDefinition` {#symbol-benchmarkfixturedefinition}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L82)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L87)
+
+##### `BenchmarkFixtureDefinition` — Summary
+Top-level definition for a single benchmark fixture in the manifest.
+Carries identity, paths, oracle config, integrity spec, and optional
+threshold overrides.
 
 #### `IntegrityDigest` {#symbol-integritydigest}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L111)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L116)
 
 ##### `IntegrityDigest` — Summary
 Return type of {@link computeIntegrityDigest}, carrying the per-file
@@ -75,7 +80,7 @@ hashes and the aggregate root hash for a single fixture.
 
 #### `FixtureFileSetSpec` {#symbol-fixturefilesetspec}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L122)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L127)
 
 ##### `FixtureFileSetSpec` — Summary
 Glob-based file selection for integrity hashing and materialisation.
@@ -83,7 +88,7 @@ Used by {@link FixtureIntegritySpec} and {@link FixtureGitMaterialization}.
 
 #### `FixtureMaterialization` {#symbol-fixturematerialization}
 - Type: type
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L132)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L137)
 - Returns: [`FixtureGitMaterialization`](#symbol-fixturegitmaterialization)
 
 ##### `FixtureMaterialization` — Summary
@@ -93,7 +98,7 @@ materialised on disk — either already present in the workspace
 
 #### `FixtureGitMaterialization` {#symbol-fixturegitmaterialization}
 - Type: interface
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L144)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L149)
 
 ##### `FixtureGitMaterialization` — Summary
 Git-based materialisation spec used by `fixtureMaterializer.ts`
@@ -102,7 +107,7 @@ commit.
 
 #### `BENCHMARK_MANIFEST_SEGMENTS` {#symbol-benchmark_manifest_segments}
 - Type: const
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L162)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L167)
 
 ##### `BENCHMARK_MANIFEST_SEGMENTS` — Summary
 Path segments from repo root to the canonical fixture manifest file.
@@ -111,7 +116,7 @@ like `regenerate-benchmarks.ts`.
 
 #### `loadBenchmarkManifest` {#symbol-loadbenchmarkmanifest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L176)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L181)
 
 ##### `loadBenchmarkManifest` — Summary
 Loads and parses the benchmark fixture manifest from disk.
@@ -121,7 +126,7 @@ Accepts either a bare JSON array or an object with a `fixtures` key
 
 #### `computeIntegrityDigest` {#symbol-computeintegritydigest}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L203)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L208)
 - Parameters: `fixture`: [`BenchmarkFixtureDefinition`](#symbol-benchmarkfixturedefinition)
 
 ##### `computeIntegrityDigest` — Summary
@@ -138,7 +143,7 @@ against the manifest's declared `integrity.rootHash`.
 
 #### `normalizeRelative` {#symbol-normalizerelative}
 - Type: function
-- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L261)
+- Source: [source](../../../../scripts/fixture-tools/benchmark-manifest.ts#L266)
 
 ##### `normalizeRelative` — Summary
 Normalises backslashes to forward slashes for platform-agnostic path comparison.

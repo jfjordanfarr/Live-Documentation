@@ -84,6 +84,12 @@ export type {
 // Main Generator Entry Point
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Generates System-layer Live Documentation by building plans from
+ * Stage-0 docs, co-activation data, and the target manifest, then
+ * rendering Mermaid topologies, component lists, activation signals,
+ * and public-symbol summaries.
+ */
 export async function generateSystemLiveDocs(
   options: GenerateSystemLiveDocsOptions
 ): Promise<SystemLiveDocGeneratorResult> {
