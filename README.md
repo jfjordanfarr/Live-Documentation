@@ -12,12 +12,12 @@ Live Documentation is a VS Code extension and CLI suite that transforms any code
 
 ## Quick Links
 
-| Guide | Description |
-|-------|-------------|
-| [Getting Started](.mdmd/layer-1/guides/getting-started.mdmd.md) | Installation, configuration, and your first session |
-| [Tracing Impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md) | Dependency pathfinding and "what will this change break?" |
-| [Visualizing Your Codebase](.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) | Explorer views, shareability, and static exports |
-| [CLI Reference](.mdmd/layer-1/guides/cli-reference.mdmd.md) | Complete command catalog |
+| Guide                                                                          | Description                                               |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| [Getting Started](.mdmd/layer-1/guides/getting-started.mdmd.md)                | Installation, configuration, and your first session       |
+| [Tracing Impact](.mdmd/layer-1/guides/tracing-impact.mdmd.md)                  | Dependency pathfinding and "what will this change break?" |
+| [Visualizing Your Codebase](.mdmd/layer-1/guides/visualizing-codebase.mdmd.md) | Explorer views, shareability, and static exports          |
+| [CLI Reference](.mdmd/layer-1/guides/cli-reference.mdmd.md)                    | Complete command catalog                                  |
 
 ---
 
@@ -51,11 +51,13 @@ Found a critical dependency path? **Share the link.** The Explorer generates sta
 ### Durable Truth
 
 - **Cloud wikis** drift from code. **AI chat contexts** vanish when the session ends. **Just-in-time maps** disappear when you close the tab.
-- **Live Documentation** writes the intelligence *back into your repo*. It travels with your code, works offline, and survives any vendor switch. Delete the cache? Regenerate it deterministically.
+- **Live Documentation** writes the intelligence _back into your repo_. It travels with your code, works offline, and survives any vendor switch. Delete the cache? Regenerate it deterministically.
 
 ### Machine-Readable by Design
 
 Every CLI command has a `--json` mode. Every visual surface reads from the same underlying graph. When your AI coding assistant needs to know "what depends on this file?" or "what's the shortest path between these two modules?"—it can query the same ground truth that humans see.
+
+Rather than embedding LLM calls in the extension, Live Documentation is designed so that **your own AI coding assistant** can consume it directly—deterministic markdown as structured context, `--json` CLI output as prompt fuel, and (at release time) redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph. The exact conventions for these agent-steering files are evolving rapidly across the ecosystem; we'll adopt whatever is standard when we ship. The result: AI-enabled workflows (impact analysis, code generation grounding, review assistance) with zero security burden on the tool itself.
 
 ---
 
@@ -75,11 +77,11 @@ Live Documentation turns your workspace into a navigable markdown graph:
 
 Live Documentation includes a visual Explorer with three complementary views:
 
-| View | Purpose |
-|------|---------|
-| **Circuit Board** | Macro view—see your entire workspace as a treemap of interconnected clusters |
-| **Local Map** | Micro view—focus on one file, see its symbols, and trace connections to neighbors |
-| **Force Graph** | Discovery view—explore the natural clustering of your codebase through physics simulation |
+| View              | Purpose                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------- |
+| **Circuit Board** | Macro view—see your entire workspace as a treemap of interconnected clusters              |
+| **Local Map**     | Micro view—focus on one file, see its symbols, and trace connections to neighbors         |
+| **Force Graph**   | Discovery view—explore the natural clustering of your codebase through physics simulation |
 
 ### Path Mode: The "Oracle of Bacon" for Code
 
@@ -116,17 +118,17 @@ Live Documentation is polyglot. Support varies by language (some have richer sym
 
 ## Competitive Landscape
 
-| Feature | **Live Documentation** | **Google CodeWiki** | **Windsurf Codemaps** | **GitLab Knowledge Graph** |
-| :--- | :--- | :--- | :--- | :--- |
-| **Primary Goal** | **Falsifiable Truth** | Exploration & Search | Flow State & Speed | Cross-Project Intelligence |
-| **Hosting** | **Local & Git-based** | Cloud-hosted | Local (Session-based) | Server-side |
-| **Durability** | **High** (Version Controlled) | Low (External Service) | Low (Ephemeral) | High (Database) |
-| **Offline Access** | **100%** | No | Yes | No |
-| **Shareable Links** | **Yes** (stable URLs) | Yes | No | Yes |
-| **AI-Consumable** | **Yes** (`--json` everywhere) | No | No | API only |
-| **Cost** | **Free** (MIT License) | Free (Public Repos) | Paid | Enterprise |
+| Feature             | **Live Documentation**        | **Google CodeWiki**    | **Windsurf Codemaps** | **GitLab Knowledge Graph** |
+| :------------------ | :---------------------------- | :--------------------- | :-------------------- | :------------------------- |
+| **Primary Goal**    | **Falsifiable Truth**         | Exploration & Search   | Flow State & Speed    | Cross-Project Intelligence |
+| **Hosting**         | **Local & Git-based**         | Cloud-hosted           | Local (Session-based) | Server-side                |
+| **Durability**      | **High** (Version Controlled) | Low (External Service) | Low (Ephemeral)       | High (Database)            |
+| **Offline Access**  | **100%**                      | No                     | Yes                   | No                         |
+| **Shareable Links** | **Yes** (stable URLs)         | Yes                    | No                    | Yes                        |
+| **AI-Consumable**   | **Yes** (`--json` everywhere) | No                     | No                    | API only                   |
+| **Cost**            | **Free** (MIT License)        | Free (Public Repos)    | Paid                  | Enterprise                 |
 
-**The key difference**: Other tools own the data or let it vanish. Live Documentation writes intelligence *back into your repo* where it belongs.
+**The key difference**: Other tools own the data or let it vanish. Live Documentation writes intelligence _back into your repo_ where it belongs.
 
 ---
 
@@ -161,9 +163,12 @@ npm run live-docs:visualize:static   # Static export for GitHub Pages
 
 ### Quality Gates
 
+- `npm run live-docs:lint` — validate Live Doc structure and coverage
+
+For contributors to this repository:
+
 - `npm run safe:commit` — full readiness gate (lint + tests + audits)
 - `npm run slopcop:markdown` — verify every markdown link is valid
-- `npm run live-docs:lint` — validate Live Doc structure and coverage
 
 ---
 

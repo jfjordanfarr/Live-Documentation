@@ -1,12 +1,12 @@
-import JSZip from "jszip";
-
 import { inferDefaultEntryNodeId } from "./bootstrap";
+import { createDataLoader } from "./dataLoader";
 import { createDetailPanel } from "./detailPanel";
-import { requireElement, setActiveView } from "./dom";
+import { setActiveView } from "./dom";
+import { downloadDocs, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { initOmnisearch } from "./panels/omnisearch";
-import { renderSourcesView, type BundledDocsData, type DownloadBundleType, type DownloadFormat } from "./panels/sources-view";
+import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
 import { parseExplorerGraphPayload } from "./parsers";
 import {
@@ -19,50 +19,25 @@ import {
 } from "./pathfind";
 import {
   parseInitialState,
-  updateUrlState
+  updateUrlState,
+  getDefaultFilters,
+  getDefaultTuning,
+  readPersistedUi,
+  applyPersistedUi,
+  readPersistedNav,
+  createPersistUiScheduler,
+  createPersistNavScheduler
 } from "./persistence";
 import type { ExplorerState, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
+import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode, RelatedDocLink } from "../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
-  ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../shared/types";
 import type { PathResult } from "./views/localView/state";
-
-// Extracted modules
-
-interface ForceGraphLink {
-  source: string;
-  target: string;
-  kind: ExplorerLinkPayload["kind"] | "related-doc";
-}
-
-type ForceGraphNode = ExplorerNodePayload & {
-  /** Archetype for Related Documentation nodes */
-  archetype?: string;
-};
-
-interface ForceGraphData {
-  nodes: ForceGraphNode[];
-  links: ForceGraphLink[];
-}
-
-interface ForceGraphInstance {
-  (container: HTMLElement): ForceGraphInstance;
-  graphData(data: ForceGraphData): ForceGraphInstance;
-  nodeLabel(labelAccessor: string | ((node: ForceGraphNode) => string)): ForceGraphInstance;
-  nodeColor(colorAccessor: (node: ForceGraphNode) => string): ForceGraphInstance;
-  linkColor(colorAccessor: (link: ForceGraphLink) => string): ForceGraphInstance;
-  linkWidth(widthAccessor: (link: ForceGraphLink) => number): ForceGraphInstance;
-  onNodeClick(handler: (node: ForceGraphNode) => void): ForceGraphInstance;
-}
-
-type ForceGraphFactory = () => ForceGraphInstance;
-
-declare const ForceGraph3D: ForceGraphFactory | undefined;
 
 declare global {
   interface Window {
@@ -229,358 +204,25 @@ function startExplorer(
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Server Mode Bundled Docs (lazy-loaded from /bundled-docs endpoint)
+  // Data Loader (bundled docs — lazy server fetch or embedded static data)
   // ─────────────────────────────────────────────────────────────────────────
 
-  type ServerBundledDocsState = {
-    loaded: boolean;
-    loading: boolean;
-    tree?: BundledMarkdownTreeNode;
-    paths?: string[];
-    count?: number;
-    relatedDocLinks?: RelatedDocLink[];
-    error?: string;
-  };
-
-  const serverBundledDocs: ServerBundledDocsState = {
-    loaded: isStaticMode, // Static mode already has embedded data
-    loading: false,
-    relatedDocLinks: relatedDocLinks // Store static mode links
-  };
-
-  /**
-   * Load bundled docs tree from server endpoint (server mode only).
-   * Returns the tree if already loaded, or fetches it lazily.
-   */
-  async function loadServerBundledDocs(): Promise<BundledDocsData | undefined> {
-    if (isStaticMode && bundledMarkdownTree) {
-      // Static mode: build from embedded data
-      return {
-        tree: bundledMarkdownTree,
-        count: bundledMarkdown ? Object.keys(bundledMarkdown).length : 0
-      };
-    }
-    
-    if (serverBundledDocs.loaded) {
-      if (serverBundledDocs.tree) {
-        return { tree: serverBundledDocs.tree, count: serverBundledDocs.count ?? 0 };
-      }
-      return undefined;
-    }
-    
-    if (serverBundledDocs.loading) {
-      // Wait for in-flight request
-      await new Promise(resolve => setTimeout(resolve, 100));
-      return loadServerBundledDocs();
-    }
-    
-    serverBundledDocs.loading = true;
-    try {
-      const response = await fetch("/bundled-docs");
-      if (!response.ok) {
-        throw new Error(`Failed to load bundled docs (${response.status})`);
-      }
-      const data = await response.json() as { tree: BundledMarkdownTreeNode; paths: string[]; count: number; relatedDocLinks?: RelatedDocLink[] };
-      serverBundledDocs.tree = data.tree;
-      serverBundledDocs.paths = data.paths;
-      serverBundledDocs.count = data.count;
-      serverBundledDocs.relatedDocLinks = data.relatedDocLinks;
-      serverBundledDocs.loaded = true;
-      serverBundledDocs.loading = false;
-      return { tree: data.tree, count: data.count };
-    } catch (error) {
-      serverBundledDocs.error = error instanceof Error ? error.message : "Unknown error";
-      serverBundledDocs.loaded = true;
-      serverBundledDocs.loading = false;
-      console.error("Failed to load bundled docs:", error);
-      return undefined;
-    }
-  }
-
-  /**
-   * Fetch a specific bundled doc content from server (server mode only).
-   */
-  async function fetchBundledDocContent(docPath: string): Promise<string | undefined> {
-    if (isStaticMode && bundledMarkdown) {
-      return bundledMarkdown[docPath];
-    }
-    
-    try {
-      const response = await fetch(`/bundled-docs?path=${encodeURIComponent(docPath)}`);
-      if (!response.ok) {
-        return undefined;
-      }
-      return await response.text();
-    } catch {
-      return undefined;
-    }
-  }
+  const dataLoader = createDataLoader({
+    isStaticMode,
+    bundledMarkdownTree,
+    bundledMarkdown,
+    relatedDocLinks
+  });
 
   // ─────────────────────────────────────────────────────────────────────────
-  // URL State Management (using imported functions)
+  // URL + LocalStorage State
   // ─────────────────────────────────────────────────────────────────────────
 
-  // Parse initial state from URL/config (uses imported parseInitialState)
   const initialState = parseInitialState(viewerConfig ?? null);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // LocalStorage: Persisted UI State (tuning + filters)
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const PERSISTED_UI_KEY = "live-docs-explorer:ui:v1";
-  const PERSISTED_UI_VERSION = 1 as const;
-
-  type PersistedUiV1 = {
-    version: typeof PERSISTED_UI_VERSION;
-    filters?: Partial<ExplorerFilters>;
-    tuning?: Partial<TuningConfig>;
-  };
-
-  const getDefaultFilters = (): ExplorerFilters => ({
-    showTests: true,
-    showAssets: false
-  });
-
-  const getDefaultTuning = (): TuningConfig => ({
-    bezier: {
-      stubFactor: 0.8,
-      stubMin: 8,
-      stubMaxOffset: 40,
-      verticalOffset: 0
-    },
-    clickBehavior: {
-      singleClickFocusOnly: true,
-      doubleClickRecenter: true
-    },
-    visual: {
-      showTypeBadges: true,
-      alchemyGlow: true
-    },
-    localMap: {
-      columnGap: 100,
-      hoverDimSymbols: 0.5,
-      hoverDimConnections: 0.1,
-      selfLoopTaper: 0.2,
-      collapseOnHover: false,
-      collapseOnPin: true
-    }
-  });
-
-  const isRecord = (value: unknown): value is Record<string, unknown> => {
-    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-  };
-
-  const getRecord = (obj: Record<string, unknown>, key: string): Record<string, unknown> | null => {
-    const val = obj[key];
-    return isRecord(val) ? val : null;
-  };
-
-  const readBoolean = (value: unknown): boolean | undefined => {
-    return typeof value === "boolean" ? value : undefined;
-  };
-
-  const readFiniteNumber = (value: unknown): number | undefined => {
-    return typeof value === "number" && Number.isFinite(value) ? value : undefined;
-  };
-
-  const readPersistedUi = (): PersistedUiV1 | null => {
-    try {
-      const raw = window.localStorage.getItem(PERSISTED_UI_KEY);
-      if (!raw) {
-        return null;
-      }
-      const parsed: unknown = JSON.parse(raw);
-      if (!isRecord(parsed)) {
-        window.localStorage.removeItem(PERSISTED_UI_KEY);
-        return null;
-      }
-      if (parsed.version !== PERSISTED_UI_VERSION) {
-        window.localStorage.removeItem(PERSISTED_UI_KEY);
-        return null;
-      }
-
-      const result: PersistedUiV1 = { version: PERSISTED_UI_VERSION };
-
-      const parsedFilters = getRecord(parsed, "filters");
-      if (parsedFilters) {
-        const showTests = readBoolean(parsedFilters.showTests);
-        const showAssets = readBoolean(parsedFilters.showAssets);
-        result.filters = {
-          ...(showTests !== undefined ? { showTests } : null),
-          ...(showAssets !== undefined ? { showAssets } : null)
-        };
-      }
-
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment --
-         Type guards verified by tsc; ESLint projectService doesn't resolve this client tsconfig properly */
-      const parsedTuning = getRecord(parsed, "tuning");
-      if (parsedTuning) {
-        const tuning: Partial<TuningConfig> = {};
-
-        const bezierRaw = getRecord(parsedTuning, "bezier");
-        if (bezierRaw) {
-          const stubFactor = readFiniteNumber(bezierRaw.stubFactor);
-          const stubMin = readFiniteNumber(bezierRaw.stubMin);
-          const stubMaxOffset = readFiniteNumber(bezierRaw.stubMaxOffset);
-          const verticalOffset = readFiniteNumber(bezierRaw.verticalOffset);
-          tuning.bezier = {
-            ...(stubFactor !== undefined ? { stubFactor } : null),
-            ...(stubMin !== undefined ? { stubMin } : null),
-            ...(stubMaxOffset !== undefined ? { stubMaxOffset } : null),
-            ...(verticalOffset !== undefined ? { verticalOffset } : null)
-          };
-        }
-
-        const clickBehaviorRaw = getRecord(parsedTuning, "clickBehavior");
-        if (clickBehaviorRaw) {
-          const singleClickFocusOnly = readBoolean(clickBehaviorRaw.singleClickFocusOnly);
-          const doubleClickRecenter = readBoolean(clickBehaviorRaw.doubleClickRecenter);
-          tuning.clickBehavior = {
-            ...(singleClickFocusOnly !== undefined ? { singleClickFocusOnly } : null),
-            ...(doubleClickRecenter !== undefined ? { doubleClickRecenter } : null)
-          };
-        }
-
-        const visualRaw = getRecord(parsedTuning, "visual");
-        if (visualRaw) {
-          const showTypeBadges = readBoolean(visualRaw.showTypeBadges);
-          const alchemyGlow = readBoolean(visualRaw.alchemyGlow);
-          tuning.visual = {
-            ...(showTypeBadges !== undefined ? { showTypeBadges } : null),
-            ...(alchemyGlow !== undefined ? { alchemyGlow } : null)
-          };
-        }
-
-        const localMapRaw = getRecord(parsedTuning, "localMap");
-        if (localMapRaw) {
-          const columnGap = readFiniteNumber(localMapRaw.columnGap);
-          const hoverDimSymbols = readFiniteNumber(localMapRaw.hoverDimSymbols);
-          const hoverDimConnections = readFiniteNumber(localMapRaw.hoverDimConnections);
-          const selfLoopTaper = readFiniteNumber(localMapRaw.selfLoopTaper);
-          const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
-          const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
-          tuning.localMap = {
-            ...(columnGap !== undefined ? { columnGap } : null),
-            ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
-            ...(hoverDimConnections !== undefined ? { hoverDimConnections } : null),
-            ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null),
-            ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
-            ...(collapseOnPin !== undefined ? { collapseOnPin } : null)
-          };
-        }
-
-        result.tuning = tuning;
-      }
-      /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
-
-      return result;
-    } catch {
-      try {
-        window.localStorage.removeItem(PERSISTED_UI_KEY);
-      } catch {
-        // ignore
-      }
-      return null;
-    }
-  };
-
-  const applyPersistedUi = (
-    defaults: { filters: ExplorerFilters; tuning: TuningConfig },
-    persisted: PersistedUiV1 | null
-  ): { filters: ExplorerFilters; tuning: TuningConfig } => {
-    if (!persisted) {
-      return defaults;
-    }
-
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment --
-       Type guards verified by tsc; ESLint projectService doesn't resolve this client tsconfig properly */
-    const filters: ExplorerFilters = {
-      ...defaults.filters,
-      ...(persisted.filters ?? {})
-    };
-
-    const tuning: TuningConfig = {
-      ...defaults.tuning,
-      bezier: {
-        ...defaults.tuning.bezier,
-        ...(persisted.tuning?.bezier ?? {})
-      },
-      clickBehavior: {
-        ...defaults.tuning.clickBehavior,
-        ...(persisted.tuning?.clickBehavior ?? {})
-      },
-      visual: {
-        ...defaults.tuning.visual,
-        ...(persisted.tuning?.visual ?? {})
-      },
-      localMap: {
-        ...defaults.tuning.localMap,
-        ...(persisted.tuning?.localMap ?? {})
-      }
-    };
-    /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
-    return { filters, tuning };
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
   const defaults = { filters: getDefaultFilters(), tuning: getDefaultTuning() };
   const persistedUi = readPersistedUi();
   const initialUi = applyPersistedUi(defaults, persistedUi);
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // LocalStorage: Persisted Navigation (view + node selection)
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const PERSISTED_NAV_KEY = "live-docs-explorer:nav:v1";
-  const PERSISTED_NAV_VERSION = 1 as const;
-
-  type PersistedNavV1 = {
-    version: typeof PERSISTED_NAV_VERSION;
-    view?: ViewName;
-    nodeId?: string | null;
-  };
-
-  const readPersistedNav = (): PersistedNavV1 | null => {
-    try {
-      const raw = window.localStorage.getItem(PERSISTED_NAV_KEY);
-      if (!raw) {
-        return null;
-      }
-      const parsed: unknown = JSON.parse(raw);
-      if (!isRecord(parsed)) {
-        window.localStorage.removeItem(PERSISTED_NAV_KEY);
-        return null;
-      }
-      if (parsed.version !== PERSISTED_NAV_VERSION) {
-        window.localStorage.removeItem(PERSISTED_NAV_KEY);
-        return null;
-      }
-
-      const viewCandidate = parsed.view;
-      const nodeIdCandidate = parsed.nodeId;
-
-      const view: ViewName | undefined =
-        viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" || viewCandidate === "sources" ? viewCandidate : undefined;
-
-      const nodeId: string | null | undefined =
-        typeof nodeIdCandidate === "string" ? nodeIdCandidate : nodeIdCandidate === null ? null : undefined;
-
-      return {
-        version: PERSISTED_NAV_VERSION,
-        ...(view ? { view } : null),
-        ...(nodeId !== undefined ? { nodeId } : null)
-      };
-    } catch {
-      try {
-        window.localStorage.removeItem(PERSISTED_NAV_KEY);
-      } catch {
-        // ignore
-      }
-      return null;
-    }
-  };
 
   const persistedNav = initialState.hasUrlState ? null : readPersistedNav();
 
@@ -595,53 +237,24 @@ function startExplorer(
     view: resolveInitialView(),
     selectedNode: null,
     focusedNode: null,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
     filters: initialUi.filters,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- ESLint projectService issue
     tuning: initialUi.tuning
   };
 
-  let persistUiTimer: number | null = null;
-  const schedulePersistUi = (): void => {
-    if (persistUiTimer !== null) {
-      window.clearTimeout(persistUiTimer);
-    }
-    persistUiTimer = window.setTimeout(() => {
-      persistUiTimer = null;
-      try {
-        const payload: PersistedUiV1 = {
-          version: PERSISTED_UI_VERSION,
-          filters: state.filters,
-          tuning: state.tuning
-        };
-        window.localStorage.setItem(PERSISTED_UI_KEY, JSON.stringify(payload));
-      } catch {
-        // ignore (storage may be unavailable/blocked)
-      }
-    }, 150);
-  };
+  const persistUi = createPersistUiScheduler(() => ({
+    filters: state.filters,
+    tuning: state.tuning
+  }));
+  const schedulePersistUi = persistUi.schedule;
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
 
-  let persistNavTimer: number | null = null;
-  const schedulePersistNav = (): void => {
-    if (persistNavTimer !== null) {
-      window.clearTimeout(persistNavTimer);
-    }
-    persistNavTimer = window.setTimeout(() => {
-      persistNavTimer = null;
-      try {
-        const payload: PersistedNavV1 = {
-          version: PERSISTED_NAV_VERSION,
-          view: state.view,
-          nodeId: state.focusedNode?.id ?? state.selectedNode?.id ?? null
-        };
-        window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
-      } catch {
-        // ignore
-      }
-    }, 150);
-  };
+  const persistNav = createPersistNavScheduler(() => ({
+    view: state.view,
+    focusedNodeId: state.focusedNode?.id ?? null,
+    selectedNodeId: state.selectedNode?.id ?? null
+  }));
+  const schedulePersistNav = persistNav.schedule;
 
   // Helper to open a node in Circuit Board view
   const openInCircuitBoardView = (node: ExplorerNodePayload): void => {
@@ -715,7 +328,22 @@ function startExplorer(
     nodesById
   });
 
-  let forceGraphInstance: ForceGraphInstance | null = null;
+  const forceGraphView = createForceGraphView({
+    state,
+    graphData,
+    nodesById,
+    resolveLinkEndpoint,
+    isStaticMode,
+    relatedDocLinks,
+    serverBundledDocs: dataLoader.serverBundledDocs,
+    onShowBundledDoc: (docPath: string) => {
+      void showBundledDocInDetailPanel(docPath);
+    },
+    onFocusNode: (node: ExplorerNodePayload) => {
+      state.focusedNode = node;
+      void detailPanel.showNode(node);
+    }
+  });
 
   syncFilterControls();
 
@@ -751,12 +379,12 @@ function startExplorer(
       // Only re-render Force Graph (Related Docs only affect that view)
       if (state.view === "graph") {
         // In server mode, ensure bundled docs (including relatedDocLinks) are loaded first
-        if (!isStaticMode && event.target.checked && !serverBundledDocs.loaded) {
-          void loadServerBundledDocs().then(() => {
-            renderGraph();
+        if (!isStaticMode && event.target.checked && !dataLoader.serverBundledDocs.loaded) {
+          void dataLoader.loadServerBundledDocs().then(() => {
+            forceGraphView.render();
           });
         } else {
-          renderGraph();
+          forceGraphView.render();
         }
       }
     });
@@ -1252,17 +880,22 @@ function startExplorer(
     } else if (state.view === "map") {
       localView.render();
     } else if (state.view === "graph") {
-      renderGraph();
+      forceGraphView.render();
     }
   }
 
+  const downloadCtx = {
+    graphData,
+    isStaticMode,
+    staticDocs,
+    bundledMarkdown,
+    dataLoader
+  };
+
   async function doRenderSourcesView(): Promise<void> {
-    // Bulk download is always available: static mode has embedded docs, server mode can fetch
     const canBulkDownload = true;
-    
-    // Load bundled docs (lazy for server mode)
-    const bundledDocsData = await loadServerBundledDocs();
-    
+    const bundledDocsData = await dataLoader.loadServerBundledDocs();
+
     renderSourcesView({
       graphData,
       viewerConfig: viewerConfig ?? null,
@@ -1281,7 +914,6 @@ function startExplorer(
         }
       },
       onFocusNode: (nodeId: string) => {
-        // Focus node in detail panel without navigating away from Knowledge Sources
         const node = nodesById.get(nodeId);
         if (node) {
           updateUrlState(state.view, node.id);
@@ -1292,459 +924,19 @@ function startExplorer(
       onViewBundledDoc: (docPath: string) => {
         void showBundledDocInDetailPanel(docPath);
       },
-      onDownload: canBulkDownload ? (bundleType: DownloadBundleType, format: DownloadFormat) => void downloadDocs(bundleType, format) : undefined
+      onDownload: canBulkDownload
+        ? (bundleType: DownloadBundleType, format: DownloadFormat) => void downloadDocs(bundleType, format, downloadCtx)
+        : undefined
     });
   }
 
   async function showBundledDocInDetailPanel(docPath: string): Promise<void> {
-    const content = await fetchBundledDocContent(docPath);
+    const content = await dataLoader.fetchBundledDocContent(docPath);
     if (content) {
       detailPanel.showBundledDoc(docPath, content);
     } else {
       console.error(`Failed to load bundled doc: ${docPath}`);
     }
-  }
-
-  /** Represents a document entry for download */
-  interface DocEntry {
-    /** Relative path for the document (used for ZIP structure) */
-    relativePath: string;
-    /** Markdown content */
-    content: string;
-    /** Whether this is a Live Doc or Related Doc */
-    type: "live" | "related";
-  }
-
-  /**
-   * Collect documents based on bundle type.
-   */
-  async function collectDocs(bundleType: DownloadBundleType): Promise<DocEntry[]> {
-    const docs: DocEntry[] = [];
-    
-    // Collect Live Docs if requested
-    if (bundleType === "live" || bundleType === "all") {
-      for (const node of graphData.nodes) {
-        let markdown: string | undefined;
-        
-        if (isStaticMode && staticDocs) {
-          markdown = staticDocs[node.id];
-        } else {
-          try {
-            const response = await fetch(`/doc?docPath=${encodeURIComponent(node.docPath)}`);
-            if (response.ok) {
-              markdown = await response.text();
-            }
-          } catch {
-            console.warn(`Failed to fetch doc for ${node.id}`);
-          }
-        }
-        
-        if (markdown) {
-          docs.push({
-            relativePath: node.docRelativePath || `${node.name}.md`,
-            content: markdown,
-            type: "live"
-          });
-        }
-      }
-    }
-    
-    // Collect Related Docs if requested
-    if (bundleType === "related" || bundleType === "all") {
-      let bundledPaths: string[] = [];
-      
-      if (isStaticMode && bundledMarkdown) {
-        bundledPaths = Object.keys(bundledMarkdown).sort();
-        for (const docPath of bundledPaths) {
-          const markdown = bundledMarkdown[docPath];
-          docs.push({
-            relativePath: docPath,
-            content: markdown,
-            type: "related"
-          });
-        }
-      } else if (!isStaticMode && serverBundledDocs.paths && serverBundledDocs.paths.length > 0) {
-        bundledPaths = serverBundledDocs.paths.sort();
-        for (const docPath of bundledPaths) {
-          try {
-            const response = await fetch(`/bundled-docs?path=${encodeURIComponent(docPath)}`);
-            if (response.ok) {
-              const markdown = await response.text();
-              docs.push({
-                relativePath: docPath,
-                content: markdown,
-                type: "related"
-              });
-            }
-          } catch {
-            console.warn(`Failed to fetch bundled doc: ${docPath}`);
-          }
-        }
-      }
-    }
-    
-    return docs;
-  }
-
-  /**
-   * Download documents as flattened markdown.
-   */
-  function downloadAsMarkdown(docs: DocEntry[], bundleType: DownloadBundleType): void {
-    const sections: string[] = [];
-    
-    const liveDocs = docs.filter(d => d.type === "live");
-    const relatedDocs = docs.filter(d => d.type === "related");
-    
-    if (liveDocs.length > 0) {
-      sections.push(`## Live Documentation (${liveDocs.length} files)\n`);
-      for (const doc of liveDocs) {
-        sections.push(`\n---\n\n<!-- SOURCE: ${doc.relativePath} -->\n\n${doc.content}`);
-      }
-    }
-    
-    if (relatedDocs.length > 0) {
-      sections.push(`\n\n## Related Documentation (${relatedDocs.length} files)\n`);
-      for (const doc of relatedDocs) {
-        sections.push(`\n---\n\n<!-- BUNDLED: ${doc.relativePath} -->\n\n${doc.content}`);
-      }
-    }
-    
-    const bundleLabel = bundleType === "live" ? "Live Docs" : bundleType === "related" ? "Related Docs" : "All Docs";
-    const combined = `# Documentation Export (${bundleLabel})\n\nExported ${docs.length} documents on ${new Date().toISOString()}\n\n${sections.join("")}`;
-    
-    const blob = new Blob([combined], { type: "text/markdown; charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    
-    const filename = bundleType === "live" ? "live-documentation.md" 
-                   : bundleType === "related" ? "related-documentation.md"
-                   : "all-documentation.md";
-    a.download = filename;
-    
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  /**
-   * Download documents as ZIP archive with preserved directory structure.
-   */
-  async function downloadAsZip(docs: DocEntry[], bundleType: DownloadBundleType): Promise<void> {
-    const zip = new JSZip();
-    
-    // Create folders for Live Docs and Related Docs when downloading "all"
-    const liveDocsFolder = bundleType === "all" ? zip.folder("live-docs") : zip;
-    const relatedDocsFolder = bundleType === "all" ? zip.folder("related-docs") : zip;
-    
-    for (const doc of docs) {
-      const folder = doc.type === "live" 
-        ? (bundleType === "all" ? liveDocsFolder : zip)
-        : (bundleType === "all" ? relatedDocsFolder : zip);
-      
-      if (folder) {
-        folder.file(doc.relativePath, doc.content);
-      }
-    }
-    
-    // Add a README to the archive
-    const liveCount = docs.filter(d => d.type === "live").length;
-    const relatedCount = docs.filter(d => d.type === "related").length;
-    const bundleLabel = bundleType === "live" ? "Live Documentation" 
-                      : bundleType === "related" ? "Related Documentation"
-                      : "All Documentation";
-    
-    const readme = `# ${bundleLabel} Export
-
-Exported on: ${new Date().toISOString()}
-
-## Contents
-
-${liveCount > 0 ? `- **Live Documentation**: ${liveCount} files${bundleType === "all" ? " (in live-docs/ folder)" : ""}` : ""}
-${relatedCount > 0 ? `- **Related Documentation**: ${relatedCount} files${bundleType === "all" ? " (in related-docs/ folder)" : ""}` : ""}
-
-Total: ${docs.length} files
-
-## What's in this archive?
-
-${bundleType !== "related" ? `**Live Documentation** mirrors your source code structure. Each markdown file corresponds to a source file and contains:
-- Purpose and notes (authored sections)
-- Public symbols and their signatures
-- Dependencies and dependents
-` : ""}
-${bundleType !== "live" ? `**Related Documentation** includes referenced markdown files from your workspace:
-- READMEs
-- Specification documents
-- Chat history
-- Other markdown files linked from Live Docs
-` : ""}
----
-
-Generated by [Live Documentation](https://github.com/jfjordanfarr/Live-Documentation)
-`;
-    
-    zip.file("README.md", readme);
-    
-    // Generate the ZIP file
-    const blob = await zip.generateAsync({ 
-      type: "blob",
-      compression: "DEFLATE",
-      compressionOptions: { level: 6 }
-    });
-    
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    
-    const filename = bundleType === "live" ? "live-documentation.zip" 
-                   : bundleType === "related" ? "related-documentation.zip"
-                   : "all-documentation.zip";
-    a.download = filename;
-    
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  /**
-   * Main download function - collects docs and exports in the selected format.
-   */
-  async function downloadDocs(bundleType: DownloadBundleType, format: DownloadFormat): Promise<void> {
-    try {
-      // Ensure bundled docs are loaded in server mode if needed
-      if (!isStaticMode && (bundleType === "related" || bundleType === "all")) {
-        await loadServerBundledDocs();
-      }
-      
-      const docs = await collectDocs(bundleType);
-      
-      if (docs.length === 0) {
-        alert("No documentation content available to download.");
-        return;
-      }
-      
-      if (format === "markdown") {
-        downloadAsMarkdown(docs, bundleType);
-      } else {
-        await downloadAsZip(docs, bundleType);
-      }
-    } catch (error) {
-      console.error("Failed to download documentation:", error);
-      alert("Failed to download documentation. Check the console for details.");
-    }
-  }
-
-  function renderGraph(): void {
-    const container = requireElement<HTMLDivElement>("graph-svg");
-
-    const includeNode = (node: ExplorerNodePayload): boolean => {
-      if (state.selectedNode && state.selectedNode.id === node.id) {
-        return true;
-      }
-      const archetype = (node.archetype || "").toLowerCase();
-      if (archetype === "test" && !state.filters.showTests) {
-        return false;
-      }
-      if (archetype === "asset" && !state.filters.showAssets) {
-        return false;
-      }
-      return true;
-    };
-
-    const filteredNodes = graphData.nodes.filter(includeNode);
-    const allowedIds = new Set(filteredNodes.map(node => node.id));
-    const filteredLinks = graphData.links.filter(link => {
-      const sourceId = resolveLinkEndpoint(link.source);
-      const targetId = resolveLinkEndpoint(link.target);
-      return sourceId !== "" && targetId !== "" && allowedIds.has(sourceId) && allowedIds.has(targetId);
-    });
-
-    // Build base graph data
-    const graphNodes: ForceGraphNode[] = filteredNodes.map(node => ({ ...node }));
-    const graphLinks: ForceGraphLink[] = filteredLinks.map(link => ({
-      source: resolveLinkEndpoint(link.source),
-      target: resolveLinkEndpoint(link.target),
-      kind: link.kind
-    }));
-
-    // Add Related Documentation nodes and links when enabled
-    if (state.filters.showRelatedDocs) {
-      const links = isStaticMode ? relatedDocLinks : serverBundledDocs.relatedDocLinks;
-      if (links && links.length > 0) {
-        // Build a set of existing node IDs to avoid duplicates
-        // (e.g., .mdmd.md files are already Live Doc nodes)
-        const existingNodeIds = new Set(graphNodes.map(n => n.id));
-        
-        // Also build a set of existing node paths to detect Live Doc duplicates
-        // Live Doc paths typically end in .mdmd.md and their IDs correspond to the source file
-        const liveDocPaths = new Set<string>();
-        for (const node of graphData.nodes) {
-          if (node.docPath) {
-            liveDocPaths.add(node.docPath.replace(/\\/g, "/"));
-          }
-        }
-
-        // Collect unique bundled doc paths that should become nodes
-        const bundledDocPaths = new Set<string>();
-        // Track which related:xxx source paths we need to create nodes for
-        const relatedSourcePaths = new Set<string>();
-        const relatedLinks: Array<{ source: string; target: string }> = [];
-
-        for (const link of links) {
-          // Skip targets that are Live Documentation files (already in graph as implementation nodes)
-          // These are .mdmd.md files that shouldn't be duplicated as purple "related" nodes
-          const normalizedTarget = link.targetPath.replace(/\\/g, "/");
-          if (normalizedTarget.endsWith(".mdmd.md") || liveDocPaths.has(normalizedTarget)) {
-            continue;
-          }
-
-          // Resolve source: could be a Live Doc node ID or a bundled doc (related:path)
-          const sourceId = link.sourceId.startsWith("related:") 
-            ? link.sourceId  // Bundled doc source
-            : link.sourceId; // Live Doc source
-          
-          // For Live Doc sources, check if they're in the allowed set
-          if (!link.sourceId.startsWith("related:") && !allowedIds.has(sourceId)) {
-            continue;
-          }
-
-          // For related: sources, track them for node creation
-          if (link.sourceId.startsWith("related:")) {
-            const sourcePath = link.sourceId.slice("related:".length);
-            // Skip if source is a Live Doc path
-            if (!sourcePath.endsWith(".mdmd.md") && !liveDocPaths.has(sourcePath)) {
-              relatedSourcePaths.add(sourcePath);
-            } else {
-              // Source is a Live Doc - skip this link since we don't create related nodes for Live Docs
-              continue;
-            }
-          }
-
-          const targetId = `related:${link.targetPath}`;
-          bundledDocPaths.add(link.targetPath);
-          relatedLinks.push({ source: sourceId, target: targetId });
-        }
-
-        // Create nodes for bundled doc sources (related: prefix sources that aren't Live Docs)
-        for (const docPath of relatedSourcePaths) {
-          const nodeId = `related:${docPath}`;
-          if (!existingNodeIds.has(nodeId)) {
-            const fileName = docPath.split("/").pop() ?? docPath;
-            graphNodes.push({
-              id: nodeId,
-              name: fileName,
-              archetype: "related-doc",
-              docPath: docPath,
-              publicSymbols: [],
-              dependencies: [],
-              dependents: []
-            } as unknown as ForceGraphNode);
-            existingNodeIds.add(nodeId);
-          }
-        }
-
-        // Create nodes for bundled doc targets
-        for (const docPath of bundledDocPaths) {
-          const nodeId = `related:${docPath}`;
-          if (!existingNodeIds.has(nodeId)) {
-            const fileName = docPath.split("/").pop() ?? docPath;
-            graphNodes.push({
-              id: nodeId,
-              name: fileName,
-              archetype: "related-doc",
-              docPath: docPath,
-              publicSymbols: [],
-              dependencies: [],
-              dependents: []
-            } as unknown as ForceGraphNode);
-            existingNodeIds.add(nodeId);
-          }
-        }
-
-        // Add links (only if both source and target nodes exist)
-        const finalNodeIds = new Set(graphNodes.map(n => n.id));
-        for (const link of relatedLinks) {
-          if (finalNodeIds.has(link.source) && finalNodeIds.has(link.target)) {
-            graphLinks.push({
-              source: link.source,
-              target: link.target,
-              kind: "related-doc"
-            });
-          }
-        }
-      }
-    }
-
-    const dataForGraph: ForceGraphData = {
-      nodes: graphNodes,
-      links: graphLinks
-    };
-
-    if (forceGraphInstance) {
-      forceGraphInstance.graphData(dataForGraph);
-      return;
-    }
-
-    if (typeof ForceGraph3D !== "function") {
-      container.innerHTML = '<div style="padding:20px;color:#f88;">ForceGraph3D failed to load.</div>';
-      return;
-    }
-
-    const instance = ForceGraph3D();
-    forceGraphInstance = instance(container)
-      .graphData(dataForGraph)
-      .nodeLabel("name")
-      .nodeColor(node => {
-        const archetype = (node.archetype || "").toLowerCase();
-        switch (archetype) {
-          case "implementation":
-            return "#0091ff";
-          case "test":
-            return "#28a745";
-          case "interface":
-            return "#ffc107";
-          case "config":
-            return "#6c757d";
-          case "script":
-            return "#17a2b8";
-          case "related-doc":
-            return "#9966cc"; // Purple for related documentation
-          default:
-            return "#888";
-        }
-      })
-      .linkColor((link: ForceGraphLink) => {
-        // Muted gray for related doc links
-        if (link.kind === "related-doc") {
-          return "rgba(153, 102, 204, 0.4)"; // Muted purple
-        }
-        return "rgba(255, 255, 255, 0.2)"; // Default link color
-      })
-      .linkWidth((link: ForceGraphLink) => {
-        // Thinner links for related docs
-        if (link.kind === "related-doc") {
-          return 0.5;
-        }
-        return 1;
-      })
-      .onNodeClick(node => {
-        // Handle Related Documentation node clicks
-        if (node.id.startsWith("related:")) {
-          const docPath = node.id.slice("related:".length);
-          void showBundledDocInDetailPanel(docPath);
-          return;
-        }
-
-        const original = nodesById.get(node.id);
-        if (!original) {
-          return;
-        }
-        // Show node in detail panel without navigating away from Force Graph
-        state.focusedNode = original;
-        void detailPanel.showNode(original);
-      });
   }
 
   function syncFilterControls(): void {
@@ -1759,4 +951,3 @@ Generated by [Live Documentation](https://github.com/jfjordanfarr/Live-Documenta
     }
   }
 }
-

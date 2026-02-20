@@ -28,11 +28,11 @@ Keep stakeholder directives, MIT licensing posture, and competitive research (Wi
 
 ### CAP-005 – Layer Distribution Surfaces
 
-Publish vision + roadmap knowledge to a static site (initially GitHub Pages), delegate requirement execution traceability to Spec-Kit and issue trackers, and keep System intelligence as CLI-driven materialized views. This capability ensures each MDMD layer lives where it provides the most value while the Layer‑4 corpus remains the canonical source of truth for generated analytics ([AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md](../../AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md)).
+Publish vision + roadmap knowledge to a static site (initially GitHub Pages), delegate requirement execution traceability to Spec-Kit and issue trackers, and keep System intelligence as CLI-driven materialized views. This capability ensures each MDMD layer lives where it provides the most value while the Layer‑4 corpus remains the canonical source of truth for generated analytics.
 
 ### CAP-006 – Generative Authoring & Docstring Bridges
 
-Deliver a human-first documentation loop where Live Docs remain the canonical, reviewable AST for understanding code, and docstring bridges flow primarily **code → docs**. Analyzers harvest rich docstring payloads (including HTML blocks, custom tags, and examples) into canonical Live Doc sections, and diagnostics flag drift when inline documentation diverges from generated summaries or required fields are missing. Optional **docs → code** write-back (preview/apply) remains a deferred wishlist item: it may be explored behind strict feature flags and audit trails later, but it is not a near-term make-or-break dependency for Live Documentation’s core value ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md](../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md)).
+Deliver a human-first documentation loop where Live Docs remain the canonical, reviewable AST for understanding code, and docstring bridges flow primarily **code → docs**. Analyzers harvest rich docstring payloads (including HTML blocks, custom tags, and examples) into canonical Live Doc sections, detecting drift during regeneration when inline documentation diverges from generated summaries or required fields are missing. ~~IDE-level drift diagnostics were originally planned but have been subsumed by analyzer-level validation during regeneration (descoped 2026-02-17).~~ Optional **docs → code** write-back (preview/apply) remains a deferred wishlist item: it may be explored behind strict feature flags and audit trails later, but it is not a near-term make-or-break dependency for Live Documentation's core value ([AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md](../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md)).
 
 ### CAP-007 – Hosted Showcase & Trials
 
@@ -47,6 +47,8 @@ The Local Map view is the natural home for non-headless inspection: it should be
 ### ~~CAP-009 – LLM Enrichment (Extractive & Generative)~~ _(Descoped 2026-02-17)_
 
 > **Rationale**: LLM integration removed from project scope; users bring their own AI assistants and consume Live Docs as structured context, eliminating trust, safety, and cost concerns from the tool itself.
+>
+> **Replacement strategy — Prompt Files**: At release time, Live Documentation will ship redistributable markdown prompt/instruction/skill files (exact path conventions and frontmatter TBD — the ecosystem is evolving rapidly) that teach AI coding assistants how to consume Live Docs as structured context, invoke CLI commands like `live-docs:inspect --json`, and interpret generated sections. Combined with deterministic `--json` output and the raw markdown corpus, this recreates virtually all of the originally-envisioned AI-enabled functionality with zero security burden on the tool itself. We defer the specific file naming and placement conventions until the last responsible moment, adopting whatever agent-steering standard is prevalent when we ship.
 
 ~~Live Documentation distinguishes two complementary LLM tasks, both requiring explicit user invocation:~~
 
@@ -82,11 +84,11 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 - Hosted showcase runs reuse the exact generator stack, emit reproducible bundles, and always point participants back to local regeneration so offline workflows remain the authoritative path.
 - Layer‑2 requirement docs cross-link to Spec-Kit tasks or issue trackers while remaining the authoritative summaries for automation.
 - Diagnostics, exports, and AI-assistant prompts rely on the same markdown-as-AST graph, shrinking the gap between human review workflows and autonomous copilots.
-- The Live Docs visualization command center unifies global file exploration with local symbol drilldowns, supports focus-mode filtering, and provides an accessible path toward inline editing and docstring scaffolding.
+- The Live Docs visualization command center unifies global file exploration with local symbol drilldowns and supports focus-mode filtering. The Explorer is read-only; editing happens in the IDE via "open in editor" affordances.
 - Markdown links stay relative (slug dialect configurable) so Live Docs double as wiki-friendly artefacts consumers can publish directly.
 - Tooling, instructions, and licensing remain MIT-friendly so adopters can regenerate Layer‑4 docs locally and opt into System analytics when needed.
 - Structured docstring subsections provide anchored headers per field so diagnostics, prompts, and writers can target summaries, parameters, remarks, or examples without scraping prose.
-- Docstring bridges harvest inline documentation into Live Docs and surface drift diagnostics; any future write-back remains explicitly opt-in and feature-flagged.
+- Docstring bridges harvest inline documentation into Live Docs and detect drift during regeneration; any future write-back remains explicitly opt-in and feature-flagged.
 - Multi-IDE distribution (VS Code, Windsurf, Cursor, and future forks) stays first-class by ensuring commands, docs, and hosted showcases all document their compatibility and offline fallback steps.
 
 ## Downstream Requirements
@@ -139,10 +141,17 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 
 ## Target Personas
 
+### Human Consumers
+
 - **Implementers**: engineers expect Live Docs to show programmatic surface, dependents, and tests before accepting Copilot suggestions or merging a PR.
 - **Test Authors**: quality engineers rely on test Live Docs to declare coverage scope and fixture responsibilities without spelunking large suites.
 - **Writers and Architects**: documentation owners edit a concise authored block while trusting generated sections to reflect the latest code reality.
 - **Leads and Reviewers**: reviewers pull Live Docs and CLI summaries to gauge blast radius and evidence before approving changes.
+
+### Headless Consumers
+
+- **AI Coding Assistants**: LLM agents consume Layer-4 Live Docs as structured context ("prompt fuel") — each file's deterministic Public Symbols, Dependencies, and Observed Evidence sections fit in a context window and ground code generation without heuristic scraping. CLI `--json` output and the Explorer's `/local-map` endpoint provide machine-readable dependency chains and fan-out maps.
+- **CI Pipelines and Automation**: quality gates run `live-docs:lint` for structural validation and pre-merge checks, and `--json` reports for automated regression detection. Static exports bundle the entire graph as `explorer-data.json` for offline tooling or hosted dashboards.
 
 ## Guiding Principles
 
@@ -159,7 +168,7 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 ## Scope and Non Goals
 
 - **In scope**: Live Documentation VS Code extension (thin CLI wrapper with lint-as-diagnostics), language server (debounced file watching + diagnostic surfacing), markdown graph builder, docstring bridges, CLI exports (generate, lint, inspect, visualize, system), MIT license preparation.
-- **Out of scope (current spec)**: IDE-agnostic clients, automated remediation, CI enforcement beyond safe-commit, hosted SaaS offerings, non-configurable storage locations.
+- **Out of scope (current spec)**: IDE-agnostic clients, automated remediation, CI enforcement beyond `live-docs:lint`, hosted SaaS offerings, non-configurable storage locations.
 - **Descoped (2026-02-18)**: Reactive ripple diagnostics, acknowledgement workflows, noise filtering, diagnostic tree views, dependency quick picks, symbol bridge harvesting, file maintenance watchers. The extension provides lint-based diagnostics (broken links, structural violations) instead of real-time change-impact analysis.
 
 ## Evolution Path
@@ -177,7 +186,7 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 ## Adoption Path
 
 - **Stage 0 – Observe**: bootstrap Live Docs from existing MDMD content, allow read-only exploration, and collect feedback.
-- **Stage 1 – Guard**: enable lint warnings for missing evidence or stale generated sections; provide regeneration commands in safe-commit.
+- **Stage 1 – Guard**: enable lint warnings for missing evidence or stale generated sections; provide regeneration commands that adopters wire into their own pre-commit or CI pipelines.
 - **Stage 2 – Bridge**: enforce docstring and coverage sync, introduce CLI and AI-assistant-consumable exports, and activate diagnostics sourced from Live Docs.
 - **Stage 3 – Sustain**: require green Live Doc gates before merge; external adopters configure storage and regen workflows mirroring ours.
 - **Stage 4 – Distribute**: publish Layer 1 to the public site, keep Layer 2 synced with Spec-Kit/issue trackers, and rely on CLI materialized views for System intelligence.

@@ -91,7 +91,7 @@ Supports CAP-003 by making Live Documentation the backbone of diagnostics, CLI t
 
 ### REQ-V1 Live Visualization Command Center
 
-Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local explorer, and force-directed discovery view into a single `npm run live-docs:visualize` experience that remains grounded in Layer‑4 Live Docs and ready for future bidirectional authoring. The explorer must maintain parity with the Live Doc graph: every dependency, symbol anchor, and evidence field available headlessly must surface in the UI without lossy aggregation or speculative heuristics, and visual affordances should colour or otherwise distinguish inbound versus outbound relationships to match CLI diagnostics.
+Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local explorer, and force-directed discovery view into a single `npm run live-docs:visualize` experience that remains grounded in Layer‑4 Live Docs. The Explorer is strictly read-only (editing happens in the IDE). It must maintain parity with the Live Doc graph: every dependency, symbol anchor, and evidence field available headlessly must surface in the UI without lossy aggregation or speculative heuristics, and visual affordances should colour or otherwise distinguish inbound versus outbound relationships to match CLI diagnostics.
 
 #### Stream LV1-A – Unified Explorer _(complete — MVP)_
 
@@ -106,11 +106,13 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 - Implement scalable zoom/pan controls that respect keyboard-only workflows and screen-reader announcements when context changes.
 - Capture automated accessibility regression checks (e.g., axe-core) inside a headless test harness so future visual tweaks retain compliance.
 
-#### Stream LV1-C – Authoring Bridge Prep _(planned)_
+#### ~~Stream LV1-C – Authoring Bridge Prep~~ _(descoped 2026-02-20)_
 
-- Introduce a text-editing stub within the detail panel that loads authored Live Doc sections read-only today, paving the way for docstring scaffolding once bidirectional authoring (REQ-G1) is feature-flagged.
-- Surface provenance (Live Doc path, generated timestamp) and upcoming editing controls so UX copy remains clear about read-only versus editable states.
-- Coordinate with docstring bridge work to reuse diff/preview components when the editing toggle goes live.
+~~- Introduce a text-editing stub within the detail panel that loads authored Live Doc sections read-only today, paving the way for docstring scaffolding once bidirectional authoring (REQ-G1) is feature-flagged.~~
+~~- Surface provenance (Live Doc path, generated timestamp) and upcoming editing controls so UX copy remains clear about read-only versus editable states.~~
+~~- Coordinate with docstring bridge work to reuse diff/preview components when the editing toggle goes live.~~
+
+> The Explorer is a read-only visualization surface. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.
 
 #### Stream LV1-D – Telemetry & QA _(planned)_
 
@@ -128,12 +130,12 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 
 Supports CAP-006 by keeping docstring extraction and drift visibility reliable (code → docs), while explicitly deferring docs → code write-back and scaffolding to an opt-in wishlist item.
 
-#### Stream LDG-A – Docstring Drift Diagnostics _(descoped 2026-02-17)_~~
+#### ~~Stream LDG-A – Docstring Drift Diagnostics~~ _(descoped 2026-02-17)_
 
-~~- Extend docstring bridges to compute structured drift signals (missing/changed docstring fields, unmapped tags) between inline docstrings and generated Live Doc schema.
+~~- Extend docstring bridges to compute structured drift signals (missing/changed docstring fields, unmapped tags) between inline docstrings and generated Live Doc schema.~~
 
-- Provide deterministic, human-readable drift reports (CLI + diagnostics) that point to the affected symbol/field and recommended remediation paths.
-- Harden polyglot fixtures (C#, Java, TypeScript, Python) with multi-paragraph, HTML-rich docstrings to validate sanitisation, canonical tagging, and drift detection coverage.
+~~- Provide deterministic, human-readable drift reports (CLI + diagnostics) that point to the affected symbol/field and recommended remediation paths.~~
+~~- Harden polyglot fixtures (C#, Java, TypeScript, Python) with multi-paragraph, HTML-rich docstrings to validate sanitisation, canonical tagging, and drift detection coverage.~~
 
 #### Stream LDG-B – Feature Controls & Telemetry _(wishlist)_
 
@@ -264,7 +266,7 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 ### REQ-L1 Acceptance Criteria
 
 - Every Live Doc contains `Metadata`, `Authored`, and `Generated` sections with required subsections; safe-commit fails if structure is missing.
-- Docstring bridges emit drift diagnostics, map multi-tag payloads into the shared schema, render deterministic subheadings per field, and update generated sections during regeneration with `_Not documented_` placeholders when data is missing.
+- Docstring bridges map multi-tag payloads into the shared schema, render deterministic subheadings per field, and update generated sections during regeneration with `_Not documented_` placeholders when data is missing.
 - Migration dry-runs compare existing Layer‑4 MDMD docs to generated Live Docs with <5% diff noise before enabling swap.
 - Relative-link lint passes with the configured slug dialect (GitHub default) so staged docs can be published directly to wiki surfaces.
 - Generated sections refresh within a single `safe:commit` run for modified files; stale Live Docs raise warnings within 24 hours if regeneration is skipped.
@@ -273,7 +275,7 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 
 ### REQ-G1 Acceptance Criteria
 
-- Docstring drift detection reports missing or divergent fields within one regeneration cycle for supported fixtures, without requiring write-back to be enabled.
+- ~~Docstring drift detection reports missing or divergent fields within one regeneration cycle for supported fixtures, without requiring write-back to be enabled.~~ _(Descoped 2026-02-17: drift detection is handled during regeneration, not as standalone diagnostics.)_
 - Any preview/apply tooling (if/when implemented) is feature-flagged, default-off, and emits telemetry for every attempted write-back.
 - Generative scaffolding workflows emit artifacts into `AI-Agent-Workspace/tmp/**` (or caller-provided scratch paths) and never mutate tracked files without a follow-up approval step recorded in safe-commit logs.
 - Unmapped docstring tags appear in Live Docs under `rawFragments` with actionable telemetry so adapters can be extended without silently dropping content.
@@ -290,7 +292,7 @@ Supports CAP-010 by enabling Live Documentation to coexist with pre-existing mar
 - The combined circuit-board/local explorer loads a Live Doc file, expands its symbols, and highlights inbound/outbound edges while dimming unrelated nodes within two interactions.
 - Hover/click updates the detail panel and “open in editor” link without desynchronising the force-directed graph; switching views preserves the active selection.
 - Keyboard navigation, focus outlines, and screen-reader labels meet WCAG AA success criteria (2.1 Keyboard, 1.4.3 Contrast, 4.1.2 Name/Role/Value) across supported browsers/host IDEs.
-- The detail panel presents authored Live Doc sections read-only today, with clear messaging about pending text editing, and loads within ≤500 ms for repos under 5k files.
+- The detail panel renders authored Live Doc sections read-only and loads within ≤500 ms for repos under 5k files. Editing is handled in the IDE via "open in editor" affordances.
 - Telemetry captures view changes, focus-mode toggles, and accessibility overrides so UX audits can trace adoption and regressions.
 - Visual overlays expose inbound versus outbound relationships with distinct treatments (for example, colour or stroke style) and honour symbol-level anchors once emitted by the generator so the UI mirrors the CLI’s directional insights without regression tests flagging gaps.
 - The Local Map provides `From`/`To` pathfinding that auto-runs (debounced) and renders the same multi-hop chain as `live-docs inspect --from/--to` (or deterministic “no connection”) using only Live Doc graph facts.

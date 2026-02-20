@@ -137,16 +137,15 @@ npm run live-docs:generate -- --config live-docs.config.json
 
 ---
 
-## The Four Experience Loops
+## What Can You Do?
 
-Live Documentation supports four distinct workflows depending on your role:
-
-| Loop                  | User                   | Action                                | System Response                                                     |
-| --------------------- | ---------------------- | ------------------------------------- | ------------------------------------------------------------------- |
-| **Writer's Loop**     | Technical Writers, PMs | Edit markdown, reference a moved file | `live-docs:lint` flags the broken link in the Problems panel        |
-| **Developer's Loop**  | Engineers              | Modify a core utility                 | `live-docs:inspect --from <file>` traces every downstream dependent |
-| **Explorer's Loop**   | Architects, Onboarders | Run the Visualizer                    | Interactive views reveal structure                                  |
-| **Maintainer's Loop** | Leads, Ops             | Prepare a release                     | Lint validates structure before merge                               |
+| Task                                | How                                                                                                        | Who Typically Does This            |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| **Explore structure visually**      | Launch the Explorer (`live-docs:visualize`); toggle between Circuit Board, Local Map, and Force Graph      | Architects, onboarders             |
+| **Trace impact before a change**    | `live-docs:inspect --from A --to B` (CLI or Local Map pathfinding)                                         | Engineers, security auditors       |
+| **Understand why something exists** | Enable "Show Related Documentation" in the Force Graph to surface chat history and design notes            | Leads, researchers                 |
+| **Validate before merge**           | `live-docs:lint` blocks broken links and structural violations; integrate into your CI or pre-commit hooks | Developers, maintainers            |
+| **Consume as structured data**      | `--json` CLI flags, raw markdown, `/local-map` JSON endpoint                                               | AI coding assistants, CI pipelines |
 
 ---
 

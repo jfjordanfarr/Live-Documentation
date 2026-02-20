@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2026-02-03T21:55:35.828Z
+- Generated At: 2026-02-20T21:08:00.163Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.828Z","inputHash":"4a6eef2cba25c124"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-20T21:08:00.163Z","inputHash":"df46ab799d136a1c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,20 +25,19 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `jszip` - `JSZip`
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
+- [`dataLoader.createDataLoader`](./dataLoader.ts.mdmd.md#symbol-createdataloader)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
-- [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)
+- [`download.DownloadBundleType`](./download.ts.mdmd.md#symbol-downloadbundletype)
+- [`download.DownloadFormat`](./download.ts.mdmd.md#symbol-downloadformat)
+- [`download.downloadDocs`](./download.ts.mdmd.md#symbol-downloaddocs)
 - [`errors.attachGlobalErrorHandler`](./errors.ts.mdmd.md#symbol-attachglobalerrorhandler)
 - [`errors.reportFatalExplorerError`](./errors.ts.mdmd.md#symbol-reportfatalexplorererror)
 - [`graph-helpers.buildTestCoverageMap`](./graph-helpers.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`graph-helpers.getInputById`](./graph-helpers.ts.mdmd.md#symbol-getinputbyid)
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
-- [`sources-view.BundledDocsData`](./panels/sources-view.ts.mdmd.md#symbol-bundleddocsdata)
-- [`sources-view.DownloadBundleType`](./panels/sources-view.ts.mdmd.md#symbol-downloadbundletype)
-- [`sources-view.DownloadFormat`](./panels/sources-view.ts.mdmd.md#symbol-downloadformat)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
 - [`parsers.parseExplorerGraphPayload`](./parsers.ts.mdmd.md#symbol-parseexplorergraphpayload)
@@ -48,17 +47,24 @@ _No public symbols detected_
 - [`pathfind.initPathfind`](./pathfind.ts.mdmd.md#symbol-initpathfind)
 - [`pathfind.parsePathfindFromUrl`](./pathfind.ts.mdmd.md#symbol-parsepathfindfromurl)
 - [`pathfind.updatePathfindUrl`](./pathfind.ts.mdmd.md#symbol-updatepathfindurl)
+- [`index.applyPersistedUi`](./persistence/index.ts.mdmd.md#symbol-applypersistedui)
+- [`index.createPersistNavScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistnavscheduler)
+- [`index.createPersistUiScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistuischeduler)
+- [`index.getDefaultFilters`](./persistence/index.ts.mdmd.md#symbol-getdefaultfilters)
+- [`index.getDefaultTuning`](./persistence/index.ts.mdmd.md#symbol-getdefaulttuning)
 - [`index.parseInitialState`](./persistence/index.ts.mdmd.md#symbol-parseinitialstate)
+- [`index.readPersistedNav`](./persistence/index.ts.mdmd.md#symbol-readpersistednav)
+- [`index.readPersistedUi`](./persistence/index.ts.mdmd.md#symbol-readpersistedui)
 - [`index.updateUrlState`](./persistence/index.ts.mdmd.md#symbol-updateurlstate)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`circuitView.createCircuitView`](./views/circuitView.ts.mdmd.md#symbol-createcircuitview)
+- [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`state.PathResult`](./views/localView/state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`staticExplorerData.BundledMarkdownTreeNode`](../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 - [`staticExplorerData.RelatedDocLink`](../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - [`staticExplorerData.StaticExplorerViewerConfig`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerviewerconfig) (type-only)
 - [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
-- [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
