@@ -11,8 +11,7 @@
  * - `"implementation"` — Layer 4: what has been accomplished so far
  * - `"code"` — raw source files tracked by Live Documentation
  *
- * Created 2025-10-16 as part of the initial spec-kit scaffolding
- * (commit `6bccf94`).
+ * Created 2025-10-16 (commit `6bccf94`).
  */
 export type ArtifactLayer =
   | "vision"

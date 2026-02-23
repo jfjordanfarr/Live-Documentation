@@ -14,7 +14,7 @@ Drive parity across the languages we benchmark today by teaching the generator t
 
 ### CAP-002 – Analysis Bridges
 
-Automate symbol extraction, docstring reconciliation, dependency inference, and evidence harvesting so generated sections stay current and lintable. Normalise documentation across languages by projecting XML/TSDoc/Sphinx/Rustdoc tags into a canonical schema (`summary`, `remarks`, `parameters`, `typeParameters`, `returns`, `exceptions`, `examples`, `links`) rendered as deterministic `##### `Symbol` — Field` subsections. Preserve unmapped fragments with provenance so adapters can round-trip raw payloads while Live Docs stay structured. The analysis stack powers regeneration, emits provenance, and exposes confidence so downstream consumers can trust on-demand views ([specs/001-link-aware-diagnostics/spec.md](../../specs/001-link-aware-diagnostics/spec.md)).
+Automate symbol extraction, docstring reconciliation, dependency inference, and evidence harvesting so generated sections stay current and lintable. Normalise documentation across languages by projecting XML/TSDoc/Sphinx/Rustdoc tags into a canonical schema (`summary`, `remarks`, `parameters`, `typeParameters`, `returns`, `exceptions`, `examples`, `links`) rendered as deterministic `##### `Symbol` — Field` subsections. Preserve unmapped fragments with provenance so adapters can round-trip raw payloads while Live Docs stay structured. The analysis stack powers regeneration, emits provenance, and exposes confidence so downstream consumers can trust on-demand views ([Feature Specification](../layer-2/feature-specification.mdmd.md)).
 
 ### CAP-003 – On-Demand System Views
 
@@ -99,11 +99,11 @@ Live Documentation coexists with pre-existing markdown documentation in brownfie
 
 ### REQ-201 – Generated Intelligence
 
-[Product roadmap – analysis & evidence](../layer-2/product-roadmap.mdmd.md) and [spec Functional Requirements](../../specs/001-link-aware-diagnostics/spec.md#functional-requirements) cover symbol/docstring extraction, heuristics, and asset stubs for CAP-002.
+[Product roadmap – analysis & evidence](../layer-2/product-roadmap.mdmd.md) and [Feature Specification – Functional Requirements](../layer-2/feature-specification.mdmd.md#functional-requirements) cover symbol/docstring extraction, heuristics, and asset stubs for CAP-002.
 
 ### REQ-301 – Consumption & Enforcement
 
-[Product roadmap – system intelligence surfaces](../layer-2/product-roadmap.mdmd.md) and [spec tasks](../../specs/001-link-aware-diagnostics/tasks.md) drive diagnostics, CLI, and lint integrations supporting CAP-003.
+[Product roadmap – system intelligence surfaces](../layer-2/product-roadmap.mdmd.md) and [Feature Backlog](../layer-2/work-items/feature-backlog.mdmd.md) drive diagnostics, CLI, and lint integrations supporting CAP-003.
 
 ### REQ-401 – Ecosystem Enablement
 

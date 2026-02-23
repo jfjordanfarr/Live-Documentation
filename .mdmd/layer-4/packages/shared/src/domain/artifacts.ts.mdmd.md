@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/domain/artifacts.ts
 - Live Doc ID: LD-implementation-packages-shared-src-domain-artifacts-ts
-- Generated At: 2026-02-18T18:15:12.222Z
+- Generated At: 2026-02-23T22:57:50.126Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,12 @@ Defines the cross-layer knowledge-graph domain model—artifacts, links, diagnos
 Confidence tiers and drift-history additions arrived alongside the October 23–24 persistence and LLM-ingestion passes, keeping telemetry and ingestion schemas aligned; see [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-23.SUMMARIZED.md#turn-14-graphstore-enhancements--status-check-lines-1531-1620) and [AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-24.SUMMARIZED.md#turn-10-prompt--shared-inference-modules-lines-3721-4460).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T18:15:12.222Z","inputHash":"044d30a6aa43006c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T22:57:50.126Z","inputHash":"250267b593bde598"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ArtifactLayer` {#symbol-artifactlayer}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L17)
+- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L16)
 
 ##### `ArtifactLayer` — Summary
 The four progressive MDMD documentation layers, plus `"code"` for
@@ -37,12 +37,11 @@ convention defined in copilot-instructions:
 - `"implementation"` — Layer 4: what has been accomplished so far
 - `"code"` — raw source files tracked by Live Documentation
 
-Created 2025-10-16 as part of the initial spec-kit scaffolding
-(commit `6bccf94`).
+Created 2025-10-16 (commit `6bccf94`).
 
 #### `KnowledgeArtifact` {#symbol-knowledgeartifact}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L38)
+- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L37)
 
 ##### `KnowledgeArtifact` — Summary
 A single tracked workspace artifact in the knowledge graph.
@@ -60,7 +59,7 @@ for the planned diffing pipeline.
 
 #### `LinkRelationshipKind` {#symbol-linkrelationshipkind}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L56)
+- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L55)
 
 ##### `LinkRelationshipKind` — Summary
 The set of relationship kinds between two knowledge artifacts.
@@ -71,7 +70,7 @@ inference pipeline.
 
 #### `LinkRelationship` {#symbol-linkrelationship}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L76)
+- Source: [source](../../../../../../packages/shared/src/domain/artifacts.ts#L75)
 
 ##### `LinkRelationship` — Summary
 A directed edge between two {@link KnowledgeArtifact}s in the

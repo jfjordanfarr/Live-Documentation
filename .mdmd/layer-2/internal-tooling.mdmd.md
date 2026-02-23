@@ -180,8 +180,8 @@ npm run fixtures:verify -- --workspace /path/to/repo
 ```
 
 **What it checks:**
-- Fixture workspaces pass graph snapshot
-- Fixture workspaces pass SlopCop (per-fixture config)
+- Fixture workspaces pass SlopCop audits (per-fixture config)
+- Benchmark fixture integrity (git clone, file count)
 - Manifest entries are complete
 
 ### `npm run fixtures:regenerate`
@@ -198,22 +198,11 @@ Syncs AST documentation fixtures with current analyzer output.
 
 ---
 
-## Build & Native Dependencies
+## Build
 
 ### `npm run build`
 
-Builds all workspaces (shared, server, extension, scripts).
-
-### `npm run rebuild:better-sqlite3:force`
-
-Rebuilds native SQLite bindings. Required when:
-- Switching Node versions
-- After fresh `npm install` on some systems
-- ABI mismatch errors in tests
-
-```powershell
-npm run rebuild:better-sqlite3:force
-```
+Builds all workspaces (shared, scripts, server, extension).
 
 ---
 
@@ -221,8 +210,6 @@ npm run rebuild:better-sqlite3:force
 
 | Internal Command | External Equivalent | Notes |
 |------------------|---------------------|-------|
-| `graph:audit` | None | External users don't need coverage auditing |
-| `graph:snapshot` | None | Runs automatically inside `graph:audit` |
 | `slopcop:markdown` | `live-docs:lint` | Lint covers Live Doc structure; SlopCop covers all markdown |
 | `safe:commit` | None | External users validate with `live-docs:lint` only |
 | `test:*` | None | External users don't run our test suites |

@@ -1,6 +1,6 @@
 ﻿# Copilot Instructions
 
-Last updated: 2026-01-27
+Last updated: 2026-02-23
 
 ---
 
@@ -73,12 +73,11 @@ On the way to full adoption we continue to land incremental wins that boost obse
 
 ## Workspace Shape
 
-- npm workspaces: `packages/extension`, `packages/server`, `packages/shared`
-- Supporting roots: `specs/`, `data/`, `tests/`, `.specify/`
+- npm workspaces: `packages/extension`, `packages/server`, `packages/shared`, `packages/scripts`
+- Supporting roots: `data/`, `tests/`
 - TypeScript 5.x targeting Node.js 22 (see `.nvmrc`)
 - Projectwide documentation: `.mdmd/` (see note about 'MDMD' below)
 - Live Documentation output: `.mdmd/layer-4/` (our workspace configuration routes Live Doc generation here instead of the default `/.live-documentation/source/`)
-- Specific feature/story documentation: stored under folders like `specs/NNN-feature-name/` (see note about 'Spec-Kit' below)
 - **Copilot's (your) own scratch space/workspace during development:** `./AI-Agent-Workspace/`
   - **The entire development history, in summarized and unsummarized form, is located at `./AI-Agent-Workspace/ChatHistory/`.**
   - **Because virtually all workspace changes have occurred by Copilot's hand, this searchable history is the definitive audit trail of _why_ the code is the way it is.**
@@ -131,27 +130,80 @@ Example invocations:
 
 ## Documentation Conventions
 
-Our project aims to follow a 4-layered structure of markdown docs which progressively describes a solution of any type, from most abstract/public to most concrete/internal. Live Documentation forms the canonical Layer‑4 implementation set once migration completes.
+### The Four-Layer Model
 
-- Layer 1: Vision/Features/User Stories/High-Level Roadmap. This layer is the answer to the overall question "What are we trying to accomplish?"
-- Layer 2: Requirements/Work Items/Issues/Epics/Tasks. This layer is the overall answer to the question "What must be done to accomplish it?"
-- Layer 3: Architecture/Solution Components. This layer is the overall answer to the question "How will it be accomplished?"
-- Layer 4: Implementation docs (somewhat like a more human-readable C Header file, describing the programmatic surface of a singular distinct solution artifact, like a single code file). This layer is the overall answer to the question "What has been accomplished so far?"
+Our project follows a 4-layered structure of markdown docs which progressively describes the solution from most abstract/public to most concrete/internal:
 
-This general set of framing and conventions which create a progressive specification strategy has been given the name **Membrane Design MarkDown (MDMD)** and is denoted by a `.mdmd.md` file extension. The convention is not known outside of this project yet, but it is hoped that it will gain traction as a general-purpose documentation strategy for LLM-assisted development. MDMD, as envisioned, aims to create a reproducible and bidirectional bridge between code and docs, enabling docs-to-code, code-to-docs, or hybrid implementation strategies.
+| Layer                                           | Question it answers                   | Location                              |
+| ----------------------------------------------- | ------------------------------------- | ------------------------------------- |
+| **Layer 1** — Vision, features, user guides     | "What are we trying to accomplish?"   | [`.mdmd/layer-1/`](../.mdmd/layer-1/) |
+| **Layer 2** — Requirements, roadmap, work items | "What must be done to accomplish it?" | [`.mdmd/layer-2/`](../.mdmd/layer-2/) |
+| **Layer 3** — Architecture, solution components | "How will it be accomplished?"        | [`.mdmd/layer-3/`](../.mdmd/layer-3/) |
+| **Layer 4** — Implementation docs (per-file)    | "What has been accomplished so far?"  | [`.mdmd/layer-4/`](../.mdmd/layer-4/) |
+
+This progressive specification strategy is called **Membrane Design MarkDown (MDMD)**, denoted by a `.mdmd.md` file extension. It is _our workspace's convention_ for organising documentation. **Live Documentation the software** ships configurable defaults (`.live-documentation/source/*.md`) and does not assume MDMD — adopters can use any root, base layer name, and file extension they like.
 
 **The key insight of MDMD — and now Live Documentation — is that markdown header sections, markdown links, and relative paths can be treated as a lightweight AST which can be parsed, analyzed, and linked to code artifacts.** Live Docs formalise this by generating deterministic `Public Symbols`, `Dependencies`, and `Observed Evidence` sections per tracked file.
 
-Unlike the `.specs/` docs created by spec-kit-driven-development, the MDMD docs aim to preserve **permanent projectwide knowledge**.
+### Documentation Library
+
+Start here when arriving with zero context. Documents are sorted from most essential to most specialised.
+
+#### Layer 1 — Vision & User Guides
+
+| Document                                                                            | Purpose                                                                                                             |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| [Live Documentation Vision](../.mdmd/layer-1/link-aware-diagnostics-vision.mdmd.md) | Capability definitions (CAP-001 through CAP-010), desired outcomes, and the descoping rationale for LLM integration |
+| [Getting Started](../.mdmd/layer-1/guides/getting-started.mdmd.md)                  | Installation, configuration, and first session walkthrough                                                          |
+| [CLI Reference](../.mdmd/layer-1/guides/cli-reference.mdmd.md)                      | Complete catalog of user-facing CLI commands                                                                        |
+| [Tracing Impact](../.mdmd/layer-1/guides/tracing-impact.mdmd.md)                    | Dependency pathfinding tutorial (`live-docs:inspect`)                                                               |
+| [Visualizing Your Codebase](../.mdmd/layer-1/guides/visualizing-codebase.mdmd.md)   | Explorer views (Circuit Board, Local Map, Force Graph), static exports, and shareability                            |
+
+#### Layer 2 — Requirements & Planning
+
+| Document                                                                                             | Purpose                                                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [Product Roadmap](../.mdmd/layer-2/product-roadmap.mdmd.md)                                          | All requirements (REQ-L1 through REQ-B1), acceptance criteria, linked components/implementations, evidence, and stage sequencing |
+| [Feature Specification](../.mdmd/layer-2/feature-specification.mdmd.md)                              | Formal FR-LD/SC-LD requirements, user stories with BDD acceptance scenarios, edge cases                                          |
+| [Falsifiability Requirements](../.mdmd/layer-2/falsifiability-requirements.mdmd.md)                  | REQ-F1 through REQ-F9 — how we prove the system works                                                                            |
+| [Internal Tooling Reference](../.mdmd/layer-2/internal-tooling.mdmd.md)                              | Contributor-only CLI commands, SlopCop, benchmarks, fixture management                                                           |
+| [Feature Backlog](../.mdmd/layer-2/work-items/feature-backlog.mdmd.md)                               | Granular LD-xxx task tracking by adoption phase                                                                                  |
+| [Edge Aggregation Consolidation](../.mdmd/layer-2/work-items/edge-aggregation-consolidation.mdmd.md) | Migration from SQLite GraphStore to "Live Docs ARE the database"                                                                 |
+
+#### Layer 3 — Architecture (23 component docs)
+
+The [`.mdmd/layer-3/`](../.mdmd/layer-3/) folder contains one architecture document per system component. Key entry points:
+
+| Document                                                                            | Purpose                                                              |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Live Documentation Pipeline](../.mdmd/layer-3/live-documentation-pipeline.mdmd.md) | Generator, lint, and edge aggregation architecture                   |
+| [Live Documentation Explorer](../.mdmd/layer-3/live-documentation-explorer.mdmd.md) | Visualization command center (Circuit Board, Local Map, Force Graph) |
+| [Polyglot Adapters](../.mdmd/layer-3/polyglot-adapters.mdmd.md)                     | Language-specific symbol/dependency extraction                       |
+| [SlopCop](../.mdmd/layer-3/slopcop.mdmd.md)                                         | Markdown, asset, and symbol lint architecture                        |
+| [Benchmark Fixtures](../.mdmd/layer-3/benchmark-fixtures.mdmd.md)                   | AST accuracy benchmark infrastructure                                |
+
+Full list: `architectural-decisions`, `benchmark-telemetry-pipeline`, `co-activation-clustering`, `edge-aggregation-pipeline`, `extension-surfaces`, `fallback-inference-heuristics`, `language-server-architecture`, `live-documentation-extension`, `live-documentation-scripts`, `live-documentation-server`, `live-documentation-shared-*` (6 modules), `polyglot-oracles-and-sampling`, `testing-integration-architecture`, and the [Ripple Falsifiability Suite](../.mdmd/layer-3/falsifiability/ripple-falsifiability-suite.mdmd.md).
+
+#### Layer 4 — Implementation (Generated)
+
+~568 Live Docs under [`.mdmd/layer-4/`](../.mdmd/layer-4/) — one per tracked source file. These are **machine-generated** by `npm run live-docs:generate` and contain authored preambles (`Purpose`, `Notes`) plus generated sections (`Public Symbols`, `Dependencies`, `Observed Evidence`). Do not manually edit generated blocks.
+
+### Workspace Convention vs. Shipped Defaults
+
+| Concern      | Our Workspace (MDMD) | Live Documentation Defaults |
+| ------------ | -------------------- | --------------------------- |
+| Root         | `.mdmd`              | `.live-documentation`       |
+| Base layer   | `layer-4`            | `source`                    |
+| Extension    | `.mdmd.md`           | `.md`                       |
+| Slug dialect | `github`             | `github`                    |
+
+This distinction matters: **code that ships to adopters must read these values from configuration, never hardcode our workspace's MDMD paths or extensions.**
 
 ---
 
 ## Development Conventions
 
-Our project utilizes Spec-Kit to plan, document, and implement specific feature-branch-sized stories (or greenfield new projects, like this one's first spec: `001-link-aware-diagnostics`). As the spec-kit ecosystem evolves, files in the `.specify/` folder may update from time to time. Visit here to see the kinds of prompts which power the `/speckit.{command}` slashcommands for reproducible agentic development.
-
-> [!Note]
-> Documentation artifacts created as part of a `.specs/` folder do not necessarily need to be migrated to the `.mdmd/` permanent documentation structure, but the changes which result from a development story demarcated by a single folder such as `specs/NNN-feature-name/` should be migrated to the permanent documentation structure.
+This project originally used Spec-Kit (`specs/001-link-aware-diagnostics/`) to bootstrap its planning and requirements. That content has been **migrated into the MDMD layer structure** (see Layer 2 and Layer 3 tables above) and the `specs/` and `.specify/` folders have been retired.
 
 ### General Development Guidelines
 
@@ -171,7 +223,7 @@ When you are faced with a large development task which is expected to take more 
 
 For the big features, I begin by creating the MDMD documentation for the things I _think_ I will need to build. Then, I perform an initial implementation pass, allowing harsh realities to dash against my initial design, forcing repeated back-and-forth refinements between documentation and implementation until the two are in harmony and the solution is complete. This particular style of development I call "Code Like Clay", and it is astoundingly well-suited to LLM-driven development, as it preserves intent across multiple context windows, allowing the LLM to reason about the problem at hand without losing sight of the big picture.
 
-Our own project's tooling is improving progressively to better support this style of development. For example, the `npm run safe:commit` command runs a battery of validations which ensure that the codebase is in a sound state before commits land, including linting, unit tests, integration tests, graph snapshotting, graph auditing, and SlopCop checks.
+Our own project's tooling is improving progressively to better support this style of development. For example, the `npm run safe:commit` command runs a battery of validations which ensure that the codebase is in a sound state before commits land, including linting, unit tests, integration tests, Live Docs regeneration, Live Docs lint, and SlopCop checks.
 
 ### Commit Guidelines
 

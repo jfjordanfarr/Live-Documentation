@@ -509,7 +509,7 @@ Supports REQ-G1. (If docs → code write-back is pursued, VS Code commands will 
 ### REQ-D1 Evidence
 
 - Layer distribution strategy logged in `AI-Agent-Workspace/Notes/live-documentation-doc-refactor-plan.md`, including tasks for site scaffolding, requirement handoff, and CLI materialized views.
-- Stage 8 backlog items (`LD-800`–`LD-802`) in `specs/001-link-aware-diagnostics/tasks.md` track execution of the public site, requirement integration, and onboarding updates.
+- Stage 8 backlog items (`LD-800`–`LD-802`) in [Feature Backlog](work-items/feature-backlog.mdmd.md) track execution of the public site, requirement integration, and onboarding updates.
 - System analytics CLI fixtures (to be added) will validate that architectural debt surfaces without persisting docs.
 
 ### REQ-V1 Evidence
