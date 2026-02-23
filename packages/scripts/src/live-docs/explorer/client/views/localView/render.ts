@@ -352,57 +352,9 @@ function renderPathModeColumns(
   // Set the path subgraph as currentSubgraph for connection drawing
   controller.currentSubgraph = pathSubgraph;
 
-  // For a 2-node path, render as center + downstream (like exploration mode)
-  // This lets the existing single-hop connection drawing work
-  if (nodeIds.length === 2) {
-    const fromNode = pathSubgraph.nodes[0];
-    const toNode = pathSubgraph.nodes[1];
-
-    // Apply path mode class for styling
-    layoutRoot.classList.add("path-mode");
-
-    // FROM as center column
-    const centerColumn = createHierarchicalColumn(
-      controller,
-      "FROM",
-      [fromNode],
-      "center",
-      "No artifact",
-      "center",
-      connectionScore
-    );
-    centerColumn.classList.add("path-node", "path-origin");
-    layoutRoot.appendChild(centerColumn);
-
-    // Collect alignment guides from center for stacked column
-    const alignmentGuides = controller.collectCenterAlignmentGuides(centerColumn);
-
-    // TO as downstream (inbound dependents) column
-    const downstreamColumn = createStackedColumn(
-      controller,
-      "TO",
-      [toNode],
-      "inbound",
-      "No destination",
-      alignmentGuides,
-      "right",
-      connectionScore
-    );
-    downstreamColumn.classList.add("path-node", "path-destination");
-    layoutRoot.appendChild(downstreamColumn);
-
-    // Highlight FROM/TO symbols if specified
-    if (fromSymbol) {
-      highlightSymbolInColumn(centerColumn, fromSymbol);
-    }
-    if (toSymbol) {
-      highlightSymbolInColumn(downstreamColumn, toSymbol);
-    }
-    return;
-  }
-
-  // For N-node paths (3+), render a simple linear chain of center columns
-  // Each path node gets exactly ONE column - no duplicates
+  // All path modes (2+ nodes) render a uniform linear chain of center columns.
+  // Each path node gets exactly ONE column — no duplicates.
+  // Connection drawing is handled by the multi-hop path mode in connections.ts.
   layoutRoot.classList.add("path-mode");
   
   for (let i = 0; i < pathSubgraph.nodes.length; i++) {

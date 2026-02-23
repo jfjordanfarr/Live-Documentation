@@ -10,9 +10,9 @@
 
 import JSZip from "jszip";
 
-import type { ExplorerGraphPayload } from "../shared/types";
 import type { DataLoaderApi } from "./dataLoader";
 import type { DownloadBundleType, DownloadFormat } from "./panels/sources-view";
+import type { ExplorerGraphPayload } from "../shared/types";
 
 export type { DownloadBundleType, DownloadFormat };
 

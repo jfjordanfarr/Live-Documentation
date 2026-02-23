@@ -574,13 +574,20 @@ function drawMultiHopConnections(context: ConnectionsContext): void {
   }> = [];
 
   // PATH MODE: Draw connections between adjacent path nodes
-  // In path mode, all columns are "center" columns with different hopIndex values
+  // In path mode, all columns are "center" columns with different hopIndex values.
+  // Edges are deduplicated because the same edge appears in adjacent hop subgraphs.
   if (isPathMode) {
-    // Path edges connect adjacent path nodes: center[hopN] → center[hopN+1]
+    const drawnPathEdges = new Set<string>();
+
     for (const hopEntry of multiHopData) {
-      const { hopIndex: _hopIndex, centerId: _centerId, subgraph } = hopEntry;
+      const { subgraph } = hopEntry;
       
       subgraph.links.forEach(edge => {
+        // Deduplicate: each edge appears in both adjacent hop subgraphs
+        const edgeKey = `${edge.sourceId}|${edge.targetId}|${edge.sourceSymbol ?? ""}|${edge.targetSymbol ?? ""}`;
+        if (drawnPathEdges.has(edgeKey)) return;
+        drawnPathEdges.add(edgeKey);
+
         // Find the hopIndex of the edge's source and target nodes
         const sourceHopIndex = multiHopData.findIndex(h => h.centerId === edge.sourceId);
         const targetHopIndex = multiHopData.findIndex(h => h.centerId === edge.targetId);
@@ -596,14 +603,14 @@ function drawMultiHopConnections(context: ConnectionsContext): void {
         // Determine direction: left-to-right is the natural flow
         const isForward = sourceHopIndex < targetHopIndex;
         
-        // Provider (outbound anchor) is on the source node
-        // Consumer (inbound anchor) is on the target node
-        // Both are "center" columns but at different hopIndex values
+        // Connect adjacent path columns left-to-right.
+        // Each node's anchor is looked up with its OWN symbol:
+        //   sourceSymbol belongs to sourceId, targetSymbol belongs to targetId.
         const providerAnchor = measureAnchor(
-          getAnchorWithHop(edge.sourceId, "center", sourceHopIndex, "outbound", edge.targetSymbol)
+          getAnchorWithHop(edge.sourceId, "center", sourceHopIndex, "outbound", edge.sourceSymbol)
         );
         const consumerAnchor = measureAnchor(
-          getAnchorWithHop(edge.targetId, "center", targetHopIndex, "inbound", edge.sourceSymbol)
+          getAnchorWithHop(edge.targetId, "center", targetHopIndex, "inbound", edge.targetSymbol)
         );
         
         if (!providerAnchor || !consumerAnchor) {
