@@ -111,9 +111,9 @@ async function main(): Promise<void> {
 
   let graph = await buildLiveDocGraph({ workspaceRoot, config: configInput });
   if (graph.nodes.size === 0 && !hasExplicitConfigOverrides) {
-    // Back-compat fallback: older workspaces (and some fixtures) may still use the
-    // MDMD-oriented defaults. Only attempt this when the user did not explicitly
-    // choose a config (flags or --config).
+    // Back-compat fallback: workspaces may use the MDMD-convention layout
+    // (.mdmd/layer-4/*.mdmd.md) rather than the default (.live-documentation/source/*.md).
+    // Only attempt this when the user did not explicitly choose a config (flags or --config).
     const legacyConfig = normalizeLiveDocumentationConfig({
       ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
       root: ".mdmd",

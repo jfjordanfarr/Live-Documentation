@@ -206,7 +206,7 @@ export function renderPublicSymbolLines(args: {
   headings: PublicSymbolHeadingInfo[];
   /** Optional workspace-wide symbol index for resolving type references to Live Doc links. */
   symbolIndex?: WorkspaceSymbolIndex;
-  /** Absolute path to the Live Docs root (e.g., "/workspace/.mdmd/layer-4"). */
+  /** Absolute path to the Live Docs root (e.g., "/workspace/.live-documentation/source"). */
   liveDocsRootAbsolute?: string;
 }): string[] {
   const lines: string[] = [];
@@ -450,7 +450,7 @@ function formatTypeReference(
       // External reference: compute relative path to target Live Doc
       const targetDocAbsolute = path.resolve(
         liveDocsRootAbsolute,
-        "..",  // Go up from liveDocsRoot (which is .mdmd/layer-4) to .mdmd
+        "..",  // Go up from liveDocsRoot (e.g. .live-documentation/source) to .live-documentation
         "..",  // Go up to workspace root
         location.liveDocPath
       );

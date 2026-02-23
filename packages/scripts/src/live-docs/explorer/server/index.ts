@@ -282,7 +282,7 @@ async function handleDetails(
  * Handle the /doc endpoint for raw markdown download.
  * Returns the raw markdown content of a Live Documentation file.
  * 
- * @example GET /doc?docPath=.mdmd/layer-4/packages/server/src/main.ts.mdmd.md
+ * @example GET /doc?docPath=.live-documentation/source/packages/server/src/main.ts.md
  */
 async function handleDoc(
     url: URL,

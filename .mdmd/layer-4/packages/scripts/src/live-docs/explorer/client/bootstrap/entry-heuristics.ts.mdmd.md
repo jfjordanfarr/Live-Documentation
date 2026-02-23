@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-bootstrap-entry-heuristics-ts
-- Generated At: 2026-02-03T21:55:35.585Z
+- Generated At: 2026-02-23T21:32:11.429Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Infers the best default entry node when launching the Explorer without a specifi
 Extracted from client/index.ts during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. The `inferDefaultEntryNodeId()` function is called during bootstrap when no node ID is in the URL.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.585Z","inputHash":"7e4f5bcad96b88eb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:11.429Z","inputHash":"9aa8d138b060153d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LinkEndpointResolver` {#symbol-linkendpointresolver}
@@ -28,7 +28,7 @@ Resolver for link endpoints to node IDs
 
 #### `scoreNode` {#symbol-scorenode}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L48)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L49)
 
 ##### `scoreNode` — Summary
 Score a node for entry-point likelihood.
@@ -43,7 +43,7 @@ A score, with negative values indicating exclusion
 
 #### `buildDegreeMap` {#symbol-builddegreemap}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L113)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L114)
 
 ##### `buildDegreeMap` — Summary
 Build a degree map for all nodes in the graph.
@@ -51,7 +51,7 @@ Counts both inbound and outbound links for each node.
 
 #### `inferDefaultEntryNodeId` {#symbol-inferdefaultentrynodeid}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L138)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts#L139)
 
 ##### `inferDefaultEntryNodeId` — Summary
 Infer the best default entry node when none is specified.

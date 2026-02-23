@@ -20,7 +20,7 @@ import {
  *
  * Nodes are keyed by `codePath` (workspace-relative source path) and carry
  * resolved dependency edges, public symbol names, and per-symbol documentation
- * extracted from the corresponding `.mdmd.md` file.
+ * extracted from the corresponding Live Doc file.
  */
 export interface LiveDocGraphNode {
   codePath: string;
@@ -41,7 +41,7 @@ export interface LiveDocGraphNode {
  *
  * - `nodes` — forward lookup by source path.
  * - `inbound` — reverse index: for a given target, which sources depend on it.
- * - `docToCode` — maps `.mdmd.md` doc paths back to their source paths.
+ * - `docToCode` — maps Live Doc paths back to their source paths.
  */
 export interface LiveDocGraph {
   nodes: Map<string, LiveDocGraphNode>;

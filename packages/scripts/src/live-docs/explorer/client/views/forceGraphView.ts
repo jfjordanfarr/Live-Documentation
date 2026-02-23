@@ -145,7 +145,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
         for (const link of links) {
           const normalizedTarget = link.targetPath.replace(/\\/g, "/");
-          if (normalizedTarget.endsWith(".mdmd.md") || liveDocPaths.has(normalizedTarget)) {
+          if (liveDocPaths.has(normalizedTarget)) {
             continue;
           }
 
@@ -157,7 +157,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
           if (link.sourceId.startsWith("related:")) {
             const sourcePath = link.sourceId.slice("related:".length);
-            if (!sourcePath.endsWith(".mdmd.md") && !liveDocPaths.has(sourcePath)) {
+            if (!liveDocPaths.has(sourcePath)) {
               relatedSourcePaths.add(sourcePath);
             } else {
               continue;

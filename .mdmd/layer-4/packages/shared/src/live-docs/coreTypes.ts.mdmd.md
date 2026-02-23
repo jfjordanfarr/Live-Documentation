@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreTypes.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coretypes-ts
-- Generated At: 2026-02-03T21:55:40.403Z
+- Generated At: 2026-02-23T21:32:14.805Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Central type definitions for Live Documentation analysis. Defines the core inter
 - Pure type definitions with no runtime behavior — consumed by analyzers, renderers, and graph builders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.403Z","inputHash":"e30414e7146f7e34"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:14.805Z","inputHash":"cdd3db160ee87b70"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -63,8 +63,8 @@ falls back to qualified name matching when ambiguous.
 ##### `WorkspaceSymbolIndex` — Examples
 ```typescript
 const index: WorkspaceSymbolIndex = new Map([
-  ["Widget", [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
-  ["processWidget", [{ liveDocPath: ".mdmd/layer-4/src/core.ts.mdmd.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
+  ["Widget", [{ liveDocPath: ".live-documentation/source/src/types.ts.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
+  ["processWidget", [{ liveDocPath: ".live-documentation/source/src/core.ts.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
 ]);
 ```
 

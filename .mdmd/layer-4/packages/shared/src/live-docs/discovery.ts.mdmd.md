@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-02-03T21:55:40.483Z
+- Generated At: 2026-02-23T21:32:14.882Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.483Z","inputHash":"b9e477d4e5883112"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:14.882Z","inputHash":"662696c653f9295c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -74,8 +74,8 @@ locations, allowing for multiple symbols with the same name from different files
 
 ##### `buildWorkspaceSymbolIndex` — Parameters
 - `options`: Configuration for the index build.
-- `options.docExtension`: File extension for Live Docs (e.g., ".mdmd.md").
-- `options.liveDocsRoot`: Workspace-relative path to the Live Docs root (e.g., ".mdmd/layer-4").
+- `options.docExtension`: File extension for Live Docs (e.g., ".md").
+- `options.liveDocsRoot`: Workspace-relative path to the Live Docs root (e.g., ".live-documentation/source").
 - `options.targetFiles`: Absolute paths to all files being processed.
 - `options.workspaceRoot`: Absolute path to the workspace root.
 
@@ -87,10 +87,10 @@ A map from symbol names to their resolved Live Doc locations.
 const index = await buildWorkspaceSymbolIndex({
   targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
   workspaceRoot: "/workspace",
-  liveDocsRoot: ".mdmd/layer-4",
-  docExtension: ".mdmd.md"
+  liveDocsRoot: ".live-documentation/source",
+  docExtension: ".md"
 });
-// index.get("Widget") => [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", ... }]
+// index.get("Widget") => [{ liveDocPath: ".live-documentation/source/src/types.ts.md", ... }]
 ```
 
 ##### `buildWorkspaceSymbolIndex` — Links

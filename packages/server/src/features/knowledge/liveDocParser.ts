@@ -4,8 +4,8 @@ import { RelationshipHint } from "@live-documentation/shared/inference/fallbackI
 
 import { LinkHintContext, resolveReferencePath } from "./linkHintExtractor";
 
-/** Structured metadata extracted from a `.mdmd.md` document. */
-export interface MdmdDocumentDetails {
+/** Structured metadata extracted from a Live Documentation markdown file. */
+export interface LiveDocDocumentDetails {
   layer?: string;
   identifier?: string;
   identifiers: string[];
@@ -23,10 +23,10 @@ export interface DocumentSymbolReferenceMetadata {
 const SYMBOL_REFERENCE_PATTERN = /`([^`]+)`/g;
 
 /**
- * Extracts MDMD document details from markdown content.
+ * Extracts Live Documentation document details from markdown content.
  */
-export function extractMdmdDocumentDetails(content: string): MdmdDocumentDetails {
-  const metadata = parseMdmdMetadata(content);
+export function extractLiveDocDocumentDetails(content: string): LiveDocDocumentDetails {
+  const metadata = parseLiveDocMetadata(content);
   const sectionSymbols = collectSectionSymbols(content, resolveSectionSymbolTargets(metadata.layer));
 
   return {
@@ -40,10 +40,10 @@ export function extractMdmdDocumentDetails(content: string): MdmdDocumentDetails
 }
 
 /**
- * Creates relationship hints from MDMD metadata code paths.
+ * Creates relationship hints from Live Doc metadata code paths.
  */
-export async function createMdmdMetadataHints(
-  details: MdmdDocumentDetails,
+export async function createLiveDocMetadataHints(
+  details: LiveDocDocumentDetails,
   context: LinkHintContext
 ): Promise<RelationshipHint[]> {
   if (!details.codePaths.length) {
@@ -75,7 +75,7 @@ export async function createMdmdMetadataHints(
  */
 export function extractDocumentSymbolReferences(
   content: string,
-  mdmdDetails?: MdmdDocumentDetails
+  liveDocDetails?: LiveDocDocumentDetails
 ): DocumentSymbolReferenceMetadata[] {
   const references = new Map<string, DocumentSymbolReferenceMetadata>();
 
@@ -90,16 +90,16 @@ export function extractDocumentSymbolReferences(
     });
   };
 
-  if (mdmdDetails) {
-    for (const symbol of mdmdDetails.sectionSymbols) {
+  if (liveDocDetails) {
+    for (const symbol of liveDocDetails.sectionSymbols) {
       register(symbol, "section-heading");
     }
 
-    for (const symbol of mdmdDetails.exports) {
+    for (const symbol of liveDocDetails.exports) {
       register(symbol, "metadata-export");
     }
 
-    for (const symbol of mdmdDetails.identifiers) {
+    for (const symbol of liveDocDetails.identifiers) {
       register(symbol, "metadata-identifier");
     }
   }
@@ -111,7 +111,7 @@ export function extractDocumentSymbolReferences(
       continue;
     }
 
-    if (!shouldRegisterInlineCode(snippet, mdmdDetails)) {
+    if (!shouldRegisterInlineCode(snippet, liveDocDetails)) {
       continue;
     }
 
@@ -122,9 +122,9 @@ export function extractDocumentSymbolReferences(
 }
 
 /**
- * Parses MDMD metadata section from markdown content.
+ * Parses Live Doc metadata section from markdown content.
  */
-export function parseMdmdMetadata(content: string): {
+export function parseLiveDocMetadata(content: string): {
   layer?: string;
   identifiers: string[];
   codePaths: string[];
@@ -199,7 +199,7 @@ export function parseMdmdMetadata(content: string): {
         const fragments = splitMetadataList(value, linkTextPattern);
         for (const fragment of fragments) {
           const token = extractSymbolToken(fragment);
-          if (token && isPotentialMdmdSymbol(token)) {
+          if (token && isPotentialLiveDocSymbol(token)) {
             identifiers.add(token);
           }
         }
@@ -280,7 +280,7 @@ export function collectSectionSymbols(content: string, sectionTitles: string[]):
 
       if (inSection && level > sectionLevel) {
         const candidate = extractSymbolToken(title);
-        if (candidate && isPotentialMdmdSymbol(candidate)) {
+        if (candidate && isPotentialLiveDocSymbol(candidate)) {
           collected.add(candidate);
         }
       }
@@ -334,9 +334,9 @@ export function looksLikeSymbolIdentifier(candidate: string): boolean {
 }
 
 /**
- * Returns true if the candidate could be an MDMD symbol (identifier or prefixed ID).
+ * Returns true if the candidate could be a Live Doc symbol (identifier or prefixed ID).
  */
-export function isPotentialMdmdSymbol(candidate: string): boolean {
+export function isPotentialLiveDocSymbol(candidate: string): boolean {
   if (!candidate) {
     return false;
   }
@@ -443,7 +443,7 @@ export function splitMetadataList(value: string, linkPattern: RegExp): string[] 
 /**
  * Determines if an inline code snippet should be registered as a symbol reference.
  */
-export function shouldRegisterInlineCode(symbol: string, details?: MdmdDocumentDetails): boolean {
+export function shouldRegisterInlineCode(symbol: string, details?: LiveDocDocumentDetails): boolean {
   if (!symbol) {
     return false;
   }
@@ -458,9 +458,24 @@ export function shouldRegisterInlineCode(symbol: string, details?: MdmdDocumentD
     }
   }
 
-  if (symbol.includes("-") && isPotentialMdmdSymbol(symbol)) {
+  if (symbol.includes("-") && isPotentialLiveDocSymbol(symbol)) {
     return true;
   }
 
   return false;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Back-compat aliases (deprecated — use LiveDoc* variants)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** @deprecated Use {@link LiveDocDocumentDetails} instead. */
+export type MdmdDocumentDetails = LiveDocDocumentDetails;
+/** @deprecated Use {@link extractLiveDocDocumentDetails} instead. */
+export const extractMdmdDocumentDetails = extractLiveDocDocumentDetails;
+/** @deprecated Use {@link createLiveDocMetadataHints} instead. */
+export const createMdmdMetadataHints = createLiveDocMetadataHints;
+/** @deprecated Use {@link parseLiveDocMetadata} instead. */
+export const parseMdmdMetadata = parseLiveDocMetadata;
+/** @deprecated Use {@link isPotentialLiveDocSymbol} instead. */
+export const isPotentialMdmdSymbol = isPotentialLiveDocSymbol;

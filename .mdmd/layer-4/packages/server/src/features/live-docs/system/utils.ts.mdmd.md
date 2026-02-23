@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/utils.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-utils-ts
-- Generated At: 2026-02-16T18:46:23.624Z
+- Generated At: 2026-02-23T21:32:13.481Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Utility functions for the System-layer generator. Path resolution, file operatio
 - `includeInComponents()` filters out compiled artifacts (.d.ts, .js in dist/node_modules)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:23.624Z","inputHash":"ab6f4e8cfd543ae2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.481Z","inputHash":"9edb0c47843e5f08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveOutputDirectory` {#symbol-resolveoutputdirectory}
@@ -40,7 +40,7 @@ Extracted from the 1847-line generator during the 2025-12-07 decomposition.
 Computes absolute and workspace-relative paths for a System-layer document.
 
 Combines the Live Docs config root, system layer name, archetype subdirectory,
-and slug to produce a deterministic `.mdmd.md` path. When {@link args.outputRoot}
+and slug to produce a deterministic Live Doc path using the configured extension. When {@link args.outputRoot}
 is supplied, paths are resolved against that directory instead of the workspace.
 
 #### `systemMetadataSourcePath` {#symbol-systemmetadatasourcepath}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/languageInference.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-languageinference-ts
-- Generated At: 2026-02-18T21:27:52.359Z
+- Generated At: 2026-02-23T21:32:13.000Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Language and file type inference for the knowledge layer. Maps file extensions t
 - `looksLikeDocsPath()` uses regex heuristics to detect docs/documentation folders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.359Z","inputHash":"3c8285f60f3e33b4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.000Z","inputHash":"b328092f21ddc3c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CODE_EXTENSIONS` {#symbol-default_code_extensions}
@@ -73,11 +73,14 @@ Returns true if a path looks like it belongs to a documentation folder.
 
 #### `inferDocumentLayer` {#symbol-inferdocumentlayer}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L121)
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/languageInference.ts#L124)
 - Returns: [`ArtifactSeed`](../../../../shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed)
 
 ##### `inferDocumentLayer` — Summary
-Infers the artifact layer from MDMD metadata or file path conventions.
+Infers the artifact layer from metadata or file path conventions.
+
+Supports both the default Live Docs layout (`.live-documentation/source/`)
+and the MDMD-convention layout (`.mdmd/layer-N/`).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

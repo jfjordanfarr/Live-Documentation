@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2026-02-16T03:54:28.228Z
+- Generated At: 2026-02-23T21:32:13.540Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect, eviden
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:28.228Z","inputHash":"f319a0e465aecfe1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.540Z","inputHash":"e336323ff43df7a7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -74,7 +74,7 @@ this shape. Obtain an instance via {@link normalizeLiveDocumentationConfig}
 which fills missing fields from {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
 
 This interface is the single source of truth for how the pipeline maps
-workspace source artifacts to their `.mdmd.md` mirror files, which slug
+workspace source artifacts to their Live Doc mirror files, which slug
 dialect to use, and how strictly evidence is enforced.
 
 #### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}

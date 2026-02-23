@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/types.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-types-ts
-- Generated At: 2026-02-16T03:54:28.042Z
+- Generated At: 2026-02-23T21:32:13.451Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Type definitions for the System-layer Live Documentation generator. Defines arch
 - Re-exports `LiveDocRenderSection` and `CoActivationEdge` from shared for convenience
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:28.042Z","inputHash":"6de422f395f756a1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.451Z","inputHash":"1b5b3a52d1fa1ad1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Layer3Archetype` {#symbol-layer3archetype}
@@ -26,7 +26,7 @@ Type definitions for the System-layer Live Documentation generator. Defines arch
 - Source: [source](../../../../../../../../packages/server/src/features/live-docs/system/types.ts#L22)
 
 ##### `Layer3Archetype` — Summary
-Discriminant for the six MDMD Layer 3 system document archetypes.
+Discriminant for the six Live Documentation Layer 3 system document archetypes.
 
 Each archetype corresponds to a distinct analytical strategy in the
 system generator's plan builders. The generator materialises one

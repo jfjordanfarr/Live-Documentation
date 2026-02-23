@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/system/constants.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-system-constants-ts
-- Generated At: 2026-02-16T18:25:00.571Z
+- Generated At: 2026-02-23T21:32:13.173Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Constants for the System-layer Live Documentation generator. Defines archetype p
 - Threshold constants control clustering (min 4 members), topology (max 80 edges), and activation display limits
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:00.571Z","inputHash":"42ac87b06687c026"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.173Z","inputHash":"bdc41abfd07587f2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LAYER3_PREFIX` {#symbol-layer3_prefix}
@@ -26,7 +26,7 @@ Constants for the System-layer Live Documentation generator. Defines archetype p
 
 ##### `LAYER3_PREFIX` — Summary
 Short prefix codes for Layer-3 archetypes, used when composing
-System-layer output filenames (e.g. `COMP-card-widget.mdmd.md`).
+System-layer output filenames (e.g. `COMP-card-widget.md`).
 
 Note: `"data-model"` is present in the map but excluded from
 {@link SUPPORTED_LAYER3_ARCHETYPES} — it was deferred during the

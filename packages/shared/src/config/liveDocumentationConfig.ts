@@ -56,13 +56,13 @@ export interface LiveDocumentationEvidenceConfig {
  * which fills missing fields from {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
  *
  * This interface is the single source of truth for how the pipeline maps
- * workspace source artifacts to their `.mdmd.md` mirror files, which slug
+ * workspace source artifacts to their Live Doc mirror files, which slug
  * dialect to use, and how strictly evidence is enforced.
  */
 export interface LiveDocumentationConfig {
   /** Filesystem root where staged Live Docs are written. */
   root: string;
-  /** Mirror folder inside the root that represents the base layer (Layer-4 by default). */
+  /** Mirror folder inside the root that represents the base layer (`"source"` by default). */
   baseLayer: string;
   /** File extension (including suffix) applied to generated Live Docs. */
   extension: string;

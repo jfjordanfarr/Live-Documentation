@@ -8,7 +8,7 @@ import { extractReferenceDefinitions } from "./markdownShared";
 import { normalizeWorkspacePath } from "./pathUtils";
 
 const HEADING_PATTERN = /^(#{1,6})\s+(.*)$/;
-const CODE_MARKER_PATTERN = /<!--\s*mdmd:code\s+([^>\s]+)\s*-->/i;
+const CODE_MARKER_PATTERN = /<!--\s*(?:mdmd|live-docs):code\s+([^>\s]+)\s*-->/i;
 const INLINE_LINK_PATTERN = /\[[^\]]+\]\(([^)]+)\)/g;
 const REFERENCE_LINK_PATTERN = /\[[^\]]+\]\[([^\]]*)\]/g;
 const EXTERNAL_SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
@@ -16,8 +16,8 @@ const EXTERNAL_SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 /**
  * Declares a bidirectional mapping between documentation files and code files.
  *
- * Each rule identifies which doc globs contain `mdmd:code` markers pointing
- * at files matched by `codeGlobs`, enabling the enforcement bridge to
+ * Each rule identifies which doc globs contain `live-docs:code` (or legacy `mdmd:code`)
+ * markers pointing at files matched by `codeGlobs`, enabling the enforcement bridge to
  * verify that breadcrumb comments exist in source files.
  */
 export interface DocumentationRule {
@@ -30,8 +30,11 @@ export interface DocumentationRule {
 }
 
 /**
- * Built-in rule set mapping MDMD Layer-4 / Live Documentation files
- * to source code under `packages/` and `scripts/`.
+ * Built-in rule set mapping Live Documentation files to source code
+ * under `packages/` and `scripts/`.
+ *
+ * Includes both the default layout (`.live-documentation/source/`)  and the
+ * MDMD-convention layout (`.mdmd/layer-4/`) used by this workspace.
  */
 export const DEFAULT_RULES: DocumentationRule[] = [
   {
@@ -61,7 +64,7 @@ export interface DocumentationAnchorSummary {
   level: number;
   /** 1-based line number where the heading appears. */
   startLine: number;
-  /** Workspace-relative paths of code files referenced via `mdmd:code` markers. */
+  /** Workspace-relative paths of code files referenced via `live-docs:code` markers. */
   codePaths: string[];
   /** Workspace-relative paths of files linked back from beneath this heading. */
   backlinks: string[];
@@ -168,7 +171,7 @@ export interface RunDocumentationLinkEnforcementOptions {
 
 /**
  * Parses heading anchors from a documentation file, collecting
- * `mdmd:code` markers and inline backlinks for each section.
+ * `live-docs:code` markers and inline backlinks for each section.
  *
  * @param docPath - Workspace-relative path to the documentation file.
  * @param options - Workspace root and optional pre-loaded content.
@@ -302,7 +305,7 @@ export function formatDocumentationLinkComment(
 /**
  * Runs the full documentation-link enforcement pass across the workspace.
  *
- * Scans documentation files for `mdmd:code` markers, resolves them to code
+ * Scans documentation files for `live-docs:code` (or legacy `mdmd:code`) markers, resolves them to code
  * files, and verifies that each code file contains the correct breadcrumb
  * comment pointing back to its documentation section. Optionally auto-fixes.
  *

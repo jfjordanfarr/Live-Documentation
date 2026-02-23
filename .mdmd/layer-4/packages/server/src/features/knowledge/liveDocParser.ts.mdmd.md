@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/knowledge/liveDocParser.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-knowledge-livedocparser-ts
-- Generated At: 2026-02-18T21:27:52.394Z
+- Generated At: 2026-02-23T21:32:13.035Z
 
 ## Authored
 ### Purpose
@@ -17,15 +17,15 @@ Parses Live Documentation markdown files (originally MDMD format) to extract str
 - The "MDMD" naming persists in function/interface names (`extractMdmdDocumentDetails`, `MdmdDocumentDetails`) as an internal implementation detail; the module itself now uses the public "Live Documentation" branding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.394Z","inputHash":"7f905aa69f5a5bd6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:13.035Z","inputHash":"0214919a1105cce2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
+#### `LiveDocDocumentDetails` {#symbol-livedocdocumentdetails}
 - Type: interface
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L8)
 
-##### `MdmdDocumentDetails` — Summary
-Structured metadata extracted from a `.mdmd.md` document.
+##### `LiveDocDocumentDetails` — Summary
+Structured metadata extracted from a Live Documentation markdown file.
 
 #### `DocumentSymbolReferenceMetadata` {#symbol-documentsymbolreferencemetadata}
 - Type: interface
@@ -34,37 +34,37 @@ Structured metadata extracted from a `.mdmd.md` document.
 ##### `DocumentSymbolReferenceMetadata` — Summary
 A symbol referenced in backticks within a markdown document.
 
-#### `extractMdmdDocumentDetails` {#symbol-extractmdmddocumentdetails}
+#### `extractLiveDocDocumentDetails` {#symbol-extractlivedocdocumentdetails}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L28)
-- Returns: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
+- Returns: [`LiveDocDocumentDetails`](#symbol-livedocdocumentdetails)
 
-##### `extractMdmdDocumentDetails` — Summary
-Extracts MDMD document details from markdown content.
+##### `extractLiveDocDocumentDetails` — Summary
+Extracts Live Documentation document details from markdown content.
 
-#### `createMdmdMetadataHints` {#symbol-createmdmdmetadatahints}
+#### `createLiveDocMetadataHints` {#symbol-createlivedocmetadatahints}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L45)
-- Parameters: `details`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails); `context`: [`LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
+- Parameters: `details`: [`LiveDocDocumentDetails`](#symbol-livedocdocumentdetails); `context`: [`LinkHintContext`](./linkHintExtractor.ts.mdmd.md#symbol-linkhintcontext)
 
-##### `createMdmdMetadataHints` — Summary
-Creates relationship hints from MDMD metadata code paths.
+##### `createLiveDocMetadataHints` — Summary
+Creates relationship hints from Live Doc metadata code paths.
 
 #### `extractDocumentSymbolReferences` {#symbol-extractdocumentsymbolreferences}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L76)
 - Returns: [`DocumentSymbolReferenceMetadata`](#symbol-documentsymbolreferencemetadata)[]
-- Parameters: `mdmdDetails`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
+- Parameters: `liveDocDetails`: [`LiveDocDocumentDetails`](#symbol-livedocdocumentdetails)
 
 ##### `extractDocumentSymbolReferences` — Summary
 Extracts symbol references from document content.
 
-#### `parseMdmdMetadata` {#symbol-parsemdmdmetadata}
+#### `parseLiveDocMetadata` {#symbol-parselivedocmetadata}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L127)
 
-##### `parseMdmdMetadata` — Summary
-Parses MDMD metadata section from markdown content.
+##### `parseLiveDocMetadata` — Summary
+Parses Live Doc metadata section from markdown content.
 
 #### `collectSectionSymbols` {#symbol-collectsectionsymbols}
 - Type: function
@@ -87,12 +87,12 @@ Returns the section titles to search for symbols based on the document layer.
 ##### `looksLikeSymbolIdentifier` — Summary
 Returns true if the candidate looks like a valid symbol identifier.
 
-#### `isPotentialMdmdSymbol` {#symbol-ispotentialmdmdsymbol}
+#### `isPotentialLiveDocSymbol` {#symbol-ispotentiallivedocsymbol}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L339)
 
-##### `isPotentialMdmdSymbol` — Summary
-Returns true if the candidate could be an MDMD symbol (identifier or prefixed ID).
+##### `isPotentialLiveDocSymbol` — Summary
+Returns true if the candidate could be a Live Doc symbol (identifier or prefixed ID).
 
 #### `extractSymbolToken` {#symbol-extractsymboltoken}
 - Type: function
@@ -132,10 +132,46 @@ Splits a metadata list value, handling markdown links.
 #### `shouldRegisterInlineCode` {#symbol-shouldregisterinlinecode}
 - Type: function
 - Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L446)
-- Parameters: `details`: [`MdmdDocumentDetails`](#symbol-mdmddocumentdetails)
+- Parameters: `details`: [`LiveDocDocumentDetails`](#symbol-livedocdocumentdetails)
 
 ##### `shouldRegisterInlineCode` — Summary
 Determines if an inline code snippet should be registered as a symbol reference.
+
+#### `MdmdDocumentDetails` {#symbol-mdmddocumentdetails}
+- Type: type
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L473)
+- Returns: [`LiveDocDocumentDetails`](#symbol-livedocdocumentdetails)
+
+##### `MdmdDocumentDetails` — Additional Documentation
+- @deprecated Use {@link LiveDocDocumentDetails} instead.
+
+#### `extractMdmdDocumentDetails` {#symbol-extractmdmddocumentdetails}
+- Type: const
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L475)
+
+##### `extractMdmdDocumentDetails` — Additional Documentation
+- @deprecated Use {@link extractLiveDocDocumentDetails} instead.
+
+#### `createMdmdMetadataHints` {#symbol-createmdmdmetadatahints}
+- Type: const
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L477)
+
+##### `createMdmdMetadataHints` — Additional Documentation
+- @deprecated Use {@link createLiveDocMetadataHints} instead.
+
+#### `parseMdmdMetadata` {#symbol-parsemdmdmetadata}
+- Type: const
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L479)
+
+##### `parseMdmdMetadata` — Additional Documentation
+- @deprecated Use {@link parseLiveDocMetadata} instead.
+
+#### `isPotentialMdmdSymbol` {#symbol-ispotentialmdmdsymbol}
+- Type: const
+- Source: [source](../../../../../../../packages/server/src/features/knowledge/liveDocParser.ts#L481)
+
+##### `isPotentialMdmdSymbol` — Additional Documentation
+- @deprecated Use {@link isPotentialLiveDocSymbol} instead.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

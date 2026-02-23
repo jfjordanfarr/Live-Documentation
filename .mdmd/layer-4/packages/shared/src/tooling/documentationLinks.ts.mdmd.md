@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/documentationLinks.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-documentationlinks-ts
-- Generated At: 2026-02-17T21:05:04.638Z
+- Generated At: 2026-02-23T21:32:15.181Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 - Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T21:05:04.638Z","inputHash":"ce4b4eec9a998d81"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:15.181Z","inputHash":"f55eb6e704d8b5ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentationRule` {#symbol-documentationrule}
@@ -26,22 +26,25 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 ##### `DocumentationRule` — Summary
 Declares a bidirectional mapping between documentation files and code files.
 
-Each rule identifies which doc globs contain `mdmd:code` markers pointing
-at files matched by `codeGlobs`, enabling the enforcement bridge to
+Each rule identifies which doc globs contain `live-docs:code` (or legacy `mdmd:code`)
+markers pointing at files matched by `codeGlobs`, enabling the enforcement bridge to
 verify that breadcrumb comments exist in source files.
 
 #### `DEFAULT_RULES` {#symbol-default_rules}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L36)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L39)
 - Returns: [`DocumentationRule`](#symbol-documentationrule)[]
 
 ##### `DEFAULT_RULES` — Summary
-Built-in rule set mapping MDMD Layer-4 / Live Documentation files
-to source code under `packages/` and `scripts/`.
+Built-in rule set mapping Live Documentation files to source code
+under `packages/` and `scripts/`.
+
+Includes both the default layout (`.live-documentation/source/`)  and the
+MDMD-convention layout (`.mdmd/layer-4/`) used by this workspace.
 
 #### `DocumentationAnchorSummary` {#symbol-documentationanchorsummary}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L55)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L58)
 
 ##### `DocumentationAnchorSummary` — Summary
 Parsed heading anchor within a documentation file, enriched with
@@ -49,7 +52,7 @@ the code paths it covers and backlinks it contains.
 
 #### `DocumentationDocumentAnchors` {#symbol-documentationdocumentanchors}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L79)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L82)
 - Extends: `ParsedDocumentationAnchors`
 
 ##### `DocumentationDocumentAnchors` — Summary
@@ -57,7 +60,7 @@ A parsed documentation file's anchors annotated with the rule that produced them
 
 #### `ResolvedDocumentationTarget` {#symbol-resolveddocumentationtarget}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L87)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L90)
 
 ##### `ResolvedDocumentationTarget` — Summary
 A fully resolved mapping from a code file to the documentation section
@@ -65,48 +68,48 @@ that describes it, including backlink status.
 
 #### `DocumentationTargetMap` {#symbol-documentationtargetmap}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L105)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L108)
 
 ##### `DocumentationTargetMap` — Summary
 Maps workspace-relative code file paths to their resolved documentation targets.
 
 #### `ParseDocumentationAnchorsOptions` {#symbol-parsedocumentationanchorsoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L108)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L111)
 
 ##### `ParseDocumentationAnchorsOptions` — Summary
 Options for {@link parseDocumentationAnchors}.
 
 #### `DocumentationLinkViolation` {#symbol-documentationlinkviolation}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L118)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L121)
 
 ##### `DocumentationLinkViolation` — Summary
 A single violation detected by the documentation-link enforcement pass.
 
 #### `DocumentationLinkEnforcementResult` {#symbol-documentationlinkenforcementresult}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L146)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L149)
 
 ##### `DocumentationLinkEnforcementResult` — Summary
 Aggregate result from a documentation-link enforcement run.
 
 #### `RunDocumentationLinkEnforcementOptions` {#symbol-rundocumentationlinkenforcementoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L158)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L161)
 
 ##### `RunDocumentationLinkEnforcementOptions` — Summary
 Options for {@link runDocumentationLinkEnforcement}.
 
 #### `parseDocumentationAnchors` {#symbol-parsedocumentationanchors}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L177)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L180)
 - Returns: `ParsedDocumentationAnchors`
 - Parameters: `_unnamed_`: [`ParseDocumentationAnchorsOptions`](#symbol-parsedocumentationanchorsoptions)
 
 ##### `parseDocumentationAnchors` — Summary
 Parses heading anchors from a documentation file, collecting
-`mdmd:code` markers and inline backlinks for each section.
+`live-docs:code` markers and inline backlinks for each section.
 
 ##### `parseDocumentationAnchors` — Parameters
 - `docPath`: Workspace-relative path to the documentation file.
@@ -117,7 +120,7 @@ Parsed anchors with code paths and backlinks.
 
 #### `resolveCodeToDocumentationMap` {#symbol-resolvecodetodocumentationmap}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L244)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L247)
 - Returns: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 - Parameters: `documents`: [`DocumentationDocumentAnchors`](#symbol-documentationdocumentanchors)[]; `targetMap`: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 
@@ -136,7 +139,7 @@ The (mutated) target map.
 
 #### `formatDocumentationLinkComment` {#symbol-formatdocumentationlinkcomment}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L289)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L292)
 - Parameters: `target`: [`ResolvedDocumentationTarget`](#symbol-resolveddocumentationtarget)
 
 ##### `formatDocumentationLinkComment` — Summary
@@ -157,14 +160,14 @@ Formatted comment string (e.g. `// Live Documentation: path.mdmd.md#slug`).
 
 #### `runDocumentationLinkEnforcement` {#symbol-rundocumentationlinkenforcement}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L312)
+- Source: [source](../../../../../../packages/shared/src/tooling/documentationLinks.ts#L315)
 - Returns: [`DocumentationLinkEnforcementResult`](#symbol-documentationlinkenforcementresult)
 - Parameters: `options`: [`RunDocumentationLinkEnforcementOptions`](#symbol-rundocumentationlinkenforcementoptions)
 
 ##### `runDocumentationLinkEnforcement` — Summary
 Runs the full documentation-link enforcement pass across the workspace.
 
-Scans documentation files for `mdmd:code` markers, resolves them to code
+Scans documentation files for `live-docs:code` (or legacy `mdmd:code`) markers, resolves them to code
 files, and verifies that each code file contains the correct breadcrumb
 comment pointing back to its documentation section. Optionally auto-fixes.
 

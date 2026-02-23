@@ -282,7 +282,7 @@ export interface StaticExplorerData {
      * 
      * @remarks
      * This enables static bundles to include brownfield documentation
-     * (READMEs, chat history summaries, MDMD specs) that are linked from
+     * (READMEs, chat history summaries, spec documents) that are linked from
      * Live Docs but are not themselves source code artifacts.
      */
     bundledMarkdown?: Record<string, string>;

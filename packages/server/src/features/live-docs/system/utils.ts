@@ -32,7 +32,7 @@ export function resolveOutputDirectory(workspaceRoot: string, outputDir: string)
  * Computes absolute and workspace-relative paths for a System-layer document.
  *
  * Combines the Live Docs config root, system layer name, archetype subdirectory,
- * and slug to produce a deterministic `.mdmd.md` path. When {@link args.outputRoot}
+ * and slug to produce a deterministic Live Doc path using the configured extension. When {@link args.outputRoot}
  * is supplied, paths are resolved against that directory instead of the workspace.
  */
 export function resolveSystemDocPaths(args: {

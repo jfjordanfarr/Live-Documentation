@@ -9,7 +9,7 @@ import type { LiveDocRenderSection } from "@live-documentation/shared/live-docs/
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Discriminant for the six MDMD Layer 3 system document archetypes.
+ * Discriminant for the six Live Documentation Layer 3 system document archetypes.
  *
  * Each archetype corresponds to a distinct analytical strategy in the
  * system generator's plan builders. The generator materialises one

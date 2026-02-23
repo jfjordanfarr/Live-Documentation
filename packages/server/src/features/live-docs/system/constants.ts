@@ -16,7 +16,7 @@ import type { Layer3Archetype, SystemGeneratorLogger } from "./types";
 
 /**
  * Short prefix codes for Layer-3 archetypes, used when composing
- * System-layer output filenames (e.g. `COMP-card-widget.mdmd.md`).
+ * System-layer output filenames (e.g. `COMP-card-widget.md`).
  *
  * Note: `"data-model"` is present in the map but excluded from
  * {@link SUPPORTED_LAYER3_ARCHETYPES} — it was deferred during the

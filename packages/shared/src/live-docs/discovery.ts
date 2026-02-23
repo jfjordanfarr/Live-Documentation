@@ -156,8 +156,8 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
  * @param options - Configuration for the index build.
  * @param options.targetFiles - Absolute paths to all files being processed.
  * @param options.workspaceRoot - Absolute path to the workspace root.
- * @param options.liveDocsRoot - Workspace-relative path to the Live Docs root (e.g., ".mdmd/layer-4").
- * @param options.docExtension - File extension for Live Docs (e.g., ".mdmd.md").
+ * @param options.liveDocsRoot - Workspace-relative path to the Live Docs root (e.g., ".live-documentation/source").
+ * @param options.docExtension - File extension for Live Docs (e.g., ".md").
  *
  * @returns A map from symbol names to their resolved Live Doc locations.
  *
@@ -166,10 +166,10 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
  * const index = await buildWorkspaceSymbolIndex({
  *   targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
  *   workspaceRoot: "/workspace",
- *   liveDocsRoot: ".mdmd/layer-4",
- *   docExtension: ".mdmd.md"
+ *   liveDocsRoot: ".live-documentation/source",
+ *   docExtension: ".md"
  * });
- * // index.get("Widget") => [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", ... }]
+ * // index.get("Widget") => [{ liveDocPath: ".live-documentation/source/src/types.ts.md", ... }]
  * ```
  *
  * @see WorkspaceSymbolIndex

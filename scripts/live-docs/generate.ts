@@ -249,7 +249,7 @@ async function main(): Promise<void> {
 
   const dryRunSuffix = args.dryRun ? " (dry-run)" : "";
   console.log(
-    `[live-docs] Layer 4 processed ${layer4Result.processed} file(s)${dryRunSuffix}: ${layer4Counts.created} created, ${layer4Counts.updated} updated, ${layer4Counts.unchanged} unchanged, ${layer4Counts.skipped} skipped, ${layer4Result.deleted} deleted.`
+    `[live-docs] Base layer processed ${layer4Result.processed} file(s)${dryRunSuffix}: ${layer4Counts.created} created, ${layer4Counts.updated} updated, ${layer4Counts.unchanged} unchanged, ${layer4Counts.skipped} skipped, ${layer4Result.deleted} deleted.`
   );
 
   const createdLayer4Docs = layer4Result.files.filter((record) => record.change === "created");
@@ -296,7 +296,7 @@ async function main(): Promise<void> {
         .map((record) => record.docPath ?? record.sourcePath);
       const remainder = createdLayer4Docs.length - listed.length;
       const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Layer 4 Live Doc(s): ${listed.join(", ")}${suffix}`);
+      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
     }
 
     if (createdLayer3Docs.length > 0) {
@@ -315,7 +315,7 @@ async function main(): Promise<void> {
       const remainder = deletedLayer4Docs.length - listed.length;
       const suffix = remainder > 0 ? `, +${remainder} more` : "";
       const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
-      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Layer 4 Live Doc(s): ${listed.join(", ")}${suffix}`);
+      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
     }
 
     if (deletedLayer3Docs.length > 0) {
@@ -341,7 +341,7 @@ async function main(): Promise<void> {
         .map((record) => record.docPath ?? record.sourcePath);
       const remainder = createdLayer4Docs.length - listed.length;
       const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Layer 4 Live Doc(s): ${listed.join(", ")}${suffix}`);
+      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
     }
 
     if (deletedLayer4Docs.length > 0) {
@@ -349,7 +349,7 @@ async function main(): Promise<void> {
       const remainder = deletedLayer4Docs.length - listed.length;
       const suffix = remainder > 0 ? `, +${remainder} more` : "";
       const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
-      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Layer 4 Live Doc(s): ${listed.join(", ")}${suffix}`);
+      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
     }
 
     console.log("[live-docs] System materialisation skipped. Use npm run live-docs:system for on-demand views.");

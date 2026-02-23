@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2026-02-16T03:54:27.431Z
+- Generated At: 2026-02-23T21:32:12.783Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files 
 - The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T03:54:27.431Z","inputHash":"159463a7d59a7a21"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:12.783Z","inputHash":"9292ce3f3866681b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}
@@ -30,7 +30,7 @@ workspace artifact and its extracted metadata.
 
 Nodes are keyed by `codePath` (workspace-relative source path) and carry
 resolved dependency edges, public symbol names, and per-symbol documentation
-extracted from the corresponding `.mdmd.md` file.
+extracted from the corresponding Live Doc file.
 
 #### `LiveDocGraph` {#symbol-livedocgraph}
 - Type: interface
@@ -45,7 +45,7 @@ pathfinder CLI, and the lint disconnected-node check.
 
 - `nodes` — forward lookup by source path.
 - `inbound` — reverse index: for a given target, which sources depend on it.
-- `docToCode` — maps `.mdmd.md` doc paths back to their source paths.
+- `docToCode` — maps Live Doc paths back to their source paths.
 
 #### `BuildLiveDocGraphOptions` {#symbol-buildlivedocgraphoptions}
 - Type: interface

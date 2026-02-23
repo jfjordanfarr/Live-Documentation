@@ -116,7 +116,10 @@ export function looksLikeDocsPath(filePath: string): boolean {
 }
 
 /**
- * Infers the artifact layer from MDMD metadata or file path conventions.
+ * Infers the artifact layer from metadata or file path conventions.
+ *
+ * Supports both the default Live Docs layout (`.live-documentation/source/`)
+ * and the MDMD-convention layout (`.mdmd/layer-N/`).
  */
 export function inferDocumentLayer(
   metadataLayer: string | undefined,

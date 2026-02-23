@@ -28,6 +28,7 @@ const EXCLUDED_PATH_FRAGMENTS = [
   "/build/",
   "/coverage/",
   "/.git/",
+  "/.live-documentation/",
   "/.mdmd/",
   "/docs/",
   "/specs/",

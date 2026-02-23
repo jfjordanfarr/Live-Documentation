@@ -204,7 +204,11 @@ export function createDetailPanel(
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${currentNode.name}.mdmd.md`;
+      // Derive extension from node's actual docPath (supports any configured extension)
+      const docExt = currentNode.docPath.includes(".")
+        ? currentNode.docPath.slice(currentNode.docPath.indexOf(".", currentNode.docPath.lastIndexOf("/") + 1))
+        : ".md";
+      a.download = `${currentNode.name}${docExt}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -360,13 +364,18 @@ function renderAuthoredContent(
   onNodeClick?: (nodeId: string) => void
 ): string {
   // Create link handler with smart routing rules:
-  // 1. Links to .mdmd.md files → navigate within explorer
+  // 1. Links that resolve to a graph node → navigate within explorer
   // 2. Links to external URLs → open in new tab
-  // 3. Links to workspace files (not Live Docs) → external link (static) or VS Code (server)
+  // 3. Links to other .md files → treat as bundled doc
+  // 4. Other workspace files → external link
   const linkHandler = (href: string, text: string): string => {
-    // Check if this is a Live Doc link
-    if (href.endsWith(".mdmd.md")) {
-      const resolvedId = resolveRelativePath(href, node.docPath, nodesById);
+    // Strip fragment for path resolution (e.g., "file.md#section" → "file.md")
+    const hrefWithoutFragment = href.split("#")[0];
+
+    // First, try to resolve as an in-explorer Live Doc link (extension-agnostic).
+    // Any .md href that matches a known graph node gets in-explorer navigation.
+    if (hrefWithoutFragment.endsWith(".md")) {
+      const resolvedId = resolveRelativePath(hrefWithoutFragment, node.docPath, nodesById);
       if (resolvedId && onNodeClick) {
         return `<a href="#" class="node-link" data-node-id="${escapeHtml(resolvedId)}">${text}</a>`;
       }
@@ -377,11 +386,8 @@ function renderAuthoredContent(
       return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
     }
     
-    // Check if this is a markdown file (potential bundled doc)
-    // Strip fragment identifier for the .md check (e.g., "file.md#L100" → "file.md")
-    const hrefWithoutFragment = href.split("#")[0];
+    // Markdown file that didn't resolve to a node → potential bundled doc
     if (hrefWithoutFragment.endsWith(".md")) {
-      // Resolve the relative path to workspace-relative (keep fragment for display, but path resolution uses the file path)
       const resolvedPath = resolveRelativePathToWorkspace(hrefWithoutFragment, node.docPath);
       return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(resolvedPath)}">${text}</a>`;
     }
@@ -676,8 +682,9 @@ function resolveRelativePathToWorkspace(
     return relativePath.slice(1); // Remove leading slash
   }
   
-  // Get the directory of the source doc (remove .mdmd.md folder prefix if present)
-  // e.g., ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md" → "packages/server/src"
+  // Get the directory of the source doc, stripping the Live Docs root prefix.
+  // e.g., ".live-documentation/source/packages/server/src/main.ts.md" → "packages/server/src"
+  //        ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md"       → "packages/server/src"
   let sourceDir = fromDocPath;
   
   // Remove the Live Doc filename
@@ -686,7 +693,8 @@ function resolveRelativePathToWorkspace(
     sourceDir = sourceDir.substring(0, lastSlash);
   }
   
-  // Remove .mdmd/layer-4 prefix if present (Live Docs are in this folder but link to workspace root)
+  // Remove Live Docs root prefix (supports both default and MDMD-style layouts)
+  sourceDir = sourceDir.replace(/^\.live-documentation\/[^/]+\//, "");
   sourceDir = sourceDir.replace(/^\.mdmd\/layer-\d+\//, "");
   
   // Resolve the relative path
@@ -755,7 +763,7 @@ function createBundledDocLinkHandler(
 
 /**
  * Resolve a relative path from a bundled doc to a workspace-relative path.
- * Similar to resolveRelativePathToWorkspace but doesn't strip .mdmd/layer-4 prefix.
+ * Similar to resolveRelativePathToWorkspace but doesn't strip the Live Docs root prefix.
  */
 function resolveRelativePathFromBundledDoc(
   relativePath: string,

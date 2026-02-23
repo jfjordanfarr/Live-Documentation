@@ -37,7 +37,7 @@ export interface SourceAnalysisResult {
  */
 export interface ResolvedSymbolLocation {
   /**
-   * Workspace-relative path to the Live Doc file (e.g., ".mdmd/layer-4/src/types.ts.mdmd.md").
+   * Workspace-relative path to the Live Doc file (e.g., ".live-documentation/source/src/types.ts.md").
    */
   liveDocPath: string;
 
@@ -73,8 +73,8 @@ export interface ResolvedSymbolLocation {
  * @example
  * ```typescript
  * const index: WorkspaceSymbolIndex = new Map([
- *   ["Widget", [{ liveDocPath: ".mdmd/layer-4/src/types.ts.mdmd.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
- *   ["processWidget", [{ liveDocPath: ".mdmd/layer-4/src/core.ts.mdmd.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
+ *   ["Widget", [{ liveDocPath: ".live-documentation/source/src/types.ts.md", sourcePath: "src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
+ *   ["processWidget", [{ liveDocPath: ".live-documentation/source/src/core.ts.md", sourcePath: "src/core.ts", anchor: "symbol-processwidget", kind: "function" }]]
  * ]);
  * ```
  *
