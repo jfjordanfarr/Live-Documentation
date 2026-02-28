@@ -39,7 +39,7 @@
   "dependencies": {
     "@live-documentation/shared": "file:../shared",
     "@live-documentation/scripts": "file:../scripts",
-    "glob": "^13.0.0"
+    "glob": "^13.0.6"
   },
   "engines": {
     "node": ">=22.0.0"
