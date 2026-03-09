@@ -30,6 +30,20 @@ Document the visualization command center that renders the Live Doc graph as int
 - The Explorer is strictly read-only. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.
 - **Static Distribution (LD-810–LD-819)**: Enable zero-server distribution via JSON bundles, GitHub Pages embedding, and standalone HTML viewers. The `StaticExplorerData` schema wraps the graph payload with provenance metadata and a symbol index for client-side search. Distribution scenarios include GitHub Pages (alongside Layer-1 markdown), Hosted Showcase bundles (REQ-H1), Teams Card embedding, and offline analysis.
 
+### Pathfinding Rendering
+
+The Local Map supports **path mode** when `FROM` and `TO` inputs are populated. The current implementation renders a single shortest path as a linear chain of hop columns (`FROM → Via 1 → Via 2 → … → TO`). Pathfinding uses BFS with a single-parent map (`Map<string, string>`), so when multiple shortest paths exist, only one arbitrary path is returned.
+
+Three planned enhancements address this limitation (see `AI-Agent-Workspace/Notes/multi-path-visualization-design.md` for full specification with ASCII diagrams):
+
+1. **All-Shortest-Paths Merged DAG** — Replace the single-parent BFS with a multi-parent variant (`Map<string, Set<string>>`) to reconstruct every shortest path. Where paths diverge, the hop column stacks multiple cards vertically. Connections fan out and converge across the DAG.
+
+2. **Near-Miss (+1) Paths** — After finding shortest paths at depth _k_, continue BFS one additional level to collect paths of length _k_+1. These render with dashed borders, reduced opacity, and dashed connection lines. A toolbar toggle controls visibility (default off).
+
+3. **Symbol-Divergent Paths Through Same File** — Port the CLI's symbol-aware BFS (`pathfind-symbol.ts`) to the Explorer client. When two shortest paths traverse the same file sequence via different symbols, multiple connection lines route through distinct symbol anchors on the same card. Each chain gets a unique color; hovering highlights the full chain end-to-end.
+
+These enhancements are additive and depend on the multi-hop rendering architecture documented in `AI-Agent-Workspace/Notes/multi-hop-local-map-architecture.md` (dynamic column count, hop-aware anchors, HopChain data model). Each can ship independently in the order listed.
+
 ## System References
 
 ### Components

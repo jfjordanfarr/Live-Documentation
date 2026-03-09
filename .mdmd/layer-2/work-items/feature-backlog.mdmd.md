@@ -76,6 +76,18 @@ Track the granular work breakdown for Live Documentation development, organised 
 - [ ] LD-408 Add accessibility + telemetry harnesses (axe-core, keyboard, Playwright)
 - [x] LD-409 Implement Local Map `From`/`To` pathfinding
 
+### Phase 4b – Multi-Path Pathfinding (Stream LV1-F)
+
+- [ ] LD-410 Replace single-parent BFS with multi-parent BFS in CLI `pathfind.ts` and Explorer `pathfind.ts`
+- [ ] LD-411 Implement all-shortest-paths DAG reconstruction from multi-parent map
+- [ ] LD-412 [P] Render merged DAG in Local Map path mode (stacked cards in hop columns)
+- [ ] LD-413 Extend BFS to collect near-miss (+1) paths; add toolbar toggle (default off)
+- [ ] LD-414 [P] Add dimmed/dashed CSS styling for near-miss cards and connection lines
+- [ ] LD-415 Port symbol-aware BFS (`pathfind-symbol.ts`) to Explorer client
+- [ ] LD-416 [P] Render symbol-divergent paths as color-coded multi-line connections through shared cards
+- [ ] LD-417 Add performance guardrails (path caps, chain caps) for multi-path rendering
+- [ ] LD-418 Update `tracing-impact.mdmd.md` and Explorer guides with multi-path documentation
+
 ## Phase 5 – Docstring Drift & Optional Authoring _(Deferred / Wishlist)_
 
 - [ ] LD-500 Emit docstring bridge config from generator

@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Feb 20, 2026\)*
+*Status: Active Development (Feb 23, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -37,8 +37,6 @@ Live Documentation is delivered through six channels, each backed by the same un
 | 5 | **Headless JSON API** | HTTP / \--json flags | AI agents, automation scripts, CI | Shipped (Local Map endpoint \+ all CLI \--json modes) |
 | 6 | **Raw Markdown** | .md files in-repo | AI agents, wiki surfaces, git reviewers | Shipped (deterministic Layer-4 mirror) |
 
-This design means that "consuming Live Documentation" need not involve any GUI at all. The markdown files *are* the product. Every other surface is a view over them.
-
 ### **User Personas**
 
 | Persona | How They Consume | What They Care About |
@@ -48,8 +46,6 @@ This design means that "consuming Live Documentation" need not involve any GUI a
 | **Technical Writers & PMs** | live-docs:lint in Problems panel, authored Purpose/Notes sections, wiki publishing | "Are the docs in sync with reality?" — structural validation, broken link detection |
 | **AI Coding Assistants** | Raw markdown (Layer-4 Live Docs as structured context), \--json CLI output as prompt fuel, .github/instructions/\*.instructions.md for glob-gated context injection | "What does this file do, what depends on it, and what evidence exists?" — structured ground truth that fits in a context window. Live Docs are *designed* to be consumed by LLMs: each file has a deterministic, anchored surface (Public Symbols, Dependencies, Observed Evidence) that an agent can parse without heuristic scraping. |
 | **CI Pipelines & Automation** | live-docs:lint exit codes, \--json reports, CI pre-merge hooks | "Is the codebase structurally sound?" — automated quality gates, regression detection, benchmark tracking |
-
-The distinction between the last two personas matters: AI agents consume Live Docs *during* development (as grounding context for code generation and review), while CI pipelines consume them *after* development (as validation gates). Both are **headless consumers** — they never open a browser or an IDE.
 
 ### **Core Workflows**
 
@@ -260,7 +256,7 @@ With the Live Docs engine in place, the team proved its universality by implemen
   * **C:** Parses Doxygen (/\*\* @brief \*/).  
   * **Java:** Parses Javadoc and strips HTML tags.  
   * **PowerShell (Commit 95):** Parses Synopsis/Description/Parameter comments.  
-* **C\# & ASP.NET:** Implemented csharpAdapter and aspnetAdapter (11/17) to handle complex, framework-heavy apps (Razor Pages, Controllers), parsing \<see\> tags and XML docs.  
+* **C\# & ASP.NET:** Implemented csharpAdapter and aspnetAdapter (11/17) to handle complex, framework-heavy apps (Razor Pages, Controllers), parsing tags and XML docs.  
 * **Hangfire & Queue Workers (Commit 89):** The csharp-queue-worker benchmark fixture modeled a **Hangfire** recurring job setup, proving the system can trace execution paths through job scheduling libraries.  
 * **Roslyn Integration (Commit 66):** The team integrated a slice of the **Roslyn compiler source** as a benchmark fixture, proving the system can handle the "meta" case of analyzing a C\# compiler written in C\#.  
 * **ASP.NET Core Support (Commits 86–87):** The team added specific support for **Blazor** and **ASP.NET Core** configurations (appsettings.json, Startup.cs). The graph can now trace telemetry from a Blazor client-side component all the way to the server-side controller, crossing the JS/C\# boundary.  
@@ -338,7 +334,7 @@ The system underwent a massive refactor to pay down technical debt and pushed in
 
 * **The "Core" Refactor (Commit 125):** The shared core.ts file had ballooned to 3,254 lines. It was exploded into **14 focused modules** (rendering.ts, symbolExtraction.ts, dependencies.ts, etc.), decisively enforcing the "500-line limit" rule across the entire stack.  
 * **The "Generator" Refactor (Commit 126):** The backend generator.ts (1847 lines) was decomposed into **10 capability modules** (plans/componentPlan.ts, rendering.ts, etc.). *Note: Committed early Dec 7 but represents the culmination of the Dec 6 refactor.* \* **Type Reference Extraction (Commit 109):** The typeScriptAdapter was upgraded to extract complex types (extends, implements, function return types, parameter types). It includes an isPrimitiveOrBuiltin filter to ignore noise (e.g., string, Promise). This is the backend logic that powers the "Cyan Lines" visualization.  
-* **Type Resolution Engine (Commit 110):** The Live DocsGenerator now builds a symbolIndex to resolve type names (e.g., returns: Promise\<Widget\>) to concrete file paths, creating clickable links instead of just text strings.  
+* **Type Resolution Engine (Commit 110):** The Live DocsGenerator now builds a symbolIndex to resolve type names (e.g., returns: Promise) to concrete file paths, creating clickable links instead of just text strings.  
 * **Systems Language Depth (C/C++):** The cAdapter was upgraded to parse specific function declarations and macro usages, enabling the graph to trace individual C function calls across files (Commit 123). *Note: While the intent was C-focused, the implementation incidentally enables deep C++ support due to shared syntax.* \* **C\# Inheritance Visualization:** The C\# adapter was upgraded to parse inheritance (: BaseClass). The graph now shows class hierarchies, not just file imports.  
 * **Chat Archaeology (Commit 121):** The team performed a massive documentation sweep, updating 30 Layer 3 docs to match the implemented reality and filling in "Purpose/Notes" sections by referencing historical chat logs.
 
@@ -863,6 +859,20 @@ The team executed a decisive refinement of the user experience and the internal 
 * **The Explorer Refactor:** Dismantled the 1763-line index.ts monolith. Extracted dataLoader.ts (bundled docs fetching), download.ts (export logic), and views/forceGraphView.ts (3D visualization), bringing the entry point down to 941 lines and adhering to the project's stewardship rules.  
 * **Tech Debt Purge:** Deleted the final vestiges of better-sqlite3, obsolete refactor plans, and redundant scripts, achieving a net reduction of dead code weight.
 
+### **Phase LVIII: Structural Maturity & Convention Decoupling (Feb 23\)**
+
+Date: February 23, 2026
+
+Scope: Commits 257–259
+
+The project formally outgrew its bootstrapping scaffolding, transitioning from a workspace with specialized "Spec-Kit" rules into a mature, extension-agnostic product.
+
+* **Local Map Logic Correction (Commit 257):** Resolved critical pathfinding direction bugs in the Explorer. Fixed a column-role mismatch in the 2-node special case and a symbol-parameter swap in multi-hop mode that was causing connections to fail or point to the wrong symbols.  
+* **MDMD Decontamination (Commit 258):** In a major "Generalization" pass, hardcoded MDMD workspace conventions were scrubbed from the software layer. The system is now truly extension-agnostic, deriving link routing, download filenames, and prefix stripping from graph configuration rather than assuming .mdmd.md.  
+* **Internal Rename & Back-Compat:** Renamed internal types from Mdmd\* to LiveDoc\* (e.g., LiveDocDocumentDetails) to align with the product's identity, while retaining deprecated aliases for seamless workspace maintenance.  
+* **Spec-Kit Retirement (Commit 259):** Retired the foundational specs/ and .specify/ folders. Unique architectural knowledge, BDD scenarios, and domain model descriptions were losslessly migrated into permanent MDMD Layer 2 and 3 artifacts, consolidating the documentation library.  
+* **Instruction Hardening:** Updated copilot-instructions.md to reflect the retired scaffolding and provide a "Living Library" of links to the newly migrated permanent knowledge layers.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -905,7 +915,8 @@ The team executed a decisive refinement of the user experience and the internal 
 * **Feb 17 (Phase LIV):** "The SCIP Migration." (Replacing heuristic oracles with compiler indexers).  
 * **Feb 17 (Phase LV):** "The Great De-AI." (Removing LLM integration to focus on deterministic tooling).  
 * **Feb 18 (Phase LVI):** "The Diagnostics Extinction." (Deleting the legacy linter to focus on the Explorer).  
-* **Feb 20 (Phase LVII):** "Experience Consolidation & Monolith Extraction." (Refining headless personas and refactoring the Explorer).
+* **Feb 20 (Phase LVII):** "Experience Consolidation & Monolith Extraction." (Refining headless personas and refactoring the Explorer).  
+* **Feb 23 (Phase LVIII):** "Convention Decontamination & Scaffolding Retirement." (Decoupling from MDMD hardcodes and retiring Spec-Kit).
 
 ## **Technical Themes & Motifs**
 

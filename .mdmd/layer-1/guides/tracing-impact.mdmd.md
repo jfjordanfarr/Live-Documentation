@@ -1,6 +1,7 @@
 # Tracing Impact with Live Documentation
 
 ## Metadata
+
 - Layer: 1
 - Guide Type: task-tutorial
 
@@ -85,11 +86,11 @@ Returns structured data:
 
 ### Output Kinds
 
-| Kind | Meaning |
-|------|---------|
-| `path` | A path was found between from and to |
-| `fanout` | No `--to` provided; shows terminal paths |
-| `not-found` | No connection exists (exit code 1) |
+| Kind        | Meaning                                  |
+| ----------- | ---------------------------------------- |
+| `path`      | A path was found between from and to     |
+| `fanout`    | No `--to` provided; shows terminal paths |
+| `not-found` | No connection exists (exit code 1)       |
 
 ### Diagnosing "Not Found"
 
@@ -128,6 +129,14 @@ Every pathfinding result generates a stable URL. Share it with colleagues:
 http://localhost:3000/?view=local&from=src/auth.ts&to=src/api.ts
 ```
 
+### Planned: Multi-Path Rendering
+
+The current Explorer renders **one** shortest path. Planned enhancements (Stream LV1-F) will surface richer pathfinding results:
+
+- **All shortest paths**: When multiple equally-short routes exist, the Local Map renders them as a merged DAG — divergent intermediaries stack vertically within their hop column, with connections fanning out and converging.
+- **Near-miss (+1) paths**: Alternate paths one hop longer than the shortest render with dashed borders and dimmed connections. A toolbar toggle controls visibility.
+- **Symbol-divergent paths**: When two shortest paths traverse the same files via different symbols, each chain renders as a distinct color-coded connection line routed through separate symbol anchors on the same card. Hovering highlights the full chain.
+
 ---
 
 ## Common Patterns
@@ -160,14 +169,14 @@ npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
 
 ## CLI Reference
 
-| Flag | Description |
-|------|-------------|
-| `--from <path[#symbol]>` | Starting artifact (required for pathfinding) |
-| `--to <path[#symbol]>` | Destination artifact (optional; omit for fan-out) |
-| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`) |
-| `--max-depth <n>` | Maximum hops (default: 25) |
-| `--json` | Machine-readable output |
-| `--verbose` | Include additional diagnostics |
+| Flag                                    | Description                                       |
+| --------------------------------------- | ------------------------------------------------- |
+| `--from <path[#symbol]>`                | Starting artifact (required for pathfinding)      |
+| `--to <path[#symbol]>`                  | Destination artifact (optional; omit for fan-out) |
+| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`)         |
+| `--max-depth <n>`                       | Maximum hops (default: 25)                        |
+| `--json`                                | Machine-readable output                           |
+| `--verbose`                             | Include additional diagnostics                    |
 
 ---
 

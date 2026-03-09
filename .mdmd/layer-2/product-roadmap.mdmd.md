@@ -126,6 +126,16 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 - [x] When both endpoints are provided, run pathfinding automatically (debounced) and expand the Local Map beyond one hop to render the multi-hop chain (including join points) using the same hop semantics the CLI emits.
 - [x] When no path exists, provide deterministic "no connection" feedback rather than silently showing unrelated neighbors.
 
+#### Stream LV1-F – Multi-Path Visualization _(planned)_
+
+- [ ] Replace single-parent BFS (`Map<string, string>`) with multi-parent BFS (`Map<string, Set<string>>`) in both CLI and Explorer pathfinding so all shortest paths can be reconstructed.
+- [ ] Render all-shortest-paths as a merged DAG in the Local Map: divergent nodes stack vertically within their hop column, connections fan out and converge.
+- [ ] Extend BFS to collect near-miss paths at depth _k_+1 after finding shortest paths at depth _k_; render near-miss cards and connections with dashed/dimmed styling.
+- [ ] Add a pathfind toolbar toggle to show/hide near-miss (+1) paths (default: off).
+- [ ] Port symbol-aware BFS (`pathfind-symbol.ts`) from CLI to Explorer client, enabling detection of symbol-divergent paths through the same file sequence.
+- [ ] Render symbol-divergent paths as multiple color-coded connection lines routed through distinct symbol anchors on the same card; hovering a chain highlights it end-to-end.
+- [ ] Cap displayed paths with performance guardrails (max 8 shortest paths, max 4 near-miss paths, max 6 symbol chains per file pair).
+
 ### REQ-G1 Docstring Drift & Optional Authoring (Wishlist)
 
 Supports CAP-006 by keeping docstring extraction and drift visibility reliable (code → docs), while explicitly deferring docs → code write-back and scaffolding to an opt-in wishlist item.
