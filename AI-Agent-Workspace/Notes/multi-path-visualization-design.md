@@ -99,11 +99,11 @@ Both `auth.ts` and `guard.ts` are valid intermediaries at hop 1. They are stacke
 
 ## Proposed Enhancement 2: Near-Miss (+1) Paths
 
-### Motivation
+### Near-Miss Motivation
 
 Sometimes the "interesting" path is one hop longer than the shortest. A maintainer may want to see that `FROM → A → B → C → TO` exists alongside the 3-hop shortest path, because `B` is a critical module.
 
-### Algorithm Change
+### Near-Miss Algorithm Change
 
 After BFS finds the shortest path at depth `k`, continue BFS for **one additional level** (`k+1`). Paths of length `k+1` that reach `TO` are collected as "near-miss" paths.
 
@@ -116,7 +116,7 @@ while (queue.length > 0) {
 }
 ```
 
-### Rendering
+### Near-Miss Rendering
 
 Near-miss paths render with **dimmed/dashed** styling to distinguish them from shortest paths:
 
@@ -156,7 +156,7 @@ Near-miss paths render with **dimmed/dashed** styling to distinguish them from s
 
 ## Proposed Enhancement 3: Symbol-Divergent Paths Through Same File
 
-### Motivation
+### Symbol-Divergent Motivation
 
 Two shortest paths may traverse the **same files** but through **different symbols**. At file level they look identical, but at symbol level they represent distinct dependency chains. The current file-level BFS cannot distinguish them.
 
@@ -170,11 +170,11 @@ FROM: main.ts#startApp
 
 Both paths go `main.ts → middleware.ts → handler.ts → db.ts`, but through completely different symbols.
 
-### Algorithm Change
+### Symbol-Divergent Algorithm Change
 
 Port `searchSymbolPath()` from the CLI (`pathfind-symbol.ts`) to the Explorer client. The symbol-aware BFS uses composite visited keys (`filePath#symbolName`) so the same file can appear multiple times in the visited set with different symbols.
 
-### Rendering
+### Symbol-Divergent Rendering
 
 Same file cards appear once per column, but **multiple connection lines** route through different symbol anchors on the card:
 
