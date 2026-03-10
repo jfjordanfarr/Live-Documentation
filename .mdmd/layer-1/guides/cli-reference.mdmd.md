@@ -1,6 +1,7 @@
 # CLI Reference
 
 ## Metadata
+
 - Layer: 1
 - Guide Type: reference
 
@@ -14,11 +15,11 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 
 ### Generation & Materialization
 
-| Command | Purpose |
-|---------|---------|
-| `npm run live-docs:generate` | Regenerate Live Docs for tracked files |
-| `npm run live-docs:system` | Materialize System-layer views on demand |
-| `npm run live-docs:targets` | Rebuild the target manifest |
+| Command                      | Purpose                                  |
+| ---------------------------- | ---------------------------------------- |
+| `npm run live-docs:generate` | Regenerate Live Docs for tracked files   |
+| `npm run live-docs:system`   | Materialize System-layer views on demand |
+| `npm run live-docs:targets`  | Rebuild the target manifest              |
 
 #### `live-docs:generate`
 
@@ -73,8 +74,8 @@ npm run live-docs:system -- --output ./system-views --clean
 
 ### Validation & Linting
 
-| Command | Purpose |
-|---------|---------|
+| Command                  | Purpose                               |
+| ------------------------ | ------------------------------------- |
 | `npm run live-docs:lint` | Validate Live Doc structure and links |
 
 #### `live-docs:lint`
@@ -86,6 +87,7 @@ npm run live-docs:lint -- --workspace /path/to/repo
 ```
 
 **What's Enforced:**
+
 - Relative links only (no absolute paths)
 - Generated-marker integrity (fences intact)
 - Evidence presence (unless waived)
@@ -95,8 +97,8 @@ npm run live-docs:lint -- --workspace /path/to/repo
 
 ### Inspection & Pathfinding
 
-| Command | Purpose |
-|---------|---------|
+| Command                     | Purpose                                      |
+| --------------------------- | -------------------------------------------- |
 | `npm run live-docs:inspect` | Query dependency paths and artifact metadata |
 | `npm run live-docs:orphans` | Find Live Docs without corresponding sources |
 
@@ -141,35 +143,16 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 ### Visualization
 
-| Command | Purpose |
-|---------|---------|
-| `npm run live-docs:visualize` | Launch interactive Explorer server |
-| `npm run live-docs:visualize:static` | Build static Explorer bundle |
+| Command                       | Purpose                      |
+| ----------------------------- | ---------------------------- |
+| `npm run live-docs:visualize` | Build static Explorer bundle |
 
 #### `live-docs:visualize`
 
-Launches the Explorer HTTP server with Circuit Board, Local Map, and Force Graph views.
+Builds a fully static Explorer bundle with Circuit Board, Local Map, and Force Graph views. Deployable to GitHub Pages or any static host.
 
 ```powershell
-npm run live-docs:visualize -- --port 8080
-```
-
-**Options:**
-| Flag | Description |
-|------|-------------|
-| `--port <number>` | HTTP port (default: 3000) |
-
-**JSON API:**
-```powershell
-Invoke-RestMethod "http://localhost:3000/local-map?nodeId=<path>&pretty=1"
-```
-
-#### `live-docs:visualize:static`
-
-Builds a fully static Explorer bundle for GitHub Pages or any static host.
-
-```powershell
-npm run live-docs:visualize:static -- --output ./public --pretty
+npm run live-docs:visualize -- --output ./public --pretty
 ```
 
 **Options:**

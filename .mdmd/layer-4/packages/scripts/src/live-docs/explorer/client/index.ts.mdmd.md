@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2026-02-20T21:08:00.163Z
+- Generated At: 2026-03-09T19:16:51.711Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-20T21:08:00.163Z","inputHash":"df46ab799d136a1c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.711Z","inputHash":"5d82cc9b3d8ace10"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -65,6 +65,13 @@ _No public symbols detected_
 - [`staticExplorerData.BundledMarkdownTreeNode`](../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 - [`staticExplorerData.RelatedDocLink`](../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - [`staticExplorerData.StaticExplorerViewerConfig`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerviewerconfig) (type-only)
+- [`template.context-name`](../shared/template.html.mdmd.md#symbol-contextname)
+- [`template.pathfind-path`](../shared/template.html.mdmd.md#symbol-pathfindpath)
+- [`template.pathfind-status`](../shared/template.html.mdmd.md#symbol-pathfindstatus)
+- [`template.sidebar`](../shared/template.html.mdmd.md#symbol-sidebar)
+- [`template.sidebar-toggle`](../shared/template.html.mdmd.md#symbol-sidebartoggle)
+- [`template.stats-line`](../shared/template.html.mdmd.md#symbol-statsline)
+- [`template.view-map`](../shared/template.html.mdmd.md#symbol-viewmap)
 - [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

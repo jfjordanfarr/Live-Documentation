@@ -10,12 +10,13 @@
 
 ### Purpose
 
-Document the visualization command center that renders the Live Doc graph as interactive views—Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—served via HTTP for browser-based exploration.
+Document the visualization command center that renders the Live Doc graph as interactive views—Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—built as a static bundle for browser-based exploration.
 
 ### Notes
 
-- Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with server, client, and shared modules.
-- The server (`explorer/server/`) builds the graph payload from Layer-4 Live Docs and serves static HTML/CSS/JS assets.
+- Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with client and shared modules.
+- The shared layer (`explorer/shared/`) builds the graph payload from Layer-4 Live Docs and bundles HTML/CSS/JS assets into a static Explorer.
+- The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`.
 - The client (`explorer/client/`) renders three view modes:
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
   - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
@@ -48,11 +49,10 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 ### Components
 
-#### Server
+#### Build Utilities
 
-- [packages/scripts/src/live-docs/explorer/server/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/server/graph.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/graph.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/server/buildAssets.ts](../layer-4/packages/scripts/src/live-docs/explorer/server/buildAssets.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/graph.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/graph.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/shared/buildAssets.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/buildAssets.ts.mdmd.md)
 
 #### Shared
 
@@ -126,6 +126,6 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 ## Evidence
 
-- `npm run live-docs:visualize` launches the HTTP server and opens the browser; manual smoke tests validate view switching and connection rendering.
+- `npm run live-docs:visualize` builds a static Explorer bundle; manual smoke tests validate view switching and connection rendering.
 - Unit tests for symbol anchor normalisation live in `symbolAnchors.test.ts`.
 - December 2025 chat sessions (12/03–12/06) document the Local Map refinements: gradient connections, column-aware anchors, type-reference edges, and origin-over-barrel preference for inheritance links.

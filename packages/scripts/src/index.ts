@@ -1,9 +1,3 @@
-export {
-  startExplorerServer,
-  type ExplorerServerInstance,
-  type ExplorerServerOptions
-} from "./live-docs/explorer/server/index";
-
 export type {
   ExplorerGraphPayload,
   ExplorerDetailPayload,

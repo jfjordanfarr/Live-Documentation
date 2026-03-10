@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/tuning.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-tuning-ts
-- Generated At: 2026-02-03T21:55:35.996Z
+- Generated At: 2026-03-09T19:16:51.863Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 Extracted from client/index.ts during Dev Day 50 (12/19). The `initTuningPanel()` function binds DOM controls to state mutations, and `syncTuningControlsFromState()` ensures UI reflects persisted preferences.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.996Z","inputHash":"020da7b7d13d37a4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.863Z","inputHash":"e1deba9210ed4ed3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
@@ -51,4 +51,16 @@ Initialize the tuning panel with all slider and checkbox controls.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`template.tuning-alchemy-glow`](../../shared/template.html.mdmd.md#symbol-tuningalchemyglow)
+- [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuningcolumngap)
+- [`template.tuning-double-click-recenter`](../../shared/template.html.mdmd.md#symbol-tuningdoubleclickrecenter)
+- [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuninghoverdimconnections)
+- [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuninghoverdimsymbols)
+- [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuningselflooptaper)
+- [`template.tuning-single-click-focus`](../../shared/template.html.mdmd.md#symbol-tuningsingleclickfocus)
+- [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuningstubfactor)
+- [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuningstubmaxoffset)
+- [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuningstubmin)
+- [`template.tuning-type-badges`](../../shared/template.html.mdmd.md#symbol-tuningtypebadges)
+- [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuningverticaloffset)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-omnisearch-ts
-- Generated At: 2026-02-03T21:55:35.901Z
+- Generated At: 2026-03-09T19:16:51.774Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the Omnisearch bar for fuzzy artifact discovery. Provides keyboard-na
 Extracted from client/index.ts during Dev Day 50 (12/19). The `initOmnisearch()` function sets up the search input handler, result rendering, and keyboard navigation for the Ctrl+P-style search experience.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.901Z","inputHash":"2594f08e29e5421a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.774Z","inputHash":"0f63f4540c534705"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `OmnisearchSelectCallback` {#symbol-omnisearchselectcallback}
@@ -50,6 +50,9 @@ API for programmatic control
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`template.omnisearch`](../../shared/template.html.mdmd.md#symbol-omnisearch)
+- [`template.omnisearch-input`](../../shared/template.html.mdmd.md#symbol-omnisearchinput)
+- [`template.omnisearch-results`](../../shared/template.html.mdmd.md#symbol-omnisearchresults)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,18 +5,18 @@ import type { LiveDocumentationConfig } from "@live-documentation/shared/config/
 import { isBarrelFilePath } from "@live-documentation/shared/live-docs/coreUtils";
 import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
-import {
-    buildLiveDocGraph,
-    type LiveDocGraph,
-    type LiveDocGraphNode
-} from "../../graph/liveDocGraph";
 import type {
     ExplorerGraphPayload,
     ExplorerLinkPayload,
     ExplorerNodePayload,
     ExplorerPublicSymbol,
     ExplorerTypeReference
-} from "../shared/types";
+} from "./types";
+import {
+    buildLiveDocGraph,
+    type LiveDocGraph,
+    type LiveDocGraphNode
+} from "../../graph/liveDocGraph";
 
 type TypeResolver = (token: string) => LiveDocGraphNode | undefined;
 

@@ -295,10 +295,41 @@ function extractHtmlDependencies(params: {
 }
 
 // ============================================================================
+// Symbol Extraction (id attributes)
+// ============================================================================
+
+/**
+ * Matches `id` attributes in HTML elements.
+ *
+ * @remarks
+ * Element `id` attributes are the public API of an HTML file — client code
+ * references them via `getElementById()`. Extracting them as public symbols
+ * enables Live Documentation to track which source files depend on which
+ * DOM elements, completing the HTML→TS dependency graph.
+ */
+const HTML_ID_ATTR = /\bid\s*=\s*(?:"(?<dq>[^"]+)"|'(?<sq>[^']+)')/gi;
+
+function extractHtmlSymbols(content: string): string[] {
+  const ids: string[] = [];
+  const seen = new Set<string>();
+  let match: RegExpExecArray | null;
+  HTML_ID_ATTR.lastIndex = 0;
+  while ((match = HTML_ID_ATTR.exec(content)) !== null) {
+    const id = match.groups?.dq ?? match.groups?.sq;
+    if (id && !seen.has(id)) {
+      seen.add(id);
+      ids.push(id);
+    }
+  }
+  ids.sort((a, b) => a.localeCompare(b));
+  return ids;
+}
+
+// ============================================================================
 // Adapter Export
 // ============================================================================
 
-/** Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies. */
+/** Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies. Extracts element `id` attributes as public symbols. */
 export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],
@@ -312,8 +343,10 @@ export const htmlAdapter: LanguageAdapter = {
       workspaceRoot
     });
 
+    const ids = extractHtmlSymbols(content);
+
     return {
-      symbols: [], // HTML files don't export symbols in the programmatic sense
+      symbols: ids.map(id => ({ name: id, kind: "variable", exportType: "named" })),
       dependencies
     };
   }

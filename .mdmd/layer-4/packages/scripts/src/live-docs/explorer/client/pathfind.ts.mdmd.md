@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/pathfind.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-pathfind-ts
-- Generated At: 2026-02-03T21:55:36.051Z
+- Generated At: 2026-03-09T19:16:51.916Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Pathfinding module providing FROM/TO omnisearch UI, BFS graph traversal, and pat
 - Integrates with URL state for shareable pathfind queries (`from`, `to`, `fromSymbol`, `toSymbol` params)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.051Z","inputHash":"c58ff3f434c2a396"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.916Z","inputHash":"c988b21a05889c2c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PathfindEndpoint` {#symbol-pathfindendpoint}
@@ -109,6 +109,17 @@ Initialize the pathfind toolbar with search and symbol selection
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`template.pathfind-clear`](../shared/template.html.mdmd.md#symbol-pathfindclear)
+- [`template.pathfind-from`](../shared/template.html.mdmd.md#symbol-pathfindfrom)
+- [`template.pathfind-from-clear`](../shared/template.html.mdmd.md#symbol-pathfindfromclear)
+- [`template.pathfind-from-results`](../shared/template.html.mdmd.md#symbol-pathfindfromresults)
+- [`template.pathfind-from-symbol`](../shared/template.html.mdmd.md#symbol-pathfindfromsymbol)
+- [`template.pathfind-go`](../shared/template.html.mdmd.md#symbol-pathfindgo)
+- [`template.pathfind-to`](../shared/template.html.mdmd.md#symbol-pathfindto)
+- [`template.pathfind-to-clear`](../shared/template.html.mdmd.md#symbol-pathfindtoclear)
+- [`template.pathfind-to-results`](../shared/template.html.mdmd.md#symbol-pathfindtoresults)
+- [`template.pathfind-to-symbol`](../shared/template.html.mdmd.md#symbol-pathfindtosymbol)
+- [`template.pathfind-toolbar`](../shared/template.html.mdmd.md#symbol-pathfindtoolbar)
 - [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

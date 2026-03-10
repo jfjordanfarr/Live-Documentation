@@ -202,4 +202,4 @@ Once you're comfortable with the basics:
 
 1. **Author the `Purpose` sections** — Fill in `_Pending authored purpose_` placeholders in your Live Docs
 2. **Set up CI integration** — Add `npm run live-docs:generate` to your pipeline
-3. **Export for your team** — Use `npm run live-docs:visualize:static` to create shareable static bundles
+3. **Export for your team** — Use `npm run live-docs:visualize` to create shareable static bundles

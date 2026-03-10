@@ -12,7 +12,6 @@ export interface ExplorerAssets {
 const moduleDirectory = __dirname;
 const explorerRoot = path.resolve(moduleDirectory, "..", "");
 const clientRoot = path.join(explorerRoot, "client");
-const serverRoot = path.join(explorerRoot, "server");
 
 /**
  * Bundles the Explorer client TypeScript + CSS into a temporary directory
@@ -47,7 +46,7 @@ export async function buildExplorerAssets(): Promise<ExplorerAssets> {
             .map(entry => fs.copyFile(path.join(stylesDir, entry), path.join(outDir, "styles", entry)))
     );
 
-    const template = await fs.readFile(path.join(serverRoot, "template.html"), "utf8");
+    const template = await fs.readFile(path.join(moduleDirectory, "template.html"), "utf8");
 
     return {
         outDir,

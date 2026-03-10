@@ -1,6 +1,7 @@
 # Visualizing Your Codebase
 
 ## Metadata
+
 - Layer: 1
 - Guide Type: task-tutorial
 
@@ -26,12 +27,14 @@ The Explorer reads from your Live Doc graph and presents three complementary vie
 A treemap visualization showing your entire workspace as interconnected clusters.
 
 **Best for:**
+
 - Architecture overview
 - Identifying hotspots (densely connected files)
 - Understanding package boundaries
 - Spotting orphaned modules
 
 **Interactions:**
+
 - Click a cluster to zoom in
 - Hover to see connection counts
 - Use the breadcrumb trail to navigate back
@@ -41,12 +44,14 @@ A treemap visualization showing your entire workspace as interconnected clusters
 A 3-column layout showing inbound → active node → outbound relationships.
 
 **Best for:**
+
 - Understanding a single file's role
 - Symbol-level navigation
 - Tracing multi-hop dependency chains
 - Impact analysis before changes
 
 **Interactions:**
+
 - Click symbols to see type references
 - Use "From/To" inputs for pathfinding (see [Tracing Impact](tracing-impact.mdmd.md))
 - Expand inbound/outbound sections for full neighbor lists
@@ -56,12 +61,14 @@ A 3-column layout showing inbound → active node → outbound relationships.
 A physics-based network visualization where related nodes cluster naturally.
 
 **Best for:**
+
 - Discovering unexpected connections
 - Seeing natural component groupings
 - Exploring brownfield documentation (when enabled)
 - Presentations and demos
 
 **Interactions:**
+
 - Drag nodes to reposition
 - Scroll to zoom
 - Toggle "Show Related Documentation" to include brownfield docs
@@ -89,6 +96,7 @@ Files with test coverage show a purple shadow. Quickly identify which code is te
 ### Detail Panel
 
 Select any node to see its full Live Doc rendered in the right panel:
+
 - Authored sections (Purpose, Notes)
 - Generated sections (Public Symbols, Dependencies)
 - Evidence metadata (for supported archetypes)
@@ -124,6 +132,7 @@ Invoke-RestMethod "http://localhost:3000/local-map?nodeId=packages/shared/src/ty
 ```
 
 Returns structured JSON with:
+
 - Center node metadata
 - Upstream/downstream neighbors
 - Edge details with symbol anchors
@@ -136,17 +145,17 @@ Returns structured JSON with:
 Generate a fully offline-capable Explorer bundle:
 
 ```powershell
-npm run live-docs:visualize:static
+npm run live-docs:visualize
 # Output: dist/explorer/
 ```
 
 ### What's Bundled
 
-| File | Contents |
-|------|----------|
-| `index.html` | Self-contained viewer |
+| File                 | Contents                                                  |
+| -------------------- | --------------------------------------------------------- |
+| `index.html`         | Self-contained viewer                                     |
 | `explorer-data.json` | Graph (nodes, links), symbol index, all Live Doc markdown |
-| `viewer-config.json` | Provenance metadata (commit hash, version, timestamp) |
+| `viewer-config.json` | Provenance metadata (commit hash, version, timestamp)     |
 
 ### Deployment
 
@@ -172,18 +181,18 @@ The Explorer's **Knowledge Sources** panel includes export options:
 
 ### Bundle Types
 
-| Type | Contents |
-|------|----------|
-| **Live Docs** | Only the generated Live Documentation files |
-| **Related Docs** | Brownfield documentation (READMEs, ADRs, etc.) |
-| **All Documentation** | Everything |
+| Type                  | Contents                                       |
+| --------------------- | ---------------------------------------------- |
+| **Live Docs**         | Only the generated Live Documentation files    |
+| **Related Docs**      | Brownfield documentation (READMEs, ADRs, etc.) |
+| **All Documentation** | Everything                                     |
 
 ### Export Formats
 
-| Format | Structure |
-|--------|-----------|
-| **Flattened Markdown** | Single concatenated file |
-| **ZIP Archive** | Preserves directory structure with `live-docs/` and `related-docs/` folders |
+| Format                 | Structure                                                                   |
+| ---------------------- | --------------------------------------------------------------------------- |
+| **Flattened Markdown** | Single concatenated file                                                    |
+| **ZIP Archive**        | Preserves directory structure with `live-docs/` and `related-docs/` folders |
 
 ---
 
@@ -224,6 +233,7 @@ npm run live-docs:generate
 ### Slow Force Graph
 
 For large workspaces (1000+ nodes), the Force Graph can be sluggish. Try:
+
 - Use Circuit Board for macro navigation
 - Filter to a subsystem before switching to Force Graph
 - Use `--changed` flag to regenerate only modified files

@@ -165,16 +165,12 @@ async function loadExplorerData(): Promise<LoadedExplorerData> {
       return { graphData: parseExplorerGraphPayload(staticData) };
     }
   } catch {
-    // Static file not found, fall through to server mode
+    // Static file not found — no data available
   }
 
-  // 4. Fall back to server mode
-  console.log("Loading explorer data from server /graph endpoint");
-  const response = await fetch(`/graph?ts=${Date.now()}`);
-  if (!response.ok) {
-    throw new Error(`Failed to load graph data (${response.status})`);
-  }
-  return { graphData: parseExplorerGraphPayload(await response.json()) };
+  throw new Error(
+    "No explorer data found. Build a static bundle first with `npm run live-docs:visualize`."
+  );
 }
 
 function startExplorer(

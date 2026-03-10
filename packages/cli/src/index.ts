@@ -11,7 +11,7 @@
  *   generate    Generate Live Documentation for your workspace
  *   lint        Validate structural markers and link hygiene
  *   inspect     Trace dependency paths between artifacts
- *   visualize   Launch the Explorer visualization server
+ *   visualize   Build a static Explorer bundle
  *
  * Run `live-docs <command> --help` for command-specific options.
  */
@@ -24,7 +24,7 @@ const COMMANDS: Record<string, string> = {
   generate: "generate.ts",
   lint: "lint.ts",
   inspect: "inspect.ts",
-  visualize: "visualize-explorer.ts",
+  visualize: "visualize-static.ts",
   system: "system.ts",
   report: "report-precision.ts",
   orphans: "find-orphans.ts"
@@ -41,7 +41,7 @@ Commands:
   generate    Generate Live Documentation for your workspace
   lint        Validate structural markers and link hygiene
   inspect     Trace dependency paths between artifacts
-  visualize   Launch the Explorer visualization server
+  visualize   Build a static Explorer bundle
   system      Materialise System Layer views
   report      Report precision metrics
   orphans     Find orphaned Live Docs

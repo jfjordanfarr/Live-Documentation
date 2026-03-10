@@ -100,8 +100,7 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - `npm run live-docs:inspect -- <path>`: emits markdown/JSON summaries for a given artifact; mirrors the Copilot prompt helper behaviour.
 - `npm run live-docs:inspect -- --from <path> [--to <path>]`: Live Docs pathfinder. Use this before and after risky edits to enumerate actual hop chains (Oracle-of-Bacon style). Remember `--direction inbound` for reverse lookups, `--direction both` for bidirectional search, and `--json` for automation. If no `--to` is provided, review the terminal fan-out to see where data ultimately lands.
 - `npm run live-docs:lint`: validates structural markers, relative-link hygiene, slug dialect compliance, and evidence placeholders inside staged Live Docs.
-- `npm run live-docs:visualize`: launches the Explorer HTTP server with Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. Use this to navigate the Live Doc graph visually. The server exposes a `/local-map?nodeId=<path>` JSON endpoint for headless debugging.
-- `npm run live-docs:visualize:static`: builds a fully static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline.
+- `npm run live-docs:visualize`: builds a static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline. Includes Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views.
 
 User-facing CLI documentation lives in `.mdmd/layer-1/guides/cli-reference.mdmd.md`. Internal development tooling (slopcop:_, fixtures:_, test:\*) is documented below and in copilot-instructions.md only — these commands are not exposed to external adopters.
 
@@ -253,6 +252,6 @@ Every ~64k-128k of tokens of chat history/context that goes through Github Copil
 
 When using Playwright MCP tools for browser automation, **limit screenshot captures to 1-2 per response**. Accumulating many screenshots in a single chat session causes "413 Request Entity Too Large" errors and progressive VS Code performance degradation until the IDE becomes unresponsive. The 12/18 dev day required 5 separate chat sessions largely due to this limitation.
 
-### Live Docs Visualization Server
+### Live Docs Visualization
 
-After TypeScript rebuilds (`npm run build`), the `npm run live-docs:visualize` server must be **restarted** to reflect changes. Only CSS file changes are hot-reloadable. The user often restarts the server in a separate terminal between your build and navigation commands — be aware that a brief pause may occur.
+After TypeScript rebuilds (`npm run build`), re-run `npm run live-docs:visualize` to regenerate the static bundle with the latest changes.

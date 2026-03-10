@@ -98,7 +98,7 @@ Supports CAP-008 by unifying the circuit-board workspace map, symbol-level local
 - [x] Refactor `visualize-explorer.ts` so the circuit-board and local views share a data model sourced from Live Docs, letting users pan globally, expand a file into its symbols, and toggle focus-mode filters that hide unrelated nodes. _(Explorer ships with Circuit Board, Local Map, and Force Graph views.)_
 - [x] Ensure hover/click events update the detail panel, highlight inbound/outbound edges, and keep the force-directed graph in sync when switching modes.
 - [x] Provide explicit affordances (toolbar button, keyboard shortcut) to open the selected Live Doc or source file in the editor, matching the Antigravity prototype walkthroughs.
-- [x] Static distribution (`npm run live-docs:visualize:static`) shipped 2026-01-26 with provenance display (generatedAt, commitHash, generatorVersion).
+- [x] Static distribution (`npm run live-docs:visualize`) shipped 2026-01-26 with provenance display (generatedAt, commitHash, generatorVersion).
 
 #### Stream LV1-B – Accessibility & Interaction _(planned)_
 
@@ -396,7 +396,7 @@ Supports REQ-G1. [Live Documentation Pipeline](../layer-3/live-documentation-pip
 
 ### COMP-030 Visualization Explorer
 
-Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (treemap), Local Map (3-column symbol graph), and Force Graph. Static distribution via `npm run live-docs:visualize:static` and interactive Local Map `From`/`To` pathfinding are shipped as of commit `a0cc5de2` (2025-12-18). Accessibility audits and Playwright smoke tests remain outstanding (LD-406–LD-408).
+Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (treemap), Local Map (3-column symbol graph), and Force Graph. Static distribution via `npm run live-docs:visualize` and interactive Local Map `From`/`To` pathfinding are shipped as of commit `a0cc5de2` (2025-12-18). Accessibility audits and Playwright smoke tests remain outstanding (LD-406–LD-408).
 
 ## Linked Implementations
 
@@ -432,7 +432,7 @@ Supports REQ-101 and REQ-301. [Safe to Commit Pipeline](../../scripts/safe-to-co
 
 ### IMP-302 liveDocsVisualize CLI
 
-Supports REQ-030. [Live Docs Visualize Explorer CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md)
+Supports REQ-030. [Live Docs Visualize Static CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-static.ts.mdmd.md)
 
 ### IMP-303 liveDocsSystem CLI
 
@@ -476,7 +476,7 @@ Supports REQ-D1. (CLI will be documented alongside the System analytics implemen
 
 ### IMP-650 liveDocsVisualizeExplorer
 
-Supports REQ-V1. [Visualize Explorer CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-explorer.ts.mdmd.md). Interactive server (`npm run live-docs:visualize`) and static distribution (`npm run live-docs:visualize:static`) are shipped. Local Map `From`/`To` pathfinding completed 2025-12-18 (commit `a0cc5de2`).
+Supports REQ-V1. [Visualize Static CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-static.ts.mdmd.md). Static distribution (`npm run live-docs:visualize`) is shipped (server mode retired 2026-03-09). Local Map `From`/`To` pathfinding completed 2025-12-18 (commit `a0cc5de2`).
 
 ### IMP-950 hostedShowcaseWorker _(planned)_
 
@@ -525,7 +525,7 @@ Supports REQ-G1. (If docs → code write-back is pursued, VS Code commands will 
 ### REQ-V1 Evidence
 
 - Antigravity walkthrough captures (2025-11-20) demonstrate the circuit-board/local explorer prototype, highlight UX gaps, and serve as the baseline for accessibility polish.
-- `npm run live-docs:visualize` command invocations within Antigravity confirm the current server boots, detail panels open files in VS Code, and force-graph sync remains functional pending refactor.
+- `npm run live-docs:visualize` command invocations within Antigravity confirm the static bundle builds, detail panels open files in VS Code, and force-graph sync remains functional pending refactor.
 - Upcoming Playwright smoke tests (planned under LV1-D) will record GIF/screenshot artefacts proving keyboard navigation, focus trapping, and screen-reader announcements operate as expected.
 
 ### REQ-G1 Evidence

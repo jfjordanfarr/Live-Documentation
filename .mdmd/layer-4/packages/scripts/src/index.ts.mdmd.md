@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-index-ts
-- Generated At: 2026-02-03T21:55:35.568Z
+- Generated At: 2026-03-09T19:16:51.410Z
 
 ## Authored
 ### Purpose
@@ -16,63 +16,48 @@ Barrel export for the `@live-documentation/scripts` workspace package, exposing 
 - Consumers import `startExplorerServer` and related types from `@live-documentation/scripts` directly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.568Z","inputHash":"15f57261b26a824d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.410Z","inputHash":"571afc4603f43ed4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `startExplorerServer` {#symbol-startexplorerserver}
+#### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: unknown
 - Source: [source](../../../../../packages/scripts/src/index.ts#L2)
 
-#### `ExplorerServerInstance` {#symbol-explorerserverinstance}
-- Type: type (type-only)
-- Source: [source](../../../../../packages/scripts/src/index.ts#L3)
-
-#### `ExplorerServerOptions` {#symbol-explorerserveroptions}
-- Type: type (type-only)
-- Source: [source](../../../../../packages/scripts/src/index.ts#L4)
-
-#### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
-- Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L8)
-
 #### `ExplorerDetailPayload` {#symbol-explorerdetailpayload}
 - Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L9)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L3)
 
 #### `ExplorerNodePayload` {#symbol-explorernodepayload}
 - Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L10)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L4)
 
 #### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
 - Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L11)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L5)
 
 #### `ExplorerLinkKind` {#symbol-explorerlinkkind}
 - Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L12)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L6)
 
 #### `buildLiveDocGraph` {#symbol-buildlivedocgraph}
 - Type: unknown
-- Source: [source](../../../../../packages/scripts/src/index.ts#L16)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L10)
 
 #### `BuildLiveDocGraphOptions` {#symbol-buildlivedocgraphoptions}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/scripts/src/index.ts#L17)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L11)
 
 #### `LiveDocGraph` {#symbol-livedocgraph}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/scripts/src/index.ts#L18)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L12)
 
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}
 - Type: type (type-only)
-- Source: [source](../../../../../packages/scripts/src/index.ts#L19)
+- Source: [source](../../../../../packages/scripts/src/index.ts#L13)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`index.ExplorerServerInstance`](./live-docs/explorer/server/index.ts.mdmd.md#symbol-explorerserverinstance) (re-export)
-- [`index.ExplorerServerOptions`](./live-docs/explorer/server/index.ts.mdmd.md#symbol-explorerserveroptions) (re-export)
-- [`index.startExplorerServer`](./live-docs/explorer/server/index.ts.mdmd.md#symbol-startexplorerserver) (re-export)
 - [`types.ExplorerDetailPayload`](./live-docs/explorer/shared/types.ts.mdmd.md#symbol-explorerdetailpayload) (re-export, type-only)
 - [`types.ExplorerGraphPayload`](./live-docs/explorer/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (re-export, type-only)
 - [`types.ExplorerLinkKind`](./live-docs/explorer/shared/types.ts.mdmd.md#symbol-explorerlinkkind) (re-export, type-only)

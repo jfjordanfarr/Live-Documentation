@@ -45,9 +45,9 @@ import type {
 } from "./staticExplorerData";
 import type { ExplorerLinkPayload } from "./types";
 
-// Lazy imports to avoid circular dependency issues
-const buildExplorerAssetsModule = async () => (await import("../server/buildAssets")).buildExplorerAssets;
-const buildExplorerGraphModule = async () => (await import("../server/graph")).buildExplorerGraph;
+// Lazy imports to keep esbuild out of the initial module graph
+const buildExplorerAssetsModule = async () => (await import("./buildAssets")).buildExplorerAssets;
+const buildExplorerGraphModule = async () => (await import("./graph")).buildExplorerGraph;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Build Options
