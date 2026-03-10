@@ -12,7 +12,7 @@
   {
     "source": "src/models.py",
     "target": "src/core_types.py",
-    "relation": "references"
+    "relation": "implements"
   },
   {
     "source": "src/processor.py",

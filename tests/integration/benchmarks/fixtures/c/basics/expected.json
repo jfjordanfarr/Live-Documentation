@@ -1,20 +1,5 @@
 [
   {
-    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/main.c",
-    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/util.c",
-    "relation": "references"
-  },
-  {
-    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/main.c",
-    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/util.h",
-    "relation": "references"
-  },
-  {
-    "source": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/util.c",
-    "target": "../../../../../../workspaces/Live-Documentation/tests/integration/benchmarks/fixtures/c/basics/src/util.h",
-    "relation": "references"
-  },
-  {
     "source": "src/main.c",
     "target": "src/util.c",
     "relation": "references"

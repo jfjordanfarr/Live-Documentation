@@ -36,7 +36,7 @@ jobs:
       - name: Build static explorer bundle
         env:
           CI: "true"
-        run: npm run live-docs:visualize:static -- --commit "${{ github.sha }}" --ref "${{ github.ref_name }}"
+        run: npm run live-docs:visualize -- --commit "${{ github.sha }}" --ref "${{ github.ref_name }}"
 
       - name: Disable Jekyll
         run: touch dist/explorer/.nojekyll

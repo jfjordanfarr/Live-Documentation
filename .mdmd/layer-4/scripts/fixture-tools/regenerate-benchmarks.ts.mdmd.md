@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/fixture-tools/regenerate-benchmarks.ts
 - Live Doc ID: LD-implementation-scripts-fixture-tools-regenerate-benchmarks-ts
-- Generated At: 2026-02-18T21:27:54.566Z
+- Generated At: 2026-03-10T18:56:32.068Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Regenerates benchmark fixtures across all supported languages by invoking their 
 - By 2025-11-06 the CLI regenerated every fixture (including libuv) end-to-end, confirming cross-language oracles, manifest cloning, and benchmark pipeline integration held together during full-suite execution ([full-suite verification](../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-06.md#L1160-L1258)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.566Z","inputHash":"001a6dc23e00e0e5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-10T18:56:32.068Z","inputHash":"8e58d5becf7e3344"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `runRegenerationCli` {#symbol-runregenerationcli}
@@ -36,7 +36,7 @@ CLI entry point for regenerating benchmark expected.json oracles from fixture so
 - `node:fs` - `existsSync`, `promises`
 - `node:path` - `path`
 - `node:process` - `process`
-- `node:url` - `pathToFileURL`
+- `node:url` - `fileURLToPath`, `pathToFileURL`
 - [`fallbackInference.ArtifactSeed`](../../packages/shared/src/inference/fallbackInference.ts.mdmd.md#symbol-artifactseed)
 - [`fallbackInference.inferFallbackGraph`](../../packages/shared/src/inference/fallbackInference.ts.mdmd.md#symbol-inferfallbackgraph)
 - [`cFixtureOracle.CFixtureOracleOptions`](../../packages/shared/src/testing/fixtureOracles/cFixtureOracle.ts.mdmd.md#symbol-cfixtureoracleoptions)

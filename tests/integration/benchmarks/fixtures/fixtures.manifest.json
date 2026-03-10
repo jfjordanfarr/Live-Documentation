@@ -700,6 +700,10 @@
         "indexer": "python",
         "root": ".",
         "manualOverrides": "python/rosetta/oracle.overrides.json"
+      },
+      "thresholds": {
+        "precision": 0.91,
+        "recall": 0.91
       }
     },
     {

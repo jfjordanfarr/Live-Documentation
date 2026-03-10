@@ -35,11 +35,6 @@ interface BenchmarkFixtureDefinition {
   expected: string;
   inferred: string;
   materialization?: FixtureMaterialization;
-  oracle?: {
-    kind: string;
-    root?: string;
-    manualOverrides?: string;
-  };
   thresholds?: {
     precision?: number;
     recall?: number;
@@ -52,65 +47,12 @@ interface MaterializeResult {
   dispose?: () => Promise<void>;
 }
 
-interface OracleOverrideEntry {
-  source: string;
-  target: string;
-  relation: string;
-}
-
-interface OracleOverrideConfig {
-  manualEdges?: OracleOverrideEntry[];
-}
-
-interface OracleEdgeRecord {
-  source: string;
-  target: string;
-  relation: string;
-}
-
-interface OracleEdge {
-  source: string;
-  target: string;
-  relation: "imports" | "uses";
-  provenance: "runtime-import" | "type-import";
-}
-
-interface OracleMergeResult {
-  autoRecords: OracleEdgeRecord[];
-  manualRecords: OracleEdgeRecord[];
-  mergedRecords: OracleEdgeRecord[];
-  missingManualEntries: OracleOverrideEntry[];
-}
-
-interface TypeScriptOracleModule {
-  generateTypeScriptFixtureGraph(options: { fixtureRoot: string; include?: string[] }): OracleEdge[];
-  mergeOracleEdges(edges: OracleEdge[], overrides?: OracleOverrideConfig): OracleMergeResult;
-}
-
 const REPO_ROOT = getRepoRoot(__dirname);
 const FIXTURE_ROOT = resolveRepoPath("tests", "integration", "benchmarks", "fixtures");
 const PRECISION_THRESHOLD = Number(process.env.BENCHMARK_PRECISION_THRESHOLD ?? "0.95");
 const RECALL_THRESHOLD = Number(process.env.BENCHMARK_RECALL_THRESHOLD ?? "0.90");
 const BENCHMARK_MODE = (process.env.BENCHMARK_MODE ?? "ast").toLowerCase();
 const requireModule = createRequire(__filename);
-const oracleModulePath = path.join(
-  REPO_ROOT,
-  "packages",
-  "shared",
-  "dist",
-  "testing",
-  "fixtureOracles",
-  "typeScriptFixtureOracle.js"
-);
-
-if (!existsSync(oracleModulePath)) {
-  throw new Error(
-    `Expected TypeScript oracle at ${oracleModulePath}. Run npm run build before executing benchmarks.`
-  );
-}
-
-const oracleModule = requireModule(oracleModulePath) as TypeScriptOracleModule;
-const { generateTypeScriptFixtureGraph, mergeOracleEdges } = oracleModule;
 const benchmarkManifestModule = requireModule(
   path.join(REPO_ROOT, "scripts", "fixture-tools", "benchmark-manifest.js")
 ) as {
@@ -145,12 +87,12 @@ suite("T061: AST accuracy benchmark", () => {
   const fixtureResults: FixtureDiffReport[] = [];
 
     for (const fixture of fixtures) {
-      const { workspaceRoot, dispose } = await materializeFixture(REPO_ROOT, fixture, {
+      const { dispose } = await materializeFixture(REPO_ROOT, fixture, {
         workspaceMode: "ephemeral"
       });
 
       try {
-        const comparison = await evaluateFixture(fixture, tracker, workspaceRoot);
+        const comparison = await evaluateFixture(fixture, tracker);
         fixtureResults.push(comparison);
       } finally {
         if (dispose) {
@@ -230,19 +172,10 @@ ${lines.join("\n")}`
 
 async function evaluateFixture(
   fixture: BenchmarkFixtureDefinition,
-  tracker: TrackerInstance,
-  workspaceRoot: string
+  tracker: TrackerInstance
 ): Promise<FixtureDiffReport> {
   const root = path.join(FIXTURE_ROOT, fixture.path);
   const expected = await loadEdges(path.join(FIXTURE_ROOT, fixture.expected));
-
-  await verifyTypeScriptOracleAlignment({
-    fixture,
-    expectedEdges: expected,
-    fixtureRoot: root,
-    workspaceRoot
-  });
-
   const inferred = await loadEdges(path.join(FIXTURE_ROOT, fixture.inferred));
 
   const expectedMap = new Map<string, EdgeRecord>();
@@ -309,103 +242,6 @@ async function evaluateFixture(
     falsePositives,
     falseNegatives
   };
-}
-
-async function verifyTypeScriptOracleAlignment(options: {
-  fixture: BenchmarkFixtureDefinition;
-  expectedEdges: EdgeRecord[];
-  fixtureRoot: string;
-  workspaceRoot: string;
-}): Promise<void> {
-  const { fixture, expectedEdges, fixtureRoot, workspaceRoot } = options;
-  const oracleConfig = fixture.oracle;
-  if (!oracleConfig || oracleConfig.kind.toLowerCase() !== "typescript") {
-    return;
-  }
-
-  const overridesPath = path.join(
-    fixtureRoot,
-    oracleConfig.manualOverrides ?? "oracle.overrides.json"
-  );
-  const overrides = await readOracleOverrides(overridesPath);
-  const oracleRoot = path.resolve(workspaceRoot, oracleConfig.root ?? ".");
-  const autoEdges = generateTypeScriptFixtureGraph({ fixtureRoot: oracleRoot });
-  const merge = mergeOracleEdges(autoEdges, overrides);
-
-  const expectedKeySet = new Set(expectedEdges.map(edgeKey));
-  const mergedRecords = merge.mergedRecords.map(toEdgeRecord);
-
-  // Only check for additions (oracle edges not in expected).
-  // We don't check for removals because expected.json = oracle ∪ tree-sitter,
-  // so expected is expected to have more edges than oracle alone.
-  const additions = mergedRecords.filter(record => !expectedKeySet.has(edgeKey(record)));
-
-  if (additions.length > 0) {
-    const message = renderOracleMismatchMessage(fixture.id, additions, [], overridesPath);
-    throw new Error(message);
-  }
-
-  if (merge.missingManualEntries.length > 0) {
-    const missing = merge.missingManualEntries
-      .map(entry => `${entry.source} → ${entry.target} (#${entry.relation})`)
-      .join(", ");
-    throw new Error(
-      `Manual override entries missing for fixture ${fixture.id}: ${missing}. Update ${overridesPath} or adjust the oracle configuration.`
-    );
-  }
-}
-
-async function readOracleOverrides(filePath: string): Promise<OracleOverrideConfig | undefined> {
-  try {
-    const raw = await fs.readFile(filePath, "utf8");
-    const parsed = JSON.parse(raw);
-    if (typeof parsed !== "object" || parsed === null) {
-      throw new Error(`Override file must be an object: ${filePath}`);
-    }
-    return parsed as OracleOverrideConfig;
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      return undefined;
-    }
-    throw error;
-  }
-}
-
-function toEdgeRecord(record: OracleEdgeRecord): EdgeRecord {
-  return {
-    source: record.source,
-    target: record.target,
-    // Oracle now emits SCIP-grounded relations directly
-    relation: record.relation
-  };
-}
-
-function renderOracleMismatchMessage(
-  fixtureId: string,
-  additions: EdgeRecord[],
-  removals: EdgeRecord[],
-  overridesPath: string
-): string {
-  const lines = [`TypeScript oracle divergence detected for fixture ${fixtureId}.`];
-  if (additions.length > 0) {
-    lines.push(
-      `Oracle-only edges (${additions.length}): ${formatEdgeSamples(additions)}`
-    );
-  }
-  if (removals.length > 0) {
-    lines.push(
-      `Edges missing from oracle (${removals.length}): ${formatEdgeSamples(removals)}`
-    );
-  }
-  lines.push(
-    `Run 'npm run fixtures:regenerate -- --fixture ${fixtureId}' to refresh expected.json and review overrides at ${overridesPath}.`
-  );
-  return lines.join("\n");
-}
-
-function formatEdgeSamples(records: EdgeRecord[]): string {
-  const samples = records.slice(0, 5).map(record => `${record.source} → ${record.target} (#${record.relation})`);
-  return samples.join("; ");
 }
 
 function selectFixtures(

@@ -4,7 +4,7 @@ import { execSync } from "node:child_process";
 import { promises as fs, existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   BENCHMARK_MANIFEST_SEGMENTS,
@@ -787,11 +787,9 @@ function getLanguageGlobs(language: string): string[] {
 function toRelativePathFromUri(uri: string, workspaceRoot: string): string | null {
   try {
     const absolutePath = uri.startsWith("file://")
-      ? decodeURIComponent(uri.replace("file:///", "").replace("file://", ""))
+      ? fileURLToPath(uri)
       : uri;
-    // Normalize slashes for Windows
-    const normalized = absolutePath.replace(/\//g, path.sep);
-    const relative = path.relative(workspaceRoot, normalized);
+    const relative = path.relative(workspaceRoot, absolutePath);
     // Convert to forward slashes for consistency
     return relative.replace(/\\/g, "/");
   } catch {
@@ -1026,6 +1024,30 @@ async function regenerateScipFixture(input: {
         });
       } catch {
         console.log(`  ⚠ npm install failed (continuing anyway)`);
+      }
+    }
+
+    // Patch global.json SDK constraints so SCIP indexers work with newer SDKs.
+    // Vendor repos (e.g., Newtonsoft.Json) often pin exact SDK versions in global.json;
+    // setting rollForward to "latestMajor" lets the installed SDK satisfy the constraint.
+    if (oracle.indexer === "csharp") {
+      const globalJsonCandidates = await glob("**/global.json", {
+        cwd: workspaceRoot,
+        absolute: true,
+        ignore: ["**/node_modules/**", "**/obj/**", "**/bin/**"]
+      });
+      for (const globalJsonPath of globalJsonCandidates) {
+        try {
+          const raw = await fs.readFile(globalJsonPath, "utf-8");
+          const parsed = JSON.parse(raw) as { sdk?: { rollForward?: string } };
+          if (parsed.sdk && parsed.sdk.rollForward !== "latestMajor") {
+            parsed.sdk.rollForward = "latestMajor";
+            await fs.writeFile(globalJsonPath, JSON.stringify(parsed, null, 2) + "\n");
+            console.log(`  Patched ${path.relative(workspaceRoot, globalJsonPath)}: sdk.rollForward → latestMajor`);
+          }
+        } catch {
+          console.log(`  ⚠ Could not patch ${path.relative(workspaceRoot, globalJsonPath)}`);
+        }
       }
     }
   }
