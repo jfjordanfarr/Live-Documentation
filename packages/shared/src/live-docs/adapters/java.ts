@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
@@ -119,6 +119,12 @@ export const javaAdapter: LanguageAdapter = {
     const sourceRoot = computeSourceRoot(absolutePath, packageName);
 
     const dependencies = extractDependencies(content, sourceRoot, workspaceRoot);
+
+    // Detect same-package references (classes used without an explicit import)
+    const samePackageDeps = detectSamePackageDependencies(
+      content, absolutePath, packageName, sourceRoot, workspaceRoot, dependencies
+    );
+    dependencies.push(...samePackageDeps);
 
     if (symbols.length === 0 && dependencies.length === 0) {
       return {
@@ -257,6 +263,77 @@ function extractDependencies(
       symbols: extractImportedSymbols(specifier),
       kind: "import"
     })) as DependencyEntry[];
+}
+
+/**
+ * Detects same-package class references that have no explicit `import` statement.
+ *
+ * In Java, classes in the same package can reference each other without importing.
+ * This function lists sibling `.java` files in the same package directory, extracts
+ * each file's class name (from filename), and checks for word-boundary references
+ * in the source code.
+ */
+function detectSamePackageDependencies(
+  content: string,
+  absolutePath: string,
+  packageName: string | undefined,
+  sourceRoot: string | undefined,
+  workspaceRoot: string,
+  existingDeps: DependencyEntry[]
+): DependencyEntry[] {
+  if (!sourceRoot || !packageName) return [];
+
+  const packageDir = path.join(
+    sourceRoot,
+    packageName.replace(/\./g, path.sep)
+  );
+  const currentFile = path.basename(absolutePath);
+
+  // Collect class names already covered by explicit imports
+  const alreadyResolved = new Set(
+    existingDeps
+      .filter(d => d.resolvedPath)
+      .map(d => path.basename(d.resolvedPath!, ".java"))
+  );
+
+  let siblings: string[];
+  try {
+    siblings = readdirSync(packageDir).filter(
+      f => f.endsWith(".java") && f !== currentFile
+    );
+  } catch {
+    return [];
+  }
+
+  // Strip package + import declarations from content for body-only scanning
+  const bodyContent = content
+    .replace(/^\s*package\s+[^;]+;/m, "")
+    .replace(/^\s*import\s+[^;]+;/gm, "");
+
+  const results: DependencyEntry[] = [];
+  for (const sibling of siblings) {
+    const className = sibling.replace(/\.java$/, "");
+    if (alreadyResolved.has(className)) continue;
+
+    // Check for word-boundary reference to the class name in the code body
+    const ref = new RegExp(`\\b${className}\\b`);
+    if (ref.test(bodyContent)) {
+      const fqn = `${packageName}.${className}`;
+      const resolvedPath = path.relative(
+        workspaceRoot,
+        path.join(packageDir, sibling)
+      ).replace(/\\/g, "/");
+
+      results.push({
+        specifier: fqn,
+        resolvedPath,
+        symbols: [className],
+        kind: "import"
+      } as DependencyEntry);
+    }
+  }
+
+  return results;
 }
 
 /**

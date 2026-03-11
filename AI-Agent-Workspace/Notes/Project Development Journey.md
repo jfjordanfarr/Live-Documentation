@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 9, 2026\)*
+*Status: Active Development (Mar 11, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -31,9 +31,9 @@ Live Documentation is delivered through six channels, each backed by the same un
 | \# | Surface | Medium | Primary Consumers | Current Status |
 | :---- | :---- | :---- | :---- | :---- |
 | 1 | **CLI Suite** | Terminal (npm run live-docs:\*) | Engineers, CI pipelines, AI agents | Shipped |
-| 2 | **Visual Explorer** | Browser (localhost:3000) | Architects, onboarders, leads | Shipped |
+| 2 | **Visual Explorer** | Browser (Static Build) | Architects, onboarders, leads | Shipped (npm run live-docs:visualize) |
 | 3 | **VS Code Extension** | Editor (thin client) | Engineers, writers | In progress (thin shell shipped; lint-as-diagnostics planned) |
-| 4 | **Static Export** | HTML \+ JSON bundle | Teams, stakeholders, offline consumers | Shipped (live-docs:visualize:static) |
+| 4 | **Static Export** | HTML \+ JSON bundle | Teams, stakeholders, offline consumers | Shipped (merged into visualize) |
 | 5 | **Headless JSON API** | HTTP / \--json flags | AI agents, automation scripts, CI | Shipped (Local Map endpoint \+ all CLI \--json modes) |
 | 6 | **Raw Markdown** | .md files in-repo | AI agents, wiki surfaces, git reviewers | Shipped (deterministic Layer-4 mirror) |
 
@@ -886,6 +886,44 @@ The team expanded the strategic horizons of the project, formally defining new u
 * **Unity & Game Development:** Explored the extreme polyglot complexity of Unity game projects (C\#, ShaderLab, HLSL, YAML manifests, prefabs), proving the architecture's potential to unify divergent code branches.  
 * **Documentation Polish:** Refined Layer 1 guides and introduced explicit cross-references to the project's historical journey, weaving the narrative directly into the user onboarding experience.
 
+### **Phase LX: The Reality Check & Database Purge (Mar 9\)**
+
+Date: March 9, 2026
+
+Scope: Commit 261
+
+The team performed a final sweep of vestigial state artifacts and established a critical new governance rule for AI interactions.
+
+* **The Final Database Purge:** Deleted the last remaining .db files and empty db/ directories from the early prototyping phases, completely severing the project's ties to its SQLite past.  
+* **The "Reality Check" Mandate:** Codified a strict rule for AI agents: *Audit Shipped Capabilities First*. After an AI proposed "new" features that had actually shipped months prior (like URL persistence and the Tuning Panel), the team mandated that all future design synthesis must ground itself in the current implementation before proposing expansions. This combats the LLM tendency to treat every feature request as greenfield development.  
+* **Pipeline Hygiene:** Fixed Markdown heading collisions to restore a green live-docs:lint build.
+
+### **Phase LXI: The Serverless Explorer (Mar 10\)**
+
+Date: March 10, 2026
+
+Scope: Commit 262
+
+The project fully embraced its identity as a static, document-driven platform by retiring its live HTTP server.
+
+* **Server Retirement:** The Node.js Express server (server/index.ts) was permanently deleted. The visualize:static command was merged into the primary visualize command, meaning the Explorer is now exclusively generated as a portable, offline-ready HTML/JSON bundle.  
+* **Glob Gap Closure:** Expanded the configuration to include \*.html, \*.css, and \*.json files across the workspace, bringing 11 new internal scaffolding files into the Live Documentation graph.  
+* **HTML DOM Extraction:** Enhanced the HTML adapter to extract DOM id attributes as Public Symbols, allowing the graph to trace dependencies from JavaScript right into the DOM structure (e.g., mapping 66 UI surface area symbols in template.html).  
+* **Chat Archaeology:** Authored detailed Purpose/Notes sections for all 13 newly exposed Live Docs, linking them back to the original Nov/Dec 2025 chat sessions.
+
+### **Phase LXII: Proximity Resolution & Pipeline Hardening (Mar 10-11)**
+
+Date: March 10-11, 2026
+
+Scope: Commits 263-265
+
+The team focused on precision engineering, eliminating hallucinated graph edges and repairing the CI pipeline following the serverless architecture shift.
+
+* **Phantom Edge Elimination (Commit 265):** Deleted the legacy detectInheritance() module. The old regex-on-raw-source approach was generating phantom extends/implements edges by matching inside string literals and templates. Type references are now strictly and correctly threaded through the parsed metadata pipeline.  
+* **Proximity-Aware Resolution (Commit 265):** Solved a major polyglot symbol clash issue where multiple files (like the Rosetta fixtures) exported the same symbol name (e.g., Entry). The system now uses a createProximityAwareComparator() to resolve these clashes, intelligently prioritizing the file closest in the directory tree to the importing consumer.  
+* **Pipeline Repairs (Commit 263):** Restored the GitHub Pages deployment workflow by pointing it to the newly unified static CLI command. The team also purged 177 lines of dead TypeScript oracle infrastructure (a holdover from the SCIP migration) and patched the benchmark regeneration script to handle .NET 10 pathing gracefully.  
+* **Dependency Stewardship (Commit 264):** Executed a comprehensive dependency bump via Dependabot, updating GitHub Actions, ESLint, Vitest, and core parser utilities to keep the toolchain modern and secure.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -930,7 +968,10 @@ The team expanded the strategic horizons of the project, formally defining new u
 * **Feb 18 (Phase LVI):** "The Diagnostics Extinction." (Deleting the legacy linter to focus on the Explorer).  
 * **Feb 20 (Phase LVII):** "Experience Consolidation & Monolith Extraction." (Refining headless personas and refactoring the Explorer).  
 * **Feb 23 (Phase LVIII):** "Convention Decontamination & Scaffolding Retirement." (Decoupling from MDMD hardcodes and retiring Spec-Kit).  
-* **Mar 9 (Phase LIX):** "The Comprehension Accelerator." (Unifying thesis: reverse polyglot code into common markdown for reasoning).
+* **Mar 9 (Phase LIX):** "The Comprehension Accelerator." (Unifying thesis: reverse polyglot code into common markdown for reasoning).  
+* **Mar 9 (Phase LX):** "The Reality Check." (Final database purge and the mandate to audit before proposing).  
+* **Mar 10 (Phase LXI):** "The Serverless Explorer." (Retiring the HTTP server, closing the glob gap, and extracting HTML DOM symbols).  
+* **Mar 11 (Phase LXII):** "Proximity Resolution & Pipeline Hardening." (Eliminating phantom string edges and adding directory-aware symbol linking).
 
 ## **Technical Themes & Motifs**
 

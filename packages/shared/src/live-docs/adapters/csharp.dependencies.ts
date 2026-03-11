@@ -18,7 +18,8 @@ import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry } from "../core";
 
 // Pattern definitions
-const USING_DIRECTIVE_PATTERN = /^\s*using\s+(?:static\s+)?([^=;]+);/gm;
+const USING_DIRECTIVE_PATTERN = /^\s*using\s+(?:static\s+)?([^;]+);/gm;
+const USING_ALIAS_SEPARATOR = "=";
 const BUILT_IN_NAMESPACE_PREFIX = "System";
 const APP_SETTINGS_PATTERN = /ConfigurationManager\.AppSettings\s*\[\s*"([^"]+)"\s*\]/g;
 const CONFIGURATION_INDEXER_PATTERN = /\b([A-Za-z_][A-Za-z0-9_]*)\s*\[\s*"([^"]+)"\s*\]/g;
@@ -53,9 +54,17 @@ export async function extractDependencies(params: ExtractDependenciesParams): Pr
   let match: RegExpExecArray | null;
 
   while ((match = USING_DIRECTIVE_PATTERN.exec(content)) !== null) {
-    const directive = match[1]?.trim();
-    if (!directive || directive.includes("=")) {
+    let directive = match[1]?.trim();
+    if (!directive) {
       continue;
+    }
+
+    // Handle using aliases: `using RTypes = Rosetta.Types;`
+    // Extract the namespace from the right-hand side of the alias
+    if (directive.includes(USING_ALIAS_SEPARATOR)) {
+      const parts = directive.split(USING_ALIAS_SEPARATOR);
+      directive = parts[1]?.trim() ?? "";
+      if (!directive) continue;
     }
 
     const normalized = directive.replace(/\s+/g, "");

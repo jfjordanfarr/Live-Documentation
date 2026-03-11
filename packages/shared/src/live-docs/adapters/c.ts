@@ -26,6 +26,12 @@ const ENUM_PATTERN = /^(\s*)(?:typedef\s+)?enum\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?:
 const TYPEDEF_PATTERN = /^(\s*)typedef\s+(.+?)\s+([A-Za-z_][A-Za-z0-9_]*)\s*;/;
 const FUNCTION_PATTERN =
   /^(\s*)(?:static\s+)?(?:inline\s+)?[A-Za-z_][A-Za-z0-9_\s*]*[*\s]+([A-Za-z_][A-Za-z0-9_]*)\s*\([^)]*\)\s*(?:;|\{)/;
+/** Matches the start of a multi-line function declaration: `type name(` without closing `)` on the same line. */
+const MULTILINE_FUNC_START =
+  /^(\s*)(?:static\s+)?(?:inline\s+)?[A-Za-z_][A-Za-z0-9_\s*]*[*\s]+([A-Za-z_][A-Za-z0-9_]*)\s*\([^)]*$/;
+const ANON_TYPEDEF_STRUCT_START = /^(\s*)typedef\s+struct\s*\{/;
+const ANON_TYPEDEF_ENUM_START = /^(\s*)typedef\s+enum\s*\{/;
+const TYPEDEF_CLOSE = /^\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;/;
 const INCLUDE_PATTERN = /#\s*include\s+([<"])([^>"]+)[>"]/g;
 
 /** Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extracts function/struct/typedef symbols and `#include` dependencies. */
@@ -55,6 +61,7 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
   const lines = content.split(/\r?\n/);
   const entries: PublicSymbolEntry[] = [];
   let pendingDoc: PendingDocBlock | null = null;
+  let anonTypedef: { kind: "struct" | "enum"; startLine: number; indent: number; doc: PendingDocBlock | null } | null = null;
 
   for (let index = 0; index < lines.length; index += 1) {
     const raw = lines[index];
@@ -81,6 +88,18 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
       continue;
     }
 
+    // Check for closing brace of an anonymous typedef
+    if (anonTypedef) {
+      const closeMatch = trimmed.match(TYPEDEF_CLOSE);
+      if (closeMatch) {
+        entries.push(createEntry(closeMatch[1], anonTypedef.kind, anonTypedef.startLine, anonTypedef.indent, anonTypedef.doc));
+        anonTypedef = null;
+        continue;
+      }
+      // Inside an anonymous typedef body — skip inner lines
+      continue;
+    }
+
     const macroMatch = raw.match(MACRO_PATTERN);
     if (macroMatch) {
       entries.push(createEntry(macroMatch[2], "const", index, macroMatch[1]?.length ?? 0, pendingDoc));
@@ -95,9 +114,25 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
       continue;
     }
 
+    // Anonymous typedef struct { ... } Name;
+    const anonStructMatch = raw.match(ANON_TYPEDEF_STRUCT_START);
+    if (anonStructMatch) {
+      anonTypedef = { kind: "struct", startLine: index, indent: anonStructMatch[1]?.length ?? 0, doc: pendingDoc };
+      pendingDoc = null;
+      continue;
+    }
+
     const enumMatch = raw.match(ENUM_PATTERN);
     if (enumMatch) {
       entries.push(createEntry(enumMatch[2], "enum", index, enumMatch[1]?.length ?? 0, pendingDoc));
+      pendingDoc = null;
+      continue;
+    }
+
+    // Anonymous typedef enum { ... } Name;
+    const anonEnumMatch = raw.match(ANON_TYPEDEF_ENUM_START);
+    if (anonEnumMatch) {
+      anonTypedef = { kind: "enum", startLine: index, indent: anonEnumMatch[1]?.length ?? 0, doc: pendingDoc };
       pendingDoc = null;
       continue;
     }
@@ -117,6 +152,24 @@ function extractSymbols(content: string): PublicSymbolEntry[] {
     const functionMatch = raw.match(FUNCTION_PATTERN);
     if (functionMatch) {
       entries.push(createEntry(functionMatch[2], "function", index, functionMatch[1]?.length ?? 0, pendingDoc));
+      pendingDoc = null;
+      continue;
+    }
+
+    // Multi-line function declaration: `type name(` without closing `)` on same line
+    const multilineFuncMatch = raw.match(MULTILINE_FUNC_START);
+    if (multilineFuncMatch) {
+      // Scan forward to find the closing `)` followed by `;` or `{`
+      let found = false;
+      for (let j = index + 1; j < lines.length && j < index + 20; j++) {
+        if (/\)\s*(?:;|\{)/.test(lines[j])) {
+          found = true;
+          break;
+        }
+      }
+      if (found) {
+        entries.push(createEntry(multilineFuncMatch[2], "function", index, multilineFuncMatch[1]?.length ?? 0, pendingDoc));
+      }
       pendingDoc = null;
       continue;
     }

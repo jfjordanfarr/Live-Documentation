@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/PipelineTests.cs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-app-pipelinetests-cs
-- Generated At: 2026-02-03T21:55:42.987Z
+- Generated At: 2026-03-11T20:38:31.869Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ xUnit integration tests for the C# Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through `using Rosetta.Models` and `using Rosetta.Processor` namespace imports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.987Z","inputHash":"dca083a942fc4bf5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:38:31.869Z","inputHash":"0c061be5554197ea"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PipelineTests` {#symbol-pipelinetests}
@@ -50,6 +50,7 @@ a directly name-matched test file.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `Rosetta.Models`
+- `Rosetta.Models.Record`
 - `Rosetta.Processor`
 - `Rosetta.Types`
 - `Xunit`

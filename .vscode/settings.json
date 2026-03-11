@@ -10,7 +10,8 @@
         ".specify/scripts/bash/": true,
         ".specify/scripts/powershell/": true,
         "Push-Location": true,
-        "Pop-Location": true
+        "Pop-Location": true,
+        "tsc": true
     },
     "github.copilot.chat.byok.ollamaModel": "qwen3-coder:30b",
     "typescript.tsserver.watchOptions": {

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/main.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-main-c
-- Generated At: 2026-02-03T21:55:42.536Z
+- Generated At: 2026-03-11T20:19:02.544Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the C Rosetta Stone fixture. Demonstrates #include and function 
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C include directive and cross-file call detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.536Z","inputHash":"21c30738df48f8cd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:02.544Z","inputHash":"9701071f6ece022c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rosetta_main` {#symbol-rosetta_main}
@@ -40,7 +40,10 @@ Pointer to summary string (caller must free)
 ### Dependencies
 - `stdio.h`
 - `stdlib.h`
+- [`models.Record`](./models.h.mdmd.md#symbol-record)
+- [`models.Report`](./models.h.mdmd.md#symbol-report)
 - [`models.create_record`](./models.h.mdmd.md#symbol-create_record)
 - [`processor.free_report`](./processor.h.mdmd.md#symbol-free_report)
+- [`processor.run_processor`](./processor.h.mdmd.md#symbol-run_processor)
 - [`processor.summarize_report`](./processor.h.mdmd.md#symbol-summarize_report)
 <!-- LIVE-DOC:END Dependencies -->

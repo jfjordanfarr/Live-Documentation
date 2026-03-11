@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/models.h
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-models-h
-- Generated At: 2026-02-03T21:55:42.584Z
+- Generated At: 2026-03-11T20:19:02.588Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,26 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.584Z","inputHash":"80ea020ab3c1a485"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:02.588Z","inputHash":"2dc13526ffef4b95"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROSETTA_MODELS_H` {#symbol-rosetta_models_h}
 - Type: const
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/rosetta/src/models.h#L9)
+
+#### `Record` {#symbol-record}
+- Type: struct
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/rosetta/src/models.h#L17)
+
+##### `Record` — Summary
+A data record to be processed.
+
+#### `Report` {#symbol-report}
+- Type: struct
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/rosetta/src/models.h#L27)
+
+##### `Report` — Summary
+Summary report produced by the processor.
 
 #### `create_record` {#symbol-create_record}
 - Type: function
@@ -53,5 +67,6 @@ true if valid, false otherwise
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `stddef.h`
-- [`types`](./types.h.mdmd.md)
+- [`types.Entry`](./types.h.mdmd.md#symbol-entry)
+- [`types.ProcessorConfig`](./types.h.mdmd.md#symbol-processorconfig)
 <!-- LIVE-DOC:END Dependencies -->

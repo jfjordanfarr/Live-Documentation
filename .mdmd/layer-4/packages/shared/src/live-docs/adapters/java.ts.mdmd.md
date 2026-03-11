@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-java-ts
-- Generated At: 2026-02-16T18:46:24.881Z
+- Generated At: 2026-03-11T20:19:01.252Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Parses Java sources to translate Javadoc summaries, tags, and imports into the L
 - Keep the polyglot integration test and updated Java fixtures in sync with any parser changes; those assets were extended alongside the original rollout to catch regressions <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md#L1488-L1508>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.881Z","inputHash":"2bc40ad46a30be4e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:01.252Z","inputHash":"717eadaa967e91b6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
@@ -29,7 +29,7 @@ Language adapter for Java (`.java`). Extracts classes, interfaces, enums, annota
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `existsSync`, `promises`
+- `node:fs` - `existsSync`, `promises`, `readdirSync`
 - `node:path`
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-dependencies-ts
-- Generated At: 2026-02-03T21:55:39.600Z
+- Generated At: 2026-03-11T20:38:30.152Z
 
 ## Authored
 ### Purpose
@@ -19,19 +19,19 @@ Extracts dependencies from C# source files, including `using` directives, config
 - **Companion Tests:** See [csharp.dependencies.unit.test.ts](./csharp.dependencies.unit.test.ts.mdmd.md) for 36 unit tests including file system operations with temp directory fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.600Z","inputHash":"20168989aacf6b7d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:38:30.152Z","inputHash":"a638349a98876c41"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExtractDependenciesParams` {#symbol-extractdependenciesparams}
 - Type: interface
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L33)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L34)
 
 ##### `ExtractDependenciesParams` — Summary
 Parameters for dependency extraction.
 
 #### `extractDependencies` {#symbol-extractdependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L50)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L51)
 - Parameters: `params`: [`ExtractDependenciesParams`](#symbol-extractdependenciesparams)
 
 ##### `extractDependencies` — Summary
@@ -45,7 +45,7 @@ Array of dependency entries
 
 #### `collectConfigKeys` {#symbol-collectconfigkeys}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L143)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L152)
 
 ##### `collectConfigKeys` — Summary
 Collects configuration keys using a given regex pattern.
@@ -59,7 +59,7 @@ Set of matched keys
 
 #### `collectConfigurationIndexerKeys` {#symbol-collectconfigurationindexerkeys}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L165)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L174)
 
 ##### `collectConfigurationIndexerKeys` — Summary
 Collects configuration keys from IConfiguration indexer patterns.
@@ -73,7 +73,7 @@ Set of configuration keys
 
 #### `collectTypeNameLiterals` {#symbol-collecttypenameliterals}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L192)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L201)
 
 ##### `collectTypeNameLiterals` — Summary
 Collects fully-qualified type name literals from string constants.
@@ -87,7 +87,7 @@ Set of type names
 
 #### `collectHangfireTargets` {#symbol-collecthangfiretargets}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L230)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L239)
 
 ##### `collectHangfireTargets` — Summary
 Collects Hangfire background job target types.
@@ -101,7 +101,7 @@ Set of target type names
 
 #### `collectTypeIdentifiers` {#symbol-collecttypeidentifiers}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L287)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L296)
 
 ##### `collectTypeIdentifiers` — Summary
 Collects variable identifiers declared with a specific type.
@@ -115,7 +115,7 @@ Set of variable identifiers
 
 #### `locateNearestFile` {#symbol-locatenearestfile}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L312)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L321)
 
 ##### `locateNearestFile` — Summary
 Locates the nearest file matching one of the candidate names,
@@ -131,7 +131,7 @@ Normalized workspace-relative path, or undefined if not found
 
 #### `fileExists` {#symbol-fileexists}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L348)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L357)
 
 ##### `fileExists` — Summary
 Checks if a file exists at the given path.
@@ -144,7 +144,7 @@ True if the file exists
 
 #### `resolveReflectionTargets` {#symbol-resolvereflectiontargets}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L365)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L374)
 - Returns: [`PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry)[]
 
 ##### `resolveReflectionTargets` — Summary
@@ -160,7 +160,7 @@ Array of resolved dependency entries
 
 #### `resolveReflectionTarget` {#symbol-resolvereflectiontarget}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L390)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L399)
 - Returns: [`PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry)[]
 
 ##### `resolveReflectionTarget` — Summary
@@ -176,7 +176,7 @@ Resolved dependency entry, or undefined if not found
 
 #### `readFileSafe` {#symbol-readfilesafe}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L453)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L462)
 
 ##### `readFileSafe` — Summary
 Safely reads a file, returning undefined on error.

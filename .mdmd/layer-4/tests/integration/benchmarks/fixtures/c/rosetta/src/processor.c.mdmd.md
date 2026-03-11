@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/processor.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-processor-c
-- Generated At: 2026-02-03T21:55:42.611Z
+- Generated At: 2026-03-11T20:19:02.616Z
 
 ## Authored
 ### Purpose
@@ -15,9 +15,13 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.611Z","inputHash":"533f892572c80770"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:02.616Z","inputHash":"d0d7bd1195d011e3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `run_processor` {#symbol-run_processor}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/rosetta/src/processor.c#L19)
+
 #### `summarize_report` {#symbol-summarize_report}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/c/rosetta/src/processor.c#L55)
@@ -35,6 +39,7 @@ See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/
 - [`helpers.format_value`](./helpers.h.mdmd.md#symbol-format_value)
 - [`helpers.sum_values`](./helpers.h.mdmd.md#symbol-sum_values)
 - [`processor.free_report`](./processor.h.mdmd.md#symbol-free_report)
+- [`processor.run_processor`](./processor.h.mdmd.md#symbol-run_processor)
 - [`processor.summarize_report`](./processor.h.mdmd.md#symbol-summarize_report)
 - `time.h`
 <!-- LIVE-DOC:END Dependencies -->

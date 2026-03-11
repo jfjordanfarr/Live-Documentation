@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/models/Report.java
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-models-report-java
-- Generated At: 2026-02-03T21:55:44.200Z
+- Generated At: 2026-03-11T20:19:03.581Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Data model for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.models package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:44.200Z","inputHash":"7297e31727804e0a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:03.581Z","inputHash":"17fe27a23e2bac7d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report (class)` {#symbol-report-class}
@@ -48,5 +48,5 @@ Summary report produced by the processor.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Record`](./Record.java.mdmd.md#symbol-record)
 <!-- LIVE-DOC:END Dependencies -->

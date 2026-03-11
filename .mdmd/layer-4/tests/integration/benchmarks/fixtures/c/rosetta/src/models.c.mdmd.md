@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/c/rosetta/src/models.c
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-c-rosetta-src-models-c
-- Generated At: 2026-02-03T21:55:42.561Z
+- Generated At: 2026-03-11T20:19:02.566Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.561Z","inputHash":"e72eb54115eb2d0c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:02.566Z","inputHash":"dc77280da540678c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `create_record` {#symbol-create_record}
@@ -30,6 +30,7 @@ See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `string.h`
+- [`models.Record`](./models.h.mdmd.md#symbol-record)
 - [`models.create_record`](./models.h.mdmd.md#symbol-create_record)
 - [`models.validate_config`](./models.h.mdmd.md#symbol-validate_config)
 - `time.h`

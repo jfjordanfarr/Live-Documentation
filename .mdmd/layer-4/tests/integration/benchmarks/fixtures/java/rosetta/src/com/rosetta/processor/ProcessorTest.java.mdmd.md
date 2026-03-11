@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/java/rosetta/src/com/rosetta/processor/ProcessorTest.java
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-java-rosetta-src-com-rosetta-processor-processortest-java
-- Generated At: 2026-02-17T15:49:09.919Z
+- Generated At: 2026-03-11T20:19:03.650Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ JUnit 5 tests for the Java Rosetta Processor class. Part of the polyglot Rosetta
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses `@Nested` and `@DisplayName` annotations for structured test organization. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-17T15:49:09.919Z","inputHash":"dd1760037a93b79d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:03.650Z","inputHash":"89cd996e8f77d0de"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTest` {#symbol-processortest}
@@ -38,6 +38,7 @@ ProcessorTest.java should automatically back Processor.java.
 - `org.junit.jupiter.api.Test` - `Test`
 - [`Record`](../models/Record.java.mdmd.md#symbol-record)
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
+- [`Processor`](./Processor.java.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/Processor.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-processor-processor-cs
-- Generated At: 2026-02-03T21:55:43.094Z
+- Generated At: 2026-03-11T20:38:31.926Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.094Z","inputHash":"1f49f67e4dfc7594"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:38:31.926Z","inputHash":"2724018e6265e8bb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Processor` {#symbol-processor}
@@ -68,4 +68,5 @@ Human-readable summary
 ### Dependencies
 - `Rosetta.Helpers`
 - `Rosetta.Models`
+- `Rosetta.Types`
 <!-- LIVE-DOC:END Dependencies -->
