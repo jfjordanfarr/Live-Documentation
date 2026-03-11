@@ -246,3 +246,50 @@ export function compareSymbolLocationsPreferOrigin(
   const bDepth = b.sourcePath.split(/[\\/]/).length;
   return bDepth - aDepth;
 }
+
+/**
+ * Counts the number of shared leading directory segments between two paths.
+ * Used for proximity-based symbol resolution.
+ */
+export function commonDirectoryPrefixLength(pathA: string, pathB: string): number {
+  const partsA = pathA.replace(/\\/g, "/").split("/");
+  const partsB = pathB.replace(/\\/g, "/").split("/");
+  let common = 0;
+  for (let i = 0; i < Math.min(partsA.length, partsB.length); i++) {
+    if (partsA[i] === partsB[i]) {
+      common++;
+    } else {
+      break;
+    }
+  }
+  return common;
+}
+
+/**
+ * Creates a comparator that ranks symbol locations by proximity to a reference path.
+ *
+ * Priority: non-barrel > barrel, then closer directory > distant, then deeper > shallower.
+ */
+export function createProximityAwareComparator(referencePath: string) {
+  return (a: { sourcePath: string }, b: { sourcePath: string }): number => {
+    const aIsBarrel = isBarrelFilePath(a.sourcePath);
+    const bIsBarrel = isBarrelFilePath(b.sourcePath);
+
+    // Non-barrel files come first
+    if (aIsBarrel !== bIsBarrel) {
+      return aIsBarrel ? 1 : -1;
+    }
+
+    // Prefer files closer to the reference path (more shared directory segments)
+    const aProximity = commonDirectoryPrefixLength(a.sourcePath, referencePath);
+    const bProximity = commonDirectoryPrefixLength(b.sourcePath, referencePath);
+    if (aProximity !== bProximity) {
+      return bProximity - aProximity;
+    }
+
+    // Among same proximity, prefer deeper paths (more specific modules)
+    const aDepth = a.sourcePath.split(/[\\/]/).length;
+    const bDepth = b.sourcePath.split(/[\\/]/).length;
+    return bDepth - aDepth;
+  };
+}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/src/util.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-basic-src-util-ts
-- Generated At: 2026-02-03T21:55:46.444Z
+- Generated At: 2026-03-11T01:35:40.476Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Formats runtime widget output for the `ts-basic` benchmark so the analyzer must 
 - Imports `Widget` as a type to confirm the oracle distinguishes runtime usage (this function) from the helper-only module, exposing type-only edges if fallback heuristics regress.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.444Z","inputHash":"86f866339d55df6a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:40.476Z","inputHash":"86f866339d55df6a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatWidget` {#symbol-formatwidget}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/basic/src/util.ts#L3)
-- Parameters: `widget`: [`Widget`](../../layered/src/models/widget.ts.mdmd.md#symbol-widget)
+- Parameters: `widget`: [`Widget`](./types.ts.mdmd.md#symbol-widget)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

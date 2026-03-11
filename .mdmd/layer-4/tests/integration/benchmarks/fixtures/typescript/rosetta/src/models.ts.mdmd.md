@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-rosetta-src-models-ts
-- Generated At: 2026-02-03T21:55:46.818Z
+- Generated At: 2026-03-11T01:35:40.685Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Data models for the TypeScript Rosetta Stone fixture. Defines Record and Report 
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for Rosetta Stone design. This module is imported by both main.ts and processor.ts, testing multi-consumer dependency detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.818Z","inputHash":"bb6fbcfef49e0094"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:40.685Z","inputHash":"bb6fbcfef49e0094"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
 - Type: interface
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts#L10)
-- Extends: [`Entry`](../../../java/rosetta/src/com/rosetta/types/Entry.java.mdmd.md#symbol-entry-class)
+- Extends: [`Entry`](./types.ts.mdmd.md#symbol-entry)
 
 ##### `Record` — Summary
 A data record to be processed.
@@ -43,7 +43,7 @@ Factory for creating records with sensible defaults.
 #### `validateConfig` {#symbol-validateconfig}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts#L35)
-- Parameters: `config`: [`ProcessorConfig`](../../../java/rosetta/src/com/rosetta/types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
+- Parameters: `config`: [`ProcessorConfig`](./types.ts.mdmd.md#symbol-processorconfig)
 
 ##### `validateConfig` — Summary
 Validates configuration is within acceptable bounds.

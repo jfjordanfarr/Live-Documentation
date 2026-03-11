@@ -78,6 +78,8 @@ export interface ParsedDependency {
   sourceAnchor?: string;
   label?: string;
   raw: string;
+  /** The type-reference role when this dependency originates from a type reference (extends, implements, etc.). */
+  role?: string;
 }
 
 const DEFAULT_ARCHETYPE = "implementation";

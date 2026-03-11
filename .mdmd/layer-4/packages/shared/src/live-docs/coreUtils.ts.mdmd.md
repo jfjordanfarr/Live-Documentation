@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreutils-ts
-- Generated At: 2026-02-03T21:55:40.421Z
+- Generated At: 2026-03-11T01:35:37.214Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 - All functions are pure with no side effects
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.421Z","inputHash":"2f8fa6f0c8e08794"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.214Z","inputHash":"0906a5f674db1fc8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatSourceLink` {#symbol-formatsourcelink}
@@ -208,6 +208,23 @@ This comparator:
 
 ##### `compareSymbolLocationsPreferOrigin` — Returns
 Negative if a should come first, positive if b should come first
+
+#### `commonDirectoryPrefixLength` {#symbol-commondirectoryprefixlength}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L254)
+
+##### `commonDirectoryPrefixLength` — Summary
+Counts the number of shared leading directory segments between two paths.
+Used for proximity-based symbol resolution.
+
+#### `createProximityAwareComparator` {#symbol-createproximityawarecomparator}
+- Type: function
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L273)
+
+##### `createProximityAwareComparator` — Summary
+Creates a comparator that ranks symbol locations by proximity to a reference path.
+
+Priority: non-barrel > barrel, then closer directory > distant, then deeper > shallower.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

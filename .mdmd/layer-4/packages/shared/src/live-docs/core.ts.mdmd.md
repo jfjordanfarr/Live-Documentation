@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-02-03T21:55:40.376Z
+- Generated At: 2026-03-11T01:35:37.171Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.376Z","inputHash":"c87315115c84b599"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.171Z","inputHash":"14a9756f07c4cfac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -156,97 +156,105 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L79)
 
+#### `commonDirectoryPrefixLength` {#symbol-commondirectoryprefixlength}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L80)
+
+#### `createProximityAwareComparator` {#symbol-createproximityawarecomparator}
+- Type: unknown
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L81)
+
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L87)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L89)
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L88)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L90)
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L96)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L98)
 
 #### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L97)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L99)
 
 #### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L98)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L100)
 
 #### `inferScriptKind` {#symbol-inferscriptkind}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L106)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L108)
 
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L107)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L109)
 
 #### `collectDependencies` {#symbol-collectdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L115)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L117)
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L116)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L118)
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L117)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L119)
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L118)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L120)
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L119)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L121)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L127)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L129)
 
 #### `renderPublicSymbolLines` {#symbol-renderpublicsymbollines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L128)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L130)
 
 #### `renderDependencyLines` {#symbol-renderdependencylines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L129)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L131)
 
 #### `renderReExportedAnchorLines` {#symbol-renderreexportedanchorlines}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L130)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L132)
 
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L137)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L139)
 
 #### `detectChangedFiles` {#symbol-detectchangedfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L144)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L146)
 
 #### `parsePorcelainLine` {#symbol-parseporcelainline}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L145)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L147)
 
 #### `execFileAsync` {#symbol-execfileasync}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L146)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L148)
 
 #### `directoryExists` {#symbol-directoryexists}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L154)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L156)
 
 #### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L155)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L157)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L162)
+- Source: [source](../../../../../../packages/shared/src/live-docs/core.ts#L164)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -274,7 +282,9 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [`coreTypes.SymbolDocumentationParameter`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationparameter) (re-export, type-only)
 - [`coreTypes.TypeReference`](./coreTypes.ts.mdmd.md#symbol-typereference) (re-export, type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (re-export, type-only)
+- [`coreUtils.commonDirectoryPrefixLength`](./coreUtils.ts.mdmd.md#symbol-commondirectoryprefixlength) (re-export)
 - [`coreUtils.compareSymbolLocationsPreferOrigin`](./coreUtils.ts.mdmd.md#symbol-comparesymbollocationspreferorigin) (re-export)
+- [`coreUtils.createProximityAwareComparator`](./coreUtils.ts.mdmd.md#symbol-createproximityawarecomparator) (re-export)
 - [`coreUtils.createSymbolSlug`](./coreUtils.ts.mdmd.md#symbol-createsymbolslug) (re-export)
 - [`coreUtils.displayDependencyKey`](./coreUtils.ts.mdmd.md#symbol-displaydependencykey) (re-export)
 - [`coreUtils.formatDependencyQualifier`](./coreUtils.ts.mdmd.md#symbol-formatdependencyqualifier) (re-export)

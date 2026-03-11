@@ -29,7 +29,7 @@ import {
   formatInlineCode,
   formatDependencyQualifier,
   displayDependencyKey,
-  compareSymbolLocationsPreferOrigin
+  createProximityAwareComparator
 } from "./coreUtils";
 
 // ============================================================================
@@ -317,8 +317,9 @@ function resolveTypeToLiveDoc(
   const selfRefs = locations.filter((loc) => loc.sourcePath === currentSourcePath);
 
   // Prefer external definitions, sorted to prefer origin files over barrels
+  // and files closer in the directory tree to the current source
   if (external.length > 0) {
-    const sorted = external.slice().sort(compareSymbolLocationsPreferOrigin);
+    const sorted = external.slice().sort(createProximityAwareComparator(currentSourcePath));
     return { location: sorted[0], isSelfReference: false };
   }
 

@@ -76,7 +76,9 @@ export {
   getNodeLocation,
   displayDependencyKey,
   isBarrelFilePath,
-  compareSymbolLocationsPreferOrigin
+  compareSymbolLocationsPreferOrigin,
+  commonDirectoryPrefixLength,
+  createProximityAwareComparator
 } from "./coreUtils";
 
 // ============================================================================

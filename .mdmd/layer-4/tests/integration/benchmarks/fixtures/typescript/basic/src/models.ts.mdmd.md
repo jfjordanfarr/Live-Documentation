@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/typescript/basic/src/models.ts
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-typescript-basic-src-models-ts
-- Generated At: 2026-02-03T21:55:46.408Z
+- Generated At: 2026-03-11T01:35:40.443Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Produces runtime widget instances that feed the `ts-basic` benchmark’s import 
 - Couples runtime creation with enum imports so regressions that demote these edges to “type-only” status are immediately caught by AST accuracy reports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.408Z","inputHash":"68443dc799db0859"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:40.443Z","inputHash":"68443dc799db0859"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createWidget` {#symbol-createwidget}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/basic/src/models.ts#L3)
-- Returns: [`Widget`](../../layered/src/models/widget.ts.mdmd.md#symbol-widget)
+- Returns: [`Widget`](./types.ts.mdmd.md#symbol-widget)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

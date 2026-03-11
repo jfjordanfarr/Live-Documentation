@@ -165,7 +165,8 @@ export async function buildLiveDocGraph(options: BuildLiveDocGraphOptions): Prom
             anchor: typeRef.targetAnchor,
             sourceAnchor: symbolName, // The symbol on this file that extends/implements/references the type
             label: `${typeRef.role}: ${typeRef.typeName}`,
-            raw: `${symbolName} ${typeRef.role} ${typeRef.typeName}`
+            raw: `${symbolName} ${typeRef.role} ${typeRef.typeName}`,
+            role: typeRef.role
           });
         }
       }

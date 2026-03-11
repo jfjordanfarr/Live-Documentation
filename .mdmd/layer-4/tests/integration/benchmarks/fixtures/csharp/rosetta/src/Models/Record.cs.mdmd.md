@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Record.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-models-record-cs
-- Generated At: 2026-02-03T21:55:43.059Z
+- Generated At: 2026-03-11T01:35:38.660Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.059Z","inputHash":"5b972d031fd7143f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:38.660Z","inputHash":"5b972d031fd7143f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record (class)` {#symbol-record-class}
 - Type: class
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Record.cs#L7)
-- Extends: [`Entry`](../../../../java/rosetta/src/com/rosetta/types/Entry.java.mdmd.md#symbol-entry-class)
+- Extends: [`Entry`](../Types/Entry.cs.mdmd.md#symbol-entry-class)
 
 ##### `Record (class)` — Summary
 A data record to be processed.

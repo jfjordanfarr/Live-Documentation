@@ -1,8 +1,6 @@
-import * as fs from "fs/promises";
 import * as path from "path";
 
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
-import { isBarrelFilePath } from "@live-documentation/shared/live-docs/coreUtils";
 import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 import type {
@@ -18,19 +16,7 @@ import {
     type LiveDocGraphNode
 } from "../../graph/liveDocGraph";
 
-type TypeResolver = (token: string) => LiveDocGraphNode | undefined;
-
 type InheritanceLinkKind = "extends" | "implements";
-
-interface InheritanceLink {
-    source: string;
-    target: string;
-    kind: InheritanceLinkKind;
-    /** The class/interface name that extends/implements */
-    sourceSymbol?: string;
-    /** The parent type name being extended/implemented */
-    targetSymbol?: string;
-}
 
 /**
  * Builds the full Explorer graph payload from the Live Doc graph,
@@ -42,7 +28,6 @@ export async function buildExplorerGraph(
 ): Promise<ExplorerGraphPayload> {
     const graph = await buildLiveDocGraph({ workspaceRoot, config });
     const nodes = Array.from(graph.nodes.values());
-    const resolveType = createTypeResolver(nodes);
 
     const links: ExplorerLinkPayload[] = [];
     const seenLinks = new Set<string>();
@@ -56,6 +41,10 @@ export async function buildExplorerGraph(
             const targetNode = targetId ? graph.nodes.get(targetId) : undefined;
             const resolved = Boolean(targetNode);
             const label = dep.label || targetId || dep.raw;
+            const kind: InheritanceLinkKind | "dependency" =
+                dep.role === "extends" ? "extends" :
+                dep.role === "implements" ? "implements" :
+                "dependency";
             return {
                 targetId: targetId,
                 targetDocPath: targetNode?.docPath ?? dep.docPath,
@@ -64,7 +53,7 @@ export async function buildExplorerGraph(
                 label,
                 raw: dep.raw,
                 resolved,
-                kind: "dependency"
+                kind
             };
         });
 
@@ -74,7 +63,7 @@ export async function buildExplorerGraph(
         dependencyReferences
             .filter(reference => reference.resolved && reference.targetId)
             .forEach(reference => {
-                addLink(node.codePath, reference.targetId!, "dependency", {
+                addLink(node.codePath, reference.targetId!, reference.kind as InheritanceLinkKind | "dependency", {
                     sourceSymbol: reference.sourceSymbol,
                     targetSymbol: reference.targetSymbol
                 });
@@ -102,6 +91,7 @@ export async function buildExplorerGraph(
 
     // Create edges for type references (param/return types that reference other files)
     // These enable connections to be drawn from the providing file to the consuming symbol
+    // Note: extends/implements flow through rawDependencies above with correct link kinds
     for (const nodePayload of nodePayloads) {
         if (!nodePayload.publicSymbolsExtended) continue;
         
@@ -111,7 +101,8 @@ export async function buildExplorerGraph(
             for (const typeRef of symbol.typeReferences) {
                 if (!typeRef.isResolved || !typeRef.targetId) continue;
                 
-                // Skip extends/implements - they're handled separately with pink/gold styling
+                // Skip extends/implements — they're routed through rawDependencies
+                // with their own link kind (pink/gold styling in the visualizer)
                 if (typeRef.role === "extends" || typeRef.role === "implements") continue;
                 
                 // Create an edge from the target file to this file
@@ -123,12 +114,6 @@ export async function buildExplorerGraph(
             }
         }
     }
-
-    const inheritanceLinks = await detectInheritance(nodes, workspaceRoot, resolveType);
-    inheritanceLinks.forEach(link => addLink(link.source, link.target, link.kind, {
-        sourceSymbol: link.sourceSymbol,
-        targetSymbol: link.targetSymbol
-    }));
 
     return {
         nodes: nodePayloads,
@@ -179,222 +164,6 @@ function toRelativePath(workspaceRoot: string, absolutePath: string): string {
     const relative = path.relative(workspaceRoot, absolutePath);
     const normalized = relative.replace(/\\/g, "/");
     return normalized || ".";
-}
-
-function createTypeResolver(nodes: LiveDocGraphNode[]): TypeResolver {
-    // Map symbol name → all nodes that export it (for later prioritization)
-    const symbolCandidates = new Map<string, LiveDocGraphNode[]>();
-    const baseLookup = new Map<string, LiveDocGraphNode[]>();
-
-    for (const node of nodes) {
-        for (const symbol of node.publicSymbols) {
-            if (!symbolCandidates.has(symbol)) {
-                symbolCandidates.set(symbol, []);
-            }
-            symbolCandidates.get(symbol)!.push(node);
-        }
-
-        const baseName = path.basename(node.codePath, path.extname(node.codePath)).toLowerCase();
-        if (!baseLookup.has(baseName)) {
-            baseLookup.set(baseName, []);
-        }
-        baseLookup.get(baseName)!.push(node);
-    }
-
-    // Pre-compute the best candidate for each symbol (prefer non-barrel files)
-    const symbolLookup = new Map<string, LiveDocGraphNode>();
-    for (const [symbol, candidates] of symbolCandidates) {
-        // Prefer non-barrel files over barrel files
-        const nonBarrel = candidates.filter(n => !isBarrelFilePath(n.codePath));
-        const best = nonBarrel.length > 0 ? nonBarrel[0] : candidates[0];
-        symbolLookup.set(symbol, best);
-    }
-
-    return token => {
-        const sanitized = sanitizeTypeToken(token);
-        if (!sanitized) {
-            return undefined;
-        }
-
-        const bySymbol = symbolLookup.get(sanitized);
-        if (bySymbol) {
-            return bySymbol;
-        }
-
-        const baseMatches = baseLookup.get(sanitized.toLowerCase());
-        if (!baseMatches || baseMatches.length === 0) {
-            return undefined;
-        }
-
-        if (baseMatches.length === 1) {
-            return baseMatches[0];
-        }
-
-        return (
-            baseMatches.find(candidate => {
-                const base = path.basename(candidate.codePath, path.extname(candidate.codePath));
-                return base === sanitized;
-            }) ?? baseMatches[0]
-        );
-    };
-}
-
-async function detectInheritance(
-    nodes: LiveDocGraphNode[],
-    workspaceRoot: string,
-    resolveType: TypeResolver
-): Promise<InheritanceLink[]> {
-    const results: InheritanceLink[] = [];
-    const seen = new Set<string>();
-
-    for (const node of nodes) {
-        const absolutePath = path.isAbsolute(node.codePath)
-            ? node.codePath
-            : path.resolve(workspaceRoot, node.codePath);
-
-        let content: string;
-        try {
-            content = await fs.readFile(absolutePath, "utf8");
-        } catch {
-            continue;
-        }
-
-        // Match: class ClassName extends ParentType [implements ...]
-        for (const match of matchTypeTokensWithCapture(content, /class\s+([A-Za-z0-9_]+)\s+extends\s+([^\n{]+)/g)) {
-            const [className, parentClause] = match;
-            const parentToken = parentClause.split(/implements/i)[0];
-            const reference = sanitizeTypeToken(parentToken);
-            if (!reference) {
-                continue;
-            }
-            const target = resolveType(reference);
-            if (!target) {
-                continue;
-            }
-            const key = `${node.codePath}|${target.codePath}|extends|${className}|${reference}`;
-            if (seen.has(key)) {
-                continue;
-            }
-            seen.add(key);
-            results.push({
-                source: node.codePath,
-                target: target.codePath,
-                kind: "extends",
-                sourceSymbol: className,
-                targetSymbol: reference
-            });
-        }
-
-        // Match: class ClassName implements Interface1, Interface2
-        for (const match of matchTypeTokensWithCapture(content, /class\s+([A-Za-z0-9_]+)\s+(?:extends\s+[^\n{]+\s+)?implements\s+([^\n{]+)/g)) {
-            const [className, implementsClause] = match;
-            const segments = implementsClause.split(",").map(segment => segment.trim()).filter(Boolean);
-            for (const segment of segments) {
-                const reference = sanitizeTypeToken(segment);
-                if (!reference) {
-                    continue;
-                }
-                const target = resolveType(reference);
-                if (!target) {
-                    continue;
-                }
-                const key = `${node.codePath}|${target.codePath}|implements|${className}|${reference}`;
-                if (seen.has(key)) {
-                    continue;
-                }
-                seen.add(key);
-                results.push({
-                    source: node.codePath,
-                    target: target.codePath,
-                    kind: "implements",
-                    sourceSymbol: className,
-                    targetSymbol: reference
-                });
-            }
-        }
-
-        // Match: interface InterfaceName extends Parent1, Parent2
-        for (const match of matchTypeTokensWithCapture(content, /interface\s+([A-Za-z0-9_]+)\s+extends\s+([^\n{]+)/g)) {
-            const [interfaceName, extendsClause] = match;
-            const segments = extendsClause.split(",").map(segment => segment.trim()).filter(Boolean);
-            for (const segment of segments) {
-                const reference = sanitizeTypeToken(segment);
-                if (!reference) {
-                    continue;
-                }
-                const target = resolveType(reference);
-                if (!target) {
-                    continue;
-                }
-                const key = `${node.codePath}|${target.codePath}|extends|${interfaceName}|${reference}`;
-                if (seen.has(key)) {
-                    continue;
-                }
-                seen.add(key);
-                results.push({
-                    source: node.codePath,
-                    target: target.codePath,
-                    kind: "extends",
-                    sourceSymbol: interfaceName,
-                    targetSymbol: reference
-                });
-            }
-        }
-    }
-
-    return results;
-}
-
-function _matchTypeTokens(content: string, pattern: RegExp): string[] {
-    const tokens: string[] = [];
-    const regex = new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(content)) !== null) {
-        const candidate = match[1];
-        if (!candidate) {
-            continue;
-        }
-        tokens.push(candidate);
-    }
-    return tokens;
-}
-
-/**
- * Like matchTypeTokens, but captures two groups: [group1, group2] for each match.
- * Used for patterns like /class\s+(\w+)\s+extends\s+(.+)/ where we need both the class name and parent.
- */
-function matchTypeTokensWithCapture(content: string, pattern: RegExp): Array<[string, string]> {
-    const results: Array<[string, string]> = [];
-    const regex = new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(content)) !== null) {
-        const group1 = match[1];
-        const group2 = match[2];
-        if (!group1 || !group2) {
-            continue;
-        }
-        results.push([group1, group2]);
-    }
-    return results;
-}
-
-function sanitizeTypeToken(raw: string): string | undefined {
-    if (!raw) {
-        return undefined;
-    }
-    let candidate = raw.trim();
-    if (!candidate) {
-        return undefined;
-    }
-    candidate = candidate.replace(/implements.+/i, "");
-    candidate = candidate.replace(/[<{(].*$/, "");
-    candidate = candidate.replace(/[^A-Za-z0-9_.]/g, "");
-    if (!candidate) {
-        return undefined;
-    }
-    const segments = candidate.split(".");
-    const tail = segments[segments.length - 1];
-    return tail ? tail : undefined;
 }
 
 /**

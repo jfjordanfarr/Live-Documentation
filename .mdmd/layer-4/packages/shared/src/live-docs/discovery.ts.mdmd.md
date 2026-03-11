@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-02-23T21:32:14.882Z
+- Generated At: 2026-03-11T01:35:37.269Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:14.882Z","inputHash":"662696c653f9295c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.269Z","inputHash":"c08a50e9cc255db4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -132,7 +132,7 @@ The resolved location, or undefined if not found.
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
-- [`coreUtils.compareSymbolLocationsPreferOrigin`](./coreUtils.ts.mdmd.md#symbol-comparesymbollocationspreferorigin)
+- [`coreUtils.createProximityAwareComparator`](./coreUtils.ts.mdmd.md#symbol-createproximityawarecomparator)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`rendering.computePublicSymbolHeadingInfo`](./rendering.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)

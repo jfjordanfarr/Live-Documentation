@@ -20,7 +20,7 @@ import type {
   ResolvedSymbolLocation,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { compareSymbolLocationsPreferOrigin } from "./coreUtils";
+import { createProximityAwareComparator } from "./coreUtils";
 import { detectChangedFiles } from "./gitUtils";
 import { computePublicSymbolHeadingInfo } from "./rendering";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
@@ -299,7 +299,7 @@ export function resolveTypeToLiveDoc(
     return external[0];
   }
   
-  // Multiple external matches: prefer origin files over barrels
-  const sorted = external.slice().sort(compareSymbolLocationsPreferOrigin);
+  // Multiple external matches: prefer origin files over barrels, and closer files
+  const sorted = external.slice().sort(createProximityAwareComparator(currentSourcePath));
   return sorted[0];
 }

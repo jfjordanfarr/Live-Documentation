@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/python/rosetta/src/models.py
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-python-rosetta-src-models-py
-- Generated At: 2026-02-03T21:55:45.087Z
+- Generated At: 2026-03-11T01:35:39.761Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,13 @@ Data models for the Python Rosetta Stone fixture. Defines Record and Report data
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:45.087Z","inputHash":"d7d529c540aab5cc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:39.761Z","inputHash":"d7d529c540aab5cc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
 - Type: class
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/python/rosetta/src/models.py#L15)
-- Extends: [`Entry`](../../../java/rosetta/src/com/rosetta/types/Entry.java.mdmd.md#symbol-entry-class)
+- Extends: [`Entry`](./core_types.py.mdmd.md#symbol-entry)
 
 ##### `Record` — Summary
 A data record to be processed.
