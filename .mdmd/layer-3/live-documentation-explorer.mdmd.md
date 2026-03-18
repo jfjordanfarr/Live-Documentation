@@ -96,7 +96,12 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 #### Views
 
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView.ts.mdmd.md)
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts.mdmd.md) — Circuit Board controller (progressive disclosure treemap)
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts.mdmd.md) — Immutable state for expand/collapse
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts.mdmd.md) — Directory aggregate metrics
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/squarify.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/squarify.ts.mdmd.md) — Squarified treemap layout algorithm
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/directoryTile.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/directoryTile.ts.mdmd.md) — Directory tile DOM builder
+- [packages/scripts/src/live-docs/explorer/client/views/circuitView/breadcrumb.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/breadcrumb.ts.mdmd.md) — Breadcrumb navigation DOM builder
 - [packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts.mdmd.md)
 

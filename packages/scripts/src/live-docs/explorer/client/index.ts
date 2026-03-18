@@ -262,9 +262,9 @@ function startExplorer(
     updateUrlState("circuit", node.id);
     schedulePersistNav();
     renderCurrentView();
-    // Scroll to the node after render
+    // Expand the containing directory and scroll to the node
     setTimeout(() => {
-      circuitView.scrollToNode(node.id);
+      circuitView.expandAndScrollToNode(node.id);
     }, 50);
   };
 
@@ -773,9 +773,9 @@ function startExplorer(
       // Use setTimeout to ensure view is fully rendered before focusing
       setTimeout(() => {
         void selectNode(focusNode);
-        // For circuit view, also scroll to the node
+        // For circuit view, expand the directory and scroll to the node
         if (state.view === "circuit") {
-          circuitView.scrollToNode(focusNode.id);
+          circuitView.expandAndScrollToNode(focusNode.id);
         }
       }, 100);
     } else {

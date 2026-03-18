@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2026-02-16T18:46:22.346Z
+- Generated At: 2026-03-17T19:15:48.709Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:22.346Z","inputHash":"3d622b048facdc33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-17T19:15:48.709Z","inputHash":"3d622b048facdc33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -144,3 +144,9 @@ position — centering on the most-connected directory cluster.
 - [`types.ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [squarify.test.ts](./circuitView/squarify.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->
