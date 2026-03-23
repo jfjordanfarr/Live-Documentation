@@ -71,12 +71,14 @@ Track the granular work breakdown for Live Documentation development, organised 
 - [x] LD-402 Ship CLI `scripts/live-docs/inspect.ts`
 - [ ] LD-404 Implement regeneration watcher (targeted updates on file save)
 - [ ] LD-405 Document legacy-parity strategy and rollback toggles
-- [ ] LD-406 Consolidate `npm run live-docs:visualize` into single explorer view
+- [ ] LD-406 Consolidate `npm run live-docs:visualize` into single explorer view _(prerequisite for Membrane Map; see Stage 12)_
 - [ ] LD-407 Implement focus-mode filtering with Live Doc detail panels
 - [ ] LD-408 Add accessibility + telemetry harnesses (axe-core, keyboard, Playwright)
 - [x] LD-409 Implement Local Map `From`/`To` pathfinding
 
 ### Phase 4b – Multi-Path Pathfinding (Stream LV1-F)
+
+> **Note (2026-03-22)**: Phase 4b rendering tasks (LD-412, LD-414, LD-416) may be reimplemented on the [Membrane Map](../../layer-3/membrane-map.mdmd.md) spatial substrate rather than the current Local Map column layout. Algorithm-level tasks (LD-410, LD-411, LD-413, LD-415) are substrate-independent and apply regardless.
 
 - [ ] LD-410 Replace single-parent BFS with multi-parent BFS in CLI `pathfind.ts` and Explorer `pathfind.ts`
 - [ ] LD-411 Implement all-shortest-paths DAG reconstruction from multi-parent map
@@ -172,6 +174,25 @@ All LLM modules were dormant with zero production callers. Users bring their own
 - [ ] LD-1106 Add integration tests for brownfield discovery
 - [ ] LD-1107 Document brownfield integration workflow
 
+## Stage 12 – Membrane Map (View Unification)
+
+The [Membrane Map](../../layer-3/membrane-map.mdmd.md) unifies Circuit Board and Local Map into a single zoomable treemap where directories render as nested membranes and dependency connections pierce membrane boundaries. Both current views remain functional until the Membrane Map achieves feature parity and stability.
+
+- [ ] LD-1200 Implement membrane layout engine (directory-as-membrane nesting, squarified treemap for interior)
+- [ ] LD-1201 [P] Implement Browse mode (directory aggregates, no connections — replaces Circuit Board)
+- [ ] LD-1202 [P] Implement Explore mode (focal node with pin-level detail, neighbor connections — replaces Local Map)
+- [ ] LD-1203 Implement barrel-as-membrane-boundary rendering for TS/JS, Python, Rust
+- [ ] LD-1204 Implement edge bundling for dense cross-membrane connections
+- [ ] LD-1205 [P] Implement Compare mode (two focal nodes with cross-membrane connections)
+- [ ] LD-1206 [P] Implement Path mode on membrane substrate (or confirm column layout retention)
+- [ ] LD-1207 Add C# namespace mode (alternative hierarchy function grouping by namespace)
+- [ ] LD-1208 Enhance C# adapter with nested public type extraction (brace-depth tracking)
+- [ ] LD-1209 Replace `innerHTML` teardown/rebuild with persistent DOM elements for membrane containers
+- [ ] LD-1210 Add zoom/pan with spatial context (ancestor membranes visible at increasing scale)
+- [ ] LD-1211 Integration tests for Membrane Map rendering modes
+- [ ] LD-1212 [P] Phase out Circuit Board and Local Map views after stability period
+- [ ] LD-1213 Update all Layer-1 guides for two-view taxonomy (Membrane Map + Force Graph)
+
 ---
 
 ## Stage Dependencies
@@ -185,6 +206,7 @@ All LLM modules were dormant with zero production callers. Users bring their own
 - **Phase 6 → Phase 7**: Enrichers build on canonical Live Docs.
 - **Stage 8 → Stage 9**: Hosted showcase depends on Layer distribution pipeline.
 - **Phase 7 → Stage 11**: Brownfield integration proceeds once canonical Live Docs and System analytics are in place.
+- **Phase 4 + Stage 11 → Stage 12**: Membrane Map builds on existing Explorer infrastructure and may subsume Phase 4b rendering tasks.
 
 ## Summary Metrics
 

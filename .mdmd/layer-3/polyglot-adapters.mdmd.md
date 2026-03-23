@@ -1,15 +1,19 @@
 # Polyglot Language Adapters
 
 ## Metadata
+
 - Layer: 3
 - Archetype: component
 - Live Doc ID: COMP-polyglot-adapters
 
 ## Authored
+
 ### Purpose
+
 Document the polyglot adapter subsystem that extracts symbols and dependencies from source files across 12+ languages, enabling Live Documentation generation without requiring language-specific compilers or interpreters at runtime.
 
 ### Notes
+
 - Adapters reside in `packages/shared/src/live-docs/adapters/` and implement a common `LanguageAdapter` interface.
 - Each adapter uses regex-based parsing to extract public symbols, dependencies, and docstring content. This is a deliberate design choice—adapters run in pure JavaScript/TypeScript without shelling out to compilers.
 - **Only TypeScript has a true compiler-backed oracle** (via `import ts from "typescript"`). All other adapters are sophisticated regex parsers that approximate the behaviour of their respective language's import/module resolution.
@@ -21,21 +25,21 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 
 ### Adapter Inventory
 
-| Adapter | File | Languages/Extensions | Special Features |
-|---------|------|---------------------|------------------|
-| **TypeScript** | (core, not in adapters/) | `.ts`, `.tsx`, `.js`, `.jsx` | Compiler-backed, full AST |
-| **Python** | `python.ts` | `.py` | NumPy/Google/reST docstrings |
-| **C#** | `csharp.ts` | `.cs` | XML doc + dependency inference |
-| **Java** | `java.ts` | `.java` | Package imports, same-package resolution |
-| **Rust** | `rust.ts` | `.rs` | `use`, `mod`, `pub` paths |
-| **Ruby** | `ruby.ts` | `.rb` | `require`, `require_relative` |
-| **Go** | `go.ts` | `.go` | `import` blocks, test file skipping |
-| **C** | `c.ts` | `.c`, `.h` | `#include`, function body scoping |
-| **PowerShell** | `powershell.ts` | `.ps1`, `.psm1` | Comment-based help blocks |
-| **HTML** | `html.ts` | `.html`, `.htm` | Asset references (scripts, stylesheets) |
-| **CSS** | `css.ts` | `.css` | `@import`, `url()` references |
-| **JSON** | `json.ts` | `.json` | Schema and reference detection |
-| **ASP.NET** | `aspnet.ts` | `.aspx`, `.ascx`, `.master` | Code-behind linking |
+| Adapter        | File                     | Languages/Extensions         | Special Features                         |
+| -------------- | ------------------------ | ---------------------------- | ---------------------------------------- |
+| **TypeScript** | (core, not in adapters/) | `.ts`, `.tsx`, `.js`, `.jsx` | Compiler-backed, full AST                |
+| **Python**     | `python.ts`              | `.py`                        | NumPy/Google/reST docstrings             |
+| **C#**         | `csharp.ts`              | `.cs`                        | XML doc + dependency inference           |
+| **Java**       | `java.ts`                | `.java`                      | Package imports, same-package resolution |
+| **Rust**       | `rust.ts`                | `.rs`                        | `use`, `mod`, `pub` paths                |
+| **Ruby**       | `ruby.ts`                | `.rb`                        | `require`, `require_relative`            |
+| **Go**         | `go.ts`                  | `.go`                        | `import` blocks, test file skipping      |
+| **C**          | `c.ts`                   | `.c`, `.h`                   | `#include`, function body scoping        |
+| **PowerShell** | `powershell.ts`          | `.ps1`, `.psm1`              | Comment-based help blocks                |
+| **HTML**       | `html.ts`                | `.html`, `.htm`              | Asset references (scripts, stylesheets)  |
+| **CSS**        | `css.ts`                 | `.css`                       | `@import`, `url()` references            |
+| **JSON**       | `json.ts`                | `.json`                      | Schema and reference detection           |
+| **ASP.NET**    | `aspnet.ts`              | `.aspx`, `.ascx`, `.master`  | Code-behind linking                      |
 
 ### Supporting Modules
 
@@ -44,12 +48,17 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 - **`python.docstring.ts`**: Stateful docstring parser supporting all major Python docstring conventions.
 
 ### Strategy
+
 - Maintain benchmark parity with curated `expected.json` fixtures across all supported languages.
 - Consider compiler/interpreter-backed oracles for Python, Rust, and Go as a future enhancement when CI infrastructure supports it.
 - Extend docstring extraction to Java (Javadoc) and Rust (`///` comments) to improve Live Doc richness.
+- **C# nested public types**: The current C# adapter extracts nested classes (`public class Outer { public class Inner { } }`) as flat sibling symbols. The [Membrane Map](membrane-map.mdmd.md) requires hierarchical pins for these types. Enhancement: track brace depth during symbol extraction, maintain a stack of enclosing type names, and emit qualified names (`Outer.Inner`). Tracked as LD-1208.
+- **C# namespace mode**: The [Membrane Map](membrane-map.mdmd.md) supports an optional namespace-based hierarchy for C# (where namespaces frequently span directories). Namespace data is already extracted by the heuristic system (`extractCSharpNamespace()`). Tracked as LD-1207.
 
 ## System References
+
 ### Components
+
 - [packages/shared/src/live-docs/adapters/index.ts](../layer-4/packages/shared/src/live-docs/adapters/index.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/python.ts](../layer-4/packages/shared/src/live-docs/adapters/python.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/python.docstring.ts](../layer-4/packages/shared/src/live-docs/adapters/python.docstring.ts.mdmd.md)
@@ -68,6 +77,7 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 - [packages/shared/src/live-docs/adapters/aspnet.ts](../layer-4/packages/shared/src/live-docs/adapters/aspnet.ts.mdmd.md)
 
 ## Evidence
+
 - Benchmark fixtures under `tests/integration/benchmarks/fixtures/{language}/` validate adapter precision/recall.
 - Dev Day 60 (2026-01-16) documented fixes for Ruby single-quote handling, Go test skipping, C function body scoping, Rust indented `use`, and Java same-package resolution.
 - `npm run test:benchmarks` runs the full polyglot accuracy suite.

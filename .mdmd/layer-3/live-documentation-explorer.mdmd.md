@@ -10,22 +10,24 @@
 
 ### Purpose
 
-Document the visualization command center that renders the Live Doc graph as interactive views—Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—built as a static bundle for browser-based exploration.
+Document the visualization command center that renders the Live Doc graph as interactive views—currently Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—built as a static bundle for browser-based exploration. The planned [Membrane Map](membrane-map.mdmd.md) will unify Circuit Board and Local Map into a single zoomable treemap with directory-as-membrane nesting, reducing the view count from three to two (Membrane Map + Force Graph).
 
 ### Notes
 
 - Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with client and shared modules.
 - The shared layer (`explorer/shared/`) builds the graph payload from Layer-4 Live Docs and bundles HTML/CSS/JS assets into a static Explorer.
 - The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`.
-- The client (`explorer/client/`) renders three view modes:
+- The client (`explorer/client/`) currently renders three view modes:
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
   - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
   - **Force Graph**: Force-directed layout for spatial discovery (accessibility relaxed vs primary views).
+- The **[Membrane Map](membrane-map.mdmd.md)** is the planned successor to Circuit Board and Local Map, unifying directory browsing and symbol exploration into a single zoomable treemap. Both current views remain fully functional; phase-out will occur when the Membrane Map achieves feature parity and stability.
 - The Local Map was split into a modular `localView/` directory on 2025-12-04 to support column-aware anchor registration, gradient connections, and type-reference edge rendering.
 - Symbol anchors (`symbolAnchors.ts`, created 2025-12-03) normalise identifiers so connection routing works across different payload formats.
 
 ### Strategy
 
+- **Membrane Map transition**: Build the [Membrane Map](membrane-map.mdmd.md) as a new view alongside existing Circuit Board and Local Map, using those as reference implementations. Once feature parity and stability are confirmed, phase out Circuit Board and Local Map. See the [feature backlog](../layer-2/work-items/feature-backlog.mdmd.md) for Membrane Map work items.
 - Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
 - The Explorer is strictly read-only. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.
@@ -44,6 +46,8 @@ Three planned enhancements address this limitation (see `AI-Agent-Workspace/Note
 3. **Symbol-Divergent Paths Through Same File** — Port the CLI's symbol-aware BFS (`pathfind-symbol.ts`) to the Explorer client. When two shortest paths traverse the same file sequence via different symbols, multiple connection lines route through distinct symbol anchors on the same card. Each chain gets a unique color; hovering highlights the full chain end-to-end.
 
 These enhancements are additive and depend on the multi-hop rendering architecture documented in `AI-Agent-Workspace/Notes/multi-hop-local-map-architecture.md` (dynamic column count, hop-aware anchors, HopChain data model). Each can ship independently in the order listed.
+
+> **Note (2026-03-22)**: Multi-path pathfinding may be reimplemented on the [Membrane Map](membrane-map.mdmd.md) spatial substrate rather than the current column layout. The column-based rendering described above remains the reference design until the Membrane Map's Path mode is prototyped.
 
 ## System References
 

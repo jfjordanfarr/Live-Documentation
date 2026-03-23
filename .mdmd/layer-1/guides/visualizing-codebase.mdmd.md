@@ -5,7 +5,9 @@
 - Layer: 1
 - Guide Type: task-tutorial
 
-The Live Documentation Explorer provides three interactive views for navigating your codebase visually. This guide covers each view's strengths, the shareability features, and how to export static bundles for your team.
+The Live Documentation Explorer provides interactive views for navigating your codebase visually. This guide covers each view's strengths, the shareability features, and how to export static bundles for your team.
+
+> **Coming soon**: The **Membrane Map** is the planned successor to Circuit Board and Local Map, unifying directory browsing and symbol-level exploration into a single zoomable treemap. Both current views remain fully functional. See [Membrane Map architecture](../../layer-3/membrane-map.mdmd.md) for details.
 
 ---
 
@@ -203,7 +205,7 @@ Existing markdown (READMEs, architecture diagrams, design notes) appears in the 
 - **Purple nodes** (#9966cc) distinguish Related Docs from Live Docs
 - **Smaller size** visually separates documentation from source code
 - **Click handling** opens Related Docs in the Detail Panel
-- **Circuit Board/Local Map buttons are hidden** for non-Live-Doc nodes
+- **Circuit Board/Local Map buttons are hidden** for non-Live-Doc nodes (Membrane Map will inherit this behaviour)
 
 This "bridge, don't replace" strategy means your existing documentation is never overwritten—it's simply made navigable.
 
@@ -234,7 +236,7 @@ npm run live-docs:generate
 
 For large workspaces (1000+ nodes), the Force Graph can be sluggish. Try:
 
-- Use Circuit Board for macro navigation
+- Use Circuit Board (or Membrane Map when available) for macro navigation
 - Filter to a subsystem before switching to Force Graph
 - Use `--changed` flag to regenerate only modified files
 

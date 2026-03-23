@@ -188,6 +188,8 @@
 
 > Three complementary views for exploring the Live Documentation graph: Circuit Board (treemap of directory hierarchy), Force-Directed Graph (emergent topology), and Local Map (3-column symbol-to-symbol detail view). Each serves a distinct cognitive purpose.
 
+[Planned successor: The **Membrane Map** (Dev Day 79, 2026-03-22) will unify Circuit Board and Local Map into a single zoomable treemap, reducing the primary view count from three to two (Membrane Map + Force Graph). See [membrane-map.mdmd.md](../.mdmd/layer-3/membrane-map.mdmd.md) and Stage 12 in the feature backlog.]
+
 ### UC-046 — Visualization Parity Between Headless and UI Modalities (2025-11-24.md)
 
 > "I expect (relative) **parity** between the 'headless' and 'UI-driven' modalities of exploring the Live Documentation."
@@ -356,6 +358,8 @@
 
 > "Right now, the Circuit Board is borderline useless for me and you. For you, it completely fills the DOM with elements. The shape of the whole codebase down to each leaf lays itself down in the DOM and floods your context window everytime. The user experience is not much better. It abstracts/hides insufficiently..."
 
+[Partially addressed: Dev Day 78 (2026-03-17.1.md) — Progressive disclosure with directory-level aggregation, two-zone layout, squarified treemap, and dimmed sibling strips shipped. DOM saturation resolved. Remaining gaps: cross-directory dependency rendering, focus mode, search-to-navigate, and the full unified view continuum (UC-094). The **Membrane Map** (Dev Day 79, 2026-03-22) is the planned successor that addresses these remaining gaps.]
+
 ### UC-088 — Prompt File Distribution as "Last Mile" AI Integration (2026-02-20.1.md:L467, L624)
 
 > "By providing prompt files which leverage whatever conventions are common for agent steering at the time of releasing the software, we can recreate virtually all of the AI-enabled functionality with a vastly reduced security burden on our own software." / "We do not know, and cannot expect to know, the exact shape of prompt files... New conventions evolve constantly, which is why... we should 'wait until the last possible second to decide on conventions'."
@@ -379,3 +383,9 @@
 ### UC-093 — The Throughline: Reverse Polyglot Code into Common Markdown for Reasoning (across all dev days)
 
 > The unifying thesis across all use cases: "We can-and-should reverse polyglot code into a common MarkDown convention so that we can reason about a workspace in numerous ways with ease." Every UC above is a facet of this core insight — that markdown-as-AST enables change impact analysis, compliance mapping, visualization, report generation, and AI-assisted development from a single auditable substrate.
+
+### UC-094 — Unified View Continuum: Circuit Board → Local Map Semantic Zoom (2026-03-17.1.md:L2453)
+
+> "Why are the circuit board and the local map separate? Once you're zoomed in to a single file, why can't one seamlessly switch to seeing the inbound/outbound dependencies for that one node in the Local Map's 3 column layout, all via transition-like CSS?" / "Okay, let's go with Option C with the plan in the back of our mind to, if we can wrangle the design, work our way up to Option B." The long-term product direction where the Circuit Board and Local Map merge into a single view with continuous zoom levels: directory tiles (workspace overview) → file cards (directory contents) → dependency neighborhood (Local Map's 3-column layout), with CSS transitions between zoom levels rather than tab switching. Currently deferred in favor of the two-zone layout (Option C), but declared as an aspiration that should inform incremental design decisions.
+
+[This use case is the direct ancestor of the **Membrane Map** concept (Dev Day 79, 2026-03-22). Membrane Map formalizes the unified view continuum as a zoomable treemap with four rendering modes (Browse, Explore, Compare, Path). See [membrane-map.mdmd.md](../.mdmd/layer-3/membrane-map.mdmd.md).]

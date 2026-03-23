@@ -396,7 +396,7 @@ Supports REQ-G1. [Live Documentation Pipeline](../layer-3/live-documentation-pip
 
 ### COMP-030 Visualization Explorer
 
-Supports REQ-V1. The Explorer is implemented with three views: Circuit Board (treemap), Local Map (3-column symbol graph), and Force Graph. Static distribution via `npm run live-docs:visualize` and interactive Local Map `From`/`To` pathfinding are shipped as of commit `a0cc5de2` (2025-12-18). Accessibility audits and Playwright smoke tests remain outstanding (LD-406–LD-408).
+Supports REQ-V1. The Explorer currently ships three views: Circuit Board (treemap), Local Map (3-column symbol graph), and Force Graph. The planned [Membrane Map](../layer-3/membrane-map.mdmd.md) will unify Circuit Board and Local Map into a single zoomable treemap, reducing the view count to two (Membrane Map + Force Graph). Static distribution via `npm run live-docs:visualize` and interactive Local Map `From`/`To` pathfinding are shipped as of commit `a0cc5de2` (2025-12-18). Accessibility audits and Playwright smoke tests remain outstanding (LD-406–LD-408). Membrane Map work items are tracked under Stage 12 (LD-1200–LD-1213).
 
 ## Linked Implementations
 
@@ -476,7 +476,7 @@ Supports REQ-D1. (CLI will be documented alongside the System analytics implemen
 
 ### IMP-650 liveDocsVisualizeExplorer
 
-Supports REQ-V1. [Visualize Static CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-static.ts.mdmd.md). Static distribution (`npm run live-docs:visualize`) is shipped (server mode retired 2026-03-09). Local Map `From`/`To` pathfinding completed 2025-12-18 (commit `a0cc5de2`).
+Supports REQ-V1. [Visualize Static CLI](../../.mdmd/layer-4/scripts/live-docs/visualize-static.ts.mdmd.md). Static distribution (`npm run live-docs:visualize`) is shipped (server mode retired 2026-03-09). Local Map `From`/`To` pathfinding completed 2025-12-18 (commit `a0cc5de2`). The [Membrane Map](../layer-3/membrane-map.mdmd.md) is the planned successor to Circuit Board + Local Map views.
 
 ### IMP-950 hostedShowcaseWorker _(planned)_
 

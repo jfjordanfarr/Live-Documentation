@@ -26,6 +26,7 @@
     ],
     "problems.exclude": {
         "**/tests/integration/benchmarks/fixtures/**": true
-    }
+    },
+    "markdown.validate.enabled": true
 }
 

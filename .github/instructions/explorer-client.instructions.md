@@ -6,6 +6,8 @@ applyTo: "packages/scripts/src/live-docs/explorer/client/**/*.ts"
 
 This file governs the Live Documentation Explorer client-side code, including the Circuit Board, Local Map, and Force Graph views.
 
+> **Planned**: The **Membrane Map** will unify Circuit Board and Local Map into a single zoomable treemap. See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md) for the architecture and [Stage 12](../../.mdmd/layer-2/work-items/feature-backlog.mdmd.md#stage-12--membrane-map) for work items. Until Membrane Map lands, all three views remain actively maintained.
+
 ## Architecture
 
 The Local Map view follows a clean separation of concerns established during the 12/18 multi-hop refactor:

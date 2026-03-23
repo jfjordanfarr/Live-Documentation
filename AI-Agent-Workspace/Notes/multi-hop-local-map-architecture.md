@@ -1,5 +1,7 @@
 # Multi-Hop Local Map Architecture Analysis
 
+> **Note (2026-03-22):** The Local Map is the planned predecessor of the **Membrane Map** Explore mode. The architectural lessons captured here (hop-chain data model, anchor registry, dynamic column count, multi-pinning) directly inform Membrane Map design. See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md).
+
 **Date:** 2025-12-18  
 **Context:** Post-mortem of 12/17.2-12/17.3 failed multi-hop attempt  
 **Related Chat:** `ChatHistory/2025/12/2025-12-17.2.md`, `ChatHistory/2025/12/2025-12-17.3.md`
@@ -58,12 +60,14 @@ The failed 12/17.3 attempt proved that **bolting multi-hop onto the existing arc
 ```
 
 **Fix Required:** Dynamic grid based on hop count:
+
 ```css
 /* 2 + (2 × hopCount) columns: [Deps, Center, [Dependents, HopCenter]×N] */
 grid-template-columns: repeat(auto-fill, max-content);
 ```
 
 Or set via JS:
+
 ```typescript
 layoutRoot.style.gridTemplateColumns = `repeat(${2 + hopCount * 2}, max-content)`;
 ```
@@ -90,12 +94,14 @@ currentSubgraph.links.forEach(edge => {
 });
 ```
 
-**The Problem:** 
+**The Problem:**
+
 - This iterates `currentSubgraph.links` — links for **one center node only**
 - Has no concept of hop columns or their edges
 - Uses fixed `ColumnRole` type: `"upstream" | "center" | "downstream"`
 
 **Fix Required:**
+
 - `ColumnRole` becomes `{ hopIndex: number, role: "deps" | "center" | "dependents" }`
 - Connection drawing iterates over **all hop subgraphs**, not just the first
 - Each hop pair `(center[n] → dependents[n])` draws edges independently
@@ -114,6 +120,7 @@ const anchorKey = `${columnRole}:${nodeId}:${symbol}`;
 **The Problem:** If the same node appears in multiple columns (e.g., as a dependency AND a hop center), keys collide.
 
 **Fix Required:**
+
 ```typescript
 const anchorKey = `hop${hopIndex}:${columnRole}:${nodeId}:${symbol}`;
 ```
@@ -126,11 +133,11 @@ const anchorKey = `hop${hopIndex}:${columnRole}:${nodeId}:${symbol}`;
 
 ```typescript
 export interface LocalSubgraph {
-  center: ExplorerNodePayload;        // ONE center
-  nodes: ExplorerNodePayload[];       // Flat list of all nodes
-  links: LocalEdge[];                 // Flat list of all edges
-  inboundIds: Set<string>;            // IDs that are dependents of center
-  outboundIds: Set<string>;           // IDs that are dependencies of center
+  center: ExplorerNodePayload; // ONE center
+  nodes: ExplorerNodePayload[]; // Flat list of all nodes
+  links: LocalEdge[]; // Flat list of all edges
+  inboundIds: Set<string>; // IDs that are dependents of center
+  outboundIds: Set<string>; // IDs that are dependencies of center
 }
 ```
 
@@ -140,16 +147,16 @@ export interface LocalSubgraph {
 export interface HopSubgraph {
   hopIndex: number;
   center: ExplorerNodePayload;
-  centerSymbol?: string;              // Pinned symbol on this hop's center
+  centerSymbol?: string; // Pinned symbol on this hop's center
   dependencies: ExplorerNodePayload[];
   dependents: ExplorerNodePayload[];
-  links: LocalEdge[];                 // Edges specific to this hop
+  links: LocalEdge[]; // Edges specific to this hop
 }
 
 export interface HopChain {
   hops: HopSubgraph[];
   fromNode: ExplorerNodePayload;
-  toNode?: ExplorerNodePayload;       // undefined if exploring, set if pathfinding
+  toNode?: ExplorerNodePayload; // undefined if exploring, set if pathfinding
   fromSymbol?: string;
   toSymbol?: string;
 }
@@ -189,10 +196,10 @@ export function renderLocalView(controller: LocalViewController): void {
   // ...
   const centerColumn = createHierarchicalColumn(...);
   layoutRoot.appendChild(centerColumn);
-  
+
   const dependenciesColumn = createStackedColumn(...);
   layoutRoot.insertBefore(dependenciesColumn, centerColumn);
-  
+
   const dependentsColumn = createStackedColumn(...);
   layoutRoot.appendChild(dependentsColumn);
   // EXACTLY 3 columns created, always
@@ -204,10 +211,10 @@ export function renderLocalView(controller: LocalViewController): void {
 ```typescript
 export function renderLocalView(controller: LocalViewController): void {
   const hopChain = controller.buildHopChain();
-  
+
   // Hop 0: Original node's dependencies
   layoutRoot.appendChild(createDepsColumn(hopChain.hops[0]));
-  
+
   hopChain.hops.forEach((hop, i) => {
     // Each hop adds: center column + dependents column
     layoutRoot.appendChild(createCenterColumn(hop, i));
@@ -235,18 +242,18 @@ The current pathfind.ts treats the graph as **undirected** — it traverses edge
 
 ```typescript
 interface PathfindResult {
-  path: string[];           // Node IDs in order
+  path: string[]; // Node IDs in order
   direction: "forward" | "reverse";
   hops: number;
 }
 
 function findDirectionalPath(
-  from: string, 
-  to: string, 
+  from: string,
+  to: string,
   maxHops: number
 ): { forward?: PathfindResult; reverse?: PathfindResult } {
   const forward = bfsForward(from, to, maxHops);
-  const reverse = bfsReverse(from, to, maxHops);  // Actually searches to→from on inbound edges
+  const reverse = bfsReverse(from, to, maxHops); // Actually searches to→from on inbound edges
   return { forward, reverse };
 }
 ```
@@ -257,10 +264,10 @@ function findDirectionalPath(
 
 Per `npm run tech-debt`:
 
-| File | Lines | Issue |
-|------|-------|-------|
-| `explorer/client/index.ts` | **1834** | Main entry point, monolithic |
-| `explorer/client/views/localView/controller.ts` | **1206** | Core logic, tightly coupled |
+| File                                            | Lines    | Issue                        |
+| ----------------------------------------------- | -------- | ---------------------------- |
+| `explorer/client/index.ts`                      | **1834** | Main entry point, monolithic |
+| `explorer/client/views/localView/controller.ts` | **1206** | Core logic, tightly coupled  |
 
 Both exceed the 1000-line threshold for reliable LLM edits. **The controller.ts file should be split** before attempting multi-hop:
 
@@ -274,16 +281,16 @@ Both exceed the 1000-line threshold for reliable LLM edits. **The controller.ts 
 
 ## Estimated Effort
 
-| Component | Effort | Risk |
-|-----------|--------|------|
-| Split controller.ts | 1 session | Low |
-| New type system (HopChain, SymbolPin) | 1 session | Low |
-| Dynamic CSS grid | 0.5 session | Low |
-| Anchor registry with hop awareness | 1 session | Medium |
-| Render function rewrite | 2 sessions | High |
-| Connection drawing rewrite | 2 sessions | High |
-| Directional pathfinding | 1 session | Medium |
-| Integration & debugging | 2 sessions | High |
+| Component                             | Effort      | Risk   |
+| ------------------------------------- | ----------- | ------ |
+| Split controller.ts                   | 1 session   | Low    |
+| New type system (HopChain, SymbolPin) | 1 session   | Low    |
+| Dynamic CSS grid                      | 0.5 session | Low    |
+| Anchor registry with hop awareness    | 1 session   | Medium |
+| Render function rewrite               | 2 sessions  | High   |
+| Connection drawing rewrite            | 2 sessions  | High   |
+| Directional pathfinding               | 1 session   | Medium |
+| Integration & debugging               | 2 sessions  | High   |
 
 **Total:** 10-12 sessions (spread across multiple days)
 
@@ -327,18 +334,20 @@ npm run live-docs:inspect -- --from "scripts/live-docs/explorer/client/views/loc
 #   FORWARD PATH (outbound, 1 hop(s)): controller.ts → connections.ts
 #   REVERSE PATH (inbound): No path found.
 
-# Symbol-level dual-direction search  
+# Symbol-level dual-direction search
 npm run live-docs:inspect -- --from "packages/shared/src/liveDocGraph.ts#LiveDocGraph" --to "packages/shared/src/symdb/evidence.ts#EvidenceExtractor" --direction both --json
 ```
 
 ### Conclusion
 
 The algorithm correctly:
+
 1. **Forward (outbound):** Follows dependency edges from source to target
 2. **Reverse (inbound):** Follows dependent edges (what depends on source, can we reach target?)
 3. **Reports both results independently:** Shows which direction(s) found a path
 
 This proves the BFS infrastructure is sound. The next step is adapting this for rendering:
+
 - The pathfinding returns hop chains that can fuel dynamic column generation
 - Each hop in the chain becomes a column pair (deps | node | consumers)
 - Connections route between adjacent columns using hop indices
@@ -347,13 +356,12 @@ This proves the BFS infrastructure is sound. The next step is adapting this for 
 
 ## Appendix: Files to Modify
 
-| File | Lines | Changes Required |
-|------|-------|------------------|
-| `types.ts` | 78 | Add `HopSubgraph`, `HopChain`, `SymbolPin` |
-| `controller.ts` | 1206 | Split into 5 files; add `pinnedPath`, `buildHopChain()` |
-| `render.ts` | 852 | Hop-loop rendering, dynamic column creation |
-| `connections.ts` | 417 | Hop-aware edge routing |
-| `runtime.ts` | ~150 | Anchor registry with hop keys |
-| `local.css` | ~300 | Dynamic grid, hop column styling |
-| `pathfind.ts` | ~400 | Directional BFS (forward + reverse) |
-
+| File             | Lines | Changes Required                                        |
+| ---------------- | ----- | ------------------------------------------------------- |
+| `types.ts`       | 78    | Add `HopSubgraph`, `HopChain`, `SymbolPin`              |
+| `controller.ts`  | 1206  | Split into 5 files; add `pinnedPath`, `buildHopChain()` |
+| `render.ts`      | 852   | Hop-loop rendering, dynamic column creation             |
+| `connections.ts` | 417   | Hop-aware edge routing                                  |
+| `runtime.ts`     | ~150  | Anchor registry with hop keys                           |
+| `local.css`      | ~300  | Dynamic grid, hop column styling                        |
+| `pathfind.ts`    | ~400  | Directional BFS (forward + reverse)                     |

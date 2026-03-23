@@ -77,6 +77,8 @@ You'll see three complementary views:
 | **Local Map**     | Micro view — focus on one file, see its symbols, trace connections    |
 | **Force Graph**   | Discovery view — physics-based clustering reveals natural groupings   |
 
+> **Coming soon — Membrane Map**: A planned successor view will unify Circuit Board and Local Map into a single zoomable treemap where directories render as nested "membranes" and dependency connections pierce boundaries. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md) for details.
+
 ### Step 3: Trace a Dependency Path
 
 Wondering how file A connects to file B? Use the pathfinder:
@@ -139,13 +141,13 @@ npm run live-docs:generate -- --config live-docs.config.json
 
 ## What Can You Do?
 
-| Task                                | How                                                                                                        | Who Typically Does This            |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| **Explore structure visually**      | Launch the Explorer (`live-docs:visualize`); toggle between Circuit Board, Local Map, and Force Graph      | Architects, onboarders             |
-| **Trace impact before a change**    | `live-docs:inspect --from A --to B` (CLI or Local Map pathfinding)                                         | Engineers, security auditors       |
-| **Understand why something exists** | Enable "Show Related Documentation" in the Force Graph to surface chat history and design notes            | Leads, researchers                 |
-| **Validate before merge**           | `live-docs:lint` blocks broken links and structural violations; integrate into your CI or pre-commit hooks | Developers, maintainers            |
-| **Consume as structured data**      | `--json` CLI flags, raw markdown, `/local-map` JSON endpoint                                               | AI coding assistants, CI pipelines |
+| Task                                | How                                                                                                                                                             | Who Typically Does This            |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| **Explore structure visually**      | Launch the Explorer (`live-docs:visualize`); toggle between Circuit Board, Local Map, and Force Graph (planned: Membrane Map unifies Circuit Board + Local Map) | Architects, onboarders             |
+| **Trace impact before a change**    | `live-docs:inspect --from A --to B` (CLI or Local Map pathfinding)                                                                                              | Engineers, security auditors       |
+| **Understand why something exists** | Enable "Show Related Documentation" in the Force Graph to surface chat history and design notes                                                                 | Leads, researchers                 |
+| **Validate before merge**           | `live-docs:lint` blocks broken links and structural violations; integrate into your CI or pre-commit hooks                                                      | Developers, maintainers            |
+| **Consume as structured data**      | `--json` CLI flags, raw markdown, `/local-map` JSON endpoint                                                                                                    | AI coding assistants, CI pipelines |
 
 ---
 

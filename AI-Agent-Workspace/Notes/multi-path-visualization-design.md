@@ -1,5 +1,7 @@
 # Multi-Path Visualization Design
 
+> **Note (2026-03-22):** Multi-path rendering enhancements will carry forward into the **Membrane Map** Path mode. The merged-DAG, near-miss, and symbol-divergent renderings specified here remain the target design, with Membrane Map providing the substrate. See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md).
+
 **Date:** 2026-03-09  
 **Context:** Pathfinding algorithm analysis and proposed rendering improvements  
 **Related Notes:** `multi-hop-local-map-architecture.md` (Dec 2025 post-mortem)

@@ -151,6 +151,8 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 Builds a fully static Explorer bundle with Circuit Board, Local Map, and Force Graph views. Deployable to GitHub Pages or any static host.
 
+> **Planned**: The **Membrane Map** will unify Circuit Board and Local Map into a single zoomable treemap. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+
 ```powershell
 npm run live-docs:visualize -- --output ./public --pretty
 ```

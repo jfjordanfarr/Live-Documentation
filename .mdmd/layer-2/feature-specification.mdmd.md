@@ -95,7 +95,7 @@ Prospective adopters visit a hosted site, enter a public GitHub repo reference, 
 
 ### US-9 Visualize Live Docs in a Command Center (P1 — Complete MVP)
 
-Explorer ships Circuit Board, Local Map, and Force Graph views. Local Map From/To pathfinding uses the same hop semantics as the CLI.
+Explorer ships Circuit Board, Local Map, and Force Graph views. Local Map From/To pathfinding uses the same hop semantics as the CLI. The planned [Membrane Map](../layer-3/membrane-map.mdmd.md) will unify Circuit Board and Local Map into a single zoomable treemap; both current views remain functional until feature parity is achieved.
 
 **Acceptance Scenarios**:
 
