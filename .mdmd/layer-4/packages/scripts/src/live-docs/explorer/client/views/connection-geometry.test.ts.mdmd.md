@@ -1,25 +1,28 @@
-# packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.test.ts
+# packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-connection-geometry-test-ts
-- Generated At: 2026-02-03T21:55:36.275Z
+- Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts
+- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-test-ts
+- Generated At: 2026-03-24T03:05:19.148Z
 
 ## Authored
 ### Purpose
+
 Unit tests for connection-geometry.ts covering Bézier path generation, self-loop stubs, gradient definitions, and rect/point primitives.
 
 ### Notes
-- Created 2025-12-18 (Dev Day 49) alongside connection-geometry.ts extraction
-- Tests edge cases: zero horizontal gap, negative coordinates, coincident points
-- Validates SVG path string format (`M ... C ...`) for Bézier curves
-- Ensures self-loop stubs produce valid arc paths even for symbols in the same node
-- Part of the 153-test pure-function module validation suite
+
+- Created 2025-12-18 (Dev Day 49) alongside connection-geometry.ts extraction.
+- Tests edge cases: zero horizontal gap, negative coordinates, coincident points.
+- Validates SVG path string format (`M ... C ...`) for Bézier curves.
+- Ensures self-loop stubs produce valid arc paths even for symbols in the same node.
+- Part of the 153-test pure-function module validation suite.
+- Promoted from `localView/connection-geometry.test.ts` to `views/connection-geometry.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.275Z","inputHash":"018ee33a1bc9be75"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.148Z","inputHash":"5586f7211af843f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -53,7 +56,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
 #### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views/localView: [connection-geometry.ts](./connection-geometry.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views: [connection-geometry.ts](./connection-geometry.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

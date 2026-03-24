@@ -4,7 +4,7 @@ import {
   type SquarifyItem,
   type SquarifyTile
 } from "./squarify";
-import type { LayoutRect } from "../layoutUtils";
+import type { LayoutRect } from "./layoutUtils";
 
 const viewport: LayoutRect = { x: 0, y: 0, width: 1000, height: 800 };
 

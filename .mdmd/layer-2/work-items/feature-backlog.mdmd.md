@@ -176,22 +176,25 @@ All LLM modules were dormant with zero production callers. Users bring their own
 
 ## Stage 12 – Membrane Map (View Unification)
 
-The [Membrane Map](../../layer-3/membrane-map.mdmd.md) unifies Circuit Board and Local Map into a single zoomable treemap where directories render as nested membranes and dependency connections pierce membrane boundaries. Both current views remain functional until the Membrane Map achieves feature parity and stability.
+The [Membrane Map](../../layer-3/membrane-map.mdmd.md) unifies Circuit Board and Local Map into a single zoomable treemap where directories render as nested membranes and dependency connections pierce membrane boundaries. Both current views remain functional until the Membrane Map achieves feature parity and stability. Implementation began Dev Day 80 (2026-03-23); the continuous pin spectrum replaces discrete Browse/Explore/Compare/Path modes.
 
-- [ ] LD-1200 Implement membrane layout engine (directory-as-membrane nesting, squarified treemap for interior)
-- [ ] LD-1201 [P] Implement Browse mode (directory aggregates, no connections — replaces Circuit Board)
-- [ ] LD-1202 [P] Implement Explore mode (focal node with pin-level detail, neighbor connections — replaces Local Map)
+- [x] LD-1200 Implement membrane layout engine (directory-as-membrane nesting, squarified treemap for interior, focus-aware weight boosting)
+- [x] LD-1201 Implement Browse mode (directory aggregates, focus-path drill-down, two-phase sizing model)
+- [ ] LD-1202 Implement continuous pin model (pin-state, focal overlay, routing, SVG connections — card LTR rearrangement outstanding)
 - [ ] LD-1203 Implement barrel-as-membrane-boundary rendering for TS/JS, Python, Rust
-- [ ] LD-1204 Implement edge bundling for dense cross-membrane connections
-- [ ] LD-1205 [P] Implement Compare mode (two focal nodes with cross-membrane connections)
-- [ ] LD-1206 [P] Implement Path mode on membrane substrate (or confirm column layout retention)
-- [ ] LD-1207 Add C# namespace mode (alternative hierarchy function grouping by namespace)
+- [x] LD-1204 Implement edge bundling for dense cross-membrane connections (implemented but disabled — re-enable with hover/progressive-disclosure)
+- [x] ~~LD-1205 Implement Compare mode~~ (subsumed: Compare emerges naturally from multi-node pinning in the continuous pin spectrum)
+- [x] ~~LD-1206 Implement Path mode on membrane substrate~~ (subsumed: Path is a pin population strategy, not a rendering mode — BFS produces ordered pins with hop-index metadata)
+- [ ] LD-1207 Add C# namespace mode (alternative hierarchy function grouping by namespace) — deferred to Commit 2
 - [ ] LD-1208 Enhance C# adapter with nested public type extraction (brace-depth tracking)
 - [ ] LD-1209 Replace `innerHTML` teardown/rebuild with persistent DOM elements for membrane containers
-- [ ] LD-1210 Add zoom/pan with spatial context (ancestor membranes visible at increasing scale)
-- [ ] LD-1211 Integration tests for Membrane Map rendering modes
-- [ ] LD-1212 [P] Phase out Circuit Board and Local Map views after stability period
+- [x] LD-1210 Add zoom/pan with spatial context (focus-aware layout + pan-zoom controller; ancestor membranes as thin borders)
+- [ ] LD-1211 Integration tests for Membrane Map (Playwright E2E — blocked on visual design stabilisation)
+- [ ] LD-1212 [P] Phase out Circuit Board and Local Map views after stability period (blocked on card LTR rearrangement)
 - [ ] LD-1213 Update all Layer-1 guides for two-view taxonomy (Membrane Map + Force Graph)
+- [ ] LD-1214 Card LTR rearrangement for dependency flow (cards must rearrange horizontally when pins active to respect L→R design language)
+- [ ] LD-1215 WCAG AA compliance planning (RTL support, screen reader compatibility, vanilla HTML/CSS layout)
+- [x] LD-1216 lz-string URL state compression (`compressed-url-state.ts` — versioned payloads, comprehensive state coverage)
 
 ---
 

@@ -35,7 +35,7 @@ export function setActiveView(view: ViewName): void {
   }
 
   // Toggle zoom-controls-active class for views that support our zoom buttons
-  if (view === "circuit" || view === "map") {
+  if (view === "circuit" || view === "map" || view === "membrane") {
     document.body.classList.add("zoom-controls-active");
   } else {
     document.body.classList.remove("zoom-controls-active");

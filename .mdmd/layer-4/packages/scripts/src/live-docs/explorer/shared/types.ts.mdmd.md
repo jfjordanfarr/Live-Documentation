@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-types-ts
-- Generated At: 2026-03-17T19:15:49.364Z
+- Generated At: 2026-03-24T03:05:20.379Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Shared type definitions used by both the Explorer server and client. Defines the
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-17T19:15:49.364Z","inputHash":"999efe4ec6f87c33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:20.379Z","inputHash":"999efe4ec6f87c33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerLinkKind` {#symbol-explorerlinkkind}
@@ -157,11 +157,18 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [compressed-url-state.test.ts](../client/persistence/compressed-url-state.test.ts.mdmd.md)
 - [aggregation.test.ts](../client/views/circuitView/aggregation.test.ts.mdmd.md)
-- [squarify.test.ts](../client/views/circuitView/squarify.test.ts.mdmd.md)
 - [state.test.ts](../client/views/circuitView/state.test.ts.mdmd.md)
 - [layout-measure.test.ts](../client/views/localView/layout-measure.test.ts.mdmd.md)
 - [pan-zoom.test.ts](../client/views/localView/pan-zoom.test.ts.mdmd.md)
 - [subgraph-builder.test.ts](../client/views/localView/subgraph-builder.test.ts.mdmd.md)
 - [symbol-highlight.test.ts](../client/views/localView/symbol-highlight.test.ts.mdmd.md)
+- [detail-levels.test.ts](../client/views/membraneView/detail-levels.test.ts.mdmd.md)
+- [edge-bundling.test.ts](../client/views/membraneView/edge-bundling.test.ts.mdmd.md)
+- [hierarchy.test.ts](../client/views/membraneView/hierarchy.test.ts.mdmd.md)
+- [layout.test.ts](../client/views/membraneView/layout.test.ts.mdmd.md)
+- [pin-state.test.ts](../client/views/membraneView/pin-state.test.ts.mdmd.md)
+- [svg-connections.test.ts](../client/views/membraneView/svg-connections.test.ts.mdmd.md)
+- [squarify.test.ts](../client/views/squarify.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

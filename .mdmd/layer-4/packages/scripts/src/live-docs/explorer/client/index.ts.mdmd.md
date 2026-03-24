@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2026-03-17T19:13:36.127Z
+- Generated At: 2026-03-23T20:05:53.396Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-17T19:13:36.127Z","inputHash":"0a697dd9ccdac1ee"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.396Z","inputHash":"624671868f6d6e4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -62,6 +62,7 @@ _No public symbols detected_
 - [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`state.PathResult`](./views/localView/state.ts.mdmd.md#symbol-pathresult) (type-only)
+- [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
 - [`staticExplorerData.BundledMarkdownTreeNode`](../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 - [`staticExplorerData.RelatedDocLink`](../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - [`staticExplorerData.StaticExplorerViewerConfig`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerviewerconfig) (type-only)

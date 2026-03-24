@@ -111,7 +111,7 @@ When no path exists, the response includes a `frontier` array explaining why tra
 
 ## Visual Pathfinding in the Explorer
 
-The Explorer's **Local Map** view supports non-headless pathfinding (planned: the **Membrane Map** will subsume Local Map pathfinding into its Explore and Path rendering modes — see [Visualizing Your Codebase](visualizing-codebase.mdmd.md)):
+The Explorer's **Local Map** view supports non-headless pathfinding (in progress: the **Membrane Map** will subsume Local Map pathfinding via its continuous pin spectrum — pathfinding is a pin population strategy, not a separate mode. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md)):
 
 1. Launch the Explorer: `npm run live-docs:visualize`
 2. Switch to "Local Map" view
@@ -131,7 +131,7 @@ http://localhost:3000/?view=local&from=src/auth.ts&to=src/api.ts
 
 ### Planned: Multi-Path Rendering
 
-The current Explorer renders **one** shortest path. Planned enhancements (Stream LV1-F) will surface richer pathfinding results, which will also carry forward into the planned Membrane Map's Path mode:
+The current Explorer renders **one** shortest path. Planned enhancements (Stream LV1-F) will surface richer pathfinding results, which will also carry forward into the Membrane Map's pin-based pathfinding:
 
 - **All shortest paths**: When multiple equally-short routes exist, the Local Map renders them as a merged DAG — divergent intermediaries stack vertically within their hop column, with connections fanning out and converging.
 - **Near-miss (+1) paths**: Alternate paths one hop longer than the shortest render with dashed borders and dimmed connections. A toolbar toggle controls visibility.

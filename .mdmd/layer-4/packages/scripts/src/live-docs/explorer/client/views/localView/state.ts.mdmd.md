@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-state-ts
-- Generated At: 2026-02-03T21:55:36.736Z
+- Generated At: 2026-03-23T20:05:54.406Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Observable state container for the Local Map visualization, providing pure-data 
 - 153 unit tests across state.ts, layout-math.ts, connection-geometry.ts validate the extraction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.736Z","inputHash":"9c6dba44a8bc9f08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:54.406Z","inputHash":"9c6dba44a8bc9f08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolPin` {#symbol-symbolpin}
@@ -134,7 +134,7 @@ Clears the entire pinned path.
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/state.ts#L187)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
-- Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `path`: [`PathResult`](./connection-geometry.ts.mdmd.md#symbol-pathresult)
+- Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `path`: [`PathResult`](../connection-geometry.ts.mdmd.md#symbol-pathresult)
 
 ##### `setActivePath` — Summary
 Sets the active path result for path mode rendering.

@@ -32,6 +32,7 @@ import type { ExplorerState, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
+import { createMembraneView } from "./views/membraneView";
 import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode, RelatedDocLink } from "../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
@@ -341,6 +342,15 @@ function startExplorer(
     }
   });
 
+  const membraneView = createMembraneView({
+    state,
+    graphData,
+    resolveLinkEndpoint,
+    onSelectNode: node => handleNodeClick(node),
+    testCoverage,
+    nodesById
+  });
+
   syncFilterControls();
 
   if (filterToggleTests) {
@@ -449,6 +459,8 @@ function startExplorer(
     } else if (state.view === "map") {
       localView.zoomIn();
       localView.drawConnections();
+    } else if (state.view === "membrane") {
+      membraneView.zoomIn();
     }
   };
 
@@ -459,6 +471,8 @@ function startExplorer(
     } else if (state.view === "map") {
       localView.zoomOut();
       localView.drawConnections();
+    } else if (state.view === "membrane") {
+      membraneView.zoomOut();
     }
   };
 
@@ -469,6 +483,8 @@ function startExplorer(
     } else if (state.view === "map") {
       localView.resetZoom();
       localView.drawConnections();
+    } else if (state.view === "membrane") {
+      membraneView.resetZoom();
     }
   };
 
@@ -877,6 +893,8 @@ function startExplorer(
       localView.render();
     } else if (state.view === "graph") {
       forceGraphView.render();
+    } else if (state.view === "membrane") {
+      membraneView.render();
     }
   }
 

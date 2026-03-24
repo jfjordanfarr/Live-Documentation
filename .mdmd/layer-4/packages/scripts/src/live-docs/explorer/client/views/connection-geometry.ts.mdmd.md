@@ -1,52 +1,55 @@
-# packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts
+# packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connection-geometry-ts
-- Generated At: 2026-02-03T21:55:36.296Z
+- Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts
+- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-ts
+- Generated At: 2026-03-24T03:05:19.169Z
 
 ## Authored
 ### Purpose
+
 Pure-function SVG geometry for the Local Map: Bézier path computation, self-loop stub generation, gradient definitions, and rect/point primitives.
 
 ### Notes
-- Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as third of three pure-function module extractions
-- `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances
-- `computeSelfLoopStubs()` handles intra-node symbol connections (same file, different symbols)
-- `createConnectionGradient()` returns `GradientDef` for directional color transitions
-- Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting
-- 385 lines of geometry, all unit-testable without DOM
+
+- Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as third of three pure-function module extractions.
+- `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances.
+- `computeSelfLoopStubs()` handles intra-node symbol connections (same file, different symbols).
+- `createConnectionGradient()` returns `GradientDef` for directional color transitions.
+- Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting.
+- 385 lines of geometry, all unit-testable without DOM.
+- Promoted from `localView/connection-geometry.ts` to `views/connection-geometry.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.296Z","inputHash":"685fe5179bc9c4fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.169Z","inputHash":"804852913a295751"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Point` {#symbol-point}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L16)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L16)
 
 ##### `Point` — Summary
 A 2D point in the coordinate system.
 
 #### `Rect` {#symbol-rect}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L24)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L24)
 
 ##### `Rect` — Summary
 A rectangle defined by its edges.
 
 #### `BezierTuningParams` {#symbol-beziertuningparams}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L34)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L34)
 
 ##### `BezierTuningParams` — Summary
 Tuning parameters for Bezier curve generation.
 
 #### `DEFAULT_BEZIER_TUNING` {#symbol-default_bezier_tuning}
 - Type: const
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L48)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L48)
 - Returns: [`BezierTuningParams`](#symbol-beziertuningparams)
 
 ##### `DEFAULT_BEZIER_TUNING` — Summary
@@ -54,14 +57,14 @@ Default Bezier tuning that produces aesthetically pleasing curves.
 
 #### `PathResult` {#symbol-pathresult}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L58)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L58)
 
 ##### `PathResult` — Summary
 Result of path computation, containing the SVG path data string.
 
 #### `computeStubLength` {#symbol-computestublength}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L75)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L75)
 - Parameters: `tuning`: [`BezierTuningParams`](#symbol-beziertuningparams)
 
 ##### `computeStubLength` — Summary
@@ -79,8 +82,8 @@ The stub length in pixels
 
 #### `computeBezierPath` {#symbol-computebezierpath}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L102)
-- Returns: [`PathResult`](./state.ts.mdmd.md#symbol-pathresult)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L102)
+- Returns: [`PathResult`](./localView/state.ts.mdmd.md#symbol-pathresult)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point); `tuning`: [`BezierTuningParams`](#symbol-beziertuningparams)
 
 ##### `computeBezierPath` — Summary
@@ -109,7 +112,7 @@ const path = computeBezierPath(
 
 #### `distance` {#symbol-distance}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L157)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L157)
 - Parameters: `a`: [`Point`](#symbol-point); `b`: [`Point`](#symbol-point)
 
 ##### `distance` — Summary
@@ -117,14 +120,14 @@ Euclidean distance between two points.
 
 #### `SelfLoopParams` {#symbol-selfloopparams}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L166)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L166)
 
 ##### `SelfLoopParams` — Summary
 Parameters for self-loop "French Corset" stubs.
 
 #### `DEFAULT_SELF_LOOP_PARAMS` {#symbol-default_self_loop_params}
 - Type: const
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L180)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L180)
 - Returns: [`SelfLoopParams`](#symbol-selfloopparams)
 
 ##### `DEFAULT_SELF_LOOP_PARAMS` — Summary
@@ -132,7 +135,7 @@ Default self-loop parameters for the "French Corset" effect.
 
 #### `SelfLoopStubResult` {#symbol-selfloopstubresult}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L191)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L191)
 
 ##### `SelfLoopStubResult` — Summary
 Result of self-loop stub computation.
@@ -140,7 +143,7 @@ Self-loops render as two small stubs that "imply" a connection behind the card.
 
 #### `computeSelfLoopStubs` {#symbol-computeselfloopstubs}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L210)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L210)
 - Returns: [`SelfLoopStubResult`](#symbol-selfloopstubresult)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point); `params`: [`SelfLoopParams`](#symbol-selfloopparams)
 
@@ -161,7 +164,7 @@ Polygon point strings for both stubs
 
 #### `offsetToPinEdge` {#symbol-offsettopinedge}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L261)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L261)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `center`: [`Point`](#symbol-point)
 
@@ -181,7 +184,7 @@ The point at the pin's edge
 
 #### `rectCenter` {#symbol-rectcenter}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L275)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L275)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -190,7 +193,7 @@ Computes the center point of a rectangle.
 
 #### `rectSize` {#symbol-rectsize}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L285)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L285)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
 ##### `rectSize` — Summary
@@ -198,7 +201,7 @@ Computes the dimensions of a rectangle.
 
 #### `expandRect` {#symbol-expandrect}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L295)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L295)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -207,7 +210,7 @@ Expands a rectangle by a given margin on all sides.
 
 #### `boundingBoxFromPoints` {#symbol-boundingboxfrompoints}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L307)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L307)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `points`: [`Point`](#symbol-point)[]
 
@@ -216,7 +219,7 @@ Computes the bounding box that contains all given points.
 
 #### `mergeRects` {#symbol-mergerects}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L328)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L328)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rects`: [`Rect`](#symbol-rect)[]
 
@@ -225,14 +228,14 @@ Merges multiple rectangles into their bounding box.
 
 #### `GradientDef` {#symbol-gradientdef}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L342)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L342)
 
 ##### `GradientDef` — Summary
 Linear gradient definition for path coloring.
 
 #### `createConnectionGradient` {#symbol-createconnectiongradient}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/localView/connection-geometry.ts#L364)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts#L364)
 - Returns: [`GradientDef`](#symbol-gradientdef)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point)
 
@@ -262,4 +265,6 @@ _No dependencies documented yet_
 ### Observed Evidence
 #### Vitest Unit Tests
 - [connection-geometry.test.ts](./connection-geometry.test.ts.mdmd.md)
+- [pin-state.test.ts](./membraneView/pin-state.test.ts.mdmd.md)
+- [routing.test.ts](./membraneView/routing.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

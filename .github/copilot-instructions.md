@@ -100,7 +100,7 @@ On the way to full adoption we continue to land incremental wins that boost obse
 - `npm run live-docs:inspect -- <path>`: emits markdown/JSON summaries for a given artifact; mirrors the Copilot prompt helper behaviour.
 - `npm run live-docs:inspect -- --from <path> [--to <path>]`: Live Docs pathfinder. Use this before and after risky edits to enumerate actual hop chains (Oracle-of-Bacon style). Remember `--direction inbound` for reverse lookups, `--direction both` for bidirectional search, and `--json` for automation. If no `--to` is provided, review the terminal fan-out to see where data ultimately lands.
 - `npm run live-docs:lint`: validates structural markers, relative-link hygiene, slug dialect compliance, and evidence placeholders inside staged Live Docs.
-- `npm run live-docs:visualize`: builds a static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline. Includes Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph views. The planned **Membrane Map** will unify Circuit Board + Local Map into a single zoomable treemap.
+- `npm run live-docs:visualize`: builds a static Explorer bundle to `dist/explorer/` containing graph data, symbol index, and all Live Doc markdown. Deployable to GitHub Pages, embeddable in Teams/Slack, or usable offline. Includes Circuit Board (treemap), Local Map (3-column symbol view), Membrane Map (zoomable treemap with continuous pin spectrum — in progress), and Force Graph views. The **Membrane Map** is the in-progress successor to Circuit Board + Local Map, unifying directory browsing and symbol-level exploration into a single view.
 
 User-facing CLI documentation lives in `.mdmd/layer-1/guides/cli-reference.mdmd.md`. Internal development tooling (slopcop:_, fixtures:_, test:\*) is documented below and in copilot-instructions.md only — these commands are not exposed to external adopters.
 
@@ -156,7 +156,7 @@ Start here when arriving with zero context. Documents are sorted from most essen
 | [Getting Started](../.mdmd/layer-1/guides/getting-started.mdmd.md)                  | Installation, configuration, and first session walkthrough                                                          |
 | [CLI Reference](../.mdmd/layer-1/guides/cli-reference.mdmd.md)                      | Complete catalog of user-facing CLI commands                                                                        |
 | [Tracing Impact](../.mdmd/layer-1/guides/tracing-impact.mdmd.md)                    | Dependency pathfinding tutorial (`live-docs:inspect`)                                                               |
-| [Visualizing Your Codebase](../.mdmd/layer-1/guides/visualizing-codebase.mdmd.md)   | Explorer views (Circuit Board, Local Map, Force Graph; planned Membrane Map), static exports, and shareability      |
+| [Visualizing Your Codebase](../.mdmd/layer-1/guides/visualizing-codebase.mdmd.md)   | Explorer views (Circuit Board, Local Map, Force Graph, Membrane Map in progress), static exports, and shareability      |
 
 #### Layer 2 — Requirements & Planning
 
@@ -176,8 +176,8 @@ The [`.mdmd/layer-3/`](../.mdmd/layer-3/) folder contains one architecture docum
 | Document                                                                            | Purpose                                                                                    |
 | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [Live Documentation Pipeline](../.mdmd/layer-3/live-documentation-pipeline.mdmd.md) | Generator, lint, and edge aggregation architecture                                         |
-| [Live Documentation Explorer](../.mdmd/layer-3/live-documentation-explorer.mdmd.md) | Visualization command center (Circuit Board, Local Map, Force Graph; planned Membrane Map) |
-| [Membrane Map](../.mdmd/layer-3/membrane-map.mdmd.md)                               | Planned unified zoomable treemap replacing Circuit Board + Local Map                       |
+| [Live Documentation Explorer](../.mdmd/layer-3/live-documentation-explorer.mdmd.md) | Visualization command center (Circuit Board, Local Map, Force Graph, Membrane Map in progress) |
+| [Membrane Map](../.mdmd/layer-3/membrane-map.mdmd.md)                               | In-progress unified zoomable treemap replacing Circuit Board + Local Map              |
 | [Polyglot Adapters](../.mdmd/layer-3/polyglot-adapters.mdmd.md)                     | Language-specific symbol/dependency extraction                                             |
 | [SlopCop](../.mdmd/layer-3/slopcop.mdmd.md)                                         | Markdown, asset, and symbol lint architecture                                              |
 | [Benchmark Fixtures](../.mdmd/layer-3/benchmark-fixtures.mdmd.md)                   | AST accuracy benchmark infrastructure                                                      |

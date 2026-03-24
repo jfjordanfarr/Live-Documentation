@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-circuitview-state-test-ts
-- Generated At: 2026-03-17T19:15:48.643Z
+- Generated At: 2026-03-23T20:05:53.991Z
 
 ## Authored
-
 ### Purpose
 
 Unit tests for the Circuit Board state management module, covering immutable state transitions (expand, collapse, collapse-to-depth, collapse-all), breadcrumb construction, and file-to-directory mapping.
@@ -21,20 +19,14 @@ Unit tests for the Circuit Board state management module, covering immutable sta
 - Tests verify immutability guarantees: expanding the same directory twice returns the same reference, collapsing a non-expanded directory is a no-op.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-17T19:15:48.643Z","inputHash":"bdf715241c4857d1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.991Z","inputHash":"bdf715241c4857d1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`state.CircuitBoardState`](./state.ts.mdmd.md#symbol-circuitboardstate)
 - [`state.buildBreadcrumbs`](./state.ts.mdmd.md#symbol-buildbreadcrumbs)
 - [`state.collapseAll`](./state.ts.mdmd.md#symbol-collapseall)
@@ -49,19 +41,13 @@ _No public symbols detected_
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
 #### Vitest Unit Tests
-
 - packages/scripts/src/live-docs/explorer/client/views/circuitView: [state.ts](./state.ts.mdmd.md)
 - packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->

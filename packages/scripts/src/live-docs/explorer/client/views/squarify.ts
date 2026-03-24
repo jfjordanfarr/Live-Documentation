@@ -1,4 +1,4 @@
-import type { LayoutRect } from "../layoutUtils";
+import type { LayoutRect } from "./layoutUtils";
 
 /**
  * An item to be laid out with the squarified treemap algorithm.

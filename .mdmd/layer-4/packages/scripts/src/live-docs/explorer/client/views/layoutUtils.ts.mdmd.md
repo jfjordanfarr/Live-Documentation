@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2026-03-17T19:15:48.709Z
+- Generated At: 2026-03-24T03:05:19.214Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-17T19:15:48.709Z","inputHash":"3d622b048facdc33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.214Z","inputHash":"3d622b048facdc33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -148,5 +148,10 @@ position — centering on the most-connected directory cluster.
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
-- [squarify.test.ts](./circuitView/squarify.test.ts.mdmd.md)
+- [detail-levels.test.ts](./membraneView/detail-levels.test.ts.mdmd.md)
+- [edge-bundling.test.ts](./membraneView/edge-bundling.test.ts.mdmd.md)
+- [layout.test.ts](./membraneView/layout.test.ts.mdmd.md)
+- [pin-state.test.ts](./membraneView/pin-state.test.ts.mdmd.md)
+- [svg-connections.test.ts](./membraneView/svg-connections.test.ts.mdmd.md)
+- [squarify.test.ts](./squarify.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

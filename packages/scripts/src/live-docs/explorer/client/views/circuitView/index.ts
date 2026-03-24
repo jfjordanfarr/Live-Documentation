@@ -32,7 +32,7 @@ import type { DirectoryAggregate } from "./aggregation";
 import { computeChildAggregates, findDirectoryByPath, computeAggregateWeight, computeFileWeight } from "./aggregation";
 import { createBreadcrumb } from "./breadcrumb";
 import { createDirectoryTile } from "./directoryTile";
-import { computeSquarifiedLayout } from "./squarify";
+import { computeSquarifiedLayout } from "../squarify";
 import {
   type CircuitBoardState,
   createInitialState,

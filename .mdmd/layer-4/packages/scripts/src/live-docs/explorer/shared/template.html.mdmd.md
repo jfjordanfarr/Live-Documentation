@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/template.html
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-template-html
-- Generated At: 2026-03-09T21:20:32.621Z
+- Generated At: 2026-03-23T20:05:55.241Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Its `id` attributes are extracted as public symbols by the HTML adapter ([html.ts](../../../../../shared/src/live-docs/adapters/html.ts.mdmd.md)), enabling Live Documentation to track which client modules depend on which DOM elements.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T21:20:32.621Z","inputHash":"e70123e8a9cea014"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:55.241Z","inputHash":"2c023c1865014d5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `circuit-connections` {#symbol-circuitconnections}
@@ -77,6 +77,15 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `map-viewport` {#symbol-mapviewport}
+- Type: variable
+
+#### `membrane-connections` {#symbol-membraneconnections}
+- Type: variable
+
+#### `membrane-container` {#symbol-membranecontainer}
+- Type: variable
+
+#### `membrane-viewport` {#symbol-membraneviewport}
 - Type: variable
 
 #### `omnisearch` {#symbol-omnisearch}
@@ -218,6 +227,9 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `view-map` {#symbol-viewmap}
+- Type: variable
+
+#### `view-membrane` {#symbol-viewmembrane}
 - Type: variable
 
 #### `view-sources` {#symbol-viewsources}

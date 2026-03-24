@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-index-ts
-- Generated At: 2026-03-18T16:03:22.949Z
+- Generated At: 2026-03-23T20:05:53.966Z
 
 ## Authored
-
 ### Purpose
 
 Main controller for the Circuit Board (treemap) view in the Live Docs Explorer. Orchestrates progressive disclosure, the two-zone layout (squarified directory tiles above, uniform file card grid below), dimmed sibling strips, pan/zoom, connection highlighting, and node selection.
@@ -23,47 +21,35 @@ Main controller for the Circuit Board (treemap) view in the Live Docs Explorer. 
 - `createSiblingStrip(aggregate, onExpand)` builds thin dimmed buttons for peer directories; clicking swaps which directory is expanded without losing hierarchy context.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-18T16:03:22.949Z","inputHash":"887e9f5f9a7c1f6c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.966Z","inputHash":"68c2886e6f17aa90"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts#L54)
 
 ##### `CircuitViewOptions` — Summary
-
 Options passed to the Circuit Board view factory.
 
 #### `CircuitViewApi` {#symbol-circuitviewapi}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts#L65)
 
 ##### `CircuitViewApi` — Summary
-
 Public API surface of the Circuit Board (treemap) view.
 
 #### `createCircuitView` {#symbol-createcircuitview}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts#L78)
 - Returns: [`CircuitViewApi`](#symbol-circuitviewapi)
 - Parameters: `options`: [`CircuitViewOptions`](#symbol-circuitviewoptions)
 
 ##### `createCircuitView` — Summary
-
 Creates the Circuit Board (treemap) view for the Live Docs Explorer.
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`types.CircuitTransform`](../../types.ts.mdmd.md#symbol-circuittransform) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
@@ -75,7 +61,6 @@ Creates the Circuit Board (treemap) view for the Live Docs Explorer.
 - [`aggregation.findDirectoryByPath`](./aggregation.ts.mdmd.md#symbol-finddirectorybypath) (type-only)
 - [`breadcrumb.createBreadcrumb`](./breadcrumb.ts.mdmd.md#symbol-createbreadcrumb)
 - [`directoryTile.createDirectoryTile`](./directoryTile.ts.mdmd.md#symbol-createdirectorytile)
-- [`squarify.computeSquarifiedLayout`](./squarify.ts.mdmd.md#symbol-computesquarifiedlayout)
 - [`state.CircuitBoardState`](./state.ts.mdmd.md#symbol-circuitboardstate)
 - [`state.buildBreadcrumbs`](./state.ts.mdmd.md#symbol-buildbreadcrumbs)
 - [`state.collapseAll`](./state.ts.mdmd.md#symbol-collapseall)
@@ -85,6 +70,7 @@ Creates the Circuit Board (treemap) view for the Live Docs Explorer.
 - [`state.hasExpandedDirectories`](./state.ts.mdmd.md#symbol-hasexpandeddirectories)
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect)
 - [`layoutUtils.buildHierarchy`](../layoutUtils.ts.mdmd.md#symbol-buildhierarchy)
+- [`squarify.computeSquarifiedLayout`](../squarify.ts.mdmd.md#symbol-computesquarifiedlayout)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkKind`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkkind) (type-only)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)

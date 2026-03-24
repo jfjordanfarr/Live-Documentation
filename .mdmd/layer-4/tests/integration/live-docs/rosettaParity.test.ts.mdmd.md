@@ -1,15 +1,13 @@
 # tests/integration/live-docs/rosettaParity.test.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/rosettaParity.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-rosettaparity-test-ts
-- Generated At: 2026-03-11T19:07:40.321Z
+- Generated At: 2026-03-23T20:06:03.123Z
 
 ## Authored
-
 ### Purpose
 
 Cross-language integration test that runs the full Live Documentation pipeline (`generateLiveDocs`) against all 8 Rosetta Stone benchmark fixtures (TypeScript, Java, C#, Python, Rust, Go, C, PowerShell) and compares the generated markdown across languages to enforce structural parity. This is Phase 1 of LD-208: Rosetta Parity Enforcement.
@@ -23,20 +21,14 @@ Cross-language integration test that runs the full Live Documentation pipeline (
 - This test is distinct from the AST accuracy benchmarks (which compare SCIP oracle against adapter inference) and from `polyglot-fixtures.test.ts` (which runs 2 language-specific fixtures but does not compare across languages).
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T19:07:40.321Z","inputHash":"426c33fd94ffa440"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:06:03.123Z","inputHash":"426c33fd94ffa440"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - `node:assert`
 - `node:fs/promises`
 - `node:os`
@@ -44,17 +36,11 @@ _No public symbols detected_
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
 _No targets documented yet_
-
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->

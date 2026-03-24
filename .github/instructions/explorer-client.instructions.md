@@ -4,9 +4,9 @@ applyTo: "packages/scripts/src/live-docs/explorer/client/**/*.ts"
 
 # Explorer Client Code Conventions
 
-This file governs the Live Documentation Explorer client-side code, including the Circuit Board, Local Map, and Force Graph views.
+This file governs the Live Documentation Explorer client-side code, including the Circuit Board, Local Map, Membrane Map, and Force Graph views.
 
-> **Planned**: The **Membrane Map** will unify Circuit Board and Local Map into a single zoomable treemap. See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md) for the architecture and [Stage 12](../../.mdmd/layer-2/work-items/feature-backlog.mdmd.md#stage-12--membrane-map) for work items. Until Membrane Map lands, all three views remain actively maintained.
+> **In progress**: The **Membrane Map** unifies Circuit Board and Local Map into a single zoomable treemap with a continuous pin spectrum (no discrete modes). See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md) for architecture and [Stage 12](../../.mdmd/layer-2/work-items/feature-backlog.mdmd.md#stage-12--membrane-map-view-unification) for work items. All four views are active; Circuit Board and Local Map phase-out occurs after Membrane Map reaches feature parity.
 
 ## Architecture
 
@@ -67,3 +67,36 @@ Several files in this folder exceed the 1000-line threshold flagged by the tech 
 - `render.ts` — may benefit from splitting path-mode and exploration-mode rendering
 
 When making changes to these large files, prefer extracting functionality into the pure-function modules to reduce maintenance burden.
+
+## Membrane Map Architecture (`membraneView/`)
+
+The Membrane Map follows the same pure-function / DOM-touching separation as the Local Map, but with stronger enforcement:
+
+1. **Pure-math modules** (testable without DOM, no browser globals):
+   - `layout.ts` — Recursive squarify engine with focus-aware weight boosting
+   - `hierarchy.ts` — Barrel detection, ancestor directory extraction
+   - `detail-levels.ts` — Detail level resolution (full/summary/badge/hidden)
+   - `edge-bundling.ts` — Cross-membrane edge aggregation
+   - `pin-state.ts` — Pin add/remove/toggle, visible connection filtering, serialization
+   - `routing.ts` — Front/back trace classification + geometry (French Corset stubs)
+   - `svg-connections.ts` — Edge aggregation and SVG path construction
+
+2. **DOM-touching modules**:
+   - `browse-renderer.ts` — Collapsed directory tiles + expanded membrane factories
+   - `focal-overlay.ts` — Symbol expansion panels, pin anchor registry, SVG connection overlay
+   - `aggregation.ts` — Directory aggregate computation
+   - `index.ts` — Controller: focus path, pin dispatch, URL state sync, pan/zoom
+
+### Continuous Pin Spectrum
+
+The Membrane Map does NOT have discrete modes. Interaction drives a continuous spectrum: 0 pins (browse) → 1 pin (focal) → N pins (compare, naturally) → all pins (≡ Local Map). Pathfinding is a pin population strategy, not a rendering mode.
+
+### Testing Strategy
+
+- **No jsdom tests** — jsdom cannot test what actually breaks (CSS cascade, `getBoundingClientRect()`, SVG layout). Tests that pass with jsdom pass even when the UI is wrong.
+- **Pure-math tests** (Vitest) for algorithmic modules — 130+ tests covering layout, pin state, routing, edge bundling, URL state compression.
+- **Playwright MCP playtesting** for visual validation — manual screenshot-based exploration before automated E2E tests.
+
+### Focus-Aware Layout
+
+Drilling into directories uses squarify weight boosting (~95% to focused child), NOT CSS transform zoom. Font-size invariance is the correctness signal: text must render at the same CSS font-size at every drill-down depth.

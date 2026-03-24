@@ -7,7 +7,7 @@
 
 The Live Documentation Explorer provides interactive views for navigating your codebase visually. This guide covers each view's strengths, the shareability features, and how to export static bundles for your team.
 
-> **Coming soon**: The **Membrane Map** is the planned successor to Circuit Board and Local Map, unifying directory browsing and symbol-level exploration into a single zoomable treemap. Both current views remain fully functional. See [Membrane Map architecture](../../layer-3/membrane-map.mdmd.md) for details.
+> **In progress**: The **Membrane Map** is the in-progress successor to Circuit Board and Local Map, unifying directory browsing and symbol-level exploration into a single zoomable treemap with a continuous pin spectrum. Both current views remain fully functional. See [Membrane Map architecture](../../layer-3/membrane-map.mdmd.md) for details.
 
 ---
 

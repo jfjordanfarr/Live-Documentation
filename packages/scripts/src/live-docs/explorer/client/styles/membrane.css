@@ -1,0 +1,621 @@
+/* ─── Membrane Map View ─────────────────────────────────────────── */
+
+#membrane-viewport {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: grab;
+    position: relative;
+}
+
+#membrane-container {
+    will-change: transform;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+}
+
+#membrane-connections {
+    will-change: transform;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ─── Membrane (directory container) ────────────────────────────── */
+
+.membrane {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid var(--cluster-border);
+    border-radius: 8px;
+    background: var(--cluster-bg);
+    overflow: visible;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.membrane--depth-0 { border-color: rgba(0, 145, 255, 0.25); }
+.membrane--depth-1 { border-color: rgba(0, 145, 255, 0.15); }
+.membrane--depth-2 { border-color: rgba(0, 145, 255, 0.08); }
+
+.membrane__label {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-panel-subtle);
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 20px);
+    z-index: 1;
+}
+
+.membrane__content {
+    position: absolute;
+    box-sizing: border-box;
+}
+
+/* ─── Collapsed directory tile ──────────────────────────────────── */
+
+.membrane--collapsed {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.membrane--collapsed:hover {
+    border-color: rgba(0, 145, 255, 0.6);
+    box-shadow: 0 8px 24px rgba(0, 145, 255, 0.15);
+    background: rgba(0, 145, 255, 0.08);
+}
+
+.membrane--collapsed:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.membrane--collapsed .membrane__label {
+    position: static;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    max-width: calc(100% - 8px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.membrane__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    overflow: hidden;
+    max-width: 100%;
+    padding: 0 4px;
+}
+
+.membrane__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: var(--badge-bg, rgba(255, 255, 255, 0.08));
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.membrane__badge--files { color: var(--text-primary); }
+.membrane__badge--symbols { color: var(--accent, #0091ff); }
+.membrane__badge--outbound { color: var(--outbound-color, #ff6b6b); }
+.membrane__badge--inbound { color: var(--inbound-color, #51cf66); }
+
+/* ─── Leaf file tile ────────────────────────────────────────────── */
+
+.membrane-leaf {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    overflow: hidden;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.membrane-leaf:hover {
+    border-color: rgba(0, 145, 255, 0.5);
+    background: rgba(0, 145, 255, 0.06);
+}
+
+.membrane-leaf:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.membrane-leaf.selected {
+    border-color: var(--accent, #0091ff);
+    background: rgba(0, 145, 255, 0.12);
+}
+
+.membrane-leaf__name {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
+}
+
+.membrane-leaf__archetype {
+    font-size: 8px;
+    color: var(--text-muted);
+    text-transform: lowercase;
+}
+
+/* ─── Leaf symbol list ──────────────────────────────────────────── */
+
+.membrane-leaf__symbols {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+}
+
+.membrane-leaf__symbols li {
+    font-size: 11px;
+    color: var(--text-secondary, #b0c4d8);
+    padding: 1px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membrane-leaf__symbols li::before {
+    content: "◆ ";
+    font-size: 7px;
+    color: var(--accent-cyan, #00bcd4);
+    vertical-align: middle;
+}
+
+.membrane-leaf__symbols-more {
+    color: var(--text-muted) !important;
+    font-style: italic;
+}
+
+.membrane-leaf__symbols-more::before {
+    content: "" !important;
+}
+
+/* ─── Edge bundle badges ────────────────────────────────────────── */
+
+.membrane__edge-bundles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.membrane__bundle-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+}
+
+/* ─── Breadcrumb bar ────────────────────────────────────────────── */
+
+.membrane-breadcrumb {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 10;
+    background: var(--bg-panel, rgba(30, 30, 30, 0.9));
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--cluster-border);
+    font-size: 11px;
+}
+
+.membrane-breadcrumb__item {
+    background: none;
+    border: none;
+    color: var(--accent, #0091ff);
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.membrane-breadcrumb__item:hover {
+    background: rgba(0, 145, 255, 0.1);
+}
+
+.membrane-breadcrumb__item--active {
+    color: var(--text-primary);
+    cursor: default;
+    font-weight: 600;
+}
+
+.membrane-breadcrumb__separator {
+    color: var(--text-muted);
+}
+
+/* ─── Focal overlay (pinned symbol expansion) ───────────────────── */
+
+.membrane-focal-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.membrane-focal-panel {
+    position: absolute;
+    box-sizing: border-box;
+    background: var(--bg-panel, rgb(30, 30, 30));
+    border: 1px solid var(--accent, #0091ff);
+    border-radius: 6px;
+    padding: 0;
+    z-index: 6;
+    min-width: 120px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    overflow: auto;
+}
+
+.membrane-focal-panel__header {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 10px 4px;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membrane-focal-panel__symbols {
+    padding: 2px 0;
+}
+
+.membrane-focal-panel__empty {
+    font-size: 10px;
+    color: var(--text-muted);
+    padding: 4px 10px;
+}
+
+.membrane-focal-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    transition: background 0.1s ease;
+}
+
+.membrane-focal-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.membrane-focal-row__label {
+    flex: 1;
+    font-size: 10px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membrane-focal-row__label--wildcard {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.membrane-focal-pin {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.membrane-focal-pin--inbound {
+    background: rgba(0, 211, 170, 0.25);
+    border: 1px solid rgba(0, 211, 170, 0.4);
+}
+
+.membrane-focal-pin--outbound {
+    background: rgba(0, 145, 255, 0.25);
+    border: 1px solid rgba(0, 145, 255, 0.4);
+}
+
+.membrane-focal-pin--active {
+    box-shadow: 0 0 8px rgba(0, 145, 255, 0.6);
+}
+
+.membrane-focal-pin--active.membrane-focal-pin--inbound {
+    background: rgba(0, 211, 170, 0.6);
+    border-color: rgba(0, 211, 170, 0.8);
+    box-shadow: 0 0 8px rgba(0, 211, 170, 0.6);
+}
+
+.membrane-focal-pin--active.membrane-focal-pin--outbound {
+    background: rgba(0, 145, 255, 0.6);
+    border-color: rgba(0, 145, 255, 0.8);
+    box-shadow: 0 0 8px rgba(0, 145, 255, 0.6);
+}
+
+.membrane-focal-pin:hover {
+    transform: scale(1.2);
+}
+
+/* ─── SVG connections ───────────────────────────────────────────── */
+
+.membrane-connection {
+    transition: stroke-opacity 0.2s ease;
+}
+
+.membrane-connection--front:hover {
+    stroke-opacity: 1;
+    stroke-width: 2.5;
+}
+
+.membrane-connection--back-stub {
+    transition: fill-opacity 0.2s ease;
+}
+
+/* ─── Hop badges (path mode) ────────────────────────────────────── */
+
+.membrane-hop-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent, #0091ff);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+/* ─── Path breadcrumb bar ───────────────────────────────────────── */
+
+.membrane-path-breadcrumb {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 12;
+    background: var(--bg-panel, rgba(30, 30, 30, 0.95));
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--accent, #0091ff);
+    font-size: 11px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.membrane-path-breadcrumb__label {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 10px;
+}
+
+.membrane-path-breadcrumb__separator {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.membrane-path-breadcrumb__hop {
+    background: none;
+    border: 1px solid rgba(0, 145, 255, 0.3);
+    color: var(--accent, #0091ff);
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.membrane-path-breadcrumb__hop:hover {
+    background: rgba(0, 145, 255, 0.12);
+    border-color: var(--accent, #0091ff);
+}
+
+.membrane-path-breadcrumb__clear {
+    background: none;
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    color: rgba(255, 100, 100, 0.7);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-left: 4px;
+    transition: background 0.15s ease;
+}
+
+.membrane-path-breadcrumb__clear:hover {
+    background: rgba(255, 100, 100, 0.15);
+    color: rgba(255, 100, 100, 0.9);
+}
+
+/* ─── Bundled Edges ─────────────────────────────────────────────── */
+
+.membrane-bundle-svg {
+    overflow: visible;
+}
+
+.membrane-bundle-edge {
+    pointer-events: stroke;
+    cursor: default;
+    transition: stroke-opacity 0.2s ease;
+}
+
+.membrane-bundle-edge:hover {
+    stroke-opacity: 0.8 !important;
+    stroke: rgba(0, 145, 255, 0.6);
+}
+
+.membrane-bundle-badge {
+    pointer-events: none;
+    font-family: var(--vscode-font-family, system-ui);
+    font-weight: 600;
+}
+
+/* ─── Card Grid (leaf directory uniform cards) ──────────────────── */
+
+.membrane__card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px;
+    align-content: flex-start;
+    /* No overflow constraint — content drives size, user pans/zooms. */
+    overflow: visible;
+}
+
+.membrane-card {
+    width: 220px;
+    min-height: 60px;
+    background: rgb(30, 30, 30);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.membrane-card:hover {
+    border-color: rgba(0, 145, 255, 0.5);
+}
+
+.membrane-card.selected {
+    border-color: rgba(0, 145, 255, 0.8);
+    box-shadow: 0 0 6px rgba(0, 145, 255, 0.3);
+}
+
+.membrane-card__header {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membrane-card__path {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.membrane-card__symbols {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.membrane-card__symbol-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 0;
+}
+
+.membrane-card__symbol-row--internals {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 2px;
+    padding-top: 3px;
+}
+
+.membrane-card__symbol-label {
+    flex: 1;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membrane-card__symbol-label--internals {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.membrane-card__empty {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+    padding: 2px 0;
+}
+
+.membrane-card__directory {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.25);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: auto;
+    padding-top: 2px;
+}
+
+.membrane-focal-pin--placeholder {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+}
