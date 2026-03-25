@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-edge-bundling-ts
-- Generated At: 2026-03-24T03:05:19.747Z
+- Generated At: 2026-03-25T17:08:29.705Z
 
 ## Authored
-
 ### Purpose
 
 Pure-function edge aggregation that collapses individual file-to-file dependency edges into membrane-level bundles based on which directories are currently collapsed, producing `BundledEdge` records for the SVG connection renderer.
@@ -23,30 +21,23 @@ Pure-function edge aggregation that collapses individual file-to-file dependency
 - Bundle rendering is currently disabled in the controller (`index.ts`) for MVP: the thick SVG arcs overwhelmed the treemap layout; re-enable once hover-only or progressive-disclosure rendering is implemented.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.747Z","inputHash":"64c4d38e9a16daec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.705Z","inputHash":"64c4d38e9a16daec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `BundledEdge` {#symbol-bundlededge}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts#L6)
 
 ##### `BundledEdge` — Summary
-
 A bundled edge representing N individual edges between two visible membrane endpoints.
 
 #### `aggregateEdges` {#symbol-aggregateedges}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts#L61)
 - Returns: [`BundledEdge`](#symbol-bundlededge)[]
 - Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `edges`: `ReadonlyArray`
 
 ##### `aggregateEdges` — Summary
-
 Aggregate individual edges into membrane-level bundles based on which
 directories are currently collapsed.
 
@@ -57,19 +48,14 @@ directories are currently collapsed.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
-
 ### Observed Evidence
-
 #### Vitest Unit Tests
-
 - [edge-bundling.test.ts](./edge-bundling.test.ts.mdmd.md)
 - [svg-connections.test.ts](./svg-connections.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

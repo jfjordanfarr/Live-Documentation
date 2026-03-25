@@ -12,6 +12,7 @@
  */
 
 import type { ExplorerLinkPayload } from "../../../shared/types";
+import { normalizeSymbolIdentifier } from "../../views/symbolAnchors";
 
 // ─── Types ─────────────────────────────────────────────────────────
 
@@ -183,15 +184,22 @@ export function getVisibleConnections(
 ): readonly VisibleConnection[] {
   if (set.entries.length === 0) return [];
 
-  // Build lookup: nodeId → Set<symbol>
+  // Build lookup: nodeId → Set<normalizedSymbol>
+  // Also track original entries by normalized key for cause attribution
   const pinsByNode = new Map<string, Set<string>>();
+  const entriesByNormKey = new Map<string, PinEntry[]>();
   for (const entry of set.entries) {
+    const norm = entry.symbol === "*" ? "*" : (normalizeSymbolIdentifier(entry.symbol) ?? entry.symbol);
     let symbols = pinsByNode.get(entry.nodeId);
     if (!symbols) {
       symbols = new Set();
       pinsByNode.set(entry.nodeId, symbols);
     }
-    symbols.add(entry.symbol);
+    symbols.add(norm);
+    const mapKey = `${entry.nodeId}\0${norm}`;
+    let arr = entriesByNormKey.get(mapKey);
+    if (!arr) { arr = []; entriesByNormKey.set(mapKey, arr); }
+    arr.push(entry);
   }
 
   const result: VisibleConnection[] = [];
@@ -208,23 +216,45 @@ export function getVisibleConnections(
     // Check source-side match
     if (sourceSymbols) {
       if (sourceSymbols.has("*")) {
-        // Wildcard: all connections from this node
-        causes.push(...set.entries.filter(e => e.nodeId === sourceId && e.symbol === "*"));
-      } else if (link.sourceSymbol && sourceSymbols.has(link.sourceSymbol)) {
-        causes.push(...set.entries.filter(
-          e => e.nodeId === sourceId && e.symbol === link.sourceSymbol
-        ));
+        causes.push(...(entriesByNormKey.get(`${sourceId}\0*`) ?? []));
+      } else if (link.sourceSymbol) {
+        const normLink = normalizeSymbolIdentifier(link.sourceSymbol);
+        if (normLink && sourceSymbols.has(normLink)) {
+          causes.push(...(entriesByNormKey.get(`${sourceId}\0${normLink}`) ?? []));
+        }
+      } else {
+        // sourceSymbol is null/undefined — this dependency is caused by internal/
+        // private code. Attribute it to ALL pins on the source node (like the Local
+        // Map's Internals row absorbing unattributed deps).
+        for (const entry of set.entries) {
+          if (entry.nodeId === sourceId) {
+            causes.push(entry);
+          }
+        }
       }
     }
 
     // Check target-side match
     if (targetSymbols) {
       if (targetSymbols.has("*")) {
-        causes.push(...set.entries.filter(e => e.nodeId === targetId && e.symbol === "*"));
-      } else if (link.targetSymbol && targetSymbols.has(link.targetSymbol)) {
-        causes.push(...set.entries.filter(
-          e => e.nodeId === targetId && e.symbol === link.targetSymbol
-        ));
+        causes.push(...(entriesByNormKey.get(`${targetId}\0*`) ?? []));
+      } else if (link.targetSymbol) {
+        const normLink = normalizeSymbolIdentifier(link.targetSymbol);
+        if (normLink && targetSymbols.has(normLink)) {
+          causes.push(...(entriesByNormKey.get(`${targetId}\0${normLink}`) ?? []));
+        }
+      } else {
+        // targetSymbol is null — attribute to __internals__ pin if present,
+        // or to ALL pins on the target node (mirrors source-side absorption).
+        if (targetSymbols.has("__internals__")) {
+          causes.push(...(entriesByNormKey.get(`${targetId}\0__internals__`) ?? []));
+        } else {
+          for (const entry of set.entries) {
+            if (entry.nodeId === targetId) {
+              causes.push(entry);
+            }
+          }
+        }
       }
     }
 

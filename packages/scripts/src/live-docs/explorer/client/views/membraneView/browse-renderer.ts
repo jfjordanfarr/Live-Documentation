@@ -376,11 +376,16 @@ function renderFileCard(
     row.appendChild(inPin);
     anchors.push({ nodeId: node.id, symbol, direction: "inbound", element: inPin });
 
-    // Label
+    // Label — clicking the name is equivalent to clicking a pin
     const label = document.createElement("span");
     label.className = "membrane-card__symbol-label";
     label.textContent = symbol;
     label.title = `${node.id}::${symbol}`;
+    label.style.cursor = "pointer";
+    label.addEventListener("click", e => {
+      e.stopPropagation();
+      callbacks.onTogglePin(node.id, symbol);
+    });
     row.appendChild(label);
 
     // Outbound pin (blue, right)
@@ -400,13 +405,21 @@ function renderFileCard(
     grid.appendChild(row);
   }
 
-  // Internals pseudo-symbol (inbound only)
-  if (symbols.length > 0) {
+  // Internals pseudo-symbol — always present so connections can route here
+  {
     const internalsRow = document.createElement("div");
     internalsRow.className = "membrane-card__symbol-row membrane-card__symbol-row--internals";
 
     const internalsPin = document.createElement("div");
     internalsPin.className = "membrane-focal-pin membrane-focal-pin--inbound";
+    if (isSymbolPinned(pinSet, node.id, "__internals__")) {
+      internalsPin.classList.add("membrane-focal-pin--active");
+    }
+    internalsPin.style.pointerEvents = "auto";
+    internalsPin.addEventListener("click", e => {
+      e.stopPropagation();
+      callbacks.onTogglePin(node.id, "__internals__");
+    });
     internalsRow.appendChild(internalsPin);
     anchors.push({ nodeId: node.id, symbol: "__internals__", direction: "inbound", element: internalsPin });
 
@@ -414,6 +427,11 @@ function renderFileCard(
     internalsLabel.className = "membrane-card__symbol-label membrane-card__symbol-label--internals";
     internalsLabel.textContent = "⬛ Internals";
     internalsLabel.title = "Internal/private — data flows in but isn't exposed as public symbols";
+    internalsLabel.style.cursor = "pointer";
+    internalsLabel.addEventListener("click", e => {
+      e.stopPropagation();
+      callbacks.onTogglePin(node.id, "__internals__");
+    });
     internalsRow.appendChild(internalsLabel);
 
     // Placeholder for outbound column alignment
@@ -422,13 +440,6 @@ function renderFileCard(
     internalsRow.appendChild(placeholder);
 
     grid.appendChild(internalsRow);
-  }
-
-  if (symbols.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "membrane-card__empty";
-    empty.textContent = "No public symbols";
-    grid.appendChild(empty);
   }
 
   card.appendChild(grid);

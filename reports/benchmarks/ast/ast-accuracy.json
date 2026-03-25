@@ -1,9 +1,9 @@
 {
   "benchmark": "ast-accuracy",
   "mode": "ast",
-  "recordedAt": "2026-03-24T13:23:52.838Z",
+  "recordedAt": "2026-03-25T17:46:27.476Z",
   "environment": {
-    "nodeVersion": "v22.22.0",
+    "nodeVersion": "v22.22.1",
     "platform": "linux",
     "arch": "x64"
   },

@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-hierarchy-ts
-- Generated At: 2026-03-24T03:05:19.830Z
+- Generated At: 2026-03-25T17:08:29.797Z
 
 ## Authored
-
 ### Purpose
 
 Barrel file detection and semantic adjustment for the Membrane Map hierarchy, ensuring `index.ts`/`index.js` re-export files are absorbed into their parent directory's membrane boundary rather than rendered as standalone leaf tiles.
@@ -22,30 +20,23 @@ Barrel file detection and semantic adjustment for the Membrane Map hierarchy, en
 - Reuses the existing `buildHierarchy` from `layoutUtils.ts` rather than reimplementing path-to-tree conversion, applying barrel removal as a post-processing pass on the `DirectoryNode` tree.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.830Z","inputHash":"faaef2a61c74344b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.797Z","inputHash":"faaef2a61c74344b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `isBarrelFile` {#symbol-isbarrelfile}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts#L25)
 
 ##### `isBarrelFile` — Summary
-
 Returns true if the given filename matches a known barrel file pattern.
 
 #### `applyBarrelSemantics` {#symbol-applybarrelsemantics}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts#L41)
 - Returns: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode)
 - Parameters: `root`: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode)
 
 ##### `applyBarrelSemantics` — Summary
-
 Recursively applies barrel-as-membrane semantics to a DirectoryNode tree.
 
 For each directory that contains a barrel file AND at least one other file,
@@ -56,21 +47,15 @@ When a barrel file is the only file in a directory, it is kept — removing
 it would leave the membrane with zero weight, making it invisible.
 
 This function returns a new tree (does not mutate the input).
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`types.DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
-
 ### Observed Evidence
-
 #### Vitest Unit Tests
-
 - [hierarchy.test.ts](./hierarchy.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

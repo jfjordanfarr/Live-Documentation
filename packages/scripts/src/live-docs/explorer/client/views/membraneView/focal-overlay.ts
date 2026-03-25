@@ -14,6 +14,7 @@ import type { PinAnchor, RoutedTrace, FrontTrace, BackTrace } from "./routing";
 import { routeConnection } from "./routing";
 import type { MembraneLayout, MembraneNode } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
+import { normalizeSymbolIdentifier } from "../../views/symbolAnchors";
 
 // ─── Types ─────────────────────────────────────────────────────────
 
@@ -94,6 +95,7 @@ export function renderFocalOverlay(
   svgOverlay.style.height = "100%";
   svgOverlay.style.pointerEvents = "none";
   svgOverlay.style.zIndex = "5";
+  svgOverlay.style.overflow = "visible";
 
   // Build the set of node IDs that need focal panels:
   // all pinned nodes + the selected node (if it's a leaf file).
@@ -291,19 +293,37 @@ export function drawConnections(
 
   if (visibleConnections.length === 0) return;
 
+  // Create <defs> for per-connection gradients (blue → green, like Local Map)
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const defs = document.createElementNS(SVG_NS, "defs");
+  svgOverlay.appendChild(defs);
+
   const containerRect = containerEl.getBoundingClientRect();
 
-  // Build anchor index: "nodeId\0symbol\0direction" → element
+  // Build anchor index: "nodeId\0normalizedSymbol\0direction" → element
+  // Normalise symbol names so raw names (from UI) and anchor slugs (from graph) both resolve.
   const anchorIndex = new Map<string, HTMLElement>();
   for (const anchor of anchorRegistry) {
-    anchorIndex.set(`${anchor.nodeId}\0${anchor.symbol}\0${anchor.direction}`, anchor.element);
+    const normSym = anchor.symbol === "*" || anchor.symbol === "__internals__"
+      ? anchor.symbol
+      : (normalizeSymbolIdentifier(anchor.symbol) ?? anchor.symbol);
+    anchorIndex.set(`${anchor.nodeId}\0${normSym}\0${anchor.direction}`, anchor.element);
   }
+
+  let gradientIndex = 0;
 
   for (const conn of visibleConnections) {
     const sourceId = typeof conn.link.source === "string" ? conn.link.source : conn.link.source.id;
     const targetId = typeof conn.link.target === "string" ? conn.link.target : conn.link.target.id;
-    const sourceSymbol = conn.link.sourceSymbol ?? "*";
-    const targetSymbol = conn.link.targetSymbol ?? "*";
+    const sourceSymbolRaw = conn.link.sourceSymbol ?? "*";
+    const targetSymbolRaw = conn.link.targetSymbol;
+    // Null targetSymbol (after flow-direction swap) represents an unattributed
+    // dependency — route it to the __internals__ anchor on the target card,
+    // mirroring the Local Map's Internals absorption pattern.
+    const sourceSymbol = sourceSymbolRaw === "*" ? "*" : (normalizeSymbolIdentifier(sourceSymbolRaw) ?? sourceSymbolRaw);
+    const targetSymbol = targetSymbolRaw
+      ? (normalizeSymbolIdentifier(targetSymbolRaw) ?? targetSymbolRaw)
+      : "__internals__";
 
     const outboundEl = anchorIndex.get(`${sourceId}\0${sourceSymbol}\0outbound`);
     const inboundEl = anchorIndex.get(`${targetId}\0${targetSymbol}\0inbound`);
@@ -339,8 +359,44 @@ export function drawConnections(
     };
 
     const trace = routeConnection(outboundAnchor, inboundAnchor);
-    renderTrace(svgOverlay, trace, conn.link.kind);
+    const gradientId = `membrane-conn-grad-${gradientIndex++}`;
+    createConnectionGradient(defs, gradientId, outboundAnchor.center, inboundAnchor.center);
+    renderTrace(svgOverlay, trace, conn.link.kind, gradientId);
   }
+}
+
+/**
+ * Create a per-connection linear gradient from outbound (blue) to inbound (green),
+ * matching the Local Map's gradient style.
+ */
+function createConnectionGradient(
+  defs: SVGDefsElement,
+  gradientId: string,
+  source: { x: number; y: number },
+  target: { x: number; y: number },
+): void {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const gradient = document.createElementNS(SVG_NS, "linearGradient");
+  gradient.setAttribute("id", gradientId);
+  gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+  gradient.setAttribute("x1", String(source.x));
+  gradient.setAttribute("y1", String(source.y));
+  gradient.setAttribute("x2", String(target.x));
+  gradient.setAttribute("y2", String(target.y));
+
+  for (const [offset, color] of [
+    ["0%",   OUTBOUND_COLOR],
+    ["10%",  OUTBOUND_COLOR],
+    ["90%",  INBOUND_COLOR],
+    ["100%", INBOUND_COLOR],
+  ] as const) {
+    const stop = document.createElementNS(SVG_NS, "stop");
+    stop.setAttribute("offset", offset);
+    stop.setAttribute("stop-color", color);
+    gradient.appendChild(stop);
+  }
+
+  defs.appendChild(gradient);
 }
 
 /**
@@ -350,47 +406,48 @@ function renderTrace(
   svg: SVGSVGElement,
   trace: RoutedTrace,
   kind: string,
+  gradientId: string,
 ): void {
   if (trace.kind === "front") {
-    renderFrontTrace(svg, trace, kind);
+    renderFrontTrace(svg, trace, kind, gradientId);
   } else {
     renderBackTrace(svg, trace, kind);
   }
 }
 
 /**
- * Render a front-trace Bézier as an SVG path.
+ * Render a front-trace Bézier as an SVG path with a blue→green gradient.
  */
 function renderFrontTrace(
   svg: SVGSVGElement,
   trace: FrontTrace,
-  kind: string,
+  _kind: string,
+  gradientId: string,
 ): void {
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("d", trace.path.d);
   path.setAttribute("fill", "none");
-  path.setAttribute("stroke", getStrokeColor(kind));
-  path.setAttribute("stroke-width", "1.5");
-  path.setAttribute("stroke-opacity", "0.6");
+  path.setAttribute("stroke", `url(#${gradientId})`);
+  path.setAttribute("stroke-width", "2.2");
+  path.setAttribute("stroke-opacity", "0.7");
   path.classList.add("membrane-connection", "membrane-connection--front");
   svg.appendChild(path);
 }
 
 /**
  * Render back-trace stubs as SVG polygons (French Corset).
+ * Outbound stub uses blue (outbound color), inbound stub uses green (inbound color).
  */
 function renderBackTrace(
   svg: SVGSVGElement,
   trace: BackTrace,
-  kind: string,
+  _kind: string,
 ): void {
-  const color = getStrokeColor(kind);
-
   const outStub = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
   outStub.setAttribute("points", trace.outboundStubPoints);
-  outStub.setAttribute("fill", color);
+  outStub.setAttribute("fill", OUTBOUND_COLOR);
   outStub.setAttribute("fill-opacity", "0.25");
-  outStub.setAttribute("stroke", color);
+  outStub.setAttribute("stroke", OUTBOUND_COLOR);
   outStub.setAttribute("stroke-width", "0.8");
   outStub.setAttribute("stroke-opacity", "0.5");
   outStub.classList.add("membrane-connection", "membrane-connection--back-stub");
@@ -398,24 +455,30 @@ function renderBackTrace(
 
   const inStub = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
   inStub.setAttribute("points", trace.inboundStubPoints);
-  inStub.setAttribute("fill", color);
+  inStub.setAttribute("fill", INBOUND_COLOR);
   inStub.setAttribute("fill-opacity", "0.25");
-  inStub.setAttribute("stroke", color);
+  inStub.setAttribute("stroke", INBOUND_COLOR);
   inStub.setAttribute("stroke-width", "0.8");
   inStub.setAttribute("stroke-opacity", "0.5");
   inStub.classList.add("membrane-connection", "membrane-connection--back-stub");
   svg.appendChild(inStub);
 }
 
+// ─── Connection Color Constants ──────────────────────────────────
+// Match the Local Map's palette: outbound = sky-400, inbound = emerald-400.
+const OUTBOUND_COLOR = "#38bdf8";
+const INBOUND_COLOR = "#34d399";
+
 /**
- * Map edge kind to stroke color.
+ * Map edge kind to a solid stroke color (used for back-trace stubs).
+ * For front traces, prefer gradients via {@link createConnectionGradient}.
  */
-function getStrokeColor(kind: string): string {
+function _getStrokeColor(kind: string): string {
   switch (kind) {
-    case "import": return "rgba(0, 145, 255, 0.7)";
-    case "export": return "rgba(0, 211, 170, 0.7)";
-    case "type":   return "rgba(180, 120, 255, 0.7)";
-    default:       return "rgba(150, 150, 150, 0.6)";
+    case "dependency": return OUTBOUND_COLOR;
+    case "extends":    return "rgba(180, 120, 255, 0.7)";
+    case "implements": return "rgba(255, 180, 50, 0.7)";
+    default:           return OUTBOUND_COLOR;
   }
 }
 

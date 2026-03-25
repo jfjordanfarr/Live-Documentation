@@ -29,6 +29,8 @@ import {
   renderPathBreadcrumb,
 } from "./focal-overlay";
 import { computeMembraneLayout } from "./layout";
+import { renderPinActiveLayout } from "./pin-active-renderer";
+import { computePinLayout } from "./pin-layout";
 import type { PinSet } from "./pin-state";
 import {
   togglePin,
@@ -245,6 +247,112 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
     const selectedNodeId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
 
+    // ─── Pin-Active Layout ─────────────────────────────────────────
+    // When pins are active, replace the squarify treemap with a
+    // left-to-right dependency-flow layout showing only relevant nodes.
+    if (pinSet.entries.length > 0) {
+      const pinLayout = computePinLayout(pinSet, graphData.links, nodesById);
+
+      if (pinLayout.relevantNodeIds.size > 0) {
+        const pinActiveResult = renderPinActiveLayout(
+          pinLayout,
+          nodesById,
+          selectedNodeId,
+          {
+            onSelectNode: node => {
+              void onSelectNode(node);
+              render();
+            },
+            onTogglePin: (nodeId, symbol) => {
+              pinSet = togglePin(pinSet, nodeId, symbol);
+              render();
+            },
+            onClearPins: () => {
+              pinSet = clearPins();
+              render();
+            },
+            onNavigateToDirectory: dir => {
+              pinSet = clearPins();
+              focusedDirectory = dir;
+              const focusPath = buildFocusPath(dir);
+              expandedDirectories.clear();
+              for (const p of focusPath) {
+                expandedDirectories.add(p);
+              }
+              shouldZoomToFocus = true;
+              render();
+            },
+          },
+          pinSet,
+        );
+
+        container.appendChild(pinActiveResult.root);
+
+        // Create SVG overlay for connections (positioned relative to container)
+        const svgOverlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svgOverlay.classList.add("membrane-focal-svg");
+        svgOverlay.style.position = "absolute";
+        svgOverlay.style.top = "0";
+        svgOverlay.style.left = "0";
+        svgOverlay.style.width = "100%";
+        svgOverlay.style.height = "100%";
+        svgOverlay.style.pointerEvents = "none";
+        svgOverlay.style.zIndex = "5";
+        svgOverlay.style.overflow = "visible";
+        container.appendChild(svgOverlay);
+
+        // Draw connections after DOM insertion (needs measured positions)
+        requestAnimationFrame(() => {
+          const visibleConns = getVisibleConnections(pinSet, graphData.links);
+          // Swap source/target for visual rendering: graph links represent dependency
+          // direction (consumer→provider) but pin-active layout shows data-flow
+          // direction (provider→consumer, left→right). Swapping produces front-traces
+          // instead of back-trace stubs.
+          const flowConns = visibleConns.map(conn => ({
+            ...conn,
+            link: {
+              ...conn.link,
+              source: conn.link.target,
+              target: conn.link.source,
+              sourceSymbol: conn.link.targetSymbol,
+              targetSymbol: conn.link.sourceSymbol,
+            },
+          }));
+          drawConnections(
+            svgOverlay,
+            pinActiveResult.anchors,
+            flowConns,
+            container,
+            transform.k,
+          );
+        });
+
+        // Render path breadcrumb bar
+        const breadcrumb = renderPathBreadcrumb(
+          pinSet,
+          nodesById,
+          {
+            onClickHop: (nodeId) => {
+              const node = nodesById.get(nodeId);
+              if (node) void onSelectNode(node);
+            },
+            onClearPath: () => {
+              pinSet = clearPins();
+              render();
+            },
+          },
+        );
+        if (breadcrumb) {
+          viewport.appendChild(breadcrumb);
+        }
+
+        // Persist state and exit — no browse-mode rendering needed
+        persistToUrl();
+        return;
+      }
+    }
+
+    // ─── Browse Mode (no pins active) ──────────────────────────────
     const browseResult = renderBrowseMode(
       currentLayout,
       collapsed,

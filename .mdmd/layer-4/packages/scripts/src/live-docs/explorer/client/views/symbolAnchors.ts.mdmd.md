@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-symbolanchors-ts
-- Generated At: 2026-02-18T21:27:51.949Z
+- Generated At: 2026-03-25T17:39:27.208Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Symbol anchor key normalisation utilities for the Local Map. Ensures that symbol
 - `buildNormalizedAnchorKey` combines node ID, direction, and optional symbol into a canonical key.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.949Z","inputHash":"901a9c7681744ad9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:39:27.208Z","inputHash":"901a9c7681744ad9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorDirection` {#symbol-anchordirection}
@@ -76,7 +76,10 @@ _No dependencies documented yet_
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [compressed-url-state.test.ts](../persistence/compressed-url-state.test.ts.mdmd.md)
 - [pan-zoom.test.ts](./localView/pan-zoom.test.ts.mdmd.md)
 - [symbol-highlight.test.ts](./localView/symbol-highlight.test.ts.mdmd.md)
+- [pin-layout.test.ts](./membraneView/pin-layout.test.ts.mdmd.md)
+- [pin-state.test.ts](./membraneView/pin-state.test.ts.mdmd.md)
 - [symbolAnchors.test.ts](./symbolAnchors.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

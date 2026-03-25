@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-24T03:01:07.322Z
+- Generated At: 2026-03-25T17:08:29.866Z
 
 ## Authored
-
 ### Purpose
 
 View controller for the Membrane Map, orchestrating layout computation, browse-mode rendering, focal overlay management, pin state transitions, pan/zoom interaction, focus-based directory drill-down, and bidirectional URL state persistence via lz-string compression.
@@ -23,47 +21,35 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - `persistToUrl` writes the full membrane state (view, selected node, pin set, expanded directories, transform, filters) to the URL via `writeUrlState` on every render; `readUrlState` restores on initialization, enabling shareable deep links.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:01:07.322Z","inputHash":"a2874fe29d8f27c8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.866Z","inputHash":"15c09b26801d27c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L42)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L44)
 
 ##### `MembraneViewOptions` — Summary
-
 Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L52)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L54)
 
 ##### `MembraneViewApi` — Summary
-
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L71)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L73)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
 ##### `createMembraneView` — Summary
-
 Initialise the Membrane Map view and return its public API.
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`compressed-url-state.UrlStateSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.readUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate) (type-only)
@@ -80,6 +66,8 @@ Initialise the Membrane Map view and return its public API.
 - [`focal-overlay.renderFocalOverlay`](./focal-overlay.ts.mdmd.md#symbol-renderfocaloverlay)
 - [`focal-overlay.renderPathBreadcrumb`](./focal-overlay.ts.mdmd.md#symbol-renderpathbreadcrumb)
 - [`layout.computeMembraneLayout`](./layout.ts.mdmd.md#symbol-computemembranelayout)
+- [`pin-active-renderer.renderPinActiveLayout`](./pin-active-renderer.ts.mdmd.md#symbol-renderpinactivelayout)
+- [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
 - [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)

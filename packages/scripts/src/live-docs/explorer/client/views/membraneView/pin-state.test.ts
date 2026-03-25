@@ -251,17 +251,22 @@ describe("getVisibleConnections", () => {
     expect(visible).toHaveLength(0);
   });
 
-  it("links without sourceSymbol/targetSymbol are only visible to wildcard pins", () => {
+  it("links without sourceSymbol are absorbed by any pin on the source node (internals pattern)", () => {
     const bareLinks: ExplorerLinkPayload[] = [
       link("a.ts", "b.ts"),  // no sourceSymbol or targetSymbol
     ];
-    // Specific symbol pin should NOT match a bare link
+    // Any pin on the source node should absorb a bare-sourceSymbol link
+    // (mirrors Local Map's "Internals" pattern for unattributed deps)
     const specificSet = addPin(EMPTY_PIN_SET, "a.ts", "fnA");
-    expect(getVisibleConnections(specificSet, bareLinks)).toHaveLength(0);
+    expect(getVisibleConnections(specificSet, bareLinks)).toHaveLength(1);
 
-    // Wildcard pin SHOULD match
+    // Wildcard pin also matches
     const wildcardSet = addPin(EMPTY_PIN_SET, "a.ts", "*");
     expect(getVisibleConnections(wildcardSet, bareLinks)).toHaveLength(1);
+
+    // Pin on a different node should NOT match
+    const otherSet = addPin(EMPTY_PIN_SET, "c.ts", "fnC");
+    expect(getVisibleConnections(otherSet, bareLinks)).toHaveLength(0);
   });
 
   it("a link matching both source and target pins appears exactly once", () => {

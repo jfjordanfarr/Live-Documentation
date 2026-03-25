@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/styles/membrane.css
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/membrane.css
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-membrane-css
-- Generated At: 2026-03-23T20:05:53.773Z
+- Generated At: 2026-03-25T17:08:28.895Z
 
 ## Authored
-
 ### Purpose
 
 Styles for the Membrane Map view: viewport/container layout, membrane (directory) borders at depth-graduated opacity, collapsed directory tiles with hover/focus states, leaf file cards in grid layout, focal overlay panels with symbol pin anchors, SVG connection paths, path breadcrumb bar, and responsive badge sizing.
@@ -24,20 +22,13 @@ Styles for the Membrane Map view: viewport/container layout, membrane (directory
 - Pin anchor dots (`.membrane-focal-pin`) use green for inbound and blue for outbound, matching the Local Map's established color language.", "oldString": "## Authored\n### Purpose\n*Pending authored purpose*\n\n### Notes\n*Pending notes*
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.773Z","inputHash":"9a7a867f30b7268c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:28.895Z","inputHash":"9a7a867f30b7268c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 _No dependencies documented yet_
-
 <!-- LIVE-DOC:END Dependencies -->

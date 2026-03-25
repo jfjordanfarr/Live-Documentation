@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-focal-overlay-ts
-- Generated At: 2026-03-24T03:05:19.785Z
+- Generated At: 2026-03-25T17:08:29.746Z
 
 ## Authored
-
 ### Purpose
 
 DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf nodes, SVG connection drawing between measured pin anchors, numbered hop badges for path mode, and a path breadcrumb bar — the visual embodiment of the continuous pin state machine.
@@ -24,81 +22,65 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 - XSS prevention: `escapeHtml` sanitizes all user-facing text content (file names, symbol names) before DOM insertion.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.785Z","inputHash":"5764bdc32feb8302"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.746Z","inputHash":"0c48585bdb11e54a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `FocalOverlayCallbacks` {#symbol-focaloverlaycallbacks}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L21)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L22)
 
 ##### `FocalOverlayCallbacks` — Summary
-
 Callbacks for focal overlay interaction events.
 
 #### `MeasuredAnchor` {#symbol-measuredanchor}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L30)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L31)
 
 ##### `MeasuredAnchor` — Summary
-
 A measured pin anchor with its absolute position in the layout.
 Used after DOM insertion to compute connection geometry.
 
 #### `FocalOverlayResult` {#symbol-focaloverlayresult}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L41)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L42)
 
 ##### `FocalOverlayResult` — Summary
-
 The result of rendering the focal overlay — contains the DOM elements
 and an anchor registry for subsequent connection routing.
 
 #### `renderFocalOverlay` {#symbol-renderfocaloverlay}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L75)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L76)
 - Returns: [`FocalOverlayResult`](#symbol-focaloverlayresult)
 - Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`FocalOverlayCallbacks`](#symbol-focaloverlaycallbacks); `skipNodeIds`: `ReadonlySet`
 
 ##### `renderFocalOverlay` — Summary
-
 Render the focal overlay: symbol expansion panels on pinned nodes.
 
 Call this after browse-mode rendering. The returned panels should be
 positioned over the corresponding leaf tiles in the membrane container.
 
 ##### `renderFocalOverlay` — Parameters
-
 - `callbacks`: Pin toggle handler
 - `layout`: Current membrane layout
 - `nodesById`: Node payload lookup
 - `pinSet`: Current pin state
 
 ##### `renderFocalOverlay` — Returns
-
 Overlay result with panels, anchors, and SVG overlay
 
 #### `drawConnections` {#symbol-drawconnections}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L280)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L282)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `drawConnections` — Summary
-
 Measure anchor positions and draw SVG connections.
 
 Must be called after the focal overlay panels are inserted into the DOM
 (so getBoundingClientRect returns real positions).
 
 ##### `drawConnections` — Parameters
-
 - `anchorRegistry`: All measured anchors (from FocalOverlayResult)
 - `containerEl`: The membrane container element (for coordinate transform)
 - `scale`: Current zoom scale factor
@@ -106,65 +88,53 @@ Must be called after the focal overlay panels are inserted into the DOM
 - `visibleConnections`: Connections to draw (from getVisibleConnections)
 
 #### `hopLabel` {#symbol-hoplabel}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L434)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L497)
 
 ##### `hopLabel` — Summary
-
 Get the display label for a hop index.
 Uses circled numbers for 0-19, falls back to plain number for larger indices.
 
 #### `attachHopBadges` {#symbol-attachhopbadges}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L449)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L512)
 - Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
-
 Attach hop badges to focal panels that are part of an active path.
 
 Each panel that contains a path entry gets a numbered badge in its
 top-right corner showing the hop index.
 
 ##### `attachHopBadges` — Parameters
-
 - `panels`: Focal panels keyed by node ID
 - `pinSet`: Current pin state (must have active path)
 
 #### `BreadcrumbCallbacks` {#symbol-breadcrumbcallbacks}
-
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L481)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L544)
 
 ##### `BreadcrumbCallbacks` — Summary
-
 Callbacks for breadcrumb bar interaction.
 
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
-
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L497)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L560)
 - Parameters: `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
-
 Render a path breadcrumb bar showing the sequence of hops.
 
 Returns null if no active path exists.
 
 ##### `renderPathBreadcrumb` — Parameters
-
 - `callbacks`: Click handlers
 - `nodesById`: Node payload lookup (for display names)
 - `pinSet`: Current pin state
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
 - [`pin-state.getPathEntries`](./pin-state.ts.mdmd.md#symbol-getpathentries) (type-only)
@@ -178,14 +148,12 @@ Returns null if no active path exists.
 - [`routing.routeConnection`](./routing.ts.mdmd.md#symbol-routeconnection) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
+- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
-
 ### Observed Evidence
-
 #### Vitest Unit Tests
-
 - [pin-state.test.ts](./pin-state.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

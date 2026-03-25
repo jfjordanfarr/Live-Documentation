@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/squarify.test.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/squarify.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-squarify-test-ts
-- Generated At: 2026-03-24T03:01:07.501Z
+- Generated At: 2026-03-25T17:08:30.231Z
 
 ## Authored
-
 ### Purpose
 
 Unit tests for the squarified treemap layout algorithm, verifying proportional area allocation, non-overlapping tile placement, viewport containment, aspect ratio quality, and edge-case handling.
@@ -22,20 +20,14 @@ Unit tests for the squarified treemap layout algorithm, verifying proportional a
 - Promoted from `circuitView/squarify.test.ts` to `views/squarify.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:01:07.501Z","inputHash":"f3ca7ace01707f4a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:30.231Z","inputHash":"f3ca7ace01707f4a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`layoutUtils.LayoutRect`](./layoutUtils.ts.mdmd.md#symbol-layoutrect) (type-only)
 - [`squarify.SquarifyItem`](./squarify.ts.mdmd.md#symbol-squarifyitem)
 - [`squarify.SquarifyTile`](./squarify.ts.mdmd.md#symbol-squarifytile)
@@ -44,17 +36,14 @@ _No public symbols detected_
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
-_No targets documented yet_
-
+#### Vitest Unit Tests
+- packages/scripts/src/live-docs/explorer/client: [types.ts](../types.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/client/views: [layoutUtils.ts](./layoutUtils.ts.mdmd.md), [squarify.ts](./squarify.ts.mdmd.md)
+- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../shared/types.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->
