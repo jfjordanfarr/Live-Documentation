@@ -10,7 +10,7 @@
  */
 
 import type { MeasuredAnchor } from "./focal-overlay";
-import type { PinLayoutResult, MembraneGroup } from "./pin-layout";
+import type { PinLayoutResult, DirectoryBand } from "./pin-layout";
 import type { PinSet } from "./pin-state";
 import { isSymbolPinned } from "./pin-state";
 import type { ExplorerNodePayload } from "../../../shared/types";
@@ -89,13 +89,15 @@ export function renderPinActiveLayout(
   // Build nested ancestor membrane wrappers from LCA outward.
   // Each ancestor layer is a thin border + label that serves as a
   // clickable escape hatch back to browse mode at that directory level.
-  const { ancestorChain, lcaDirectory } = pinLayout;
+  const { ancestorChain } = pinLayout;
   let innermost: HTMLElement = root;
 
   for (const dir of ancestorChain) {
     const membraneLayer = document.createElement("div");
     membraneLayer.className = "pa-ancestor-membrane";
     membraneLayer.dataset.dir = dir;
+    // Stable data-id for FLIP animation matching across re-renders.
+    membraneLayer.dataset.id = dir;
 
     const layerLabel = document.createElement("div");
     layerLabel.className = "pa-ancestor-membrane__label";
@@ -113,98 +115,144 @@ export function renderPinActiveLayout(
     innermost = membraneLayer;
   }
 
-  // Create the columns container inside the innermost ancestor membrane
-  const columnsContainer = document.createElement("div");
-  columnsContainer.className = "pa-columns-container";
+  // Create the grid container inside the innermost ancestor membrane.
+  // CSS Grid: one track per column, one label row, then one row per band-row.
+  const gridContainer = document.createElement("div");
+  gridContainer.className = "pa-grid-container";
+  gridContainer.style.gridTemplateColumns = `repeat(${pinLayout.columnCount}, minmax(220px, 320px))`;
 
-  // Group membrane groups by column
-  const groupsByColumn = new Map<number, MembraneGroup[]>();
-  for (const group of pinLayout.membraneGroups) {
-    let list = groupsByColumn.get(group.column);
-    if (!list) {
-      list = [];
-      groupsByColumn.set(group.column, list);
-    }
-    list.push(group);
+  // Determine how many band rows exist
+  let maxBandRow = 0;
+  for (const band of pinLayout.directoryBands) {
+    if (band.bandRow > maxBandRow) maxBandRow = band.bandRow;
   }
+  // Row 1 = labels, rows 2..N = band rows
+  gridContainer.style.gridTemplateRows = `auto ${Array(maxBandRow + 1).fill("auto").join(" ")}`;
 
-  // Render each column
+  // Column labels (grid row 1)
   for (let col = 0; col < pinLayout.columnCount; col++) {
-    const columnEl = document.createElement("div");
-    columnEl.className = "pin-active-column";
-    columnEl.dataset.column = String(col);
-
-    // Column label
-    const label = pinLayout.columnLabels[col] ?? "";
     const labelEl = document.createElement("div");
     labelEl.className = "pin-active-column__label";
-    labelEl.textContent = label;
-    columnEl.appendChild(labelEl);
-
-    // Render membrane groups in this column
-    const groups = groupsByColumn.get(col) ?? [];
-    for (const group of groups) {
-      const groupEl = renderMembraneGroup(
-        group, nodesById, selectedNodeId, callbacks, pinSet, anchors, cardRenderedIds,
-        lcaDirectory,
-      );
-      columnEl.appendChild(groupEl);
-    }
-
-    columnsContainer.appendChild(columnEl);
+    labelEl.textContent = pinLayout.columnLabels[col] ?? "";
+    labelEl.style.gridColumn = String(col + 1);
+    labelEl.style.gridRow = "1";
+    gridContainer.appendChild(labelEl);
   }
 
-  innermost.appendChild(columnsContainer);
+  // Render each directory band as a membrane spanning its column range
+  for (const band of pinLayout.directoryBands) {
+    const bandEl = renderDirectoryBand(
+      band, nodesById, selectedNodeId, callbacks, pinSet, anchors,
+      cardRenderedIds, pinLayout.lcaDirectory, pinLayout.columnCount,
+    );
+    // Position in grid: column span from minColumn to maxColumn (CSS Grid is 1-indexed)
+    bandEl.style.gridColumn = `${band.minColumn + 1} / ${band.maxColumn + 2}`;
+    bandEl.style.gridRow = String(band.bandRow + 2); // +2: row 1 is labels
+    gridContainer.appendChild(bandEl);
+  }
+
+  innermost.appendChild(gridContainer);
 
   return { root, anchors, cardRenderedIds };
 }
 
 /**
- * Render a membrane group: a directory header wrapping a set of file cards.
+ * Render a directory band — either a leaf (file cards) or a parent
+ * (nested child bands). Parent bands contain an inner grid that places
+ * children; leaf bands render file cards directly.
+ *
+ * @param contextDirectory - parent band's directory, used for relative labels
  */
-function renderMembraneGroup(
-  group: MembraneGroup,
+function renderDirectoryBand(
+  band: DirectoryBand,
   nodesById: ReadonlyMap<string, ExplorerNodePayload>,
   selectedNodeId: string | null,
   callbacks: PinActiveCallbacks,
   pinSet: PinSet,
   anchors: MeasuredAnchor[],
   cardRenderedIds: Set<string>,
-  lcaDirectory: string,
+  contextDirectory: string,
+  totalColumns: number,
 ): HTMLElement {
+  const isParent = band.children.length > 0;
+  const isRootLevel = band.directory === contextDirectory;
   const container = document.createElement("div");
-  container.className = "pin-active-membrane";
-  container.dataset.directory = group.directory;
+  container.className = isRootLevel
+    ? "pa-band-bare"
+    : isParent ? "pa-band-membrane pa-band-membrane--group" : "pa-band-membrane";
+  container.dataset.directory = band.directory;
+  container.dataset.id = band.directory;
 
-  // Show directory label only when it differs from the LCA (avoid duplicate labels)
-  const showLabel = group.directory && group.directory !== lcaDirectory;
+  // Directory label — show relative to the context directory; skip for root-level files
+  const showLabel = band.directory && !isRootLevel;
   if (showLabel) {
-    // Show relative path from LCA for cleaner labels
-    const displayDir = lcaDirectory && group.directory.startsWith(lcaDirectory + "/")
-      ? group.directory.substring(lcaDirectory.length + 1)
-      : group.directory;
+    const displayDir = contextDirectory && band.directory.startsWith(contextDirectory + "/")
+      ? band.directory.substring(contextDirectory.length + 1)
+      : band.directory;
     const dirLabel = document.createElement("div");
-    dirLabel.className = "pin-active-membrane__label";
+    dirLabel.className = "pa-band-membrane__label";
     dirLabel.textContent = displayDir;
-    dirLabel.title = `Navigate to ${group.directory}`;
+    dirLabel.title = `Navigate to ${band.directory}`;
     dirLabel.style.cursor = "pointer";
     dirLabel.addEventListener("click", e => {
       e.stopPropagation();
-      callbacks.onNavigateToDirectory(group.directory);
+      callbacks.onNavigateToDirectory(band.directory);
     });
     container.appendChild(dirLabel);
   }
 
-  // File cards
-  for (const nodeId of group.nodeIds) {
-    const payload = nodesById.get(nodeId);
-    if (!payload) continue;
+  if (isParent) {
+    // ── Parent band: inner grid of child bands ──────────────────
+    const bandSpan = band.maxColumn - band.minColumn + 1;
+    let maxChildRow = 0;
+    for (const child of band.children) {
+      if (child.bandRow > maxChildRow) maxChildRow = child.bandRow;
+    }
 
-    const card = renderFlowCard(
-      nodeId, payload, selectedNodeId, callbacks, pinSet, anchors,
-    );
-    cardRenderedIds.add(nodeId);
-    container.appendChild(card);
+    const innerGrid = document.createElement("div");
+    innerGrid.className = "pa-band-inner";
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
+    innerGrid.style.gridTemplateRows = Array(maxChildRow + 1).fill("auto").join(" ");
+
+    for (const child of band.children) {
+      const childEl = renderDirectoryBand(
+        child, nodesById, selectedNodeId, callbacks, pinSet, anchors,
+        cardRenderedIds, band.directory, totalColumns,
+      );
+      // Place in inner grid relative to parent's minColumn
+      childEl.style.gridColumn = `${child.minColumn - band.minColumn + 1} / ${child.maxColumn - band.minColumn + 2}`;
+      childEl.style.gridRow = String(child.bandRow + 1);
+      innerGrid.appendChild(childEl);
+    }
+
+    container.appendChild(innerGrid);
+  } else {
+    // ── Leaf band: render file cards ────────────────────────────
+    const bandSpan = band.maxColumn - band.minColumn + 1;
+    const innerGrid = document.createElement("div");
+    innerGrid.className = "pa-band-inner";
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
+
+    for (let col = band.minColumn; col <= band.maxColumn; col++) {
+      const nodeIds = band.nodesByColumn.get(col);
+      const slot = document.createElement("div");
+      slot.className = "pa-band-slot";
+      slot.style.gridColumn = String(col - band.minColumn + 1);
+
+      if (nodeIds) {
+        for (const nodeId of nodeIds) {
+          const payload = nodesById.get(nodeId);
+          if (!payload) continue;
+          const card = renderFlowCard(nodeId, payload, selectedNodeId, callbacks, pinSet, anchors);
+          cardRenderedIds.add(nodeId);
+          slot.appendChild(card);
+        }
+      }
+
+      innerGrid.appendChild(slot);
+    }
+
+    container.appendChild(innerGrid);
   }
 
   return container;

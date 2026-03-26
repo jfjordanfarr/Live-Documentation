@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-active-renderer-ts
-- Generated At: 2026-03-25T17:46:57.984Z
+- Generated At: 2026-03-26T19:37:25.259Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms 
 - All user-supplied text is escaped through `escapeHtml` to prevent XSS in symbol names and directory labels
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:46:57.984Z","inputHash":"5f3970ab569b7ea9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.259Z","inputHash":"68502fc4f53bbfb5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PinActiveCallbacks` {#symbol-pinactivecallbacks}
@@ -64,7 +64,7 @@ Creates a horizontal column layout where:
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
-- [`pin-layout.MembraneGroup`](./pin-layout.ts.mdmd.md#symbol-membranegroup) (type-only)
+- [`pin-layout.DirectoryBand`](./pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`pin-layout.PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult) (type-only)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)

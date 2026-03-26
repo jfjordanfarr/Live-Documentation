@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-layout-test-ts
-- Generated At: 2026-03-25T17:46:58.020Z
+- Generated At: 2026-03-26T19:37:25.290Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Vitest unit tests for the pin-layout dependency-flow engine, covering topologica
 - Test helper `addPin` creates pin state entries; `EMPTY_PIN_SET` provides the base case
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:46:58.020Z","inputHash":"4af67f6cec07b3ef"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.290Z","inputHash":"24f378e8fa5326c0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -29,6 +29,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`pin-layout.buildAncestorChain`](./pin-layout.ts.mdmd.md#symbol-buildancestorchain)
+- [`pin-layout.computeDirectoryBands`](./pin-layout.ts.mdmd.md#symbol-computedirectorybands)
 - [`pin-layout.computeLCA`](./pin-layout.ts.mdmd.md#symbol-computelca)
 - [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
 - [`pin-layout.parentDirectory`](./pin-layout.ts.mdmd.md#symbol-parentdirectory)

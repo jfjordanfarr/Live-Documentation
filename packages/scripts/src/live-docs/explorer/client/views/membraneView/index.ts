@@ -21,13 +21,16 @@ import type { DirectoryAggregate } from "../circuitView/aggregation";
 import { buildHierarchy } from "../layoutUtils";
 import type { LayoutRect } from "../layoutUtils";
 import { computeAllAggregates } from "./aggregation";
+import { capturePositions, animateTransition } from "./animation";
 import { renderBrowseMode } from "./browse-renderer";
 import {
   renderFocalOverlay,
   drawConnections,
   attachHopBadges,
   renderPathBreadcrumb,
+  setupHoverDimming,
 } from "./focal-overlay";
+import type { MeasuredAnchor } from "./focal-overlay";
 import { computeMembraneLayout } from "./layout";
 import { renderPinActiveLayout } from "./pin-active-renderer";
 import { computePinLayout } from "./pin-layout";
@@ -102,6 +105,19 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
   // If URL restored a non-default transform, apply it immediately
   const hasRestoredTransform = transform.x !== 0 || transform.y !== 0 || transform.k !== 1;
+
+  // ─── Structural fingerprint ──────────────────────────────────────
+  // Tracks whether a full rebuild is needed.  When only the selected
+  // node changes the layout is structurally identical and we can apply
+  // a lightweight CSS-only selection update.
+  let lastStructuralKey = "";
+
+  /** Compute a fingerprint of everything that changes layout structure. */
+  function structuralKey(): string {
+    const dirs = [...expandedDirectories].sort().join(",");
+    const pins = pinSet.entries.map(e => `${e.nodeId}:${e.symbol}`).sort().join(",");
+    return `${focusedDirectory}|${dirs}|${pins}|${state.filters.showTests}|${state.filters.showAssets}`;
+  }
 
   // ─── Pan / Zoom ──────────────────────────────────────────────────
 
@@ -182,7 +198,39 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
   // ─── Rendering ───────────────────────────────────────────────────
 
+  /**
+   * Lightweight selection update — toggles the `.selected` CSS class
+   * on existing DOM elements without rebuilding the layout.
+   * Returns `true` if the fast path was taken.
+   */
+  function trySelectionOnlyUpdate(): boolean {
+    const key = structuralKey();
+    if (key !== lastStructuralKey) return false;
+
+    const selectedNodeId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
+
+    // Toggle .selected on leaves and cards
+    for (const el of container.querySelectorAll<HTMLElement>(".selected")) {
+      el.classList.remove("selected");
+    }
+    if (selectedNodeId) {
+      const leaf = container.querySelector<HTMLElement>(`.membrane-leaf[data-id="${CSS.escape(selectedNodeId)}"]`);
+      if (leaf) leaf.classList.add("selected");
+      const card = container.querySelector<HTMLElement>(`.membrane-card[data-id="${CSS.escape(selectedNodeId)}"]`);
+      if (card) card.classList.add("selected");
+    }
+
+    persistToUrl();
+    return true;
+  }
+
   function render(): void {
+    // ─── Fast path: selection-only change ─────────────────────────
+    if (trySelectionOnlyUpdate()) return;
+
+    // ─── FLIP: capture old positions before teardown ───────────────
+    const oldPositions = capturePositions(container, transform.k);
+
     container.innerHTML = "";
 
     // Remove stale breadcrumb bars from prior renders
@@ -301,8 +349,12 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         svgOverlay.style.overflow = "visible";
         container.appendChild(svgOverlay);
 
-        // Draw connections after DOM insertion (needs measured positions)
-        requestAnimationFrame(() => {
+        // Enable hover dimming on symbol rows → SVG connections
+        setupHoverDimming(container, svgOverlay);
+
+        // Draw connections after FLIP animation completes (elements at final positions)
+        const flipDone = animateTransition(container, oldPositions, transform.k);
+        void flipDone.then(() => {
           const visibleConns = getVisibleConnections(pinSet, graphData.links);
           // Swap source/target for visual rendering: graph links represent dependency
           // direction (consumer→provider) but pin-active layout shows data-flow
@@ -347,6 +399,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         }
 
         // Persist state and exit — no browse-mode rendering needed
+        lastStructuralKey = structuralKey();
         persistToUrl();
         return;
       }
@@ -437,6 +490,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       && currentLayout?.index.get(selectedNodeId)?.isDirectory === false;
     const hasNonCardPins = pinSet.entries.some(e => !browseResult.cardRenderedIds.has(e.nodeId));
     const hasPins = pinSet.entries.length > 0;
+    let browseOverlay: { svgOverlay: SVGSVGElement; anchors: MeasuredAnchor[] } | null = null;
     if ((hasNonCardPins || hasSelectedLeaf || hasPins) && currentLayout) {
       const overlay = renderFocalOverlay(
         currentLayout,
@@ -463,20 +517,12 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       // Append SVG overlay
       container.appendChild(overlay.svgOverlay);
 
-      // Draw connections after DOM insertion (needs measured positions)
-      requestAnimationFrame(() => {
-        const visibleConns = getVisibleConnections(pinSet, graphData.links);
-        // Merge card-grid anchors with focal overlay anchors so
-        // connections can span between card pins and overlay pins.
-        const allAnchors = [...overlay.anchors, ...browseResult.anchors];
-        drawConnections(
-          overlay.svgOverlay,
-          allAnchors,
-          visibleConns,
-          container,
-          transform.k,
-        );
-      });
+      // Enable hover dimming on symbol rows → SVG connections
+      setupHoverDimming(container, overlay.svgOverlay);
+
+      // Connection drawing is deferred below — after FLIP animation completes
+      // so that element positions are settled when anchors are measured.
+      browseOverlay = overlay;
 
       // Render path breadcrumb bar (outside the container, in the viewport)
       const breadcrumb = renderPathBreadcrumb(
@@ -506,6 +552,23 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     } else if (!hasRestoredTransform && transform.x === 0 && transform.y === 0 && transform.k === 1) {
       fitToViewport(layoutViewport);
     }
+
+    // ─── FLIP: animate elements from old to new positions ─────────
+    // Draw connections only after FLIP settles so anchor positions are final.
+    const flipDone = animateTransition(container, oldPositions, transform.k);
+    if (browseOverlay) {
+      const ov = browseOverlay;
+      const anchors = browseResult.anchors;
+      const k = transform.k;
+      void flipDone.then(() => {
+        const visibleConns = getVisibleConnections(pinSet, graphData.links);
+        const allAnchors = [...ov.anchors, ...anchors];
+        drawConnections(ov.svgOverlay, allAnchors, visibleConns, container, k);
+      });
+    }
+
+    // Record structural fingerprint for fast-path detection
+    lastStructuralKey = structuralKey();
 
     // Persist state to URL
     persistToUrl();

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-focal-overlay-ts
-- Generated At: 2026-03-25T17:08:29.746Z
+- Generated At: 2026-03-26T19:37:25.087Z
 
 ## Authored
 ### Purpose
@@ -22,19 +22,19 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 - XSS prevention: `escapeHtml` sanitizes all user-facing text content (file names, symbol names) before DOM insertion.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.746Z","inputHash":"0c48585bdb11e54a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.087Z","inputHash":"170b96adbccb5f18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FocalOverlayCallbacks` {#symbol-focaloverlaycallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L22)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L23)
 
 ##### `FocalOverlayCallbacks` — Summary
 Callbacks for focal overlay interaction events.
 
 #### `MeasuredAnchor` {#symbol-measuredanchor}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L31)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L32)
 
 ##### `MeasuredAnchor` — Summary
 A measured pin anchor with its absolute position in the layout.
@@ -42,7 +42,7 @@ Used after DOM insertion to compute connection geometry.
 
 #### `FocalOverlayResult` {#symbol-focaloverlayresult}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L42)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L43)
 
 ##### `FocalOverlayResult` — Summary
 The result of rendering the focal overlay — contains the DOM elements
@@ -50,7 +50,7 @@ and an anchor registry for subsequent connection routing.
 
 #### `renderFocalOverlay` {#symbol-renderfocaloverlay}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L76)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L77)
 - Returns: [`FocalOverlayResult`](#symbol-focaloverlayresult)
 - Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`FocalOverlayCallbacks`](#symbol-focaloverlaycallbacks); `skipNodeIds`: `ReadonlySet`
 
@@ -71,7 +71,7 @@ Overlay result with panels, anchors, and SVG overlay
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L282)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L283)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `drawConnections` — Summary
@@ -89,7 +89,7 @@ Must be called after the focal overlay panels are inserted into the DOM
 
 #### `hopLabel` {#symbol-hoplabel}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L497)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L535)
 
 ##### `hopLabel` — Summary
 Get the display label for a hop index.
@@ -97,7 +97,7 @@ Uses circled numbers for 0-19, falls back to plain number for larger indices.
 
 #### `attachHopBadges` {#symbol-attachhopbadges}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L512)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L550)
 - Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
@@ -112,14 +112,14 @@ top-right corner showing the hop index.
 
 #### `BreadcrumbCallbacks` {#symbol-breadcrumbcallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L544)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L582)
 
 ##### `BreadcrumbCallbacks` — Summary
 Callbacks for breadcrumb bar interaction.
 
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L560)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L598)
 - Parameters: `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
@@ -131,10 +131,38 @@ Returns null if no active path exists.
 - `callbacks`: Click handlers
 - `nodesById`: Node payload lookup (for display names)
 - `pinSet`: Current pin state
+
+#### `setupHoverDimming` {#symbol-setuphoverdimming}
+- Type: function
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L675)
+- Parameters: `svgOverlay`: `SVGSVGElement`
+
+##### `setupHoverDimming` — Summary
+Set up hover dimming on symbol rows within `container`.
+
+When the user hovers a symbol row, all connections in the `svgOverlay`
+that do NOT involve that symbol are dimmed, mirroring the Local Map's
+hover behavior.
+
+Handlers are attached via event delegation on the container so setup
+is called once, not per-row.
+
+##### `setupHoverDimming` — Parameters
+- `container`: The membrane container element (holds symbol rows)
+- `svgOverlay`: The SVG overlay element (holds connection paths)
+
+#### `clearHoverDimming` {#symbol-clearhoverdimming}
+- Type: function
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L723)
+- Parameters: `svgOverlay`: `SVGSVGElement`
+
+##### `clearHoverDimming` — Summary
+Remove all hover-dimming state from the SVG overlay.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`animation.animateLineDrawIn`](./animation.ts.mdmd.md#symbol-animatelinedrawin)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
 - [`pin-state.getPathEntries`](./pin-state.ts.mdmd.md#symbol-getpathentries) (type-only)

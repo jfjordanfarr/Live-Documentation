@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 22, 2026\)*
+*Status: Active Development (Mar 25, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -31,7 +31,7 @@ Live Documentation is delivered through six channels, each backed by the same un
 | \# | Surface | Medium | Primary Consumers | Current Status |
 | :---- | :---- | :---- | :---- | :---- |
 | 1 | **CLI Suite** | Terminal (npm run live-docs:\*) | Engineers, CI pipelines, AI agents | Shipped |
-| 2 | **Visual Explorer** | Browser (Static Build) | Architects, onboarders, leads | Shipped (npm run live-docs:visualize) |
+| 2 | **Visual Explorer** | Browser (Static Build) | Architects, onboarders, leads | Shipped (npm run live-docs:visualize), Membrane Map in WIP |
 | 3 | **VS Code Extension** | Editor (thin client) | Engineers, writers | In progress (thin shell shipped; lint-as-diagnostics planned) |
 | 4 | **Static Export** | HTML \+ JSON bundle | Teams, stakeholders, offline consumers | Shipped (merged into visualize) |
 | 5 | **Headless JSON API** | HTTP / \--json flags | AI agents, automation scripts, CI | Shipped (Local Map endpoint \+ all CLI \--json modes) |
@@ -53,7 +53,7 @@ Live Documentation is delivered through six channels, each backed by the same un
 
 *Who: Architects, Onboarders*
 
-Launch the **Visual Explorer** and use the fuzzy **Omnisearch** (Ctrl+P) to find symbols or files. Toggle between the macro **Circuit Board** (directory-level treemap), the focused **Local Map** (3-column symbol view), and the **Force Graph** (physics-based clustering). The **Knowledge Sources** panel shows exactly where the data comes from, including disconnected nodes that may indicate dead code or adapter gaps.
+Launch the **Visual Explorer** and use the fuzzy **Omnisearch** (Ctrl+P) to find symbols or files. Toggle between the macro **Circuit Board** (directory-level treemap), the focused **Local Map** (3-column symbol view), and the **Force Graph** (physics-based clustering). The **Knowledge Sources** panel shows exactly where the data comes from, including disconnected nodes that may indicate dead code or adapter gaps. *(Note: The system is actively transitioning towards a unified "Membrane Map" that will combine these fragmented views into a single, seamless semantic zoom continuum).*
 
 **Result:** Holographic understanding of system architecture without reading a single line of source code.
 
@@ -963,6 +963,33 @@ The team formalized the next major evolutionary leap for the Visual Explorer: Th
 * **Layer-3 Architecture:** Authored the comprehensive membrane-map.mdmd.md specification detailing the successor's architecture, including four rendering modes (Browse, Explore, Compare, Path), namespace mapping for C\#, and edge bundling mechanics.  
 * **Strategic Forward Referencing:** Updated 14 architectural documents (instructions, vision, specs, roadmap) to officially designate the Membrane Map as the planned successor to the legacy dual-view system, laying the groundwork for the next phase of frontend development.
 
+### **Phase LXVI: Scaffolding the Membrane Map & The LTR Roadblock (Mar 23-24)**
+
+Date: March 23–24, 2026
+
+Scope: Commit 269
+
+The team transitioned from the Layer-3 architecture specification of the Membrane Map into concrete implementation, immediately colliding with the harsh realities of DOM layout constraints and complex visual design.
+
+* **The Pure-Math Foundation:** The team scaffolded the core layout engine (membraneMath.ts) entirely independently of the DOM, backing the nested bounding-box and focus algorithms with a rigorous suite of **136 passing unit tests**.  
+* **The DOM Reality Check & Manual Debugging:** Without Playwright E2E or visual regression tests, the team relied on five grueling rounds of manual screenshot debugging. They discovered that utilizing CSS transform for zooming fundamentally broke layout coordinates. In response, they pivoted to a "Weight Boosting" algorithm, dynamically recalculating the flex-basis of focused nodes to achieve zooming within standard document flow.  
+* **The LTR Design Roadblock:** The core aesthetic aspiration—marrying a squarified treemap (which optimizes for area) with a Left-To-Right (LTR) dependency flow—hit a wall. Cards inside the membranes resisted natural ordering for clean dependency lines, forcing the team to fall back to "French Corset" connection stubs. Solving this visual routing remains the primary open design challenge.  
+* **Tactical Retreats:** Features like edge bundling and dynamic detail-level culling were successfully tested in the math layer but deliberately disabled in the renderer due to visual noise. Embodying the "Every Mess is Our Mess" principle, the team chose to ship a stable, incomplete foundation rather than a chaotic, fully-featured one.
+
+### **Phase LXVII: Context Retention & LCA Membranes (Mar 24-25)**
+
+Date: March 24–25, 2026
+
+Scope: Commit 270
+
+The team continued refining the Membrane Map, focusing on the UX challenge of context loss during deep dependency tracing within the new unified layout.
+
+* **The "Lost in the Weeds" Problem:** When users entered the "Pin-Active" flow to trace specific dependencies, the isolated view stripped away the surrounding directory context, making it hard to orient or navigate back out.  
+* **The LCA Escape Hatch:** Implemented a pure-math computeLCA() algorithm to determine the Least Common Ancestor directory of all currently visible nodes in a dependency chain.  
+* **Nested Ancestor DOM:** The UI now wraps the dependency flow in nested, thin-bordered .pa-ancestor-membrane containers. These act as clickable "escape hatches"—clicking an ancestor instantly clears active pins and zooms the user back out to that directory in the broader "Browse" mode.  
+* **Symbol Attribution Fix:** Refined the connection rendering logic to correctly attribute target symbols. Connections now gracefully fall back to the \_\_internals\_\_ pin or flood across all pins when a specific target symbol cannot be matched, ensuring no dependency edges are silently dropped.  
+* **Continued Math Rigor:** Backed the new LCA layout and ancestor chain building with 28 new unit tests (pin-layout.test.ts), maintaining the strict separation of pure layout math from DOM rendering.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -1013,7 +1040,9 @@ The team formalized the next major evolutionary leap for the Visual Explorer: Th
 * **Mar 11 (Phase LXII):** "Proximity Resolution & Pipeline Hardening." (Eliminating phantom string edges and adding directory-aware symbol linking).  
 * **Mar 11 (Phase LXIII):** "Cross-Language Parity." (Asserting structural consensus across 8 languages and refining C/C\#/Java adapters).  
 * **Mar 18 (Phase LXIV):** "Circuit Board Progressive Disclosure." (Extracting the frontend monolith and implementing two-zone squarified layouts).  
-* **Mar 22 (Phase LXV):** "The Membrane Map." (Architecting the unified, zoomable treemap to replace the split Circuit/Local views).
+* **Mar 22 (Phase LXV):** "The Membrane Map." (Architecting the unified, zoomable treemap to replace the split Circuit/Local views).  
+* **Mar 24 (Phase LXVI):** "Scaffolding the Membrane Map." (Landing the 136-test pure-math engine and confronting the DOM/LTR layout roadblocks).  
+* **Mar 24-25 (Phase LXVII):** "Context Retention & LCA Membranes." (Solving deep-dive disorientation with clickable Least Common Ancestor escape hatches).
 
 ## **Technical Themes & Motifs**
 

@@ -389,7 +389,7 @@
 /* ─── SVG connections ───────────────────────────────────────────── */
 
 .membrane-connection {
-    transition: stroke-opacity 0.2s ease;
+    transition: stroke-opacity 0.15s ease-out, fill-opacity 0.15s ease-out;
 }
 
 .membrane-connection--front:hover {
@@ -398,7 +398,29 @@
 }
 
 .membrane-connection--back-stub {
-    transition: fill-opacity 0.2s ease;
+    transition: fill-opacity 0.15s ease-out, stroke-opacity 0.15s ease-out;
+}
+
+/* ─── Hover dimming ─────────────────────────────────────────────── */
+
+/* When hover-active, dim all connections by default */
+.membrane-hover-active .membrane-connection {
+    stroke-opacity: 0.08 !important;
+}
+
+.membrane-hover-active .membrane-connection--back-stub {
+    fill-opacity: 0.05 !important;
+    stroke-opacity: 0.08 !important;
+}
+
+/* Highlighted connections stay fully visible */
+.membrane-hover-active .membrane-connection--highlighted {
+    stroke-opacity: 0.85 !important;
+}
+
+.membrane-hover-active .membrane-connection--back-stub.membrane-connection--highlighted {
+    fill-opacity: 0.3 !important;
+    stroke-opacity: 0.55 !important;
 }
 
 /* ─── Hop badges (path mode) ────────────────────────────────────── */
@@ -748,4 +770,85 @@
     gap: 32px;
     padding: 8px;
     min-height: 100%;
+}
+
+/* ── CSS Grid Container for Cross-Column Bands ─────────────────
+   Replaces the flex column layout when directoryBands are used.
+   Columns are defined inline; rows: row 1 = labels, row 2+ = bands.
+   ─────────────────────────────────────────────────────────────── */
+
+.pa-grid-container {
+    display: grid;
+    gap: 12px 32px;
+    padding: 8px;
+    min-height: 100%;
+    align-items: start;
+}
+
+/* Band membrane: a directory spanning one or more grid columns */
+.pa-band-membrane {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Bare band: root-level files in the LCA directory, no membrane styling */
+.pa-band-bare {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+/* Parent band: groups child bands; lighter styling to avoid visual noise */
+.pa-band-membrane--group {
+    background: rgba(255, 255, 255, 0.015);
+    border-color: rgba(255, 255, 255, 0.06);
+    gap: 6px;
+    padding: 6px 8px;
+}
+
+.pa-band-membrane__label {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+    transition: color 0.15s;
+}
+
+.pa-band-membrane__label:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Inner grid: aligns cards within a band to their column positions */
+.pa-band-inner {
+    display: grid;
+    gap: 8px 24px;
+    align-items: start;
+}
+
+/* Each column slot within a band */
+.pa-band-slot {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+/* ─── FLIP Transition Animations ────────────────────────────────── */
+/* Position/opacity transitions are applied as inline styles by animation.ts
+   so that durations stay in sync with the JS constants and avoid specificity
+   conflicts with per-element transition rules.  Only the pointer-event
+   guard is kept as a class. */
+
+/* Disable pointer events during animation to prevent mid-flight clicks. */
+.membrane-animating {
+    pointer-events: none;
 }

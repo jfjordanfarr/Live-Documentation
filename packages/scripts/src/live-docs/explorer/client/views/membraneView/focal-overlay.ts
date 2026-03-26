@@ -8,6 +8,7 @@
  * @module focal-overlay
  */
 
+import { animateLineDrawIn } from "./animation";
 import type { PinSet, VisibleConnection } from "./pin-state";
 import { getPinnedNodeIds, isSymbolPinned, getPathEntries, hasActivePath } from "./pin-state";
 import type { PinAnchor, RoutedTrace, FrontTrace, BackTrace } from "./routing";
@@ -361,7 +362,8 @@ export function drawConnections(
     const trace = routeConnection(outboundAnchor, inboundAnchor);
     const gradientId = `membrane-conn-grad-${gradientIndex++}`;
     createConnectionGradient(defs, gradientId, outboundAnchor.center, inboundAnchor.center);
-    renderTrace(svgOverlay, trace, conn.link.kind, gradientId);
+    const edgeInfo: EdgeInfo = { sourceId, sourceSymbol, targetId, targetSymbol };
+    renderTrace(svgOverlay, trace, conn.link.kind, gradientId, edgeInfo);
   }
 }
 
@@ -399,6 +401,22 @@ function createConnectionGradient(
   defs.appendChild(gradient);
 }
 
+/** Identifies the endpoints of a connection for data-attribute tagging. */
+interface EdgeInfo {
+  sourceId: string;
+  sourceSymbol: string;
+  targetId: string;
+  targetSymbol: string;
+}
+
+/** Apply data-* edge attributes to an SVG element for hover filtering. */
+function tagEdge(el: SVGElement, info: EdgeInfo): void {
+  el.dataset.sourceId = info.sourceId;
+  el.dataset.sourceSymbol = info.sourceSymbol;
+  el.dataset.targetId = info.targetId;
+  el.dataset.targetSymbol = info.targetSymbol;
+}
+
 /**
  * Render a single routed trace into the SVG overlay.
  */
@@ -407,22 +425,25 @@ function renderTrace(
   trace: RoutedTrace,
   kind: string,
   gradientId: string,
+  edgeInfo: EdgeInfo,
 ): void {
   if (trace.kind === "front") {
-    renderFrontTrace(svg, trace, kind, gradientId);
+    renderFrontTrace(svg, trace, kind, gradientId, edgeInfo);
   } else {
-    renderBackTrace(svg, trace, kind);
+    renderBackTrace(svg, trace, kind, edgeInfo);
   }
 }
 
 /**
  * Render a front-trace Bézier as an SVG path with a blue→green gradient.
+ * Applies a "line draw" animation from outbound (source) to inbound (target).
  */
 function renderFrontTrace(
   svg: SVGSVGElement,
   trace: FrontTrace,
   _kind: string,
   gradientId: string,
+  edgeInfo: EdgeInfo,
 ): void {
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("d", trace.path.d);
@@ -431,37 +452,54 @@ function renderFrontTrace(
   path.setAttribute("stroke-width", "2.2");
   path.setAttribute("stroke-opacity", "0.7");
   path.classList.add("membrane-connection", "membrane-connection--front");
+  tagEdge(path, edgeInfo);
   svg.appendChild(path);
+  animateLineDrawIn(path, 350);
 }
 
 /**
  * Render back-trace stubs as SVG polygons (French Corset).
  * Outbound stub uses blue (outbound color), inbound stub uses green (inbound color).
+ * Both stubs fade in over 250ms.
  */
 function renderBackTrace(
   svg: SVGSVGElement,
   trace: BackTrace,
   _kind: string,
+  edgeInfo: EdgeInfo,
 ): void {
   const outStub = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
   outStub.setAttribute("points", trace.outboundStubPoints);
   outStub.setAttribute("fill", OUTBOUND_COLOR);
-  outStub.setAttribute("fill-opacity", "0.25");
+  outStub.setAttribute("fill-opacity", "0");
   outStub.setAttribute("stroke", OUTBOUND_COLOR);
   outStub.setAttribute("stroke-width", "0.8");
-  outStub.setAttribute("stroke-opacity", "0.5");
+  outStub.setAttribute("stroke-opacity", "0");
   outStub.classList.add("membrane-connection", "membrane-connection--back-stub");
+  tagEdge(outStub, edgeInfo);
   svg.appendChild(outStub);
 
   const inStub = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
   inStub.setAttribute("points", trace.inboundStubPoints);
   inStub.setAttribute("fill", INBOUND_COLOR);
-  inStub.setAttribute("fill-opacity", "0.25");
+  inStub.setAttribute("fill-opacity", "0");
   inStub.setAttribute("stroke", INBOUND_COLOR);
   inStub.setAttribute("stroke-width", "0.8");
-  inStub.setAttribute("stroke-opacity", "0.5");
+  inStub.setAttribute("stroke-opacity", "0");
   inStub.classList.add("membrane-connection", "membrane-connection--back-stub");
+  tagEdge(inStub, edgeInfo);
   svg.appendChild(inStub);
+
+  // Fade in both stubs
+  requestAnimationFrame(() => {
+    outStub.style.transition = "fill-opacity 250ms ease-in, stroke-opacity 250ms ease-in";
+    outStub.setAttribute("fill-opacity", "0.25");
+    outStub.setAttribute("stroke-opacity", "0.5");
+
+    inStub.style.transition = "fill-opacity 250ms ease-in, stroke-opacity 250ms ease-in";
+    inStub.setAttribute("fill-opacity", "0.25");
+    inStub.setAttribute("stroke-opacity", "0.5");
+  });
 }
 
 // ─── Connection Color Constants ──────────────────────────────────
@@ -614,4 +652,77 @@ export function renderPathBreadcrumb(
   bar.appendChild(clear);
 
   return bar;
+}
+
+// ─── Hover Dimming ─────────────────────────────────────────────────
+
+const HOVER_ACTIVE_CLASS = "membrane-hover-active";
+const CONN_HIGHLIGHTED_CLASS = "membrane-connection--highlighted";
+
+/**
+ * Set up hover dimming on symbol rows within `container`.
+ *
+ * When the user hovers a symbol row, all connections in the `svgOverlay`
+ * that do NOT involve that symbol are dimmed, mirroring the Local Map's
+ * hover behavior.
+ *
+ * Handlers are attached via event delegation on the container so setup
+ * is called once, not per-row.
+ *
+ * @param container - The membrane container element (holds symbol rows)
+ * @param svgOverlay - The SVG overlay element (holds connection paths)
+ */
+export function setupHoverDimming(
+  container: HTMLElement,
+  svgOverlay: SVGSVGElement,
+): void {
+  container.addEventListener("mouseenter", (e) => {
+    const row = (e.target as HTMLElement).closest<HTMLElement>(
+      ".membrane-focal-row, .membrane-card__symbol-row",
+    );
+    if (!row) return;
+
+    const nodeId = row.dataset.nodeId;
+    const symbolRaw = row.dataset.symbol;
+    if (!nodeId || !symbolRaw) return;
+
+    const symbol = symbolRaw === "__internals__"
+      ? "__internals__"
+      : (normalizeSymbolIdentifier(symbolRaw) ?? symbolRaw);
+
+    // Activate dimming mode
+    svgOverlay.classList.add(HOVER_ACTIVE_CLASS);
+
+    // Highlight connections that involve this node+symbol on either end
+    for (const el of svgOverlay.querySelectorAll<SVGElement>(".membrane-connection")) {
+      const srcId = el.dataset.sourceId;
+      const srcSym = el.dataset.sourceSymbol;
+      const tgtId = el.dataset.targetId;
+      const tgtSym = el.dataset.targetSymbol;
+
+      const isSourceMatch = srcId === nodeId && srcSym === symbol;
+      const isTargetMatch = tgtId === nodeId && tgtSym === symbol;
+
+      if (isSourceMatch || isTargetMatch) {
+        el.classList.add(CONN_HIGHLIGHTED_CLASS);
+      }
+    }
+  }, true); // useCapture so we catch before bubbling
+
+  container.addEventListener("mouseleave", (e) => {
+    const row = (e.target as HTMLElement).closest?.(
+      ".membrane-focal-row, .membrane-card__symbol-row",
+    );
+    if (!row) return;
+
+    clearHoverDimming(svgOverlay);
+  }, true);
+}
+
+/** Remove all hover-dimming state from the SVG overlay. */
+export function clearHoverDimming(svgOverlay: SVGSVGElement): void {
+  svgOverlay.classList.remove(HOVER_ACTIVE_CLASS);
+  for (const el of svgOverlay.querySelectorAll<SVGElement>(`.${CONN_HIGHLIGHTED_CLASS}`)) {
+    el.classList.remove(CONN_HIGHLIGHTED_CLASS);
+  }
 }

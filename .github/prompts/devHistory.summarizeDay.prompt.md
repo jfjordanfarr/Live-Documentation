@@ -4,11 +4,17 @@ The setup sequence consists of multiple steps, executed in order. **Complete all
 
 ---
 
+## Step 0: Refresh on the Narrative of the Workspace
+
+Read through the full [Project Development Journey](../../AI-Agent-Workspace/Notes/Project%20Development%20Journey.md) doc to refresh your understanding of the workspace's narrative at a coarse level of detail.
+
+---
+
 ## Step 1: Summarize the Prior Dev Day Chat
 
 Summarize the attached dev day conversation file into an auditable, turn-by-turn conversation summary in the same style as the other dev day summaries.
 
-**Read the most recent five summaries in full before summarizing the conversation.** This establishes style consistency and provides temporal context.
+**Read the most recent five summaries in full before summarizing the conversation.** This establishes style consistency and provides finer-grained temporal context than the project development journey doc.
 
 [Development Chat History Summary Index](../../AI-Agent-Workspace/ChatHistory/README.md)
 

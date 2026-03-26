@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-25T17:08:29.866Z
+- Generated At: 2026-03-26T19:37:25.180Z
 
 ## Authored
 ### Purpose
@@ -21,26 +21,26 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - `persistToUrl` writes the full membrane state (view, selected node, pin set, expanded directories, transform, filters) to the URL via `writeUrlState` on every render; `readUrlState` restores on initialization, enabling shareable deep links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.866Z","inputHash":"15c09b26801d27c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.180Z","inputHash":"310c788da7f9a07c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L44)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L47)
 
 ##### `MembraneViewOptions` — Summary
 Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L54)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L57)
 
 ##### `MembraneViewApi` — Summary
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L73)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L76)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
@@ -60,11 +60,15 @@ Initialise the Membrane Map view and return its public API.
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect)
 - [`layoutUtils.buildHierarchy`](../layoutUtils.ts.mdmd.md#symbol-buildhierarchy)
 - [`aggregation.computeAllAggregates`](./aggregation.ts.mdmd.md#symbol-computeallaggregates)
+- [`animation.animateTransition`](./animation.ts.mdmd.md#symbol-animatetransition)
+- [`animation.capturePositions`](./animation.ts.mdmd.md#symbol-capturepositions)
 - [`browse-renderer.renderBrowseMode`](./browse-renderer.ts.mdmd.md#symbol-renderbrowsemode)
+- [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor)
 - [`focal-overlay.attachHopBadges`](./focal-overlay.ts.mdmd.md#symbol-attachhopbadges)
 - [`focal-overlay.drawConnections`](./focal-overlay.ts.mdmd.md#symbol-drawconnections)
 - [`focal-overlay.renderFocalOverlay`](./focal-overlay.ts.mdmd.md#symbol-renderfocaloverlay)
 - [`focal-overlay.renderPathBreadcrumb`](./focal-overlay.ts.mdmd.md#symbol-renderpathbreadcrumb)
+- [`focal-overlay.setupHoverDimming`](./focal-overlay.ts.mdmd.md#symbol-setuphoverdimming)
 - [`layout.computeMembraneLayout`](./layout.ts.mdmd.md#symbol-computemembranelayout)
 - [`pin-active-renderer.renderPinActiveLayout`](./pin-active-renderer.ts.mdmd.md#symbol-renderpinactivelayout)
 - [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
