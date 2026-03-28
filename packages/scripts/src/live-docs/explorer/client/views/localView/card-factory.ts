@@ -223,7 +223,7 @@ export function createSymbolSection(
     labelWrapper.appendChild(label);
 
     // Add type reference indicator if present
-    if (hasTypeRefs && controller.options.state.tuning.visual.showTypeBadges) {
+    if (hasTypeRefs) {
       const typeIndicator = createTypeReferenceIndicator(controller, typeRefs);
       labelWrapper.appendChild(typeIndicator);
     }

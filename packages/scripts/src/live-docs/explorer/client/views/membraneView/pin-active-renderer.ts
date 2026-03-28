@@ -119,7 +119,7 @@ export function renderPinActiveLayout(
   // CSS Grid: one track per column, one label row, then one row per band-row.
   const gridContainer = document.createElement("div");
   gridContainer.className = "pa-grid-container";
-  gridContainer.style.gridTemplateColumns = `repeat(${pinLayout.columnCount}, minmax(220px, 320px))`;
+  gridContainer.style.gridTemplateColumns = `repeat(${pinLayout.columnCount}, 320px)`;
 
   // Determine how many band rows exist
   let maxBandRow = 0;
@@ -211,7 +211,7 @@ function renderDirectoryBand(
 
     const innerGrid = document.createElement("div");
     innerGrid.className = "pa-band-inner";
-    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 320px)`;
     innerGrid.style.gridTemplateRows = Array(maxChildRow + 1).fill("auto").join(" ");
 
     for (const child of band.children) {
@@ -231,7 +231,7 @@ function renderDirectoryBand(
     const bandSpan = band.maxColumn - band.minColumn + 1;
     const innerGrid = document.createElement("div");
     innerGrid.className = "pa-band-inner";
-    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 320px)`;
 
     for (let col = band.minColumn; col <= band.maxColumn; col++) {
       const nodeIds = band.nodesByColumn.get(col);
@@ -294,6 +294,9 @@ function renderFlowCard(
     row.className = "membrane-card__symbol-row";
     row.dataset.nodeId = nodeId;
     row.dataset.symbol = symbol;
+    if (isSymbolPinned(pinSet, nodeId, symbol)) {
+      row.classList.add("membrane-card__symbol-row--pinned");
+    }
 
     // Inbound pin (green, left)
     const inPin = document.createElement("div");

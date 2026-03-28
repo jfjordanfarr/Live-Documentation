@@ -38,9 +38,9 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.membrane--depth-0 { border-color: rgba(0, 145, 255, 0.25); }
-.membrane--depth-1 { border-color: rgba(0, 145, 255, 0.15); }
-.membrane--depth-2 { border-color: rgba(0, 145, 255, 0.08); }
+.membrane--depth-0 { border-color: rgba(0, 145, 255, 0.25); background: rgba(0, 20, 50, 0.25); }
+.membrane--depth-1 { border-color: rgba(0, 145, 255, 0.18); background: rgba(0, 20, 50, 0.18); }
+.membrane--depth-2 { border-color: rgba(0, 145, 255, 0.12); background: rgba(0, 20, 50, 0.12); }
 
 .membrane__label {
     position: absolute;
@@ -50,7 +50,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--text-panel-subtle);
+    color: rgba(180, 210, 240, 0.7);
     pointer-events: none;
     white-space: nowrap;
     overflow: hidden;
@@ -423,6 +423,47 @@
     stroke-opacity: 0.55 !important;
 }
 
+/* Participating-but-unpinned endpoints: partially un-dim the pin dot
+   that a highlighted connection terminates at, and lighten the symbol
+   label text, to signal "this symbol is reachable — click to explore". */
+.membrane-focal-pin--participating {
+    opacity: 1 !important;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+}
+
+.membrane-focal-pin--participating.membrane-focal-pin--inbound {
+    background: rgba(0, 211, 170, 0.45);
+    border-color: rgba(0, 211, 170, 0.65);
+}
+
+.membrane-focal-pin--participating.membrane-focal-pin--outbound {
+    background: rgba(0, 145, 255, 0.45);
+    border-color: rgba(0, 145, 255, 0.65);
+}
+
+.membrane-row--participating .membrane-focal-row__label,
+.membrane-row--participating .membrane-card__symbol-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ─── Static connected-endpoint indicators ──────────────────────── */
+/* Always-visible highlight for symbol rows that participate in a
+   drawn connection but are NOT actively pinned.  Provides persistent
+   visual feedback so users can see which endpoints are reachable. */
+
+.membrane-card__symbol-row--connected {
+    background: rgba(0, 211, 170, 0.08);
+    border-radius: 3px;
+    box-shadow: inset 2px 0 0 rgba(0, 211, 170, 0.4);
+}
+
+/* Pinned symbol rows get a full border + glow (mirrors Local Map styling). */
+.membrane-card__symbol-row--pinned {
+    background: rgba(0, 145, 255, 0.08);
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.5), 0 0 6px rgba(0, 145, 255, 0.2);
+}
+
 /* ─── Hop badges (path mode) ────────────────────────────────────── */
 
 .membrane-hop-badge {
@@ -545,6 +586,13 @@
     overflow: visible;
 }
 
+/* Hybrid mode: card-grid below the treemap zone in mixed directories */
+.membrane__card-grid--hybrid {
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 8px;
+}
+
 .membrane-card {
     width: 220px;
     min-height: 60px;
@@ -640,6 +688,87 @@
     width: 8px;
     height: 8px;
     flex-shrink: 0;
+}
+
+/* ─── Collapsed card state ──────────────────────────────────────── */
+
+.membrane-card--collapsed {
+    opacity: 0.85;
+}
+
+.membrane-card--collapsed:hover {
+    opacity: 1;
+}
+
+.membrane-card__header-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.membrane-card__header-row .membrane-card__header {
+    flex: 1;
+    min-width: 0;
+}
+
+.membrane-card__pin-all {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1;
+    padding: 1px 3px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+    color: rgba(255, 255, 255, 0.6);
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.membrane-card__pin-all::before {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    box-shadow: 0 2px 0 currentColor;
+}
+
+.membrane-card__pin-all:hover {
+    opacity: 1;
+    border-color: rgba(0, 145, 255, 0.5);
+    color: rgba(0, 145, 255, 0.8);
+}
+
+/* Test-backed card styling (mirrors Local Map .node-card.test-backed) */
+.membrane-card--test-backed {
+    border-color: var(--color-test-border);
+    position: relative;
+}
+
+.membrane-card--test-backed::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 6px;
+    background: var(--color-test-bg);
+    border: 1px solid var(--color-test-border);
+    pointer-events: none;
+    box-shadow: 0 6px 12px var(--color-test-glow);
+    z-index: -1;
+}
+
+.membrane-card__symbol-summary {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    font-style: italic;
+    padding: 1px 0;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -779,7 +908,7 @@
 
 .pa-grid-container {
     display: grid;
-    gap: 12px 32px;
+    gap: 12px var(--local-column-gap, 32px);
     padding: 8px;
     min-height: 100%;
     align-items: start;
@@ -830,7 +959,7 @@
 /* Inner grid: aligns cards within a band to their column positions */
 .pa-band-inner {
     display: grid;
-    gap: 8px 24px;
+    gap: 8px var(--local-column-gap, 32px);
     align-items: start;
 }
 

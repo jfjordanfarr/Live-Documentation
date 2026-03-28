@@ -1,6 +1,7 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
 
 ## Metadata
+
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
@@ -8,6 +9,7 @@
 - Generated At: 2026-03-26T19:37:25.259Z
 
 ## Authored
+
 ### Purpose
 
 DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms `PinLayoutResult` into a nested HTML structure of ancestor directory membranes containing topological columns, each with directory-grouped file cards and symbol lists.
@@ -18,42 +20,55 @@ DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms 
 - Key exports: `renderPinActiveLayout` (main entry), `PinActiveCallbacks` (interaction handlers including `onNavigateToDirectory`), `PinActiveRenderResult` (DOM element + measured anchors for connection rendering)
 - Ancestor membranes render as nested thin-bordered `.pa-ancestor-membrane` divs, each with a clickable label that navigates back to that directory in browse mode — the "escape hatch" interaction model
 - Per-column membrane group labels are deduplicated: suppressed when the group's directory matches the LCA directory, otherwise shown as a path relative to the LCA
+- Grid columns use fixed `320px` widths (changed from `1fr` in [Dev Day 83](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md)) so card dimensions remain stable when the column gap slider is adjusted; inner band grids also use fixed widths and `var(--local-column-gap)` for horizontal gaps.
+- Symbol rows receive `.membrane-card__symbol-row--pinned` class when the symbol is actively pinned, providing a visual border treatment matching the Local Map's pinned-symbol styling.
 - All user-supplied text is escaped through `escapeHtml` to prevent XSS in symbol names and directory labels
 
 ## Generated
+
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.259Z","inputHash":"68502fc4f53bbfb5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
+
 ### Public Symbols
+
 #### `PinActiveCallbacks` {#symbol-pinactivecallbacks}
+
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L26)
 
 ##### `PinActiveCallbacks` — Summary
+
 Callbacks for pin-active renderer interactive elements.
 
 #### `PinActiveRenderResult` {#symbol-pinactiverenderresult}
+
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L34)
 
 ##### `PinActiveRenderResult` — Summary
+
 Result from renderPinActiveLayout.
 
 #### `renderPinActiveLayout` {#symbol-renderpinactivelayout}
+
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L58)
 - Returns: [`PinActiveRenderResult`](#symbol-pinactiverenderresult)
 - Parameters: `pinLayout`: [`PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult); `nodesById`: `ReadonlyMap`; `callbacks`: [`PinActiveCallbacks`](#symbol-pinactivecallbacks); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `renderPinActiveLayout` — Summary
+
 Render the dependency-flow layout when pins are active.
 
 Creates a horizontal column layout where:
+
 - Upstream (dependency) nodes appear on the left
 - Pinned nodes appear in the center
 - Downstream (dependent) nodes appear on the right
 - Nodes within each column are grouped by directory (membrane)
 
 ##### `renderPinActiveLayout` — Parameters
+
 - `callbacks`: Interaction handlers
 - `nodesById`: Node payload lookup
 - `pinLayout`: Computed dependency-flow layout from computePinLayout
@@ -62,7 +77,9 @@ Creates a horizontal column layout where:
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
+
 ### Dependencies
+
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
 - [`pin-layout.DirectoryBand`](./pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`pin-layout.PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult) (type-only)

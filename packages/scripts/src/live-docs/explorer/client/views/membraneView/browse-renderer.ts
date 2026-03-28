@@ -14,6 +14,7 @@ import type { PinSet } from "./pin-state";
 import { isSymbolPinned } from "./pin-state";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
+import type { TestCoverageMap } from "../../types";
 import type { DirectoryAggregate } from "../circuitView/aggregation";
 
 /** Escape HTML special characters to prevent XSS. */
@@ -29,6 +30,8 @@ export interface BrowseRenderCallbacks {
   onCollapseDirectory: (id: string) => void;
   onSelectNode: (node: ExplorerNodePayload) => void;
   onTogglePin: (nodeId: string, symbol: string) => void;
+  onExpandCard: (nodeId: string) => void;
+  onPinAllSymbols: (nodeId: string) => void;
 }
 
 /** Result from renderBrowseMode, including any card-grid anchors. */
@@ -61,6 +64,8 @@ export function renderBrowseMode(
   callbacks: BrowseRenderCallbacks,
   pinSet: PinSet,
   focusedDirectory: string | null,
+  expandedCards: ReadonlySet<string> = new Set(),
+  testCoverage?: TestCoverageMap,
 ): BrowseRenderResult {
   const container = document.createElement("div");
   container.className = "membrane-browse-root";
@@ -76,7 +81,7 @@ export function renderBrowseMode(
   renderNode(
     layout.root, container, layout.root, collapsed,
     aggregates, nodesById, selectedNodeId, callbacks,
-    pinSet, focusedDirectory, anchors, cardRenderedIds,
+    pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
   );
 
   return { root: container, anchors, cardRenderedIds };
@@ -99,6 +104,8 @@ function renderNode(
   focusedDirectory: string | null,
   anchors: MeasuredAnchor[],
   cardRenderedIds: Set<string>,
+  expandedCards: ReadonlySet<string>,
+  testCoverage?: TestCoverageMap,
 ): void {
   // Compute position relative to parent's content rect
   const offsetX = node.rect.x - parentNode.contentRect.x;
@@ -250,9 +257,18 @@ function renderNode(
     membrane.appendChild(label);
 
     // Detect leaf directory: the focused directory whose children are all files.
+    const hasFileChildren = node.children.some(c => !c.isDirectory);
+    const hasDirChildren = node.children.some(c => c.isDirectory);
     const isLeafDirectory = node.id === focusedDirectory
       && node.children.length > 0
-      && node.children.every(c => !c.isDirectory);
+      && hasFileChildren && !hasDirChildren;
+
+    // Detect mixed directory: the focused directory with both files
+    // and subdirectories.  Gets hybrid rendering: treemap for
+    // directories, card-grid for files.
+    const isMixedDirectory = node.id === focusedDirectory
+      && node.children.length > 0
+      && hasFileChildren && hasDirChildren;
 
     if (isLeafDirectory) {
       // Render children as uniform Local-Map-style cards in a naturally-
@@ -273,12 +289,63 @@ function renderNode(
       for (const child of node.children) {
         const payload = nodesById.get(child.id);
         if (!payload) continue;
-        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors);
+        const isCardExpanded = expandedCards.has(child.id);
+        const isTestBacked = testCoverage ? (testCoverage.get(child.id)?.length ?? 0) > 0 : false;
+        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked);
         cardRenderedIds.add(child.id);
         content.appendChild(card);
       }
 
       membrane.appendChild(content);
+    } else if (isMixedDirectory) {
+      // Hybrid rendering: treemap zone for subdirectories, then a
+      // card-grid zone for files below.  The layout engine excludes
+      // files from squarify for this directory, so directory tiles
+      // occupy the full treemap area.
+      const dirChildren = node.children.filter(c => c.isDirectory);
+      const fileChildren = node.children.filter(c => !c.isDirectory);
+
+      // ── Treemap zone (directory tiles) ──
+      const treemapContent = document.createElement("div");
+      treemapContent.className = "membrane__content";
+      if (isOnFocusPath) {
+        treemapContent.style.position = "relative";
+        treemapContent.style.marginLeft = `${node.contentRect.x - node.rect.x}px`;
+        treemapContent.style.marginTop = `${node.contentRect.y - node.rect.y}px`;
+        treemapContent.style.width = `${node.contentRect.width}px`;
+        treemapContent.style.minHeight = `${node.contentRect.height}px`;
+      } else {
+        treemapContent.style.left = `${node.contentRect.x - node.rect.x}px`;
+        treemapContent.style.top = `${node.contentRect.y - node.rect.y}px`;
+        treemapContent.style.width = `${node.contentRect.width}px`;
+        treemapContent.style.height = `${node.contentRect.height}px`;
+      }
+
+      for (const child of dirChildren) {
+        renderNode(
+          child, treemapContent, node, collapsed, aggregates, nodesById,
+          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
+        );
+      }
+      membrane.appendChild(treemapContent);
+
+      // ── Card-grid zone (file cards) ──
+      const cardGrid = document.createElement("div");
+      cardGrid.className = "membrane__content membrane__card-grid membrane__card-grid--hybrid";
+      cardGrid.style.position = "relative";
+      cardGrid.style.marginLeft = `${node.contentRect.x - node.rect.x}px`;
+      cardGrid.style.width = `${node.contentRect.width}px`;
+
+      for (const child of fileChildren) {
+        const payload = nodesById.get(child.id);
+        if (!payload) continue;
+        const isCardExpanded = expandedCards.has(child.id);
+        const isTestBacked = testCoverage ? (testCoverage.get(child.id)?.length ?? 0) > 0 : false;
+        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked);
+        cardRenderedIds.add(child.id);
+        cardGrid.appendChild(card);
+      }
+      membrane.appendChild(cardGrid);
     } else {
       // Normal expanded membrane — position children via treemap rects
       const content = document.createElement("div");
@@ -302,7 +369,7 @@ function renderNode(
       for (const child of node.children) {
         renderNode(
           child, content, node, collapsed, aggregates, nodesById,
-          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds,
+          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
         );
       }
 
@@ -323,7 +390,8 @@ function renderNode(
 
 /**
  * Render a single file as a uniform card with symbol rows and pin anchors.
- * Resembles a Local Map node card.
+ * Cards start collapsed (compact: name, path, internals anchor, symbol count).
+ * On click they expand to show all symbols — resembling a Local Map node card.
  */
 function renderFileCard(
   node: MembraneNode,
@@ -332,18 +400,38 @@ function renderFileCard(
   callbacks: BrowseRenderCallbacks,
   pinSet: PinSet,
   anchors: MeasuredAnchor[],
+  isExpanded: boolean,
+  isTestBacked: boolean,
 ): HTMLElement {
   const card = document.createElement("div");
   card.className = "membrane-card";
+  if (!isExpanded) card.classList.add("membrane-card--collapsed");
+  if (isTestBacked) card.classList.add("membrane-card--test-backed");
   if (node.id === selectedNodeId) card.classList.add("selected");
   card.dataset.id = node.id;
   card.tabIndex = 0;
 
-  // Header
+  // Header row (filename + optional pin-all button when expanded)
+  const headerRow = document.createElement("div");
+  headerRow.className = "membrane-card__header-row";
+
   const header = document.createElement("div");
   header.className = "membrane-card__header";
   header.textContent = escapeHtml(node.name);
-  card.appendChild(header);
+  headerRow.appendChild(header);
+
+  if (isExpanded) {
+    const pinAllBtn = document.createElement("button");
+    pinAllBtn.className = "membrane-card__pin-all";
+    pinAllBtn.title = "Pin all symbols";
+    pinAllBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      callbacks.onPinAllSymbols(node.id);
+    });
+    headerRow.appendChild(pinAllBtn);
+  }
+
+  card.appendChild(headerRow);
 
   // Path
   const pathEl = document.createElement("div");
@@ -356,57 +444,69 @@ function renderFileCard(
   const grid = document.createElement("div");
   grid.className = "membrane-card__symbols";
 
-  for (const symbol of symbols) {
-    const row = document.createElement("div");
-    row.className = "membrane-card__symbol-row";
-    row.dataset.nodeId = node.id;
-    row.dataset.symbol = symbol;
+  if (isExpanded) {
+    // ── Expanded: full symbol rows with pin anchors ──
+    for (const symbol of symbols) {
+      const row = document.createElement("div");
+      row.className = "membrane-card__symbol-row";
+      row.dataset.nodeId = node.id;
+      row.dataset.symbol = symbol;
 
-    // Inbound pin (green, left)
-    const inPin = document.createElement("div");
-    inPin.className = "membrane-focal-pin membrane-focal-pin--inbound";
-    if (isSymbolPinned(pinSet, node.id, symbol)) {
-      inPin.classList.add("membrane-focal-pin--active");
+      // Inbound pin (green, left)
+      const inPin = document.createElement("div");
+      inPin.className = "membrane-focal-pin membrane-focal-pin--inbound";
+      if (isSymbolPinned(pinSet, node.id, symbol)) {
+        inPin.classList.add("membrane-focal-pin--active");
+      }
+      inPin.style.pointerEvents = "auto";
+      inPin.addEventListener("click", e => {
+        e.stopPropagation();
+        callbacks.onTogglePin(node.id, symbol);
+      });
+      row.appendChild(inPin);
+      anchors.push({ nodeId: node.id, symbol, direction: "inbound", element: inPin });
+
+      // Label — clicking the name is equivalent to clicking a pin
+      const label = document.createElement("span");
+      label.className = "membrane-card__symbol-label";
+      label.textContent = symbol;
+      label.title = `${node.id}::${symbol}`;
+      label.style.cursor = "pointer";
+      label.addEventListener("click", e => {
+        e.stopPropagation();
+        callbacks.onTogglePin(node.id, symbol);
+      });
+      row.appendChild(label);
+
+      // Outbound pin (blue, right)
+      const outPin = document.createElement("div");
+      outPin.className = "membrane-focal-pin membrane-focal-pin--outbound";
+      if (isSymbolPinned(pinSet, node.id, symbol)) {
+        outPin.classList.add("membrane-focal-pin--active");
+      }
+      outPin.style.pointerEvents = "auto";
+      outPin.addEventListener("click", e => {
+        e.stopPropagation();
+        callbacks.onTogglePin(node.id, symbol);
+      });
+      row.appendChild(outPin);
+      anchors.push({ nodeId: node.id, symbol, direction: "outbound", element: outPin });
+
+      grid.appendChild(row);
     }
-    inPin.style.pointerEvents = "auto";
-    inPin.addEventListener("click", e => {
-      e.stopPropagation();
-      callbacks.onTogglePin(node.id, symbol);
-    });
-    row.appendChild(inPin);
-    anchors.push({ nodeId: node.id, symbol, direction: "inbound", element: inPin });
-
-    // Label — clicking the name is equivalent to clicking a pin
-    const label = document.createElement("span");
-    label.className = "membrane-card__symbol-label";
-    label.textContent = symbol;
-    label.title = `${node.id}::${symbol}`;
-    label.style.cursor = "pointer";
-    label.addEventListener("click", e => {
-      e.stopPropagation();
-      callbacks.onTogglePin(node.id, symbol);
-    });
-    row.appendChild(label);
-
-    // Outbound pin (blue, right)
-    const outPin = document.createElement("div");
-    outPin.className = "membrane-focal-pin membrane-focal-pin--outbound";
-    if (isSymbolPinned(pinSet, node.id, symbol)) {
-      outPin.classList.add("membrane-focal-pin--active");
+  } else {
+    // ── Collapsed: symbol count summary only ──
+    if (symbols.length > 0) {
+      const summary = document.createElement("div");
+      summary.className = "membrane-card__symbol-summary";
+      summary.textContent = `${symbols.length} symbol${symbols.length !== 1 ? "s" : ""}`;
+      grid.appendChild(summary);
     }
-    outPin.style.pointerEvents = "auto";
-    outPin.addEventListener("click", e => {
-      e.stopPropagation();
-      callbacks.onTogglePin(node.id, symbol);
-    });
-    row.appendChild(outPin);
-    anchors.push({ nodeId: node.id, symbol, direction: "outbound", element: outPin });
-
-    grid.appendChild(row);
   }
 
-  // Internals pseudo-symbol — always present so connections can route here
-  {
+  // Internals pseudo-symbol — only shown when expanded so collapsed cards
+  // display a clean symbol count without the misleading single "Internals" row.
+  if (isExpanded) {
     const internalsRow = document.createElement("div");
     internalsRow.className = "membrane-card__symbol-row membrane-card__symbol-row--internals";
 
@@ -425,7 +525,7 @@ function renderFileCard(
 
     const internalsLabel = document.createElement("span");
     internalsLabel.className = "membrane-card__symbol-label membrane-card__symbol-label--internals";
-    internalsLabel.textContent = "⬛ Internals";
+    internalsLabel.textContent = "Internals";
     internalsLabel.title = "Internal/private — data flows in but isn't exposed as public symbols";
     internalsLabel.style.cursor = "pointer";
     internalsLabel.addEventListener("click", e => {
@@ -451,11 +551,22 @@ function renderFileCard(
   dirPath.textContent = lastSlash > 0 ? payload.codeRelativePath.substring(0, lastSlash) : "";
   card.appendChild(dirPath);
 
-  // Click to select
+  // Click handling: collapsed → expand + select; expanded → select only
   card.addEventListener("click", e => {
     e.stopPropagation();
+    if (!isExpanded) {
+      callbacks.onExpandCard(node.id);
+    }
     callbacks.onSelectNode(payload);
   });
+
+  // Double-click on expanded card → pin all symbols
+  if (isExpanded) {
+    card.addEventListener("dblclick", e => {
+      e.stopPropagation();
+      callbacks.onPinAllSymbols(node.id);
+    });
+  }
 
   return card;
 }

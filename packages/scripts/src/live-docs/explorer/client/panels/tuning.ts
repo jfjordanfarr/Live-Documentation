@@ -19,22 +19,19 @@ export interface TuningPanelConfig {
   onTuningChange: TuningChangeCallback;
   onRender: RenderCallback;
   drawLocalConnections: () => void;
+  drawMembraneConnections: () => void;
 }
 
 /**
  * Initialize the tuning panel with all slider and checkbox controls.
  */
 export function initTuningPanel(config: TuningPanelConfig): void {
-  const { state, onTuningChange, onRender, drawLocalConnections } = config;
+  const { state, onTuningChange, onRender, drawLocalConnections, drawMembraneConnections } = config;
 
   const stubFactorInput = document.getElementById("tuning-stub-factor") as HTMLInputElement | null;
   const stubMinInput = document.getElementById("tuning-stub-min") as HTMLInputElement | null;
   const stubMaxOffsetInput = document.getElementById("tuning-stub-max-offset") as HTMLInputElement | null;
   const verticalOffsetInput = document.getElementById("tuning-vertical-offset") as HTMLInputElement | null;
-  const singleClickFocusInput = document.getElementById("tuning-single-click-focus") as HTMLInputElement | null;
-  const doubleClickRecenterInput = document.getElementById("tuning-double-click-recenter") as HTMLInputElement | null;
-  const typeBadgesInput = document.getElementById("tuning-type-badges") as HTMLInputElement | null;
-  const alchemyGlowInput = document.getElementById("tuning-alchemy-glow") as HTMLInputElement | null;
   const columnGapInput = document.getElementById("tuning-column-gap") as HTMLInputElement | null;
   const hoverDimSymbolsInput = document.getElementById("tuning-hover-dim-symbols") as HTMLInputElement | null;
   const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
@@ -50,16 +47,9 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       onTuningChange();
       if (state.view === "map") {
         drawLocalConnections();
+      } else if (state.view === "membrane") {
+        onRender();
       }
-    });
-  };
-
-  const wireCheckbox = (input: HTMLInputElement | null, setter: (v: boolean) => void): void => {
-    if (!input) return;
-    input.addEventListener("change", () => {
-      setter(input.checked);
-      onTuningChange();
-      onRender();
     });
   };
 
@@ -77,13 +67,13 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       setter(value);
       if (output) output.textContent = input.value;
       onTuningChange();
-      // Update CSS custom property on the local-layout element
-      const localLayout = document.querySelector<HTMLElement>(".local-layout");
-      if (localLayout) {
-        localLayout.style.setProperty(cssProperty, cssProperty === "--local-column-gap" ? `${value}px` : String(value));
-      }
+      // Update CSS custom property on root (cascades to both Local Map and Membrane Map)
+      const cssValue = cssProperty === "--local-column-gap" ? `${value}px` : String(value);
+      document.documentElement.style.setProperty(cssProperty, cssValue);
       if (state.view === "map") {
         drawLocalConnections();
+      } else if (state.view === "membrane") {
+        drawMembraneConnections();
       }
     });
   };
@@ -108,34 +98,22 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     return clamped;
   };
 
-  const setCheckbox = (input: HTMLInputElement | null, value: boolean): void => {
-    if (!input) return;
-    input.checked = value;
-  };
-
   const syncTuningControlsFromState = (): void => {
     state.tuning.bezier.stubFactor = setSlider(stubFactorInput, "tuning-stub-factor-value", state.tuning.bezier.stubFactor);
     state.tuning.bezier.stubMin = setSlider(stubMinInput, "tuning-stub-min-value", state.tuning.bezier.stubMin);
     state.tuning.bezier.stubMaxOffset = setSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", state.tuning.bezier.stubMaxOffset);
     state.tuning.bezier.verticalOffset = setSlider(verticalOffsetInput, "tuning-vertical-offset-value", state.tuning.bezier.verticalOffset);
 
-    setCheckbox(singleClickFocusInput, state.tuning.clickBehavior.singleClickFocusOnly);
-    setCheckbox(doubleClickRecenterInput, state.tuning.clickBehavior.doubleClickRecenter);
-    setCheckbox(typeBadgesInput, state.tuning.visual.showTypeBadges);
-    setCheckbox(alchemyGlowInput, state.tuning.visual.alchemyGlow);
-
     state.tuning.localMap.columnGap = setSlider(columnGapInput, "tuning-column-gap-value", state.tuning.localMap.columnGap, v => String(v));
     state.tuning.localMap.hoverDimSymbols = setSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", state.tuning.localMap.hoverDimSymbols);
     state.tuning.localMap.hoverDimConnections = setSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", state.tuning.localMap.hoverDimConnections);
     state.tuning.localMap.selfLoopTaper = setSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", state.tuning.localMap.selfLoopTaper);
 
-    const localLayout = document.querySelector<HTMLElement>(".local-layout");
-    if (localLayout) {
-      localLayout.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
-      localLayout.style.setProperty("--hover-dim-symbols", String(state.tuning.localMap.hoverDimSymbols));
-      localLayout.style.setProperty("--hover-dim-connections", String(state.tuning.localMap.hoverDimConnections));
-      localLayout.style.setProperty("--self-loop-taper", String(state.tuning.localMap.selfLoopTaper));
-    }
+    // Set CSS custom properties on document root so they cascade to both views
+    document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
+    document.documentElement.style.setProperty("--hover-dim-symbols", String(state.tuning.localMap.hoverDimSymbols));
+    document.documentElement.style.setProperty("--hover-dim-connections", String(state.tuning.localMap.hoverDimConnections));
+    document.documentElement.style.setProperty("--self-loop-taper", String(state.tuning.localMap.selfLoopTaper));
   };
 
   // Ensure controls reflect restored state before wiring events.
@@ -145,11 +123,6 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   wireSlider(stubMinInput, "tuning-stub-min-value", v => { state.tuning.bezier.stubMin = v; });
   wireSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", v => { state.tuning.bezier.stubMaxOffset = v; });
   wireSlider(verticalOffsetInput, "tuning-vertical-offset-value", v => { state.tuning.bezier.verticalOffset = v; });
-
-  wireCheckbox(singleClickFocusInput, v => { state.tuning.clickBehavior.singleClickFocusOnly = v; });
-  wireCheckbox(doubleClickRecenterInput, v => { state.tuning.clickBehavior.doubleClickRecenter = v; });
-  wireCheckbox(typeBadgesInput, v => { state.tuning.visual.showTypeBadges = v; });
-  wireCheckbox(alchemyGlowInput, v => { state.tuning.visual.alchemyGlow = v; });
 
   // Local Map tuning sliders
   wireLocalMapSlider(columnGapInput, "tuning-column-gap-value", "--local-column-gap", v => { state.tuning.localMap.columnGap = v; });

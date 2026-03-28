@@ -803,7 +803,8 @@ function startExplorer(
     state,
     onTuningChange: schedulePersistUi,
     onRender: renderCurrentView,
-    drawLocalConnections: () => localView.drawConnections()
+    drawLocalConnections: () => localView.drawConnections(),
+    drawMembraneConnections: () => membraneView.redrawConnections(),
   });
 
   interface SelectNodeOptions {
@@ -842,17 +843,11 @@ function startExplorer(
   }
 
   function handleNodeClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
-    if (state.tuning.clickBehavior.singleClickFocusOnly) {
-      return focusSidebar(node, options);
-    }
-    return selectNode(node, options);
+    return focusSidebar(node, options);
   }
 
   function handleNodeDoubleClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
-    if (state.tuning.clickBehavior.doubleClickRecenter) {
-      return selectNode(node, options);
-    }
-    return focusSidebar(node, options);
+    return selectNode(node, options);
   }
 
   function highlightSelectedCards(): void {

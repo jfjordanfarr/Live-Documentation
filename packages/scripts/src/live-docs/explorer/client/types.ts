@@ -30,18 +30,6 @@ export interface BezierTuning {
   verticalOffset: number;
 }
 
-/** Click/double-click semantic separation tuning. */
-export interface ClickBehaviorTuning {
-  singleClickFocusOnly: boolean;
-  doubleClickRecenter: boolean;
-}
-
-/** Visual / aesthetic toggle config for the Explorer. */
-export interface VisualTuning {
-  showTypeBadges: boolean;
-  alchemyGlow: boolean;
-}
-
 /**
  * Tuning knobs specific to the Local Map (3-column) view.
  * Includes self-loop rendering and hover/pin collapse behaviour
@@ -62,8 +50,6 @@ export interface LocalMapTuning {
 /** Aggregate tuning configuration threading through into every Explorer view. */
 export interface TuningConfig {
   bezier: BezierTuning;
-  clickBehavior: ClickBehaviorTuning;
-  visual: VisualTuning;
   localMap: LocalMapTuning;
 }
 

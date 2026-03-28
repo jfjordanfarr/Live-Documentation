@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/template.html
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-template-html
-- Generated At: 2026-03-23T20:05:55.241Z
+- Generated At: 2026-03-28T20:31:00.892Z
 
 ## Authored
 ### Purpose
@@ -17,9 +17,10 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Created [2025-11-22](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as part of the initial Explorer server scaffolding (`f1e2dec0`).
 - Relocated from `server/template.html` to `shared/template.html` on [2026-03-09](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-09.1.md) during the server retirement that consolidated all Explorer build-time utilities into the `shared/` module.
 - Its `id` attributes are extracted as public symbols by the HTML adapter ([html.ts](../../../../../shared/src/live-docs/adapters/html.ts.mdmd.md)), enabling Live Documentation to track which client modules depend on which DOM elements.
+- Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:55.241Z","inputHash":"2c023c1865014d5c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T20:31:00.892Z","inputHash":"5327411984f4d05d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `circuit-connections` {#symbol-circuitconnections}
@@ -160,16 +161,10 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `stats-line` {#symbol-statsline}
 - Type: variable
 
-#### `tuning-alchemy-glow` {#symbol-tuningalchemyglow}
-- Type: variable
-
 #### `tuning-column-gap` {#symbol-tuningcolumngap}
 - Type: variable
 
 #### `tuning-column-gap-value` {#symbol-tuningcolumngapvalue}
-- Type: variable
-
-#### `tuning-double-click-recenter` {#symbol-tuningdoubleclickrecenter}
 - Type: variable
 
 #### `tuning-hover-dim-connections` {#symbol-tuninghoverdimconnections}
@@ -190,9 +185,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `tuning-self-loop-taper-value` {#symbol-tuningselflooptapervalue}
 - Type: variable
 
-#### `tuning-single-click-focus` {#symbol-tuningsingleclickfocus}
-- Type: variable
-
 #### `tuning-stub-factor` {#symbol-tuningstubfactor}
 - Type: variable
 
@@ -209,9 +201,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-stub-min-value` {#symbol-tuningstubminvalue}
-- Type: variable
-
-#### `tuning-type-badges` {#symbol-tuningtypebadges}
 - Type: variable
 
 #### `tuning-vertical-offset` {#symbol-tuningverticaloffset}

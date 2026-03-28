@@ -30,21 +30,13 @@ export const getDefaultFilters = (): ExplorerFilters => ({
   showRelatedDocs: false
 });
 
-/** Returns the factory-default tuning configuration for bezier curves, click behaviour, visual effects, and the local-map layout. */
+/** Returns the factory-default tuning configuration for bezier curves and the local-map layout. */
 export const getDefaultTuning = (): TuningConfig => ({
   bezier: {
     stubFactor: 0.8,
     stubMin: 8,
     stubMaxOffset: 40,
     verticalOffset: 0
-  },
-  clickBehavior: {
-    singleClickFocusOnly: true,
-    doubleClickRecenter: true
-  },
-  visual: {
-    showTypeBadges: true,
-    alchemyGlow: true
   },
   localMap: {
     columnGap: 100,
@@ -128,26 +120,6 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         };
       }
 
-      const clickBehaviorRaw = getRecord(parsedTuning, "clickBehavior");
-      if (clickBehaviorRaw) {
-        const singleClickFocusOnly = readBoolean(clickBehaviorRaw.singleClickFocusOnly);
-        const doubleClickRecenter = readBoolean(clickBehaviorRaw.doubleClickRecenter);
-        tuning.clickBehavior = {
-          ...(singleClickFocusOnly !== undefined ? { singleClickFocusOnly } : null),
-          ...(doubleClickRecenter !== undefined ? { doubleClickRecenter } : null)
-        };
-      }
-
-      const visualRaw = getRecord(parsedTuning, "visual");
-      if (visualRaw) {
-        const showTypeBadges = readBoolean(visualRaw.showTypeBadges);
-        const alchemyGlow = readBoolean(visualRaw.alchemyGlow);
-        tuning.visual = {
-          ...(showTypeBadges !== undefined ? { showTypeBadges } : null),
-          ...(alchemyGlow !== undefined ? { alchemyGlow } : null)
-        };
-      }
-
       const localMapRaw = getRecord(parsedTuning, "localMap");
       if (localMapRaw) {
         const columnGap = readFiniteNumber(localMapRaw.columnGap);
@@ -207,14 +179,6 @@ export const applyPersistedUi = (
     bezier: {
       ...defaults.tuning.bezier,
       ...(persisted.tuning?.bezier ?? {})
-    },
-    clickBehavior: {
-      ...defaults.tuning.clickBehavior,
-      ...(persisted.tuning?.clickBehavior ?? {})
-    },
-    visual: {
-      ...defaults.tuning.visual,
-      ...(persisted.tuning?.visual ?? {})
     },
     localMap: {
       ...defaults.tuning.localMap,

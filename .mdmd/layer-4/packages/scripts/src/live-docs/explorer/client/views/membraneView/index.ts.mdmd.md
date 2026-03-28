@@ -1,13 +1,15 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 
 ## Metadata
+
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-26T19:37:25.180Z
+- Generated At: 2026-03-28T04:28:15.300Z
 
 ## Authored
+
 ### Purpose
 
 View controller for the Membrane Map, orchestrating layout computation, browse-mode rendering, focal overlay management, pin state transitions, pan/zoom interaction, focus-based directory drill-down, and bidirectional URL state persistence via lz-string compression.
@@ -15,41 +17,55 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 ### Notes
 
 - Created during [Dev Day 80 Step 5](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) as the minimal browse-mode controller, then augmented in Steps 6–9 with pin state wiring, focal overlay integration, SVG connection drawing, hop badge attachment, path breadcrumb rendering, keyboard shortcuts, and compressed URL state.
-- `createMembraneView` is a closure-based controller (not a class) returning a `MembraneViewApi` with `render`, `zoomIn`, `zoomOut`, and `resetZoom` — the closure captures mutable state (transform, expandedDirectories, pinSet, focusedDirectory) and re-renders imperatively on each state change.
+- `createMembraneView` is a closure-based controller (not a class) returning a `MembraneViewApi` with `render`, `zoomIn`, `zoomOut`, `resetZoom`, and `redrawConnections` — the closure captures mutable state (transform, expandedDirectories, pinSet, focusedDirectory, expandedCards) and re-renders imperatively on each state change.
+- `expandedCards` state (added [Dev Day 83](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md)) tracks which file cards are expanded in browse mode; included in `structuralKey()` to trigger re-renders when cards expand/collapse.
+- `redrawConnections()` is a lightweight re-render that reuses stored pin-active artifacts (`lastPinSvg`, `lastPinAnchors`, `lastPinConns`, `lastPinScale`) to re-measure anchor positions and redraw SVG paths without triggering a full FLIP animation. Called from tuning slider handlers when column gap or bezier parameters change.
 - Focus-based drill-down: clicking a collapsed tile sets `focusedDirectory`, clears expansions outside the ancestor path, and triggers `fitToViewport` to auto-zoom; double-clicking an expanded membrane navigates focus up to the parent directory.
 - Bundle edge rendering is commented out for MVP with a clear re-enablement path once progressive-disclosure or hover-only rendering is implemented.
 - `persistToUrl` writes the full membrane state (view, selected node, pin set, expanded directories, transform, filters) to the URL via `writeUrlState` on every render; `readUrlState` restores on initialization, enabling shareable deep links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.180Z","inputHash":"310c788da7f9a07c"}]} -->
+
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T04:28:15.300Z","inputHash":"94b7d2d36920de79"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
+
 ### Public Symbols
+
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
+
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L47)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L50)
 
 ##### `MembraneViewOptions` — Summary
+
 Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
+
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L57)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L60)
 
 ##### `MembraneViewApi` — Summary
+
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
+
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L76)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L81)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
 ##### `createMembraneView` — Summary
+
 Initialise the Membrane Map view and return its public API.
+
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
+
 ### Dependencies
+
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`compressed-url-state.UrlStateSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.readUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate) (type-only)
@@ -66,6 +82,7 @@ Initialise the Membrane Map view and return its public API.
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor)
 - [`focal-overlay.attachHopBadges`](./focal-overlay.ts.mdmd.md#symbol-attachhopbadges)
 - [`focal-overlay.drawConnections`](./focal-overlay.ts.mdmd.md#symbol-drawconnections)
+- [`focal-overlay.markConnectedEndpoints`](./focal-overlay.ts.mdmd.md#symbol-markconnectedendpoints)
 - [`focal-overlay.renderFocalOverlay`](./focal-overlay.ts.mdmd.md#symbol-renderfocaloverlay)
 - [`focal-overlay.renderPathBreadcrumb`](./focal-overlay.ts.mdmd.md#symbol-renderpathbreadcrumb)
 - [`focal-overlay.setupHoverDimming`](./focal-overlay.ts.mdmd.md#symbol-setuphoverdimming)
@@ -73,6 +90,8 @@ Initialise the Membrane Map view and return its public API.
 - [`pin-active-renderer.renderPinActiveLayout`](./pin-active-renderer.ts.mdmd.md#symbol-renderpinactivelayout)
 - [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
+- [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin) (type-only)
 - [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
 - [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)

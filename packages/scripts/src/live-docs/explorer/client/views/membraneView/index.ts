@@ -29,13 +29,16 @@ import {
   attachHopBadges,
   renderPathBreadcrumb,
   setupHoverDimming,
+  markConnectedEndpoints,
 } from "./focal-overlay";
 import type { MeasuredAnchor } from "./focal-overlay";
 import { computeMembraneLayout } from "./layout";
 import { renderPinActiveLayout } from "./pin-active-renderer";
 import { computePinLayout } from "./pin-layout";
 import type { PinSet } from "./pin-state";
+import type { VisibleConnection } from "./pin-state";
 import {
+  addPin,
   togglePin,
   clearPins,
   getVisibleConnections,
@@ -56,6 +59,8 @@ export interface MembraneViewOptions {
 /** Public API surface returned by {@link createMembraneView}. */
 export interface MembraneViewApi {
   render(): void;
+  /** Re-measure anchor positions and redraw SVG connections without rebuilding DOM. */
+  redrawConnections(): void;
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
@@ -74,7 +79,7 @@ function clamp(value: number, min: number, max: number): number {
 
 /** Initialise the Membrane Map view and return its public API. */
 export function createMembraneView(options: MembraneViewOptions): MembraneViewApi {
-  const { state, graphData, resolveLinkEndpoint: _resolveLinkEndpoint, onSelectNode, nodesById } = options;
+  const { state, graphData, resolveLinkEndpoint: _resolveLinkEndpoint, onSelectNode, testCoverage, nodesById } = options;
 
   // DOM elements
   const viewport = requireElement<HTMLDivElement>("membrane-viewport");
@@ -98,10 +103,20 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   let currentAggregates: Map<string, DirectoryAggregate> = new Map();
   let pinSet: PinSet = urlSnapshot.pinSet;
 
+  // Tracks which file cards in the card-grid are expanded to show symbols.
+  // Cards start collapsed (compact: name, path, internals) and expand on click.
+  const expandedCards = new Set<string>();
+
   // Focus-based drill-down: tracks which directory the user is
   // "inside" so siblings collapse and the viewport frames it.
   let focusedDirectory: string | null = inferFocusFromExpanded(expandedDirectories);
   let shouldZoomToFocus = false;
+
+  // Stored pin-active render artifacts for lightweight connection redraw
+  let lastPinSvg: SVGSVGElement | null = null;
+  let lastPinAnchors: readonly MeasuredAnchor[] = [];
+  let lastPinConns: readonly VisibleConnection[] = [];
+  let lastPinScale = 1;
 
   // If URL restored a non-default transform, apply it immediately
   const hasRestoredTransform = transform.x !== 0 || transform.y !== 0 || transform.k !== 1;
@@ -116,7 +131,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   function structuralKey(): string {
     const dirs = [...expandedDirectories].sort().join(",");
     const pins = pinSet.entries.map(e => `${e.nodeId}:${e.symbol}`).sort().join(",");
-    return `${focusedDirectory}|${dirs}|${pins}|${state.filters.showTests}|${state.filters.showAssets}`;
+    const cards = [...expandedCards].sort().join(",");
+    return `${focusedDirectory}|${dirs}|${pins}|${cards}|${state.filters.showTests}|${state.filters.showAssets}`;
   }
 
   // ─── Pan / Zoom ──────────────────────────────────────────────────
@@ -376,7 +392,15 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             flowConns,
             container,
             transform.k,
+            state.tuning.bezier,
           );
+          markConnectedEndpoints(svgOverlay, container, pinSet);
+
+          // Store artifacts for lightweight connection redraw (tuning slider)
+          lastPinSvg = svgOverlay;
+          lastPinAnchors = pinActiveResult.anchors;
+          lastPinConns = flowConns;
+          lastPinScale = transform.k;
         });
 
         // Render path breadcrumb bar
@@ -418,6 +442,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
           // collapse everything not on the ancestor path, and auto-zoom.
           focusedDirectory = id;
           shouldZoomToFocus = true;
+          expandedCards.clear();
 
           const focusPath = buildFocusPath(id);
           expandedDirectories.clear();
@@ -434,8 +459,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             if (key.startsWith(id + "/")) {
               expandedDirectories.delete(key);
             }
-          }
-
+          }          expandedCards.clear();
           // Navigate focus up to parent directory
           const lastSlash = id.lastIndexOf("/");
           const parentId = lastSlash > 0 ? id.substring(0, lastSlash) : null;
@@ -454,9 +478,25 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
           pinSet = togglePin(pinSet, nodeId, symbol);
           render();
         },
+        onExpandCard: (nodeId) => {
+          expandedCards.add(nodeId);
+          render();
+        },
+        onPinAllSymbols: (nodeId) => {
+          const payload = nodesById.get(nodeId);
+          if (payload) {
+            for (const sym of payload.publicSymbols) {
+              pinSet = addPin(pinSet, nodeId, sym);
+            }
+            pinSet = addPin(pinSet, nodeId, "__internals__");
+          }
+          render();
+        },
       },
       pinSet,
       focusedDirectory,
+      expandedCards,
+      testCoverage,
     );
 
     container.appendChild(browseResult.root);
@@ -563,7 +603,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       void flipDone.then(() => {
         const visibleConns = getVisibleConnections(pinSet, graphData.links);
         const allAnchors = [...ov.anchors, ...anchors];
-        drawConnections(ov.svgOverlay, allAnchors, visibleConns, container, k);
+        drawConnections(ov.svgOverlay, allAnchors, visibleConns, container, k, state.tuning.bezier);
       });
     }
 
@@ -636,8 +676,24 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     zoomAtPoint(rect.width / 2, rect.height / 2, Math.log(factor));
   }
 
+  /**
+   * Re-measure anchor positions and redraw SVG connections without
+   * rebuilding the DOM.  Called by the tuning-panel column-gap slider
+   * so connectors stay aligned when the CSS grid gap changes.
+   */
+  function redrawConnections(): void {
+    if (lastPinSvg && lastPinAnchors.length > 0) {
+      drawConnections(
+        lastPinSvg, lastPinAnchors, lastPinConns,
+        container, lastPinScale, state.tuning.bezier,
+      );
+      markConnectedEndpoints(lastPinSvg, container, pinSet);
+    }
+  }
+
   return {
     render,
+    redrawConnections,
     zoomIn: () => zoomByFactor(1.3),
     zoomOut: () => zoomByFactor(1 / 1.3),
     resetZoom: () => {

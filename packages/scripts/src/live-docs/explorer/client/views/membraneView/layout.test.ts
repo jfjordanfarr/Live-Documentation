@@ -276,4 +276,88 @@ describe("computeMembraneLayout", () => {
       expect(c.depth).toBe(3);
     });
   });
+
+  describe("mixed-content focus target", () => {
+    it("excludes files from squarify when the focused directory has mixed content", () => {
+      // Directory "mixed" has 2 subdirectories (50 files total) and 2 leaf files.
+      // Without the fix, files get ~2/52 ≈ 4% of the area.
+      // With the fix, files are excluded from squarify and get zero-area rects.
+      const root = dir("root", "__root__", [
+        dir("mixed", "mixed", [
+          dir("big-a", "mixed/big-a", [], 30),
+          dir("big-b", "mixed/big-b", [], 20),
+        ], 2),
+      ]);
+
+      const focusPath = new Set(["mixed"]);
+      const layout = computeMembraneLayout(root, viewport, undefined, focusPath);
+
+      const mixed = layout.root.children[0];
+      expect(mixed.id).toBe("mixed");
+      expect(mixed.children).toHaveLength(4); // 2 dirs + 2 files
+
+      const dirs = mixed.children.filter(c => c.isDirectory);
+      const files = mixed.children.filter(c => !c.isDirectory);
+
+      expect(dirs).toHaveLength(2);
+      expect(files).toHaveLength(2);
+
+      // File nodes should have zero-area rects (excluded from squarify)
+      for (const f of files) {
+        expect(f.rect.width).toBe(0);
+        expect(f.rect.height).toBe(0);
+      }
+
+      // Directory nodes should have positive rects and fill the content area
+      for (const d of dirs) {
+        expect(d.rect.width).toBeGreaterThan(0);
+        expect(d.rect.height).toBeGreaterThan(0);
+      }
+
+      // Directories should collectively fill most of the content area
+      const totalDirArea = dirs.reduce((sum, d) => sum + d.rect.width * d.rect.height, 0);
+      const contentArea = mixed.contentRect.width * mixed.contentRect.height;
+      expect(totalDirArea / contentArea).toBeGreaterThan(0.95);
+    });
+
+    it("does not affect layout when the directory is not the focus target", () => {
+      // Same tree but without focusPath — files get normal squarified rects
+      const root = dir("root", "__root__", [
+        dir("mixed", "mixed", [
+          dir("big-a", "mixed/big-a", [], 30),
+          dir("big-b", "mixed/big-b", [], 20),
+        ], 2),
+      ]);
+
+      const layout = computeMembraneLayout(root, viewport);
+
+      const mixed = layout.root.children[0];
+      const files = mixed.children.filter(c => !c.isDirectory);
+
+      // Without focus, files get normal (small but positive) rects
+      for (const f of files) {
+        expect(f.rect.width).toBeGreaterThan(0);
+        expect(f.rect.height).toBeGreaterThan(0);
+      }
+    });
+
+    it("does not affect pure-file leaf directories", () => {
+      // Directory with only files (no subdirectories) — no mixed-content logic
+      const root = dir("root", "__root__", [
+        dir("leaf", "leaf", [], 5),
+      ]);
+
+      const focusPath = new Set(["leaf"]);
+      const layout = computeMembraneLayout(root, viewport, undefined, focusPath);
+
+      const leaf = layout.root.children[0];
+      const files = leaf.children.filter(c => !c.isDirectory);
+
+      // All files should have positive rects (normal squarified layout)
+      for (const f of files) {
+        expect(f.rect.width).toBeGreaterThan(0);
+        expect(f.rect.height).toBeGreaterThan(0);
+      }
+    });
+  });
 });

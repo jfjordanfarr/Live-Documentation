@@ -134,7 +134,22 @@ function layoutDirectory(
     ? childItems.filter(c => c.id === focusedChildId)
     : childItems;
 
-  const squarifyItems: SquarifyItem[] = itemsToLayout.map(c => ({
+  // Mixed-content focus target: when the focused directory (innermost
+  // on the focus path) contains both subdirectories and leaf files,
+  // exclude files from the squarify layout so directories get the full
+  // treemap area.  Files will be rendered as card-grid cards by the
+  // browse renderer instead of tiny treemap tiles.
+  const isFocusTarget = focusPath?.has(dirNode.path) && !isFocusAncestor;
+  const dirItemCount = itemsToLayout.filter(c => c.kind === "dir").length;
+  const fileItemCount = itemsToLayout.filter(c => c.kind === "file").length;
+  const isMixedFocusTarget = !!isFocusTarget
+    && dirItemCount > 0
+    && fileItemCount > 0;
+
+  const squarifySource = isMixedFocusTarget
+    ? itemsToLayout.filter(c => c.kind === "dir")
+    : itemsToLayout;
+  const squarifyItems: SquarifyItem[] = squarifySource.map(c => ({
     id: c.id,
     weight: c.weight,
   }));
@@ -151,17 +166,20 @@ function layoutDirectory(
   const children: MembraneNode[] = [];
   for (const childItem of itemsToLayout) {
     const tileRect = tileRects.get(childItem.id);
-    if (!tileRect) continue;
 
     if (childItem.kind === "dir" && childItem.dirNode) {
+      if (!tileRect) continue;
       children.push(layoutDirectory(childItem.dirNode, tileRect, depth + 1, config, focusPath));
     } else {
-      // Leaf file node
+      // Leaf file node — in mixed focus targets, files are excluded
+      // from squarify and receive zero-area rects.  The browse
+      // renderer will render them as card-grid cards instead.
+      const fileRect = tileRect ?? { x: 0, y: 0, width: 0, height: 0 };
       children.push({
         id: childItem.id,
         name: childItem.name,
-        rect: tileRect,
-        contentRect: tileRect, // leaves have no padding
+        rect: fileRect,
+        contentRect: fileRect,
         isDirectory: false,
         children: [],
         depth: depth + 1,
