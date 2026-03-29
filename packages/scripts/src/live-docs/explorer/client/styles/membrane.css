@@ -401,16 +401,106 @@
     transition: fill-opacity 0.15s ease-out, stroke-opacity 0.15s ease-out;
 }
 
-/* ─── Hover dimming ─────────────────────────────────────────────── */
+/* ─── Pin-active baseline dimming ───────────────────────────────── */
+/* When pins are active, all symbols/pins/connections dim by default.
+   Pinned and participating (connected) elements are un-dimmed.
+   Hover further filters to a single symbol's connections. */
 
-/* When hover-active, dim all connections by default */
+/* Baseline: dim all symbol rows, pins, and connections */
+.pin-active-root .membrane-card__symbol-row {
+    opacity: 0.3;
+    transition: opacity 0.15s ease-out;
+}
+
+.pin-active-root .membrane-focal-pin {
+    opacity: 0.3;
+    transition: opacity 0.15s ease-out;
+}
+
+.pin-active-root .membrane-connection {
+    stroke-opacity: 0.08;
+    transition: stroke-opacity 0.15s ease-out;
+}
+
+.pin-active-root .membrane-connection--back-stub {
+    fill-opacity: 0.05;
+    stroke-opacity: 0.08;
+    transition: fill-opacity 0.15s ease-out, stroke-opacity 0.15s ease-out;
+}
+
+/* Un-dim: pinned symbol rows stay bright */
+.pin-active-root .membrane-card__symbol-row--pinned {
+    opacity: 1;
+}
+
+.pin-active-root .membrane-card__symbol-row--pinned .membrane-focal-pin {
+    opacity: 1;
+}
+
+/* Un-dim: connected (participating-but-unpinned) symbol rows stay bright */
+.pin-active-root .membrane-card__symbol-row--connected {
+    opacity: 1;
+}
+
+/* Un-dim: connected pin dots */
+.pin-active-root .membrane-focal-pin--connected {
+    opacity: 1;
+}
+
+/* Un-dim: active (pinned) pin dots */
+.pin-active-root .membrane-focal-pin--active {
+    opacity: 1;
+}
+
+/* Un-dim: connections that are drawn (all connections in pin-active mode
+   are relevant, so they render at normal opacity) */
+.pin-active-root .membrane-connection--front {
+    stroke-opacity: 0.6;
+}
+
+.pin-active-root .membrane-connection--back-stub {
+    fill-opacity: 0.15;
+    stroke-opacity: 0.35;
+}
+
+/* ─── Hover dimming (on top of baseline) ────────────────────────── */
+/* When hovering an undimmed symbol, further dim everything except
+   that symbol's direct connections and endpoints. */
+
+/* Further dim all connections */
 .membrane-hover-active .membrane-connection {
-    stroke-opacity: 0.08 !important;
+    stroke-opacity: 0.04 !important;
 }
 
 .membrane-hover-active .membrane-connection--back-stub {
-    fill-opacity: 0.05 !important;
-    stroke-opacity: 0.08 !important;
+    fill-opacity: 0.02 !important;
+    stroke-opacity: 0.04 !important;
+}
+
+/* Further dim all symbol rows (even pinned/connected ones) */
+.membrane-hover-active .membrane-card__symbol-row {
+    opacity: 0.2 !important;
+}
+
+/* Keep hovered row and its direct participants bright */
+.membrane-hover-active .membrane-row--participating {
+    opacity: 1 !important;
+}
+
+/* Keep participating pin dots bright */
+.membrane-hover-active .membrane-focal-pin--participating {
+    opacity: 1 !important;
+}
+
+/* Dim non-participating cards */
+.membrane-hover-active .membrane-card:not(.membrane-card--participating) {
+    opacity: 0.35;
+    transition: opacity 0.15s ease-out;
+}
+
+.membrane-hover-active .membrane-card--participating {
+    opacity: 1;
+    transition: opacity 0.15s ease-out;
 }
 
 /* Highlighted connections stay fully visible */
@@ -423,45 +513,13 @@
     stroke-opacity: 0.55 !important;
 }
 
-/* Participating-but-unpinned endpoints: partially un-dim the pin dot
-   that a highlighted connection terminates at, and lighten the symbol
-   label text, to signal "this symbol is reachable — click to explore". */
-.membrane-focal-pin--participating {
-    opacity: 1 !important;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
-}
+/* ─── Pinned symbol row styling ─────────────────────────────────── */
+/* Blue border + glow matching Local Map's .symbol-pinned treatment. */
 
-.membrane-focal-pin--participating.membrane-focal-pin--inbound {
-    background: rgba(0, 211, 170, 0.45);
-    border-color: rgba(0, 211, 170, 0.65);
-}
-
-.membrane-focal-pin--participating.membrane-focal-pin--outbound {
-    background: rgba(0, 145, 255, 0.45);
-    border-color: rgba(0, 145, 255, 0.65);
-}
-
-.membrane-row--participating .membrane-focal-row__label,
-.membrane-row--participating .membrane-card__symbol-label {
-    color: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* ─── Static connected-endpoint indicators ──────────────────────── */
-/* Always-visible highlight for symbol rows that participate in a
-   drawn connection but are NOT actively pinned.  Provides persistent
-   visual feedback so users can see which endpoints are reachable. */
-
-.membrane-card__symbol-row--connected {
-    background: rgba(0, 211, 170, 0.08);
-    border-radius: 3px;
-    box-shadow: inset 2px 0 0 rgba(0, 211, 170, 0.4);
-}
-
-/* Pinned symbol rows get a full border + glow (mirrors Local Map styling). */
 .membrane-card__symbol-row--pinned {
-    background: rgba(0, 145, 255, 0.08);
+    background: var(--accent-subtle);
     border-radius: 3px;
-    box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.5), 0 0 6px rgba(0, 145, 255, 0.2);
+    box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }
 
 /* ─── Hop badges (path mode) ────────────────────────────────────── */
@@ -667,6 +725,38 @@
     color: rgba(255, 255, 255, 0.45);
 }
 
+/* ─── Type reference badges ─────────────────────────────────────── */
+
+.membrane-card__type-refs {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: 3px;
+    flex-shrink: 0;
+}
+
+.membrane-type-badge {
+    display: inline-block;
+    font-size: 8px;
+    line-height: 1;
+    padding: 1px 3px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.04);
+    cursor: default;
+}
+
+.membrane-type-badge--resolved {
+    border-color: rgba(0, 145, 255, 0.4);
+    color: rgba(0, 145, 255, 0.7);
+    background: rgba(0, 145, 255, 0.08);
+}
+
+.membrane-type-badge--return { border-color: rgba(0, 145, 255, 0.3); }
+.membrane-type-badge--param { border-color: rgba(0, 211, 170, 0.3); }
+.membrane-type-badge--extends { border-color: rgba(138, 92, 255, 0.3); }
+.membrane-type-badge--implements { border-color: rgba(138, 92, 255, 0.3); }
+
 .membrane-card__empty {
     font-size: 10px;
     color: rgba(255, 255, 255, 0.3);
@@ -744,6 +834,22 @@
     opacity: 1;
     border-color: rgba(0, 145, 255, 0.5);
     color: rgba(0, 145, 255, 0.8);
+}
+
+.membrane-card__pin-all--active {
+    opacity: 0.9;
+    border-color: rgba(0, 145, 255, 0.6);
+    color: rgba(0, 145, 255, 1);
+}
+
+.membrane-card__pin-all--active::before {
+    background: rgba(0, 145, 255, 0.8);
+}
+
+.membrane-card__pin-all--active:hover {
+    opacity: 1;
+    border-color: rgba(255, 100, 100, 0.5);
+    color: rgba(255, 100, 100, 0.8);
 }
 
 /* Test-backed card styling (mirrors Local Map .node-card.test-backed) */

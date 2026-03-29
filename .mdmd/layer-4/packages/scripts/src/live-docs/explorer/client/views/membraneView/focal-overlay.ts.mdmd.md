@@ -6,7 +6,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-focal-overlay-ts
-- Generated At: 2026-03-28T04:28:15.203Z
+- Generated At: 2026-03-29T21:52:09.775Z
 
 ## Authored
 
@@ -24,10 +24,11 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 - `hopLabel` uses Unicode circled numbers (①–⑴) for hop indices 0–19, falling back to parenthesized numbers for larger paths.
 - The `skipNodeIds` parameter prevents double-rendering when leaf files are already displayed as Local-Map-style cards in the browse renderer's card grid.
 - XSS prevention: `escapeHtml` sanitizes all user-facing text content (file names, symbol names) before DOM insertion.
+- [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md) dimming model fixes: `clearHoverDimming` no longer removes persistent baseline classes (`--connected`, `--pinned`) on mouseleave — only transient hover classes (`--highlighted`, `--participating`, `--card--participating`) are cleared. `markConnectedEndpoints` now tracks direction per endpoint for directional pin dot coloring, and the `__internals__` skip guard was removed so internals rows can participate in connected-endpoint marking.
 
 ## Generated
 
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T04:28:15.203Z","inputHash":"c38e68a1fc246d9a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.775Z","inputHash":"ef2220d18a2e59af"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 
 ### Public Symbols
@@ -89,7 +90,7 @@ Overlay result with panels, anchors, and SVG overlay
 #### `drawConnections` {#symbol-drawconnections}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L284)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L285)
 - Parameters: `svgOverlay`: `SVGSVGElement`; `tuning`: [`BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
 
 ##### `drawConnections` — Summary
@@ -110,7 +111,7 @@ Must be called after the focal overlay panels are inserted into the DOM
 #### `hopLabel` {#symbol-hoplabel}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L537)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L538)
 
 ##### `hopLabel` — Summary
 
@@ -120,7 +121,7 @@ Uses circled numbers for 0-19, falls back to plain number for larger indices.
 #### `attachHopBadges` {#symbol-attachhopbadges}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L552)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L553)
 - Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
@@ -138,7 +139,7 @@ top-right corner showing the hop index.
 #### `BreadcrumbCallbacks` {#symbol-breadcrumbcallbacks}
 
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L584)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L585)
 
 ##### `BreadcrumbCallbacks` — Summary
 
@@ -147,7 +148,7 @@ Callbacks for breadcrumb bar interaction.
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L600)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L601)
 - Parameters: `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
@@ -165,7 +166,7 @@ Returns null if no active path exists.
 #### `setupHoverDimming` {#symbol-setuphoverdimming}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L684)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L686)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `setupHoverDimming` — Summary
@@ -192,7 +193,7 @@ is called once, not per-row.
 #### `clearHoverDimming` {#symbol-clearhoverdimming}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L767)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L780)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `clearHoverDimming` — Summary
@@ -202,7 +203,7 @@ Remove all hover-dimming state from the SVG overlay and container.
 #### `markConnectedEndpoints` {#symbol-markconnectedendpoints}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L798)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts#L818)
 - Parameters: `svgOverlay`: `SVGSVGElement`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `markConnectedEndpoints` — Summary
@@ -214,6 +215,7 @@ of which symbols participate in the dependency graph — not just on hover.
 
 Pinned symbols already have `.membrane-focal-pin--active` styling;
 this function targets the unpinned endpoints that complete a connection.
+Pin dots for connected endpoints also get lit up with directional coloring.
 
 <!-- LIVE-DOC:END Public Symbols -->
 

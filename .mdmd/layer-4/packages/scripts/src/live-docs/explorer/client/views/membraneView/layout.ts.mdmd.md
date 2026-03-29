@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-layout-ts
-- Generated At: 2026-03-28T04:28:15.356Z
+- Generated At: 2026-03-29T21:52:09.950Z
 
 ## Authored
-
 ### Purpose
 
 Recursive membrane layout engine that maps a `DirectoryNode` tree onto a `MembraneLayout` of nested squarified treemap tiles, with configurable border sizing, weight functions, and focus-path-aware allocation.
@@ -24,21 +22,16 @@ Recursive membrane layout engine that maps a `DirectoryNode` tree onto a `Membra
 - The layout is pure-functional (no DOM dependency), enabling comprehensive Vitest coverage of spatial invariants like non-overlap, containment within parent bounds, and area proportionality.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T04:28:15.356Z","inputHash":"3e09a0668cfdae10"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.950Z","inputHash":"3e09a0668cfdae10"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `computeMembraneLayout` {#symbol-computemembranelayout}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts#L227)
 - Returns: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout)
 - Parameters: `root`: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode); `viewport`: [`LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect); `config`: [`MembraneLayoutConfig`](./types.ts.mdmd.md#symbol-membranelayoutconfig)
 
 ##### `computeMembraneLayout` — Summary
-
 Computes a recursive membrane layout for an entire directory tree.
 
 Each directory becomes a nested membrane container. Files inside
@@ -46,21 +39,16 @@ a directory are laid out as sibling leaf tiles. The squarified
 treemap algorithm ensures that tiles have aspect ratios close to 1:1.
 
 ##### `computeMembraneLayout` — Parameters
-
 - `config`: Layout tuning parameters (optional; uses defaults)
 - `root`: The root DirectoryNode (from `buildHierarchy()`)
 - `viewport`: The bounding rectangle to fill
 
 ##### `computeMembraneLayout` — Returns
-
 A fully-positioned MembraneLayout
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`types.DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode) (type-only)
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect) (type-only)
 - [`types.DEFAULT_MEMBRANE_CONFIG`](./types.ts.mdmd.md#symbol-default_membrane_config) (type-only)
@@ -72,10 +60,7 @@ A fully-positioned MembraneLayout
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
-
 ### Observed Evidence
-
 #### Vitest Unit Tests
-
 - [layout.test.ts](./layout.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

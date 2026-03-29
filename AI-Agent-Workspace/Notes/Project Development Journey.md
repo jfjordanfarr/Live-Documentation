@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 26, 2026\)*
+*Status: Active Development (Mar 28, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -1006,6 +1006,20 @@ The team focused on the interaction fidelity of the new Membrane Map, implementi
 * **Hover Dimming:** Reintroduced event-delegated hover dimming on symbol rows. Hovering instantly adds/removes CSS classes on the SVG overlay to highlight specific connection paths, maintaining the tactical, responsive feel of the legacy Explorer.  
 * **Continued Testing Discipline:** The band computation and hierarchy building logic were fully validated with 41 new pin-layout tests.
 
+### **Phase LXIX: Hybrid Membrane Layouts & Dependency Endpoints (Mar 27-28)**
+
+Date: March 27–28, 2026
+
+Scope: Commit 272
+
+The Membrane Map received major layout and interaction upgrades, specifically targeting the "mixed-content" directory problem and reducing visual overwhelm during deep dependency tracing.
+
+* **The "Area-Crushing" Layout Fix:** Solved a visual imbalance where single files (weight=1) were dwarfed by massive subdirectories (weight=N) within the same parent membrane. The system now uses a hybrid two-zone layout (Solution C) for these "mixed-content" directories: subdirectories are squarified at the top, while files flow into a uniform flex grid underneath.  
+* **Progressive Disclosure via Collapsed Cards:** To manage information density, file cards now default to a collapsed state, displaying only the filename, path, and total symbol count. Clicking a card expands it to reveal individual, pinnable symbol rows. A new bulk "Pin-all" action was also introduced.  
+* **Terminal Endpoint Indicators:** Addressed a critical UX ambiguity in the dependency flow. The graph now explicitly renders terminal indicators so users know when a dependency chain has naturally ended, rather than wondering if the UI simply failed to expand further.  
+* **Dynamic SVG Redraw:** Implemented a lightweight redrawConnections() API. This ensures that the bezier connection lines dynamically re-anchor themselves without jank whenever a user expands or collapses a file card, fixing "stray line" visual bugs.  
+* **Legacy UI Purge:** Removed obsolete tuning toggles (like "Alchemy glow" and "Type reference badges") from the DOM, cleaning up the interface as the project fully commits to the Membrane Map aesthetic.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -1059,7 +1073,8 @@ The team focused on the interaction fidelity of the new Membrane Map, implementi
 * **Mar 22 (Phase LXV):** "The Membrane Map." (Architecting the unified, zoomable treemap to replace the split Circuit/Local views).  
 * **Mar 24 (Phase LXVI):** "Scaffolding the Membrane Map." (Landing the 136-test pure-math engine and confronting the DOM/LTR layout roadblocks).  
 * **Mar 24-25 (Phase LXVII):** "Context Retention & LCA Membranes." (Solving deep-dive disorientation with clickable Least Common Ancestor escape hatches).  
-* **Mar 26 (Phase LXVIII):** "FLIP Animations & Cross-Column Membranes." (Adding smooth transitions, trie-based directory bands, and hover dimming to the dependency flow).
+* **Mar 26 (Phase LXVIII):** "FLIP Animations & Cross-Column Membranes." (Adding smooth transitions, trie-based directory bands, and hover dimming to the dependency flow).  
+* **Mar 27-28 (Phase LXIX):** "Hybrid Membrane Layouts." (Solving the mixed-content area-crushing problem and adding dependency endpoint indicators).
 
 ## **Technical Themes & Motifs**
 

@@ -141,6 +141,14 @@ export function isSymbolPinned(set: PinSet, nodeId: string, symbol: string): boo
 }
 
 /**
+ * Check whether ALL symbols of a node (including __internals__) are pinned.
+ */
+export function areAllSymbolsPinned(set: PinSet, nodeId: string, symbols: readonly string[]): boolean {
+  const allSymbols = [...symbols, "__internals__"];
+  return allSymbols.every(sym => isSymbolPinned(set, nodeId, sym));
+}
+
+/**
  * Whether the pin set contains any entries with hop indices (i.e., a path is active).
  */
 export function hasActivePath(set: PinSet): boolean {

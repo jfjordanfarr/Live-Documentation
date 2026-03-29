@@ -12,8 +12,35 @@
 import type { MeasuredAnchor } from "./focal-overlay";
 import type { PinLayoutResult, DirectoryBand } from "./pin-layout";
 import type { PinSet } from "./pin-state";
-import { isSymbolPinned } from "./pin-state";
-import type { ExplorerNodePayload } from "../../../shared/types";
+import { isSymbolPinned, areAllSymbolsPinned } from "./pin-state";
+import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
+
+const REF_BADGE_ICONS: Record<string, string> = {
+  return: "→", parameter: "←", extends: "⊲", implements: "◇", constraint: "∈",
+};
+
+/** Create compact reference badges for a symbol's type references. */
+function createReferenceBadges(extSymbol: ExplorerPublicSymbol | undefined): HTMLElement | null {
+  const refs = extSymbol?.typeReferences;
+  if (!refs || refs.length === 0) return null;
+  const container = document.createElement("span");
+  container.className = "membrane-card__type-refs";
+  const byRole = new Map<string, typeof refs>();
+  for (const ref of refs) {
+    const arr = byRole.get(ref.role) ?? [];
+    arr.push(ref);
+    byRole.set(ref.role, arr);
+  }
+  for (const [role, roleRefs] of byRole) {
+    const badge = document.createElement("span");
+    badge.className = `membrane-type-badge membrane-type-badge--${role}`;
+    if (roleRefs.some(r => r.isResolved)) badge.classList.add("membrane-type-badge--resolved");
+    badge.textContent = REF_BADGE_ICONS[role] ?? "?";
+    badge.title = `${role}: ${roleRefs.map(r => r.typeName).join(", ")}`;
+    container.appendChild(badge);
+  }
+  return container;
+}
 
 /** Escape HTML special characters to prevent XSS. */
 function escapeHtml(str: string): string {
@@ -26,6 +53,7 @@ function escapeHtml(str: string): string {
 export interface PinActiveCallbacks {
   onSelectNode: (node: ExplorerNodePayload) => void;
   onTogglePin: (nodeId: string, symbol: string) => void;
+  onPinAllSymbols: (nodeId: string) => void;
   onClearPins: () => void;
   onNavigateToDirectory: (dir: string) => void;
 }
@@ -278,14 +306,38 @@ function renderFlowCard(
   card.dataset.id = nodeId;
   card.tabIndex = 0;
 
-  // Header
+  // Header row (filename + pin-all toggle)
+  const headerRow = document.createElement("div");
+  headerRow.className = "membrane-card__header-row";
+
   const header = document.createElement("div");
   header.className = "membrane-card__header";
   header.textContent = escapeHtml(payload.name);
-  card.appendChild(header);
+  headerRow.appendChild(header);
+
+  // Pin-all / unpin-all toggle button
+  {
+    const symbols = payload.publicSymbols ?? [];
+    const allPinned = areAllSymbolsPinned(pinSet, nodeId, symbols);
+    const pinAllBtn = document.createElement("button");
+    pinAllBtn.className = "membrane-card__pin-all";
+    if (allPinned) pinAllBtn.classList.add("membrane-card__pin-all--active");
+    pinAllBtn.title = allPinned ? "Unpin all symbols" : "Pin all symbols";
+    pinAllBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      callbacks.onPinAllSymbols(nodeId);
+    });
+    headerRow.appendChild(pinAllBtn);
+  }
+
+  card.appendChild(headerRow);
 
   // Symbol grid
   const symbols = payload.publicSymbols ?? [];
+  const extByName = new Map<string, ExplorerPublicSymbol>();
+  for (const ext of payload.publicSymbolsExtended ?? []) {
+    extByName.set(ext.name, ext);
+  }
   const grid = document.createElement("div");
   grid.className = "membrane-card__symbols";
 
@@ -324,6 +376,10 @@ function renderFlowCard(
     });
     row.appendChild(label);
 
+    // Reference type badges (→ return, ← param, etc.)
+    const badges = createReferenceBadges(extByName.get(symbol));
+    if (badges) row.appendChild(badges);
+
     // Outbound pin (blue, right)
     const outPin = document.createElement("div");
     outPin.className = "membrane-focal-pin membrane-focal-pin--outbound";
@@ -345,6 +401,11 @@ function renderFlowCard(
   {
     const internalsRow = document.createElement("div");
     internalsRow.className = "membrane-card__symbol-row membrane-card__symbol-row--internals";
+    internalsRow.dataset.nodeId = nodeId;
+    internalsRow.dataset.symbol = "__internals__";
+    if (isSymbolPinned(pinSet, nodeId, "__internals__")) {
+      internalsRow.classList.add("membrane-card__symbol-row--pinned");
+    }
 
     const internalsPin = document.createElement("div");
     internalsPin.className = "membrane-focal-pin membrane-focal-pin--inbound";

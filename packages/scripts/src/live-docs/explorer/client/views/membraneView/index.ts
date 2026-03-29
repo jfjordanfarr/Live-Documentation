@@ -41,6 +41,8 @@ import {
   addPin,
   togglePin,
   clearPins,
+  removePinsForNode,
+  areAllSymbolsPinned,
   getVisibleConnections,
   getRequiredExpansions,
 } from "./pin-state";
@@ -223,7 +225,13 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     const key = structuralKey();
     if (key !== lastStructuralKey) return false;
 
+    // Decline the fast path when a leaf is selected but no directory
+    // is focused — the full render needs to auto-expand the ancestor
+    // path so the node renders as a card instead of a floating overlay.
     const selectedNodeId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
+    if (selectedNodeId && !focusedDirectory && expandedDirectories.size === 0) {
+      return false;
+    }
 
     // Toggle .selected on leaves and cards
     for (const el of container.querySelectorAll<HTMLElement>(".selected")) {
@@ -281,6 +289,28 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       height: Math.max(viewportRect.height, 600),
     };
 
+    // Auto-focus: when a leaf node is selected but no directory is
+    // expanded, expand the ancestor path so the node renders as a
+    // card rather than a tiny focal-overlay on a collapsed tile.
+    // We must derive the parent directory from the *layout* hierarchy
+    // (docRelativePath-based) rather than the node's .id, since the
+    // treemap directory structure lives under the MDMD layer path.
+    const selectedId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
+    if (selectedId && !focusedDirectory && expandedDirectories.size === 0) {
+      const selectedNode = state.focusedNode ?? state.selectedNode;
+      const docPath = selectedNode?.docRelativePath ?? "";
+      const docParts = docPath.split("/").filter(Boolean);
+      if (docParts.length > 1) {
+        const parentDir = docParts.slice(0, -1).join("/");
+        focusedDirectory = parentDir;
+        const focusPath = buildFocusPath(parentDir);
+        for (const p of focusPath) {
+          expandedDirectories.add(p);
+        }
+        shouldZoomToFocus = true;
+      }
+    }
+
     currentLayout = computeMembraneLayout(
       hierarchy,
       layoutViewport,
@@ -329,6 +359,20 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             },
             onTogglePin: (nodeId, symbol) => {
               pinSet = togglePin(pinSet, nodeId, symbol);
+              render();
+            },
+            onPinAllSymbols: (nodeId) => {
+              const payload = nodesById.get(nodeId);
+              if (payload) {
+                if (areAllSymbolsPinned(pinSet, nodeId, payload.publicSymbols)) {
+                  pinSet = removePinsForNode(pinSet, nodeId);
+                } else {
+                  for (const sym of payload.publicSymbols) {
+                    pinSet = addPin(pinSet, nodeId, sym);
+                  }
+                  pinSet = addPin(pinSet, nodeId, "__internals__");
+                }
+              }
               render();
             },
             onClearPins: () => {
@@ -485,10 +529,16 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         onPinAllSymbols: (nodeId) => {
           const payload = nodesById.get(nodeId);
           if (payload) {
-            for (const sym of payload.publicSymbols) {
-              pinSet = addPin(pinSet, nodeId, sym);
+            if (areAllSymbolsPinned(pinSet, nodeId, payload.publicSymbols)) {
+              // Toggle: unpin all
+              pinSet = removePinsForNode(pinSet, nodeId);
+            } else {
+              // Pin all
+              for (const sym of payload.publicSymbols) {
+                pinSet = addPin(pinSet, nodeId, sym);
+              }
+              pinSet = addPin(pinSet, nodeId, "__internals__");
             }
-            pinSet = addPin(pinSet, nodeId, "__internals__");
           }
           render();
         },

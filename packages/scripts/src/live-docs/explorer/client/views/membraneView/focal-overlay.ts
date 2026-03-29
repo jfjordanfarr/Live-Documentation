@@ -148,8 +148,9 @@ function renderSymbolPanel(
   panel.style.position = "absolute";
   panel.style.left = `${node.rect.x}px`;
   panel.style.top = `${node.rect.y}px`;
-  panel.style.width = `${node.rect.width}px`;
-  panel.style.height = `${node.rect.height}px`;
+  // Enforce a minimum width so thin treemap tiles still render a readable panel
+  panel.style.width = `${Math.max(node.rect.width, 200)}px`;
+  panel.style.minHeight = `${node.rect.height}px`;
 
   // Header with file name
   const header = document.createElement("div");
@@ -662,6 +663,7 @@ const HOVER_ACTIVE_CLASS = "membrane-hover-active";
 const CONN_HIGHLIGHTED_CLASS = "membrane-connection--highlighted";
 const PIN_PARTICIPATING_CLASS = "membrane-focal-pin--participating";
 const ROW_PARTICIPATING_CLASS = "membrane-row--participating";
+const CARD_PARTICIPATING_CLASS = "membrane-card--participating";
 
 /**
  * Set up hover dimming on symbol rows within `container`.
@@ -735,6 +737,14 @@ export function setupHoverDimming(
 
     // Activate dimming mode
     svgOverlay.classList.add(HOVER_ACTIVE_CLASS);
+    container.classList.add(HOVER_ACTIVE_CLASS);
+
+    // Also mark the hovered row itself so it stays bright
+    row.classList.add(ROW_PARTICIPATING_CLASS);
+
+    // Mark containing card of the hovered row as participating
+    const hoveredCard = row.closest<HTMLElement>(".membrane-card");
+    if (hoveredCard) hoveredCard.classList.add(CARD_PARTICIPATING_CLASS);
 
     // Mark participating endpoints: find their pin dots and containing rows
     for (const ep of participatingEndpoints) {
@@ -743,6 +753,9 @@ export function setupHoverDimming(
       const selector = `.membrane-focal-row[data-node-id="${CSS.escape(ep.nodeId)}"][data-symbol="${CSS.escape(ep.symbol)}"], .membrane-card__symbol-row[data-node-id="${CSS.escape(ep.nodeId)}"][data-symbol="${CSS.escape(ep.symbol)}"]`;
       for (const matchRow of container.querySelectorAll<HTMLElement>(selector)) {
         matchRow.classList.add(ROW_PARTICIPATING_CLASS);
+        // Mark containing card as participating
+        const card = matchRow.closest<HTMLElement>(".membrane-card");
+        if (card) card.classList.add(CARD_PARTICIPATING_CLASS);
         // Find the specific directional pin dot
         const pinClass = ep.direction === "inbound"
           ? "membrane-focal-pin--inbound"
@@ -770,21 +783,27 @@ export function clearHoverDimming(svgOverlay: SVGSVGElement, container?: HTMLEle
     el.classList.remove(CONN_HIGHLIGHTED_CLASS);
   }
   if (container) {
+    container.classList.remove(HOVER_ACTIVE_CLASS);
     for (const el of container.querySelectorAll<HTMLElement>(`.${PIN_PARTICIPATING_CLASS}`)) {
       el.classList.remove(PIN_PARTICIPATING_CLASS);
     }
     for (const el of container.querySelectorAll<HTMLElement>(`.${ROW_PARTICIPATING_CLASS}`)) {
       el.classList.remove(ROW_PARTICIPATING_CLASS);
     }
-    for (const el of container.querySelectorAll<HTMLElement>(".membrane-card__symbol-row--connected")) {
-      el.classList.remove("membrane-card__symbol-row--connected");
+    for (const el of container.querySelectorAll<HTMLElement>(`.${CARD_PARTICIPATING_CLASS}`)) {
+      el.classList.remove(CARD_PARTICIPATING_CLASS);
     }
+    // Note: --connected and --pinned classes are NOT cleared here.
+    // They are static baseline indicators set by markConnectedEndpoints
+    // and the renderer, persisting across hover interactions.
   }
 }
 
 // ─── Static Connected-Endpoint Marking ─────────────────────────────
 
 const ROW_CONNECTED_CLASS = "membrane-card__symbol-row--connected";
+
+const PIN_CONNECTED_CLASS = "membrane-focal-pin--connected";
 
 /**
  * After connections are drawn in pin-active mode, scan all SVG connection
@@ -794,6 +813,7 @@ const ROW_CONNECTED_CLASS = "membrane-card__symbol-row--connected";
  *
  * Pinned symbols already have `.membrane-focal-pin--active` styling;
  * this function targets the unpinned endpoints that complete a connection.
+ * Pin dots for connected endpoints also get lit up with directional coloring.
  */
 export function markConnectedEndpoints(
   svgOverlay: SVGSVGElement,
@@ -804,16 +824,27 @@ export function markConnectedEndpoints(
   for (const el of container.querySelectorAll<HTMLElement>(`.${ROW_CONNECTED_CLASS}`)) {
     el.classList.remove(ROW_CONNECTED_CLASS);
   }
+  for (const el of container.querySelectorAll<HTMLElement>(`.${PIN_CONNECTED_CLASS}`)) {
+    el.classList.remove(PIN_CONNECTED_CLASS);
+  }
 
-  // Collect all unique endpoint (nodeId, symbol) pairs from drawn connections
-  const endpoints = new Set<string>();
+  // Collect endpoint (nodeId, symbol) pairs with direction from drawn connections
+  const endpointDirections = new Map<string, Set<"inbound" | "outbound">>();
   for (const el of svgOverlay.querySelectorAll<SVGElement>(".membrane-connection")) {
     const srcId = el.dataset.sourceId;
     const srcSym = el.dataset.sourceSymbol;
     const tgtId = el.dataset.targetId;
     const tgtSym = el.dataset.targetSymbol;
-    if (srcId && srcSym) endpoints.add(`${srcId}\0${srcSym}`);
-    if (tgtId && tgtSym) endpoints.add(`${tgtId}\0${tgtSym}`);
+    if (srcId && srcSym) {
+      const key = `${srcId}\0${srcSym}`;
+      if (!endpointDirections.has(key)) endpointDirections.set(key, new Set());
+      endpointDirections.get(key)!.add("outbound");
+    }
+    if (tgtId && tgtSym) {
+      const key = `${tgtId}\0${tgtSym}`;
+      if (!endpointDirections.has(key)) endpointDirections.set(key, new Set());
+      endpointDirections.get(key)!.add("inbound");
+    }
   }
 
   // Build lowercase lookup: graph edges store symbols lowercased but
@@ -827,11 +858,10 @@ export function markConnectedEndpoints(
     else rowsByKey.set(key, [row]);
   }
 
-  // Mark rows that are connected but not pinned
-  for (const key of endpoints) {
+  // Mark rows that are connected but not pinned, and light up pin dots
+  for (const [key, directions] of endpointDirections) {
     const [nodeId, symbol] = key.split("\0");
-    // Skip synthetic __internals__ symbol — no matching row
-    if (symbol === "__internals__") continue;
+    // __internals__ rows now carry data-symbol="__internals__" — process normally
 
     const lowerKey = `${nodeId}\0${symbol.toLowerCase()}`;
     const rows = rowsByKey.get(lowerKey);
@@ -839,8 +869,18 @@ export function markConnectedEndpoints(
       for (const row of rows) {
         // Use the row's original-case symbol for the pinned check
         const rowSymbol = row.dataset.symbol!;
-        if (isSymbolPinned(pinSet, nodeId, rowSymbol)) continue;
-        row.classList.add(ROW_CONNECTED_CLASS);
+        const isPinned = isSymbolPinned(pinSet, nodeId, rowSymbol);
+        if (!isPinned) {
+          row.classList.add(ROW_CONNECTED_CLASS);
+        }
+        // Light up directional pin dots for all connected endpoints
+        for (const dir of directions) {
+          const pinClass = dir === "inbound"
+            ? "membrane-focal-pin--inbound"
+            : "membrane-focal-pin--outbound";
+          const pin = row.querySelector<HTMLElement>(`.${pinClass}`);
+          if (pin && !isPinned) pin.classList.add(PIN_CONNECTED_CLASS);
+        }
       }
     }
   }

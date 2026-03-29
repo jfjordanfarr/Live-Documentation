@@ -6,7 +6,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-28T04:28:15.300Z
+- Generated At: 2026-03-29T21:52:09.879Z
 
 ## Authored
 
@@ -23,10 +23,11 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - Focus-based drill-down: clicking a collapsed tile sets `focusedDirectory`, clears expansions outside the ancestor path, and triggers `fitToViewport` to auto-zoom; double-clicking an expanded membrane navigates focus up to the parent directory.
 - Bundle edge rendering is commented out for MVP with a clear re-enablement path once progressive-disclosure or hover-only rendering is implemented.
 - `persistToUrl` writes the full membrane state (view, selected node, pin set, expanded directories, transform, filters) to the URL via `writeUrlState` on every render; `readUrlState` restores on initialization, enabling shareable deep links.
+- [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): auto-focus bug fix — initial render now derives the parent directory from `selectedNode.docRelativePath` (not `codeRelativePath`) to match the treemap's `docRelativePath`-keyed hierarchy; `trySelectionOnlyUpdate` fast-path declines when auto-focus would change `focusedDirectory`. Also added `openInMembraneMapView` helper and `onPinAllSymbols` callback wiring for both browse and pin-active modes, with detail panel auto-open suppressed on initial load (`{ suppressDetailPanel: true }`).
 
 ## Generated
 
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T04:28:15.300Z","inputHash":"94b7d2d36920de79"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.879Z","inputHash":"90b0c3b896717949"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 
 ### Public Symbols
@@ -34,7 +35,7 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
 
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L50)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L52)
 
 ##### `MembraneViewOptions` — Summary
 
@@ -43,7 +44,7 @@ Options for creating a Membrane Map view controller.
 #### `MembraneViewApi` {#symbol-membraneviewapi}
 
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L60)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L62)
 
 ##### `MembraneViewApi` — Summary
 
@@ -52,7 +53,7 @@ Public API surface returned by {@link createMembraneView}.
 #### `createMembraneView` {#symbol-createmembraneview}
 
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L81)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L83)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
@@ -92,9 +93,11 @@ Initialise the Membrane Map view and return its public API.
 - [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
 - [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin) (type-only)
+- [`pin-state.areAllSymbolsPinned`](./pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
 - [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
 - [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
+- [`pin-state.removePinsForNode`](./pin-state.ts.mdmd.md#symbol-removepinsfornode) (type-only)
 - [`pin-state.togglePin`](./pin-state.ts.mdmd.md#symbol-togglepin) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)

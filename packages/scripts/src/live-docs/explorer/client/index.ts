@@ -269,6 +269,18 @@ function startExplorer(
     }, 50);
   };
 
+  // Helper to open a node in Membrane Map view
+  const openInMembraneMapView = (node: ExplorerNodePayload): void => {
+    detailPanel.hide();
+    state.selectedNode = node;
+    state.focusedNode = node;
+    state.view = "membrane";
+    setActiveView("membrane");
+    updateUrlState("membrane", node.id);
+    schedulePersistNav();
+    renderCurrentView();
+  };
+
   // Helper to handle clicks on node links in documentation
   const handleDocNodeClick = (nodeId: string): void => {
     const node = nodesById.get(nodeId);
@@ -286,7 +298,8 @@ function startExplorer(
       // Show the bundled doc in the detail panel
       void showBundledDocInDetailPanel(docPath);
     },
-    onOpenInCircuitBoard: openInCircuitBoardView
+    onOpenInCircuitBoard: openInCircuitBoardView,
+    onOpenInMembraneMap: openInMembraneMapView,
   });
 
   // Use imported resolveLinkEndpoint and inferDefaultEntryNodeId from extracted modules
@@ -788,7 +801,7 @@ function startExplorer(
       console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
       // Use setTimeout to ensure view is fully rendered before focusing
       setTimeout(() => {
-        void selectNode(focusNode);
+        void selectNode(focusNode, { suppressDetailPanel: true });
         // For circuit view, expand the directory and scroll to the node
         if (state.view === "circuit") {
           circuitView.expandAndScrollToNode(focusNode.id);
