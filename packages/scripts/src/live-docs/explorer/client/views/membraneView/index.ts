@@ -258,7 +258,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     container.innerHTML = "";
 
     // Remove stale breadcrumb bars from prior renders
-    for (const el of Array.from(viewport.querySelectorAll(".membrane-path-breadcrumb"))) {
+    for (const el of Array.from(viewport.querySelectorAll(".membrane-path-breadcrumb, .membrane-browse-breadcrumb"))) {
       el.remove();
     }
 
@@ -292,16 +292,13 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     // Auto-focus: when a leaf node is selected but no directory is
     // expanded, expand the ancestor path so the node renders as a
     // card rather than a tiny focal-overlay on a collapsed tile.
-    // We must derive the parent directory from the *layout* hierarchy
-    // (docRelativePath-based) rather than the node's .id, since the
-    // treemap directory structure lives under the MDMD layer path.
     const selectedId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
     if (selectedId && !focusedDirectory && expandedDirectories.size === 0) {
       const selectedNode = state.focusedNode ?? state.selectedNode;
-      const docPath = selectedNode?.docRelativePath ?? "";
-      const docParts = docPath.split("/").filter(Boolean);
-      if (docParts.length > 1) {
-        const parentDir = docParts.slice(0, -1).join("/");
+      const idPath = selectedNode?.id ?? "";
+      const idParts = idPath.split("/").filter(Boolean);
+      if (idParts.length > 1) {
+        const parentDir = idParts.slice(0, -1).join("/");
         focusedDirectory = parentDir;
         const focusPath = buildFocusPath(parentDir);
         for (const p of focusPath) {
@@ -542,6 +539,46 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
           }
           render();
         },
+        onExploreDirectory: (dirId) => {
+          // Pin __internals__ for every file in the directory that
+          // contributes to cross-boundary (outbound or inbound) edges.
+          // This jumps directly from a collapsed directory tile into
+          // pin-active mode showing the directory's external connections.
+          const dirPrefix = dirId + "/";
+          const filesInDir = new Set<string>();
+          for (const node of graphData.nodes) {
+            if (node.id.startsWith(dirPrefix) || node.id === dirId) {
+              filesInDir.add(node.id);
+            }
+          }
+          // Find files with cross-boundary edges
+          const contributingFiles = new Set<string>();
+          for (const link of graphData.links) {
+            const sourceId = typeof link.source === "string" ? link.source : link.source.id;
+            const targetId = typeof link.target === "string" ? link.target : link.target.id;
+            const srcIn = filesInDir.has(sourceId);
+            const tgtIn = filesInDir.has(targetId);
+            if (srcIn && !tgtIn) contributingFiles.add(sourceId);
+            if (tgtIn && !srcIn) contributingFiles.add(targetId);
+          }
+          // Pin __internals__ on each contributing file
+          pinSet = clearPins();
+          for (const fileId of contributingFiles) {
+            pinSet = addPin(pinSet, fileId, "__internals__");
+          }
+          render();
+        },
+        onNavigateToDirectory: (dirId) => {
+          focusedDirectory = dirId;
+          shouldZoomToFocus = true;
+          expandedCards.clear();
+          const focusPath = buildFocusPath(dirId);
+          expandedDirectories.clear();
+          for (const p of focusPath) {
+            expandedDirectories.add(p);
+          }
+          render();
+        },
       },
       pinSet,
       focusedDirectory,
@@ -550,6 +587,68 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     );
 
     container.appendChild(browseResult.root);
+
+    // ─── Browse-mode directory breadcrumb ───
+    // Shows the current focused-directory path as clickable segments
+    // so users can jump to any ancestor with one click.
+    if (focusedDirectory) {
+      const breadcrumbBar = document.createElement("div");
+      breadcrumbBar.className = "membrane-browse-breadcrumb";
+
+      // Build segments: root ("~") + each directory in the focus path
+      const parts = focusedDirectory.split("/");
+      const segments: Array<{ label: string; dirId: string }> = [];
+      for (let i = 0; i < parts.length; i++) {
+        segments.push({
+          label: parts[i],
+          dirId: parts.slice(0, i + 1).join("/"),
+        });
+      }
+
+      // Root link (return to top-level)
+      const rootLink = document.createElement("span");
+      rootLink.className = "membrane-browse-breadcrumb__segment membrane-browse-breadcrumb__segment--link";
+      rootLink.textContent = "~";
+      rootLink.addEventListener("click", () => {
+        focusedDirectory = null;
+        expandedDirectories.clear();
+        expandedCards.clear();
+        shouldZoomToFocus = false;
+        render();
+      });
+      breadcrumbBar.appendChild(rootLink);
+
+      for (let i = 0; i < segments.length; i++) {
+        const sep = document.createElement("span");
+        sep.className = "membrane-browse-breadcrumb__sep";
+        sep.textContent = " / ";
+        breadcrumbBar.appendChild(sep);
+
+        const seg = segments[i];
+        const isLast = i === segments.length - 1;
+        const span = document.createElement("span");
+        span.className = isLast
+          ? "membrane-browse-breadcrumb__segment membrane-browse-breadcrumb__segment--current"
+          : "membrane-browse-breadcrumb__segment membrane-browse-breadcrumb__segment--link";
+        span.textContent = seg.label;
+        if (!isLast) {
+          span.addEventListener("click", () => {
+            focusedDirectory = seg.dirId;
+            shouldZoomToFocus = true;
+            expandedCards.clear();
+            const focusPath = buildFocusPath(seg.dirId);
+            expandedDirectories.clear();
+            for (const p of focusPath) {
+              expandedDirectories.add(p);
+            }
+            render();
+          });
+        }
+        breadcrumbBar.appendChild(span);
+      }
+
+      viewport.appendChild(breadcrumbBar);
+    }
 
     // ─── Bundled edges (membrane-to-membrane connections) ───
     // Disabled for MVP: the thick arcs between collapsed tiles create

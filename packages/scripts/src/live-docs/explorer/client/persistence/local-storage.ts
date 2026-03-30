@@ -234,7 +234,7 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
     const nodeIdCandidate = parsed.nodeId;
 
     const view: ViewName | undefined =
-      viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" || viewCandidate === "sources" ? viewCandidate : undefined;
+      viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" || viewCandidate === "sources" || viewCandidate === "membrane" ? viewCandidate : undefined;
 
     const nodeId: string | null | undefined =
       typeof nodeIdCandidate === "string" ? nodeIdCandidate : nodeIdCandidate === null ? null : undefined;

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-url-state-ts
-- Generated At: 2026-02-18T21:27:51.442Z
+- Generated At: 2026-03-30T18:52:13.443Z
 
 ## Authored
 ### Purpose
@@ -15,40 +15,40 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 Extracted from client/index.ts during Dev Day 50 (12/19). The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL↔state synchronization without page reloads.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.442Z","inputHash":"ac4074f17ff0b27c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:13.443Z","inputHash":"a928f7ccfb7411ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `viewNameToInternal` {#symbol-viewnametointernal}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L16)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L17)
 
 ##### `viewNameToInternal` — Summary
 Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}.
 
 #### `viewNameToUrl` {#symbol-viewnametourl}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L28)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L30)
 
 ##### `viewNameToUrl` — Summary
 Maps an internal {@link ViewName} back to the URL-facing string used in query parameters.
 
 #### `InitialUrlState` {#symbol-initialurlstate}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L40)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L43)
 
 ##### `InitialUrlState` — Summary
 State parsed from the initial URL on page load.
 
 #### `ViewerConfig` {#symbol-viewerconfig}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L47)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L50)
 
 ##### `ViewerConfig` — Summary
 Optional configuration object supplied by the `viewerConfig` JSON block in the HTML template.
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L56)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L59)
 
 ##### `parseInitialState` — Summary
 Parse initial view and node from URL parameters.
@@ -56,7 +56,7 @@ Priority: URL params > viewerConfig > defaults (Sources view for cold start)
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L87)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L103)
 
 ##### `updateUrlState` — Summary
 Update URL to reflect current view and focused node without page reload.
@@ -65,5 +65,6 @@ Uses replaceState to avoid polluting browser history on every interaction.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

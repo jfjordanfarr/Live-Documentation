@@ -97,7 +97,7 @@ export function buildBreadcrumbs(directoryPath: string): Array<{ label: string; 
  */
 export function findContainingDirectory(node: ExplorerNodePayload): string {
   const ROOT_KEY = "__root__";
-  const parts = (node.docRelativePath || "").split("/").filter(Boolean);
+  const parts = (node.id || "").split("/").filter(Boolean);
   if (parts.length <= 1) {
     return ROOT_KEY;
   }

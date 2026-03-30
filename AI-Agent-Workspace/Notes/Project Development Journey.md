@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 28, 2026\)*
+*Status: Active Development (Mar 29, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -1020,6 +1020,22 @@ The Membrane Map received major layout and interaction upgrades, specifically ta
 * **Dynamic SVG Redraw:** Implemented a lightweight redrawConnections() API. This ensures that the bezier connection lines dynamically re-anchor themselves without jank whenever a user expands or collapses a file card, fixing "stray line" visual bugs.  
 * **Legacy UI Purge:** Removed obsolete tuning toggles (like "Alchemy glow" and "Type reference badges") from the DOM, cleaning up the interface as the project fully commits to the Membrane Map aesthetic.
 
+### **Phase LXX: Visual Parity & The Dimming Model (Mar 28-29)**
+
+Date: March 28–29, 2026
+
+Scope: Commit 273
+
+The team focused entirely on bringing the Membrane Map to visual parity with the legacy Local Map, replacing clunky temporary UI with a sophisticated layered dimming model for complex dependency tracing.
+
+* **The Layered Dimming Model:** The team replaced the stopgap "green inset-border" active state with a sophisticated opacity-based dimming system. When a symbol is pinned, the entire graph dims to 30% baseline opacity. Valid connections and pinned elements are restored to full opacity, and hovering further dims unrelated elements to 20%, drastically reducing visual noise during deep traces.  
+* **Interaction Polish:** Fixed a critical order-of-operations bug where clearHoverDimming() was improperly stripping persistent \--connected and \--pinned classes on mouseleave, breaking the multi-hop visualization state.  
+* **Feature Completeness:** Restored several critical legacy features to the new map:  
+  * **Pin-All:** A universal pin-all button was added to all file cards (in both browse and pin-active renderers) to quickly map a file's entire surface area.  
+  * **Reference Badges:** Symbol rows once again display color-coded badges indicating inbound/outbound/type-only roles.  
+  * **Internal Tracing:** Re-enabled the pinning of the \_\_internals\_\_ pseudo-symbol for tracing private implementation details.  
+* **Navigation & Alignment:** Fixed an auto-focus bug that broke treemap expansion when searching from the command palette. The team discovered that strictly deriving the parent directory from docRelativePath (rather than code paths) was essential to keep the DOM hierarchy synced with the data model. Finally, the "Open in Membrane Map" button was added to the Detail Panel, slowly bringing the new map to the forefront of the application.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -1074,7 +1090,8 @@ The Membrane Map received major layout and interaction upgrades, specifically ta
 * **Mar 24 (Phase LXVI):** "Scaffolding the Membrane Map." (Landing the 136-test pure-math engine and confronting the DOM/LTR layout roadblocks).  
 * **Mar 24-25 (Phase LXVII):** "Context Retention & LCA Membranes." (Solving deep-dive disorientation with clickable Least Common Ancestor escape hatches).  
 * **Mar 26 (Phase LXVIII):** "FLIP Animations & Cross-Column Membranes." (Adding smooth transitions, trie-based directory bands, and hover dimming to the dependency flow).  
-* **Mar 27-28 (Phase LXIX):** "Hybrid Membrane Layouts." (Solving the mixed-content area-crushing problem and adding dependency endpoint indicators).
+* **Mar 27-28 (Phase LXIX):** "Hybrid Membrane Layouts." (Solving the mixed-content area-crushing problem and adding dependency endpoint indicators).  
+* **Mar 28-29 (Phase LXX):** "Visual Parity & The Dimming Model." (Refining interaction fidelity with layered opacity states, pin-all actions, and reference badges in the Membrane Map).
 
 ## **Technical Themes & Motifs**
 

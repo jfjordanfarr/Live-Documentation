@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-active-renderer-ts
-- Generated At: 2026-03-29T21:52:09.984Z
+- Generated At: 2026-03-30T18:52:14.542Z
 
 ## Authored
-
 ### Purpose
 
 DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms `PinLayoutResult` into a nested HTML structure of ancestor directory membranes containing topological columns, each with directory-grouped file cards and symbol lists.
@@ -26,50 +24,39 @@ DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms 
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): added pin-all toggle button to flow card headers via `onPinAllSymbols` in `PinActiveCallbacks`, reference badges on symbol rows (`createReferenceBadges` helper), and `--pinned` class on `__internals__` rows.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.984Z","inputHash":"fa1dcc7dfb2acd8a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.542Z","inputHash":"fa1dcc7dfb2acd8a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `PinActiveCallbacks` {#symbol-pinactivecallbacks}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L53)
 
 ##### `PinActiveCallbacks` — Summary
-
 Callbacks for pin-active renderer interactive elements.
 
 #### `PinActiveRenderResult` {#symbol-pinactiverenderresult}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L62)
 
 ##### `PinActiveRenderResult` — Summary
-
 Result from renderPinActiveLayout.
 
 #### `renderPinActiveLayout` {#symbol-renderpinactivelayout}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts#L86)
 - Returns: [`PinActiveRenderResult`](#symbol-pinactiverenderresult)
 - Parameters: `pinLayout`: [`PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult); `nodesById`: `ReadonlyMap`; `callbacks`: [`PinActiveCallbacks`](#symbol-pinactivecallbacks); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `renderPinActiveLayout` — Summary
-
 Render the dependency-flow layout when pins are active.
 
 Creates a horizontal column layout where:
-
 - Upstream (dependency) nodes appear on the left
 - Pinned nodes appear in the center
 - Downstream (dependent) nodes appear on the right
 - Nodes within each column are grouped by directory (membrane)
 
 ##### `renderPinActiveLayout` — Parameters
-
 - `callbacks`: Interaction handlers
 - `nodesById`: Node payload lookup
 - `pinLayout`: Computed dependency-flow layout from computePinLayout
@@ -78,9 +65,7 @@ Creates a horizontal column layout where:
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
 - [`pin-layout.DirectoryBand`](./pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`pin-layout.PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult) (type-only)

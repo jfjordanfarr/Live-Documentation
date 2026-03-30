@@ -239,7 +239,7 @@ function renderDirectoryBand(
 
     const innerGrid = document.createElement("div");
     innerGrid.className = "pa-band-inner";
-    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 320px)`;
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
     innerGrid.style.gridTemplateRows = Array(maxChildRow + 1).fill("auto").join(" ");
 
     for (const child of band.children) {
@@ -259,7 +259,7 @@ function renderDirectoryBand(
     const bandSpan = band.maxColumn - band.minColumn + 1;
     const innerGrid = document.createElement("div");
     innerGrid.className = "pa-band-inner";
-    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 320px)`;
+    innerGrid.style.gridTemplateColumns = `repeat(${bandSpan}, 1fr)`;
 
     for (let col = band.minColumn; col <= band.maxColumn; col++) {
       const nodeIds = band.nodesByColumn.get(col);

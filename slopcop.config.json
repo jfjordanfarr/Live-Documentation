@@ -24,7 +24,8 @@
     ],
     "ignoreGlobs": [
       "tests/integration/fixtures/slopcop-assets/workspace/**",
-      "AI-Agent-Workspace/tmp/**"
+      "AI-Agent-Workspace/tmp/**",
+      "reports/e2e/**"
     ],
     "ignoreTargets": [
       "\\.[a-f0-9]{8,}\\.[a-z0-9]+$",

@@ -86,6 +86,11 @@ function runSafeCommitCheck() {
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
     runNpmScript('Technical debt detection', ['run', 'tech-debt', '--', '--stale-limit', '10']);
 
+    if (flags.includeE2E) {
+      runNpmScript('Explorer visualization build', ['run', 'live-docs:visualize']);
+      runNpmScript('Playwright E2E tests', ['run', 'test:e2e']);
+    }
+
     if (flags.generateReport) {
       const reportModes = resolveReportModes(flags.mode);
       for (const reportMode of reportModes) {
@@ -156,6 +161,7 @@ function parseFlags(argv) {
     'ast';
   let generateReport = coerceBoolean(process.env.npm_config_report) ?? false;
   let includeBenchmarks = coerceBoolean(process.env.npm_config_benchmarks) ?? false;
+  let includeE2E = coerceBoolean(process.env.npm_config_e2e) ?? false;
   const benchmarkArgs = [];
   let reportPreference = 'default';
 
@@ -225,6 +231,16 @@ function parseFlags(argv) {
       continue;
     }
 
+    if (token === '--e2e') {
+      includeE2E = true;
+      continue;
+    }
+
+    if (token === '--no-e2e') {
+      includeE2E = false;
+      continue;
+    }
+
     if (token === '--suite' || token.startsWith('--suite=')) {
       const value = token.includes('=') ? token.split('=', 2)[1] : argv[index + 1];
       if (!value) {
@@ -260,7 +276,7 @@ function parseFlags(argv) {
     generateReport = true;
   }
 
-  return { skipGitStatus, mode, generateReport, includeBenchmarks, benchmarkArgs, reportPreference };
+  return { skipGitStatus, mode, generateReport, includeBenchmarks, includeE2E, benchmarkArgs, reportPreference };
 }
 
 function normalizeMode(candidate) {

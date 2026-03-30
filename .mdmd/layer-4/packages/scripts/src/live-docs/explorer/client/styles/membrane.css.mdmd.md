@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/styles/membrane.css
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/membrane.css
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-membrane-css
-- Generated At: 2026-03-29T21:52:08.956Z
+- Generated At: 2026-03-30T18:52:13.511Z
 
 ## Authored
-
 ### Purpose
 
 Styles for the Membrane Map view: viewport/container layout, membrane (directory) borders at depth-graduated opacity, collapsed directory tiles with hover/focus states, leaf file cards in grid layout, focal overlay panels with symbol pin anchors, SVG connection paths, path breadcrumb bar, and responsive badge sizing.
@@ -27,20 +25,13 @@ Styles for the Membrane Map view: viewport/container layout, membrane (directory
 - [Dev Day 84](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md) complete dimming model rewrite: `.pin-active-root` applies baseline opacity 0.3 to all rows/pins and stroke-opacity 0.08 to connections; `--pinned` and `--connected` elements restore to opacity 1; hover layer further dims to 0.2 with `--participating`/`--highlighted` exceptions. Removed the green inset border on connected rows in favor of the opacity model. Added pin-all button active/inactive CSS, reference badge role-specific styling, and connected pin dot directional coloring.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:08.956Z","inputHash":"9a7a867f30b7268c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:13.511Z","inputHash":"9a7a867f30b7268c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 _No dependencies documented yet_
-
 <!-- LIVE-DOC:END Dependencies -->

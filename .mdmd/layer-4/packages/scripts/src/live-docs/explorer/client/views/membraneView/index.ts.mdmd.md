@@ -1,15 +1,13 @@
 # packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-29T21:52:09.879Z
+- Generated At: 2026-03-30T18:52:14.453Z
 
 ## Authored
-
 ### Purpose
 
 View controller for the Membrane Map, orchestrating layout computation, browse-mode rendering, focal overlay management, pin state transitions, pan/zoom interaction, focus-based directory drill-down, and bidirectional URL state persistence via lz-string compression.
@@ -26,47 +24,35 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): auto-focus bug fix — initial render now derives the parent directory from `selectedNode.docRelativePath` (not `codeRelativePath`) to match the treemap's `docRelativePath`-keyed hierarchy; `trySelectionOnlyUpdate` fast-path declines when auto-focus would change `focusedDirectory`. Also added `openInMembraneMapView` helper and `onPinAllSymbols` callback wiring for both browse and pin-active modes, with detail panel auto-open suppressed on initial load (`{ suppressDetailPanel: true }`).
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.879Z","inputHash":"90b0c3b896717949"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.453Z","inputHash":"90b0c3b896717949"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L52)
 
 ##### `MembraneViewOptions` — Summary
-
 Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
-
 - Type: interface
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L62)
 
 ##### `MembraneViewApi` — Summary
-
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
-
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L83)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
 ##### `createMembraneView` — Summary
-
 Initialise the Membrane Map view and return its public API.
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`compressed-url-state.UrlStateSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.readUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate) (type-only)

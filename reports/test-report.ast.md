@@ -1,7 +1,7 @@
 # Test Report
 
-- **Generated:** 2026-03-10T18:58:57.733Z
-- **Git commit:** 9a6ded52c7666250f4d05f372c119dee640ca222
+- **Generated:** 2026-03-30T19:31:18.072Z
+- **Git commit:** da151a49b57bbea2e4e9148f7ca54e00f744a1b7
 - **Git branch:** main
 - **Benchmark mode:** ast
 
@@ -15,7 +15,7 @@
 
 | TP | FP | FN | Precision | Recall | F1 |
 | - | - | - | - | - | - |
-| 843 | 161 | 1424 | 84.0% | 37.2% | 51.5% |
+| 843 | 161 | 1428 | 84.0% | 37.1% | 51.5% |
 
 - **Fixtures:**
 
@@ -36,7 +36,7 @@
 | Java analytics service with layered modules | java | 12 | 0 | 1 | 100.0% | 92.3% | 96.0% |
 | C# diagnostics reporting sample | csharp | 13 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | C# WebForms hidden field propagation sample | csharp | 6 | 0 | 0 | 100.0% | 100.0% | 100.0% |
-| OkHttp client repository | java | 473 | 72 | 1367 | 86.8% | 25.7% | 39.7% |
+| OkHttp client repository | java | 473 | 72 | 1371 | 86.8% | 25.7% | 39.6% |
 | Ruby module graph for summary reporting | ruby | 5 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | Ruby CLI with layered services | ruby | 7 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | TypeScript Rosetta Stone (cross-language canonical program) | typescript | 12 | 0 | 0 | 100.0% | 100.0% | 100.0% |
@@ -58,4 +58,4 @@
 
 ## Benchmark Artifacts
 
-- ast-accuracy [mode: ast] — recorded 2026-03-10T18:55:59.949Z (AI-Agent-Workspace/tmp/benchmarks/ast-accuracy.ast.json)
+- ast-accuracy [mode: ast] — recorded 2026-03-30T19:27:42.768Z (AI-Agent-Workspace/tmp/benchmarks/ast-accuracy.ast.json)

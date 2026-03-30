@@ -162,13 +162,13 @@ export const layoutConstants: LayoutConstants = {
 
 /**
  * Builds a directory tree from a flat list of explorer nodes, grouping
- * them by their `docRelativePath` segments. Nodes without a directory
- * prefix land at the root.
+ * them by their source-relative path (`node.id`). Nodes without a
+ * directory prefix land at the root.
  */
 export function buildHierarchy(nodes: ExplorerNodePayload[]): DirectoryNode {
   const root: DirectoryNode = { name: "", path: ROOT_KEY, children: new Map(), nodes: [] };
   nodes.forEach(node => {
-    const parts = (node.docRelativePath || "").split("/").filter(Boolean);
+    const parts = (node.id || "").split("/").filter(Boolean);
     if (parts.length === 0) {
       root.nodes.push(node);
       return;
@@ -192,9 +192,9 @@ export function buildHierarchy(nodes: ExplorerNodePayload[]): DirectoryNode {
   return root;
 }
 
-/** Returns the directory key for a node by stripping the filename from `docRelativePath`. */
+/** Returns the directory key for a node by stripping the filename from `node.id`. */
 export function getDirectoryKey(node: ExplorerNodePayload): string {
-  const parts = (node.docRelativePath || "").split("/").filter(Boolean);
+  const parts = (node.id || "").split("/").filter(Boolean);
   if (parts.length <= 1) {
     return ROOT_KEY;
   }

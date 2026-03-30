@@ -320,10 +320,10 @@ export function computePinLayout(
 
   for (const [id, col] of columns) {
     const payload = nodesById.get(id);
-    // Use docRelativePath so directories match the browse-mode hierarchy
-    // (which is built from docRelativePath, not codeRelativePath).
-    const dir = payload?.docRelativePath
-      ? parentDirectory(payload.docRelativePath)
+    // Use node.id so directories match the browse-mode hierarchy
+    // (which is built from source-relative node.id paths).
+    const dir = payload?.id
+      ? parentDirectory(payload.id)
       : "";
 
     let role: "upstream" | "pinned" | "downstream";
@@ -376,9 +376,9 @@ export function computePinLayout(
   }
 
   // Step 8: Compute LCA and ancestor chain
-  // Use docRelativePath so directories match the browse-mode hierarchy.
+  // Use node.id so directories match the browse-mode hierarchy.
   const relevantPaths = [...relevantNodeIds]
-    .map(id => nodesById.get(id)?.docRelativePath ?? id);
+    .map(id => nodesById.get(id)?.id ?? id);
   const lcaDirectory = computeLCA(relevantPaths);
   const ancestorChain = buildAncestorChain(lcaDirectory);
 

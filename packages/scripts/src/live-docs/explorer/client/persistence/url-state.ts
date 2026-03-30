@@ -6,6 +6,7 @@
  */
 
 import type { ViewName } from "../types";
+import { decompressSnapshot } from "./compressed-url-state";
 
 /**
  * Map between URL/config view names and internal state view names.
@@ -18,6 +19,7 @@ export const viewNameToInternal = (name: string): ViewName => {
     case "local": return "map";
     case "force": return "graph";
     case "sources": return "sources";
+    case "membrane": return "membrane";
     case "circuit":
     default:
       return "circuit";
@@ -30,6 +32,7 @@ export const viewNameToUrl = (name: ViewName): string => {
     case "map": return "local";
     case "graph": return "force";
     case "sources": return "sources";
+    case "membrane": return "membrane";
     case "circuit":
     default:
       return "circuit";
@@ -55,6 +58,19 @@ export interface ViewerConfig {
  */
 export const parseInitialState = (viewerConfig: ViewerConfig | null): InitialUrlState => {
   const params = new URLSearchParams(window.location.search);
+
+  // Compressed state (?s=) takes highest priority — it encodes the full
+  // Membrane Map snapshot including view, pins, expanded dirs, transform.
+  const compressedParam = params.get("s");
+  if (compressedParam) {
+    const snapshot = decompressSnapshot(compressedParam);
+    return {
+      view: snapshot.view,
+      nodeId: snapshot.selectedNodeId,
+      hasUrlState: true
+    };
+  }
+
   const urlView = params.get("view");
   const urlNode = params.get("node");
 

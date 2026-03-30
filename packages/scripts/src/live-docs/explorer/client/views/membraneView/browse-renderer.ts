@@ -60,6 +60,10 @@ export interface BrowseRenderCallbacks {
   onTogglePin: (nodeId: string, symbol: string) => void;
   onExpandCard: (nodeId: string) => void;
   onPinAllSymbols: (nodeId: string) => void;
+  /** Explore cross-boundary dependencies for a collapsed directory. */
+  onExploreDirectory: (id: string) => void;
+  /** Navigate focus to a specific ancestor directory. */
+  onNavigateToDirectory: (id: string) => void;
 }
 
 /** Result from renderBrowseMode, including any card-grid anchors. */
@@ -264,6 +268,23 @@ function renderNode(
         metrics.appendChild(createBadge(`${agg.inboundDepCount} in`, "inbound"));
       }
       membrane.appendChild(metrics);
+    }
+
+    // "Explore" button — shown when the tile is large enough and has
+    // cross-boundary dependencies.  Clicking it pins the directory's
+    // contributing files and jumps straight to pin-active mode.
+    const hasCrossBoundary = agg && (agg.outboundDepCount > 0 || agg.inboundDepCount > 0);
+    if (hasCrossBoundary && tileW >= 120 && tileH >= 60) {
+      const exploreBtn = document.createElement("button");
+      exploreBtn.className = "membrane__explore-btn";
+      exploreBtn.type = "button";
+      exploreBtn.textContent = "Explore ⇗";
+      exploreBtn.title = `Explore ${agg.outboundDepCount} outbound + ${agg.inboundDepCount} inbound cross-boundary dependencies`;
+      exploreBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        callbacks.onExploreDirectory(node.id);
+      });
+      membrane.appendChild(exploreBtn);
     }
 
     membrane.title = `${node.id} — click to expand`;

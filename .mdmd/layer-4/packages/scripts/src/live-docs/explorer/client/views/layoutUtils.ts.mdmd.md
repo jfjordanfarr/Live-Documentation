@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2026-03-24T03:05:19.214Z
+- Generated At: 2026-03-30T18:52:13.717Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.214Z","inputHash":"3d622b048facdc33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:13.717Z","inputHash":"9246e9d989a1fefb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}
@@ -89,8 +89,8 @@ Singleton instance of the layout constants used by the Circuit Board view.
 
 ##### `buildHierarchy` — Summary
 Builds a directory tree from a flat list of explorer nodes, grouping
-them by their `docRelativePath` segments. Nodes without a directory
-prefix land at the root.
+them by their source-relative path (`node.id`). Nodes without a
+directory prefix land at the root.
 
 #### `getDirectoryKey` {#symbol-getdirectorykey}
 - Type: function
@@ -98,7 +98,7 @@ prefix land at the root.
 - Parameters: `node`: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `getDirectoryKey` — Summary
-Returns the directory key for a node by stripping the filename from `docRelativePath`.
+Returns the directory key for a node by stripping the filename from `node.id`.
 
 #### `measureDirectoryTree` {#symbol-measuredirectorytree}
 - Type: function

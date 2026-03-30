@@ -1536,11 +1536,6 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
-    "target": "okhttp-tests/src/test/java/okhttp3/UrlComponentEncodingTester.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
     "target": "okhttp-tls/src/main/java/okhttp3/tls/HandshakeCertificates.java",
     "relation": "references"
   },
@@ -1597,22 +1592,12 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
     "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/http2/PushObserver.java",
-    "relation": "implements"
+    "relation": "references"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
     "target": "okhttp/src/main/java/okhttp3/internal/Internal.java",
     "relation": "references"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/NamedRunnable.java",
-    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
@@ -1647,12 +1632,12 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
     "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
-    "relation": "implements"
+    "relation": "references"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
-    "relation": "implements"
+    "relation": "references"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
@@ -1716,16 +1701,6 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp-tests/src/test/java/okhttp3/DelegatingServerSocketFactory.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "okhttp-tests/src/test/java/okhttp3/DelegatingSocketFactory.java",
     "relation": "implements"
   },
@@ -1748,11 +1723,6 @@
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "okhttp-tests/src/test/java/okhttp3/internal/http/RecordingProxySelector.java",
     "relation": "references"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp-tests/src/test/java/okhttp3/internal/http2/BaseTestHandler.java",
-    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
@@ -1882,7 +1852,7 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "okhttp/src/main/java/okhttp3/EventListener.java",
-    "relation": "implements"
+    "relation": "references"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
@@ -1906,38 +1876,8 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/cache/FaultHidingSink.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/http2/PushObserver.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/NamedRunnable.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
     "relation": "references"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketReader.java",
-    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
@@ -1972,21 +1912,16 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
     "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
-    "relation": "implements"
+    "relation": "references"
   },
   {
-    "source": "okhttp-tests/src/test/java/okhttp3/CallTest.java",
-    "target": "okhttp/src/main/java/okhttp3/WebSocketListener.java",
+    "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/DelegatingServerSocketFactory.java",
     "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
-    "target": "mockwebserver/src/main/java/okhttp3/internal/duplex/MwsDuplexAccess.java",
-    "relation": "implements"
-  },
-  {
-    "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
-    "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/DelegatingSocketFactory.java",
     "relation": "implements"
   },
   {
@@ -2002,6 +1937,11 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
     "target": "okhttp/src/main/java/okhttp3/Callback.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
+    "target": "okhttp/src/main/java/okhttp3/CookieJar.java",
     "relation": "implements"
   },
   {
@@ -2038,6 +1978,11 @@
     "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
     "target": "okhttp/src/main/java/okhttp3/internal/tls/CertificateChainCleaner.java",
     "relation": "references"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
+    "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketReader.java",
+    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/CertificateChainCleanerTest.java",
@@ -3386,8 +3331,28 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "mockwebserver/src/main/java/okhttp3/mockwebserver/Dispatcher.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
     "target": "okhttp-testing-support/src/main/java/okhttp3/TestUtil.java",
     "relation": "references"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/CacheTest.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/DelegatingServerSocketFactory.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/internal/http2/BaseTestHandler.java",
+    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
@@ -3396,8 +3361,33 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp-tests/src/test/java/okhttp3/UrlComponentEncodingTester.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/Callback.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/EventListener.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
     "target": "okhttp/src/main/java/okhttp3/Headers.java",
     "relation": "references"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/Interceptor.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/internal/cache/FaultHidingSink.java",
+    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
@@ -3427,7 +3417,12 @@
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
     "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Connection.java",
-    "relation": "references"
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/internal/http2/Http2Reader.java",
+    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
@@ -3461,8 +3456,33 @@
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/internal/NamedRunnable.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
     "target": "okhttp/src/main/java/okhttp3/internal/Util.java",
     "relation": "references"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/internal/ws/WebSocketReader.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/RequestBody.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/ResponseBody.java",
+    "relation": "implements"
+  },
+  {
+    "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2ConnectionTest.java",
+    "target": "okhttp/src/main/java/okhttp3/WebSocketListener.java",
+    "relation": "implements"
   },
   {
     "source": "okhttp-tests/src/test/java/okhttp3/internal/http2/Http2Test.java",

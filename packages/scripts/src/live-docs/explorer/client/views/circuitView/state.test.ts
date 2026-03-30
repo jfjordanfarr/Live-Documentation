@@ -175,12 +175,12 @@ describe("findContainingDirectory", () => {
   });
 
   it("returns parent directory for nested files", () => {
-    const node = createNode("file.ts", "packages/shared/src/file.ts");
+    const node = createNode("packages/shared/src/file.ts", "packages/shared/src/file.ts");
     expect(findContainingDirectory(node)).toBe("packages/shared/src");
   });
 
-  it("returns __root__ for empty docRelativePath", () => {
-    const node = createNode("file.ts", "");
+  it("returns __root__ for empty id", () => {
+    const node = createNode("", "");
     expect(findContainingDirectory(node)).toBe("__root__");
   });
 });
