@@ -1,15 +1,13 @@
 # tests/e2e/membrane-card-expand-persistence.spec.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-card-expand-persistence.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-card-expand-persistence-spec-ts
-- Generated At: 2026-03-31T14:17:44.634Z
+- Generated At: 2026-03-31T15:43:43.553Z
 
 ## Authored
-
 ### Purpose
 
 Playwright E2E regression suite for `expandedCards` URL-state persistence in the Membrane Map: verifies that expanding a file card writes the card set into the `?s=` compressed URL parameter and that reloading the page restores all previously-expanded cards.
@@ -22,37 +20,25 @@ Playwright E2E regression suite for `expandedCards` URL-state persistence in the
 - After the fix landed in `compressed-url-state.ts` (new `c?` field) and `membraneView/index.ts` (seed from `urlSnapshot.expandedCards`, persist in `persistToUrl()`), all three tests turned green in the same session without modification.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T14:17:44.634Z","inputHash":"83d7666b7c77fb10"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T15:43:43.553Z","inputHash":"83d7666b7c77fb10"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - `@playwright/test` - `expect`, `test`
 - [`helpers.expandDirectory`](./helpers.ts.mdmd.md#symbol-expanddirectory)
 - [`helpers.goToMembraneMap`](./helpers.ts.mdmd.md#symbol-gotomembranemap)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
 _No targets documented yet_
-
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->

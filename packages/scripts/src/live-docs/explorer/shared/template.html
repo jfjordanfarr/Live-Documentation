@@ -31,13 +31,13 @@
       <div class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
         <span class="nav-icon">📊</span><span>Knowledge Sources</span>
       </div>
-      <div class="nav-item active" data-view="circuit" onclick="switchView(event, 'circuit')">
+      <div class="nav-item" data-view="circuit" onclick="switchView(event, 'circuit')">
         <span class="nav-icon">⚡</span><span>Circuit Board</span>
       </div>
       <div class="nav-item" data-view="map" onclick="switchView(event, 'map')">
         <span class="nav-icon">🗺️</span><span>Local Map</span>
       </div>
-      <div class="nav-item" data-view="membrane" onclick="switchView(event, 'membrane')">
+      <div class="nav-item active" data-view="membrane" onclick="switchView(event, 'membrane')">
         <span class="nav-icon">🧬</span><span>Membrane Map</span>
       </div>
       <div class="nav-item" data-view="graph" onclick="switchView(event, 'graph')">
@@ -162,7 +162,7 @@
       <div id="sources-container" class="sources-view"></div>
     </div>
 
-    <div id="view-circuit" class="view-container active">
+    <div id="view-circuit" class="view-container">
       <div id="circuit-viewport">
         <div id="circuit-container" class="dom-layer"></div>
         <div id="circuit-connections" class="connections-layer"></div>
@@ -216,7 +216,7 @@
       </div>
     </div>
 
-    <div id="view-membrane" class="view-container">
+    <div id="view-membrane" class="view-container active">
       <div id="membrane-viewport">
         <div id="membrane-container"></div>
         <div id="membrane-connections"></div>

@@ -10,8 +10,8 @@ import { decompressSnapshot } from "./compressed-url-state";
 
 /**
  * Map between URL/config view names and internal state view names.
- * URL uses: circuit, local, force, sources (matches config schema)
- * Internal uses: circuit, map, graph, sources
+ * URL uses: circuit, local, membrane, force, sources (matches config schema)
+ * Internal uses: circuit, map, membrane, graph, sources
  */
 /** Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}. */
 export const viewNameToInternal = (name: string): ViewName => {
@@ -54,7 +54,7 @@ export interface ViewerConfig {
 
 /**
  * Parse initial view and node from URL parameters.
- * Priority: URL params > viewerConfig > defaults (Sources view for cold start)
+ * Priority: URL params > viewerConfig > defaults (Membrane view for cold start)
  */
 export const parseInitialState = (viewerConfig: ViewerConfig | null): InitialUrlState => {
   const params = new URLSearchParams(window.location.search);
@@ -86,14 +86,14 @@ export const parseInitialState = (viewerConfig: ViewerConfig | null): InitialUrl
   // Fall back to viewerConfig
   if (viewerConfig) {
     return {
-      view: viewerConfig.defaultView ? viewNameToInternal(viewerConfig.defaultView) : "map",
+      view: viewerConfig.defaultView ? viewNameToInternal(viewerConfig.defaultView) : "membrane",
       nodeId: viewerConfig.initialFocusNode ?? null,
       hasUrlState: false
     };
   }
 
-  // Defaults: Knowledge Sources is the cold-start landing for first-time visitors
-  return { view: "sources", nodeId: null, hasUrlState: false };
+  // Defaults: Membrane Map is the cold-start landing for first-time visitors.
+  return { view: "membrane", nodeId: null, hasUrlState: false };
 };
 
 /**
@@ -112,9 +112,11 @@ export const updateUrlState = (view: ViewName, nodeId: string | null): void => {
   params.delete("node");
 
   // Set new params (skip defaults to keep URLs clean)
-  // Local Map ("local") is the default, so omit it from URL
+  // Membrane is the default cold-start view, but node-only legacy URLs
+  // still imply Local Map, so only omit the view when Membrane has no node.
   const urlViewName = viewNameToUrl(view);
-  if (urlViewName !== "local") {
+  const canOmitView = urlViewName === "membrane" && !nodeId;
+  if (!canOmitView) {
     params.set("view", urlViewName);
   }
   if (nodeId) {

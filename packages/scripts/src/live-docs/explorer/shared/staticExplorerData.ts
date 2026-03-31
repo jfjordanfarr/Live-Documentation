@@ -81,8 +81,8 @@ export interface StaticExplorerProvenance {
  * without requiring external configuration files.
  */
 export interface StaticExplorerViewerConfig {
-    /** Default view to display on load (circuit, local, force). */
-    defaultView: "circuit" | "local" | "force";
+    /** Default view to display on load (circuit, local, membrane, force). */
+    defaultView: "circuit" | "local" | "membrane" | "force";
 
     /** Initial node to focus in Local Map view (code path). */
     initialFocusNode?: string;

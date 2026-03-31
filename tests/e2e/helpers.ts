@@ -36,7 +36,9 @@ export async function pinAllOnCard(
   page: Page,
   nodeId: string,
 ): Promise<void> {
-  const card = page.locator(`.membrane-card[data-id="${nodeId}"]`);
+  const card = page.locator(
+    `.membrane-card[data-id="${nodeId}"], .pin-active-card[data-id="${nodeId}"]`,
+  );
   await card.waitFor({ state: "visible", timeout: 5_000 });
   await card.locator('[title="Pin all symbols"]').click();
   await page.waitForTimeout(600);

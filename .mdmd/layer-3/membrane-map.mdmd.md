@@ -10,11 +10,18 @@
 
 ### Purpose
 
-Document the Membrane Map: the planned successor to the Circuit Board and Local Map Explorer views. The Membrane Map unifies directory-level browsing and symbol-level exploration into a single zoomable treemap where directories render as nested containing rectangles ("membranes"), files render as cards inside their directory membrane, and dependency connections pierce membrane boundaries to show cross-directory coupling.
+Document the Membrane Map: the current default Explorer view and the in-progress replacement for the Circuit Board and Local Map views. The Membrane Map unifies directory-level browsing and symbol-level exploration into a single zoomable treemap where directories render as nested containing rectangles ("membranes"), files render as cards inside their directory membrane, and dependency connections pierce membrane boundaries to show cross-directory coupling.
 
 ### Design Origin
 
 The Membrane Map concept emerged from Dev Day 79 (2026-03-22.1.md) when a misunderstanding about the Circuit Board's sibling-directory rendering led to a fundamental redesign insight: instead of navigating between separate macro (Circuit Board) and micro (Local Map) views, a single spatial substrate can support multiple levels of detail depending on the user's focus.
+
+### Current Status
+
+- Membrane is now the cold-start default in the static Explorer, but Circuit Board and Local Map still ship while Step 11 phase-out work continues.
+- Shareable Membrane sessions restore through the compressed `?s=` payload and currently round-trip view, selected node, pins, expanded directories, expanded cards, transform, and display filters.
+- Broader Explorer UI and navigation fallback still persist through versioned localStorage when no explicit URL state is present.
+- Playwright coverage is landed and currently spans 12 spec files / 25 tests, including browse mode, pin-active layout, restore behavior, multi-focal/path seeding, default-view behavior, and pin-active visual stability across reload.
 
 ### Core Concepts
 
@@ -77,6 +84,14 @@ Pins can be populated by multiple strategies — all produce the same data struc
 
 The pathfinder is a **pin population strategy**, not a rendering mode. BFS produces an ordered set of `(nodeId, symbol)` pairs that get injected into the pin set with hop-index metadata. The standard multi-pin renderer draws them; hop badges and the breadcrumb bar are optional decorations on ordered pins. This means the pathfinder UI is desirable (for CLI parity with `live-docs:inspect --from --to`) but not architecturally load-bearing — if it causes implementation difficulty, it can be deferred without blocking other features.
 
+### Persistence Model
+
+Membrane-specific share state and broader cross-session fallback are intentionally split:
+
+- **Compressed URL state** (`compressed-url-state.ts`) is the shareable representation for Membrane sessions. It round-trips view, selected node, pins (including hop metadata), expanded directories, expanded cards, transform, and display filters via `?s=`.
+- **Versioned localStorage** (`local-storage.ts`) persists Explorer UI and navigation fallback across sessions when no explicit URL state is present.
+- **Startup precedence** is explicit URL state (`?s=` or legacy `?view=` / `?node=`) → localStorage → viewerConfig → defaults.
+
 ### Namespace Mode (C# Enhancement)
 
 For languages where namespaces do not align with directories (primarily C#), the Membrane Map supports an alternative hierarchy function that groups files by namespace rather than directory:
@@ -120,7 +135,7 @@ When many connections cross the same membrane boundary, individual lines become 
 
 ### Phase-Out Plan
 
-The Membrane Map is the planned successor to both Circuit Board and Local Map. The transition is additive:
+The Membrane Map is now the default cold-start Explorer surface and the in-progress replacement for both Circuit Board and Local Map. The transition remains additive:
 
 1. **Prototype phase**: Build the Membrane Map as a new view alongside existing Circuit Board and Local Map, using those as reference implementations for correctness checks.
 2. **Feature parity phase**: Ensure all existing Circuit Board and Local Map functionality is available in the Membrane Map.
@@ -141,17 +156,20 @@ This is an adapter-level enhancement documented in [Polyglot Adapters](polyglot-
 
 ### Resolved Design Decisions
 
-| #   | Question                                   | Decision                                                                                                                                                                                    |
-| --- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | Discrete modes or continuous spectrum?     | Continuous pin model. No mode picker. Browse→Selected→Partial Pins→All Pins. Compare/Path emerge from multi-focal pinning / active BFS.                                                     |
-| Q2  | Path mode: membrane substrate or columns?  | Membrane substrate. Common membrane (LCA) + numbered hop badges + breadcrumb bar + animated pulse.                                                                                          |
-| Q7  | Pin directionality with cycles?            | Preserve L/R grammar (Option B). Back-connections rendered as French Corset stubs (Approach X). Hover-promotion deferred.                                                                   |
-| Q8  | URL state sharing?                         | Always `lz-string` into single `?s=` param. Comprehensive state covering all views, filters, tuning, pins, path. Backward-compatible redirect from legacy `?view=&node=` params.            |
-| Q9  | Pathfinder: separate mode or pin strategy? | Pin population strategy. BFS results inject ordered pins into the pin set. Multi-pin renderer handles display. Pathfinder UI preserved for CLI parity but not architecturally load-bearing. |
+| #   | Question                                   | Decision                                                                                                                                                                                                                                                                             |
+| --- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Q1  | Discrete modes or continuous spectrum?     | Continuous pin model. No mode picker. Browse→Selected→Partial Pins→All Pins. Compare/Path emerge from multi-focal pinning / active BFS.                                                                                                                                              |
+| Q2  | Path mode: membrane substrate or columns?  | Membrane substrate. Common membrane (LCA) + numbered hop badges + breadcrumb bar + animated pulse.                                                                                                                                                                                   |
+| Q7  | Pin directionality with cycles?            | Preserve L/R grammar (Option B). Back-connections rendered as French Corset stubs (Approach X). Hover-promotion deferred.                                                                                                                                                            |
+| Q8  | URL state sharing?                         | Use versioned `?s=` payloads for shareable Membrane state while retaining versioned localStorage for broader Explorer UI/navigation fallback. Startup precedence is explicit URL state → localStorage → viewerConfig → defaults. Legacy `?view=` / `?node=` params remain tolerated. |
+| Q9  | Pathfinder: separate mode or pin strategy? | Pin population strategy. BFS results inject ordered pins into the pin set. Multi-pin renderer handles display. Pathfinder UI preserved for CLI parity but not architecturally load-bearing.                                                                                          |
 
 ### Open Questions
 
-- **Card LTR rearrangement for dependency flow** — The primary remaining challenge for Commit 1. When pins are activated on leaf-directory file cards, the cards must rearrange themselves horizontally to respect the L→R dependency design language (green inbound = left, blue outbound = right). The user explicitly rejected forcing front-trace Bézier curves as a workaround — the cards themselves must move. This is the gate blocking visual parity with the Local Map. RTL language support (flipping dependency flow direction) should influence the rearrangement architecture. See WCAG AA compliance planning below.
+- **Browse-mode edge progressive disclosure** — Bundle math and SVG rendering exist, but browse-mode controller wiring remains intentionally disabled until hover/progressive-disclosure avoids noisy thick inter-tile arcs.
+- **Stale persisted-state reconciliation** — Invalid directories, nodes, or pins referenced by URL/localStorage currently rely on best-effort misses rather than explicit pruning/reset. The desired UX for moved or deleted artifacts is still open.
+- **Legacy-view decoupling** — Membrane still imports `DirectoryAggregate` from `circuitView/aggregation.ts`; extracting or re-homing that type remains the architectural blocker before old-view retirement can proceed cleanly.
+- **Detail-level wiring** — `resolveDetailLevels()` exists and is tested, but the live Membrane renderers do not yet consume it.
 - **WCAG AA accessibility** — Raised as a "strong strong bonus" rather than a hard requirement, but planning for compliance early enables wiser design choices before redesigning later. Vanilla HTML/CSS layout techniques are preferred over DOM-heavy absolute positioning for screen reader compatibility. RTL language support is a forward-planning consideration.
 - **Hub nodes**: Files with very high connection counts create visual clutter even with edge bundling. May need dedicated "hub" rendering (minimised card with radial connection summary).
 - **Performance**: Large workspaces (1000+ files) require lazy rendering — only expand membranes that are visible in the viewport. The current Circuit Board `innerHTML = ""` teardown/rebuild pattern must be replaced with persistent DOM elements that resize.
@@ -166,7 +184,7 @@ The testing strategy is:
 
 1. **Pure-math tests** (Vitest) — Layout, hierarchy, detail-levels, edge-bundling, pin-state, routing, SVG connection aggregation, URL state compression. 130+ tests covering algorithmic correctness without any DOM dependency.
 2. **Visual playtesting** (Playwright MCP) — Manual screenshot-based exploration before creating automated E2E tests. Multiple rounds of user-driven visual feedback (Turns 24–32) caught focus-zoom, membrane sizing, and connection rendering issues that no unit test could surface.
-3. **Playwright E2E tests** (planned) — Automated screenshot regression tests, to be created after visual design stabilises.
+3. **Playwright E2E tests** — Landed and actively expanded. The current suite covers browse mode, pin-active layout, containment, dimming, directory bands, URL restore, expanded-card persistence, multi-focal/path-as-pins, default-view behavior, and pin-active visual stability across reload.
 
 ## System References
 
@@ -197,15 +215,19 @@ The testing strategy is:
 
 #### Persistence
 
-- `packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts` — lz-string URL state: versioned `ExplorerUrlPayload`, `compressSnapshot()`/`decompressSnapshot()`
+- `packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts` — Shareable Membrane URL state: versioned compressed payloads for pins, expansions, transform, and display filters
+- `packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts` — Legacy URL parsing + cold-start/default-view semantics for Explorer boot
+- `packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts` — Versioned UI and navigation fallback persisted across browser sessions
 
 ### Related Architecture
 
 - [Live Documentation Explorer](live-documentation-explorer.mdmd.md) — Parent component; the Membrane Map is a view within the Explorer
 - [Polyglot Adapters](polyglot-adapters.mdmd.md) — Nested type extraction enhancement needed for Membrane Map hierarchical pins
+- [Membrane Map Execution Plan](../../AI-Agent-Workspace/Notes/membrane-map-execution-plan.md) — Temporary committed working plan for remaining Step 11/12 convergence; remove once the architecture doc fully absorbs it
 
 ## Evidence
 
 - Design origin: [2026-03-22.1.md chat log](../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-22.1.md) — full design conversation including barrel-as-membrane, namespace mode, and cross-language pressure testing
 - Implementation origin: [2026-03-23.1.md chat log](../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) — 7,028-line implementation marathon: 12-step execution plan, 5 design forks resolved, 826/826 tests green, iterative visual playtesting
+- Convergence follow-up: [2026-03-31.1.md chat log](../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) — expanded-card URL persistence, multi-focal/path E2E, Membrane default-view promotion, visual stability coverage, and stale-state/persistence analysis
 - UC-094 (Unified View Continuum), UC-095 (Continuous Pin Spectrum), and UC-087 (Circuit Board Reimagined) in `user-use-case-census.md`
