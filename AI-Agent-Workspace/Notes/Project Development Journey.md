@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 29, 2026\)*
+*Status: Active Development (Mar 30, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -1036,6 +1036,18 @@ The team focused entirely on bringing the Membrane Map to visual parity with the
   * **Internal Tracing:** Re-enabled the pinning of the \_\_internals\_\_ pseudo-symbol for tracing private implementation details.  
 * **Navigation & Alignment:** Fixed an auto-focus bug that broke treemap expansion when searching from the command palette. The team discovered that strictly deriving the parent directory from docRelativePath (rather than code paths) was essential to keep the DOM hierarchy synced with the data model. Finally, the "Open in Membrane Map" button was added to the Detail Panel, slowly bringing the new map to the forefront of the application.
 
+### **Phase LXXI: Visual Regression & The Playwright Suite (Mar 30\)**
+
+Date: March 30, 2026
+
+Scope: Commit 274
+
+The team addressed the technical debt of "manual screenshot debugging" accrued during Phase LXVI by introducing a robust End-to-End (E2E) visual regression suite using Playwright.
+
+* **The Playwright Infrastructure:** Scaffolded tests/e2e/playwright.config.ts and shared helpers.ts utilities to support headless Chromium testing, auto-starting the local HTTP server to guarantee isolation.  
+* **Locking in the Visual Reality:** Authored 16 comprehensive Playwright tests specifically targeting the precise visual behaviors established over the previous week (Dev Days 80-85). This suite covers critical interactions across four categories: membrane-containment, membrane-card-interactions, membrane-dimming, and membrane-directory-bands.  
+* **The Overflow Fix:** Applying the rigors of automated visual testing immediately surfaced and fixed a pin-active card overflow bug. The team replaced fixed 320px column assignments with a fluid 1fr CSS grid and added max-width: 100% guards, ensuring file cards remain perfectly contained within their directory bands even under deep traversal.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -1091,7 +1103,8 @@ The team focused entirely on bringing the Membrane Map to visual parity with the
 * **Mar 24-25 (Phase LXVII):** "Context Retention & LCA Membranes." (Solving deep-dive disorientation with clickable Least Common Ancestor escape hatches).  
 * **Mar 26 (Phase LXVIII):** "FLIP Animations & Cross-Column Membranes." (Adding smooth transitions, trie-based directory bands, and hover dimming to the dependency flow).  
 * **Mar 27-28 (Phase LXIX):** "Hybrid Membrane Layouts." (Solving the mixed-content area-crushing problem and adding dependency endpoint indicators).  
-* **Mar 28-29 (Phase LXX):** "Visual Parity & The Dimming Model." (Refining interaction fidelity with layered opacity states, pin-all actions, and reference badges in the Membrane Map).
+* **Mar 28-29 (Phase LXX):** "Visual Parity & The Dimming Model." (Refining interaction fidelity with layered opacity states, pin-all actions, and reference badges in the Membrane Map).  
+* **Mar 30 (Phase LXXI):** "Visual Regression & The Playwright Suite." (Eliminating manual visual debugging by locking in interactions with Playwright E2E tests).
 
 ## **Technical Themes & Motifs**
 

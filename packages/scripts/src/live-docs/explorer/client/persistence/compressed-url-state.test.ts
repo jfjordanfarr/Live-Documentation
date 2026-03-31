@@ -55,6 +55,21 @@ describe("snapshotToPayload", () => {
     expect(payload.e).toHaveLength(2);
   });
 
+  it("includes expanded cards when non-empty", () => {
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      expandedCards: new Set(["packages/shared/src/types.ts", "packages/server/src/index.ts"]),
+    };
+    const payload = snapshotToPayload(snap);
+    expect(payload.c).toEqual(expect.arrayContaining(["packages/shared/src/types.ts", "packages/server/src/index.ts"]));
+    expect(payload.c).toHaveLength(2);
+  });
+
+  it("omits expanded cards when empty", () => {
+    const payload = snapshotToPayload(DEFAULT_SNAPSHOT);
+    expect(payload.c).toBeUndefined();
+  });
+
   it("includes transform when non-default", () => {
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
@@ -109,6 +124,7 @@ describe("payloadToSnapshot", () => {
       n: "foo.ts",
       p: [{ n: "a.ts", s: "X", h: 0 }],
       e: ["dir1", "dir2"],
+      c: ["card1.ts", "card2.ts"],
       t: [10, 20, 2],
       f: [0, 1],
     };
@@ -119,6 +135,7 @@ describe("payloadToSnapshot", () => {
     expect(snap.pinSet.entries[0].nodeId).toBe("a.ts");
     expect(snap.pinSet.entries[0].hopIndex).toBe(0);
     expect(snap.expandedDirectories).toEqual(new Set(["dir1", "dir2"]));
+    expect(snap.expandedCards).toEqual(new Set(["card1.ts", "card2.ts"]));
     expect(snap.transform).toEqual({ x: 10, y: 20, k: 2 });
     expect(snap.filters).toEqual({ showTests: false, showAssets: true });
   });
@@ -140,6 +157,7 @@ describe("payloadToSnapshot", () => {
     expect(snap.view).toBe("sources");
     expect(snap.pinSet).toEqual(EMPTY_PIN_SET);
     expect(snap.expandedDirectories.size).toBe(0);
+    expect(snap.expandedCards.size).toBe(0);
   });
 });
 
@@ -168,6 +186,7 @@ describe("compress/decompress round-trip", () => {
         ],
       },
       expandedDirectories: new Set(["packages", "packages/server", "packages/server/src"]),
+      expandedCards: new Set(["packages/server/src/index.ts", "packages/server/src/main.ts"]),
       transform: { x: 150.5, y: -42.3, k: 1.75 },
       filters: { showTests: false, showAssets: false },
     };
@@ -180,6 +199,7 @@ describe("compress/decompress round-trip", () => {
     expect(restored.pinSet.entries).toHaveLength(3);
     expect(restored.pinSet.entries[1].hopIndex).toBe(1);
     expect(restored.expandedDirectories).toEqual(original.expandedDirectories);
+    expect(restored.expandedCards).toEqual(original.expandedCards);
     expect(restored.transform.x).toBeCloseTo(150.5);
     expect(restored.transform.y).toBeCloseTo(-42.3);
     expect(restored.transform.k).toBeCloseTo(1.75);

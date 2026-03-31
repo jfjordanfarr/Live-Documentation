@@ -51,6 +51,8 @@ export interface CompressedPayload {
   t?: [number, number, number];
   /** Filters: [showTests, showAssets]. Stored as 0/1 for compactness. */
   f?: [number, number];
+  /** Expanded file card IDs. */
+  c?: string[];
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -65,6 +67,7 @@ export interface UrlStateSnapshot {
   selectedNodeId: string | null;
   pinSet: PinSet;
   expandedDirectories: ReadonlySet<string>;
+  expandedCards: ReadonlySet<string>;
   transform: { x: number; y: number; k: number };
   filters: { showTests: boolean; showAssets: boolean };
 }
@@ -75,6 +78,7 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   selectedNodeId: null,
   pinSet: EMPTY_PIN_SET,
   expandedDirectories: new Set(),
+  expandedCards: new Set(),
   transform: { x: 0, y: 0, k: 1 },
   filters: { showTests: true, showAssets: true },
 };
@@ -99,6 +103,9 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   }
   if (snapshot.expandedDirectories.size > 0) {
     payload.e = [...snapshot.expandedDirectories];
+  }
+  if (snapshot.expandedCards.size > 0) {
+    payload.c = [...snapshot.expandedCards];
   }
   const { x, y, k } = snapshot.transform;
   if (x !== 0 || y !== 0 || k !== 1) {
@@ -133,6 +140,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
   const selectedNodeId = payload.n ?? null;
   const pinSet = payload.p ? deserializePins(payload.p) : EMPTY_PIN_SET;
   const expandedDirectories = new Set(payload.e ?? []);
+  const expandedCards = new Set(payload.c ?? []);
   const transform = payload.t
     ? { x: payload.t[0], y: payload.t[1], k: payload.t[2] }
     : { ...DEFAULT_SNAPSHOT.transform };
@@ -140,7 +148,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : { ...DEFAULT_SNAPSHOT.filters };
 
-  return { view, selectedNodeId, pinSet, expandedDirectories, transform, filters };
+  return { view, selectedNodeId, pinSet, expandedDirectories, expandedCards, transform, filters };
 }
 
 /**

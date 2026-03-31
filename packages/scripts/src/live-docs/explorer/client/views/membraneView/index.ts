@@ -107,7 +107,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
   // Tracks which file cards in the card-grid are expanded to show symbols.
   // Cards start collapsed (compact: name, path, internals) and expand on click.
-  const expandedCards = new Set<string>();
+  const expandedCards = new Set<string>(urlSnapshot.expandedCards);
 
   // Focus-based drill-down: tracks which directory the user is
   // "inside" so siblings collapse and the viewport frames it.
@@ -770,6 +770,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       selectedNodeId: state.selectedNode?.id ?? null,
       pinSet,
       expandedDirectories,
+      expandedCards,
       transform,
       filters: {
         showTests: state.filters.showTests,
