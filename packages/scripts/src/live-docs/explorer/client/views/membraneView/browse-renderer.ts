@@ -9,13 +9,14 @@
  * files, the children render as uniform Local-Map-style cards in a
  * scrollable grid instead of squarified treemap tiles.
  */
+import type { DirectoryAggregate } from "./aggregation";
+import { DetailLevel } from "./detail-levels";
 import type { MeasuredAnchor } from "./focal-overlay";
 import type { PinSet } from "./pin-state";
 import { isSymbolPinned, areAllSymbolsPinned } from "./pin-state";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
 import type { TestCoverageMap } from "../../types";
-import type { DirectoryAggregate } from "../circuitView/aggregation";
 
 /** Escape HTML special characters to prevent XSS. */
 function escapeHtml(str: string): string {
@@ -98,6 +99,7 @@ export function renderBrowseMode(
   focusedDirectory: string | null,
   expandedCards: ReadonlySet<string> = new Set(),
   testCoverage?: TestCoverageMap,
+  detailLevels?: ReadonlyMap<string, DetailLevel>,
 ): BrowseRenderResult {
   const container = document.createElement("div");
   container.className = "membrane-browse-root";
@@ -113,7 +115,7 @@ export function renderBrowseMode(
   renderNode(
     layout.root, container, layout.root, collapsed,
     aggregates, nodesById, selectedNodeId, callbacks,
-    pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
+    pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage, detailLevels,
   );
 
   return { root: container, anchors, cardRenderedIds };
@@ -138,6 +140,7 @@ function renderNode(
   cardRenderedIds: Set<string>,
   expandedCards: ReadonlySet<string>,
   testCoverage?: TestCoverageMap,
+  detailLevels?: ReadonlyMap<string, DetailLevel>,
 ): void {
   // Compute position relative to parent's content rect
   const offsetX = node.rect.x - parentNode.contentRect.x;
@@ -340,7 +343,8 @@ function renderNode(
         if (!payload) continue;
         const isCardExpanded = expandedCards.has(child.id);
         const isTestBacked = testCoverage ? (testCoverage.get(child.id)?.length ?? 0) > 0 : false;
-        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked);
+        const detail = detailLevels?.get(child.id);
+        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked, detail);
         cardRenderedIds.add(child.id);
         content.appendChild(card);
       }
@@ -373,7 +377,7 @@ function renderNode(
       for (const child of dirChildren) {
         renderNode(
           child, treemapContent, node, collapsed, aggregates, nodesById,
-          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
+          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage, detailLevels,
         );
       }
       membrane.appendChild(treemapContent);
@@ -390,7 +394,8 @@ function renderNode(
         if (!payload) continue;
         const isCardExpanded = expandedCards.has(child.id);
         const isTestBacked = testCoverage ? (testCoverage.get(child.id)?.length ?? 0) > 0 : false;
-        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked);
+        const detail = detailLevels?.get(child.id);
+        const card = renderFileCard(child, payload, selectedNodeId, callbacks, pinSet, anchors, isCardExpanded, isTestBacked, detail);
         cardRenderedIds.add(child.id);
         cardGrid.appendChild(card);
       }
@@ -418,7 +423,7 @@ function renderNode(
       for (const child of node.children) {
         renderNode(
           child, content, node, collapsed, aggregates, nodesById,
-          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage,
+          selectedNodeId, callbacks, pinSet, focusedDirectory, anchors, cardRenderedIds, expandedCards, testCoverage, detailLevels,
         );
       }
 
@@ -451,12 +456,14 @@ function renderFileCard(
   anchors: MeasuredAnchor[],
   isExpanded: boolean,
   isTestBacked: boolean,
+  detailLevel?: DetailLevel,
 ): HTMLElement {
   const card = document.createElement("div");
   card.className = "membrane-card";
   if (!isExpanded) card.classList.add("membrane-card--collapsed");
   if (isTestBacked) card.classList.add("membrane-card--test-backed");
   if (node.id === selectedNodeId) card.classList.add("selected");
+  if (detailLevel) card.dataset.detail = detailLevel;
   card.dataset.id = node.id;
   card.tabIndex = 0;
 

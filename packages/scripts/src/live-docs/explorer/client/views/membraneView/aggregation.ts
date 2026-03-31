@@ -7,6 +7,7 @@
  */
 import type { ExplorerNodePayload } from "../../../shared/types";
 import type { DirectoryNode } from "../../types";
+export type { DirectoryAggregate } from "../circuitView/aggregation";
 import type { DirectoryAggregate } from "../circuitView/aggregation";
 
 /**

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-persistence-compressed-url-state-test-ts
-- Generated At: 2026-03-25T17:39:25.937Z
+- Generated At: 2026-03-31T20:36:02.871Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests for the lz-string URL state compression module, verifying round-trip 
 - The test file does not exercise `readUrlState`/`writeUrlState` (the DOM-touching boundary functions) because those require `window.location`, which is unavailable in vitest's Node environment. Browser-level testing is deferred to Playwright E2E.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:39:25.937Z","inputHash":"ea63a8ff4576b5d5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:02.871Z","inputHash":"0f65585f7fb82cad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,6 +33,7 @@ _No public symbols detected_
 - [`compressed-url-state.compressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`compressed-url-state.payloadToSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
+- [`compressed-url-state.scrubSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot)
 - [`compressed-url-state.snapshotToPayload`](./compressed-url-state.ts.mdmd.md#symbol-snapshottopayload)
 - [`pin-state.EMPTY_PIN_SET`](../views/membraneView/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](../views/membraneView/pin-state.ts.mdmd.md#symbol-pinset)

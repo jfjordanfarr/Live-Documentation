@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-30T18:52:14.453Z
+- Generated At: 2026-03-31T20:36:03.951Z
 
 ## Authored
 ### Purpose
@@ -24,26 +24,26 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): auto-focus bug fix — initial render now derives the parent directory from `selectedNode.docRelativePath` (not `codeRelativePath`) to match the treemap's `docRelativePath`-keyed hierarchy; `trySelectionOnlyUpdate` fast-path declines when auto-focus would change `focusedDirectory`. Also added `openInMembraneMapView` helper and `onPinAllSymbols` callback wiring for both browse and pin-active modes, with detail panel auto-open suppressed on initial load (`{ suppressDetailPanel: true }`).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.453Z","inputHash":"90b0c3b896717949"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:03.951Z","inputHash":"ec90fd4ba85904d6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L52)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L55)
 
 ##### `MembraneViewOptions` — Summary
 Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L62)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L65)
 
 ##### `MembraneViewApi` — Summary
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L83)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts#L86)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 
@@ -56,16 +56,20 @@ Initialise the Membrane Map view and return its public API.
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`compressed-url-state.UrlStateSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
 - [`compressed-url-state.readUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate) (type-only)
+- [`compressed-url-state.scrubSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot) (type-only)
 - [`compressed-url-state.writeUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-writeurlstate) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap) (type-only)
-- [`aggregation.DirectoryAggregate`](../circuitView/aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect)
 - [`layoutUtils.buildHierarchy`](../layoutUtils.ts.mdmd.md#symbol-buildhierarchy)
-- [`aggregation.computeAllAggregates`](./aggregation.ts.mdmd.md#symbol-computeallaggregates)
+- [`aggregation.DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
+- [`aggregation.computeAllAggregates`](./aggregation.ts.mdmd.md#symbol-computeallaggregates) (type-only)
 - [`animation.animateTransition`](./animation.ts.mdmd.md#symbol-animatetransition)
 - [`animation.capturePositions`](./animation.ts.mdmd.md#symbol-capturepositions)
 - [`browse-renderer.renderBrowseMode`](./browse-renderer.ts.mdmd.md#symbol-renderbrowsemode)
+- [`detail-levels.DetailLevel`](./detail-levels.ts.mdmd.md#symbol-detaillevel)
+- [`detail-levels.FocalSpec`](./detail-levels.ts.mdmd.md#symbol-focalspec)
+- [`detail-levels.resolveDetailLevels`](./detail-levels.ts.mdmd.md#symbol-resolvedetaillevels)
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor)
 - [`focal-overlay.attachHopBadges`](./focal-overlay.ts.mdmd.md#symbol-attachhopbadges)
 - [`focal-overlay.drawConnections`](./focal-overlay.ts.mdmd.md#symbol-drawconnections)

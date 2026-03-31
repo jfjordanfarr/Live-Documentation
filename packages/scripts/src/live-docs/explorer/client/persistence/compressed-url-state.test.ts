@@ -4,6 +4,7 @@ import {
   payloadToSnapshot,
   compressSnapshot,
   decompressSnapshot,
+  scrubSnapshot,
   DEFAULT_SNAPSHOT,
 } from "./compressed-url-state";
 import type { UrlStateSnapshot, CompressedPayload } from "./compressed-url-state";
@@ -231,5 +232,103 @@ describe("compress/decompress round-trip", () => {
   it("returns default snapshot for empty string", () => {
     const restored = decompressSnapshot("");
     expect(restored).toEqual(DEFAULT_SNAPSHOT);
+  });
+});
+
+// ─── scrubSnapshot ─────────────────────────────────────────────────
+
+describe("scrubSnapshot", () => {
+  /** Minimal node-like map for look-ups. */
+  function makeNodeMap(...ids: string[]): Map<string, unknown> {
+    return new Map(ids.map(id => [id, {}]));
+  }
+
+  it("passes through a fully valid snapshot unchanged", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts", "pkg/src/b.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      expandedDirectories: new Set(["pkg/src"]),
+      expandedCards: new Set(["pkg/src/a.ts"]),
+      selectedNodeId: "pkg/src/b.ts",
+      pinSet: { entries: [{ nodeId: "pkg/src/a.ts", symbol: "Foo" }] },
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect([...result.expandedDirectories]).toEqual(["pkg/src"]);
+    expect([...result.expandedCards]).toEqual(["pkg/src/a.ts"]);
+    expect(result.selectedNodeId).toBe("pkg/src/b.ts");
+    expect(result.pinSet.entries).toHaveLength(1);
+  });
+
+  it("drops stale expanded directories", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      expandedDirectories: new Set(["pkg/src", "deleted/dir"]),
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect([...result.expandedDirectories]).toEqual(["pkg/src"]);
+  });
+
+  it("drops stale expanded cards", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      expandedCards: new Set(["pkg/src/a.ts", "gone/file.ts"]),
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect([...result.expandedCards]).toEqual(["pkg/src/a.ts"]);
+  });
+
+  it("drops all-stale pins (falls to empty pinSet)", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      pinSet: {
+        entries: [
+          { nodeId: "deleted/x.ts", symbol: "X" },
+          { nodeId: "deleted/y.ts", symbol: "Y" },
+        ],
+      },
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect(result.pinSet.entries).toHaveLength(0);
+  });
+
+  it("keeps valid pins and drops stale ones", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      pinSet: {
+        entries: [
+          { nodeId: "pkg/src/a.ts", symbol: "Foo" },
+          { nodeId: "deleted/x.ts", symbol: "Bar" },
+        ],
+      },
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect(result.pinSet.entries).toHaveLength(1);
+    expect(result.pinSet.entries[0].nodeId).toBe("pkg/src/a.ts");
+  });
+
+  it("clears stale selectedNodeId", () => {
+    const nodesById = makeNodeMap("pkg/src/a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      selectedNodeId: "deleted/file.ts",
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect(result.selectedNodeId).toBeNull();
+  });
+
+  it("preserves transform and filters untouched", () => {
+    const nodesById = makeNodeMap("a.ts");
+    const snap: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      transform: { x: 10, y: 20, k: 1.5 },
+      filters: { showTests: false, showAssets: true },
+    };
+    const result = scrubSnapshot(snap, nodesById);
+    expect(result.transform).toEqual({ x: 10, y: 20, k: 1.5 });
+    expect(result.filters).toEqual({ showTests: false, showAssets: true });
   });
 });

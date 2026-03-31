@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-aggregation-ts
-- Generated At: 2026-03-25T17:08:29.561Z
+- Generated At: 2026-03-31T20:36:03.691Z
 
 ## Authored
 ### Purpose
@@ -19,12 +19,16 @@ Recursive directory aggregate computation for the Membrane Map, extending the Ci
 - `collectAllFiles` recursively gathers every `ExplorerNodePayload` leaf under a directory subtree; `computeAllAggregates` walks the tree, computing cross-boundary dependencies by comparing each file's dependency/dependent lists against the set of files within its own directory, counting only edges that cross the membrane boundary.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.561Z","inputHash":"f66f511e1fa55b49"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:03.691Z","inputHash":"b8d1c2c1a8bdfbd2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `DirectoryAggregate` {#symbol-directoryaggregate}
+- Type: unknown
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts#L10)
+
 #### `computeAllAggregates` {#symbol-computeallaggregates}
 - Type: function
-- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts#L30)
+- Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts#L31)
 - Parameters: `root`: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode)
 
 ##### `computeAllAggregates` — Summary
@@ -38,6 +42,6 @@ the same shape as the Circuit Board's DirectoryAggregate.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode) (type-only)
-- [`aggregation.DirectoryAggregate`](../circuitView/aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
+- [`aggregation.DirectoryAggregate`](../circuitView/aggregation.ts.mdmd.md#symbol-directoryaggregate) (re-export, type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

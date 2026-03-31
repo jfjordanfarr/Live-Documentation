@@ -174,6 +174,55 @@ export function decompressSnapshot(compressed: string): UrlStateSnapshot {
   }
 }
 
+// ─── Stale State Scrubbing ─────────────────────────────────────────
+
+/**
+ * Scrub a snapshot against the live node set, dropping references to
+ * nodes/directories that no longer exist. This prevents stale shared
+ * URLs from producing empty treemaps, zombie pins, or orphan cards.
+ *
+ * Pure function — returns a new snapshot; does not mutate the input.
+ */
+export function scrubSnapshot(
+  snapshot: UrlStateSnapshot,
+  nodesById: ReadonlyMap<string, unknown>,
+): UrlStateSnapshot {
+  // Expanded directories: keep only if at least one live node has this prefix
+  const nodeIds = [...nodesById.keys()];
+  const expandedDirectories = new Set<string>();
+  for (const dir of snapshot.expandedDirectories) {
+    const prefix = dir.endsWith("/") ? dir : dir + "/";
+    if (nodeIds.some(id => id.startsWith(prefix) || id === dir)) {
+      expandedDirectories.add(dir);
+    }
+  }
+
+  // Expanded cards: keep only if the node still exists
+  const expandedCards = new Set<string>();
+  for (const id of snapshot.expandedCards) {
+    if (nodesById.has(id)) expandedCards.add(id);
+  }
+
+  // Pins: keep only entries whose node still exists
+  const validEntries = snapshot.pinSet.entries.filter(e => nodesById.has(e.nodeId));
+  const pinSet: PinSet = validEntries.length === snapshot.pinSet.entries.length
+    ? snapshot.pinSet
+    : { entries: validEntries };
+
+  // Selected node: clear if stale
+  const selectedNodeId = snapshot.selectedNodeId && nodesById.has(snapshot.selectedNodeId)
+    ? snapshot.selectedNodeId
+    : null;
+
+  return {
+    ...snapshot,
+    expandedDirectories,
+    expandedCards,
+    pinSet,
+    selectedNodeId,
+  };
+}
+
 // ─── URL Integration ───────────────────────────────────────────────
 
 const URL_PARAM = "s";

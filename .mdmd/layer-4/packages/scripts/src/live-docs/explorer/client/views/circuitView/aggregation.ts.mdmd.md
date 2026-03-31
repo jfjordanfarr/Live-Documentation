@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-aggregation-ts
-- Generated At: 2026-03-23T20:05:53.878Z
+- Generated At: 2026-03-31T20:36:03.119Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Computes per-directory aggregate metrics (file count, symbol count, cross-bounda
 - The deprecated `computeDirectoryAggregates` wraps `computeChildAggregates(root)` for backward compatibility with existing call sites.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.878Z","inputHash":"38b920b4c72ae6ca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:03.119Z","inputHash":"38b920b4c72ae6ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DirectoryAggregate` {#symbol-directoryaggregate}
@@ -35,7 +35,7 @@ Used to drive the visual weight and labels of collapsed directory tiles.
 #### `computeChildAggregates` {#symbol-computechildaggregates}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts#L37)
-- Returns: [`DirectoryAggregate`](#symbol-directoryaggregate)[]
+- Returns: [`DirectoryAggregate`](../membraneView/aggregation.ts.mdmd.md#symbol-directoryaggregate)[]
 - Parameters: `parentDir`: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode)
 
 ##### `computeChildAggregates` — Summary
@@ -77,7 +77,7 @@ Computes aggregate metrics for each top-level directory in a hierarchy.
 #### `computeAggregateWeight` {#symbol-computeaggregateweight}
 - Type: function
 - Source: [source](../../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts#L162)
-- Parameters: `aggregate`: [`DirectoryAggregate`](#symbol-directoryaggregate)
+- Parameters: `aggregate`: [`DirectoryAggregate`](../membraneView/aggregation.ts.mdmd.md#symbol-directoryaggregate)
 
 ##### `computeAggregateWeight` — Summary
 Computes the total weight for a directory aggregate.

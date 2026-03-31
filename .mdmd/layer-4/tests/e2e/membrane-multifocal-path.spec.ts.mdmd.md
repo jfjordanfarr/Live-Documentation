@@ -1,15 +1,13 @@
 # tests/e2e/membrane-multifocal-path.spec.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-multifocal-path.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-multifocal-path-spec-ts
-- Generated At: 2026-03-31T15:43:43.721Z
+- Generated At: 2026-03-31T20:36:07.167Z
 
 ## Authored
-
 ### Purpose
 
 Playwright E2E regression suite covering multi-focal pinning and path-as-pins rendering in the Membrane Map. Fills the Step 10.5 gap identified in the execution plan where these two Step 7 visual features were only covered by pure-function unit tests.
@@ -21,20 +19,14 @@ Playwright E2E regression suite covering multi-focal pinning and path-as-pins re
 - The `buildStateUrl()` helper mirrors `snapshotToPayload()` from `compressed-url-state.ts` in a minimal form, producing a valid v1 compressed payload for test seeding.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T15:43:43.721Z","inputHash":"ee7a9701471d9c02"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:07.167Z","inputHash":"ee7a9701471d9c02"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - `@playwright/test` - `expect`, `test`
 - `lz-string` - `compressToEncodedURIComponent`
 - [`helpers.countElements`](./helpers.ts.mdmd.md#symbol-countelements)
@@ -44,17 +36,11 @@ _No public symbols detected_
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
 _No targets documented yet_
-
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->

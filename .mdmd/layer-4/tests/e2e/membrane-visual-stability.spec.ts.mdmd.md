@@ -1,15 +1,13 @@
 # tests/e2e/membrane-visual-stability.spec.ts
 
 ## Metadata
-
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-visual-stability.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-visual-stability-spec-ts
-- Generated At: 2026-03-31T19:12:05.914Z
+- Generated At: 2026-03-31T20:36:07.241Z
 
 ## Authored
-
 ### Purpose
 
 Pixel-stability regression suite for the Membrane Map's pin-active layout. Catches temporal rendering bugs (e.g., SVG connector lines drawing before pin-active cards settle into their final DOM positions) by comparing screenshots taken before and after a page reload of the same deterministic URL state.
@@ -22,36 +20,24 @@ Pixel-stability regression suite for the Membrane Map's pin-active layout. Catch
 - The `waitForPinActiveSettle()` helper polls until `.pin-active-root`, `.pin-active-card[data-id]`, and `.membrane-focal-svg` are all present, then flushes an additional animation frame wait (800ms) for connection-path drawing to complete.
 
 ## Generated
-
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T19:12:05.914Z","inputHash":"0ac819125bfc0f64"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:07.241Z","inputHash":"0ac819125bfc0f64"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
-
 ### Public Symbols
-
 _No public symbols detected_
-
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
-
 ### Dependencies
-
 - `@playwright/test` - `expect`, `test`
 - `lz-string` - `compressToEncodedURIComponent`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
-
 ### Targets
-
 _No targets documented yet_
-
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-
 ### Supporting Fixtures
-
 _No supporting fixtures documented yet_
-
 <!-- LIVE-DOC:END Supporting Fixtures -->

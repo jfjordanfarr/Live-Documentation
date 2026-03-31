@@ -674,6 +674,21 @@
     box-shadow: 0 0 6px rgba(0, 145, 255, 0.3);
 }
 
+/* ── Detail-level visual tiers ────────────────────────────────── */
+
+.membrane-card[data-detail="full"] {
+    border-color: rgba(0, 145, 255, 0.6);
+    opacity: 1;
+}
+
+.membrane-card[data-detail="summary"] {
+    opacity: 0.85;
+}
+
+.membrane-card[data-detail="badge"] {
+    opacity: 0.5;
+}
+
 .membrane-card__header {
     font-size: 12px;
     font-weight: 600;
@@ -997,15 +1012,6 @@
 .pa-ancestor-membrane__label:hover {
     color: rgba(255, 255, 255, 0.7);
     background: rgba(255, 255, 255, 0.06);
-}
-
-.pa-columns-container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 32px;
-    padding: 8px;
-    min-height: 100%;
 }
 
 /* ── CSS Grid Container for Cross-Column Bands ─────────────────

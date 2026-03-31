@@ -15,14 +15,17 @@ import type { UrlStateSnapshot } from "../../persistence/compressed-url-state";
 import {
   readUrlState,
   writeUrlState,
+  scrubSnapshot,
 } from "../../persistence/compressed-url-state";
 import type { ExplorerState, TestCoverageMap } from "../../types";
-import type { DirectoryAggregate } from "../circuitView/aggregation";
 import { buildHierarchy } from "../layoutUtils";
 import type { LayoutRect } from "../layoutUtils";
+import type { DirectoryAggregate } from "./aggregation";
 import { computeAllAggregates } from "./aggregation";
 import { capturePositions, animateTransition } from "./animation";
 import { renderBrowseMode } from "./browse-renderer";
+import { resolveDetailLevels, DetailLevel } from "./detail-levels";
+import type { FocalSpec } from "./detail-levels";
 import {
   renderFocalOverlay,
   drawConnections,
@@ -87,8 +90,15 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   const viewport = requireElement<HTMLDivElement>("membrane-viewport");
   const container = requireElement<HTMLDivElement>("membrane-container");
 
-  // Restore state from URL (or defaults)
-  const urlSnapshot = readUrlState();
+  // Precompute edge pairs for detail-level resolution (link source/target → [id, id])
+  const edgePairs: ReadonlyArray<readonly [string, string]> = graphData.links.map(link => {
+    const s = typeof link.source === "string" ? link.source : link.source.id;
+    const t = typeof link.target === "string" ? link.target : link.target.id;
+    return [s, t] as const;
+  });
+
+  // Restore state from URL (or defaults), then scrub stale references
+  const urlSnapshot = scrubSnapshot(readUrlState(), nodesById);
 
   // Apply URL-restored selection to shared state if applicable
   if (urlSnapshot.selectedNodeId && !state.selectedNode) {
@@ -338,6 +348,27 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
     const selectedNodeId = state.focusedNode?.id ?? state.selectedNode?.id ?? null;
 
+    // ─── Detail-Level Resolution ───────────────────────────────────
+    // Compute per-node detail tiers (Full/Summary/Badge/Hidden) based
+    // on the focal specification and dependency edges.
+    let detailLevels: Map<string, DetailLevel>;
+    if (pinSet.entries.length > 0) {
+      // Pin-active: pinned nodes are focal; derive primary/secondary from
+      // the first two unique node IDs in the pin set.
+      const uniqueNodeIds = [...new Set(pinSet.entries.map(e => e.nodeId))];
+      const focalSpec: FocalSpec = {
+        focal: uniqueNodeIds[0],
+        secondary: uniqueNodeIds[1],
+      };
+      detailLevels = resolveDetailLevels(currentLayout, edgePairs, focalSpec);
+    } else if (selectedNodeId) {
+      // Browse mode with selection: selected node is focal
+      detailLevels = resolveDetailLevels(currentLayout, edgePairs, { focal: selectedNodeId });
+    } else {
+      // Browse mode, no selection: no focal → all visible nodes get Badge
+      detailLevels = resolveDetailLevels(currentLayout, edgePairs, {});
+    }
+
     // ─── Pin-Active Layout ─────────────────────────────────────────
     // When pins are active, replace the squarify treemap with a
     // left-to-right dependency-flow layout showing only relevant nodes.
@@ -584,6 +615,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       focusedDirectory,
       expandedCards,
       testCoverage,
+      detailLevels,
     );
 
     container.appendChild(browseResult.root);

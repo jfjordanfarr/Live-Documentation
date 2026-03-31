@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-compressed-url-state-ts
-- Generated At: 2026-03-31T15:43:39.736Z
+- Generated At: 2026-03-31T20:36:02.897Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Encodes the full Membrane Map view state (active view, selected node, pin set, e
 - On [Dev Day 86](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) the `expandedCards` field (`c?` in the wire format) was added to `CompressedPayload` and `UrlStateSnapshot` so that file-card expansion state round-trips through the URL, enabling reload and share-URL fidelity for expanded cards in browse mode.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T15:43:39.736Z","inputHash":"b0059733c36d8032"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:02.897Z","inputHash":"ceba0f92fd4c9d4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompressedPayload` {#symbol-compressedpayload}
@@ -90,9 +90,22 @@ Compress a snapshot into a URL-safe string.
 Decompress a URL-safe string back into a snapshot.
 Returns the default snapshot if decompression or parsing fails.
 
+#### `scrubSnapshot` {#symbol-scrubsnapshot}
+- Type: function
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts#L186)
+- Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
+- Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
+
+##### `scrubSnapshot` — Summary
+Scrub a snapshot against the live node set, dropping references to
+nodes/directories that no longer exist. This prevents stale shared
+URLs from producing empty treemaps, zombie pins, or orphan cards.
+
+Pure function — returns a new snapshot; does not mutate the input.
+
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts#L185)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts#L234)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -101,7 +114,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts#L196)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts#L245)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary
