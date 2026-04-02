@@ -2,7 +2,7 @@
 
 **Source**: `all-user-prompts.md` (2,588 prompts across 102 chat files)
 **Method**: Manual scan of all user prompts, extracting those that describe desired software behavior from the user perspective.
-**Date**: 2026-03-01
+**Date**: 2026-03-31
 
 ---
 
@@ -403,3 +403,21 @@ The Membrane Map's interaction model is a continuous spectrum driven by pin coun
 > "Please now begin outlining how we can setup a suite of playwright tests to detect and flag things which we have found, over the past several days of development, as problems with the Membrane Map... The first test we should try out is one which we should expect to fail right now" / "look back through the most recent ~5 dev day summaries to see what kind of issues I verbalized with the visualization so that we can design tests (as practicable) around the visual failings we found along the way."
 
 Membrane Map quality should accumulate browser-level Playwright regression tests derived from actual observed visual failures, not generic smoke checks. The suite should begin by encoding known-broken screenshots as expected failures, then expand by mining recent dev-day summaries for previously verbalized layout/interaction regressions, and finally fit into the same opt-in validation culture as other expensive gates (`safe:commit`, CI, browser install requirements). This turns the chat-history record of visual pain into an executable falsifiability layer for the Explorer.
+
+### UC-097 — Graceful Stale-State Restoration for URL/localStorage Replay (2026-03-31.1.md:L1600)
+
+> "With respect to state preservation (via URL or via browser local storage), how are we handling cases in which one or more mentioned paths or files that should be visualized no longer exist? How are we dealilng gracefully (or otherwise) with state activation from data that is no longer valid?"
+
+Persisted state is only useful if it is resilient to repository drift. When replaying compressed URL state or localStorage fallbacks, invalid paths/symbols should be scrubbed or ignored gracefully rather than causing broken renders, zombie pins, or navigation dead-ends.
+
+### UC-098 — Refresh-Invariant Pixel Output for Settled Membrane States (2026-03-31.1.md:L1704)
+
+> "Loading a symbol-pinned representation of the Membrane Map... rendering to pixels, refreshing the page, rendering to pixels again, and expecting that those pixels match... catch temporal bugs... connectors... before the nodes... settled into their final position."
+
+For a fixed pinned state, the rendered Membrane view should be visually deterministic across refresh. Browser tests should compare screenshots before/after refresh to catch timing races where connector lines are computed before final node layout.
+
+### UC-099 — Membrane Map as Cold-Start Default Explorer View (2026-03-31.1.md:L1421)
+
+> "Please proceed to making the Membrane Map the cold-start default."
+
+The Explorer's initial user experience should open on Membrane Map by default, reflecting its role as the primary unified topology surface rather than a secondary tab.

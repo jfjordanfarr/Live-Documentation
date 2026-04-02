@@ -267,6 +267,10 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
     container.innerHTML = "";
 
+    // Clear stale hover-dimming state: the old DOM elements that triggered
+    // mouseenter are gone, so mouseleave will never fire for them.
+    container.classList.remove("membrane-hover-active");
+
     // Remove stale breadcrumb bars from prior renders
     for (const el of Array.from(viewport.querySelectorAll(".membrane-path-breadcrumb, .membrane-browse-breadcrumb"))) {
       el.remove();

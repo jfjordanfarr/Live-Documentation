@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-svg-connections-ts
-- Generated At: 2026-03-25T17:08:30.182Z
+- Generated At: 2026-04-01T23:35:41.568Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ SVG rendering of membrane-to-membrane bundled edge connections, drawing logarith
 - Currently disabled in the controller for MVP (the thick arcs created visual noise over the treemap layout); the pure functions remain tested and ready for re-enablement with progressive-disclosure or hover-only rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:30.182Z","inputHash":"a9daa7dc31ee3cfe"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-04-01T23:35:41.568Z","inputHash":"fee3da492381d69e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `bundleStrokeWidth` {#symbol-bundlestrokewidth}

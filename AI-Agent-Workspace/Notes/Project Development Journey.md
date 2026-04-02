@@ -2,7 +2,7 @@
 
 ## **Executive Summary**
 
-*Status: Active Development (Mar 30, 2026\)*
+*Status: Active Development (Mar 31, 2026\)*
 
 "Copilot-Improvement-Experiments" began as an initiative to build an "IntelliSense for Documentation"—a system to prevent drift between markdown plans and implementation code.
 
@@ -31,7 +31,7 @@ Live Documentation is delivered through six channels, each backed by the same un
 | \# | Surface | Medium | Primary Consumers | Current Status |
 | :---- | :---- | :---- | :---- | :---- |
 | 1 | **CLI Suite** | Terminal (npm run live-docs:\*) | Engineers, CI pipelines, AI agents | Shipped |
-| 2 | **Visual Explorer** | Browser (Static Build) | Architects, onboarders, leads | Shipped (npm run live-docs:visualize), Membrane Map in WIP |
+| 2 | **Visual Explorer** | Browser (Static Build) | Architects, onboarders, leads | Shipped (npm run live-docs:visualize), Membrane Map is Default |
 | 3 | **VS Code Extension** | Editor (thin client) | Engineers, writers | In progress (thin shell shipped; lint-as-diagnostics planned) |
 | 4 | **Static Export** | HTML \+ JSON bundle | Teams, stakeholders, offline consumers | Shipped (merged into visualize) |
 | 5 | **Headless JSON API** | HTTP / \--json flags | AI agents, automation scripts, CI | Shipped (Local Map endpoint \+ all CLI \--json modes) |
@@ -1048,6 +1048,20 @@ The team addressed the technical debt of "manual screenshot debugging" accrued d
 * **Locking in the Visual Reality:** Authored 16 comprehensive Playwright tests specifically targeting the precise visual behaviors established over the previous week (Dev Days 80-85). This suite covers critical interactions across four categories: membrane-containment, membrane-card-interactions, membrane-dimming, and membrane-directory-bands.  
 * **The Overflow Fix:** Applying the rigors of automated visual testing immediately surfaced and fixed a pin-active card overflow bug. The team replaced fixed 320px column assignments with a fluid 1fr CSS grid and added max-width: 100% guards, ensuring file cards remain perfectly contained within their directory bands even under deep traversal.
 
+### **Phase LXXII: The Default View & State Resilience (Mar 31\)**
+
+Date: March 31, 2026
+
+Scope: Commits 275–277
+
+The project achieved a massive milestone: the Membrane Map was officially promoted to the cold-start default view, formally replacing the legacy Circuit Board and Local Map as the primary Explorer experience.
+
+* **The Default Promotion:** The fallback logic in parseInitialState() was updated to land first-time users directly into the unified Membrane Map, completing the UX transition planned in Phase LXV.  
+* **URL State & Persistence:** The team identified and fixed a gap where individual card expansion states were lost on reload. They added an expandedCards payload to the compressed URL (?s=...\&c=...), ensuring deep architectural explorations survive page refreshes and link sharing.  
+* **State Scrubbing (Zombie Pin Prevention):** Implemented a rigorous scrubSnapshot() validation phase during URL restoration. The system now cross-references persisted state against the live graph, silently dropping "zombie" pins and stale directories if the underlying codebase has changed since the URL was generated.  
+* **Adaptive Detail Levels:** Wired the resolveDetailLevels() math engine into the DOM renderer. Cards now adaptively assign a data-detail attribute (full, summary, badge, or hidden), managing visual density and preventing browser overload in massive workspaces.  
+* **Testing Milestone:** Expanded the Playwright suite to verify cold-start defaults, multi-focal paths, and visual stability, bringing the project to 879 unit, 28 integration, and 29 E2E tests.
+
 ## **Vision Evolution Log**
 
 * **Oct 16 (Phase I):** "Link-Aware Diagnostics." (Linter for Docs).  
@@ -1104,7 +1118,8 @@ The team addressed the technical debt of "manual screenshot debugging" accrued d
 * **Mar 26 (Phase LXVIII):** "FLIP Animations & Cross-Column Membranes." (Adding smooth transitions, trie-based directory bands, and hover dimming to the dependency flow).  
 * **Mar 27-28 (Phase LXIX):** "Hybrid Membrane Layouts." (Solving the mixed-content area-crushing problem and adding dependency endpoint indicators).  
 * **Mar 28-29 (Phase LXX):** "Visual Parity & The Dimming Model." (Refining interaction fidelity with layered opacity states, pin-all actions, and reference badges in the Membrane Map).  
-* **Mar 30 (Phase LXXI):** "Visual Regression & The Playwright Suite." (Eliminating manual visual debugging by locking in interactions with Playwright E2E tests).
+* **Mar 30 (Phase LXXI):** "Visual Regression & The Playwright Suite." (Eliminating manual visual debugging by locking in interactions with Playwright E2E tests).  
+* **Mar 31 (Phase LXXII):** "The Default View & State Resilience." (Promoting the Membrane Map to the default landing view, wiring adaptive detail levels, and hardening URL state persistence).
 
 ## **Technical Themes & Motifs**
 

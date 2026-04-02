@@ -1,6 +1,6 @@
 # User Intent Census – Link-Aware Diagnostics
 
-Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–80. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
+Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–86. Each entry references the source chat log and line range so future agents can reconstruct the full context during autosummarization windows.
 
 ## 2025-10-16 (Dev Day 1)
 
@@ -1097,6 +1097,15 @@ Tracking the explicit guidance provided by `jfjordanfarr` across Dev Days 1–80
 - `2026-03-30.1.md:L2698-L2698` — **Expected-Failing Browser Tests Are the Right First Playwright Test**: The first Playwright test for the Membrane Map should encode a real, currently broken screenshot and be expected to fail. This turns a visual defect into an executable target before any fix is attempted, extending Day 80's playtesting-first workflow and Day 83's diagnostic-proof tests into a stronger falsifiability pattern: begin browser regression suites from known red states, not only green-path smoke coverage.
 - `2026-03-30.1.md:L3043-L3043` — **Recent Dev-Day Summaries Form the Visual Regression Backlog**: The user explicitly asked Copilot to mine the most recent ~5 dev-day summaries for verbalized visualization failures and turn those into Playwright tests. This establishes the summary corpus as a regression-source artifact, not just a context-rehydration tool: historical pain points should become executable browser checks so they cannot quietly recur.
 - `2026-03-30.1.md:L3222-L3222` — **New Validation Modalities Should Fit Existing Opt-In Pipeline Patterns**: When adding a costly suite like Playwright E2E, the user wanted it explicitly placed within `safe:commit` and CI strategy rather than left as an orphan side-suite. This extends earlier pipeline rigor signals by favoring symmetry with existing opt-in expensive checks (`--benchmarks`) and by treating validation-surface design as architecture, not housekeeping.
+
+## 2026-03-31 (Dev Day 86)
+
+### Chat 1 (2026-03-31.1.md) — Loose-End Fact-Checking + State Resilience + Membrane Defaulting
+
+- `2026-03-31.1.md:L264-L265` — **Search Extraction Is Not Evidence — Full-Read Verification Rule**: _"I see you're attempting this via searches instead of file reads... not every summary has a loose ends section... not every loose ends section is perfectly trustworthy."_ Tightens Day 85's summary-sweep practice with an explicit evidence hierarchy: extraction searches can propose candidates, but decisions must be based on full-file reads of turn-by-turn summaries, especially when compaction markers appear near loose-end reporting.
+- `2026-03-31.1.md:L331` — **Planning Artifacts Must Be Falsified Before Use**: _"using codebase searches and playwright MCP testing... fact-check the temp doc you have produced. Let us make certain it is fully factual and useful before we leverage it."_ Establishes that tmp planning docs are hypotheses, not truth. Before they drive implementation sequencing, they must be verified against both static code and runtime behavior.
+- `2026-03-31.1.md:L1191` — **Execution Plans Are Living Documents, Not Historical Snapshots**: _"I feel like the membrane map execution plan is still not up to date relative to the work done over the past several days."_ Extends Day 80's stateful plan encoding with a maintenance mandate: plan documents that lag shipped reality are actively harmful and should be synchronized before further planning decisions.
+- `2026-03-31.1.md:L1704` — **Temporal Rendering Bugs Require Pixel-Stability Regression Tests**: _"rendering to pixels, refreshing the page, rendering to pixels again, and expecting that those pixels match... catch temporal bugs... connectors... before nodes... settled."_ Introduces a high-signal visual falsifiability pattern for dynamic layouts: same state + refresh should produce deterministic pixels, or there is a timing/layout race.
 
 ---
 

@@ -24,11 +24,11 @@ Replace Circuit Board (9 files, ~2,200 lines) + Local Map (24 files, ~8,950 line
 
 This plan originally assumed **two major commits**. That is no longer the lived history.
 
-### Current reality (Day 86)
+### Current reality (Day 86, end-of-day)
 
 - Steps 0–9 are substantively landed and were shipped incrementally across Dev Days 80–86 rather than as one future mega-commit.
-- Step 10 is substantively complete: the Playwright harness exists, 12 E2E spec files / 25 tests are green, and the suite now covers browse mode, pin-active layout, containment, dimming, directory bands, refresh restore, expanded-card persistence, multi-focal pinning, path-as-pins breadcrumb restore, Membrane cold-start default behavior, and pin-active visual stability across reload.
-- Step 11 has started as a convergence phase rather than a true phase-out: Circuit Board + Local Map still ship, Membrane still has type-level coupling to Circuit Board, but Membrane is now the default cold-start view.
+- Step 10 is substantively complete: the Playwright harness exists, 14 E2E spec files / 29 tests are green, and the suite now covers browse mode, pin-active layout, containment, dimming, directory bands, refresh restore, expanded-card persistence, multi-focal pinning, path-as-pins breadcrumb restore, Membrane cold-start default behavior, pin-active visual stability across reload, and stale-state restore scrubbing.
+- Step 11 has started as a convergence phase rather than a true phase-out: Circuit Board + Local Map still ship, Membrane is now the default cold-start view, direct Membrane imports of `DirectoryAggregate` were re-homed behind `membraneView/aggregation.ts`, and stale `.pa-columns-container` CSS was removed. Full old-view retirement and full type ownership decoupling remain open.
 - Step 12 namespace mode remains a separate deferred follow-on.
 
 ### Historical framing
@@ -149,6 +149,7 @@ Assert that recursive squarify produces correct `MembraneNode[]` trees:
 - [x] **3.1** Create `membraneView/detail-levels.test.ts`
 - [x] **3.2** Create `membraneView/detail-levels.ts`
 - [x] **3.3** All detail-level tests green (8/8)
+- [x] **3.3a** Wire `resolveDetailLevels()` into browse rendering (`data-detail` tiers + CSS for `full`/`summary`/`badge`/`hidden`) on Dev Day 86
 - [ ] **3.4** ~~Commit~~ (deferred)
 
 ---
@@ -174,6 +175,24 @@ Assert that recursive squarify produces correct `MembraneNode[]` trees:
 - [x] **4.2** Create `membraneView/edge-bundling.ts`
 - [x] **4.3** All edge-bundling tests green (6/6)
 - [ ] **4.4** ~~Commit~~ (deferred)
+
+### Design Decision: Browse-Mode Rendering Strategy (Day 85, 2026-03-30)
+
+The pure-math edge-bundling module (`aggregateEdges()`, `filterBundlesForNode()`) is complete and tested. However, the question of **how to surface bundled edges visually in browse mode** was extensively analyzed on Dev Day 85 (2026-03-30.1) and resolved as follows:
+
+**Rejected approaches** (with reasons):
+
+1. **Draw SVG bundle arcs on the treemap in browse mode** — The treemap is a space-filling layout; cross-directory edges fly to off-viewport targets with no meaningful endpoint anchoring. Rendering all bundles simultaneously produces visual soup (confirmed Day 80). Hover-scoped rendering only partially mitigates this: arcs still span to invisible tiles, and the ephemeral hover state can't be interacted with.
+2. **Hover-only edge reveal** — Causes reflow if membranes need to grow, unavailable on mobile, and ephemeral state means users can't interact with the revealed information.
+3. **Progressive membrane wrapping in browse mode** — Pin-active mode's membrane bands work because it abandons the treemap for a flow layout. Injecting flow elements into a squarify partition breaks the fundamental layout contract.
+
+**Adopted approach** (landed Day 85, Step 5.6c):
+
+- **Browse-mode breadcrumb bar** — reduces click distance from deep directories to any ancestor. One-click navigation to any level.
+- **Directory-level `Explore ⇗` button** on collapsed tiles with cross-boundary deps — jumps directly to pin-active mode by pinning `__internals__` for files in that directory that contribute to cross-boundary edges. Goes from "I see `12 out`" to the full edge visualization in 1 click.
+- These two features solve the **real gap** (click distance from spatial awareness to relational exploration) without attempting to force relational rendering into the spatial layout.
+
+> **Warning to future sessions**: Do NOT re-propose drawing SVG bundle arcs on the treemap. This approach was implemented and reverted on Dev Day 87 (2026-04-01) after producing the exact visual problems the Day 85 analysis predicted. The breadcrumb + Explore affordance is the correct browse-mode relational path.
 
 ---
 
@@ -334,7 +353,8 @@ The continuous spectrum: Browse (0 pins) → Selected (detail panel) → Partial
 - [x] **9.3a** Source-relative hierarchy correction (`node.id` / repo topology, not `.mdmd` mirror paths) for browse breadcrumbs and directory Explore behavior
 - [x] **9.3b** Refresh restore via compressed `?s=` parsing landed on Dev Day 85
 - [x] **9.3c** Expanded-card persistence landed on Dev Day 86 (`expandedCards` round-trips through the compressed payload)
-- [x] **9.4** Controller integration is now partially covered by Playwright E2E (card interactions, dimming, containment, directory restore, expanded-card restore)
+- [x] **9.3d** Stale-state restore scrubbing landed on Dev Day 86 (`scrubSnapshot()` drops invalid directories/cards/pins and stale selected-node ids)
+- [x] **9.4** Controller integration is now partially covered by Playwright E2E (card interactions, dimming, containment, directory restore, expanded-card restore, stale-state restore)
 - [ ] **9.5** ~~Commit~~ (deferred)
 
 ---
@@ -343,13 +363,13 @@ The continuous spectrum: Browse (0 pins) → Selected (detail panel) → Partial
 
 **Goal**: Playwright-backed regression coverage for the Membrane Map's browse-mode, pin-active layout, containment, dimming, and URL-state restoration.
 
-### Current coverage (Day 86)
+### Current coverage (Day 86, end-of-day)
 
-The suite now contains 12 spec files / 25 tests:
+The suite now contains 14 spec files / 29 tests:
 
 - Browse mode: mixed-content layout, collapsed/expanded card behavior, focus layout, font invariance
 - Pin-active: containment, dimming, directory bands, pin-all active state
-- State restore: directory refresh restore and expanded-card persistence
+- State restore: directory refresh restore, expanded-card persistence, and stale-state scrub behavior
 - Multi-focal / path-as-pins: second-card pinning in pin-active mode, path-seeded breadcrumb restore, shared ancestor membrane restore
 - Cold-start behavior: Membrane first-load landing and explicit `?view=local` writing for Local Map
 - Visual stability: symbol-pinned reload pixel identity and focal SVG path presence after settle
@@ -362,7 +382,7 @@ The suite now contains 12 spec files / 25 tests:
 - [x] **10.4** Add URL-state regression coverage
 - [x] **10.5** Add explicit multi-focal / path-as-pins regression coverage
 - [x] **10.6** Add `--e2e` / `--no-e2e` opt-in support to `safe:commit`
-- [x] **10.7** Current validation baseline proven green: 872/872 unit · 28 integration · 25 E2E
+- [x] **10.7** Current validation baseline proven green: 879/879 unit · 28 integration · 29 E2E
 - [ ] **10.8** ~~Commit~~ (deferred; landed incrementally instead)
 
 ---
@@ -375,7 +395,8 @@ The suite now contains 12 spec files / 25 tests:
 
 **Checklist**
 
-- [ ] **11.1** Extract or re-home `DirectoryAggregate` so Membrane no longer imports from `circuitView/aggregation.ts`
+- [x] **11.1** Re-home Membrane imports of `DirectoryAggregate` behind `membraneView/aggregation.ts` (no direct imports from Membrane controller/renderers)
+- [ ] **11.1a** Remove the remaining `circuitView/aggregation.ts` type re-export from `membraneView/aggregation.ts` (full ownership decoupling)
 - [x] **11.2** Make Membrane Map the default cold-start view (`StaticExplorerViewerConfig.defaultView` + shell init logic)
 - [ ] **11.3** Remove `circuitView/` once remaining coupling is gone
 - [ ] **11.4** Remove `localView/` once the retirement/parity decision is explicit
@@ -454,3 +475,6 @@ The suite now contains 12 spec files / 25 tests:
 | 2026-03-31 | Step 10.5 complete  | Day 86 — Added explicit multi-focal / path-as-pins Playwright coverage in `membrane-multifocal-path.spec.ts`: one interaction-driven test proves second-card pinning yields a real multi-focal pin-active state, and one URL-seeded test proves path breadcrumb + shared ancestor membrane restore from compressed `?s=` state. Helper widened so `pinAllOnCard` works in browse and pin-active cards. 21/21 E2E green. |
 | 2026-03-31 | Step 11.2 complete  | Day 86 — Membrane is now the cold-start default. `parseInitialState()` falls back to `membrane`, `StaticExplorerViewerConfig.defaultView` now permits `"membrane"`, the static shell template boots with the Membrane nav/view active, and `membrane-default-view.spec.ts` guards both first-load landing and explicit `?view=local` writing for Local Map. 23/23 E2E green.                                            |
 | 2026-03-31 | Step 10 extension   | Day 86 — Added `membrane-visual-stability.spec.ts` to catch temporal connector drift by comparing a symbol-pinned `liveDocumentationConfig.ts` render against its own reload at the pixel-buffer level and by asserting focal SVG path visibility after settling. 25/25 E2E green.                                                                                                                                      |
+| 2026-03-31 | Step 9 robustness   | Day 86 — Added stale-state restore scrubbing (`scrubSnapshot`) so invalid expanded directories, expanded cards, pin entries, and selected node ids are dropped before applying compressed URL state. Added stale-state Playwright coverage (`membrane-stale-state.spec.ts`). 29/29 E2E green.                                                                                                                           |
+| 2026-03-31 | Step 3 wiring       | Day 86 — Wired `resolveDetailLevels()` into browse-mode rendering. Cards now receive `data-detail` tiers (`full`, `summary`, `badge`, `hidden`) with corresponding CSS behavior.                                                                                                                                                                                                                                        |
+| 2026-03-31 | Step 11 convergence | Day 86 — Re-homed Membrane `DirectoryAggregate` imports behind `membraneView/aggregation.ts` and removed dead `.pa-columns-container` CSS residue. This removes direct Membrane controller/renderer imports from Circuit modules while keeping one type-level re-export as remaining cleanup.                                                                                                                           |

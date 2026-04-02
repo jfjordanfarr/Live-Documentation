@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-edge-bundling-ts
-- Generated At: 2026-03-25T17:08:29.705Z
+- Generated At: 2026-04-01T23:35:41.235Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Pure-function edge aggregation that collapses individual file-to-file dependency
 - Bundle rendering is currently disabled in the controller (`index.ts`) for MVP: the thick SVG arcs overwhelmed the treemap layout; re-enable once hover-only or progressive-disclosure rendering is implemented.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.705Z","inputHash":"64c4d38e9a16daec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-04-01T23:35:41.235Z","inputHash":"9d8eb7926f7060c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledEdge` {#symbol-bundlededge}
