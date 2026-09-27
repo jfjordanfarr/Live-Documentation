@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/processor/processor_test.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-processor-processor-test-go
-- Generated At: 2026-09-27T18:53:06.666Z
+- Generated At: 2026-09-27T20:30:56.322Z
 
 ## Authored
 ### Purpose
@@ -15,10 +15,18 @@ Unit tests for the Go Rosetta processor package. Part of the polyglot Rosetta St
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's idiomatic `_test.go` suffix in the same package. Required fix to go.ts heuristic to not skip test files in `appliesTo`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.666Z","inputHash":"98acdeb906f61e67"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.322Z","inputHash":"81f4e2111a9cffb6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `TestRun` {#symbol-testrun}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/processor/processor_test.go#L12)
+- Parameters: `t`: `T`
+
+#### `TestSummarize` {#symbol-testsummarize}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/processor/processor_test.go#L45)
+- Parameters: `t`: `T`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

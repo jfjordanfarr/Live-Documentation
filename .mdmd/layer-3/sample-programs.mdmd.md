@@ -15,7 +15,7 @@ Every directory below holds committed source. The seven vendored fixtures that w
 | TypeScript | `basic`, `layered`, `rosetta`              | all: the oracle; `rosetta`: Rosetta parity                              |
 | C          | `basics`, `modular`, `rosetta`             | `rosetta`: Rosetta parity. No indexer for C is installed                |
 | C#         | `basic`, `webforms`, `estate`, `rosetta`   | all: the oracle; `rosetta`: Rosetta parity                              |
-| Go         | `rosetta`                                  | the oracle; Rosetta parity                                              |
+| Go         | `rosetta`, `depot`                         | all: the oracle; `rosetta`: Rosetta parity                              |
 | Java       | `basic`, `service`, `rosetta`, `warehouse` | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
 | Python     | `basics`, `pipeline`, `rosetta`, `ledger`  | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
 | Ruby       | `basic`, `cli`, `rosetta`                  | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
@@ -45,6 +45,10 @@ A fixture that has been measured carries an `expected/` directory.
 ## The warehouse program
 
 `java/warehouse` is a stock-keeping program in the Maven layout, written on 2026-09-27 for the Java adapter; its [README](../../tests/integration/programs/java/warehouse/README.md) lists the source shapes it exercises, the first being one package split across `src/main/java` and `src/test/java`.
+
+## The depot program
+
+`go/depot` is a stock-keeping module written on 2026-09-27 for the Go adapter; its [README](../../tests/integration/programs/go/depot/README.md) lists the shapes it exercises, from a package spread over files that use each other's declarations to a local variable that shadows a sibling file's function.
 
 ## The WebForms fixture
 

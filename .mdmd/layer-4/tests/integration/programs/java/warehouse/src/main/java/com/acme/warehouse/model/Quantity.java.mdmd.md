@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-quantity-java
-- Generated At: 2026-09-27T20:19:23.853Z
+- Generated At: 2026-09-27T20:30:56.592Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - A record: its components are published as fields. Its `none` factory is the target of the static import in `report/ReportWriter.java`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.853Z","inputHash":"12d2b5163b3ec9b0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.592Z","inputHash":"12d2b5163b3ec9b0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Quantity` {#symbol-quantity}
@@ -40,7 +40,7 @@ An amount of stock in some unit.
 #### `none` {#symbol-none}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java#L12)
-- Returns: [`Quantity`](#symbol-quantity)
+- Returns: [`Quantity`](../../../../../../../../../go/depot/stock/quantity.go.mdmd.md#symbol-quantity)
 - Parameters: `unit`: [`Unit`](./Unit.java.mdmd.md#symbol-unit)
 
 ##### `none` — Summary
@@ -49,8 +49,8 @@ A quantity of nothing, in the given unit.
 #### `plus` {#symbol-plus}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java#L17)
-- Returns: [`Quantity`](#symbol-quantity)
-- Parameters: `other`: [`Quantity`](#symbol-quantity)
+- Returns: [`Quantity`](../../../../../../../../../go/depot/stock/quantity.go.mdmd.md#symbol-quantity)
+- Parameters: `other`: [`Quantity`](../../../../../../../../../go/depot/stock/quantity.go.mdmd.md#symbol-quantity)
 
 ##### `plus` — Summary
 This quantity plus another of the same unit.

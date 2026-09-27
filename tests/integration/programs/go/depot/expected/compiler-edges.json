@@ -1,0 +1,348 @@
+{
+  "tool": "scip-go 0.1.26",
+  "projectFile": "go.mod",
+  "projects": [
+    {
+      "name": "depot",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "cmd/depot/main.go",
+    "internal/audit/audit.go",
+    "report/count.go",
+    "report/format.go",
+    "report/report.go",
+    "report/report_test.go",
+    "stock/item.go",
+    "stock/item_test.go",
+    "stock/quantity.go",
+    "stock/quantity_test.go",
+    "store/base.go",
+    "store/inventory.go",
+    "store/memory/memory.go"
+  ],
+  "outside": [
+    "../../home/node/.cache/go-build/90/908d8ce879b8c0d6d22401027388507162cb1fd4f63f7a9613ffa878edc876a5-d",
+    "../../home/node/.cache/go-build/d9/d9ed1071aefcbe0c36f09ed1db13c4db113951be6d0fde37f46e78f0cf9c3e20-d"
+  ],
+  "edges": [
+    {
+      "from": "cmd/depot/main.go",
+      "to": "internal/audit/audit.go",
+      "symbols": [
+        "`example.com/depot/internal/audit`/"
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "report/count.go",
+      "symbols": [
+        "`example.com/depot/report`/",
+        "`example.com/depot/report`/Count()."
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "report/report.go",
+      "symbols": [
+        "`example.com/depot/report`/Write()."
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#",
+        "`example.com/depot/stock`/Item#Name.",
+        "`example.com/depot/stock`/Item#SKU.",
+        "`example.com/depot/stock`/Item#Unit."
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Each.",
+        "`example.com/depot/stock`/Kilogram.",
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Quantity#Amount.",
+        "`example.com/depot/stock`/Quantity#Unit."
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "store/base.go",
+      "symbols": [
+        "`example.com/depot/store`/Base#Listen()."
+      ]
+    },
+    {
+      "from": "cmd/depot/main.go",
+      "to": "store/memory/memory.go",
+      "symbols": [
+        "`example.com/depot/store/memory`/",
+        "`example.com/depot/store/memory`/Memory#Item().",
+        "`example.com/depot/store/memory`/Memory#Receive().",
+        "`example.com/depot/store/memory`/New()."
+      ]
+    },
+    {
+      "from": "report/format.go",
+      "to": "report/count.go",
+      "symbols": [
+        "`example.com/depot/report`/"
+      ]
+    },
+    {
+      "from": "report/format.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#",
+        "`example.com/depot/stock`/Item#Describe()."
+      ]
+    },
+    {
+      "from": "report/format.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Quantity#"
+      ]
+    },
+    {
+      "from": "report/report_test.go",
+      "to": "report/count.go",
+      "symbols": [
+        "`example.com/depot/report`/",
+        "`example.com/depot/report`/Count()."
+      ]
+    },
+    {
+      "from": "report/report_test.go",
+      "to": "report/report.go",
+      "symbols": [
+        "`example.com/depot/report`/Total().",
+        "`example.com/depot/report`/Write()."
+      ]
+    },
+    {
+      "from": "report/report_test.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#",
+        "`example.com/depot/stock`/Item#Name.",
+        "`example.com/depot/stock`/Item#SKU.",
+        "`example.com/depot/stock`/Item#Unit."
+      ]
+    },
+    {
+      "from": "report/report_test.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Each.",
+        "`example.com/depot/stock`/Kilogram.",
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Quantity#Amount.",
+        "`example.com/depot/stock`/Quantity#Unit."
+      ]
+    },
+    {
+      "from": "report/report_test.go",
+      "to": "store/memory/memory.go",
+      "symbols": [
+        "`example.com/depot/store/memory`/",
+        "`example.com/depot/store/memory`/Memory#Item().",
+        "`example.com/depot/store/memory`/Memory#Receive().",
+        "`example.com/depot/store/memory`/New()."
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "report/count.go",
+      "symbols": [
+        "`example.com/depot/report`/"
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "report/format.go",
+      "symbols": [
+        "`example.com/depot/report`/Line#",
+        "`example.com/depot/report`/Line#Item.",
+        "`example.com/depot/report`/Line#OnHand.",
+        "`example.com/depot/report`/format()."
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#"
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Number#"
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "store/base.go",
+      "symbols": [
+        "`example.com/depot/store`/"
+      ]
+    },
+    {
+      "from": "report/report.go",
+      "to": "store/inventory.go",
+      "symbols": [
+        "`example.com/depot/store`/Inventory#",
+        "`example.com/depot/store`/Inventory#OnHand."
+      ]
+    },
+    {
+      "from": "stock/item_test.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#",
+        "`example.com/depot/stock`/Item#Describe().",
+        "`example.com/depot/stock`/Item#Name.",
+        "`example.com/depot/stock`/Item#SKU.",
+        "`example.com/depot/stock`/Item#Unit."
+      ]
+    },
+    {
+      "from": "stock/item_test.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Each.",
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Quantity#Amount.",
+        "`example.com/depot/stock`/Quantity#Unit."
+      ]
+    },
+    {
+      "from": "stock/item.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Unit#",
+        "`example.com/depot/stock`/format()."
+      ]
+    },
+    {
+      "from": "stock/quantity_test.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/"
+      ]
+    },
+    {
+      "from": "stock/quantity_test.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Each.",
+        "`example.com/depot/stock`/Kilogram.",
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Quantity#Amount.",
+        "`example.com/depot/stock`/Quantity#Plus().",
+        "`example.com/depot/stock`/Quantity#Unit."
+      ]
+    },
+    {
+      "from": "stock/quantity.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/"
+      ]
+    },
+    {
+      "from": "store/base.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#"
+      ]
+    },
+    {
+      "from": "store/base.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Quantity#"
+      ]
+    },
+    {
+      "from": "store/base.go",
+      "to": "store/inventory.go",
+      "symbols": [
+        "`example.com/depot/store`/Listener#"
+      ]
+    },
+    {
+      "from": "store/inventory.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#"
+      ]
+    },
+    {
+      "from": "store/inventory.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Quantity#"
+      ]
+    },
+    {
+      "from": "store/inventory.go",
+      "to": "store/base.go",
+      "symbols": [
+        "`example.com/depot/store`/"
+      ]
+    },
+    {
+      "from": "store/memory/memory.go",
+      "to": "stock/item.go",
+      "symbols": [
+        "`example.com/depot/stock`/",
+        "`example.com/depot/stock`/Item#",
+        "`example.com/depot/stock`/Item#SKU.",
+        "`example.com/depot/stock`/Item#Unit."
+      ]
+    },
+    {
+      "from": "store/memory/memory.go",
+      "to": "stock/quantity.go",
+      "symbols": [
+        "`example.com/depot/stock`/Quantity#",
+        "`example.com/depot/stock`/Quantity#Plus().",
+        "`example.com/depot/stock`/Quantity#Unit."
+      ]
+    },
+    {
+      "from": "store/memory/memory.go",
+      "to": "store/base.go",
+      "symbols": [
+        "`example.com/depot/store`/",
+        "`example.com/depot/store`/Base#",
+        "`example.com/depot/store`/Base#Notify()."
+      ]
+    },
+    {
+      "from": "store/memory/memory.go",
+      "to": "store/inventory.go",
+      "symbols": [
+        "`example.com/depot/store`/Inventory#"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

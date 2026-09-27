@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/models/models.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-models-models-go
-- Generated At: 2026-09-27T18:53:06.580Z
+- Generated At: 2026-09-27T20:30:56.280Z
 
 ## Authored
 ### Purpose
@@ -17,15 +17,24 @@ Data model definitions and factory functions for the Go Rosetta Stone benchmark 
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.580Z","inputHash":"2c7ae7e61ed0cd6c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.280Z","inputHash":"75252be495ac17f4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
 - Type: struct
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L12)
+- Extends: [`Entry`](../types/types.go.mdmd.md#symbol-entry)
 
 ##### `Record` — Summary
 Record represents a data record to be processed.
+
+#### `Value` {#symbol-value}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L14)
+
+#### `Tags` {#symbol-tags}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L15)
 
 #### `Report` {#symbol-report}
 - Type: struct
@@ -34,9 +43,26 @@ Record represents a data record to be processed.
 ##### `Report` — Summary
 Report represents a summary produced by the processor.
 
+#### `Total` {#symbol-total}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L20)
+
+#### `Average` {#symbol-average}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L21)
+
+#### `Records` {#symbol-records}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L22)
+
+#### `GeneratedAt` {#symbol-generatedat}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L23)
+
 #### `CreateRecord` {#symbol-createrecord}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L27)
+- Returns: [`Record`](../../../../java/basic/src/com/example/model/Record.java.mdmd.md#symbol-record)
 
 ##### `CreateRecord` — Summary
 CreateRecord is a factory for creating records with sensible defaults.
@@ -44,6 +70,7 @@ CreateRecord is a factory for creating records with sensible defaults.
 #### `ValidateConfig` {#symbol-validateconfig}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L40)
+- Parameters: `config`: [`ProcessorConfig`](../types/types.go.mdmd.md#symbol-processorconfig)
 
 ##### `ValidateConfig` — Summary
 ValidateConfig validates that a configuration is within acceptable bounds.

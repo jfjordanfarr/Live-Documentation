@@ -23,24 +23,6 @@ const GO_STRINGS: StringDelimiters = {
 };
 
 /**
- * Standard library packages (partial list - major ones).
- * Used to distinguish stdlib imports from local/third-party imports.
- */
-export const GO_STDLIB_PACKAGES = new Set([
-  "fmt", "os", "io", "bufio", "bytes", "strings", "strconv",
-  "errors", "log", "time", "math", "rand", "sort", "sync",
-  "context", "net", "http", "json", "xml", "html", "template",
-  "regexp", "path", "filepath", "flag", "testing", "reflect",
-  "runtime", "unsafe", "syscall", "encoding", "crypto", "hash",
-  "compress", "archive", "database", "image", "text", "unicode",
-  // Common subpackages
-  "net/http", "net/url", "io/ioutil", "io/fs", "path/filepath",
-  "encoding/json", "encoding/xml", "encoding/base64", "encoding/hex",
-  "crypto/sha256", "crypto/md5", "crypto/tls", "crypto/rand",
-  "database/sql", "html/template", "text/template", "log/slog"
-]);
-
-/**
  * Fundamental Go types that appear in virtually every file.
  * These are conservative — only built-in types, not stdlib types.
  */

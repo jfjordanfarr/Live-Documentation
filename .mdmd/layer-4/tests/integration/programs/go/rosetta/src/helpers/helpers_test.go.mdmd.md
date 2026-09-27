@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/helpers/helpers_test.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-helpers-helpers-test-go
-- Generated At: 2026-09-27T18:53:06.449Z
+- Generated At: 2026-09-27T20:30:56.215Z
 
 ## Authored
 ### Purpose
@@ -15,10 +15,23 @@ Unit tests for the Go Rosetta helpers package (Format, Sum, Average utilities).
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Go's same-package test pattern which doesn't require explicit imports for internal symbols.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.449Z","inputHash":"0cbcb656f694b9b6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.215Z","inputHash":"03b77bc1a9c8e636"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `TestFormat` {#symbol-testformat}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/helpers/helpers_test.go#L11)
+- Parameters: `t`: `T`
+
+#### `TestSum` {#symbol-testsum}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/helpers/helpers_test.go#L22)
+- Parameters: `t`: `T`
+
+#### `TestAverage` {#symbol-testaverage}
+- Type: function
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/helpers/helpers_test.go#L43)
+- Parameters: `t`: `T`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

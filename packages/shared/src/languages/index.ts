@@ -29,7 +29,7 @@ export { createSyncStripper, createLanguageSyntax, stripCStyleComments } from ".
 
 export { cSyntax } from "./c";
 export { csharpSyntax } from "./csharp";
-export { goSyntax, GO_STDLIB_PACKAGES } from "./go";
+export { goSyntax } from "./go";
 export { javaSyntax } from "./java";
 export { powershellSyntax } from "./powershell";
 export { pythonSyntax } from "./python";

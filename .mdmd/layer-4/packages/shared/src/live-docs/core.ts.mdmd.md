@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-09-27T20:19:20.702Z
+- Generated At: 2026-09-27T20:36:54.245Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.702Z","inputHash":"14a9756f07c4cfac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:54.245Z","inputHash":"14a9756f07c4cfac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -338,7 +338,9 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [csharp.test.ts](./adapters/csharp.test.ts.mdmd.md)
 - [css.test.ts](./adapters/css.test.ts.mdmd.md)
 - [dotnetConfig.test.ts](./adapters/dotnetConfig.test.ts.mdmd.md)
+- [go.test.ts](./adapters/go.test.ts.mdmd.md)
 - [html.test.ts](./adapters/html.test.ts.mdmd.md)
+- [java.test.ts](./adapters/java.test.ts.mdmd.md)
 - [java.typeref.test.ts](./adapters/java.typeref.test.ts.mdmd.md)
 - [json.test.ts](./adapters/json.test.ts.mdmd.md)
 - [powershell.test.ts](./adapters/powershell.test.ts.mdmd.md)

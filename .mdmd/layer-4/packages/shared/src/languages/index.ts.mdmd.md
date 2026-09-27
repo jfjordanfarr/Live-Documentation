@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-09-27T20:19:19.906Z
+- Generated At: 2026-09-27T20:36:53.487Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:19.906Z","inputHash":"8fea4e2682df8706"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:53.487Z","inputHash":"6b3a44ec1267760b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -55,10 +55,6 @@ Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L31)
 
 #### `goSyntax` {#symbol-gosyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
-
-#### `GO_STDLIB_PACKAGES` {#symbol-go_stdlib_packages}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L32)
 
@@ -189,7 +185,6 @@ True if the identifier is a framework type to filter as noise, false otherwise
 ### Dependencies
 - [`c.cSyntax`](./c.ts.mdmd.md#symbol-csyntax)
 - [`csharp.csharpSyntax`](./csharp.ts.mdmd.md#symbol-csharpsyntax)
-- [`go.GO_STDLIB_PACKAGES`](./go.ts.mdmd.md#symbol-go_stdlib_packages)
 - [`go.goSyntax`](./go.ts.mdmd.md#symbol-gosyntax)
 - [`java.javaSyntax`](./java.ts.mdmd.md#symbol-javasyntax)
 - [`powershell.powershellSyntax`](./powershell.ts.mdmd.md#symbol-powershellsyntax)
@@ -211,6 +206,9 @@ True if the identifier is a framework type to filter as noise, false otherwise
 #### Vitest Unit Tests
 - [index.test.ts](./index.test.ts.mdmd.md)
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
+- [go.test.ts](../live-docs/adapters/go.test.ts.mdmd.md)
+- [java.test.ts](../live-docs/adapters/java.test.ts.mdmd.md)
+- [java.typeref.test.ts](../live-docs/adapters/java.typeref.test.ts.mdmd.md)
 - [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
 - [python.resolution.test.ts](../live-docs/adapters/python.resolution.test.ts.mdmd.md)
 - [python.test.ts](../live-docs/adapters/python.test.ts.mdmd.md)

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/types/types.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-types-types-go
-- Generated At: 2026-09-27T18:53:06.697Z
+- Generated At: 2026-09-27T20:30:56.343Z
 
 ## Authored
 ### Purpose
@@ -17,14 +17,14 @@ Foundational type definitions for the Go Rosetta Stone benchmark, establishing t
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.697Z","inputHash":"3320ca3c257edbb0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.343Z","inputHash":"cd22c391d72aba8a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Status` {#symbol-status}
+#### `Status (type)` {#symbol-status-type}
 - Type: type
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L8)
 
-##### `Status` — Summary
+##### `Status (type)` — Summary
 Status represents the state of a record in the pipeline.
 
 #### `StatusPending` {#symbol-statuspending}
@@ -55,6 +55,18 @@ StatusComplete indicates a processed record.
 ##### `Entry` — Summary
 Entry represents a timestamped item in the data pipeline.
 
+#### `ID` {#symbol-id}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L21)
+
+#### `Timestamp` {#symbol-timestamp}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L22)
+
+#### `Status (field)` {#symbol-status-field}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L23)
+
 #### `ProcessorConfig` {#symbol-processorconfig}
 - Type: struct
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L27)
@@ -62,9 +74,22 @@ Entry represents a timestamped item in the data pipeline.
 ##### `ProcessorConfig` — Summary
 ProcessorConfig holds configuration for processing operations.
 
+#### `BatchSize` {#symbol-batchsize}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L28)
+
+#### `Timeout` {#symbol-timeout}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L29)
+
+#### `Strict` {#symbol-strict}
+- Type: field
+- Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L30)
+
 #### `NewProcessorConfig` {#symbol-newprocessorconfig}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L34)
+- Returns: [`ProcessorConfig`](../../../../java/rosetta/src/com/rosetta/types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
 
 ##### `NewProcessorConfig` — Summary
 NewProcessorConfig creates a ProcessorConfig with the given parameters.
