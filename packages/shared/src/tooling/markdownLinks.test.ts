@@ -1,7 +1,6 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
-import path from "node:path";
 import { tmpdir } from "node:os";
-
+import path from "node:path";
 import { describe, expect, it, afterEach } from "vitest";
 
 import { findBrokenMarkdownLinks } from "./markdownLinks";

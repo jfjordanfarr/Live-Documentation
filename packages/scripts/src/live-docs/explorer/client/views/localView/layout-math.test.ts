@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest";
+
 import {
   type LayoutConfig,
-  type LayoutColumn,
   type LayoutNode,
   type LocalMapLayout,
-  type ColumnRole,
   type HopData,
-  DEFAULT_LAYOUT_CONFIG,
   computeGridTemplate,
   computeColumnCount,
   getColumnRole,

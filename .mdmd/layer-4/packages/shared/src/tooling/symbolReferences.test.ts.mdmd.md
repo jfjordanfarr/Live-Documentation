@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/symbolReferences.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-symbolreferences-test-ts
-- Generated At: 2026-02-03T21:55:41.475Z
+- Generated At: 2026-09-27T19:11:42.320Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Guards the slug-anomaly detector with fixture-style Vitest coverage so duplicate
 - The second scenario flips rule severities and ignore patterns to match the configuration knobs we introduced for the opt-in symbol audit rollout ([severity planning](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L4627-L4944)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.475Z","inputHash":"76216000ee3d924a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.320Z","inputHash":"89127dbb5cc35456"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

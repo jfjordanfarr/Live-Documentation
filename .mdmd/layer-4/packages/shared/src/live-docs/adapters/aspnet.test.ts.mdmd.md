@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/aspnet.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-aspnet-test-ts
-- Generated At: 2026-09-27T10:23:12.700Z
+- Generated At: 2026-09-27T19:11:41.259Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Verifies that the ASP.NET markup adapter links Blazor `.razor` pages to both the
 - Runs against a temporary workspace so we can assert filesystem-driven heuristics (like `~/` resolution) without polluting the repo fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:23:12.700Z","inputHash":"10b68834ad810fb8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.259Z","inputHash":"2e74e6d78dca3959"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

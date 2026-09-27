@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-font-invariance.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-font-invariance-spec-ts
-- Generated At: 2026-03-30T19:28:11.508Z
+- Generated At: 2026-09-27T19:11:42.754Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ E2E test asserting that font sizes remain constant when drilling into directorie
 - Measures median font size of `.membrane__label, .membrane-card__header` before and after directory expansion, tolerating ±1px for rounding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T19:28:11.508Z","inputHash":"810660ef4e38535a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.754Z","inputHash":"77a5f26e960a06e2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

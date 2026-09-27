@@ -11,16 +11,13 @@ module.exports = tseslint.config(
       "**/dist/**",
       "out/**",
       "**/out/**",
-  "tests/integration/programs/**",
+      "tests/integration/programs/**",
       "node_modules/**",
       "**/*.d.ts",
       "eslint.config.js",
-  "AI-Agent-Workspace/**",
+      "AI-Agent-Workspace/**",
       // Generated CommonJS shims that live alongside TypeScript sources in the shared package.
       "packages/shared/src/**/*.js",
-      // Temporarily ignore test files to avoid typed-rule crashes in our environment
-      "**/*.test.ts",
-      "**/*.spec.ts"
     ]
   },
   {
@@ -69,6 +66,8 @@ module.exports = tseslint.config(
   },
   {
     files: ["packages/**/src/**/*.ts"],
+    // Typed rules need a tsconfig project; the packages' projects hold their sources, not their tests.
+    ignores: ["**/*.test.ts", "**/*.spec.ts"],
     extends: [...tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
@@ -80,21 +79,6 @@ module.exports = tseslint.config(
       "@typescript-eslint/no-floating-promises": "error",
       // Workaround: rule is unstable with TS 5.x + projectService in some environments
       "@typescript-eslint/await-thenable": "off"
-    }
-  },
-  {
-    files: ["**/*.{test,spec}.ts"],
-    languageOptions: {
-      parserOptions: {
-        // Disable typed project service for test files to avoid tsconfig include constraints
-        projectService: false
-      }
-    },
-    rules: {
-      "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/no-array-delete": "off",
-      "@typescript-eslint/await-thenable": "off",
-      "@typescript-eslint/no-misused-promises": "off"
     }
   },
   // Require JSDoc on exported symbols in package source and scripts.

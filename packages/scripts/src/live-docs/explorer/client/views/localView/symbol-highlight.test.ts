@@ -6,7 +6,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { computeSymbolHighlight, type SymbolHighlightResult } from "./symbol-highlight";
+
+import { computeSymbolHighlight } from "./symbol-highlight";
 import type { LocalSubgraph, LocalEdge, LocalViewOptions } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 

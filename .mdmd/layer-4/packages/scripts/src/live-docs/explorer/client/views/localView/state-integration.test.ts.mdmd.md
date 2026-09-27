@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-state-integration-test-ts
-- Generated At: 2026-02-03T21:55:36.694Z
+- Generated At: 2026-09-27T19:11:40.045Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Integration tests verifying multi-hop workflow scenarios: pin chaining, subscrib
 - Bridges unit-level state.test.ts and controller-level rendering tests
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.694Z","inputHash":"3da6fc4aeabcb1bd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.045Z","inputHash":"9ad2966461ad922c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,7 +26,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`state.LocalMapState`](./state.ts.mdmd.md#symbol-localmapstate)
-- [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin)
 - [`state.addPin`](./state.ts.mdmd.md#symbol-addpin)
 - [`state.clearPins`](./state.ts.mdmd.md#symbol-clearpins)
 - [`state.createInitialState`](./state.ts.mdmd.md#symbol-createinitialstate)

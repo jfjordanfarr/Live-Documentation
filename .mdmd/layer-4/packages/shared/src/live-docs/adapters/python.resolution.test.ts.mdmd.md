@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.resolution.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-resolution-test-ts
-- Generated At: 2026-02-03T21:55:40.089Z
+- Generated At: 2026-09-27T19:11:41.753Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates Python import resolution logic including local modules, relative impor
 Tests cover the fixture patterns used in `python/basics` and `python/pipeline` benchmark fixtures to ensure Live Doc dependency links resolve correctly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.089Z","inputHash":"0ac34977b229847e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.753Z","inputHash":"1df08d1a0fd1bd7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

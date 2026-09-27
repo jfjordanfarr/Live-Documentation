@@ -94,6 +94,7 @@ Settled in September 2026: derived views (the graph index, the Explorer bundle) 
 - **Decision**: Vitest for unit and integration tests, as two projects in one config; Playwright for the Explorer. The integration project runs the real generator and CLI over fixture workspaces and imports sources directly, so no build precedes it.
 - **Rationale**: Fast feedback; visual behaviour verified in a real browser rather than jsdom.
 - **Retired 2026-09-27**: the VS Code Electron harness (`@vscode/test-electron` plus mocha) that hosted the integration suites. None of them used the VS Code API, and the harness cost a compile step, an 8 GB download cache, and `xvfb` on every Linux run.
+- **Lint covers the tests again (2026-09-27)**: ESLint had ignored every `*.test.ts` and `*.spec.ts` "temporarily" because the typed rules crashed on files outside a tsconfig project. The typed rules now apply to package sources only, the untyped rules to everything, and the ignore is gone. Lifting it found import order, needless escapes and unused imports in the tests, nothing else.
 
 ## Descoped Decisions (Audit Trail)
 

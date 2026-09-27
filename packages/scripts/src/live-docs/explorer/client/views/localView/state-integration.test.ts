@@ -8,6 +8,7 @@
  * but these pure-function integration tests verify the state logic.
  */
 import { describe, expect, it } from "vitest";
+
 import {
   createInitialState,
   createStateStore,
@@ -19,8 +20,7 @@ import {
   isSymbolPinned,
   getPinnedNodeIds,
   getRequiredColumnCount,
-  type LocalMapState,
-  type SymbolPin
+  type LocalMapState
 } from "./state";
 
 describe("State Integration: Multi-hop Pathfinding Scenarios", () => {

@@ -50,12 +50,6 @@ test.describe("Membrane Map — Stale URL State Scrubbing", () => {
       "Root browse should render directory membranes even with stale expanded dirs",
     ).toBeGreaterThan(0);
 
-    // The URL should have been cleaned (no ?s= with stale dirs persisted)
-    // After scrubbing, the state approaches defaults, so ?s= may be removed
-    const urlAfter = new URL(page.url());
-    const sParam = urlAfter.searchParams.get("s");
-    // Either no ?s= (default state) or a valid ?s= without stale dirs
-    // Just assert the page rendered successfully
     expect(membranes).toBeGreaterThan(0);
   });
 

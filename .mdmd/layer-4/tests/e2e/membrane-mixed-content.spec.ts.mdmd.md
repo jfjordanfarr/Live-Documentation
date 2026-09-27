@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-mixed-content.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-mixed-content-spec-ts
-- Generated At: 2026-03-30T19:28:11.532Z
+- Generated At: 2026-09-27T19:11:42.778Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ E2E test for the hybrid card-grid layout in mixed-content directories, ensuring 
 - Minimum card size assertions (width >30px, height >15px) apply to all visible cards as a universal guardrail.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T19:28:11.532Z","inputHash":"db34ffa273acf32c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.778Z","inputHash":"841a017bffa7af08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

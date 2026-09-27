@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-containment.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-containment-spec-ts
-- Generated At: 2026-03-30T19:28:11.400Z
+- Generated At: 2026-09-27T19:11:42.625Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ E2E regression test verifying that file cards never overflow their containing di
 - Coverage intention: regression test to prevent layout overflow bugs from recurring across CSS/renderer changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T19:28:11.400Z","inputHash":"ff394c2a8f79a88a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.625Z","inputHash":"8fb08ff1ab2527e9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,7 +28,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `Page`, `expect`, `test`
+- `@playwright/test` - `expect`, `test`
 - [`helpers.expandDirectory`](./helpers.ts.mdmd.md#symbol-expanddirectory)
 - [`helpers.findContainmentViolations`](./helpers.ts.mdmd.md#symbol-findcontainmentviolations)
 - [`helpers.formatViolations`](./helpers.ts.mdmd.md#symbol-formatviolations)

@@ -1,5 +1,5 @@
-import { spawnSync } from "node:child_process";
 import * as assert from "node:assert";
+import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "vitest";

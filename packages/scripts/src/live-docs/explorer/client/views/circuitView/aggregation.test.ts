@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import {
   computeDirectoryAggregates,
   computeChildAggregates,
@@ -7,8 +8,8 @@ import {
   findDirectoryByPath,
   type DirectoryAggregate
 } from "./aggregation";
-import type { DirectoryNode } from "../../types";
 import type { ExplorerNodePayload, ExplorerDependencyReference } from "../../../shared/types";
+import type { DirectoryNode } from "../../types";
 
 function createNode(
   id: string,

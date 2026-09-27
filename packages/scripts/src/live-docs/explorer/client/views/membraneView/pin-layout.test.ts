@@ -2,10 +2,11 @@
  * Tests for the pin-layout dependency-flow layout engine.
  */
 import { describe, it, expect } from "vitest";
-import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../../shared/types";
+
+import { computePinLayout, parentDirectory, computeLCA, buildAncestorChain, computeDirectoryBands } from "./pin-layout";
 import type { PinSet } from "./pin-state";
 import { addPin, EMPTY_PIN_SET } from "./pin-state";
-import { computePinLayout, parentDirectory, computeLCA, buildAncestorChain, computeDirectoryBands } from "./pin-layout";
+import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../../shared/types";
 
 // ─── Test Helpers ──────────────────────────────────────────────────
 

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/c.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-c-docstring-test-ts
-- Generated At: 2026-02-03T21:55:39.550Z
+- Generated At: 2026-09-27T19:11:41.288Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summa
 - Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.550Z","inputHash":"72627193349135d9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.288Z","inputHash":"7d55865ddb969704"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

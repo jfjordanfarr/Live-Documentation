@@ -1,10 +1,10 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import * as fs from "node:fs";
-import * as path from "node:path";
 import * as os from "node:os";
+import * as path from "node:path";
+import { describe, expect, it, beforeEach, afterEach } from "vitest";
 
-import { jsonAdapter } from "./json";
 import type { WorkspaceFileIndex } from "./index";
+import { jsonAdapter } from "./json";
 
 describe("JSON Adapter", () => {
   let tempDir: string;

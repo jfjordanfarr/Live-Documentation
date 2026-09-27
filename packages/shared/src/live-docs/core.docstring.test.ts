@@ -2,13 +2,13 @@ import path from "node:path";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
-
 import {
   collectExportedSymbols,
   computePublicSymbolHeadingInfo,
   renderPublicSymbolLines
 } from "./core";
+import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
+
 
 describe("TypeScript docstring bridging", () => {
   it("captures structured metadata from JSDoc blocks", () => {

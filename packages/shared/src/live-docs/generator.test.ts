@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
-import type { LiveDocMetadata, LiveDocProvenance } from "./schema";
 import {
   composeLiveDocId,
   composeLiveDocPath,
@@ -10,6 +8,8 @@ import {
   renderLiveDocMarkdown,
   renderProvenanceComment
 } from "./markdown";
+import type { LiveDocMetadata, LiveDocProvenance } from "./schema";
+import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 
 describe("Live Documentation markdown rendering", () => {
   it("preserves authored block when present", () => {

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/css.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-css-test-ts
-- Generated At: 2026-02-03T21:55:39.764Z
+- Generated At: 2026-09-27T19:11:41.477Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Unit test suite for the CSS language adapter, validating dependency extraction f
 - Tests external URL filtering and missing file handling (unresolved dependencies)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.764Z","inputHash":"7500961861ce5ff7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.477Z","inputHash":"6590aa7d03ceaa4c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

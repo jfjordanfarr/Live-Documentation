@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
+
 import { computeMembraneLayout } from "./layout";
 import type { MembraneNode } from "./types";
-import { DEFAULT_MEMBRANE_CONFIG } from "./types";
-import type { LayoutRect } from "../layoutUtils";
 import type { DirectoryNode } from "../../types";
+import type { LayoutRect } from "../layoutUtils";
 
 const viewport: LayoutRect = { x: 0, y: 0, width: 1000, height: 800 };
 

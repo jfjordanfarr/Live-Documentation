@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-circuitview-state-test-ts
-- Generated At: 2026-03-23T20:05:53.991Z
+- Generated At: 2026-09-27T19:11:39.644Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests for the Circuit Board state management module, covering immutable sta
 - Tests verify immutability guarantees: expanding the same directory twice returns the same reference, collapsing a non-expanded directory is a no-op.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.991Z","inputHash":"bdf715241c4857d1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:39.644Z","inputHash":"c56293900380e923"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,7 +27,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`state.CircuitBoardState`](./state.ts.mdmd.md#symbol-circuitboardstate)
 - [`state.buildBreadcrumbs`](./state.ts.mdmd.md#symbol-buildbreadcrumbs)
 - [`state.collapseAll`](./state.ts.mdmd.md#symbol-collapseall)
 - [`state.collapseDirectory`](./state.ts.mdmd.md#symbol-collapsedirectory)

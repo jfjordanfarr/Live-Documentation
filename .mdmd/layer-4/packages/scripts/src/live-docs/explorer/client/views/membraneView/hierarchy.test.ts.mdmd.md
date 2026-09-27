@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-hierarchy-test-ts
-- Generated At: 2026-03-25T17:08:29.773Z
+- Generated At: 2026-09-27T19:11:40.359Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Verifies barrel file detection (`isBarrelFile`) and barrel-as-membrane semantic 
 - 9 tests covering: positive/negative barrel pattern matching, barrel removal when siblings exist, barrel preservation when it's the only file, recursive application through nested directories, and immutability of the input tree.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.773Z","inputHash":"ae105ab29ca2183a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.359Z","inputHash":"b7583b18cfe304ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

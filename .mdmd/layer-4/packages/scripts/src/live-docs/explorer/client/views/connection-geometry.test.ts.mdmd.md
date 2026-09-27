@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-test-ts
-- Generated At: 2026-03-24T03:05:19.148Z
+- Generated At: 2026-09-27T19:11:39.675Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Unit tests for connection-geometry.ts covering Bézier path generation, self-loo
 - Promoted from `localView/connection-geometry.test.ts` to `views/connection-geometry.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.148Z","inputHash":"5586f7211af843f5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:39.675Z","inputHash":"db01178bac104240"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,12 +33,10 @@ _No public symbols detected_
 - [`connection-geometry.BezierTuningParams`](./connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
 - [`connection-geometry.DEFAULT_BEZIER_TUNING`](./connection-geometry.ts.mdmd.md#symbol-default_bezier_tuning)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](./connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
-- [`connection-geometry.GradientDef`](./connection-geometry.ts.mdmd.md#symbol-gradientdef)
 - [`connection-geometry.PathResult`](./connection-geometry.ts.mdmd.md#symbol-pathresult)
 - [`connection-geometry.Point`](./connection-geometry.ts.mdmd.md#symbol-point)
 - [`connection-geometry.Rect`](./connection-geometry.ts.mdmd.md#symbol-rect)
 - [`connection-geometry.SelfLoopParams`](./connection-geometry.ts.mdmd.md#symbol-selfloopparams)
-- [`connection-geometry.SelfLoopStubResult`](./connection-geometry.ts.mdmd.md#symbol-selfloopstubresult)
 - [`connection-geometry.boundingBoxFromPoints`](./connection-geometry.ts.mdmd.md#symbol-boundingboxfrompoints)
 - [`connection-geometry.computeBezierPath`](./connection-geometry.ts.mdmd.md#symbol-computebezierpath)
 - [`connection-geometry.computeSelfLoopStubs`](./connection-geometry.ts.mdmd.md#symbol-computeselfloopstubs)

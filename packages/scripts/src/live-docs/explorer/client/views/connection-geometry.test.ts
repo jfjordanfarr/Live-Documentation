@@ -1,12 +1,11 @@
 import { describe, expect, it } from "vitest";
+
 import {
   type Point,
   type Rect,
   type BezierTuningParams,
   type PathResult,
   type SelfLoopParams,
-  type SelfLoopStubResult,
-  type GradientDef,
   distance,
   computeStubLength,
   computeBezierPath,

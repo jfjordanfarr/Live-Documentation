@@ -1,9 +1,8 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
-import { spawnSync } from "node:child_process";
-
 import { describe, expect, it } from "vitest";
 
 const ROOT = path.resolve(__dirname, "../../../..");

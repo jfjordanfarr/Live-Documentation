@@ -10,8 +10,8 @@
  */
 
 import { describe, expect, it } from "vitest";
+
 import { clamp, computeFitTransform, type Bounds, type LayoutExtents } from "./layout-measure";
-import type { MapTransform } from "./types";
 
 describe("layout-measure", () => {
   describe("clamp", () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import {
   createInitialState,
   expandDirectory,
@@ -7,8 +8,7 @@ import {
   collapseAll,
   hasExpandedDirectories,
   buildBreadcrumbs,
-  findContainingDirectory,
-  type CircuitBoardState
+  findContainingDirectory
 } from "./state";
 import type { ExplorerNodePayload } from "../../../shared/types";
 

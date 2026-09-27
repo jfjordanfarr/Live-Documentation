@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-svg-connections-test-ts
-- Generated At: 2026-03-25T17:08:30.156Z
+- Generated At: 2026-09-27T19:11:40.657Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Verifies the pure-function SVG geometry computations for bundled edge rendering:
 - Tests exercise the `aggregateEdges` function from `edge-bundling.ts` as an integration cross-check, verifying that the bundled-edge pipeline from aggregation through SVG geometry produces correct end-to-end results.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:30.156Z","inputHash":"aa3394683a3d0eba"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.657Z","inputHash":"c573d79613c52f0d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { aggregateEdges } from "./edge-bundling";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { LayoutRect } from "../layoutUtils";

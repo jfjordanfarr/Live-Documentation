@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { resolveDetailLevels, DetailLevel } from "./detail-levels";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { LayoutRect } from "../layoutUtils";

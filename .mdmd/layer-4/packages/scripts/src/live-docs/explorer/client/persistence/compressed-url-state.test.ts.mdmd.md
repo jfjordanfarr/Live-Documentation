@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-persistence-compressed-url-state-test-ts
-- Generated At: 2026-03-31T20:36:02.871Z
+- Generated At: 2026-09-27T19:11:39.357Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests for the lz-string URL state compression module, verifying round-trip 
 - The test file does not exercise `readUrlState`/`writeUrlState` (the DOM-touching boundary functions) because those require `window.location`, which is unavailable in vitest's Node environment. Browser-level testing is deferred to Playwright E2E.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:02.871Z","inputHash":"0f65585f7fb82cad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:39.357Z","inputHash":"94d098b44fc5521e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

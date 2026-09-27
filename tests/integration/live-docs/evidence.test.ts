@@ -132,7 +132,7 @@ describe("Live Docs evidence bridge", () => {
       assert.match(
         implementationContent,
         new RegExp(
-          `Observed Evidence[\\s\\S]*Vitest[\\s\\S]*tests\/app\/example\\.test\\.ts${LIVE_DOC_EXTENSION_PATTERN}`
+          `Observed Evidence[\\s\\S]*Vitest[\\s\\S]*tests/app/example\\.test\\.ts${LIVE_DOC_EXTENSION_PATTERN}`
         )
       );
       assert.doesNotMatch(implementationContent, /_No automated evidence found_/);
@@ -149,7 +149,7 @@ describe("Live Docs evidence bridge", () => {
       assert.match(
         testContent,
         new RegExp(
-          `## Generated[\\s\\S]*Targets[\\s\\S]*#### Vitest[\\s\\S]*- packages\/app\/src: \\[example\\.ts\\]\\(.+packages\/app\/src\/example\\.ts${LIVE_DOC_EXTENSION_PATTERN}\\)`
+          `## Generated[\\s\\S]*Targets[\\s\\S]*#### Vitest[\\s\\S]*- packages/app/src: \\[example\\.ts\\]\\(.+packages/app/src/example\\.ts${LIVE_DOC_EXTENSION_PATTERN}\\)`
         )
       );
       assert.match(testContent, /Supporting Fixtures[\s\S]*tests\/app\/fixtures\/greeting\.json/);

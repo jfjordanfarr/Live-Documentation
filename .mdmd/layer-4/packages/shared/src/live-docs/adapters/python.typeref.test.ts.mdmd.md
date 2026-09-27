@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.typeref.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-typeref-test-ts
-- Generated At: 2026-02-03T21:55:40.149Z
+- Generated At: 2026-09-27T19:11:41.805Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests verifying that the Python language adapter correctly extracts `typeRe
 - Filters out builtins like `ABC`, `Protocol`, `Exception` from rendered type references
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.149Z","inputHash":"4aa530978d6bb4b1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.805Z","inputHash":"34ff43b192bd61b4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

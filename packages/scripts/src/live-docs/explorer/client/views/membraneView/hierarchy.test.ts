@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { isBarrelFile, applyBarrelSemantics } from "./hierarchy";
 import type { DirectoryNode } from "../../types";
 

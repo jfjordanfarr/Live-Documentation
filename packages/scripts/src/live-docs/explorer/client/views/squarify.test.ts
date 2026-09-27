@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
+
+import type { LayoutRect } from "./layoutUtils";
 import {
   computeSquarifiedLayout,
   type SquarifyItem,
   type SquarifyTile
 } from "./squarify";
-import type { LayoutRect } from "./layoutUtils";
 
 const viewport: LayoutRect = { x: 0, y: 0, width: 1000, height: 800 };
 

@@ -25,7 +25,6 @@ import { beforeAll, describe, it } from "vitest";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
 } from "../../../packages/shared/src/config/liveDocumentationConfig";
 
@@ -35,8 +34,6 @@ import {
 
 const FIXTURE_ROOT = path.resolve(__dirname, "../programs");
 
-const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
-const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
 
 /**
  * Per-language Rosetta fixture configurations.
@@ -227,7 +224,6 @@ function isTestFile(filePath: string): boolean {
  */
 function classifyFile(filePath: string): CanonicalNodeId | null {
   const basename = path.basename(filePath).toLowerCase();
-  const dir = path.dirname(filePath).toLowerCase();
   const parts = filePath.toLowerCase().split(/[/\\]/);
 
   // Classify test files first
@@ -333,10 +329,7 @@ function extractSection(content: string, sectionName: string): string {
  *    `- \`Rosetta.Models\``
  *    → split on '.', classify each segment to canonical node.
  */
-function extractDependencyTargets(
-  depsSection: string,
-  sourceDir: string
-): Set<CanonicalNodeId> {
+function extractDependencyTargets(depsSection: string): Set<CanonicalNodeId> {
   const targets = new Set<CanonicalNodeId>();
 
   // Phase 1: Extract resolved markdown link targets
@@ -434,10 +427,7 @@ async function generateAndExtract(fixtureConfig: RosettaFixtureConfig): Promise<
     // Build edge set from dependency sections
     for (const [nodeId, docs] of result.nodeMap) {
       for (const doc of docs) {
-        const targets = extractDependencyTargets(
-          doc.dependenciesSection,
-          fixtureConfig.sourceDir
-        );
+        const targets = extractDependencyTargets(doc.dependenciesSection);
         for (const target of targets) {
           const edgeKey = `${nodeId}→${target}`;
           const isCanonical = CANONICAL_EDGES.some(
@@ -606,7 +596,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
         const docs = result.nodeMap.get(nodeId);
         if (!docs) continue;
         for (const doc of docs) {
-          const targets = extractDependencyTargets(doc.dependenciesSection, result.config.sourceDir);
+          const targets = extractDependencyTargets(doc.dependenciesSection);
           // Filter out self-references and test nodes
           const productionTargets = [...targets].filter(
             t => !LEAF_NODES.has(t) && !t.endsWith("_test") && t !== nodeId
@@ -633,7 +623,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
         const docs = result.nodeMap.get(nodeId);
         if (!docs) continue;
         for (const doc of docs) {
-          const targets = extractDependencyTargets(doc.dependenciesSection, result.config.sourceDir);
+          const targets = extractDependencyTargets(doc.dependenciesSection);
           const productionTargets = [...targets].filter(
             t => !FOUNDATION_NODES.has(t) && !t.endsWith("_test") && t !== nodeId
           );
