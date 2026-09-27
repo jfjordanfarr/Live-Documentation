@@ -11,9 +11,24 @@ import { compareFixture } from "../../../scripts/oracle/compare";
 
 const FIXTURE_ROOT = path.resolve(__dirname, "../programs");
 
-const MEASURED_FIXTURES = ["csharp/webforms", "csharp/estate"];
+/** Every `<language>/<program>` under the sample programs that carries `expected/compiler-edges.json`. */
+function measuredFixtures(): string[] {
+  const directories = (parent: string): string[] =>
+    fs.readdirSync(parent, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  return directories(FIXTURE_ROOT).flatMap((language) =>
+    directories(path.join(FIXTURE_ROOT, language))
+      .filter((program) => fs.existsSync(path.join(FIXTURE_ROOT, language, program, "expected", "compiler-edges.json")))
+      .map((program) => `${language}/${program}`)
+  );
+}
+
+const MEASURED_FIXTURES = measuredFixtures();
 
 describe("oracle:compare", () => {
+  it("finds fixtures that carry expectations", () => {
+    expect(MEASURED_FIXTURES).toContain("csharp/estate");
+  });
+
   for (const fixture of MEASURED_FIXTURES) {
     it(`accounts for every expected edge of ${fixture}`, async () => {
       const fixtureDir = path.join(FIXTURE_ROOT, fixture);

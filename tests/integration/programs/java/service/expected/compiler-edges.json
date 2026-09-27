@@ -1,0 +1,124 @@
+{
+  "tool": "scip-java 0.11.2",
+  "projectFile": "pom.xml",
+  "projects": [
+    {
+      "name": "service",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/com/example/service/AppService.java",
+    "src/com/example/service/analytics/Analyzer.java",
+    "src/com/example/service/data/Repository.java",
+    "src/com/example/service/data/SourceRegistry.java",
+    "src/com/example/service/metrics/SummaryBuilder.java",
+    "src/com/example/service/model/Sample.java",
+    "src/com/example/service/model/Summary.java",
+    "src/com/example/service/util/Logger.java"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/com/example/service/analytics/Analyzer.java",
+      "to": "src/com/example/service/metrics/SummaryBuilder.java",
+      "symbols": [
+        "com/example/service/metrics/SummaryBuilder#",
+        "com/example/service/metrics/SummaryBuilder#create()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/analytics/Analyzer.java",
+      "to": "src/com/example/service/model/Sample.java",
+      "symbols": [
+        "com/example/service/model/Sample#"
+      ]
+    },
+    {
+      "from": "src/com/example/service/analytics/Analyzer.java",
+      "to": "src/com/example/service/model/Summary.java",
+      "symbols": [
+        "com/example/service/model/Summary#"
+      ]
+    },
+    {
+      "from": "src/com/example/service/analytics/Analyzer.java",
+      "to": "src/com/example/service/util/Logger.java",
+      "symbols": [
+        "com/example/service/util/Logger#",
+        "com/example/service/util/Logger#info()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/AppService.java",
+      "to": "src/com/example/service/analytics/Analyzer.java",
+      "symbols": [
+        "com/example/service/analytics/Analyzer#",
+        "com/example/service/analytics/Analyzer#evaluate()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/AppService.java",
+      "to": "src/com/example/service/data/Repository.java",
+      "symbols": [
+        "com/example/service/data/Repository#",
+        "com/example/service/data/Repository#fetch()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/AppService.java",
+      "to": "src/com/example/service/model/Summary.java",
+      "symbols": [
+        "com/example/service/model/Summary#"
+      ]
+    },
+    {
+      "from": "src/com/example/service/data/Repository.java",
+      "to": "src/com/example/service/data/SourceRegistry.java",
+      "symbols": [
+        "com/example/service/data/SourceRegistry#",
+        "com/example/service/data/SourceRegistry#resolve()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/data/Repository.java",
+      "to": "src/com/example/service/model/Sample.java",
+      "symbols": [
+        "com/example/service/model/Sample#"
+      ]
+    },
+    {
+      "from": "src/com/example/service/data/Repository.java",
+      "to": "src/com/example/service/util/Logger.java",
+      "symbols": [
+        "com/example/service/util/Logger#",
+        "com/example/service/util/Logger#info()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/data/SourceRegistry.java",
+      "to": "src/com/example/service/model/Sample.java",
+      "symbols": [
+        "com/example/service/model/Sample#",
+        "com/example/service/model/Sample#`<init>`()."
+      ]
+    },
+    {
+      "from": "src/com/example/service/metrics/SummaryBuilder.java",
+      "to": "src/com/example/service/model/Sample.java",
+      "symbols": [
+        "com/example/service/model/Sample#"
+      ]
+    },
+    {
+      "from": "src/com/example/service/metrics/SummaryBuilder.java",
+      "to": "src/com/example/service/model/Summary.java",
+      "symbols": [
+        "com/example/service/model/Summary#",
+        "com/example/service/model/Summary#`<init>`()."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

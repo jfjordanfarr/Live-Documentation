@@ -1,0 +1,163 @@
+{
+  "tool": "scip-typescript 0.4.0",
+  "projectFile": "tsconfig.json",
+  "projects": [
+    {
+      "name": "rosetta",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/helpers.test.ts",
+    "src/helpers.ts",
+    "src/main.ts",
+    "src/models.ts",
+    "src/pipeline.test.ts",
+    "src/processor.test.ts",
+    "src/processor.ts",
+    "src/types.ts"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/helpers.test.ts",
+      "to": "src/helpers.ts",
+      "symbols": [
+        "src/`helpers.ts`/",
+        "src/`helpers.ts`/average().",
+        "src/`helpers.ts`/format().",
+        "src/`helpers.ts`/sum()."
+      ]
+    },
+    {
+      "from": "src/main.ts",
+      "to": "src/models.ts",
+      "symbols": [
+        "src/`models.ts`/",
+        "src/`models.ts`/Report#",
+        "src/`models.ts`/createRecord()."
+      ]
+    },
+    {
+      "from": "src/main.ts",
+      "to": "src/processor.ts",
+      "symbols": [
+        "src/`processor.ts`/",
+        "src/`processor.ts`/run().",
+        "src/`processor.ts`/summarize()."
+      ]
+    },
+    {
+      "from": "src/models.ts",
+      "to": "src/types.ts",
+      "symbols": [
+        "src/`types.ts`/",
+        "src/`types.ts`/Entry#",
+        "src/`types.ts`/Entry#id.",
+        "src/`types.ts`/Entry#status.",
+        "src/`types.ts`/Entry#timestamp.",
+        "src/`types.ts`/ProcessorConfig#",
+        "src/`types.ts`/ProcessorConfig#batchSize.",
+        "src/`types.ts`/ProcessorConfig#timeout.",
+        "src/`types.ts`/Status#",
+        "src/`types.ts`/Status#Pending."
+      ]
+    },
+    {
+      "from": "src/pipeline.test.ts",
+      "to": "src/models.ts",
+      "symbols": [
+        "src/`models.ts`/",
+        "src/`models.ts`/Record#",
+        "src/`models.ts`/Report#",
+        "src/`models.ts`/Report#average.",
+        "src/`models.ts`/Report#generatedAt.",
+        "src/`models.ts`/Report#records.",
+        "src/`models.ts`/Report#total.",
+        "src/`models.ts`/createRecord().",
+        "src/`models.ts`/validateConfig()."
+      ]
+    },
+    {
+      "from": "src/pipeline.test.ts",
+      "to": "src/processor.ts",
+      "symbols": [
+        "src/`processor.ts`/",
+        "src/`processor.ts`/run().",
+        "src/`processor.ts`/summarize()."
+      ]
+    },
+    {
+      "from": "src/pipeline.test.ts",
+      "to": "src/types.ts",
+      "symbols": [
+        "src/`types.ts`/",
+        "src/`types.ts`/ProcessorConfig#",
+        "src/`types.ts`/ProcessorConfig#batchSize.",
+        "src/`types.ts`/ProcessorConfig#strict.",
+        "src/`types.ts`/ProcessorConfig#timeout."
+      ]
+    },
+    {
+      "from": "src/processor.test.ts",
+      "to": "src/models.ts",
+      "symbols": [
+        "src/`models.ts`/",
+        "src/`models.ts`/Report#",
+        "src/`models.ts`/Report#average.",
+        "src/`models.ts`/Report#generatedAt.",
+        "src/`models.ts`/Report#records.",
+        "src/`models.ts`/Report#total.",
+        "src/`models.ts`/createRecord()."
+      ]
+    },
+    {
+      "from": "src/processor.test.ts",
+      "to": "src/processor.ts",
+      "symbols": [
+        "src/`processor.ts`/",
+        "src/`processor.ts`/run().",
+        "src/`processor.ts`/summarize()."
+      ]
+    },
+    {
+      "from": "src/processor.ts",
+      "to": "src/helpers.ts",
+      "symbols": [
+        "src/`helpers.ts`/",
+        "src/`helpers.ts`/average().",
+        "src/`helpers.ts`/format().",
+        "src/`helpers.ts`/sum()."
+      ]
+    },
+    {
+      "from": "src/processor.ts",
+      "to": "src/models.ts",
+      "symbols": [
+        "src/`models.ts`/",
+        "src/`models.ts`/Record#",
+        "src/`models.ts`/Record#value.",
+        "src/`models.ts`/Report#",
+        "src/`models.ts`/Report#average.",
+        "src/`models.ts`/Report#generatedAt.",
+        "src/`models.ts`/Report#records.",
+        "src/`models.ts`/Report#total.",
+        "src/`models.ts`/validateConfig()."
+      ]
+    },
+    {
+      "from": "src/processor.ts",
+      "to": "src/types.ts",
+      "symbols": [
+        "src/`types.ts`/",
+        "src/`types.ts`/ProcessorConfig#",
+        "src/`types.ts`/ProcessorConfig#batchSize.",
+        "src/`types.ts`/ProcessorConfig#strict.",
+        "src/`types.ts`/ProcessorConfig#timeout.",
+        "src/`types.ts`/Status#"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

@@ -1,0 +1,68 @@
+{
+  "tool": "scip-java 0.11.2",
+  "projectFile": "pom.xml",
+  "projects": [
+    {
+      "name": "basic",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/com/example/app/App.java",
+    "src/com/example/data/Catalog.java",
+    "src/com/example/data/Reader.java",
+    "src/com/example/format/ReportWriter.java",
+    "src/com/example/model/Record.java"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/com/example/app/App.java",
+      "to": "src/com/example/data/Reader.java",
+      "symbols": [
+        "com/example/data/Reader#",
+        "com/example/data/Reader#load()."
+      ]
+    },
+    {
+      "from": "src/com/example/app/App.java",
+      "to": "src/com/example/format/ReportWriter.java",
+      "symbols": [
+        "com/example/format/ReportWriter#",
+        "com/example/format/ReportWriter#write()."
+      ]
+    },
+    {
+      "from": "src/com/example/app/App.java",
+      "to": "src/com/example/model/Record.java",
+      "symbols": [
+        "com/example/model/Record#"
+      ]
+    },
+    {
+      "from": "src/com/example/data/Reader.java",
+      "to": "src/com/example/model/Record.java",
+      "symbols": [
+        "com/example/model/Record#",
+        "com/example/model/Record#`<init>`()."
+      ]
+    },
+    {
+      "from": "src/com/example/format/ReportWriter.java",
+      "to": "src/com/example/data/Catalog.java",
+      "symbols": [
+        "com/example/data/Catalog#",
+        "com/example/data/Catalog#describe()."
+      ]
+    },
+    {
+      "from": "src/com/example/format/ReportWriter.java",
+      "to": "src/com/example/model/Record.java",
+      "symbols": [
+        "com/example/model/Record#"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

@@ -44,10 +44,10 @@ Both Vitest projects import TypeScript sources directly, so neither needs a buil
 
 The oracle measures the shipped generator against a compiler, which shares no mechanism with it. Both commands take a fixture directory and never write into it except under `expected/`.
 
-| Command                               | What it does                                                                                                                                                                                                                        |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run oracle:index -- <fixture>`   | Copies the fixture, runs `scip-dotnet` over its `.sln` or `.csproj`, and writes every compiler-resolved edge to `expected/compiler-edges.json`. Needs the dotnet SDK and the `scip-dotnet` tool                                     |
-| `npm run oracle:compare -- <fixture>` | Runs the generator over a copy of the fixture and lists every disagreement with `expected/compiler-edges.json` and, if present, `expected/hand-verified-edges.json`. A list, not a score; exit code 0 either way. `--json` for data |
+| Command                               | What it does                                                                                                                                                                                                                                                               |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run oracle:index -- <fixture>`   | Copies the fixture, runs the SCIP indexer its project file selects (`scip-dotnet`, `scip-go`, `rust-analyzer`, `scip-java`, `scip-typescript`, or `scip-python` for a directory of `.py` files), and writes every compiler-resolved edge to `expected/compiler-edges.json` |
+| `npm run oracle:compare -- <fixture>` | Runs the generator over a copy of the fixture and lists every disagreement with `expected/compiler-edges.json` and, if present, `expected/hand-verified-edges.json`. A list, not a score; exit code 0 either way. `--json` for data                                        |
 
 The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside it.
 

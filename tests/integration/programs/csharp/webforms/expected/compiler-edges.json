@@ -15,6 +15,7 @@
     "src/Pages/Default.aspx.cs",
     "src/Pages/Default.aspx.designer.cs"
   ],
+  "outside": [],
   "edges": [
     {
       "from": "src/Pages/Default.aspx.cs",

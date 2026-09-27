@@ -1,0 +1,96 @@
+{
+  "tool": "scip-typescript 0.4.0",
+  "projectFile": "tsconfig.json",
+  "projects": [
+    {
+      "name": "layered",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/index.ts",
+    "src/models/widget.ts",
+    "src/repositories/storage.ts",
+    "src/services/dataService.ts",
+    "src/services/reportService.ts",
+    "src/utils/format.ts"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/index.ts",
+      "to": "src/models/widget.ts",
+      "symbols": [
+        "src/models/`widget.ts`/",
+        "src/models/`widget.ts`/Widget#",
+        "src/models/`widget.ts`/Widget#id.",
+        "src/models/`widget.ts`/Widget#label."
+      ]
+    },
+    {
+      "from": "src/index.ts",
+      "to": "src/services/reportService.ts",
+      "symbols": [
+        "src/services/`reportService.ts`/",
+        "src/services/`reportService.ts`/generateReport()."
+      ]
+    },
+    {
+      "from": "src/repositories/storage.ts",
+      "to": "src/models/widget.ts",
+      "symbols": [
+        "src/models/`widget.ts`/",
+        "src/models/`widget.ts`/Widget#",
+        "src/models/`widget.ts`/Widget#id.",
+        "src/models/`widget.ts`/Widget#label."
+      ]
+    },
+    {
+      "from": "src/services/dataService.ts",
+      "to": "src/repositories/storage.ts",
+      "symbols": [
+        "src/repositories/`storage.ts`/",
+        "src/repositories/`storage.ts`/MetricRecord#",
+        "src/repositories/`storage.ts`/MetricRecord#score.",
+        "src/repositories/`storage.ts`/StorageClient#",
+        "src/repositories/`storage.ts`/StorageClient#read()."
+      ]
+    },
+    {
+      "from": "src/services/reportService.ts",
+      "to": "src/models/widget.ts",
+      "symbols": [
+        "src/models/`widget.ts`/",
+        "src/models/`widget.ts`/Widget#",
+        "src/models/`widget.ts`/Widget#id."
+      ]
+    },
+    {
+      "from": "src/services/reportService.ts",
+      "to": "src/services/dataService.ts",
+      "symbols": [
+        "src/services/`dataService.ts`/",
+        "src/services/`dataService.ts`/loadWidgetMetrics()."
+      ]
+    },
+    {
+      "from": "src/services/reportService.ts",
+      "to": "src/utils/format.ts",
+      "symbols": [
+        "src/utils/`format.ts`/",
+        "src/utils/`format.ts`/formatReport()."
+      ]
+    },
+    {
+      "from": "src/utils/format.ts",
+      "to": "src/models/widget.ts",
+      "symbols": [
+        "src/models/`widget.ts`/",
+        "src/models/`widget.ts`/Widget#",
+        "src/models/`widget.ts`/Widget#label."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

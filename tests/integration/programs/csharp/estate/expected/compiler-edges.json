@@ -67,6 +67,7 @@
     "Portal/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
     "Portal/obj/Debug/net48/Portal.AssemblyInfo.cs"
   ],
+  "outside": [],
   "edges": [
     {
       "from": "Contracts/IPaymentHub.cs",

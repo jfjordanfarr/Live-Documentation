@@ -1,6 +1,6 @@
 # Live Documentation Development Container
 
-This devcontainer provides a fully-configured Linux environment for developing and testing Live Documentation, including all SCIP indexers needed for benchmark fixture generation.
+This devcontainer provides a fully-configured Linux environment for developing and testing Live Documentation, including the SCIP indexers the oracle uses to write a sample program's expected edges.
 
 ## Compatibility
 
@@ -74,7 +74,7 @@ rust-analyzer --version
 
 ## The SCIP Indexers
 
-The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. `npm run oracle:index -- <fixture>` drives `scip-dotnet` today; the other indexers are installed but not yet wired in. `scip-dotnet` is built for an older runtime than the container's .NET 10, so the script runs it with `DOTNET_ROLL_FORWARD=Major`; do the same when running it by hand.
+The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. `npm run oracle:index -- <fixture>` picks the indexer from the fixture's project file (`.sln` or `.csproj`, `go.mod`, `Cargo.toml`, `pom.xml`, `tsconfig.json`) or, for Python, from the presence of `.py` files. `scip-dotnet` is built for an older runtime than the container's .NET 10, so the script runs it with `DOTNET_ROLL_FORWARD=Major`; do the same when running it by hand.
 
 ## Troubleshooting
 

@@ -8,8 +8,8 @@ import { edgesFromIndex, readProjects, type OracleProject, type ScipIndex } from
 const DEFINITION = 1;
 const REFERENCE  = 0;
 
-function index(documents: ScipIndex["documents"]): ScipIndex {
-  return { metadata: { tool_info: { name: "scip-dotnet", version: "test" } }, documents };
+function index(documents: ScipIndex["documents"], tool = "scip-dotnet"): ScipIndex {
+  return { metadata: { tool_info: { name: tool, version: "test" } }, documents };
 }
 
 function occurrence(symbol: string, roles: number) {
@@ -17,6 +17,7 @@ function occurrence(symbol: string, roles: number) {
 }
 
 const SINGLE_PROJECT: OracleProject[] = [{ name: "App", directory: ".", references: [] }];
+const APP = { projects: SINGLE_PROJECT, projectFile: "App.csproj" };
 
 describe("edgesFromIndex", () => {
   it("makes an edge from a reference to a definition in another file, carrying the symbol", () => {
@@ -25,13 +26,15 @@ describe("edgesFromIndex", () => {
         { relative_path: "A.cs", occurrences: [occurrence("scip-dotnet nuget . . App/A#", DEFINITION), occurrence("scip-dotnet nuget . . App/B#Run().", REFERENCE)] },
         { relative_path: "B.cs", occurrences: [occurrence("scip-dotnet nuget . . App/B#", DEFINITION), occurrence("scip-dotnet nuget . . App/B#Run().", DEFINITION)] }
       ]),
-      SINGLE_PROJECT,
-      "App.csproj"
+      APP
     );
 
     expect(result.edges).toEqual([{ from: "A.cs", to: "B.cs", symbols: ["App/B#Run()."] }]);
     expect(result.documents).toEqual(["A.cs", "B.cs"]);
+    expect(result.outside).toEqual([]);
     expect(result.ambiguous).toEqual([]);
+    expect(result.tool).toBe("scip-dotnet test");
+    expect(result.projectFile).toBe("App.csproj");
   });
 
   it("ignores local symbols and references to symbols the same file defines", () => {
@@ -40,10 +43,42 @@ describe("edgesFromIndex", () => {
         { relative_path: "A.cs", occurrences: [occurrence("scip-dotnet nuget . . App/A#", DEFINITION), occurrence("scip-dotnet nuget . . App/A#", REFERENCE), occurrence("local 0", REFERENCE)] },
         { relative_path: "B.cs", occurrences: [occurrence("local 0", DEFINITION)] }
       ]),
-      SINGLE_PROJECT,
-      "App.csproj"
+      APP
     );
 
+    expect(result.edges).toEqual([]);
+  });
+
+  it("shows a symbol by its descriptors alone, whichever indexer wrote it", () => {
+    const java = "semanticdb maven maven/com.rosetta/java-rosetta-fixture 1.0.0 com/rosetta/types/Entry#";
+    const rust = "rust-analyzer cargo rust-rosetta-fixture 0.1.0 models/Record#";
+    const go   = "scip-go gomod rosetta . `rosetta/src/helpers`/Sum().";
+    const result = edgesFromIndex(
+      index([
+        { relative_path: "use.rs", occurrences: [occurrence(java, REFERENCE), occurrence(rust, REFERENCE), occurrence(go, REFERENCE)] },
+        { relative_path: "def.rs", occurrences: [occurrence(java, DEFINITION), occurrence(rust, DEFINITION), occurrence(go, DEFINITION)] }
+      ], "rust-analyzer"),
+      { projects: SINGLE_PROJECT }
+    );
+
+    expect(result.edges).toEqual([{ from: "use.rs", to: "def.rs", symbols: ["`rosetta/src/helpers`/Sum().", "com/rosetta/types/Entry#", "models/Record#"] }]);
+    expect(result.tool).toBe("rust-analyzer test");
+    expect(result.projectFile).toBeUndefined();
+  });
+
+  it("lists documents outside the fixture and takes no edges from or to them", () => {
+    const helper   = "scip-go gomod rosetta . `rosetta/src/helpers`/Sum().";
+    const testMain = "scip-go gomod rosetta . `rosetta/src/helpers.test`/tests.";
+    const result = edgesFromIndex(
+      index([
+        { relative_path: "src/helpers/helpers.go",                      occurrences: [occurrence(helper, DEFINITION), occurrence(testMain, REFERENCE)] },
+        { relative_path: "../../home/node/.cache/go-build/ab/abcd-d", occurrences: [occurrence(testMain, DEFINITION), occurrence(helper, REFERENCE)] }
+      ], "scip-go"),
+      { projects: SINGLE_PROJECT, projectFile: "go.mod" }
+    );
+
+    expect(result.documents).toEqual(["src/helpers/helpers.go"]);
+    expect(result.outside).toEqual(["../../home/node/.cache/go-build/ab/abcd-d"]);
     expect(result.edges).toEqual([]);
   });
 
@@ -53,8 +88,7 @@ describe("edgesFromIndex", () => {
         { relative_path: "Default.aspx.cs",          occurrences: [occurrence("scip-dotnet nuget . . Pages/Default#", DEFINITION), occurrence("scip-dotnet nuget . . Pages/Default#Field.", REFERENCE)] },
         { relative_path: "Default.aspx.designer.cs", occurrences: [occurrence("scip-dotnet nuget . . Pages/Default#", DEFINITION), occurrence("scip-dotnet nuget . . Pages/Default#Field.", DEFINITION)] }
       ]),
-      SINGLE_PROJECT,
-      "App.csproj"
+      APP
     );
 
     expect(result.edges).toEqual([{ from: "Default.aspx.cs", to: "Default.aspx.designer.cs", symbols: ["Pages/Default#Field."] }]);
@@ -73,8 +107,7 @@ describe("edgesFromIndex", () => {
         { relative_path: "Portal/Startup.cs",                         occurrences: [occurrence(controller, REFERENCE)] },
         { relative_path: "Gateway/Controllers/PaymentsController.cs", occurrences: [occurrence(controller, DEFINITION)] }
       ]),
-      projects,
-      "Estate.sln"
+      { projects, projectFile: "Estate.sln" }
     );
 
     expect(result.edges).toEqual([{ from: "Portal/Startup.cs", to: "Portal/Controllers/PaymentsController.cs", symbols: ["Controllers/PaymentsController#"] }]);
@@ -92,8 +125,7 @@ describe("edgesFromIndex", () => {
         { relative_path: "Core/Thing.cs", occurrences: [occurrence("scip-dotnet nuget . . Core/Thing#", DEFINITION)] },
         { relative_path: "Top/Use.cs",    occurrences: [occurrence("scip-dotnet nuget . . Core/Thing#", REFERENCE)] }
       ]),
-      projects,
-      "All.sln"
+      { projects, projectFile: "All.sln" }
     );
 
     expect(result.edges).toEqual([{ from: "Top/Use.cs", to: "Core/Thing.cs", symbols: ["Core/Thing#"] }]);
@@ -107,8 +139,7 @@ describe("edgesFromIndex", () => {
         { relative_path: "B/Models/Item.cs", occurrences: [occurrence(symbol, DEFINITION)] },
         { relative_path: "Use.cs",           occurrences: [occurrence(symbol, REFERENCE)] }
       ]),
-      SINGLE_PROJECT,
-      "App.csproj"
+      APP
     );
 
     expect(result.edges.map((edge) => edge.to)).toEqual(["A/Models/Item.cs", "B/Models/Item.cs"]);

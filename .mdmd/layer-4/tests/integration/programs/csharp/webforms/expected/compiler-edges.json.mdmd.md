@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/expected/compiler-edges.json
 - Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-expected-compiler-edges-json
-- Generated At: 2026-09-27T18:53:06.265Z
+- Generated At: 2026-09-27T19:49:14.507Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.265Z","inputHash":"bbe8fc7cc8f8daef"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:49:14.507Z","inputHash":"6db1f0d8b4b9eee2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}
@@ -28,6 +28,9 @@ _Pending notes_
 - Type: key
 
 #### `documents` {#symbol-documents}
+- Type: key
+
+#### `outside` {#symbol-outside}
 - Type: key
 
 #### `edges` {#symbol-edges}

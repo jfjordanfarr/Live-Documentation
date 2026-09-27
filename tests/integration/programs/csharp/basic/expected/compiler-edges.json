@@ -1,0 +1,122 @@
+{
+  "tool": "scip-dotnet 0.2.14",
+  "projectFile": "CSharpBasic.csproj",
+  "projects": [
+    {
+      "name": "CSharpBasic",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
+    "obj/Debug/net8.0/CSharpBasic.AssemblyInfo.cs",
+    "obj/Debug/net8.0/CSharpBasic.GlobalUsings.g.cs",
+    "src/Diagnostics/App.cs",
+    "src/Diagnostics/Data/Repository.cs",
+    "src/Diagnostics/Models/FormattedReport.cs",
+    "src/Diagnostics/Models/Formatter.cs",
+    "src/Diagnostics/Models/Record.cs",
+    "src/Diagnostics/Services/ReportService.cs"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "symbols": [
+        "Data/Repository#",
+        "Data/Repository#GetLatest()."
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "symbols": [
+        "Models/FormattedReport#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "symbols": [
+        "Models/Formatter#",
+        "Models/Formatter#Render()."
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "symbols": [
+        "Models/Record#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/App.cs",
+      "to": "src/Diagnostics/Services/ReportService.cs",
+      "symbols": [
+        "Services/ReportService#",
+        "Services/ReportService#Process()."
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Data/Repository.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "symbols": [
+        "Models/Record#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Models/FormattedReport.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "symbols": [
+        "Models/Record#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "symbols": [
+        "Models/FormattedReport#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Models/Formatter.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "symbols": [
+        "Models/Record#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Data/Repository.cs",
+      "symbols": [
+        "Data/Repository#",
+        "Data/Repository#GetLatest()."
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/FormattedReport.cs",
+      "symbols": [
+        "Models/FormattedReport#"
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Formatter.cs",
+      "symbols": [
+        "Models/Formatter#",
+        "Models/Formatter#BuildHeadline()."
+      ]
+    },
+    {
+      "from": "src/Diagnostics/Services/ReportService.cs",
+      "to": "src/Diagnostics/Models/Record.cs",
+      "symbols": [
+        "Models/Record#"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

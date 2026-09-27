@@ -1,0 +1,226 @@
+{
+  "tool": "rust-analyzer 1.93.1 (01f6ddf 2026-02-11)",
+  "projectFile": "Cargo.toml",
+  "projects": [
+    {
+      "name": "rosetta",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/helpers.rs",
+    "src/helpers_test.rs",
+    "src/main.rs",
+    "src/models.rs",
+    "src/pipeline_test.rs",
+    "src/processor.rs",
+    "src/processor_test.rs",
+    "src/types.rs"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/helpers_test.rs",
+      "to": "src/helpers.rs",
+      "symbols": [
+        "helpers/",
+        "helpers/average().",
+        "helpers/format().",
+        "helpers/sum()."
+      ]
+    },
+    {
+      "from": "src/helpers_test.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/helpers_test.rs",
+      "symbols": [
+        "helpers_test/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/helpers.rs",
+      "symbols": [
+        "helpers/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Report#",
+        "models/create_record()."
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/pipeline_test.rs",
+      "symbols": [
+        "pipeline_test/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/processor_test.rs",
+      "symbols": [
+        "processor_test/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/processor.rs",
+      "symbols": [
+        "processor/",
+        "processor/run().",
+        "processor/summarize()."
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/types.rs",
+      "symbols": [
+        "types/"
+      ]
+    },
+    {
+      "from": "src/models.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/models.rs",
+      "to": "src/types.rs",
+      "symbols": [
+        "types/",
+        "types/Entry#",
+        "types/Entry#id.",
+        "types/Entry#status.",
+        "types/Entry#timestamp.",
+        "types/ProcessorConfig#",
+        "types/ProcessorConfig#batch_size.",
+        "types/ProcessorConfig#timeout.",
+        "types/Status#",
+        "types/Status#Pending#"
+      ]
+    },
+    {
+      "from": "src/pipeline_test.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/pipeline_test.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Record#",
+        "models/Report#average.",
+        "models/Report#records.",
+        "models/Report#total.",
+        "models/validate_config()."
+      ]
+    },
+    {
+      "from": "src/pipeline_test.rs",
+      "to": "src/processor.rs",
+      "symbols": [
+        "processor/",
+        "processor/run().",
+        "processor/summarize()."
+      ]
+    },
+    {
+      "from": "src/pipeline_test.rs",
+      "to": "src/types.rs",
+      "symbols": [
+        "types/",
+        "types/ProcessorConfig#",
+        "types/ProcessorConfig#batch_size.",
+        "types/ProcessorConfig#strict.",
+        "types/ProcessorConfig#timeout."
+      ]
+    },
+    {
+      "from": "src/processor_test.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/processor_test.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Record#",
+        "models/Report#",
+        "models/Report#average.",
+        "models/Report#records.",
+        "models/Report#total."
+      ]
+    },
+    {
+      "from": "src/processor_test.rs",
+      "to": "src/processor.rs",
+      "symbols": [
+        "processor/",
+        "processor/run().",
+        "processor/summarize()."
+      ]
+    },
+    {
+      "from": "src/processor.rs",
+      "to": "src/helpers.rs",
+      "symbols": [
+        "helpers/",
+        "helpers/average().",
+        "helpers/format().",
+        "helpers/sum()."
+      ]
+    },
+    {
+      "from": "src/processor.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/processor.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Record#",
+        "models/Record#value.",
+        "models/Report#",
+        "models/Report#average.",
+        "models/Report#records.",
+        "models/Report#total.",
+        "models/impl#[Report]new().",
+        "models/validate_config()."
+      ]
+    },
+    {
+      "from": "src/processor.rs",
+      "to": "src/types.rs",
+      "symbols": [
+        "types/",
+        "types/ProcessorConfig#",
+        "types/impl#[ProcessorConfig]new()."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

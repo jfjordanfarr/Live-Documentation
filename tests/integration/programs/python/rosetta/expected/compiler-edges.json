@@ -1,0 +1,150 @@
+{
+  "tool": "scip-python 0.6.6",
+  "projects": [
+    {
+      "name": "rosetta",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/core_types.py",
+    "src/helpers.py",
+    "src/main.py",
+    "src/models.py",
+    "src/processor.py",
+    "src/test_helpers.py",
+    "src/test_pipeline.py",
+    "src/test_processor.py"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/main.py",
+      "to": "src/models.py",
+      "symbols": [
+        "`src.models`/Report#",
+        "`src.models`/create_record()."
+      ]
+    },
+    {
+      "from": "src/main.py",
+      "to": "src/processor.py",
+      "symbols": [
+        "`src.processor`/run().",
+        "`src.processor`/summarize()."
+      ]
+    },
+    {
+      "from": "src/models.py",
+      "to": "src/core_types.py",
+      "symbols": [
+        "`src.core_types`/Entry#",
+        "`src.core_types`/Entry#id.",
+        "`src.core_types`/Entry#status.",
+        "`src.core_types`/Entry#timestamp.",
+        "`src.core_types`/ProcessorConfig#",
+        "`src.core_types`/ProcessorConfig#batch_size.",
+        "`src.core_types`/ProcessorConfig#timeout.",
+        "`src.core_types`/Status#",
+        "`src.core_types`/Status#PENDING."
+      ]
+    },
+    {
+      "from": "src/processor.py",
+      "to": "src/core_types.py",
+      "symbols": [
+        "`src.core_types`/ProcessorConfig#",
+        "`src.core_types`/ProcessorConfig#batch_size.",
+        "`src.core_types`/ProcessorConfig#strict.",
+        "`src.core_types`/ProcessorConfig#timeout.",
+        "`src.core_types`/Status#"
+      ]
+    },
+    {
+      "from": "src/processor.py",
+      "to": "src/helpers.py",
+      "symbols": [
+        "`src.helpers`/average().",
+        "`src.helpers`/format_value().",
+        "`src.helpers`/sum_values()."
+      ]
+    },
+    {
+      "from": "src/processor.py",
+      "to": "src/models.py",
+      "symbols": [
+        "`src.models`/Record#",
+        "`src.models`/Record#value.",
+        "`src.models`/Report#",
+        "`src.models`/Report#average.",
+        "`src.models`/Report#generated_at.",
+        "`src.models`/Report#records.",
+        "`src.models`/Report#total.",
+        "`src.models`/validate_config()."
+      ]
+    },
+    {
+      "from": "src/test_helpers.py",
+      "to": "src/helpers.py",
+      "symbols": [
+        "`src.helpers`/average().",
+        "`src.helpers`/format_value().",
+        "`src.helpers`/sum_values()."
+      ]
+    },
+    {
+      "from": "src/test_pipeline.py",
+      "to": "src/core_types.py",
+      "symbols": [
+        "`src.core_types`/ProcessorConfig#",
+        "`src.core_types`/ProcessorConfig#batch_size.",
+        "`src.core_types`/ProcessorConfig#strict.",
+        "`src.core_types`/ProcessorConfig#timeout."
+      ]
+    },
+    {
+      "from": "src/test_pipeline.py",
+      "to": "src/models.py",
+      "symbols": [
+        "`src.models`/Record#",
+        "`src.models`/Report#",
+        "`src.models`/Report#average.",
+        "`src.models`/Report#generated_at.",
+        "`src.models`/Report#records.",
+        "`src.models`/Report#total.",
+        "`src.models`/create_record().",
+        "`src.models`/validate_config()."
+      ]
+    },
+    {
+      "from": "src/test_pipeline.py",
+      "to": "src/processor.py",
+      "symbols": [
+        "`src.processor`/run().",
+        "`src.processor`/summarize()."
+      ]
+    },
+    {
+      "from": "src/test_processor.py",
+      "to": "src/models.py",
+      "symbols": [
+        "`src.models`/Report#",
+        "`src.models`/Report#average.",
+        "`src.models`/Report#generated_at.",
+        "`src.models`/Report#records.",
+        "`src.models`/Report#total.",
+        "`src.models`/create_record()."
+      ]
+    },
+    {
+      "from": "src/test_processor.py",
+      "to": "src/processor.py",
+      "symbols": [
+        "`src.processor`/run().",
+        "`src.processor`/summarize()."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

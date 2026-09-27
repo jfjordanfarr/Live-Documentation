@@ -2,11 +2,17 @@
  * Turns a SCIP index into file-to-file edges, with nothing filtered.
  *
  * A reference occurrence in one document that resolves to a definition in another
- * document is an edge. scip-dotnet names a type by its innermost namespace only, so
- * two projects that both declare `Controllers.PaymentsController` produce the same
- * symbol; the solution's project references decide which definitions a document can
- * see. When more than one visible definition remains, every candidate becomes an edge
- * and the case is listed under `ambiguous`, so the reader sees it instead of a guess.
+ * document is an edge. Two wrinkles of the indexers are handled here, and both are
+ * recorded in the output rather than hidden:
+ *
+ * - scip-dotnet names a type by its innermost namespace only, so two projects that both
+ *   declare `Controllers.PaymentsController` produce the same symbol. The solution's
+ *   project references decide which definitions a document can see; when more than one
+ *   visible definition remains, every candidate becomes an edge and the case is listed
+ *   under `ambiguous`, so the reader sees it instead of a guess.
+ * - scip-go also indexes the test binaries it generates outside the module, under the
+ *   Go build cache. No source file exists for those documents, so they are listed under
+ *   `outside` and take no part in the edges.
  */
 import * as fs from "node:fs";
 import path from "node:path";
@@ -54,20 +60,41 @@ export interface OracleAmbiguity {
 
 /** The written form of a fixture's `expected/compiler-edges.json`. */
 export interface OracleEdges {
-  tool:        string;
-  projectFile: string;
-  projects:    OracleProject[];
-  documents:   string[];
-  edges:       OracleEdge[];
-  ambiguous:   OracleAmbiguity[];
+  tool:         string;
+  /** The project file the indexer was pointed at; absent for a language that needs none. */
+  projectFile?: string;
+  projects:     OracleProject[];
+  documents:    string[];
+  /** Documents the indexer produced from files outside the fixture. */
+  outside:      string[];
+  edges:        OracleEdge[];
+  ambiguous:    OracleAmbiguity[];
+}
+
+/** What the caller knows about the fixture that the index does not. */
+export interface IndexContext {
+  projects:     OracleProject[];
+  projectFile?: string;
+  /** Replaces the name and version the index reports about its own tool, for a tool that misreports it. */
+  tool?:        string;
 }
 
 /** SCIP's Definition role bit; the binding exposes the same value. */
 const DEFINITION_ROLE = 1;
-const SYMBOL_PREFIX   = "scip-dotnet nuget . . ";
+
+/** A symbol is `<scheme> <manager> <package-name> <version> <descriptors>`, with a space inside the first four fields doubled. Only the descriptors are shown. */
+const PACKAGE_FIELDS = /^(?:(?:[^ ]| {2})+ ){4}/;
 
 function toPosix(value: string): string {
   return value.replace(/\\/g, "/");
+}
+
+function displaySymbol(symbol: string): string {
+  return symbol.replace(PACKAGE_FIELDS, "");
+}
+
+function isOutside(documentPath: string): boolean {
+  return documentPath.startsWith("../") || path.posix.isAbsolute(documentPath);
 }
 
 /** Reads the projects of a .sln, or the one project of a .csproj, with their direct project references. */
@@ -132,16 +159,15 @@ function projectOf(projects: OracleProject[], documentPath: string): OracleProje
   return best;
 }
 
-function displaySymbol(symbol: string): string {
-  return symbol.startsWith(SYMBOL_PREFIX) ? symbol.slice(SYMBOL_PREFIX.length) : symbol;
-}
-
 /** Derives the edges from an already-decoded index. Pure; the unit test drives it with plain objects. */
-export function edgesFromIndex(index: ScipIndex, projects: OracleProject[], projectFile: string, tool?: string): OracleEdges {
-  const documents = index.documents.map((document) => toPosix(document.relative_path)).sort();
+export function edgesFromIndex(index: ScipIndex, context: IndexContext): OracleEdges {
+  const { projects } = context;
+  const inside    = index.documents.filter((document) => !isOutside(toPosix(document.relative_path)));
+  const documents = inside.map((document) => toPosix(document.relative_path)).sort();
+  const outside   = index.documents.map((document) => toPosix(document.relative_path)).filter(isOutside).sort();
 
   const definitions = new Map<string, Set<string>>();
-  for (const document of index.documents) {
+  for (const document of inside) {
     const documentPath = toPosix(document.relative_path);
     for (const occurrence of document.occurrences) {
       if ((occurrence.symbol_roles & DEFINITION_ROLE) === 0) continue;
@@ -158,7 +184,7 @@ export function edgesFromIndex(index: ScipIndex, projects: OracleProject[], proj
   const ambiguous: OracleAmbiguity[] = [];
   const seenAmbiguities = new Set<string>();
 
-  for (const document of index.documents) {
+  for (const document of inside) {
     const from    = toPosix(document.relative_path);
     const visible = visibleProjects(projects, projectOf(projects, from)?.name ?? "");
 
@@ -203,16 +229,17 @@ export function edgesFromIndex(index: ScipIndex, projects: OracleProject[], proj
   ambiguous.sort((left, right) => left.from.localeCompare(right.from) || left.symbol.localeCompare(right.symbol));
 
   return {
-    tool:        tool ?? `${index.metadata.tool_info.name} ${index.metadata.tool_info.version}`,
-    projectFile: path.basename(projectFile),
+    tool:        context.tool ?? `${index.metadata.tool_info.name} ${index.metadata.tool_info.version}`,
+    projectFile: context.projectFile,
     projects,
     documents,
+    outside,
     edges:       sortedEdges,
     ambiguous
   };
 }
 
 /** Decodes an index file and derives its edges. */
-export function convertScipIndex(indexBytes: Uint8Array, projects: OracleProject[], projectFile: string, tool?: string): OracleEdges {
-  return edgesFromIndex(scip.Index.deserialize(indexBytes), projects, projectFile, tool);
+export function convertScipIndex(indexBytes: Uint8Array, context: IndexContext): OracleEdges {
+  return edgesFromIndex(scip.Index.deserialize(indexBytes), context);
 }

@@ -12,7 +12,6 @@
  *   npm run oracle:compare -- <fixture-dir> [--json]
  */
 import * as fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 
@@ -24,6 +23,7 @@ import {
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { parseLiveDocMarkdown } from "@live-documentation/shared/live-docs/parse";
 
+import { copyFixture } from "./fixture";
 import type { OracleEdges } from "./scip-edges";
 
 interface HandVerifiedEdge {
@@ -59,8 +59,6 @@ export interface Report {
   unresolved:     Array<{ from: string; raw: string }>;
 }
 
-const SKIPPED_ENTRIES = new Set(["bin", "obj", "expected"]);
-
 /** The default globs anchor on this workspace's layout; a fixture is its own workspace, so keep only the extensions. */
 function fixtureGlobs(): string[] {
   const extensions = new Set(LIVE_DOCUMENTATION_DEFAULT_GLOBS.map((pattern) => pattern.slice(pattern.lastIndexOf("/") + 1)));
@@ -72,13 +70,8 @@ function readJson<T>(filePath: string): T | undefined {
 }
 
 async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[]; unresolved: Report["unresolved"] }> {
-  const workDir = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-compare-"));
+  const workDir = copyFixture(fixtureDir, "oracle-compare-");
   try {
-    fs.cpSync(fixtureDir, workDir, {
-      recursive: true,
-      filter:    (source) => !SKIPPED_ENTRIES.has(path.basename(source))
-    });
-
     const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
     const result = await generateLiveDocs({
       workspaceRoot: workDir,

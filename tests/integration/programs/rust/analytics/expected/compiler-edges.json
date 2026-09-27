@@ -1,0 +1,118 @@
+{
+  "tool": "rust-analyzer 1.93.1 (01f6ddf 2026-02-11)",
+  "projectFile": "Cargo.toml",
+  "projects": [
+    {
+      "name": "analytics",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "src/analytics.rs",
+    "src/io.rs",
+    "src/main.rs",
+    "src/metrics.rs",
+    "src/models.rs"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "src/analytics.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/analytics.rs",
+      "to": "src/metrics.rs",
+      "symbols": [
+        "metrics/",
+        "metrics/is_alert().",
+        "metrics/summarize()."
+      ]
+    },
+    {
+      "from": "src/analytics.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Sample#",
+        "models/Summary#",
+        "models/Summary#alert."
+      ]
+    },
+    {
+      "from": "src/io.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/io.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Sample#",
+        "models/Sample#label.",
+        "models/Sample#value."
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/analytics.rs",
+      "symbols": [
+        "analytics/",
+        "analytics/run_analysis()."
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/io.rs",
+      "symbols": [
+        "io/",
+        "io/load_series()."
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/metrics.rs",
+      "symbols": [
+        "metrics/"
+      ]
+    },
+    {
+      "from": "src/main.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Summary#alert.",
+        "models/Summary#label."
+      ]
+    },
+    {
+      "from": "src/metrics.rs",
+      "to": "src/main.rs",
+      "symbols": [
+        "crate/"
+      ]
+    },
+    {
+      "from": "src/metrics.rs",
+      "to": "src/models.rs",
+      "symbols": [
+        "models/",
+        "models/Sample#",
+        "models/Sample#label.",
+        "models/Sample#value.",
+        "models/Summary#",
+        "models/Summary#alert.",
+        "models/Summary#average.",
+        "models/Summary#label."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

@@ -10,29 +10,29 @@ Describe the sample programs under `tests/integration/programs/`: what each one 
 
 Every directory below holds committed source. The seven vendored fixtures that were pinned clones of third-party repositories (ky, libuv, Newtonsoft.Json, mux, OkHttp, Requests, log) were retired on 2026-09-27; see [Architectural Decisions](architectural-decisions.mdmd.md).
 
-| Language   | Fixtures                                 | Read by                                                     |
-| ---------- | ---------------------------------------- | ----------------------------------------------------------- |
-| TypeScript | `basic`, `layered`, `rosetta`            | `rosetta`: Rosetta parity                                   |
-| C          | `basics`, `modular`, `rosetta`           | `rosetta`: Rosetta parity                                   |
-| C#         | `basic`, `webforms`, `estate`, `rosetta` | `webforms`, `estate`: the oracle; `rosetta`: Rosetta parity |
-| Go         | `rosetta`                                | Rosetta parity                                              |
-| Java       | `basic`, `service`, `rosetta`            | `basic`: polyglot fixtures; `rosetta`: Rosetta parity       |
-| Python     | `basics`, `pipeline`, `rosetta`          | `basics`: polyglot fixtures; `rosetta`: Rosetta parity      |
-| Ruby       | `basic`, `cli`, `rosetta`                | `rosetta`: Rosetta parity                                   |
-| Rust       | `basics`, `analytics`, `rosetta`         | `rosetta`: Rosetta parity                                   |
+| Language   | Fixtures                                 | Read by                                                                 |
+| ---------- | ---------------------------------------- | ----------------------------------------------------------------------- |
+| TypeScript | `basic`, `layered`, `rosetta`            | all: the oracle; `rosetta`: Rosetta parity                              |
+| C          | `basics`, `modular`, `rosetta`           | `rosetta`: Rosetta parity. No indexer for C is installed                |
+| C#         | `basic`, `webforms`, `estate`, `rosetta` | all: the oracle; `rosetta`: Rosetta parity                              |
+| Go         | `rosetta`                                | the oracle; Rosetta parity                                              |
+| Java       | `basic`, `service`, `rosetta`            | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
+| Python     | `basics`, `pipeline`, `rosetta`          | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
+| Ruby       | `basic`, `cli`, `rosetta`                | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
+| Rust       | `basics`, `analytics`, `rosetta`         | all: the oracle; `rosetta`: Rosetta parity                              |
 
 `rosetta-manifest.json` at the root describes the canonical program the eight Rosetta implementations share: the nodes, the twelve edges, and the symbols each edge travels through. The parity suite's constants are drawn from it.
 
-The fixtures with no reader today (`basic`, `layered`, `basics`, `modular`, `pipeline`, `service`, `cli`, `analytics`) were the paired "trivial, then incrementally less trivial" programs of the retired accuracy benchmark. They are candidates for oracle expectations once an indexer for their language is wired in.
+The paired "trivial, then incrementally less trivial" programs of the retired accuracy benchmark (`basic`, `layered`, `basics`, `modular`, `pipeline`, `service`, `cli`, `analytics`) found a reader again on 2026-09-27: every one whose language has an indexer carries oracle expectations. C's `basics` and `modular` and Ruby's `basic` and `cli` still have none; `scip-clang` needs a compilation database and `scip-ruby` a Sorbet project, and neither is installed.
 
 ## Expected edges
 
 A fixture that has been measured carries an `expected/` directory.
 
-- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. Today the indexer is `scip-dotnet`, so only C# fixtures have one.
+- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, and `scip-python` for a directory of `.py` files. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read.
 - `hand-verified-edges.json` is authored: the hops no compiler can see, each with the evidence a reader can check, and `remote: true` where the hop crosses a deployment.
 
-`npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. The report on 2026-09-27, the baseline the tree-sitter adapter replaces, is recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md).
+`npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. The reports are recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md): the C# baseline of 2026-09-27 and the tree-sitter result that replaced it, and the same day's baseline of the other scanners.
 
 ## The estate fixture
 

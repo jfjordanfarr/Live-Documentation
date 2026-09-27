@@ -48,7 +48,7 @@ Document the language adapters that turn a source file into its public symbols, 
 
 ### Strategy
 
-- Every adapter is measured against a compiler-backed oracle that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md). The C# adapter matches every compiler edge on the two measured fixtures.
+- Every adapter is measured against a compiler-backed oracle that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md). Every sample program with an indexer carries expectations; the C# and TypeScript adapters match every compiler edge, and the baseline of the remaining scanners is recorded there.
 - Replace the remaining scanners with tree-sitter, one language at a time, each measured the same way.
 - Extend docstring extraction to Java (Javadoc) and Rust (`///` comments).
 - The C# adapter records each type's namespace-qualified name (`Outer.Inner` for nested types), which is what the [Membrane Map](membrane-map.mdmd.md)'s namespace-based hierarchy needs; no view reads it yet.
