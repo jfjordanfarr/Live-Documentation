@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/html.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-html-ts
-- Generated At: 2026-03-09T20:32:59.294Z
+- Generated At: 2026-09-27T10:23:12.932Z
 
 ## Authored
 ### Purpose
@@ -20,12 +20,21 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Returns empty symbols array since HTML files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T20:32:59.294Z","inputHash":"76af22ca65d8229d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:23:12.932Z","inputHash":"451fb83553c72a71"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `extractElementIds` {#symbol-extractelementids}
+- Type: function
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/html.ts#L317)
+
+##### `extractElementIds` — Summary
+Every element id in a markup file, sorted and unique. Shared with the ASP.NET
+markup adapter so that a script's `getElementById` link lands on a symbol the
+target doc actually publishes, whatever the markup dialect.
+
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/html.ts#L333)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/html.ts#L338)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
@@ -45,5 +54,6 @@ Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link hre
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Unit Tests
+- [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [html.test.ts](./html.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

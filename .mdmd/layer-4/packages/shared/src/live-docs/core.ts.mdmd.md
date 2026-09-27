@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-09-27T09:36:40.209Z
+- Generated At: 2026-09-27T10:16:23.862Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:40.209Z","inputHash":"14a9756f07c4cfac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:23.862Z","inputHash":"14a9756f07c4cfac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -325,6 +325,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 #### Vitest Integration Tests
 - [evidence.test.ts](../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
 - [generation.test.ts](../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [oracle.test.ts](../../../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
 - [polyglot-fixtures.test.ts](../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
 - [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
 

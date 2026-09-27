@@ -62,4 +62,34 @@ describe("aspNetMarkupAdapter", () => {
       ])
     );
   });
+
+  it("publishes element ids as public symbols, server controls and plain HTML alike", async () => {
+    const pagesDir = path.join(workspaceRoot, "Pages");
+    await fs.mkdir(pagesDir, { recursive: true });
+    const markupPath = path.join(pagesDir, "Default.aspx");
+
+    await fs.writeFile(
+      markupPath,
+      [
+        "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Portal.Pages.Default\" %>",
+        "<form id=\"serverForm\" runat=\"server\">",
+        "  <asp:HiddenField ID=\"PaymentsEnabledHidden\" runat=\"server\" />",
+        "</form>",
+        "<form id=\"paymentForm\"><p id='paymentStatus'></p></form>"
+      ].join("\n"),
+      "utf8"
+    );
+
+    const analysis = await aspNetMarkupAdapter.analyze({
+      absolutePath: markupPath,
+      workspaceRoot
+    });
+
+    expect(analysis?.symbols.map((symbol) => symbol.name)).toEqual([
+      "paymentForm",
+      "PaymentsEnabledHidden",
+      "paymentStatus",
+      "serverForm"
+    ]);
+  });
 });

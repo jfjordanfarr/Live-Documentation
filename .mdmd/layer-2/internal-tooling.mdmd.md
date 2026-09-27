@@ -36,7 +36,20 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 | `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, evidence, polyglot fixtures, CLI pathfinding, Rosetta parity (~20 s) |
 | `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                |
 
-Both Vitest projects import TypeScript sources directly, so neither needs a build first. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement, a compiler-backed oracle over the shipped generator, is step 2 of the vision's order of work.
+Both Vitest projects import TypeScript sources directly, so neither needs a build first. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
+
+---
+
+## Oracle
+
+The oracle measures the shipped generator against a compiler, which shares no mechanism with it. Both commands take a fixture directory and never write into it except under `expected/`.
+
+| Command                               | What it does                                                                                                                                                                                                                        |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run oracle:index -- <fixture>`   | Copies the fixture, runs `scip-dotnet` over its `.sln` or `.csproj`, and writes every compiler-resolved edge to `expected/compiler-edges.json`. Needs the dotnet SDK and the `scip-dotnet` tool                                     |
+| `npm run oracle:compare -- <fixture>` | Runs the generator over a copy of the fixture and lists every disagreement with `expected/compiler-edges.json` and, if present, `expected/hand-verified-edges.json`. A list, not a score; exit code 0 either way. `--json` for data |
+
+The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside it.
 
 ---
 
@@ -56,17 +69,17 @@ All accept `--json`.
 
 ## Fixtures
 
-Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scenarios) and `tests/integration/benchmarks/fixtures/` (per-language sample programs, including the eight Rosetta implementations). They are plain directories that the integration suites copy into a temporary workspace; there is no manifest, hashing or regeneration tooling around them any more. The compiler-backed oracle that will consume them again is step 2 of the vision's order of work.
+Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scenarios) and `tests/integration/benchmarks/fixtures/` (per-language sample programs, including the eight Rosetta implementations). They are plain directories that the integration suites and the oracle copy into a temporary workspace; the only thing written back is a fixture's `expected/` directory, by `oracle:index`. See [Fixture Corpus](../layer-3/benchmark-fixtures.mdmd.md).
 
 ---
 
 ## Other maintainer commands
 
-| Command                                   | Purpose                                                                                                       |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                              |
+| Command                                   | Purpose                                                                                                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                                                                  |
 | `npm run live-docs:orphans`               | Live Docs whose source file no longer exists. The generator never prunes a doc that has authored content, so run this after deleting source files |
-| `npm run build`                           | `tsc` for shared, generator and scripts                                                                          |
+| `npm run build`                           | `tsc` for shared, generator and scripts                                                                                                           |
 
 ---
 

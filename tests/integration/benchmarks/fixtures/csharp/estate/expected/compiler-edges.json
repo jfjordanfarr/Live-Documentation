@@ -1,0 +1,370 @@
+{
+  "tool": "scip-dotnet 0.2.14",
+  "projectFile": "Estate.sln",
+  "projects": [
+    {
+      "name": "Contracts",
+      "directory": "Contracts",
+      "references": []
+    },
+    {
+      "name": "Gateway",
+      "directory": "Gateway",
+      "references": [
+        "Contracts"
+      ]
+    },
+    {
+      "name": "Hub",
+      "directory": "Hub",
+      "references": [
+        "Contracts"
+      ]
+    },
+    {
+      "name": "PaymentService",
+      "directory": "PaymentService",
+      "references": [
+        "Contracts"
+      ]
+    },
+    {
+      "name": "Portal",
+      "directory": "Portal",
+      "references": []
+    }
+  ],
+  "documents": [
+    "Contracts/IPaymentHub.cs",
+    "Contracts/IPaymentService.cs",
+    "Contracts/PaymentQuery.cs",
+    "Contracts/PaymentRequest.cs",
+    "Contracts/PaymentResult.cs",
+    "Contracts/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "Contracts/obj/Debug/net48/Contracts.AssemblyInfo.cs",
+    "Gateway/Controllers/PaymentsController.cs",
+    "Gateway/GatewaySettings.cs",
+    "Gateway/Wcf/HubProxy.cs",
+    "Gateway/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "Gateway/obj/Debug/net48/Gateway.AssemblyInfo.cs",
+    "Hub/PaymentHub.cs",
+    "Hub/ServiceRouting.cs",
+    "Hub/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "Hub/obj/Debug/net48/Hub.AssemblyInfo.cs",
+    "PaymentService/Data/Payment.cs",
+    "PaymentService/Data/PaymentsContext.cs",
+    "PaymentService/Data/PostPaymentRow.cs",
+    "PaymentService/PaymentService.cs",
+    "PaymentService/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "PaymentService/obj/Debug/net48/PaymentService.AssemblyInfo.cs",
+    "Portal/App_Code/Globals.cs",
+    "Portal/Controllers/PaymentsController.cs",
+    "Portal/Models/PaymentRequestModel.cs",
+    "Portal/Models/PaymentResultModel.cs",
+    "Portal/Pages/Default.aspx.cs",
+    "Portal/Pages/Default.aspx.designer.cs",
+    "Portal/Services/GatewayClient.cs",
+    "Portal/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "Portal/obj/Debug/net48/Portal.AssemblyInfo.cs"
+  ],
+  "edges": [
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#"
+      ]
+    },
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#"
+      ]
+    },
+    {
+      "from": "Contracts/IPaymentHub.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "symbols": [
+        "Contracts/PaymentResult#"
+      ]
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#"
+      ]
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#"
+      ]
+    },
+    {
+      "from": "Contracts/IPaymentService.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "symbols": [
+        "Contracts/PaymentResult#"
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#",
+        "Contracts/PaymentQuery#Environment.",
+        "Contracts/PaymentQuery#PaymentId.",
+        "Contracts/PaymentQuery#Workload."
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#",
+        "Contracts/PaymentRequest#Environment.",
+        "Contracts/PaymentRequest#Workload."
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Gateway/GatewaySettings.cs",
+      "symbols": [
+        "Gateway/GatewaySettings#",
+        "Gateway/GatewaySettings#Environment.",
+        "Gateway/GatewaySettings#Workload."
+      ]
+    },
+    {
+      "from": "Gateway/Controllers/PaymentsController.cs",
+      "to": "Gateway/Wcf/HubProxy.cs",
+      "symbols": [
+        "Wcf/HubProxy#",
+        "Wcf/HubProxy#GetPayment().",
+        "Wcf/HubProxy#PostPayment()."
+      ]
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/IPaymentHub.cs",
+      "symbols": [
+        "Contracts/IPaymentHub#",
+        "Contracts/IPaymentHub#GetPayment().",
+        "Contracts/IPaymentHub#PostPayment()."
+      ]
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#"
+      ]
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#"
+      ]
+    },
+    {
+      "from": "Gateway/Wcf/HubProxy.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "symbols": [
+        "Contracts/PaymentResult#"
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/IPaymentHub.cs",
+      "symbols": [
+        "Contracts/IPaymentHub#"
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/IPaymentService.cs",
+      "symbols": [
+        "Contracts/IPaymentService#",
+        "Contracts/IPaymentService#Get().",
+        "Contracts/IPaymentService#Post()."
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#",
+        "Contracts/PaymentQuery#Environment.",
+        "Contracts/PaymentQuery#Workload."
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#",
+        "Contracts/PaymentRequest#Environment.",
+        "Contracts/PaymentRequest#Workload."
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "symbols": [
+        "Contracts/PaymentResult#"
+      ]
+    },
+    {
+      "from": "Hub/PaymentHub.cs",
+      "to": "Hub/ServiceRouting.cs",
+      "symbols": [
+        "Hub/ServiceRouting#",
+        "Hub/ServiceRouting#EndpointNameFor()."
+      ]
+    },
+    {
+      "from": "PaymentService/Data/PaymentsContext.cs",
+      "to": "PaymentService/Data/Payment.cs",
+      "symbols": [
+        "Data/Payment#"
+      ]
+    },
+    {
+      "from": "PaymentService/Data/PaymentsContext.cs",
+      "to": "PaymentService/Data/PostPaymentRow.cs",
+      "symbols": [
+        "Data/PostPaymentRow#"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/IPaymentService.cs",
+      "symbols": [
+        "Contracts/IPaymentService#"
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentQuery.cs",
+      "symbols": [
+        "Contracts/PaymentQuery#",
+        "Contracts/PaymentQuery#PaymentId."
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentRequest.cs",
+      "symbols": [
+        "Contracts/PaymentRequest#",
+        "Contracts/PaymentRequest#AccountNumber.",
+        "Contracts/PaymentRequest#Amount."
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "Contracts/PaymentResult.cs",
+      "symbols": [
+        "Contracts/PaymentResult#",
+        "Contracts/PaymentResult#AccountBalance.",
+        "Contracts/PaymentResult#PaymentId.",
+        "Contracts/PaymentResult#Status."
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/Payment.cs",
+      "symbols": [
+        "Data/Payment#",
+        "Data/Payment#PaymentId.",
+        "Data/Payment#Status."
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/PaymentsContext.cs",
+      "symbols": [
+        "Data/PaymentsContext#",
+        "Data/PaymentsContext#Payments.",
+        "Data/PaymentsContext#PostPayment()."
+      ]
+    },
+    {
+      "from": "PaymentService/PaymentService.cs",
+      "to": "PaymentService/Data/PostPaymentRow.cs",
+      "symbols": [
+        "Data/PostPaymentRow#",
+        "Data/PostPaymentRow#AccountBalance.",
+        "Data/PostPaymentRow#PaymentId.",
+        "Data/PostPaymentRow#Status."
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/App_Code/Globals.cs",
+      "symbols": [
+        "Portal/Globals#",
+        "Portal/Globals#GatewayBaseUrl.",
+        "Portal/Globals#PaymentsEnabled."
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Models/PaymentRequestModel.cs",
+      "symbols": [
+        "Models/PaymentRequestModel#"
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Models/PaymentResultModel.cs",
+      "symbols": [
+        "Models/PaymentResultModel#"
+      ]
+    },
+    {
+      "from": "Portal/Controllers/PaymentsController.cs",
+      "to": "Portal/Services/GatewayClient.cs",
+      "symbols": [
+        "Services/GatewayClient#",
+        "Services/GatewayClient#GetPaymentAsync().",
+        "Services/GatewayClient#PostPaymentAsync()."
+      ]
+    },
+    {
+      "from": "Portal/Pages/Default.aspx.cs",
+      "to": "Portal/App_Code/Globals.cs",
+      "symbols": [
+        "Portal/Globals#",
+        "Portal/Globals#GatewayBaseUrl.",
+        "Portal/Globals#PaymentsEnabled."
+      ]
+    },
+    {
+      "from": "Portal/Pages/Default.aspx.cs",
+      "to": "Portal/Pages/Default.aspx.designer.cs",
+      "symbols": [
+        "Pages/Default#GatewayBaseUrlHidden.",
+        "Pages/Default#PaymentsEnabledHidden."
+      ]
+    },
+    {
+      "from": "Portal/Services/GatewayClient.cs",
+      "to": "Portal/Models/PaymentRequestModel.cs",
+      "symbols": [
+        "Models/PaymentRequestModel#"
+      ]
+    },
+    {
+      "from": "Portal/Services/GatewayClient.cs",
+      "to": "Portal/Models/PaymentResultModel.cs",
+      "symbols": [
+        "Models/PaymentResultModel#"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

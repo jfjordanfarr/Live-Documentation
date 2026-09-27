@@ -1,0 +1,38 @@
+{
+  "tool": "scip-dotnet 0.2.14",
+  "projectFile": "WebForms.csproj",
+  "projects": [
+    {
+      "name": "WebForms",
+      "directory": ".",
+      "references": []
+    }
+  ],
+  "documents": [
+    "obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+    "obj/Debug/net48/WebForms.AssemblyInfo.cs",
+    "src/App_Code/Globals.cs",
+    "src/Pages/Default.aspx.cs",
+    "src/Pages/Default.aspx.designer.cs"
+  ],
+  "edges": [
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/App_Code/Globals.cs",
+      "symbols": [
+        "AppCode/Globals#",
+        "AppCode/Globals#GetClientConfig().",
+        "AppCode/Globals#GetWidgetToggle()."
+      ]
+    },
+    {
+      "from": "src/Pages/Default.aspx.cs",
+      "to": "src/Pages/Default.aspx.designer.cs",
+      "symbols": [
+        "Pages/Default#ClientConfigHidden.",
+        "Pages/Default#WidgetToggleHidden."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

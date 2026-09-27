@@ -309,7 +309,12 @@ function extractHtmlDependencies(params: {
  */
 const HTML_ID_ATTR = /\bid\s*=\s*(?:"(?<dq>[^"]+)"|'(?<sq>[^']+)')/gi;
 
-function extractHtmlSymbols(content: string): string[] {
+/**
+ * Every element id in a markup file, sorted and unique. Shared with the ASP.NET
+ * markup adapter so that a script's `getElementById` link lands on a symbol the
+ * target doc actually publishes, whatever the markup dialect.
+ */
+export function extractElementIds(content: string): string[] {
   const ids: string[] = [];
   const seen = new Set<string>();
   let match: RegExpExecArray | null;
@@ -343,7 +348,7 @@ export const htmlAdapter: LanguageAdapter = {
       workspaceRoot
     });
 
-    const ids = extractHtmlSymbols(content);
+    const ids = extractElementIds(content);
 
     return {
       symbols: ids.map(id => ({ name: id, kind: "variable", exportType: "named" })),

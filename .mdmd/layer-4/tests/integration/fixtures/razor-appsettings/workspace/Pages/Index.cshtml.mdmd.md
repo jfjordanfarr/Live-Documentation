@@ -5,22 +5,22 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml
 - Live Doc ID: LD-implementation-tests-integration-fixtures-razor-appsettings-workspace-pages-index-cshtml
-- Generated At: 2026-02-03T21:55:50.386Z
+- Generated At: 2026-09-27T10:16:32.094Z
 
 ## Authored
 ### Purpose
-Renders the Razor telemetry page that exposes the instrumentation key for client scripts to bootstrap Application Insights during the LD-402 scenario.
+Renders the Razor telemetry page that exposes the instrumentation key for client scripts to bootstrap Application Insights.
 
 ### Notes
-- Keeps markup intentionally sparse—hidden field and script loader—to isolate DOM dependency detection in tests.
-#### AppInsightsKey {#symbol-appinsightskey}
-- Hidden input `appinsightskey` surfaces the current instrumentation key so downstream scripts can discover it via standard form field lookup.
+- Keeps markup intentionally sparse (hidden field and script loader) to isolate DOM dependency detection in tests.
+- The hidden input `app-insights-key` surfaces the current instrumentation key so the page's script can read it. Its id is the page's public symbol, published by the markup adapter since 2026-09-27.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.386Z","inputHash":"49ad48d64b793570"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:32.094Z","inputHash":"89bfcaee9bdb882b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `app-insights-key` {#symbol-appinsightskey}
+- Type: variable
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -12,7 +12,6 @@ module.exports = tseslint.config(
       "out/**",
       "**/out/**",
   "tests/integration/benchmarks/fixtures/**",
-  "scripts/fixture-tools/*.js",
       "node_modules/**",
       "**/*.d.ts",
       "eslint.config.js",

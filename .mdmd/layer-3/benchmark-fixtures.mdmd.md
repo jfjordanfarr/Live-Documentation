@@ -10,20 +10,33 @@ Describe the sample programs under `tests/integration/benchmarks/fixtures/`: wha
 
 Every directory below holds committed source. The seven vendored fixtures that were pinned clones of third-party repositories (ky, libuv, Newtonsoft.Json, mux, OkHttp, Requests, log) were retired on 2026-09-27; see [Architectural Decisions](architectural-decisions.mdmd.md).
 
-| Language   | Fixtures                         | Read by                                                |
-| ---------- | -------------------------------- | ------------------------------------------------------ |
-| TypeScript | `basic`, `layered`, `rosetta`    | `rosetta`: Rosetta parity                              |
-| C          | `basics`, `modular`, `rosetta`   | `rosetta`: Rosetta parity                              |
-| C#         | `basic`, `webforms`, `rosetta`   | `rosetta`: Rosetta parity                              |
-| Go         | `rosetta`                        | Rosetta parity                                         |
-| Java       | `basic`, `service`, `rosetta`    | `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
-| Python     | `basics`, `pipeline`, `rosetta`  | `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
-| Ruby       | `basic`, `cli`, `rosetta`        | `rosetta`: Rosetta parity                              |
-| Rust       | `basics`, `analytics`, `rosetta` | `rosetta`: Rosetta parity                              |
+| Language   | Fixtures                                 | Read by                                                     |
+| ---------- | ---------------------------------------- | ----------------------------------------------------------- |
+| TypeScript | `basic`, `layered`, `rosetta`            | `rosetta`: Rosetta parity                                   |
+| C          | `basics`, `modular`, `rosetta`           | `rosetta`: Rosetta parity                                   |
+| C#         | `basic`, `webforms`, `estate`, `rosetta` | `webforms`, `estate`: the oracle; `rosetta`: Rosetta parity |
+| Go         | `rosetta`                                | Rosetta parity                                              |
+| Java       | `basic`, `service`, `rosetta`            | `basic`: polyglot fixtures; `rosetta`: Rosetta parity       |
+| Python     | `basics`, `pipeline`, `rosetta`          | `basics`: polyglot fixtures; `rosetta`: Rosetta parity      |
+| Ruby       | `basic`, `cli`, `rosetta`                | `rosetta`: Rosetta parity                                   |
+| Rust       | `basics`, `analytics`, `rosetta`         | `rosetta`: Rosetta parity                                   |
 
 `rosetta-manifest.json` at the root describes the canonical program the eight Rosetta implementations share: the nodes, the twelve edges, and the symbols each edge travels through. The parity suite's constants are drawn from it.
 
-The fixtures with no reader today (`basic`, `layered`, `basics`, `modular`, `pipeline`, `service`, `cli`, `analytics`, `webforms`) were the paired "trivial, then incrementally less trivial" programs of the retired accuracy benchmark. They are the first candidates for the compiler-backed oracle when it is rebuilt.
+The fixtures with no reader today (`basic`, `layered`, `basics`, `modular`, `pipeline`, `service`, `cli`, `analytics`) were the paired "trivial, then incrementally less trivial" programs of the retired accuracy benchmark. They are candidates for oracle expectations once an indexer for their language is wired in.
+
+## Expected edges
+
+A fixture that has been measured carries an `expected/` directory.
+
+- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. Today the indexer is `scip-dotnet`, so only C# fixtures have one.
+- `hand-verified-edges.json` is authored: the hops no compiler can see, each with the evidence a reader can check, and `remote: true` where the hop crosses a deployment.
+
+`npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. The report on 2026-09-27, the baseline the tree-sitter adapter replaces, is recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md).
+
+## The estate fixture
+
+`csharp/estate` is the owner's payment chain in miniature, five .NET Framework 4.8 projects and the SQL behind them; its [README](../../tests/integration/benchmarks/fixtures/csharp/estate/README.md) draws the chain and says which hops each expectation file covers.
 
 ## The WebForms fixture
 

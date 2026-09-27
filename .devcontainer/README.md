@@ -5,6 +5,7 @@ This devcontainer provides a fully-configured Linux environment for developing a
 ## Compatibility
 
 **This is the same configuration file for both environments:**
+
 - ✅ **VS Code Dev Containers** (local Docker)
 - ✅ **GitHub Codespaces** (cloud)
 
@@ -29,28 +30,31 @@ No special setup is required — the same `.devcontainer/devcontainer.json` work
 ## What's Included
 
 ### Base Environment
+
 - **Node.js 22** (matches `.nvmrc`)
 - **TypeScript** (project dependency)
 - **npm workspaces** pre-configured
 
 ### Language Toolchains
-| Language | Version | Purpose |
-|----------|---------|---------|
-| .NET | 10.0 (LTS) | scip-dotnet for C# fixtures |
-| Java | 21 (LTS) + Maven/Gradle | scip-java for Java fixtures |
-| Go | latest | scip-go for Go fixtures |
-| Python | 3.12 | scip-python for Python fixtures |
-| Rust | stable | rust-analyzer for Rust fixtures |
+
+| Language | Version                 | Purpose                         |
+| -------- | ----------------------- | ------------------------------- |
+| .NET     | 10.0 (LTS)              | scip-dotnet for C# fixtures     |
+| Java     | 21 (LTS) + Maven/Gradle | scip-java for Java fixtures     |
+| Go       | latest                  | scip-go for Go fixtures         |
+| Python   | 3.12                    | scip-python for Python fixtures |
+| Rust     | stable                  | rust-analyzer for Rust fixtures |
 
 ### SCIP Indexers (installed via post-create.sh)
-| Indexer | Installation | Command |
-|---------|--------------|---------|
-| scip-typescript | npm (project dep) | `npx scip-typescript index` |
-| scip-dotnet | dotnet global tool | `scip-dotnet index` |
-| scip-java | Coursier | `scip-java index` |
-| scip-go | go install | `scip-go` |
-| scip-python | npm global | `scip-python index` |
-| rust-analyzer | rustup component | `rust-analyzer scip .` |
+
+| Indexer         | Installation       | Command                     |
+| --------------- | ------------------ | --------------------------- |
+| scip-typescript | npm (project dep)  | `npx scip-typescript index` |
+| scip-dotnet     | dotnet global tool | `scip-dotnet index`         |
+| scip-java       | Coursier           | `scip-java index`           |
+| scip-go         | go install         | `scip-go`                   |
+| scip-python     | npm global         | `scip-python index`         |
+| rust-analyzer   | rustup component   | `rust-analyzer scip .`      |
 
 ## Verifying the Environment
 
@@ -70,18 +74,21 @@ rust-analyzer --version
 
 ## The SCIP Indexers
 
-The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. The regeneration tooling that drives them is being rebuilt; see the order of work in [the vision](../.mdmd/layer-1/vision.mdmd.md).
+The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. `npm run oracle:index -- <fixture>` drives `scip-dotnet` today; the other indexers are installed but not yet wired in. `scip-dotnet` is built for an older runtime than the container's .NET 10, so the script runs it with `DOTNET_ROLL_FORWARD=Major`; do the same when running it by hand.
 
 ## Troubleshooting
 
 ### scip-java fails on first run
+
 scip-java uses Coursier to download dependencies. If it fails, try:
+
 ```bash
 cs update
 cs install scip-java
 ```
 
 ### Slow container startup
+
 The first build downloads ~2GB of language toolchains. Subsequent rebuilds use cached layers.
 
 ## GitHub Codespaces Notes

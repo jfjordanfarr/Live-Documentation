@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/schema.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-schema-ts
-- Generated At: 2026-09-27T09:36:40.382Z
+- Generated At: 2026-09-27T10:16:24.039Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Defines the normalized metadata/provenance schema every generated Live Doc must 
 - Hardened during the Stage‑0 refactor when docLoader, manifests, and co-activation analytics began relying on these types.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-11.SUMMARIZED.md#turn-08-begin-refactor--stage-0-extraction-lines-961-1100]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:40.382Z","inputHash":"336172eaa52d19c5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:24.039Z","inputHash":"336172eaa52d19c5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocLayer` {#symbol-livedoclayer}
@@ -72,6 +72,7 @@ by the graph builder, lint, and inspector CLIs.
 #### Vitest Integration Tests
 - [evidence.test.ts](../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
 - [generation.test.ts](../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [oracle.test.ts](../../../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
 - [polyglot-fixtures.test.ts](../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
 - [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
 

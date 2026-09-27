@@ -1,0 +1,45 @@
+# tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs
+- Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-portal-app-code-globals-cs
+- Generated At: 2026-09-27T10:09:19.953Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:19.953Z","inputHash":"afb3f52837318cf4"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `Globals` {#symbol-globals}
+- Type: class
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L9)
+
+##### `Globals` — Summary
+The one place the portal reads Web.config. Every appSettings key is a constant
+here so that a renamed key breaks in one file.
+
+#### `GatewayBaseUrlKey` {#symbol-gatewaybaseurlkey}
+- Type: field
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L11)
+
+#### `PaymentsEnabledKey` {#symbol-paymentsenabledkey}
+- Type: field
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L12)
+
+#### `GatewayBaseUrl` {#symbol-gatewaybaseurl}
+- Type: property
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L14)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->

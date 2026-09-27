@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/parse.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-parse-ts
-- Generated At: 2026-03-11T01:35:37.358Z
+- Generated At: 2026-09-27T10:16:24.011Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralises Live Doc markdown parsing so CLI utilities can obtain consistent met
 Outputs workspace-relative paths and filters Live Doc links down to their underlying code artefacts, keeping downstream scripts agnostic of mirror layout conventions.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.358Z","inputHash":"e127ae7466c63a67"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:24.011Z","inputHash":"e127ae7466c63a67"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ParsedTypeReference` {#symbol-parsedtypereference}
@@ -72,3 +72,9 @@ Returns `undefined` if the markdown lacks the required `Code Path:` metadata lin
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Integration Tests
+- [oracle.test.ts](../../../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

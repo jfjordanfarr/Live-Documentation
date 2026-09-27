@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 
 const sharedSrc = path.resolve(__dirname, "packages/shared/src");
 const scriptsSrc = path.resolve(__dirname, "packages/scripts/src");
+const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");
 
@@ -35,6 +36,10 @@ export default defineConfig({
       {
         find: /^@live-documentation\/scripts\/(.+)$/u,
         replacement: `${withTrailingSeparator(scriptsSrc)}$1`
+      },
+      {
+        find: /^@live-documentation\/generator\/(.+)$/u,
+        replacement: `${withTrailingSeparator(generatorSrc)}$1`
       }
     ]
   },

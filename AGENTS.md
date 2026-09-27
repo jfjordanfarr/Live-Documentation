@@ -29,18 +29,20 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 
 ## Commands that matter
 
-| Command                                                                                         | What it does                                                                      |
-| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                                |
-| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                  |
-| `npm run test:unit`                                                                             | Vitest, 829 tests (about 30 s)                                                    |
-| `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                     |
-| `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s) |
-| `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope   |
-| `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                      |
-| `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                       |
-| `npm run live-docs:visualize`                                                                   | Build the static Explorer into `dist/explorer/`                                   |
-| `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                   |
+| Command                                                                                         | What it does                                                                                   |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                                             |
+| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                               |
+| `npm run test:unit`                                                                             | Vitest, 838 tests (about 30 s)                                                                 |
+| `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                                  |
+| `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s)              |
+| `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope                |
+| `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                                   |
+| `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                                    |
+| `npm run oracle:index -- <fixture>`                                                             | Write a C# fixture's compiler-resolved edges to its `expected/` (needs dotnet and scip-dotnet) |
+| `npm run oracle:compare -- <fixture>`                                                           | List where the shipped generator disagrees with a fixture's expected edges                     |
+| `npm run live-docs:visualize`                                                                   | Build the static Explorer into `dist/explorer/`                                                |
+| `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                                |
 
 After changing source, run `live-docs:generate` and commit the regenerated docs with the code.
 
@@ -68,4 +70,4 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 
 ## Status (2026-09-27)
 
-The cleanup pass is under way; the order of work is in the vision doc. Retired so far: the VS Code Electron test harness, the AST accuracy benchmark and its reports, the benchmark-only inference path and fixture oracles, the system layer and co-activation clustering, the headless harness, `live-docs:report`, `tech-debt` and `audit:network`. The VS Code extension shell and the language server went on 2026-09-27 as well; the editor panel described in the vision will be built fresh. The Circuit Board and Local Map views are being folded into one file-scale view. The compiler-backed oracle and the tree-sitter C# adapter come next.
+The cleanup pass is under way; the order of work is in the vision doc. Retired so far: the VS Code Electron test harness, the AST accuracy benchmark and its reports, the benchmark-only inference path and fixture oracles, the system layer and co-activation clustering, the headless harness, `live-docs:report`, `tech-debt` and `audit:network`. The VS Code extension shell and the language server went on 2026-09-27 as well; the editor panel described in the vision will be built fresh. The Circuit Board and Local Map views are being folded into one file-scale view. The compiler-backed oracle landed on 2026-09-27 (`scripts/oracle/`, expectations on the `csharp/webforms` and `csharp/estate` fixtures); its first measurement of the shipped C# adapter is in the decisions log. The tree-sitter C# adapter comes next, measured against it.

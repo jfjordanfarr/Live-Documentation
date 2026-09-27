@@ -52,6 +52,8 @@
     "live-docs:targets": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/build-target-manifest.ts",
     "live-docs:inspect": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/inspect.ts --config ./.live-docs.config.json",
     "live-docs:visualize": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-static.ts --config ./.live-docs.config.json",
+    "oracle:index": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/index-fixture.ts",
+    "oracle:compare": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/compare.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts --docs-root .mdmd --base-layer layer-4",
     "ci-check": "node ./scripts/safe-to-commit.mjs --skip-git-status"
   },

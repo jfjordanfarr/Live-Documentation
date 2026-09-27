@@ -3,13 +3,14 @@ import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, SourceAnalysisResult } from "../core";
+import { extractElementIds } from "./html";
 import type { LanguageAdapter } from "./index";
 
 const SCRIPT_SRC_PATTERN = /<script[^>]*?src\s*=\s*"([^"]+)"[^>]*?>/gi;
 const PAGE_DIRECTIVE_PATTERN = /<%@\s+Page[^%]*?(?:CodeFile|CodeBehind)\s*=\s*"([^"]+)"[^%]*?%>/i;
 const MARKUP_EXTENSIONS = new Set([".aspx", ".cshtml", ".razor", ".ascx"]);
 
-/** Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`). Extracts `CodeFile`/`CodeBehind` references and model directives. */
+/** Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`). Extracts `CodeFile`/`CodeBehind` and `<script src>` references as dependencies, and element ids (server controls and plain HTML alike) as public symbols. */
 export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
   extensions: [".aspx", ".cshtml", ".razor"],
@@ -34,7 +35,7 @@ export const aspNetMarkupAdapter: LanguageAdapter = {
     }
 
     return {
-      symbols: [],
+      symbols: extractElementIds(content).map((id) => ({ name: id, kind: "variable", exportType: "named" })),
       dependencies
     };
   }
