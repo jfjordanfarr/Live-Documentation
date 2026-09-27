@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-dependencies-unit-test-ts
-- Generated At: 2026-09-27T21:43:40.498Z
+- Generated At: 2026-09-27T21:58:30.757Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests for the C# dependency extraction module, validating correct detection
 - **Created:** 2025-12-10 during the `csharp.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.498Z","inputHash":"dec1772407be34db"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.757Z","inputHash":"89e8004a9338bdc2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,9 +26,16 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./csharp.dependencies` - `collectConfigKeys`, `collectConfigurationIndexerKeys`, `collectHangfireTargets`, `collectTypeIdentifiers`, `collectTypeNameLiterals`, `fileExists`, `locateNearestFile`, `resolveReflectionTargets`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`
+- [`csharp.dependencies.collectConfigKeys`](./csharp.dependencies.ts.mdmd.md#symbol-collectconfigkeys)
+- [`csharp.dependencies.collectConfigurationIndexerKeys`](./csharp.dependencies.ts.mdmd.md#symbol-collectconfigurationindexerkeys)
+- [`csharp.dependencies.collectHangfireTargets`](./csharp.dependencies.ts.mdmd.md#symbol-collecthangfiretargets)
+- [`csharp.dependencies.collectTypeIdentifiers`](./csharp.dependencies.ts.mdmd.md#symbol-collecttypeidentifiers)
+- [`csharp.dependencies.collectTypeNameLiterals`](./csharp.dependencies.ts.mdmd.md#symbol-collecttypenameliterals)
+- [`csharp.dependencies.fileExists`](./csharp.dependencies.ts.mdmd.md#symbol-fileexists)
+- [`csharp.dependencies.locateNearestFile`](./csharp.dependencies.ts.mdmd.md#symbol-locatenearestfile)
+- [`csharp.dependencies.resolveReflectionTargets`](./csharp.dependencies.ts.mdmd.md#symbol-resolvereflectiontargets)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

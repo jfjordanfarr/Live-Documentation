@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-java-ts
-- Generated At: 2026-09-27T21:43:40.889Z
+- Generated At: 2026-09-27T21:58:30.995Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 - The qualifier of a static call or field access (`Registry.register(...)`, `Unit.EACH`) is resolved as a type name; a local variable that shadows a type name would be mistaken for it.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.889Z","inputHash":"d8b6c6218c188e33"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.995Z","inputHash":"399aea4ee78a126e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
@@ -31,13 +31,13 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./java.javadoc` - `parseJavaDoc`
 - `glob` - `glob`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - [`index.javaSyntax`](../../languages/index.ts.mdmd.md#symbol-javasyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`java.javadoc.parseJavaDoc`](./java.javadoc.ts.mdmd.md#symbol-parsejavadoc)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)

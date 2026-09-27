@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.xmldoc.unit.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-xmldoc-unit-test-ts
-- Generated At: 2026-09-27T21:43:40.624Z
+- Generated At: 2026-09-27T21:58:30.823Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Unit tests for the C# XML documentation parsing module, validating correct extra
 - **Created:** 2025-12-10 during the `csharp.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.624Z","inputHash":"26479009baecdc16"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.823Z","inputHash":"3ea631c9903ea3b8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,6 +25,21 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./csharp.xmldoc` - `RECOGNIZED_DOC_TAGS`, `buildDocumentationFromLines`, `decodeXmlEntities`, `detectUnsupportedTags`, `extractExampleTags`, `extractExceptionTags`, `extractLinkTags`, `extractParameterTags`, `extractRawDocFragments`, `extractSingleTagText`, `hasStructuredContent`, `normalizeCrefTarget`, `normalizeXmlText`, `parseXmlAttributes`, `renderCrefText`, `stripDocCommentMarker`
+- [`csharp.xmldoc.RECOGNIZED_DOC_TAGS`](./csharp.xmldoc.ts.mdmd.md#symbol-recognized_doc_tags)
+- [`csharp.xmldoc.buildDocumentationFromLines`](./csharp.xmldoc.ts.mdmd.md#symbol-builddocumentationfromlines)
+- [`csharp.xmldoc.decodeXmlEntities`](./csharp.xmldoc.ts.mdmd.md#symbol-decodexmlentities)
+- [`csharp.xmldoc.detectUnsupportedTags`](./csharp.xmldoc.ts.mdmd.md#symbol-detectunsupportedtags)
+- [`csharp.xmldoc.extractExampleTags`](./csharp.xmldoc.ts.mdmd.md#symbol-extractexampletags)
+- [`csharp.xmldoc.extractExceptionTags`](./csharp.xmldoc.ts.mdmd.md#symbol-extractexceptiontags)
+- [`csharp.xmldoc.extractLinkTags`](./csharp.xmldoc.ts.mdmd.md#symbol-extractlinktags)
+- [`csharp.xmldoc.extractParameterTags`](./csharp.xmldoc.ts.mdmd.md#symbol-extractparametertags)
+- [`csharp.xmldoc.extractRawDocFragments`](./csharp.xmldoc.ts.mdmd.md#symbol-extractrawdocfragments)
+- [`csharp.xmldoc.extractSingleTagText`](./csharp.xmldoc.ts.mdmd.md#symbol-extractsingletagtext)
+- [`csharp.xmldoc.hasStructuredContent`](./csharp.xmldoc.ts.mdmd.md#symbol-hasstructuredcontent)
+- [`csharp.xmldoc.normalizeCrefTarget`](./csharp.xmldoc.ts.mdmd.md#symbol-normalizecreftarget)
+- [`csharp.xmldoc.normalizeXmlText`](./csharp.xmldoc.ts.mdmd.md#symbol-normalizexmltext)
+- [`csharp.xmldoc.parseXmlAttributes`](./csharp.xmldoc.ts.mdmd.md#symbol-parsexmlattributes)
+- [`csharp.xmldoc.renderCrefText`](./csharp.xmldoc.ts.mdmd.md#symbol-rendercreftext)
+- [`csharp.xmldoc.stripDocCommentMarker`](./csharp.xmldoc.ts.mdmd.md#symbol-stripdoccommentmarker)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

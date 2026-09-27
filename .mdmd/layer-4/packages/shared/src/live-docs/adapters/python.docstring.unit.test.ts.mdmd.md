@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.unit.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-docstring-unit-test-ts
-- Generated At: 2026-09-27T21:43:41.036Z
+- Generated At: 2026-09-27T21:58:31.077Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Unit tests for the Python docstring parsing module, validating correct extractio
 - **Created:** 2025-12-10 during the `python.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.036Z","inputHash":"ebb87b0dea1200cf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.077Z","inputHash":"ceedb05e69c0d3ba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,6 +25,16 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./python.docstring` - `capitalize`, `createEmptyDocstringState`, `detectGoogleSections`, `detectMinimumIndent`, `detectNumpySections`, `extractDocstringSummary`, `joinParagraphs`, `normalizeExample`, `parseDocstring`, `parseIndentedEntries`, `parseNumpyEntries`
+- [`python.docstring.capitalize`](./python.docstring.ts.mdmd.md#symbol-capitalize)
+- [`python.docstring.createEmptyDocstringState`](./python.docstring.ts.mdmd.md#symbol-createemptydocstringstate)
+- [`python.docstring.detectGoogleSections`](./python.docstring.ts.mdmd.md#symbol-detectgooglesections)
+- [`python.docstring.detectMinimumIndent`](./python.docstring.ts.mdmd.md#symbol-detectminimumindent)
+- [`python.docstring.detectNumpySections`](./python.docstring.ts.mdmd.md#symbol-detectnumpysections)
+- [`python.docstring.extractDocstringSummary`](./python.docstring.ts.mdmd.md#symbol-extractdocstringsummary)
+- [`python.docstring.joinParagraphs`](./python.docstring.ts.mdmd.md#symbol-joinparagraphs)
+- [`python.docstring.normalizeExample`](./python.docstring.ts.mdmd.md#symbol-normalizeexample)
+- [`python.docstring.parseDocstring`](./python.docstring.ts.mdmd.md#symbol-parsedocstring)
+- [`python.docstring.parseIndentedEntries`](./python.docstring.ts.mdmd.md#symbol-parseindentedentries)
+- [`python.docstring.parseNumpyEntries`](./python.docstring.ts.mdmd.md#symbol-parsenumpyentries)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

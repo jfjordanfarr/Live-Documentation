@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-dependencies-ts
-- Generated At: 2026-02-03T21:55:40.444Z
+- Generated At: 2026-09-27T21:58:31.370Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.444Z","inputHash":"9c54d89151e1140a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.370Z","inputHash":"e0a1709ae32dcd7a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}
@@ -81,14 +81,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L370)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L379)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L394)
+- Source: [source](../../../../../../packages/shared/src/live-docs/dependencies.ts#L403)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.

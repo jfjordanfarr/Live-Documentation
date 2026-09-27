@@ -325,21 +325,30 @@ async function resolveAliasCandidates(
   return undefined;
 }
 
+/** The TypeScript sources a specifier written with a JavaScript extension may name. */
+const TYPESCRIPT_SOURCES_FOR: Record<string, string[]> = {
+  ".js":  [".ts", ".tsx"],
+  ".jsx": [".tsx"],
+  ".mjs": [".mts"],
+  ".cjs": [".cts"]
+};
+
 async function resolveWithExtensions(basePath: string): Promise<string | undefined> {
   const attempts: string[] = [];
   const explicitExt = path.extname(basePath);
 
-  if (explicitExt) {
-    attempts.push(basePath);
+  if (MODULE_RESOLUTION_EXTENSIONS.includes(explicitExt)) {
+    // "./widget.ts" names that file; "./widget.js" names the TypeScript source it compiles from.
+    const stem = basePath.slice(0, basePath.length - explicitExt.length);
+    attempts.push(basePath, ...(TYPESCRIPT_SOURCES_FOR[explicitExt] ?? []).map((ext) => `${stem}${ext}`));
   } else {
+    // Anything else is a whole file name: "./csharp.dependencies" is csharp.dependencies.ts, not csharp.ts.
     for (const ext of MODULE_RESOLUTION_EXTENSIONS) {
       attempts.push(`${basePath}${ext}`);
     }
-  }
-
-  const indexBase = explicitExt ? basePath.slice(0, basePath.length - explicitExt.length) : basePath;
-  for (const ext of MODULE_RESOLUTION_EXTENSIONS) {
-    attempts.push(path.join(indexBase, `index${ext}`));
+    for (const ext of MODULE_RESOLUTION_EXTENSIONS) {
+      attempts.push(path.join(basePath, `index${ext}`));
+    }
   }
 
   for (const candidate of attempts) {

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2026-09-27T21:43:41.122Z
+- Generated At: 2026-09-27T21:58:31.133Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 - File existence is checked against the directory listing, not `stat` alone, because the workspace may sit on a case-insensitive mount and Python imports are case-sensitive.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.122Z","inputHash":"3a044b7ed3d4a645"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.133Z","inputHash":"d01b789e79763d3e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
@@ -31,11 +31,11 @@ Language adapter for Python (`.py`): tree-sitter symbols and import resolution t
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./python.docstring` - `parseDocstring`
 - `node:fs` - `promises`, `readdirSync`, `statSync`
 - `node:path` - `path`
 - [`index.pythonSyntax`](../../languages/index.ts.mdmd.md#symbol-pythonsyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
+- [`python.docstring.parseDocstring`](./python.docstring.ts.mdmd.md#symbol-parsedocstring)
 - [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
 - [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
