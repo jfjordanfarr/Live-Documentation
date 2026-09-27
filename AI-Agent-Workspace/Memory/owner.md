@@ -1,0 +1,34 @@
+# The owner
+
+_Current as of 2026-09-27. Any agent working here keeps this file: when the owner says something that changes how to work with him, add it with the date, in his words where you can._
+
+Jordan Farr owns this repository and is its only human contributor. He acts as product manager and architect and expects the agent to be the lead developer who owns the code. He built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
+
+## What the tool has to serve
+
+His day job is public-facing, PCI-DSS-secured applications at a mid-sized multi-state legal enterprise: .NET Framework 4.8, WebForms, C#, PowerShell 5.1. That C# estate is where he means to run this tool, and the sample program under `tests/integration/programs/csharp/estate` is its miniature. The shape, in his words (2026-09-27):
+
+> .NET Framework 4.8 WebForms (but using no PostBack nastiness - just using it as the substrate to do some simple data-specific rendering choices on the pages and letting vanilla JS take over for the parts which update; it's using standard .NET WebAPI 2.N controllers), which talks to a .NET WebAPI 2 API gateway, bridging cloud REST into on-prem WCF service calls, issued out to the onprem WCF service hub (for this specific workload + environment combination), which then matches those operations to the proper WCF service. The WCF service will likely call stored procedures in an onprem MS SQL Server, which itself may perform OraQueries into the (yuck) Oracle database at the center of everything. Entity Framework is typical on the WCF services.
+
+What he wants from the tool at work (2026-09-26): "I just want to be able to show non-software people what I do and they can _see it_ the way I understand it. I don't want to keep drawing bespoke diagrams for XYZ questions from the business at work."
+
+## How he works with an agent
+
+- **Engaged, and asks to be asked.** "I want you to always feel free to stop and ask me questions rather than make assumptions. I am a highly engaged user and monitor the process closely." (2026-09-26)
+- **Autonomy on the engine work.** "At this point, I think I'm comfortable enough to say that I trust your judgment... I actually want you to have and feel a lot of autonomy in this work." He declined per-checkpoint reviews. "If your common sense is obviously superior to mine at a point of disagreement, please make it known to me and we will quite likely go with your path (or an intersting hybrid/synthesis)." (2026-09-27)
+- **Overnight work is welcome; forks are not to be guessed.** "I am absolutely happy to come back to a short transcript where, 5 minutes later, you hit a fork in the road and simply stopped with a wonderful set of questions that couldn't be answered from prior user intent signals... Let's just keep this ball rolling, but rolling within good standards of stewardship." (2026-09-27)
+- **Commits.** "Feel free to stage and commit as you need, so long as you are confident in the safety and quality of the. commit." One `main` branch with gated commits until there is a release and end users to endanger; he pushes. (2026-09-27)
+- **Git.** The rules in AGENTS.md (never bulk `git checkout`, `git restore` or `git clean`; commit only when asked) exist because of a severe work-loss incident on 2025-11-15; the record is in that day's chat log.
+- **Renames.** "If it seems semantically smoother and more correct to do the rename, do the rename." (2026-09-27)
+- **Honesty over comfort.** He can propose things that are wrong and wants to be told, and he values pushback. He also notices imported certainty: when conclusions mined from the chat archive were written into current documents as decisions, he said "So much certainty going in. Hmm..." (2026-09-27). Old material becomes dated history or an open question, never a current decision, unless he re-affirms it.
+- **The old chat record** stays "until modernization effort complete". Mine it for the spirit of his intent; when signals conflict, the newer one wins. Before deleting a file, read the record of why it was written.
+- **Names.** Requirement-ID schemes bother him: "It's just relatively inuman/beurocratic and leaves me worried that it creates subtle semantic biases toward mediocrity." Plain words.
+- **No grilling needed.** He knows Matt Pocock's "Grill Me" technique (question the user until consensus) and decided it was unnecessary here: "typical steering being the way user preference nudges can be applied if anything falls off course." (2026-09-27)
+- **He is learning the current models' habits as he goes.** "I am not yet fully familiar with the quirks of the current round of frontier models." (2026-09-27)
+
+## Formatting and visual taste
+
+- **Aligned whitespace.** "I personally have a _major_ preference to utilize languages which allow me to use an arbitrary number of spaces/tabs so that I can visually align things which are semantically aligned... I optimize for readability to the human eye." Tables and parallel code are hand-aligned. "Let me know if the linters get in your way. Feel free to adjust so long as it isn't a matter of substantive code quality." Adjust lint and format configuration freely for style; never weaken a substantive rule. (2026-09-27)
+- **Cut, don't boost.** "A master audio producer will prefer to cut frequencies they don't like rather than boost frequencies they do like during EQ." Fade the irrelevant; never highlight the relevant. No emoji anywhere.
+- **Direction and colour.** He wants inputs and outputs colour-coded on consistent sides, configurable is fine, and he is "happy to be shown other designs", including HTML mock-ups. He expects three dimensions for distributed systems: "2 dimensions simply aren't enough to handle the number of things that are mutually related to one another."
+- **He reads designs through exact ASCII diagrams.** By his own account (2025-12-05) he is borderline aphantasic, which is also why the visualizations matter to him; a diagram must be precise down to pin placement.

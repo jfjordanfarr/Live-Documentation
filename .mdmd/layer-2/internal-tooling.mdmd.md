@@ -55,7 +55,7 @@ The converter lives in `scripts/oracle/scip-edges.ts` with its unit test beside 
 
 ## SlopCop audits
 
-Markdown and asset hygiene for every `.md` in the repository. The historical `AI-Agent-Workspace/` is excluded; see `slopcop.config.json`.
+Markdown and asset hygiene for every `.md` in the repository. The chat archive, notes and scripts under `AI-Agent-Workspace/` are excluded; its README and `Memory/` are audited. See `slopcop.config.json`.
 
 | Command                    | Checks                                                                    |
 | -------------------------- | ------------------------------------------------------------------------- |

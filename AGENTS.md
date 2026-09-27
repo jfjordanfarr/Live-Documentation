@@ -8,6 +8,10 @@ Live Documentation turns a folder of source files into a map you can look at. It
 
 The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read it before proposing features.
 
+## What the owner has said
+
+His standing preferences, his answers at every fork so far, and ideas without a home live under `AI-Agent-Workspace/Memory/`: [owner.md](AI-Agent-Workspace/Memory/owner.md), [direction.md](AI-Agent-Workspace/Memory/direction.md) and [ideas.md](AI-Agent-Workspace/Memory/ideas.md). Read them after this file. They are plain markdown so that an agent of any vendor reads the same facts. When the owner says something that changes how to work here or where the project goes, add it there with the date, in his words where you can. A vendor's private memory may point at these files; it must not hold a second copy.
+
 ## How to work here
 
 - **You own the code.** This is a single-owner repository where nearly every line was written by an agent. Nothing is "pre-existing" or "not my code." If a file can't be justified, delete it.
@@ -25,7 +29,8 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 - npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/generator` (the Live Doc generator and the evidence bridge), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
 - Live Docs for this repo are generated into `.mdmd/layer-4/`, one per tracked source file. Shipped defaults are `.live-documentation/source/*.md`.
 - `.mdmd/layer-1` through `layer-3` are authored docs. Many are stale; see Status.
-- `AI-Agent-Workspace/ChatHistory/` is the full chat record from October 2025 to April 2026. It is historical reference only, never a source of current facts.
+- `AI-Agent-Workspace/ChatHistory/` is the chat record. October 2025 to April 2026 are full transcripts of the GitHub Copilot era: historical reference only, never a source of current facts, kept until the modernization is complete. From September 2026 it holds only the owner's prompts, verbatim, from the Claude Code sessions.
+- The workspace mount is case-insensitive (a Windows-backed volume), so a file-existence probe must check the directory listing: `Account.py` finds `account.py`.
 
 ## Commands that matter
 
