@@ -13,7 +13,7 @@ Fixture TypeScript configuration used by the SPA runtime configuration suite to 
 
 ### Notes
 - Mirrors the compiler flags our production SPA harness relies on, ensuring integration tests compile helper scripts exactly like the real project.
-- Loaded by the headless harness when replaying SPA scenarios; edits here can change module resolution and must be reflected in test expectations.
+- Read by the inspect CLI integration suite, which resolves the fixture's alias imports through it; edits here change module resolution and must be reflected in test expectations.
 - Update alongside fixture source files and document changes in the fixture README to keep regeneration narratives reproducible.
 
 ## Generated

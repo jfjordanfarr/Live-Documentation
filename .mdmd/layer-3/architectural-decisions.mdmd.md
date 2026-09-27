@@ -48,10 +48,10 @@ Record the key architectural decisions made during Live Documentation developmen
 
 ### Link Sources _(Updated 2026-09-27)_
 
-- **Decision**: Relationships come from deterministic source analysis only. TypeScript and JavaScript use the compiler API; the other languages use hand-written scanners today. Tree-sitter is used only to build benchmark ground truth and is scheduled to replace the scanners, C# first.
+- **Decision**: Relationships come from deterministic source analysis only. TypeScript and JavaScript use the compiler API; the other languages use hand-written scanners today. Tree-sitter is not used by shipped code yet; it replaces the scanners next, C# first.
 - **Rationale**: Deterministic, offline, no external runtime.
 - **Descoped**: LLM inference via Ollama or `vscode.lm` (removed 2026-02-17: dormant, zero production callers; users bring their own assistants). VS Code's workspace symbol index as a second source (gone with the diagnostics subsystem).
-- **Observation**: each language's code is split across `languages/{lang}.ts`, `inference/heuristics/{lang}.ts` and `live-docs/adapters/{lang}.ts`, so adding one language touches three directories. An abandoned January 2026 note proposed one folder per language; whether to do that is decided with the tree-sitter work, not here.
+- **Observation**: each language's code is split across `languages/{lang}.ts` and `live-docs/adapters/{lang}.ts` (a third directory, the benchmark-only heuristics, was removed on 2026-09-27). An abandoned January 2026 note proposed one folder per language; whether to do that is decided with the tree-sitter work, not here.
 
 ### Accuracy Measurement _(Updated 2026-09-27)_
 
@@ -74,7 +74,7 @@ Requirements written in 2025 and never implemented, kept as observations rather 
 - Renaming or moving a source file should carry its authored `Purpose` and `Notes` to the new doc; today the generator refuses to prune a doc that has authored content, so the old doc survives as an orphan (`live-docs:orphans` lists them) and nothing carries its text forward.
 - Writes could be atomic (temp file, then rename) so a crash cannot leave a half-written doc.
 
-Settled in September 2026: derived views (the graph index, system rollups, the Explorer bundle) are regenerated on demand and never committed; only the per-file mirror is.
+Settled in September 2026: derived views (the graph index, the Explorer bundle) are regenerated on demand and never committed; only the per-file mirror is.
 
 ### Related Documentation Bridge _(Recorded 2026-09-27; in effect since 2026-01-06)_
 
@@ -104,6 +104,10 @@ The following decisions were explored and explicitly removed from scope during t
 - **Spec-Kit** _(Retired 2026-02-23)_: the bootstrapping scaffolding. Its specs, plans and task lists were migrated into `.mdmd` and have since been retired in turn.
 - **Explorer HTTP Server** _(Removed 2026-03-10)_: the static bundle does everything the server did except open files in the editor.
 - **AST Accuracy Benchmark, Benchmark Reports and Telemetry** _(Retired 2026-09-27)_: the mocha benchmark suite, the per-mode markdown reports under `reports/`, the manual benchmark workflow, the report builder and the inference-accuracy tracker. See "Accuracy Measurement" above for why. One observation from the November 2025 TypeScript oracle is worth carrying into the new one: it classified each edge as a runtime or a type-only binding, a distinction SCIP output does not make on its own.
+- **Benchmark-only Inference Path and Fixture Oracles** _(Retired 2026-09-27)_: `packages/shared/src/inference` (regex heuristics plus a tree-sitter import extractor) was what the benchmark scored, but the shipped generator never called it. The C and Ruby "oracles" were in-repo regex scanners, so those two languages never had independent ground truth; SCIP covered TypeScript, Python, Rust, Java, C# and Go. The rebuilt oracle needs its own answer for C and Ruby. Three lessons carried forward: linking every C# partial-class peer flooded a Roslyn slice with false positives in November 2025, and only generated peers (`*.designer.cs`, `*.g.cs`) were linked after that; the shipped C# adapter has no partial-peer handling at all, and WebForms code-behind depends on controls declared in the designer file, so the tree-sitter adapter must cover it. A C oracle that scanned only `.c` files silently dropped every header-to-header include; headers are nodes. And the WebForms overrides file removed a real SCIP edge (`Default.aspx.cs → Default.aspx.designer.cs`) "to fit the heuristic", which is exactly the filter the Correctness rules forbid; it is recorded here as the cautionary case.
+- **System Layer and Co-activation Clustering** _(Retired 2026-09-27)_: on-demand Layer-3 markdown that grouped files by statistically significant co-activation. The vision's "a system is a folder" supersedes finding systems by clustering, and the owner found the output noisy. The method, as dated history: a degree-corrected configuration model as the background, edges weighted per symbol, a Poisson tail test with Benjamini-Hochberg correction, validated against the fixtures cluster as a positive control. Two findings outlive it. Barrel re-export hubs inflate node degree until the graph's architectural signal disappears, which is why the package-level barrel was deleted on 2026-01-17 while module-level barrels stayed. Git co-change was rejected as a signal on 2025-11-10 because users' local trees differ and the output would not be deterministic. The owner's principle stands regardless of method: "It shouldn't be possible for our software to spit out useless or misleading statistical analysis. Do it the right way by default."
+- **Headless Harness, Precision Report, Technical-debt Detector, Network Audit** _(Retired 2026-09-27)_: the headless harness replayed per-language fixtures through the generator and is covered by the Vitest integration project. `live-docs:report` compared the analyzer with a re-run of itself. `tech-debt` flagged files by size and age. `audit:network` and `safeFetch` guarded a network path the product no longer has; `SECURITY.md` now describes verification by inspection and by running the suites with no network stack.
+- **Vendored Benchmark Fixtures** _(Retired 2026-09-27)_: seven pinned clones (ky, libuv, Newtonsoft.Json, mux, OkHttp, Requests, log) kept only their expectation JSON in the repository and were cloned on every gate run. The in-repo fixture corpus stays; see [Fixture Corpus](benchmark-fixtures.mdmd.md). Two dynamic patterns from the vendored code are candidates for hand-verified fixtures later: Requests' module aliasing (`requests.packages`, `requests.compat`) and rust-lang/log's macro-generated `$crate::__private_api` edges; neither is visible to a static scanner.
 - **Copilot-era Steering and Planning Documents** _(Retired 2026-09-27)_: vendor-specific instruction files, daily-summary prompts, the capability-ID vision, the requirement, roadmap and backlog documents, and the falsifiability requirements were replaced by `AGENTS.md`, the rewritten vision, and the entries above. The chat archive was excluded from the Explorer bundle the same day.
 
 ## System References
@@ -113,7 +117,6 @@ The following decisions were explored and explicitly removed from scope during t
 - [Live Documentation Pipeline](live-documentation-pipeline.mdmd.md) — generator, lint, and edge aggregation architecture
 - [Polyglot Adapters](polyglot-adapters.mdmd.md) — language-specific symbol/dependency extraction
 - [Language Server Architecture](language-server-architecture.mdmd.md) — LSP server design
-- [Shared Contracts](live-documentation-shared-contracts.mdmd.md) — domain model types
 
 ### Implementation Traceability
 

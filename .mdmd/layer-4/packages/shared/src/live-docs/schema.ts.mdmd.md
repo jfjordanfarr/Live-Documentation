@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/schema.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-schema-ts
-- Generated At: 2026-09-27T08:09:16.612Z
+- Generated At: 2026-09-27T08:33:37.754Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Defines the normalized metadata/provenance schema every generated Live Doc must 
 - Hardened during the Stage‑0 refactor when docLoader, manifests, and co-activation analytics began relying on these types.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-11.SUMMARIZED.md#turn-08-begin-refactor--stage-0-extraction-lines-961-1100]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:16.612Z","inputHash":"2094a09dddfaaeb5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:33:37.754Z","inputHash":"336172eaa52d19c5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocLayer` {#symbol-livedoclayer}
@@ -60,38 +60,6 @@ Complete metadata block for a Live Documentation file.
 
 Encoded as YAML frontmatter in the `.mdmd.md` file and parsed
 by the graph builder, lint, and inspector CLIs.
-
-#### `LiveDocMetadataInput` {#symbol-livedocmetadatainput}
-- Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/schema.ts#L77)
-
-##### `LiveDocMetadataInput` — Summary
-Partial input type for {@link normalizeLiveDocMetadata}, requiring
-only `sourcePath` and `liveDocId` while defaulting everything else.
-
-#### `DEFAULT_LIVE_DOC_LAYER` {#symbol-default_live_doc_layer}
-- Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/schema.ts#L83)
-- Returns: [`LiveDocLayer`](#symbol-livedoclayer)
-
-##### `DEFAULT_LIVE_DOC_LAYER` — Summary
-Default documentation layer assigned when none is specified.
-
-#### `normalizeLiveDocMetadata` {#symbol-normalizelivedocmetadata}
-- Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/schema.ts#L92)
-- Returns: [`LiveDocMetadata`](#symbol-livedocmetadata)
-- Parameters: `input`: [`LiveDocMetadataInput`](#symbol-livedocmetadatainput)
-
-##### `normalizeLiveDocMetadata` — Summary
-Normalises a partial metadata input into a complete {@link LiveDocMetadata}
-object, applying defaults, trimming strings, and normalising paths.
-
-##### `normalizeLiveDocMetadata` — Parameters
-- `input`: Partial metadata with at least `sourcePath` and `liveDocId`.
-
-##### `normalizeLiveDocMetadata` — Returns
-Fully normalised metadata suitable for YAML frontmatter emission.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -110,7 +78,5 @@ Fully normalised metadata suitable for YAML frontmatter emission.
 #### Vitest Unit Tests
 - [generator.test.ts](../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
 - [generator.test.ts](./generator.test.ts.mdmd.md)
-- [schema.test.ts](./schema.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -16,12 +16,11 @@ function runStep(label, command, args, options = {}) {
   }
 }
 
-function runNpmScript(label, args, envOverrides = {}) {
+function runNpmScript(label, args) {
   const npmArgs = Array.isArray(args) ? args : [args];
   const npmExecPath = process.env.npm_execpath;
   const useNodeShim = Boolean(npmExecPath && npmExecPath.endsWith('.js'));
   const options = {
-    env: { ...process.env, ...envOverrides },
     shell: useNodeShim ? false : process.platform === 'win32'
   };
 
@@ -37,15 +36,10 @@ function runSafeCommitCheck() {
 
   try {
     runNpmScript('Verify (lint + build + unit + integration)', ['run', 'verify']);
-    runNpmScript('Live Docs regeneration', ['run', 'live-docs:generate']);
-    runNpmScript('Fixture workspace verification', ['run', 'fixtures:verify'], {
-      FIXTURES_VERIFY_QUIET: '1'
-    });
-    runNpmScript('Live Docs pipeline (lint + report)', ['run', 'livedocs', '--', '--skip-generate', '--report']);
+    runNpmScript('Live Docs pipeline (targets + generate + lint)', ['run', 'livedocs']);
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
-    runNpmScript('Technical debt detection', ['run', 'tech-debt', '--', '--stale-limit', '10']);
 
     if (flags.includeE2E) {
       runNpmScript('Explorer visualization build', ['run', 'live-docs:visualize']);

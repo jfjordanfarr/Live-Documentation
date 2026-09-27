@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-09-27T08:09:15.055Z
+- Generated At: 2026-09-27T08:25:00.685Z
 
 ## Authored
 ### Purpose
@@ -16,12 +16,12 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:15.055Z","inputHash":"c37595544bbb55e7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:25:00.685Z","inputHash":"d1f39d079c7489fa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L78)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L75)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -31,7 +31,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L118)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L115)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -54,15 +54,11 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 
 #### `__testUtils` {#symbol-__testutils}
 - Type: const
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L822)
+- Source: [source](../../../../../../../packages/server/src/features/live-docs/generator.ts#L815)
 
 ##### `__testUtils` — Summary
-Internal re-exports exposed solely for unit testing.
-
-Consumers: `renderPublicSymbolLines.test.ts`, `report-precision.ts`.
-These functions originate in `@live-documentation/shared/live-docs/core`;
-re-exporting them here lets tests import a single module for
-generator-adjacent assertions without coupling to shared internals.
+Internal re-export exposed solely for `renderPublicSymbolLines.test.ts`,
+which asserts on the generator's rendering through the module it exercises.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -85,14 +81,11 @@ generator-adjacent assertions without coupling to shared internals.
 - [`core.analyzeSourceFile`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceSymbolIndex`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)
 - [`core.cleanupEmptyParents`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
-- [`core.collectDependencies`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-collectdependencies)
-- [`core.collectExportedSymbols`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`core.computePublicSymbolHeadingInfo`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`core.directoryExists`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
 - [`core.discoverTargetFiles`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
 - [`core.formatRelativePathFromDoc`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-formatrelativepathfromdoc)
 - [`core.hasMeaningfulAuthoredContent`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`core.inferScriptKind`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-inferscriptkind)
 - [`core.renderDependencyLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderdependencylines)
 - [`core.renderPublicSymbolLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderpublicsymbollines)
 - [`core.renderReExportedAnchorLines`](../../../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderreexportedanchorlines)

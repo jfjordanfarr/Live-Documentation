@@ -111,7 +111,7 @@ Everything downstream — pins, connections, edge bundling, zoom, rendering — 
 | **Membrane Map (namespace)** | Logical — type system grouping  | "How does the developer mentally organize types?" |
 | **Force Graph**              | Topological — coupling strength | "What's the emergent shape?"                      |
 
-Namespace mode uses data already extracted by the C# heuristic system (`extractCSharpNamespace()` in `packages/shared/src/inference/heuristics/csharp.ts`). No new extraction logic is required.
+Namespace mode needs each C# file's declared namespace. No shipped adapter records that today (the regex adapter records `using` directives only); it arrives with the tree-sitter C# adapter.
 
 ### Focus-Aware Layout (Font-Size Invariance)
 

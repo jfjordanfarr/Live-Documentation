@@ -12,13 +12,10 @@ import {
   analyzeSourceFile,
   buildWorkspaceSymbolIndex,
   cleanupEmptyParents,
-  collectDependencies,
-  collectExportedSymbols,
   directoryExists,
   discoverTargetFiles,
   formatRelativePathFromDoc,
   hasMeaningfulAuthoredContent,
-  inferScriptKind,
   computePublicSymbolHeadingInfo,
   renderDependencyLines,
   renderReExportedAnchorLines,
@@ -812,18 +809,10 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
 }
 
 /**
- * Internal re-exports exposed solely for unit testing.
- *
- * Consumers: `renderPublicSymbolLines.test.ts`, `report-precision.ts`.
- * These functions originate in `@live-documentation/shared/live-docs/core`;
- * re-exporting them here lets tests import a single module for
- * generator-adjacent assertions without coupling to shared internals.
+ * Internal re-export exposed solely for `renderPublicSymbolLines.test.ts`,
+ * which asserts on the generator's rendering through the module it exercises.
  */
 export const __testUtils = {
-  collectExportedSymbols,
-  collectDependencies,
-  inferScriptKind,
-  resolveArchetype,
   renderPublicSymbolLines
 };
 

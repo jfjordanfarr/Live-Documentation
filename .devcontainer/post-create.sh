@@ -20,8 +20,6 @@ echo "=== Configuring git safe.directory ==="
 #   - There is no "untrusted other user" who could plant malicious hooks
 #   - The VS Code Dev Containers extension itself auto-adds safe.directory for
 #     the main workspace (see microsoft/vscode-remote-release#7628)
-#   - Our benchmark fixtures clone vendor repos at runtime, creating nested repos
-#     that also need safe.directory entries
 #
 # Using '*' acknowledges that devcontainer ownership semantics are fundamentally
 # different from multi-user systems. This aligns with the VS Code team's own fix.

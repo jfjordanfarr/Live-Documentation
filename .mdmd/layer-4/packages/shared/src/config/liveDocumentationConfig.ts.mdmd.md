@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2026-09-27T08:09:15.401Z
+- Generated At: 2026-09-27T08:33:36.887Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect, eviden
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:15.401Z","inputHash":"d059f17a4cabc102"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:33:36.887Z","inputHash":"d059f17a4cabc102"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -171,10 +171,7 @@ _No dependencies documented yet_
 #### Vitest Unit Tests
 - [generator.test.ts](../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](../../../server/src/features/live-docs/system/generator.test.ts.mdmd.md)
 - [liveDocumentationConfig.test.ts](./liveDocumentationConfig.test.ts.mdmd.md)
-- [coActivation.test.ts](../live-docs/analysis/coActivation.test.ts.mdmd.md)
 - [core.docstring.test.ts](../live-docs/core.docstring.test.ts.mdmd.md)
 - [generator.test.ts](../live-docs/generator.test.ts.mdmd.md)
-- [schema.test.ts](../live-docs/schema.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

@@ -68,17 +68,9 @@ scip-python --version
 rust-analyzer --version
 ```
 
-## Regenerating Benchmark Fixtures
+## The SCIP Indexers
 
-With all SCIP indexers available, you can regenerate expected.json files with compiler-backed ground truth:
-
-```bash
-# Regenerate all fixtures with SCIP oracles
-npm run fixtures:regenerate -- --write
-
-# Or regenerate a specific fixture
-npx tsx scripts/fixture-tools/regenerate-benchmarks.ts --fixture java-rosetta --write
-```
+The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. The regeneration tooling that drives them is being rebuilt; see the order of work in [the vision](../.mdmd/layer-1/vision.mdmd.md).
 
 ## Troubleshooting
 

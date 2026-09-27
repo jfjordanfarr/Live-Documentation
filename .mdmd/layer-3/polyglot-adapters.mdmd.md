@@ -49,11 +49,11 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 
 ### Strategy
 
-- Maintain benchmark parity with curated `expected.json` fixtures across all supported languages.
-- Consider compiler/interpreter-backed oracles for Python, Rust, and Go as a future enhancement when CI infrastructure supports it.
+- Measure every adapter against a compiler-backed oracle (SCIP indexes) that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md).
+- Replace the regex scanners with tree-sitter, C# first, as the vision's order of work states.
 - Extend docstring extraction to Java (Javadoc) and Rust (`///` comments) to improve Live Doc richness.
-- **C# nested public types**: The current C# adapter extracts nested classes (`public class Outer { public class Inner { } }`) as flat sibling symbols. The [Membrane Map](membrane-map.mdmd.md) requires hierarchical pins for these types. Enhancement: track brace depth during symbol extraction, maintain a stack of enclosing type names, and emit qualified names (`Outer.Inner`). Tracked as LD-1208.
-- **C# namespace mode**: The [Membrane Map](membrane-map.mdmd.md) supports an optional namespace-based hierarchy for C# (where namespaces frequently span directories). Namespace data is already extracted by the heuristic system (`extractCSharpNamespace()`). Tracked as LD-1207.
+- **C# nested public types**: The current C# adapter extracts nested classes (`public class Outer { public class Inner { } }`) as flat sibling symbols. The [Membrane Map](membrane-map.mdmd.md) requires hierarchical pins for these types. Enhancement: track brace depth during symbol extraction, maintain a stack of enclosing type names, and emit qualified names (`Outer.Inner`).
+- **C# namespace mode**: The [Membrane Map](membrane-map.mdmd.md) supports an optional namespace-based hierarchy for C# (where namespaces frequently span directories). No shipped adapter records a file's namespace yet; it arrives with the tree-sitter C# adapter.
 
 ## System References
 
@@ -78,6 +78,5 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 
 ## Evidence
 
-- Benchmark fixtures under `tests/integration/benchmarks/fixtures/{language}/` validate adapter precision/recall.
-- Dev Day 60 (2026-01-16) documented fixes for Ruby single-quote handling, Go test skipping, C function body scoping, Rust indented `use`, and Java same-package resolution.
-- `npm run test:benchmarks` runs the full polyglot accuracy suite.
+- The Rosetta parity suite (`tests/integration/live-docs/rosettaParity.test.ts`) generates the same program in eight languages and flags an adapter that disagrees with the others; the polyglot fixture suite checks the C#, Java and Python output in detail.
+- Fixes recorded on 2026-01-16: Ruby single-quote handling, Go test skipping, C function body scoping, Rust indented `use`, and Java same-package resolution.

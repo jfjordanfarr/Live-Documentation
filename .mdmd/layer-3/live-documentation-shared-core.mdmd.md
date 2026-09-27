@@ -13,7 +13,6 @@ Outline the shared utilities that interpret, render, and validate Live Documenta
 - Core modules parse Live Doc markdown into a typed AST used by generators, lint tooling, and analytics so every consumer shares the same interpretation of headings and generated blocks.
 - Markdown helpers render deterministic sections, manage provenance comments, and prevent authored content from being overwritten during regeneration.
 - Schema definitions underpin validation logic in both `live-docs:lint` and integration tests; they codify section ordering and field requirements per archetype.
-- Type declarations make it easy to construct synthetic mirrors during testing, supporting harness and benchmark scenarios without running the full generator.
 
 ### Strategy
 - Expand the schema module to cover future sections (Targets, Supporting Fixtures, Observed Evidence) so linting can differentiate required versus optional blocks by archetype.
@@ -25,7 +24,6 @@ Outline the shared utilities that interpret, render, and validate Live Documenta
 - [packages/shared/src/live-docs/markdown.ts](../layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md)
 - [packages/shared/src/live-docs/schema.ts](../layer-4/packages/shared/src/live-docs/schema.ts.mdmd.md)
 - [packages/shared/src/live-docs/parse.ts](../layer-4/packages/shared/src/live-docs/parse.ts.mdmd.md)
-- [packages/shared/src/live-docs/types.ts](../layer-4/packages/shared/src/live-docs/types.ts.mdmd.md)
 
 ## Evidence
 - Parser and schema unit suites (`core.test.ts`, `markdown.test.ts`) prevent regressions in heading detection and provenance handling.

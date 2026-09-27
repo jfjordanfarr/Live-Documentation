@@ -11,7 +11,6 @@ import {
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 
 import { generateLiveDocs } from "../../packages/server/src/features/live-docs/generator";
-import { generateSystemLiveDocs } from "../../packages/server/src/features/live-docs/system/generator";
 
 interface ParsedArgs {
   help: boolean;
@@ -25,9 +24,6 @@ interface ParsedArgs {
   configPath?: string;
   dryRun: boolean;
   changedOnly: boolean;
-  system: boolean;
-  systemOutput?: string;
-  systemClean: boolean;
 }
 
 type ChangeCounts = Record<"created" | "updated" | "unchanged" | "skipped", number>;
@@ -39,9 +35,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     globs: [],
     include: [],
     dryRun: false,
-    changedOnly: false,
-    system: false,
-    systemClean: false
+    changedOnly: false
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -105,23 +99,6 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
-      case "--system": {
-        parsed.system = true;
-        break;
-      }
-
-      case "--system-output": {
-        parsed.systemOutput = expectValue(argv, ++index, current);
-        parsed.system = true;
-        break;
-      }
-
-      case "--system-clean": {
-        parsed.systemClean = true;
-        parsed.system = true;
-        break;
-      }
-
       default: {
         if (current.startsWith("-")) {
           throw new Error(`Unknown option: ${current}`);
@@ -159,15 +136,11 @@ function usage(): string {
     `  --config <file>           Load configuration from JSON file.\n` +
     `  --dry-run                 Preview changes without writing files.\n` +
     `  --changed                 Limit regeneration to changed files (git status).\n` +
-  `  --system                  Materialise System Layer views to the default workspace output folder.\n` +
-  `  --system-output <dir>     Materialise System Layer views to the specified directory.\n` +
-  `  --system-clean            Remove the system output directory before generation (requires --system or --system-output).\n` +
     `  --version                 Print generator version.\n` +
     `  --help                    Display this help text.\n` +
     `\nExamples:\n` +
     `  npm run live-docs:generate\n` +
   `  npm run live-docs:generate -- --dry-run --changed\n` +
-  `  npm run live-docs:generate -- --system-output ./AI-Agent-Workspace/tmp/system-cli-output --system-clean\n` +
   `  npm run live-docs:generate -- --glob packages/**/*.ts --include tests/**/*.ts`;
 }
 
@@ -255,104 +228,24 @@ async function main(): Promise<void> {
   const createdLayer4Docs = layer4Result.files.filter((record) => record.change === "created");
   const deletedLayer4Docs = layer4Result.deletedFiles;
 
-  if (args.system) {
-    const defaultSystemOutput = path.join("AI-Agent-Workspace", "tmp", "system-cli-output");
-    const systemOutputCandidate = args.systemOutput ?? defaultSystemOutput;
-    const systemOutputDir = path.isAbsolute(systemOutputCandidate)
-      ? systemOutputCandidate
-      : path.resolve(workspaceRoot, systemOutputCandidate);
+  const MAX_LISTED = 10;
+  const verb = args.dryRun ? "Would create" : "Created";
 
-    const layer3Result = await generateSystemLiveDocs({
-      workspaceRoot,
-      config: normalizedConfig,
-      dryRun: args.dryRun,
-      outputDir: systemOutputDir,
-      cleanOutputDir: args.systemClean
-    });
+  if (createdLayer4Docs.length > 0) {
+    const listed = createdLayer4Docs
+      .slice(0, MAX_LISTED)
+      .map((record) => record.docPath ?? record.sourcePath);
+    const remainder = createdLayer4Docs.length - listed.length;
+    const suffix = remainder > 0 ? `, +${remainder} more` : "";
+    console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
+  }
 
-    const layer3Counts = layer3Result.files.reduce<ChangeCounts>(
-      (acc, record) => {
-        acc[record.change] += 1;
-        return acc;
-      },
-      { created: 0, updated: 0, unchanged: 0, skipped: 0 }
-    );
-
-    console.log(
-      `[live-docs] System views processed ${layer3Result.processed} plan(s)${dryRunSuffix}: ` +
-        `${layer3Counts.created} created, ${layer3Counts.updated} updated, ` +
-        `${layer3Counts.unchanged} unchanged, ${layer3Counts.skipped} skipped, ${layer3Result.deleted} deleted.`
-    );
-
-    const createdLayer3Docs = layer3Result.files.filter((record) => record.change === "created");
-    const deletedLayer3Docs = layer3Result.deletedFiles;
-
-    const MAX_LISTED = 10;
-    const verb = args.dryRun ? "Would create" : "Created";
-
-    if (createdLayer4Docs.length > 0) {
-      const listed = createdLayer4Docs
-        .slice(0, MAX_LISTED)
-        .map((record) => record.docPath ?? record.sourcePath);
-      const remainder = createdLayer4Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
-    }
-
-    if (createdLayer3Docs.length > 0) {
-      const listed = createdLayer3Docs
-        .slice(0, MAX_LISTED)
-        .map((record) => record.docPath);
-      const remainder = createdLayer3Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      console.log(
-        `[live-docs] ${verb} ${createdLayer3Docs.length} System view(s) at ${systemOutputDir}: ${listed.join(", ")}${suffix}`
-      );
-    }
-
-    if (deletedLayer4Docs.length > 0) {
-      const listed = deletedLayer4Docs.slice(0, MAX_LISTED);
-      const remainder = deletedLayer4Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
-      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
-    }
-
-    if (deletedLayer3Docs.length > 0) {
-      const listed = deletedLayer3Docs.slice(0, MAX_LISTED);
-      const remainder = deletedLayer3Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
-      console.log(
-        `[live-docs] ${deleteVerb} ${deletedLayer3Docs.length} System view(s) from ${systemOutputDir}: ${listed.join(", ")}${suffix}`
-      );
-    }
-
-    if (!args.dryRun && layer3Result.outputDir) {
-      console.log(`[live-docs] System views available under: ${layer3Result.outputDir}`);
-    }
-  } else {
-    const MAX_LISTED = 10;
-    const verb = args.dryRun ? "Would create" : "Created";
-
-    if (createdLayer4Docs.length > 0) {
-      const listed = createdLayer4Docs
-        .slice(0, MAX_LISTED)
-        .map((record) => record.docPath ?? record.sourcePath);
-      const remainder = createdLayer4Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      console.log(`[live-docs] ${verb} ${createdLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
-    }
-
-    if (deletedLayer4Docs.length > 0) {
-      const listed = deletedLayer4Docs.slice(0, MAX_LISTED);
-      const remainder = deletedLayer4Docs.length - listed.length;
-      const suffix = remainder > 0 ? `, +${remainder} more` : "";
-      const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
-      console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
-    }
-
-    console.log("[live-docs] System materialisation skipped. Use npm run live-docs:system for on-demand views.");
+  if (deletedLayer4Docs.length > 0) {
+    const listed = deletedLayer4Docs.slice(0, MAX_LISTED);
+    const remainder = deletedLayer4Docs.length - listed.length;
+    const suffix = remainder > 0 ? `, +${remainder} more` : "";
+    const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
+    console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
   }
 }
 

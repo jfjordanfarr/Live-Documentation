@@ -15,11 +15,10 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 
 ### Generation & Materialization
 
-| Command                      | Purpose                                  |
-| ---------------------------- | ---------------------------------------- |
-| `npm run live-docs:generate` | Regenerate Live Docs for tracked files   |
-| `npm run live-docs:system`   | Materialize System-layer views on demand |
-| `npm run live-docs:targets`  | Rebuild the target manifest              |
+| Command                      | Purpose                                |
+| ---------------------------- | -------------------------------------- |
+| `npm run live-docs:generate` | Regenerate Live Docs for tracked files |
+| `npm run live-docs:targets`  | Rebuild the target manifest            |
 
 #### `live-docs:generate`
 
@@ -35,9 +34,6 @@ npm run live-docs:generate
 # Regenerate only recently modified files
 npm run live-docs:generate -- --changed
 
-# Include System-layer materialization
-npm run live-docs:generate -- --system
-
 # Custom workspace and config
 npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 ```
@@ -47,26 +43,6 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 |------|-------------|
 | `--dry-run` | Preview without writing files |
 | `--changed` | Only process modified files |
-| `--system` | Also materialize System views |
-| `--system-output <dir>` | Custom System output directory |
-| `--system-clean` | Remove stale System files |
-| `--workspace <path>` | Target workspace root |
-| `--config <file>` | Path to config file |
-
-#### `live-docs:system`
-
-Materialize System-layer views without touching the tracked mirror.
-
-```bash
-npm run live-docs:system -- --output ./system-views --clean
-```
-
-**Options:**
-| Flag | Description |
-|------|-------------|
-| `--output <dir>` | Output directory (default: `AI-Agent-Workspace/tmp/system-cli-output`) |
-| `--clean` | Remove stale files before generating |
-| `--dry-run` | Preview without writing |
 | `--workspace <path>` | Target workspace root |
 | `--config <file>` | Path to config file |
 

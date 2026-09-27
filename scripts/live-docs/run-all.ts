@@ -9,7 +9,6 @@ interface OrchestratorOptions {
   skipTargets: boolean;
   skipGenerate: boolean;
   skipLint: boolean;
-  runReport: boolean;
   showHelp: boolean;
   partialRun: boolean;
   skipTargetsExplicit: boolean;
@@ -59,7 +58,6 @@ function parseArgs(rawArgs: string[]): OrchestratorOptions {
     skipTargets: false,
     skipGenerate: false,
     skipLint: false,
-    runReport: false,
     showHelp: false,
     partialRun: false,
     skipTargetsExplicit: false,
@@ -170,11 +168,6 @@ function parseArgs(rawArgs: string[]): OrchestratorOptions {
         indexRef.current += 1;
         continue;
       }
-      case "--report": {
-        options.runReport = true;
-        indexRef.current += 1;
-        continue;
-      }
       case "--force-targets": {
         options.forceTargets = true;
         options.skipTargets = false;
@@ -253,7 +246,7 @@ function appendDefaultConfigIfPresent(args: string[], workspaceRoot: string): st
   return [...args, "--config", defaultConfigPath];
 }
 
-function filterArgsForLintAndReport(args: string[]): string[] {
+function filterArgsForLint(args: string[]): string[] {
   const filtered: string[] = [];
 
   for (let index = 0; index < args.length; index += 1) {
@@ -293,7 +286,6 @@ function formatUsage(): string {
     `  --skip-targets    Skip manifest regeneration step.\n` +
     `  --skip-generate   Skip Live Doc regeneration step.\n` +
     `  --skip-lint       Skip lint step.\n` +
-    `  --report          Run live-docs:report after lint completes.\n` +
   `  --force-targets   Run manifest even when executing a partial regeneration.\n` +
     `  -h, --help        Show this help message.\n\n` +
   `Any additional options are forwarded to live-docs:generate (e.g. --dry-run, --changed).\n` +
@@ -338,7 +330,7 @@ async function main(): Promise<void> {
 
   const workspaceRoot = resolveWorkspaceRoot(options.generatorArgs);
   options.generatorArgs = appendDefaultConfigIfPresent(options.generatorArgs, workspaceRoot);
-  const lintAndReportArgs = filterArgsForLintAndReport(options.generatorArgs);
+  const lintArgs = filterArgsForLint(options.generatorArgs);
 
   if (options.showHelp) {
     console.log(formatUsage());
@@ -367,19 +359,10 @@ async function main(): Promise<void> {
     {
       label: "live-docs:lint",
       script: "scripts/live-docs/lint.ts",
-      args: lintAndReportArgs,
+      args: lintArgs,
       enabled: !options.skipLint
     }
   ];
-
-  if (options.runReport) {
-    stages.push({
-      label: "live-docs:report",
-      script: "scripts/live-docs/report-precision.ts",
-      args: lintAndReportArgs,
-      enabled: true
-    });
-  }
 
   for (const stage of stages) {
     try {

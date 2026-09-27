@@ -57,7 +57,6 @@ Supports FR-LD6 and REQ-G1 by keeping docstring extraction and drift diagnostics
 ### Outbound Interfaces
 - Markdown writes to `/.live-documentation/<baseLayer>/` guarded by atomic file swaps and provenance updates.
 - Graph projection APIs consumed by diagnostics publishers, CLI inspectors, and Copilot prompt builders (`packages/shared/src/live-docs/*`).
-- Telemetry hooks emitting regeneration latency and evidence coverage metrics to benchmark pipelines.
 - Drift reports and telemetry describing docstring/schema mismatches.
 - Future (wishlist) docstring update pipeline writing back into source files via language-specific adapters, gated behind feature flags and explicit confirmation.
 - Scratch artifact emitters targeting `AI-Agent-Workspace/tmp/**` (or caller-provided directories) when generating scaffolds or multi-language prototypes.
@@ -86,8 +85,7 @@ If docs → code write-back is pursued, calculates diffs between Live Docs and i
 If docs → code write-back is pursued, VS Code + CLI commands surface preview/apply flows and scaffolding hooks to interact with COMP-203.
 
 ## Evidence
-- Planned integration suites (`tests/integration/live-docs/generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`) cover regeneration determinism, evidence emission, and CLI parity.
-- Benchmark reports under `reports/benchmarks/live-docs/` record regeneration latency and analyzer precision/recall for generated sections.
+- Integration suites (`tests/integration/live-docs/generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`) cover regeneration determinism, evidence emission, and CLI behaviour.
 - Safe-to-commit pipeline will fail when Live Doc lint, SlopCop link audits, or provenance checks detect regressions.
 - Polyglot fixtures (`tests/integration/benchmarks/fixtures/java/basic`) validate docstring extraction/sanitisation, and drift-oriented suites can be added to exercise high-risk docstring shapes without enabling write-back.
 

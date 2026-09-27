@@ -25,8 +25,6 @@ const COMMANDS: Record<string, string> = {
   lint: "lint.ts",
   inspect: "inspect.ts",
   visualize: "visualize-static.ts",
-  system: "system.ts",
-  report: "report-precision.ts",
   orphans: "find-orphans.ts"
 };
 
@@ -42,8 +40,6 @@ Commands:
   lint        Validate structural markers and link hygiene
   inspect     Trace dependency paths between artifacts
   visualize   Build a static Explorer bundle
-  system      Materialise System Layer views
-  report      Report precision metrics
   orphans     Find orphaned Live Docs
 
 Options:

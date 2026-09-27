@@ -1,164 +1,24 @@
 # Security Policy
 
-Live Documentation is designed with security-conscious environments in mind, including those requiring PCI-DSS compliance or air-gapped operation. This document describes our security posture and provides auditable evidence for each claim.
+Live Documentation is built for environments that need offline, auditable tooling, including PCI-DSS scopes and air-gapped networks. This document states the posture and how to check it yourself.
 
-## Network Isolation Guarantee
+## No network access
 
-**Live Documentation never makes outbound requests to the open internet.**
+The generator, the CLI and the static-site builder open no sockets. They read source files, write markdown, and write a folder of static files. The Explorer page, once served, fetches only its own bundled data files from the same origin it was loaded from; it contacts no other host.
 
-All network operations are restricted to localhost addresses only. This is enforced through multiple layers:
+There is no LLM integration, no telemetry, and no update check.
 
-### Layer 1: Static Analysis Audit
+### How to verify
 
-We maintain a static analysis script that scans the entire codebase for network-related patterns:
-
-```bash
-npm run audit:network
-```
-
-This script identifies all usages of `fetch()`, `http.request()`, `createServer()`, and similar APIs, classifying each as:
-- **Safe**: Protected by `safeFetch()` wrapper (localhost-only enforced)
-- **Allowed**: Non-production code (tests, fixtures, documentation)
-- **Requires Review**: Unaccounted usage that fails the audit
-
-### Layer 2: Runtime Enforcement (`safeFetch`)
-
-All network requests from our code pass through [`safeFetch()`](packages/shared/src/tooling/safeFetch.ts), a wrapper that:
-
-1. Validates the URL hostname before making any request
-2. Throws `NetworkPolicyViolation` for any non-localhost address
-3. Permits only: `localhost`, `127.0.0.1`, `::1`, and `*.localhost` subdomains
-
-```typescript
-// This succeeds:
-await safeFetch("http://localhost:11434/api/chat");
-
-// This throws NetworkPolicyViolation:
-await safeFetch("https://api.openai.com/v1/chat");
-```
-
-### Layer 3: CI Network Verification
-
-Our CI pipeline runs the static network audit on every commit:
-
-```yaml
-- name: Run network usage audit
-  run: npm run audit:network
-```
-
-This ensures any new code introducing network calls is immediately flagged. The audit must pass for CI to succeed.
-
-Additionally, unit tests run with all proxy environment variables unset, verifying that tests don't depend on any external network configuration.
-
-## LLM Independence
-
-**Live Documentation does not include any LLM integration.** The tool is fully deterministic—symbol extraction, dependency resolution, and document generation all run locally using static analysis, with no language-model calls of any kind.
-
-Users who want AI-assisted analysis bring their own AI assistants (GitHub Copilot, Cursor, etc.) and consume Live Docs as structured context. This design eliminates trust boundaries, cost concerns, and hallucination risks from the tool itself.
-
-The `safeFetch()` runtime enforcement and static network audit described above remain in place to guarantee that **no outbound requests occur**, period—not even to localhost LLM endpoints.
-
-## Dependency Supply Chain
-
-### Minimized Attack Surface
-
-We maintain a minimal dependency footprint:
-
-| Package | Purpose | Justification |
-|---------|---------|---------------|
-| `better-sqlite3` | Local SQLite database | No network, native module |
-| `glob` | File pattern matching | No network |
-| `ignore` | Gitignore parsing | No network |
-| `minimatch` | Path pattern matching | No network |
-| `typescript` | TypeScript compiler API | No network |
-| `vscode-languageserver` | VS Code extension protocol | IPC only, no network |
-
-### No Post-Install Scripts
-
-Our production dependencies have no `postinstall` scripts that could execute arbitrary code during installation. We verify this with:
+Search the product code for network APIs. The only hits should be the Explorer client loading its own bundle:
 
 ```bash
-npm ls --json | jq '.dependencies | to_entries | .[] | select(.value.scripts.postinstall)'
+grep -rn "fetch(\|http\.request\|https\.request\|net\.connect\|WebSocket\|createServer" packages/*/src scripts --include=*.ts | grep -v "\.test\."
 ```
 
-### Dependabot Monitoring
-
-GitHub Dependabot monitors our dependencies for known vulnerabilities. We address security advisories promptly.
-
-## Reporting Security Issues
-
-If you discover a security vulnerability, please report it responsibly:
-
-1. **Preferred**: Use GitHub's [private security advisory](https://github.com/jfjordanfarr/Live-Documentation/security/advisories/new) feature.
-2. **Alternative**: Email jfjordanfarr@gmail.com with subject line `[SECURITY] Live Documentation`.
-3. **Do not** open a public GitHub issue for security vulnerabilities.
-
-Please include: description, reproduction steps, and potential impact.
-
-We aim to respond within 48 hours and provide a fix within 7 days for critical issues.
-
-## Audit Trail
-
-All development decisions are captured in our [Chat History](AI-Agent-Workspace/ChatHistory/README.md), providing a complete audit trail of:
-- Why each dependency was added
-- Security considerations for each feature
-- Decision rationale for architecture choices
-
-This linear development history is searchable and auditable.
-
-## Verification Limitations
-
-Our multi-layer approach provides strong evidence but not absolute proof. This section documents what we can and cannot prove, and what was attempted.
-
-### What We Attempted: True Network Isolation in CI
-
-The gold standard for proving "software never needs internet" is to run tests in a Docker container with `--network none`. We attempted to add this to our CI workflow:
-
-```yaml
-network-isolation-test:
-  runs-on: ubuntu-latest
-  container:
-    image: node:22-slim
-    options: --network none  # No network stack at all
-  steps:
-    - uses: actions/checkout@v4
-    - uses: actions/download-artifact@v4
-    - run: npm run test:unit
-```
-
-If tests passed in this environment, it would be **definitive proof** that our software doesn't require internet access.
-
-### Why It Doesn't Work
-
-GitHub Actions itself requires network to function:
-
-- `actions/checkout@v4` needs to clone the repository from GitHub
-- `actions/download-artifact@v4` needs to download from GitHub's artifact storage
-
-With `--network none`, the container starts with no network stack, so these actions fail before tests even run.
-
-### Alternatives Considered
-
-| Approach | Why Rejected |
-|----------|-------------|
-| Self-hosted runner with Docker-in-Docker | Requires external infrastructure, complex to maintain |
-| Two-stage job with volume mounting | Complex Docker orchestration within GitHub Actions |
-| iptables firewall rules | Requires root permissions, may interfere with GitHub Actions telemetry |
-
-### What Our Current Approach Proves
-
-| Layer | What It Proves | Limitation |
-|-------|---------------|------------|
-| Static audit | Code doesn't contain unaccounted network calls | Doesn't prove runtime behavior of dependencies |
-| `safeFetch()` wrapper | Our fetch calls are localhost-only | Doesn't cover internal calls from third-party dependencies |
-| CI audit | New code is checked on every commit | Audit could theoretically have false negatives |
-
-### Manual Verification for High-Security Environments
-
-For PCI-DSS compliance or air-gapped environments requiring definitive proof, run this locally:
+Run the test suites with no network stack at all. If this passes, nothing the tests exercise needs the internet:
 
 ```bash
-# Build a test image
 docker build -t ld-network-test -f - . <<EOF
 FROM node:22-slim
 WORKDIR /app
@@ -166,42 +26,42 @@ COPY . .
 RUN npm ci --ignore-scripts
 EOF
 
-# Run tests with no network
 docker run --rm --network none ld-network-test npm run test:unit
+docker run --rm --network none ld-network-test npm run test:integration
 ```
 
-If this passes, the software genuinely does not require internet access at runtime.
+CI cannot run that recipe, because GitHub Actions needs the network to check out the repository before any step runs. The recipe is offered for release acceptance in high-security environments instead.
 
-### What This Means for Security Teams
+## Dependencies
 
-Our automated CI provides **strong circumstantial evidence** of localhost-only network access. For environments requiring **absolute proof**, we recommend:
+Production dependencies are kept to a minimum. Everything else is a development dependency.
 
-1. Running the manual Docker verification above as part of your release acceptance
-2. Network monitoring/auditing in your deployment environment
-3. Reviewing the static audit output (`npm run audit:network`) for your specific compliance needs
+| Package                       | Used by             | Purpose                                            |
+| ----------------------------- | ------------------- | -------------------------------------------------- |
+| `typescript`                  | shared, server      | TypeScript and JavaScript analysis via the compiler API |
+| `@vscode/tree-sitter-wasm`    | shared              | Tree-sitter grammars for the other languages       |
+| `glob`, `ignore`, `minimatch` | shared, scripts, cli | File discovery and path matching                  |
+| `esbuild`                     | scripts             | Bundles the Explorer client into the static site   |
+| `lz-string`, `jszip`          | scripts             | Compressed URL state and downloadable exports in the Explorer |
+| `vscode-languageserver`, `vscode-languageserver-textdocument` | server | Left over from the retired language server; scheduled for removal |
 
-## Verification Commands
-
-Run these commands to verify our security claims:
+No production dependency runs a `postinstall` script. Check with:
 
 ```bash
-# Network usage audit (Layer 1)
-npm run audit:network
-
-# Run unit tests (would fail if network required)
-npm run test:unit
-
-# Dependency audit
+npm ls --json --omit=dev | node -e "const t=JSON.parse(require('fs').readFileSync(0,'utf8'));const walk=(d)=>{for(const [n,v] of Object.entries(d.dependencies??{})){if(v.scripts?.postinstall)console.log(n);walk(v);}};walk(t);console.log('done')"
 npm audit
-
-# Check for postinstall scripts
-npm ls --json 2>/dev/null | node -e "
-  const deps = JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8'));
-  console.log('Checking for postinstall scripts...');
-  // Check recursively
-"
 ```
+
+Dependabot monitors the lockfile for known vulnerabilities.
+
+## Reporting a vulnerability
+
+1. Preferred: open a [private security advisory](https://github.com/jfjordanfarr/Live-Documentation/security/advisories/new) on GitHub.
+2. Alternative: email jfjordanfarr@gmail.com with the subject `[SECURITY] Live Documentation`.
+3. Do not open a public issue for a vulnerability.
+
+Include a description, reproduction steps, and the impact you expect. Critical issues are acknowledged within 48 hours and fixed within 7 days where possible.
 
 ---
 
-*Last updated: December 2025*
+_Last updated 2026-09-27._

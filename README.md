@@ -176,7 +176,7 @@ For contributors to this repository:
 
 - **Offline-first**: No telemetry. No external HTTP calls required for core functionality.
 - **No lifecycle scripts**: `postinstall`/`preinstall` hooks are explicitly avoided.
-- **Localhost-only by default**: All network calls are constrained to localhost. See [SECURITY.md](SECURITY.md) for details.
+- **No network access**: the tool makes no network requests at all, not even to localhost. See [SECURITY.md](SECURITY.md) for how to verify that.
 
 ---
 

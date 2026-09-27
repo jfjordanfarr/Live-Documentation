@@ -66,6 +66,6 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 - Ground truth is never filtered. Whatever produces benchmark expectations, its output is not trimmed to fit the analyzer; adapter blocklists may remove only true framework or builtin names; a filter that can only raise false negatives is a bug.
 - Adapters are the product, oracles are the ground truth, and nothing grades itself. A "precision" that compares an analyzer to a re-run of the same analyzer is not a measurement.
 
-## Status (2026-09-26)
+## Status (2026-09-27)
 
-A cleanup pass is planned; the order of work is in the vision doc. Until it lands, do not invest in: `packages/extension` and the language server in `packages/server/src/main.ts` (to be removed); `packages/shared/src/inference/*` and `testing/fixtureOracles` (a benchmark-only inference path, to be replaced by tree-sitter adapters); `live-docs:report` (it compares the analyzer to itself); `tech-debt` and `audit:network`. The Circuit Board and Local Map views are being folded into one file-scale view.
+The cleanup pass is under way; the order of work is in the vision doc. Retired so far: the VS Code Electron test harness, the AST accuracy benchmark and its reports, the benchmark-only inference path and fixture oracles, the system layer and co-activation clustering, the headless harness, `live-docs:report`, `tech-debt` and `audit:network`. Still to go: `packages/extension` and the language server in `packages/server/src/main.ts`. Do not invest in either. The Circuit Board and Local Map views are being folded into one file-scale view. The compiler-backed oracle and the tree-sitter C# adapter come next.
