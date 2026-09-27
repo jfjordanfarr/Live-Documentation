@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Live Doc ID: LD-implementation-packages-generator-src-generator-ts
-- Generated At: 2026-09-27T21:47:29.583Z
+- Generated At: 2026-09-27T22:11:38.176Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:47:29.583Z","inputHash":"510e11e93933925c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:38.176Z","inputHash":"9033d893cf2222c3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
@@ -50,14 +50,6 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 
 ##### `generateLiveDocs` — Parameters
 - `options`: Generation configuration including workspace root, config overrides, and logger.
-
-#### `__testUtils` {#symbol-__testutils}
-- Type: const
-- Source: [source](../../../../../packages/generator/src/generator.ts#L493)
-
-##### `__testUtils` — Summary
-Internal re-export exposed solely for `renderPublicSymbolLines.test.ts`,
-which asserts on the generator's rendering through the module it exercises.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -74,20 +66,20 @@ which asserts on the generator's rendering through the module it exercises.
 - [`core.analyzeSourceFile`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceSymbolIndex`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)
 - [`core.cleanupEmptyParents`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
+- [`core.composeDependencies`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
+- [`core.composeReExports`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
+- [`core.composeSymbolBlocks`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
 - [`core.computePublicSymbolHeadingInfo`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`core.directoryExists`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
 - [`core.discoverTargetFiles`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
 - [`core.hasMeaningfulAuthoredContent`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`core.renderDependencyLines`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderdependencylines)
-- [`core.renderPublicSymbolLines`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderpublicsymbollines)
-- [`core.renderReExportedAnchorLines`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-renderreexportedanchorlines)
 - [`core.resolveArchetype`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
-- [`markdown.LiveDocRenderSection`](../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-livedocrendersection)
-- [`markdown.composeLiveDocId`](../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-composelivedocid)
-- [`markdown.extractAuthoredBlock`](../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-extractauthoredblock)
-- [`markdown.renderLiveDocMarkdown`](../../shared/src/live-docs/markdown.ts.mdmd.md#symbol-renderlivedocmarkdown)
+- [`document.LiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDocSyntaxError`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
+- [`document.authoredBlockOf`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.parseLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`document.renderLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`schema.LiveDocGeneratorProvenance`](../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocgeneratorprovenance) (type-only)
-- [`schema.LiveDocMetadata`](../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocmetadata) (type-only)
 - [`schema.LiveDocProvenance`](../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)

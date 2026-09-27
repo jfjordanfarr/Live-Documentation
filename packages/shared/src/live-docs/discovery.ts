@@ -15,6 +15,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
+import { computePublicSymbolHeadingInfo } from "./compose";
 import type {
   PublicSymbolEntry,
   ResolvedSymbolLocation,
@@ -22,7 +23,6 @@ import type {
 } from "./coreTypes";
 import { createProximityAwareComparator } from "./coreUtils";
 import { detectChangedFiles } from "./gitUtils";
-import { computePublicSymbolHeadingInfo } from "./rendering";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";

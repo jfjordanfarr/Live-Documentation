@@ -1,7 +1,6 @@
 import * as path from "path";
 
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
-import type { ParsedTypeReference } from "@live-documentation/shared/live-docs/parse";
 
 import type {
     ExplorerGraphPayload,
@@ -13,7 +12,8 @@ import type {
 import {
     buildLiveDocGraph,
     type LiveDocGraph,
-    type LiveDocGraphNode
+    type LiveDocGraphNode,
+    type ParsedTypeReference
 } from "../../graph/liveDocGraph";
 
 type InheritanceLinkKind = "extends" | "implements";

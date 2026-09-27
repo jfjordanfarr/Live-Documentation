@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/graph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-graph-ts
-- Generated At: 2026-03-11T01:35:34.503Z
+- Generated At: 2026-09-27T22:11:39.810Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Builds the `ExplorerGraphPayload` from the Live Doc graph — the canonical JSON
 - `normalizeDocPath` is the single path-resolution function shared between graph construction and static output; keeping it colocated prevents divergence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:34.503Z","inputHash":"b7bad9b8055f7f8f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:39.810Z","inputHash":"5617470e27d5a71a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}
@@ -48,8 +48,8 @@ Resolves a doc-relative path to an absolute, normalised file-system path.
 - [`types.ExplorerTypeReference`](./types.ts.mdmd.md#symbol-explorertypereference) (type-only)
 - [`LiveDocGraph`](../../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph)
 - [`liveDocGraph.LiveDocGraphNode`](../../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraphnode)
+- [`liveDocGraph.ParsedTypeReference`](../../graph/liveDocGraph.ts.mdmd.md#symbol-parsedtypereference)
 - [`liveDocGraph.buildLiveDocGraph`](../../graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraph)
 - [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`parse.ParsedTypeReference`](../../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parsedtypereference) (type-only)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->

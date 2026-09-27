@@ -1,9 +1,12 @@
 /**
- * Markdown rendering for Live Documentation.
+ * From analysis to document: the resolution step of generation.
  *
  * @remarks
- * This module generates the markdown content for Live Doc sections,
- * including Public Symbols, Dependencies, and Re-exported Anchors.
+ * A source file's analysis names symbols and dependencies. Composing turns
+ * them into what a Live Doc records: headings with unique anchors, links to
+ * the docs that declare the types a symbol uses, links to the docs of the
+ * files it depends on, and the documentation sections. The result is a
+ * {@link LiveDoc} fragment that `renderLiveDoc` writes out.
  *
  * @module
  */
@@ -22,15 +25,14 @@ import type {
   WorkspaceSymbolIndex
 } from "./coreTypes";
 import {
-  formatSourceLink,
   formatRelativePathFromDoc,
   createSymbolSlug,
   toModuleLabel,
   formatInlineCode,
-  formatDependencyQualifier,
   displayDependencyKey,
   createProximityAwareComparator
 } from "./coreUtils";
+import type { Dependency, DocSection, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
 
 // ============================================================================
 // Public Symbol Heading Computation
@@ -172,112 +174,59 @@ function ensureUniqueSymbolSlugs(headings: PublicSymbolHeadingInfo[]): void {
 }
 
 // ============================================================================
-// Public Symbol Rendering
+// Public Symbols
 // ============================================================================
 
 /**
- * Renders the markdown lines that populate the `Public Symbols` section for a Live Doc.
+ * Composes the `Public Symbols` section of a Live Doc.
  *
- * @remarks
- * The output includes symbol metadata (type, location, qualifiers) followed by
- * deterministic `#####` subsections per documented field (summary, remarks,
- * parameters, returns, etc.). This structure keeps docstring bridges stable and
- * individually addressable across languages.
- *
- * @param args.analysis - Analyzer output describing exported symbols and dependencies.
- * @param args.docDir - Absolute directory path of the Live Doc being written.
- * @param args.sourceAbsolute - Absolute path to the source file backing this Live Doc.
- * @param args.workspaceRoot - Workspace root, used to resolve relative links.
- * @param args.sourceRelativePath - Workspace-relative source path.
- * @param args.headings - Pre-computed heading info for symbols.
- * @param args.symbolIndex - Optional workspace-wide symbol index for resolving type references.
- * @param args.liveDocsRootAbsolute - Absolute path to the Live Docs root.
- *
- * @returns An array of markdown lines ready to insert beneath the `Public Symbols` heading.
- *
- * @see renderDependencyLines
+ * @param args.headings - The symbols with their display names and anchors, from {@link computePublicSymbolHeadingInfo}.
+ * @param args.docDir - Absolute directory of the Live Doc being written; links are relative to it.
+ * @param args.sourceAbsolute - Absolute path of the source file, for the `Source:` links.
+ * @param args.sourceRelativePath - Workspace-relative source path, so a type declared in this file links within the doc.
+ * @param args.symbolIndex - The workspace symbol index that resolves a type name to the doc that declares it.
+ * @param args.liveDocsRootAbsolute - Absolute path of the Live Docs root.
  */
-export function renderPublicSymbolLines(args: {
-  analysis: SourceAnalysisResult;
+export function composeSymbolBlocks(args: {
+  headings: PublicSymbolHeadingInfo[];
   docDir: string;
   sourceAbsolute: string;
-  workspaceRoot: string;
   sourceRelativePath: string;
-  headings: PublicSymbolHeadingInfo[];
-  /** Optional workspace-wide symbol index for resolving type references to Live Doc links. */
   symbolIndex?: WorkspaceSymbolIndex;
-  /** Absolute path to the Live Docs root (e.g., "/workspace/.live-documentation/source"). */
   liveDocsRootAbsolute?: string;
-}): string[] {
-  const lines: string[] = [];
-
-  for (const info of args.headings) {
+}): SymbolBlock[] {
+  return args.headings.map((info) => {
     const symbol = info.symbol;
-    const anchorSuffix = info.slug ? ` {#${info.slug}}` : "";
-    lines.push(`#### \`${info.displayName}\`${anchorSuffix}`);
-
-    const detailLines: string[] = [];
-    const displayKind = symbol.kind ? symbol.kind : "symbol";
-
-    const typeSuffixParts: string[] = [];
+    const flags: string[] = [];
     if (symbol.isDefault) {
-      typeSuffixParts.push("default");
+      flags.push("default");
     }
     if (symbol.isTypeOnly) {
-      typeSuffixParts.push("type-only");
+      flags.push("type-only");
     }
-    const typeSuffix = typeSuffixParts.length > 0 ? ` (${typeSuffixParts.join(", ")})` : "";
-    detailLines.push(`- Type: ${displayKind}${typeSuffix}`);
-
+    const block: SymbolBlock = {
+      name: info.displayName,
+      slug: info.slug || undefined,
+      kind: symbol.kind ? symbol.kind : "symbol",
+      flags,
+      references: composeReferences(symbol.typeReferences, args),
+      sections: composeDocSections(symbol)
+    };
     if (symbol.location) {
-      const location = formatSourceLink({
-        docDir: args.docDir,
-        sourceAbsolute: args.sourceAbsolute,
+      block.source = {
+        path: formatRelativePathFromDoc(args.docDir, args.sourceAbsolute),
         line: symbol.location.line
-      });
-      detailLines.push(`- Source: [source](${location})`);
+      };
     }
-
-    // Render type references if present
-    const typeRefLines = renderTypeReferences(
-      symbol.typeReferences,
-      args.symbolIndex,
-      args.sourceRelativePath,
-      args.docDir,
-      args.liveDocsRootAbsolute
-    );
-    if (typeRefLines.length > 0) {
-      detailLines.push(...typeRefLines);
-    }
-
-    if (detailLines.length > 0) {
-      lines.push(...detailLines);
-    }
-
-    const documentationLines = renderSymbolDocumentationSections(symbol, info.displayName);
-    if (documentationLines.length > 0) {
-      lines.push("", ...documentationLines);
-    }
-
-    lines.push("");
-  }
-
-  while (lines.length > 0 && lines[lines.length - 1] === "") {
-    lines.pop();
-  }
-
-  return lines;
+    return block;
+  });
 }
 
 // ============================================================================
-// Type Reference Rendering
+// Type References
 // ============================================================================
 
-/**
- * Result of resolving a type name to its Live Doc location.
- */
 interface ResolvedTypeLocation {
-  /** The resolved symbol location. */
   location: ResolvedSymbolLocation;
   /** True if the type is defined in the same file (intra-file reference). */
   isSelfReference: boolean;
@@ -287,20 +236,9 @@ interface ResolvedTypeLocation {
  * Resolves a type name to its Live Doc location using the workspace symbol index.
  *
  * @remarks
- * When multiple files export the same symbol (e.g., an origin file and a barrel
- * that re-exports it), this function prefers the **origin** file where the symbol
- * is actually defined. This produces more accurate documentation links.
- *
- * The resolution strategy:
- * 1. Filter out self-references (types in the current file)
- * 2. Prefer non-barrel files over barrel files (index.ts, mod.ts, etc.)
- * 3. Among files of the same barrel-ness, prefer deeper paths (more specific)
- *
- * @param typeName - The type name to resolve (e.g., "Widget", "Foo.Bar").
- * @param index - The workspace-wide symbol index.
- * @param currentSourcePath - The source path of the file being rendered.
- *
- * @returns The resolved location with self-reference flag, or undefined if not found.
+ * When multiple files export the same symbol (an origin file and a barrel that
+ * re-exports it), the origin file wins, then the file closest to the one being
+ * rendered. A type declared in the file itself links within the doc.
  */
 function resolveTypeToLiveDoc(
   typeName: string,
@@ -312,18 +250,14 @@ function resolveTypeToLiveDoc(
     return undefined;
   }
 
-  // Separate self-references from external references
   const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
   const selfRefs = locations.filter((loc) => loc.sourcePath === currentSourcePath);
 
-  // Prefer external definitions, sorted to prefer origin files over barrels
-  // and files closer in the directory tree to the current source
   if (external.length > 0) {
     const sorted = external.slice().sort(createProximityAwareComparator(currentSourcePath));
     return { location: sorted[0], isSelfReference: false };
   }
 
-  // Fall back to self-reference (intra-file link)
   if (selfRefs.length > 0) {
     return { location: selfRefs[0], isSelfReference: true };
   }
@@ -331,179 +265,110 @@ function resolveTypeToLiveDoc(
   return undefined;
 }
 
-/**
- * Renders type references as markdown bullet points with optional Live Doc links.
- *
- * @remarks
- * Groups type references by role (returns, parameters, extends, implements)
- * and formats them as readable bullet points. When a symbol index is provided,
- * type names that resolve to workspace symbols are rendered as markdown links
- * to their Live Doc definitions.
- *
- * @param typeReferences - Array of type references extracted from the symbol.
- * @param symbolIndex - Optional workspace-wide symbol index for resolving type links.
- * @param currentSourcePath - Source path of the current file (to avoid self-links).
- * @param docDir - Directory of the current Live Doc (for relative path calculation).
- * @param liveDocsRootAbsolute - Absolute path to Live Docs root.
- * @returns Array of markdown lines representing the type references.
- */
-function renderTypeReferences(
+function composeReferences(
   typeReferences: TypeReference[] | undefined,
-  symbolIndex?: WorkspaceSymbolIndex,
-  currentSourcePath?: string,
-  docDir?: string,
-  liveDocsRootAbsolute?: string
-): string[] {
+  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string }
+): ReferenceLine[] {
   if (!typeReferences || typeReferences.length === 0) {
     return [];
   }
 
-  const lines: string[] = [];
-
-  // Create a type formatter with the resolution context
-  const formatType = (ref: TypeReference): string => {
-    return formatTypeReference(ref, symbolIndex, currentSourcePath, docDir, liveDocsRootAbsolute);
+  const compose = (refs: TypeReference[]): TypeRef[] => {
+    const types: TypeRef[] = [];
+    const seen = new Set<string>();
+    for (const ref of refs) {
+      const type = composeTypeRef(ref, args);
+      const key = JSON.stringify(type);
+      if (!seen.has(key)) {
+        seen.add(key);
+        types.push(type);
+      }
+    }
+    return types;
   };
 
-  // Group by role
-  const returnTypes = typeReferences.filter((ref) => ref.role === "return");
-  const paramTypes = typeReferences.filter((ref) => ref.role === "parameter");
-  const extendsTypes = typeReferences.filter((ref) => ref.role === "extends");
-  const implementsTypes = typeReferences.filter((ref) => ref.role === "implements");
-  const constraintTypes = typeReferences.filter((ref) => ref.role === "generic-constraint");
+  const lines: ReferenceLine[] = [];
+  const byRole = (role: TypeReference["role"]) => typeReferences.filter((ref) => ref.role === role);
 
-  // Render return types
+  const returnTypes = byRole("return");
   if (returnTypes.length > 0) {
-    const formatted = formatTypeListWithLinks(returnTypes, formatType);
-    lines.push(`- Returns: ${formatted}`);
+    lines.push({ role: "Returns", types: compose(returnTypes) });
   }
 
-  // Render parameter types (grouped by parameter name)
   const paramsByName = new Map<string, TypeReference[]>();
-  for (const param of paramTypes) {
+  for (const param of byRole("parameter")) {
     const name = param.parameterName ?? "_unnamed_";
     const existing = paramsByName.get(name) ?? [];
     existing.push(param);
     paramsByName.set(name, existing);
   }
-
   if (paramsByName.size > 0) {
-    const paramEntries = Array.from(paramsByName.entries())
-      .map(([name, refs]) => `\`${name}\`: ${formatTypeListWithLinks(refs, formatType)}`)
-      .join("; ");
-    lines.push(`- Parameters: ${paramEntries}`);
+    lines.push({
+      role: "Parameters",
+      parameters: Array.from(paramsByName.entries()).map(([name, refs]) => ({ name, types: compose(refs) }))
+    });
   }
 
-  // Render extends
+  const extendsTypes = byRole("extends");
   if (extendsTypes.length > 0) {
-    const formatted = formatTypeListWithLinks(extendsTypes, formatType);
-    lines.push(`- Extends: ${formatted}`);
+    lines.push({ role: "Extends", types: compose(extendsTypes) });
   }
 
-  // Render implements
+  const implementsTypes = byRole("implements");
   if (implementsTypes.length > 0) {
-    const formatted = formatTypeListWithLinks(implementsTypes, formatType);
-    lines.push(`- Implements: ${formatted}`);
+    lines.push({ role: "Implements", types: compose(implementsTypes) });
   }
 
-  // Render generic constraints
+  const constraintTypes = byRole("generic-constraint");
   if (constraintTypes.length > 0) {
-    const formatted = formatTypeListWithLinks(constraintTypes, formatType);
-    lines.push(`- Constraints: ${formatted}`);
+    lines.push({ role: "Constraints", types: compose(constraintTypes) });
   }
 
   return lines;
 }
 
-/**
- * Formats a single type reference, optionally as a link if resolvable.
- *
- * @param ref - The type reference to format.
- * @param symbolIndex - Optional workspace symbol index.
- * @param currentSourcePath - Current source path to avoid self-links.
- * @param docDir - Current Live Doc directory for relative path calculation.
- * @param liveDocsRootAbsolute - Absolute path to Live Docs root.
- * @returns Formatted type string (code span or link).
- */
-function formatTypeReference(
+function composeTypeRef(
   ref: TypeReference,
-  symbolIndex?: WorkspaceSymbolIndex,
-  currentSourcePath?: string,
-  docDir?: string,
-  liveDocsRootAbsolute?: string
-): string {
-  // Try to resolve the type to a Live Doc
-  let resolved: ResolvedTypeLocation | undefined;
-  if (symbolIndex && currentSourcePath) {
-    resolved = resolveTypeToLiveDoc(ref.name, symbolIndex, currentSourcePath);
-  }
+  args: { docDir: string; sourceRelativePath: string; symbolIndex?: WorkspaceSymbolIndex; liveDocsRootAbsolute?: string }
+): TypeRef {
+  const type: TypeRef = { name: ref.name };
 
-  let formatted: string;
+  const resolved = args.symbolIndex
+    ? resolveTypeToLiveDoc(ref.name, args.symbolIndex, args.sourceRelativePath)
+    : undefined;
 
-  if (resolved && docDir && liveDocsRootAbsolute) {
+  if (resolved && args.liveDocsRootAbsolute) {
     const { location, isSelfReference } = resolved;
     const fragment = location.anchor ? `#${location.anchor}` : "";
-
     if (isSelfReference) {
-      // Intra-file reference: use fragment-only link (same document)
-      formatted = `[\`${ref.name}\`](${fragment})`;
+      type.link = fragment;
     } else {
-      // External reference: compute relative path to target Live Doc
-      const targetDocAbsolute = path.resolve(
-        liveDocsRootAbsolute,
-        "..",  // Go up from liveDocsRoot (e.g. .live-documentation/source) to .live-documentation
-        "..",  // Go up to workspace root
-        location.liveDocPath
-      );
-      const relativePath = formatRelativePathFromDoc(docDir, targetDocAbsolute);
-      formatted = `[\`${ref.name}\`](${relativePath}${fragment})`;
+      // liveDocPath is workspace-relative; the Live Docs root sits two levels below the workspace root.
+      const targetDocAbsolute = path.resolve(args.liveDocsRootAbsolute, "..", "..", location.liveDocPath);
+      type.link = `${formatRelativePathFromDoc(args.docDir, targetDocAbsolute)}${fragment}`;
     }
-  } else {
-    // No resolution — render as plain code span
-    formatted = `\`${ref.name}\``;
   }
 
-  // Add array indicator
   if (ref.isArrayElement) {
-    formatted = `${formatted}[]`;
+    type.array = true;
   }
-
-  // Add Promise indicator
   if (ref.isPromiseResolution) {
-    formatted = `Promise<${formatted}>`;
+    type.promise = true;
   }
-
-  return formatted;
-}
-
-/**
- * Formats a list of type references with optional links.
- *
- * @param refs - Array of type references to format.
- * @param formatFn - Function to format each individual type reference.
- * @returns A comma-separated string of formatted type names.
- */
-function formatTypeListWithLinks(
-  refs: TypeReference[],
-  formatFn: (ref: TypeReference) => string
-): string {
-  const formatted = refs.map(formatFn);
-  // Deduplicate and join
-  const unique = [...new Set(formatted)];
-  return unique.join(", ");
+  return type;
 }
 
 // ============================================================================
-// Symbol Documentation Rendering
+// Symbol Documentation
 // ============================================================================
 
-function renderSymbolDocumentationSections(symbol: PublicSymbolEntry, displayName: string): string[] {
+function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
   const documentation = symbol.documentation;
   if (!documentation) {
     return [];
   }
 
-  const sections: Array<{ title: string; body: string[] }> = [];
+  const sections: DocSection[] = [];
   const pushSection = (title: string, body: string[] | undefined): void => {
     if (!body || body.length === 0) {
       return;
@@ -515,37 +380,27 @@ function renderSymbolDocumentationSections(symbol: PublicSymbolEntry, displayNam
   pushSection("Remarks", normalizeDocText(documentation.remarks));
 
   if (documentation.parameters && documentation.parameters.length > 0) {
-    const parameterLines = documentation.parameters.map((param) => {
-      const description = param.description?.trim()
-        ? param.description.trim()
-        : "_Not documented_";
+    pushSection("Parameters", documentation.parameters.map((param) => {
+      const description = param.description?.trim() ? param.description.trim() : "_Not documented_";
       return `- \`${param.name}\`: ${description}`;
-    });
-    pushSection("Parameters", parameterLines);
+    }));
   }
 
   if (documentation.typeParameters && documentation.typeParameters.length > 0) {
-    const typeParameterLines = documentation.typeParameters.map((param) => {
-      const description = param.description?.trim()
-        ? param.description.trim()
-        : "_Not documented_";
+    pushSection("Type Parameters", documentation.typeParameters.map((param) => {
+      const description = param.description?.trim() ? param.description.trim() : "_Not documented_";
       return `- \`${param.name}\`: ${description}`;
-    });
-    pushSection("Type Parameters", typeParameterLines);
+    }));
   }
 
   pushSection("Returns", normalizeDocText(documentation.returns));
   pushSection("Value", normalizeDocText(documentation.value));
 
   if (documentation.exceptions && documentation.exceptions.length > 0) {
-    const exceptionLines = documentation.exceptions.map((exception) => {
+    pushSection("Exceptions", documentation.exceptions.map((exception) => {
       const head = exception.type ? `\`${exception.type}\`` : "_Unknown_";
-      if (exception.description?.trim()) {
-        return `- ${head}: ${exception.description.trim()}`;
-      }
-      return `- ${head}`;
-    });
-    pushSection("Exceptions", exceptionLines);
+      return exception.description?.trim() ? `- ${head}: ${exception.description.trim()}` : `- ${head}`;
+    }));
   }
 
   if (documentation.examples && documentation.examples.length > 0) {
@@ -559,20 +414,17 @@ function renderSymbolDocumentationSections(symbol: PublicSymbolEntry, displayNam
         exampleLines.push(...descriptionLines);
       }
       if (example.code) {
-          if (exampleLines.length > 0 && exampleLines[exampleLines.length - 1] !== "") {
-            exampleLines.push("");
-          }
-        const fence = example.language ? `\`\`\`${example.language}` : "```";
-        exampleLines.push(fence);
-        exampleLines.push(example.code);
-        exampleLines.push("```");
+        if (exampleLines.length > 0 && exampleLines[exampleLines.length - 1] !== "") {
+          exampleLines.push("");
+        }
+        exampleLines.push(example.language ? `\`\`\`${example.language}` : "```", example.code, "```");
       }
     });
     pushSection("Examples", exampleLines);
   }
 
   if (documentation.links && documentation.links.length > 0) {
-    const linkLines = documentation.links.map((link) => {
+    pushSection("Links", documentation.links.map((link) => {
       switch (link.kind) {
         case "href": {
           const label = link.text?.trim() || link.target;
@@ -587,38 +439,18 @@ function renderSymbolDocumentationSections(symbol: PublicSymbolEntry, displayNam
           return `- ${link.target}${suffix}`;
         }
       }
-    });
-    pushSection("Links", linkLines);
+    }));
   }
 
   if (documentation.rawFragments && documentation.rawFragments.length > 0) {
-    const rawLines = documentation.rawFragments.map((fragment) => `- ${fragment}`);
-    pushSection("Additional Documentation", rawLines);
+    pushSection("Additional Documentation", documentation.rawFragments.map((fragment) => `- ${fragment}`));
   }
 
   if (documentation.unsupportedTags && documentation.unsupportedTags.length > 0) {
-    const unsupportedLines = documentation.unsupportedTags.map((tag) => `- \`${tag}\``);
-    pushSection("Unsupported Doc Tags", unsupportedLines);
+    pushSection("Unsupported Doc Tags", documentation.unsupportedTags.map((tag) => `- \`${tag}\``));
   }
 
-  if (sections.length === 0) {
-    return [];
-  }
-
-  const headingPrefix = `##### \`${displayName}\` — `;
-  const lines: string[] = [];
-
-  for (const section of sections) {
-    lines.push(`${headingPrefix}${section.title}`);
-    lines.push(...section.body);
-    lines.push("");
-  }
-
-  while (lines.length > 0 && lines[lines.length - 1] === "") {
-    lines.pop();
-  }
-
-  return lines;
+  return sections;
 }
 
 function normalizeDocText(value?: string): string[] | undefined {
@@ -645,39 +477,33 @@ function normalizeDocText(value?: string): string[] | undefined {
 }
 
 // ============================================================================
-// Dependency Rendering
+// Dependencies
 // ============================================================================
 
 /**
- * Renders the markdown bullet list for a Live Doc's `Dependencies` section.
+ * Composes the `Dependencies` section of a Live Doc.
  *
  * @remarks
- * Module specifiers that resolve inside the workspace are linked directly to
- * their Live Doc counterparts, while external dependencies are emitted as inline
- * code with optional symbol suffixes.
+ * A dependency that resolves inside the workspace becomes one line per imported
+ * symbol, each linking to the symbol's anchor in the target doc, or one line
+ * for the whole module when no symbol is named. An external dependency keeps
+ * its specifier and the symbols taken from it.
  *
  * @param args.analysis - Analyzer output describing imported and re-exported modules.
  * @param args.docDir - Directory containing the Live Doc being written.
- * @param args.workspaceRoot - Workspace root used to compute relative links.
  * @param args.liveDocsRootAbsolute - Absolute path to the Live Docs mirror root.
  * @param args.docExtension - File extension for Live Docs (e.g., ".mdmd.md").
  * @param args.headings - Symbol heading info for anchor resolution within the current file.
- * @param args.symbolIndex - Optional workspace-wide symbol index for cross-file anchor resolution.
- *
- * @see renderPublicSymbolLines
- *
- * @returns Markdown lines suitable for the `Dependencies` section, or an empty array when none exist.
+ * @param args.symbolIndex - The workspace symbol index, for anchors in other files.
  */
-export function renderDependencyLines(args: {
+export function composeDependencies(args: {
   analysis: SourceAnalysisResult;
   docDir: string;
-  workspaceRoot: string;
   liveDocsRootAbsolute: string;
   docExtension: string;
   headings: PublicSymbolHeadingInfo[];
-  /** Optional workspace-wide symbol index for resolving imported symbols to correct anchors. */
   symbolIndex?: WorkspaceSymbolIndex;
-}): string[] {
+}): Dependency[] {
   if (args.analysis.dependencies.length === 0) {
     return [];
   }
@@ -709,12 +535,18 @@ export function renderDependencyLines(args: {
   }
 
   const keys = Array.from(grouped.keys()).sort();
-  const lines: string[] = [];
+  const dependencies: Dependency[] = [];
 
   for (const key of keys) {
     const bucket = grouped.get(key)!;
     const dependency = bucket.entry;
-    const qualifierSuffix = formatDependencyQualifier(dependency);
+    const qualifiers: string[] = [];
+    if (dependency.kind === "export") {
+      qualifiers.push("re-export");
+    }
+    if (dependency.isTypeOnly) {
+      qualifiers.push("type-only");
+    }
 
     if (dependency.resolvedPath) {
       const moduleLabel = toModuleLabel(dependency.resolvedPath);
@@ -726,39 +558,40 @@ export function renderDependencyLines(args: {
       const symbols = Array.from(bucket.symbols).sort();
 
       if (symbols.length === 0) {
-        lines.push(`- [${formatInlineCode(moduleLabel)}](${docRelative})${qualifierSuffix}`);
+        dependencies.push({ label: inlineLabel(moduleLabel), link: docRelative, qualifiers });
         continue;
       }
 
       for (const symbolName of symbols) {
         const anchorName = bucket.targets[symbolName] ?? symbolName;
-        // Try to resolve slug from workspace-wide index first (cross-file), then fall back to local headings
-        const workspaceSlug = resolveSymbolSlugFromIndex(
-          anchorName,
-          dependency.resolvedPath,
-          args.symbolIndex
-        );
+        const workspaceSlug = resolveSymbolSlugFromIndex(anchorName, dependency.resolvedPath, args.symbolIndex);
         const slug =
           workspaceSlug ?? resolveSymbolSlug(anchorName, slugIndex) ?? createSymbolSlug(anchorName);
         const fragment = slug ? `#${slug}` : "";
-        // Avoid redundancy like "Reader.Reader" when symbol equals module name (common in Java)
+        // Avoid redundancy like "Reader.Reader" when the symbol is named like its module (common in Java)
         const label =
           symbolName.toLowerCase() === moduleLabel.toLowerCase()
             ? symbolName
             : `${moduleLabel}.${symbolName}`;
-        lines.push(`- [${formatInlineCode(label)}](${docRelative}${fragment})${qualifierSuffix}`);
+        dependencies.push({ label: inlineLabel(label), link: `${docRelative}${fragment}`, qualifiers });
       }
       continue;
     }
 
-    const externalSymbols = Array.from(bucket.symbols)
-      .sort()
-      .map((name) => formatInlineCode(name));
-    const symbolSuffix = externalSymbols.length ? ` - ${externalSymbols.join(", ")}` : "";
-    lines.push(`- ${formatInlineCode(dependency.specifier)}${symbolSuffix}${qualifierSuffix}`);
+    const externalSymbols = Array.from(bucket.symbols).sort().map(inlineLabel);
+    const external: Dependency = { label: inlineLabel(dependency.specifier), qualifiers };
+    if (externalSymbols.length > 0) {
+      external.symbols = externalSymbols;
+    }
+    dependencies.push(external);
   }
 
-  return lines;
+  return dependencies;
+}
+
+/** The text inside an inline-code span: backticks cannot appear in it. */
+function inlineLabel(value: string): string {
+  return formatInlineCode(value).slice(1, -1);
 }
 
 function buildSymbolSlugIndex(headings: PublicSymbolHeadingInfo[]): Map<string, string> {
@@ -817,18 +650,9 @@ function resolveSymbolSlug(alias: string | undefined, index: Map<string, string>
 }
 
 /**
- * Resolves a symbol slug from the workspace-wide symbol index.
- *
- * @remarks
- * This function looks up the correct anchor slug for an imported symbol
- * by finding it in the workspace symbol index, filtered by source path.
- * This handles cases where symbols are disambiguated (e.g., `Analyzer`
- * becomes `symbol-analyzer-class` when the file also has a constructor).
- *
- * @param symbolName - The symbol name to look up.
- * @param targetSourcePath - The workspace-relative source path where the symbol is defined.
- * @param index - The workspace-wide symbol index.
- * @returns The resolved anchor slug, or undefined if not found.
+ * Resolves a symbol's anchor from the workspace-wide symbol index, filtered to
+ * the file that declares it, so a disambiguated heading (`symbol-analyzer-class`)
+ * is linked by its real slug.
  */
 function resolveSymbolSlugFromIndex(
   symbolName: string,
@@ -839,84 +663,48 @@ function resolveSymbolSlugFromIndex(
     return undefined;
   }
 
-  // Normalize path separators for comparison
   const normalizedTarget = targetSourcePath.replace(/\\/gu, "/");
-
-  // Look up all locations for this symbol name
   const locations = index.get(symbolName) ?? index.get(symbolName.toLowerCase());
   if (!locations || locations.length === 0) {
     return undefined;
   }
 
-  // Find the location matching our target source path
-  const matchingLocation = locations.find((loc) => {
-    const normalizedSource = loc.sourcePath.replace(/\\/gu, "/");
-    return normalizedSource === normalizedTarget;
-  });
-
+  const matchingLocation = locations.find((loc) => loc.sourcePath.replace(/\\/gu, "/") === normalizedTarget);
   return matchingLocation?.anchor;
 }
 
 // ============================================================================
-// Re-Exported Anchor Rendering
+// Re-Exported Symbol Anchors
 // ============================================================================
 
 /**
- * Renders the markdown for the Re-Exported Symbol Anchors section.
- *
- * @param args.reExports - Array of re-exported symbol info
- * @param args.docDir - Directory containing the Live Doc being written
- * @param args.liveDocsRootAbsolute - Absolute path to the Live Docs mirror root
- * @param args.docExtension - File extension for Live Docs
- *
- * @returns Markdown lines for re-exported anchors, or empty array if none
+ * Composes the `Re-Exported Symbol Anchors` section: one anchor per symbol a
+ * barrel re-exports, linking to the module it comes from.
  */
-export function renderReExportedAnchorLines(args: {
+export function composeReExports(args: {
   reExports: ReExportedSymbolInfo[];
   docDir: string;
   liveDocsRootAbsolute: string;
   docExtension: string;
-}): string[] {
-  if (args.reExports.length === 0) {
-    return [];
-  }
-
+}): ReExport[] {
   const sorted = [...args.reExports].sort((a, b) => a.name.localeCompare(b.name));
-  const lines: string[] = [];
 
-  for (const entry of sorted) {
+  return sorted.map((entry) => {
     const slugValue = createSymbolSlug(entry.name);
-    const anchorSuffix = slugValue ? ` {#${slugValue}}` : "";
-    lines.push(`#### \`${entry.name}\`${anchorSuffix}`);
-
-    const qualifierParts: string[] = [];
+    const flags: string[] = [];
     if (entry.isTypeOnly) {
-      qualifierParts.push("type-only");
+      flags.push("type-only");
     }
-
+    const reExport: ReExport = { name: entry.name, slug: slugValue, flags };
     if (entry.sourceModulePath) {
       const moduleDocAbsolute = path.resolve(
         args.liveDocsRootAbsolute,
         `${entry.sourceModulePath}${args.docExtension}`
       );
       const relative = formatRelativePathFromDoc(args.docDir, moduleDocAbsolute);
-      const moduleLabel = toModuleLabel(entry.sourceModulePath);
       const fragment = slugValue ? `#${slugValue}` : "";
-      const qualifierSuffix = qualifierParts.length ? ` (${qualifierParts.join(", ")})` : "";
-      lines.push(
-        `- Re-exported from [${formatInlineCode(moduleLabel)}](${relative}${fragment})${qualifierSuffix}`
-      );
-    } else {
-      const qualifierSuffix = qualifierParts.length ? ` (${qualifierParts.join(", ")})` : "";
-      lines.push(`- Re-exported from external module${qualifierSuffix}`);
+      reExport.from = { label: inlineLabel(toModuleLabel(entry.sourceModulePath)), link: `${relative}${fragment}` };
     }
-
-    lines.push("");
-  }
-
-  while (lines.length > 0 && lines[lines.length - 1] === "") {
-    lines.pop();
-  }
-
-  return lines;
+    return reExport;
+  });
 }

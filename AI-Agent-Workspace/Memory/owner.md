@@ -24,6 +24,7 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 - **The old chat record** stays "until modernization effort complete". Mine it for the spirit of their intent; when signals conflict, the newer one wins. Before deleting a file, read the record of why it was written.
 - **Names.** Requirement-ID schemes bother them: "It's just relatively inuman/beurocratic and leaves me worried that it creates subtle semantic biases toward mediocrity." Plain words.
 - **No grilling needed.** They know Matt Pocock's "Grill Me" technique (question the user until consensus) and decided it was unnecessary here: "typical steering being the way user preference nudges can be applied if anything falls off course." (2026-09-27)
+- **Their understanding of the system must not run away from them** (2026-09-27). They read the prepared diffs and raise questions, will misread some, and welcome correction: "being correct and understanding the system is the aim." So every change is explained at the level of the whole system as well as its files, and what was deliberate is said plainly. "I will attempt to be more trusting of your judgment, but will also probably need additional help interpreting and understanding the work."
 - **They are learning the current models' habits as they go.** "I am not yet fully familiar with the quirks of the current round of frontier models." (2026-09-27)
 
 ## Formatting and visual taste

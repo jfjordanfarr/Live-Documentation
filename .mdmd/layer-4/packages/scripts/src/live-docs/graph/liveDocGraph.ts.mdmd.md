@@ -5,24 +5,46 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2026-02-23T21:32:12.783Z
+- Generated At: 2026-09-27T22:11:39.967Z
 
 ## Authored
 ### Purpose
-Builds an in-memory graph of Live Documentation by parsing all `.mdmd.md` files in the workspace. Powers the Explorer visualization and the `live-docs inspect` CLI.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
+Builds an in-memory graph of Live Documentation by reading every doc through the grammar. Powers the Explorer visualization, the `live-docs:inspect` CLI and the lint connectivity check.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
 
 ### Notes
 - Created 2025-11-21 during the `packages/scripts` package scaffold.
 - Returns a `LiveDocGraph` with `nodes`, `inbound` adjacency map, and `docToCode` lookup for resolving dependencies.
 - The `rawDependencies` field preserves structured `ParsedDependency` objects to enable symbol-level connection rendering.
+- Since 2026-09-27 the docs are read with `parseLiveDoc`; a doc the grammar refuses stops the build with its path and line. The node shape (`rawDependencies`, `symbolDocumentation`, `publicSymbols`) is derived from the model and kept as the Explorer and `inspect` expect it until they read the derived index.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:12.783Z","inputHash":"9292ce3f3866681b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:39.967Z","inputHash":"0b2771e016f29cf8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `ParsedTypeReference` {#symbol-parsedtypereference}
+- Type: interface
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L23)
+
+##### `ParsedTypeReference` — Summary
+A type reference of a public symbol, as the graph's consumers read it.
+
+#### `ParsedSymbolDocumentationEntry` {#symbol-parsedsymboldocumentationentry}
+- Type: interface
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L39)
+
+##### `ParsedSymbolDocumentationEntry` — Summary
+Documentation of a public symbol, as the graph's consumers read it.
+
+#### `ParsedDependency` {#symbol-parseddependency}
+- Type: interface
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L47)
+
+##### `ParsedDependency` — Summary
+A single dependency edge as the graph's consumers read it.
+
 #### `LiveDocGraphNode` {#symbol-livedocgraphnode}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L25)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L67)
 
 ##### `LiveDocGraphNode` — Summary
 A single node in the Live Doc dependency graph, representing one tracked
@@ -34,14 +56,13 @@ extracted from the corresponding Live Doc file.
 
 #### `LiveDocGraph` {#symbol-livedocgraph}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L46)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L87)
 
 ##### `LiveDocGraph` — Summary
 The complete Live Documentation dependency graph.
 
 Built by {@link buildLiveDocGraph}, this structure powers the Explorer
-visualizations (Circuit Board, Force Graph, Local Map), the `inspect`
-pathfinder CLI, and the lint disconnected-node check.
+visualizations, the `inspect` pathfinder CLI, and the lint disconnected-node check.
 
 - `nodes` — forward lookup by source path.
 - `inbound` — reverse index: for a given target, which sources depend on it.
@@ -49,7 +70,7 @@ pathfinder CLI, and the lint disconnected-node check.
 
 #### `BuildLiveDocGraphOptions` {#symbol-buildlivedocgraphoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L59)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L100)
 
 ##### `BuildLiveDocGraphOptions` — Summary
 Options accepted by {@link buildLiveDocGraph}.
@@ -61,16 +82,14 @@ Options accepted by {@link buildLiveDocGraph}.
 
 #### `buildLiveDocGraph` {#symbol-buildlivedocgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L85)
+- Source: [source](../../../../../../../packages/scripts/src/live-docs/graph/liveDocGraph.ts#L121)
 - Parameters: `options`: [`BuildLiveDocGraphOptions`](../../index.ts.mdmd.md#symbol-buildlivedocgraphoptions)
 
 ##### `buildLiveDocGraph` — Summary
-Scans all staged Live Doc markdown files, parses their `Dependencies` and
-`Public Symbols` sections, and assembles a complete dependency graph.
+Reads every Live Doc under the configured root and assembles the dependency graph.
 
-The resulting {@link LiveDocGraph} is consumed by the Explorer server/static
-builder, the `inspect` CLI pathfinder, and the lint pipeline's disconnected-
-node check.
+A doc that the grammar refuses stops the build with its path and line, since
+a doc no one may hand-edit can only be malformed by a generator bug.
 
 ##### `buildLiveDocGraph` — Parameters
 - `options`: Workspace root and optional config overrides.
@@ -89,7 +108,10 @@ and doc-to-code path mapping.
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
 - [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`parse.ParsedDependency`](../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parseddependency)
-- [`parse.ParsedSymbolDocumentationEntry`](../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parsedsymboldocumentationentry)
-- [`parse.parseLiveDocMarkdown`](../../../../shared/src/live-docs/parse.ts.mdmd.md#symbol-parselivedocmarkdown)
+- [`document.LiveDoc`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDocSyntaxError`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
+- [`document.SymbolBlock`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-symbolblock)
+- [`document.TypeRef`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-typeref)
+- [`document.linkTarget`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-linktarget-function)
+- [`document.parseLiveDoc`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 <!-- LIVE-DOC:END Dependencies -->

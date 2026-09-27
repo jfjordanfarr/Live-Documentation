@@ -5,8 +5,9 @@ import { describe, expect, it } from "vitest";
 import {
   collectExportedSymbols,
   computePublicSymbolHeadingInfo,
-  renderPublicSymbolLines
+  composeSymbolBlocks
 } from "./core";
+import { renderSymbolBlocks } from "./document";
 import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "../config/liveDocumentationConfig";
 
 
@@ -122,17 +123,7 @@ export async function orchestrate<T>(options: { workspaceRoot: string; includePa
 
     const headings = computePublicSymbolHeadingInfo(symbols);
 
-    const rendered = renderPublicSymbolLines({
-      analysis: {
-        symbols,
-        dependencies: []
-      },
-      docDir,
-      sourceAbsolute,
-      workspaceRoot,
-      sourceRelativePath,
-      headings
-    });
+    const rendered = renderSymbolBlocks(composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath }));
 
     const summaryIndex = rendered.indexOf("##### `orchestrate` — Summary");
     expect(summaryIndex).toBeGreaterThan(-1);

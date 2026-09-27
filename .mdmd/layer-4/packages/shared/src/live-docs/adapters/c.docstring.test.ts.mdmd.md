@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/c.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-c-docstring-test-ts
-- Generated At: 2026-09-27T21:43:40.430Z
+- Generated At: 2026-09-27T22:11:40.284Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summa
 - Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.430Z","inputHash":"7d55865ddb969704"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.284Z","inputHash":"c772adf5f69b361c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,7 +27,8 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
+- [`core.composeSymbolBlocks`](../core.ts.mdmd.md#symbol-composesymbolblocks)
 - [`core.computePublicSymbolHeadingInfo`](../core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
-- [`core.renderPublicSymbolLines`](../core.ts.mdmd.md#symbol-renderpublicsymbollines)
+- [`document.renderSymbolBlocks`](../document.ts.mdmd.md#symbol-rendersymbolblocks)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -12,6 +12,7 @@ import {
   type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
+import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc } from "@live-documentation/shared/live-docs/document";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
@@ -207,24 +208,13 @@ async function main(): Promise<void> {
 }
 
 function validateStructure(file: string, content: string, issues: LintIssue[]): void {
-  const requiredHeadings = ["## Metadata", "## Authored", "## Generated"];
-  for (const heading of requiredHeadings) {
-    if (!content.includes(heading)) {
-      issues.push({
-        file,
-        message: `missing required heading: ${heading}`
-      });
+  try {
+    parseLiveDoc(content);
+  } catch (error) {
+    if (!(error instanceof LiveDocSyntaxError)) {
+      throw error;
     }
-  }
-
-  const requiredSections = ["Public Symbols", "Dependencies"];
-  for (const section of requiredSections) {
-    if (!hasSection(content, section)) {
-      issues.push({
-        file,
-        message: `missing generated section markers for ${section}`
-      });
-    }
+    issues.push({ file, message: error.message });
   }
 }
 
@@ -233,10 +223,7 @@ function validateAuthoredSections(
   content: string,
   warnings: LintWarning[]
 ): void {
-  const block = extractAuthoredBlock(content);
-  if (!block) {
-    return;
-  }
+  const block = authoredBlockOf(content);
 
   const missingPieces: string[] = [];
 
@@ -363,32 +350,6 @@ async function validateConnectivity(
     file: "(graph)",
     message: `${islands.length} disconnected node(s) detected (no dependencies and no dependents):\n    - ${groupedIslands.join("\n    - ")}${suffix}`
   });
-}
-
-function hasSection(content: string, section: string): boolean {
-  const begin = `<!-- LIVE-DOC:BEGIN ${section} -->`;
-  const end = `<!-- LIVE-DOC:END ${section} -->`;
-  return content.includes(begin) && content.includes(end);
-}
-
-function extractAuthoredBlock(content: string): string | undefined {
-  const headingRegex = /^##\s+Authored\s*$/m;
-  const headingMatch = headingRegex.exec(content);
-  if (!headingMatch || headingMatch.index === undefined) {
-    return undefined;
-  }
-
-  const afterHeadingIndex = content.indexOf("\n", headingMatch.index + headingMatch[0].length);
-  if (afterHeadingIndex === -1) {
-    return undefined;
-  }
-
-  const startIndex = afterHeadingIndex + 1;
-  const remainder = content.slice(startIndex);
-  const nextHeadingMatch = /\r?\n##\s+/m.exec(remainder);
-  const endIndex = nextHeadingMatch ? startIndex + nextHeadingMatch.index : content.length;
-
-  return content.slice(startIndex, endIndex).trim();
 }
 
 function extractSubsection(block: string, heading: string): string | undefined {

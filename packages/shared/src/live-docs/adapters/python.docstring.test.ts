@@ -3,7 +3,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { computePublicSymbolHeadingInfo, renderPublicSymbolLines } from "../core";
+import { computePublicSymbolHeadingInfo, composeSymbolBlocks } from "../core";
+import { renderSymbolBlocks } from "../document";
 import { pythonAdapter } from "./python";
 
 describe("pythonAdapter docstring bridging", () => {
@@ -66,14 +67,7 @@ def compute(value: int) -> int:
 
     const headings = computePublicSymbolHeadingInfo(analysis!.symbols);
 
-    const lines = renderPublicSymbolLines({
-      analysis: analysis!,
-      docDir,
-      sourceAbsolute: filePath,
-      workspaceRoot,
-      sourceRelativePath: path.relative(workspaceRoot, filePath),
-      headings
-    });
+    const lines = renderSymbolBlocks(composeSymbolBlocks({ headings, docDir, sourceAbsolute: filePath, sourceRelativePath: path.relative(workspaceRoot, filePath) }));
 
     expect(lines).toContain("##### `compute` — Parameters");
     expect(lines).toContain("- `value`: Input value. (type: int)");

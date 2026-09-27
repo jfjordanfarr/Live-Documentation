@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Live Doc ID: LD-implementation-scripts-oracle-compare-ts
-- Generated At: 2026-09-27T21:43:41.988Z
+- Generated At: 2026-09-27T22:11:41.341Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.988Z","inputHash":"d4fd5531dd3ba694"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:41.341Z","inputHash":"b816385a7ead1fba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}
@@ -28,7 +28,7 @@ What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L178)
+- Source: [source](../../../../scripts/oracle/compare.ts#L177)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
@@ -43,7 +43,8 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`parse.parseLiveDocMarkdown`](../../packages/shared/src/live-docs/parse.ts.mdmd.md#symbol-parselivedocmarkdown)
+- [`document.linkTarget`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-linktarget-function)
+- [`document.parseLiveDoc`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

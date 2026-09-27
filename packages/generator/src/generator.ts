@@ -15,23 +15,23 @@ import {
   discoverTargetFiles,
   hasMeaningfulAuthoredContent,
   computePublicSymbolHeadingInfo,
-  renderDependencyLines,
-  renderReExportedAnchorLines,
-  renderPublicSymbolLines,
+  composeDependencies,
+  composeReExports,
+  composeSymbolBlocks,
   resolveArchetype,
   type SourceAnalysisResult,
   type WorkspaceFileIndex,
   type WorkspaceSymbolIndex
 } from "@live-documentation/shared/live-docs/core";
 import {
-  composeLiveDocId,
-  extractAuthoredBlock,
-  renderLiveDocMarkdown,
-  type LiveDocRenderSection
-} from "@live-documentation/shared/live-docs/markdown";
+  LiveDocSyntaxError,
+  authoredBlockOf,
+  parseLiveDoc,
+  renderLiveDoc,
+  type LiveDoc
+} from "@live-documentation/shared/live-docs/document";
 import type {
   LiveDocGeneratorProvenance,
-  LiveDocMetadata,
   LiveDocProvenance
 } from "@live-documentation/shared/live-docs/schema";
 import {
@@ -183,14 +183,6 @@ export async function generateLiveDocs(
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
     const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig);
     const liveDocId = composeLiveDocId(archetype, normalizedSourcePath);
-    const title = normalizedSourcePath;
-
-    const metadataBase: LiveDocMetadata = {
-      layer: 4,
-      archetype,
-      sourcePath: normalizedSourcePath,
-      liveDocId
-    };
 
     const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex);
 
@@ -202,12 +194,11 @@ export async function generateLiveDocs(
     );
     generatedDocPaths.add(docPaths.relative);
     const existingContent = await readFileIfExists(docPaths.absolute);
-    const authoredBlock = extractAuthoredBlock(existingContent);
-    const previousGeneratedAt = extractGeneratedAt(existingContent);
+    const existing = readExisting(existingContent);
     const timestampNow = now().toISOString();
-    const initialGeneratedAt = previousGeneratedAt ?? timestampNow;
+    const initialGeneratedAt = existing.generatedAt ?? timestampNow;
 
-    const sections = buildGeneratedSections({
+    const generated = composeGenerated({
       analysis,
       docAbsolutePath: docPaths.absolute,
       workspaceRoot,
@@ -227,25 +218,22 @@ export async function generateLiveDocs(
         analysis
       });
 
-      const metadata: LiveDocMetadata = {
-        ...metadataBase,
+      return renderLiveDoc({
+        codePath: normalizedSourcePath,
+        layer: 4,
+        archetype,
+        liveDocId,
         generatedAt,
-        provenance
-      };
-
-      return renderLiveDocMarkdown({
-        title,
-        metadata,
-        authoredBlock,
-        sections,
-        provenance
+        provenance,
+        authored: existing.authored,
+        ...generated
       });
     };
 
     let rendered = renderDocument(initialGeneratedAt);
     let change = classifyChange(existingContent, rendered);
 
-    if (change !== "unchanged" && previousGeneratedAt) {
+    if (change !== "unchanged" && existing.generatedAt) {
       if (timestampNow !== initialGeneratedAt) {
         rendered = renderDocument(timestampNow);
         change = classifyChange(existingContent, rendered);
@@ -345,8 +333,7 @@ async function pruneStaleLiveDocs(args: {
     }
 
     const content = await fs.readFile(absolute, "utf8");
-    const authoredBlock = extractAuthoredBlock(content);
-    if (hasMeaningfulAuthoredContent(authoredBlock)) {
+    if (hasMeaningfulAuthoredContent(authoredBlockOf(content))) {
       args.logger.info(`Preserving ${workspaceRelative} (authored content detected)`);
       continue;
     }
@@ -377,7 +364,8 @@ async function readFileIfExists(filePath: string): Promise<string | undefined> {
   }
 }
 
-function buildGeneratedSections(params: {
+/** Composes the generated sections of a doc from its source analysis. */
+function composeGenerated(params: {
   analysis: SourceAnalysisResult;
   docAbsolutePath: string;
   workspaceRoot: string;
@@ -385,72 +373,68 @@ function buildGeneratedSections(params: {
   liveDocsRootAbsolute: string;
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
-}): LiveDocRenderSection[] {
+}): Pick<LiveDoc, "symbols" | "dependencies" | "reExports"> {
   const docDir = path.dirname(params.docAbsolutePath);
   const sourceAbsolute = path.resolve(params.workspaceRoot, params.sourceRelativePath);
   const headings = computePublicSymbolHeadingInfo(params.analysis.symbols);
 
-  const symbolLines = renderPublicSymbolLines({
-    analysis: params.analysis,
+  const symbols = composeSymbolBlocks({
+    headings,
     docDir,
     sourceAbsolute,
-    workspaceRoot: params.workspaceRoot,
     sourceRelativePath: params.sourceRelativePath,
-    headings,
     symbolIndex: params.symbolIndex,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute
   });
 
-  const dependencyLines = renderDependencyLines({
+  const dependencies = composeDependencies({
     analysis: params.analysis,
     docDir,
-    workspaceRoot: params.workspaceRoot,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension,
     headings,
     symbolIndex: params.symbolIndex
   });
 
-  const sections: LiveDocRenderSection[] = [
-    {
-      name: "Public Symbols",
-      lines: symbolLines.length ? symbolLines : ["_No public symbols detected_"]
-    },
-    {
-      name: "Dependencies",
-      lines: dependencyLines.length ? dependencyLines : ["_No dependencies documented yet_"]
-    }
-  ];
-
-  const reExportAnchorLines = renderReExportedAnchorLines({
+  const reExports = composeReExports({
     reExports: params.analysis.reExportedSymbols ?? [],
     docDir,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
     docExtension: params.docExtension
   });
 
-  if (reExportAnchorLines.length > 0) {
-    sections.push({
-      name: "Re-Exported Symbol Anchors",
-      lines: reExportAnchorLines
-    });
-  }
-
-  return sections;
+  return reExports.length > 0 ? { symbols, dependencies, reExports } : { symbols, dependencies };
 }
 
-function extractGeneratedAt(existingContent?: string): string | undefined {
-  if (!existingContent) {
-    return undefined;
+/**
+ * What a run keeps of the doc already on disk: its authored block and its timestamp.
+ *
+ * A doc the grammar refuses, written before the grammar or by hand, still keeps
+ * both; everything generated is replaced on this run anyway.
+ */
+function readExisting(text: string | undefined): { authored: string; generatedAt?: string } {
+  if (!text) {
+    return { authored: authoredBlockOf(undefined) };
   }
-
-  const match = existingContent.match(/^-\s+Generated At:\s*(.+)$/m);
-  if (!match) {
-    return undefined;
+  try {
+    const doc = parseLiveDoc(text);
+    return { authored: doc.authored, generatedAt: doc.generatedAt };
+  } catch (error) {
+    if (!(error instanceof LiveDocSyntaxError)) {
+      throw error;
+    }
+    const generatedAt = /^- Generated At:\s*(.+)$/mu.exec(text)?.[1].trim();
+    return { authored: authoredBlockOf(text), generatedAt: generatedAt || undefined };
   }
+}
 
-  const value = match[1]?.trim();
-  return value && value.length > 0 ? value : undefined;
+/** The `Live Doc ID` line: `LD-{archetype}-{kebab-path}`. */
+function composeLiveDocId(archetype: string, sourcePath: string): string {
+  const normalised = normalizeWorkspacePath(sourcePath)
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+  return `LD-${archetype}-${normalised || "root"}`;
 }
 
 function composeProvenance(params: {
@@ -485,12 +469,3 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
 
   return existingContent === rendered ? "unchanged" : "updated";
 }
-
-/**
- * Internal re-export exposed solely for `renderPublicSymbolLines.test.ts`,
- * which asserts on the generator's rendering through the module it exercises.
- */
-export const __testUtils = {
-  renderPublicSymbolLines
-};
-

@@ -3,7 +3,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { computePublicSymbolHeadingInfo, renderPublicSymbolLines } from "../core";
+import { computePublicSymbolHeadingInfo, composeSymbolBlocks } from "../core";
+import { renderSymbolBlocks } from "../document";
 import { cAdapter } from "./c";
 
 describe("cAdapter docstring bridging", () => {
@@ -109,14 +110,7 @@ logger *logger_build(logger *handle, int level);
     const docDir = path.join(workspaceRoot, ".live-documentation", "source");
     await fs.mkdir(docDir, { recursive: true });
     const headings = computePublicSymbolHeadingInfo(analysis!.symbols);
-    const lines = renderPublicSymbolLines({
-      analysis: analysis!,
-      docDir,
-      sourceAbsolute: filePath,
-      workspaceRoot,
-      sourceRelativePath: path.relative(workspaceRoot, filePath),
-      headings
-    });
+    const lines = renderSymbolBlocks(composeSymbolBlocks({ headings, docDir, sourceAbsolute: filePath, sourceRelativePath: path.relative(workspaceRoot, filePath) }));
 
     expect(lines.some((line) => line.includes("logger_build") && line.includes("Parameters"))).toBe(true);
   });

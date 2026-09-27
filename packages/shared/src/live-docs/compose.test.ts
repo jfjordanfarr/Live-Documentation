@@ -1,0 +1,128 @@
+import path from "node:path";
+import { describe, expect, it } from "vitest";
+
+import { composeDependencies, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
+import type { WorkspaceSymbolIndex } from "./coreTypes";
+import { renderLiveDoc, parseLiveDoc } from "./document";
+
+const workspaceRoot = path.resolve("/workspace-root");
+const liveDocsRootAbsolute = path.join(workspaceRoot, ".live-documentation", "source");
+const sourceRelativePath = "packages/shared/src/contracts/dependencies.ts";
+const sourceAbsolute = path.join(workspaceRoot, sourceRelativePath);
+const docDir = path.dirname(path.join(liveDocsRootAbsolute, `${sourceRelativePath}.md`));
+
+describe("composeSymbolBlocks", () => {
+  it("gives each symbol its heading, kind, source line and documentation", () => {
+    const symbols = [
+      {
+        name: "DependencyGraphEdge",
+        kind: "interface",
+        location: { line: 16, character: 1 },
+        documentation: { summary: "Represents a dependency edge.", source: "tsdoc" }
+      },
+      { name: "INSPECT_DEPENDENCIES_REQUEST", kind: "const", location: { line: 3, character: 1 } }
+    ];
+    const headings = computePublicSymbolHeadingInfo(symbols);
+    const blocks = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath });
+
+    expect(blocks).toEqual([
+      {
+        name: "DependencyGraphEdge",
+        slug: "symbol-dependencygraphedge",
+        kind: "interface",
+        flags: [],
+        source: { path: "../../../../../../packages/shared/src/contracts/dependencies.ts", line: 16 },
+        references: [],
+        sections: [{ title: "Summary", body: ["Represents a dependency edge."] }]
+      },
+      {
+        name: "INSPECT_DEPENDENCIES_REQUEST",
+        slug: "symbol-inspect_dependencies_request",
+        kind: "const",
+        flags: [],
+        source: { path: "../../../../../../packages/shared/src/contracts/dependencies.ts", line: 3 },
+        references: [],
+        sections: []
+      }
+    ]);
+  });
+
+  it("links a type reference to the doc that declares it, or within the doc when declared here", () => {
+    const symbolIndex: WorkspaceSymbolIndex = new Map([
+      ["Widget", [{ liveDocPath: ".live-documentation/source/packages/shared/src/types.ts.md", sourcePath: "packages/shared/src/types.ts", anchor: "symbol-widget", kind: "interface" }]],
+      ["Edge", [{ liveDocPath: ".live-documentation/source/packages/shared/src/contracts/dependencies.ts.md", sourcePath: sourceRelativePath, anchor: "symbol-edge", kind: "interface" }]]
+    ]);
+    const headings = computePublicSymbolHeadingInfo([
+      {
+        name: "walk",
+        kind: "function",
+        typeReferences: [
+          { name: "Edge", role: "return", isArrayElement: true },
+          { name: "Widget", role: "parameter", parameterName: "from" },
+          { name: "Unknown", role: "parameter", parameterName: "options", isPromiseResolution: true }
+        ]
+      }
+    ]);
+    const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
+
+    expect(block.references).toEqual([
+      { role: "Returns", types: [{ name: "Edge", link: "#symbol-edge", array: true }] },
+      {
+        role: "Parameters",
+        parameters: [
+          { name: "from", types: [{ name: "Widget", link: "../types.ts.md#symbol-widget" }] },
+          { name: "options", types: [{ name: "Unknown", promise: true }] }
+        ]
+      }
+    ]);
+  });
+});
+
+describe("composeDependencies", () => {
+  it("links each imported symbol to its anchor and keeps external modules as text", () => {
+    const headings = computePublicSymbolHeadingInfo([]);
+    const dependencies = composeDependencies({
+      analysis: {
+        symbols: [],
+        dependencies: [
+          { specifier: "../types", resolvedPath: "packages/shared/src/types.ts", symbols: ["Widget", "Edge"], kind: "import", isTypeOnly: true },
+          { specifier: "../index", resolvedPath: "packages/shared/src/index.ts", symbols: [], kind: "export" },
+          { specifier: "node:path", symbols: ["basename", "join"], kind: "import" },
+          { specifier: "vitest", symbols: [], kind: "import" }
+        ]
+      },
+      docDir,
+      liveDocsRootAbsolute,
+      docExtension: ".md",
+      headings
+    });
+
+    expect(dependencies).toEqual([
+      { label: "node:path", symbols: ["basename", "join"], qualifiers: [] },
+      { label: "index", link: "../index.ts.md", qualifiers: ["re-export"] },
+      { label: "types.Edge", link: "../types.ts.md#symbol-edge", qualifiers: ["type-only"] },
+      { label: "types.Widget", link: "../types.ts.md#symbol-widget", qualifiers: ["type-only"] },
+      { label: "vitest", qualifiers: [] }
+    ]);
+  });
+
+  it("composes only what the grammar can write back", () => {
+    const headings = computePublicSymbolHeadingInfo([{ name: "walk", kind: "function", location: { line: 1, character: 1 } }]);
+    const doc = {
+      codePath: sourceRelativePath,
+      layer: 4,
+      archetype: "implementation",
+      liveDocId: "LD-implementation-x",
+      authored: "### Purpose\nWalks.\n\n### Notes\nNone.",
+      symbols: composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath }),
+      dependencies: composeDependencies({
+        analysis: { symbols: [], dependencies: [{ specifier: "./graph", resolvedPath: "packages/shared/src/contracts/graph.ts", symbols: ["walk"], kind: "import" }] },
+        docDir,
+        liveDocsRootAbsolute,
+        docExtension: ".md",
+        headings
+      })
+    };
+    expect(parseLiveDoc(renderLiveDoc(doc))).toEqual(doc);
+  });
+});

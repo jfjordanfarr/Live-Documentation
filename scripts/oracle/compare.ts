@@ -21,7 +21,7 @@ import {
   LIVE_DOCUMENTATION_DEFAULT_GLOBS,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/shared/config/liveDocumentationConfig";
-import { parseLiveDocMarkdown } from "@live-documentation/shared/live-docs/parse";
+import { linkTarget, parseLiveDoc } from "@live-documentation/shared/live-docs/document";
 
 import { copyFixture } from "./fixture";
 import type { OracleEdges } from "./scip-edges";
@@ -83,14 +83,13 @@ async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[];
     const unresolved: Report["unresolved"] = [];
     for (const record of result.files) {
       if (record.change === "skipped") continue;
-      const docPath = path.resolve(workDir, record.docPath);
-      const parsed  = parseLiveDocMarkdown(fs.readFileSync(docPath, "utf8"), docPath, workDir, config);
-      if (!parsed) continue;
-      for (const dependency of parsed.dependencies) {
-        if (dependency.codePath) {
-          edges.push({ from: record.sourcePath, to: dependency.codePath });
+      const doc = parseLiveDoc(fs.readFileSync(path.resolve(workDir, record.docPath), "utf8"));
+      for (const dependency of doc.dependencies) {
+        const target = dependency.link ? linkTarget(record.docPath, dependency.link, config) : undefined;
+        if (target) {
+          edges.push({ from: record.sourcePath, to: target.codePath });
         } else {
-          unresolved.push({ from: record.sourcePath, raw: dependency.raw });
+          unresolved.push({ from: record.sourcePath, raw: dependency.label });
         }
       }
     }

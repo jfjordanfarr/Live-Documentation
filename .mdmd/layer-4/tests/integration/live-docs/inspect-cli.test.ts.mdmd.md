@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/inspect-cli.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-inspect-cli-test-ts
-- Generated At: 2026-09-27T21:43:43.177Z
+- Generated At: 2026-09-27T23:16:52.408Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the `npm run live-docs:inspect` CLI against representative workspaces 
 - Blazor coverage was added on 2025-11-18 to lock in the `.razor` → partial class → `appsettings.json` chain discussed during the LD-402 expansion.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.177Z","inputHash":"780292dafe3bcfd2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T23:16:52.408Z","inputHash":"589805bf180cafc7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,6 +27,9 @@ _No public symbols detected_
 - `node:assert`
 - `node:child_process` - `spawnSync`
 - `node:fs`
+- `node:os`
 - `node:path`
-- `vitest` - `describe`, `it`
+- [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- `vitest` - `afterAll`, `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

@@ -14,7 +14,8 @@
  * - `discovery.ts` - File discovery and symbol indexing
  * - `symbolExtraction.ts` - TypeScript AST symbol extraction
  * - `dependencies.ts` - Dependency collection and resolution
- * - `rendering.ts` - Markdown rendering functions
+ * - `compose.ts` - From analysis to the document model
+ * - `document.ts` - The grammar: the document model, its renderer and its parser
  * - `jsDoc.ts` - JSDoc documentation extraction
  * - `gitUtils.ts` - Git status utilities
  * - `fileUtils.ts` - File system utilities
@@ -122,15 +123,15 @@ export {
 } from "./dependencies";
 
 // ============================================================================
-// Rendering Exports
+// Composition Exports
 // ============================================================================
 
 export {
   computePublicSymbolHeadingInfo,
-  renderPublicSymbolLines,
-  renderDependencyLines,
-  renderReExportedAnchorLines
-} from "./rendering";
+  composeSymbolBlocks,
+  composeDependencies,
+  composeReExports
+} from "./compose";
 
 // ============================================================================
 // JSDoc Exports

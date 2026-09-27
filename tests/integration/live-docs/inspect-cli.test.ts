@@ -1,8 +1,12 @@
 import * as assert from "node:assert";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
-import { describe, it } from "vitest";
+import { afterAll, beforeAll, describe, it } from "vitest";
+
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
+import { normalizeLiveDocumentationConfig } from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 interface InspectRunResult {
   exitCode: number;
@@ -26,64 +30,47 @@ const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
 const tsconfigPath = path.join(repoRoot, "tsconfig.base.json");
 const inspectScript = path.join(repoRoot, "scripts", "live-docs", "inspect.ts");
 
-const fixtures = {
-  webforms: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "webforms-appsettings",
-    "workspace"
-  ),
-  razor: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "razor-appsettings",
-    "workspace"
-  ),
-  spa: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "spa-runtime-config",
-    "workspace"
-  ),
-  reflection: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "csharp-reflection",
-    "workspace"
-  ),
-  blazor: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "blazor-telemetry",
-    "workspace"
-  ),
-  queueWorker: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "queue-worker",
-    "workspace"
-  ),
-  powershell: path.join(
-    repoRoot,
-    "tests",
-    "integration",
-    "fixtures",
-    "powershell-compendium",
-    "workspace"
-  )
+/** The fixture workspaces, by the folder under tests/integration/fixtures. */
+const fixtureFolders = {
+  webforms: "webforms-appsettings",
+  razor: "razor-appsettings",
+  spa: "spa-runtime-config",
+  reflection: "csharp-reflection",
+  blazor: "blazor-telemetry",
+  queueWorker: "queue-worker",
+  powershell: "powershell-compendium"
 } as const;
+
+/**
+ * Each fixture is copied to a temporary workspace and its Live Docs are generated
+ * there before the CLI runs, so the paths the CLI finds are the ones the shipped
+ * generator writes. No fixture is written to.
+ */
+const fixtures: Record<keyof typeof fixtureFolders, string> = { ...fixtureFolders };
+const temporaryWorkspaces: string[] = [];
+
+beforeAll(async () => {
+  for (const [name, folder] of Object.entries(fixtureFolders) as Array<[keyof typeof fixtureFolders, string]>) {
+    const source = path.join(repoRoot, "tests", "integration", "fixtures", folder, "workspace");
+    const workspace = fs.mkdtempSync(path.join(os.tmpdir(), `inspect-${folder}-`));
+    temporaryWorkspaces.push(workspace);
+    fs.cpSync(source, workspace, { recursive: true });
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", glob: ["**/*"] };
+    fs.writeFileSync(path.join(workspace, ".live-docs.config.json"), JSON.stringify(config), "utf8");
+    await generateLiveDocs({
+      workspaceRoot: workspace,
+      config: normalizeLiveDocumentationConfig(config),
+      logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } }
+    });
+    fixtures[name] = workspace;
+  }
+});
+
+afterAll(() => {
+  for (const workspace of temporaryWorkspaces) {
+    fs.rmSync(workspace, { recursive: true, force: true });
+  }
+});
 
 function runInspectCli(workspace: string, args: string[]): InspectRunResult {
   const result = spawnSync(
