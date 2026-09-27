@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/json.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-json-ts
-- Generated At: 2026-02-16T18:46:24.919Z
+- Generated At: 2026-09-27T18:34:26.565Z
 
 ## Authored
 ### Purpose
@@ -19,16 +19,24 @@ Polyglot language adapter for JSON configuration files, enabling Live Documentat
 - Created 2026-01-15 as part of the JSON Adapter commit, following Option B architecture (generic reference detection with file index validation) per the user's architecture guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.919Z","inputHash":"228937e0e1c10a26"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.565Z","inputHash":"60e8514d7e219541"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `collectKeyPaths` {#symbol-collectkeypaths}
+- Type: function
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/json.ts#L169)
+
+##### `collectKeyPaths` — Summary
+Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
+nested settings (`Hangfire:Queue`). Arrays are not descended into.
+
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/json.ts#L166)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/json.ts#L182)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary
-Language adapter for JSON and JSONC files. Extracts top-level keys as public symbols and detects file-path references in string values.
+Language adapter for JSON and JSONC files. Publishes key paths as public symbols and detects file-path references in string values.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -38,6 +46,7 @@ Language adapter for JSON and JSONC files. Extracts top-level keys as public sym
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
 - [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
+- [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

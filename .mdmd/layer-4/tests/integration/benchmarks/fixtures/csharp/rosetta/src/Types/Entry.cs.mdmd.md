@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Types/Entry.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-types-entry-cs
-- Generated At: 2026-02-03T21:55:43.130Z
+- Generated At: 2026-09-27T18:34:28.816Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.130Z","inputHash":"8fe320948f0857b3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.816Z","inputHash":"439929a59e906136"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Entry (class)` {#symbol-entry-class}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Types/Entry.cs#L5)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Types/Entry.cs#L6)
 
 ##### `Entry (class)` — Summary
 A timestamped entry in the data pipeline.
@@ -40,9 +40,10 @@ A timestamped entry in the data pipeline.
 #### `Entry (constructor)` {#symbol-entry-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Types/Entry.cs#L12)
+- Parameters: `status`: [`Status`](./Status.cs.mdmd.md#symbol-status)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Status`](./Status.cs.mdmd.md#symbol-status)
 <!-- LIVE-DOC:END Dependencies -->

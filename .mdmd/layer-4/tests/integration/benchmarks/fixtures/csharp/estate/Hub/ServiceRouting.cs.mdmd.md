@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Hub/ServiceRouting.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-hub-servicerouting-cs
-- Generated At: 2026-09-27T10:09:18.461Z
+- Generated At: 2026-09-27T18:34:28.281Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.461Z","inputHash":"fb83fab825ca7ee9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.281Z","inputHash":"6e8d25a667bd8f56"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ServiceRouting` {#symbol-servicerouting}

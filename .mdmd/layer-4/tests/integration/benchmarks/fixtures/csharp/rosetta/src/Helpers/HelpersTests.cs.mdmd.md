@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-helpers-helperstests-cs
-- Generated At: 2026-02-03T21:55:43.023Z
+- Generated At: 2026-09-27T18:34:28.693Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ xUnit tests for the C# Rosetta Helpers class (Format, Sum, Average utilities).
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses nested `FormatTests`, `SumTests`, and `AverageTests` classes. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.023Z","inputHash":"b27a7aa73d2a5e0e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.693Z","inputHash":"98a160ddb0997cce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HelpersTests` {#symbol-helperstests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L12)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L13)
 
 ##### `HelpersTests` — Summary
 Unit tests for the Helpers class.
@@ -30,7 +30,7 @@ HelpersTests.cs should automatically back Helpers.cs.
 
 #### `FormatTests` {#symbol-formattests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L14)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L15)
 
 #### `FormatsNumbersWithTwoDecimalPlaces` {#symbol-formatsnumberswithtwodecimalplaces}
 - Type: method
@@ -38,7 +38,7 @@ HelpersTests.cs should automatically back Helpers.cs.
 
 #### `SumTests` {#symbol-sumtests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L23)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L25)
 
 #### `SumsArrayOfNumbers` {#symbol-sumsarrayofnumbers}
 - Type: method
@@ -50,7 +50,7 @@ HelpersTests.cs should automatically back Helpers.cs.
 
 #### `AverageTests` {#symbol-averagetests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L39)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Helpers/HelpersTests.cs#L41)
 
 #### `CalculatesAverageOfNumbers` {#symbol-calculatesaverageofnumbers}
 - Type: method
@@ -63,8 +63,8 @@ HelpersTests.cs should automatically back Helpers.cs.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Rosetta.Helpers`
 - `Xunit`
+- [`Helpers`](./Helpers.cs.mdmd.md#symbol-helpers)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

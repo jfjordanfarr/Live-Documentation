@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Gateway/Wcf/HubProxy.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-gateway-wcf-hubproxy-cs
-- Generated At: 2026-09-27T10:09:18.406Z
+- Generated At: 2026-09-27T18:34:28.211Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.406Z","inputHash":"76350afb33e1a02a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.211Z","inputHash":"5d6e4a3759aafcf9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HubProxy` {#symbol-hubproxy}
@@ -33,13 +33,21 @@ Client side of the hub contract. The endpoint address lives in Web.config under 
 #### `PostPayment` {#symbol-postpayment}
 - Type: method
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Gateway/Wcf/HubProxy.cs#L16)
+- Returns: [`PaymentResult`](../../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `request`: [`PaymentRequest`](../../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
 
 #### `GetPayment` {#symbol-getpayment}
 - Type: method
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Gateway/Wcf/HubProxy.cs#L18)
+- Returns: [`PaymentResult`](../../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `query`: [`PaymentQuery`](../../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Estate.Contracts`
+- [`IPaymentHub`](../../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
+- [`PaymentQuery`](../../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
+- [`PaymentRequest`](../../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
+- [`PaymentResult`](../../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- [`Web.PaymentHub`](../Web.config.mdmd.md#symbol-paymenthub)
 <!-- LIVE-DOC:END Dependencies -->

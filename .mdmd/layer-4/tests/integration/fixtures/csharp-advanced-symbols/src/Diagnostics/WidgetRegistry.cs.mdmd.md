@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgetregistry-cs
-- Generated At: 2026-02-03T21:55:47.132Z
+- Generated At: 2026-09-27T18:34:30.631Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Documents the `WidgetRegistry` class that exercises events, generics, and nullab
 Keep the XML documentation and event surface intact; modify only when expanding the advanced C# fixture's coverage footprint.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.132Z","inputHash":"3f1745a0c37880a2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.631Z","inputHash":"6adaecfdcd4bbd8b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WidgetRegistry` {#symbol-widgetregistry}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L14)
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L15)
 
 ##### `WidgetRegistry` — Summary
 Maintains widget registrations and surfaces change notifications.
@@ -49,6 +49,7 @@ Subscribers receive `WidgetRegisteredEventArgs` instances describing the change.
 #### `TryRegister` {#symbol-tryregister}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L45)
+- Parameters: `widget`: [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 ##### `TryRegister` — Summary
 Attempts to register a widget and emits `WidgetRegistered` upon success.
@@ -93,6 +94,7 @@ The ordered collection of registered widgets.
 #### `Resolve` {#symbol-resolve}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L71)
+- Returns: [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 ##### `Resolve` — Summary
 Resolves a widget by name or returns `null` when not found.
@@ -112,6 +114,7 @@ The registered widget, or `null` when the name is unknown.
 #### `TryMerge` {#symbol-trymerge}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L86)
+- Parameters: `widget`: [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 ##### `TryMerge` — Summary
 Attempts to merge an incoming widget into the stored entry.
@@ -135,14 +138,14 @@ Delegates to `BaseWidget.TryMerge(BaseWidget)` for the merge semantics.
 #### `OnWidgetRegistered` {#symbol-onwidgetregistered}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L99)
+- Parameters: `args`: [`WidgetRegisteredEventArgs`](#symbol-widgetregisteredeventargs-class)
 
 ##### `OnWidgetRegistered` — Additional Documentation
 - <inheritdoc cref="WidgetRegistered"/>
 
 #### `WidgetRegisteredEventArgs (class)` {#symbol-widgetregisteredeventargs-class}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L109)
-- Extends: `EventArgs`
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L110)
 
 ##### `WidgetRegisteredEventArgs (class)` — Summary
 Describes the widget that triggered a registration event.
@@ -156,6 +159,7 @@ Provides access to the widget and its registration timestamp.
 #### `WidgetRegisteredEventArgs (constructor)` {#symbol-widgetregisteredeventargs-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs#L112)
+- Parameters: `widget`: [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 #### `Widget` {#symbol-widget}
 - Type: property
@@ -180,5 +184,5 @@ A UTC timestamp captured at registration time.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 <!-- LIVE-DOC:END Dependencies -->

@@ -1,8 +1,8 @@
 /**
  * Unit tests for C# dependency extraction module.
  *
- * Tests cover extraction of using directives, configuration references,
- * Type.GetType() calls, type name literals, and Hangfire job targets.
+ * Tests cover configuration references, Type.GetType() calls, type name
+ * literals, Hangfire job targets, and the file helpers around them.
  */
 
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
@@ -18,8 +18,7 @@ import {
   collectTypeIdentifiers,
   locateNearestFile,
   fileExists,
-  resolveReflectionTarget,
-  readFileSafe
+  resolveReflectionTargets
 } from "./csharp.dependencies";
 
 describe("csharp.dependencies unit tests", () => {
@@ -243,18 +242,6 @@ describe("csharp.dependencies unit tests", () => {
       });
     });
 
-    describe("readFileSafe", () => {
-      it("reads existing file", async () => {
-        const filePath = path.join(tempDir, "test.txt");
-        await fs.writeFile(filePath, "hello world");
-        expect(await readFileSafe(filePath)).toBe("hello world");
-      });
-
-      it("returns undefined for non-existent file", async () => {
-        expect(await readFileSafe(path.join(tempDir, "nope.txt"))).toBeUndefined();
-      });
-    });
-
     describe("locateNearestFile", () => {
       it("finds file in same directory", async () => {
         const sourcePath = path.join(tempDir, "src", "file.cs");
@@ -318,57 +305,26 @@ describe("csharp.dependencies unit tests", () => {
       });
     });
 
-    describe("resolveReflectionTarget", () => {
-      it("resolves type name to file path", async () => {
-        const csFile = path.join(tempDir, "MyClass.cs");
-        await fs.writeFile(csFile, `
-          namespace MyNamespace {
-            public class MyClass { }
-          }
-        `);
+    describe("resolveReflectionTargets", () => {
+      const resolveType = (typeName: string) =>
+        typeName === "MyNamespace.MyClass" || typeName === "MyClass"
+          ? [{ file: "MyClass.cs", name: "MyClass" }]
+          : [];
 
-        const result = await resolveReflectionTarget("MyNamespace.MyClass", tempDir);
-        expect(result?.specifier).toBe("MyClass.cs");
-        expect(result?.symbols).toContain("MyNamespace.MyClass");
+      it("links each named type to the file that declares it, carrying the type name", () => {
+        expect(resolveReflectionTargets(["MyNamespace.MyClass"], resolveType)).toEqual([
+          { specifier: "MyClass.cs", resolvedPath: "MyClass.cs", symbols: ["MyClass"], kind: "import" }
+        ]);
       });
 
-      it("returns undefined for non-matching namespace", async () => {
-        const csFile = path.join(tempDir, "MyClass.cs");
-        await fs.writeFile(csFile, `
-          namespace WrongNamespace {
-            public class MyClass { }
-          }
-        `);
-
-        const result = await resolveReflectionTarget("MyNamespace.MyClass", tempDir);
-        expect(result).toBeUndefined();
+      it("merges several names that land in the same file", () => {
+        expect(resolveReflectionTargets(["MyNamespace.MyClass", "MyClass"], resolveType)).toEqual([
+          { specifier: "MyClass.cs", resolvedPath: "MyClass.cs", symbols: ["MyClass"], kind: "import" }
+        ]);
       });
 
-      it("returns undefined for non-existent files", async () => {
-        const result = await resolveReflectionTarget("MyNamespace.NoSuchClass", tempDir);
-        expect(result).toBeUndefined();
-      });
-
-      it("includes symbol targets when extractSymbolsFn provided", async () => {
-        const csFile = path.join(tempDir, "MyClass.cs");
-        await fs.writeFile(csFile, `
-          namespace MyNamespace {
-            public class MyClass { }
-          }
-        `);
-
-        const extractSymbolsFn = () => [
-          { name: "MyClass", kind: "class", location: { line: 3, character: 1 } }
-        ];
-
-        const result = await resolveReflectionTarget("MyNamespace.MyClass", tempDir, extractSymbolsFn);
-        expect(result?.symbolTargets).toBeDefined();
-        expect(result?.symbolTargets?.["MyNamespace.MyClass"]).toBe("MyClass (class)");
-      });
-
-      it("handles empty type name", async () => {
-        const result = await resolveReflectionTarget("", tempDir);
-        expect(result).toBeUndefined();
+      it("returns nothing for names the workspace does not declare", () => {
+        expect(resolveReflectionTargets(["MyNamespace.NoSuchClass", ""], resolveType)).toEqual([]);
       });
     });
   });

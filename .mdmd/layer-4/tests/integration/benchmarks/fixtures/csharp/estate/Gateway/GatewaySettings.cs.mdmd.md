@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Gateway/GatewaySettings.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-gateway-gatewaysettings-cs
-- Generated At: 2026-09-27T10:09:18.390Z
+- Generated At: 2026-09-27T18:34:28.178Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.390Z","inputHash":"e2adb35832550e92"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.178Z","inputHash":"2918b1f41657e6f7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GatewaySettings` {#symbol-gatewaysettings}
@@ -44,5 +44,6 @@ Which workload and environment this gateway deployment serves, from Web.config.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Web.Gateway.Environment`](./Web.config.mdmd.md#symbol-gatewayenvironment)
+- [`Web.Gateway.Workload`](./Web.config.mdmd.md#symbol-gatewayworkload)
 <!-- LIVE-DOC:END Dependencies -->

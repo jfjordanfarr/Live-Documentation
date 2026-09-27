@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Portal/Models/PaymentResultModel.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-portal-models-paymentresultmodel-cs
-- Generated At: 2026-09-27T10:09:20.000Z
+- Generated At: 2026-09-27T18:34:28.468Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:20.000Z","inputHash":"f7cb26b230a1d9a6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.468Z","inputHash":"f0cc29c18e3cfe63"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentResultModel` {#symbol-paymentresultmodel}

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/PaymentService/Data/PaymentsContext.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-paymentservice-data-paymentscontext-cs
-- Generated At: 2026-09-27T10:09:18.499Z
+- Generated At: 2026-09-27T18:34:28.340Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.499Z","inputHash":"e54a1472279bce98"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.340Z","inputHash":"13cdbc10f30d25ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentsContext (class)` {#symbol-paymentscontext-class}
@@ -47,9 +47,11 @@ where the linked-server read of the Oracle account balance happens.
 #### `PostPayment` {#symbol-postpayment}
 - Type: method
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/PaymentService/Data/PaymentsContext.cs#L23)
+- Returns: [`PostPaymentRow`](./PostPaymentRow.cs.mdmd.md#symbol-postpaymentrow)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Payment`](./Payment.cs.mdmd.md#symbol-payment)
+- [`PostPaymentRow`](./PostPaymentRow.cs.mdmd.md#symbol-postpaymentrow)
 <!-- LIVE-DOC:END Dependencies -->

@@ -48,7 +48,7 @@ describe("Live Docs polyglot fixtures", () => {
       const widgetDocContent = await fs.readFile(widgetRegistryDoc, "utf8");
       assert.match(widgetDocContent, /#### `WidgetRegistry`/);
       assert.match(widgetDocContent, /#### `WidgetRegisteredEventArgs \(class\)`/);
-      assert.match(widgetDocContent, /_No dependencies documented yet_/);
+      assert.match(widgetDocContent, /- \[`BaseWidget`\]\(\.\/BaseWidget\.cs\.md#symbol-basewidget-class\)/);
       assert.match(
         widgetDocContent,
         /##### `WidgetRegistry` — Summary\s+Maintains widget registrations and surfaces change notifications\./
@@ -169,7 +169,8 @@ describe("Live Docs polyglot fixtures", () => {
       );
       const extensionsDocContent = await fs.readFile(extensionsDoc, "utf8");
       assert.match(extensionsDocContent, /#### `WidgetExtensions`/);
-      assert.match(extensionsDocContent, /LinkAware\.Diagnostics/);
+      assert.match(extensionsDocContent, /- \[`BaseWidget`\]\(\.\.\/BaseWidget\.cs\.md#symbol-basewidget-class\)/);
+      assert.match(extensionsDocContent, /- \[`RenderContext`\]\(\.\.\/RenderContext\.cs\.md#symbol-rendercontext-class\)/);
       assert.match(
         extensionsDocContent,
         /##### `WidgetExtensions` — Summary\s+Provides helpers for flattening widget dependency graphs\./

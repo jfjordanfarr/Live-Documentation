@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Portal/Web.config
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-estate-portal-web-config
-- Generated At: 2026-09-27T10:09:20.122Z
+- Generated At: 2026-09-27T18:34:28.582Z
 
 ## Authored
 ### Purpose
@@ -15,10 +15,16 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:20.122Z","inputHash":"5758a72e12345986"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.582Z","inputHash":"a229e7646c6f0906"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `Portal.GatewayBaseUrl` {#symbol-portalgatewaybaseurl}
+- Type: setting
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/Web.config#L4)
+
+#### `Portal.PaymentsEnabled` {#symbol-portalpaymentsenabled}
+- Type: setting
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/Web.config#L5)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
 - Live Doc ID: LD-test-tests-integration-tsconfig-json
-- Generated At: 2026-09-27T08:02:42.377Z
+- Generated At: 2026-09-27T18:34:31.456Z
 
 ## Authored
 ### Purpose
@@ -17,10 +17,38 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 - Vitest itself transpiles without type-checking, which is why this project exists. Until 2026-09-27 the same file compiled the suites for the VS Code Electron harness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:02:42.377Z","inputHash":"e4fb28054ad83533"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:31.456Z","inputHash":"35588e178a1de90f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `extends` {#symbol-extends}
+- Type: key
+
+#### `compilerOptions` {#symbol-compileroptions}
+- Type: key
+
+#### `compilerOptions:noEmit` {#symbol-compileroptionsnoemit}
+- Type: key
+
+#### `compilerOptions:composite` {#symbol-compileroptionscomposite}
+- Type: key
+
+#### `compilerOptions:declaration` {#symbol-compileroptionsdeclaration}
+- Type: key
+
+#### `compilerOptions:declarationMap` {#symbol-compileroptionsdeclarationmap}
+- Type: key
+
+#### `compilerOptions:sourceMap` {#symbol-compileroptionssourcemap}
+- Type: key
+
+#### `compilerOptions:types` {#symbol-compileroptionstypes}
+- Type: key
+
+#### `include` {#symbol-include}
+- Type: key
+
+#### `exclude` {#symbol-exclude}
+- Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

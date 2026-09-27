@@ -5,24 +5,22 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-reflection-workspace-services-telemetryhandler-cs
-- Generated At: 2026-02-03T21:55:48.217Z
+- Generated At: 2026-09-27T18:34:30.733Z
 
 ## Authored
 ### Purpose
-Defines the reflection-only handler that the LD-402 pathfinder must rediscover when traversing factory-constructed telemetry processors.
+Defines the reflection-only handler that the pathfinder must rediscover when traversing factory-constructed telemetry processors.
 
 ### Notes
-- Served alongside `ReflectionFactory.cs` to validate that reflection metadata emitted by the generator keeps dependencies precise even without explicit `new` expressions.
-#### TelemetryHandler Class {#symbol-telemetryhandler-class}
-- Outbound links expect this anchor when `ReflectionFactory` resolves types dynamically.
+- Served alongside `ReflectionFactory.cs` to validate that a type named only in a string passed to `Type.GetType` still becomes a dependency. The factory's link lands on the class symbol below.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.217Z","inputHash":"c9139999c5c35b06"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.733Z","inputHash":"7e63b6d85bad54bb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryHandler` {#symbol-telemetryhandler}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs#L2)
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs#L3)
 
 #### `InstrumentationKey` {#symbol-instrumentationkey}
 - Type: property

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Portal/Pages/Default.aspx.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-portal-pages-default-aspx-cs
-- Generated At: 2026-09-27T10:09:20.038Z
+- Generated At: 2026-09-27T18:34:28.502Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:20.038Z","inputHash":"169c959ee01ee7ca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.502Z","inputHash":"0c1c2c7fba19b23e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Default` {#symbol-default}
@@ -34,5 +34,7 @@ portal.js reads the fields and talks to the portal's own Web API from then on.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Globals`](../App_Code/Globals.cs.mdmd.md#symbol-globals)
+- [`Default.aspx.designer.GatewayBaseUrlHidden`](./Default.aspx.designer.cs.mdmd.md#symbol-gatewaybaseurlhidden)
+- [`Default.aspx.designer.PaymentsEnabledHidden`](./Default.aspx.designer.cs.mdmd.md#symbol-paymentsenabledhidden)
 <!-- LIVE-DOC:END Dependencies -->

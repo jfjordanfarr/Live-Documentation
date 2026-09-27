@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-razor-appsettings-workspace-pages-index-cshtml-cs
-- Generated At: 2026-02-03T21:55:50.408Z
+- Generated At: 2026-09-27T18:34:30.867Z
 
 ## Authored
 ### Purpose
@@ -15,17 +15,18 @@ Backs the Razor telemetry page by promoting `appsettings.json` values into view 
 - Mirrors the Blazor `_Host` model to keep parity across ASP.NET fixtures; future coverage comparing the two will rely on this doc’s dependency links.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.408Z","inputHash":"6563bd4f4daa3490"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.867Z","inputHash":"0f07be08faa0b368"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IndexModel (class)` {#symbol-indexmodel-class}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs#L2)
+- Source: [source](../../../../../../../../tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs#L4)
 - Extends: `PageModel`
 
 #### `IndexModel (constructor)` {#symbol-indexmodel-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml.cs#L8)
+- Parameters: `configuration`: `IConfiguration`
 
 #### `InstrumentationKey` {#symbol-instrumentationkey}
 - Type: property

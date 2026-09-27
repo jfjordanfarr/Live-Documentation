@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Report.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-models-report-cs
-- Generated At: 2026-02-03T21:55:43.077Z
+- Generated At: 2026-09-27T18:34:28.751Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.077Z","inputHash":"7f079dce334bf7cb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.751Z","inputHash":"cbbca1b6ca60f1cc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report (class)` {#symbol-report-class}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Report.cs#L5)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Report.cs#L6)
 
 ##### `Report (class)` — Summary
 Summary report produced by the processor.
@@ -44,9 +44,10 @@ Summary report produced by the processor.
 #### `Report (constructor)` {#symbol-report-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Models/Report.cs#L13)
+- Parameters: `records`: [`Record`](./Record.cs.mdmd.md#symbol-record-class)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Record`](./Record.cs.mdmd.md#symbol-record-class)
 <!-- LIVE-DOC:END Dependencies -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgets-compositewidget-cs
-- Generated At: 2026-02-03T21:55:47.165Z
+- Generated At: 2026-09-27T18:34:30.666Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Explains the `CompositeWidget` base used by the C# advanced symbols fixture to s
 Keep the child traversal logic straightforward; the fixture asserts that inherited `CollectDependencies` results are preserved.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.165Z","inputHash":"a5d48ec66406b6d5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.666Z","inputHash":"5c2e25d4c5dad113"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompositeWidget (class)` {#symbol-compositewidget-class}
 - Type: class
-- Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs#L3)
+- Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs#L5)
 - Extends: [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 #### `CompositeWidget (constructor)` {#symbol-compositewidget-constructor}
@@ -30,10 +30,12 @@ Keep the child traversal logic straightforward; the fixture asserts that inherit
 #### `RenderCore` {#symbol-rendercore}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs#L13)
+- Parameters: `context`: [`RenderContext`](../RenderContext.cs.mdmd.md#symbol-rendercontext-class)
 
 #### `AttachChild` {#symbol-attachchild}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs#L21)
+- Parameters: `widget`: [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 
 #### `CollectDependencies` {#symbol-collectdependencies}
 - Type: method
@@ -42,5 +44,6 @@ Keep the child traversal logic straightforward; the fixture asserts that inherit
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
+- [`RenderContext`](../RenderContext.cs.mdmd.md#symbol-rendercontext-class)
 <!-- LIVE-DOC:END Dependencies -->

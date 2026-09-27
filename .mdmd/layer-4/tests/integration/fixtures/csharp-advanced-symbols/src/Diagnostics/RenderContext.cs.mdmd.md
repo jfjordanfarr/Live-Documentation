@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-rendercontext-cs
-- Generated At: 2026-02-03T21:55:47.100Z
+- Generated At: 2026-09-27T18:34:30.590Z
 
 ## Authored
 ### Purpose
@@ -15,16 +15,20 @@ Describes the `RenderContext` helper consumed by the C# advanced symbols fixture
 Preserve the null-checks and event recording semantics—they intentionally surface analyzer inputs for the benchmark.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.100Z","inputHash":"60bf151b93dc81c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.590Z","inputHash":"1af0765b867c3838"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `RenderContext (class)` {#symbol-rendercontext-class}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L4)
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L6)
 
 #### `RenderContext (constructor)` {#symbol-rendercontext-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L10)
+
+#### `State` {#symbol-state}
+- Type: property
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L16)
 
 #### `Events` {#symbol-events}
 - Type: property
@@ -33,6 +37,11 @@ Preserve the null-checks and event recording semantics—they intentionally surf
 #### `Record` {#symbol-record}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L20)
+
+#### `Require` {#symbol-require}
+- Type: method
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs#L28)
+- Returns: `T`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

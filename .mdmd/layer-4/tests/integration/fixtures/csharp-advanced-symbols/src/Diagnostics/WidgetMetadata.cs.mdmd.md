@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgetmetadata-cs
-- Generated At: 2026-02-03T21:55:47.115Z
+- Generated At: 2026-09-27T18:34:30.610Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Tracks the `WidgetMetadata` value type leveraged by the C# advanced symbols fixt
 Retain the constructor guardrails and `WithTag` helper so dependency analysis keeps seeing enrichment paths.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.115Z","inputHash":"9f15c4c9c31f5b22"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.610Z","inputHash":"4249c034d704e6fa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WidgetMetadata (struct)` {#symbol-widgetmetadata-struct}
 - Type: struct
-- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs#L5)
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs#L7)
 
 #### `WidgetMetadata (constructor)` {#symbol-widgetmetadata-constructor}
 - Type: constructor
@@ -38,9 +38,14 @@ Retain the constructor guardrails and `WithTag` helper so dependency analysis ke
 - Type: property
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs#L20)
 
+#### `Empty` {#symbol-empty}
+- Type: property
+- Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs#L22)
+
 #### `WithTag` {#symbol-withtag}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs#L24)
+- Returns: [`WidgetMetadata`](#symbol-widgetmetadata-struct)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

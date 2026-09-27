@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Hub/PaymentHub.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-hub-paymenthub-cs
-- Generated At: 2026-09-27T10:09:18.446Z
+- Generated At: 2026-09-27T18:34:28.262Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.446Z","inputHash":"ba0e5ef77be3cdc8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.262Z","inputHash":"70af7033fd9aac68"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentHub` {#symbol-paymenthub}
@@ -23,16 +23,29 @@ _Pending notes_
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Hub/PaymentHub.cs#L13)
 - Implements: [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
 
+##### `PaymentHub` — Summary
+The on-prem WCF hub. It does no payment work itself: it picks the payment service
+for the request's workload and environment and forwards the operation.
+
 #### `PostPayment` {#symbol-postpayment}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Hub/PaymentHub.cs#L15)
+- Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `request`: [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
 
 #### `GetPayment` {#symbol-getpayment}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Hub/PaymentHub.cs#L20)
+- Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `query`: [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Estate.Contracts`
+- [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
+- [`IPaymentService`](../Contracts/IPaymentService.cs.mdmd.md#symbol-ipaymentservice)
+- [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
+- [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
+- [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- [`ServiceRouting`](./ServiceRouting.cs.mdmd.md#symbol-servicerouting)
 <!-- LIVE-DOC:END Dependencies -->

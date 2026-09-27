@@ -42,11 +42,7 @@ A fixture that has been measured carries an `expected/` directory.
 
 `csharp/webforms` is the owner's own scenario, stated on 2025-11-06: "we use a lot of ASPX hidden fields to supply server-authored values to the client-side HTML ... sourced from a common C# configuration reference file (we tend to call ours `Globals.cs`) which itself references from a `Web.config` file ... If we can see a change in the web.config expected to propagate to the JS and break something, we've done a damn good job."
 
-The chain is `Web.config → Globals.cs → Default.aspx.cs → Default.aspx → appConfig.js`. Three of its hops are invisible to the shipped adapters today, which is why this fixture matters for the C# work:
-
-- `ConfigurationManager.AppSettings[key]` where the key is held in a constant; the adapter matches a string literal only.
-- Controls declared in `Default.aspx.designer.cs` and used from the code-behind partial class; the adapter has no partial-class handling.
-- JavaScript that reads an element id through a helper function; the DOM heuristic matches a literal inside `getElementById` or `querySelector('#…')` only.
+The chain is `Web.config → Globals.cs → Default.aspx.cs → Default.aspx → appConfig.js`. Two of its hops became visible with the tree-sitter C# adapter on 2026-09-27: `ConfigurationManager.AppSettings[key]` where the key is held in a constant, and controls declared in `Default.aspx.designer.cs` and used from the code-behind partial class. One is still invisible: JavaScript that reads an element id through a helper function, because the DOM heuristic matches a literal inside `getElementById` or `querySelector('#…')` only.
 
 The simpler form of the same chain, with literal keys and ids, lives in `tests/integration/fixtures/webforms-appsettings` and is exercised by the inspect CLI suite.
 

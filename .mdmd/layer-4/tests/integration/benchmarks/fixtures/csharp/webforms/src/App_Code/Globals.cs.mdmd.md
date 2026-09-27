@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/src/App_Code/Globals.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-webforms-src-app-code-globals-cs
-- Generated At: 2026-02-03T21:55:43.227Z
+- Generated At: 2026-09-27T18:34:28.889Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Provides configuration helpers for the WebForms benchmark, funneling app setting
 Keep the keys synchronized with the Web.config fixture; renaming them breaks the hidden-field wiring the tests rely on.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:43.227Z","inputHash":"fed63a1518ca7030"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.889Z","inputHash":"eb7130c78c7ac3b6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Globals` {#symbol-globals}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/webforms/src/App_Code/Globals.cs#L3)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/webforms/src/App_Code/Globals.cs#L5)
 
 #### `GetWidgetToggle` {#symbol-getwidgettoggle}
 - Type: method

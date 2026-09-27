@@ -18,7 +18,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import type { DependencyEntry, SourceAnalysisResult } from "../core";
+import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 
 // ============================================================================
@@ -162,20 +162,28 @@ function resolveToWorkspaceFile(
 // JSON Adapter
 // ============================================================================
 
-/** Language adapter for JSON and JSONC files. Extracts top-level keys as public symbols and detects file-path references in string values. */
+/**
+ * Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
+ * nested settings (`Hangfire:Queue`). Arrays are not descended into.
+ */
+export function collectKeyPaths(value: unknown, prefix = "", into: string[] = []): string[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return into;
+  }
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    const keyPath = prefix ? `${prefix}:${key}` : key;
+    into.push(keyPath);
+    collectKeyPaths(child, keyPath, into);
+  }
+  return into;
+}
+
+/** Language adapter for JSON and JSONC files. Publishes key paths as public symbols and detects file-path references in string values. */
 export const jsonAdapter: LanguageAdapter = {
   id: "json-config",
   extensions: [".json"],
 
   async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
-    // JSON adapter requires the file index to resolve references
-    if (!fileIndex || fileIndex.size === 0) {
-      return {
-        symbols: [],
-        dependencies: []
-      };
-    }
-
     let content: string;
     try {
       content = await fs.readFile(absolutePath, "utf8");
@@ -190,6 +198,16 @@ export const jsonAdapter: LanguageAdapter = {
       // Invalid JSON - skip silently
       return {
         symbols: [],
+        dependencies: []
+      };
+    }
+
+    const symbols: PublicSymbolEntry[] = collectKeyPaths(parsed).map((keyPath) => ({ name: keyPath, kind: "key" }));
+
+    // Reference resolution needs the file index
+    if (!fileIndex || fileIndex.size === 0) {
+      return {
+        symbols,
         dependencies: []
       };
     }
@@ -222,7 +240,7 @@ export const jsonAdapter: LanguageAdapter = {
     dependencies.sort((a, b) => (a.resolvedPath ?? "").localeCompare(b.resolvedPath ?? ""));
 
     return {
-      symbols: [], // JSON files don't export symbols in the traditional sense
+      symbols,
       dependencies
     };
   }

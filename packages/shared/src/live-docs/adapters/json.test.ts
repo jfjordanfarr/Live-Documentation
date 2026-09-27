@@ -311,10 +311,11 @@ describe("JSON Adapter", () => {
   });
 
   describe("symbols output", () => {
-    it("always returns empty symbols array (JSON has no exports)", async () => {
-      const jsonPath = path.join(tempDir, "config.json");
+    it("publishes every key path, joined the way IConfiguration addresses nested settings", async () => {
+      const jsonPath = path.join(tempDir, "appsettings.json");
       fs.writeFileSync(jsonPath, JSON.stringify({
-        entry: "./src/index.ts"
+        entry: "./src/index.ts",
+        Hangfire: { Queue: "telemetry", Workers: [1, 2] }
       }));
 
       const fileIndex: WorkspaceFileIndex = new Set(["src/index.ts"]);
@@ -325,7 +326,12 @@ describe("JSON Adapter", () => {
       });
 
       expect(result).not.toBeNull();
-      expect(result!.symbols).toHaveLength(0);
+      expect(result!.symbols.map((symbol) => `${symbol.kind} ${symbol.name}`)).toEqual([
+        "key entry",
+        "key Hangfire",
+        "key Hangfire:Queue",
+        "key Hangfire:Workers"
+      ]);
     });
   });
 });

@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json
 - Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-symbols-workspace-slopcop-config-json
-- Generated At: 2026-02-03T21:55:51.129Z
+- Generated At: 2026-09-27T18:34:31.273Z
 
 ## Authored
 ### Purpose
@@ -17,10 +17,20 @@ Configuration file driving the SlopCop symbol audit fixture, defining heading an
 - Adjust whenever lint rules evolve; document changes in fixture notes to keep expectations aligned.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.129Z","inputHash":"b9aacb5977740eac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:31.273Z","inputHash":"f5ef468e28d83fc8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `symbols` {#symbol-symbols}
+- Type: key
+
+#### `symbols:enabled` {#symbol-symbolsenabled}
+- Type: key
+
+#### `symbols:duplicateHeadingSeverity` {#symbol-symbolsduplicateheadingseverity}
+- Type: key
+
+#### `symbols:missingAnchorSeverity` {#symbol-symbolsmissinganchorseverity}
+- Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

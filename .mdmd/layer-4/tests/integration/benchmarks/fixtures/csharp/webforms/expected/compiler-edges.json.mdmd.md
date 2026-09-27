@@ -5,7 +5,7 @@
 - Archetype: asset
 - Code Path: tests/integration/benchmarks/fixtures/csharp/webforms/expected/compiler-edges.json
 - Live Doc ID: LD-asset-tests-integration-benchmarks-fixtures-csharp-webforms-expected-compiler-edges-json
-- Generated At: 2026-09-27T10:09:20.252Z
+- Generated At: 2026-09-27T18:34:28.871Z
 
 ## Authored
 ### Purpose
@@ -15,10 +15,26 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:20.252Z","inputHash":"81bbb143dc591640"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.871Z","inputHash":"b2dc04e89bd65b7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-_No public symbols detected_
+#### `tool` {#symbol-tool}
+- Type: key
+
+#### `projectFile` {#symbol-projectfile}
+- Type: key
+
+#### `projects` {#symbol-projects}
+- Type: key
+
+#### `documents` {#symbol-documents}
+- Type: key
+
+#### `edges` {#symbol-edges}
+- Type: key
+
+#### `ambiguous` {#symbol-ambiguous}
+- Type: key
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

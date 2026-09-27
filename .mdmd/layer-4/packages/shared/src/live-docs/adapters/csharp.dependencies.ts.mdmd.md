@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-dependencies-ts
-- Generated At: 2026-03-11T20:38:30.152Z
+- Generated At: 2026-09-27T18:34:26.242Z
 
 ## Authored
 ### Purpose
@@ -19,181 +19,101 @@ Extracts dependencies from C# source files, including `using` directives, config
 - **Companion Tests:** See [csharp.dependencies.unit.test.ts](./csharp.dependencies.unit.test.ts.mdmd.md) for 36 unit tests including file system operations with temp directory fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:38:30.152Z","inputHash":"a638349a98876c41"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.242Z","inputHash":"5c5579606676da9f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `ExtractDependenciesParams` {#symbol-extractdependenciesparams}
+#### `ConfigReference` {#symbol-configreference}
+- Type: interface
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L28)
+
+##### `ConfigReference` — Summary
+A configuration name the syntax tree found, with its key resolved from a literal or a constant.
+
+#### `ResolvedTypeTarget` {#symbol-resolvedtypetarget}
 - Type: interface
 - Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L34)
 
-##### `ExtractDependenciesParams` — Summary
-Parameters for dependency extraction.
+##### `ResolvedTypeTarget` — Summary
+A workspace file that declares the named type.
 
-#### `extractDependencies` {#symbol-extractdependencies}
+#### `TypeResolver` {#symbol-typeresolver}
+- Type: type
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L40)
+- Returns: [`ResolvedTypeTarget`](#symbol-resolvedtypetarget)[]
+
+##### `TypeResolver` — Summary
+Resolves a simple or qualified type name to the workspace files that declare it.
+
+#### `extractDynamicDependencies` {#symbol-extractdynamicdependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L51)
-- Parameters: `params`: [`ExtractDependenciesParams`](#symbol-extractdependenciesparams)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L43)
 
-##### `extractDependencies` — Summary
-Extracts all dependencies from a C# source file.
-
-##### `extractDependencies` — Parameters
-- `params`: Extraction parameters
-
-##### `extractDependencies` — Returns
-Array of dependency entries
+##### `extractDynamicDependencies` — Summary
+Extracts the configuration, reflection and Hangfire dependencies of one C# file.
 
 #### `collectConfigKeys` {#symbol-collectconfigkeys}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L152)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L81)
 
 ##### `collectConfigKeys` — Summary
-Collects configuration keys using a given regex pattern.
-
-##### `collectConfigKeys` — Parameters
-- `content`: Source content to search
-- `pattern`: Regex pattern with capture group for the key
-
-##### `collectConfigKeys` — Returns
-Set of matched keys
+Collects the first capture group of every match.
 
 #### `collectConfigurationIndexerKeys` {#symbol-collectconfigurationindexerkeys}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L174)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L93)
 
 ##### `collectConfigurationIndexerKeys` — Summary
-Collects configuration keys from IConfiguration indexer patterns.
-Only matches identifiers that contain "config" (case-insensitive).
-
-##### `collectConfigurationIndexerKeys` — Parameters
-- `content`: Source content to search
-
-##### `collectConfigurationIndexerKeys` — Returns
-Set of configuration keys
+Keys read through an `IConfiguration` indexer, recognised by an identifier containing "config".
 
 #### `collectTypeNameLiterals` {#symbol-collecttypenameliterals}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L201)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L106)
 
 ##### `collectTypeNameLiterals` — Summary
-Collects fully-qualified type name literals from string constants.
-Looks for patterns like "MyNamespace.MyClass" in string literals.
-
-##### `collectTypeNameLiterals` — Parameters
-- `content`: Source content to search
-
-##### `collectTypeNameLiterals` — Returns
-Set of type names
+Dotted, capitalised names inside string literals, the shape of a type name passed to reflection.
 
 #### `collectHangfireTargets` {#symbol-collecthangfiretargets}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L239)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L123)
 
 ##### `collectHangfireTargets` — Summary
-Collects Hangfire background job target types.
-Detects BackgroundJob.Enqueue<T>, RecurringJob.AddOrUpdate<T>, etc.
-
-##### `collectHangfireTargets` — Parameters
-- `content`: Source content to search
-
-##### `collectHangfireTargets` — Returns
-Set of target type names
+Job types named in `BackgroundJob.Enqueue<T>`, `RecurringJob.AddOrUpdate<T>` and their instance forms.
 
 #### `collectTypeIdentifiers` {#symbol-collecttypeidentifiers}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L296)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L152)
 
 ##### `collectTypeIdentifiers` — Summary
-Collects variable identifiers declared with a specific type.
-
-##### `collectTypeIdentifiers` — Parameters
-- `content`: Source content to search
-- `typeName`: Type name to search for (e.g., "IRecurringJobManager")
-
-##### `collectTypeIdentifiers` — Returns
-Set of variable identifiers
+Variable identifiers declared with the given type name.
 
 #### `locateNearestFile` {#symbol-locatenearestfile}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L321)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L164)
 
 ##### `locateNearestFile` — Summary
-Locates the nearest file matching one of the candidate names,
-searching from the source file's directory up to the workspace root.
-
-##### `locateNearestFile` — Parameters
-- `candidates`: List of filenames to search for
-- `sourcePath`: Path to the source file
-- `workspaceRoot`: Workspace root directory
-
-##### `locateNearestFile` — Returns
-Normalized workspace-relative path, or undefined if not found
+The nearest file with one of the candidate names, from the source file's directory up to the workspace root.
 
 #### `fileExists` {#symbol-fileexists}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L357)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L183)
 
 ##### `fileExists` — Summary
-Checks if a file exists at the given path.
-
-##### `fileExists` — Parameters
-- `candidate`: Path to check
-
-##### `fileExists` — Returns
-True if the file exists
+True when the path names an existing file.
 
 #### `resolveReflectionTargets` {#symbol-resolvereflectiontargets}
 - Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L374)
-- Returns: [`PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry)[]
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L192)
+- Returns: [`DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry)[]
+- Parameters: `resolveType`: [`TypeResolver`](#symbol-typeresolver)
 
 ##### `resolveReflectionTargets` — Summary
-Resolves reflection target type names to workspace files.
-
-##### `resolveReflectionTargets` — Parameters
-- `extractSymbolsFn`: Optional function to extract symbols from file content
-- `typeNames`: Array of fully-qualified type names
-- `workspaceRoot`: Workspace root directory
-
-##### `resolveReflectionTargets` — Returns
-Array of resolved dependency entries
-
-#### `resolveReflectionTarget` {#symbol-resolvereflectiontarget}
-- Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L399)
-- Returns: [`PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry)[]
-
-##### `resolveReflectionTarget` — Summary
-Resolves a single reflection target type name to a workspace file.
-
-##### `resolveReflectionTarget` — Parameters
-- `extractSymbolsFn`: Optional function to extract symbols from file content
-- `typeName`: Fully-qualified type name (e.g., "MyNamespace.MyClass")
-- `workspaceRoot`: Workspace root directory
-
-##### `resolveReflectionTarget` — Returns
-Resolved dependency entry, or undefined if not found
-
-#### `readFileSafe` {#symbol-readfilesafe}
-- Type: function
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/csharp.dependencies.ts#L462)
-
-##### `readFileSafe` — Summary
-Safely reads a file, returning undefined on error.
-
-##### `readFileSafe` — Parameters
-- `filePath`: Path to the file
-
-##### `readFileSafe` — Returns
-File content or undefined
+One dependency per workspace file that declares any of the named types, carrying the type names as symbols.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob` - `glob`
 - `node:fs` - `promises`
 - `node:path` - `path`
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
-- [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

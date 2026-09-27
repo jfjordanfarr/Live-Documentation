@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-portal-app-code-globals-cs
-- Generated At: 2026-09-27T10:09:19.953Z
+- Generated At: 2026-09-27T18:34:28.409Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:19.953Z","inputHash":"afb3f52837318cf4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.409Z","inputHash":"41e883132ec525ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Globals` {#symbol-globals}
@@ -37,9 +37,14 @@ here so that a renamed key breaks in one file.
 #### `GatewayBaseUrl` {#symbol-gatewaybaseurl}
 - Type: property
 - Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L14)
+
+#### `PaymentsEnabled` {#symbol-paymentsenabled}
+- Type: property
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Portal/App_Code/Globals.cs#L15)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Web.Portal.GatewayBaseUrl`](../Web.config.mdmd.md#symbol-portalgatewaybaseurl)
+- [`Web.Portal.PaymentsEnabled`](../Web.config.mdmd.md#symbol-portalpaymentsenabled)
 <!-- LIVE-DOC:END Dependencies -->

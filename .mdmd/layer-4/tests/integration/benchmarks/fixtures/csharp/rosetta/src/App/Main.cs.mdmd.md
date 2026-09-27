@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/Main.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-rosetta-src-app-main-cs
-- Generated At: 2026-02-03T21:55:42.969Z
+- Generated At: 2026-09-27T18:34:28.634Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.969Z","inputHash":"446f495b066bcbb4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.634Z","inputHash":"c73643f1443bba39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main` {#symbol-main}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/Main.cs#L11)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/App/Main.cs#L12)
 
 ##### `Main` — Summary
 Entry point for the Rosetta benchmark fixture.
@@ -44,6 +44,7 @@ Formatted summary of the processing results
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Rosetta.Models`
-- `Rosetta.Processor`
+- [`ModelFactory`](../Models/ModelFactory.cs.mdmd.md#symbol-modelfactory)
+- [`Report`](../Models/Report.cs.mdmd.md#symbol-report-class)
+- [`Processor`](../Processor/Processor.cs.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->

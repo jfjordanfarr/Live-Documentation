@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-csharp-rosetta-src-processor-processortests-cs
-- Generated At: 2026-03-11T20:38:31.944Z
+- Generated At: 2026-09-27T18:34:28.791Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ xUnit tests for the C# Rosetta Processor class. Part of the polyglot Rosetta Sto
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:38:31.944Z","inputHash":"c636213dc7957701"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.791Z","inputHash":"d6ea2578f57f17c2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTests` {#symbol-processortests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L14)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L15)
 
 ##### `ProcessorTests` — Summary
 Unit tests for the Processor class.
@@ -30,7 +30,7 @@ ProcessorTests.cs should automatically back Processor.cs.
 
 #### `RunTests` {#symbol-runtests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L16)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L17)
 
 #### `ProcessesRecordsAndReturnsReport` {#symbol-processesrecordsandreturnsreport}
 - Type: method
@@ -42,7 +42,7 @@ ProcessorTests.cs should automatically back Processor.cs.
 
 #### `SummarizeTests` {#symbol-summarizetests}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L44)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/rosetta/src/Processor/ProcessorTests.cs#L46)
 
 #### `FormatsReportAsHumanReadableString` {#symbol-formatsreportashumanreadablestring}
 - Type: method
@@ -51,10 +51,10 @@ ProcessorTests.cs should automatically back Processor.cs.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Rosetta.Models`
-- `Rosetta.Models.Record`
-- `Rosetta.Processor`
 - `Xunit`
+- [`Record`](../Models/Record.cs.mdmd.md#symbol-record-class)
+- [`Report`](../Models/Report.cs.mdmd.md#symbol-report-class)
+- [`Processor`](./Processor.cs.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

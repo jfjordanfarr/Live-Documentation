@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/App.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-basic-src-diagnostics-app-cs
-- Generated At: 2026-02-03T21:55:42.783Z
+- Generated At: 2026-09-27T18:34:27.928Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,12 @@ Coordinates the C# basic diagnostics benchmark by instantiating repository, form
 Keep the control flow direct; the goal is to surface namespace interactions rather than additional logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.783Z","inputHash":"b50d56addd10b608"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:27.928Z","inputHash":"2d6b16ad683b51e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}
 - Type: class
-- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/App.cs#L5)
+- Source: [source](../../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/basic/src/Diagnostics/App.cs#L7)
 
 #### `Run` {#symbol-run}
 - Type: method
@@ -29,7 +29,9 @@ Keep the control flow direct; the goal is to surface namespace interactions rath
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Diagnostics.Data`
-- `Diagnostics.Models`
-- `Diagnostics.Services`
+- [`Repository`](./Data/Repository.cs.mdmd.md#symbol-repository)
+- [`FormattedReport`](./Models/FormattedReport.cs.mdmd.md#symbol-formattedreport)
+- [`Formatter`](./Models/Formatter.cs.mdmd.md#symbol-formatter)
+- [`Record`](./Models/Record.cs.mdmd.md#symbol-record)
+- [`ReportService`](./Services/ReportService.cs.mdmd.md#symbol-reportservice-class)
 <!-- LIVE-DOC:END Dependencies -->

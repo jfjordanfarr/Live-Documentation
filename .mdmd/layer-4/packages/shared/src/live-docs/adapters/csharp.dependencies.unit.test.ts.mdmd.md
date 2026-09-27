@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-dependencies-unit-test-ts
-- Generated At: 2026-02-03T21:55:39.631Z
+- Generated At: 2026-09-27T18:34:26.271Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests for the C# dependency extraction module, validating correct detection
 - **Created:** 2025-12-10 during the `csharp.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.631Z","inputHash":"efb8d00a0a305291"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.271Z","inputHash":"2b5e9ecf6645057d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,7 +26,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./csharp.dependencies` - `collectConfigKeys`, `collectConfigurationIndexerKeys`, `collectHangfireTargets`, `collectTypeIdentifiers`, `collectTypeNameLiterals`, `fileExists`, `locateNearestFile`, `readFileSafe`, `resolveReflectionTarget`
+- `./csharp.dependencies` - `collectConfigKeys`, `collectConfigurationIndexerKeys`, `collectHangfireTargets`, `collectTypeIdentifiers`, `collectTypeNameLiterals`, `fileExists`, `locateNearestFile`, `resolveReflectionTargets`
 - `node:fs` - `promises`
 - `node:os` - `os`
 - `node:path` - `path`

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/PaymentService/PaymentService.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-paymentservice-paymentservice-cs
-- Generated At: 2026-09-27T10:09:18.531Z
+- Generated At: 2026-09-27T18:34:28.378Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:18.531Z","inputHash":"e803732c6cfb60d0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.378Z","inputHash":"bb08f00473704848"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentService` {#symbol-paymentservice}
@@ -29,16 +29,23 @@ The on-prem WCF payment service. Posting goes through a stored procedure; lookup
 #### `Post` {#symbol-post}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/PaymentService/PaymentService.cs#L9)
+- Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `request`: [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
 
 #### `Get` {#symbol-get}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/PaymentService/PaymentService.cs#L23)
+- Returns: [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- Parameters: `query`: [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `Estate.Contracts`
-- `Estate.Payments.Data`
-- `newPaymentsContext()){Paymentpayment`
-- `newPaymentsContext()){PostPaymentRowrow`
+- [`IPaymentService`](../Contracts/IPaymentService.cs.mdmd.md#symbol-ipaymentservice)
+- [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md#symbol-paymentquery)
+- [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
+- [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
+- [`Payment`](./Data/Payment.cs.mdmd.md#symbol-payment)
+- [`PaymentsContext`](./Data/PaymentsContext.cs.mdmd.md#symbol-paymentscontext-class)
+- [`PostPaymentRow`](./Data/PostPaymentRow.cs.mdmd.md#symbol-postpaymentrow)
 <!-- LIVE-DOC:END Dependencies -->

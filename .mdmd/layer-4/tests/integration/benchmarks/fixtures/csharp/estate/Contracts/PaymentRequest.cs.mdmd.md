@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs
 - Live Doc ID: LD-implementation-tests-integration-benchmarks-fixtures-csharp-estate-contracts-paymentrequest-cs
-- Generated At: 2026-09-27T10:09:16.945Z
+- Generated At: 2026-09-27T18:34:28.118Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,31 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:09:16.945Z","inputHash":"77a3209008e58b74"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:28.118Z","inputHash":"9fb5f012a539507b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentRequest` {#symbol-paymentrequest}
 - Type: class
 - Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs#L7)
+
+##### `PaymentRequest` — Summary
+A payment to post. Workload and Environment are stamped by the gateway, never by the browser.
+
+#### `AccountNumber` {#symbol-accountnumber}
+- Type: property
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs#L9)
+
+#### `Amount` {#symbol-amount}
+- Type: property
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs#L10)
+
+#### `Workload` {#symbol-workload}
+- Type: property
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs#L11)
+
+#### `Environment` {#symbol-environment}
+- Type: property
+- Source: [source](../../../../../../../../../tests/integration/benchmarks/fixtures/csharp/estate/Contracts/PaymentRequest.cs#L12)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

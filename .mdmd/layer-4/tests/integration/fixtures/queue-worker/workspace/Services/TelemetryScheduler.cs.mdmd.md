@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs
 - Live Doc ID: LD-implementation-tests-integration-fixtures-queue-worker-workspace-services-telemetryscheduler-cs
-- Generated At: 2026-02-03T21:55:50.334Z
+- Generated At: 2026-09-27T18:34:30.792Z
 
 ## Authored
 ### Purpose
@@ -15,16 +15,17 @@ Document the recurring Hangfire registration so LD-402 captures scheduled teleme
 Calls the Hangfire recurring manager directly to keep the pathfinder's inbound edges honest when configuration feeds the worker and controller through scheduled hops.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.334Z","inputHash":"8097fad89f8ed80f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.792Z","inputHash":"a03ee132f234d329"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryScheduler (class)` {#symbol-telemetryscheduler-class}
 - Type: class
-- Source: [source](../../../../../../../../tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs#L4)
+- Source: [source](../../../../../../../../tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs#L6)
 
 #### `TelemetryScheduler (constructor)` {#symbol-telemetryscheduler-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs#L10)
+- Parameters: `recurringJobs`: `IRecurringJobManager`
 
 #### `Configure` {#symbol-configure}
 - Type: method
@@ -34,6 +35,5 @@ Calls the Hangfire recurring manager directly to keep the pathfinder's inbound e
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `Hangfire`
-- `QueueWorker.Workers`
 - [`TelemetryWorker`](../Workers/TelemetryWorker.cs.mdmd.md#symbol-telemetryworker-class)
 <!-- LIVE-DOC:END Dependencies -->

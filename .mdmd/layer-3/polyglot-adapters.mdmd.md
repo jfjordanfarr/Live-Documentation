@@ -10,50 +10,48 @@
 
 ### Purpose
 
-Document the polyglot adapter subsystem that extracts symbols and dependencies from source files across 12+ languages, enabling Live Documentation generation without requiring language-specific compilers or interpreters at runtime.
+Document the language adapters that turn a source file into its public symbols, its dependencies and its documentation, so that Live Documentation can be generated for a polyglot workspace without shelling out to each language's toolchain.
 
 ### Notes
 
-- Adapters reside in `packages/shared/src/live-docs/adapters/` and implement a common `LanguageAdapter` interface.
-- Each adapter uses regex-based parsing to extract public symbols, dependencies, and docstring content. This is a deliberate design choice—adapters run in pure JavaScript/TypeScript without shelling out to compilers.
-- **Only TypeScript has a true compiler-backed oracle** (via `import ts from "typescript"`). All other adapters are sophisticated regex parsers that approximate the behaviour of their respective language's import/module resolution.
-- Docstring extraction varies by language:
-  - **Python**: Supports NumPy, Google, and reStructuredText docstring formats (`python.docstring.ts`)
-  - **C#**: Parses XML documentation comments including `<summary>`, `<param>`, `<returns>`, `<exception>` (`csharp.xmldoc.ts`)
-  - **C**: Extracts Doxygen-style `/** */` comments (`c.ts`)
-- The adapter barrel (`adapters/index.ts`) exports `analyzeWithLanguageAdapters()` which orchestrates analysis across the full adapter suite.
+- Adapters live in `packages/shared/src/live-docs/adapters/` and implement one `LanguageAdapter` interface: `analyze({ absolutePath, workspaceRoot, fileIndex })` returns symbols and dependencies for one file. The barrel (`adapters/index.ts`) dispatches by file extension; TypeScript and JavaScript are handled by the core with the TypeScript compiler API instead.
+- **C# is parsed with tree-sitter** (`csharp.ts`, since 2026-09-27). The grammar comes from `@vscode/tree-sitter-wasm` and runs on `web-tree-sitter` (`treeSitter.ts`); that package's own JavaScript entry cannot be required from Node, so only its `.wasm` files are used. The adapter extracts each file's declarations and every name it uses, builds a workspace-wide table of qualified type names once per generation run (cached on the file index), and resolves names the way the compiler does: enclosing types, then enclosing namespaces from the inside out, then `using` directives and aliases. A partial class is linked to the peer file that declares the members it uses. Per-file facts are cached by modification time, so the symbol-index pass and the document pass parse each file once.
+- **What no compiler sees** is handled by `csharp.dependencies.ts`: `ConfigurationManager.AppSettings[...]` and `ConnectionStrings[...]` keys (literals, or constants declared in this file or another), `ChannelFactory<T>(name)` endpoint names, `IConfiguration` indexer keys, types named in strings for reflection, and Hangfire job targets. Those resolve through the same type table.
+- **Configuration files publish what code reaches into them by.** `.config` files (`dotnetConfig.ts`) publish appSettings keys, connection-string names, WCF endpoint names and service names, and depend on the types their `contract` and `service name` attributes name. JSON files (`json.ts`) publish every key path joined with `:`, the way `IConfiguration` addresses nested settings. Markup files (`aspnet.ts`, `html.ts`) publish element ids. This is what lets a generated link to a key, an endpoint or an element land on a real anchor.
+- The other languages still use hand-written scanners. Their docstring extraction varies: Python supports NumPy, Google and reStructuredText (`python.docstring.ts`); C# parses XML documentation comments (`csharp.xmldoc.ts`); C extracts Doxygen-style comments (`c.ts`).
 
 ### Adapter Inventory
 
-| Adapter        | File                     | Languages/Extensions         | Special Features                         |
-| -------------- | ------------------------ | ---------------------------- | ---------------------------------------- |
-| **TypeScript** | (core, not in adapters/) | `.ts`, `.tsx`, `.js`, `.jsx` | Compiler-backed, full AST                |
-| **Python**     | `python.ts`              | `.py`                        | NumPy/Google/reST docstrings             |
-| **C#**         | `csharp.ts`              | `.cs`                        | XML doc + dependency inference           |
-| **Java**       | `java.ts`                | `.java`                      | Package imports, same-package resolution |
-| **Rust**       | `rust.ts`                | `.rs`                        | `use`, `mod`, `pub` paths                |
-| **Ruby**       | `ruby.ts`                | `.rb`                        | `require`, `require_relative`            |
-| **Go**         | `go.ts`                  | `.go`                        | `import` blocks, test file skipping      |
-| **C**          | `c.ts`                   | `.c`, `.h`                   | `#include`, function body scoping        |
-| **PowerShell** | `powershell.ts`          | `.ps1`, `.psm1`              | Comment-based help blocks                |
-| **HTML**       | `html.ts`                | `.html`, `.htm`              | Asset references (scripts, stylesheets)  |
-| **CSS**        | `css.ts`                 | `.css`                       | `@import`, `url()` references            |
-| **JSON**       | `json.ts`                | `.json`                      | Schema and reference detection           |
-| **ASP.NET**    | `aspnet.ts`              | `.aspx`, `.ascx`, `.master`  | Code-behind linking                      |
+| Adapter         | File                     | Languages/Extensions         | What it extracts                                                                     |
+| --------------- | ------------------------ | ---------------------------- | ------------------------------------------------------------------------------------ |
+| **TypeScript**  | (core, not in adapters/) | `.ts`, `.tsx`, `.js`, `.jsx` | Compiler-backed, full AST                                                            |
+| **C#**          | `csharp.ts`              | `.cs`                        | tree-sitter; types, members, XML docs, signatures; compiler-style name resolution    |
+| **.NET config** | `dotnetConfig.ts`        | `.config`                    | Settings, connection strings, WCF endpoints and services; contract and service types |
+| **Python**      | `python.ts`              | `.py`                        | NumPy/Google/reST docstrings                                                         |
+| **Java**        | `java.ts`                | `.java`                      | Package imports, same-package resolution                                             |
+| **Rust**        | `rust.ts`                | `.rs`                        | `use`, `mod`, `pub` paths                                                            |
+| **Ruby**        | `ruby.ts`                | `.rb`                        | `require`, `require_relative`                                                        |
+| **Go**          | `go.ts`                  | `.go`                        | `import` blocks, test file skipping                                                  |
+| **C**           | `c.ts`                   | `.c`, `.h`                   | `#include`, function body scoping                                                    |
+| **PowerShell**  | `powershell.ts`          | `.ps1`, `.psm1`              | Comment-based help blocks                                                            |
+| **HTML**        | `html.ts`                | `.html`, `.htm`              | Asset references; element ids as symbols                                             |
+| **CSS**         | `css.ts`                 | `.css`                       | `@import`, `url()` references                                                        |
+| **JSON**        | `json.ts`                | `.json`                      | Key paths as symbols; file-path references                                           |
+| **ASP.NET**     | `aspnet.ts`              | `.aspx`, `.ascx`, `.master`  | Code-behind and script links; element ids as symbols                                 |
 
 ### Supporting Modules
 
-- **`csharp.dependencies.ts`**: Deep dependency inference for C# including configuration keys, type name literals, and indexer patterns.
-- **`csharp.xmldoc.ts`**: Full XML documentation comment parser with multi-paragraph support.
-- **`python.docstring.ts`**: Stateful docstring parser supporting all major Python docstring conventions.
+- **`treeSitter.ts`**: one parser per grammar, loaded on first use.
+- **`csharp.dependencies.ts`**: the C# dependencies no compiler sees (configuration, reflection, Hangfire).
+- **`csharp.xmldoc.ts`**: XML documentation comment parser with multi-paragraph support.
+- **`python.docstring.ts`**: stateful docstring parser supporting the major Python docstring conventions.
 
 ### Strategy
 
-- Measure every adapter against a compiler-backed oracle (SCIP indexes) that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md).
-- Replace the regex scanners with tree-sitter, C# first, as the vision's order of work states.
-- Extend docstring extraction to Java (Javadoc) and Rust (`///` comments) to improve Live Doc richness.
-- **C# nested public types**: The current C# adapter extracts nested classes (`public class Outer { public class Inner { } }`) as flat sibling symbols. The [Membrane Map](membrane-map.mdmd.md) requires hierarchical pins for these types. Enhancement: track brace depth during symbol extraction, maintain a stack of enclosing type names, and emit qualified names (`Outer.Inner`).
-- **C# namespace mode**: The [Membrane Map](membrane-map.mdmd.md) supports an optional namespace-based hierarchy for C# (where namespaces frequently span directories). No shipped adapter records a file's namespace yet; it arrives with the tree-sitter C# adapter.
+- Every adapter is measured against a compiler-backed oracle that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md). The C# adapter matches every compiler edge on the two measured fixtures.
+- Replace the remaining scanners with tree-sitter, one language at a time, each measured the same way.
+- Extend docstring extraction to Java (Javadoc) and Rust (`///` comments).
+- The C# adapter records each type's namespace-qualified name (`Outer.Inner` for nested types), which is what the [Membrane Map](membrane-map.mdmd.md)'s namespace-based hierarchy needs; no view reads it yet.
 
 ## System References
 
@@ -65,6 +63,8 @@ Document the polyglot adapter subsystem that extracts symbols and dependencies f
 - [packages/shared/src/live-docs/adapters/csharp.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/csharp.xmldoc.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/csharp.dependencies.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.dependencies.ts.mdmd.md)
+- [packages/shared/src/live-docs/adapters/treeSitter.ts](../layer-4/packages/shared/src/live-docs/adapters/treeSitter.ts.mdmd.md)
+- [packages/shared/src/live-docs/adapters/dotnetConfig.ts](../layer-4/packages/shared/src/live-docs/adapters/dotnetConfig.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/java.ts](../layer-4/packages/shared/src/live-docs/adapters/java.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/rust.ts](../layer-4/packages/shared/src/live-docs/adapters/rust.ts.mdmd.md)
 - [packages/shared/src/live-docs/adapters/ruby.ts](../layer-4/packages/shared/src/live-docs/adapters/ruby.ts.mdmd.md)
