@@ -5,109 +5,81 @@
 - Layer: 1
 - Guide Type: getting-started
 
-Live Documentation transforms any codebase into a **navigable, shareable, falsifiable graph of knowledge**. This guide walks you through your first session: from installation to visual exploration.
+Live Documentation turns a folder of source files into a map you can look at. This guide walks through a first session: install, generate the markdown mirror, build the Explorer, trace a dependency.
 
 ---
 
 ## Prerequisites
 
-- **Node.js 22.x** (see `.nvmrc`)
-- **Git** for version control
-- **VS Code 1.91+** (optional — CLI works standalone)
+- **Node.js 22** (see `.nvmrc`)
+- **Git**
 
 ---
 
 ## Installation
 
-### From Source (Development)
+Live Documentation is not yet published to npm. Install from source:
 
-```powershell
-# Clone the repository
+```bash
 git clone https://github.com/jfjordanfarr/Live-Documentation.git
 cd Live-Documentation
-
-# Install dependencies
 npm install
-
-# Build all packages
 npm run build
-```
-
-### As an NPM Package (Coming Soon)
-
-```powershell
-npm install -g live-documentation
 ```
 
 ---
 
-## Your First Live Docs Session
+## Your First Session
 
-### Step 1: Generate the Documentation Mirror
+### Step 1: Generate the documentation mirror
 
-Live Documentation creates a markdown file for every source file in your workspace. Each Live Doc contains:
+Live Documentation writes one markdown file per source file. Each Live Doc has:
 
-- **Authored sections** (`Purpose`, `Notes`) — you write these
-- **Generated sections** (`Public Symbols`, `Dependencies`) — machine-maintained
+- **Authored sections** (`Purpose`, `Notes`), which you write and which survive regeneration
+- **Generated sections** (`Public Symbols`, `Dependencies`), which the tool maintains
 
-```powershell
-# Preview what would be created
+```bash
+# Preview what would be written
 npm run live-docs:generate -- --dry-run
 
-# Generate for real
+# Write the mirror
 npm run live-docs:generate
 ```
 
-Output lands in `.live-documentation/source/` by default (or your configured path).
+Output lands in `.live-documentation/source/` by default, mirroring your source tree.
 
-### Step 2: Explore Visually
+### Step 2: Build and open the Explorer
 
-Launch the Explorer to see your codebase as an interactive graph:
+The Explorer is a static web page built from the mirror:
 
-```powershell
+```bash
 npm run live-docs:visualize
-# Opens http://localhost:3000
+npx serve dist/explorer
 ```
 
-You'll see three complementary views:
+It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Force Graph** shows the whole workspace as a physics layout, and **Knowledge Sources** reports graph statistics and health warnings. Two earlier views, Circuit Board and Local Map, are still present and are being folded into the Membrane Map. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
-| View              | Purpose                                                               |
-| ----------------- | --------------------------------------------------------------------- |
-| **Circuit Board** | Macro view — entire workspace as a treemap of interconnected clusters |
-| **Local Map**     | Micro view — focus on one file, see its symbols, trace connections    |
-| **Force Graph**   | Discovery view — physics-based clustering reveals natural groupings   |
+### Step 3: Trace a dependency path
 
-> **In progress — Membrane Map**: The Membrane Map unifies Circuit Board and Local Map into a single zoomable treemap where directories render as nested "membranes" and a continuous pin spectrum replaces discrete view modes. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md) for details.
-
-### Step 3: Trace a Dependency Path
-
-Wondering how file A connects to file B? Use the pathfinder:
-
-```powershell
+```bash
 npm run live-docs:inspect -- --from src/core/auth.ts --to src/api/endpoints.ts
 ```
 
-Or use the Explorer's Local Map: enter "From" and "To" artifacts to see the hop-by-hop chain visually.
+The same question can be asked in the Explorer: the Local Map view takes From and To artifacts, and pinning symbols in the Membrane Map follows their connections hop by hop. See [Tracing Impact](tracing-impact.mdmd.md).
 
-### Step 4: Validate Your Live Docs
+### Step 4: Validate the mirror
 
-Before committing, ensure your Live Docs are structurally sound:
-
-```powershell
+```bash
 npm run live-docs:lint
 ```
 
-This validates:
-
-- Relative links (no absolute paths)
-- Generated-marker integrity
-- Slug dialect compliance
+This checks relative links, generated-marker integrity, and slug dialect compliance.
 
 ---
 
 ## Configuration
 
-Create a `live-docs.config.json` at your repository root:
+Create `.live-docs.config.json` at the repository root and pass it with `--config`:
 
 ```json
 {
@@ -116,75 +88,59 @@ Create a `live-docs.config.json` at your repository root:
   "extension": ".md",
   "slugDialect": "github",
   "requireRelativeLinks": true,
-  "glob": ["src/**/*.{ts,tsx,js,jsx}", "lib/**/*.{ts,tsx,js,jsx}"]
+  "glob": ["src/**/*.{ts,tsx,js,jsx}", "lib/**/*.{ts,tsx,js,jsx}"],
+  "bundleExclude": ["docs/archive/**"]
 }
 ```
 
-### Key Settings
+| Setting                | Default               | Purpose                                                                            |
+| ---------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| `root`                 | `.live-documentation` | Where Live Docs are written                                                        |
+| `baseLayer`            | `source`              | Subfolder mirroring your source tree                                               |
+| `extension`            | `.md`                 | File extension for Live Docs                                                       |
+| `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`)                           |
+| `requireRelativeLinks` | `true`                | Enforce relative links so the mirror works as a repo-hosted wiki                   |
+| `glob`                 | `[...]`               | Which files receive Live Docs                                                      |
+| `bundleExclude`        | `[]`                  | Linked markdown the Explorer bundle must leave out (large archives, private notes) |
 
-| Setting                | Default               | Purpose                                                  |
-| ---------------------- | --------------------- | -------------------------------------------------------- |
-| `root`                 | `.live-documentation` | Where Live Docs are materialized                         |
-| `baseLayer`            | `source`              | Subfolder mirroring your source tree                     |
-| `extension`            | `.md`                 | File extension for Live Docs                             |
-| `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`) |
-| `requireRelativeLinks` | `true`                | Enforce relative links for repo-backed wikis             |
-| `glob`                 | `[...]`               | Which files receive Live Docs                            |
-
-Point the generator to your config:
-
-```powershell
-npm run live-docs:generate -- --config live-docs.config.json
+```bash
+npm run live-docs:generate -- --config .live-docs.config.json
 ```
 
 ---
 
 ## What Can You Do?
 
-| Task                                | How                                                                                                                                                             | Who Typically Does This            |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| **Explore structure visually**      | Launch the Explorer (`live-docs:visualize`); toggle between Circuit Board, Local Map, Membrane Map (in progress), and Force Graph | Architects, onboarders             |
-| **Trace impact before a change**    | `live-docs:inspect --from A --to B` (CLI or Local Map pathfinding)                                                                                              | Engineers, security auditors       |
-| **Understand why something exists** | Enable "Show Related Documentation" in the Force Graph to surface chat history and design notes                                                                 | Leads, researchers                 |
-| **Validate before merge**           | `live-docs:lint` blocks broken links and structural violations; integrate into your CI or pre-commit hooks                                                      | Developers, maintainers            |
-| **Consume as structured data**      | `--json` CLI flags, raw markdown, `/local-map` JSON endpoint                                                                                                    | AI coding assistants, CI pipelines |
+| Task                         | How                                                                              |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| See the shape of a codebase  | Build the Explorer and browse the Membrane Map                                   |
+| Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer        |
+| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph |
+| Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                      |
+| Consume as data              | `live-docs:inspect -- --json`, or the raw markdown                               |
 
 ---
 
 ## Daily Commands
 
-| Task                    | Command                                      |
-| ----------------------- | -------------------------------------------- |
-| Regenerate after edits  | `npm run live-docs:generate -- --changed`    |
-| Trace dependencies      | `npm run live-docs:inspect -- --from <path>` |
-| Validate structure      | `npm run live-docs:lint`                     |
-| Visualize relationships | `npm run live-docs:visualize`                |
+| Task                   | Command                                      |
+| ---------------------- | -------------------------------------------- |
+| Regenerate after edits | `npm run live-docs:generate -- --changed`    |
+| Trace dependencies     | `npm run live-docs:inspect -- --from <path>` |
+| Validate structure     | `npm run live-docs:lint`                     |
+| Rebuild the Explorer   | `npm run live-docs:visualize`                |
 
 ---
 
 ## Troubleshooting
 
-### Native Module Errors (better-sqlite3)
+### The Explorer page is blank when opened as a file
 
-If tests fail due to ABI mismatch:
+Most browsers block the page's data fetch over `file://`. Serve the folder instead (`npx serve dist/explorer`).
 
-```powershell
-npm run rebuild:better-sqlite3:force
-```
+### Broken links in Live Docs
 
-### Missing Live Docs
-
-Run the audit to find gaps:
-
-```powershell
-npm run graph:audit
-```
-
-### Broken Links in Live Docs
-
-The linter catches invalid references:
-
-```powershell
+```bash
 npm run live-docs:lint
 ```
 
@@ -192,16 +148,14 @@ npm run live-docs:lint
 
 ## Related Guides
 
-- [Tracing Impact](tracing-impact.mdmd.md) — Deep dive into dependency pathfinding
-- [Visualizing Your Codebase](visualizing-codebase.mdmd.md) — Explorer features and shareability
-- [CLI Reference](cli-reference.mdmd.md) — Complete command catalog
+- [Tracing Impact](tracing-impact.mdmd.md)
+- [Visualizing Your Codebase](visualizing-codebase.mdmd.md)
+- [CLI Reference](cli-reference.mdmd.md)
 
 ---
 
 ## What's Next?
 
-Once you're comfortable with the basics:
-
-1. **Author the `Purpose` sections** — Fill in `_Pending authored purpose_` placeholders in your Live Docs
-2. **Set up CI integration** — Add `npm run live-docs:generate` to your pipeline
-3. **Export for your team** — Use `npm run live-docs:visualize` to create shareable static bundles
+1. **Author `Purpose` sections** — replace the `_Pending authored purpose_` placeholders with the sentence a new reader needs.
+2. **Regenerate in CI** — run `npm run live-docs:generate` in your pipeline so the mirror never drifts from the code.
+3. **Share the Explorer** — `dist/explorer/` is a self-contained static site.

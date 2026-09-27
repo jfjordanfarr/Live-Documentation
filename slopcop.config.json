@@ -1,6 +1,6 @@
 {
   "ignoreGlobs": [
-    "AI-Agent-Workspace/ChatHistory/**",
+    "AI-Agent-Workspace/**",
     "AI-Agent-Workspace/tmp/**",
     ".playwright-mcp/**"
   ],

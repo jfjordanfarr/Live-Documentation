@@ -1,223 +1,97 @@
 # Internal Tooling Reference
 
 ## Metadata
+
 - Layer: 2
 - Audience: Contributors
 
-This document catalogs CLI commands and workflows used for **developing** Live Documentation — not for using it. These tools are not exposed to external adopters and should not be documented in Layer 1 guides.
+Commands used to **develop** Live Documentation, as opposed to using it. Adopters never need these; the user-facing catalog is the [CLI Reference](../layer-1/guides/cli-reference.mdmd.md). Several of these tools are scheduled for removal or replacement; the order of work is in [the vision](../layer-1/vision.mdmd.md).
 
 ---
 
-## When to Use This Reference
-
-| Situation | Relevant Section |
-|-----------|------------------|
-| Preparing a commit | [Pre-Commit Pipeline](#precommit-pipeline) |
-| Debugging graph issues | [Graph Tooling](#graph-tooling-deprecated--removed-20260112) |
-| Validating markdown quality | [SlopCop Audits](#slopcop-audits) |
-| Running benchmarks | [Testing & Benchmarks](#testing--benchmarks) |
-| Managing test fixtures | [Fixture Management](#fixture-management) |
-
----
-
-## Pre-Commit Pipeline
+## Pre-commit gate
 
 ### `npm run safe:commit`
 
-The definitive readiness gate before commits. Chains:
+Runs, in order:
 
-1. ESLint + Prettier checks
-2. Unit tests (Vitest)
-3. Integration tests
-4. Graph snapshot + audit
-5. SlopCop markdown/asset validation
-6. Live Docs generation + lint
+1. `verify`: ESLint, Vitest unit tests, the VS Code integration suite, documentation link enforcement
+2. Live Docs regeneration (`live-docs:generate`)
+3. Fixture workspace verification (`fixtures:verify`)
+4. Documentation link enforcement (`docs:links:enforce`)
+5. Live Docs lint and precision report (`livedocs -- --skip-generate --report`)
+6. SlopCop markdown, asset and symbol audits
+7. Technical debt detection (`tech-debt -- --stale-limit 10`)
 
-```powershell
-# Standard check
-npm run safe:commit
+Flags: `--benchmarks` appends the AST accuracy benchmark; `--e2e` appends an Explorer build and the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
 
-# Include benchmark suites (slower)
-npm run safe:commit -- --benchmarks
+The integration suite launches VS Code through `@vscode/test-electron`. On Linux, run the gate under `xvfb-run -a`. If your terminal was spawned by VS Code, unset `ELECTRON_RUN_AS_NODE` first, or Electron starts as plain Node and fails to load the test workspace:
 
-# Skip git status enforcement (for CI)
-npm run safe:commit -- --skip-git-status
+```bash
+env -u ELECTRON_RUN_AS_NODE xvfb-run -a npm run safe:commit
 ```
-
-### `npm run ci-check`
-
-CI-friendly variant that skips git status enforcement by default.
 
 ### `npm run verify`
 
-Aggregates lint + unit + integration without full SlopCop or graph auditing. Faster for mid-development validation.
+Lint, unit and integration tests, and link enforcement, without the rest of the chain. `--mode ast` adds the AST benchmark; `--report` refreshes `reports/test-report.ast.md`.
 
 ---
 
-## Graph Tooling *(Deprecated — Removed 2026-01-12)*
+## Tests
 
-> **Note**: The `graph:*` commands were removed during the Edge Aggregation Consolidation (Phase 6). Their functionality has been replaced by `live-docs:*` commands that operate directly on the Live Doc markdown graph. See [edge-aggregation-consolidation.mdmd.md](work-items/edge-aggregation-consolidation.mdmd.md) for migration details.
->
-> - `graph:snapshot` → replaced by `live-docs:generate`
-> - `graph:audit` → replaced by `live-docs:lint`
-> - `graph:inspect` → replaced by `live-docs:inspect`
+| Command                    | What it runs                                                                                                                                                                       |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run test:unit`        | Vitest across `packages/*/src`, `scripts/` and the SlopCop suites; no VS Code required                                                                                             |
+| `npm run test:integration` | Mocha suites under the VS Code Electron harness (`tests/integration/`), including CLI pathfinding across languages, cross-language Rosetta parity, and polyglot fixture generation |
+| `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                                    |
+| `npm run test:benchmarks`  | AST accuracy benchmark over `tests/integration/benchmarks/fixtures`; `--mode ast` or `--mode all`                                                                                  |
 
-The legacy SQLite/JSON snapshot infrastructure (`GraphStore`, `RippleAnalyzer`, `scripts/graph-tools/`) was deleted to reduce maintenance burden. Live Docs now serve as the canonical graph database.
-
-~~### `npm run graph:snapshot`~~ *(removed)*
-
-~~Rebuilds the workspace graph (SQLite database + JSON fixture).~~
-
-~~### `npm run graph:audit`~~ *(removed)*
-
-~~Flags files missing Live Docs, orphan documents, and symbol coverage gaps.~~
-
-~~### `npm run graph:inspect`~~ *(removed)*
-
-~~Low-level querying of the graph database.~~
+The benchmark currently scores an inference path the product does not ship, against per-fixture thresholds. Rebuilding it around the shipped adapters and SCIP ground truth is step 2 of the vision's order of work.
 
 ---
 
-## Live Doc Replacements
+## SlopCop audits
 
-| Removed Command | Replacement | Notes |
-|-----------------|-------------|-------|
-| `graph:snapshot` | `live-docs:generate` | Live Docs are now the graph |
-| `graph:audit` | `live-docs:lint` | Validates Live Doc structure and coverage |
-| `graph:inspect` | `live-docs:inspect` | Queries the Live Doc graph with `--from`/`--to` pathfinding |
+Markdown and asset hygiene for every `.md` in the repository. The historical `AI-Agent-Workspace/` is excluded; see `slopcop.config.json`.
 
----
+| Command                    | Checks                                                                    |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `npm run slopcop:markdown` | Relative links resolve; heading anchors match the configured slug dialect |
+| `npm run slopcop:assets`   | HTML and CSS asset references resolve                                     |
+| `npm run slopcop:symbols`  | Live Doc symbol anchors are well-formed                                   |
 
-## SlopCop Audits
-
-SlopCop is our internal markdown quality enforcement suite. Named after "sloppy copy" — it catches LLM-generated documentation drift.
-
-### `npm run slopcop:markdown`
-
-Validates all markdown links against the configured slug dialect (GitHub, Azure DevOps, GitLab).
-
-```powershell
-npm run slopcop:markdown -- --json
-```
-
-**What it checks:**
-- Broken relative links
-- Incorrect heading anchor slugs
-- Absolute paths that should be relative
-
-### `npm run slopcop:assets`
-
-Validates asset references (images, CSS, HTML) in markdown files.
-
-```powershell
-npm run slopcop:assets -- --json
-```
-
-### `npm run slopcop:symbols`
-
-Verifies heading anchors match expected patterns. Opt-in — enable once Live Doc generation stabilizes.
-
-```powershell
-npm run slopcop:symbols -- --json
-```
+All accept `--json`.
 
 ---
 
-## Testing & Benchmarks
+## Fixtures
 
-### Unit Tests
+| Command                            | Purpose                                                                                             |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `npm run fixtures:verify`          | Scenario workspaces pass their SlopCop configs; the benchmark manifest is complete and hashes match |
+| `npm run fixtures:update-hashes`   | Re-record fixture hashes after an intentional fixture change                                        |
+| `npm run fixtures:regenerate`      | Regenerate benchmark expectations (needs the SCIP indexers installed in the devcontainer)           |
+| `npm run fixtures:sync-docs`       | Sync the AST benchmark documentation with current output                                            |
+| `npm run fixtures:record-fallback` | Record fallback-inference output for the benchmark; goes away with that path                        |
 
-```powershell
-npm run test:unit
-```
-
-Uses Vitest. Fast, no VS Code host required.
-
-### Integration Tests
-
-```powershell
-npm run test:integration
-```
-
-Runs VS Code extension integration tests. Requires VS Code installed.
-
-### Contract Tests
-
-```powershell
-npm run test:contracts
-```
-
-Validates server protocol contracts.
-
-### Benchmark Suites
-
-```powershell
-# Both modes
-npm run test:benchmarks -- --mode all --report
-
-# AST extraction accuracy
-npm run test:benchmarks -- --mode ast
-
-# Self-similarity detection
-npm run test:benchmarks -- --mode self-similarity
-```
-
-**Output:**
-- `reports/test-report.ast.md` — AST benchmark results
-- `reports/test-report.self-similarity.md` — Self-similarity results
-- `reports/benchmarks/<mode>/` — Versioned JSON history
+The fixture corpora under `tests/integration/` are the durable part: the eight-language Rosetta apps, vendored real repositories, and hand-authored scenario workspaces (reflection, WebForms and Razor configuration, queue workers). Keep those; the scripts around them will shrink.
 
 ---
 
-## Fixture Management
+## Other maintainer commands
 
-### `npm run fixtures:verify`
-
-Validates all repository fixtures remain in sync with expectations.
-
-```powershell
-npm run fixtures:verify -- --workspace /path/to/repo
-```
-
-**What it checks:**
-- Fixture workspaces pass SlopCop audits (per-fixture config)
-- Benchmark fixture integrity (git clone, file count)
-- Manifest entries are complete
-
-### `npm run fixtures:regenerate`
-
-Rebuilds benchmark fixtures from source.
-
-### `npm run fixtures:record-fallback`
-
-Records fallback inference fixtures for edge case testing.
-
-### `npm run fixtures:sync-docs`
-
-Syncs AST documentation fixtures with current analyzer output.
+| Command                                   | Purpose                                                                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                              |
+| `npm run live-docs:orphans`               | Live Docs whose source file no longer exists                                                                  |
+| `npm run live-docs:report`                | Precision and recall of generated sections against a re-run of the same analyzer. Tautological; being removed |
+| `npm run tech-debt`                       | Flags large and long-unmodified files. Being removed                                                          |
+| `npm run audit:network`                   | Asserts no network calls in product code. Being removed; the product makes none                               |
+| `npm run build`                           | `tsc` for shared, scripts, server and extension                                                               |
 
 ---
 
-## Build
+## Related
 
-### `npm run build`
-
-Builds all workspaces (shared, scripts, server, extension).
-
----
-
-## Relationship to External Commands
-
-| Internal Command | External Equivalent | Notes |
-|------------------|---------------------|-------|
-| `slopcop:markdown` | `live-docs:lint` | Lint covers Live Doc structure; SlopCop covers all markdown |
-| `safe:commit` | None | External users validate with `live-docs:lint` only |
-| `test:*` | None | External users don't run our test suites |
-
----
-
-## Related Documentation
-
-- [copilot-instructions.md](../../.github/copilot-instructions.md) — Commands section for quick reference
-- [Layer 1 CLI Reference](../layer-1/guides/cli-reference.mdmd.md) — External-facing commands
-- [Falsifiability Requirements](falsifiability-requirements.mdmd.md) — Why we test what we test
+- [AGENTS.md](../../AGENTS.md) — working rules and the commands that matter day to day
+- [CLI Reference](../layer-1/guides/cli-reference.mdmd.md) — user-facing commands

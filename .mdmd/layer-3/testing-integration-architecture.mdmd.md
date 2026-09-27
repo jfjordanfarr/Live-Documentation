@@ -7,7 +7,7 @@
 ## Components
 
 ### COMP-008 Integration Test Harness
-Supports FR-LD1 through FR-LD6 plus REQ-F1 to REQ-F6 by executing end-to-end scenarios that validate Live Documentation regeneration, diagnostics accuracy, knowledge ingestion, and ripple behaviour across the built extension and server.
+Executes end-to-end scenarios against compiled output: Live Documentation regeneration, evidence population, CLI pathfinding across languages, cross-language parity, and the SlopCop audits.
 
 ## Responsibilities
 
@@ -16,13 +16,16 @@ Supports FR-LD1 through FR-LD6 plus REQ-F1 to REQ-F6 by executing end-to-end sce
 - Launch the VS Code harness (`tests/integration/vscode/runTests.ts`) to execute suites against compiled output rather than source mocks.
 
 ### Fixture Stewardship
-- Maintain the simple workspace fixture (`tests/integration/fixtures/simple-workspace`) as the canonical testbed for US1–US4.
-- Provide specialised fixtures (LLM ingestion payloads, benchmark repos) for targeted suites without duplicating workspace state.
+- Maintain the simple workspace fixture (`tests/integration/fixtures/simple-workspace`) as the canonical testbed for the generation and evidence suites.
+- Provide specialised fixtures (scenario workspaces, the eight-language Rosetta apps, vendored benchmark repositories) for targeted suites without duplicating workspace state.
 
 ### Scenario Coverage
-- Ensure suites `us1` through `us5` cover writer, developer, scope collision, acknowledgement, and transform ripple flows.
-- Add Live Documentation suites (`live-docs-generation`, `live-docs-evidence`, `live-docs-inspect-cli`, `live-docs-docstring-drift`) validating regeneration determinism, evidence population, CLI parity, and drift remediation.
-- Keep suite responsibilities mapped back to runtime components (Live Doc generator, diagnostics pipeline, knowledge ingestion, LLM bridge) for traceability.
+- `live-docs/generation.test.ts` and `live-docs/evidence.test.ts`: regeneration determinism, authored-section preservation, evidence population.
+- `live-docs/inspect-cli.test.ts`: CLI pathfinding across languages.
+- `live-docs/rosettaParity.test.ts` and `live-docs/polyglot-fixtures.test.ts`: the same application in eight languages produces the same shape, and every adapter generates cleanly.
+- `live-docs/system-output.test.ts`: on-demand system views.
+- `slopcop/*.test.ts` and `benchmarks/astAccuracy.test.ts`: the audits and the accuracy benchmark (the benchmark is being rebuilt; see [Architectural Decisions](architectural-decisions.mdmd.md)).
+- The ripple and diagnostics suites (`us1` through `us5`) were removed with the diagnostics subsystem on 2026-02-18.
 
 ### Harness Strategy & Options
 - **Immediate path (Options 1 + 4)**: retain the VS Code harness for UI/diagnostics flows while carving out a lightweight headless runner that replays the same suites against compiled artifacts using a sandboxed fixture. This preserves UX coverage and gives us a deterministic harness for CLI, generator, and hosted showcase rehearsal without pulling Electron into every scenario.
@@ -50,7 +53,7 @@ Supports FR-LD1 through FR-LD6 plus REQ-F1 to REQ-F6 by executing end-to-end sce
 Bootstraps VS Code with compiled artifacts and loads suites. [VS Code Integration Harness](../layer-4/tests/integration/vscode/runTests.ts.mdmd.md)
 
 ### IMP-402 simpleWorkspaceFixture
-Primary workspace assets used across US suites. [Simple Workspace Fixture](../layer-4/tests/integration/fixtures/simple-workspace/scripts/applyTemplate.ts.mdmd.md)
+Primary workspace assets used by the generation and evidence suites (`tests/integration/fixtures/simple-workspace/`).
 
 ### IMP-403 Core Suites
 Live Docs integration suites covering generation, evidence, and inspection. [Live Docs Generation Suite](../layer-4/tests/integration/live-docs/generation.test.ts.mdmd.md)
@@ -65,10 +68,7 @@ Exercises regeneration CLI, authored preservation, and deterministic output. [St
 Validates evidence ingestion, lint warnings, and `_No automated evidence found_` behaviour. [Stage‑0 Live Doc](../layer-4/tests/integration/live-docs/evidence.test.ts.mdmd.md)
 
 ### IMP-407 liveDocsInspectCliSuite
-CLI parity suite remains on the roadmap; capture its responsibility once the corresponding Stage-0 doc materialises.
-
-### IMP-408 liveDocsDocstringDriftSuite
-Drift remediation suite remains planned; update this entry after initial implementation lands in Stage-0 Live Docs.
+Traces dependency paths across every supported language through the CLI. [Inspect CLI Suite](../layer-4/tests/integration/live-docs/inspect-cli.test.ts.mdmd.md)
 
 ### IMP-409 integrationHarnessTsconfig
 Primary TypeScript compiler surface for the integration harness runtime. [Integration Harness `tsconfig.json`](../layer-4/tests/integration/tsconfig.json.mdmd.md)
@@ -77,10 +77,8 @@ Primary TypeScript compiler surface for the integration harness runtime. [Integr
 Bundles VS Code integration harness sources with matching module/target settings for the test runner bootstrap. [VS Code Harness `tsconfig.json`](../layer-4/tests/integration/vscode/tsconfig.json.mdmd.md)
 
 ## Evidence
-- Integration suites US1–US5 run inside CI and `npm run test:integration`, asserting diagnostics accuracy, acknowledgement flows, and knowledge ingestion behaviour.
-- Planned Live Doc suites (`tests/integration/live-docs/*.test.ts`) will run alongside US suites to gate regeneration parity, evidence coverage, CLI parity, and drift remediation.
-- Harness unit tests (`runTests.test.ts`, planned) verify extension attachment and suite registration.
-- Safe-to-commit orchestration depends on integration success before passing.
+- The suites above run inside CI (`npm run ci-check`) and `npm run test:integration`; `safe:commit` depends on their success.
+- None of them use the VS Code API, although they still run through the Electron harness; moving them under Vitest is part of the engine work described in the vision.
 
 ## Operational Notes
 - Snapshot directories remain isolated per suite to ease diffing pre/post change.

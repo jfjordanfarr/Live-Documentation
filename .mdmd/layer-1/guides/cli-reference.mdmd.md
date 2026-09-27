@@ -7,7 +7,7 @@
 
 Complete catalog of Live Documentation CLI commands for external adopters. All commands are invoked via `npm run <script> [-- <options>]`.
 
-> **Note**: This reference covers user-facing commands. Internal development tooling (test suites, fixture management, etc.) is documented separately for contributors.
+> **Note**: This reference covers user-facing commands. Contributor tooling (test suites, fixture management, audits) is in the [Internal Tooling Reference](../../layer-2/internal-tooling.mdmd.md).
 
 ---
 
@@ -25,7 +25,7 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 
 Scans your workspace and materializes the documentation mirror.
 
-```powershell
+```bash
 # Preview changes without writing
 npm run live-docs:generate -- --dry-run
 
@@ -57,7 +57,7 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 
 Materialize System-layer views without touching the tracked mirror.
 
-```powershell
+```bash
 npm run live-docs:system -- --output ./system-views --clean
 ```
 
@@ -82,7 +82,7 @@ npm run live-docs:system -- --output ./system-views --clean
 
 Validates structural markers, relative links, slug dialect compliance, and evidence placeholders.
 
-```powershell
+```bash
 npm run live-docs:lint -- --workspace /path/to/repo
 ```
 
@@ -106,7 +106,7 @@ npm run live-docs:lint -- --workspace /path/to/repo
 
 The "Oracle of Bacon" for code. Traces dependency chains through the Live Doc graph.
 
-```powershell
+```bash
 # Quick summary of an artifact
 npm run live-docs:inspect -- packages/shared/src/types.ts
 
@@ -149,11 +149,9 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 #### `live-docs:visualize`
 
-Builds a fully static Explorer bundle with Circuit Board, Local Map, Membrane Map, and Force Graph views. Deployable to GitHub Pages or any static host.
+Builds a self-contained static Explorer bundle: the Membrane Map, Force Graph and Knowledge Sources views, plus the earlier Local Map and Circuit Board. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
-> **In progress**: The **Membrane Map** unifies Circuit Board and Local Map into a single zoomable treemap. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
-
-```powershell
+```bash
 npm run live-docs:visualize -- --output ./public --pretty
 ```
 
@@ -161,6 +159,10 @@ npm run live-docs:visualize -- --output ./public --pretty
 | Flag | Description |
 |------|-------------|
 | `--output <dir>` | Output directory (default: `dist/explorer/`) |
+| `--local-maps <path...>` | Precompute Local Map JSON for these files into `local-maps/` |
+| `--all-local-maps` | Precompute Local Map JSON for every file (large) |
+| `--commit <hash>`, `--ref <name>` | Stamp provenance into the bundle |
+| `--config <file>` | Path to config file |
 | `--pretty` | Pretty-print JSON for debugging |
 
 ---

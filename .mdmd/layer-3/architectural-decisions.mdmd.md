@@ -15,27 +15,25 @@ Record the key architectural decisions made during Live Documentation developmen
 ### Notes
 
 - Decisions are listed chronologically by when they became relevant.
-- Descoped decisions are retained as brief audit trail entries; the full context lives in the chat history (Dev Days 70–72, February 2026).
+- Descoped decisions are retained as brief audit trail entries; the full context lives in the chat record under `AI-Agent-Workspace/ChatHistory/`.
 - This document was originally `specs/001-link-aware-diagnostics/research.md`.
 
 ## Decisions
 
-### Diagnostic Architecture
+### Diagnostic Architecture _(Superseded 2026-02-18)_
 
-- **Decision**: Use a Node.js-based language server, coordinated by a thin VS Code extension, to own graph construction and lint diagnostics.
-- **Rationale**: LSP keeps analysis off the UI thread, enables reuse in other editors/CI, and aligns with official tooling guidance. Diagnostics can be published via `connection.sendDiagnostics` while the VS Code client remains lightweight.
-- **Alternatives Considered**: Pure extension (rejected: UI thread pressure, limited reuse); external service (rejected: added deployment complexity at pilot scale).
+- **Original decision**: A Node.js language server, coordinated by a thin VS Code extension, owning graph construction and lint diagnostics.
+- **What happened**: The diagnostics subsystem was removed on 2026-02-18 (see the audit trail below). What remains is a 60-line server shell and the generator code that happens to live in `packages/server`; both are scheduled for removal or relocation, and the extension is being rescoped (see "Explorer Panel in the Editor").
 
-### Symbol Ingestion Strategy
+### Symbol Ingestion Strategy _(Superseded; see "Link Sources")_
 
-- **Decision**: Prefer VS Code's built-in `execute*Provider` commands and existing language-server diagnostics before falling back to custom parsing.
-- **Rationale**: Inherits improvements from maintained language servers and reduces maintenance. Diagnostic events and symbol providers already expose structured data.
-- **Alternatives Considered**: Always run Tree-sitter parsing (rejected: duplicated effort, more upkeep); rely solely on LLM extraction (rejected: lower precision, higher cost).
+- **Original decision**: Prefer VS Code's built-in `execute*Provider` commands and language-server diagnostics before falling back to custom parsing.
+- **What happened**: With the diagnostics subsystem gone, all relationships come from source analysis in the CLI; the editor is a host for the result, not a source of it.
 
-### Workspace Indexing & Change Detection
+### Workspace Indexing & Change Detection _(Superseded; see "Explorer Panel in the Editor")_
 
-- **Observation**: VS Code core maintains a file-service index backed by OS-level watchers and delivers incremental events to extensions; language servers receive `didOpen`, `didChange`, `didClose`, and `didSave` notifications.
-- **Implication**: Our LSP subscribes to the same incremental feed — no bespoke polling needed. For files outside open editors, `workspace.findFiles` and `executeWorkspaceSymbolProvider` provide reach.
+- **Original observation**: VS Code delivers incremental file events, so an LSP needs no bespoke polling.
+- **What happened**: The constraint that survives is about cost, not plumbing: a file watcher may notify and debounce, but must never trigger a cold CLI regeneration on every save.
 
 ### Link Establishment Strategy
 
@@ -46,27 +44,52 @@ Record the key architectural decisions made during Live Documentation developmen
 ### Graph Rebuild & Freshness _(Updated 2026-01-12)_
 
 - **Decision**: Live Docs themselves serve as the canonical graph representation. Dependency relationships are encoded as markdown links and queried via `live-docs:inspect --from/--to`. No separate SQLite cache or external feeds are needed.
-- **Rationale**: "Live Docs ARE the database" — eliminates cache invalidation complexity. See [Edge Aggregation Consolidation](../layer-2/work-items/edge-aggregation-consolidation.mdmd.md) for the migration history.
+- **Rationale**: "Live Docs ARE the database" — eliminates cache invalidation complexity.
 
-### Link Sources _(Updated 2026-02-17)_
+### Link Sources _(Updated 2026-09-27)_
 
-- **Decision**: Live Documentation gathers relationships from two complementary sources:
-  1. **Polyglot Adapters** — Tree-sitter-based AST parsing for symbols & dependencies (always available)
-  2. **VS Code Symbols** — IDE workspace symbol index (extension only)
-- **Rationale**: Both sources are deterministic and require no external runtime.
-- **Descoped Alternative**: LLM Inference via Ollama or `vscode.lm` — all infrastructure was dormant/speculative with zero production callers. Removed 2026-02-17.
+- **Decision**: Relationships come from deterministic source analysis only. TypeScript and JavaScript use the compiler API; the other languages use hand-written scanners today. Tree-sitter is used only to build benchmark ground truth and is scheduled to replace the scanners, C# first.
+- **Rationale**: Deterministic, offline, no external runtime.
+- **Descoped**: LLM inference via Ollama or `vscode.lm` (removed 2026-02-17: dormant, zero production callers; users bring their own assistants). VS Code's workspace symbol index as a second source (gone with the diagnostics subsystem).
+- **Observation**: each language's code is split across `languages/{lang}.ts`, `inference/heuristics/{lang}.ts` and `live-docs/adapters/{lang}.ts`, so adding one language touches three directories. An abandoned January 2026 note proposed one folder per language; whether to do that is decided with the tree-sitter work, not here.
 
-### AST Benchmark Strategy
+### Accuracy Measurement _(Updated 2026-09-27)_
 
-- **Decision**: Maintain a curated benchmark suite with canonical ASTs (starting with small C programs, expanding to other languages where ground truth is accessible) to validate inferred knowledge graphs, while continuing multi-pass self-similarity benchmarks for repositories that lack authoritative AST exports.
-- **Rationale**: AST-backed comparisons provide higher-fidelity accuracy whenever compiler-grade metadata is available, yet the self-similarity fallback ensures every workspace still benefits from automated validation.
-- **Alternatives Considered**: Depend exclusively on self-similarity metrics (rejected: weaker guarantee when ground truth exists); require AST availability for every benchmark (rejected: excludes important languages and bloats setup).
+- **Approach** (as stated in the vision): measure the shipped analyzers against oracles that share no mechanism with them: a compiler's own resolution (SCIP indexes), what actually breaks when a symbol is removed, and small hand-verified fixtures for dynamic patterns. Cross-language parity over the Rosetta fixtures guards against regressions in any one adapter. The details are undesigned.
+- **Ground truth is never filtered**: whatever produces the expectations, its output is not trimmed to fit the analyzer. (In the January 2026 benchmark that meant the union of SCIP and tree-sitter output.) Adapter blocklists may remove only true framework or builtin names. A filter that can only raise false negatives is a bug. The roles stay separate: adapters are the product, oracles are the ground truth, and nothing grades itself.
+- **Where this stands**: the current benchmark scores a benchmark-only inference path rather than the shipped adapters, and its per-fixture thresholds were lowered until it passed. `live-docs:report` compares the analyzer to a re-run of itself. Both are being replaced. The earlier self-similarity mode was removed in early 2026.
+- **Candidate scenarios from the earlier product** (dictated by the owner on 2025-10-21 for the diagnostics tool and lost when the ripple suites were removed; kept as candidates, not commitments): a negative case where JavaScript reuses the variable name `data` in increasingly local scopes and nothing should be reported; `web.config` XSLT transforms from .NET Framework WebForms, to see how metaprogramming is handled; and a rename or move of a source file. Whether each still matters is decided when the benchmark is rebuilt.
 
-### Testing Approach
+### Edge Storage _(Recorded 2026-09-27; in effect since 2026-01-12)_
 
-- **Decision**: Use `vitest` for shared modules, `@vscode/test-electron` for extension-client integration, and targeted contract tests for custom LSP messages.
-- **Rationale**: Matches existing VS Code ecosystem practices, provides fast unit feedback, and ensures protocol stability.
-- **Alternatives Considered**: Jest (less aligned with ESM/TypeScript setup); integration-only manual validation (insufficient coverage).
+- **Decision**: Each edge is stored once, on the source file's Live Doc, in its `Dependencies` section. Inbound relationships are derived by the graph loader and never written.
+- **Rationale**: Tests and other high-fan-in files would otherwise bloat every doc they touch; one direction keeps the mirror deterministic and regeneration cheap.
+- **Open**: the vision wants every edge to carry its evidence and its tier (observed from source, observed from configuration, declared). A January 2026 design that was never built sketched one shape for that (kind, provenance, source location, unresolved targets kept rather than dropped, disagreements surfaced rather than merged). It is recorded here as prior art, not as the plan; the grammar work decides what an edge carries.
+
+### Generator Gaps Noted by Earlier Specs _(Recorded 2026-09-27; unprioritised)_
+
+Requirements written in 2025 and never implemented, kept as observations rather than commitments:
+
+- A failure part-way through a run should not overwrite existing generated sections; today `generator.ts` has no per-file recovery.
+- Renaming or moving a source file should carry its authored `Purpose` and `Notes` to the new doc; today the old doc is pruned and they are lost.
+- Writes could be atomic (temp file, then rename) so a crash cannot leave a half-written doc.
+
+Settled in September 2026: derived views (the graph index, system rollups, the Explorer bundle) are regenerated on demand and never committed; only the per-file mirror is.
+
+### Related Documentation Bridge _(Recorded 2026-09-27; in effect since 2026-01-06)_
+
+- **Decision**: Existing markdown (READMEs, ADRs, design notes) is never rewritten or moved. A document joins the graph only because a Live Doc links to it, renders as a related-document node, and can be kept out of the bundle by pattern (`bundleExclude`).
+- **Rationale**: "Do we throw out all their work?" For brownfield adoption the answer is no: bridge, don't replace.
+
+### Explorer Panel in the Editor _(Recorded 2026-09-27)_
+
+- **Direction, not yet designed**: the VS Code extension is expected to become a panel that hosts the same static Explorer and re-renders it as files change. What is settled is the portability rule: the editor is a host, not a second renderer, and nothing may work only there.
+- **Known cost, to re-measure**: in February 2026 a `--changed` regeneration took about 12 seconds for zero files, almost all of it `tsx` start-up, which is why the earlier design had the watcher notify rather than regenerate. Whether that still holds once the CLI is compiled is untested; the panel's refresh strategy is undecided.
+
+### Testing Approach _(Updated 2026-09-27)_
+
+- **Decision**: Vitest for unit tests, Playwright for the Explorer, and mocha suites for cross-language integration. The mocha suites still run through the VS Code Electron harness although none of them use the VS Code API; moving them under Vitest is part of the engine work.
+- **Rationale**: Fast unit feedback; visual behaviour verified in a real browser rather than jsdom.
 
 ## Descoped Decisions (Audit Trail)
 
@@ -75,6 +98,11 @@ The following decisions were explored and explicitly removed from scope during t
 - **Baseline Inference & Fallbacks** _(Descoped 2026-02-17)_: GraphRAG-style LLM fallback for graph construction when native language-server signals are missing. Removed because the system relies exclusively on deterministic polyglot analyzers.
 - **LLM Augmentation & Ingestion** _(Descoped 2026-02-17)_: Optional `vscode.lm` API integration for deeper change impact analysis. Removed because all modules were dormant with zero production callers; users bring their own AI assistants.
 - **LLM Ingestion Pipeline** _(Descoped 2026-02-17)_: GraphRAG-style pipeline with chunking, edge extraction, and confidence calibration. Removed alongside the LLM augmentation decision.
+- **SQLite GraphStore** _(Removed 2026-01-12)_: replaced by the mirror itself; "Live Docs ARE the database."
+- **Language Server and Diagnostics** _(Removed 2026-02-18)_: the original ripple and diagnostics subsystem. Type-safe languages already have their own lint and IntelliSense; in-editor polyglot change detection was not mission-critical, and the tool's value moved to generating and showing the map.
+- **Spec-Kit** _(Retired 2026-02-23)_: the bootstrapping scaffolding. Its specs, plans and task lists were migrated into `.mdmd` and have since been retired in turn.
+- **Explorer HTTP Server** _(Removed 2026-03-10)_: the static bundle does everything the server did except open files in the editor.
+- **Copilot-era Steering and Planning Documents** _(Retired 2026-09-27)_: vendor-specific instruction files, daily-summary prompts, the capability-ID vision, the requirement, roadmap and backlog documents, and the falsifiability requirements were replaced by `AGENTS.md`, the rewritten vision, and the entries above. The chat archive was excluded from the Explorer bundle the same day.
 
 ## System References
 

@@ -5,17 +5,17 @@
 - Layer: 1
 - Guide Type: task-tutorial
 
-When you change a core utility, what else will break? Live Documentation answers this with **dependency pathfinding** — trace the shortest path between any two artifacts, or enumerate everything that depends on a given file.
+When you change a file, what else moves? Live Documentation answers with dependency pathfinding: the shortest path between any two artifacts, or everything that depends on one.
 
 ---
 
 ## The Inspect CLI
 
-The `live-docs:inspect` command is your "Oracle of Bacon" for code. It traces dependency chains through the Live Doc graph.
+`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code.
 
-### Find the Path Between Two Files
+### Find the path between two files
 
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/shared/src/types.ts
 ```
 
@@ -29,35 +29,31 @@ Path found (3 hops):
     → packages/shared/src/types.ts
 ```
 
-### Symbol-Level Pathfinding
+### Symbol-level pathfinding
 
 Trace connections between specific symbols, not just files:
 
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/server/src/main.ts#initializeServer --to packages/shared/src/types.ts#ConfigOptions
 ```
 
-### See What Depends on a File (Inbound)
+### See what depends on a file (inbound)
 
-Who imports this module? Use `--direction inbound`:
-
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/shared/src/types.ts --direction inbound
 ```
 
-### See What a File Depends On (Outbound)
+### See what a file depends on (outbound)
 
-What does this module reach? Omit `--to` to see the fan-out:
+Omit `--to` to see the fan-out:
 
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/server/src/main.ts --direction outbound
 ```
 
-### Bidirectional Search
+### Bidirectional search
 
-Search both directions simultaneously:
-
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/server/src/main.ts --direction both
 ```
 
@@ -65,103 +61,81 @@ npm run live-docs:inspect -- --from packages/server/src/main.ts --direction both
 
 ## Machine-Readable Output
 
-Add `--json` for automation and AI consumption:
+Add `--json` for scripts and automation:
 
-```powershell
-npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
+```bash
+npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/server/src/runtime/environment.ts --json
 ```
-
-Returns structured data:
 
 ```json
 {
   "kind": "path",
-  "nodes": ["src/auth.ts", "src/middleware.ts", "src/api.ts"],
+  "direction": "outbound",
+  "length": 1,
+  "from": {
+    "codePath": "packages/server/src/main.ts",
+    "docPath": ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md"
+  },
+  "to": {
+    "codePath": "packages/server/src/runtime/environment.ts",
+    "docPath": ".mdmd/layer-4/packages/server/src/runtime/environment.ts.mdmd.md"
+  },
+  "nodes": [
+    { "codePath": "packages/server/src/main.ts", "docPath": "..." },
+    { "codePath": "packages/server/src/runtime/environment.ts", "docPath": "..." }
+  ],
   "hops": [
-    { "from": "src/auth.ts", "to": "src/middleware.ts", "symbol": "validateToken" },
-    { "from": "src/middleware.ts", "to": "src/api.ts", "symbol": "authMiddleware" }
+    {
+      "from": { "codePath": "packages/server/src/main.ts", "docPath": "..." },
+      "to": { "codePath": "packages/server/src/runtime/environment.ts", "docPath": "..." }
+    }
   ]
 }
 ```
 
-### Output Kinds
+### Output kinds
 
-| Kind        | Meaning                                  |
-| ----------- | ---------------------------------------- |
-| `path`      | A path was found between from and to     |
-| `fanout`    | No `--to` provided; shows terminal paths |
-| `not-found` | No connection exists (exit code 1)       |
-
-### Diagnosing "Not Found"
-
-When no path exists, the response includes a `frontier` array explaining why traversal stopped:
-
-```json
-{
-  "kind": "not-found",
-  "frontier": [
-    { "node": "src/orphan.ts", "reason": "terminal" },
-    { "node": "src/deep.ts", "reason": "max-depth" },
-    { "node": "src/missing.ts", "reason": "missing-doc" }
-  ]
-}
-```
+| Kind        | Meaning                                                                                                                  |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `path`      | A path was found between `from` and `to`                                                                                 |
+| `fanout`    | No `--to` was given; the result lists where traversal from `from` ends up                                                |
+| `not-found` | No connection exists (exit code 1). A `frontier` array lists the closest reachable nodes and why traversal stopped there |
 
 ---
 
 ## Visual Pathfinding in the Explorer
 
-The Explorer's **Local Map** view supports non-headless pathfinding (in progress: the **Membrane Map** will subsume Local Map pathfinding via its continuous pin spectrum — pathfinding is a pin population strategy, not a separate mode. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md)):
+The Explorer's **Local Map** view has From and To inputs: enter both, click **Find Path**, and the hop-by-hop chain renders as columns. If no connection exists in the chosen direction you get a "no path" message; try the other direction, since the search is directional.
 
-1. Launch the Explorer: `npm run live-docs:visualize`
-2. Switch to "Local Map" view
-3. Enter a **From** artifact in the left input
-4. Enter a **To** artifact in the right input
-5. The hop-by-hop chain renders automatically (debounced)
+In the **Membrane Map**, pinning a symbol lays out what feeds it and what depends on it, and following pins from card to card walks a path hop by hop. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
-If no connection exists, you'll see a clear "No path found" message with the same frontier diagnostics as the CLI.
-
-### URL Shareability
-
-Every pathfinding result generates a stable URL. Share it with colleagues:
-
-```
-http://localhost:3000/?view=local&from=src/auth.ts&to=src/api.ts
-```
-
-### Planned: Multi-Path Rendering
-
-The current Explorer renders **one** shortest path. Planned enhancements (Stream LV1-F) will surface richer pathfinding results, which will also carry forward into the Membrane Map's pin-based pathfinding:
-
-- **All shortest paths**: When multiple equally-short routes exist, the Local Map renders them as a merged DAG — divergent intermediaries stack vertically within their hop column, with connections fanning out and converging.
-- **Near-miss (+1) paths**: Alternate paths one hop longer than the shortest render with dashed borders and dimmed connections. A toolbar toggle controls visibility.
-- **Symbol-divergent paths**: When two shortest paths traverse the same files via different symbols, each chain renders as a distinct color-coded connection line routed through separate symbol anchors on the same card. Hovering highlights the full chain.
+Either way, the result is encoded in the page URL, so a path you found can be sent as a link.
 
 ---
 
 ## Common Patterns
 
-### Before Refactoring a Utility
+### Before refactoring a utility
 
-See all consumers before changing a shared function:
+See every consumer before changing a shared function:
 
-```powershell
+```bash
 npm run live-docs:inspect -- --from packages/shared/src/utils/format.ts --direction inbound --json
 ```
 
-### After Adding a New Dependency
+### After adding a dependency
 
-Verify the import chain is as expected:
+Verify the import chain is what you expect:
 
-```powershell
-npm run live-docs:inspect -- --from src/new-feature.ts --to node_modules/some-lib --direction outbound
+```bash
+npm run live-docs:inspect -- --from src/new-feature.ts --to src/core/config.ts --direction outbound
 ```
 
-### Investigating Test Coverage
+### Checking test coverage
 
 Trace from a source file to its test:
 
-```powershell
+```bash
 npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
 ```
 
@@ -174,7 +148,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
 | `--from <path[#symbol]>`                | Starting artifact (required for pathfinding)      |
 | `--to <path[#symbol]>`                  | Destination artifact (optional; omit for fan-out) |
 | `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`)         |
-| `--max-depth <n>`                       | Maximum hops (default: 25)                        |
+| `--max-depth <n>`                       | Maximum hops                                      |
 | `--json`                                | Machine-readable output                           |
 | `--verbose`                             | Include additional diagnostics                    |
 
@@ -182,6 +156,6 @@ npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
 
 ## Related Guides
 
-- [Getting Started](getting-started.mdmd.md) — Installation and first session
-- [Visualizing Your Codebase](visualizing-codebase.mdmd.md) — Explorer features in depth
-- [CLI Reference](cli-reference.mdmd.md) — Complete command catalog
+- [Getting Started](getting-started.mdmd.md)
+- [Visualizing Your Codebase](visualizing-codebase.mdmd.md)
+- [CLI Reference](cli-reference.mdmd.md)

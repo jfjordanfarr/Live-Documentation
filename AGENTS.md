@@ -49,15 +49,22 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 - Markdown is canonical. Everything the Explorer or CLI shows must be derivable from the Live Docs. If a picture needs a fact the docs can't carry, grow the doc format rather than add a side channel.
 - Never hand-edit a `LIVE-DOC:BEGIN` … `LIVE-DOC:END` region. Fix the generator.
 - Authored `Purpose` and `Notes` explain what a file is for and what a maintainer must know. Write them for a new reader, not as a changelog. A chat-log citation is not required.
-- Every authored doc is either current or historical. Historical docs say so in their first lines and are never linked from current ones.
+- Every authored doc is either current or historical. Historical docs say so in their first lines. Current docs may cite them as provenance but never depend on them for facts.
+- Before deleting an authored document, find out why it was written (`git log`, and the chat record under `AI-Agent-Workspace/ChatHistory/`) and carry forward anything still true that lives nowhere else.
+- Anything carried forward from the chat record or a retired document is written as dated history or as an open question, never as a current decision, unless the owner re-affirms it. Old certainty is the easiest thing to import and the hardest to notice.
 - No requirement-ID schemes (`CAP-`, `REQ-`, `UC-`, `LD-`). Name things in plain words.
 
 ## Explorer client (`packages/scripts/src/live-docs/explorer/client/`)
 
 - Layout math lives in pure modules with Vitest tests; DOM modules render from them. No jsdom tests: they pass when the UI is wrong. Visual behavior is verified with Playwright.
-- The visual language is fixed at every scale: inputs on the left (green), outputs on the right (blue), wires between them. Fade the irrelevant; never boost the relevant. Text stays the same size at every zoom level. No emoji anywhere in the UI.
+- The visual language is consistent across scales: inputs enter on one side and outputs leave on the other, colour-coded the same way everywhere (today left/green in, right/blue out; the owner is open to other designs). Fade the irrelevant; never boost the relevant. No emoji anywhere in the UI.
 - Prefer a symbol's origin file over a barrel re-export when resolving links.
-- Pins are a continuous spectrum (zero pins is browsing, all pins is the full local map), not a set of modes.
+- View-specific doctrine (the Membrane Map's pin spectrum, font-size invariance) lives in `.mdmd/layer-3/membrane-map.mdmd.md`, and the vision's "one crafted rendering per scale" may revise it. Don't treat either as settled.
+
+## Correctness
+
+- Ground truth is never filtered. Whatever produces benchmark expectations, its output is not trimmed to fit the analyzer; adapter blocklists may remove only true framework or builtin names; a filter that can only raise false negatives is a bug.
+- Adapters are the product, oracles are the ground truth, and nothing grades itself. A "precision" that compares an analyzer to a re-run of the same analyzer is not a measurement.
 
 ## Status (2026-09-26)
 

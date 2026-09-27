@@ -1,4 +1,0 @@
-environment: ${ENVIRONMENT}
-featureFlags:
-  telemetry: ${TELEMETRY}
-  onboarding: ${ONBOARDING}

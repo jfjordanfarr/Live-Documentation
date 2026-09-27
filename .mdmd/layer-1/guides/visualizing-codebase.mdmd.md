@@ -5,245 +5,117 @@
 - Layer: 1
 - Guide Type: task-tutorial
 
-The Live Documentation Explorer provides interactive views for navigating your codebase visually. This guide covers each view's strengths, the shareability features, and how to export static bundles for your team.
-
-> **In progress**: The **Membrane Map** is the in-progress successor to Circuit Board and Local Map, unifying directory browsing and symbol-level exploration into a single zoomable treemap with a continuous pin spectrum. Both current views remain fully functional. See [Membrane Map architecture](../../layer-3/membrane-map.mdmd.md) for details.
+The Explorer is a static web page that renders your Live Doc graph. This guide covers its views, how to share what you are looking at, and how to publish the bundle.
 
 ---
 
-## Launching the Explorer
+## Building and opening the Explorer
 
-```powershell
+```bash
 npm run live-docs:visualize
-# Opens http://localhost:3000
-```
-
-The Explorer reads from your Live Doc graph and presents three complementary views.
-
----
-
-## The Three Views
-
-### Circuit Board (Macro View)
-
-A treemap visualization showing your entire workspace as interconnected clusters.
-
-**Best for:**
-
-- Architecture overview
-- Identifying hotspots (densely connected files)
-- Understanding package boundaries
-- Spotting orphaned modules
-
-**Interactions:**
-
-- Click a cluster to zoom in
-- Hover to see connection counts
-- Use the breadcrumb trail to navigate back
-
-### Local Map (Micro View)
-
-A 3-column layout showing inbound → active node → outbound relationships.
-
-**Best for:**
-
-- Understanding a single file's role
-- Symbol-level navigation
-- Tracing multi-hop dependency chains
-- Impact analysis before changes
-
-**Interactions:**
-
-- Click symbols to see type references
-- Use "From/To" inputs for pathfinding (see [Tracing Impact](tracing-impact.mdmd.md))
-- Expand inbound/outbound sections for full neighbor lists
-
-### Force Graph (Discovery View)
-
-A physics-based network visualization where related nodes cluster naturally.
-
-**Best for:**
-
-- Discovering unexpected connections
-- Seeing natural component groupings
-- Exploring brownfield documentation (when enabled)
-- Presentations and demos
-
-**Interactions:**
-
-- Drag nodes to reposition
-- Scroll to zoom
-- Toggle "Show Related Documentation" to include brownfield docs
-
----
-
-## Explorer Features
-
-### Hover Highlighting
-
-Hover over any node or symbol to dim unrelated connections. This helps you trace specific relationships without visual noise.
-
-### Sticky Pins
-
-Click a symbol to "pin" the highlight. Useful on mobile or when you need the highlight to persist while scrolling.
-
-### Type Reference Badges
-
-Cyan badges on symbols indicate type references. Click to navigate to the type definition.
-
-### Test-Backed Glow
-
-Files with test coverage show a purple shadow. Quickly identify which code is tested.
-
-### Detail Panel
-
-Select any node to see its full Live Doc rendered in the right panel:
-
-- Authored sections (Purpose, Notes)
-- Generated sections (Public Symbols, Dependencies)
-- Evidence metadata (for supported archetypes)
-
----
-
-## Sharing Views with Your Team
-
-### URL State Preservation
-
-Every interaction updates the URL with shareable parameters:
-
-```
-http://localhost:3000/?view=local&node=packages/shared/src/types.ts
-```
-
-Parameters:
-| Param | Values | Purpose |
-|-------|--------|---------|
-| `view` | `circuit`, `local`, `force`, `sources` | Active view |
-| `node` | `<file-path>` | Focused node |
-| `from` | `<file-path>` | Pathfinding start (Local Map) |
-| `to` | `<file-path>` | Pathfinding end (Local Map) |
-
-**Share the URL** — colleagues see exactly what you see without "scroll to line 247" instructions.
-
-### Headless JSON API
-
-For automation or AI consumption, query the Local Map data directly:
-
-```powershell
-Invoke-RestMethod "http://localhost:3000/local-map?nodeId=packages/shared/src/types.ts&pretty=1"
-```
-
-Returns structured JSON with:
-
-- Center node metadata
-- Upstream/downstream neighbors
-- Edge details with symbol anchors
-- Layout statistics
-
----
-
-## Static Site Export (GitHub Pages)
-
-Generate a fully offline-capable Explorer bundle:
-
-```powershell
-npm run live-docs:visualize
-# Output: dist/explorer/
-```
-
-### What's Bundled
-
-| File                 | Contents                                                  |
-| -------------------- | --------------------------------------------------------- |
-| `index.html`         | Self-contained viewer                                     |
-| `explorer-data.json` | Graph (nodes, links), symbol index, all Live Doc markdown |
-| `viewer-config.json` | Provenance metadata (commit hash, version, timestamp)     |
-
-### Deployment
-
-```powershell
-# GitHub Pages
-Copy-Item dist/explorer/* docs/ -Recurse
-git add docs/
-git commit -m "Update Explorer static bundle"
-
-# Any static host
 npx serve dist/explorer
 ```
 
-### Bundle Size
-
-For a typical workspace (~600 nodes), expect ~5MB total. The bundle includes all Live Doc markdown, so users can browse documentation fully offline.
+`live-docs:visualize` reads the mirror and writes a self-contained bundle to `dist/explorer/`. Open it through any static server; most browsers block the page's data fetch when it is opened as a plain file.
 
 ---
 
-## Exporting Documentation
+## The Views
 
-The Explorer's **Knowledge Sources** panel includes export options:
+### Membrane Map (default)
 
-### Bundle Types
+Your workspace as nested membranes: directories contain directories, and files sit inside them as cards. A breadcrumb at the top shows where you are; use a directory's **Explore** control to drill in and the breadcrumb to climb back out.
 
-| Type                  | Contents                                       |
-| --------------------- | ---------------------------------------------- |
-| **Live Docs**         | Only the generated Live Documentation files    |
-| **Related Docs**      | Brownfield documentation (READMEs, ADRs, etc.) |
-| **All Documentation** | Everything                                     |
+- A file card starts collapsed, showing its name, path and symbol count. Click it to expand its symbol rows.
+- Each symbol row has an inbound pin on the left and an outbound pin on the right. **Pin** a symbol (or **pin all** on a card) and the map re-lays itself as a left-to-right dependency flow: what feeds the pinned symbol on one side, what depends on it on the other, with connection lines between pins. Directory membranes persist as bands across the flow so you keep your bearings.
+- Hovering a symbol fades everything not connected to it. Pinning keeps that focus.
+- **Back to Browse** returns to the directory view.
 
-### Export Formats
+### Force Graph
 
-| Format                 | Structure                                                                   |
-| ---------------------- | --------------------------------------------------------------------------- |
-| **Flattened Markdown** | Single concatenated file                                                    |
-| **ZIP Archive**        | Preserves directory structure with `live-docs/` and `related-docs/` folders |
+The whole workspace as a physics layout. Files that talk to each other settle near each other, which makes this the quickest way to see a system's natural clusters and its outliers. Markdown documents linked from Live Docs (READMEs, design notes) appear as smaller purple nodes. Drag to rotate, scroll to zoom, click a node to open it.
+
+### Knowledge Sources
+
+Provenance of the bundle (commit, time), graph statistics, and health warnings: files with unusually high fan-out (likely barrel files) or fan-in, and isolated files with no connections at all. The export controls described below live here too.
+
+### Local Map and Circuit Board
+
+Two earlier views that remain available. The Local Map shows one file in the centre with its dependencies on the left and its dependents on the right, symbol wires between them, and From/To inputs for pathfinding (see [Tracing Impact](tracing-impact.mdmd.md)). The Circuit Board is a directory treemap. Both are being folded into the Membrane Map.
 
 ---
 
-## Brownfield Integration
+## Around the views
 
-Existing markdown (READMEs, architecture diagrams, design notes) appears in the Force Graph when "Show Related Documentation" is enabled:
+- **Search** (`Ctrl+P`) finds any file or symbol by name.
+- **Show Tests** and **Show Assets** toggle those archetypes in and out of every view.
+- The **detail panel** opens when you select a file: its authored `Purpose` and `Notes`, its public symbols, and buttons to open it in another view or download its markdown.
+- The **legend** in the sidebar names the colours: inbound is green, outbound is blue, and test-backed files carry a gold outline.
 
-- **Purple nodes** (#9966cc) distinguish Related Docs from Live Docs
-- **Smaller size** visually separates documentation from source code
-- **Click handling** opens Related Docs in the Detail Panel
-- **Circuit Board/Local Map buttons are hidden** for non-Live-Doc nodes (Membrane Map will inherit this behaviour)
+---
 
-This "bridge, don't replace" strategy means your existing documentation is never overwritten—it's simply made navigable.
+## Sharing what you see
+
+Every change to the view — the active view, the focused file, pinned symbols, expanded cards, path endpoints — is written into the page URL. Copy the address bar and send it; the recipient lands on the same picture. Because the bundle is static, the link works from any host that serves the folder, including GitHub Pages.
+
+### Local Map data as JSON
+
+To get one file's neighbourhood as data rather than a picture, ask the builder to precompute it:
+
+```bash
+npm run live-docs:visualize -- --local-maps packages/shared/src/types.ts
+# writes dist/explorer/local-maps/packages-shared-src-types.ts.json
+```
+
+`--all-local-maps` writes one file per node (large).
+
+---
+
+## Publishing the bundle
+
+```bash
+npm run live-docs:visualize -- --commit "$(git rev-parse HEAD)" --ref "$(git rev-parse --abbrev-ref HEAD)"
+```
+
+| Path                 | Contents                                                                  |
+| -------------------- | ------------------------------------------------------------------------- |
+| `index.html`         | The viewer                                                                |
+| `explorer-data.json` | Graph, symbol index, every Live Doc, bundled related markdown, provenance |
+| `static/`            | Scripts and styles                                                        |
+| `local-maps/`        | Precomputed Local Map JSON, if requested                                  |
+
+Copy `dist/explorer/` to any static host. This repository's own Explorer is published to GitHub Pages by the `pages.yml` workflow.
+
+### Bundle size
+
+Expect roughly 5 MB for 600 files. Everything a Live Doc links to is bundled so it can be read offline; use `bundleExclude` in your config to keep large or private markdown out (see [Getting Started](getting-started.mdmd.md#configuration)).
+
+---
+
+## Exporting documentation
+
+The Knowledge Sources view can download the documentation as a single flattened markdown file or as a ZIP that preserves directory structure, for the Live Docs alone, the related markdown alone, or both.
 
 ---
 
 ## Troubleshooting
 
-### Explorer Shows Stale Data
+### The Explorer shows stale data
 
-After TypeScript rebuilds (`npm run build`), restart the server:
+The bundle is a snapshot. After regenerating Live Docs, rebuild it with `npm run live-docs:visualize`.
 
-```powershell
-# Stop the running server (Ctrl+C)
-npm run live-docs:visualize
-```
+### Files are missing
 
-CSS changes are hot-reloadable; code changes require restart.
+Only files with Live Docs appear. Check your `glob` configuration and run `npm run live-docs:generate`.
 
-### Missing Nodes
+### The Force Graph is slow
 
-Files only appear in the Explorer if they have Live Docs. Generate missing docs:
-
-```powershell
-npm run live-docs:generate
-```
-
-### Slow Force Graph
-
-For large workspaces (1000+ nodes), the Force Graph can be sluggish. Try:
-
-- Use Circuit Board (or Membrane Map when available) for macro navigation
-- Filter to a subsystem before switching to Force Graph
-- Use `--changed` flag to regenerate only modified files
+At a thousand nodes or more the physics layout gets sluggish. Use the Membrane Map for navigation and the Force Graph for the overview.
 
 ---
 
 ## Related Guides
 
-- [Getting Started](getting-started.mdmd.md) — Installation and first session
-- [Tracing Impact](tracing-impact.mdmd.md) — Dependency pathfinding in depth
-- [CLI Reference](cli-reference.mdmd.md) — Complete command catalog
+- [Getting Started](getting-started.mdmd.md)
+- [Tracing Impact](tracing-impact.mdmd.md)
+- [CLI Reference](cli-reference.mdmd.md)

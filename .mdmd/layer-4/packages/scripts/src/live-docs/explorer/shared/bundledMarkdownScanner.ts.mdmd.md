@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-bundledmarkdownscanner-ts
-- Generated At: 2026-09-27T02:03:41.348Z
+- Generated At: 2026-09-27T02:38:09.689Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Scans Live Documentation files for markdown links and bundles the referenced fil
 - File categorization simplified to generic "markdown" type — no workspace-specific icons
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T02:03:41.348Z","inputHash":"01aded0c5cb23bcb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T02:38:09.689Z","inputHash":"01aded0c5cb23bcb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
@@ -84,3 +84,9 @@ Single-hop only: bundles files directly linked from Live Docs, no nested travers
 - [`staticExplorerData.RelatedDocLink`](./staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [bundledMarkdownScanner.test.ts](./bundledMarkdownScanner.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

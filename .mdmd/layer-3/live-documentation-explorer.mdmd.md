@@ -21,14 +21,14 @@ Document the visualization command center that renders the Live Doc graph as int
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
   - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
   - **Force Graph**: Force-directed layout for spatial discovery (accessibility relaxed vs primary views).
-  - **Membrane Map** _(in progress)_: Zoomable treemap unifying Circuit Board and Local Map. Directory-as-membrane nesting with continuous pin spectrum (no discrete modes). See [Membrane Map architecture](membrane-map.mdmd.md).
-- The **[Membrane Map](membrane-map.mdmd.md)** is the in-progress successor to Circuit Board and Local Map. Implementation began Dev Day 80 (2026-03-23) with 826/826 tests green. Phase-out of the old views will occur when the Membrane Map achieves feature parity and stability.
+  - **Membrane Map** _(default view since 2026-03-31)_: Zoomable treemap unifying Circuit Board and Local Map. Directory-as-membrane nesting with continuous pin spectrum (no discrete modes). See [Membrane Map architecture](membrane-map.mdmd.md).
+- The **[Membrane Map](membrane-map.mdmd.md)** succeeds Circuit Board and Local Map and has been the default view since 2026-03-31. The older views remain while their remaining behaviour is folded into it.
 - The Local Map was split into a modular `localView/` directory on 2025-12-04 to support column-aware anchor registration, gradient connections, and type-reference edge rendering.
 - Symbol anchors (`symbolAnchors.ts`, created 2025-12-03) normalise identifiers so connection routing works across different payload formats.
 
 ### Strategy
 
-- **Membrane Map transition**: Build the [Membrane Map](membrane-map.mdmd.md) as a new view alongside existing Circuit Board and Local Map, using those as reference implementations. Once feature parity and stability are confirmed, phase out Circuit Board and Local Map. See the [feature backlog](../layer-2/work-items/feature-backlog.mdmd.md) for Membrane Map work items.
+- **Membrane Map transition**: Fold what remains of Circuit Board and Local Map into the [Membrane Map](membrane-map.mdmd.md), then remove them.
 - Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
 - The Explorer is strictly read-only. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.

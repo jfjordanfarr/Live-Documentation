@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-09-26. This replaces the [earlier vision document](link-aware-diagnostics-vision.mdmd.md), which is kept as history._
+_Current as of 2026-09-26._
 
 **Live Documentation turns a folder of source files into a map you can look at.**
 
@@ -31,11 +31,11 @@ The tool leads with the first two, because the single-folder map is what works t
 | System | a repository or app       | endpoints: routes, service contracts, stored procedures | remote endpoints: HTTP calls, service proxies, connection strings |
 | Zone   | cloud, on-prem, a network | —                                                       | —                                                                 |
 
-Every node is a card with a name, inputs on the left, outputs on the right, and wires between them. Focusing a node fades everything not connected to it. That is the whole visual vocabulary, and it does not change with scale.
+What holds at every scale is the model: a thing exposes and consumes, and the picture shows what flows in, what flows out, and what is connected to what. How that is drawn is open. Today it is cards with pins and wires; it may become something three-dimensional that a person reads at a glance. Two things are settled taste rather than design: focusing on something fades what is unrelated to it, and whatever convention marks direction is the same everywhere it appears.
 
 ## Scale is a design law, not a zoom slider
 
-Each scale is its own designed experience, complete on its own terms. The closest view, one file with its public symbols, consumers flanking it, and wires crossing between them, should feel intimate and exact. The furthest, systems as shapes on a canvas, should feel like a map. The mechanics are continuous: the same cards, pins, wires, fading, and navigation everywhere. The renderings are crafted separately. You move between scales; the view does not morph under you. From any scale, the next one out should be visible enough to pull you toward it.
+Each scale is its own designed experience, complete on its own terms. The closest view, one file with its public symbols, consumers flanking it, and wires crossing between them, should feel intimate and exact. The furthest, systems as shapes on a canvas, should feel like a map. The mechanics are continuous: the same model, the same fading, the same navigation everywhere. The renderings are crafted separately, and which renderings will exist is not decided; the current views are precedents, not the plan. You move between scales; the view does not morph under you. From any scale, the next one out should be visible enough to pull you toward it.
 
 The upper limit of scale is set by what the data can honestly support, not by the renderer.
 

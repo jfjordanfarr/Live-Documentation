@@ -18,10 +18,10 @@ The Membrane Map concept emerged from Dev Day 79 (2026-03-22.1.md) when a misund
 
 ### Current Status
 
-- Membrane is now the cold-start default in the static Explorer, but Circuit Board and Local Map still ship while Step 11 phase-out work continues.
+- Membrane is now the cold-start default in the static Explorer, but Circuit Board and Local Map still ship while phase-out work continues.
 - Shareable Membrane sessions restore through the compressed `?s=` payload and currently round-trip view, selected node, pins, expanded directories, expanded cards, transform, and display filters.
 - Broader Explorer UI and navigation fallback still persist through versioned localStorage when no explicit URL state is present.
-- Playwright coverage is landed and currently spans 12 spec files / 25 tests, including browse mode, pin-active layout, restore behavior, multi-focal/path seeding, default-view behavior, and pin-active visual stability across reload.
+- Playwright coverage is landed and currently spans 13 spec files / 29 tests, including browse mode, pin-active layout, restore behavior, multi-focal/path seeding, default-view behavior, and pin-active visual stability across reload.
 
 ### Core Concepts
 
@@ -34,6 +34,8 @@ Each directory in the workspace is a nested rectangle — a **membrane**. Membra
 In languages with barrel/index files (TypeScript `index.ts`, Python `__init__.py`, Rust `mod.rs`), the barrel file IS the membrane's public API surface. Connections from outside the membrane terminate at the membrane boundary rather than routing to the barrel file as an interior node. When the membrane is expanded, barrel files render as thin "edge nodes" positioned along the membrane border, visually reinforcing their role as the public surface.
 
 This isomorphism (barrel = membrane boundary) resolves the existing problem where the Local Map misleadingly presents barrel files as rich artifacts with many symbols, when they are actually routing tables for the directory's true contents.
+
+> **Status (2026-09-27)**: Designed, not rendered. `hierarchy.ts` implements `isBarrelFile()` and `applyBarrelSemantics()` with tests, but no renderer consumes them yet; barrel files still render as ordinary cards.
 
 #### Pin-Level Fidelity
 
@@ -164,8 +166,11 @@ This is an adapter-level enhancement documented in [Polyglot Adapters](polyglot-
 | Q8  | URL state sharing?                         | Use versioned `?s=` payloads for shareable Membrane state while retaining versioned localStorage for broader Explorer UI/navigation fallback. Startup precedence is explicit URL state → localStorage → viewerConfig → defaults. Legacy `?view=` / `?node=` params remain tolerated. |
 | Q9  | Pathfinder: separate mode or pin strategy? | Pin population strategy. BFS results inject ordered pins into the pin set. Multi-pin renderer handles display. Pathfinder UI preserved for CLI parity but not architecturally load-bearing.                                                                                          |
 
-### Open Questions
+### Where this design stopped (March 2026)
 
+These are the questions the Membrane Map left open as built. They belong to this design, not to whatever comes next: the next visualization is not obliged to answer them and may make them moot. They are recorded so that nothing here is rediscovered the hard way.
+
+- **Pinning and layout** — The stated blocker was that pinning should rearrange cards into left-to-right dependency flow instead of switching to a separate renderer, and the owner rejected routing curves around the browse layout: "once pinning of symbols begins, the irrelevant nodes should not even appear. Indeed, a layout rearrangement must begin." That was the gate set at the time for retiring Circuit Board and Local Map.
 - **Browse-mode edge progressive disclosure** — Bundle math and SVG rendering exist, but browse-mode controller wiring remains intentionally disabled until hover/progressive-disclosure avoids noisy thick inter-tile arcs.
 - **Stale persisted-state reconciliation** — Invalid directories, nodes, or pins referenced by URL/localStorage currently rely on best-effort misses rather than explicit pruning/reset. The desired UX for moved or deleted artifacts is still open.
 - **Legacy-view decoupling** — Membrane still imports `DirectoryAggregate` from `circuitView/aggregation.ts`; extracting or re-homing that type remains the architectural blocker before old-view retirement can proceed cleanly.
@@ -223,7 +228,6 @@ The testing strategy is:
 
 - [Live Documentation Explorer](live-documentation-explorer.mdmd.md) — Parent component; the Membrane Map is a view within the Explorer
 - [Polyglot Adapters](polyglot-adapters.mdmd.md) — Nested type extraction enhancement needed for Membrane Map hierarchical pins
-- [Membrane Map Execution Plan](../../AI-Agent-Workspace/Notes/membrane-map-execution-plan.md) — Temporary committed working plan for remaining Step 11/12 convergence; remove once the architecture doc fully absorbs it
 
 ## Evidence
 
