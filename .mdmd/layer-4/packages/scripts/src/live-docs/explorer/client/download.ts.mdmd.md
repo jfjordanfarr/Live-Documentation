@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/download.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-download-ts
-- Generated At: 2026-02-23T20:26:19.350Z
+- Generated At: 2026-09-27T23:21:26.904Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Collects Live Documentation entries and exports them as flattened markdown or ZI
 - Uses JSZip for multi-file archive creation; the library is loaded dynamically in the browser bundle.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T20:26:19.350Z","inputHash":"7f35f73e166e7468"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DownloadBundleType` {#symbol-downloadbundletype}

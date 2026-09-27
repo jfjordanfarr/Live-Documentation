@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/slopcop/symbolsAudit.test.ts
-- Live Doc ID: LD-test-tests-integration-slopcop-symbolsaudit-test-ts
-- Generated At: 2026-09-27T21:43:48.467Z
+- Generated At: 2026-09-27T23:21:39.744Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Runs the SlopCop symbol audit against the healed fixture workspace to prove the 
 - Shared a 20s timeout after Safe Commit uncovered slow spawn/compile phases, keeping the symbol audit reliable across Windows CI runs ([safe commit stabilization](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.467Z","inputHash":"23c0d97db44d0dc6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

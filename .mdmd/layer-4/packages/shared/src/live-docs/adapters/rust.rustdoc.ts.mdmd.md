@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.rustdoc.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-rustdoc-ts
-- Generated At: 2026-09-27T20:50:49.786Z
+- Generated At: 2026-09-27T23:21:31.111Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Parses the lines of a rustdoc comment into structured documentation: summary and
 - Moved verbatim out of the old scanner on 2026-09-27 when the Rust adapter moved to tree-sitter; the adapter hands it the `///` lines or the `/** */` block above an item, markers removed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:49.786Z","inputHash":"f93b2cff4d3c5629"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `parseRustDocumentation` {#symbol-parserustdocumentation}

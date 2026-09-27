@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/graph.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-graph-ts
-- Generated At: 2026-09-27T22:11:39.810Z
+- Generated At: 2026-09-27T23:21:29.413Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Builds the `ExplorerGraphPayload` from the Live Doc graph — the canonical JSON
 - `normalizeDocPath` is the single path-resolution function shared between graph construction and static output; keeping it colocated prevents divergence.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:39.810Z","inputHash":"5617470e27d5a71a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `buildExplorerGraph` {#symbol-buildexplorergraph}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/go.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-go-test-ts
-- Generated At: 2026-09-27T21:43:40.707Z
+- Generated At: 2026-09-27T23:21:30.546Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Tests the Go adapter's rules on small temporary modules: what is published, same
 - Each test writes its own `go.mod` and files, so the cases read as small Go modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.707Z","inputHash":"4fa97d0170a9cebb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

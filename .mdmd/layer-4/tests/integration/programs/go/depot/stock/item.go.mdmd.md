@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/stock/item.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-stock-item-go
-- Generated At: 2026-09-27T21:43:44.836Z
+- Generated At: 2026-09-27T23:21:35.768Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Uses `format`, `Quantity` and `Unit` from its sibling file with no import, as Go allows within a package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.836Z","inputHash":"9f608e4f3e751365"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Item` {#symbol-item}

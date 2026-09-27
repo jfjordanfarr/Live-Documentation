@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/dotnetConfig.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-dotnetconfig-test-ts
-- Generated At: 2026-09-27T21:43:40.673Z
+- Generated At: 2026-09-27T23:21:30.504Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.673Z","inputHash":"703ae6cd2fcd4c53"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/src/processor.test.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-src-processor-test-ts
-- Generated At: 2026-09-27T21:43:48.391Z
+- Generated At: 2026-09-27T23:21:39.661Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Unit tests for the TypeScript Rosetta processor module. Part of the polyglot Ros
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). These tests exercise name-matched test detection: `processor.test.ts` should automatically back `processor.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.391Z","inputHash":"14238d7728cb2f5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

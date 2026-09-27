@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgetregistry-cs
-- Generated At: 2026-09-27T18:34:30.631Z
+- Generated At: 2026-09-27T23:21:32.657Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Documents the `WidgetRegistry` class that exercises events, generics, and nullab
 Keep the XML documentation and event surface intact; modify only when expanding the advanced C# fixture's coverage footprint.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.631Z","inputHash":"6adaecfdcd4bbd8b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WidgetRegistry` {#symbol-widgetregistry}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/generation.test.ts
-- Live Doc ID: LD-test-tests-integration-live-docs-generation-test-ts
-- Generated At: 2026-09-27T21:43:43.164Z
+- Generated At: 2026-09-27T23:21:33.852Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Spins up a scratch workspace, seeds a sample TypeScript module, and runs the gen
 - Seeds a legacy `### Description` block to ensure the generator keeps unexpected human-authored headings even after the template dropped that section ([deterministic template refresh](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-09.SUMMARIZED.md#turn-13-regenerate-base-layer-without-description-lines-1841-1990)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.164Z","inputHash":"0cfb5cf4af3f3c18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

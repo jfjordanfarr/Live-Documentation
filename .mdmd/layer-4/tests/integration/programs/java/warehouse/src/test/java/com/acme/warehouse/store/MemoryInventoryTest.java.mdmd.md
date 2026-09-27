@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-test-java-com-acme-warehouse-store-memoryinventorytest-java
-- Generated At: 2026-09-27T21:43:45.894Z
+- Generated At: 2026-09-27T23:21:36.926Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Tests for `MemoryInventory` in the warehouse sample program.
 - Declares the same package as `MemoryInventory` from the other source root (`src/test/java`), so `MemoryInventory` and `Inventory.Listener` resolve with no import, as they do for javac.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.894Z","inputHash":"042cff6a3615422e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MemoryInventoryTest` {#symbol-memoryinventorytest}

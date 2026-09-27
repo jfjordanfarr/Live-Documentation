@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-circuitview-aggregation-test-ts
-- Generated At: 2026-09-27T21:43:38.310Z
+- Generated At: 2026-09-27T23:21:27.707Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Unit tests for the Circuit Board aggregation module, validating directory metric
 - The tests deliberately exercise edge cases: empty hierarchies, root-level files with no directories, deeply nested single-child chains, and cross-boundary vs. internal dependency classification.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.310Z","inputHash":"e935adac29380808"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

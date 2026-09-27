@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-app-java
-- Generated At: 2026-09-27T21:43:45.675Z
+- Generated At: 2026-09-27T23:21:36.668Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The entry point of the warehouse sample program: receives two items into an inve
 - Names `Inventory.Listener` and `Report.Builder` through their outer types, imports the report package on demand (`.*`), and mentions `Movement` in a comment and `Report.Builder` in a string, neither of which is a reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.675Z","inputHash":"bf521ff90e0179ae"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}

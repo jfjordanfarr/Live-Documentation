@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapbuilder-ts
-- Generated At: 2026-02-03T21:55:37.085Z
+- Generated At: 2026-09-27T23:21:29.524Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Headless computation layer for the Local Map view. Takes a full `ExplorerGraphPa
 - Symbol anchors are pre-computed so static renderers can route connection lines without querying the DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.085Z","inputHash":"81b794a99578bf2f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestCoverageMap` {#symbol-testcoveragemap}

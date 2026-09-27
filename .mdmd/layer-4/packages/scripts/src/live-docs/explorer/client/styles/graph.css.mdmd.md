@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/graph.css
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-graph-css
-- Generated At: 2026-03-09T21:20:31.796Z
+- Generated At: 2026-09-27T23:21:27.545Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Minimal styles for the Force Graph view: ensures the `#graph-svg` container fill
 - Intentionally minimal (4 lines) — layout logic lives in client code, not CSS.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T21:20:31.796Z","inputHash":"3946a1075be5aee1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

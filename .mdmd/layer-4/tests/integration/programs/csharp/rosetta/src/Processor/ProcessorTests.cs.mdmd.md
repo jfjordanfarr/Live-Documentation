@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/Processor/ProcessorTests.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-rosetta-src-processor-processortests-cs
-- Generated At: 2026-09-27T21:43:44.495Z
+- Generated At: 2026-09-27T23:21:35.414Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ xUnit tests for the C# Rosetta Processor class. Part of the polyglot Rosetta Sto
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses C#'s idiomatic nested test class pattern with `[Fact]` attributes. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.495Z","inputHash":"4b5adb30f08b3d6c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTests` {#symbol-processortests}

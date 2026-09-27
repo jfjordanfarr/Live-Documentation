@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/src/pipeline.test.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-src-pipeline-test-ts
-- Generated At: 2026-09-27T21:43:48.372Z
+- Generated At: 2026-09-27T23:21:39.639Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Integration tests for the TypeScript Rosetta data processing pipeline. Validates
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection: `pipeline.test.ts` imports processor/models, so those files appear as "test-backed" without a directly name-matched test file.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.372Z","inputHash":"0507503348ed8b7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

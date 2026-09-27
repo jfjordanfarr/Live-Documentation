@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/directoryTile.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-directorytile-ts
-- Generated At: 2026-03-23T20:05:53.916Z
+- Generated At: 2026-09-27T23:21:27.767Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ DOM builder for collapsed directory tiles in the Circuit Board's aggregated view
 - Metric badges are created via a private `createBadge` helper with variant-specific CSS classes (`--files`, `--symbols`, `--outbound`, `--inbound`), conditionally rendered only when the metric is non-zero.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.916Z","inputHash":"f46deec2ac582302"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createDirectoryTile` {#symbol-createdirectorytile}

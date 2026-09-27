@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/basics/src/main.py
-- Live Doc ID: LD-test-tests-integration-programs-python-basics-src-main-py
-- Generated At: 2026-09-27T21:43:45.959Z
+- Generated At: 2026-09-27T23:21:36.997Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Acts as the entry point for the Python basics benchmark, validating seed input b
 Keep the control flow straightforward; the benchmark depends on this file to surface simple import relationships.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.959Z","inputHash":"0acbe69c46e56b79"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

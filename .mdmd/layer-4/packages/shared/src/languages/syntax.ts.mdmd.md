@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/syntax.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-syntax-ts
-- Generated At: 2026-02-16T18:25:01.674Z
+- Generated At: 2026-09-27T23:21:30.192Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the `LanguageSyntax` interface — the unified contract for language-spe
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — created as part of the LanguageSyntax module to unify duplicated comment-stripping logic across Go heuristics and C adapters. The async interface anticipates tree-sitter WASM integration; `createSyncStripper()` provides backward compatibility for sync callers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.674Z","inputHash":"c903af43a75e4075"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CommentDelimiters` {#symbol-commentdelimiters}

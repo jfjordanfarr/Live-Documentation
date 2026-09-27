@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/cli/lib/services/cache.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-services-cache-rb
-- Generated At: 2026-09-27T21:43:47.380Z
+- Generated At: 2026-09-27T23:21:38.548Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the memoization layer for the Ruby CLI benchmark so the analyzer enco
 The store intentionally uses `object_id` keys; adjust cautiously to avoid breaking deterministic cache behavior in tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.380Z","inputHash":"f49c5d2126d44aab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

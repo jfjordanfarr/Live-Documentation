@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-09-27T22:11:40.890Z
+- Generated At: 2026-09-27T23:21:31.319Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.890Z","inputHash":"a59b70ce6d8d1268"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}

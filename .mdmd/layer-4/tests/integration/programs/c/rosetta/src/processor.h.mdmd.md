@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/processor.h
-- Live Doc ID: LD-test-tests-integration-programs-c-rosetta-src-processor-h
-- Generated At: 2026-09-27T21:43:43.564Z
+- Generated At: 2026-09-27T23:21:34.343Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.564Z","inputHash":"73a542b254521442"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROSETTA_PROCESSOR_H` {#symbol-rosetta_processor_h}

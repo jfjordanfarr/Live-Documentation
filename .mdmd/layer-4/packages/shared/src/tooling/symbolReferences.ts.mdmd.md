@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/symbolReferences.ts
-- Live Doc ID: LD-implementation-packages-shared-src-tooling-symbolreferences-ts
-- Generated At: 2026-09-27T21:43:41.836Z
+- Generated At: 2026-09-27T23:21:31.757Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Implements the shared detector SlopCop uses to spot duplicate heading slugs and 
 - Relies on the vendored GitHub slugger and shared markdown parsing helpers so reported slugs match GitHub’s anchor rules when we fix MDMD/spec links ([slug alignment plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L1089-L1244)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.836Z","inputHash":"ba71d7150e7195f4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolIssueKind` {#symbol-symbolissuekind}

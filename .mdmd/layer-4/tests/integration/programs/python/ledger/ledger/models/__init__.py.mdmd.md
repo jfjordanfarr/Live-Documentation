@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/models/__init__.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-models-init-py
-- Generated At: 2026-09-27T21:43:46.121Z
+- Generated At: 2026-09-27T23:21:37.178Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The models package of the ledger sample program: re-exports `Account`, `Entry` a
 - A second barrel, one level down, so a re-export chain of two hops is exercised (`ledger` re-exports what `ledger.models` re-exports).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.121Z","inputHash":"a41acbd123b46180"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Contracts/PaymentQuery.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-contracts-paymentquery-cs
-- Generated At: 2026-09-27T21:43:43.829Z
+- Generated At: 2026-09-27T23:21:34.654Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.829Z","inputHash":"db30b1174fef48df"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentQuery` {#symbol-paymentquery}

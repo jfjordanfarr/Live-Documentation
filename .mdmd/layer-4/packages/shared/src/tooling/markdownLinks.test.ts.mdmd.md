@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/tooling/markdownLinks.test.ts
-- Live Doc ID: LD-test-packages-shared-src-tooling-markdownlinks-test-ts
-- Generated At: 2026-09-27T21:43:41.735Z
+- Generated At: 2026-09-27T23:21:31.668Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Exercises the markdown link audit against real filesystem fixtures so the SlopCo
 - Confirms `findBrokenMarkdownLinks` handles workspace-absolute paths, missing definitions, and non-link generics before the CLI surfaced the suite in safe-to-commit runs on November 2.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-02.md §SlopCop: Markdown]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.735Z","inputHash":"38a70219c47b2508"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

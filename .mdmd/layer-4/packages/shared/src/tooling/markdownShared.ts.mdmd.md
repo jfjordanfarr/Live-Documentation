@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/markdownShared.ts
-- Live Doc ID: LD-implementation-packages-shared-src-tooling-markdownshared-ts
-- Generated At: 2026-09-27T21:43:41.760Z
+- Generated At: 2026-09-27T23:21:31.690Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Packages the Markdown parsing primitives (reference extraction, line/column math
 - Relationship rule resolvers leverage the same helpers when translating MDMD links into graph edges, preventing divergent parsing logic in doc-to-code inference ([shared helper extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-26.md#L23-L33)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.760Z","inputHash":"d9d381eb87e23841"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReferenceDefinition` {#symbol-referencedefinition}

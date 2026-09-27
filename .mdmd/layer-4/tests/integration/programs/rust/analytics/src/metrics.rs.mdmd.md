@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/metrics.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-metrics-rs
-- Generated At: 2026-09-27T21:43:47.656Z
+- Generated At: 2026-09-27T23:21:38.844Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the summarization and alert thresholds for the Rust analytics benchma
 Preserve the inline documentation and threshold values—they ensure the analyzer sees rich symbol metadata in this fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.656Z","inputHash":"da60025370de9e61"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize` {#symbol-summarize}

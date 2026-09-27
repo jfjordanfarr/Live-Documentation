@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/cli/lib/commands/report.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-commands-report-rb
-- Generated At: 2026-09-27T21:43:47.340Z
+- Generated At: 2026-09-27T23:21:38.495Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the `report` command for the Ruby CLI benchmark, stitching together s
 Keep the flow focused on service calls; this command intentionally avoids extra logic to highlight dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.340Z","inputHash":"060151938ba2c626"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/expected/compiler-edges.json
-- Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-expected-compiler-edges-json
-- Generated At: 2026-09-27T21:43:47.875Z
+- Generated At: 2026-09-27T23:21:39.087Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The file-to-file edges the compiler resolved for the `rust/stockroom` sample pro
 - Never hand-edited. Regenerate with `oracle:index` after changing the program. Its `projects` are the package's crates read from Cargo's layout, which is what narrows every `crate::` reference to the right root.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.875Z","inputHash":"17ab65317ec4511a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}

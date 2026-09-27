@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/java.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-java-ts
-- Generated At: 2026-02-16T18:25:01.598Z
+- Generated At: 2026-09-27T23:21:30.110Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides Java-specific syntax configuration implementing `LanguageSyntax`. Defin
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — text blocks (Java 15+) are not yet handled by the regex stripper; tree-sitter integration will address this gap.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.598Z","inputHash":"8e61826b2744e7c3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaSyntax` {#symbol-javasyntax}

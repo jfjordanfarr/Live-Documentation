@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-app-code-globals-cs
-- Generated At: 2026-09-27T21:43:44.595Z
+- Generated At: 2026-09-27T23:21:35.508Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides configuration helpers for the WebForms benchmark, funneling app setting
 Keep the keys synchronized with the Web.config fixture; renaming them breaks the hidden-field wiring the tests rely on.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.595Z","inputHash":"a5be44c355e3da86"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Globals` {#symbol-globals}

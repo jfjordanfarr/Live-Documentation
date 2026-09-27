@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-item-java
-- Generated At: 2026-09-27T21:43:45.717Z
+- Generated At: 2026-09-27T23:21:36.715Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Two top-level types in one file: the adapter publishes both and resolves `ItemFormatter` from `Item` as a type declared in the same file. The constructor shares the class's name, so the headings carry `(class)` and `(constructor)`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.717Z","inputHash":"1339d57beaffbde5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Item (class)` {#symbol-item-class}

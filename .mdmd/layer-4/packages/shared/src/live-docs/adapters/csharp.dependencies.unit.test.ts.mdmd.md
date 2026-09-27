@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.dependencies.unit.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-dependencies-unit-test-ts
-- Generated At: 2026-09-27T21:58:30.757Z
+- Generated At: 2026-09-27T23:21:30.343Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Unit tests for the C# dependency extraction module, validating correct detection
 - **Created:** 2025-12-10 during the `csharp.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.757Z","inputHash":"89e8004a9338bdc2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

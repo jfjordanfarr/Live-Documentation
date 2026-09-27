@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-detail-levels-test-ts
-- Generated At: 2026-09-27T21:43:39.201Z
+- Generated At: 2026-09-27T23:21:28.749Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Verifies detail level resolution across Browse, Explore, and Compare focal speci
 - 9 tests covering: no-focal browse mode (all Badge), single-focal explore mode (Full + Summary neighbors), dual-focal compare mode (union of neighbor sets), off-viewport culling to Hidden, partially-visible nodes retained, non-neighbor nodes as Badge, and directory vs. leaf classification.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.201Z","inputHash":"74d66f7984d2f050"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-ts
-- Generated At: 2026-09-27T21:58:31.244Z
+- Generated At: 2026-09-27T23:21:31.172Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 - Inside a macro invocation the source is a token tree; `a::b::c` is read back from the tokens, so paths in `println!` and `assert_eq!` count.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.244Z","inputHash":"5983853f11aa3640"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}

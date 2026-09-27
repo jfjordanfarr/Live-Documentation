@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/services/posting.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-services-posting-py
-- Generated At: 2026-09-27T21:43:46.435Z
+- Generated At: 2026-09-27T23:21:37.540Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Carries most of the shapes the program exists for: a multi-line parenthesized import through the `ledger.models` barrel, `import ledger.util.money as money`, an import under `if TYPE_CHECKING:`, an import inside a function, and the words `import os` inside its docstring and a commented-out import, neither of which is a dependency.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.435Z","inputHash":"c1fc143b498f4fa8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PostingService` {#symbol-postingservice}

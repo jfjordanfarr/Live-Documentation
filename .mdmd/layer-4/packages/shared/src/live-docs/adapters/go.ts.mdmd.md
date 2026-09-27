@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/go.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-go-ts
-- Generated At: 2026-09-27T21:43:40.740Z
+- Generated At: 2026-09-27T23:21:30.585Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 - The package table is keyed by directory and package clause, built once per generation run on the file index; per-file facts are cached by modification time.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.740Z","inputHash":"e4759ae9f484ea32"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}

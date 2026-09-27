@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/doc-tools/enforce-documentation-links.ts
-- Live Doc ID: LD-implementation-scripts-doc-tools-enforce-documentation-links-ts
-- Generated At: 2026-09-27T21:43:41.869Z
+- Generated At: 2026-09-27T23:21:31.798Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Provide the CLI entry point for documentation-link enforcement so `npm run docs:
 - Exported `runCli` on 2025-11-05 so graph audits and other callers could consume it programmatically while keeping exit codes stable across the toolchain ([API hardening](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md#L70-L86)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.869Z","inputHash":"a7e09201d6f266c8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EXIT_CODES` {#symbol-exit_codes}

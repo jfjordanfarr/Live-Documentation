@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-url-state.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-url-state-spec-ts
-- Generated At: 2026-09-27T21:43:42.388Z
+- Generated At: 2026-09-27T23:21:32.399Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ E2E test verifying that page refresh preserves the navigated directory context v
 - After drilling into a directory and reloading, asserts the Membrane Map view is restored (not Knowledge Sources) and the directory context is preserved.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.388Z","inputHash":"6727b5471eb15c1e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

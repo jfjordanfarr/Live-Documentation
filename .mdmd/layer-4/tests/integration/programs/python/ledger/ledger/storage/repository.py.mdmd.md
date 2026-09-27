@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/storage/repository.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-storage-repository-py
-- Generated At: 2026-09-27T21:43:46.494Z
+- Generated At: 2026-09-27T23:21:37.609Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Imports `Account` from the package root, so the dependency on `models/account.py` is reached through two barrels.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.494Z","inputHash":"78e8be8a94e0c111"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository` {#symbol-repository}

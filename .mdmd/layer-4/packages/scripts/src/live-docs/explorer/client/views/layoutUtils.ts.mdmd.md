@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-layoututils-ts
-- Generated At: 2026-09-27T21:43:38.519Z
+- Generated At: 2026-09-27T23:21:27.962Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Shared layout utilities for the Circuit and Local Map views. Builds hierarchical
 - `computeTreemapLayout` uses a squarified treemap algorithm to pack folders efficiently.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.519Z","inputHash":"9246e9d989a1fefb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROOT_KEY` {#symbol-root_key}

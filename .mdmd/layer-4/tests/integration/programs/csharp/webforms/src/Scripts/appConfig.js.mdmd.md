@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js
-- Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-scripts-appconfig-js
-- Generated At: 2026-09-27T21:43:44.675Z
+- Generated At: 2026-09-27T23:21:35.591Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Mirrors the client-side bootstrap for the WebForms benchmark, reading hidden fie
 Keep the element IDs and shape of `widgetConfig` stable; regression tests assert on these values.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.675Z","inputHash":"65aaecba482657ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

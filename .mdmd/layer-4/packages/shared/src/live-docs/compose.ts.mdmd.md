@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/compose.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-compose-ts
-- Generated At: 2026-09-27T22:11:40.830Z
+- Generated At: 2026-09-27T23:21:31.254Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Turns a source file's analysis into the document model: headings with unique anc
 - Dependencies are grouped by resolved file: an imported symbol links to its anchor, an alias links to the original name, and an external module keeps its specifier and the symbols taken from it.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.830Z","inputHash":"e7d56392491e680e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}

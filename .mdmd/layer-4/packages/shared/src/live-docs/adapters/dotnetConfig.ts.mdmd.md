@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/dotnetConfig.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-dotnetconfig-ts
-- Generated At: 2026-09-27T21:43:40.692Z
+- Generated At: 2026-09-27T23:21:30.529Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.692Z","inputHash":"bc8675f88c36a158"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `dotnetConfigAdapter` {#symbol-dotnetconfigadapter}

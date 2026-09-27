@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/models.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-models-rs
-- Generated At: 2026-09-27T21:43:47.670Z
+- Generated At: 2026-09-27T23:21:38.860Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Declares the data structures consumed across the Rust analytics benchmark so the
 Struct fields should remain open and descriptive; changing them affects every dependent module in the fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.670Z","inputHash":"df8f123fb0f6903a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Sample` {#symbol-sample}

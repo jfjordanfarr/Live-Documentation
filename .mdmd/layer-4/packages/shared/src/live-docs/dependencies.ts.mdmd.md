@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/dependencies.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-dependencies-ts
-- Generated At: 2026-09-27T21:58:31.370Z
+- Generated At: 2026-09-27T23:21:31.389Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.370Z","inputHash":"e0a1709ae32dcd7a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}

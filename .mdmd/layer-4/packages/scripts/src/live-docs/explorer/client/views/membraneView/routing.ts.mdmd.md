@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-routing-ts
-- Generated At: 2026-09-27T21:43:39.674Z
+- Generated At: 2026-09-27T23:21:29.167Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Pure-function connection routing that classifies each pin-to-pin connection as a
 - `routeConnections` provides batch routing with opaque `id` correlation, used by the focal overlay to route all visible connections in a single pass after DOM measurement.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.674Z","inputHash":"b9ec5fd42c541ab2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TraceKind` {#symbol-tracekind}

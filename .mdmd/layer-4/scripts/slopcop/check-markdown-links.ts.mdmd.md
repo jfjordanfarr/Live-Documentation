@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-markdown-links.ts
-- Live Doc ID: LD-implementation-scripts-slopcop-check-markdown-links-ts
-- Generated At: 2026-02-03T21:55:42.070Z
+- Generated At: 2026-09-27T23:21:32.019Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Scans markdown and MDMD files for broken relative links so Live Docs, specs, and
 - Backed by `packages/shared/src/tooling/markdownLinks.test.ts`, which stress-tests the parser while the CLI surfaces regressions to `safe-to-commit.mjs` and maintainer tasks.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.070Z","inputHash":"e249351d5f6e276c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

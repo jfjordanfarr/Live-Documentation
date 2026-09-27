@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/sources.css
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-sources-css
-- Generated At: 2026-03-09T21:20:31.858Z
+- Generated At: 2026-09-27T23:21:27.623Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Styles for the Knowledge Sources view — the Explorer's cold-start landing page
 - Created on [2025-12-16](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-16.1.SUMMARIZED.md) (Turns 19–20) as part of the Knowledge Sources view feature (`146d4d62`). The user requested a view that answers "where does this visualization get its information?" and guides visitors toward improving coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T21:20:31.858Z","inputHash":"8d71f118c5eb20b2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

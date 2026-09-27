@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-docstring-ts
-- Generated At: 2026-02-03T21:55:40.041Z
+- Generated At: 2026-09-27T23:21:30.898Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Parses Python docstrings into structured `SymbolDocumentation` objects, supporti
 - **Companion Tests:** See [python.docstring.unit.test.ts](./python.docstring.unit.test.ts.mdmd.md) for 65 unit tests covering all three docstring formats and edge cases.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.041Z","inputHash":"4c38c697ff77f253"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MutableDocstringState` {#symbol-mutabledocstringstate}

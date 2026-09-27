@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/analytics/Analyzer.java
-- Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-analytics-analyzer-java
-- Generated At: 2026-09-27T21:43:45.520Z
+- Generated At: 2026-09-27T23:21:36.498Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Runs the analytics workflow for the Java service benchmark, logging progress and
 Preserve both logging statements; they provide the analyzer with multiple util dependencies in a single method.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.520Z","inputHash":"56b09fedcbe25ca4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Analyzer (class)` {#symbol-analyzer-class}

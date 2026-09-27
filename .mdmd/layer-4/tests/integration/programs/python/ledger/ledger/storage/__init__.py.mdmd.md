@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/storage/__init__.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-storage-init-py
-- Generated At: 2026-09-27T21:43:46.450Z
+- Generated At: 2026-09-27T23:21:37.557Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The storage package of the ledger sample program; holds nothing but a docstring.
 - Present so the storage module lives in a package like the others.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.450Z","inputHash":"4a96deb565c29342"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

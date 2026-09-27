@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-dimming.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-dimming-spec-ts
-- Generated At: 2026-09-27T21:43:42.216Z
+- Generated At: 2026-09-27T23:21:32.205Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ E2E tests for the layered opacity dimming model in pin-active mode, validating t
 - Connected endpoint test validates `.membrane-card__symbol-row--connected` and `.membrane-card__symbol-row--pinned` classes appear correctly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.216Z","inputHash":"f440705b6bc92f0a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

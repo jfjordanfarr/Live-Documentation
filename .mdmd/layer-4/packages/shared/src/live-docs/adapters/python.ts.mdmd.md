@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2026-09-27T21:58:31.133Z
+- Generated At: 2026-09-27T23:21:30.994Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 - File existence is checked against the directory listing, not `stat` alone, because the workspace may sit on a case-insensitive mount and Python imports are case-sensitive.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.133Z","inputHash":"d01b789e79763d3e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}

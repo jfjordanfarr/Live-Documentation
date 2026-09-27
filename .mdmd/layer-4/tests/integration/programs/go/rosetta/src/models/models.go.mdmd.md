@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/models/models.go
-- Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-models-models-go
-- Generated At: 2026-09-27T21:43:45.068Z
+- Generated At: 2026-09-27T23:21:36.017Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Data model definitions and factory functions for the Go Rosetta Stone benchmark 
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.068Z","inputHash":"75252be495ac17f4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}

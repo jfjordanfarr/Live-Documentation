@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_pipeline.py
-- Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-pipeline-py
-- Generated At: 2026-09-27T21:43:47.158Z
+- Generated At: 2026-09-27T23:21:38.307Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Pytest integration tests for the Python Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of processor, models, and core_types modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.158Z","inputHash":"86c1ea2afd817b33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestPipelineIntegration` {#symbol-testpipelineintegration}

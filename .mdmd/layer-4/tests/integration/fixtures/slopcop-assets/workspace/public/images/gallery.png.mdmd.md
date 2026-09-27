@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/gallery.png
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-gallery-png
-- Generated At: 2026-02-03T21:55:50.930Z
+- Generated At: 2026-09-27T23:21:33.427Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture image used to validate simple image references from HTML im
 - Demonstrates basic HTML-to-image dependency tracking
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.930Z","inputHash":"fd6e2bd2979f5052"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

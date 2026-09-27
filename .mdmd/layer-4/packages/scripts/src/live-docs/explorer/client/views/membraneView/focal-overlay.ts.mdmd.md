@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-focal-overlay-ts
-- Generated At: 2026-09-27T21:43:39.319Z
+- Generated At: 2026-09-27T23:21:28.852Z
 
 ## Authored
 ### Purpose
@@ -25,7 +24,6 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md) dimming model fixes: `clearHoverDimming` no longer removes persistent baseline classes (`--connected`, `--pinned`) on mouseleave — only transient hover classes (`--highlighted`, `--participating`, `--card--participating`) are cleared. `markConnectedEndpoints` now tracks direction per endpoint for directional pin dot coloring, and the `__internals__` skip guard was removed so internals rows can participate in connected-endpoint marking.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.319Z","inputHash":"ef2220d18a2e59af"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FocalOverlayCallbacks` {#symbol-focaloverlaycallbacks}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/powershell.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-powershell-ts
-- Generated At: 2026-09-27T21:43:40.977Z
+- Generated At: 2026-09-27T23:21:30.859Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Dot-sourced paths are normalized to workspace-relative form so downstream graph 
 Runtime extraction depends on [`powershell.emit-ast.ps1`](./powershell.emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata. Until 2026-09-27 the adapter looked for that script inside the workspace being documented, so only this repository, and a fixture that shipped a shim pointing back at it, could analyse PowerShell at all; the emitter is part of the product and ships with the adapter.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.977Z","inputHash":"ee8eec8b8914c145"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellAdapter` {#symbol-powershelladapter}

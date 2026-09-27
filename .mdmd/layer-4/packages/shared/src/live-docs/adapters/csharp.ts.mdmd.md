@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-ts
-- Generated At: 2026-09-27T21:58:30.798Z
+- Generated At: 2026-09-27T23:21:30.408Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Extends Hangfire heuristics to capture scheduled and recurring jobs, mirroring the LD-402 queue-worker fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.798Z","inputHash":"be1e23d228d00147"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}

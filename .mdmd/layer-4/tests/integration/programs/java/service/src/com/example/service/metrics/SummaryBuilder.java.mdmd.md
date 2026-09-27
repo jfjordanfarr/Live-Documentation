@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/metrics/SummaryBuilder.java
-- Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-metrics-summarybuilder-java
-- Generated At: 2026-09-27T21:43:45.584Z
+- Generated At: 2026-09-27T23:21:36.569Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Builds summary objects for the Java service benchmark, converting sample collect
 The alert threshold is deliberate; adjust it only when coordinating changes with analyzer expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.584Z","inputHash":"73e9b4943274af1d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SummaryBuilder` {#symbol-summarybuilder}

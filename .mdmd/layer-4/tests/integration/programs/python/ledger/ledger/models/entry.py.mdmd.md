@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/models/entry.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-models-entry-py
-- Generated At: 2026-09-27T21:43:46.271Z
+- Generated At: 2026-09-27T23:21:37.333Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Reaches `Money` through a two-dot relative import of a module, and carries a property and a dataclass field for the member-publishing rules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.271Z","inputHash":"21110f42663b166c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EntryKind` {#symbol-entrykind}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/squarify.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-squarify-ts
-- Generated At: 2026-09-27T21:43:39.792Z
+- Generated At: 2026-09-27T23:21:29.292Z
 
 ## Authored
 ### Purpose
@@ -21,7 +20,6 @@ Implements the Bruls, Huizing, and van Wijk "Squarified Treemaps" algorithm (200
 - Promoted from `circuitView/squarify.ts` to `views/squarify.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.792Z","inputHash":"f15b554208198ba1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SquarifyItem` {#symbol-squarifyitem}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/src/main.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-src-main-ts
-- Generated At: 2026-09-27T21:43:48.333Z
+- Generated At: 2026-09-27T23:21:39.597Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Entry point for the TypeScript Rosetta Stone fixture. Demonstrates runtime impor
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Mirrors the structure of main modules in Python, Java, C#, Rust, C, and Ruby fixtures.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.333Z","inputHash":"e1fb66b9ace4d6d7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}

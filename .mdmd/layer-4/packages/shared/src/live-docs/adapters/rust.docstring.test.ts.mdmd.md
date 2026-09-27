@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/rust.docstring.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-rust-docstring-test-ts
-- Generated At: 2026-09-27T21:43:41.203Z
+- Generated At: 2026-09-27T23:21:31.092Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Proves the Rust adapter can parse line and block Rustdoc, mapping sections like 
 - Keeps coverage for the manual fixture verification pass we ran after seeding docstrings in `metrics.rs`, so extend these cases whenever the adapter learns a new Rustdoc construct <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2740-L2833>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.203Z","inputHash":"a1d6590d921e78a6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

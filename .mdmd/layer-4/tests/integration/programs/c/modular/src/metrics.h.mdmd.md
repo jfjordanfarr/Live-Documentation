@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/modular/src/metrics.h
-- Live Doc ID: LD-test-tests-integration-programs-c-modular-src-metrics-h
-- Generated At: 2026-09-27T21:43:43.369Z
+- Generated At: 2026-09-27T23:21:34.123Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Summarises the statistical helpers exposed to the modular pipeline implementatio
 Exports both averaging and clamping routines so the pipeline can normalise values before logging.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.369Z","inputHash":"8e7bf58c23c66134"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `METRICS_H` {#symbol-metrics_h}

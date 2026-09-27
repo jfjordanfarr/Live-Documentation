@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-report-report-java
-- Generated At: 2026-09-27T21:43:45.782Z
+- Generated At: 2026-09-27T23:21:36.793Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - The nested `Builder` is what `report/ReportWriter.java` and `App.java` name as `Report.Builder`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.782Z","inputHash":"05174b343789673e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}

@@ -15,8 +15,6 @@
 
 import { posix } from "node:path";
 
-import type { LiveDocProvenance } from "./schema";
-
 // ============================================================================
 // The model
 // ============================================================================
@@ -27,10 +25,8 @@ export interface LiveDoc {
   codePath: string;
   layer: number;
   archetype?: string;
-  liveDocId: string;
+  /** When the generated sections last changed. */
   generatedAt?: string;
-  /** Provenance of the generated sections, when the generator recorded it. */
-  provenance?: LiveDocProvenance;
   /** The authored block, verbatim, with no leading or trailing blank lines. */
   authored: string;
   /** The `Public Symbols` section; empty when the file publishes nothing. */
@@ -113,7 +109,6 @@ export interface ReExport {
 
 const BEGIN = "<!-- LIVE-DOC:BEGIN ";
 const END = "<!-- LIVE-DOC:END ";
-const PROVENANCE = "<!-- LIVE-DOC:PROVENANCE ";
 const CLOSE = " -->";
 
 const PUBLIC_SYMBOLS = "Public Symbols";
@@ -141,14 +136,10 @@ export function renderLiveDoc(doc: LiveDoc): string {
   if (doc.layer === 4) {
     lines.push(`- Code Path: ${doc.codePath}`);
   }
-  lines.push(`- Live Doc ID: ${doc.liveDocId}`);
   if (doc.generatedAt) {
     lines.push(`- Generated At: ${doc.generatedAt}`);
   }
   lines.push("", "## Authored", ...doc.authored.split("\n"), "", "## Generated");
-  if (doc.provenance) {
-    lines.push(`${PROVENANCE}${JSON.stringify(doc.provenance)}${CLOSE}`);
-  }
   pushSection(lines, PUBLIC_SYMBOLS, doc.symbols.length ? renderSymbolBlocks(doc.symbols) : [NO_SYMBOLS]);
   lines.push("");
   pushSection(lines, DEPENDENCIES, doc.dependencies.length ? doc.dependencies.map(renderDependency) : [NO_DEPENDENCIES]);
@@ -256,7 +247,6 @@ export function parseLiveDoc(text: string): LiveDoc {
       reader.fail(`the Code Path (${declared}) differs from the title (${codePath})`);
     }
   }
-  const liveDocId = reader.expect(/^- Live Doc ID: (.+)$/u, "the Live Doc ID line")[1];
   const generatedAt = reader.take(/^- Generated At: (.+)$/u)?.[1];
   reader.expectBlank();
   reader.expectLine("## Authored");
@@ -269,8 +259,6 @@ export function parseLiveDoc(text: string): LiveDoc {
     reader.fail("the authored block must not start or end with a blank line");
   }
   reader.expectLine("## Generated");
-  const provenanceLine = reader.take(new RegExp(`^${escape(PROVENANCE)}(.*)${escape(CLOSE)}$`, "u"));
-  const provenance = provenanceLine ? parseProvenance(reader, provenanceLine[1]) : undefined;
 
   const symbols = parseSection(reader, PUBLIC_SYMBOLS, (body) => body.lines.length === 1 && body.lines[0] === NO_SYMBOLS ? [] : parseSymbols(body));
   reader.expectBlank();
@@ -286,7 +274,7 @@ export function parseLiveDoc(text: string): LiveDoc {
   if (!reader.atEnd()) {
     reader.fail("text after the last generated section");
   }
-  return { codePath, layer, archetype, liveDocId, generatedAt, provenance, authored: authored.join("\n"), symbols, dependencies, reExports };
+  return { codePath, layer, archetype, generatedAt, authored: authored.join("\n"), symbols, dependencies, reExports };
 }
 
 /** The lines of a section body and the one-based line number of the first. */
@@ -305,14 +293,6 @@ function parseSection<T>(reader: Reader, name: string, parse: (body: Body) => T)
     throw new LiveDocSyntaxError(start, `${name} is empty`);
   }
   return parse({ start, lines });
-}
-
-function parseProvenance(reader: Reader, json: string): LiveDocProvenance {
-  try {
-    return JSON.parse(json) as LiveDocProvenance;
-  } catch {
-    reader.fail("the provenance comment is not JSON");
-  }
 }
 
 const SYMBOL_HEADING = /^#### `([^`]+)`(?: \{#([^}]+)\})?$/u;

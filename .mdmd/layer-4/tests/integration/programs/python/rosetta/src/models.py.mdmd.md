@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/models.py
-- Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-models-py
-- Generated At: 2026-09-27T21:43:47.000Z
+- Generated At: 2026-09-27T23:21:38.152Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Data models for the Python Rosetta Stone fixture. Defines Record and Report data
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.000Z","inputHash":"819ca788d8afdb3d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}

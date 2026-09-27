@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-routing-test-ts
-- Generated At: 2026-09-27T21:43:39.651Z
+- Generated At: 2026-09-27T23:21:29.141Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Verifies connection routing classification (front vs. back trace), Bézier path 
 - 21 tests covering: front/back classification based on relative X positions, front trace source/target at pin edges, back trace stub polygon generation, edge cases (vertically aligned pins, coincident pins, zero-radius pins), `routeConnection` unified router, and `routeConnections` batch API with result map keying.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.651Z","inputHash":"edcc8566d73a0973"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

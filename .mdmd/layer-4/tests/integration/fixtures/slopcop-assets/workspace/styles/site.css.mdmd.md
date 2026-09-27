@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/styles/site.css
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-styles-site-css
-- Generated At: 2026-02-03T21:55:51.115Z
+- Generated At: 2026-09-27T23:21:33.634Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ CSS asset used by the SlopCop asset audit fixture to model a valid stylesheet re
 - Update alongside fixture HTML and configuration when testing new asset scenarios.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.115Z","inputHash":"ed6aebd13eab4700"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

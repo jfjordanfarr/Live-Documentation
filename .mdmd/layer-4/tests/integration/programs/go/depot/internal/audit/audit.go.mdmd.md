@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/internal/audit/audit.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-internal-audit-audit-go
-- Generated At: 2026-09-27T21:43:44.746Z
+- Generated At: 2026-09-27T23:21:35.666Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The audit package of the depot sample program: switches logging on in its `init`
 - The target of the blank import in `cmd/depot/main.go`; a blank import depends on the whole package, here this one file.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.746Z","inputHash":"f9e55a191878a7cb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `enabled` {#symbol-enabled}

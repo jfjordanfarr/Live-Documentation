@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/basics/src/util.c
-- Live Doc ID: LD-test-tests-integration-programs-c-basics-src-util-c
-- Generated At: 2026-09-27T21:43:43.267Z
+- Generated At: 2026-09-27T23:21:33.995Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the widget builder for the C basics benchmark, demonstrating how simp
 Keep the example comment and return structure; they are intentionally verbose for analyzer coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.267Z","inputHash":"4280fd290c876a7e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `build_widget` {#symbol-build_widget}

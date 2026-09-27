@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-local-storage-ts
-- Generated At: 2026-03-29T21:52:08.852Z
+- Generated At: 2026-09-27T23:21:27.433Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Manages localStorage-based persistence for Explorer UI preferences and navigatio
 - Serialization simplified in [Dev Day 83](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md): `clickBehavior` and `visual` tuning defaults/deserialization removed alongside the corresponding type interfaces.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:08.852Z","inputHash":"c0a088d6e244b1fe"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PERSISTED_UI_KEY` {#symbol-persisted_ui_key}

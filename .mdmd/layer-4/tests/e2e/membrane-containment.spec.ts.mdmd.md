@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-containment.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-containment-spec-ts
-- Generated At: 2026-09-27T21:43:42.168Z
+- Generated At: 2026-09-27T23:21:32.155Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ E2E regression test verifying that file cards never overflow their containing di
 - Coverage intention: regression test to prevent layout overflow bugs from recurring across CSS/renderer changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.168Z","inputHash":"8fb08ff1ab2527e9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

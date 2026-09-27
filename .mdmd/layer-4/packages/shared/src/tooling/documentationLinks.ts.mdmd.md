@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/documentationLinks.ts
-- Live Doc ID: LD-implementation-packages-shared-src-tooling-documentationlinks-ts
-- Generated At: 2026-09-27T21:43:41.682Z
+- Generated At: 2026-09-27T23:21:31.622Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 - Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.682Z","inputHash":"f55eb6e704d8b5ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentationRule` {#symbol-documentationrule}

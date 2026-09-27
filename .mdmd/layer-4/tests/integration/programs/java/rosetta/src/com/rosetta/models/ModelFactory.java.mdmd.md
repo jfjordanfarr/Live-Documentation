@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/models/ModelFactory.java
-- Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-models-modelfactory-java
-- Generated At: 2026-09-27T21:43:45.341Z
+- Generated At: 2026-09-27T23:21:36.305Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Data model for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.models package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.341Z","inputHash":"eb051e8ffce57042"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ModelFactory` {#symbol-modelfactory}

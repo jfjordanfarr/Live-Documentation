@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/shell.css
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-shell-css
-- Generated At: 2026-03-09T21:20:31.843Z
+- Generated At: 2026-09-27T23:21:27.608Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Layout and interaction styles for the Explorer's application shell: sidebar (nav
 - At ~1180 lines this is the largest stylesheet; further decomposition would be warranted if it continues to grow.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T21:20:31.843Z","inputHash":"12e086f2e0bfd664"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

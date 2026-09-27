@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.designer.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-pages-default-aspx-designer-cs
-- Generated At: 2026-09-27T21:43:44.660Z
+- Generated At: 2026-09-27T23:21:35.574Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the generated control declarations for the WebForms benchmark so the ana
 Treat this file as generated; manual edits should happen in the code-behind or markup instead.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.660Z","inputHash":"a0bc381b62e1e248"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Default` {#symbol-default}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/fixture.ts
-- Live Doc ID: LD-implementation-scripts-oracle-fixture-ts
-- Generated At: 2026-09-27T21:43:41.997Z
+- Generated At: 2026-09-27T23:21:31.956Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Copies a sample program to a temporary directory and lists its files, leaving ou
 - `listFixtureFiles` is what `oracle:index` uses to choose an indexer, so a project file inside a build output can never be chosen.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.997Z","inputHash":"b77a2364e0aedeaa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `copyFixture` {#symbol-copyfixture}

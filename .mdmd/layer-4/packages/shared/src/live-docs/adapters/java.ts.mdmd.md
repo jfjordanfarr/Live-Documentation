@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/java.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-java-ts
-- Generated At: 2026-09-27T21:58:30.995Z
+- Generated At: 2026-09-27T23:21:30.749Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 - The qualifier of a static call or field access (`Registry.register(...)`, `Unit.EACH`) is resolved as a type name; a local variable that shadows a type name would be mistaken for it.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:30.995Z","inputHash":"399aea4ee78a126e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}

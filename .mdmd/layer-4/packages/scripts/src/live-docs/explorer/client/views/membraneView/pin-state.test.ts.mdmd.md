@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-state-test-ts
-- Generated At: 2026-09-27T21:43:39.602Z
+- Generated At: 2026-09-27T23:21:29.088Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Comprehensive behavioral coverage of the immutable pin state machine, verifying 
 - Also tests `hopLabel` from `focal-overlay.ts` for circled-number rendering (①-⑴) and fallback to parenthesized numbers beyond index 19.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.602Z","inputHash":"d9d6d9322b202e9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

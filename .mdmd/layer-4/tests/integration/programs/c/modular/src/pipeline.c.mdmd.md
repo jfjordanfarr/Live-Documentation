@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/modular/src/pipeline.c
-- Live Doc ID: LD-test-tests-integration-programs-c-modular-src-pipeline-c
-- Generated At: 2026-09-27T21:43:43.397Z
+- Generated At: 2026-09-27T23:21:34.156Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Coordinates metrics and logging for the C modular benchmark, showcasing static h
 Preserve the clamp helper and logging branches—they ensure the analyzer sees both internal and external symbol usage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.397Z","inputHash":"e92082e32c4a5128"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `normalize` {#symbol-normalize}

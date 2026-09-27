@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-index-ts
-- Generated At: 2026-03-23T20:05:53.396Z
+- Generated At: 2026-09-27T23:21:27.113Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Bootstrap entry point for the Explorer client. Fetches the graph payload, initia
 - Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.396Z","inputHash":"624671868f6d6e4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

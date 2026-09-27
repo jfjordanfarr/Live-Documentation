@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/types.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-types-ts
-- Generated At: 2026-09-27T21:43:39.107Z
+- Generated At: 2026-09-27T23:21:28.612Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Type definitions for the Local Map view. Centralises interfaces for view options
 - `CenterAlignmentGuides` tracks vertical positions for connection line rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.107Z","inputHash":"de4985b21b31092a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewOptions` {#symbol-localviewoptions}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/basic/lib/data_store.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-basic-lib-data-store-rb
-- Generated At: 2026-09-27T21:43:47.220Z
+- Generated At: 2026-09-27T23:21:38.366Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Maintains the static datasets for the Ruby basic benchmark so dependency analysi
 Dataset keys and values are intentionally small; change them only when expanding fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.220Z","inputHash":"c6e59d5fa972dd9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}

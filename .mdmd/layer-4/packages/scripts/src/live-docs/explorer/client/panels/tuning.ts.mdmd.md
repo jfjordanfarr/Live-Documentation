@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/tuning.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-tuning-ts
-- Generated At: 2026-03-29T21:52:08.731Z
+- Generated At: 2026-09-27T23:21:27.289Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - `TuningPanelConfig.drawMembraneConnections` callback triggers lightweight SVG connection redraw when column gap or bezier sliders change in membrane view, avoiding full DOM reconstruction.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:08.731Z","inputHash":"6860fc3310894dc8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}

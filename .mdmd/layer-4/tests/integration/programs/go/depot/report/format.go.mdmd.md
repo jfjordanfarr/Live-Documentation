@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/report/format.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-report-format-go
-- Generated At: 2026-09-27T21:43:44.783Z
+- Generated At: 2026-09-27T23:21:35.708Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - `report.go` uses `format` from here; `count.go` has a local variable of the same name, which must not link back.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.783Z","inputHash":"4ac50d5ec69f489b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Line` {#symbol-line}

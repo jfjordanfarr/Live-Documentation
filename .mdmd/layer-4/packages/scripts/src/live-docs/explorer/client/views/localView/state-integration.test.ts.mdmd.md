@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-state-integration-test-ts
-- Generated At: 2026-09-27T21:43:38.933Z
+- Generated At: 2026-09-27T23:21:28.420Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Integration tests verifying multi-hop workflow scenarios: pin chaining, subscrib
 - Bridges unit-level state.test.ts and controller-level rendering tests
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.933Z","inputHash":"9ad2966461ad922c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

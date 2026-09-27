@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/store/memory.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-store-memory-rs
-- Generated At: 2026-09-27T21:43:47.982Z
+- Generated At: 2026-09-27T23:21:39.206Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Uses `super::` for the parent module's trait and `crate::` for the stock types; the trait implementation is recorded as an implements reference on `Memory`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.982Z","inputHash":"c03f0b12cfd06a25"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Memory` {#symbol-memory}

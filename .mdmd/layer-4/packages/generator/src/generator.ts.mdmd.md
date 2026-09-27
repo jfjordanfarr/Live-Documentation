@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
-- Live Doc ID: LD-implementation-packages-generator-src-generator-ts
-- Generated At: 2026-09-27T22:11:38.176Z
+- Generated At: 2026-09-27T23:21:26.769Z
 
 ## Authored
 ### Purpose
@@ -16,12 +15,11 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:38.176Z","inputHash":"9033d893cf2222c3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L65)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L60)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -31,7 +29,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L104)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L100)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -39,7 +37,8 @@ Entry point for the Live Documentation generation pipeline.
 
 Discovers all workspace files matching the configured globs, analyses each for
 public symbols and dependencies, and renders deterministic markdown docs under
-the configured base layer directory.
+the configured base layer directory. A doc is rewritten only when its generated
+content changed, and only then does its `Generated At` line move.
 
 Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
 and `--include` (explicit file subset) modes. Stale Live Docs whose source
@@ -55,7 +54,6 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob` - `glob`
-- `node:crypto` - `createHash`
 - `node:fs/promises`
 - `node:path` - `path`
 - [`LiveDocumentationConfig`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
@@ -79,8 +77,6 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 - [`document.authoredBlockOf`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
 - [`document.parseLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`schema.LiveDocGeneratorProvenance`](../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocgeneratorprovenance) (type-only)
-- [`schema.LiveDocProvenance`](../../shared/src/live-docs/schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)

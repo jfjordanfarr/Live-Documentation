@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2026-09-27T21:43:40.021Z
+- Generated At: 2026-09-27T23:21:29.617Z
 
 ## Authored
 ### Purpose
@@ -36,7 +35,6 @@ The viewer supports three loading modes:
 3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.021Z","inputHash":"a8a026dd9122a380"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}

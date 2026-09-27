@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-url-state-ts
-- Generated At: 2026-03-31T20:36:02.950Z
+- Generated At: 2026-09-27T23:21:27.453Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 - On [Dev Day 86](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) the default fallback view was changed from `"sources"` (Circuit Board) to `"membrane"` to reflect the Membrane Map's promotion to cold-start default. `updateUrlState()` was also updated to write an explicit `?view=` parameter for non-membrane views, since membrane is now the implicit default.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:02.950Z","inputHash":"499b69dd3ff925f9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `viewNameToInternal` {#symbol-viewnametointernal}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_helpers.py
-- Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-helpers-py
-- Generated At: 2026-09-27T21:43:47.110Z
+- Generated At: 2026-09-27T23:21:38.253Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Pytest tests for the Python Rosetta helpers module (format_value, sum_values, av
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.110Z","inputHash":"5cd362ac07da5201"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestFormatValue` {#symbol-testformatvalue}

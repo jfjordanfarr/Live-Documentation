@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/fonts/ghost.woff2
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-fonts-ghost-woff2
-- Generated At: 2026-02-03T21:55:50.854Z
+- Generated At: 2026-09-27T23:21:33.355Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture font representing an orphaned/unused font asset, used to te
 - The name "ghost" indicates this font is intentionally unreferenced for SlopCop testing
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.854Z","inputHash":"7c9c466eff930e5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

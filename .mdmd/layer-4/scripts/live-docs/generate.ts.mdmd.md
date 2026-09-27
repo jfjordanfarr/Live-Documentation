@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/generate.ts
-- Live Doc ID: LD-implementation-scripts-live-docs-generate-ts
-- Generated At: 2026-09-27T09:36:40.594Z
+- Generated At: 2026-09-27T23:21:31.819Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ CLI entry point that applies workspace configuration, resolves include/changed f
 The script wraps `generateLiveDocs` from the generator package, wiring in the JSON config file and the `--changed`, `--include` and `--dry-run` filters.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:40.594Z","inputHash":"cbe50428faa9cc4c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

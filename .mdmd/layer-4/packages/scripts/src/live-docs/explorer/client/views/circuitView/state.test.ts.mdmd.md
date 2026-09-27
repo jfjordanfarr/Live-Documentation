@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-circuitview-state-test-ts
-- Generated At: 2026-09-27T21:43:38.415Z
+- Generated At: 2026-09-27T23:21:27.843Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Unit tests for the Circuit Board state management module, covering immutable sta
 - Tests verify immutability guarantees: expanding the same directory twice returns the same reference, collapsing a non-expanded directory is a no-op.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.415Z","inputHash":"c56293900380e923"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/trailer.jpg
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-trailer-jpg
-- Generated At: 2026-02-03T21:55:50.974Z
+- Generated At: 2026-09-27T23:21:33.471Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture video poster image referenced from the `<video>` element's 
 - Demonstrates HTML-to-image connectivity for video poster thumbnails
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.974Z","inputHash":"e29672d9b145262d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

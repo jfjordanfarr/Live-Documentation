@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/localMapData.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-localmapdata-ts
-- Generated At: 2026-09-27T09:36:39.330Z
+- Generated At: 2026-09-27T23:21:29.545Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Schema definition for the headless Local Map JSON format. Defines the 3-column s
 - `normalizeSymbolIdentifier()` and `buildNormalizedAnchorKey()` are shared between server and client for consistent anchor matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:39.330Z","inputHash":"1bf9b3cf74592322"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalMapColumn` {#symbol-localmapcolumn}

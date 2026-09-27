@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/App/Main.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-rosetta-src-app-main-cs
-- Generated At: 2026-09-27T21:43:44.345Z
+- Generated At: 2026-09-27T23:21:35.251Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.345Z","inputHash":"0e654c0a2bdf1d8d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main` {#symbol-main}

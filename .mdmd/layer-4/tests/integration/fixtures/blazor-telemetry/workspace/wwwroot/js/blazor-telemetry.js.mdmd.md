@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js
-- Live Doc ID: LD-implementation-tests-integration-fixtures-blazor-telemetry-workspace-wwwroot-js-blazor-telemetry-js
-- Generated At: 2026-02-03T21:55:47.049Z
+- Generated At: 2026-09-27T23:21:32.556Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Captures an interop script that reads telemetry attributes from `_Host.cshtml` a
 - Mirrors the Razor telemetry script so the DOM heuristic is forced to discriminate between host shells; this keeps the LD-402 regression suite honest once additional Blazor fixtures arrive.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:47.049Z","inputHash":"f43fae64bd3ca9ee"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

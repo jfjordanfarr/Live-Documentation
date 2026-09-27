@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/tests/test_money.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-tests-test-money-py
-- Generated At: 2026-09-27T21:43:46.583Z
+- Generated At: 2026-09-27T23:21:37.701Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Tests for `Money` in the ledger sample program.
 - A plain `from ledger.util.money import Money, total`, resolved from the workspace root because `tests/` is not a package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.583Z","inputHash":"af20e531ba9c9be7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `test_of_rounds_to_cents` {#symbol-test_of_rounds_to_cents}

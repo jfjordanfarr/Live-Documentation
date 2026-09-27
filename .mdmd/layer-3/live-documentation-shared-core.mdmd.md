@@ -11,7 +11,6 @@ The modules under `packages/shared/src/live-docs` that every consumer of Live Do
 - [document.ts](../layer-4/packages/shared/src/live-docs/document.ts.mdmd.md) is the grammar: the model of a Live Doc, `renderLiveDoc`, which writes one, and `parseLiveDoc`, which reads one back and refuses anything the grammar does not describe. Rendering what was parsed gives back the same text for every doc the generator writes, and the round-trip suite checks that on every committed doc.
 - [compose.ts](../layer-4/packages/shared/src/live-docs/compose.ts.mdmd.md) turns a file's analysis into the model: unique headings and anchors, links from type references and dependencies to the docs that declare them, and the documentation sections.
 - [core.ts](../layer-4/packages/shared/src/live-docs/core.ts.mdmd.md) is the entry point to the analysis engine: discovery, the symbol index, the TypeScript extractor, dependency resolution and the language adapters.
-- [schema.ts](../layer-4/packages/shared/src/live-docs/schema.ts.mdmd.md) holds the provenance types written into the generated comment.
 
 ## Who reads docs
 

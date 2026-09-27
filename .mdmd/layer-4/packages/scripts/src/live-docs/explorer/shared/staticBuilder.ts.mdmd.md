@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticbuilder-ts
-- Generated At: 2026-09-27T09:36:39.372Z
+- Generated At: 2026-09-27T23:21:29.596Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Core builder module for creating fully static Live Documentation Explorer bundle
 - Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:39.372Z","inputHash":"9792f8736a7736bc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}

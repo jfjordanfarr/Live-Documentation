@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSlugger.ts
-- Live Doc ID: LD-implementation-packages-shared-src-tooling-githubslugger-ts
-- Generated At: 2026-09-27T21:43:41.710Z
+- Generated At: 2026-09-27T23:21:31.646Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 - November 7 anchor-audit confirmed the maintainCase flag and unicode handling stay aligned with GitHub after targeting mis-slugged `COMP-003 – Heuristic Suite` references.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.710Z","inputHash":"8f7b9f1d6137e972"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SlugContext` {#symbol-slugcontext}

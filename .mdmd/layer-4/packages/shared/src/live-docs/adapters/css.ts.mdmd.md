@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/css.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-css-ts
-- Generated At: 2026-09-27T21:43:40.659Z
+- Generated At: 2026-09-27T23:21:30.486Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 - Returns empty symbols array since CSS files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.659Z","inputHash":"b413f790f83a4fcc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-index-ts
-- Generated At: 2026-02-18T21:27:51.652Z
+- Generated At: 2026-09-27T23:21:28.136Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Public entry point for the Local Map view module. Exposes `createLocalView` fact
 - Delegates to `LocalViewController` for implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.652Z","inputHash":"0546ceea4aca2e8c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createLocalView` {#symbol-createlocalview}

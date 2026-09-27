@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
-- Live Doc ID: LD-implementation-scripts-live-docs-lint-ts
-- Generated At: 2026-09-27T22:11:41.311Z
+- Generated At: 2026-09-27T23:21:31.911Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Checks every staged Live Doc against the grammar, refuses absolute links, warns 
 Introduced alongside the first Live Docs CLI (Aug 2024) and expanded repeatedly through the MDMD migration. In Nov 2025 we added authored-section warnings to surface pending “Purpose/Notes” placeholders without blocking commits, keeping the guardrail lightweight while nudging documentation quality forward.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:41.311Z","inputHash":"4c2f74fbc553fe36"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

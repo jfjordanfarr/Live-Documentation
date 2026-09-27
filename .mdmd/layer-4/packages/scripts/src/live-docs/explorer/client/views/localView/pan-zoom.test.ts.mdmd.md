@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-pan-zoom-test-ts
-- Generated At: 2026-09-27T21:43:38.814Z
+- Generated At: 2026-09-27T23:21:28.297Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Unit tests for the pan-zoom pure functions. Validates clamp behavior, easing cur
 Created during Dev Day 50 (12/19) to provide coverage for the Phase 4 extraction. Tests mathematical properties rather than DOM behavior, ensuring the pure functions are independently verifiable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.814Z","inputHash":"d41e2af71b4b7ed6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

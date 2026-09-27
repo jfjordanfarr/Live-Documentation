@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/pipeline_test.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-pipeline-test-rs
-- Generated At: 2026-09-27T21:43:47.819Z
+- Generated At: 2026-09-27T23:21:39.013Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Integration tests for the Rust Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of processor and models modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.819Z","inputHash":"416ffb7f1c0c5de3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-store-memoryinventory-java
-- Generated At: 2026-09-27T21:43:45.848Z
+- Generated At: 2026-09-27T23:21:36.874Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Imports the model package on demand (`com.acme.warehouse.model.*`) and carries the workspace annotation `@Audited`; `Listener` resolves through the implemented interface's nested type.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.848Z","inputHash":"04b2f2b667605508"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MemoryInventory` {#symbol-memoryinventory}

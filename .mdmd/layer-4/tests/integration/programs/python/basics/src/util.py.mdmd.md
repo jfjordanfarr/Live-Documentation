@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/basics/src/util.py
-- Live Doc ID: LD-test-tests-integration-programs-python-basics-src-util-py
-- Generated At: 2026-09-27T21:43:45.978Z
+- Generated At: 2026-09-27T23:21:37.023Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Summarizes numeric sequences for the Python basics benchmark, providing simple a
 Avoid over-optimizing the list length calculation; the current approach intentionally mixes iterator and list handling.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.978Z","inputHash":"606f991dd5d2d57e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize_values` {#symbol-summarize_values}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
-- Live Doc ID: LD-test-tests-e2e-playwright-config-ts
-- Generated At: 2026-09-27T21:43:42.436Z
+- Generated At: 2026-09-27T23:21:32.454Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Playwright test configuration for the Membrane Map E2E suite, defining browser s
 - `fullyParallel: false` and `workers: 1` because tests share one browser context and the http-server port.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.436Z","inputHash":"189aab4af39abcad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `default` {#symbol-default}

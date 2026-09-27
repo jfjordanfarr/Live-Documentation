@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/symbolExtraction.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-symbolextraction-ts
-- Generated At: 2026-02-03T21:55:40.726Z
+- Generated At: 2026-09-27T23:21:31.557Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ TypeScript AST symbol extraction for Live Documentation. Walks the AST of TypeSc
 - Handles edge cases: `export =`, `export default`, namespace re-exports, type-only exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.726Z","inputHash":"1de8843e3fd14336"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `inferScriptKind` {#symbol-inferscriptkind}

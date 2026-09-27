@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Hub/ServiceRouting.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-hub-servicerouting-cs
-- Generated At: 2026-09-27T21:43:43.995Z
+- Generated At: 2026-09-27T23:21:34.839Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.995Z","inputHash":"f941970e30250052"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ServiceRouting` {#symbol-servicerouting}

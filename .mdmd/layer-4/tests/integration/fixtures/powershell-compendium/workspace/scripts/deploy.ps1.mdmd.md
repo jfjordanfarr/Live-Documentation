@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/deploy.ps1
-- Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-workspace-scripts-deploy-ps1
-- Generated At: 2026-09-27T23:16:51.823Z
+- Generated At: 2026-09-27T23:21:32.876Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Fixture entry point that simulates an ops deployment script for inspect CLI regr
 - Lives under the `powershell-compendium` fixture workspace and mirrors the patterns covered by the unit-level adapter tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T23:16:51.823Z","inputHash":"0f5e0a99ca369f55"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Invoke-Deployment` {#symbol-invokedeployment}

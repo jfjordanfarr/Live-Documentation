@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-ts
-- Generated At: 2026-09-27T21:43:39.082Z
+- Generated At: 2026-09-27T23:21:28.583Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Pure functions for computing symbol hover/pin highlighting in the Local Map. Det
 Extracted from controller.ts during Dev Day 50 (12/19). The `computeSymbolHighlight()` function is pure computation; `applySymbolHighlight()` handles DOM mutations. This separation enables comprehensive unit testing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.082Z","inputHash":"19dd0d09951490f7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolHighlightResult` {#symbol-symbolhighlightresult}

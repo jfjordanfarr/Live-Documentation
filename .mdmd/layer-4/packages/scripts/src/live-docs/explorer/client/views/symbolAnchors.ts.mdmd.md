@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-symbolanchors-ts
-- Generated At: 2026-09-27T21:43:39.827Z
+- Generated At: 2026-09-27T23:21:29.330Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Symbol anchor key normalisation utilities for the Local Map. Ensures that symbol
 - `buildNormalizedAnchorKey` combines node ID, direction, and optional symbol into a canonical key.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.827Z","inputHash":"901a9c7681744ad9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorDirection` {#symbol-anchordirection}

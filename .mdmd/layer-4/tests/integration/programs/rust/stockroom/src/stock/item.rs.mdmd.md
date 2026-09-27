@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/stock/item.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-stock-item-rs
-- Generated At: 2026-09-27T21:43:47.947Z
+- Generated At: 2026-09-27T23:21:39.168Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Reaches `Quantity` through `super::quantity`, a sibling module named through the parent.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.947Z","inputHash":"aab9bea3b03e5190"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Item` {#symbol-item}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/banner-hash.123abc456def7890.png
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-banner-hash-123abc456def7890-png
-- Generated At: 2026-02-03T21:55:50.885Z
+- Generated At: 2026-09-27T23:21:33.384Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture content-hashed image demonstrating that the HTML adapter ha
 - The hash pattern `123abc456def7890` simulates webpack/vite content hash naming
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.885Z","inputHash":"2a7f6dd675247e07"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

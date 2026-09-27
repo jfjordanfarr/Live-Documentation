@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-sources-view-ts
-- Generated At: 2026-02-20T21:08:00.263Z
+- Generated At: 2026-09-27T23:21:27.252Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Renders the Knowledge Sources panel showing graph health warnings and data sourc
 Extracted from client/index.ts during Dev Day 50 (12/19). The `renderSourcesView()` function populates the sidebar with graph statistics, while `renderHealthWarnings()` surfaces actionable issues.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-20T21:08:00.263Z","inputHash":"f3b09209b10ff240"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticDocsMap` {#symbol-staticdocsmap}

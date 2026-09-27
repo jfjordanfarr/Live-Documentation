@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/tooling/githubSlugger.test.ts
-- Live Doc ID: LD-test-packages-shared-src-tooling-githubslugger-test-ts
-- Generated At: 2026-09-27T21:43:41.696Z
+- Generated At: 2026-09-27T23:21:31.634Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Locks in the vendored slugger’s behaviour against GitHub’s casing, unicode, 
 - Reinforced during the November 7 anchor audit that reproduced real headings like “COMP-003 – Heuristic Suite,” ensuring unicode deduping remains correct.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.696Z","inputHash":"0e4b486e6c9acd72"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

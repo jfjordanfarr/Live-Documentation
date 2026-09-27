@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/compose.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-compose-test-ts
-- Generated At: 2026-09-27T22:11:40.810Z
+- Generated At: 2026-09-27T23:21:31.233Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Proves composition: a symbol becomes a heading with its kind, source line and do
 - Replaced `renderPublicSymbolLines.test.ts` on 2026-09-27, which asserted on rendered lines; these assertions are on the model.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.810Z","inputHash":"d5a0fdf3b15923f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

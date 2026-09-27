@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/videos/intro.mp4
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-videos-intro-mp4
-- Generated At: 2026-02-03T21:55:51.007Z
+- Generated At: 2026-09-27T23:21:33.503Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ SlopCop test fixture video file referenced from `index.html` via `<source src>`,
 - The video element also has a `poster` attribute pointing to `trailer.jpg`
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.007Z","inputHash":"b4931cd7ffa711f8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

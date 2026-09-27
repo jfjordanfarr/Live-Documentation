@@ -112,7 +112,6 @@ describe("composeDependencies", () => {
       codePath: sourceRelativePath,
       layer: 4,
       archetype: "implementation",
-      liveDocId: "LD-implementation-x",
       authored: "### Purpose\nWalks.\n\n### Notes\nNone.",
       symbols: composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath }),
       dependencies: composeDependencies({

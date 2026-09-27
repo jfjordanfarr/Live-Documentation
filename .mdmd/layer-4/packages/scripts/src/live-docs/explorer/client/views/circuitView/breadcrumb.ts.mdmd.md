@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/breadcrumb.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-breadcrumb-ts
-- Generated At: 2026-03-23T20:05:53.896Z
+- Generated At: 2026-09-27T23:21:27.747Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ DOM builder for the breadcrumb navigation bar in the Circuit Board view. Renders
 - Separators ("›") are `aria-hidden` to keep screen reader output clean.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.896Z","inputHash":"bab73e8b5aa204b8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createBreadcrumb` {#symbol-createbreadcrumb}

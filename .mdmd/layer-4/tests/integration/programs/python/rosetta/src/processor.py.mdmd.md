@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/processor.py
-- Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-processor-py
-- Generated At: 2026-09-27T21:43:47.072Z
+- Generated At: 2026-09-27T23:21:38.218Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Core processing logic for the Python Rosetta Stone fixture. Exercises various im
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Python's from-import and import-as patterns.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.072Z","inputHash":"8ba73a660d546665"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DEFAULT_CONFIG` {#symbol-default_config}

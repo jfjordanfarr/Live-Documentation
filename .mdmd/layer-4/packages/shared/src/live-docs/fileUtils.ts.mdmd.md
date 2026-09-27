@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/fileUtils.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-fileutils-ts
-- Generated At: 2026-02-03T21:55:40.497Z
+- Generated At: 2026-09-27T23:21:31.467Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ File system utilities for Live Documentation. Provides helpers for checking dire
 - Both functions handle errors gracefully with try/catch, returning `false` or breaking the loop on failure
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.497Z","inputHash":"3786680e199511d3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `directoryExists` {#symbol-directoryexists}

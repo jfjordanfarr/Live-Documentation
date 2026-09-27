@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Web.config
-- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-gateway-web-config
-- Generated At: 2026-09-27T21:43:43.949Z
+- Generated At: 2026-09-27T23:21:34.781Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.949Z","inputHash":"da80f54a93858367"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Gateway.Workload` {#symbol-gatewayworkload}

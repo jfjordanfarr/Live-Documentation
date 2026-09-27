@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-reflection-workspace-services-telemetryhandler-cs
-- Generated At: 2026-09-27T18:34:30.733Z
+- Generated At: 2026-09-27T23:21:32.790Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the reflection-only handler that the pathfinder must rediscover when tra
 - Served alongside `ReflectionFactory.cs` to validate that a type named only in a string passed to `Type.GetType` still becomes a dependency. The factory's link lands on the class symbol below.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.733Z","inputHash":"7e63b6d85bad54bb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryHandler` {#symbol-telemetryhandler}

@@ -14,9 +14,7 @@ const FULL: LiveDoc = {
   codePath: "src/widgets/widget.ts",
   layer: 4,
   archetype: "implementation",
-  liveDocId: "LD-implementation-src-widgets-widget-ts",
   generatedAt: "2026-09-27T12:00:00.000Z",
-  provenance: { generators: [{ tool: "live-docs-generator", version: "0.1.0", generatedAt: "2026-09-27T12:00:00.000Z", inputHash: "0123456789abcdef" }] },
   authored: ["### Purpose", "Draws widgets.", "", "### Notes", "- Keep it small.", "- A line with `code` and a [link](../other.md)."].join("\n"),
   symbols: [
     {
@@ -75,7 +73,6 @@ const EMPTY: LiveDoc = {
   codePath: "assets/logo.png",
   layer: 4,
   archetype: "asset",
-  liveDocId: "LD-asset-assets-logo-png",
   authored: DEFAULT_AUTHORED_BLOCK,
   symbols: [],
   dependencies: []
@@ -104,7 +101,6 @@ describe("the Live Doc grammar", () => {
       "- Layer: 4",
       "- Archetype: asset",
       "- Code Path: assets/logo.png",
-      "- Live Doc ID: LD-asset-assets-logo-png",
       "",
       "## Authored",
       "### Purpose",

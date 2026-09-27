@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles/view-shared.css
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-view-shared-css
-- Generated At: 2026-03-09T21:20:31.889Z
+- Generated At: 2026-09-27T23:21:27.654Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Shared visual primitives consumed by multiple Explorer views: viewport layers (p
 - Z-index stacking was refined iteratively in Turns 21–22 of that session after the user reported connectors drawing behind nodes and test-backed glow drawing above nodes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T21:20:31.889Z","inputHash":"4ab68c6a97bcbac3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

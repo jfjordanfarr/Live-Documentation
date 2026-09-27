@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/report/ReportWriterTest.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-test-java-com-acme-warehouse-report-reportwritertest-java
-- Generated At: 2026-09-27T21:43:45.869Z
+- Generated At: 2026-09-27T23:21:36.901Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Tests for `ReportWriter` in the warehouse sample program.
 - Statically imports everything from JUnit's `Assertions`, which stays an external dependency: nothing in the workspace defines it.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.869Z","inputHash":"3a849ed336acc3f3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriterTest` {#symbol-reportwritertest}

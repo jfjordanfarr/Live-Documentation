@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/card-factory.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-card-factory-ts
-- Generated At: 2026-02-03T21:55:36.216Z
+- Generated At: 2026-09-27T23:21:27.989Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Creates individual node cards for the Local Map view. Each card displays artifac
 Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the three-column layout, including symbol sections and type badges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.216Z","inputHash":"ee5e3ea3dde6bc65"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createNodeCard` {#symbol-createnodecard}

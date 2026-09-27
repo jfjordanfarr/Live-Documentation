@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-09-27T21:43:40.816Z
+- Generated At: 2026-09-27T23:21:30.673Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.816Z","inputHash":"a5cd48145f320980"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/ReportWriter.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-report-reportwriter-java
-- Generated At: 2026-09-27T21:43:45.803Z
+- Generated At: 2026-09-27T23:21:36.823Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Names `com.acme.warehouse.store.Inventory` fully qualified with no import, statically imports `Quantity.none`, and has a generic method with a bound (`<T extends Item>`), which is recorded as a generic-constraint type reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.803Z","inputHash":"2e2bfe99bb8d33dc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriter` {#symbol-reportwriter}

@@ -4,7 +4,6 @@
 
 - Layer: 3
 - Archetype: component
-- Live Doc ID: COMP-polyglot-adapters
 
 ## Authored
 

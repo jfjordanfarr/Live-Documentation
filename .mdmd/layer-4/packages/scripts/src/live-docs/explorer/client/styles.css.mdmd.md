@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/styles.css
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-styles-css
-- Generated At: 2026-03-23T20:05:53.735Z
+- Generated At: 2026-09-27T23:21:27.513Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ CSS entry point for the Explorer client. Contains only `@import` statements that
 - Decomposed into `styles/` on [2025-12-04](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19–20) after exceeding the 1000-line file-size threshold. The user identified it as "a big big big source of trouble" and the CSS was split into domain-specific files: theme, shell, view-shared, circuit, local, graph (`4504d36a`).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.735Z","inputHash":"61bcdc0c7307d8a9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

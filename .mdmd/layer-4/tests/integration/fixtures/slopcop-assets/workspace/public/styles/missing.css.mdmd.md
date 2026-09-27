@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/styles/missing.css
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-styles-missing-css
-- Generated At: 2026-02-03T21:55:50.992Z
+- Generated At: 2026-09-27T23:21:33.488Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Intentional missing stylesheet referenced by the SlopCop asset fixture to demons
 - Coordinate changes with `slopcop.config.json` waivers if we alter how missing assets are reported.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.992Z","inputHash":"16db975f04f92234"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-layout-test-ts
-- Generated At: 2026-09-27T21:43:39.543Z
+- Generated At: 2026-09-27T23:21:29.037Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Vitest unit tests for the pin-layout dependency-flow engine, covering topologica
 - Test helper `addPin` creates pin state entries; `EMPTY_PIN_SET` provides the base case
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.543Z","inputHash":"54e9af42d8508996"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-panels-index-ts
-- Generated At: 2026-02-03T21:55:35.866Z
+- Generated At: 2026-09-27T23:21:27.159Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Barrel file that re-exports all panel initialization functions. Provides a singl
 Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups panel-related exports for cleaner imports in the main index.ts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.866Z","inputHash":"161eae9a0e9ff233"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `initOmnisearch` {#symbol-initomnisearch}

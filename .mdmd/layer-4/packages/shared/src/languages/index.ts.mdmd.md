@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-09-27T21:43:40.317Z
+- Generated At: 2026-09-27T23:21:30.093Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.317Z","inputHash":"6b3a44ec1267760b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Models/FormattedReport.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-models-formattedreport-cs
-- Generated At: 2026-09-27T21:43:43.719Z
+- Generated At: 2026-09-27T23:21:34.526Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Represents the rendered diagnostics payload for the C# basic benchmark, pairing 
 This record intentionally mirrors the service output; change it only when the service contract evolves.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.719Z","inputHash":"4b4c91d25df4fd0a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FormattedReport` {#symbol-formattedreport}

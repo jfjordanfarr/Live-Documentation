@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-index-ts
-- Generated At: 2026-03-23T20:05:53.966Z
+- Generated At: 2026-09-27T23:21:27.815Z
 
 ## Authored
 ### Purpose
@@ -21,7 +20,6 @@ Main controller for the Circuit Board (treemap) view in the Live Docs Explorer. 
 - `createSiblingStrip(aggregate, onExpand)` builds thin dimmed buttons for peer directories; clicking swaps which directory is expanded without losing hierarchy context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:53.966Z","inputHash":"68c2886e6f17aa90"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}

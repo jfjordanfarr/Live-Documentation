@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
-- Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2026-09-27T21:43:40.232Z
+- Generated At: 2026-09-27T23:21:29.966Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect—so th
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.232Z","inputHash":"05035d256754c4e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}

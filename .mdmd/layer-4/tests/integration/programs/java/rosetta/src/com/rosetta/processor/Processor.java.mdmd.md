@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/processor/Processor.java
-- Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-processor-processor-java
-- Generated At: 2026-09-27T21:43:45.394Z
+- Generated At: 2026-09-27T23:21:36.364Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Core processing logic for the Java Rosetta Stone fixture. Tests import and stati
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Exercises both direct imports and type-only references.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.394Z","inputHash":"f2983f259de55d5f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Processor` {#symbol-processor}

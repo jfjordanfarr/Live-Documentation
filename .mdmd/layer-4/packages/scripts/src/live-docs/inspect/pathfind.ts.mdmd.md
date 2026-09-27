@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-pathfind-ts
-- Generated At: 2026-02-03T21:55:37.375Z
+- Generated At: 2026-09-27T23:21:29.873Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the core BFS/DFS graph traversal for finding shortest paths between L
 Extracted from inspect.ts during Dev Day 50 (12/19). The `searchGraph()` function is the workhorse for file-level pathfinding. Symbol-level pathfinding is handled by pathfind-symbol.ts.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.375Z","inputHash":"ade8cae2a46058b5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `searchGraph` {#symbol-searchgraph}

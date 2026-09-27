@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-aggregation-ts
-- Generated At: 2026-09-27T21:43:38.332Z
+- Generated At: 2026-09-27T23:21:27.730Z
 
 ## Authored
 ### Purpose
@@ -21,7 +20,6 @@ Computes per-directory aggregate metrics (file count, symbol count, cross-bounda
 - The deprecated `computeDirectoryAggregates` wraps `computeChildAggregates(root)` for backward compatibility with existing call sites.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.332Z","inputHash":"38b920b4c72ae6ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DirectoryAggregate` {#symbol-directoryaggregate}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/rosettaParity.test.ts
-- Live Doc ID: LD-test-tests-integration-live-docs-rosettaparity-test-ts
-- Generated At: 2026-09-27T21:43:43.220Z
+- Generated At: 2026-09-27T23:21:33.916Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Cross-language integration test that runs the full Live Documentation pipeline (
 - Parity is a smoke alarm, not a correctness measure; the compiler-backed oracle described in the architectural decisions is the measure. Created 2026-03-11; moved off the VS Code Electron harness 2026-09-27.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.220Z","inputHash":"7c97d9a5a5ab6bfb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

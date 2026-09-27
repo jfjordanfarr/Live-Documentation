@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-pages-default-aspx-cs
-- Generated At: 2026-09-27T21:43:44.639Z
+- Generated At: 2026-09-27T23:21:35.553Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Implements the WebForms code-behind for the benchmark page, populating hidden fi
 Preserve the `Page_Load` behavior; client tests depend on the hidden values being assigned during initial render.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.639Z","inputHash":"ed21248280962955"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Default` {#symbol-default}

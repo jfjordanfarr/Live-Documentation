@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/scip-edges.ts
-- Live Doc ID: LD-implementation-scripts-oracle-scip-edges-ts
-- Generated At: 2026-09-27T21:43:42.027Z
+- Generated At: 2026-09-27T23:21:31.986Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Turns a SCIP index into the file-to-file edges a fixture's `expected/compiler-ed
 - Symbols are shown by their descriptors alone, with the scheme, package manager, package name and version stripped, so one converter reads every indexer's output.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.027Z","inputHash":"e998d560e0bca95a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ScipIndex` {#symbol-scipindex}

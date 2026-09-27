@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-index-ts
-- Generated At: 2026-03-09T19:16:51.410Z
+- Generated At: 2026-09-27T23:21:26.786Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Barrel export for the `@live-documentation/scripts` workspace package, exposing 
 - Consumers import `startExplorerServer` and related types from `@live-documentation/scripts` directly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.410Z","inputHash":"571afc4603f43ed4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}

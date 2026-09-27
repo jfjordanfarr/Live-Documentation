@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Scripts/app-insights.js
-- Live Doc ID: LD-implementation-tests-integration-fixtures-webforms-appsettings-workspace-packages-site-scripts-app-insights-js
-- Generated At: 2026-02-03T21:55:51.289Z
+- Generated At: 2026-09-27T23:21:33.831Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Fixture JavaScript demonstrating how telemetry scripts consume configuration inj
 - Update this file in tandem with `Default.aspx.cs` and `Web.config` to keep dependency mappings accurate.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.289Z","inputHash":"0d7e71f8cbc4be54"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `initializeTelemetry` {#symbol-initializetelemetry}

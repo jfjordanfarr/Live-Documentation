@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/processor/processor.go
-- Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-processor-processor-go
-- Generated At: 2026-09-27T21:43:45.092Z
+- Generated At: 2026-09-27T23:21:36.044Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Core processing logic for the Go Rosetta Stone benchmark, transforming models us
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.092Z","inputHash":"587311a3c4e260cb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DefaultConfig` {#symbol-defaultconfig}

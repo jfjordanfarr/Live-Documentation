@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/__init__.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-init-py
-- Generated At: 2026-09-27T21:43:46.028Z
+- Generated At: 2026-09-27T23:21:37.083Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The package root of the ledger sample program: re-exports the model types and `M
 - A barrel. The adapter follows `from ledger import Account` through this file to `models/account.py`, and the oracle records both files as dependencies of the importer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.028Z","inputHash":"0f2fd11916875e79"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

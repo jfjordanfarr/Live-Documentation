@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/src/helpers.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-src-helpers-ts
-- Generated At: 2026-09-27T21:43:48.315Z
+- Generated At: 2026-09-27T23:21:39.576Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Utility functions for the TypeScript Rosetta Stone fixture. Provides formatting 
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Imported selectively by processor.ts to test named import detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.315Z","inputHash":"175fd8a7d99d9ac0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format` {#symbol-format}

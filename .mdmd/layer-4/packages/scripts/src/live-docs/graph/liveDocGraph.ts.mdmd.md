@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/graph/liveDocGraph.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-graph-livedocgraph-ts
-- Generated At: 2026-09-27T22:11:39.967Z
+- Generated At: 2026-09-27T23:21:29.676Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Builds an in-memory graph of Live Documentation by reading every doc through the
 - Since 2026-09-27 the docs are read with `parseLiveDoc`; a doc the grammar refuses stops the build with its path and line. The node shape (`rawDependencies`, `symbolDocumentation`, `publicSymbols`) is derived from the model and kept as the Explorer and `inspect` expect it until they read the derived index.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:39.967Z","inputHash":"0b2771e016f29cf8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ParsedTypeReference` {#symbol-parsedtypereference}

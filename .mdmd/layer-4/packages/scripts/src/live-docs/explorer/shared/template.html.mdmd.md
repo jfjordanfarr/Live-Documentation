@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/template.html
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-template-html
-- Generated At: 2026-03-28T20:31:00.892Z
+- Generated At: 2026-09-27T23:21:29.638Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-28T20:31:00.892Z","inputHash":"5327411984f4d05d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `circuit-connections` {#symbol-circuitconnections}

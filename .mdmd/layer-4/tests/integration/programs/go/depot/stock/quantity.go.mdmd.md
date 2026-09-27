@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/stock/quantity.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-stock-quantity-go
-- Generated At: 2026-09-27T21:43:44.872Z
+- Generated At: 2026-09-27T23:21:35.807Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Half of the `stock` package; the other file uses `format`, `Quantity` and `Unit` from here without qualification, which is the same-package case the adapter resolves through sibling files.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.872Z","inputHash":"fb1701aa27e92f0f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Unit (type)` {#symbol-unit-type}

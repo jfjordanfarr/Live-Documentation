@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/cli/lib/cli.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-cli-rb
-- Generated At: 2026-09-27T21:43:47.317Z
+- Generated At: 2026-09-27T23:21:38.469Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the entry point for the Ruby CLI benchmark, dispatching to subcommands s
 Keep the command switch intentionally small; new behavior should live in the services or command modules to preserve this file's role.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.317Z","inputHash":"e6ed3b730a19889d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

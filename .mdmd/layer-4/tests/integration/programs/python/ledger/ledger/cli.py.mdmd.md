@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/cli.py
-- Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-cli-py
-- Generated At: 2026-09-27T21:43:46.093Z
+- Generated At: 2026-09-27T23:21:37.147Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The command-line entry point of the ledger sample program: opens two accounts, m
 - The one compiler edge the adapter does not find starts here: `account.balance()` on an object returned by `Repository.get`, which only type inference can attribute to `models/account.py`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.093Z","inputHash":"a27f42ba8b854714"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/html.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-html-test-ts
-- Generated At: 2026-09-27T21:43:40.756Z
+- Generated At: 2026-09-27T23:21:30.603Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Unit test suite for the HTML language adapter, validating dependency extraction 
 - Tests deduplication of repeated references and srcset multi-URL parsing
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.756Z","inputHash":"36161f47f38b32ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

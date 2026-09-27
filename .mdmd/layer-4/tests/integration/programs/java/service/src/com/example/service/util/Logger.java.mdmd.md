@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/util/Logger.java
-- Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-util-logger-java
-- Generated At: 2026-09-27T21:43:45.642Z
+- Generated At: 2026-09-27T23:21:36.630Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides console logging for the Java service benchmark so support utilities app
 The logger intentionally stays minimal; expand it only if the fixture requires richer logging edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.642Z","inputHash":"fcf29b5bd5081d23"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Logger` {#symbol-logger}

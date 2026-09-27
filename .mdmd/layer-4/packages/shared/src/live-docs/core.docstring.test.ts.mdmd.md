@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/core.docstring.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-core-docstring-test-ts
-- Generated At: 2026-09-27T22:11:40.847Z
+- Generated At: 2026-09-27T23:21:31.271Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Verifies the Live Docs extraction engine emits structured docstrings for TypeScr
 - Works in concert with the polyglot adapter tests landed the same week, ensuring the shared core honors language-specific docstring structures.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-08-stand-up-co-activation-infrastructure-lines-1101-1220]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.847Z","inputHash":"fa31f697743ad8b5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

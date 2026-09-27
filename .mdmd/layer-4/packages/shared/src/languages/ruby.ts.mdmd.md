@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/ruby.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-ruby-ts
-- Generated At: 2026-02-16T18:25:01.645Z
+- Generated At: 2026-09-27T23:21:30.162Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides Ruby-specific syntax configuration implementing `LanguageSyntax`. Defin
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — heredoc and percent-literal stripping is best-effort; complex Ruby string interpolation needs tree-sitter for correctness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.645Z","inputHash":"bfdb16caca05ed8c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubySyntax` {#symbol-rubysyntax}

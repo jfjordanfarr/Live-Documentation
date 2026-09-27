@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Live Doc ID: LD-implementation-scripts-oracle-compare-ts
-- Generated At: 2026-09-27T22:11:41.341Z
+- Generated At: 2026-09-27T23:21:31.948Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:41.341Z","inputHash":"b816385a7ead1fba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}

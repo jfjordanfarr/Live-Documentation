@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/jsDoc.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-jsdoc-ts
-- Generated At: 2026-02-03T21:55:40.568Z
+- Generated At: 2026-09-27T23:21:31.507Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ JSDoc/TSDoc documentation extraction for Live Documentation. Parses JSDoc commen
 - Unknown tags are preserved in `rawFragments` for downstream inspection
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.568Z","inputHash":"9a8d76040261eb46"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/pipeline/src/pipeline.py
-- Live Doc ID: LD-test-tests-integration-programs-python-pipeline-src-pipeline-py
-- Generated At: 2026-09-27T21:43:46.799Z
+- Generated At: 2026-09-27T23:21:37.918Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Orchestrates report construction for the Python pipeline benchmark, tying reposi
 Maintain the dataclass wrapper and sequencing—they model the minimal integration flow the benchmark expects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.799Z","inputHash":"ce34956cefc6ca77"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}

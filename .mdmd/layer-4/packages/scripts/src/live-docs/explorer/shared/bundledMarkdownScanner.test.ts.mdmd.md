@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-shared-bundledmarkdownscanner-test-ts
-- Generated At: 2026-09-27T21:43:39.852Z
+- Generated At: 2026-09-27T23:21:29.368Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Proves that `scanAndBundleMarkdown` bundles every markdown file a Live Doc links
 - The exclusion case is the guard for the `bundleExclude` config field introduced on 2026-09-27 to keep this repository's chat archive out of the public Explorer bundle
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.852Z","inputHash":"5a5522801e88e4a2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/background.png
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-background-png
-- Generated At: 2026-02-03T21:55:50.869Z
+- Generated At: 2026-09-27T23:21:33.370Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture background image referenced from `site.css` via `url()` to 
 - Demonstrates CSS-to-image graph connectivity in the Explorer visualization
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.869Z","inputHash":"8f584e2a1d2e2c63"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

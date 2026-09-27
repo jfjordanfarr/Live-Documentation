@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/Services/TelemetryScheduler.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-queue-worker-workspace-services-telemetryscheduler-cs
-- Generated At: 2026-09-27T18:34:30.792Z
+- Generated At: 2026-09-27T23:21:32.932Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Document the recurring Hangfire registration so LD-402 captures scheduled teleme
 Calls the Hangfire recurring manager directly to keep the pathfinder's inbound edges honest when configuration feeds the worker and controller through scheduled hops.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.792Z","inputHash":"a03ee132f234d329"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TelemetryScheduler (class)` {#symbol-telemetryscheduler-class}

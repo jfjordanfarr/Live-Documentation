@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/rust.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-rust-test-ts
-- Generated At: 2026-09-27T21:43:41.229Z
+- Generated At: 2026-09-27T23:21:31.129Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Tests the Rust adapter's rules on small temporary crates: what is published, `mo
 - Each test writes its own `Cargo.toml` and files; `rust.typeref.test.ts` and `rust.docstring.test.ts` hold the older cases the rewrite had to keep passing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.229Z","inputHash":"a6b2739769bb6500"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

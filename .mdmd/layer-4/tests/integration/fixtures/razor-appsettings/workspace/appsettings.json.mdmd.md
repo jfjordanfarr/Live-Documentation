@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/appsettings.json
-- Live Doc ID: LD-asset-tests-integration-fixtures-razor-appsettings-workspace-appsettings-json
-- Generated At: 2026-09-27T18:34:30.881Z
+- Generated At: 2026-09-27T23:21:33.046Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Holds the instrumentation key surfaced by the Razor telemetry page model so a pa
 - `Telemetry:InstrumentationKey` is shared with the Razor page and its script to keep parity with the Blazor telemetry fixture. The key path is the file's public symbol.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.881Z","inputHash":"8b8d0a6723343bc7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Telemetry` {#symbol-telemetry}

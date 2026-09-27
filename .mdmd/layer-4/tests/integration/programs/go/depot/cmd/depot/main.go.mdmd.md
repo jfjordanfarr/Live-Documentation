@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/cmd/depot/main.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-cmd-depot-main-go
-- Generated At: 2026-09-27T21:43:44.710Z
+- Generated At: 2026-09-27T23:21:35.630Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The command of the depot sample program: receives two items into an in-memory in
 - Imports the audit package blank for its `init`, aliases the memory store as `memstore`, and mentions `store.Inventory`, `audit.Log` and `stock.Item` in a comment and a string, none of which is a reference. Its call to `Listen`, a method promoted from the embedded `store.Base`, is the one edge here that needs type inference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.710Z","inputHash":"7a07de59c7df5ee3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}

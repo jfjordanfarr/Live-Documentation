@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts
-- Live Doc ID: LD-implementation-tests-integration-fixtures-slopcop-symbols-workspace-src-component-ts
-- Generated At: 2026-02-03T21:55:51.144Z
+- Generated At: 2026-09-27T23:21:33.664Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides the minimal implementation required for the SlopCop symbol-audit fixtur
 - Intentionally trivial; any extra dependencies here would dilute the fixture’s goal of isolating symbol-link validation during SlopCop runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.144Z","inputHash":"2d7a224640bf1d87"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `placeholder` {#symbol-placeholder}

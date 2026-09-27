@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/document.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-document-test-ts
-- Generated At: 2026-09-27T22:11:40.995Z
+- Generated At: 2026-09-27T23:21:31.440Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Proves the grammar: a doc using every production renders and parses back to the 
 - The lenient `authoredBlockOf` is covered here too, including text with no sections at all.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:40.995Z","inputHash":"cea8da4d8241c6e0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/gitUtils.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-gitutils-ts
-- Generated At: 2026-02-03T21:55:40.534Z
+- Generated At: 2026-09-27T23:21:31.479Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Git-related utilities for Live Documentation. Supports the `--changed` flag in t
 - Returns empty Set on git errors (e.g., not a git repository) rather than throwing
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.534Z","inputHash":"67661cb42ff60971"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `detectChangedFiles` {#symbol-detectchangedfiles}

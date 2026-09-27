@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/layered/src/services/dataService.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-layered-src-services-dataservice-ts
-- Generated At: 2026-09-27T21:43:48.214Z
+- Generated At: 2026-09-27T23:21:39.454Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides the intermediate service layer for the `ts-layered` benchmark so depend
 - Instantiates `StorageClient` at module scope to highlight runtime evaluation and ensure static analyzers respect constructor side effects.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.214Z","inputHash":"7be1115485b52228"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `loadWidgetMetrics` {#symbol-loadwidgetmetrics}

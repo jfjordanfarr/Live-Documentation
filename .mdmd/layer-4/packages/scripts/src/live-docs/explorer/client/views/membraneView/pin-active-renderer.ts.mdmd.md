@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-active-renderer.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-active-renderer-ts
-- Generated At: 2026-03-30T18:52:14.542Z
+- Generated At: 2026-09-27T23:21:29.009Z
 
 ## Authored
 ### Purpose
@@ -24,7 +23,6 @@ DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms 
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): added pin-all toggle button to flow card headers via `onPinAllSymbols` in `PinActiveCallbacks`, reference badges on symbol rows (`createReferenceBadges` helper), and `--pinned` class on `__internals__` rows.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.542Z","inputHash":"fa1dcc7dfb2acd8a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PinActiveCallbacks` {#symbol-pinactivecallbacks}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/archetype.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-archetype-ts
-- Generated At: 2026-02-03T21:55:40.312Z
+- Generated At: 2026-09-27T23:21:31.217Z
 
 ## Authored
 ### Purpose
@@ -18,7 +17,6 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:40.312Z","inputHash":"ae3e7075614e0c88"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveArchetype` {#symbol-resolvearchetype}

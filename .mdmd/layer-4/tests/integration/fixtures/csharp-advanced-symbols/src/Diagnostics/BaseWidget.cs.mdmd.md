@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-basewidget-cs
-- Generated At: 2026-09-27T18:34:30.551Z
+- Generated At: 2026-09-27T23:21:32.576Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the `BaseWidget` abstraction used throughout the C# advanced symbols fix
 Changes to rendering hooks must stay synchronized with the derived widget fixtures to keep the scenario coherent.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.551Z","inputHash":"98fb60682a278d4a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BaseWidget (class)` {#symbol-basewidget-class}

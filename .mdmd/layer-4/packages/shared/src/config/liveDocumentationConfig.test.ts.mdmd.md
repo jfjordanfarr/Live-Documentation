@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/config/liveDocumentationConfig.test.ts
-- Live Doc ID: LD-test-packages-shared-src-config-livedocumentationconfig-test-ts
-- Generated At: 2026-09-27T21:43:40.219Z
+- Generated At: 2026-09-27T23:21:29.952Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Exercises `normalizeLiveDocumentationConfig` so Live Docs tooling respects trimm
 Coverage anchors the upcoming `.mdmd` migration work by proving the extension/root/base-layer overrides behave—context tracked in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.219Z","inputHash":"9976c5d28a7d560e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

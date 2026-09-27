@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/dataLoader.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-dataloader-ts
-- Generated At: 2026-02-23T19:50:02.209Z
+- Generated At: 2026-09-27T23:21:26.844Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Manages lazy-loading of bundled documentation for the Explorer client. In server
 - Replaces ~80 lines of inline loading state and fetch logic that lived in `index.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T19:50:02.209Z","inputHash":"8d580bf809f8abcb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ServerBundledDocsState` {#symbol-serverbundleddocsstate}

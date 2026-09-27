@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/rosetta/lib/processor.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-rosetta-lib-processor-rb
-- Generated At: 2026-09-27T21:43:47.504Z
+- Generated At: 2026-09-27T23:21:38.681Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Ruby Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby module dependency graph inference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.504Z","inputHash":"1d2ecdf15a0b6dca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Rosetta` {#symbol-rosetta}

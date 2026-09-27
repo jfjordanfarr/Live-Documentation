@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/types.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-types-rs
-- Generated At: 2026-09-27T21:43:47.861Z
+- Generated At: 2026-09-27T23:21:39.068Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Rust Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust use statement and pub use re-export detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.861Z","inputHash":"bdb08eaf76eb5b27"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Status (enum)` {#symbol-status-enum}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Models/PaymentResultModel.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-portal-models-paymentresultmodel-cs
-- Generated At: 2026-09-27T21:43:44.168Z
+- Generated At: 2026-09-27T23:21:35.045Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.168Z","inputHash":"abc9fb58803b7543"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentResultModel` {#symbol-paymentresultmodel}

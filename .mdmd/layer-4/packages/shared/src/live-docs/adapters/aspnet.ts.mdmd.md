@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/aspnet.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-aspnet-ts
-- Generated At: 2026-09-27T21:43:40.413Z
+- Generated At: 2026-09-27T23:21:30.248Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 - Intentional filesystem probes ensure we only yield dependencies for files that actually exist, preventing noisy edges during Stage-0 regeneration.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.413Z","inputHash":"00372a4d46392484"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `aspNetMarkupAdapter` {#symbol-aspnetmarkupadapter}

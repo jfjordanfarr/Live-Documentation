@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/store/memory/memory.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-store-memory-memory-go
-- Generated At: 2026-09-27T21:43:44.945Z
+- Generated At: 2026-09-27T23:21:35.883Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - The package name differs from the directory name, so an importer refers to it as `memstore` unless it aliases the import; the adapter takes the name from the package clause. Embeds `store.Base`, which is recorded as an extends reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.945Z","inputHash":"8cbd2baaa9d0e011"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Memory` {#symbol-memory}

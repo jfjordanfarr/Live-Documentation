@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2026-09-27T21:43:38.286Z
+- Generated At: 2026-09-27T23:21:27.684Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `ClickBehaviorTuning` and `VisualTuning` interfaces removed in [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md); `TuningConfig` simplified to only `bezier` and `localMap` properties.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.286Z","inputHash":"d4f15ec9ba8a5cc5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}

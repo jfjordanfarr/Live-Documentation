@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-detail-levels-ts
-- Generated At: 2026-09-27T21:43:39.224Z
+- Generated At: 2026-09-27T23:21:28.770Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Pure-function detail level resolution for the Membrane Map, classifying every no
 - Although the continuous pin model (adopted later in the same dev day) means the renderer doesn't consume `DetailLevel` directly for DOM class assignment, the classification remains available for future performance optimization (e.g., culling Hidden nodes from the DOM entirely).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.224Z","inputHash":"64f432bae87f1ff2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailLevel` {#symbol-detaillevel}

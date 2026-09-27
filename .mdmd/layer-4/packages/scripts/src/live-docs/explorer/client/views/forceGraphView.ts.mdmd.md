@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-forcegraphview-ts
-- Generated At: 2026-02-23T19:50:02.811Z
+- Generated At: 2026-09-27T23:21:27.937Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Renders the Force-directed 3D graph view for the Live Docs Explorer, including t
 - Depends on the external `3d-force-graph` library; the graph container is resolved via `requireElement('forceGraphContainer')`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T19:50:02.811Z","inputHash":"7078d3fcae67d898"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}

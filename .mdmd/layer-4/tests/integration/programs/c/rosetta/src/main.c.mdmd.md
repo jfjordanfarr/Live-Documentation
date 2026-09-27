@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/main.c
-- Live Doc ID: LD-test-tests-integration-programs-c-rosetta-src-main-c
-- Generated At: 2026-09-27T21:43:43.472Z
+- Generated At: 2026-09-27T23:21:34.244Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Entry point for the C Rosetta Stone fixture. Demonstrates #include and function 
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C include directive and cross-file call detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.472Z","inputHash":"78e079866c99cc7d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rosetta_main` {#symbol-rosetta_main}

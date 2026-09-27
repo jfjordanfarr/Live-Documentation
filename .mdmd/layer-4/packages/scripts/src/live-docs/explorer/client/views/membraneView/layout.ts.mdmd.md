@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-layout-ts
-- Generated At: 2026-09-27T21:43:39.488Z
+- Generated At: 2026-09-27T23:21:28.982Z
 
 ## Authored
 ### Purpose
@@ -22,7 +21,6 @@ Recursive membrane layout engine that maps a `DirectoryNode` tree onto a `Membra
 - The layout is pure-functional (no DOM dependency), enabling comprehensive Vitest coverage of spatial invariants like non-overlap, containment within parent bounds, and area proportionality.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.488Z","inputHash":"3e09a0668cfdae10"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computeMembraneLayout` {#symbol-computemembranelayout}

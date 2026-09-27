@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java
-- Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-quantity-java
-- Generated At: 2026-09-27T21:43:45.738Z
+- Generated At: 2026-09-27T23:21:36.741Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - A record: its components are published as fields. Its `none` factory is the target of the static import in `report/ReportWriter.java`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.738Z","inputHash":"12d2b5163b3ec9b0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Quantity` {#symbol-quantity}

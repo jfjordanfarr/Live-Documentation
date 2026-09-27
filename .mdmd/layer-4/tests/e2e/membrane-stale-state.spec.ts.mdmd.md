@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-stale-state.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-stale-state-spec-ts
-- Generated At: 2026-09-27T21:43:42.364Z
+- Generated At: 2026-09-27T23:21:32.371Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Playwright E2E regression suite proving the Membrane Map degrades gracefully whe
 - Uses `window.__staticExplorerDataPromise` to discover a real node ID at runtime for the mixed-pin test, avoiding hardcoded node IDs that could themselves become stale.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.364Z","inputHash":"a74ec1b03bd68563"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

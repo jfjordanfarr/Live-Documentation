@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/treeSitter.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-treesitter-ts
-- Generated At: 2026-09-27T21:43:41.307Z
+- Generated At: 2026-09-27T23:21:31.201Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.307Z","inputHash":"fb8c7b593be34e05"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SyntaxNode` {#symbol-syntaxnode}

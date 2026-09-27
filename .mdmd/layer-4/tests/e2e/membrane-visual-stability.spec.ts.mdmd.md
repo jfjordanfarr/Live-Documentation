@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-visual-stability.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-visual-stability-spec-ts
-- Generated At: 2026-09-27T21:43:42.412Z
+- Generated At: 2026-09-27T23:21:32.427Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Pixel-stability regression suite for the Membrane Map's pin-active layout. Catch
 - The `waitForPinActiveSettle()` helper polls until `.pin-active-root`, `.pin-active-card[data-id]`, and `.membrane-focal-svg` are all present, then flushes an additional animation frame wait (800ms) for connection-path drawing to complete.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.412Z","inputHash":"0ac819125bfc0f64"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

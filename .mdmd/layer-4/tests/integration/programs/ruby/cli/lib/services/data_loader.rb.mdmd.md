@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/cli/lib/services/data_loader.rb
-- Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-services-data-loader-rb
-- Generated At: 2026-09-27T21:43:47.399Z
+- Generated At: 2026-09-27T23:21:38.570Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides dataset loading for the Ruby CLI benchmark, emitting log messages so an
 Keep dataset names and logging intact; they ensure deterministic edges for the fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.399Z","inputHash":"c2615bd4abbcc876"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}

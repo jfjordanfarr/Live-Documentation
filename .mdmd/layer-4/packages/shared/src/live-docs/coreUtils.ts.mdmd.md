@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreUtils.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreutils-ts
-- Generated At: 2026-09-27T20:03:30.171Z
+- Generated At: 2026-09-27T23:21:31.355Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 - All functions are pure with no side effects
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:30.171Z","inputHash":"63381a19e9dd37da"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatSourceLink` {#symbol-formatsourcelink}

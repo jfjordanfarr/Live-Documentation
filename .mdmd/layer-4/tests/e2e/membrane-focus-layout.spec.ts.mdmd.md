@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-focus-layout.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-focus-layout-spec-ts
-- Generated At: 2026-09-27T21:43:42.266Z
+- Generated At: 2026-09-27T23:21:32.262Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ E2E test validating that the focused directory in browse mode occupies the major
 - The 50% threshold is conservative; the actual focus weight-boost typically yields 70–80% width dominance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.266Z","inputHash":"d808e3b84e268eb5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

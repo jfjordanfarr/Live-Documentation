@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/missing.png
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-assets-workspace-public-images-missing-png
-- Generated At: 2026-02-03T21:55:50.959Z
+- Generated At: 2026-09-27T23:21:33.456Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ SlopCop test fixture representing a "missing" or placeholder image, used to test
 - The name "missing" is a semantic hint for SlopCop test scenarios
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:50.959Z","inputHash":"6fffbc33ed387388"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

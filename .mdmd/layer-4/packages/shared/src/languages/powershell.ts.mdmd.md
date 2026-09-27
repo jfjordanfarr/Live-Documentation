@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/powershell.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-powershell-ts
-- Generated At: 2026-02-16T18:25:01.614Z
+- Generated At: 2026-09-27T23:21:30.127Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides PowerShell-specific syntax configuration implementing `LanguageSyntax`.
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — here-strings (`@"..."@`) are stripped via multiline regex. Variable sigils (`$`) are not stripped from identifiers; they appear as-is in symbol matching.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.614Z","inputHash":"52cc5076826fe70a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellSyntax` {#symbol-powershellsyntax}

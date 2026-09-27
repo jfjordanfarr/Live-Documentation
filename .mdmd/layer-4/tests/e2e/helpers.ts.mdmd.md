@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/helpers.ts
-- Live Doc ID: LD-test-tests-e2e-helpers-ts
-- Generated At: 2026-09-27T21:43:42.093Z
+- Generated At: 2026-09-27T23:21:32.078Z
 
 ## Authored
 ### Purpose
@@ -22,7 +21,6 @@ Shared Playwright helper library for all Membrane Map E2E spec files, providing 
 - Archetype is `test` since this module only serves test infrastructure; it has no runtime consumers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.093Z","inputHash":"126fb9800d304e9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FIXTURE_DIR` {#symbol-fixture_dir}

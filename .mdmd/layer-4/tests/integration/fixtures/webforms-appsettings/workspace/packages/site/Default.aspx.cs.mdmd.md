@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-webforms-appsettings-workspace-packages-site-default-aspx-cs
-- Generated At: 2026-09-27T18:34:31.371Z
+- Generated At: 2026-09-27T23:21:33.797Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Code-behind file for the WebForms telemetry sample, demonstrating how runtime co
 - Update alongside the paired `Web.config` Live Doc whenever configuration keys or telemetry wiring changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:31.371Z","inputHash":"df15221ef9de2945"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WebApp_Default` {#symbol-webapp_default}

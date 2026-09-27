@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-symbol.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-inspect-pathfind-symbol-ts
-- Generated At: 2026-02-03T21:55:37.357Z
+- Generated At: 2026-09-27T23:21:29.852Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Extends pathfinding to symbol-level granularity. When users specify symbol ancho
 Extracted from inspect.ts during Dev Day 50 (12/19). Symbol-level paths are more precise than file-level paths, enabling impact analysis like "which code paths lead from ConfigLoader#loadConfig to Database#query?"
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:37.357Z","inputHash":"18fbff45ad7c57b7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `searchSymbolPath` {#symbol-searchsymbolpath}

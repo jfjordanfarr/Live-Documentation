@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json
-- Live Doc ID: LD-asset-tests-integration-fixtures-slopcop-symbols-workspace-slopcop-config-json
-- Generated At: 2026-09-27T18:34:31.273Z
+- Generated At: 2026-09-27T23:21:33.648Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Configuration file driving the SlopCop symbol audit fixture, defining heading an
 - Adjust whenever lint rules evolve; document changes in fixture notes to keep expectations aligned.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:31.273Z","inputHash":"f5ef468e28d83fc8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `symbols` {#symbol-symbols}

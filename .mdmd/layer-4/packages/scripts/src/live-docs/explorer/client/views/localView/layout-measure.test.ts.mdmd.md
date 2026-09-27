@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-layout-measure-test-ts
-- Generated At: 2026-09-27T21:43:38.723Z
+- Generated At: 2026-09-27T23:21:28.205Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Unit tests for layout measurement pure functions. Validates clamp behavior, fit-
 Created during Dev Day 50 (12/19). Tests the mathematical aspects of `computeFitTransform()` without requiring DOM; DOM-dependent measurement is validated via integration tests.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.723Z","inputHash":"cb2234e0717ad933"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.unit.test.ts
-- Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-docstring-unit-test-ts
-- Generated At: 2026-09-27T21:58:31.077Z
+- Generated At: 2026-09-27T23:21:30.919Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Unit tests for the Python docstring parsing module, validating correct extractio
 - **Created:** 2025-12-10 during the `python.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:58:31.077Z","inputHash":"ceedb05e69c0d3ba"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

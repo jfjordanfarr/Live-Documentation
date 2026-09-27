@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/round-trip.test.ts
-- Live Doc ID: LD-test-tests-integration-live-docs-round-trip-test-ts
-- Generated At: 2026-09-27T22:11:42.440Z
+- Generated At: 2026-09-27T23:21:33.935Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ The property behind "markdown is a lightweight AST": every committed Live Doc of
 - The sample programs are copied to a temporary workspace before generation, as the oracle does, so no fixture is ever written to.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:42.440Z","inputHash":"9888c528246ec98f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

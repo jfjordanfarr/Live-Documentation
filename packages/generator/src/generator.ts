@@ -1,5 +1,4 @@
 import { glob } from "glob";
-import { createHash } from "node:crypto";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 
@@ -30,10 +29,6 @@ import {
   renderLiveDoc,
   type LiveDoc
 } from "@live-documentation/shared/live-docs/document";
-import type {
-  LiveDocGeneratorProvenance,
-  LiveDocProvenance
-} from "@live-documentation/shared/live-docs/schema";
 import {
   normalizeWorkspacePath,
   toWorkspaceFileUri,
@@ -90,7 +85,8 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
  *
  * Discovers all workspace files matching the configured globs, analyses each for
  * public symbols and dependencies, and renders deterministic markdown docs under
- * the configured base layer directory.
+ * the configured base layer directory. A doc is rewritten only when its generated
+ * content changed, and only then does its `Generated At` line move.
  *
  * Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
  * and `--include` (explicit file subset) modes. Stale Live Docs whose source
@@ -182,7 +178,6 @@ export async function generateLiveDocs(
 
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
     const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig);
-    const liveDocId = composeLiveDocId(archetype, normalizedSourcePath);
 
     const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex);
 
@@ -208,27 +203,15 @@ export async function generateLiveDocs(
       symbolIndex
     });
 
-    const renderDocument = (generatedAt: string): string => {
-      const provenance = composeProvenance({
-        toolVersion: process.env.LIVE_DOCS_GENERATOR_VERSION ?? "0.1.0",
-        generatedAt,
-        // Use relative path for hashing to ensure cross-platform consistency
-        // (Windows vs Linux paths would produce different hashes)
-        sourceRelativePath: normalizedSourcePath,
-        analysis
-      });
-
-      return renderLiveDoc({
+    const renderDocument = (generatedAt: string): string =>
+      renderLiveDoc({
         codePath: normalizedSourcePath,
         layer: 4,
         archetype,
-        liveDocId,
         generatedAt,
-        provenance,
         authored: existing.authored,
         ...generated
       });
-    };
 
     let rendered = renderDocument(initialGeneratedAt);
     let change = classifyChange(existingContent, rendered);
@@ -426,40 +409,6 @@ function readExisting(text: string | undefined): { authored: string; generatedAt
     const generatedAt = /^- Generated At:\s*(.+)$/mu.exec(text)?.[1].trim();
     return { authored: authoredBlockOf(text), generatedAt: generatedAt || undefined };
   }
-}
-
-/** The `Live Doc ID` line: `LD-{archetype}-{kebab-path}`. */
-function composeLiveDocId(archetype: string, sourcePath: string): string {
-  const normalised = normalizeWorkspacePath(sourcePath)
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
-  return `LD-${archetype}-${normalised || "root"}`;
-}
-
-function composeProvenance(params: {
-  toolVersion: string;
-  generatedAt: string;
-  sourceRelativePath: string;
-  analysis: SourceAnalysisResult;
-}): LiveDocProvenance {
-  const hash = createHash("sha256")
-    .update(params.sourceRelativePath)
-    .update(JSON.stringify(params.analysis.symbols))
-    .update(JSON.stringify(params.analysis.dependencies))
-    .digest("hex")
-    .slice(0, 16);
-
-  const generator: LiveDocGeneratorProvenance = {
-    tool: "live-docs-generator",
-    version: params.toolVersion,
-    generatedAt: params.generatedAt,
-    inputHash: hash
-  };
-
-  return {
-    generators: [generator]
-  };
 }
 
 function classifyChange(existingContent: string | undefined, rendered: string): LiveDocWriteKind {

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreTypes.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-coretypes-ts
-- Generated At: 2026-02-23T21:32:14.805Z
+- Generated At: 2026-09-27T23:21:31.340Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Central type definitions for Live Documentation analysis. Defines the core inter
 - Pure type definitions with no runtime behavior — consumed by analyzers, renderers, and graph builders
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:14.805Z","inputHash":"cdd3db160ee87b70"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}

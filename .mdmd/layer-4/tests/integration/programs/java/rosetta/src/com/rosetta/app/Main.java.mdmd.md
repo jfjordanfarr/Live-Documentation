@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
-- Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-app-main-java
-- Generated At: 2026-09-27T21:43:45.269Z
+- Generated At: 2026-09-27T23:21:36.227Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Entry point for the Java Rosetta Stone fixture. Demonstrates package imports and
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.269Z","inputHash":"340837626b657480"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main (class)` {#symbol-main-class}

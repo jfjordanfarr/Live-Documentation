@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/verify.mjs
-- Live Doc ID: LD-implementation-scripts-verify-mjs
-- Generated At: 2026-09-27T08:02:35.716Z
+- Generated At: 2026-09-27T23:21:32.053Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Runs the verification half of the pre-commit gate in a fixed order: ESLint, `tsc
 - Uses platform-aware npm spawning so Windows shells execute `npm.cmd` directly instead of requiring manual shims during CI or local runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:02:35.716Z","inputHash":"c746ef3b378503ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

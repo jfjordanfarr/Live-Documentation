@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-types-ts
-- Generated At: 2026-09-27T21:43:39.745Z
+- Generated At: 2026-09-27T23:21:29.245Z
 
 ## Authored
 ### Purpose
@@ -21,7 +20,6 @@ Shared type vocabulary for the Membrane Map layout engine, defining the recursiv
 - `MembraneLayout.index` provides O(1) lookup by node ID, avoiding tree traversal when the controller needs to map a click event or pin anchor to its layout position.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.745Z","inputHash":"2b11d60c0d0a3c03"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WeightFunction` {#symbol-weightfunction}

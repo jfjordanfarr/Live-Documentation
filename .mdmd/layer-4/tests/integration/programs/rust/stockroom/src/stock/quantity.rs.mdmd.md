@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/stock/quantity.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-stock-quantity-rs
-- Generated At: 2026-09-27T21:43:47.965Z
+- Generated At: 2026-09-27T23:21:39.188Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - The inline test module's `use super::*` names this same file, so it is no dependency. The compiler's edge from here to `lib.rs` comes from the expansion of `format!`, which the adapter does not see.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.965Z","inputHash":"28506a9e3c0a9c84"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Unit (enum)` {#symbol-unit-enum}

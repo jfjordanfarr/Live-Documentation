@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/report/count.go
-- Live Doc ID: LD-test-tests-integration-programs-go-depot-report-count-go
-- Generated At: 2026-09-27T21:43:44.764Z
+- Generated At: 2026-09-27T23:21:35.687Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@
 - Its local variable `format` shadows the package's `format` in `format.go`; the adapter tracks the names a function declares so this file links to nothing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.764Z","inputHash":"9f39790cad767ca1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Count` {#symbol-count}

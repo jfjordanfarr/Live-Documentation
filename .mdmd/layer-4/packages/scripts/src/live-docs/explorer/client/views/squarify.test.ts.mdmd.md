@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/squarify.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-squarify-test-ts
-- Generated At: 2026-09-27T21:43:39.771Z
+- Generated At: 2026-09-27T23:21:29.271Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Unit tests for the squarified treemap layout algorithm, verifying proportional a
 - Promoted from `circuitView/squarify.test.ts` to `views/squarify.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.771Z","inputHash":"33907c779719cd6b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

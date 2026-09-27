@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/src/processor.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-src-processor-ts
-- Generated At: 2026-09-27T21:43:48.413Z
+- Generated At: 2026-09-27T23:21:39.685Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Core processing logic for the TypeScript Rosetta Stone fixture. Exercises namesp
 Demonstrates multiple import patterns for heuristic testing; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). The type-only import from types.ts specifically tests edge detection for "import type" statements.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.413Z","inputHash":"e99fe46970c2f7e1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

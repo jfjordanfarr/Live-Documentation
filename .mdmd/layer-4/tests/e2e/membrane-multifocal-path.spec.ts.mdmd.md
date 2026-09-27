@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/membrane-multifocal-path.spec.ts
-- Live Doc ID: LD-test-tests-e2e-membrane-multifocal-path-spec-ts
-- Generated At: 2026-09-27T21:43:42.340Z
+- Generated At: 2026-09-27T23:21:32.345Z
 
 ## Authored
 ### Purpose
@@ -19,7 +18,6 @@ Playwright E2E regression suite covering multi-focal pinning and path-as-pins re
 - The `buildStateUrl()` helper mirrors `snapshotToPayload()` from `compressed-url-state.ts` in a minimal form, producing a valid v1 compressed payload for test seeding.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.340Z","inputHash":"59964261446b7a6a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

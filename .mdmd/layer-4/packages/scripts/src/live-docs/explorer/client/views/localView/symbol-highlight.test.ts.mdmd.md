@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.test.ts
-- Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-test-ts
-- Generated At: 2026-09-27T21:43:39.054Z
+- Generated At: 2026-09-27T23:21:28.558Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Unit tests for symbol highlight computation. Covers edge-symbol matching, `__int
 Created during Dev Day 50 (12/19). Tests `computeSymbolHighlight()` with various subgraph configurations to ensure correct related symbol/edge/node set computation without DOM involvement.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.054Z","inputHash":"55558ebc3243b795"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

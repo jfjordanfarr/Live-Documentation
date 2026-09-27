@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-ts
-- Generated At: 2026-09-27T21:43:38.475Z
+- Generated At: 2026-09-27T23:21:27.907Z
 
 ## Authored
 ### Purpose
@@ -23,7 +22,6 @@ Pure-function SVG geometry for the Local Map: Bézier path computation, self-loo
 - Promoted from `localView/connection-geometry.ts` to `views/connection-geometry.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.475Z","inputHash":"804852913a295751"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Point` {#symbol-point}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-controller-ts
-- Generated At: 2026-02-18T19:14:02.689Z
+- Generated At: 2026-09-27T23:21:28.109Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, and B
 - Manages scroll sync, column expansion, and SVG layer updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T19:14:02.689Z","inputHash":"879b5a03f2840b22"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/graph-helpers.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-graph-helpers-ts
-- Generated At: 2026-02-03T21:55:35.698Z
+- Generated At: 2026-09-27T23:21:26.955Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides utility functions for graph data manipulation in the Explorer client. I
 Extracted from client/index.ts during Dev Day 50 (12/19). These helpers are consumed by the Local Map, Circuit Board, and Force Graph views for consistent graph data access.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:35.698Z","inputHash":"0e1cd6b9fbe03f70"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `getInputById` {#symbol-getinputbyid}

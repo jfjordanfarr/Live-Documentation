@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/SymbolDriftWidget.cs
-- Live Doc ID: LD-implementation-tests-integration-fixtures-csharp-advanced-symbols-src-diagnostics-widgets-symboldriftwidget-cs
-- Generated At: 2026-09-27T18:34:30.701Z
+- Generated At: 2026-09-27T23:21:32.742Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Details the `SymbolDriftWidget` implementation that feeds tag-heavy metadata int
 Maintain the merge semantics and dependency list—they emulate a real drift monitor the analyzer depends on.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.701Z","inputHash":"335ec174c4cc0c84"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolDriftWidget (class)` {#symbol-symboldriftwidget-class}

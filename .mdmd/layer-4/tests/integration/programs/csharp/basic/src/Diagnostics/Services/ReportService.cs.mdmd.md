@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Services/ReportService.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-services-reportservice-cs
-- Generated At: 2026-09-27T21:43:43.778Z
+- Generated At: 2026-09-27T23:21:34.595Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Creates formatted diagnostics reports for the C# basic benchmark, bridging repos
 Both `Process` methods intentionally exist to exercise overload analysis; keep their signatures stable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.778Z","inputHash":"76e36a80d3ad0896"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportService (class)` {#symbol-reportservice-class}

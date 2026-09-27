@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/document.ts
-- Live Doc ID: LD-implementation-packages-shared-src-live-docs-document-ts
-- Generated At: 2026-09-27T22:11:41.010Z
+- Generated At: 2026-09-27T23:21:31.456Z
 
 ## Authored
 ### Purpose
@@ -18,75 +17,74 @@ The grammar of a Live Doc: the model of everything a doc says, `renderLiveDoc`, 
 - `linkTarget` resolves a doc-relative link to the doc it names and the source file that doc mirrors; the graph and the oracle use it so that no consumer re-derives the mirror layout.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T22:11:41.010Z","inputHash":"0267619c054e176c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDoc` {#symbol-livedoc}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L25)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L23)
 
 ##### `LiveDoc` — Summary
 A Live Doc, as written to disk: everything the file says and nothing else.
 
 #### `SymbolBlock` {#symbol-symbolblock}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L45)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L41)
 
 ##### `SymbolBlock` — Summary
 One public symbol: a `####` heading, its detail lines and its documentation sections.
 
 #### `ReferenceRole` {#symbol-referencerole}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L63)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L59)
 
 ##### `ReferenceRole` — Summary
 The reference lines that list types directly; `Parameters` lists them per parameter.
 
 #### `ReferenceLine` {#symbol-referenceline}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L66)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L62)
 
 ##### `ReferenceLine` — Summary
 A line of type references on a symbol.
 
 #### `TypeRef` {#symbol-typeref}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L71)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L67)
 
 ##### `TypeRef` — Summary
 One type in a reference line: a link to the doc that declares it, or a bare name.
 
 #### `DocSection` {#symbol-docsection}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L82)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L78)
 
 ##### `DocSection` — Summary
 A `#####` documentation section under a symbol.
 
 #### `Dependency` {#symbol-dependency}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L89)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L85)
 
 ##### `Dependency` — Summary
 One line of the `Dependencies` section.
 
 #### `ReExport` {#symbol-reexport}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L101)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L97)
 
 ##### `ReExport` — Summary
 One entry of the `Re-Exported Symbol Anchors` section.
 
 #### `DEFAULT_AUTHORED_BLOCK` {#symbol-default_authored_block}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L128)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L123)
 
 ##### `DEFAULT_AUTHORED_BLOCK` — Summary
 The authored block a new doc starts with.
 
 #### `renderLiveDoc` {#symbol-renderlivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L135)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L130)
 - Parameters: `doc`: [`LiveDoc`](#symbol-livedoc)
 
 ##### `renderLiveDoc` — Summary
@@ -94,7 +92,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L167)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L158)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -102,14 +100,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L238)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L229)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L246)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L237)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -117,7 +115,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L497)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L477)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -129,14 +127,14 @@ is nothing to carry.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L516)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L496)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L533)
+- Source: [source](../../../../../../packages/shared/src/live-docs/document.ts#L513)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 
 ##### `linkTarget (function)` — Summary
@@ -154,5 +152,4 @@ The target, or undefined when the link leaves the workspace or does not name a L
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `posix`
-- [`schema.LiveDocProvenance`](./schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

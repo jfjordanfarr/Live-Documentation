@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/index-fixture.ts
-- Live Doc ID: LD-implementation-scripts-oracle-index-fixture-ts
-- Generated At: 2026-09-27T20:50:50.365Z
+- Generated At: 2026-09-27T23:21:31.967Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ The `oracle:index` command: picks the SCIP indexer a sample program's project fi
 - C and Ruby programs have no indexer here (`scip-clang` needs a compilation database, `scip-ruby` a Sorbet project), so the command refuses them rather than guessing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:50.365Z","inputHash":"0e6e5525b5399972"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

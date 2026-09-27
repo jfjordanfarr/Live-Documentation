@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/modular/src/pipeline.h
-- Live Doc ID: LD-test-tests-integration-programs-c-modular-src-pipeline-h
-- Generated At: 2026-09-27T21:43:43.416Z
+- Generated At: 2026-09-27T23:21:34.177Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Defines the primary analytics entry point for the modular C benchmark, mirroring
 Includes `<stddef.h>` for the `size_t` alias and chains to `metrics.h` so downstream headers stay self-contained during compilation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.416Z","inputHash":"f9c379bbba81644d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PIPELINE_H` {#symbol-pipeline_h}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-runtime-ts
-- Generated At: 2026-09-27T21:43:38.904Z
+- Generated At: 2026-09-27T23:21:28.395Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Runtime state management for the Local Map. Maintains the anchor registry, drag 
 - `LocalViewRuntime` bundles the registry, DOM refs, and drag state.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.904Z","inputHash":"5fa44cf3a6ed3491"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AnchorRegistry` {#symbol-anchorregistry}

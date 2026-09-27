@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/basics/src/math.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-basics-src-math-rs
-- Generated At: 2026-09-27T21:43:47.715Z
+- Generated At: 2026-09-27T23:21:38.906Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Mathematical operations module for the `rust-basics` polyglot benchmark fixture.
 - Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.715Z","inputHash":"9ef7462b938997ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sum` {#symbol-sum}

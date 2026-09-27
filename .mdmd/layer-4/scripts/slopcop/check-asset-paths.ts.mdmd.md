@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-asset-paths.ts
-- Live Doc ID: LD-implementation-scripts-slopcop-check-asset-paths-ts
-- Generated At: 2026-02-03T21:55:42.056Z
+- Generated At: 2026-09-27T23:21:32.005Z
 
 ## Authored
 ### Purpose
@@ -17,7 +16,6 @@ Audits HTML/CSS assets for broken relative references (images, scripts, styles) 
 - Integration suite `tests/integration/slopcop/assetsAudit.test.ts` exercises the `--json` output and ensures ignore patterns (for example ChatHistory, dist folders) stay in sync with maintainer expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.056Z","inputHash":"e5dcff542a20bd84"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/basic/src/models.ts
-- Live Doc ID: LD-test-tests-integration-programs-typescript-basic-src-models-ts
-- Generated At: 2026-09-27T21:43:48.082Z
+- Generated At: 2026-09-27T23:21:39.319Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Produces runtime widget instances that feed the `ts-basic` benchmark’s import 
 - Couples runtime creation with enum imports so regressions that demote these edges to “type-only” status are immediately caught by AST accuracy reports.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.082Z","inputHash":"530ce5d3d7ddace6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `createWidget` {#symbol-createwidget}

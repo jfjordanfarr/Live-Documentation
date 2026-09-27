@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-index-ts
-- Generated At: 2026-03-31T20:36:03.951Z
+- Generated At: 2026-09-27T23:21:28.942Z
 
 ## Authored
 ### Purpose
@@ -24,7 +23,6 @@ View controller for the Membrane Map, orchestrating layout computation, browse-m
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): auto-focus bug fix — initial render now derives the parent directory from `selectedNode.docRelativePath` (not `codeRelativePath`) to match the treemap's `docRelativePath`-keyed hierarchy; `trySelectionOnlyUpdate` fast-path declines when auto-focus would change `focusedDirectory`. Also added `openInMembraneMapView` helper and `onPinAllSymbols` callback wiring for both browse and pin-active modes, with detail panel auto-open suppressed on initial load (`{ suppressDetailPanel: true }`).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:03.951Z","inputHash":"ec90fd4ba85904d6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MembraneViewOptions` {#symbol-membraneviewoptions}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/csharp.ts
-- Live Doc ID: LD-implementation-packages-shared-src-languages-csharp-ts
-- Generated At: 2026-02-16T18:25:01.508Z
+- Generated At: 2026-09-27T23:21:30.001Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Provides C#-specific syntax configuration implementing `LanguageSyntax`. Defines
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — scaffolded alongside other language configs. C# verbatim (`@"`) and interpolated (`$"`) string handling is regex-approximated; tree-sitter will provide accurate parsing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.508Z","inputHash":"cc849c4baf47bd19"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `csharpSyntax` {#symbol-csharpsyntax}

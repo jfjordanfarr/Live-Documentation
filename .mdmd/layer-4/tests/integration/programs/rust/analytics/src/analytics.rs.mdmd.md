@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/analytics.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-analytics-rs
-- Generated At: 2026-09-27T21:43:47.615Z
+- Generated At: 2026-09-27T23:21:38.798Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Coordinates the analytics pipeline for the Rust benchmark by combining metrics a
 Keep the orchestrator lean; its job is to surface dependency edges across modules rather than add new logic.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.615Z","inputHash":"c951295fa97e4b76"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run_analysis` {#symbol-run_analysis}

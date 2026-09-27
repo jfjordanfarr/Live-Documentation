@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/appsettings.json
-- Live Doc ID: LD-asset-tests-integration-fixtures-blazor-telemetry-workspace-appsettings-json
-- Generated At: 2026-09-27T18:34:30.516Z
+- Generated At: 2026-09-27T23:21:32.514Z
 
 ## Authored
 ### Purpose
@@ -16,7 +15,6 @@ Carries the telemetry endpoint and instrumentation key that the Blazor host page
 - `Telemetry:Endpoint` is the service URL that `_Host.cshtml` writes into `data-telemetry-endpoint`; `Telemetry:InstrumentationKey` is the Application Insights key exposed to the JavaScript bootstrapper. Both key paths are the file's public symbols, published by the JSON adapter since 2026-09-27.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:30.516Z","inputHash":"15b1eaa5ad82306e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Telemetry` {#symbol-telemetry}

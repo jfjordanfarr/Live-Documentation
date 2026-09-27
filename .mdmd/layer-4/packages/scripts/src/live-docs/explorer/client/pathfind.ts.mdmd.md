@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/pathfind.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-pathfind-ts
-- Generated At: 2026-03-09T19:16:51.916Z
+- Generated At: 2026-09-27T23:21:27.342Z
 
 ## Authored
 ### Purpose
@@ -20,7 +19,6 @@ Pathfinding module providing FROM/TO omnisearch UI, BFS graph traversal, and pat
 - Integrates with URL state for shareable pathfind queries (`from`, `to`, `fromSymbol`, `toSymbol` params)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T19:16:51.916Z","inputHash":"c988b21a05889c2c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PathfindEndpoint` {#symbol-pathfindendpoint}

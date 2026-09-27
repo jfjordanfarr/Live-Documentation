@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/helpers/Helpers.java
-- Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-helpers-helpers-java
-- Generated At: 2026-09-27T21:43:45.306Z
+- Generated At: 2026-09-27T23:21:36.266Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Utility class for the Java Rosetta Stone fixture with static helper methods.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.306Z","inputHash":"4451676de1d92e39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Helpers` {#symbol-helpers}

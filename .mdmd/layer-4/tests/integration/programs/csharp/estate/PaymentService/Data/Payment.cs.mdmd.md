@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/Payment.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-paymentservice-data-payment-cs
-- Generated At: 2026-09-27T21:43:44.027Z
+- Generated At: 2026-09-27T23:21:34.876Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.027Z","inputHash":"d2be5aa5a8f38ccc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Payment` {#symbol-payment}

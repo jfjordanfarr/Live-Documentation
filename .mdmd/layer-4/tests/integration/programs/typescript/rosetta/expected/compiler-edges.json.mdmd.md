@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/rosetta/expected/compiler-edges.json
-- Live Doc ID: LD-test-tests-integration-programs-typescript-rosetta-expected-compiler-edges-json
-- Generated At: 2026-09-27T21:43:48.283Z
+- Generated At: 2026-09-27T23:21:39.541Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ The file-to-file edges the compiler resolved for the `programs/typescript` sampl
 - Never hand-edited. Regenerate with `oracle:index` after changing the program; nothing in it is trimmed to fit the adapter.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.283Z","inputHash":"d92588152233f155"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Models/Formatter.cs
-- Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-models-formatter-cs
-- Generated At: 2026-09-27T21:43:43.738Z
+- Generated At: 2026-09-27T23:21:34.551Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Formats diagnostics records for the C# basic benchmark, demonstrating culture-aw
 Retain the `Render` method's copy semantics and comment—they ensure the analyzer observes immutable record patterns.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.738Z","inputHash":"82151a26dcee0999"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Formatter` {#symbol-formatter}

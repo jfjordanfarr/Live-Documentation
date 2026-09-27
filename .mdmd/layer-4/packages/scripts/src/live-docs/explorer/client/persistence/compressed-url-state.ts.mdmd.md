@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts
-- Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-compressed-url-state-ts
-- Generated At: 2026-09-27T21:43:38.122Z
+- Generated At: 2026-09-27T23:21:27.393Z
 
 ## Authored
 ### Purpose
@@ -22,7 +21,6 @@ Encodes the full Membrane Map view state (active view, selected node, pin set, e
 - On [Dev Day 86](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) the `expandedCards` field (`c?` in the wire format) was added to `CompressedPayload` and `UrlStateSnapshot` so that file-card expansion state round-trips through the URL, enabling reload and share-URL fidelity for expanded cards in browse mode.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.122Z","inputHash":"ceba0f92fd4c9d4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompressedPayload` {#symbol-compressedpayload}

@@ -4,8 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/tests/report.rs
-- Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-tests-report-rs
-- Generated At: 2026-09-27T21:43:48.011Z
+- Generated At: 2026-09-27T23:21:39.244Z
 
 ## Authored
 ### Purpose
@@ -15,7 +14,6 @@ Integration tests of the stockroom sample program, a crate of their own that use
 - Cargo compiles this file as its own crate; the oracle reads it as one, and its paths resolve through `stockroom`, the library root.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.011Z","inputHash":"9b67ded79c557a57"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
