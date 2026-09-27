@@ -11,7 +11,7 @@ module.exports = tseslint.config(
       "**/dist/**",
       "out/**",
       "**/out/**",
-  "tests/integration/benchmarks/fixtures/**",
+  "tests/integration/programs/**",
       "node_modules/**",
       "**/*.d.ts",
       "eslint.config.js",

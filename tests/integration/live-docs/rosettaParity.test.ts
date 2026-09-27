@@ -33,7 +33,7 @@ import {
 // Constants
 // ---------------------------------------------------------------------------
 
-const FIXTURE_ROOT = path.resolve(__dirname, "../benchmarks/fixtures");
+const FIXTURE_ROOT = path.resolve(__dirname, "../programs");
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;

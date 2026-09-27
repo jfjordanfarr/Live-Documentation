@@ -184,7 +184,7 @@ describe("Live Docs polyglot fixtures", () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-java-"));
 
     try {
-      const fixtureRoot = path.join(__dirname, "../benchmarks/fixtures/java/basic");
+      const fixtureRoot = path.join(__dirname, "../programs/java/basic");
       await fs.cp(fixtureRoot, workspaceRoot, { recursive: true });
 
       const config = normalizeLiveDocumentationConfig({
@@ -314,7 +314,7 @@ describe("Live Docs polyglot fixtures", () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-python-"));
 
     try {
-      const fixtureRoot = path.join(__dirname, "../benchmarks/fixtures/python/basics");
+      const fixtureRoot = path.join(__dirname, "../programs/python/basics");
       await fs.cp(fixtureRoot, workspaceRoot, { recursive: true });
 
       const config = normalizeLiveDocumentationConfig({

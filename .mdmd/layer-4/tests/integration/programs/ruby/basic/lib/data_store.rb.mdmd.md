@@ -1,0 +1,59 @@
+# tests/integration/programs/ruby/basic/lib/data_store.rb
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/ruby/basic/lib/data_store.rb
+- Live Doc ID: LD-test-tests-integration-programs-ruby-basic-lib-data-store-rb
+- Generated At: 2026-09-27T18:53:07.725Z
+
+## Authored
+### Purpose
+Maintains the static datasets for the Ruby basic benchmark so dependency analysis captures constant maps and module accessors.
+
+### Notes
+Dataset keys and values are intentionally small; change them only when expanding fixture coverage.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.725Z","inputHash":"c6e59d5fa972dd9c"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `BenchmarkApp` {#symbol-benchmarkapp}
+- Type: module
+- Source: [source](../../../../../../../../tests/integration/programs/ruby/basic/lib/data_store.rb#L3)
+
+#### `DataStore` {#symbol-datastore}
+- Type: module
+- Source: [source](../../../../../../../../tests/integration/programs/ruby/basic/lib/data_store.rb#L5)
+
+##### `DataStore` — Summary
+In-memory dataset registry used by the demo fixtures.
+
+#### `self.fetch` {#symbol-selffetch}
+- Type: method
+- Source: [source](../../../../../../../../tests/integration/programs/ruby/basic/lib/data_store.rb#L15)
+
+##### `self.fetch` — Summary
+Looks up a dataset by key.
+
+##### `self.fetch` — Parameters
+- `key`: Dataset identifier.
+
+##### `self.fetch` — Returns
+[Array<Integer>] Frozen copy of the dataset or `[0]` when missing.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

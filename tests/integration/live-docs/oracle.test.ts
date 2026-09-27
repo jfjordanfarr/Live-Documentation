@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 
 import { compareFixture } from "../../../scripts/oracle/compare";
 
-const FIXTURE_ROOT = path.resolve(__dirname, "../benchmarks/fixtures");
+const FIXTURE_ROOT = path.resolve(__dirname, "../programs");
 
 const MEASURED_FIXTURES = ["csharp/webforms", "csharp/estate"];
 

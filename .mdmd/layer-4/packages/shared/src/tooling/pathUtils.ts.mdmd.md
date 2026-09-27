@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/pathUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-pathutils-ts
-- Generated At: 2026-09-27T10:16:24.179Z
+- Generated At: 2026-09-27T18:53:03.552Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unifies workspace path handling by converting between file URIs, absolute paths,
 - Chosen over ad hoc normalisation so Windows drive letters and separator differences collapse to the same canonical representation used by Live Docs and link audits ([upgrade summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L5428-L5454)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:24.179Z","inputHash":"b4560a905d93f187"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:03.552Z","inputHash":"b4560a905d93f187"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `toWorkspaceRelativePath` {#symbol-toworkspacerelativepath}
@@ -63,7 +63,10 @@ Normalise a path so directory separators are POSIX-style.
 - [generator.test.ts](../../../generator/src/generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](../../../generator/src/renderPublicSymbolLines.test.ts.mdmd.md)
 - [aspnet.test.ts](../live-docs/adapters/aspnet.test.ts.mdmd.md)
+- [csharp.hangfire.test.ts](../live-docs/adapters/csharp.hangfire.test.ts.mdmd.md)
+- [csharp.test.ts](../live-docs/adapters/csharp.test.ts.mdmd.md)
 - [css.test.ts](../live-docs/adapters/css.test.ts.mdmd.md)
+- [dotnetConfig.test.ts](../live-docs/adapters/dotnetConfig.test.ts.mdmd.md)
 - [html.test.ts](../live-docs/adapters/html.test.ts.mdmd.md)
 - [json.test.ts](../live-docs/adapters/json.test.ts.mdmd.md)
 - [powershell.test.ts](../live-docs/adapters/powershell.test.ts.mdmd.md)

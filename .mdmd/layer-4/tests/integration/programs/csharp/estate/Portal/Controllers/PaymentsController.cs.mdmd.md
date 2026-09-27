@@ -1,0 +1,57 @@
+# tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
+- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-portal-controllers-paymentscontroller-cs
+- Generated At: 2026-09-27T18:53:05.834Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.834Z","inputHash":"db5b98349dac69f2"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `PaymentsController` {#symbol-paymentscontroller}
+- Type: class
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L10)
+- Extends: `ApiController`
+
+##### `PaymentsController` — Summary
+Receives the browser's payment requests and forwards them to the gateway.
+
+#### `Post` {#symbol-post}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L16)
+- Returns: `IHttpActionResult`
+- Parameters: `request`: [`PaymentRequestModel`](../Models/PaymentRequestModel.cs.mdmd.md#symbol-paymentrequestmodel)
+
+#### `Get` {#symbol-get}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L28)
+- Returns: `IHttpActionResult`
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`Globals`](../App_Code/Globals.cs.mdmd.md#symbol-globals)
+- [`PaymentRequestModel`](../Models/PaymentRequestModel.cs.mdmd.md#symbol-paymentrequestmodel)
+- [`PaymentResultModel`](../Models/PaymentResultModel.cs.mdmd.md#symbol-paymentresultmodel)
+- [`GatewayClient`](../Services/GatewayClient.cs.mdmd.md#symbol-gatewayclient-class)
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

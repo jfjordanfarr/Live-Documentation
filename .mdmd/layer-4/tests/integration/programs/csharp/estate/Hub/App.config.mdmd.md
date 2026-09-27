@@ -1,0 +1,49 @@
+# tests/integration/programs/csharp/estate/Hub/App.config
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/csharp/estate/Hub/App.config
+- Live Doc ID: LD-test-tests-integration-programs-csharp-estate-hub-app-config
+- Generated At: 2026-09-27T18:53:05.634Z
+
+## Authored
+### Purpose
+_Pending authored purpose_
+
+### Notes
+_Pending notes_
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.634Z","inputHash":"ff4bae24a113e617"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `Estate.Hub.PaymentHub` {#symbol-estatehubpaymenthub}
+- Type: service
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L5)
+
+#### `PaymentService.Consumer.Production` {#symbol-paymentserviceconsumerproduction}
+- Type: endpoint
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L12)
+
+#### `PaymentService.Consumer.Staging` {#symbol-paymentserviceconsumerstaging}
+- Type: endpoint
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L15)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
+- [`IPaymentService`](../Contracts/IPaymentService.cs.mdmd.md#symbol-ipaymentservice)
+- [`PaymentHub`](./PaymentHub.cs.mdmd.md#symbol-paymenthub)
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

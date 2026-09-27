@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-test-ts
-- Generated At: 2026-09-27T18:34:26.295Z
+- Generated At: 2026-09-27T18:53:02.736Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.295Z","inputHash":"84445925c28c874e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:02.736Z","inputHash":"84445925c28c874e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,7 +32,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
+- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [csharp.ts](./csharp.ts.mdmd.md), [treeSitter.ts](./treeSitter.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

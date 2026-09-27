@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/dotnetConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-dotnetconfig-ts
-- Generated At: 2026-09-27T18:34:26.435Z
+- Generated At: 2026-09-27T18:53:02.881Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.435Z","inputHash":"bc8675f88c36a158"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:02.881Z","inputHash":"bc8675f88c36a158"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `dotnetConfigAdapter` {#symbol-dotnetconfigadapter}
@@ -36,3 +36,9 @@ Language adapter for `.config` files: configuration names as symbols, contract a
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Observed Evidence -->
+### Observed Evidence
+#### Vitest Unit Tests
+- [dotnetConfig.test.ts](./dotnetConfig.test.ts.mdmd.md)
+<!-- LIVE-DOC:END Observed Evidence -->

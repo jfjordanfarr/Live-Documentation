@@ -13,7 +13,7 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 
 ### Notes
 - Source file: [`tests/integration/tsconfig.json`](../../../../tests/integration/tsconfig.json)
-- Extends `tsconfig.base.json` and turns off `composite`, declarations and source maps because nothing is emitted. Fixture sources under `fixtures/` and `benchmarks/fixtures/` are excluded.
+- Extends `tsconfig.base.json` and turns off `composite`, declarations and source maps because nothing is emitted. Fixture sources under `fixtures/` and `programs/` are excluded.
 - Vitest itself transpiles without type-checking, which is why this project exists. Until 2026-09-27 the same file compiled the suites for the VS Code Electron harness.
 
 ## Generated

@@ -1,0 +1,73 @@
+# tests/integration/programs/ruby/cli/lib/support/logger.rb
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/ruby/cli/lib/support/logger.rb
+- Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-support-logger-rb
+- Generated At: 2026-09-27T18:53:07.938Z
+
+## Authored
+### Purpose
+Provides the lightweight logging backend for the Ruby CLI benchmark so support modules appear in the dependency graph.
+
+### Notes
+Leave the API minimal; the analyzer relies on these two methods to map support module usage.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.938Z","inputHash":"1d7ace78e5ebc7bd"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `BenchmarkCLI` {#symbol-benchmarkcli}
+- Type: module
+- Source: [source](../../../../../../../../../tests/integration/programs/ruby/cli/lib/support/logger.rb#L3)
+
+#### `Support` {#symbol-support}
+- Type: module
+- Source: [source](../../../../../../../../../tests/integration/programs/ruby/cli/lib/support/logger.rb#L4)
+
+#### `Logger` {#symbol-logger}
+- Type: module
+- Source: [source](../../../../../../../../../tests/integration/programs/ruby/cli/lib/support/logger.rb#L5)
+
+#### `info` {#symbol-info}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/ruby/cli/lib/support/logger.rb#L12)
+
+##### `info` — Summary
+Emits an informational message.
+
+##### `info` — Parameters
+- `message`: Text to print.
+
+##### `info` — Returns
+[void]
+
+#### `warn` {#symbol-warn}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/ruby/cli/lib/support/logger.rb#L20)
+
+##### `warn` — Summary
+Emits a warning message.
+
+##### `warn` — Parameters
+- `message`: Text to print.
+
+##### `warn` — Returns
+[void]
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

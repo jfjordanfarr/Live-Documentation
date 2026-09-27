@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
   "exclude": [
-    "tests/integration/benchmarks/fixtures"
+    "tests/integration/programs"
   ]
 }

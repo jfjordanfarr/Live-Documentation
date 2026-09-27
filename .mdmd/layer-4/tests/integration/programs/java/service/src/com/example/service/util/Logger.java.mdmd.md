@@ -1,0 +1,43 @@
+# tests/integration/programs/java/service/src/com/example/service/util/Logger.java
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/java/service/src/com/example/service/util/Logger.java
+- Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-util-logger-java
+- Generated At: 2026-09-27T18:53:07.406Z
+
+## Authored
+### Purpose
+Provides console logging for the Java service benchmark so support utilities appear in dependency graphs.
+
+### Notes
+The logger intentionally stays minimal; expand it only if the fixture requires richer logging edges.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.406Z","inputHash":"78cd775bcd5ac0c5"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `Logger` {#symbol-logger}
+- Type: class
+- Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/util/Logger.java#L3)
+
+#### `info` {#symbol-info}
+- Type: method
+- Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/util/Logger.java#L6)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

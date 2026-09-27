@@ -20,7 +20,7 @@ Rosetta parity is a smoke alarm for a regression in one adapter. It is not a mea
 ## Fixtures
 
 - `tests/integration/fixtures/`: hand-authored scenario workspaces (WebForms and Razor configuration chains, a queue worker, reflection, PowerShell, the C# XML-doc stress workspace, and the SlopCop dogfood workspaces).
-- `tests/integration/benchmarks/fixtures/`: per-language sample programs, including the eight Rosetta implementations. Two C# fixtures carry an `expected/` directory written by the oracle; see [Fixture Corpus](benchmark-fixtures.mdmd.md).
+- `tests/integration/programs/`: per-language sample programs, including the eight Rosetta implementations. Two C# programs carry an `expected/` directory written by the oracle; see [Sample Programs](sample-programs.mdmd.md).
 
 Each suite copies its fixture into a temporary directory before generating, so fixtures are never written to.
 

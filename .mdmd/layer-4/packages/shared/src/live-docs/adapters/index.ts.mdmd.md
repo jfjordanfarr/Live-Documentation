@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-09-27T18:34:26.515Z
+- Generated At: 2026-09-27T18:53:02.973Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.515Z","inputHash":"a5cd48145f320980"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:02.973Z","inputHash":"a5cd48145f320980"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
@@ -85,7 +85,9 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
+- [csharp.test.ts](./csharp.test.ts.mdmd.md)
 - [css.test.ts](./css.test.ts.mdmd.md)
+- [dotnetConfig.test.ts](./dotnetConfig.test.ts.mdmd.md)
 - [html.test.ts](./html.test.ts.mdmd.md)
 - [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
 - [json.test.ts](./json.test.ts.mdmd.md)

@@ -1,0 +1,51 @@
+# tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs
+- Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-app-code-globals-cs
+- Generated At: 2026-09-27T18:53:06.283Z
+
+## Authored
+### Purpose
+Provides configuration helpers for the WebForms benchmark, funneling app settings into the code-behind and scripts.
+
+### Notes
+Keep the keys synchronized with the Web.config fixture; renaming them breaks the hidden-field wiring the tests rely on.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.283Z","inputHash":"a5be44c355e3da86"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `Globals` {#symbol-globals}
+- Type: class
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs#L5)
+
+#### `GetWidgetToggle` {#symbol-getwidgettoggle}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs#L10)
+
+#### `GetClientConfig` {#symbol-getclientconfig}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs#L12)
+
+#### `GetSetting` {#symbol-getsetting}
+- Type: method
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs#L14)
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+_No targets documented yet_
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->
