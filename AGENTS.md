@@ -22,7 +22,7 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 ## Workspace facts
 
 - Linux devcontainer, bash, Node 22 (`.nvmrc`), TypeScript 5.
-- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/server` (the Live Doc generator under `features/live-docs/`, plus a vestigial language server), `packages/extension` (vestigial), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
+- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/server` (the Live Doc generator under `features/live-docs/`; the name predates the language server's removal), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
 - Live Docs for this repo are generated into `.mdmd/layer-4/`, one per tracked source file. Shipped defaults are `.live-documentation/source/*.md`.
 - `.mdmd/layer-1` through `layer-3` are authored docs. Many are stale; see Status.
 - `AI-Agent-Workspace/ChatHistory/` is the full chat record from October 2025 to April 2026. It is historical reference only, never a source of current facts.
@@ -68,4 +68,4 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 
 ## Status (2026-09-27)
 
-The cleanup pass is under way; the order of work is in the vision doc. Retired so far: the VS Code Electron test harness, the AST accuracy benchmark and its reports, the benchmark-only inference path and fixture oracles, the system layer and co-activation clustering, the headless harness, `live-docs:report`, `tech-debt` and `audit:network`. Still to go: `packages/extension` and the language server in `packages/server/src/main.ts`. Do not invest in either. The Circuit Board and Local Map views are being folded into one file-scale view. The compiler-backed oracle and the tree-sitter C# adapter come next.
+The cleanup pass is under way; the order of work is in the vision doc. Retired so far: the VS Code Electron test harness, the AST accuracy benchmark and its reports, the benchmark-only inference path and fixture oracles, the system layer and co-activation clustering, the headless harness, `live-docs:report`, `tech-debt` and `audit:network`. The VS Code extension shell and the language server went on 2026-09-27 as well; the editor panel described in the vision will be built fresh. The Circuit Board and Local Map views are being folded into one file-scale view. The compiler-backed oracle and the tree-sitter C# adapter come next.

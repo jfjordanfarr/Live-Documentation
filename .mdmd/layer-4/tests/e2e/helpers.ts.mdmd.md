@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/helpers.ts
 - Live Doc ID: LD-test-tests-e2e-helpers-ts
-- Generated At: 2026-03-31T20:36:06.949Z
+- Generated At: 2026-09-27T08:46:12.872Z
 
 ## Authored
 ### Purpose
@@ -22,24 +22,59 @@ Shared Playwright helper library for all Membrane Map E2E spec files, providing 
 - Archetype is `test` since this module only serves test infrastructure; it has no runtime consumers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:06.949Z","inputHash":"1ca33c5e96fd10ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:46:12.872Z","inputHash":"126fb9800d304e9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `FIXTURE_DIR` {#symbol-fixture_dir}
+- Type: const
+- Source: [source](../../../../tests/e2e/helpers.ts#L12)
+
+##### `FIXTURE_DIR` — Summary
+The specs open the Membrane Map on a directory that has both files and
+subdirectories, so files render as cards and subdirectories as tiles.
+The Explorer client's own folder has that shape; `persistence/` inside it
+holds a module and its test, which the pinning specs use as a pair.
+
+#### `FIXTURE_ENTRY` {#symbol-fixture_entry}
+- Type: const
+- Source: [source](../../../../tests/e2e/helpers.ts#L13)
+
+#### `FIXTURE_SUBDIR` {#symbol-fixture_subdir}
+- Type: const
+- Source: [source](../../../../tests/e2e/helpers.ts#L14)
+
+#### `FIXTURE_FILE` {#symbol-fixture_file}
+- Type: const
+- Source: [source](../../../../tests/e2e/helpers.ts#L15)
+
+#### `FIXTURE_TEST` {#symbol-fixture_test}
+- Type: const
+- Source: [source](../../../../tests/e2e/helpers.ts#L16)
+
+#### `buildStateUrl` {#symbol-buildstateurl}
+- Type: function
+- Source: [source](../../../../tests/e2e/helpers.ts#L19)
+
+##### `buildStateUrl` — Summary
+Build a `/?s=` URL carrying a compressed Membrane Map state payload.
+
 #### `ContainmentViolation` {#symbol-containmentviolation}
 - Type: interface
-- Source: [source](../../../../tests/e2e/helpers.ts#L5)
+- Source: [source](../../../../tests/e2e/helpers.ts#L28)
 
 #### `goToMembraneMap` {#symbol-gotomembranemap}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L14)
+- Source: [source](../../../../tests/e2e/helpers.ts#L41)
 - Parameters: `page`: `Page`
 
 ##### `goToMembraneMap` — Summary
-Navigate to the Membrane Map view and wait for the treemap to render.
+Open the Membrane Map focused on {@link FIXTURE_ENTRY}, so every spec starts
+from the same directory regardless of which node the Explorer would land on
+by itself.
 
 #### `expandDirectory` {#symbol-expanddirectory}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L24)
+- Source: [source](../../../../tests/e2e/helpers.ts#L51)
 - Parameters: `page`: `Page`
 
 ##### `expandDirectory` — Summary
@@ -47,7 +82,7 @@ Click a collapsed membrane tile by its data-id to expand/focus it.
 
 #### `pinAllOnCard` {#symbol-pinalloncard}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L35)
+- Source: [source](../../../../tests/e2e/helpers.ts#L62)
 - Parameters: `page`: `Page`
 
 ##### `pinAllOnCard` — Summary
@@ -55,7 +90,7 @@ Click the pin-all button on a card identified by data-id.
 
 #### `findContainmentViolations` {#symbol-findcontainmentviolations}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L53)
+- Source: [source](../../../../tests/e2e/helpers.ts#L80)
 - Parameters: `page`: `Page`
 
 ##### `findContainmentViolations` — Summary
@@ -64,7 +99,7 @@ Returns violations where a card extends beyond its membrane by > tolerancePx.
 
 #### `formatViolations` {#symbol-formatviolations}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L142)
+- Source: [source](../../../../tests/e2e/helpers.ts#L169)
 - Parameters: `violations`: [`ContainmentViolation`](#symbol-containmentviolation)[]
 
 ##### `formatViolations` — Summary
@@ -72,7 +107,7 @@ Format containment violations into a readable string.
 
 #### `measureFontSizes` {#symbol-measurefontsizes}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L157)
+- Source: [source](../../../../tests/e2e/helpers.ts#L184)
 - Parameters: `page`: `Page`
 
 ##### `measureFontSizes` — Summary
@@ -81,7 +116,7 @@ Returns a map from selector description to computed font-size in px.
 
 #### `measureOpacities` {#symbol-measureopacities}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L173)
+- Source: [source](../../../../tests/e2e/helpers.ts#L200)
 - Parameters: `page`: `Page`
 
 ##### `measureOpacities` — Summary
@@ -90,7 +125,7 @@ Returns an array of { id, opacity } objects.
 
 #### `countElements` {#symbol-countelements}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L189)
+- Source: [source](../../../../tests/e2e/helpers.ts#L216)
 - Parameters: `page`: `Page`
 
 ##### `countElements` — Summary
@@ -98,7 +133,7 @@ Count elements matching a selector.
 
 #### `getRect` {#symbol-getrect}
 - Type: function
-- Source: [source](../../../../tests/e2e/helpers.ts#L202)
+- Source: [source](../../../../tests/e2e/helpers.ts#L229)
 - Parameters: `page`: `Page`
 
 ##### `getRect` — Summary
@@ -108,6 +143,7 @@ Get the bounding rect of the first element matching a selector.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`
+- `lz-string` - `compressToEncodedURIComponent`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

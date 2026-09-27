@@ -2,7 +2,7 @@
   "name": "@live-documentation/server",
   "version": "0.0.0",
   "private": true,
-  "description": "Language server for Live Documentation VS Code extension.",
+  "description": "The Live Documentation generator: analyzes a workspace and writes one markdown file per source file.",
   "license": "MIT",
   "author": "Jordan Farr <jfjordanfarr@gmail.com>",
   "repository": {
@@ -11,20 +11,16 @@
     "directory": "packages/server"
   },
   "type": "commonjs",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "dist/features/live-docs/generator.js",
+  "types": "dist/features/live-docs/generator.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "watch": "tsc -p tsconfig.json --watch",
-    "test:contracts": "echo \"No contract tests yet\""
+    "watch": "tsc -p tsconfig.json --watch"
   },
   "dependencies": {
-    "@live-documentation/shared": "file:../shared",
-    "typescript": "^5.4.0",
-    "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.12"
+    "@live-documentation/shared": "file:../shared"
   }
 }

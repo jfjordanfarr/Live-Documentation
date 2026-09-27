@@ -27,8 +27,8 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/server/src/runtime");
-    await pinAllOnCard(page, "packages/server/src/runtime/environment.ts");
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
 
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(300);
@@ -82,10 +82,10 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/server/src/runtime");
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
 
-    // Pin all on environment.ts
-    await pinAllOnCard(page, "packages/server/src/runtime/environment.ts");
+    // Pin all on compressed-url-state.ts
+    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(300);
 
@@ -101,8 +101,8 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/server/src/runtime");
-    await pinAllOnCard(page, "packages/server/src/runtime/environment.ts");
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
 
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(500);
@@ -114,7 +114,7 @@ test.describe("Membrane Map — Dimming Model", () => {
       ".membrane-card__symbol-row--connected",
     );
 
-    // environment.ts has outbound deps, so there should be at least one
+    // compressed-url-state.ts has outbound deps, so there should be at least one
     // connected endpoint on a dependent card
     expect(connectedCount).toBeGreaterThanOrEqual(0);
     // (This is a soft assertion — if 0, the test still passes but

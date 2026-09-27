@@ -4,7 +4,7 @@
 
 > Point Live Documentation at any folder of interconnected files, and it reveals the public connection surface between them—generating markdown documents that serve as a **lightweight, verifiable AST** for your entire workspace.
 
-Live Documentation is a VS Code extension and CLI suite that transforms any codebase into a **navigable, shareable, falsifiable graph of knowledge**.
+Live Documentation is a CLI suite and a static Explorer that turn any codebase into a **navigable, shareable graph of what connects to what**.
 
 **[🔗 Explore the Live Demo →](https://jfjordanfarr.github.io/Live-Documentation/)**
 
@@ -57,7 +57,7 @@ Found a critical dependency path? **Share the link.** The Explorer generates sta
 
 Every CLI command has a `--json` mode. Every visual surface reads from the same underlying graph. When your AI coding assistant needs to know "what depends on this file?" or "what's the shortest path between these two modules?"—it can query the same ground truth that humans see.
 
-Rather than embedding LLM calls in the extension, Live Documentation is designed so that **your own AI coding assistant** can consume it directly—deterministic markdown as structured context, `--json` CLI output as prompt fuel, and (at release time) redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph. The exact conventions for these agent-steering files are evolving rapidly across the ecosystem; we'll adopt whatever is standard when we ship. The result: AI-enabled workflows (impact analysis, code generation grounding, review assistance) with zero security burden on the tool itself.
+Rather than embedding LLM calls in the tool, Live Documentation is designed so that **your own AI coding assistant** can consume it directly—deterministic markdown as structured context, `--json` CLI output as prompt fuel, and (at release time) redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph. The exact conventions for these agent-steering files are evolving rapidly across the ecosystem; we'll adopt whatever is standard when we ship. The result: AI-enabled workflows (impact analysis, code generation grounding, review assistance) with zero security burden on the tool itself.
 
 ---
 
@@ -199,8 +199,8 @@ This repository uses an internal MDMD convention (`.mdmd/layer-4/*.mdmd.md`) to 
 
 ## Getting Started
 
-```powershell
-# Prerequisites: Node.js 22.x, VS Code 1.91+
+```bash
+# Prerequisites: Node.js 22.x
 
 npm install
 npm run build

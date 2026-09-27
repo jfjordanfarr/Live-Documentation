@@ -19,7 +19,7 @@ test.describe("Membrane Map — URL State Persistence", () => {
     await goToMembraneMap(page);
 
     // Drill into a specific directory
-    await expandDirectory(page, "packages/server/src/runtime");
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
 
     // Capture the current URL after navigation
     const urlBefore = page.url();
@@ -48,19 +48,19 @@ test.describe("Membrane Map — URL State Persistence", () => {
     expect(isMembraneMap, "Should restore to Membrane Map view after refresh").toBe(true);
 
     // Verify the breadcrumb shows we're in the right context
-    // by checking for the presence of runtime-related content
-    const hasRuntimeContext = await page.evaluate(() => {
+    // by checking for the presence of the expanded directory's content
+    const hasDirectoryContext = await page.evaluate(() => {
       const text = document.body.textContent ?? "";
-      // Check breadcrumb or visible labels for runtime-related content
+      // Check breadcrumb or visible labels for the persistence directory
       return (
-        text.includes("runtime") ||
-        text.includes("environment") ||
-        text.includes("server")
+        text.includes("persistence") ||
+        text.includes("compressed-url-state") ||
+        text.includes("explorer")
       );
     });
 
     expect(
-      hasRuntimeContext,
+      hasDirectoryContext,
       "Should preserve directory navigation context after refresh",
     ).toBe(true);
   });

@@ -12,7 +12,6 @@
     "typescript",
     "polyglot",
     "offline-first",
-    "vscode-extension",
     "cli"
   ],
   "homepage": "https://github.com/jfjordanfarr/Live-Documentation#readme",
@@ -29,14 +28,13 @@
     "node": ">=22.0.0"
   },
   "workspaces": [
-    "packages/extension",
     "packages/server",
     "packages/shared",
     "packages/scripts",
     "packages/cli"
   ],
   "scripts": {
-    "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/server && npm run compile -w packages/extension",
+    "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/server",
     "lint": "eslint .",
     "format": "prettier --check .",
     "test:unit": "vitest run --project unit",

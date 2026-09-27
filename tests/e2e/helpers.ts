@@ -1,4 +1,27 @@
 import { Page } from "@playwright/test";
+import { compressToEncodedURIComponent } from "lz-string";
+
+// ─── Fixture locations in this repository's own graph ────────────────────────
+
+/**
+ * The specs open the Membrane Map on a directory that has both files and
+ * subdirectories, so files render as cards and subdirectories as tiles.
+ * The Explorer client's own folder has that shape; `persistence/` inside it
+ * holds a module and its test, which the pinning specs use as a pair.
+ */
+export const FIXTURE_DIR = "packages/scripts/src/live-docs/explorer/client";
+export const FIXTURE_ENTRY = `${FIXTURE_DIR}/index.ts`;
+export const FIXTURE_SUBDIR = `${FIXTURE_DIR}/persistence`;
+export const FIXTURE_FILE = `${FIXTURE_SUBDIR}/compressed-url-state.ts`;
+export const FIXTURE_TEST = `${FIXTURE_SUBDIR}/compressed-url-state.test.ts`;
+
+/** Build a `/?s=` URL carrying a compressed Membrane Map state payload. */
+export function buildStateUrl(payload: Record<string, unknown>): string {
+  const compressed = compressToEncodedURIComponent(
+    JSON.stringify({ v: 1, w: "membrane", ...payload }),
+  );
+  return `/?s=${compressed}`;
+}
 
 // ─── Containment violation types ─────────────────────────────────────────────
 
@@ -10,9 +33,13 @@ export interface ContainmentViolation {
 
 // ─── Navigation helpers ──────────────────────────────────────────────────────
 
-/** Navigate to the Membrane Map view and wait for the treemap to render. */
+/**
+ * Open the Membrane Map focused on {@link FIXTURE_ENTRY}, so every spec starts
+ * from the same directory regardless of which node the Explorer would land on
+ * by itself.
+ */
 export async function goToMembraneMap(page: Page): Promise<void> {
-  await page.goto("/");
+  await page.goto(buildStateUrl({ n: FIXTURE_ENTRY }));
   await page.waitForSelector("text=nodes", { timeout: 10_000 });
   await page.locator('.nav-item[data-view="membrane"]').click();
   await page.waitForSelector(".membrane-browse-root, .pin-active-root", {

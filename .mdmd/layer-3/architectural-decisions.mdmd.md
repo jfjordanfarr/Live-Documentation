@@ -83,7 +83,7 @@ Settled in September 2026: derived views (the graph index, the Explorer bundle) 
 
 ### Explorer Panel in the Editor _(Recorded 2026-09-27)_
 
-- **Direction, not yet designed**: the VS Code extension is expected to become a panel that hosts the same static Explorer and re-renders it as files change. What is settled is the portability rule: the editor is a host, not a second renderer, and nothing may work only there.
+- **Direction, not yet designed**: a VS Code extension is expected to return as a panel that hosts the same static Explorer and re-renders it as files change; the earlier extension shell was removed on 2026-09-27 rather than carried. What is settled is the portability rule: the editor is a host, not a second renderer, and nothing may work only there.
 - **Known cost, to re-measure**: in February 2026 a `--changed` regeneration took about 12 seconds for zero files, almost all of it `tsx` start-up, which is why the earlier design had the watcher notify rather than regenerate. Whether that still holds once the CLI is compiled is untested; the panel's refresh strategy is undecided.
 
 ### Testing Approach _(Updated 2026-09-27)_
@@ -100,7 +100,7 @@ The following decisions were explored and explicitly removed from scope during t
 - **LLM Augmentation & Ingestion** _(Descoped 2026-02-17)_: Optional `vscode.lm` API integration for deeper change impact analysis. Removed because all modules were dormant with zero production callers; users bring their own AI assistants.
 - **LLM Ingestion Pipeline** _(Descoped 2026-02-17)_: GraphRAG-style pipeline with chunking, edge extraction, and confidence calibration. Removed alongside the LLM augmentation decision.
 - **SQLite GraphStore** _(Removed 2026-01-12)_: replaced by the mirror itself; "Live Docs ARE the database."
-- **Language Server and Diagnostics** _(Removed 2026-02-18)_: the original ripple and diagnostics subsystem. Type-safe languages already have their own lint and IntelliSense; in-editor polyglot change detection was not mission-critical, and the tool's value moved to generating and showing the map.
+- **Language Server and Diagnostics** _(Removed 2026-02-18; the remaining LSP shell and the extension package removed 2026-09-27)_: the original ripple and diagnostics subsystem. Type-safe languages already have their own lint and IntelliSense; in-editor polyglot change detection was not mission-critical, and the tool's value moved to generating and showing the map. What survived until September was a 60-line server that answered no requests and a 78-line extension that registered one command.
 - **Spec-Kit** _(Retired 2026-02-23)_: the bootstrapping scaffolding. Its specs, plans and task lists were migrated into `.mdmd` and have since been retired in turn.
 - **Explorer HTTP Server** _(Removed 2026-03-10)_: the static bundle does everything the server did except open files in the editor.
 - **AST Accuracy Benchmark, Benchmark Reports and Telemetry** _(Retired 2026-09-27)_: the mocha benchmark suite, the per-mode markdown reports under `reports/`, the manual benchmark workflow, the report builder and the inference-accuracy tracker. See "Accuracy Measurement" above for why. One observation from the November 2025 TypeScript oracle is worth carrying into the new one: it classified each edge as a runtime or a type-only binding, a distinction SCIP output does not make on its own.
@@ -116,10 +116,9 @@ The following decisions were explored and explicitly removed from scope during t
 
 - [Live Documentation Pipeline](live-documentation-pipeline.mdmd.md) — generator, lint, and edge aggregation architecture
 - [Polyglot Adapters](polyglot-adapters.mdmd.md) — language-specific symbol/dependency extraction
-- [Language Server Architecture](language-server-architecture.mdmd.md) — LSP server design
 
 ### Implementation Traceability
 
 - [scripts/live-docs/generate.ts](../layer-4/scripts/live-docs/generate.ts.mdmd.md) implements the generation pipeline
-- Symbol ingestion relies on polyglot adapters under `packages/shared/src/live-docs/adapters/` and the VS Code Workspace Symbols bridge in extension mode
+- Symbol ingestion relies on the TypeScript compiler API and the polyglot adapters under `packages/shared/src/live-docs/adapters/`
 - Integration suites under `tests/integration/live-docs/` validate key hypotheses

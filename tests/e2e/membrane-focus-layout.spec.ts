@@ -26,8 +26,8 @@ test.describe("Membrane Map — Focus Layout", () => {
     );
     expect(viewportRect).not.toBeNull();
 
-    // Measure the two collapsed sibling tiles (runtime, features)
-    // These are at packages/server/src level
+    // Measure the collapsed sibling tiles (bootstrap, persistence, views, ...)
+    // at the Explorer client folder level
     const tileRects = await page.evaluate(() => {
       const tiles =
         document.querySelectorAll<HTMLElement>(".membrane--collapsed");
@@ -52,10 +52,10 @@ test.describe("Membrane Map — Focus Layout", () => {
       ).toBeGreaterThan(0);
     }
 
-    // Now drill into runtime to focus on it
-    await expandDirectory(page, "packages/server/src/runtime");
+    // Now drill into persistence to focus on it
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
 
-    // After focus: the runtime directory content should occupy a large portion
+    // After focus: the persistence directory content should occupy a large portion
     // of the viewport. Measure the focused directory's membrane.
     const focusedRect = await page.evaluate(() => {
       // Look for the focused membrane (the most recently expanded one)

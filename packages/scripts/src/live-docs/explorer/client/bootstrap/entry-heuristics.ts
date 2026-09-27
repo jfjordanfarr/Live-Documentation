@@ -92,11 +92,6 @@ export const scoreNode = (
   if (path.endsWith("/src/main.ts") || path.endsWith("/src/main.js")) score += 200;
   if (path.endsWith("/src/index.ts") || path.endsWith("/src/index.js")) score += 150;
 
-  // Prefer common monorepo entry packages (small nudges; not required)
-  if (path.startsWith("packages/server/")) score += 120;
-  if (path.startsWith("packages/extension/")) score += 90;
-  if (path.startsWith("packages/cli/")) score += 70;
-
   // Graph centrality as a tie-breaker signal
   score += Math.min(300, degreeById.get(node.id) ?? 0);
 

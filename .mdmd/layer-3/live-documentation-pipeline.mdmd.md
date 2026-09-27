@@ -50,8 +50,7 @@ Supports FR-LD6 and REQ-G1 by keeping docstring extraction and drift diagnostics
 ### Inbound Interfaces
 - Analyzer outputs exposed by `packages/server/src/features` modules (symbol harvesters, dependency resolvers, coverage adapters).
 - Workspace configuration obtained via `packages/shared/src/config/liveDocumentationConfig.ts`.
-- CLI/extension commands requesting regeneration (`live-docs:generate`, `Live Docs: Regenerate File`).
-- Drift reporting commands and diagnostics requests emitted by the extension/CLI.
+- CLI commands requesting regeneration (`live-docs:generate`).
 - Future (wishlist) authoring commands for preview/apply and scaffolding, gated behind explicit opt-in.
 
 ### Outbound Interfaces

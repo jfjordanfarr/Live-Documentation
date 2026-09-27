@@ -38,12 +38,11 @@ Production dependencies are kept to a minimum. Everything else is a development 
 
 | Package                       | Used by             | Purpose                                            |
 | ----------------------------- | ------------------- | -------------------------------------------------- |
-| `typescript`                  | shared, server      | TypeScript and JavaScript analysis via the compiler API |
+| `typescript`                  | shared              | TypeScript and JavaScript analysis via the compiler API |
 | `@vscode/tree-sitter-wasm`    | shared              | Tree-sitter grammars for the other languages       |
 | `glob`, `ignore`, `minimatch` | shared, scripts, cli | File discovery and path matching                  |
 | `esbuild`                     | scripts             | Bundles the Explorer client into the static site   |
 | `lz-string`, `jszip`          | scripts             | Compressed URL state and downloadable exports in the Explorer |
-| `vscode-languageserver`, `vscode-languageserver-textdocument` | server | Left over from the retired language server; scheduled for removal |
 
 No production dependency runs a `postinstall` script. Check with:
 

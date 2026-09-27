@@ -19,29 +19,9 @@ test.describe("Membrane Map — Mixed-Content Hybrid Layout", () => {
   }) => {
     await goToMembraneMap(page);
 
-    // Navigate to a known mixed-content directory.
-    // packages/server/src/features/live-docs is mixed (has files + subdirectories).
-    // We need to navigate there via JS since it requires multiple levels of focus.
-    await page.evaluate(() => {
-      const labels = document.querySelectorAll<HTMLElement>(".membrane__label");
-      const target = Array.from(labels).find(
-        (l) => l.textContent?.trim() === "features",
-      );
-      if (target) target.click();
-    });
-    await page.waitForTimeout(500);
-
-    await page.evaluate(() => {
-      const labels = document.querySelectorAll<HTMLElement>(".membrane__label");
-      const target = Array.from(labels).find(
-        (l) => l.textContent?.trim() === "live-docs",
-      );
-      if (target) target.click();
-    });
-    await page.waitForTimeout(500);
-
-    // At the live-docs level, we should see a hybrid layout if there are both
-    // files and subdirectories. Check for the hybrid card-grid class.
+    // The specs land on the Explorer client folder, which is mixed content
+    // (files such as index.ts beside subdirectories such as persistence/).
+    // Check for the hybrid card-grid class.
     const hasHybridGrid = await page.evaluate(() => {
       return document.querySelector(".membrane__card-grid--hybrid") !== null;
     });

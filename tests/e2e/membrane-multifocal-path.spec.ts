@@ -1,19 +1,12 @@
 import { test, expect } from "@playwright/test";
-import { compressToEncodedURIComponent } from "lz-string";
 
 import {
+  buildStateUrl,
   goToMembraneMap,
   expandDirectory,
   pinAllOnCard,
   countElements,
 } from "./helpers";
-
-function buildStateUrl(payload: Record<string, unknown>): string {
-  const compressed = compressToEncodedURIComponent(
-    JSON.stringify({ v: 1, w: "membrane", ...payload }),
-  );
-  return `/?s=${compressed}`;
-}
 
 /**
  * Membrane Map — Multi-Focal & Path-As-Pins
@@ -31,12 +24,12 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/server/src/runtime");
+    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
 
-    await pinAllOnCard(page, "packages/server/src/runtime/environment.ts");
+    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
 
-    await pinAllOnCard(page, "packages/server/src/runtime/environment.test.ts");
+    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts");
     await page.waitForTimeout(500);
 
     const activePinnedCards = await page.evaluate(() => {
@@ -53,10 +46,10 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     });
 
     expect(activePinnedCards).toContain(
-      "packages/server/src/runtime/environment.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
     );
     expect(activePinnedCards).toContain(
-      "packages/server/src/runtime/environment.test.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
     );
 
     const activeCount = await countElements(page, ".membrane-card__pin-all--active");
@@ -77,9 +70,9 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
   }) => {
     const pathUrl = buildStateUrl({
       p: [
-        { n: "packages/server/src/main.ts", s: "__internals__", h: 0 },
-        { n: "packages/server/src/runtime/environment.ts", s: "__internals__", h: 1 },
-        { n: "packages/server/src/runtime/environment.test.ts", s: "__internals__", h: 2 },
+        { n: "packages/scripts/src/live-docs/explorer/client/index.ts", s: "__internals__", h: 0 },
+        { n: "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts", s: "__internals__", h: 1 },
+        { n: "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts", s: "__internals__", h: 2 },
       ],
     });
 
@@ -98,12 +91,12 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
         .sort();
     });
 
-    expect(renderedCardIds).toContain("packages/server/src/main.ts");
+    expect(renderedCardIds).toContain("packages/scripts/src/live-docs/explorer/client/index.ts");
     expect(renderedCardIds).toContain(
-      "packages/server/src/runtime/environment.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
     );
     expect(renderedCardIds).toContain(
-      "packages/server/src/runtime/environment.test.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
     );
 
     const hopLabels = await page.evaluate(() => {
@@ -114,21 +107,33 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     });
 
     expect(hopLabels).toHaveLength(3);
-    expect(hopLabels[0]).toContain("main.ts");
-    expect(hopLabels[1]).toContain("environment.ts");
-    expect(hopLabels[2]).toContain("environment.test.ts");
+    expect(hopLabels[0]).toContain("index.ts");
+    expect(hopLabels[1]).toContain("compressed-url-state.ts");
+    expect(hopLabels[2]).toContain("compressed-url-state.test.ts");
 
-    const hasCommonAncestor = await page.evaluate(() => {
-      return (
-        document.querySelector(
-          '.pa-ancestor-membrane[data-dir="packages/server/src"]',
-        ) !== null
-      );
+    // The pin-active layout wraps the columns in the ancestor chain of the
+    // least common ancestor of every relevant node (the path nodes plus the
+    // neighbours drawn beside them). The innermost membrane must therefore
+    // still be an ancestor of all three path nodes.
+    const ancestorDirs = await page.evaluate(() => {
+      const layers = document.querySelectorAll<HTMLElement>(".pa-ancestor-membrane[data-dir]");
+      return Array.from(layers).map((layer) => layer.dataset.dir ?? "");
     });
     expect(
-      hasCommonAncestor,
-      "Path-seeded pins should restore the shared ancestor membrane for the path nodes",
-    ).toBe(true);
+      ancestorDirs.length,
+      "Path-seeded pins should restore ancestor membranes around the path nodes",
+    ).toBeGreaterThan(0);
+    const innermost = ancestorDirs.reduce((a, b) => (b.length > a.length ? b : a), "");
+    for (const nodeId of [
+      "packages/scripts/src/live-docs/explorer/client/index.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
+      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+    ]) {
+      expect(
+        nodeId.startsWith(`${innermost}/`),
+        `Innermost ancestor membrane "${innermost}" should contain ${nodeId}`,
+      ).toBe(true);
+    }
 
     await page.locator(".membrane-path-breadcrumb__clear").click();
     await page.waitForSelector(".membrane-browse-root", { timeout: 5_000 });
