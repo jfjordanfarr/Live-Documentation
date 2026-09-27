@@ -12,9 +12,9 @@
 Provide the Stage-0 adapter that translates PowerShell scripts and modules into Live Docs symbols and dependency edges.
 
 ### Notes
-The adapter shells out to `scripts/powershell/emit-ast.ps1`, caches per-file payloads, and accepts either `pwsh` or Windows PowerShell.
+The adapter shells out to the emitter script beside it, `powershell.emit-ast.ps1`, caches per-file payloads, and accepts either `pwsh` or Windows PowerShell.
 Dot-sourced paths are normalized to workspace-relative form so downstream graph tooling can reason about cross-script hops, and comment-based help is translated into `symbolDocumentation` summaries and parameter blurbs for downstream renderers.
-Runtime extraction depends on [`scripts/powershell/emit-ast.ps1`](../../../../../scripts/powershell/emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata.
+Runtime extraction depends on [`powershell.emit-ast.ps1`](./powershell.emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata. Until 2026-09-27 the adapter looked for that script inside the workspace being documented, so only this repository, and a fixture that shipped a shim pointing back at it, could analyse PowerShell at all; the emitter is part of the product and ships with the adapter.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.977Z","inputHash":"ee8eec8b8914c145"}]} -->

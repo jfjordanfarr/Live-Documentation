@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/modules/Inventory.psm1
 - Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-workspace-scripts-modules-inventory-psm1
-- Generated At: 2026-02-03T21:55:48.319Z
+- Generated At: 2026-09-27T23:16:51.834Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Expose the exported inventory module that the deploy script loads during inspect
 - Only `Get-InventorySnapshot` is exported so the adapter and heuristic coverage can verify module filtering and inter-script edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.319Z","inputHash":"1074f24f1573036f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T23:16:51.834Z","inputHash":"91dd3a1211287092"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Get-InventorySnapshot` {#symbol-getinventorysnapshot}
@@ -26,7 +26,7 @@ Expose the exported inventory module that the deploy script loads during inspect
 Retrieves the latest deployment inventory snapshot for a region.
 
 ##### `Get-InventorySnapshot` — Parameters
-- `REGION`: The region identifier used to scope the inventory query.
+- `Region`: The region identifier used to scope the inventory query.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

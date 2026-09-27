@@ -150,9 +150,18 @@ $ast = [System.Management.Automation.Language.Parser]::ParseFile($resolvedPath, 
 $functions = @()
 $functionNodes = $ast.FindAll({ param($node) $node -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
 foreach ($fn in $functionNodes) {
-    $parameterNameMap = @{}
+    # Comment-based help upper-cases parameter names; map them back to the declared spelling,
+    # whether the function declares them in its header or in a param() block in its body.
+    $declaredParameters = @()
     if ($fn -and $fn.Parameters) {
-        foreach ($parameter in $fn.Parameters) {
+        $declaredParameters += $fn.Parameters
+    }
+    if ($fn -and $fn.Body -and $fn.Body.ParamBlock -and $fn.Body.ParamBlock.Parameters) {
+        $declaredParameters += $fn.Body.ParamBlock.Parameters
+    }
+    $parameterNameMap = @{}
+    if ($declaredParameters.Count -gt 0) {
+        foreach ($parameter in $declaredParameters) {
             $parameterName = $null
             if ($parameter -and $parameter.Name -and $parameter.Name.VariablePath -and $parameter.Name.VariablePath.UserPath) {
                 $parameterName = $parameter.Name.VariablePath.UserPath

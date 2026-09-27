@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1
 - Live Doc ID: LD-implementation-tests-integration-fixtures-powershell-compendium-workspace-scripts-common-logging-ps1
-- Generated At: 2026-02-03T21:55:48.286Z
+- Generated At: 2026-09-27T23:16:51.810Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provide the dot-sourced logging helper consumed by the PowerShell inspect fixtur
 - Keeps the implementation intentionally tiny so the generated Live Doc highlights the dependency hop back to `scripts/deploy.ps1`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:48.286Z","inputHash":"796367b31273fb3f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T23:16:51.810Z","inputHash":"a69be129c53f8503"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Write-DeploymentLog` {#symbol-writedeploymentlog}
@@ -26,7 +26,7 @@ Provide the dot-sourced logging helper consumed by the PowerShell inspect fixtur
 Writes a deployment log entry to standard output.
 
 ##### `Write-DeploymentLog` — Parameters
-- `MESSAGE`: The content to emit in the log entry.
+- `Message`: The content to emit in the log entry.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

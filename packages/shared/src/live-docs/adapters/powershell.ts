@@ -63,7 +63,7 @@ export const powershellAdapter: LanguageAdapter = {
       };
     }
 
-    const payload = await parsePowerShellFile(absolutePath, workspaceRoot);
+    const payload = await parsePowerShellFile(absolutePath);
     if (!payload) {
       return {
         symbols: [],
@@ -295,15 +295,14 @@ function normalizeWithinWorkspace(candidate: string, workspaceRoot: string): str
 }
 
 async function parsePowerShellFile(
-  absolutePath: string,
-  workspaceRoot: string
+  absolutePath: string
 ): Promise<PowerShellExtractionPayload | null> {
   const cached = cache.get(absolutePath);
   if (cached) {
     return cached;
   }
 
-  const pending = invokePowerShellEmitter(absolutePath, workspaceRoot).catch((error) => {
+  const pending = invokePowerShellEmitter(absolutePath).catch((error) => {
     cache.delete(absolutePath);
     throw error;
   });
@@ -312,11 +311,13 @@ async function parsePowerShellFile(
   return pending;
 }
 
+/** The PowerShell script beside this module that parses a file with PowerShell's own parser and prints what it found as JSON. */
+const EMITTER_PATH = path.join(__dirname, "powershell.emit-ast.ps1");
+
 async function invokePowerShellEmitter(
-  absolutePath: string,
-  workspaceRoot: string
+  absolutePath: string
 ): Promise<PowerShellExtractionPayload | null> {
-  const emitterPath = path.join(workspaceRoot, "scripts", "powershell", "emit-ast.ps1");
+  const emitterPath = EMITTER_PATH;
   for (const candidate of RUNTIME_CANDIDATES) {
     try {
       const { stdout } = await execFileAsync(candidate, [

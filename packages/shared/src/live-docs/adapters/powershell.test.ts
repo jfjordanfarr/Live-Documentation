@@ -15,16 +15,12 @@ if (!POWERSHELL_RUNTIME_AVAILABLE) {
 
 describeIfRuntime("powershellAdapter", () => {
   const repoRoot = path.resolve(__dirname, "../../../../..");
-  const emitterSource = path.join(repoRoot, "scripts", "powershell", "emit-ast.ps1");
   const fixtureRoot = path.join(repoRoot, "tests", "integration", "fixtures", "powershell-compendium");
 
   let workspaceRoot: string;
 
   beforeEach(async () => {
     workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "powershell-adapter-"));
-    const emitterTarget = path.join(workspaceRoot, "scripts", "powershell", "emit-ast.ps1");
-    await fs.mkdir(path.dirname(emitterTarget), { recursive: true });
-    await fs.copyFile(emitterSource, emitterTarget);
     await fs.cp(fixtureRoot, path.join(workspaceRoot, "powershell-compendium"), { recursive: true });
   });
 
