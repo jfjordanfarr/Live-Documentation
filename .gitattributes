@@ -1,0 +1,4 @@
+# Normalize line endings to LF in the repository and on checkout, whatever a
+# contributor's core.autocrlf says. Development happens in a Linux devcontainer
+# and CI runs on Linux.
+* text=auto eol=lf
