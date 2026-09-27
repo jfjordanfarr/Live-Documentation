@@ -78,6 +78,12 @@ export interface LiveDocumentationConfig {
   enableDocstringBridge: boolean;
   /** Evidence configuration controlling lint severity when evidence is missing. */
   evidence: LiveDocumentationEvidenceConfig;
+  /**
+   * Workspace-relative glob patterns for markdown files that Live Docs may link
+   * to but that the Explorer must not bundle or show as related documents
+   * (for example, a large chat archive).
+   */
+  bundleExclude: string[];
 }
 
 /**
@@ -205,7 +211,8 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   enableDocstringBridge: false,
   evidence: {
     strict: "warning"
-  }
+  },
+  bundleExclude: []
 };
 
 /**
@@ -236,6 +243,9 @@ export function normalizeLiveDocumentationConfig(
     strict: input?.evidence?.strict ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.evidence.strict
   };
 
+  const inputBundleExclude = Array.isArray(input?.bundleExclude) ? input?.bundleExclude : undefined;
+  const bundleExclude = inputBundleExclude ? dedupeStrings(inputBundleExclude) : [];
+
   return {
     root: normalizeStringOption(input?.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root),
     baseLayer: normalizeStringOption(
@@ -253,7 +263,8 @@ export function normalizeLiveDocumentationConfig(
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
     enableDocstringBridge:
       input?.enableDocstringBridge ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.enableDocstringBridge,
-    evidence
+    evidence,
+    bundleExclude
   };
 }
 

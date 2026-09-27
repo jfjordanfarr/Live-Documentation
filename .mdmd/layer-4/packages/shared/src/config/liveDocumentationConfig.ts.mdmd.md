@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2026-03-09T20:15:24.889Z
+- Generated At: 2026-09-27T01:44:10.527Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect, eviden
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-09T20:15:24.889Z","inputHash":"e60050f922f9e46b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T01:44:10.527Z","inputHash":"d059f17a4cabc102"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -79,7 +79,7 @@ dialect to use, and how strictly evidence is enforced.
 
 #### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L90)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L96)
 
 ##### `LiveDocumentationConfigInput` — Summary
 Partial input shape accepted by {@link normalizeLiveDocumentationConfig}.
@@ -90,28 +90,28 @@ want to override; everything else falls back to
 
 #### `LIVE_DOCUMENTATION_DEFAULT_ROOT` {#symbol-live_documentation_default_root}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L99)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L105)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_ROOT` — Summary
 Default root directory for the Live Docs mirror (`".live-documentation"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` {#symbol-live_documentation_default_base_layer}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L101)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L107)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` — Summary
 Default base-layer subdirectory within the root (`"source"`).
 
 #### `LIVE_DOCUMENTATION_FILE_EXTENSION` {#symbol-live_documentation_file_extension}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L103)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L109)
 
 ##### `LIVE_DOCUMENTATION_FILE_EXTENSION` — Summary
 Default file extension for generated Live Doc files (`".md"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L111)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L117)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
 Default glob patterns selecting workspace artifacts that receive Live Docs.
@@ -122,7 +122,7 @@ media). Static assets receive stub-only Live Docs for graph connectivity.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L197)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L203)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -135,7 +135,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L223)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L230)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 

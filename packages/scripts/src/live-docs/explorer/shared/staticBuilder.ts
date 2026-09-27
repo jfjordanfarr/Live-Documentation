@@ -185,7 +185,7 @@ export async function buildStaticExplorer(
         docs,
         workspaceRoot,
         liveDocPaths,
-        maxDepth: 2,
+        exclude: config?.bundleExclude,
         logger
     });
 

@@ -1,11 +1,14 @@
 /**
  * Bundled Markdown Scanner
- * 
- * Scans Live Docs for references to other markdown files (READMEs, chat history,
- * specs, etc.) and bundles them for inclusion in the explorer.
+ *
+ * Scans Live Docs for references to other markdown files (READMEs, specs,
+ * design notes, etc.) and bundles them for inclusion in the explorer.
+ * Files matching an `exclude` pattern are dropped before anything is
+ * recorded, so they neither ship in the bundle nor appear as related-doc nodes.
  */
 
 import * as fs from "fs/promises";
+import { minimatch } from "minimatch";
 import * as path from "path";
 
 import type { BundledMarkdownTreeNode, RelatedDocLink } from "./staticExplorerData";
@@ -151,8 +154,8 @@ export interface ScanBundledMarkdownOptions {
     workspaceRoot: string;
     /** Map from nodeId to docPath for the Live Docs */
     liveDocPaths: Map<string, string>;
-    /** Maximum depth for following nested links (default: 2) */
-    maxDepth?: number;
+    /** Workspace-relative glob patterns for linked markdown that must be neither bundled nor linked */
+    exclude?: string[];
     /** Logger for progress messages */
     logger?: Pick<Console, "log" | "error">;
 }
@@ -168,13 +171,17 @@ export async function scanAndBundleMarkdown(
         docs,
         workspaceRoot,
         liveDocPaths,
-        // maxDepth is now ignored - we only do single-hop
-        logger = console
+        exclude = [],
+        logger  = console
     } = options;
+
+    const isExcluded = (link: string): boolean =>
+        exclude.some(pattern => minimatch(link, pattern, { dot: true }));
 
     const bundledMarkdown: Record<string, string> = {};
     const relatedDocLinks: RelatedDocLink[] = [];
     const visited = new Set<string>();
+    let excludedLinkCount = 0;
 
     // Collect all links from Live Docs (single hop only)
     const linksToProcess: Array<{ path: string; sourceId: string }> = [];
@@ -185,9 +192,14 @@ export async function scanAndBundleMarkdown(
 
         const links = extractMarkdownLinks(content, docPath, workspaceRoot);
         for (const link of links) {
+            if (isExcluded(link)) {
+                excludedLinkCount++;
+                continue;
+            }
+
             // Track the link from this Live Doc to the bundled doc
             relatedDocLinks.push({ sourceId: nodeId, targetPath: link });
-            
+
             if (!visited.has(link)) {
                 visited.add(link);
                 linksToProcess.push({ path: link, sourceId: nodeId });
@@ -196,6 +208,9 @@ export async function scanAndBundleMarkdown(
     }
 
     logger.log(`Found ${linksToProcess.length} unique markdown links in Live Docs`);
+    if (excludedLinkCount > 0) {
+        logger.log(`Skipped ${excludedLinkCount} links matching bundleExclude patterns`);
+    }
 
     // Process each link - single hop, no nested traversal
     let processedCount = 0;

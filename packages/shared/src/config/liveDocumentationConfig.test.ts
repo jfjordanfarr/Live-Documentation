@@ -18,6 +18,15 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.slugDialect).toBe("github");
     expect(config.enableDocstringBridge).toBe(false);
     expect(config.evidence.strict).toBe("warning");
+    expect(config.bundleExclude).toEqual([]);
+  });
+
+  it("de-duplicates and trims bundleExclude patterns", () => {
+    const config = normalizeLiveDocumentationConfig({
+      bundleExclude: ["  notes/chat/**  ", "notes/chat/**", "", "drafts/*.md"]
+    });
+
+    expect(config.bundleExclude).toEqual(["notes/chat/**", "drafts/*.md"]);
   });
 
   it("merges overrides and de-duplicates glob patterns", () => {

@@ -16,6 +16,9 @@ const scriptsSrcEntry = toPosix(path.join(scriptsSrc, "index.ts"));
 
 export default defineConfig({
   resolve: {
+    // Prefer sources over any compiled twin sitting beside them; otherwise a stray
+    // `foo.js` next to `foo.ts` is what the tests silently exercise.
+    extensions: [".ts", ".tsx", ".mts", ".mjs", ".js", ".json"],
     alias: [
       {
         find: /^@live-documentation\/shared$/u,
@@ -46,12 +49,6 @@ export default defineConfig({
       "scripts/**/*.test.ts",
       "tests/integration/slopcop/**/*.test.ts"
     ],
-    poolOptions: {
-      threads: {
-        minThreads: 1,
-        maxThreads: 1
-      }
-    },
     coverage: {
       enabled: true,
       reporter: ["text-summary", "html"],
