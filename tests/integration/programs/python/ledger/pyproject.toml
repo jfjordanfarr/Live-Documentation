@@ -1,0 +1,5 @@
+[project]
+name = "ledger"
+version = "0.1.0"
+description = "A small double-entry ledger: the sample program that exercises the Python adapter."
+requires-python = ">=3.10"

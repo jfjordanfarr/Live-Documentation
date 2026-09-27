@@ -32,7 +32,7 @@ export { csharpSyntax } from "./csharp";
 export { goSyntax, GO_STDLIB_PACKAGES } from "./go";
 export { javaSyntax } from "./java";
 export { powershellSyntax } from "./powershell";
-export { pythonSyntax, PYTHON_STDLIB_MODULES } from "./python";
+export { pythonSyntax } from "./python";
 export { rubySyntax } from "./ruby";
 export { rustSyntax } from "./rust";
 export { typescriptSyntax } from "./typescript";

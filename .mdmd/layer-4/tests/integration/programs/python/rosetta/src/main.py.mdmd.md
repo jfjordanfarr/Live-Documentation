@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/main.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-main-py
-- Generated At: 2026-09-27T18:53:07.604Z
+- Generated At: 2026-09-27T20:03:33.939Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Python Rosetta Stone fixture. Demonstrates runtime imports f
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Mirrors TypeScript's main.ts structure.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.604Z","inputHash":"133c76a1eafb3e1f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.939Z","inputHash":"34e8c627af0990d1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}

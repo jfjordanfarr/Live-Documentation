@@ -10,16 +10,16 @@ Describe the sample programs under `tests/integration/programs/`: what each one 
 
 Every directory below holds committed source. The seven vendored fixtures that were pinned clones of third-party repositories (ky, libuv, Newtonsoft.Json, mux, OkHttp, Requests, log) were retired on 2026-09-27; see [Architectural Decisions](architectural-decisions.mdmd.md).
 
-| Language   | Fixtures                                 | Read by                                                                 |
-| ---------- | ---------------------------------------- | ----------------------------------------------------------------------- |
-| TypeScript | `basic`, `layered`, `rosetta`            | all: the oracle; `rosetta`: Rosetta parity                              |
-| C          | `basics`, `modular`, `rosetta`           | `rosetta`: Rosetta parity. No indexer for C is installed                |
-| C#         | `basic`, `webforms`, `estate`, `rosetta` | all: the oracle; `rosetta`: Rosetta parity                              |
-| Go         | `rosetta`                                | the oracle; Rosetta parity                                              |
-| Java       | `basic`, `service`, `rosetta`            | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
-| Python     | `basics`, `pipeline`, `rosetta`          | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
-| Ruby       | `basic`, `cli`, `rosetta`                | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
-| Rust       | `basics`, `analytics`, `rosetta`         | all: the oracle; `rosetta`: Rosetta parity                              |
+| Language   | Fixtures                                  | Read by                                                                 |
+| ---------- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| TypeScript | `basic`, `layered`, `rosetta`             | all: the oracle; `rosetta`: Rosetta parity                              |
+| C          | `basics`, `modular`, `rosetta`            | `rosetta`: Rosetta parity. No indexer for C is installed                |
+| C#         | `basic`, `webforms`, `estate`, `rosetta`  | all: the oracle; `rosetta`: Rosetta parity                              |
+| Go         | `rosetta`                                 | the oracle; Rosetta parity                                              |
+| Java       | `basic`, `service`, `rosetta`             | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
+| Python     | `basics`, `pipeline`, `rosetta`, `ledger` | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
+| Ruby       | `basic`, `cli`, `rosetta`                 | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
+| Rust       | `basics`, `analytics`, `rosetta`          | all: the oracle; `rosetta`: Rosetta parity                              |
 
 `rosetta-manifest.json` at the root describes the canonical program the eight Rosetta implementations share: the nodes, the twelve edges, and the symbols each edge travels through. The parity suite's constants are drawn from it.
 
@@ -37,6 +37,10 @@ A fixture that has been measured carries an `expected/` directory.
 ## The estate fixture
 
 `csharp/estate` is the owner's payment chain in miniature, five .NET Framework 4.8 projects and the SQL behind them; its [README](../../tests/integration/programs/csharp/estate/README.md) draws the chain and says which hops each expectation file covers.
+
+## The ledger program
+
+`python/ledger` is a packaged double-entry ledger written on 2026-09-27 to give the Python adapter something a line scanner cannot pass; its [README](../../tests/integration/programs/python/ledger/README.md) lists the import shapes it exercises and where each one lives. The measurement before and after the tree-sitter adapter is under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md).
 
 ## The WebForms fixture
 

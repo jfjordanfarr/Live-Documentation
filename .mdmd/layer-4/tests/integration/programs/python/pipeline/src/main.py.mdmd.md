@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/pipeline/src/main.py
 - Live Doc ID: LD-test-tests-integration-programs-python-pipeline-src-main-py
-- Generated At: 2026-09-27T18:53:07.492Z
+- Generated At: 2026-09-27T20:03:33.720Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides a runnable wrapper for the Python pipeline benchmark so the analyzer tr
 Keep the status check and exception message stable; tests assert on this behavior during regression runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.492Z","inputHash":"1cffb926b5caf7a7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.720Z","inputHash":"fe28303e86fc49e4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}

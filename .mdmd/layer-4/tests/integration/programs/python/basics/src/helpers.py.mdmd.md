@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/basics/src/helpers.py
 - Live Doc ID: LD-test-tests-integration-programs-python-basics-src-helpers-py
-- Generated At: 2026-09-27T18:53:07.423Z
+- Generated At: 2026-09-27T20:03:33.141Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Contains the seed validation helper for the Python basics benchmark so dependenc
 The guard intentionally remains minimal; adjust only if the benchmark needs additional branches.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.423Z","inputHash":"bb4f71c670878736"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.141Z","inputHash":"f6fdfec21f8cc84c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `validate_seed` {#symbol-validate_seed}

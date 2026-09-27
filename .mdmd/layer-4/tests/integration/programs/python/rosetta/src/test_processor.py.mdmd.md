@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_processor.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-processor-py
-- Generated At: 2026-09-27T18:53:07.695Z
+- Generated At: 2026-09-27T20:03:34.142Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta processor module. Part of the polyglot Roset
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Python's idiomatic `test_` prefix pattern. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.695Z","inputHash":"7354a717bb8188a4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:34.142Z","inputHash":"a9be801f96165cbb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestRun` {#symbol-testrun}
@@ -23,11 +23,11 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_processor.py#L13)
 
 #### `test_processes_records_and_returns_report` {#symbol-test_processes_records_and_returns_report}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_processor.py#L14)
 
 #### `test_handles_empty_record_set` {#symbol-test_handles_empty_record_set}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_processor.py#L27)
 
 #### `TestSummarize` {#symbol-testsummarize}
@@ -35,7 +35,7 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_processor.py#L34)
 
 #### `test_formats_report_as_human_readable_string` {#symbol-test_formats_report_as_human_readable_string}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_processor.py#L35)
 <!-- LIVE-DOC:END Public Symbols -->
 

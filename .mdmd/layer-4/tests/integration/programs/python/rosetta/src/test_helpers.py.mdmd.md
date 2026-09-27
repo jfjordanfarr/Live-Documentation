@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_helpers.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-helpers-py
-- Generated At: 2026-09-27T18:53:07.656Z
+- Generated At: 2026-09-27T20:03:34.063Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta helpers module (format_value, sum_values, av
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection with Python's `from helpers import` pattern.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.656Z","inputHash":"a555fc003e596924"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:34.063Z","inputHash":"5cd362ac07da5201"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestFormatValue` {#symbol-testformatvalue}
@@ -23,7 +23,7 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L12)
 
 #### `test_formats_numbers_with_two_decimal_places` {#symbol-test_formats_numbers_with_two_decimal_places}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L13)
 
 #### `TestSumValues` {#symbol-testsumvalues}
@@ -31,11 +31,11 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L19)
 
 #### `test_sums_an_array_of_numbers` {#symbol-test_sums_an_array_of_numbers}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L20)
 
-#### `test_returns_zero_for_empty_list (function overload 1)` {#symbol-test_returns_zero_for_empty_list-function-overload-1}
-- Type: function
+#### `test_returns_zero_for_empty_list (method overload 1)` {#symbol-test_returns_zero_for_empty_list-method-overload-1}
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L24)
 
 #### `TestAverage` {#symbol-testaverage}
@@ -43,11 +43,11 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L28)
 
 #### `test_calculates_average_of_numbers` {#symbol-test_calculates_average_of_numbers}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L29)
 
-#### `test_returns_zero_for_empty_list (function overload 2)` {#symbol-test_returns_zero_for_empty_list-function-overload-2}
-- Type: function
+#### `test_returns_zero_for_empty_list (method overload 2)` {#symbol-test_returns_zero_for_empty_list-method-overload-2}
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_helpers.py#L33)
 <!-- LIVE-DOC:END Public Symbols -->
 

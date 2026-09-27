@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/coreUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-coreutils-ts
-- Generated At: 2026-03-11T01:35:37.214Z
+- Generated At: 2026-09-27T20:03:30.171Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Stateless utility functions for Live Documentation generation. Provides helpers 
 - All functions are pure with no side effects
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.214Z","inputHash":"0906a5f674db1fc8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:30.171Z","inputHash":"63381a19e9dd37da"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `formatSourceLink` {#symbol-formatsourcelink}
@@ -79,7 +79,7 @@ Base name without extension, e.g., "core"
 
 #### `formatInlineCode` {#symbol-formatinlinecode}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L87)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L93)
 
 ##### `formatInlineCode` — Summary
 Formats a value as inline code, escaping backticks.
@@ -92,7 +92,7 @@ The value wrapped in backticks with internal backticks escaped
 
 #### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L98)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L104)
 - Parameters: `dependency`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `formatDependencyQualifier` — Summary
@@ -106,7 +106,7 @@ A qualifier string like " (re-export, type-only)" or empty string
 
 #### `resolveExportAssignmentName` {#symbol-resolveexportassignmentname}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L122)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L128)
 - Parameters: `expression`: `ts.Expression`
 
 ##### `resolveExportAssignmentName` — Summary
@@ -120,7 +120,7 @@ The resolved name, or "default" for anonymous expressions
 
 #### `hasExportModifier` {#symbol-hasexportmodifier}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L135)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L141)
 - Parameters: `node`: `ts.Node`
 
 ##### `hasExportModifier` — Summary
@@ -128,7 +128,7 @@ Checks if a node has the `export` modifier.
 
 #### `hasDefaultModifier` {#symbol-hasdefaultmodifier}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L146)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L152)
 - Parameters: `node`: `ts.Node`
 
 ##### `hasDefaultModifier` — Summary
@@ -136,7 +136,7 @@ Checks if a node has the `default` modifier.
 
 #### `getNodeLocation` {#symbol-getnodelocation}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L157)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L163)
 - Returns: [`LocationInfo`](./core.ts.mdmd.md#symbol-locationinfo)
 - Parameters: `node`: `ts.Node`; `sourceFile`: `ts.SourceFile`
 
@@ -145,7 +145,7 @@ Gets the source location (1-indexed line and character) of a node.
 
 #### `displayDependencyKey` {#symbol-displaydependencykey}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L172)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L178)
 - Parameters: `entry`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `displayDependencyKey` — Summary
@@ -159,7 +159,7 @@ The resolved path if available, otherwise the specifier
 
 #### `isBarrelFilePath` {#symbol-isbarrelfilepath}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L210)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L216)
 
 ##### `isBarrelFilePath` — Summary
 Determines if a file path represents a barrel/index file.
@@ -188,7 +188,7 @@ isBarrelFilePath("lib/mod.ts");                 // true
 
 #### `compareSymbolLocationsPreferOrigin` {#symbol-comparesymbollocationspreferorigin}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L232)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L238)
 
 ##### `compareSymbolLocationsPreferOrigin` — Summary
 Sorts symbol locations to prefer non-barrel files over barrel files.
@@ -211,7 +211,7 @@ Negative if a should come first, positive if b should come first
 
 #### `commonDirectoryPrefixLength` {#symbol-commondirectoryprefixlength}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L254)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L260)
 
 ##### `commonDirectoryPrefixLength` — Summary
 Counts the number of shared leading directory segments between two paths.
@@ -219,7 +219,7 @@ Used for proximity-based symbol resolution.
 
 #### `createProximityAwareComparator` {#symbol-createproximityawarecomparator}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L273)
+- Source: [source](../../../../../../packages/shared/src/live-docs/coreUtils.ts#L279)
 
 ##### `createProximityAwareComparator` — Summary
 Creates a comparator that ranks symbol locations by proximity to a reference path.

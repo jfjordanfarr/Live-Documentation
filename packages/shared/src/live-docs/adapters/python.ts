@@ -1,546 +1,644 @@
-import { existsSync } from "node:fs";
-import { promises as fs } from "node:fs";
+/**
+ * Python adapter: tree-sitter symbols and import resolution across the workspace.
+ *
+ * A module's public symbols are its top-level classes, functions and assignments
+ * and the public members of its classes (methods, properties, fields, nested
+ * classes), with docstrings parsed by `python.docstring.ts`.
+ *
+ * Dependencies follow the language's import semantics rather than its text:
+ *
+ * - `from M import name` depends on M's own file and on the file where `name`
+ *   is defined, followed through the `from .x import name` re-exports of a
+ *   package's `__init__.py`; a name that is a submodule depends on that module.
+ * - `import a.b.c [as m]` depends on module `a.b.c`, and `m.X` (or `a.b.c.X`)
+ *   used anywhere in the file depends on where `X` is defined.
+ * - `from M import *` depends on M and, for every public name of M the file
+ *   uses, on where that name is defined.
+ * - Imports inside functions and under `if TYPE_CHECKING:` count like any other;
+ *   import text inside strings and comments does not, because the parser sees it
+ *   for what it is.
+ *
+ * An absolute module is looked up, in order, beside the importing file, at the
+ * root of the package the file belongs to, at the workspace root and under its
+ * `src/`; a module found nowhere is recorded by name as an external dependency.
+ */
+import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
-import type {
-  DependencyEntry,
-  PublicSymbolEntry,
-  SourceAnalysisResult,
-  TypeReference
-} from "../core";
+import { pythonSyntax } from "../../languages";
+import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
 import type { LanguageAdapter } from "./index";
 import { parseDocstring } from "./python.docstring";
-import { PYTHON_STDLIB_MODULES } from "../../languages";
+import { parseSource, type SyntaxNode } from "./treeSitter";
 
-interface DependencyBucket {
-  specifier: string;
-  resolvedPath: string | undefined;
-  symbols: Set<string>;
+// ---------------------------------------------------------------------------
+// Facts about one module
+// ---------------------------------------------------------------------------
+
+interface ImportedName {
+  name:  string;
+  alias: string;
 }
 
-// Captures: [1] indent, [2] keyword, [3] name, [4] base classes (optional)
-const TOP_LEVEL_PATTERN = /^([ \t]*)(async\s+def|def|class)\s+([A-Za-z_][A-Za-z0-9_]*)(?:\(([^)]+)\))?/;
-const DECORATOR_PATTERN = /^\s*@/;
+/** One import statement, as written. `level` counts the leading dots of a relative import. */
+interface ModuleImport {
+  module:    string[];
+  level:     number;
+  /** The names of a `from` import; absent for `import M`. */
+  names?:    ImportedName[];
+  wildcard:  boolean;
+  /** The `as` name of `import M as alias`. */
+  alias?:    string;
+}
 
-/**
- * Language adapter that extracts public symbols and docstring metadata from Python modules.
- *
- * @remarks
- * The adapter recognises reStructuredText, Google, and NumPy-style docstring conventions
- * to populate Live Doc summaries, parameter tables, and inline examples without relying
- * on Python runtime introspection.
- */
-export const pythonAdapter: LanguageAdapter = {
-  id: "python-basic",
-  extensions: [".py"],
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
-    const symbols = extractSymbols(content);
-    const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
+interface Declared {
+  name:           string;
+  qualifiedName:  string;
+  kind:           string;
+  line:           number;
+  character:      number;
+  documentation?: SymbolDocumentation;
+  typeReferences: TypeReference[];
+  members:        Declared[];
+}
 
-    if (symbols.length === 0 && dependencies.length === 0) {
-      return {
-        symbols: [],
-        dependencies: []
-      };
-    }
+interface ModuleFacts {
+  imports:      ModuleImport[];
+  declarations: Declared[];
+  /** Every name bound at module level, public or not. */
+  boundNames:   Set<string>;
+  /** The names listed in `__all__`, when it is a literal list. */
+  all?:         string[];
+  /** Every bare identifier the module uses. */
+  identifiers:  Set<string>;
+  /** Every `a.b.c` chain the module uses, longest form only. */
+  chains:       string[][];
+}
 
-    return {
-      symbols,
-      dependencies
-    };
-  }
-};
+const FUTURE_MODULE = "__future__";
 
-function extractSymbols(content: string): PublicSymbolEntry[] {
-  const lines = content.split(/\r?\n/);
-  const results: PublicSymbolEntry[] = [];
+function position(node: SyntaxNode): { line: number; character: number } {
+  return { line: node.startPosition.row + 1, character: node.startPosition.column + 1 };
+}
 
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index];
-    if (DECORATOR_PATTERN.test(line)) {
-      continue;
-    }
+function dottedParts(node: SyntaxNode | null): string[] {
+  if (!node) return [];
+  if (node.type === "identifier") return [node.text];
+  return node.namedChildren.filter((child) => child.type === "identifier").map((child) => child.text);
+}
 
-    const match = TOP_LEVEL_PATTERN.exec(line);
-    TOP_LEVEL_PATTERN.lastIndex = 0;
-    if (!match) {
-      continue;
-    }
-
-    const indent = match[1] ?? "";
-    if (indent.trim().length > 0) {
-      continue;
-    }
-
-    const keyword = match[2];
-    const name = match[3];
-    const baseClasses = match[4];
-    const kind = keyword.includes("class") ? "class" : "function";
-    const docstring = extractDocstring(lines, index);
-    const documentation = docstring ? parseDocstring(docstring) : undefined;
-
-    // Extract type references from base classes for class definitions
-    let typeReferences: TypeReference[] | undefined;
-    if (kind === "class" && baseClasses) {
-      const bases = baseClasses
-        .split(",")
-        .map(b => b.trim())
-        .filter(b => b && !b.includes("=")) // Exclude keyword args like metaclass=
-        .map(b => b.split("[")[0].trim()); // Strip generic params like List[int]
-      
-      if (bases.length > 0) {
-        typeReferences = bases.map(baseName => ({
-          name: baseName,
-          role: "extends" as const
-        }));
+/** Reads an import statement into its module path and bound names. */
+function readImport(node: SyntaxNode): ModuleImport[] {
+  if (node.type === "import_statement") {
+    const imports: ModuleImport[] = [];
+    for (const child of node.namedChildren) {
+      if (child.type === "dotted_name") {
+        imports.push({ module: dottedParts(child), level: 0, wildcard: false });
+      } else if (child.type === "aliased_import") {
+        imports.push({ module: dottedParts(child.childForFieldName("name")), level: 0, wildcard: false, alias: child.childForFieldName("alias")?.text });
       }
     }
-
-    results.push({
-      name,
-      kind,
-      location: {
-        line: index + 1,
-        character: indent.length + 1
-      },
-      documentation,
-      typeReferences
-    } as PublicSymbolEntry);
+    return imports;
   }
 
-  results.sort((left, right) => {
-    const lineDiff = (left.location?.line ?? 0) - (right.location?.line ?? 0);
-    if (lineDiff !== 0) {
-      return lineDiff;
-    }
-    const charDiff = (left.location?.character ?? 0) - (right.location?.character ?? 0);
-    if (charDiff !== 0) {
-      return charDiff;
-    }
-    return left.name.localeCompare(right.name);
-  });
+  const moduleNode = node.childForFieldName("module_name");
+  let level  = 0;
+  let module: string[] = [];
+  if (moduleNode?.type === "relative_import") {
+    level  = moduleNode.namedChildren.find((child) => child.type === "import_prefix")?.text.length ?? 0;
+    module = dottedParts(moduleNode.namedChildren.find((child) => child.type === "dotted_name") ?? null);
+  } else {
+    module = dottedParts(moduleNode);
+  }
 
-  return results;
+  const names: ImportedName[] = [];
+  let wildcard = false;
+  for (const child of node.namedChildren) {
+    if (child.id === moduleNode?.id) continue;
+    if (child.type === "dotted_name") {
+      names.push({ name: child.text, alias: child.text });
+    } else if (child.type === "aliased_import") {
+      const name = child.childForFieldName("name")?.text ?? "";
+      names.push({ name, alias: child.childForFieldName("alias")?.text ?? name });
+    } else if (child.type === "wildcard_import") {
+      wildcard = true;
+    }
+  }
+  return [{ module, level, names, wildcard }];
 }
 
-function extractDocstring(lines: string[], definitionIndex: number): string | undefined {
-  let cursor = definitionIndex + 1;
-  while (cursor < lines.length) {
-    const raw = lines[cursor];
-    if (!raw.trim()) {
-      cursor += 1;
-      continue;
-    }
-
-    const trimmed = raw.trim();
-    const quote = detectTripleQuote(trimmed);
-    if (!quote) {
-      return undefined;
-    }
-
-    const closingIndex = trimmed.indexOf(quote, quote.length);
-    if (closingIndex >= 0) {
-      const inner = trimmed.slice(quote.length, closingIndex);
-      const normalizedInline = normalizeDocstring(inner);
-      return normalizedInline || undefined;
-    }
-
-    const accumulator: string[] = [];
-    accumulator.push(trimmed.slice(quote.length));
-    cursor += 1;
-    while (cursor < lines.length) {
-      const candidate = lines[cursor];
-      const closePos = candidate.indexOf(quote);
-      if (closePos >= 0) {
-        accumulator.push(candidate.slice(0, closePos));
-        break;
+/** Statements at module level, looking inside `if` and `try` blocks, whose bindings are module-level too. */
+function* moduleStatements(block: SyntaxNode): Generator<SyntaxNode> {
+  for (const statement of block.namedChildren) {
+    if (statement.type === "if_statement" || statement.type === "try_statement") {
+      for (const child of statement.namedChildren) {
+        if (child.type === "block") {
+          yield* moduleStatements(child);
+        } else if (child.type.endsWith("_clause")) {
+          const inner = child.namedChildren.find((grandchild) => grandchild.type === "block");
+          if (inner) yield* moduleStatements(inner);
+        }
       }
-      accumulator.push(candidate);
-      cursor += 1;
+    } else {
+      yield statement;
     }
-
-    const normalized = normalizeDocstring(accumulator.join("\n"));
-    return normalized || undefined;
   }
-
-  return undefined;
 }
 
-function detectTripleQuote(candidate: string): string | undefined {
-  if (candidate.startsWith('"""')) {
-    return '"""';
-  }
-  if (candidate.startsWith("'''")) {
-    return "'''";
-  }
-  return undefined;
+function docstringOf(body: SyntaxNode | null): SymbolDocumentation | undefined {
+  const first = body?.namedChildren[0];
+  const text  = first?.type === "expression_statement" && first.namedChildren[0]?.type === "string"
+    ? first.namedChildren[0].namedChildren.filter((child) => child.type === "string_content").map((child) => child.text).join("")
+    : undefined;
+  const normalized = text ? normalizeDocstring(text) : "";
+  return normalized ? parseDocstring(normalized) : undefined;
 }
 
+/** Trims a docstring's blank edges and removes the indentation its position in the source gave it. */
 function normalizeDocstring(raw: string): string {
-  const replaced = raw.replace(/\r\n/g, "\n");
-  const segments = replaced.split("\n");
+  const lines = raw.replace(/\r\n/g, "\n").split("\n");
+  while (lines.length > 0 && !lines[0].trim()) lines.shift();
+  while (lines.length > 0 && !lines[lines.length - 1].trim()) lines.pop();
+  if (lines.length === 0) return "";
 
-  let start = 0;
-  while (start < segments.length && !segments[start].trim()) {
-    start += 1;
+  let indent = Infinity;
+  for (const line of lines.slice(1)) {
+    if (!line.trim()) continue;
+    indent = Math.min(indent, line.match(/^\s*/)![0].length);
   }
-
-  let end = segments.length - 1;
-  while (end >= start && !segments[end].trim()) {
-    end -= 1;
-  }
-
-  const sliced = segments.slice(start, end + 1);
-  if (!sliced.length) {
-    return "";
-  }
-
-  let minIndent = Infinity;
-  for (const line of sliced.slice(1)) {
-    if (!line.trim()) {
-      continue;
-    }
-    const leading = line.match(/^\s+/);
-    if (!leading) {
-      minIndent = 0;
-      break;
-    }
-    minIndent = Math.min(minIndent, leading[0].length);
-  }
-
-  if (!Number.isFinite(minIndent)) {
-    minIndent = 0;
-  }
-
-  if (minIndent > 0) {
-    for (let index = 1; index < sliced.length; index += 1) {
-      const line = sliced[index];
-      if (!line.trim()) {
-        continue;
-      }
-      sliced[index] = line.slice(minIndent);
-    }
-  }
-
-  return sliced.join("\n");
+  const body = lines.map((line, index) => (index === 0 || !Number.isFinite(indent) ? line.trim() : line.slice(indent)));
+  return body.join("\n").trim();
 }
 
-// ============================================================================
-// Python Import Resolution
-// ============================================================================
-
-/**
- * Checks if a module name is a known standard library or common third-party package.
- *
- * @param moduleName - The top-level module name (e.g., "os", "typing", "dataclasses")
- * @returns True if the module is from the standard library or known third-party
- */
-function isStdlibOrThirdParty(moduleName: string): boolean {
-  const topLevel = moduleName.split(".")[0];
-  return PYTHON_STDLIB_MODULES.has(topLevel);
-}
-
-/**
- * Resolves a Python import to a workspace-relative file path.
- *
- * @remarks
- * Python import resolution follows these patterns:
- * - `import util` → look for `util.py` or `util/__init__.py` in same directory
- * - `from util import func` → same resolution, symbol tracked separately
- * - `from .helpers import func` → relative import from current package
- * - `from ..utils import func` → relative import from parent package
- *
- * Standard library and known third-party modules are not resolved.
- *
- * @param moduleSpec - The module specifier (e.g., "util", ".helpers", "..utils")
- * @param absolutePath - Absolute path to the importing file
- * @param workspaceRoot - Workspace root for generating relative paths
- * @returns Workspace-relative path if resolved, undefined otherwise
- */
-function resolvePythonImport(
-  moduleSpec: string,
-  absolutePath: string,
-  workspaceRoot: string
-): string | undefined {
-  if (!moduleSpec) {
-    return undefined;
-  }
-
-  // Check for relative import (starts with dots)
-  const relativeMatch = moduleSpec.match(/^(\.+)(.*)$/);
-  if (relativeMatch) {
-    return resolveRelativeImport(relativeMatch[1], relativeMatch[2], absolutePath, workspaceRoot);
-  }
-
-  // Absolute import - check if it's stdlib/third-party first
-  if (isStdlibOrThirdParty(moduleSpec)) {
-    return undefined;
-  }
-
-  // Try to resolve as a local module
-  return resolveLocalModule(moduleSpec, absolutePath, workspaceRoot);
-}
-
-/**
- * Resolves a relative Python import (one starting with dots).
- *
- * @param dots - The leading dots (e.g., ".", "..", "...")
- * @param remainder - The module path after the dots (e.g., "helpers", "utils.format")
- * @param absolutePath - Absolute path to the importing file
- * @param workspaceRoot - Workspace root for generating relative paths
- * @returns Workspace-relative path if resolved, undefined otherwise
- */
-function resolveRelativeImport(
-  dots: string,
-  remainder: string,
-  absolutePath: string,
-  workspaceRoot: string
-): string | undefined {
-  const fileDir = path.dirname(absolutePath);
-  const levels = dots.length;
-
-  // Go up (levels - 1) directories from the current file's directory
-  // One dot means current package, two dots means parent package, etc.
-  let targetDir = fileDir;
-  for (let i = 1; i < levels; i++) {
-    targetDir = path.dirname(targetDir);
-  }
-
-  // If there's a remainder, resolve it as a module path
-  if (remainder) {
-    const parts = remainder.split(".");
-    const modulePath = path.join(targetDir, ...parts);
-    return probeModulePath(modulePath, workspaceRoot);
-  }
-
-  // Just dots with no remainder - refers to the package itself
-  // Look for __init__.py in the target directory
-  const initPath = path.join(targetDir, "__init__.py");
-  if (existsSync(initPath)) {
-    return path.relative(workspaceRoot, initPath).replace(/\\/g, "/");
-  }
-
-  return undefined;
-}
-
-/**
- * Resolves a local (non-relative, non-stdlib) module import.
- *
- * @param moduleSpec - The module specifier (e.g., "util", "package.submodule")
- * @param absolutePath - Absolute path to the importing file
- * @param workspaceRoot - Workspace root for generating relative paths
- * @returns Workspace-relative path if resolved, undefined otherwise
- */
-function resolveLocalModule(
-  moduleSpec: string,
-  absolutePath: string,
-  workspaceRoot: string
-): string | undefined {
-  const fileDir = path.dirname(absolutePath);
-  const parts = moduleSpec.split(".");
-
-  // For simple imports like "util", only take the first segment
-  // (the remaining parts might be submodules or attributes)
-  const moduleName = parts[0];
-
-  // Try resolving from the current directory first
-  const fromCurrentDir = probeModulePath(path.join(fileDir, moduleName), workspaceRoot);
-  if (fromCurrentDir) {
-    return fromCurrentDir;
-  }
-
-  // Try resolving from the package root (if we're in a package)
-  const packageRoot = findPackageRoot(fileDir);
-  if (packageRoot && packageRoot !== fileDir) {
-    const fromPackageRoot = probeModulePath(path.join(packageRoot, moduleName), workspaceRoot);
-    if (fromPackageRoot) {
-      return fromPackageRoot;
-    }
-  }
-
-  return undefined;
-}
-
-/**
- * Probes for a Python module at a given base path.
- *
- * @remarks
- * Checks for:
- * 1. `{basePath}.py` - single-file module
- * 2. `{basePath}/__init__.py` - package module
- *
- * @param basePath - Base path to probe (without extension)
- * @param workspaceRoot - Workspace root for generating relative paths
- * @returns Workspace-relative path if found, undefined otherwise
- */
-function probeModulePath(basePath: string, workspaceRoot: string): string | undefined {
-  // Try as single file module
-  const asFile = `${basePath}.py`;
-  if (existsSync(asFile)) {
-    return path.relative(workspaceRoot, asFile).replace(/\\/g, "/");
-  }
-
-  // Try as package (directory with __init__.py)
-  const asPackage = path.join(basePath, "__init__.py");
-  if (existsSync(asPackage)) {
-    return path.relative(workspaceRoot, asPackage).replace(/\\/g, "/");
-  }
-
-  return undefined;
-}
-
-/**
- * Finds the root of the Python package containing a given directory.
- *
- * @remarks
- * Walks up the directory tree looking for the topmost directory
- * that still contains an `__init__.py` file.
- *
- * @param startDir - Directory to start searching from
- * @returns Path to the package root, or undefined if not in a package
- */
-function findPackageRoot(startDir: string): string | undefined {
-  let currentDir = startDir;
-  let packageRoot: string | undefined;
-
-  // Walk up looking for __init__.py files
-  while (currentDir && currentDir !== path.dirname(currentDir)) {
-    const initPath = path.join(currentDir, "__init__.py");
-    if (existsSync(initPath)) {
-      packageRoot = currentDir;
-      currentDir = path.dirname(currentDir);
-    } else {
-      // No more __init__.py, stop here
-      break;
-    }
-  }
-
-  return packageRoot;
-}
-
-// ============================================================================
-// Dependency Extraction
-// ============================================================================
-
-/**
- * Extracts import dependencies from Python source code.
- *
- * @remarks
- * Handles both `import X` and `from X import Y` statements.
- * Resolves local modules to workspace-relative paths while leaving
- * standard library and third-party imports unresolved.
- *
- * @param content - Python source code content
- * @param absolutePath - Absolute path to the source file
- * @param workspaceRoot - Workspace root for path resolution
- * @returns Array of dependency entries
- */
-function extractDependencies(
-  content: string,
-  absolutePath: string,
-  workspaceRoot: string
-): DependencyEntry[] {
-  const lines = content.split(/\r?\n/);
-  const dependencies = new Map<string, DependencyBucket>();
-
-  /**
-   * Registers a dependency with optional imported symbols.
-   */
-  const register = (
-    specifier: string,
-    resolvedPath: string | undefined,
-    symbols: string[]
-  ): void => {
-    const normalized = specifier.trim();
-    if (!normalized) {
-      return;
-    }
-
-    const existing = dependencies.get(normalized);
-    if (existing) {
-      // Merge symbols into existing bucket
-      for (const sym of symbols) {
-        if (sym && sym.trim()) {
-          existing.symbols.add(sym.trim());
+/** The names a type annotation mentions, minus builtins; names inside `[...]` are type arguments. */
+function typeNames(node: SyntaxNode, role: TypeReference["role"], parameterName?: string, into: TypeReference[] = []): TypeReference[] {
+  const add = (name: string, nameRole: TypeReference["role"]) => {
+    if (pythonSyntax.isFrameworkType(name) || name === "None") return;
+    if (into.some((reference) => reference.name === name && reference.role === nameRole && reference.parameterName === parameterName)) return;
+    into.push(parameterName ? { name, role: nameRole, parameterName } : { name, role: nameRole });
+  };
+  const visit = (current: SyntaxNode, currentRole: TypeReference["role"]): void => {
+    switch (current.type) {
+      case "identifier":
+        add(current.text, currentRole);
+        return;
+      case "attribute":
+        add(current.text, currentRole);
+        return;
+      case "string":
+        add(current.namedChildren.filter((child) => child.type === "string_content").map((child) => child.text).join(""), currentRole);
+        return;
+      case "type_parameter":
+        for (const child of current.namedChildren) visit(child, "type-argument");
+        return;
+      case "subscript": {
+        const value = current.childForFieldName("value");
+        if (value) visit(value, currentRole);
+        for (const child of current.namedChildren) {
+          if (child !== value) visit(child, "type-argument");
         }
+        return;
       }
-      // Update resolvedPath if we now have one
-      if (resolvedPath && !existing.resolvedPath) {
-        existing.resolvedPath = resolvedPath;
-      }
-    } else {
-      const symbolSet = new Set<string>();
-      for (const sym of symbols) {
-        if (sym && sym.trim()) {
-          symbolSet.add(sym.trim());
-        }
-      }
-      dependencies.set(normalized, {
-        specifier: normalized,
-        resolvedPath,
-        symbols: symbolSet
-      });
+      default:
+        for (const child of current.namedChildren) visit(child, currentRole);
     }
   };
+  visit(node, role);
+  return into;
+}
 
-  for (const rawLine of lines) {
-    const trimmed = rawLine.trim();
-    if (!trimmed || trimmed.startsWith("#")) {
-      continue;
+function decoratorNames(node: SyntaxNode): string[] {
+  return node.namedChildren
+    .filter((child) => child.type === "decorator")
+    .map((child) => child.namedChildren[0])
+    .map((expression) => (expression?.type === "call" ? expression.childForFieldName("function")?.text : expression?.text) ?? "");
+}
+
+/** Reads a class or function definition, with its members when it is a class. */
+function readDefinition(statement: SyntaxNode, scope: string[], insideClass: boolean): Declared | undefined {
+  let node       = statement;
+  let decorators: string[] = [];
+  if (statement.type === "decorated_definition") {
+    decorators = decoratorNames(statement);
+    node       = statement.childForFieldName("definition") ?? statement;
+  }
+  if (node.type !== "class_definition" && node.type !== "function_definition") return undefined;
+  if (decorators.some((name) => name.endsWith(".setter") || name.endsWith(".deleter"))) return undefined;
+
+  const nameNode = node.childForFieldName("name");
+  if (!nameNode) return undefined;
+  const name          = nameNode.text;
+  const qualifiedName = [...scope, name].join(".");
+  const body          = node.childForFieldName("body");
+  const { line, character } = position(nameNode);
+
+  if (node.type === "class_definition") {
+    const typeReferences: TypeReference[] = [];
+    for (const base of node.childForFieldName("superclasses")?.namedChildren ?? []) {
+      if (base.type === "keyword_argument") continue;
+      typeNames(base, "extends", undefined, typeReferences);
     }
+    const members: Declared[] = [];
+    for (const child of body?.namedChildren ?? []) {
+      const member = readMember(child, [...scope, name]);
+      if (member && !members.some((existing) => existing.name === member.name)) members.push(member);
+    }
+    return { name, qualifiedName, kind: "class", line, character, documentation: docstringOf(body), typeReferences, members };
+  }
 
-    // Handle: import module1, module2 as alias, module3
-    if (trimmed.startsWith("import ")) {
-      const remainder = trimmed.slice("import ".length);
-      const modules = remainder.split(",").map((segment) => {
-        // Handle "module as alias" - extract original module name
-        return segment.split(/\s+as\s+/)[0]?.trim();
-      });
+  const kind = decorators.includes("property") ? "property" : insideClass ? "method" : "function";
+  const typeReferences: TypeReference[] = [];
+  for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
+    const type = parameter.childForFieldName("type");
+    if (!type) continue;
+    const parameterName = parameter.childForFieldName("name")?.text ?? parameter.namedChildren[0]?.text;
+    typeNames(type, "parameter", parameterName, typeReferences);
+  }
+  const returnType = node.childForFieldName("return_type");
+  if (returnType) typeNames(returnType, "return", undefined, typeReferences);
+  return { name, qualifiedName, kind, line, character, documentation: docstringOf(body), typeReferences, members: [] };
+}
 
-      for (const moduleName of modules) {
-        if (!moduleName) {
-          continue;
-        }
-        const resolvedPath = resolvePythonImport(moduleName, absolutePath, workspaceRoot);
-        register(moduleName, resolvedPath, []);
+function readMember(statement: SyntaxNode, scope: string[]): Declared | undefined {
+  const assigned = readAssignment(statement, scope, "field");
+  return assigned ?? readDefinition(statement, scope, true);
+}
+
+/** A module-level or class-level assignment to one plain name. */
+function readAssignment(statement: SyntaxNode, scope: string[], kind: string): Declared | undefined {
+  const assignment = statement.type === "expression_statement" ? statement.namedChildren[0] : undefined;
+  if (assignment?.type !== "assignment") return undefined;
+  const left = assignment.childForFieldName("left");
+  if (left?.type !== "identifier") return undefined;
+  const type = assignment.childForFieldName("type");
+  const { line, character } = position(left);
+  return {
+    name:           left.text,
+    qualifiedName:  [...scope, left.text].join("."),
+    kind,
+    line,
+    character,
+    typeReferences: type ? typeNames(type, "property") : [],
+    members:        []
+  };
+}
+
+function readAll(statement: SyntaxNode): string[] | undefined {
+  const assignment = statement.type === "expression_statement" ? statement.namedChildren[0] : undefined;
+  if (assignment?.type !== "assignment" || assignment.childForFieldName("left")?.text !== "__all__") return undefined;
+  const right = assignment.childForFieldName("right");
+  if (right?.type !== "list" && right?.type !== "tuple") return undefined;
+  return right.namedChildren
+    .filter((child) => child.type === "string")
+    .map((child) => child.namedChildren.filter((part) => part.type === "string_content").map((part) => part.text).join(""));
+}
+
+/** Collects every identifier and attribute chain used anywhere in the module. */
+function collectUses(root: SyntaxNode, facts: ModuleFacts): void {
+  const visit = (node: SyntaxNode): void => {
+    if (node.type === "import_statement" || node.type === "import_from_statement" || node.type === "future_import_statement") return;
+    if (node.type === "attribute") {
+      const chain = attributeChain(node);
+      if (chain) {
+        facts.chains.push(chain);
+        facts.identifiers.add(chain[0]);
+        return;
       }
-      continue;
     }
+    if (node.type === "identifier") {
+      facts.identifiers.add(node.text);
+      return;
+    }
+    for (const child of node.namedChildren) visit(child);
+  };
+  visit(root);
+}
 
-    // Handle: from module import name1, name2 as alias, name3
-    if (trimmed.startsWith("from ")) {
-      const fromMatch = /^from\s+([.\w]+)\s+import\s+(.+)$/.exec(trimmed);
-      if (!fromMatch) {
+function attributeChain(node: SyntaxNode): string[] | undefined {
+  const object    = node.childForFieldName("object");
+  const attribute = node.childForFieldName("attribute");
+  if (!object || !attribute) return undefined;
+  if (object.type === "identifier") return [object.text, attribute.text];
+  if (object.type === "attribute") {
+    const inner = attributeChain(object);
+    return inner ? [...inner, attribute.text] : undefined;
+  }
+  return undefined;
+}
+
+async function extractFacts(source: string): Promise<ModuleFacts> {
+  const tree  = await parseSource("python", source);
+  const facts: ModuleFacts = { imports: [], declarations: [], boundNames: new Set(), identifiers: new Set(), chains: [] };
+  try {
+    const root = tree.rootNode;
+
+    const visitImports = (node: SyntaxNode): void => {
+      if (node.type === "import_statement" || node.type === "import_from_statement") {
+        facts.imports.push(...readImport(node));
+        return;
+      }
+      for (const child of node.namedChildren) visitImports(child);
+    };
+    visitImports(root);
+
+    for (const statement of moduleStatements(root)) {
+      const all = readAll(statement);
+      if (all) {
+        facts.all = all;
         continue;
       }
+      const declared = readAssignment(statement, [], "variable") ?? readDefinition(statement, [], false);
+      if (!declared) continue;
+      facts.boundNames.add(declared.name);
+      if (!facts.declarations.some((existing) => existing.name === declared.name)) facts.declarations.push(declared);
+    }
+    for (const entry of facts.imports) {
+      for (const name of entry.names ?? []) facts.boundNames.add(name.alias);
+      if (!entry.names) facts.boundNames.add(entry.alias ?? entry.module[0]);
+    }
 
-      const moduleSpec = fromMatch[1];
-      const importSegment = fromMatch[2];
+    collectUses(root, facts);
+  } finally {
+    tree.delete();
+  }
+  return facts;
+}
 
-      // Parse imported names (handling aliases and wildcards)
-      const rawNames = importSegment
-        .split(",")
-        .map((segment) => segment.split(/\s+as\s+/)[0]?.trim())
-        .filter((name): name is string => Boolean(name && name.trim()));
+// ---------------------------------------------------------------------------
+// Workspace: module facts by file, and import resolution
+// ---------------------------------------------------------------------------
 
-      // Filter out wildcards - we can't know what symbols * imports
-      const symbols = rawNames.filter((name) => name !== "*");
+const factsCache = new Map<string, { mtimeMs: number; facts: Promise<ModuleFacts> }>();
 
-      // Resolve the module path
-      const resolvedPath = resolvePythonImport(moduleSpec, absolutePath, workspaceRoot);
+async function moduleFacts(absolutePath: string): Promise<ModuleFacts> {
+  const mtimeMs = statSync(absolutePath).mtimeMs;
+  const cached  = factsCache.get(absolutePath);
+  if (cached && cached.mtimeMs === mtimeMs) return cached.facts;
+  const facts = fs.readFile(absolutePath, "utf8").then(extractFacts);
+  factsCache.set(absolutePath, { mtimeMs, facts });
+  return facts;
+}
 
-      // Register with the module specifier and imported symbols
-      register(moduleSpec, resolvedPath, symbols);
+const directoryCache = new Map<string, { mtimeMs: number; entries: Set<string> }>();
+
+/** The entries of a directory, cached until the directory changes. */
+function directoryEntries(directory: string): Set<string> {
+  let mtimeMs: number;
+  try {
+    mtimeMs = statSync(directory).mtimeMs;
+  } catch {
+    return new Set();
+  }
+  const cached = directoryCache.get(directory);
+  if (cached && cached.mtimeMs === mtimeMs) return cached.entries;
+  const entries = new Set(readdirSync(directory));
+  directoryCache.set(directory, { mtimeMs, entries });
+  return entries;
+}
+
+/** Whether `candidate` exists as a file with exactly that name: Python imports are case-sensitive even where the filesystem is not. */
+function isFile(candidate: string): boolean {
+  if (!directoryEntries(path.dirname(candidate)).has(path.basename(candidate))) return false;
+  try {
+    return statSync(candidate).isFile();
+  } catch {
+    return false;
+  }
+}
+
+/** The file for module `parts` under `base`: `a/b.py`, else `a/b/__init__.py`; `base/__init__.py` for no parts. */
+function probeModule(base: string, parts: string[]): string | undefined {
+  if (parts.length === 0) {
+    const init = path.join(base, "__init__.py");
+    return isFile(init) ? init : undefined;
+  }
+  const stem = path.join(base, ...parts);
+  if (isFile(`${stem}.py`)) return `${stem}.py`;
+  const init = path.join(stem, "__init__.py");
+  return isFile(init) ? init : undefined;
+}
+
+/** Where an absolute import is looked up from `importer`, in order. */
+function importRoots(importer: string, workspaceRoot: string): string[] {
+  const directory = path.dirname(importer);
+  const roots     = [directory];
+  if (isFile(path.join(directory, "__init__.py"))) {
+    let top = directory;
+    while (path.dirname(top) !== top && isFile(path.join(path.dirname(top), "__init__.py"))) top = path.dirname(top);
+    roots.push(path.dirname(top));
+  }
+  roots.push(workspaceRoot, path.join(workspaceRoot, "src"));
+  return Array.from(new Set(roots));
+}
+
+function resolveModule(entry: ModuleImport, importer: string, workspaceRoot: string): string | undefined {
+  if (entry.level > 0) {
+    let base = path.dirname(importer);
+    for (let up = 1; up < entry.level; up += 1) base = path.dirname(base);
+    return probeModule(base, entry.module);
+  }
+  if (entry.module[0] === FUTURE_MODULE) return undefined;
+  for (const root of importRoots(importer, workspaceRoot)) {
+    const found = probeModule(root, entry.module);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+/** For a package's `__init__.py`, the file of its submodule `name`; otherwise nothing. */
+function submoduleOf(moduleFile: string, name: string): string | undefined {
+  return path.basename(moduleFile) === "__init__.py" ? probeModule(path.dirname(moduleFile), [name]) : undefined;
+}
+
+interface Origin {
+  file:  string;
+  name?: string;
+}
+
+/** The public names of a module: `__all__` when it says, else every bound name without a leading underscore. */
+async function publicNames(moduleFile: string): Promise<Set<string>> {
+  const facts = await moduleFacts(moduleFile);
+  return new Set(facts.all ?? Array.from(facts.boundNames).filter((name) => !name.startsWith("_")));
+}
+
+/** Where `name`, as exported by `moduleFile`, is defined: the module itself, a submodule, or the file a re-export leads to. */
+async function originOf(moduleFile: string, name: string, workspaceRoot: string, seen = new Set<string>()): Promise<Origin | undefined> {
+  const key = `${moduleFile}|${name}`;
+  if (seen.has(key)) return undefined;
+  seen.add(key);
+
+  const facts = await moduleFacts(moduleFile);
+  if (facts.boundNames.has(name) && facts.declarations.some((declared) => declared.name === name)) {
+    return { file: moduleFile, name };
+  }
+
+  for (const entry of facts.imports) {
+    if (entry.names) {
+      const imported = entry.names.find((candidate) => candidate.alias === name);
+      if (!imported) continue;
+      const target = resolveModule(entry, moduleFile, workspaceRoot);
+      if (!target) return undefined;
+      const submodule = submoduleOf(target, imported.name);
+      return submodule ? { file: submodule } : originOf(target, imported.name, workspaceRoot, seen);
+    }
+    if ((entry.alias ?? entry.module[0]) === name) {
+      const target = resolveModule(entry, moduleFile, workspaceRoot);
+      return target ? { file: target } : undefined;
     }
   }
 
-  return Array.from(dependencies.values())
-    .map<DependencyEntry>((bucket) => ({
-      specifier: bucket.specifier,
-      resolvedPath: bucket.resolvedPath,
-      symbols: Array.from(bucket.symbols).sort(),
-      kind: "import"
-    }))
-    .sort((left, right) => left.specifier.localeCompare(right.specifier));
+  const submodule = submoduleOf(moduleFile, name);
+  if (submodule) return { file: submodule };
+
+  for (const entry of facts.imports) {
+    if (!entry.wildcard) continue;
+    const target = resolveModule(entry, moduleFile, workspaceRoot);
+    if (!target || !(await publicNames(target)).has(name)) continue;
+    const origin = await originOf(target, name, workspaceRoot, seen);
+    if (origin) return origin;
+  }
+  return undefined;
 }
+
+// ---------------------------------------------------------------------------
+// Adapter output
+// ---------------------------------------------------------------------------
+
+function published(declared: Declared): boolean {
+  return !declared.name.startsWith("_");
+}
+
+/** A name bound to a module by an import: `import a.b.c` binds `a` to the whole path, `import a.b.c as m` and `from a.b import c` bind one name. */
+interface ModuleBinding {
+  module: string[];
+  file:   string;
+  alias:  boolean;
+}
+
+/** A type written through a module binding (`money.Money`, `a.b.c.X`) is the symbol behind it. */
+function unqualified(name: string, bindings: Map<string, ModuleBinding>): string {
+  const chain   = name.split(".");
+  const binding = bindings.get(chain[0]);
+  if (!binding || chain.length < 2) return name;
+  if (binding.alias) return chain.slice(1).join(".");
+  if (chain.length > binding.module.length && binding.module.every((part, index) => chain[index] === part)) {
+    return chain.slice(binding.module.length).join(".");
+  }
+  return name;
+}
+
+function toSymbols(facts: ModuleFacts, bindings: Map<string, ModuleBinding>): PublicSymbolEntry[] {
+  const entries: PublicSymbolEntry[] = [];
+  const add = (declared: Declared): void => {
+    if (!published(declared)) return;
+    const typeReferences = declared.typeReferences.map((reference) => ({ ...reference, name: unqualified(reference.name, bindings) }));
+    entries.push({
+      name:           declared.name,
+      kind:           declared.kind,
+      qualifiedName:  declared.qualifiedName !== declared.name ? declared.qualifiedName : undefined,
+      location:       { line: declared.line, character: declared.character },
+      documentation:  declared.documentation,
+      typeReferences: typeReferences.length > 0 ? typeReferences : undefined
+    });
+    for (const member of declared.members) add(member);
+  };
+  for (const declared of facts.declarations) add(declared);
+  return entries.sort((left, right) =>
+    (left.location!.line - right.location!.line) ||
+    (left.location!.character - right.location!.character) ||
+    left.name.localeCompare(right.name)
+  );
+}
+
+function specifierOf(entry: ModuleImport): string {
+  return `${".".repeat(entry.level)}${entry.module.join(".")}`;
+}
+
+async function toDependencies(
+  facts: ModuleFacts,
+  absolutePath: string,
+  workspaceRoot: string
+): Promise<{ dependencies: DependencyEntry[]; bindings: Map<string, ModuleBinding> }> {
+  const byFile   = new Map<string, { specifier?: string; symbols: Set<string> }>();
+  const external = new Map<string, Set<string>>();
+  const bindings = new Map<string, ModuleBinding>();
+
+  const link = (file: string, symbol?: string, specifier?: string): void => {
+    if (file === absolutePath) return;
+    const target = byFile.get(file) ?? { symbols: new Set<string>() };
+    target.specifier ??= specifier;
+    if (symbol) target.symbols.add(symbol);
+    byFile.set(file, target);
+  };
+  const linkOrigin = (origin: Origin | undefined): void => {
+    if (origin) link(origin.file, origin.name);
+  };
+
+  for (const entry of facts.imports) {
+    if (entry.level === 0 && entry.module[0] === FUTURE_MODULE) continue;
+    const specifier  = specifierOf(entry);
+    const moduleFile = resolveModule(entry, absolutePath, workspaceRoot);
+    if (!moduleFile) {
+      const symbols = external.get(specifier) ?? new Set<string>();
+      for (const name of entry.names ?? []) symbols.add(name.name);
+      external.set(specifier, symbols);
+      continue;
+    }
+
+    link(moduleFile, undefined, specifier);
+    if (!entry.names) {
+      bindings.set(entry.alias ?? entry.module[0], { module: entry.module, file: moduleFile, alias: Boolean(entry.alias) });
+      continue;
+    }
+    for (const imported of entry.names) {
+      const submodule = submoduleOf(moduleFile, imported.name);
+      if (submodule) {
+        link(submodule, undefined, `${specifier}.${imported.name}`);
+        bindings.set(imported.alias, { module: [...entry.module, imported.name], file: submodule, alias: true });
+      } else {
+        linkOrigin(await originOf(moduleFile, imported.name, workspaceRoot));
+      }
+    }
+    if (entry.wildcard) {
+      for (const name of await publicNames(moduleFile)) {
+        if (facts.identifiers.has(name)) linkOrigin(await originOf(moduleFile, name, workspaceRoot));
+      }
+    }
+  }
+
+  for (const chain of facts.chains) {
+    const binding = bindings.get(chain[0]);
+    if (!binding) continue;
+    let symbol: string | undefined;
+    if (binding.alias) {
+      symbol = chain[1];
+    } else if (binding.module.every((part, index) => chain[index] === part)) {
+      symbol = chain[binding.module.length];
+    }
+    if (symbol) linkOrigin(await originOf(binding.file, symbol, workspaceRoot));
+  }
+
+  const dependencies: DependencyEntry[] = Array.from(byFile.entries())
+    .map(([file, target]) => {
+      const relative = normalizeWorkspacePath(path.relative(workspaceRoot, file));
+      return { specifier: target.specifier ?? relative, resolvedPath: relative, symbols: Array.from(target.symbols).sort(), kind: "import" as const };
+    })
+    .sort((left, right) => left.resolvedPath.localeCompare(right.resolvedPath));
+
+  for (const [specifier, symbols] of Array.from(external.entries()).sort(([left], [right]) => left.localeCompare(right))) {
+    dependencies.push({ specifier, symbols: Array.from(symbols).sort(), kind: "import" });
+  }
+  return { dependencies, bindings };
+}
+
+/** Language adapter for Python (`.py`): tree-sitter symbols and import resolution that follows re-exports to where a name is defined. */
+export const pythonAdapter: LanguageAdapter = {
+  id:         "python",
+  extensions: [".py"],
+  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
+    const facts = await moduleFacts(absolutePath);
+    const { dependencies, bindings } = await toDependencies(facts, absolutePath, workspaceRoot);
+    return { symbols: toSymbols(facts, bindings), dependencies };
+  }
+};

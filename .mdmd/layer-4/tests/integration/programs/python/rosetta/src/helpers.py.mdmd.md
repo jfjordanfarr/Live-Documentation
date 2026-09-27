@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/helpers.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-helpers-py
-- Generated At: 2026-09-27T18:53:07.586Z
+- Generated At: 2026-09-27T20:03:33.911Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility functions for the Python Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests selective import detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.586Z","inputHash":"b31d56b753b1a4a3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.911Z","inputHash":"ba388a58babbe4aa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format_value` {#symbol-format_value}
@@ -35,6 +35,7 @@ Validates that a string is a valid identifier.
 #### `sum_values` {#symbol-sum_values}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/helpers.py#L22)
+- Parameters: `values`: `List`
 
 ##### `sum_values` — Summary
 Computes the sum of numeric values.
@@ -42,6 +43,7 @@ Computes the sum of numeric values.
 #### `average` {#symbol-average}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/helpers.py#L27)
+- Parameters: `values`: `List`
 
 ##### `average` — Summary
 Computes the average of numeric values.

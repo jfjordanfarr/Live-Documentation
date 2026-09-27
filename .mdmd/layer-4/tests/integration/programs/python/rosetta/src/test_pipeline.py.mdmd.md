@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_pipeline.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-pipeline-py
-- Generated At: 2026-09-27T18:53:07.676Z
+- Generated At: 2026-09-27T20:03:34.107Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest integration tests for the Python Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of processor, models, and core_types modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.676Z","inputHash":"72fc3c25191a00e4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:34.107Z","inputHash":"86c1ea2afd817b33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestPipelineIntegration` {#symbol-testpipelineintegration}
@@ -23,15 +23,15 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_pipeline.py#L16)
 
 #### `test_processes_records_through_complete_pipeline` {#symbol-test_processes_records_through_complete_pipeline}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_pipeline.py#L17)
 
 #### `test_validates_configuration_before_processing` {#symbol-test_validates_configuration_before_processing}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_pipeline.py#L39)
 
 #### `test_handles_edge_cases_in_pipeline` {#symbol-test_handles_edge_cases_in_pipeline}
-- Type: function
+- Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/test_pipeline.py#L55)
 <!-- LIVE-DOC:END Public Symbols -->
 

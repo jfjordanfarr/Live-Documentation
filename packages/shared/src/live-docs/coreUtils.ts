@@ -75,6 +75,12 @@ export function createSymbolSlug(name: string): string | undefined {
 export function toModuleLabel(workspaceRelativePath: string): string {
   const baseName = path.basename(workspaceRelativePath);
   const withoutExtension = baseName.replace(/\.[^.]+$/, "");
+  if (withoutExtension === "__init__") {
+    const packageName = path.basename(path.dirname(workspaceRelativePath));
+    if (packageName && packageName !== ".") {
+      return packageName;
+    }
+  }
   return withoutExtension || baseName || workspaceRelativePath;
 }
 

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-02-16T18:25:01.581Z
+- Generated At: 2026-09-27T20:03:29.475Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:25:01.581Z","inputHash":"b41ebce60fe76325"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:29.475Z","inputHash":"8fea4e2682df8706"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -71,10 +71,6 @@ Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L34)
 
 #### `pythonSyntax` {#symbol-pythonsyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/shared/src/languages/index.ts#L35)
-
-#### `PYTHON_STDLIB_MODULES` {#symbol-python_stdlib_modules}
 - Type: unknown
 - Source: [source](../../../../../../packages/shared/src/languages/index.ts#L35)
 
@@ -197,7 +193,6 @@ True if the identifier is a framework type to filter as noise, false otherwise
 - [`go.goSyntax`](./go.ts.mdmd.md#symbol-gosyntax)
 - [`java.javaSyntax`](./java.ts.mdmd.md#symbol-javasyntax)
 - [`powershell.powershellSyntax`](./powershell.ts.mdmd.md#symbol-powershellsyntax)
-- [`python.PYTHON_STDLIB_MODULES`](./python.ts.mdmd.md#symbol-python_stdlib_modules)
 - [`python.pythonSyntax`](./python.ts.mdmd.md#symbol-pythonsyntax)
 - [`ruby.rubySyntax`](./ruby.ts.mdmd.md#symbol-rubysyntax)
 - [`rust.rustSyntax`](./rust.ts.mdmd.md#symbol-rustsyntax)

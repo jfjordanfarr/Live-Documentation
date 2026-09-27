@@ -9,10 +9,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The file-to-file edges the compiler resolved for the `programs/typescript` sample program, written by `npm run oracle:index`; the ground truth `oracle:compare` measures the adapter against.
 
 ### Notes
-_Pending notes_
+- Never hand-edited. Regenerate with `oracle:index` after changing the program; nothing in it is trimmed to fit the adapter.
 
 ## Generated
 <!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:49:15.951Z","inputHash":"011259cb693fdb4a"}]} -->
