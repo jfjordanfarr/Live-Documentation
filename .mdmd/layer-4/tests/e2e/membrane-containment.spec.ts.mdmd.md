@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-containment.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-containment-spec-ts
-- Generated At: 2026-09-27T19:11:42.625Z
+- Generated At: 2026-09-27T21:43:42.168Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ E2E regression test verifying that file cards never overflow their containing di
 - Coverage intention: regression test to prevent layout overflow bugs from recurring across CSS/renderer changes.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.625Z","inputHash":"8fb08ff1ab2527e9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.168Z","inputHash":"8fb08ff1ab2527e9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,13 +35,3 @@ _No public symbols detected_
 - [`helpers.goToMembraneMap`](./helpers.ts.mdmd.md#symbol-gotomembranemap)
 - [`helpers.pinAllOnCard`](./helpers.ts.mdmd.md#symbol-pinalloncard)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

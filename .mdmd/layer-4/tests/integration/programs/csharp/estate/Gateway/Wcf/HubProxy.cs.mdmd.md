@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Wcf/HubProxy.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-gateway-wcf-hubproxy-cs
-- Generated At: 2026-09-27T18:53:05.598Z
+- Generated At: 2026-09-27T21:43:43.933Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.598Z","inputHash":"19b8724fc0a2c6ec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.933Z","inputHash":"19b8724fc0a2c6ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HubProxy` {#symbol-hubproxy}
@@ -51,13 +51,3 @@ Client side of the hub contract. The endpoint address lives in Web.config under 
 - [`PaymentResult`](../../Contracts/PaymentResult.cs.mdmd.md#symbol-paymentresult)
 - [`Web.PaymentHub`](../Web.config.mdmd.md#symbol-paymenthub)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

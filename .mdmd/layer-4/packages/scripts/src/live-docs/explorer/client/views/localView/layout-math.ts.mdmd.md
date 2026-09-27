@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-layout-math-ts
-- Generated At: 2026-02-03T21:55:36.469Z
+- Generated At: 2026-09-27T21:43:38.702Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Pure-function layout computation for the Local Map: column counts, grid template
 - 495 lines of geometry and layout logic, all unit-testable without DOM
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.469Z","inputHash":"7ca1d1824b961632"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.702Z","inputHash":"7ca1d1824b961632"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LayoutNode` {#symbol-layoutnode}
@@ -285,9 +285,3 @@ True if the connection spans more than adjacent columns
 ### Dependencies
 - [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [layout-math.test.ts](./layout-math.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

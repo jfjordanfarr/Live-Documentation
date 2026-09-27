@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rosetta-manifest.json
 - Live Doc ID: LD-test-tests-integration-programs-rosetta-manifest-json
-- Generated At: 2026-09-27T18:53:07.711Z
+- Generated At: 2026-09-27T21:43:47.208Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Registry of Rosetta Stone cross-language benchmark fixtures. Each language imple
 Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for design rationale. The Rosetta Stone concept ensures each language fixture exercises identical dependency patterns (namespace imports, selective imports, type-only imports) so precision/recall metrics are comparable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.711Z","inputHash":"a2d5ec25ff9ff4b2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.208Z","inputHash":"a2d5ec25ff9ff4b2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `$schema (key overload 1)` {#symbol-schema-key-overload-1}
@@ -86,13 +86,3 @@ Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspa
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

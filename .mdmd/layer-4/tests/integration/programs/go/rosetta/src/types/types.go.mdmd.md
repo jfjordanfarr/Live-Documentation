@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/types/types.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-types-types-go
-- Generated At: 2026-09-27T20:30:56.343Z
+- Generated At: 2026-09-27T21:43:45.135Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Foundational type definitions for the Go Rosetta Stone benchmark, establishing t
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.343Z","inputHash":"cd22c391d72aba8a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.135Z","inputHash":"cd22c391d72aba8a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Status (type)` {#symbol-status-type}
@@ -99,13 +99,3 @@ NewProcessorConfig creates a ProcessorConfig with the given parameters.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

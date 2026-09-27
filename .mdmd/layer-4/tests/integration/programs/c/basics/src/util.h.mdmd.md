@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/c/basics/src/util.h
 - Live Doc ID: LD-test-tests-integration-programs-c-basics-src-util-h
-- Generated At: 2026-09-27T18:53:04.905Z
+- Generated At: 2026-09-27T21:43:43.282Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Declares the widget struct and factory API used by the C basics benchmark so the
 The header intentionally keeps the API tiny—just a value wrapper and its constructor—to ease cross-language comparison in the benchmark suite.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:04.905Z","inputHash":"e25e5981c24b33be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.282Z","inputHash":"e25e5981c24b33be"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WIDGET_UTIL_H` {#symbol-widget_util_h}
@@ -53,13 +53,3 @@ struct widget Widget initialized with a deterministic value.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

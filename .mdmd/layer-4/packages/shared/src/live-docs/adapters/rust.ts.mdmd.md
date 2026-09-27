@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/rust.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-rust-ts
-- Generated At: 2026-09-27T20:50:49.848Z
+- Generated At: 2026-09-27T21:43:41.279Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 - Inside a macro invocation the source is a token tree; `a::b::c` is read back from the tokens, so paths in `println!` and `assert_eq!` count.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:49.848Z","inputHash":"8c21135a6065cc43"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.279Z","inputHash":"8c21135a6065cc43"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
@@ -47,10 +47,3 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

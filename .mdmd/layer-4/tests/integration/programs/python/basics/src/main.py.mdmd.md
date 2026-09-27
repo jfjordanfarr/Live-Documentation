@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/basics/src/main.py
 - Live Doc ID: LD-test-tests-integration-programs-python-basics-src-main-py
-- Generated At: 2026-09-27T20:03:33.166Z
+- Generated At: 2026-09-27T21:43:45.959Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the entry point for the Python basics benchmark, validating seed input b
 Keep the control flow straightforward; the benchmark depends on this file to surface simple import relationships.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.166Z","inputHash":"0acbe69c46e56b79"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.959Z","inputHash":"0acbe69c46e56b79"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}
@@ -28,13 +28,3 @@ Keep the control flow straightforward; the benchmark depends on this file to sur
 - [`helpers.validate_seed`](./helpers.py.mdmd.md#symbol-validate_seed)
 - [`util.summarize_values`](./util.py.mdmd.md#symbol-summarize_values)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

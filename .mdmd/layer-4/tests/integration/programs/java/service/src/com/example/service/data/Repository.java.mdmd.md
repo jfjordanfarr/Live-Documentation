@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/data/Repository.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-data-repository-java
-- Generated At: 2026-09-27T20:19:23.637Z
+- Generated At: 2026-09-27T21:43:45.539Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Fetches datasets for the Java service benchmark, logging access and routing thro
 Keep the logging call and delegation intact; they ensure both util and registry modules appear in the graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.637Z","inputHash":"82c6ec7008a9e8c7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.539Z","inputHash":"82c6ec7008a9e8c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository (class)` {#symbol-repository-class}
@@ -39,13 +39,3 @@ Keep the logging call and delegation intact; they ensure both util and registry 
 - [`Sample`](../model/Sample.java.mdmd.md#symbol-sample)
 - [`Logger`](../util/Logger.java.mdmd.md#symbol-logger)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -58,8 +58,6 @@ test-results/
 reports/e2e/
 
 # Live Documentation staging outputs
-coverage/live-docs/
-data/live-docs/
 
 # SCIP index files and the build artifacts the SCIP indexers leave behind
 *.scip

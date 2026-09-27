@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-layout-ts
-- Generated At: 2026-03-29T21:52:09.950Z
+- Generated At: 2026-09-27T21:43:39.488Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Recursive membrane layout engine that maps a `DirectoryNode` tree onto a `Membra
 - The layout is pure-functional (no DOM dependency), enabling comprehensive Vitest coverage of spatial invariants like non-overlap, containment within parent bounds, and area proportionality.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.950Z","inputHash":"3e09a0668cfdae10"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.488Z","inputHash":"3e09a0668cfdae10"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computeMembraneLayout` {#symbol-computemembranelayout}
@@ -58,9 +58,3 @@ A fully-positioned MembraneLayout
 - [`squarify.SquarifyItem`](../squarify.ts.mdmd.md#symbol-squarifyitem) (type-only)
 - [`squarify.computeSquarifiedLayout`](../squarify.ts.mdmd.md#symbol-computesquarifiedlayout) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [layout.test.ts](./layout.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

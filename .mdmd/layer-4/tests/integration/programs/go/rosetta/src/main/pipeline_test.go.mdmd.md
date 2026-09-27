@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/main/pipeline_test.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-main-pipeline-test-go
-- Generated At: 2026-09-27T20:30:56.257Z
+- Generated At: 2026-09-27T21:43:45.043Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Integration tests for the Go Rosetta data processing pipeline.
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection through imports of `rosetta/src/processor` and `rosetta/src/models` packages.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.257Z","inputHash":"86bbbda8a92aab5c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.043Z","inputHash":"86bbbda8a92aab5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestPipelineIntegration` {#symbol-testpipelineintegration}
@@ -33,13 +33,3 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - [`processor.Summarize`](../processor/processor.go.mdmd.md#symbol-summarize)
 - [`types.ProcessorConfig`](../types/types.go.mdmd.md#symbol-processorconfig)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/processor.c
 - Live Doc ID: LD-test-tests-integration-programs-c-rosetta-src-processor-c
-- Generated At: 2026-09-27T18:53:05.173Z
+- Generated At: 2026-09-27T21:43:43.538Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.173Z","inputHash":"227f02604512d832"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.538Z","inputHash":"227f02604512d832"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run_processor` {#symbol-run_processor}
@@ -43,13 +43,3 @@ See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/202
 - [`processor.summarize_report`](./processor.h.mdmd.md#symbol-summarize_report)
 - `time.h`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

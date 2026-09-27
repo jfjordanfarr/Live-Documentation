@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/slopcopSymbolsCli.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-slopcopsymbolscli-test-ts
-- Generated At: 2026-09-27T19:11:42.306Z
+- Generated At: 2026-09-27T21:43:41.802Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the `slopcop:symbols` CLI end to end so healthy workspaces exit cleanl
 - Keeps the audit opt-in by proving the CLI works independently of the root config toggle, supporting the staged rollout we discussed for symbol lint ([rollout plan](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L6068-L6069)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.306Z","inputHash":"059df4684216cd19"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.802Z","inputHash":"059df4684216cd19"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,13 +31,3 @@ _No public symbols detected_
 - `node:process` - `process`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

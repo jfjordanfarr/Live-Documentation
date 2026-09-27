@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/models/account.py
 - Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-models-account-py
-- Generated At: 2026-09-27T20:03:33.356Z
+- Generated At: 2026-09-27T21:43:46.197Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Imports `money` as a submodule through a two-dot relative import and uses it as `money.Money` and `money.total`; the adapter must bind the name to the module to link those.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.356Z","inputHash":"ce9548c7c71afb08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.197Z","inputHash":"ce9548c7c71afb08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Account` {#symbol-account}
@@ -73,13 +73,3 @@ The balance at a point in time, for reports.
 - [`money.total`](../util/money.py.mdmd.md#symbol-total)
 - `typing` - `Iterable`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

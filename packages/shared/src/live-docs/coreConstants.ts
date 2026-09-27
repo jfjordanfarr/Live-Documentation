@@ -79,9 +79,6 @@ export const RESERVED_HEADING_NAMES = new Set(
     "Generated",
     "Public Symbols",
     "Dependencies",
-    "Observed Evidence",
-    "Targets",
-    "Supporting Fixtures",
     "Re-Exported Symbol Anchors"
   ].map((name) => name.toLowerCase())
 );

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-state-integration-test-ts
-- Generated At: 2026-09-27T19:11:40.045Z
+- Generated At: 2026-09-27T21:43:38.933Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Integration tests verifying multi-hop workflow scenarios: pin chaining, subscrib
 - Bridges unit-level state.test.ts and controller-level rendering tests
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.045Z","inputHash":"9ad2966461ad922c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.933Z","inputHash":"9ad2966461ad922c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -38,14 +38,3 @@ _No public symbols detected_
 - [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

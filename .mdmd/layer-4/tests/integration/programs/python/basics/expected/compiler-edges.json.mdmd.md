@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/basics/expected/compiler-edges.json
 - Live Doc ID: LD-test-tests-integration-programs-python-basics-expected-compiler-edges-json
-- Generated At: 2026-09-27T19:49:15.288Z
+- Generated At: 2026-09-27T21:43:45.918Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The file-to-file edges the compiler resolved for the `programs/python` sample pr
 - Never hand-edited. Regenerate with `oracle:index` after changing the program; nothing in it is trimmed to fit the adapter.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:49:15.288Z","inputHash":"13de6849952ffc26"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.918Z","inputHash":"13de6849952ffc26"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}
@@ -41,13 +41,3 @@ The file-to-file edges the compiler resolved for the `programs/python` sample pr
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

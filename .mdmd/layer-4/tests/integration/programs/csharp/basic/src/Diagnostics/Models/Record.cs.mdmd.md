@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Models/Record.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-models-record-cs
-- Generated At: 2026-09-27T18:53:05.394Z
+- Generated At: 2026-09-27T21:43:43.759Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the immutable `Record` type for the C# basic benchmark so analyzer cover
 Keep the signature minimal; additional members belong in the service layer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.394Z","inputHash":"c4a182568ddc9101"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.759Z","inputHash":"c4a182568ddc9101"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
@@ -27,13 +27,3 @@ Keep the signature minimal; additional members belong in the service layer.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-ts
-- Generated At: 2026-03-24T03:05:19.169Z
+- Generated At: 2026-09-27T21:43:38.475Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Pure-function SVG geometry for the Local Map: Bézier path computation, self-loo
 - Promoted from `localView/connection-geometry.ts` to `views/connection-geometry.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-24T03:05:19.169Z","inputHash":"804852913a295751"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.475Z","inputHash":"804852913a295751"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Point` {#symbol-point}
@@ -260,11 +260,3 @@ GradientDef ready for SVG rendering
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [connection-geometry.test.ts](./connection-geometry.test.ts.mdmd.md)
-- [pin-state.test.ts](./membraneView/pin-state.test.ts.mdmd.md)
-- [routing.test.ts](./membraneView/routing.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

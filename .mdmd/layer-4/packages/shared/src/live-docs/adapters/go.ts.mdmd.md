@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/go.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-go-ts
-- Generated At: 2026-09-27T20:36:53.812Z
+- Generated At: 2026-09-27T21:43:40.740Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 - The package table is keyed by directory and package clause, built once per generation run on the file index; per-file facts are cached by modification time.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:53.812Z","inputHash":"e4759ae9f484ea32"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.740Z","inputHash":"e4759ae9f484ea32"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
@@ -46,9 +46,3 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [go.test.ts](./go.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

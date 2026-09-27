@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/c.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-c-ts
-- Generated At: 2026-03-11T20:19:01.015Z
+- Generated At: 2026-09-27T21:43:40.459Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Implements the Doxygen-aware analyzer for `.c` and `.h` sources, binding doc com
 - Extend both the parser and its test scenarios when onboarding new Doxygen tags, following the coverage matrix captured in the adapter plan <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:01.015Z","inputHash":"f374f873938b4b89"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.459Z","inputHash":"f374f873938b4b89"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cAdapter` {#symbol-cadapter}
@@ -43,9 +43,3 @@ Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extr
 - [`core.SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

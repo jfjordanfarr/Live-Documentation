@@ -22,7 +22,6 @@ Supports REQ-020, REQ-030, REQ-F4, and REQ-F5 by delivering repository-wide lint
 ### Symbol Integrity Progression
 - Stage S0: audit markdown headings for duplicates and missing anchors across MDMD and Live Doc mirrors.
 - Planned stages: correlate Layer 4 exports against knowledge graph symbols (S1), harvest language-level symbols without bespoke compilers (S2), and surface Problems view diagnostics plus auto-repair hints (S3).
-- Upcoming Live Doc passes will verify generated sections (`Public Symbols`, `Dependencies`, `Observed Evidence`) were produced by approved generators and match provenance hashes.
 
 ### CLI Ergonomics and Adoption
 - Maintain deterministic exit codes, Windows-friendly flag forwarding, and `--json` support across SlopCop commands.
@@ -65,7 +64,6 @@ Provides headless dependency exploration referenced by lint diagnostics. [Live D
 - Shared tooling unit tests (`markdownLinks.test.ts`, `assetPaths.test.ts`, `symbolReferences.test.ts`) validate parsing and diagnostics.
 - CLI regression tests (`slopcopAssetCli.test.ts`, `slopcopSymbolsCli.test.ts`) and integration fixtures under `tests/integration/fixtures/slopcop-*` demonstrate fail/fix cycles.
 - Safe-to-commit logs for 2025-10-29 show SlopCop gating commits before symbol lint passed.
-- Planned Live Doc lint suites (`tests/integration/live-docs/evidence.test.ts`) will assert that missing markers, absolute links, or blank evidence sections trip SlopCop checks.
 
 ## Operational Notes
 - Lint logic lives in shared utilities so CLIs and future extension diagnostics reuse the same engine.

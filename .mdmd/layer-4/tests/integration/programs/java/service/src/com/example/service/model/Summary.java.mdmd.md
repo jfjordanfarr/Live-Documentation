@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/model/Summary.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-model-summary-java
-- Generated At: 2026-09-27T20:19:23.712Z
+- Generated At: 2026-09-27T21:43:45.622Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the summary record emitted by the Java service benchmark, capturing labe
 Field ordering should stay aligned with `SummaryBuilder`; modify both together if requirements change.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.712Z","inputHash":"ad5bde94e801c825"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.622Z","inputHash":"ad5bde94e801c825"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Summary` {#symbol-summary}
@@ -39,13 +39,3 @@ Field ordering should stay aligned with `SummaryBuilder`; modify both together i
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

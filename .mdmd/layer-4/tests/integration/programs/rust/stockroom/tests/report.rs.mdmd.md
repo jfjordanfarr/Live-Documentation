@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/tests/report.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-tests-report-rs
-- Generated At: 2026-09-27T20:50:54.322Z
+- Generated At: 2026-09-27T21:43:48.011Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Integration tests of the stockroom sample program, a crate of their own that use
 - Cargo compiles this file as its own crate; the oracle reads it as one, and its paths resolve through `stockroom`, the library root.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.322Z","inputHash":"9b67ded79c557a57"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.011Z","inputHash":"9b67ded79c557a57"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -34,13 +34,3 @@ _No public symbols detected_
 - [`Memory`](../src/store/memory.rs.mdmd.md#symbol-memory)
 - [`store.Inventory`](../src/store/mod.rs.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

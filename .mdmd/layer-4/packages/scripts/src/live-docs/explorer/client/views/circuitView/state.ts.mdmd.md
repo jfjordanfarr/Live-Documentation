@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-circuitview-state-ts
-- Generated At: 2026-03-23T20:05:54.011Z
+- Generated At: 2026-09-27T21:43:38.435Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Immutable state management for the Circuit Board's progressive disclosure model.
 - `collapseToDepth` supports breadcrumb click behavior: clicking an ancestor crumb collapses everything below that level.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:54.011Z","inputHash":"42bdc7b6511f7a8c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.435Z","inputHash":"42bdc7b6511f7a8c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CircuitBoardState` {#symbol-circuitboardstate}
@@ -115,9 +115,3 @@ to a specific node (file) from omnisearch or external link.
 ### Dependencies
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [state.test.ts](./state.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

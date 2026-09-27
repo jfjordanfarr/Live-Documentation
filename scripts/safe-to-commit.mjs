@@ -36,7 +36,7 @@ function runSafeCommitCheck() {
 
   try {
     runNpmScript('Verify (lint + build + unit + integration)', ['run', 'verify']);
-    runNpmScript('Live Docs pipeline (targets + generate + lint)', ['run', 'livedocs']);
+    runNpmScript('Live Docs pipeline (generate + lint)', ['run', 'livedocs']);
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/App_Code/Globals.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-portal-app-code-globals-cs
-- Generated At: 2026-09-27T18:53:05.813Z
+- Generated At: 2026-09-27T21:43:44.114Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.813Z","inputHash":"259ab3b3b4379a18"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.114Z","inputHash":"259ab3b3b4379a18"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Globals` {#symbol-globals}
@@ -48,13 +48,3 @@ here so that a renamed key breaks in one file.
 - [`Web.Portal.GatewayBaseUrl`](../Web.config.mdmd.md#symbol-portalgatewaybaseurl)
 - [`Web.Portal.PaymentsEnabled`](../Web.config.mdmd.md#symbol-portalpaymentsenabled)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

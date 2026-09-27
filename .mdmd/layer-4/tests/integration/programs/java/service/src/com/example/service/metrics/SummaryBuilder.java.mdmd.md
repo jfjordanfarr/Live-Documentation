@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/metrics/SummaryBuilder.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-metrics-summarybuilder-java
-- Generated At: 2026-09-27T20:19:23.674Z
+- Generated At: 2026-09-27T21:43:45.584Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Builds summary objects for the Java service benchmark, converting sample collect
 The alert threshold is deliberate; adjust it only when coordinating changes with analyzer expectations.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.674Z","inputHash":"73e9b4943274af1d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.584Z","inputHash":"73e9b4943274af1d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SummaryBuilder` {#symbol-summarybuilder}
@@ -34,13 +34,3 @@ The alert threshold is deliberate; adjust it only when coordinating changes with
 - [`Sample`](../model/Sample.java.mdmd.md#symbol-sample)
 - [`Summary`](../model/Summary.java.mdmd.md#symbol-summary)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

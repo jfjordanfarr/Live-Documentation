@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Services/ReportService.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-services-reportservice-cs
-- Generated At: 2026-09-27T18:53:05.418Z
+- Generated At: 2026-09-27T21:43:43.778Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Creates formatted diagnostics reports for the C# basic benchmark, bridging repos
 Both `Process` methods intentionally exist to exercise overload analysis; keep their signatures stable.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.418Z","inputHash":"76e36a80d3ad0896"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.778Z","inputHash":"76e36a80d3ad0896"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportService (class)` {#symbol-reportservice-class}
@@ -46,13 +46,3 @@ Both `Process` methods intentionally exist to exercise overload analysis; keep t
 - [`Formatter`](../Models/Formatter.cs.mdmd.md#symbol-formatter)
 - [`Record`](../Models/Record.cs.mdmd.md#symbol-record)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

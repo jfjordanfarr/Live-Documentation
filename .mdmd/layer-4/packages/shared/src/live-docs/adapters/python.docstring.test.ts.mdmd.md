@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-docstring-test-ts
-- Generated At: 2026-09-27T20:19:20.416Z
+- Generated At: 2026-09-27T21:43:40.995Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates the Python adapter’s handling of reST, Google, and NumPy-style docst
 - Executed during the Nov 14 `safe:commit -- --benchmarks` run; expand its fixtures whenever the adapter learns new docstring dialect features <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L1378-L1414>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.416Z","inputHash":"e44c8892858d327c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.995Z","inputHash":"e44c8892858d327c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,17 +31,3 @@ _No public symbols detected_
 - [`core.renderPublicSymbolLines`](../core.ts.mdmd.md#symbol-renderpublicsymbollines)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/languages: [languages/index.ts](../../languages/index.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [python.ts](./python.ts.mdmd.md), [treeSitter.ts](./treeSitter.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

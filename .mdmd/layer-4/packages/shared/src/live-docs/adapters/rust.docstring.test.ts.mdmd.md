@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/rust.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-rust-docstring-test-ts
-- Generated At: 2026-09-27T19:11:41.866Z
+- Generated At: 2026-09-27T21:43:41.203Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Proves the Rust adapter can parse line and block Rustdoc, mapping sections like 
 - Keeps coverage for the manual fixture verification pass we ran after seeding docstrings in `metrics.rs`, so extend these cases whenever the adapter learns a new Rustdoc construct <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2740-L2833>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.866Z","inputHash":"a1d6590d921e78a6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.203Z","inputHash":"a1d6590d921e78a6"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -29,15 +29,3 @@ _No public symbols detected_
 - [`rust.rustAdapter`](./rust.ts.mdmd.md#symbol-rustadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [rust.ts](./rust.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

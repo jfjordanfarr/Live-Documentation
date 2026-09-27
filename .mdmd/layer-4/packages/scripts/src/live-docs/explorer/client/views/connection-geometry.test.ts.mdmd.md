@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-connection-geometry-test-ts
-- Generated At: 2026-09-27T19:11:39.675Z
+- Generated At: 2026-09-27T21:43:38.458Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Unit tests for connection-geometry.ts covering Bézier path generation, self-loo
 - Promoted from `localView/connection-geometry.test.ts` to `views/connection-geometry.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:39.675Z","inputHash":"db01178bac104240"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.458Z","inputHash":"db01178bac104240"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -50,14 +50,3 @@ _No public symbols detected_
 - [`connection-geometry.rectSize`](./connection-geometry.ts.mdmd.md#symbol-rectsize)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views: [connection-geometry.ts](./connection-geometry.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

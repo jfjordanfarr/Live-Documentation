@@ -26,7 +26,7 @@ His standing preferences, his answers at every fork so far, and ideas without a 
 ## Workspace facts
 
 - Linux devcontainer, bash, Node 22 (`.nvmrc`), TypeScript 5.
-- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/generator` (the Live Doc generator and the evidence bridge), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
+- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/generator` (the Live Doc generator), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
 - Live Docs for this repo are generated into `.mdmd/layer-4/`, one per tracked source file. Shipped defaults are `.live-documentation/source/*.md`.
 - `.mdmd/layer-1` through `layer-3` are authored docs. Many are stale; see Status.
 - `AI-Agent-Workspace/ChatHistory/` is the chat record. October 2025 to April 2026 are full transcripts of the GitHub Copilot era: historical reference only, never a source of current facts, kept until the modernization is complete. From September 2026 it holds only the owner's prompts, verbatim, from the Claude Code sessions.

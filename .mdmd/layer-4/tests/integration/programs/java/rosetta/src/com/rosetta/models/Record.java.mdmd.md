@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/models/Record.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-models-record-java
-- Generated At: 2026-09-27T20:19:23.468Z
+- Generated At: 2026-09-27T21:43:45.358Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Data model for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.models package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.468Z","inputHash":"e0fc9855f8a1159c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.358Z","inputHash":"e0fc9855f8a1159c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record (class)` {#symbol-record-class}
@@ -53,13 +53,3 @@ Static factory for creating records (used by tests).
 - [`Entry`](../types/Entry.java.mdmd.md#symbol-entry-class)
 - [`Status`](../types/Status.java.mdmd.md#symbol-status)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

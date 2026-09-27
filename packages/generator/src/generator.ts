@@ -4,7 +4,6 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import {
-  type LiveDocumentationArchetype,
   type LiveDocumentationConfig,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/shared/config/liveDocumentationConfig";
@@ -14,7 +13,6 @@ import {
   cleanupEmptyParents,
   directoryExists,
   discoverTargetFiles,
-  formatRelativePathFromDoc,
   hasMeaningfulAuthoredContent,
   computePublicSymbolHeadingInfo,
   renderDependencyLines,
@@ -41,14 +39,6 @@ import {
   toWorkspaceFileUri,
   toWorkspaceRelativePath
 } from "@live-documentation/shared/tooling/pathUtils";
-
-import {
-  loadEvidenceSnapshot,
-  type CoverageSummary,
-  type EvidenceSnapshot,
-  type ImplementationEvidenceItem,
-  type TestEvidenceItem
-} from "./evidenceBridge";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;
@@ -99,9 +89,8 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
  * Entry point for the Live Documentation generation pipeline.
  *
  * Discovers all workspace files matching the configured globs, analyses each for
- * public symbols and dependencies, loads the evidence snapshot (coverage +
- * targets + waivers), and renders deterministic markdown docs under the
- * configured base layer directory.
+ * public symbols and dependencies, and renders deterministic markdown docs under
+ * the configured base layer directory.
  *
  * Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
  * and `--include` (explicit file subset) modes. Stale Live Docs whose source
@@ -140,11 +129,6 @@ export async function generateLiveDocs(
       deletedFiles: []
     };
   }
-
-  const evidenceSnapshot = await loadEvidenceSnapshot({
-    workspaceRoot,
-    logger
-  });
 
   // Build workspace file index for cross-file reference resolution (e.g., JSON adapters)
   const fileIndex: WorkspaceFileIndex = new Set(
@@ -225,11 +209,9 @@ export async function generateLiveDocs(
 
     const sections = buildGeneratedSections({
       analysis,
-      archetype,
       docAbsolutePath: docPaths.absolute,
       workspaceRoot,
       sourceRelativePath: normalizedSourcePath,
-      evidenceSnapshot,
       liveDocsRootAbsolute,
       docExtension,
       symbolIndex
@@ -312,7 +294,6 @@ export async function generateLiveDocs(
     deletedFiles
   };
 }
-
 
 function resolveLiveDocPaths(
   workspaceRoot: string,
@@ -398,11 +379,9 @@ async function readFileIfExists(filePath: string): Promise<string | undefined> {
 
 function buildGeneratedSections(params: {
   analysis: SourceAnalysisResult;
-  archetype: LiveDocumentationArchetype;
   docAbsolutePath: string;
   workspaceRoot: string;
   sourceRelativePath: string;
-  evidenceSnapshot: EvidenceSnapshot;
   liveDocsRootAbsolute: string;
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
@@ -443,50 +422,6 @@ function buildGeneratedSections(params: {
     }
   ];
 
-  if (params.archetype === "implementation") {
-    const implementationEvidence = params.evidenceSnapshot.implementationEvidence.get(
-      params.sourceRelativePath
-    );
-    const observedEvidenceLines = renderObservedEvidenceLines({
-      implementationEvidence,
-      docDir,
-      liveDocsRootAbsolute: params.liveDocsRootAbsolute,
-      docExtension: params.docExtension
-    });
-
-    if (observedEvidenceLines.length > 0) {
-      sections.push({
-        name: "Observed Evidence",
-        lines: observedEvidenceLines
-      });
-    }
-  }
-
-  if (params.archetype === "test") {
-    const testEvidence = params.evidenceSnapshot.testEvidence.get(params.sourceRelativePath);
-    const targetLines = renderTargetLines({
-      testEvidence,
-      docDir,
-      liveDocsRootAbsolute: params.liveDocsRootAbsolute,
-      docExtension: params.docExtension
-    });
-    const fixtureLines = renderFixtureLines({
-      testEvidence,
-      docDir,
-      workspaceRoot: params.workspaceRoot
-    });
-
-    sections.push({
-      name: "Targets",
-      lines: targetLines.length ? targetLines : ["_No targets documented yet_"]
-    });
-
-    sections.push({
-      name: "Supporting Fixtures",
-      lines: fixtureLines.length ? fixtureLines : ["_No supporting fixtures documented yet_"]
-    });
-  }
-
   const reExportAnchorLines = renderReExportedAnchorLines({
     reExports: params.analysis.reExportedSymbols ?? [],
     docDir,
@@ -502,263 +437,6 @@ function buildGeneratedSections(params: {
   }
 
   return sections;
-}
-
-
-function renderObservedEvidenceLines(params: {
-  implementationEvidence?: ImplementationEvidenceItem[];
-  docDir: string;
-  liveDocsRootAbsolute: string;
-  docExtension: string;
-}): string[] {
-  const evidence = params.implementationEvidence;
-  if (!evidence || evidence.length === 0) {
-    return [];
-  }
-
-  const lines: string[] = [];
-  const hasAutomatedEvidence = evidence.some((entry) => Boolean(entry.testPath) || Boolean(entry.summary));
-  const waiverNotes = Array.from(
-    new Set(
-      evidence
-        .filter((entry) => !entry.testPath && !entry.summary && entry.notes?.trim())
-        .map((entry) => entry.notes!.trim())
-    )
-  );
-
-  if (!hasAutomatedEvidence && waiverNotes.length > 0) {
-    lines.push(`<!-- evidence-waived: ${waiverNotes.join(" | ")} -->`);
-    lines.push("_No automated evidence found_");
-  }
-
-  const groups = new Map<string, { suite: string; entries: ImplementationEvidenceItem[] }>();
-  for (const entry of evidence) {
-    const suite = entry.suite?.trim() || "Evidence";
-    const key = `${suite}||${entry.kind}`;
-    const bucket = groups.get(key);
-    if (bucket) {
-      bucket.entries.push(entry);
-    } else {
-      groups.set(key, { suite, entries: [entry] });
-    }
-  }
-
-  const sortedGroupKeys = Array.from(groups.keys()).sort((left, right) => {
-    const [leftSuite] = left.split("||");
-    const [rightSuite] = right.split("||");
-    const suiteComparison = leftSuite.localeCompare(rightSuite);
-    if (suiteComparison !== 0) {
-      return suiteComparison;
-    }
-    return left.localeCompare(right);
-  });
-
-  const sectionLines: string[] = [];
-  for (const key of sortedGroupKeys) {
-    const group = groups.get(key)!;
-    const entries: string[] = [];
-
-    const tests = group.entries
-      .filter((entry) => Boolean(entry.testPath))
-      .sort((a, b) => (a.testPath ?? "").localeCompare(b.testPath ?? ""));
-    const seenTests = new Set<string>();
-    for (const entry of tests) {
-      const testPath = entry.testPath!;
-      if (seenTests.has(testPath)) {
-        continue;
-      }
-      seenTests.add(testPath);
-      const testDocAbsolute = path.resolve(
-        params.liveDocsRootAbsolute,
-        `${testPath}${params.docExtension}`
-      );
-      const relativeDocPath = formatRelativePathFromDoc(params.docDir, testDocAbsolute);
-      entries.push(`- [${formatTargetLabel(testPath)}](${relativeDocPath})`);
-    }
-
-    const coverageEntries = group.entries.filter((entry) => !entry.testPath && entry.summary);
-    const seenCoverage = new Set<string>();
-    for (const entry of coverageEntries) {
-      const summary = entry.summary;
-      if (!summary) {
-        continue;
-      }
-      const summarySignature = JSON.stringify(summary);
-      if (seenCoverage.has(summarySignature)) {
-        continue;
-      }
-      seenCoverage.add(summarySignature);
-      entries.push(`- Coverage: ${formatCoverageSummary(summary)}`);
-    }
-
-    const waiverEntries = group.entries.filter(
-      (entry) => !entry.testPath && !entry.summary && entry.notes?.trim()
-    );
-    const seenWaivers = new Set<string>();
-    for (const entry of waiverEntries) {
-      const note = entry.notes!.trim();
-      if (!note || seenWaivers.has(note)) {
-        continue;
-      }
-      seenWaivers.add(note);
-      entries.push(`- Waiver: ${note}`);
-    }
-
-    if (entries.length === 0) {
-      continue;
-    }
-
-    if (sectionLines.length > 0) {
-      sectionLines.push("");
-    }
-    sectionLines.push(`#### ${group.suite}`);
-    sectionLines.push(...entries);
-  }
-
-  if (sectionLines.length === 0) {
-    return lines;
-  }
-
-  if (lines.length > 0) {
-    lines.push("");
-  }
-  lines.push(...sectionLines);
-  return lines;
-}
-
-function renderTargetLines(params: {
-  testEvidence?: TestEvidenceItem;
-  docDir: string;
-  liveDocsRootAbsolute: string;
-  docExtension: string;
-}): string[] {
-  const evidence = params.testEvidence;
-  if (!evidence || evidence.targets.length === 0) {
-    return [];
-  }
-
-  const seen = new Set<string>();
-  const grouped = new Map<string, Array<{ label: string; link: string }>>();
-
-  for (const target of evidence.targets) {
-    if (seen.has(target)) {
-      continue;
-    }
-    seen.add(target);
-
-    const docAbsolute = path.resolve(
-      params.liveDocsRootAbsolute,
-      `${target}${params.docExtension}`
-    );
-    const relative = formatRelativePathFromDoc(params.docDir, docAbsolute);
-    const directory = path.dirname(target);
-    const bucket = grouped.get(directory) ?? [];
-    bucket.push({
-      label: formatTargetLabel(target),
-      link: relative
-    });
-    grouped.set(directory, bucket);
-  }
-
-  const lines: string[] = [];
-  if (evidence.suite.trim().length > 0) {
-    lines.push(`#### ${evidence.suite}`);
-  }
-
-  const sortedDirectories = Array.from(grouped.keys()).sort();
-  for (const directory of sortedDirectories) {
-    const entries = grouped.get(directory)!;
-    entries.sort((left, right) => left.label.localeCompare(right.label));
-    const linkFragments = entries.map((entry) => `[${entry.label}](${entry.link})`);
-    const chunks = chunkArray(linkFragments, 6);
-
-    if (chunks.length === 0) {
-      continue;
-    }
-
-    const directoryLabel = directory === "." ? "." : directory;
-    lines.push(`- ${directoryLabel}: ${chunks[0].join(", ")}`);
-    for (let index = 1; index < chunks.length; index += 1) {
-      lines.push(`  ${chunks[index].join(", ")}`);
-    }
-  }
-
-  return lines;
-}
-
-function formatTargetLabel(targetPath: string): string {
-  const baseName = path.basename(targetPath);
-  const lower = baseName.toLowerCase();
-  if (lower === "index.ts" || lower === "index.tsx") {
-    const parent = path.basename(path.dirname(targetPath));
-    return `${parent}/${baseName}`;
-  }
-  return baseName;
-}
-
-function chunkArray<T>(source: T[], size: number): T[][] {
-  if (size <= 0) {
-    return [source.slice()];
-  }
-  const result: T[][] = [];
-  for (let index = 0; index < source.length; index += size) {
-    result.push(source.slice(index, index + size));
-  }
-  return result;
-}
-
-function formatCoverageSummary(summary: CoverageSummary): string {
-  const parts: string[] = [];
-
-  const append = (label: string, ratio?: { covered?: number; total?: number; percent?: number }) => {
-    if (!ratio) {
-      return;
-    }
-    const covered = typeof ratio.covered === "number" ? ratio.covered : 0;
-    const total = typeof ratio.total === "number" ? ratio.total : 0;
-    const percentValue = typeof ratio.percent === "number"
-      ? ratio.percent
-      : total === 0
-        ? 0
-        : (covered / total) * 100;
-    const roundedPercent = Number.isFinite(percentValue)
-      ? Math.round(percentValue * 10) / 10
-      : 0;
-    const percentLabel = Number.isInteger(roundedPercent)
-      ? `${roundedPercent}%`
-      : `${roundedPercent.toFixed(1)}%`;
-    parts.push(`${label} ${percentLabel} (${covered}/${total})`);
-  };
-
-  append("lines", summary.lines);
-  append("statements", summary.statements);
-  append("functions", summary.functions);
-  append("branches", summary.branches);
-
-  return parts.length > 0 ? parts.join(", ") : "coverage summary unavailable";
-}
-
-function renderFixtureLines(params: {
-  testEvidence?: TestEvidenceItem;
-  docDir: string;
-  workspaceRoot: string;
-}): string[] {
-  const evidence = params.testEvidence;
-  if (!evidence || evidence.fixtures.length === 0) {
-    return [];
-  }
-  const seen = new Set<string>();
-  const lines: string[] = [];
-  for (const fixture of evidence.fixtures) {
-    if (seen.has(fixture)) {
-      continue;
-    }
-    seen.add(fixture);
-    const absolute = path.resolve(params.workspaceRoot, fixture);
-    const relative = formatRelativePathFromDoc(params.docDir, absolute);
-    lines.push(`- ${evidence.suite} - [${fixture}](${relative})`);
-  }
-  return lines;
 }
 
 function extractGeneratedAt(existingContent?: string): string | undefined {
@@ -815,5 +493,4 @@ function classifyChange(existingContent: string | undefined, rendered: string): 
 export const __testUtils = {
   renderPublicSymbolLines
 };
-
 

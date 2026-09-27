@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/basic/expected/compiler-edges.json
 - Live Doc ID: LD-test-tests-integration-programs-java-basic-expected-compiler-edges-json
-- Generated At: 2026-09-27T19:49:14.841Z
+- Generated At: 2026-09-27T21:43:45.150Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The file-to-file edges the compiler resolved for the `programs/java` sample prog
 - Never hand-edited. Regenerate with `oracle:index` after changing the program; nothing in it is trimmed to fit the adapter.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:49:14.841Z","inputHash":"ea44858c476c724b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.150Z","inputHash":"ea44858c476c724b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}
@@ -44,13 +44,3 @@ The file-to-file edges the compiler resolved for the `programs/java` sample prog
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

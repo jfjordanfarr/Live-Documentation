@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/symbolReferences.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-symbolreferences-test-ts
-- Generated At: 2026-09-27T19:11:42.320Z
+- Generated At: 2026-09-27T21:43:41.818Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Guards the slug-anomaly detector with fixture-style Vitest coverage so duplicate
 - The second scenario flips rule severities and ignore patterns to match the configuration knobs we introduced for the opt-in symbol audit rollout ([severity planning](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L4627-L4944)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.320Z","inputHash":"89127dbb5cc35456"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.818Z","inputHash":"89127dbb5cc35456"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -30,14 +30,3 @@ _No public symbols detected_
 - [`symbolReferences.findSymbolReferenceAnomalies`](./symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/tooling: [githubSlugger.ts](./githubSlugger.ts.mdmd.md), [githubSluggerRegex.ts](./githubSluggerRegex.ts.mdmd.md), [markdownShared.ts](./markdownShared.ts.mdmd.md), [symbolReferences.ts](./symbolReferences.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-symbol-highlight-test-ts
-- Generated At: 2026-09-27T19:11:40.140Z
+- Generated At: 2026-09-27T21:43:39.054Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for symbol highlight computation. Covers edge-symbol matching, `__int
 Created during Dev Day 50 (12/19). Tests `computeSymbolHighlight()` with various subgraph configurations to ensure correct related symbol/edge/node set computation without DOM involvement.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.140Z","inputHash":"55558ebc3243b795"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.054Z","inputHash":"55558ebc3243b795"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -30,17 +30,3 @@ _No public symbols detected_
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views: [symbolAnchors.ts](../symbolAnchors.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md), [symbol-highlight.ts](./symbol-highlight.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Contracts/IPaymentHub.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-contracts-ipaymenthub-cs
-- Generated At: 2026-09-27T18:53:05.441Z
+- Generated At: 2026-09-27T21:43:43.796Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.441Z","inputHash":"a877c8e57be64147"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.796Z","inputHash":"a877c8e57be64147"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `IPaymentHub` {#symbol-ipaymenthub}
@@ -46,13 +46,3 @@ and environment.
 - [`PaymentRequest`](./PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
 - [`PaymentResult`](./PaymentResult.cs.mdmd.md#symbol-paymentresult)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

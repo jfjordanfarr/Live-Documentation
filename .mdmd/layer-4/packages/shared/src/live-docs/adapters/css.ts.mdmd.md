@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/css.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-css-ts
-- Generated At: 2026-02-16T18:46:24.761Z
+- Generated At: 2026-09-27T21:43:40.659Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Language adapter that extracts dependency relationships from CSS files by parsin
 - Returns empty symbols array since CSS files have no TypeScript-style exports
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.761Z","inputHash":"b413f790f83a4fcc"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.659Z","inputHash":"b413f790f83a4fcc"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `cssAdapter` {#symbol-cssadapter}
@@ -41,9 +41,3 @@ Language adapter for CSS and SCSS (`.css`, `.scss`). Extracts class selectors, c
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [css.test.ts](./css.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/basic/src/index.ts
 - Live Doc ID: LD-test-tests-integration-programs-typescript-basic-src-index-ts
-- Generated At: 2026-09-27T18:53:08.436Z
+- Generated At: 2026-09-27T21:43:48.059Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ground-truths the runtime entrypoint for the `ts-basic` benchmark so the analyze
 - Keeps the fixture focused on executable dependencies; type-only exports live in `types.ts` so false-positive edges are immediately visible in benchmark diffs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.436Z","inputHash":"cd6d2cde43c13d30"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.059Z","inputHash":"cd6d2cde43c13d30"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
@@ -28,13 +28,3 @@ Ground-truths the runtime entrypoint for the `ts-basic` benchmark so the analyze
 - [`models.createWidget`](./models.ts.mdmd.md#symbol-createwidget)
 - [`util.formatWidget`](./util.ts.mdmd.md#symbol-formatwidget)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

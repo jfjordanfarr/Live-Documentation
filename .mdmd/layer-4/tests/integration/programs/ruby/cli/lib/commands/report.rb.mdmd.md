@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/cli/lib/commands/report.rb
 - Live Doc ID: LD-test-tests-integration-programs-ruby-cli-lib-commands-report-rb
-- Generated At: 2026-09-27T18:53:07.865Z
+- Generated At: 2026-09-27T21:43:47.340Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the `report` command for the Ruby CLI benchmark, stitching together s
 Keep the flow focused on service calls; this command intentionally avoids extra logic to highlight dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.865Z","inputHash":"060151938ba2c626"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.340Z","inputHash":"060151938ba2c626"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkCLI` {#symbol-benchmarkcli}
@@ -46,13 +46,3 @@ Generates the default benchmark report.
 - [`analyzer`](../services/analyzer.rb.mdmd.md)
 - [`data_loader`](../services/data_loader.rb.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

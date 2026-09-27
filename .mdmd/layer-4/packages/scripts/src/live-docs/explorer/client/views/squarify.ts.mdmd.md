@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/squarify.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-squarify-ts
-- Generated At: 2026-03-25T17:08:30.254Z
+- Generated At: 2026-09-27T21:43:39.792Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Implements the Bruls, Huizing, and van Wijk "Squarified Treemaps" algorithm (200
 - Promoted from `circuitView/squarify.ts` to `views/squarify.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:30.254Z","inputHash":"f15b554208198ba1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.792Z","inputHash":"f15b554208198ba1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SquarifyItem` {#symbol-squarifyitem}
@@ -65,10 +65,3 @@ Positioned tiles, one per item
 ### Dependencies
 - [`layoutUtils.LayoutRect`](./layoutUtils.ts.mdmd.md#symbol-layoutrect) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [layout.test.ts](./membraneView/layout.test.ts.mdmd.md)
-- [squarify.test.ts](./squarify.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

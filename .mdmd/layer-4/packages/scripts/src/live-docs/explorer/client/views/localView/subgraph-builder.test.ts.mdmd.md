@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-subgraph-builder-test-ts
-- Generated At: 2026-09-27T19:11:40.101Z
+- Generated At: 2026-09-27T21:43:39.006Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for subgraph construction functions. Validates inbound/outbound class
 Created during Dev Day 50 (12/19). Uses mock graph data to verify `createLocalSubgraph()`, `buildSelfLoopEdges()`, and `buildPathSubgraph()` produce correct graph subsets.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.101Z","inputHash":"8b5d25a2f3c38dd3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.006Z","inputHash":"8b5d25a2f3c38dd3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -36,16 +36,3 @@ _No public symbols detected_
 - [`types.ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md), [subgraph-builder.ts](./subgraph-builder.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

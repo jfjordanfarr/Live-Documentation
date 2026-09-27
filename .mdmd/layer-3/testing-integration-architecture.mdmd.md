@@ -9,7 +9,6 @@ Integration suites run the real generator and the real CLI over fixture workspac
 | Suite                       | What it proves                                                                                                                                |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `generation.test.ts`        | Regeneration is deterministic and preserves authored sections                                                                                 |
-| `evidence.test.ts`          | Coverage manifests and waivers populate the Observed Evidence and Targets sections                                                            |
 | `polyglot-fixtures.test.ts` | C#, Java and Python fixtures generate the expected symbols, XML-doc sections and resolved dependency links                                    |
 | `inspect-cli.test.ts`       | `live-docs:inspect`, spawned through `tsx`, finds paths across WebForms, Razor, Blazor, queue-worker, SPA, reflection and PowerShell fixtures |
 | `rosettaParity.test.ts`     | The same program in eight languages yields the same topology; a canonical edge must be found in at least 6 of 8 languages                     |

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/basic/lib/reporter.rb
 - Live Doc ID: LD-test-tests-integration-programs-ruby-basic-lib-reporter-rb
-- Generated At: 2026-09-27T18:53:07.801Z
+- Generated At: 2026-09-27T21:43:47.280Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Wraps the formatter for the Ruby basic benchmark, turning raw numeric samples in
 Retain the delegations to `Formatter` so the fixture continues to exercise cross-module references.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.801Z","inputHash":"72a2c532cb3e07ca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.280Z","inputHash":"72a2c532cb3e07ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}
@@ -56,13 +56,3 @@ Converts raw numeric samples into a human readable report.
 - [`data_store`](./data_store.rb.mdmd.md)
 - [`formatter`](./formatter.rb.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

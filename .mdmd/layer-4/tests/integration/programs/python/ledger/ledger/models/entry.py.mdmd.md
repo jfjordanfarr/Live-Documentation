@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/models/entry.py
 - Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-models-entry-py
-- Generated At: 2026-09-27T20:03:33.415Z
+- Generated At: 2026-09-27T21:43:46.271Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Reaches `Money` through a two-dot relative import of a module, and carries a property and a dataclass field for the member-publishing rules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.415Z","inputHash":"21110f42663b166c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.271Z","inputHash":"21110f42663b166c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EntryKind` {#symbol-entrykind}
@@ -77,13 +77,3 @@ The amount with the sign of its side: debits positive, credits negative.
 - `enum` - `Enum`
 - [`Money`](../util/money.py.mdmd.md#symbol-money)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

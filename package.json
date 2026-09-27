@@ -49,7 +49,6 @@
     "livedocs": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/run-all.ts",
     "live-docs:generate": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/generate.ts --config ./.live-docs.config.json",
     "live-docs:lint": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/lint.ts --config ./.live-docs.config.json",
-    "live-docs:targets": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/build-target-manifest.ts",
     "live-docs:inspect": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/inspect.ts --config ./.live-docs.config.json",
     "live-docs:visualize": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-static.ts --config ./.live-docs.config.json",
     "oracle:index": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/index-fixture.ts",

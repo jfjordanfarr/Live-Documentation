@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Scripts/appConfig.js
 - Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-scripts-appconfig-js
-- Generated At: 2026-09-27T18:53:06.364Z
+- Generated At: 2026-09-27T21:43:44.675Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Mirrors the client-side bootstrap for the WebForms benchmark, reading hidden fie
 Keep the element IDs and shape of `widgetConfig` stable; regression tests assert on these values.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.364Z","inputHash":"65aaecba482657ac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.675Z","inputHash":"65aaecba482657ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -25,13 +25,3 @@ _No public symbols detected_
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

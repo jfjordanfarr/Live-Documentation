@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/ruby.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-ruby-ts
-- Generated At: 2026-02-16T18:46:25.083Z
+- Generated At: 2026-09-27T21:43:41.172Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the Ruby analyzer that maps YARD-style line and block comments, mixins,
 - Keep YARD tag coverage aligned with `ruby.docstring.test.ts` and the regenerated ruby fixtures that shipped with the adapter <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3308-L3334>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:25.083Z","inputHash":"29dc24aea546e458"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.172Z","inputHash":"29dc24aea546e458"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rubyAdapter` {#symbol-rubyadapter}
@@ -43,10 +43,3 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
-- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

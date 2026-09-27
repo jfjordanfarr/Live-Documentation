@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/Helpers/Helpers.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-rosetta-src-helpers-helpers-cs
-- Generated At: 2026-09-27T18:53:06.092Z
+- Generated At: 2026-09-27T21:43:44.379Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.092Z","inputHash":"94c76c4fa2fc65ed"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.379Z","inputHash":"94c76c4fa2fc65ed"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Helpers` {#symbol-helpers}
@@ -61,13 +61,3 @@ Computes the average of numeric values.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

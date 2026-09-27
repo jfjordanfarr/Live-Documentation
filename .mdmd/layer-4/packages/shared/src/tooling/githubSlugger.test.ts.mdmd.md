@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/githubSlugger.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-githubslugger-test-ts
-- Generated At: 2026-02-03T21:55:41.276Z
+- Generated At: 2026-09-27T21:43:41.696Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Locks in the vendored slugger’s behaviour against GitHub’s casing, unicode, 
 - Reinforced during the November 7 anchor audit that reproduced real headings like “COMP-003 – Heuristic Suite,” ensuring unicode deduping remains correct.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:41.276Z","inputHash":"0e4b486e6c9acd72"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.696Z","inputHash":"0e4b486e6c9acd72"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -29,14 +29,3 @@ _No public symbols detected_
 - [`githubSlugger.slug`](./githubSlugger.ts.mdmd.md#symbol-slug)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/tooling: [githubSlugger.ts](./githubSlugger.ts.mdmd.md), [githubSluggerRegex.ts](./githubSluggerRegex.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

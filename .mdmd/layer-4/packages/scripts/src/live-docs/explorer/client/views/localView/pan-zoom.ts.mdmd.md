@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-pan-zoom-ts
-- Generated At: 2026-02-03T21:55:36.605Z
+- Generated At: 2026-09-27T21:43:38.841Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure functions for pan/zoom/inertia behavior in the Local Map. Handles mouse dra
 Extracted from controller.ts during Dev Day 50 (12/19) as part of Phase 4 tech-debt reduction. All functions take runtime state as input and callback for state updates, enabling testability without DOM dependencies.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:36.605Z","inputHash":"147a1dd8d917f52c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.841Z","inputHash":"147a1dd8d917f52c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `clamp` {#symbol-clamp}
@@ -118,9 +118,3 @@ Starts a drag operation.
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

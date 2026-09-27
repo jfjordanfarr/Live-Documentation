@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-gateway-controllers-paymentscontroller-cs
-- Generated At: 2026-09-27T18:53:05.538Z
+- Generated At: 2026-09-27T21:43:43.887Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.538Z","inputHash":"eabefd92ffad5003"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.887Z","inputHash":"eabefd92ffad5003"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentsController` {#symbol-paymentscontroller}
@@ -45,13 +45,3 @@ Bridges the portal's REST calls into WCF calls on the on-prem hub.
 - [`GatewaySettings`](../GatewaySettings.cs.mdmd.md#symbol-gatewaysettings)
 - [`HubProxy`](../Wcf/HubProxy.cs.mdmd.md#symbol-hubproxy)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

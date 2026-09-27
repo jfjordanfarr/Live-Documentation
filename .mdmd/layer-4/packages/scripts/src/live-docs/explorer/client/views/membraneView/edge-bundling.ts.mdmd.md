@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-edge-bundling-ts
-- Generated At: 2026-04-01T23:35:41.235Z
+- Generated At: 2026-09-27T21:43:39.269Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Pure-function edge aggregation that collapses individual file-to-file dependency
 - Bundle rendering is currently disabled in the controller (`index.ts`) for MVP: the thick SVG arcs overwhelmed the treemap layout; re-enable once hover-only or progressive-disclosure rendering is implemented.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-04-01T23:35:41.235Z","inputHash":"9d8eb7926f7060c4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.269Z","inputHash":"9d8eb7926f7060c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BundledEdge` {#symbol-bundlededge}
@@ -52,10 +52,3 @@ directories are currently collapsed.
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [edge-bundling.test.ts](./edge-bundling.test.ts.mdmd.md)
-- [svg-connections.test.ts](./svg-connections.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

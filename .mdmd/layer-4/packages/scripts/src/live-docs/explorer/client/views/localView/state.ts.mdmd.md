@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-state-ts
-- Generated At: 2026-03-23T20:05:54.406Z
+- Generated At: 2026-09-27T21:43:38.980Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Observable state container for the Local Map visualization, providing pure-data 
 - 153 unit tests across state.ts, layout-math.ts, connection-geometry.ts validate the extraction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:05:54.406Z","inputHash":"9c6dba44a8bc9f08"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.980Z","inputHash":"9c6dba44a8bc9f08"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SymbolPin` {#symbol-symbolpin}
@@ -239,15 +239,3 @@ Formula: 3 base columns + 2 columns per additional hop
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [layout-math.test.ts](./layout-math.test.ts.mdmd.md)
-- [layout-measure.test.ts](./layout-measure.test.ts.mdmd.md)
-- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
-- [state-integration.test.ts](./state-integration.test.ts.mdmd.md)
-- [state.test.ts](./state.test.ts.mdmd.md)
-- [subgraph-builder.test.ts](./subgraph-builder.test.ts.mdmd.md)
-- [symbol-highlight.test.ts](./symbol-highlight.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

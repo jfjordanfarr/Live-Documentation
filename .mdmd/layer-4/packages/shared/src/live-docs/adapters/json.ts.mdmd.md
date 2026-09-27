@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/json.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-json-ts
-- Generated At: 2026-09-27T18:34:26.565Z
+- Generated At: 2026-09-27T21:43:40.941Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Polyglot language adapter for JSON configuration files, enabling Live Documentat
 - Created 2026-01-15 as part of the JSON Adapter commit, following Option B architecture (generic reference detection with file index validation) per the user's architecture guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:26.565Z","inputHash":"60e8514d7e219541"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.941Z","inputHash":"60e8514d7e219541"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectKeyPaths` {#symbol-collectkeypaths}
@@ -50,9 +50,3 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [json.test.ts](./json.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

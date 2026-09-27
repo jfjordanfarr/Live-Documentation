@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/tests/test_posting.py
 - Live Doc ID: LD-test-tests-integration-programs-python-ledger-tests-test-posting-py
-- Generated At: 2026-09-27T20:03:33.679Z
+- Generated At: 2026-09-27T21:43:46.619Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tests for posting in the ledger sample program, written through the module impor
 - `from ledger import *` is the wildcard case: the adapter links only the public names the file uses (`Account`, `Money`), and the oracle attributes those calls to the barrel itself.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.679Z","inputHash":"130373f9688d8e7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.619Z","inputHash":"130373f9688d8e7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `test_transfer_balances_both_accounts` {#symbol-test_transfer_balances_both_accounts}
@@ -34,13 +34,3 @@ Tests for posting in the ledger sample program, written through the module impor
 - `ledger.storage.repository` - `Repository`
 - `pytest`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

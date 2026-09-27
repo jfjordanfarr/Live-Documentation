@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/doc-tools/enforce-documentation-links.ts
 - Live Doc ID: LD-implementation-scripts-doc-tools-enforce-documentation-links-ts
-- Generated At: 2026-02-18T21:27:54.489Z
+- Generated At: 2026-09-27T21:43:41.869Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provide the CLI entry point for documentation-link enforcement so `npm run docs:
 - Exported `runCli` on 2025-11-05 so graph audits and other callers could consume it programmatically while keeping exit codes stable across the toolchain ([API hardening](../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-05.SUMMARIZED.md#L70-L86)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.489Z","inputHash":"a7e09201d6f266c8"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.869Z","inputHash":"a7e09201d6f266c8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EXIT_CODES` {#symbol-exit_codes}
@@ -53,9 +53,3 @@ Numeric exit code: `0` on success, `3` when violations are found,
 - [`documentationLinks.runDocumentationLinkEnforcement`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-rundocumentationlinkenforcement)
 - [`pathUtils.normalizeWorkspacePath`](../../packages/shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [enforce-documentation-links.test.ts](./enforce-documentation-links.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

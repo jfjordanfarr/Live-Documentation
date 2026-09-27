@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-state-ts
-- Generated At: 2026-03-30T18:52:14.632Z
+- Generated At: 2026-09-27T21:43:39.626Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Immutable pure-function state machine for the continuous pin model, managing the
 - `areAllSymbolsPinned` (added [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md)) checks whether all symbols for a given node (including `__internals__`) are pinned, enabling pin-all/unpin-all toggle buttons in both renderers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.632Z","inputHash":"6d54b6168f4fe95f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.626Z","inputHash":"6d54b6168f4fe95f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PinEntry` {#symbol-pinentry}
@@ -213,11 +213,3 @@ Set of directory IDs that should be expanded
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [compressed-url-state.test.ts](../../persistence/compressed-url-state.test.ts.mdmd.md)
-- [pin-layout.test.ts](./pin-layout.test.ts.mdmd.md)
-- [pin-state.test.ts](./pin-state.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

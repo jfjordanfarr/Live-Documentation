@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/processor.h
 - Live Doc ID: LD-test-tests-integration-programs-c-rosetta-src-processor-h
-- Generated At: 2026-09-27T18:53:05.198Z
+- Generated At: 2026-09-27T21:43:43.564Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C Rosetta Stone fixture source/header file. Part of the cross-language benchmark
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C #include and function call graph detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.198Z","inputHash":"73a542b254521442"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.564Z","inputHash":"73a542b254521442"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ROSETTA_PROCESSOR_H` {#symbol-rosetta_processor_h}
@@ -70,13 +70,3 @@ Frees resources allocated by a report.
 - [`models.Report`](./models.h.mdmd.md#symbol-report)
 - [`types.ProcessorConfig`](./types.h.mdmd.md#symbol-processorconfig)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

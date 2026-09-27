@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/basic/lib/main.rb
 - Live Doc ID: LD-test-tests-integration-programs-ruby-basic-lib-main-rb
-- Generated At: 2026-09-27T18:53:07.772Z
+- Generated At: 2026-09-27T21:43:47.259Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Provides the entry point for the Ruby basic benchmark, coordinating the data sto
 Keep imports limited to the existing modules; the benchmark depends on this compact orchestration.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.772Z","inputHash":"7242657850ab6a3b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.259Z","inputHash":"7242657850ab6a3b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BenchmarkApp` {#symbol-benchmarkapp}
@@ -46,13 +46,3 @@ Runs the minimal benchmark pipeline.
 - [`data_store`](./data_store.rb.mdmd.md)
 - [`reporter`](./reporter.rb.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -1,0 +1,660 @@
+{
+  "version": 1,
+  "suites": [
+    {
+      "suite": "Vitest Integration Tests",
+      "kind": "integration",
+      "tests": [
+        {
+          "path": "tests/integration/live-docs/evidence.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "tests/integration/live-docs/generation.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "tests/integration/live-docs/oracle.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/parse.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts",
+            "scripts/oracle/compare.ts",
+            "scripts/oracle/fixture.ts",
+            "scripts/oracle/scip-edges.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "tests/integration/live-docs/polyglot-fixtures.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "tests/integration/live-docs/rosettaParity.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        }
+      ]
+    },
+    {
+      "suite": "Vitest Unit Tests",
+      "kind": "unit",
+      "tests": [
+        {
+          "path": "packages/generator/src/generator.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/generator/src/renderPublicSymbolLines.test.ts",
+          "targets": [
+            "packages/generator/src/evidenceBridge.ts",
+            "packages/generator/src/generator.ts",
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/squarify.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/animation.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/squarify.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/types.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
+            "packages/scripts/src/live-docs/explorer/client/views/squarify.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.test.ts",
+          "targets": [
+            "packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts",
+            "packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts",
+            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/config/liveDocumentationConfig.test.ts",
+          "targets": [
+            "packages/shared/src/config/liveDocumentationConfig.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/languages/index.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/aspnet.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/aspnet.ts",
+            "packages/shared/src/live-docs/adapters/html.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/c.docstring.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/c.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/core.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/csharp.hangfire.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/csharp.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/csharp.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/csharp.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/css.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/css.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/dotnetConfig.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/csharp.ts",
+            "packages/shared/src/live-docs/adapters/dotnetConfig.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/go.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/go.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/html.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/html.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/java.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/java.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/java.typeref.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/java.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/json.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/json.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/powershell.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/powershell.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/python.docstring.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/python.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/python.resolution.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/python.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/python.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/python.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/python.typeref.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/python.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/ruby.docstring.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/ruby.ts",
+            "packages/shared/src/live-docs/core.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/ruby.typeref.test.ts",
+          "targets": [
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/ruby.ts",
+            "packages/shared/src/live-docs/core.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/rust.docstring.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/rust.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/rust.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/rust.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/adapters/rust.typeref.test.ts",
+          "targets": [
+            "packages/shared/src/languages/index.ts",
+            "packages/shared/src/live-docs/adapters/index.ts",
+            "packages/shared/src/live-docs/adapters/rust.ts",
+            "packages/shared/src/live-docs/adapters/treeSitter.ts",
+            "packages/shared/src/live-docs/core.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/core.docstring.test.ts",
+          "targets": [
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/core.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/live-docs/generator.test.ts",
+          "targets": [
+            "packages/shared/src/config/liveDocumentationConfig.ts",
+            "packages/shared/src/live-docs/markdown.ts",
+            "packages/shared/src/live-docs/schema.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/tooling/assetPaths.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/assetPaths.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/tooling/documentationLinks.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/documentationLinks.ts",
+            "packages/shared/src/tooling/githubSlugger.ts",
+            "packages/shared/src/tooling/githubSluggerRegex.ts",
+            "packages/shared/src/tooling/markdownShared.ts",
+            "packages/shared/src/tooling/pathUtils.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/tooling/githubSlugger.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/githubSlugger.ts",
+            "packages/shared/src/tooling/githubSluggerRegex.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/tooling/markdownLinks.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/markdownLinks.ts",
+            "packages/shared/src/tooling/markdownShared.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "packages/shared/src/tooling/symbolReferences.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/githubSlugger.ts",
+            "packages/shared/src/tooling/githubSluggerRegex.ts",
+            "packages/shared/src/tooling/markdownShared.ts",
+            "packages/shared/src/tooling/symbolReferences.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "scripts/doc-tools/enforce-documentation-links.test.ts",
+          "targets": [
+            "packages/shared/src/tooling/documentationLinks.ts",
+            "packages/shared/src/tooling/githubSlugger.ts",
+            "packages/shared/src/tooling/githubSluggerRegex.ts",
+            "packages/shared/src/tooling/markdownShared.ts",
+            "packages/shared/src/tooling/pathUtils.ts",
+            "scripts/doc-tools/enforce-documentation-links.ts"
+          ],
+          "fixtures": []
+        },
+        {
+          "path": "scripts/oracle/scip-edges.test.ts",
+          "targets": [
+            "scripts/oracle/scip-edges.ts"
+          ],
+          "fixtures": []
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-edge-bundling-test-ts
-- Generated At: 2026-09-27T19:11:40.293Z
+- Generated At: 2026-09-27T21:43:39.249Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Verifies membrane-level edge aggregation: correct endpoint resolution through co
 - 6 tests covering: basic two-node bundling, direction preservation (A→B vs B→A as separate bundles), internal edge exclusion, fully-visible edge pass-through, nested directory resolution to shallowest collapsed ancestor, and multi-edge count accumulation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.293Z","inputHash":"2aeacc14414b79b9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.249Z","inputHash":"2aeacc14414b79b9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,17 +31,3 @@ _No public symbols detected_
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views: [layoutUtils.ts](../layoutUtils.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/membraneView: [edge-bundling.ts](./edge-bundling.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

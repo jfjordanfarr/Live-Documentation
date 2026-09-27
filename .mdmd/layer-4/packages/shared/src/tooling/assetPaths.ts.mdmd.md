@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/assetPaths.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-assetpaths-ts
-- Generated At: 2026-02-18T21:27:54.319Z
+- Generated At: 2026-09-27T21:43:41.650Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Detects broken HTML/CSS asset references (images, scripts, stylesheets) across t
 - Regularly exercised through the `slopcop-assets` fixture and repo-wide audits (for example November 3) to ensure new docs or Live Doc outputs never leave dangling asset links.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:54.319Z","inputHash":"05f2bc0928737a5c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.650Z","inputHash":"05f2bc0928737a5c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AssetReferenceIssue` {#symbol-assetreferenceissue}
@@ -52,9 +52,3 @@ parsing, and optional alternative `assetRootDirectories`.
 - `node:fs` - `fs`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [assetPaths.test.ts](./assetPaths.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

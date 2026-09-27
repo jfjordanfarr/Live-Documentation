@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/helpers.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-helpers-rs
-- Generated At: 2026-09-27T20:50:54.085Z
+- Generated At: 2026-09-27T21:43:47.765Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Rust Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust use statement and pub use re-export detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.085Z","inputHash":"d77c23901b16dc25"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.765Z","inputHash":"d77c23901b16dc25"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format` {#symbol-format}
@@ -51,13 +51,3 @@ Computes the average of numeric values.
 ### Dependencies
 - `regex` - `Regex`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

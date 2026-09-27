@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/generator/src/generator.test.ts
 - Live Doc ID: LD-test-packages-generator-src-generator-test-ts
-- Generated At: 2026-09-27T19:11:38.869Z
+- Generated At: 2026-09-27T21:43:37.580Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates that `generateLiveDocs` prunes stale documents without authored contex
 - Ensures the Stage‑0 pruning safeguards added during the generator refactor (see [2025-11-10 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) remain regression-tested.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:38.869Z","inputHash":"c2abd5a734b5b570"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:37.580Z","inputHash":"c2abd5a734b5b570"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,17 +32,3 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/generator/src: [evidenceBridge.ts](./evidenceBridge.ts.mdmd.md), [generator.ts](./generator.ts.mdmd.md)
-- packages/shared/src/config: [liveDocumentationConfig.ts](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../../shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../shared/src/live-docs/schema.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../shared/src/tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

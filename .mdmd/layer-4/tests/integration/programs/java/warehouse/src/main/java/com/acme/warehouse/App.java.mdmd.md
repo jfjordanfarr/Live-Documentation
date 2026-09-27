@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-app-java
-- Generated At: 2026-09-27T20:19:23.769Z
+- Generated At: 2026-09-27T21:43:45.675Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The entry point of the warehouse sample program: receives two items into an inve
 - Names `Inventory.Listener` and `Report.Builder` through their outer types, imports the report package on demand (`.*`), and mentions `Movement` in a comment and `Report.Builder` in a string, neither of which is a reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.769Z","inputHash":"bf521ff90e0179ae"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.675Z","inputHash":"bf521ff90e0179ae"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `App` {#symbol-app}
@@ -41,13 +41,3 @@ Receives two items and prints the report. Mentions of Movement in this comment a
 - [`Inventory.Listener`](./store/Inventory.java.mdmd.md#symbol-listener)
 - [`MemoryInventory`](./store/MemoryInventory.java.mdmd.md#symbol-memoryinventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

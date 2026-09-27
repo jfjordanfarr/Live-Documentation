@@ -75,7 +75,7 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direct
 Terminal both paths from packages/generator/src/generator.ts (max depth 25, 7 path(s) listed, limit 200).
   1. packages/generator/src/generator.ts […] -> packages/generator/src/generator.test.ts […]
   2. packages/generator/src/generator.ts […] -> packages/generator/src/renderPublicSymbolLines.test.ts […]
-  3. packages/generator/src/generator.ts […] -> tests/integration/live-docs/evidence.test.ts […]
+  3. packages/generator/src/generator.ts […] -> tests/integration/live-docs/generation.test.ts […]
   ...
   7. packages/generator/src/generator.ts […] -> scripts/live-docs/generate.ts […]
 ```
@@ -87,7 +87,7 @@ Terminal both paths from packages/generator/src/generator.ts (max depth 25, 7 pa
 Add `--json` for scripts and automation:
 
 ```bash
-npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/evidenceBridge.ts --json
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/scripts/src/live-docs/graph/liveDocGraph.ts --json
 ```
 
 ```json
@@ -96,21 +96,21 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to pac
   "direction": "outbound",
   "length": 1,
   "from": {
-    "codePath": "packages/generator/src/generator.ts",
-    "docPath": ".mdmd/layer-4/packages/generator/src/generator.ts.mdmd.md"
+    "codePath": "scripts/live-docs/inspect.ts",
+    "docPath": ".mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md"
   },
   "to": {
-    "codePath": "packages/generator/src/evidenceBridge.ts",
-    "docPath": ".mdmd/layer-4/packages/generator/src/evidenceBridge.ts.mdmd.md"
+    "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts",
+    "docPath": ".mdmd/layer-4/packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md"
   },
   "nodes": [
-    { "codePath": "packages/generator/src/generator.ts", "docPath": "..." },
-    { "codePath": "packages/generator/src/evidenceBridge.ts", "docPath": "..." }
+    { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
+    { "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts", "docPath": "..." }
   ],
   "hops": [
     {
-      "from": { "codePath": "packages/generator/src/generator.ts", "docPath": "..." },
-      "to": { "codePath": "packages/generator/src/evidenceBridge.ts", "docPath": "..." }
+      "from": { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
+      "to": { "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts", "docPath": "..." }
     }
   ]
 }
@@ -128,19 +128,21 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to pac
 ### When there is no path
 
 ```bash
-npm run live-docs:inspect -- --from packages/generator/src/evidenceBridge.ts --to packages/generator/src/generator.ts
+npm run live-docs:inspect -- --from packages/scripts/src/live-docs/graph/liveDocGraph.ts --to scripts/live-docs/inspect.ts
 ```
 
 ```
-No dependency path found from packages/generator/src/evidenceBridge.ts to packages/generator/src/generator.ts (outbound).
+No dependency path found from packages/scripts/src/live-docs/graph/liveDocGraph.ts to scripts/live-docs/inspect.ts (outbound).
 Closest reachable frontier:
+  - packages/shared/src/config/liveDocumentationConfig.ts […] — terminal
   - packages/shared/src/tooling/pathUtils.ts […] — terminal
-  - packages/generator/src/evidenceBridge.ts […] — missing-doc (missing glob)
-  - packages/generator/src/evidenceBridge.ts […] — missing-doc (missing node:fs/promises)
+  - packages/scripts/src/live-docs/explorer/shared/types.ts […] — terminal
+  - packages/scripts/src/live-docs/graph/liveDocGraph.ts […] — missing-doc (missing glob)
+  - packages/scripts/src/live-docs/graph/liveDocGraph.ts […] — missing-doc (missing node:fs)
   ...
 ```
 
-The dependency runs the other way (the generator imports the bridge), so the search stops at the bridge's own leaves: a workspace file with no further dependencies and the external modules that have no Live Doc.
+The dependency runs the other way (the inspector imports the graph builder), so the search stops at the builder's own leaves: workspace files with no further dependencies and the external modules that have no Live Doc.
 
 ---
 
@@ -169,7 +171,7 @@ npm run live-docs:inspect -- --from packages/shared/src/tooling/pathUtils.ts --d
 Verify the import chain is what you expect:
 
 ```bash
-npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/evidenceBridge.ts
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/scripts/src/live-docs/graph/liveDocGraph.ts
 ```
 
 ### Finding a file's tests

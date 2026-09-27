@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-focal-overlay-ts
-- Generated At: 2026-03-30T18:52:14.351Z
+- Generated At: 2026-09-27T21:43:39.319Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 - [Dev Day 84](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md) dimming model fixes: `clearHoverDimming` no longer removes persistent baseline classes (`--connected`, `--pinned`) on mouseleave — only transient hover classes (`--highlighted`, `--participating`, `--card--participating`) are cleared. `markConnectedEndpoints` now tracks direction per endpoint for directional pin dot coloring, and the `__internals__` skip guard was removed so internals rows can participate in connected-endpoint marking.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T18:52:14.351Z","inputHash":"ef2220d18a2e59af"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.319Z","inputHash":"ef2220d18a2e59af"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FocalOverlayCallbacks` {#symbol-focaloverlaycallbacks}
@@ -203,9 +203,3 @@ Pin dots for connected endpoints also get lit up with directional coloring.
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [pin-state.test.ts](./pin-state.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

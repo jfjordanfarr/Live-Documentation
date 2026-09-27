@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-paymentservice-data-paymentscontext-cs
-- Generated At: 2026-09-27T18:53:05.734Z
+- Generated At: 2026-09-27T21:43:44.045Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.734Z","inputHash":"35ebd546189e949d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.045Z","inputHash":"35ebd546189e949d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentsContext (class)` {#symbol-paymentscontext-class}
@@ -55,13 +55,3 @@ where the linked-server read of the Oracle account balance happens.
 - [`Payment`](./Payment.cs.mdmd.md#symbol-payment)
 - [`PostPaymentRow`](./PostPaymentRow.cs.mdmd.md#symbol-postpaymentrow)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-portal-controllers-paymentscontroller-cs
-- Generated At: 2026-09-27T18:53:05.834Z
+- Generated At: 2026-09-27T21:43:44.133Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.834Z","inputHash":"db5b98349dac69f2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.133Z","inputHash":"db5b98349dac69f2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PaymentsController` {#symbol-paymentscontroller}
@@ -45,13 +45,3 @@ Receives the browser's payment requests and forwards them to the gateway.
 - [`PaymentResultModel`](../Models/PaymentResultModel.cs.mdmd.md#symbol-paymentresultmodel)
 - [`GatewayClient`](../Services/GatewayClient.cs.mdmd.md#symbol-gatewayclient-class)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

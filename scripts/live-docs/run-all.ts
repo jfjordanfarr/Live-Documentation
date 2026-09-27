@@ -6,13 +6,9 @@ import { pathToFileURL } from "node:url";
 
 interface OrchestratorOptions {
   generatorArgs: string[];
-  skipTargets: boolean;
   skipGenerate: boolean;
   skipLint: boolean;
   showHelp: boolean;
-  partialRun: boolean;
-  skipTargetsExplicit: boolean;
-  forceTargets: boolean;
 }
 
 interface Stage {
@@ -28,21 +24,6 @@ class StageError extends Error {
   }
 }
 
-const VALUE_FLAGS = new Set([
-  "--workspace",
-  "--root",
-  "--base-layer",
-  "--extension",
-  "--glob",
-  "--include",
-  "--config"
-]);
-
-const BOOLEAN_FLAGS = new Set([
-  "--dry-run",
-  "--changed"
-]);
-
 const PIPELINE_CONFIG_FLAGS = new Set([
   "--workspace",
   "--config",
@@ -52,137 +33,33 @@ const PIPELINE_CONFIG_FLAGS = new Set([
 ]);
 
 function parseArgs(rawArgs: string[]): OrchestratorOptions {
-  const generatorArgs: string[] = [];
   const options: OrchestratorOptions = {
-    generatorArgs,
-    skipTargets: false,
+    generatorArgs: [],
     skipGenerate: false,
     skipLint: false,
-    showHelp: false,
-    partialRun: false,
-    skipTargetsExplicit: false,
-    forceTargets: false
+    showHelp: false
   };
 
-  const appendFlag = (flag: string, value?: string): void => {
-    generatorArgs.push(flag);
-    if (typeof value === "string") {
-      generatorArgs.push(value);
-    }
-  };
-
-  const markPartial = (): void => {
-    options.partialRun = true;
-  };
-
-  const expectValue = (args: string[], index: number, flag: string): string => {
-    const candidate = args[index];
-    if (!candidate || candidate.startsWith("-")) {
-      throw new Error(`Option ${flag} requires a value.`);
-    }
-    return candidate;
-  };
-
-  const processValueFlag = (
-    flag: string,
-    inlineValue: string | undefined,
-    args: string[],
-    indexRef: { current: number }
-  ): void => {
-    let value = inlineValue;
-    if (value === undefined) {
-      indexRef.current += 1;
-      value = expectValue(args, indexRef.current, flag);
-    }
-    appendFlag(flag, value);
-    if (flag === "--include" || flag === "--glob") {
-      markPartial();
-    }
-  };
-
-  const processBooleanFlag = (flag: string): void => {
-    appendFlag(flag);
-    if (flag === "--dry-run" || flag === "--changed") {
-      markPartial();
-    }
-  };
-
-  const processGeneratorArg = (args: string[], indexRef: { current: number }): void => {
-    const current = args[indexRef.current];
-    if (!current) {
-      return;
-    }
-
-    const [flagCandidate, inlineValue] = splitFlagAndValue(current);
-
-    if (VALUE_FLAGS.has(flagCandidate)) {
-      processValueFlag(flagCandidate, inlineValue, args, indexRef);
-      return;
-    }
-
-    if (BOOLEAN_FLAGS.has(flagCandidate)) {
-      processBooleanFlag(flagCandidate);
-      return;
-    }
-
-    generatorArgs.push(current);
-    if (!current.startsWith("--")) {
-      markPartial();
-    }
-  };
-
-  const indexRef = { current: 0 };
-  while (indexRef.current < rawArgs.length) {
-    const arg = rawArgs[indexRef.current];
-
+  for (let index = 0; index < rawArgs.length; index += 1) {
+    const arg = rawArgs[index];
     if (arg === "--") {
-      const remaining = rawArgs.slice(indexRef.current + 1);
-      for (let inner = 0; inner < remaining.length; inner += 1) {
-        const innerRef = { current: inner };
-        processGeneratorArg(remaining, innerRef);
-        inner = innerRef.current;
-      }
+      options.generatorArgs.push(...rawArgs.slice(index + 1));
       break;
     }
-
     switch (arg) {
       case "--help":
-      case "-h": {
+      case "-h":
         options.showHelp = true;
-        indexRef.current += 1;
-        continue;
-      }
-      case "--skip-targets": {
-        options.skipTargets = true;
-        options.skipTargetsExplicit = true;
-        indexRef.current += 1;
-        continue;
-      }
-      case "--skip-generate": {
+        break;
+      case "--skip-generate":
         options.skipGenerate = true;
-        indexRef.current += 1;
-        continue;
-      }
-      case "--skip-lint": {
+        break;
+      case "--skip-lint":
         options.skipLint = true;
-        indexRef.current += 1;
-        continue;
-      }
-      case "--force-targets": {
-        options.forceTargets = true;
-        options.skipTargets = false;
-        indexRef.current += 1;
-        continue;
-      }
-      default: {
-        processGeneratorArg(rawArgs, indexRef);
-        indexRef.current += 1;
-      }
+        break;
+      default:
+        options.generatorArgs.push(arg);
     }
-  }
-
-  if (options.partialRun && !options.forceTargets && !options.skipTargetsExplicit) {
-    options.skipTargets = true;
   }
 
   return options;
@@ -281,12 +158,10 @@ function filterArgsForLint(args: string[]): string[] {
 
 function formatUsage(): string {
   return `Usage: npm run livedocs -- [options]\n\n` +
-    `Runs the Live Documentation pipeline in order: target manifest → generate → lint.\n\n` +
+    `Runs the Live Documentation pipeline in order: generate, then lint.\n\n` +
     `Options:\n` +
-    `  --skip-targets    Skip manifest regeneration step.\n` +
     `  --skip-generate   Skip Live Doc regeneration step.\n` +
     `  --skip-lint       Skip lint step.\n` +
-  `  --force-targets   Run manifest even when executing a partial regeneration.\n` +
     `  -h, --help        Show this help message.\n\n` +
   `Any additional options are forwarded to live-docs:generate (e.g. --dry-run, --changed).\n` +
   `When running via npm, pass two "--" separators to forward generator flags without npm config warnings:\n` +
@@ -337,19 +212,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (options.partialRun && options.skipTargets && !options.forceTargets) {
-    console.log(
-      "[live-docs] Partial Live Docs run detected; skipping live-docs:targets. Pass --force-targets to rebuild the manifest."
-    );
-  }
-
   const stages: Stage[] = [
-    {
-      label: "live-docs:targets",
-      script: "scripts/live-docs/build-target-manifest.ts",
-      args: [],
-      enabled: !options.skipTargets
-    },
     {
       label: "live-docs:generate",
       script: "scripts/live-docs/generate.ts",

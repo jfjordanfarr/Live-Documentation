@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/fixture.ts
 - Live Doc ID: LD-implementation-scripts-oracle-fixture-ts
-- Generated At: 2026-09-27T20:03:30.612Z
+- Generated At: 2026-09-27T21:43:41.997Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Copies a sample program to a temporary directory and lists its files, leaving ou
 - `listFixtureFiles` is what `oracle:index` uses to choose an indexer, so a project file inside a build output can never be chosen.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:30.612Z","inputHash":"b77a2364e0aedeaa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.997Z","inputHash":"b77a2364e0aedeaa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `copyFixture` {#symbol-copyfixture}
@@ -40,9 +40,3 @@ Every file of the fixture as a POSIX path relative to its root, minus build outp
 - `node:os` - `os`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Integration Tests
-- [oracle.test.ts](../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

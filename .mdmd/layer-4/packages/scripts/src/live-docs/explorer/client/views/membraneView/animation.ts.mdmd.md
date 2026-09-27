@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/animation.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-animation-ts
-- Generated At: 2026-03-26T19:43:20.931Z
+- Generated At: 2026-09-27T21:43:39.143Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ FLIP animation utilities for the Membrane Map, enabling smooth visual continuity
 - Fade-in handling: elements present only in the new DOM (no matching `data-id` in old snapshot) receive an opacity fade-in instead of a positional FLIP.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:43:20.931Z","inputHash":"c7ec7dad925f1941"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.143Z","inputHash":"c7ec7dad925f1941"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PositionSnapshot` {#symbol-positionsnapshot}
@@ -97,9 +97,3 @@ DOM with its `d` attribute set.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [pin-state.test.ts](./pin-state.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

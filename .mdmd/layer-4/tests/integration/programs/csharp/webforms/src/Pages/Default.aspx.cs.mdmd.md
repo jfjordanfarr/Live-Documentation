@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-pages-default-aspx-cs
-- Generated At: 2026-09-27T18:53:06.329Z
+- Generated At: 2026-09-27T21:43:44.639Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Implements the WebForms code-behind for the benchmark page, populating hidden fi
 Preserve the `Page_Load` behavior; client tests depend on the hidden values being assigned during initial render.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.329Z","inputHash":"ed21248280962955"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.639Z","inputHash":"ed21248280962955"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Default` {#symbol-default}
@@ -34,13 +34,3 @@ Preserve the `Page_Load` behavior; client tests depend on the hidden values bein
 - [`Default.aspx.designer.ClientConfigHidden`](./Default.aspx.designer.cs.mdmd.md#symbol-clientconfighidden)
 - [`Default.aspx.designer.WidgetToggleHidden`](./Default.aspx.designer.cs.mdmd.md#symbol-widgettogglehidden)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

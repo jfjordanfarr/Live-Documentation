@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-localview-connections-ts
-- Generated At: 2026-02-18T21:27:51.589Z
+- Generated At: 2026-09-27T21:43:38.598Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ SVG connection drawing for the Local Map. Draws Bézier splines between anchor p
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:51.589Z","inputHash":"b246acbc4e52075a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.598Z","inputHash":"b246acbc4e52075a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MultiHopEntry` {#symbol-multihopentry}
@@ -62,9 +62,3 @@ positions relative to the container, computes Bézier curves, and appends
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [pan-zoom.test.ts](./pan-zoom.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

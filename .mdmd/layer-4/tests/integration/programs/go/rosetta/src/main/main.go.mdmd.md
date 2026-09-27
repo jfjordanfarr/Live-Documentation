@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/main/main.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-main-main-go
-- Generated At: 2026-09-27T20:36:56.887Z
+- Generated At: 2026-09-27T21:43:45.023Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Entry point for the Go Rosetta Stone benchmark fixture, demonstrating Go's packa
 - Created 2026-01-15 as part of the Go adapter commit; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for implementation context and goFixtureOracle.ts for ground truth generation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:56.887Z","inputHash":"e74bab0e4709d443"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.023Z","inputHash":"e74bab0e4709d443"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main (function overload 1)` {#symbol-main-function-overload-1}
@@ -42,13 +42,3 @@ and returns a formatted summary.
 - [`processor.Run`](../processor/processor.go.mdmd.md#symbol-run)
 - [`processor.Summarize`](../processor/processor.go.mdmd.md#symbol-summarize)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

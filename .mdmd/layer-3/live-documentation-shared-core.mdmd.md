@@ -15,7 +15,6 @@ Outline the shared utilities that interpret, render, and validate Live Documenta
 - Schema definitions underpin validation logic in both `live-docs:lint` and integration tests; they codify section ordering and field requirements per archetype.
 
 ### Strategy
-- Expand the schema module to cover future sections (Targets, Supporting Fixtures, Observed Evidence) so linting can differentiate required versus optional blocks by archetype.
 - Document parser extension points so adopters can add custom sections without forking the shared library.
 
 ## System References

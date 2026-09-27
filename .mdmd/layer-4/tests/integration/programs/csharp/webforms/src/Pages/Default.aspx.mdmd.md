@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx
 - Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-pages-default-aspx
-- Generated At: 2026-09-27T18:53:06.311Z
+- Generated At: 2026-09-27T21:43:44.618Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Represent the WebForms markup that bridges the config-driven hidden fields from 
 Keeps the `aspNetMarkupAdapter` exercised: the test expects dependencies to `Default.aspx.cs` via the page directive and to `Scripts/appConfig.js` through the `<script>` tag.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.311Z","inputHash":"6d69c1c5bc3980e5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.618Z","inputHash":"6d69c1c5bc3980e5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ClientConfigHidden` {#symbol-clientconfighidden}
@@ -36,13 +36,3 @@ Keeps the `aspNetMarkupAdapter` exercised: the test expects dependencies to `Def
 - [`Default.aspx`](./Default.aspx.cs.mdmd.md)
 - [`appConfig`](../Scripts/appConfig.js.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

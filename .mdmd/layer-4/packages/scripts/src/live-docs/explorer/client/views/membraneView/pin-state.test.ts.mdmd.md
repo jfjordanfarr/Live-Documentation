@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-state-test-ts
-- Generated At: 2026-09-27T19:11:40.583Z
+- Generated At: 2026-09-27T21:43:39.602Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Comprehensive behavioral coverage of the immutable pin state machine, verifying 
 - Also tests `hopLabel` from `focal-overlay.ts` for circled-number rendering (①-⑴) and fallback to parenthesized numbers beyond index 19.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.583Z","inputHash":"d9d6d9322b202e9c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.602Z","inputHash":"d9d6d9322b202e9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -46,17 +46,3 @@ _No public symbols detected_
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views: [connection-geometry.ts](../connection-geometry.ts.mdmd.md), [layoutUtils.ts](../layoutUtils.ts.mdmd.md), [symbolAnchors.ts](../symbolAnchors.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/membraneView: [animation.ts](./animation.ts.mdmd.md), [focal-overlay.ts](./focal-overlay.ts.mdmd.md), [pin-state.ts](./pin-state.ts.mdmd.md), [routing.ts](./routing.ts.mdmd.md), [types.ts](./types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Web.config
 - Live Doc ID: LD-test-tests-integration-programs-csharp-webforms-src-web-config
-- Generated At: 2026-09-27T18:53:06.381Z
+- Generated At: 2026-09-27T21:43:44.690Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Capture the Web.config appSettings that the WebForms benchmark relies on so Live
 The fallback inference suite expects these keys to flow into `Globals.cs`, `Default.aspx.cs`, and `Default.aspx`, so the doc must remain in place to validate Web.config awareness in the analyzer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.381Z","inputHash":"8deff0668043b529"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.690Z","inputHash":"8deff0668043b529"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EnableWidget` {#symbol-enablewidget}
@@ -31,13 +31,3 @@ The fallback inference suite expects these keys to flow into `Globals.cs`, `Defa
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

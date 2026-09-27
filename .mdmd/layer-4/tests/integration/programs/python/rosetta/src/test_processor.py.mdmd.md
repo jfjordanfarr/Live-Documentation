@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/test_processor.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-test-processor-py
-- Generated At: 2026-09-27T20:03:34.142Z
+- Generated At: 2026-09-27T21:43:47.195Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pytest tests for the Python Rosetta processor module. Part of the polyglot Roset
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Python's idiomatic `test_` prefix pattern. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:34.142Z","inputHash":"a9be801f96165cbb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.195Z","inputHash":"a9be801f96165cbb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TestRun` {#symbol-testrun}
@@ -47,13 +47,3 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - [`processor.run`](./processor.py.mdmd.md#symbol-run)
 - [`processor.summarize`](./processor.py.mdmd.md#symbol-summarize)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

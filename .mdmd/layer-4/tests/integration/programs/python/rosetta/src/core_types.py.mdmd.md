@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/core_types.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-core-types-py
-- Generated At: 2026-09-27T20:03:33.886Z
+- Generated At: 2026-09-27T21:43:46.901Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definitions for the Python Rosetta Stone fixture using TypedDict.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Named core_types.py (not types.py) to avoid Python stdlib collision.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.886Z","inputHash":"a67fd6510cdd1a5b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.901Z","inputHash":"a67fd6510cdd1a5b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Status (class)` {#symbol-status-class}
@@ -84,13 +84,3 @@ Configuration for processing operations.
 - `enum` - `Enum`
 - `typing` - `List`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

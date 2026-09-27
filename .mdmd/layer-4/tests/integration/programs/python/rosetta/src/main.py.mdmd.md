@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/main.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-main-py
-- Generated At: 2026-09-27T20:03:33.939Z
+- Generated At: 2026-09-27T21:43:46.958Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Python Rosetta Stone fixture. Demonstrates runtime imports f
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Mirrors TypeScript's main.ts structure.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.939Z","inputHash":"34e8c627af0990d1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.958Z","inputHash":"34e8c627af0990d1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
@@ -36,13 +36,3 @@ Executes the Rosetta data pipeline.
 - [`processor.run`](./processor.py.mdmd.md#symbol-run)
 - [`processor.summarize`](./processor.py.mdmd.md#symbol-summarize)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/store/base.go
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-store-base-go
-- Generated At: 2026-09-27T20:30:56.124Z
+- Generated At: 2026-09-27T21:43:44.906Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Embedded by `Memory` in `store/memory/memory.go`; a method promoted from here (`Listen`) is what `cmd/depot/main.go` calls without naming this file.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.124Z","inputHash":"3b67776194a1f586"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.906Z","inputHash":"3b67776194a1f586"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Base` {#symbol-base}
@@ -48,13 +48,3 @@ Notify tells every listener about a movement.
 - [`Quantity`](../stock/quantity.go.mdmd.md#symbol-quantity)
 - [`inventory.Listener`](./inventory.go.mdmd.md#symbol-listener)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

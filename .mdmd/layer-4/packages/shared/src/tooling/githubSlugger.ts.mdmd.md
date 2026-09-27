@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSlugger.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-githubslugger-ts
-- Generated At: 2026-09-27T08:33:37.856Z
+- Generated At: 2026-09-27T21:43:41.710Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provides a fully vendored GitHub-compatible slugger (function + stateful class) 
 - November 7 anchor-audit confirmed the maintainCase flag and unicode handling stay aligned with GitHub after targeting mis-slugged `COMP-003 – Heuristic Suite` references.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:33:37.856Z","inputHash":"8f7b9f1d6137e972"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.710Z","inputHash":"8f7b9f1d6137e972"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SlugContext` {#symbol-slugcontext}
@@ -64,12 +64,3 @@ Creates a fresh {@link GitHubSlugger} instance.
 ### Dependencies
 - [`githubSluggerRegex.GITHUB_SLUG_REMOVE_PATTERN`](./githubSluggerRegex.ts.mdmd.md#symbol-github_slug_remove_pattern)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [documentationLinks.test.ts](./documentationLinks.test.ts.mdmd.md)
-- [githubSlugger.test.ts](./githubSlugger.test.ts.mdmd.md)
-- [symbolReferences.test.ts](./symbolReferences.test.ts.mdmd.md)
-- [enforce-documentation-links.test.ts](../../../../scripts/doc-tools/enforce-documentation-links.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

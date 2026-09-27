@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/Entry.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-types-entry-java
-- Generated At: 2026-09-27T20:19:23.543Z
+- Generated At: 2026-09-27T21:43:45.430Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definition for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.types package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.543Z","inputHash":"e2a92dff03d23e72"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.430Z","inputHash":"e2a92dff03d23e72"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Entry (class)` {#symbol-entry-class}
@@ -49,13 +49,3 @@ A timestamped entry in the data pipeline.
 ### Dependencies
 - [`Status`](./Status.java.mdmd.md#symbol-status)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

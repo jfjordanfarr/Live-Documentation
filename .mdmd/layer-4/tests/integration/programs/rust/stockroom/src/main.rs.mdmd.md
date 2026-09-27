@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-main-rs
-- Generated At: 2026-09-27T20:50:54.230Z
+- Generated At: 2026-09-27T21:43:47.902Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The binary of the stockroom sample program: receives two items into a `Memory` i
 - Every path here starts with `stockroom`, the library crate, which the adapter resolves to `src/lib.rs` and then through its re-exports; a comment and a string mention `store::Inventory` and `stock::Item`, neither a reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.230Z","inputHash":"4fefbf861fc9fbc2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.902Z","inputHash":"4fefbf861fc9fbc2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,13 +32,3 @@ _No public symbols detected_
 - [`Memory`](./store/memory.rs.mdmd.md#symbol-memory)
 - [`store.Inventory`](./store/mod.rs.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

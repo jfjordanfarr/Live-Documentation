@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/powershell.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-powershell-test-ts
-- Generated At: 2026-09-27T19:11:41.668Z
+- Generated At: 2026-09-27T21:43:40.956Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercise the PowerShell adapter against the compendium fixtures to confirm symbo
 The suite mirrors the fixtures into a temporary workspace, skips automatically when no PowerShell runtime is available, and expects Export-ModuleMember to gate public surface area.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.668Z","inputHash":"f56d5956fab6b56a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.956Z","inputHash":"f56d5956fab6b56a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -30,16 +30,3 @@ _No public symbols detected_
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [powershell.ts](./powershell.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/generator.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-generator-test-ts
-- Generated At: 2026-09-27T19:11:42.057Z
+- Generated At: 2026-09-27T21:43:41.474Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Exercises the Live Docs renderer/generator glue to ensure authored blocks, prove
 - Kept in the `.md` migration to confirm extension changes didn’t alter rendered headings or provenance comments.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-15-shift-live-docs-to-md-outputs-lines-1401-1820]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.057Z","inputHash":"848ca1220145bcc0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.474Z","inputHash":"848ca1220145bcc0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,16 +35,3 @@ _No public symbols detected_
 - [`schema.LiveDocProvenance`](./schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/config: [liveDocumentationConfig.ts](../config/liveDocumentationConfig.ts.mdmd.md)
-- packages/shared/src/live-docs: [markdown.ts](./markdown.ts.mdmd.md), [schema.ts](./schema.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

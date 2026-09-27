@@ -5,17 +5,17 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/config/liveDocumentationConfig.ts
 - Live Doc ID: LD-implementation-packages-shared-src-config-livedocumentationconfig-ts
-- Generated At: 2026-09-27T10:16:23.164Z
+- Generated At: 2026-09-27T21:43:40.232Z
 
 ## Authored
 ### Purpose
-Centralizes Live Documentation defaults—root, base layer, slug dialect, evidence strictness—so the generator, lint, and CLI flows share one configuration contract, as hardened during the Live Docs pipeline work in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
+Centralizes Live Documentation defaults—root, base layer, slug dialect—so the generator, lint, and CLI flows share one configuration contract, as hardened during the Live Docs pipeline work in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
 
 ### Notes
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:23.164Z","inputHash":"d059f17a4cabc102"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.232Z","inputHash":"05035d256754c4e8"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocumentationSlugDialect` {#symbol-livedocumentationslugdialect}
@@ -32,39 +32,18 @@ resolve correctly on the target hosting platform.
 
 #### `LiveDocumentationArchetype` {#symbol-livedocumentationarchetype}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L21)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L20)
 
 ##### `LiveDocumentationArchetype` — Summary
 Classifies a tracked workspace artifact into a structural role.
 
-Archetypes drive how the Live Doc generator emits metadata sections
-(e.g. `test` files get an "Observed Evidence" section, `asset` files
-get a stub-only doc). The generator infers archetypes from path patterns
-but consumers can force a value via {@link LiveDocumentationConfig.archetypeOverrides}.
-
-#### `LiveDocumentationEvidenceStrictMode` {#symbol-livedocumentationevidencestrictmode}
-- Type: type
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L41)
-
-##### `LiveDocumentationEvidenceStrictMode` — Summary
-Controls lint severity when a non-test file lacks observed evidence
-(coverage manifests, waivers, or fixture references).
-
-- `"off"` — no diagnostic emitted.
-- `"warning"` — lint emits a warning (default).
-- `"error"` — lint treats missing evidence as a hard failure.
-
-#### `LiveDocumentationEvidenceConfig` {#symbol-livedocumentationevidenceconfig}
-- Type: interface
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L47)
-
-##### `LiveDocumentationEvidenceConfig` — Summary
-Evidence-related settings that control how the Live Docs lint pipeline
-reports missing test coverage or waivers on implementation files.
+The archetype is recorded in each Live Doc's metadata. The generator infers
+it from path patterns, and consumers can force a value via
+{@link LiveDocumentationConfig.archetypeOverrides}.
 
 #### `LiveDocumentationConfig` {#symbol-livedocumentationconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L62)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L43)
 
 ##### `LiveDocumentationConfig` — Summary
 Complete, resolved configuration for the Live Documentation pipeline.
@@ -74,12 +53,12 @@ this shape. Obtain an instance via {@link normalizeLiveDocumentationConfig}
 which fills missing fields from {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
 
 This interface is the single source of truth for how the pipeline maps
-workspace source artifacts to their Live Doc mirror files, which slug
-dialect to use, and how strictly evidence is enforced.
+workspace source artifacts to their Live Doc mirror files and which slug
+dialect to use.
 
 #### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}
 - Type: type
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L96)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L75)
 
 ##### `LiveDocumentationConfigInput` — Summary
 Partial input shape accepted by {@link normalizeLiveDocumentationConfig}.
@@ -90,28 +69,28 @@ want to override; everything else falls back to
 
 #### `LIVE_DOCUMENTATION_DEFAULT_ROOT` {#symbol-live_documentation_default_root}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L105)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L82)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_ROOT` — Summary
 Default root directory for the Live Docs mirror (`".live-documentation"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` {#symbol-live_documentation_default_base_layer}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L107)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L84)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` — Summary
 Default base-layer subdirectory within the root (`"source"`).
 
 #### `LIVE_DOCUMENTATION_FILE_EXTENSION` {#symbol-live_documentation_file_extension}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L109)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L86)
 
 ##### `LIVE_DOCUMENTATION_FILE_EXTENSION` — Summary
 Default file extension for generated Live Doc files (`".md"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L117)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L94)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
 Default glob patterns selecting workspace artifacts that receive Live Docs.
@@ -122,7 +101,7 @@ media). Static assets receive stub-only Live Docs for graph connectivity.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L203)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L180)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -135,7 +114,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L230)
+- Source: [source](../../../../../../packages/shared/src/config/liveDocumentationConfig.ts#L204)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 
@@ -159,20 +138,3 @@ A complete, immutable configuration ready for pipeline consumption.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Integration Tests
-- [evidence.test.ts](../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
-- [generation.test.ts](../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
-- [oracle.test.ts](../../../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
-- [polyglot-fixtures.test.ts](../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
-- [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
-
-#### Vitest Unit Tests
-- [generator.test.ts](../../../generator/src/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../generator/src/renderPublicSymbolLines.test.ts.mdmd.md)
-- [liveDocumentationConfig.test.ts](./liveDocumentationConfig.test.ts.mdmd.md)
-- [core.docstring.test.ts](../live-docs/core.docstring.test.ts.mdmd.md)
-- [generator.test.ts](../live-docs/generator.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/store/memory/memory.go
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-store-memory-memory-go
-- Generated At: 2026-09-27T20:50:52.371Z
+- Generated At: 2026-09-27T21:43:44.945Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - The package name differs from the directory name, so an importer refers to it as `memstore` unless it aliases the import; the adapter takes the name from the package clause. Embeds `store.Base`, which is recorded as an extends reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:52.371Z","inputHash":"8cbd2baaa9d0e011"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.945Z","inputHash":"8cbd2baaa9d0e011"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Memory` {#symbol-memory}
@@ -67,13 +67,3 @@ Item is the item behind a SKU, if the inventory has seen it.
 - [`Base`](../base.go.mdmd.md#symbol-base)
 - [`Inventory`](../inventory.go.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

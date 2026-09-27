@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/pipeline/src/metrics.py
 - Live Doc ID: LD-test-tests-integration-programs-python-pipeline-src-metrics-py
-- Generated At: 2026-09-27T20:03:33.756Z
+- Generated At: 2026-09-27T21:43:46.737Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Calculates aggregate statistics for the Python pipeline benchmark while invoking
 Retain the validation calls ahead of aggregation; they ensure dependency order is visible to the analyzer.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.756Z","inputHash":"233a95583442221a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.737Z","inputHash":"233a95583442221a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `compute_summary` {#symbol-compute_summary}
@@ -30,13 +30,3 @@ Retain the validation calls ahead of aggregation; they ensure dependency order i
 - [`validators.ensure_positive`](./validators.py.mdmd.md#symbol-ensure_positive)
 - `typing` - `Sequence`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

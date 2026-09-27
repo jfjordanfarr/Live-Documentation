@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-test-java-com-acme-warehouse-store-memoryinventorytest-java
-- Generated At: 2026-09-27T20:19:24.023Z
+- Generated At: 2026-09-27T21:43:45.894Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tests for `MemoryInventory` in the warehouse sample program.
 - Declares the same package as `MemoryInventory` from the other source root (`src/test/java`), so `MemoryInventory` and `Inventory.Listener` resolve with no import, as they do for javac.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:24.023Z","inputHash":"042cff6a3615422e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.894Z","inputHash":"042cff6a3615422e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MemoryInventoryTest` {#symbol-memoryinventorytest}
@@ -36,13 +36,3 @@ Same package as `MemoryInventory`, in the other source root.
 - [`Inventory.Listener`](../../../../../../main/java/com/acme/warehouse/store/Inventory.java.mdmd.md#symbol-listener)
 - [`MemoryInventory`](../../../../../../main/java/com/acme/warehouse/store/MemoryInventory.java.mdmd.md#symbol-memoryinventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

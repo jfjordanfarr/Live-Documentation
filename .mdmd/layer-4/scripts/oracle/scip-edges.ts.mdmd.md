@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/scip-edges.ts
 - Live Doc ID: LD-implementation-scripts-oracle-scip-edges-ts
-- Generated At: 2026-09-27T20:50:50.386Z
+- Generated At: 2026-09-27T21:43:42.027Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Turns a SCIP index into the file-to-file edges a fixture's `expected/compiler-ed
 - Symbols are shown by their descriptors alone, with the scheme, package manager, package name and version stripped, so one converter reads every indexer's output.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:50.386Z","inputHash":"e998d560e0bca95a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.027Z","inputHash":"e998d560e0bca95a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ScipIndex` {#symbol-scipindex}
@@ -108,12 +108,3 @@ Decodes an index file and derives its edges.
 - `node:fs`
 - `node:path` - `path`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Integration Tests
-- [oracle.test.ts](../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
-
-#### Vitest Unit Tests
-- [scip-edges.test.ts](./scip-edges.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/basic/src/Diagnostics/Models/Formatter.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-basic-src-diagnostics-models-formatter-cs
-- Generated At: 2026-09-27T18:53:05.372Z
+- Generated At: 2026-09-27T21:43:43.738Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Formats diagnostics records for the C# basic benchmark, demonstrating culture-aw
 Retain the `Render` method's copy semantics and comment—they ensure the analyzer observes immutable record patterns.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.372Z","inputHash":"82151a26dcee0999"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.738Z","inputHash":"82151a26dcee0999"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Formatter` {#symbol-formatter}
@@ -39,13 +39,3 @@ Retain the `Render` method's copy semantics and comment—they ensure the analyz
 - [`FormattedReport`](./FormattedReport.cs.mdmd.md#symbol-formattedreport)
 - [`Record`](./Record.cs.mdmd.md#symbol-record)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

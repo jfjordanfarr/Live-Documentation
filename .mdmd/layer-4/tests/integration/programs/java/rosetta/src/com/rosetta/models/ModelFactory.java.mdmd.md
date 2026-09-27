@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/models/ModelFactory.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-models-modelfactory-java
-- Generated At: 2026-09-27T20:19:23.449Z
+- Generated At: 2026-09-27T21:43:45.341Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Data model for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.models package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.449Z","inputHash":"eb051e8ffce57042"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.341Z","inputHash":"eb051e8ffce57042"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ModelFactory` {#symbol-modelfactory}
@@ -47,13 +47,3 @@ Validates configuration is within acceptable bounds.
 - [`Record`](./Record.java.mdmd.md#symbol-record-class)
 - [`ProcessorConfig`](../types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

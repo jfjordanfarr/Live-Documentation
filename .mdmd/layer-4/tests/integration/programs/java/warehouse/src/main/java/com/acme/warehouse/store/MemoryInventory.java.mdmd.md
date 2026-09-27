@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-store-memoryinventory-java
-- Generated At: 2026-09-27T20:19:23.952Z
+- Generated At: 2026-09-27T21:43:45.848Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Imports the model package on demand (`com.acme.warehouse.model.*`) and carries the workspace annotation `@Audited`; `Listener` resolves through the implemented interface's nested type.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.952Z","inputHash":"04b2f2b667605508"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.848Z","inputHash":"04b2f2b667605508"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MemoryInventory` {#symbol-memoryinventory}
@@ -73,13 +73,3 @@ The movements so far, oldest first.
 - [`Quantity`](../model/Quantity.java.mdmd.md#symbol-quantity)
 - [`Inventory`](./Inventory.java.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

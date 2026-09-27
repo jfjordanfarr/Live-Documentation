@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/ruby/rosetta/lib/models.rb
 - Live Doc ID: LD-test-tests-integration-programs-ruby-rosetta-lib-models-rb
-- Generated At: 2026-09-27T18:53:07.993Z
+- Generated At: 2026-09-27T21:43:47.476Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Ruby Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Ruby module dependency graph inference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.993Z","inputHash":"52a630772155146a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.476Z","inputHash":"52a630772155146a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Rosetta` {#symbol-rosetta}
@@ -115,13 +115,3 @@ Validates configuration is within acceptable bounds.
 ### Dependencies
 - [`types`](./types.rb.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

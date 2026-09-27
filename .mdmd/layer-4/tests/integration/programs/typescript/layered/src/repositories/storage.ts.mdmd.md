@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/layered/src/repositories/storage.ts
 - Live Doc ID: LD-test-tests-integration-programs-typescript-layered-src-repositories-storage-ts
-- Generated At: 2026-09-27T18:53:08.555Z
+- Generated At: 2026-09-27T21:43:48.195Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the repository layer for the `ts-layered` benchmark so the analyzer must
 - Returns hard-coded metric records to isolate dependency traversal from data variability while still proving constructor-level runtime edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.555Z","inputHash":"b1a18c43ab79c354"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.195Z","inputHash":"b1a18c43ab79c354"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MetricRecord` {#symbol-metricrecord}
@@ -31,13 +31,3 @@ Defines the repository layer for the `ts-layered` benchmark so the analyzer must
 ### Dependencies
 - [`Widget`](../models/widget.ts.mdmd.md#symbol-widget)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

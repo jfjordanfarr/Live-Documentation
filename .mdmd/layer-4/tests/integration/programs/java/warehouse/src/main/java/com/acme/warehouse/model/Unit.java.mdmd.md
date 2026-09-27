@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Unit.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-unit-java
-- Generated At: 2026-09-27T20:19:23.873Z
+- Generated At: 2026-09-27T21:43:45.761Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - The leaf of the model package; referenced from `Quantity` without an import because they share a package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.873Z","inputHash":"5fec21e79777f0d7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.761Z","inputHash":"5fec21e79777f0d7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Unit` {#symbol-unit}
@@ -45,13 +45,3 @@ The unit's short label for reports.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

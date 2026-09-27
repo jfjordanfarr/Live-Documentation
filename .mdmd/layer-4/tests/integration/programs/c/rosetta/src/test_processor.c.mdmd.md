@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/test_processor.c
 - Live Doc ID: LD-test-tests-integration-programs-c-rosetta-src-test-processor-c
-- Generated At: 2026-09-27T18:53:05.267Z
+- Generated At: 2026-09-27T21:43:43.637Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the C Rosetta processor module. Part of the polyglot Rosetta Ston
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses manual assertion macros (no standard C test framework). Required fix to cFunctions.ts heuristic to avoid matching function definitions as calls.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.267Z","inputHash":"b09193331c1ebe58"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.637Z","inputHash":"b09193331c1ebe58"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ASSERT` {#symbol-assert}
@@ -50,13 +50,3 @@ Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../
 - [`models.create_record`](./models.h.mdmd.md#symbol-create_record)
 - [`processor`](./processor.h.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/models/__init__.py
 - Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-models-init-py
-- Generated At: 2026-09-27T20:03:33.302Z
+- Generated At: 2026-09-27T21:43:46.121Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The models package of the ledger sample program: re-exports `Account`, `Entry` a
 - A second barrel, one level down, so a re-export chain of two hops is exercised (`ledger` re-exports what `ledger.models` re-exports).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.302Z","inputHash":"a41acbd123b46180"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.121Z","inputHash":"a41acbd123b46180"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -27,13 +27,3 @@ _No public symbols detected_
 - [`Entry`](./entry.py.mdmd.md#symbol-entry)
 - [`entry.EntryKind`](./entry.py.mdmd.md#symbol-entrykind)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

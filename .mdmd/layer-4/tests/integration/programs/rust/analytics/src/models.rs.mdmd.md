@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/models.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-models-rs
-- Generated At: 2026-09-27T20:50:54.018Z
+- Generated At: 2026-09-27T21:43:47.670Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Declares the data structures consumed across the Rust analytics benchmark so the
 Struct fields should remain open and descriptive; changing them affects every dependent module in the fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.018Z","inputHash":"df8f123fb0f6903a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.670Z","inputHash":"df8f123fb0f6903a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Sample` {#symbol-sample}
@@ -51,13 +51,3 @@ Struct fields should remain open and descriptive; changing them affects every de
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

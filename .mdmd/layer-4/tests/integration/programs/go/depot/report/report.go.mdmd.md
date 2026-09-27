@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/report/report.go
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-report-report-go
-- Generated At: 2026-09-27T20:30:56.020Z
+- Generated At: 2026-09-27T21:43:44.800Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - `Total[T stock.Number]` constrains a type parameter with another package's interface, recorded as a generic-constraint reference to `Number`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.020Z","inputHash":"cbfbd2528ad425f5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.800Z","inputHash":"cbfbd2528ad425f5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Write` {#symbol-write}
@@ -44,13 +44,3 @@ Total adds up values of any number type the stock package allows.
 - [`quantity.Number`](../stock/quantity.go.mdmd.md#symbol-number)
 - [`Inventory`](../store/inventory.go.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

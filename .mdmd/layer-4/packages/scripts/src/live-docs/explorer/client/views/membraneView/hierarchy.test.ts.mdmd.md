@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-hierarchy-test-ts
-- Generated At: 2026-09-27T19:11:40.359Z
+- Generated At: 2026-09-27T21:43:39.342Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Verifies barrel file detection (`isBarrelFile`) and barrel-as-membrane semantic 
 - 9 tests covering: positive/negative barrel pattern matching, barrel removal when siblings exist, barrel preservation when it's the only file, recursive application through nested directories, and immutability of the input tree.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.359Z","inputHash":"b7583b18cfe304ab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.342Z","inputHash":"b7583b18cfe304ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -30,16 +30,3 @@ _No public symbols detected_
 - [`hierarchy.isBarrelFile`](./hierarchy.ts.mdmd.md#symbol-isbarrelfile)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client: [types.ts](../../types.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/membraneView: [hierarchy.ts](./hierarchy.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

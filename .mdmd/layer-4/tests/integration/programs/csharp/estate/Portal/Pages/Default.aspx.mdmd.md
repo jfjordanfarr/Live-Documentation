@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Pages/Default.aspx
 - Live Doc ID: LD-test-tests-integration-programs-csharp-estate-portal-pages-default-aspx
-- Generated At: 2026-09-27T18:53:05.901Z
+- Generated At: 2026-09-27T21:43:44.187Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:05.901Z","inputHash":"924be646851bd88b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.187Z","inputHash":"924be646851bd88b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GatewayBaseUrlHidden` {#symbol-gatewaybaseurlhidden}
@@ -39,13 +39,3 @@ _Pending notes_
 - [`Default.aspx`](./Default.aspx.cs.mdmd.md)
 - [`portal`](../Scripts/portal.js.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Live Doc ID: LD-implementation-scripts-oracle-compare-ts
-- Generated At: 2026-09-27T19:49:12.618Z
+- Generated At: 2026-09-27T21:43:41.988Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:49:12.618Z","inputHash":"d4fd5531dd3ba694"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.988Z","inputHash":"d4fd5531dd3ba694"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}
@@ -47,9 +47,3 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Integration Tests
-- [oracle.test.ts](../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

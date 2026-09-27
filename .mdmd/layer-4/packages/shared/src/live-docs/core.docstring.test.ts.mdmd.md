@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/core.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-core-docstring-test-ts
-- Generated At: 2026-09-27T19:11:41.926Z
+- Generated At: 2026-09-27T21:43:41.333Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Verifies the Live Docs extraction engine emits structured docstrings for TypeScr
 - Works in concert with the polyglot adapter tests landed the same week, ensuring the shared core honors language-specific docstring structures.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-08-stand-up-co-activation-infrastructure-lines-1101-1220]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.926Z","inputHash":"092d1d2d531bf60b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.333Z","inputHash":"092d1d2d531bf60b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,15 +32,3 @@ _No public symbols detected_
 - `typescript` - `ts`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/config: [liveDocumentationConfig.ts](../config/liveDocumentationConfig.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](./core.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

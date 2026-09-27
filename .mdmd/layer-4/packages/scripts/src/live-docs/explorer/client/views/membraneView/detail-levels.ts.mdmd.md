@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-detail-levels-ts
-- Generated At: 2026-03-25T17:08:29.653Z
+- Generated At: 2026-09-27T21:43:39.224Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Pure-function detail level resolution for the Membrane Map, classifying every no
 - Although the continuous pin model (adopted later in the same dev day) means the renderer doesn't consume `DetailLevel` directly for DOM class assignment, the classification remains available for future performance optimization (e.g., culling Hidden nodes from the DOM entirely).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.653Z","inputHash":"64f432bae87f1ff2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.224Z","inputHash":"64f432bae87f1ff2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailLevel` {#symbol-detaillevel}
@@ -70,9 +70,3 @@ A Map from node id to DetailLevel
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [detail-levels.test.ts](./detail-levels.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-09-27T20:36:53.487Z
+- Generated At: 2026-09-27T21:43:40.317Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:53.487Z","inputHash":"6b3a44ec1267760b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.317Z","inputHash":"6b3a44ec1267760b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -200,17 +200,3 @@ True if the identifier is a framework type to filter as noise, false otherwise
 - [`syntax.stripCStyleComments`](./syntax.ts.mdmd.md#symbol-stripcstylecomments) (type-only)
 - [`typescript.typescriptSyntax`](./typescript.ts.mdmd.md#symbol-typescriptsyntax)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [index.test.ts](./index.test.ts.mdmd.md)
-- [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
-- [go.test.ts](../live-docs/adapters/go.test.ts.mdmd.md)
-- [java.test.ts](../live-docs/adapters/java.test.ts.mdmd.md)
-- [java.typeref.test.ts](../live-docs/adapters/java.typeref.test.ts.mdmd.md)
-- [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
-- [python.resolution.test.ts](../live-docs/adapters/python.resolution.test.ts.mdmd.md)
-- [python.test.ts](../live-docs/adapters/python.test.ts.mdmd.md)
-- [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

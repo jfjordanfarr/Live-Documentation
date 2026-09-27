@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-shared-staticexplorerdata-ts
-- Generated At: 2026-09-27T02:38:09.832Z
+- Generated At: 2026-09-27T21:43:40.021Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ The viewer supports three loading modes:
 3. **Remote**: Data loaded from configurable URL (Teams Card scenario)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T02:38:09.832Z","inputHash":"a8a026dd9122a380"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.021Z","inputHash":"a8a026dd9122a380"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StaticExplorerProvenance` {#symbol-staticexplorerprovenance}
@@ -204,9 +204,3 @@ Current bundle format version.
 - [`types.ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](./types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [bundledMarkdownScanner.test.ts](./bundledMarkdownScanner.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/helpers.ts
 - Live Doc ID: LD-test-tests-e2e-helpers-ts
-- Generated At: 2026-09-27T08:46:12.872Z
+- Generated At: 2026-09-27T21:43:42.093Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Shared Playwright helper library for all Membrane Map E2E spec files, providing 
 - Archetype is `test` since this module only serves test infrastructure; it has no runtime consumers.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:46:12.872Z","inputHash":"126fb9800d304e9c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.093Z","inputHash":"126fb9800d304e9c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FIXTURE_DIR` {#symbol-fixture_dir}
@@ -145,13 +145,3 @@ Get the bounding rect of the first element matching a selector.
 - `@playwright/test` - `Page`
 - `lz-string` - `compressToEncodedURIComponent`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

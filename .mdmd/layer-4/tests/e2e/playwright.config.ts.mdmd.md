@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
 - Live Doc ID: LD-test-tests-e2e-playwright-config-ts
-- Generated At: 2026-03-30T19:28:11.577Z
+- Generated At: 2026-09-27T21:43:42.436Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Playwright test configuration for the Membrane Map E2E suite, defining browser s
 - `fullyParallel: false` and `workers: 1` because tests share one browser context and the http-server port.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-30T19:28:11.577Z","inputHash":"189aab4af39abcad"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.436Z","inputHash":"189aab4af39abcad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `default` {#symbol-default}
@@ -32,13 +32,3 @@ Playwright test configuration for the Membrane Map E2E suite, defining browser s
 ### Dependencies
 - `@playwright/test` - `defineConfig`, `devices`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

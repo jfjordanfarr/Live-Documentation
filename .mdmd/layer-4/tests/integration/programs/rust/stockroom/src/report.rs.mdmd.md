@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/report.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-report-rs
-- Generated At: 2026-09-27T20:50:54.242Z
+- Generated At: 2026-09-27T21:43:47.916Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Reports for the stockroom sample program: one line per item on hand, a generic `
 - `use crate::stock::*` is the glob import: only the names this file uses (`Countable`, `Item`, `Quantity`) link. The call `item.describe(...)` on a value of inferred type is the edge to `item.rs` the adapter cannot see.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.242Z","inputHash":"c18710fc368bdc4d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.916Z","inputHash":"c18710fc368bdc4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `write` {#symbol-write}
@@ -48,13 +48,3 @@ How many lines a report has.
 - [`stock.Countable`](./stock.rs.mdmd.md#symbol-countable)
 - [`store.Inventory`](./store/mod.rs.mdmd.md#symbol-inventory)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

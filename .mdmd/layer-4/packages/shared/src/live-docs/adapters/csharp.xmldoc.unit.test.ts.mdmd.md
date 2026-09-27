@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/csharp.xmldoc.unit.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-csharp-xmldoc-unit-test-ts
-- Generated At: 2026-02-03T21:55:39.747Z
+- Generated At: 2026-09-27T21:43:40.624Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Unit tests for the C# XML documentation parsing module, validating correct extra
 - **Created:** 2025-12-10 during the `csharp.ts` refactoring to ensure the extracted module is test-backed.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:39.747Z","inputHash":"26479009baecdc16"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.624Z","inputHash":"26479009baecdc16"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,13 +28,3 @@ _No public symbols detected_
 - `./csharp.xmldoc` - `RECOGNIZED_DOC_TAGS`, `buildDocumentationFromLines`, `decodeXmlEntities`, `detectUnsupportedTags`, `extractExampleTags`, `extractExceptionTags`, `extractLinkTags`, `extractParameterTags`, `extractRawDocFragments`, `extractSingleTagText`, `hasStructuredContent`, `normalizeCrefTarget`, `normalizeXmlText`, `parseXmlAttributes`, `renderCrefText`, `stripDocCommentMarker`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

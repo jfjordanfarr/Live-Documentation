@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
 - Live Doc ID: LD-test-tests-integration-tsconfig-json
-- Generated At: 2026-09-27T18:34:31.456Z
+- Generated At: 2026-09-27T21:43:48.476Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 - Vitest itself transpiles without type-checking, which is why this project exists. Until 2026-09-27 the same file compiled the suites for the VS Code Electron harness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:34:31.456Z","inputHash":"35588e178a1de90f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.476Z","inputHash":"35588e178a1de90f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `extends` {#symbol-extends}
@@ -55,13 +55,3 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

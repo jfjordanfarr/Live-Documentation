@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/expected/compiler-edges.json
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-expected-compiler-edges-json
-- Generated At: 2026-09-27T20:30:55.951Z
+- Generated At: 2026-09-27T21:43:44.725Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The file-to-file edges the compiler resolved for the `go/depot` sample program, 
 - Never hand-edited. Regenerate with `oracle:index` after changing the program. Six of its edges carry only the package symbol, which scip-go attributes to a package's alphabetically first file; the decisions log records why the adapter does not reproduce them.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:55.951Z","inputHash":"77000781e99753c7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.725Z","inputHash":"77000781e99753c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `tool` {#symbol-tool}
@@ -44,13 +44,3 @@ The file-to-file edges the compiler resolved for the `go/depot` sample program, 
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

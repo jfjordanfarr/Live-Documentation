@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-persistence-compressed-url-state-ts
-- Generated At: 2026-03-31T20:36:02.897Z
+- Generated At: 2026-09-27T21:43:38.122Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Encodes the full Membrane Map view state (active view, selected node, pin set, e
 - On [Dev Day 86](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) the `expandedCards` field (`c?` in the wire format) was added to `CompressedPayload` and `UrlStateSnapshot` so that file-card expansion state round-trips through the URL, enabling reload and share-URL fidelity for expanded cards in browse mode.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-31T20:36:02.897Z","inputHash":"ceba0f92fd4c9d4d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.122Z","inputHash":"ceba0f92fd4c9d4d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompressedPayload` {#symbol-compressedpayload}
@@ -131,9 +131,3 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - [`pin-state.deserializePins`](../views/membraneView/pin-state.ts.mdmd.md#symbol-deserializepins) (type-only)
 - [`pin-state.serializePins`](../views/membraneView/pin-state.ts.mdmd.md#symbol-serializepins) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [compressed-url-state.test.ts](./compressed-url-state.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

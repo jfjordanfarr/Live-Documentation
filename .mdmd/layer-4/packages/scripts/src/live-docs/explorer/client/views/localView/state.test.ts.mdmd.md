@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-state-test-ts
-- Generated At: 2026-09-27T19:11:40.067Z
+- Generated At: 2026-09-27T21:43:38.961Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unit tests for the LocalMapState shape, StateStore subscriptions, and pin/hover/
 - No jsdom required — these tests run in pure Node environment
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.067Z","inputHash":"c2f4431064c82782"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.961Z","inputHash":"c2f4431064c82782"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -45,14 +45,3 @@ _No public symbols detected_
 - [`state.toggleCollapseUnrelated`](./state.ts.mdmd.md#symbol-togglecollapseunrelated)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views/localView: [state.ts](./state.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

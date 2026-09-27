@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-localview-layout-math-test-ts
-- Generated At: 2026-09-27T19:11:39.872Z
+- Generated At: 2026-09-27T21:43:38.679Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests for layout-math.ts covering column counting, grid template generation
 - Part of the 153-test pure-function module validation suite
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:39.872Z","inputHash":"0677f4437141b1c9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.679Z","inputHash":"0677f4437141b1c9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -46,14 +46,3 @@ _No public symbols detected_
 - [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views/localView: [layout-math.ts](./layout-math.ts.mdmd.md), [state.ts](./state.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

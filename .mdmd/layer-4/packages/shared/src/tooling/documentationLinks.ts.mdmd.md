@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/documentationLinks.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-documentationlinks-ts
-- Generated At: 2026-02-23T21:32:15.181Z
+- Generated At: 2026-09-27T21:43:41.682Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Supplies the shared engine that parses Live Doc anchors, maps code files to docu
 - Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-23T21:32:15.181Z","inputHash":"f55eb6e704d8b5ac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.682Z","inputHash":"f55eb6e704d8b5ac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DocumentationRule` {#symbol-documentationrule}
@@ -187,10 +187,3 @@ Aggregate enforcement result with violations.
 - [`markdownShared.extractReferenceDefinitions`](./markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
 - [`pathUtils.normalizeWorkspacePath`](./pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [documentationLinks.test.ts](./documentationLinks.test.ts.mdmd.md)
-- [enforce-documentation-links.test.ts](../../../../scripts/doc-tools/enforce-documentation-links.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

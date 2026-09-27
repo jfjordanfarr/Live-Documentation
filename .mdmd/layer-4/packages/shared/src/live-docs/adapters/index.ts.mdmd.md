@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-09-27T20:36:53.879Z
+- Generated At: 2026-09-27T21:43:40.816Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:53.879Z","inputHash":"a5cd48145f320980"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.816Z","inputHash":"a5cd48145f320980"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
@@ -78,28 +78,3 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [`rust.rustAdapter`](./rust.ts.mdmd.md#symbol-rustadapter)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [aspnet.test.ts](./aspnet.test.ts.mdmd.md)
-- [c.docstring.test.ts](./c.docstring.test.ts.mdmd.md)
-- [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
-- [csharp.test.ts](./csharp.test.ts.mdmd.md)
-- [css.test.ts](./css.test.ts.mdmd.md)
-- [dotnetConfig.test.ts](./dotnetConfig.test.ts.mdmd.md)
-- [go.test.ts](./go.test.ts.mdmd.md)
-- [html.test.ts](./html.test.ts.mdmd.md)
-- [java.test.ts](./java.test.ts.mdmd.md)
-- [java.typeref.test.ts](./java.typeref.test.ts.mdmd.md)
-- [json.test.ts](./json.test.ts.mdmd.md)
-- [powershell.test.ts](./powershell.test.ts.mdmd.md)
-- [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
-- [python.resolution.test.ts](./python.resolution.test.ts.mdmd.md)
-- [python.test.ts](./python.test.ts.mdmd.md)
-- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
-- [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
-- [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)
-- [rust.docstring.test.ts](./rust.docstring.test.ts.mdmd.md)
-- [rust.typeref.test.ts](./rust.typeref.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

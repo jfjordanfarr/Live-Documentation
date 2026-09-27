@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.typeref.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-typeref-test-ts
-- Generated At: 2026-09-27T20:19:20.561Z
+- Generated At: 2026-09-27T21:43:41.137Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Unit tests verifying that the Python language adapter correctly extracts `typeRe
 - Filters out builtins like `ABC`, `Protocol`, `Exception` from rendered type references
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.561Z","inputHash":"34ff43b192bd61b4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.137Z","inputHash":"34ff43b192bd61b4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,17 +33,3 @@ _No public symbols detected_
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/languages: [languages/index.ts](../../languages/index.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [python.ts](./python.ts.mdmd.md), [treeSitter.ts](./treeSitter.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

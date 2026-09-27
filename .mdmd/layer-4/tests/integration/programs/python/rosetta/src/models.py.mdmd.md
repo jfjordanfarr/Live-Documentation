@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/models.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-models-py
-- Generated At: 2026-09-27T20:03:33.980Z
+- Generated At: 2026-09-27T21:43:47.000Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Data models for the Python Rosetta Stone fixture. Defines Record and Report data
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Multi-consumer module imported by main.py and processor.py.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.980Z","inputHash":"819ca788d8afdb3d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.000Z","inputHash":"819ca788d8afdb3d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
@@ -83,13 +83,3 @@ Validates configuration is within acceptable bounds.
 - [`core_types.Status`](./core_types.py.mdmd.md#symbol-status-class)
 - `typing` - `List`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

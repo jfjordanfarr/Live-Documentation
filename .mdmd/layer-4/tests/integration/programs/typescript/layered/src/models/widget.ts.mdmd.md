@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/typescript/layered/src/models/widget.ts
 - Live Doc ID: LD-test-tests-integration-programs-typescript-layered-src-models-widget-ts
-- Generated At: 2026-09-27T18:53:08.535Z
+- Generated At: 2026-09-27T21:43:48.176Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies the shared model definitions for the `ts-layered` benchmark so downstre
 - Remains intentionally dependency-free; any analyzer emitting extra edges here indicates leakage from runtime-bound modules.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.535Z","inputHash":"69ad8051d942d3e4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:48.176Z","inputHash":"69ad8051d942d3e4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Widget` {#symbol-widget}
@@ -27,13 +27,3 @@ Supplies the shared model definitions for the `ts-layered` benchmark so downstre
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

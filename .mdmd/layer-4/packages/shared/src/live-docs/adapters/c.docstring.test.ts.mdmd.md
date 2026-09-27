@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/c.docstring.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-c-docstring-test-ts
-- Generated At: 2026-09-27T19:11:41.288Z
+- Generated At: 2026-09-27T21:43:40.430Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summa
 - Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.288Z","inputHash":"7d55865ddb969704"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.430Z","inputHash":"7d55865ddb969704"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,16 +31,3 @@ _No public symbols detected_
 - [`core.renderPublicSymbolLines`](../core.ts.mdmd.md#symbol-renderpublicsymbollines)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/languages: [languages/index.ts](../../languages/index.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [c.ts](./c.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

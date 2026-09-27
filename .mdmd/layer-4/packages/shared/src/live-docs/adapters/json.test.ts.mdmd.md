@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/json.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-json-test-ts
-- Generated At: 2026-09-27T19:11:41.642Z
+- Generated At: 2026-09-27T21:43:40.923Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Unit tests for the JSON adapter, verifying file reference detection, non-path fi
 - Created 2026-01-15 alongside the JSON adapter implementation.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.642Z","inputHash":"8b256fe94115e636"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.923Z","inputHash":"8b256fe94115e636"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,16 +32,3 @@ _No public symbols detected_
 - [`json.jsonAdapter`](./json.ts.mdmd.md#symbol-jsonadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [json.ts](./json.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

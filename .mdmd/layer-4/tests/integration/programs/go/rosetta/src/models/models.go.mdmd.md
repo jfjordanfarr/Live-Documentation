@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/models/models.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-models-models-go
-- Generated At: 2026-09-27T20:30:56.280Z
+- Generated At: 2026-09-27T21:43:45.068Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Data model definitions and factory functions for the Go Rosetta Stone benchmark 
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.280Z","inputHash":"75252be495ac17f4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.068Z","inputHash":"75252be495ac17f4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
@@ -82,13 +82,3 @@ ValidateConfig validates that a configuration is within acceptable bounds.
 - [`types.ProcessorConfig`](../types/types.go.mdmd.md#symbol-processorconfig)
 - [`types.StatusPending`](../types/types.go.mdmd.md#symbol-statuspending)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

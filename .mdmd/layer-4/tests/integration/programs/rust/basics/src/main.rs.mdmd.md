@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/basics/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-basics-src-main-rs
-- Generated At: 2026-09-27T20:50:54.039Z
+- Generated At: 2026-09-27T21:43:47.697Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Entry point for the `rust-basics` polyglot benchmark fixture. Declares module de
 - The fixture demonstrates the `mod foo;` pattern where Rust looks for `foo.rs` or `foo/mod.rs` relative to the crate source root.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.039Z","inputHash":"ac8510eee227799d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.697Z","inputHash":"ac8510eee227799d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,13 +28,3 @@ _No public symbols detected_
 - [`math.sum`](./math.rs.mdmd.md#symbol-sum)
 - [`utils.is_even`](./utils.rs.mdmd.md#symbol-is_even)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

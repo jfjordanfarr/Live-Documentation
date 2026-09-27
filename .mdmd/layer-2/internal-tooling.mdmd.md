@@ -33,7 +33,7 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 | Command                    | What it runs                                                                                                                                                   |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm run test:unit`        | The Vitest `unit` project: `packages/*/src`, `scripts/` and the SlopCop suites                                                                                 |
-| `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, evidence, polyglot fixtures, CLI pathfinding, Rosetta parity (~20 s) |
+| `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, polyglot fixtures, CLI pathfinding, Rosetta parity, the oracle (~20 s)   |
 | `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                |
 
 Both Vitest projects import TypeScript sources directly, so neither needs a build first. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.

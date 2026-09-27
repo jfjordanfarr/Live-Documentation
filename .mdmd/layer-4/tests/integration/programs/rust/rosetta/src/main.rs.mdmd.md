@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-main-rs
-- Generated At: 2026-09-27T20:50:54.121Z
+- Generated At: 2026-09-27T21:43:47.792Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Rust Rosetta Stone fixture. Demonstrates mod declarations an
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust's module system detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.121Z","inputHash":"b1a0af60961c7e12"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.792Z","inputHash":"b1a0af60961c7e12"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
@@ -44,13 +44,3 @@ Formatted summary of the processing results
 - [`processor_test`](./processor_test.rs.mdmd.md)
 - [`types`](./types.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

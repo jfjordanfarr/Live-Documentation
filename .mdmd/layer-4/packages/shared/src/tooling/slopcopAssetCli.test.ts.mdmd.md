@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/tooling/slopcopAssetCli.test.ts
 - Live Doc ID: LD-test-packages-shared-src-tooling-slopcopassetcli-test-ts
-- Generated At: 2026-09-27T19:11:42.294Z
+- Generated At: 2026-09-27T21:43:41.787Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Locks in the SlopCop asset CLI’s fail/repair workflow with a Vitest harness th
 - Restores the fixture to ensure downstream runs stay green, keeping the asset audit opt-in until maintainers flip it on globally ([asset fixture summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-25.md#L4488-L4554)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.294Z","inputHash":"7cd1668dcfa8d86b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.787Z","inputHash":"7cd1668dcfa8d86b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -31,13 +31,3 @@ _No public symbols detected_
 - `node:process` - `process`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

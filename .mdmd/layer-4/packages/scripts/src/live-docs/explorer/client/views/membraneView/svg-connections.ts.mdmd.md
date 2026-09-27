@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-svg-connections-ts
-- Generated At: 2026-04-01T23:35:41.568Z
+- Generated At: 2026-09-27T21:43:39.722Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ SVG rendering of membrane-to-membrane bundled edge connections, drawing logarith
 - Currently disabled in the controller for MVP (the thick arcs created visual noise over the treemap layout); the pure functions remain tested and ready for re-enablement with progressive-disclosure or hover-only rendering.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-04-01T23:35:41.568Z","inputHash":"fee3da492381d69e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.722Z","inputHash":"fee3da492381d69e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `bundleStrokeWidth` {#symbol-bundlestrokewidth}
@@ -88,9 +88,3 @@ SVG overlay element, or null if no bundles to render
 - [`edge-bundling.BundledEdge`](./edge-bundling.ts.mdmd.md#symbol-bundlededge) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [svg-connections.test.ts](./svg-connections.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

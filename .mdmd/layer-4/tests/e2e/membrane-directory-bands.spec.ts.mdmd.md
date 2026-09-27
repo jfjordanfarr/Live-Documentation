@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-directory-bands.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-directory-bands-spec-ts
-- Generated At: 2026-09-27T19:11:42.696Z
+- Generated At: 2026-09-27T21:43:42.242Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ E2E tests for the directory band structure in pin-active mode: band rendering, b
 - Orphan card test ensures every `.pin-active-card` is inside either a `.pa-band-membrane` or `.pa-band-bare` container.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.696Z","inputHash":"e6791279fdee69d3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.242Z","inputHash":"e6791279fdee69d3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,13 +33,3 @@ _No public symbols detected_
 - [`helpers.goToMembraneMap`](./helpers.ts.mdmd.md#symbol-gotomembranemap)
 - [`helpers.pinAllOnCard`](./helpers.ts.mdmd.md#symbol-pinalloncard)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-main-rs
-- Generated At: 2026-09-27T20:50:53.989Z
+- Generated At: 2026-09-27T21:43:47.642Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the entry point for the Rust analytics benchmark, invoking IO and metric
 Maintain parity with the supporting modules; this file should stay lightweight to keep the dependency graph focused.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:53.989Z","inputHash":"9a15da0f1430f7ec"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.642Z","inputHash":"9a15da0f1430f7ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,13 +28,3 @@ _No public symbols detected_
 - [`metrics`](./metrics.rs.mdmd.md)
 - [`models`](./models.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

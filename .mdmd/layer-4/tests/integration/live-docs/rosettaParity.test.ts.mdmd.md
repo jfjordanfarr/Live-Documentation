@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/rosettaParity.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-rosettaparity-test-ts
-- Generated At: 2026-09-27T19:11:43.672Z
+- Generated At: 2026-09-27T21:43:43.220Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Cross-language integration test that runs the full Live Documentation pipeline (
 - Parity is a smoke alarm, not a correctness measure; the compiler-backed oracle described in the architectural decisions is the measure. Created 2026-03-11; moved off the VS Code Electron harness 2026-09-27.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:43.672Z","inputHash":"7c97d9a5a5ab6bfb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.220Z","inputHash":"7c97d9a5a5ab6bfb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -37,17 +37,3 @@ _No public symbols detected_
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - `vitest` - `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Integration Tests
-- packages/generator/src: [evidenceBridge.ts](../../../packages/generator/src/evidenceBridge.ts.mdmd.md), [generator.ts](../../../packages/generator/src/generator.ts.mdmd.md)
-- packages/shared/src/config: [liveDocumentationConfig.ts](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md)
-- packages/shared/src/live-docs: [core.ts](../../../packages/shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../../packages/shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../../packages/shared/src/live-docs/schema.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../../packages/shared/src/tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

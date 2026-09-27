@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/processor/Processor.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-processor-processor-java
-- Generated At: 2026-09-27T20:19:23.508Z
+- Generated At: 2026-09-27T21:43:45.394Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Core processing logic for the Java Rosetta Stone fixture. Tests import and stati
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Exercises both direct imports and type-only references.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.508Z","inputHash":"f2983f259de55d5f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.394Z","inputHash":"f2983f259de55d5f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Processor` {#symbol-processor}
@@ -77,13 +77,3 @@ Human-readable summary
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 - [`ProcessorConfig`](../types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

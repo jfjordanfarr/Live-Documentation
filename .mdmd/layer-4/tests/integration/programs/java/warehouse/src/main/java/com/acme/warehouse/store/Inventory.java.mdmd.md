@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-store-inventory-java
-- Generated At: 2026-09-27T20:30:56.639Z
+- Generated At: 2026-09-27T21:43:45.825Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Interface members are published without modifiers because they are public by definition. Its Javadoc `@see MemoryInventory` is not a reference; the old scanner counted it as one.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.639Z","inputHash":"1d85b2c564fc42ca"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.825Z","inputHash":"1d85b2c564fc42ca"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Inventory` {#symbol-inventory}
@@ -81,13 +81,3 @@ Registers a listener; the default keeps none.
 - [`Item`](../model/Item.java.mdmd.md#symbol-item-class)
 - [`Quantity`](../model/Quantity.java.mdmd.md#symbol-quantity)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

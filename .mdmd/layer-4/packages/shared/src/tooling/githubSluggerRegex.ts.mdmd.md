@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/githubSluggerRegex.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-githubsluggerregex-ts
-- Generated At: 2026-09-27T08:33:37.867Z
+- Generated At: 2026-09-27T21:43:41.722Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Packages the vendored GitHub slug sanitiser regex so our slugger matches exactly
 - Verified repeatedly while tuning doc-link anchors for SlopCop on November 7, ensuring unicode headings slug to `comp003--heuristic-suite` and similar real-world cases.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:33:37.867Z","inputHash":"8a837503b1e1513f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.722Z","inputHash":"8a837503b1e1513f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `GITHUB_SLUG_REMOVE_PATTERN` {#symbol-github_slug_remove_pattern}
@@ -39,12 +39,3 @@ Created 2025-10-25 for the SlopCop symbol auditor.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [documentationLinks.test.ts](./documentationLinks.test.ts.mdmd.md)
-- [githubSlugger.test.ts](./githubSlugger.test.ts.mdmd.md)
-- [symbolReferences.test.ts](./symbolReferences.test.ts.mdmd.md)
-- [enforce-documentation-links.test.ts](../../../../scripts/doc-tools/enforce-documentation-links.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

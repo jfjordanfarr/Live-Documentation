@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/helpers/Helpers.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-helpers-helpers-java
-- Generated At: 2026-09-27T20:19:23.410Z
+- Generated At: 2026-09-27T21:43:45.306Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility class for the Java Rosetta Stone fixture with static helper methods.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.410Z","inputHash":"4451676de1d92e39"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.306Z","inputHash":"4451676de1d92e39"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Helpers` {#symbol-helpers}
@@ -64,13 +64,3 @@ Computes the average of numeric values.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

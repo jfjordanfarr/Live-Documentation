@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-layout-ts
-- Generated At: 2026-03-26T19:37:25.319Z
+- Generated At: 2026-09-27T21:43:39.575Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Pure-function dependency-flow layout engine for Membrane Map pin-active mode. Co
 - 28 tests covering layout mechanics, LCA edge cases (empty set, single file, cross-directory), and ancestor chain construction
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-26T19:37:25.319Z","inputHash":"328e2d962321e4f1"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.575Z","inputHash":"328e2d962321e4f1"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `FlowNode` {#symbol-flownode}
@@ -132,9 +132,3 @@ Exported for testing.
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [pin-layout.test.ts](./pin-layout.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

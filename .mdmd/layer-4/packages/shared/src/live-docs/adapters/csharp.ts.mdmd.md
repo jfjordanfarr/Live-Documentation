@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/csharp.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-csharp-ts
-- Generated At: 2026-09-27T18:53:02.790Z
+- Generated At: 2026-09-27T21:43:40.585Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 - Extends Hangfire heuristics to capture scheduled and recurring jobs, mirroring the LD-402 queue-worker fixture coverage.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:02.790Z","inputHash":"c1950a55335080c2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.585Z","inputHash":"c1950a55335080c2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
@@ -54,11 +54,3 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
-- [csharp.test.ts](./csharp.test.ts.mdmd.md)
-- [dotnetConfig.test.ts](./dotnetConfig.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

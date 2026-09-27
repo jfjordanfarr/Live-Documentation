@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-app-main-java
-- Generated At: 2026-09-27T20:19:23.373Z
+- Generated At: 2026-09-27T21:43:45.269Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Java Rosetta Stone fixture. Demonstrates package imports and
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.373Z","inputHash":"340837626b657480"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.269Z","inputHash":"340837626b657480"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main (class)` {#symbol-main-class}
@@ -54,13 +54,3 @@ Formatted summary of the processing results
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 - [`Processor`](../processor/Processor.java.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

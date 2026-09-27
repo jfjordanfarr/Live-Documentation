@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/processor/processor.go
 - Live Doc ID: LD-test-tests-integration-programs-go-rosetta-src-processor-processor-go
-- Generated At: 2026-09-27T20:30:56.301Z
+- Generated At: 2026-09-27T21:43:45.092Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Core processing logic for the Go Rosetta Stone benchmark, transforming models us
 - Created 2026-01-15; see [2026-01-15.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-15.1.md) for context.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.301Z","inputHash":"587311a3c4e260cb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.092Z","inputHash":"587311a3c4e260cb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DefaultConfig` {#symbol-defaultconfig}
@@ -61,13 +61,3 @@ Summarize creates a formatted summary string from a report.
 - [`types.NewProcessorConfig`](../types/types.go.mdmd.md#symbol-newprocessorconfig)
 - [`types.ProcessorConfig`](../types/types.go.mdmd.md#symbol-processorconfig)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

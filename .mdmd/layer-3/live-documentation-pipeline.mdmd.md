@@ -9,12 +9,11 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 ## One run
 
 1. **Discover targets.** The configured globs select source files ([discovery.ts](../layer-4/packages/shared/src/live-docs/discovery.ts.mdmd.md)). `--changed` narrows the set to files git reports as modified; `--include` names an explicit subset.
-2. **Load evidence.** The [evidence bridge](../layer-4/packages/generator/src/evidenceBridge.ts.mdmd.md) reads three optional inputs: the targets manifest (`coverage/live-docs/targets.json`, which test files exercise which implementation files), Istanbul-style `coverage-summary.json` files under `coverage/`, and `data/live-docs/evidence-waivers.json` for files a person has reviewed by hand.
-3. **Build the indexes.** A file index (every target path) lets adapters resolve references to other workspace files. A symbol index (every public symbol name across the workspace) lets a doc link a dependency to the doc that defines it.
-4. **Analyze each file.** The language adapter for the file returns its public symbols, its dependencies, and any docstrings ([core.ts](../layer-4/packages/shared/src/live-docs/core.ts.mdmd.md)).
-5. **Render the generated sections.** `Public Symbols` and `Dependencies` always; `Observed Evidence` for implementation files that have evidence; `Targets` and `Supporting Fixtures` for test files; `Re-Exported Symbol Anchors` when a file re-exports symbols from elsewhere. Every link is relative to the doc's own directory.
-6. **Merge and write.** The existing doc's authored block is read back and placed above the generated block ([markdown.ts](../layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md)). A provenance comment records the tool version, the timestamp, and a hash of the path, symbols, and dependencies. The doc is written only when its rendered text differs from what is on disk; `--dry-run` reports instead of writing.
-7. **Prune.** Docs whose source file no longer exists are deleted, unless they contain authored content. Pruning is skipped under `--changed` and `--include`.
+2. **Build the indexes.** A file index (every target path) lets adapters resolve references to other workspace files. A symbol index (every public symbol name across the workspace) lets a doc link a dependency to the doc that defines it.
+3. **Analyze each file.** The language adapter for the file returns its public symbols, its dependencies, and any docstrings ([core.ts](../layer-4/packages/shared/src/live-docs/core.ts.mdmd.md)).
+4. **Render the generated sections.** `Public Symbols` and `Dependencies` always; `Re-Exported Symbol Anchors` when a file re-exports symbols from elsewhere. Every link is relative to the doc's own directory.
+5. **Merge and write.** The existing doc's authored block is read back and placed above the generated block ([markdown.ts](../layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md)). A provenance comment records the tool version, the timestamp, and a hash of the path, symbols, and dependencies. The doc is written only when its rendered text differs from what is on disk; `--dry-run` reports instead of writing.
+6. **Prune.** Docs whose source file no longer exists are deleted, unless they contain authored content. Pruning is skipped under `--changed` and `--include`.
 
 ## What a run keeps
 
@@ -33,5 +32,7 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 Root, base layer, extension, archetype globs, and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout.
 
 ## History
+
+Until 2026-09-27 the generator also wrote `Observed Evidence`, `Targets` and `Supporting Fixtures` sections from a generated manifest of which tests import which files. They duplicated the dependency edges and changed without the source changing, so they were retired; see the decisions log.
 
 Until 2026-09-27 this document described the pipeline in the vocabulary of a retired specification process (component and requirement identifiers, a graph projector, diagnostics publishers, Copilot prompt builders). None of those parts exist; what is described above is the code as it runs today.

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-hierarchy-ts
-- Generated At: 2026-03-25T17:08:29.797Z
+- Generated At: 2026-09-27T21:43:39.362Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Barrel file detection and semantic adjustment for the Membrane Map hierarchy, en
 - Reuses the existing `buildHierarchy` from `layoutUtils.ts` rather than reimplementing path-to-tree conversion, applying barrel removal as a post-processing pass on the `DirectoryNode` tree.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:29.797Z","inputHash":"faaef2a61c74344b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.362Z","inputHash":"faaef2a61c74344b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `isBarrelFile` {#symbol-isbarrelfile}
@@ -53,9 +53,3 @@ This function returns a new tree (does not mutate the input).
 ### Dependencies
 - [`types.DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [hierarchy.test.ts](./hierarchy.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

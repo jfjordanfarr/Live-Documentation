@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/css.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-css-test-ts
-- Generated At: 2026-09-27T19:11:41.477Z
+- Generated At: 2026-09-27T21:43:40.639Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Unit test suite for the CSS language adapter, validating dependency extraction f
 - Tests external URL filtering and missing file handling (unresolved dependencies)
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.477Z","inputHash":"6590aa7d03ceaa4c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.639Z","inputHash":"6590aa7d03ceaa4c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -34,16 +34,3 @@ _No public symbols detected_
 - [`css.cssAdapter`](./css.ts.mdmd.md#symbol-cssadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [css.ts](./css.ts.mdmd.md)
-- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

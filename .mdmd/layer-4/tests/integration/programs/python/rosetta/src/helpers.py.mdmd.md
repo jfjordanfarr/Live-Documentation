@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/helpers.py
 - Live Doc ID: LD-test-tests-integration-programs-python-rosetta-src-helpers-py
-- Generated At: 2026-09-27T20:03:33.911Z
+- Generated At: 2026-09-27T21:43:46.926Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Utility functions for the Python Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests selective import detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.911Z","inputHash":"ba388a58babbe4aa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.926Z","inputHash":"ba388a58babbe4aa"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `format_value` {#symbol-format_value}
@@ -54,13 +54,3 @@ Computes the average of numeric values.
 - `re`
 - `typing` - `List`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

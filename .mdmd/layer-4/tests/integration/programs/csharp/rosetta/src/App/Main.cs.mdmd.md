@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/App/Main.cs
 - Live Doc ID: LD-test-tests-integration-programs-csharp-rosetta-src-app-main-cs
-- Generated At: 2026-09-27T18:53:06.057Z
+- Generated At: 2026-09-27T21:43:44.345Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ C# Rosetta Stone fixture source file. Part of the cross-language benchmark suite
 See [2026-01-14.1.md](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests C# namespace using and type reference detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.057Z","inputHash":"0e654c0a2bdf1d8d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.345Z","inputHash":"0e654c0a2bdf1d8d"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main` {#symbol-main}
@@ -48,13 +48,3 @@ Formatted summary of the processing results
 - [`Report`](../Models/Report.cs.mdmd.md#symbol-report-class)
 - [`Processor`](../Processor/Processor.cs.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

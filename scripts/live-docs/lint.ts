@@ -9,8 +9,7 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
   type LiveDocumentationConfig,
-  type LiveDocumentationConfigInput,
-  type LiveDocumentationEvidenceStrictMode
+  type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
 
@@ -181,20 +180,6 @@ async function main(): Promise<void> {
 
       validateStructure(relativePath, content, issues);
       validateAuthoredSections(relativePath, content, warnings);
-
-      const archetype = detectArchetype(content);
-      if (archetype === "implementation") {
-        validateImplementationEvidence(
-          relativePath,
-          content,
-          warnings,
-          issues,
-          config.evidence.strict
-        );
-      } else if (archetype === "test") {
-        validateTestLinks(relativePath, content, warnings);
-      }
-
       validateRelativeLinks(relativePath, content, issues);
     })
   );
@@ -292,122 +277,6 @@ function validateAuthoredSections(
   }
 }
 
-function validateImplementationEvidence(
-  file: string,
-  content: string,
-  warnings: LintWarning[],
-  issues: LintIssue[],
-  strictMode: LiveDocumentationEvidenceStrictMode
-): void {
-  const observedEvidenceExists = hasSection(content, "Observed Evidence");
-  if (!observedEvidenceExists) {
-    return;
-  }
-
-  const block = extractSection(content, "Observed Evidence");
-  const trimmed = block.trim();
-  if (!trimmed) {
-    reportEvidenceProblem(
-      file,
-      "Observed Evidence block empty",
-      strictMode,
-      warnings,
-      issues
-    );
-    return;
-  }
-
-  const waiverMatch = trimmed.match(/^<!--\s*evidence-waived[^>]*-->/i);
-  const hasWaiver = Boolean(waiverMatch);
-  const remainder = hasWaiver ? trimmed.slice(waiverMatch![0].length).trim() : trimmed;
-
-  const lines = remainder.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const hasDefaultMessage = lines.some((line) =>
-    line.toLowerCase().includes("_no automated evidence found_")
-  );
-  const hasBullet = lines.some((line) => line.startsWith("- "));
-  const hasEvidenceEntries = hasBullet || (!hasDefaultMessage && lines.length > 0);
-
-  if (!hasEvidenceEntries) {
-    if (hasWaiver) {
-      if (!hasDefaultMessage) {
-        warnings.push({
-          file,
-          message: "Evidence waiver present but default message missing"
-        });
-      }
-      return;
-    }
-
-    reportEvidenceProblem(
-      file,
-      "Observed Evidence contains no automated evidence and lacks a waiver comment",
-      strictMode,
-      warnings,
-      issues
-    );
-    return;
-  }
-
-  if (hasDefaultMessage && !hasWaiver) {
-    reportEvidenceProblem(
-      file,
-      "Observed Evidence indicates no automated evidence but is missing an evidence waiver comment",
-      strictMode,
-      warnings,
-      issues
-    );
-  }
-
-  if (hasWaiver && hasEvidenceEntries && !hasDefaultMessage) {
-    warnings.push({
-      file,
-      message: "Evidence waiver present despite recorded evidence entries"
-    });
-  }
-
-  if (!hasBullet && !hasDefaultMessage) {
-    warnings.push({
-      file,
-      message: "Observed Evidence should enumerate tests as bullet list items"
-    });
-  }
-}
-
-function reportEvidenceProblem(
-  file: string,
-  message: string,
-  strictMode: LiveDocumentationEvidenceStrictMode,
-  warnings: LintWarning[],
-  issues: LintIssue[]
-): void {
-  if (strictMode === "off") {
-    return;
-  }
-
-  if (strictMode === "error") {
-    issues.push({ file, message });
-    return;
-  }
-
-  warnings.push({ file, message });
-}
-
-function validateTestLinks(file: string, content: string, warnings: LintWarning[]): void {
-  if (!hasSection(content, "Targets")) {
-    warnings.push({
-      file,
-      message: "Targets block missing"
-    });
-  }
-  if (!hasSection(content, "Supporting Fixtures")) {
-    warnings.push({
-      file,
-      message: "Supporting Fixtures block missing"
-    });
-  }
-}
-
 function validateRelativeLinks(file: string, content: string, issues: LintIssue[]): void {
   const linkPattern = /\[[^\]]*\]\(([^)]+)\)/g;
   let match: RegExpExecArray | null;
@@ -500,25 +369,6 @@ function hasSection(content: string, section: string): boolean {
   const begin = `<!-- LIVE-DOC:BEGIN ${section} -->`;
   const end = `<!-- LIVE-DOC:END ${section} -->`;
   return content.includes(begin) && content.includes(end);
-}
-
-function extractSection(content: string, section: string): string {
-  const begin = `<!-- LIVE-DOC:BEGIN ${section} -->`;
-  const end = `<!-- LIVE-DOC:END ${section} -->`;
-  const startIndex = content.indexOf(begin);
-  const endIndex = content.indexOf(end);
-  if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
-    return "";
-  }
-  return content.slice(startIndex + begin.length, endIndex).trim();
-}
-
-function detectArchetype(content: string): string {
-  const match = content.match(/-\s+Archetype:\s+(\w+)/);
-  if (match) {
-    return match[1].toLowerCase();
-  }
-  return "implementation";
 }
 
 function extractAuthoredBlock(content: string): string | undefined {

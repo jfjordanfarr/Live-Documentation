@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/stock.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-stock-rs
-- Generated At: 2026-09-27T20:50:54.255Z
+- Generated At: 2026-09-27T21:43:47.931Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The `stock` module of the stockroom sample program: declares its `item` and `qua
 - A module file with a submodule directory (`src/stock/`), the 2018 layout; its `pub use` lines are the re-exports other files' paths are followed through.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.255Z","inputHash":"aa886751d62ad134"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.931Z","inputHash":"aa886751d62ad134"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Countable` {#symbol-countable}
@@ -43,13 +43,3 @@ The amount to add up.
 - [`Quantity`](./stock/quantity.rs.mdmd.md#symbol-quantity)
 - [`quantity.Unit`](./stock/quantity.rs.mdmd.md#symbol-unit-enum)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

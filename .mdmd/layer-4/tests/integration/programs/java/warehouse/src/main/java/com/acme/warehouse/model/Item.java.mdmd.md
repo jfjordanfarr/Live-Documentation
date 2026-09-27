@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Item.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-item-java
-- Generated At: 2026-09-27T20:19:23.831Z
+- Generated At: 2026-09-27T21:43:45.717Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Two top-level types in one file: the adapter publishes both and resolves `ItemFormatter` from `Item` as a type declared in the same file. The constructor shares the class's name, so the headings carry `(class)` and `(constructor)`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.831Z","inputHash":"1339d57beaffbde5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.717Z","inputHash":"1339d57beaffbde5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Item (class)` {#symbol-item-class}
@@ -72,13 +72,3 @@ Formats items; shares the file with `Item` and is visible only in this package.
 - [`Quantity`](./Quantity.java.mdmd.md#symbol-quantity)
 - [`Unit`](./Unit.java.mdmd.md#symbol-unit)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

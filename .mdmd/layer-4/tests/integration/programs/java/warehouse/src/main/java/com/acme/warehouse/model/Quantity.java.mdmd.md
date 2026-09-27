@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java
 - Live Doc ID: LD-test-tests-integration-programs-java-warehouse-src-main-java-com-acme-warehouse-model-quantity-java
-- Generated At: 2026-09-27T20:50:52.723Z
+- Generated At: 2026-09-27T21:43:45.738Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - A record: its components are published as fields. Its `none` factory is the target of the static import in `report/ReportWriter.java`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:52.723Z","inputHash":"12d2b5163b3ec9b0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:45.738Z","inputHash":"12d2b5163b3ec9b0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Quantity` {#symbol-quantity}
@@ -60,13 +60,3 @@ This quantity plus another of the same unit.
 ### Dependencies
 - [`Unit`](./Unit.java.mdmd.md#symbol-unit)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

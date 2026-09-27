@@ -17,7 +17,6 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.requireRelativeLinks).toBe(true);
     expect(config.slugDialect).toBe("github");
     expect(config.enableDocstringBridge).toBe(false);
-    expect(config.evidence.strict).toBe("warning");
     expect(config.bundleExclude).toEqual([]);
   });
 
@@ -46,10 +45,7 @@ describe("normalizeLiveDocumentationConfig", () => {
       },
       requireRelativeLinks: false,
       slugDialect: "azure-devops",
-      enableDocstringBridge: true,
-      evidence: {
-        strict: "error"
-      }
+      enableDocstringBridge: true
     });
 
     expect(config.root).toBe("docs/ld");
@@ -66,7 +62,6 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.requireRelativeLinks).toBe(false);
     expect(config.slugDialect).toBe("azure-devops");
     expect(config.enableDocstringBridge).toBe(true);
-    expect(config.evidence.strict).toBe("error");
   });
 
   it("falls back to defaults when overrides are blank", () => {
@@ -81,7 +76,6 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.baseLayer).toBe(DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer);
     expect(config.extension).toBe(DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension);
     expect(config.glob).toEqual(DEFAULT_LIVE_DOCUMENTATION_CONFIG.glob);
-    expect(config.evidence.strict).toBe("warning");
   });
 
   it("ensures extension values have a leading dot", () => {

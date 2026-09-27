@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-views-membraneview-types-ts
-- Generated At: 2026-03-25T17:08:30.206Z
+- Generated At: 2026-09-27T21:43:39.745Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Shared type vocabulary for the Membrane Map layout engine, defining the recursiv
 - `MembraneLayout.index` provides O(1) lookup by node ID, avoiding tree traversal when the controller needs to map a click event or pin anchor to its layout position.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-25T17:08:30.206Z","inputHash":"2b11d60c0d0a3c03"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.745Z","inputHash":"2b11d60c0d0a3c03"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WeightFunction` {#symbol-weightfunction}
@@ -71,13 +71,3 @@ The complete output of the membrane layout computation.
 ### Dependencies
 - [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [detail-levels.test.ts](./detail-levels.test.ts.mdmd.md)
-- [edge-bundling.test.ts](./edge-bundling.test.ts.mdmd.md)
-- [layout.test.ts](./layout.test.ts.mdmd.md)
-- [pin-state.test.ts](./pin-state.test.ts.mdmd.md)
-- [svg-connections.test.ts](./svg-connections.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

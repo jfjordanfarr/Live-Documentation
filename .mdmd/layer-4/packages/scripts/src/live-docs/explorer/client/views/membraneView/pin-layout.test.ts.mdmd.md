@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.test.ts
 - Live Doc ID: LD-test-packages-scripts-src-live-docs-explorer-client-views-membraneview-pin-layout-test-ts
-- Generated At: 2026-09-27T19:11:40.539Z
+- Generated At: 2026-09-27T21:43:39.543Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Vitest unit tests for the pin-layout dependency-flow engine, covering topologica
 - Test helper `addPin` creates pin state entries; `EMPTY_PIN_SET` provides the base case
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:40.539Z","inputHash":"54e9af42d8508996"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:39.543Z","inputHash":"54e9af42d8508996"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -40,16 +40,3 @@ _No public symbols detected_
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-#### Vitest Unit Tests
-- packages/scripts/src/live-docs/explorer/client/views: [symbolAnchors.ts](../symbolAnchors.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/client/views/membraneView: [pin-layout.ts](./pin-layout.ts.mdmd.md), [pin-state.ts](./pin-state.ts.mdmd.md)
-- packages/scripts/src/live-docs/explorer/shared: [types.ts](../../../shared/types.ts.mdmd.md)
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/storage/repository.py
 - Live Doc ID: LD-test-tests-integration-programs-python-ledger-ledger-storage-repository-py
-- Generated At: 2026-09-27T20:03:33.575Z
+- Generated At: 2026-09-27T21:43:46.494Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Imports `Account` from the package root, so the dependency on `models/account.py` is reached through two barrels.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:33.575Z","inputHash":"78e8be8a94e0c111"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:46.494Z","inputHash":"78e8be8a94e0c111"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository` {#symbol-repository}
@@ -50,13 +50,3 @@ Keeps accounts by name; one shared instance serves the process.
 - [`ledger`](../__init__.py.mdmd.md)
 - [`Account`](../models/account.py.mdmd.md#symbol-account)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

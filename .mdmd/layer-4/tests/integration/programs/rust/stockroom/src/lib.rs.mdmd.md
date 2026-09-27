@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/lib.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-stockroom-src-lib-rs
-- Generated At: 2026-09-27T20:50:54.219Z
+- Generated At: 2026-09-27T21:43:47.888Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ The library root of the stockroom sample program: declares the `report`, `stock`
 - The root module every `crate::` path in the library names, and the module the binary and the integration test reach through the package name `stockroom`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.219Z","inputHash":"af10ea4f8a7e4533"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:47.888Z","inputHash":"af10ea4f8a7e4533"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `report` {#symbol-report}
@@ -39,13 +39,3 @@ The library root of the stockroom sample program: declares the `report`, `stock`
 - [`Memory`](./store/memory.rs.mdmd.md#symbol-memory)
 - [`store`](./store/mod.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

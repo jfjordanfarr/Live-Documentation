@@ -13,10 +13,9 @@ export type LiveDocumentationSlugDialect = "github" | "azure-devops" | "gitlab";
 /**
  * Classifies a tracked workspace artifact into a structural role.
  *
- * Archetypes drive how the Live Doc generator emits metadata sections
- * (e.g. `test` files get an "Observed Evidence" section, `asset` files
- * get a stub-only doc). The generator infers archetypes from path patterns
- * but consumers can force a value via {@link LiveDocumentationConfig.archetypeOverrides}.
+ * The archetype is recorded in each Live Doc's metadata. The generator infers
+ * it from path patterns, and consumers can force a value via
+ * {@link LiveDocumentationConfig.archetypeOverrides}.
  */
 export type LiveDocumentationArchetype =
   | "implementation"
@@ -31,24 +30,6 @@ export type LiveDocumentationArchetype =
   | "testing";
 
 /**
- * Controls lint severity when a non-test file lacks observed evidence
- * (coverage manifests, waivers, or fixture references).
- *
- * - `"off"` — no diagnostic emitted.
- * - `"warning"` — lint emits a warning (default).
- * - `"error"` — lint treats missing evidence as a hard failure.
- */
-export type LiveDocumentationEvidenceStrictMode = "off" | "warning" | "error";
-
-/**
- * Evidence-related settings that control how the Live Docs lint pipeline
- * reports missing test coverage or waivers on implementation files.
- */
-export interface LiveDocumentationEvidenceConfig {
-  strict: LiveDocumentationEvidenceStrictMode;
-}
-
-/**
  * Complete, resolved configuration for the Live Documentation pipeline.
  *
  * Every CLI command, generator pass, lint rule, and explorer view reads from
@@ -56,8 +37,8 @@ export interface LiveDocumentationEvidenceConfig {
  * which fills missing fields from {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
  *
  * This interface is the single source of truth for how the pipeline maps
- * workspace source artifacts to their Live Doc mirror files, which slug
- * dialect to use, and how strictly evidence is enforced.
+ * workspace source artifacts to their Live Doc mirror files and which slug
+ * dialect to use.
  */
 export interface LiveDocumentationConfig {
   /** Filesystem root where staged Live Docs are written. */
@@ -76,8 +57,6 @@ export interface LiveDocumentationConfig {
   slugDialect: LiveDocumentationSlugDialect;
   /** Toggle for docstring bridge reconciliation once adapters are configured. */
   enableDocstringBridge: boolean;
-  /** Evidence configuration controlling lint severity when evidence is missing. */
-  evidence: LiveDocumentationEvidenceConfig;
   /**
    * Workspace-relative glob patterns for markdown files that Live Docs may link
    * to but that the Explorer must not bundle or show as related documents
@@ -93,9 +72,7 @@ export interface LiveDocumentationConfig {
  * want to override; everything else falls back to
  * {@link DEFAULT_LIVE_DOCUMENTATION_CONFIG}.
  */
-export type LiveDocumentationConfigInput = Partial<LiveDocumentationConfig> & {
-  evidence?: Partial<LiveDocumentationEvidenceConfig>;
-};
+export type LiveDocumentationConfigInput = Partial<LiveDocumentationConfig>;
 
 // Consumer-friendly defaults.
 //
@@ -209,9 +186,6 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   requireRelativeLinks: true,
   slugDialect: "github",
   enableDocstringBridge: false,
-  evidence: {
-    strict: "warning"
-  },
   bundleExclude: []
 };
 
@@ -239,10 +213,6 @@ export function normalizeLiveDocumentationConfig(
     ? { ...input.archetypeOverrides }
     : {};
 
-  const evidence: LiveDocumentationEvidenceConfig = {
-    strict: input?.evidence?.strict ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.evidence.strict
-  };
-
   const inputBundleExclude = Array.isArray(input?.bundleExclude) ? input?.bundleExclude : undefined;
   const bundleExclude = inputBundleExclude ? dedupeStrings(inputBundleExclude) : [];
 
@@ -263,7 +233,6 @@ export function normalizeLiveDocumentationConfig(
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
     enableDocstringBridge:
       input?.enableDocstringBridge ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.enableDocstringBridge,
-    evidence,
     bundleExclude
   };
 }

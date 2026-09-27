@@ -5,18 +5,18 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/markdown.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-markdown-ts
-- Generated At: 2026-09-27T10:16:23.994Z
+- Generated At: 2026-09-27T21:43:41.530Z
 
 ## Authored
 ### Purpose
 Renders Live Doc sections with deterministic markers, provenance, and authored-block preservation so generators and lint can round-trip markdown safely.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-15-build-evidence-bridge--lint-pipeline-lines-2641-2960]
 
 ### Notes
-- Powers the Stage‑0 generator, evidence bridge, and lint flow introduced during the initial Live Docs rollout.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-15-build-evidence-bridge--lint-pipeline-lines-2641-2960]
+- Powers the Stage‑0 generator and lint flow introduced during the initial Live Docs rollout.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-15-build-evidence-bridge--lint-pipeline-lines-2641-2960]
 - Updated in the Stage‑0 recovery to adopt the `.md` extension and lint-friendly import order while keeping authored sections intact.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-15.SUMMARIZED.md#turn-15-shift-live-docs-to-md-outputs-lines-1401-1820]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:23.994Z","inputHash":"e0842e3b932151b2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:41.530Z","inputHash":"0468ffd7f1eccdd3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LIVE_DOC_BEGIN_MARKER_PREFIX` {#symbol-live_doc_begin_marker_prefix}
@@ -56,7 +56,7 @@ A named section of generated content within a Live Doc, rendered between
 Full set of inputs required to render a single Live Doc markdown document.
 
 The authored block is preserved across regeneration; generated sections
-(Public Symbols, Dependencies, Observed Evidence) are replaced each run.
+(Public Symbols, Dependencies) are replaced each run.
 
 #### `renderLiveDocMarkdown` {#symbol-renderlivedocmarkdown}
 - Type: function
@@ -140,18 +140,3 @@ metadata field to uniquely identify each document in the Live Doc graph.
 - [`schema.LiveDocProvenance`](./schema.ts.mdmd.md#symbol-livedocprovenance) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Integration Tests
-- [evidence.test.ts](../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
-- [generation.test.ts](../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
-- [oracle.test.ts](../../../../tests/integration/live-docs/oracle.test.ts.mdmd.md)
-- [polyglot-fixtures.test.ts](../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
-- [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
-
-#### Vitest Unit Tests
-- [generator.test.ts](../../../generator/src/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../generator/src/renderPublicSymbolLines.test.ts.mdmd.md)
-- [generator.test.ts](./generator.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

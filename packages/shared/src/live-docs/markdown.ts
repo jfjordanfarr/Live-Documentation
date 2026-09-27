@@ -25,7 +25,7 @@ export interface LiveDocRenderSection {
  * Full set of inputs required to render a single Live Doc markdown document.
  *
  * The authored block is preserved across regeneration; generated sections
- * (Public Symbols, Dependencies, Observed Evidence) are replaced each run.
+ * (Public Symbols, Dependencies) are replaced each run.
  */
 export interface RenderLiveDocOptions {
   title: string;

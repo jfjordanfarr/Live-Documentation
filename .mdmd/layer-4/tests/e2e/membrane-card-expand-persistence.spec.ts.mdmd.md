@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-card-expand-persistence.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-card-expand-persistence-spec-ts
-- Generated At: 2026-09-27T19:11:42.573Z
+- Generated At: 2026-09-27T21:43:42.119Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Playwright E2E regression suite for `expandedCards` URL-state persistence in the
 - After the fix landed in `compressed-url-state.ts` (new `c?` field) and `membraneView/index.ts` (seed from `urlSnapshot.expandedCards`, persist in `persistToUrl()`), all three tests turned green in the same session without modification.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.573Z","inputHash":"0314da747d6fab5a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.119Z","inputHash":"0314da747d6fab5a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,13 +32,3 @@ _No public symbols detected_
 - [`helpers.expandDirectory`](./helpers.ts.mdmd.md#symbol-expanddirectory)
 - [`helpers.goToMembraneMap`](./helpers.ts.mdmd.md#symbol-gotomembranemap)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

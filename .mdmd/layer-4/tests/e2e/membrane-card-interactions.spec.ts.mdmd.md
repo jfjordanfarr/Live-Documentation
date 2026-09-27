@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/membrane-card-interactions.spec.ts
 - Live Doc ID: LD-test-tests-e2e-membrane-card-interactions-spec-ts
-- Generated At: 2026-09-27T19:11:42.600Z
+- Generated At: 2026-09-27T21:43:42.144Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ E2E tests for Membrane Map card interaction behaviors: collapsed default state, 
 - Test-backed gold border styling test verifies `.membrane-card--test-backed` class on test files like `environment.test.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:42.600Z","inputHash":"eb7c1933119346b9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:42.144Z","inputHash":"eb7c1933119346b9"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,13 +33,3 @@ _No public symbols detected_
 - [`helpers.expandDirectory`](./helpers.ts.mdmd.md#symbol-expanddirectory)
 - [`helpers.goToMembraneMap`](./helpers.ts.mdmd.md#symbol-gotomembranemap)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

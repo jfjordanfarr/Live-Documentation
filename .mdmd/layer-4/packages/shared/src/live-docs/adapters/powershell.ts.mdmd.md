@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/powershell.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-powershell-ts
-- Generated At: 2026-02-16T18:46:24.948Z
+- Generated At: 2026-09-27T21:43:40.977Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Dot-sourced paths are normalized to workspace-relative form so downstream graph 
 Runtime extraction depends on [`scripts/powershell/emit-ast.ps1`](../../../../../scripts/powershell/emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T18:46:24.948Z","inputHash":"ee8eec8b8914c145"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:40.977Z","inputHash":"ee8eec8b8914c145"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `powershellAdapter` {#symbol-powershelladapter}
@@ -41,9 +41,3 @@ Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, 
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [powershell.test.ts](./powershell.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

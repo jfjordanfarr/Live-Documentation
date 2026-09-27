@@ -18,7 +18,6 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 | Command                      | Purpose                                |
 | ---------------------------- | -------------------------------------- |
 | `npm run live-docs:generate` | Regenerate Live Docs for tracked files |
-| `npm run live-docs:targets`  | Rebuild the target manifest            |
 
 #### `live-docs:generate`
 
@@ -56,7 +55,7 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 
 #### `live-docs:lint`
 
-Validates structural markers, relative links, slug dialect compliance, and evidence placeholders.
+Validates the structure of every generated doc and its links, and warns about what a person still has to write.
 
 ```bash
 npm run live-docs:lint -- --workspace /path/to/repo
@@ -64,10 +63,13 @@ npm run live-docs:lint -- --workspace /path/to/repo
 
 **What's Enforced:**
 
+- The `Metadata`, `Authored` and `Generated` headings and the `Public Symbols` and `Dependencies` markers are present
 - Relative links only (no absolute paths)
-- Generated-marker integrity (fences intact)
-- Evidence presence (unless waived)
-- Slug dialect compliance (`github`, `azure-devops`, `gitlab`)
+
+**What's Warned About:**
+
+- Authored `Purpose` or `Notes` still holding the placeholder text
+- Files with no dependencies and no dependents, which usually means no adapter understood them
 
 ---
 

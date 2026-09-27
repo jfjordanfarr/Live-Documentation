@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/c/modular/src/logger.h
 - Live Doc ID: LD-test-tests-integration-programs-c-modular-src-logger-h
-- Generated At: 2026-09-27T18:53:04.938Z
+- Generated At: 2026-09-27T21:43:43.314Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Declares the logging helper consumed across the modular C benchmark so pipeline 
 The logger stays intentionally tiny—just a printf wrapper—to keep the fixture portable across build environments.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:04.938Z","inputHash":"33aeb121214fff62"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:43.314Z","inputHash":"33aeb121214fff62"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LOGGER_H` {#symbol-logger_h}
@@ -40,13 +40,3 @@ Provides a consistent logging surface for the modular fixture pipeline.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->

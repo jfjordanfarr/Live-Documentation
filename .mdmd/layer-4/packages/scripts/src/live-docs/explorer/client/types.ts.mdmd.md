@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/types.ts
 - Live Doc ID: LD-implementation-packages-scripts-src-live-docs-explorer-client-types-ts
-- Generated At: 2026-03-29T21:52:09.019Z
+- Generated At: 2026-09-27T21:43:38.286Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `ClickBehaviorTuning` and `VisualTuning` interfaces removed in [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md); `TuningConfig` simplified to only `bezier` and `localMap` properties.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-29T21:52:09.019Z","inputHash":"d4f15ec9ba8a5cc5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:38.286Z","inputHash":"d4f15ec9ba8a5cc5"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
@@ -103,21 +103,3 @@ Built by the Circuit Board view to lay out the treemap hierarchy.
 ### Dependencies
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Observed Evidence -->
-### Observed Evidence
-#### Vitest Unit Tests
-- [compressed-url-state.test.ts](./persistence/compressed-url-state.test.ts.mdmd.md)
-- [aggregation.test.ts](./views/circuitView/aggregation.test.ts.mdmd.md)
-- [layout-measure.test.ts](./views/localView/layout-measure.test.ts.mdmd.md)
-- [pan-zoom.test.ts](./views/localView/pan-zoom.test.ts.mdmd.md)
-- [subgraph-builder.test.ts](./views/localView/subgraph-builder.test.ts.mdmd.md)
-- [symbol-highlight.test.ts](./views/localView/symbol-highlight.test.ts.mdmd.md)
-- [detail-levels.test.ts](./views/membraneView/detail-levels.test.ts.mdmd.md)
-- [edge-bundling.test.ts](./views/membraneView/edge-bundling.test.ts.mdmd.md)
-- [hierarchy.test.ts](./views/membraneView/hierarchy.test.ts.mdmd.md)
-- [layout.test.ts](./views/membraneView/layout.test.ts.mdmd.md)
-- [pin-state.test.ts](./views/membraneView/pin-state.test.ts.mdmd.md)
-- [svg-connections.test.ts](./views/membraneView/svg-connections.test.ts.mdmd.md)
-- [squarify.test.ts](./views/squarify.test.ts.mdmd.md)
-<!-- LIVE-DOC:END Observed Evidence -->

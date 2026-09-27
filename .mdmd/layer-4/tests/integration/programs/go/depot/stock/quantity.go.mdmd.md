@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/stock/quantity.go
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-stock-quantity-go
-- Generated At: 2026-09-27T20:36:56.778Z
+- Generated At: 2026-09-27T21:43:44.872Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - Half of the `stock` package; the other file uses `format`, `Quantity` and `Unit` from here without qualification, which is the same-package case the adapter resolves through sibling files.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:36:56.778Z","inputHash":"fb1701aa27e92f0f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T21:43:44.872Z","inputHash":"fb1701aa27e92f0f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Unit (type)` {#symbol-unit-type}
@@ -83,13 +83,3 @@ format renders a quantity for a report line; item.go uses it.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
-
-<!-- LIVE-DOC:BEGIN Targets -->
-### Targets
-_No targets documented yet_
-<!-- LIVE-DOC:END Targets -->
-
-<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
-### Supporting Fixtures
-_No supporting fixtures documented yet_
-<!-- LIVE-DOC:END Supporting Fixtures -->
