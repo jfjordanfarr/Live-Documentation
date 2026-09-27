@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/generation.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-generation-test-ts
-- Generated At: 2026-02-03T21:55:51.324Z
+- Generated At: 2026-09-27T08:09:23.238Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Spins up a scratch workspace, seeds a sample TypeScript module, and runs the gen
 - Seeds a legacy `### Description` block to ensure the generator keeps unexpected human-authored headings even after the template dropped that section ([deterministic template refresh](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-09.SUMMARIZED.md#turn-13-regenerate-base-layer-without-description-lines-1841-1990)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.324Z","inputHash":"80675564170c6cfd"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:23.238Z","inputHash":"c796998a67f695ef"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,11 +28,20 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:os`
 - `node:path`
+- [`generator.generateLiveDocs`](../../../packages/server/src/features/live-docs/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- `vitest` - `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Integration Tests
+- packages/server/src/features/live-docs: [evidenceBridge.ts](../../../packages/server/src/features/live-docs/evidenceBridge.ts.mdmd.md), [generator.ts](../../../packages/server/src/features/live-docs/generator.ts.mdmd.md)
+- packages/shared/src/config: [liveDocumentationConfig.ts](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md)
+- packages/shared/src/live-docs: [core.ts](../../../packages/shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../../packages/shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../../packages/shared/src/live-docs/schema.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../../packages/shared/src/tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

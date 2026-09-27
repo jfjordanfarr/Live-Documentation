@@ -11,8 +11,6 @@ module.exports = tseslint.config(
       "**/dist/**",
       "out/**",
       "**/out/**",
-      ".vscode-test/**",
-  "tests/integration/dist/**",
   "tests/integration/benchmarks/fixtures/**",
   "scripts/fixture-tools/*.js",
       "node_modules/**",

@@ -36,50 +36,11 @@ function runSafeCommitCheck() {
   const flags = parseFlags(process.argv.slice(2));
 
   try {
-    const verifyArgs = ['run', 'verify'];
-    if (flags.mode || flags.generateReport) {
-      verifyArgs.push('--');
-      if (flags.mode) {
-        verifyArgs.push('--mode', flags.mode);
-      }
-      if (flags.generateReport) {
-        verifyArgs.push('--report');
-      }
-    }
-
-    runNpmScript('Verify (lint + unit + integration)', verifyArgs);
-
-    if (flags.includeBenchmarks) {
-      runStep(
-        'Regenerate benchmark fixtures',
-        process.platform === 'win32' ? 'npx.cmd' : 'npx',
-        [
-          'tsx',
-          '--tsconfig',
-          './tsconfig.base.json',
-          './scripts/fixture-tools/regenerate-benchmarks.ts',
-          '--write'
-        ],
-        { shell: process.platform === 'win32' }
-      );
-
-      const benchmarkArgs = ['run', 'test:benchmarks'];
-      if (flags.benchmarkArgs.length > 0) {
-        benchmarkArgs.push('--', ...flags.benchmarkArgs);
-      }
-      const benchmarkEnv = {
-        BENCHMARK_SKIP_REGENERATE: '1'
-      };
-      if (flags.mode) {
-        benchmarkEnv.BENCHMARK_MODE = flags.mode;
-      }
-      runNpmScript('Benchmarks', benchmarkArgs, benchmarkEnv);
-    }
+    runNpmScript('Verify (lint + build + unit + integration)', ['run', 'verify']);
     runNpmScript('Live Docs regeneration', ['run', 'live-docs:generate']);
     runNpmScript('Fixture workspace verification', ['run', 'fixtures:verify'], {
       FIXTURES_VERIFY_QUIET: '1'
     });
-    runNpmScript('Documentation link enforcement', ['run', 'docs:links:enforce']);
     runNpmScript('Live Docs pipeline (lint + report)', ['run', 'livedocs', '--', '--skip-generate', '--report']);
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
@@ -89,32 +50,6 @@ function runSafeCommitCheck() {
     if (flags.includeE2E) {
       runNpmScript('Explorer visualization build', ['run', 'live-docs:visualize']);
       runNpmScript('Playwright E2E tests', ['run', 'test:e2e']);
-    }
-
-    if (flags.generateReport) {
-      const reportModes = resolveReportModes(flags.mode);
-      for (const reportMode of reportModes) {
-        const reportEnv = { ...process.env };
-        if (flags.mode) {
-          reportEnv.BENCHMARK_MODE = flags.mode;
-        }
-        runStep(
-          `Generate test report (${reportMode})`,
-          process.platform === 'win32' ? 'npx.cmd' : 'npx',
-          [
-            'tsx',
-            '--tsconfig',
-            './tsconfig.base.json',
-            './scripts/reporting/generateTestReport.ts',
-            '--mode',
-            reportMode
-          ],
-          {
-            env: reportEnv,
-            shell: process.platform === 'win32'
-          }
-        );
-      }
     }
   } catch (error) {
     console.error('\nSafe to commit check failed.');
@@ -156,18 +91,9 @@ runSafeCommitCheck();
 
 function parseFlags(argv) {
   let skipGitStatus = coerceBoolean(process.env.npm_config_skip_git_status) ?? false;
-  let mode =
-    normalizeMode(process.env.BENCHMARK_MODE ?? process.env.npm_config_mode) ??
-    'ast';
-  let generateReport = coerceBoolean(process.env.npm_config_report) ?? false;
-  let includeBenchmarks = coerceBoolean(process.env.npm_config_benchmarks) ?? false;
   let includeE2E = coerceBoolean(process.env.npm_config_e2e) ?? false;
-  const benchmarkArgs = [];
-  let reportPreference = 'default';
 
-  for (let index = 0; index < argv.length; index += 1) {
-    const token = argv[index];
-
+  for (const token of argv) {
     if (token === '--skip-git-status' || token === '--ci') {
       skipGitStatus = true;
       continue;
@@ -175,59 +101,6 @@ function parseFlags(argv) {
 
     if (token === '--no-skip-git-status') {
       skipGitStatus = false;
-      continue;
-    }
-
-    if (token === '--mode') {
-      const value = argv[index + 1];
-      if (!value) {
-        console.error('--mode requires a value');
-        process.exit(1);
-      }
-      const resolved = normalizeMode(value);
-      if (!resolved) {
-        console.error(`Invalid mode: ${value}`);
-        process.exit(1);
-      }
-      mode = resolved;
-      index += 1;
-      continue;
-    }
-
-    if (token.startsWith('--mode=')) {
-      const [, value] = token.split('=', 2);
-      if (!value) {
-        console.error('--mode requires a value');
-        process.exit(1);
-      }
-      const resolved = normalizeMode(value);
-      if (!resolved) {
-        console.error(`Invalid mode: ${value}`);
-        process.exit(1);
-      }
-      mode = resolved;
-      continue;
-    }
-
-    if (token === '--report') {
-      generateReport = true;
-      reportPreference = 'force';
-      continue;
-    }
-
-    if (token === '--no-report') {
-      generateReport = false;
-      reportPreference = 'skip';
-      continue;
-    }
-
-    if (token === '--benchmarks') {
-      includeBenchmarks = true;
-      continue;
-    }
-
-    if (token === '--no-benchmarks') {
-      includeBenchmarks = false;
       continue;
     }
 
@@ -241,29 +114,6 @@ function parseFlags(argv) {
       continue;
     }
 
-    if (token === '--suite' || token.startsWith('--suite=')) {
-      const value = token.includes('=') ? token.split('=', 2)[1] : argv[index + 1];
-      if (!value) {
-        console.error('--suite requires a value');
-        process.exit(1);
-      }
-      benchmarkArgs.push('--suite', value);
-      if (!token.includes('=')) {
-        index += 1;
-      }
-      continue;
-    }
-
-    if (!token.startsWith('-')) {
-      const resolved = normalizeMode(token);
-      if (!resolved) {
-        console.error(`Unknown argument: ${token}`);
-        process.exit(1);
-      }
-      mode = resolved;
-      continue;
-    }
-
     console.error(`Unknown argument: ${token}`);
     process.exit(1);
   }
@@ -272,32 +122,7 @@ function parseFlags(argv) {
     skipGitStatus = true;
   }
 
-  if (includeBenchmarks && reportPreference !== 'skip') {
-    generateReport = true;
-  }
-
-  return { skipGitStatus, mode, generateReport, includeBenchmarks, includeE2E, benchmarkArgs, reportPreference };
-}
-
-function normalizeMode(candidate) {
-  if (!candidate) {
-    return undefined;
-  }
-  const normalized = String(candidate).toLowerCase();
-  if (['ast', 'all'].includes(normalized)) {
-    return normalized;
-  }
-  return undefined;
-}
-
-function resolveReportModes(mode) {
-  if (!mode || mode === 'ast') {
-    return ['ast'];
-  }
-  if (mode === 'all') {
-    return ['ast'];
-  }
-  return [mode];
+  return { skipGitStatus, includeE2E };
 }
 
 function coerceBoolean(value) {

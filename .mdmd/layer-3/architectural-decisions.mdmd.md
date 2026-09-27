@@ -57,7 +57,7 @@ Record the key architectural decisions made during Live Documentation developmen
 
 - **Approach** (as stated in the vision): measure the shipped analyzers against oracles that share no mechanism with them: a compiler's own resolution (SCIP indexes), what actually breaks when a symbol is removed, and small hand-verified fixtures for dynamic patterns. Cross-language parity over the Rosetta fixtures guards against regressions in any one adapter. The details are undesigned.
 - **Ground truth is never filtered**: whatever produces the expectations, its output is not trimmed to fit the analyzer. (In the January 2026 benchmark that meant the union of SCIP and tree-sitter output.) Adapter blocklists may remove only true framework or builtin names. A filter that can only raise false negatives is a bug. The roles stay separate: adapters are the product, oracles are the ground truth, and nothing grades itself.
-- **Where this stands**: the current benchmark scores a benchmark-only inference path rather than the shipped adapters, and its per-fixture thresholds were lowered until it passed. `live-docs:report` compares the analyzer to a re-run of itself. Both are being replaced. The earlier self-similarity mode was removed in early 2026.
+- **Where this stands**: the AST accuracy benchmark was retired on 2026-09-27. It scored a benchmark-only inference path rather than the shipped adapters, its ground truth was the union of SCIP output and that same tree-sitter path, and its per-fixture thresholds had been lowered as far as 15% precision and 5% recall until it passed. `live-docs:report` compares the analyzer to a re-run of itself and is next to go. The replacement, a compiler-backed oracle over the shipped generator, is step 2 of the vision's order of work. The earlier self-similarity mode was removed in early 2026.
 - **Candidate scenarios from the earlier product** (dictated by the owner on 2025-10-21 for the diagnostics tool and lost when the ripple suites were removed; kept as candidates, not commitments): a negative case where JavaScript reuses the variable name `data` in increasingly local scopes and nothing should be reported; `web.config` XSLT transforms from .NET Framework WebForms, to see how metaprogramming is handled; and a rename or move of a source file. Whether each still matters is decided when the benchmark is rebuilt.
 
 ### Edge Storage _(Recorded 2026-09-27; in effect since 2026-01-12)_
@@ -71,7 +71,7 @@ Record the key architectural decisions made during Live Documentation developmen
 Requirements written in 2025 and never implemented, kept as observations rather than commitments:
 
 - A failure part-way through a run should not overwrite existing generated sections; today `generator.ts` has no per-file recovery.
-- Renaming or moving a source file should carry its authored `Purpose` and `Notes` to the new doc; today the old doc is pruned and they are lost.
+- Renaming or moving a source file should carry its authored `Purpose` and `Notes` to the new doc; today the generator refuses to prune a doc that has authored content, so the old doc survives as an orphan (`live-docs:orphans` lists them) and nothing carries its text forward.
 - Writes could be atomic (temp file, then rename) so a crash cannot leave a half-written doc.
 
 Settled in September 2026: derived views (the graph index, system rollups, the Explorer bundle) are regenerated on demand and never committed; only the per-file mirror is.
@@ -88,8 +88,9 @@ Settled in September 2026: derived views (the graph index, system rollups, the E
 
 ### Testing Approach _(Updated 2026-09-27)_
 
-- **Decision**: Vitest for unit tests, Playwright for the Explorer, and mocha suites for cross-language integration. The mocha suites still run through the VS Code Electron harness although none of them use the VS Code API; moving them under Vitest is part of the engine work.
-- **Rationale**: Fast unit feedback; visual behaviour verified in a real browser rather than jsdom.
+- **Decision**: Vitest for unit and integration tests, as two projects in one config; Playwright for the Explorer. The integration project runs the real generator and CLI over fixture workspaces and imports sources directly, so no build precedes it.
+- **Rationale**: Fast feedback; visual behaviour verified in a real browser rather than jsdom.
+- **Retired 2026-09-27**: the VS Code Electron harness (`@vscode/test-electron` plus mocha) that hosted the integration suites. None of them used the VS Code API, and the harness cost a compile step, an 8 GB download cache, and `xvfb` on every Linux run.
 
 ## Descoped Decisions (Audit Trail)
 
@@ -102,6 +103,7 @@ The following decisions were explored and explicitly removed from scope during t
 - **Language Server and Diagnostics** _(Removed 2026-02-18)_: the original ripple and diagnostics subsystem. Type-safe languages already have their own lint and IntelliSense; in-editor polyglot change detection was not mission-critical, and the tool's value moved to generating and showing the map.
 - **Spec-Kit** _(Retired 2026-02-23)_: the bootstrapping scaffolding. Its specs, plans and task lists were migrated into `.mdmd` and have since been retired in turn.
 - **Explorer HTTP Server** _(Removed 2026-03-10)_: the static bundle does everything the server did except open files in the editor.
+- **AST Accuracy Benchmark, Benchmark Reports and Telemetry** _(Retired 2026-09-27)_: the mocha benchmark suite, the per-mode markdown reports under `reports/`, the manual benchmark workflow, the report builder and the inference-accuracy tracker. See "Accuracy Measurement" above for why. One observation from the November 2025 TypeScript oracle is worth carrying into the new one: it classified each edge as a runtime or a type-only binding, a distinction SCIP output does not make on its own.
 - **Copilot-era Steering and Planning Documents** _(Retired 2026-09-27)_: vendor-specific instruction files, daily-summary prompts, the capability-ID vision, the requirement, roadmap and backlog documents, and the falsifiability requirements were replaced by `AGENTS.md`, the rewritten vision, and the entries above. The chat archive was excluded from the Explorer bundle the same day.
 
 ## System References

@@ -617,7 +617,7 @@ function inferScriptKind(extension: string): ts.ScriptKind {
 function classifyTest(relativePath: string): { suite: string; kind: ManifestSuiteKind } {
   if (relativePath.startsWith("tests/")) {
     return {
-      suite: "Mocha Integration Tests",
+      suite: "Vitest Integration Tests",
       kind: "integration"
     };
   }

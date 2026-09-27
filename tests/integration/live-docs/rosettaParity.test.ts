@@ -1,58 +1,39 @@
 /**
  * Rosetta Parity Test
  *
- * Exercises `generateLiveDocs` against all 8 Rosetta Stone fixtures (one per
- * supported language) and validates cross-language structural parity.
+ * Runs the full Live Documentation pipeline over the same small program written
+ * in eight languages (the Rosetta fixtures) and compares the generated markdown
+ * across languages, asserting:
  *
- * Phase 1 of LD-208: Rosetta Parity Enforcement.
- *
- * **What this tests (and why no other test does)**
- *
- * The AST accuracy benchmarks compare `expected.json` (SCIP oracle) against
- * `inferred.json` (our adapters). That tests the dependency *detection* layer.
- * `polyglot-fixtures.test.ts` runs `generateLiveDocs` against 2 language-specific
- * fixtures. Neither exercises all 8 languages, and neither compares results
- * *across* languages.
- *
- * This test runs the full Live Documentation pipeline for each Rosetta fixture
- * and then compares the generated markdown **across languages**, asserting:
- *
- * 1. All source files receive a Live Doc  (file coverage)
- * 2. Public Symbols sections contain expected canonical symbol names
+ * 1. All source files receive a Live Doc (file coverage)
+ * 2. Public Symbols sections contain the canonical symbol names
  * 3. Dependencies sections resolve the canonical topology
  * 4. Leaf/foundation node invariants hold (helpers has no deps, types has no deps)
- * 5. Cross-language consensus — if 6+/8 languages agree, outliers are flagged
+ * 5. Cross-language consensus: if 6+ of 8 languages agree, outliers are flagged
  *
- * Created: 2026-03-11 (Dev Day 77, LD-208 Phase 1)
+ * Parity is a smoke alarm for a regression in any one adapter, not a proof that
+ * the edges are right; that is the job of the compiler-backed oracle.
+ *
+ * Created 2026-03-11.
  */
 import * as assert from "node:assert";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
+import { beforeAll, describe, it } from "vitest";
 
-const { generateLiveDocs } = require(
-  path.join(
-    __dirname,
-    "../../../../packages/server/dist/features/live-docs/generator"
-  )
-) as typeof import("../../../packages/server/dist/features/live-docs/generator");
-
-const {
+import { generateLiveDocs } from "../../../packages/server/src/features/live-docs/generator";
+import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} = require(
-  path.join(
-    __dirname,
-    "../../../../packages/shared/dist/config/liveDocumentationConfig"
-  )
-) as typeof import("../../../packages/shared/dist/config/liveDocumentationConfig");
+} from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-const FIXTURE_ROOT = path.resolve(__dirname, "../../benchmarks/fixtures");
+const FIXTURE_ROOT = path.resolve(__dirname, "../benchmarks/fixtures");
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
@@ -557,13 +538,11 @@ function formatComparisonMatrix(results: FixtureResult[]): string {
 // Test suite
 // ---------------------------------------------------------------------------
 
-suite("Rosetta Parity: cross-language Live Documentation generation", () => {
+describe("Rosetta Parity: cross-language Live Documentation generation", () => {
   const GENERATION_TIMEOUT = 120_000; // 2 minutes for all 8 fixtures
-  let allResults: FixtureResult[] = [];
+  const allResults: FixtureResult[] = [];
 
-  suiteSetup(async function () {
-    this.timeout(GENERATION_TIMEOUT);
-
+  beforeAll(async () => {
     // Generate Live Docs for all 8 fixtures sequentially
     // (sequential to avoid file system contention and to isolate failures)
     for (const fixtureConfig of ROSETTA_FIXTURES) {
@@ -575,13 +554,13 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     const matrix = formatComparisonMatrix(allResults);
     const tmpOutput = path.resolve(
       __dirname,
-      "../../../../AI-Agent-Workspace/tmp/rosetta-parity-matrix.md"
+      "../../../AI-Agent-Workspace/tmp/rosetta-parity-matrix.md"
     );
     await fs.mkdir(path.dirname(tmpOutput), { recursive: true });
     await fs.writeFile(tmpOutput, matrix, "utf8");
-  });
+  }, GENERATION_TIMEOUT);
 
-  test("all 8 fixtures generate without errors", function () {
+  it("all 8 fixtures generate without errors", () => {
     const failures = allResults.filter(r => r.error);
     if (failures.length > 0) {
       const details = failures.map(r => `${r.language}: ${r.error}`).join("\n");
@@ -589,7 +568,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("all 8 fixtures process at least one source file", function () {
+  it("all 8 fixtures process at least one source file", () => {
     for (const result of allResults) {
       assert.ok(
         result.processed > 0,
@@ -598,7 +577,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("all 8 canonical node roles are covered in each fixture", function () {
+  it("all 8 canonical node roles are covered in each fixture", () => {
     const allNodeIds: CanonicalNodeId[] = [
       "main", "processor", "models", "types", "helpers",
       "helpers_test", "processor_test", "pipeline_test"
@@ -619,7 +598,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("leaf nodes (helpers) have no outgoing production dependencies", function () {
+  it("leaf nodes (helpers) have no outgoing production dependencies", () => {
     const violations: string[] = [];
     for (const result of allResults) {
       if (result.error) continue;
@@ -646,7 +625,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("foundation nodes (types) have no outgoing production dependencies", function () {
+  it("foundation nodes (types) have no outgoing production dependencies", () => {
     const violations: string[] = [];
     for (const result of allResults) {
       if (result.error) continue;
@@ -672,7 +651,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("canonical edges are detected with cross-language consensus (≥6/8)", function () {
+  it("canonical edges are detected with cross-language consensus (≥6/8)", () => {
     const CONSENSUS_THRESHOLD = 6;
     const canonicalEdgeKeys = CANONICAL_EDGES.map(e => `${e.from}→${e.to}`);
     const failures: string[] = [];
@@ -699,7 +678,7 @@ suite("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  test("canonical symbol names appear in Public Symbols sections", function () {
+  it("canonical symbol names appear in Public Symbols sections", () => {
     const CONSENSUS_THRESHOLD = 6;
     const failures: string[] = [];
 

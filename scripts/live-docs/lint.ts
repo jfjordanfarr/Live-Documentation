@@ -117,17 +117,6 @@ async function readConfigFile(configPath: string): Promise<LiveDocumentationConf
   return JSON.parse(raw) as LiveDocumentationConfigInput;
 }
 
-function escapeRegexLiteral(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function buildAuthoredContentIgnorePatterns(configRoot: string, baseLayer: string): RegExp[] {
-  const root = configRoot.replace(/\\/g, "/").replace(/^\/+/, "").replace(/\/+$/, "");
-  const layer = baseLayer.replace(/\\/g, "/").replace(/^\/+/, "").replace(/\/+$/, "");
-  const prefix = `${escapeRegexLiteral(root)}/${escapeRegexLiteral(layer)}`;
-  return [new RegExp(`^${prefix}/tests/integration/dist/`)];
-}
-
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -184,10 +173,6 @@ async function main(): Promise<void> {
 
   const issues: LintIssue[] = [];
   const warnings: LintWarning[] = [];
-  const authoredContentIgnorePatterns = buildAuthoredContentIgnorePatterns(
-    config.root,
-    config.baseLayer
-  );
 
   await Promise.all(
     files.map(async (absolutePath) => {
@@ -195,7 +180,7 @@ async function main(): Promise<void> {
       const relativePath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");
 
       validateStructure(relativePath, content, issues);
-      validateAuthoredSections(relativePath, content, warnings, authoredContentIgnorePatterns);
+      validateAuthoredSections(relativePath, content, warnings);
 
       const archetype = detectArchetype(content);
       if (archetype === "implementation") {
@@ -261,12 +246,8 @@ function validateStructure(file: string, content: string, issues: LintIssue[]): 
 function validateAuthoredSections(
   file: string,
   content: string,
-  warnings: LintWarning[],
-  ignorePatterns: RegExp[]
+  warnings: LintWarning[]
 ): void {
-  if (shouldIgnoreAuthoredContentWarning(file, ignorePatterns)) {
-    return;
-  }
   const block = extractAuthoredBlock(content);
   if (!block) {
     return;
@@ -309,10 +290,6 @@ function validateAuthoredSections(
       message: "Authored block still uses placeholder content"
     });
   }
-}
-
-function shouldIgnoreAuthoredContentWarning(file: string, ignorePatterns: RegExp[]): boolean {
-  return ignorePatterns.some(pattern => pattern.test(file));
 }
 
 function validateImplementationEvidence(

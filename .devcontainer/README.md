@@ -74,7 +74,7 @@ With all SCIP indexers available, you can regenerate expected.json files with co
 
 ```bash
 # Regenerate all fixtures with SCIP oracles
-npm run test:benchmarks -- --write
+npm run fixtures:regenerate -- --write
 
 # Or regenerate a specific fixture
 npx tsx scripts/fixture-tools/regenerate-benchmarks.ts --fixture java-rosetta --write

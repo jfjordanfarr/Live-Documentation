@@ -15,38 +15,30 @@ Commands used to **develop** Live Documentation, as opposed to using it. Adopter
 
 Runs, in order:
 
-1. `verify`: ESLint, Vitest unit tests, the VS Code integration suite, documentation link enforcement
+1. `verify`: ESLint, `tsc` for the packages, a type-check of the test suites, the Vitest `unit` and `integration` projects, documentation link enforcement
 2. Live Docs regeneration (`live-docs:generate`)
 3. Fixture workspace verification (`fixtures:verify`)
-4. Documentation link enforcement (`docs:links:enforce`)
-5. Live Docs lint and precision report (`livedocs -- --skip-generate --report`)
-6. SlopCop markdown, asset and symbol audits
-7. Technical debt detection (`tech-debt -- --stale-limit 10`)
+4. Live Docs lint and precision report (`livedocs -- --skip-generate --report`)
+5. SlopCop markdown, asset and symbol audits
+6. Technical debt detection (`tech-debt -- --stale-limit 10`)
 
-Flags: `--benchmarks` appends the AST accuracy benchmark; `--e2e` appends an Explorer build and the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
-
-The integration suite launches VS Code through `@vscode/test-electron`. On Linux, run the gate under `xvfb-run -a`. If your terminal was spawned by VS Code, unset `ELECTRON_RUN_AS_NODE` first, or Electron starts as plain Node and fails to load the test workspace:
-
-```bash
-env -u ELECTRON_RUN_AS_NODE xvfb-run -a npm run safe:commit
-```
+Flags: `--e2e` appends an Explorer build and the Playwright suite; `--skip-git-status` skips the clean-tree check, which is what CI does as `npm run ci-check`.
 
 ### `npm run verify`
 
-Lint, unit and integration tests, and link enforcement, without the rest of the chain. `--mode ast` adds the AST benchmark; `--report` refreshes `reports/test-report.ast.md`.
+Lint, build, type-check, both Vitest projects, and link enforcement, without the rest of the chain.
 
 ---
 
 ## Tests
 
-| Command                    | What it runs                                                                                                                                                                       |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run test:unit`        | Vitest across `packages/*/src`, `scripts/` and the SlopCop suites; no VS Code required                                                                                             |
-| `npm run test:integration` | Mocha suites under the VS Code Electron harness (`tests/integration/`), including CLI pathfinding across languages, cross-language Rosetta parity, and polyglot fixture generation |
-| `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                                    |
-| `npm run test:benchmarks`  | AST accuracy benchmark over `tests/integration/benchmarks/fixtures`; `--mode ast` or `--mode all`                                                                                  |
+| Command                    | What it runs                                                                                                                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run test:unit`        | The Vitest `unit` project: `packages/*/src`, `scripts/` and the SlopCop suites                                                                                 |
+| `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, evidence, polyglot fixtures, CLI pathfinding, Rosetta parity (~20 s) |
+| `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                |
 
-The benchmark currently scores an inference path the product does not ship, against per-fixture thresholds. Rebuilding it around the shipped adapters and SCIP ground truth is step 2 of the vision's order of work.
+Both Vitest projects import TypeScript sources directly, so neither needs a build first. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement, a compiler-backed oracle over the shipped generator, is step 2 of the vision's order of work.
 
 ---
 

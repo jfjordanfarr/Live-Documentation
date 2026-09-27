@@ -16,11 +16,10 @@ This component aggregates synthetic and vendored fixtures across TypeScript, C, 
 #### Covered Artifacts
 - Fixtures: `tests/integration/benchmarks/fixtures/**/{typescript,c,python,rust,java,ruby,csharp}/**`
 - Vendor manifest: [`tests/integration/benchmarks/fixtures/fixtures.manifest.json`](../../tests/integration/benchmarks/fixtures/fixtures.manifest.json)
-- Harness: [`tests/integration/benchmarks/astAccuracy.test.ts`](../../tests/integration/benchmarks/astAccuracy.test.ts)
+- Harness: retired 2026-09-27 with the AST accuracy benchmark; the fixtures now feed the Rosetta parity and polyglot suites under Vitest until the compiler-backed oracle is rebuilt.
 
 ## System References
 ### Components
-- [tests/integration/benchmarks/astAccuracy.test.ts](../layer-4/tests/integration/benchmarks/astAccuracy.test.ts.mdmd.md)
 - [fixtures.manifest.json](../layer-4/tests/integration/benchmarks/fixtures/fixtures.manifest.json.mdmd.md)
 
 #### Fixture Inventory Overview
@@ -107,13 +106,8 @@ Each fixture pairs a curated `expected.json` (ground truth) with the current `in
 - `ruby-cli`: CLI surface layering command dispatch, services, cache, and logging helpers to exercise denser Ruby graphs.
 
 #### Operational Notes
-- Fixture metadata lives in [`fixtures.manifest.json`](../../tests/integration/benchmarks/fixtures/fixtures.manifest.json) and feeds both the benchmark harness and the vendor inventory above.
-- `reports/test-report.ast.md` surfaces precision/recall deltas per fixture; regenerating fixtures or expectations must be followed by report refreshes.
+- Fixture metadata lives in [`fixtures.manifest.json`](../../tests/integration/benchmarks/fixtures/fixtures.manifest.json) and feeds the vendor inventory above.
 - Determinism rules: fixtures avoid external dependencies, pin upstream commits, and record integrity digests so Safe Commit can validate vendored workspaces.
-
-#### Shared Reporting Types
-- [`BenchmarkEnvironment`](../../packages/shared/src/reporting/testReport.ts): describes runtime characteristics (Node version, platform, provider mode) per benchmark run.
-- [`ReportSection`](../../packages/shared/src/reporting/testReport.ts): markdown fragment container used by the benchmark reporter when emitting the AST suite summary.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

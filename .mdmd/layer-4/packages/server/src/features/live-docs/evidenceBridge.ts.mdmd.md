@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/evidenceBridge.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-evidencebridge-ts
-- Generated At: 2026-02-18T21:27:52.427Z
+- Generated At: 2026-09-27T08:09:15.019Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Loads coverage summaries, targets manifests, and evidence waivers into structure
 - Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:27:52.427Z","inputHash":"b41a4ca8528c5796"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:15.019Z","inputHash":"b41a4ca8528c5796"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EvidenceKind` {#symbol-evidencekind}
@@ -103,6 +103,12 @@ The snapshot is consumed once per `generateLiveDocs()` invocation.
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
+#### Vitest Integration Tests
+- [evidence.test.ts](../../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
+- [generation.test.ts](../../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [polyglot-fixtures.test.ts](../../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
+- [rosettaParity.test.ts](../../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
+
 #### Vitest Unit Tests
 - [generator.test.ts](./generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](./renderPublicSymbolLines.test.ts.mdmd.md)

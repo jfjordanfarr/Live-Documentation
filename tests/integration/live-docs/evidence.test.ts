@@ -2,29 +2,19 @@ import * as assert from "node:assert";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
+import { describe, it } from "vitest";
 
-const { generateLiveDocs } = require(
-  path.join(
-    __dirname,
-    "../../../../packages/server/dist/features/live-docs/generator"
-  )
-) as typeof import("../../../packages/server/dist/features/live-docs/generator");
-
-const {
+import { generateLiveDocs } from "../../../packages/server/src/features/live-docs/generator";
+import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} = require(
-  path.join(
-    __dirname,
-    "../../../../packages/shared/dist/config/liveDocumentationConfig"
-  )
-) as typeof import("../../../packages/shared/dist/config/liveDocumentationConfig");
+} from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
 
-suite("Live Docs evidence bridge", () => {
+describe("Live Docs evidence bridge", () => {
   const LIVE_DOC_EXTENSION_PATTERN = LIVE_DOCUMENTATION_FILE_EXTENSION.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
   async function withTempWorkspace(
@@ -38,9 +28,7 @@ suite("Live Docs evidence bridge", () => {
     }
   }
 
-  test("populates observed evidence and targets from coverage manifests", async function () {
-    this.timeout(20000);
-
+  it("populates observed evidence and targets from coverage manifests", async () => {
     await withTempWorkspace(async (workspaceRoot) => {
       const implementationDir = path.join(workspaceRoot, "packages", "app", "src");
       await fs.mkdir(implementationDir, { recursive: true });
@@ -168,9 +156,7 @@ suite("Live Docs evidence bridge", () => {
     });
   });
 
-  test("emits default supporting fixtures block when no fixtures are recorded", async function () {
-    this.timeout(10000);
-
+  it("emits default supporting fixtures block when no fixtures are recorded", async () => {
     await withTempWorkspace(async (workspaceRoot) => {
       const implementationDir = path.join(workspaceRoot, "packages", "app", "src");
       await fs.mkdir(implementationDir, { recursive: true });
@@ -254,9 +240,7 @@ suite("Live Docs evidence bridge", () => {
     });
   });
 
-  test("omits observed evidence when no coverage or waivers are present", async function () {
-    this.timeout(10000);
-
+  it("omits observed evidence when no coverage or waivers are present", async () => {
     await withTempWorkspace(async (workspaceRoot) => {
       const implementationDir = path.join(workspaceRoot, "packages", "app", "src");
       await fs.mkdir(implementationDir, { recursive: true });
@@ -298,9 +282,7 @@ suite("Live Docs evidence bridge", () => {
     });
   });
 
-  test("records waiver-only evidence with explanatory comment", async function () {
-    this.timeout(10000);
-
+  it("records waiver-only evidence with explanatory comment", async () => {
     await withTempWorkspace(async (workspaceRoot) => {
       const implementationDir = path.join(workspaceRoot, "packages", "app", "src");
       await fs.mkdir(implementationDir, { recursive: true });

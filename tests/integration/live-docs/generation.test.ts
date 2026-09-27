@@ -2,32 +2,20 @@ import * as assert from "node:assert";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
+import { describe, it } from "vitest";
 
-const { generateLiveDocs } = require(
-  path.join(
-    __dirname,
-    "../../../../packages/server/dist/features/live-docs/generator"
-  )
-) as typeof import("../../../packages/server/dist/features/live-docs/generator");
-
-const {
+import { generateLiveDocs } from "../../../packages/server/src/features/live-docs/generator";
+import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} = require(
-  path.join(
-    __dirname,
-    "../../../../packages/shared/dist/config/liveDocumentationConfig"
-  )
-) as typeof import("../../../packages/shared/dist/config/liveDocumentationConfig");
+} from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
 
-suite("Live Docs generator", () => {
-  test("preserves authored sections and produces deterministic output", async function () {
-    this.timeout(20000);
-
+describe("Live Docs generator", () => {
+  it("preserves authored sections and produces deterministic output", async () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-generator-"));
 
     try {

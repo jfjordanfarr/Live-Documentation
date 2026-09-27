@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/tooling/pathUtils.ts
 - Live Doc ID: LD-implementation-packages-shared-src-tooling-pathutils-ts
-- Generated At: 2026-02-16T14:27:58.236Z
+- Generated At: 2026-09-27T08:09:16.779Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Unifies workspace path handling by converting between file URIs, absolute paths,
 - Chosen over ad hoc normalisation so Windows drive letters and separator differences collapse to the same canonical representation used by Live Docs and link audits ([upgrade summary](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/2025-10-30.md#L5428-L5454)).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-16T14:27:58.236Z","inputHash":"b4560a905d93f187"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:16.779Z","inputHash":"b4560a905d93f187"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `toWorkspaceRelativePath` {#symbol-toworkspacerelativepath}
@@ -52,6 +52,12 @@ Normalise a path so directory separators are POSIX-style.
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
+#### Vitest Integration Tests
+- [evidence.test.ts](../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
+- [generation.test.ts](../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [polyglot-fixtures.test.ts](../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
+- [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
+
 #### Vitest Unit Tests
 - [generator.test.ts](../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)

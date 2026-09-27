@@ -1,26 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2020",
-    "rootDir": "./",
-    "rootDirs": ["./", "../.."],
-    "paths": {
-      "@live-documentation/shared": ["packages/shared/dist/index"],
-      "@live-documentation/shared/*": ["packages/shared/dist/*"]
-    },
-    "outDir": "./dist",
-    "sourceMap": false,
+    "noEmit": true,
+    "composite": false,
     "declaration": false,
     "declarationMap": false,
-    "composite": false,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": ["node", "mocha"]
+    "sourceMap": false,
+    "types": ["node"]
   },
   "include": ["./**/*.ts"],
   "exclude": [
-    "./dist",
+    "./fixtures/**/*",
     "./benchmarks/fixtures/**/*"
   ]
 }

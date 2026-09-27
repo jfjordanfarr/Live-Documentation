@@ -5,19 +5,19 @@
 - Archetype: implementation
 - Code Path: scripts/verify.mjs
 - Live Doc ID: LD-implementation-scripts-verify-mjs
-- Generated At: 2026-02-03T21:55:42.103Z
+- Generated At: 2026-09-27T08:02:35.716Z
 
 ## Authored
 ### Purpose
-Coordinates the end-to-end workspace verification pipeline so a single command lint-checks, rebuilds native addons, executes unit/integration suites, enforces documentation links, and (optionally) regenerates benchmark reports before a change ships.
+Runs the verification half of the pre-commit gate in a fixed order: ESLint, `tsc` for the packages, a type-check of the test suites, the Vitest `unit` and `integration` projects, and documentation link enforcement. `npm run safe:commit` calls it first and adds the documentation audits.
 
 ### Notes
-- Originated 2025-10-31 while wiring the benchmark reporting workflow; kept as the canonical `npm run verify` entry point referenced throughout `2025-10-31.md` in `AI-Agent-Workspace/ChatHistory/`.
-- Accepts `--mode`/`BENCHMARK_MODE` to run self-similarity, AST, or dual benchmark suites, and `--report` to invoke `scripts/reporting/generateTestReport.ts` for each selected mode (expanded during the 2025-11-03 dual-mode rollout).
-- Uses platform-aware npm spawning so Windows shells execute `npm.cmd`/`npx.cmd` directly instead of requiring manual shims during CI or local runs.
+- Originated 2025-10-31 as the entry point for the benchmark reporting workflow. The benchmark modes, report generation and the `xvfb` wrapper for the VS Code Electron harness were removed on 2026-09-27 when the integration suites moved to Vitest; the script is now a plain sequence of steps with no flags.
+- Invokes `tsc` through `node_modules/typescript/lib/tsc.js` with `process.execPath` so no shell is involved on any platform.
+- Uses platform-aware npm spawning so Windows shells execute `npm.cmd` directly instead of requiring manual shims during CI or local runs.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:42.103Z","inputHash":"6c9b947b629e43c0"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:02:35.716Z","inputHash":"c746ef3b378503ce"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -26,4 +26,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:child_process` - `spawnSync`
+- `node:path` - `path`
+- `node:url` - `fileURLToPath`
 <!-- LIVE-DOC:END Dependencies -->

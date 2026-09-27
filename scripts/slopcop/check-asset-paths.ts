@@ -35,7 +35,6 @@ const EXIT_FAILURE = 4;
 const DEFAULT_IGNORE = [
   "**/node_modules/**",
   "**/.git/**",
-  "**/.vscode-test/**",
   "**/coverage/**",
   "**/dist/**",
   "**/out/**",

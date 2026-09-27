@@ -26,14 +26,6 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Cache VS Code test downloads
-        uses: actions/cache@v5
-        with:
-          path: .vscode-test
-          key: ${{ runner.os }}-vscode-test-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-vscode-test-
-
       - name: Install dependencies
         # The lockfile generated on Windows omits Linux platform binaries for Rollup.
         # npm has a known bug (https://github.com/npm/cli/issues/4828) where optional
@@ -43,13 +35,10 @@ jobs:
           npm ci
           npm install @rollup/rollup-linux-x64-gnu --no-save --ignore-scripts
 
-      - name: Install xvfb (for integration tests)
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-
       - name: Run CI checks (safe-to-commit CI mode)
         env:
           CI: "true"
-        run: xvfb-run -a npm run ci-check
+        run: npm run ci-check
 
       - name: Run network usage audit
         # Static analysis proving all network usage is localhost-only or browser-side

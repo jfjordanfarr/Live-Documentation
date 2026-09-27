@@ -24,10 +24,6 @@ Thumbs.db
 *.db-shm
 *.db-wal
 
-# Test outputs
-*.tap
-.vscode-test/
-
 # DB files
 *.db
 

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/pipeline.test.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-typescript-rosetta-src-pipeline-test-ts
-- Generated At: 2026-02-03T21:55:46.845Z
+- Generated At: 2026-09-27T08:09:19.843Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Integration tests for the TypeScript Rosetta data processing pipeline. Validates
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises NON-name-matched test detection: `pipeline.test.ts` imports processor/models, so those files appear as "test-backed" without a directly name-matched test file.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.845Z","inputHash":"fb063b589e80956e"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:19.843Z","inputHash":"fb063b589e80956e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -39,7 +39,7 @@ _No targets documented yet_
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
 ### Supporting Fixtures
-- Mocha Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts)
-- Mocha Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/processor.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/processor.ts)
-- Mocha Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/types.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/types.ts)
+- Vitest Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/models.ts)
+- Vitest Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/processor.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/processor.ts)
+- Vitest Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/types.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/types.ts)
 <!-- LIVE-DOC:END Supporting Fixtures -->

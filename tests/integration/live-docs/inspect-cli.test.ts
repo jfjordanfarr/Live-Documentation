@@ -1,7 +1,8 @@
+import { spawnSync } from "node:child_process";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
-import { spawnSync } from "node:child_process";
 import * as path from "node:path";
+import { describe, it } from "vitest";
 
 interface InspectRunResult {
   exitCode: number;
@@ -98,10 +99,7 @@ function runInspectCli(workspace: string, args: string[]): InspectRunResult {
     ],
     {
       encoding: "utf8",
-      env: {
-        ...process.env,
-        ELECTRON_RUN_AS_NODE: "1"
-      }
+      env: process.env
     }
   );
 
@@ -133,8 +131,8 @@ function findRepoRoot(startDir: string): string {
   }
 }
 
-suite("Live Docs inspect CLI", () => {
-  test("finds a dependency path from the WebForms telemetry script to Web.config", () => {
+describe("Live Docs inspect CLI", () => {
+  it("finds a dependency path from the WebForms telemetry script to Web.config", () => {
     const run = runInspectCli(fixtures.webforms, [
       "--from",
       "packages/site/Scripts/app-insights.js",
@@ -167,7 +165,7 @@ suite("Live Docs inspect CLI", () => {
     assert.strictEqual(payload.hops.length, 3);
   });
 
-  test("enumerates terminal outbound paths when no --to target is supplied", () => {
+  it("enumerates terminal outbound paths when no --to target is supplied", () => {
     const run = runInspectCli(fixtures.webforms, [
       "--from",
       "packages/site/Scripts/app-insights.js",
@@ -203,7 +201,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("traces Razor telemetry chain back to appsettings", () => {
+  it("traces Razor telemetry chain back to appsettings", () => {
     const run = runInspectCli(fixtures.razor, [
       "--from",
       "wwwroot/js/telemetry.js",
@@ -234,7 +232,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("resolves Blazor host telemetry chain", () => {
+  it("resolves Blazor host telemetry chain", () => {
     const run = runInspectCli(fixtures.blazor, [
       "--from",
       "wwwroot/js/blazor-telemetry.js",
@@ -265,7 +263,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("links queue enqueue calls to workers and configuration", () => {
+  it("links queue enqueue calls to workers and configuration", () => {
     const run = runInspectCli(fixtures.queueWorker, [
       "--from",
       "Controllers/TelemetryController.cs",
@@ -295,7 +293,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("finds inbound dependencies from configuration back to the queue controller", () => {
+  it("finds inbound dependencies from configuration back to the queue controller", () => {
     const run = runInspectCli(fixtures.queueWorker, [
       "--from",
       "appsettings.json",
@@ -327,7 +325,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("resolves SPA alias imports to concrete modules", () => {
+  it("resolves SPA alias imports to concrete modules", () => {
     const run = runInspectCli(fixtures.spa, [
       "--from",
       "src/bootstrap.ts",
@@ -351,7 +349,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("follows reflection-based handlers to their implementation", () => {
+  it("follows reflection-based handlers to their implementation", () => {
     const run = runInspectCli(fixtures.reflection, [
       "--from",
       "Services/ReflectionFactory.cs",
@@ -375,7 +373,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("connects PowerShell scripts to dot-sourced helpers", () => {
+  it("connects PowerShell scripts to dot-sourced helpers", () => {
     const run = runInspectCli(fixtures.powershell, [
       "--from",
       "scripts/deploy.ps1",
@@ -436,7 +434,7 @@ suite("Live Docs inspect CLI", () => {
     ]);
   });
 
-  test("reports when no path connects disconnected artefacts", () => {
+  it("reports when no path connects disconnected artefacts", () => {
     const run = runInspectCli(fixtures.queueWorker, [
       "--from",
       "Services/TelemetryScheduler.cs",
@@ -458,7 +456,7 @@ suite("Live Docs inspect CLI", () => {
     );
   });
 
-  test("honours max-depth limits when searching", () => {
+  it("honours max-depth limits when searching", () => {
     const run = runInspectCli(fixtures.queueWorker, [
       "--from",
       "Controllers/TelemetryController.cs",

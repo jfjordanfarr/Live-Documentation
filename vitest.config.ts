@@ -41,13 +41,31 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    include: [
-      "packages/shared/src/**/*.test.ts",
-      "packages/server/src/**/*.test.ts",
-      "packages/extension/src/**/*.test.ts",
-      "packages/scripts/src/**/*.test.ts",
-      "scripts/**/*.test.ts",
-      "tests/integration/slopcop/**/*.test.ts"
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          include: [
+            "packages/shared/src/**/*.test.ts",
+            "packages/server/src/**/*.test.ts",
+            "packages/scripts/src/**/*.test.ts",
+            "scripts/**/*.test.ts",
+            "tests/integration/slopcop/**/*.test.ts"
+          ]
+        }
+      },
+      {
+        extends: true,
+        test: {
+          name: "integration",
+          include: ["tests/integration/live-docs/**/*.test.ts"],
+          // Every suite here runs the generator over a fixture workspace or spawns
+          // the CLI through tsx; both take seconds, not milliseconds.
+          testTimeout: 120_000,
+          hookTimeout: 180_000
+        }
+      }
     ],
     coverage: {
       enabled: true,
@@ -58,9 +76,7 @@ export default defineConfig({
         "scripts/**/*.ts",
         "tests/**",
         "AI-Agent-Workspace/**",
-        ".vscode-test/**",
-        "coverage/**",
-        "packages/extension/src/extension.ts"
+        "coverage/**"
       ]
     }
   }

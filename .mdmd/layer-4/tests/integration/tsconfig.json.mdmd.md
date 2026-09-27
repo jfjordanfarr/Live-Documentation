@@ -5,19 +5,19 @@
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
 - Live Doc ID: LD-test-tests-integration-tsconfig-json
-- Generated At: 2026-02-03T21:55:51.396Z
+- Generated At: 2026-09-27T08:02:42.377Z
 
 ## Authored
 ### Purpose
-Anchor the shared TypeScript compiler options the integration harness expects so downstream suites stay aligned with the runtime bundle requirements documented in [`Integration Testing Architecture`](../../../../.mdmd/layer-3/testing-integration-architecture.mdmd.md).
+A `noEmit` TypeScript project that type-checks the integration suites under `tests/integration/` without compiling them; the gate runs it as the "Type-check tests" step in `scripts/verify.mjs`.
 
 ### Notes
 - Source file: [`tests/integration/tsconfig.json`](../../../../tests/integration/tsconfig.json)
-- Extends the shared inputs profile while tightening module resolution for VS Code harness execution.
-- Update this Live Doc alongside harness build changes so the Live Documentation generator and headless harness stay synchronized.
+- Extends `tsconfig.base.json` and turns off `composite`, declarations and source maps because nothing is emitted. Fixture sources under `fixtures/` and `benchmarks/fixtures/` are excluded.
+- Vitest itself transpiles without type-checking, which is why this project exists. Until 2026-09-27 the same file compiled the suites for the VS Code Electron harness.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:51.396Z","inputHash":"e4fb28054ad83533"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:02:42.377Z","inputHash":"e4fb28054ad83533"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_

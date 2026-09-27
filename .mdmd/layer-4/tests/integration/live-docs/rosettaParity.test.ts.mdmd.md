@@ -5,23 +5,22 @@
 - Archetype: test
 - Code Path: tests/integration/live-docs/rosettaParity.test.ts
 - Live Doc ID: LD-test-tests-integration-live-docs-rosettaparity-test-ts
-- Generated At: 2026-03-23T20:06:03.123Z
+- Generated At: 2026-09-27T08:09:23.274Z
 
 ## Authored
 ### Purpose
 
-Cross-language integration test that runs the full Live Documentation pipeline (`generateLiveDocs`) against all 8 Rosetta Stone benchmark fixtures (TypeScript, Java, C#, Python, Rust, Go, C, PowerShell) and compares the generated markdown across languages to enforce structural parity. This is Phase 1 of LD-208: Rosetta Parity Enforcement.
+Cross-language integration test that runs the full Live Documentation pipeline (`generateLiveDocs`) against the eight Rosetta fixtures (TypeScript, Java, C#, Python, Rust, Go, C, Ruby) and compares the generated markdown across languages, so a regression in any one adapter shows up as an outlier.
 
 ### Notes
 
-- Created on [Dev Day 77](../../../../../AI-Agent-Workspace/ChatHistory/2026/03/Summarized/2026-03-11.1.SUMMARIZED.md) (2026-03-11) as the first concrete implementation of the Rosetta parity enforcement plan designed during Dev Day 76. The commit (`0e6e156`) landed with the title "LD-208 Phase 1: Rosetta parity test + C/C#/Java adapter fixes (96/96 green)".
-- Validates 7 assertions per fixture: error-free generation, file processing, canonical node role coverage (all 8 roles per fixture), leaf invariant (helpers has no outgoing production deps), foundation invariant (types has no outgoing production deps), edge topology consensus (≥6/8 languages agree), and symbol name consensus (≥6/8 languages agree).
-- Parses generated markdown to extract Dependencies and Public Symbols sections, classifying dependency targets into canonical roles (`types`, `helpers`, `models`, `services`, `controllers`, `config`, `entrypoint`, `middleware`) using exact segment matching rather than substring heuristics (the `classifyNamespaceSegment` approach, chosen after `classifyByKeyword` misclassified `ctype.h` as "types").
-- Each fixture runs in an isolated temp directory to prevent cross-contamination. The test produces a diagnostic matrix file (`rosetta-parity-matrix.md`) with per-language per-assertion results for debugging failures.
-- This test is distinct from the AST accuracy benchmarks (which compare SCIP oracle against adapter inference) and from `polyglot-fixtures.test.ts` (which runs 2 language-specific fixtures but does not compare across languages).
+- Runs in the Vitest `integration` project; the eight fixtures are generated once in `beforeAll`, then seven assertions read the results: error-free generation, file processing, canonical node role coverage, the leaf invariant (helpers has no outgoing production deps), the foundation invariant (types has no outgoing production deps), edge topology consensus (6 of 8 languages agree), and symbol name consensus (6 of 8 agree).
+- Parses generated markdown to extract Dependencies and Public Symbols sections and classifies dependency targets into canonical roles. Namespace segments use exact matching (`classifyNamespaceSegment`) because substring matching once classified `ctype.h` as "types".
+- Each fixture runs in an isolated temp directory. The test writes a diagnostic matrix (`AI-Agent-Workspace/tmp/rosetta-parity-matrix.md`) with per-language, per-assertion results.
+- Parity is a smoke alarm, not a correctness measure; the compiler-backed oracle described in the architectural decisions is the measure. Created 2026-03-11; moved off the VS Code Electron harness 2026-09-27.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-23T20:06:03.123Z","inputHash":"426c33fd94ffa440"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:23.274Z","inputHash":"df3194472216f869"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -33,11 +32,20 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:os`
 - `node:path`
+- [`generator.generateLiveDocs`](../../../packages/server/src/features/live-docs/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- `vitest` - `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Integration Tests
+- packages/server/src/features/live-docs: [evidenceBridge.ts](../../../packages/server/src/features/live-docs/evidenceBridge.ts.mdmd.md), [generator.ts](../../../packages/server/src/features/live-docs/generator.ts.mdmd.md)
+- packages/shared/src/config: [liveDocumentationConfig.ts](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md)
+- packages/shared/src/live-docs: [core.ts](../../../packages/shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../../packages/shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../../packages/shared/src/live-docs/schema.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../../packages/shared/src/tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

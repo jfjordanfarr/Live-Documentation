@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/server/src/features/live-docs/generator.ts
 - Live Doc ID: LD-implementation-packages-server-src-features-live-docs-generator-ts
-- Generated At: 2026-02-18T21:36:27.396Z
+- Generated At: 2026-09-27T08:09:15.055Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Coordinates Live Documentation generation by analyzing source files, merging aut
 - Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-18T21:36:27.396Z","inputHash":"c37595544bbb55e7"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:15.055Z","inputHash":"c37595544bbb55e7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
@@ -111,6 +111,12 @@ generator-adjacent assertions without coupling to shared internals.
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
+#### Vitest Integration Tests
+- [evidence.test.ts](../../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
+- [generation.test.ts](../../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [polyglot-fixtures.test.ts](../../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
+- [rosettaParity.test.ts](../../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
+
 #### Vitest Unit Tests
 - [generator.test.ts](./generator.test.ts.mdmd.md)
 - [renderPublicSymbolLines.test.ts](./renderPublicSymbolLines.test.ts.mdmd.md)

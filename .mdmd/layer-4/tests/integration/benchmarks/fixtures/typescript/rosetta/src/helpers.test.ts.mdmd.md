@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.test.ts
 - Live Doc ID: LD-test-tests-integration-benchmarks-fixtures-typescript-rosetta-src-helpers-test-ts
-- Generated At: 2026-02-03T21:55:46.753Z
+- Generated At: 2026-09-27T08:09:19.794Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the TypeScript Rosetta helpers module (format, sum, average utili
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Exercises name-matched test detection: `helpers.test.ts` should automatically back `helpers.ts`.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-02-03T21:55:46.753Z","inputHash":"8b2333cf886058a3"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:19.794Z","inputHash":"8b2333cf886058a3"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,5 +35,5 @@ _No targets documented yet_
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->
 ### Supporting Fixtures
-- Mocha Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.ts)
+- Vitest Integration Tests - [tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.ts](../../../../../../../../../tests/integration/benchmarks/fixtures/typescript/rosetta/src/helpers.ts)
 <!-- LIVE-DOC:END Supporting Fixtures -->

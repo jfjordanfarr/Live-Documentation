@@ -35,7 +35,7 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 | `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                |
 | `npm run test:unit`                                                                             | Vitest, 879 tests (about 30 s)                                                  |
 | `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                   |
-| `npm run test:integration`                                                                      | Mocha suites through the VS Code Electron harness; needs `xvfb-run` here        |
+| `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s) |
 | `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope |
 | `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                    |
 | `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                     |

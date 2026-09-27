@@ -2,36 +2,24 @@ import * as assert from "node:assert";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
+import { describe, it } from "vitest";
 
-const { generateLiveDocs } = require(
-  path.join(
-    __dirname,
-    "../../../../packages/server/dist/features/live-docs/generator"
-  )
-) as typeof import("../../../packages/server/dist/features/live-docs/generator");
-
-const {
+import { generateLiveDocs } from "../../../packages/server/src/features/live-docs/generator";
+import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} = require(
-  path.join(
-    __dirname,
-    "../../../../packages/shared/dist/config/liveDocumentationConfig"
-  )
-) as typeof import("../../../packages/shared/dist/config/liveDocumentationConfig");
+} from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
 
-suite("Live Docs polyglot fixtures", () => {
-  test("generates C# docs for advanced fixture", async function () {
-    this.timeout(20000);
-
+describe("Live Docs polyglot fixtures", () => {
+  it("generates C# docs for advanced fixture", async () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-csharp-"));
 
     try {
-      const fixtureRoot = path.join(__dirname, "../../fixtures/csharp-advanced-symbols");
+      const fixtureRoot = path.join(__dirname, "../fixtures/csharp-advanced-symbols");
       await fs.cp(fixtureRoot, workspaceRoot, { recursive: true });
 
       const config = normalizeLiveDocumentationConfig({
@@ -191,16 +179,11 @@ suite("Live Docs polyglot fixtures", () => {
     }
   });
 
-  test("generates Java docs for basic fixture", async function () {
-    this.timeout(20000);
-
+  it("generates Java docs for basic fixture", async () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-java-"));
 
     try {
-      const fixtureRoot = path.join(
-        __dirname,
-        "../../benchmarks/fixtures/java/basic"
-      );
+      const fixtureRoot = path.join(__dirname, "../benchmarks/fixtures/java/basic");
       await fs.cp(fixtureRoot, workspaceRoot, { recursive: true });
 
       const config = normalizeLiveDocumentationConfig({
@@ -253,7 +236,7 @@ suite("Live Docs polyglot fixtures", () => {
         appDoc,
         /##### `run` — Links[\s\S]*`Reader#load\(String\)`/
       );
-      // Dependencies are now resolved to markdown links pointing to Live Doc files
+      // Dependencies are resolved to markdown links pointing to Live Doc files
       assert.match(
         appDoc,
         /### Dependencies[\s\S]*\[`Reader`\]\(\.\.\/data\/Reader\.java/
@@ -326,16 +309,11 @@ suite("Live Docs polyglot fixtures", () => {
     }
   });
 
-  test("generates Python docs for basics fixture", async function () {
-    this.timeout(20000);
-
+  it("generates Python docs for basics fixture", async () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-python-"));
 
     try {
-      const fixtureRoot = path.join(
-        __dirname,
-        "../../benchmarks/fixtures/python/basics"
-      );
+      const fixtureRoot = path.join(__dirname, "../benchmarks/fixtures/python/basics");
       await fs.cp(fixtureRoot, workspaceRoot, { recursive: true });
 
       const config = normalizeLiveDocumentationConfig({
