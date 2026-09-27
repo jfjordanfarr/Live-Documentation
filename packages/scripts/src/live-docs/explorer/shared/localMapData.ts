@@ -146,7 +146,7 @@ export interface LocalMapSymbolAnchor {
  * @example
  * ```json
  * {
- *   "focusNodeId": "packages/server/src/main.ts",
+ *   "focusNodeId": "packages/generator/src/generator.ts",
  *   "center": { ... },
  *   "upstream": [ ... ],
  *   "downstream": [ ... ],

@@ -66,7 +66,7 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                              |
 | `npm run live-docs:orphans`               | Live Docs whose source file no longer exists. The generator never prunes a doc that has authored content, so run this after deleting source files |
-| `npm run build`                           | `tsc` for shared, scripts and server                                                                          |
+| `npm run build`                           | `tsc` for shared, generator and scripts                                                                          |
 
 ---
 

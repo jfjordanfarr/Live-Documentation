@@ -11,50 +11,73 @@ When you change a file, what else moves? Live Documentation answers with depende
 
 ## The Inspect CLI
 
-`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code.
+`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code. Every example below is real output from this repository as of 2026-09-27; the bracketed Live Doc path after each file is shortened to `[…]`.
 
 ### Find the path between two files
 
 ```bash
-npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/shared/src/types.ts
+npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/shared/src/live-docs/core.ts
 ```
 
-Output shows each hop in the chain:
+```
+Path from scripts/live-docs/generate.ts to packages/shared/src/live-docs/core.ts (2 hop(s), outbound).
+  1. scripts/live-docs/generate.ts […] -> packages/generator/src/generator.ts […]
+  2. packages/generator/src/generator.ts […] -> packages/shared/src/live-docs/core.ts […]
+```
 
-```
-Path found (3 hops):
-  packages/server/src/main.ts
-    → packages/server/src/services/auth.ts
-    → packages/shared/src/utils/validation.ts
-    → packages/shared/src/types.ts
-```
+Each hop names the file and the Live Doc the edge was read from.
 
 ### Symbol-level pathfinding
 
-Trace connections between specific symbols, not just files:
+Trace connections between specific symbols, not just files, with `path#Symbol`:
 
 ```bash
-npm run live-docs:inspect -- --from packages/server/src/main.ts#initializeServer --to packages/shared/src/types.ts#ConfigOptions
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/shared/src/live-docs/core.ts#analyzeSourceFile --json
+```
+
+```json
+{
+  "kind": "symbol-path",
+  "direction": "outbound",
+  "length": 1,
+  "from": { "codePath": "packages/generator/src/generator.ts", "symbol": "generateLiveDocs" },
+  "to": { "codePath": "packages/shared/src/live-docs/core.ts", "symbol": "analyzeSourceFile" },
+  "hops": [
+    {
+      "from": { "codePath": "packages/generator/src/generator.ts", "symbol": "generateLiveDocs" },
+      "to": { "codePath": "packages/shared/src/live-docs/core.ts", "symbol": "analyzeSourceFile" }
+    }
+  ]
+}
 ```
 
 ### See what depends on a file (inbound)
 
 ```bash
-npm run live-docs:inspect -- --from packages/shared/src/types.ts --direction inbound
+npm run live-docs:inspect -- --from packages/shared/src/config/liveDocumentationConfig.ts --direction inbound
 ```
+
+Without `--to`, the result is a fan-out: every terminal path away from the file, up to 200 of them. For a module as widely used as the configuration loader that list is long. `--max-depth` shortens it and `--json` returns the paths as data.
 
 ### See what a file depends on (outbound)
 
-Omit `--to` to see the fan-out:
-
 ```bash
-npm run live-docs:inspect -- --from packages/server/src/main.ts --direction outbound
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direction outbound
 ```
 
-### Bidirectional search
+### Both directions
 
 ```bash
-npm run live-docs:inspect -- --from packages/server/src/main.ts --direction both
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direction both
+```
+
+```
+Terminal both paths from packages/generator/src/generator.ts (max depth 25, 7 path(s) listed, limit 200).
+  1. packages/generator/src/generator.ts […] -> packages/generator/src/generator.test.ts […]
+  2. packages/generator/src/generator.ts […] -> packages/generator/src/renderPublicSymbolLines.test.ts […]
+  3. packages/generator/src/generator.ts […] -> tests/integration/live-docs/evidence.test.ts […]
+  ...
+  7. packages/generator/src/generator.ts […] -> scripts/live-docs/generate.ts […]
 ```
 
 ---
@@ -64,7 +87,7 @@ npm run live-docs:inspect -- --from packages/server/src/main.ts --direction both
 Add `--json` for scripts and automation:
 
 ```bash
-npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/server/src/runtime/environment.ts --json
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/evidenceBridge.ts --json
 ```
 
 ```json
@@ -73,21 +96,21 @@ npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/se
   "direction": "outbound",
   "length": 1,
   "from": {
-    "codePath": "packages/server/src/main.ts",
-    "docPath": ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md"
+    "codePath": "packages/generator/src/generator.ts",
+    "docPath": ".mdmd/layer-4/packages/generator/src/generator.ts.mdmd.md"
   },
   "to": {
-    "codePath": "packages/server/src/runtime/environment.ts",
-    "docPath": ".mdmd/layer-4/packages/server/src/runtime/environment.ts.mdmd.md"
+    "codePath": "packages/generator/src/evidenceBridge.ts",
+    "docPath": ".mdmd/layer-4/packages/generator/src/evidenceBridge.ts.mdmd.md"
   },
   "nodes": [
-    { "codePath": "packages/server/src/main.ts", "docPath": "..." },
-    { "codePath": "packages/server/src/runtime/environment.ts", "docPath": "..." }
+    { "codePath": "packages/generator/src/generator.ts", "docPath": "..." },
+    { "codePath": "packages/generator/src/evidenceBridge.ts", "docPath": "..." }
   ],
   "hops": [
     {
-      "from": { "codePath": "packages/server/src/main.ts", "docPath": "..." },
-      "to": { "codePath": "packages/server/src/runtime/environment.ts", "docPath": "..." }
+      "from": { "codePath": "packages/generator/src/generator.ts", "docPath": "..." },
+      "to": { "codePath": "packages/generator/src/evidenceBridge.ts", "docPath": "..." }
     }
   ]
 }
@@ -95,11 +118,29 @@ npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/se
 
 ### Output kinds
 
-| Kind        | Meaning                                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `path`      | A path was found between `from` and `to`                                                                                 |
-| `fanout`    | No `--to` was given; the result lists where traversal from `from` ends up                                                |
-| `not-found` | No connection exists (exit code 1). A `frontier` array lists the closest reachable nodes and why traversal stopped there |
+| Kind          | Meaning                                                                                                                  |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `path`        | A path was found between `from` and `to`                                                                                 |
+| `symbol-path` | The same, for a `path#Symbol` query                                                                                      |
+| `fanout`      | No `--to` was given; the result lists where traversal from `from` ends up                                                |
+| `not-found`   | No connection exists (exit code 1). A `frontier` array lists the closest reachable nodes and why traversal stopped there |
+
+### When there is no path
+
+```bash
+npm run live-docs:inspect -- --from packages/generator/src/evidenceBridge.ts --to packages/generator/src/generator.ts
+```
+
+```
+No dependency path found from packages/generator/src/evidenceBridge.ts to packages/generator/src/generator.ts (outbound).
+Closest reachable frontier:
+  - packages/shared/src/tooling/pathUtils.ts […] — terminal
+  - packages/generator/src/evidenceBridge.ts […] — missing-doc (missing glob)
+  - packages/generator/src/evidenceBridge.ts […] — missing-doc (missing node:fs/promises)
+  ...
+```
+
+The dependency runs the other way (the generator imports the bridge), so the search stops at the bridge's own leaves: a workspace file with no further dependencies and the external modules that have no Live Doc.
 
 ---
 
@@ -120,7 +161,7 @@ Either way, the result is encoded in the page URL, so a path you found can be se
 See every consumer before changing a shared function:
 
 ```bash
-npm run live-docs:inspect -- --from packages/shared/src/utils/format.ts --direction inbound --json
+npm run live-docs:inspect -- --from packages/shared/src/tooling/pathUtils.ts --direction inbound --json
 ```
 
 ### After adding a dependency
@@ -128,15 +169,15 @@ npm run live-docs:inspect -- --from packages/shared/src/utils/format.ts --direct
 Verify the import chain is what you expect:
 
 ```bash
-npm run live-docs:inspect -- --from src/new-feature.ts --to src/core/config.ts --direction outbound
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/evidenceBridge.ts
 ```
 
-### Checking test coverage
+### Finding a file's tests
 
-Trace from a source file to its test:
+Tests import the code they exercise, so trace inbound from the source file:
 
 ```bash
-npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/generator.test.ts --direction inbound
 ```
 
 ---
@@ -148,9 +189,9 @@ npm run live-docs:inspect -- --from src/auth.ts --to tests/auth.test.ts
 | `--from <path[#symbol]>`                | Starting artifact (required for pathfinding)      |
 | `--to <path[#symbol]>`                  | Destination artifact (optional; omit for fan-out) |
 | `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`)         |
-| `--max-depth <n>`                       | Maximum hops                                      |
+| `--max-depth <n>`                       | Maximum hops (default: 25)                        |
 | `--json`                                | Machine-readable output                           |
-| `--verbose`                             | Include additional diagnostics                    |
+| `--verbose`                             | Include full symbol lists in output               |
 
 ---
 

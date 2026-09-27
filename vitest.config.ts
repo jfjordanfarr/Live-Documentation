@@ -48,7 +48,7 @@ export default defineConfig({
           name: "unit",
           include: [
             "packages/shared/src/**/*.test.ts",
-            "packages/server/src/**/*.test.ts",
+            "packages/generator/src/**/*.test.ts",
             "packages/scripts/src/**/*.test.ts",
             "scripts/**/*.test.ts",
             "tests/integration/slopcop/**/*.test.ts"

@@ -1,0 +1,46 @@
+# packages/generator/src/renderPublicSymbolLines.test.ts
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: packages/generator/src/renderPublicSymbolLines.test.ts
+- Live Doc ID: LD-test-packages-generator-src-renderpublicsymbollines-test-ts
+- Generated At: 2026-09-27T09:36:37.509Z
+
+## Authored
+### Purpose
+Ensures the public symbol renderer emits heading blocks with type metadata, source links, and normalized documentation snippets so generated Live Docs show consistent structure across languages.
+
+### Notes
+- Added while refactoring the renderer to `####` heading format and detail bullets; see [2025-11-08 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
+- Expanded again during the docstring normalization push outlined in [2025-11-12 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md) to keep tests aligned with richer metadata.
+
+## Generated
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:37.509Z","inputHash":"a303c6136f0aa7a5"}]} -->
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+_No public symbols detected_
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `node:path` - `path`
+- [`generator.__testUtils`](./generator.ts.mdmd.md#symbol-__testutils)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`core.computePublicSymbolHeadingInfo`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
+- `vitest` - `describe`, `expect`, `it`
+<!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Targets -->
+### Targets
+#### Vitest Unit Tests
+- packages/generator/src: [evidenceBridge.ts](./evidenceBridge.ts.mdmd.md), [generator.ts](./generator.ts.mdmd.md)
+- packages/shared/src/config: [liveDocumentationConfig.ts](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md)
+- packages/shared/src/live-docs: [core.ts](../../shared/src/live-docs/core.ts.mdmd.md), [markdown.ts](../../shared/src/live-docs/markdown.ts.mdmd.md), [schema.ts](../../shared/src/live-docs/schema.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../shared/src/tooling/pathUtils.ts.mdmd.md)
+<!-- LIVE-DOC:END Targets -->
+
+<!-- LIVE-DOC:BEGIN Supporting Fixtures -->
+### Supporting Fixtures
+_No supporting fixtures documented yet_
+<!-- LIVE-DOC:END Supporting Fixtures -->

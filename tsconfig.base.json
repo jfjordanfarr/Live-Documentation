@@ -25,7 +25,7 @@
   },
   "references": [
     { "path": "packages/shared" },
-    { "path": "packages/server" },
+    { "path": "packages/generator" },
     { "path": "packages/scripts" }
   ]
 }

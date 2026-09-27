@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/discovery.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-discovery-ts
-- Generated At: 2026-03-11T01:35:37.269Z
+- Generated At: 2026-09-27T09:36:40.283Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T01:35:37.269Z","inputHash":"c08a50e9cc255db4"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:40.283Z","inputHash":"dd91137b4345d822"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
@@ -49,7 +49,7 @@ A sorted array of absolute, workspace-resolved file paths ready for analysis.
 const files = await discoverTargetFiles({
   workspaceRoot,
   config,
-  include: new Set(["packages/server/src/index.ts"]),
+  include: new Set(["packages/generator/src/generator.ts"]),
   changedOnly: false
 });
 ```

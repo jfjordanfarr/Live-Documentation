@@ -1,94 +1,37 @@
 # Live Documentation Pipeline
 
-## Metadata
-- Layer: 3
-- Component IDs: COMP-201, COMP-202
+_Current as of 2026-09-27._
 
-## Components
+## Purpose
 
-### COMP-201 Live Doc Generator Service
-Supports FR-LD1, FR-LD2, and FR-LD3 by orchestrating analyzers, template preservation, and provenance capture to emit deterministic markdown mirrors under `/.live-documentation/<baseLayer>/`.
+Describe what one run of the generator does, what it reads, what it writes, and what it promises to keep. The generator is `generateLiveDocs` in [generator.ts](../layer-4/packages/generator/src/generator.ts.mdmd.md); the CLI wrapper is [generate.ts](../layer-4/scripts/live-docs/generate.ts.mdmd.md).
 
-### COMP-202 Live Doc Graph Projector
-Supports FR-LD5, FR-LD7, and SC-LD4 by ingesting generated markdown links into the workspace knowledge graph, powering diagnostics, CLI exports, and Copilot prompts.
+## One run
 
-<a id="comp203-live-doc-authoring-bridge"></a>
-### COMP-203 Live Doc Authoring Bridge
-Supports FR-LD6 and REQ-G1 by keeping docstring extraction and drift diagnostics reliable (code → docs), managing feature flags, and preserving provenance for unmapped docstring fragments. Any docs → code write-back or scaffolding remains a deferred wishlist item.
+1. **Discover targets.** The configured globs select source files ([discovery.ts](../layer-4/packages/shared/src/live-docs/discovery.ts.mdmd.md)). `--changed` narrows the set to files git reports as modified; `--include` names an explicit subset.
+2. **Load evidence.** The [evidence bridge](../layer-4/packages/generator/src/evidenceBridge.ts.mdmd.md) reads three optional inputs: the targets manifest (`coverage/live-docs/targets.json`, which test files exercise which implementation files), Istanbul-style `coverage-summary.json` files under `coverage/`, and `data/live-docs/evidence-waivers.json` for files a person has reviewed by hand.
+3. **Build the indexes.** A file index (every target path) lets adapters resolve references to other workspace files. A symbol index (every public symbol name across the workspace) lets a doc link a dependency to the doc that defines it.
+4. **Analyze each file.** The language adapter for the file returns its public symbols, its dependencies, and any docstrings ([core.ts](../layer-4/packages/shared/src/live-docs/core.ts.mdmd.md)).
+5. **Render the generated sections.** `Public Symbols` and `Dependencies` always; `Observed Evidence` for implementation files that have evidence; `Targets` and `Supporting Fixtures` for test files; `Re-Exported Symbol Anchors` when a file re-exports symbols from elsewhere. Every link is relative to the doc's own directory.
+6. **Merge and write.** The existing doc's authored block is read back and placed above the generated block ([markdown.ts](../layer-4/packages/shared/src/live-docs/markdown.ts.mdmd.md)). A provenance comment records the tool version, the timestamp, and a hash of the path, symbols, and dependencies. The doc is written only when its rendered text differs from what is on disk; `--dry-run` reports instead of writing.
+7. **Prune.** Docs whose source file no longer exists are deleted, unless they contain authored content. Pruning is skipped under `--changed` and `--include`.
 
-## Responsibilities
+## What a run keeps
 
-### Template Preservation & Authored Guardrails (COMP-201)
-- Load Layer-4 Live Documentation files, parse HTML markers, and protect authored headers (`Description`, `Purpose`, `Notes`) from generator overwrites.
-- Enforce generated section ordering (`Public Symbols`, `Dependencies`, `Observed Evidence`/archetype sections) and emit deterministic delimiters for diff tooling.
-- Validate relative-link requirements and slug dialect configuration before writing outputs.
+- The authored `Purpose` and `Notes` of every existing doc, verbatim.
+- The `Generated At` timestamp, unless the generated content changed.
+- The order and delimiters of generated sections, so two runs over the same source produce byte-identical files.
 
-### Analyzer & Enricher Coordination (COMP-201)
-- Invoke language-specific analyzers (TypeScript, Python, Rust, C#, etc.) to resolve exported symbols and first-order dependencies per artifact.
-- Normalise docstring payloads across analyzer outputs into a canonical schema (`summary`, `remarks`, `parameters`, `returns`, `exceptions`, `examples`) before writing markdown so Live Docs surface consistent headings regardless of source language.
-- Merge coverage bridges and docstring adapters to populate `Observed Evidence`, `Targets`, and drift metadata when available.
-- Render docstring fields as deterministic `##### `Symbol` — Field` subsections, emit `_Not documented_` placeholders for empty entries, and persist raw fragments plus provenance for tags we do not yet model so adopters retain lossless payloads.
-- Collect provenance (`generator tool`, `version`, `benchmark hash`, `input hash`) and persist it inside Live Doc metadata for audit trails.
+## What a run does not do
 
-### Graph Projection & Indexing (COMP-202)
-- Parse generated markdown links to synthesise graph edges tying implementation ↔ tests ↔ assets, respecting archetype semantics.
-- Surface backlink queries (`which Live Docs depend on X?`) to diagnostics and CLI consumers while avoiding authored-section mutations.
-- Cache projections so downstream diagnostics remain responsive without rereading every markdown file on each request.
+- It does not delete a stale doc that has authored content. It logs "Preserving … (authored content detected)" and leaves the doc in place; run `npm run live-docs:orphans` after deleting source files and remove the orphans by hand.
+- It does not read the previous doc's generated regions. Everything generated comes from the source file on this run.
+- It does not write anywhere except the configured base layer directory.
 
-### Consumption Surface Integration (COMP-202)
-- Provide typed accessors for diagnostics publishers, CLI commands, and Copilot helpers to resolve Live Doc metadata, evidence summaries, and regeneration timestamps.
-- Expose diff helpers so `npm run live-docs:generate -- --dry-run` and UI preview panes can highlight pending updates before writes.
+## Configuration
 
-### Drift & Optional Authoring Controls (COMP-203)
-- Compute structured drift signals between inline docstrings and the canonical Live Doc schema, surfacing actionable diagnostics without mutating source files.
-- Sanitize and normalise docstring content (HTML paragraphs, code blocks, custom tags) so extraction and normalization remain stable across supported languages.
-- Preserve unmapped tags/fragments with provenance so no docstring content is silently dropped.
-- If/when docs → code write-back is pursued, require strict feature flags, audit logging, rollback hooks, and explicit human confirmation.
+Root, base layer, extension, archetype globs, and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout.
 
-## Interfaces
+## History
 
-### Inbound Interfaces
-- Analyzer outputs exposed by `packages/server/src/features` modules (symbol harvesters, dependency resolvers, coverage adapters).
-- Workspace configuration obtained via `packages/shared/src/config/liveDocumentationConfig.ts`.
-- CLI commands requesting regeneration (`live-docs:generate`).
-- Future (wishlist) authoring commands for preview/apply and scaffolding, gated behind explicit opt-in.
-
-### Outbound Interfaces
-- Markdown writes to `/.live-documentation/<baseLayer>/` guarded by atomic file swaps and provenance updates.
-- Graph projection APIs consumed by diagnostics publishers, CLI inspectors, and Copilot prompt builders (`packages/shared/src/live-docs/*`).
-- Drift reports and telemetry describing docstring/schema mismatches.
-- Future (wishlist) docstring update pipeline writing back into source files via language-specific adapters, gated behind feature flags and explicit confirmation.
-- Scratch artifact emitters targeting `AI-Agent-Workspace/tmp/**` (or caller-provided directories) when generating scaffolds or multi-language prototypes.
-
-## Linked Implementations
-
-### IMP-301 liveDocsGenerateCli
-Scaffolds the generation CLI entry point. See `.mdmd/layer-4/scripts/live-docs/generate.ts.mdmd.mdmd.md` for the Stage-0 mirror and `npm run live-docs:generate -- --help` for usage.
-
-### IMP-302 liveDocGenerator
-Coordinates analyzers, template parsing, and provenance capture. Implementation detail resides in `.mdmd/layer-4/packages/server/src/features/live-docs/generator.ts.mdmd.mdmd.md`.
-
-### IMP-303 liveDocGraphProjector
-Projects markdown links into the workspace graph for diagnostics and CLI use. The generated view is `.mdmd/layer-4/packages/server/src/features/live-docs/graphProjector.ts.mdmd.mdmd.md`.
-
-### IMP-304 liveDocDiffService
-Produces diff previews for dry-run and UI workflows. The diff helper currently ships inside the generator CLI; standalone materialisation will be regenerated once the service is reinstated.
-
-### IMP-305 liveDocMetadataStore
-Persists provenance metadata and archetype assignments. Metadata persistence now lives within `.mdmd/layer-4/packages/shared/src/live-docs/schema.ts.mdmd.mdmd.md`; a dedicated store will resurface when promotion tooling requires it.
-
-### IMP-306 docstringRoundTripService *(wishlist)*
-If docs → code write-back is pursued, calculates diffs between Live Docs and inline docstrings, applies updates under feature flag control, and records telemetry for REQ-G1.
-
-### IMP-307 liveDocsAuthoringCommands *(wishlist)*
-If docs → code write-back is pursued, VS Code + CLI commands surface preview/apply flows and scaffolding hooks to interact with COMP-203.
-
-## Evidence
-- Integration suites (`tests/integration/live-docs/generation.test.ts`, `evidence.test.ts`, `inspect-cli.test.ts`) cover regeneration determinism, evidence emission, and CLI behaviour.
-- Safe-to-commit pipeline will fail when Live Doc lint, SlopCop link audits, or provenance checks detect regressions.
-- Polyglot fixtures (`tests/integration/benchmarks/fixtures/java/basic`) validate docstring extraction/sanitisation, and drift-oriented suites can be added to exercise high-risk docstring shapes without enabling write-back.
-
-## Operational Notes
-- Live Doc IDs hash normalised relative paths + archetype to stay stable across machines; avoid incorporating timestamps into identifiers.
-- Asset archetypes remain optional—prefer validating links from implementation/test Live Docs before emitting standalone asset docs.
-- Future work (Phase 7) will derive Layer‑2/Layer‑3 documentation directly from generated markdown once churn/reference enrichers stabilise.
+Until 2026-09-27 this document described the pipeline in the vocabulary of a retired specification process (component and requirement identifiers, a graph projector, diagnostics publishers, Copilot prompt builders). None of those parts exist; what is described above is the code as it runs today.

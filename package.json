@@ -28,13 +28,13 @@
     "node": ">=22.0.0"
   },
   "workspaces": [
-    "packages/server",
     "packages/shared",
+    "packages/generator",
     "packages/scripts",
     "packages/cli"
   ],
   "scripts": {
-    "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/server",
+    "build": "npm run build -w packages/shared && npm run build -w packages/scripts && npm run build -w packages/generator",
     "lint": "eslint .",
     "format": "prettier --check .",
     "test:unit": "vitest run --project unit",

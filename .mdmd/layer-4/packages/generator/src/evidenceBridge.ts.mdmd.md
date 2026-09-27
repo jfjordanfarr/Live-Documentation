@@ -1,27 +1,27 @@
-# packages/server/src/features/live-docs/evidenceBridge.ts
+# packages/generator/src/evidenceBridge.ts
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/server/src/features/live-docs/evidenceBridge.ts
-- Live Doc ID: LD-implementation-packages-server-src-features-live-docs-evidencebridge-ts
-- Generated At: 2026-09-27T08:09:15.019Z
+- Code Path: packages/generator/src/evidenceBridge.ts
+- Live Doc ID: LD-implementation-packages-generator-src-evidencebridge-ts
+- Generated At: 2026-09-27T09:36:37.452Z
 
 ## Authored
 ### Purpose
 Loads coverage summaries, targets manifests, and evidence waivers into structured maps so the Live Doc generator can annotate each implementation and test with observed evidence.
 
 ### Notes
-- Built alongside the coverage ingestion push captured in [2025-11-08 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
-- Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
+- Built alongside the coverage ingestion push captured in [2025-11-08 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
+- Subsequent safe-to-commit runs (see [2025-11-10 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md)) validated the manifest search paths and motivated the logger guidance.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:09:15.019Z","inputHash":"b41a4ca8528c5796"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:37.452Z","inputHash":"631adc5958ae9d16"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `EvidenceKind` {#symbol-evidencekind}
 - Type: type
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L13)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L13)
 
 ##### `EvidenceKind` — Summary
 Classification of how a piece of evidence was gathered.
@@ -31,7 +31,7 @@ Classification of how a piece of evidence was gathered.
 
 #### `CoverageRatio` {#symbol-coverageratio}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L19)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L19)
 
 ##### `CoverageRatio` — Summary
 A single coverage metric (e.g. statement coverage) expressed as
@@ -39,7 +39,7 @@ a numerator/denominator pair and a pre-computed percentage.
 
 #### `CoverageSummary` {#symbol-coveragesummary}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L29)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L29)
 
 ##### `CoverageSummary` — Summary
 Aggregated code-coverage metrics from a test provider's
@@ -47,7 +47,7 @@ Aggregated code-coverage metrics from a test provider's
 
 #### `ImplementationEvidenceItem` {#symbol-implementationevidenceitem}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L42)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L42)
 
 ##### `ImplementationEvidenceItem` — Summary
 A single piece of evidence that an implementation file is tested.
@@ -57,7 +57,7 @@ from coverage-summary files, or from manual evidence waivers.
 
 #### `TestEvidenceItem` {#symbol-testevidenceitem}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L54)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L54)
 
 ##### `TestEvidenceItem` — Summary
 Evidence record for a test file, listing the implementation files
@@ -65,7 +65,7 @@ it targets and any supporting fixtures it depends on.
 
 #### `EvidenceSnapshot` {#symbol-evidencesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L69)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L69)
 
 ##### `EvidenceSnapshot` — Summary
 Complete workspace-wide evidence snapshot assembled from coverage summaries,
@@ -77,7 +77,7 @@ on test-archetype docs. Currently feeds 67+ Live Doc files in this workspace.
 
 #### `loadEvidenceSnapshot` {#symbol-loadevidencesnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/server/src/features/live-docs/evidenceBridge.ts#L95)
+- Source: [source](../../../../../packages/generator/src/evidenceBridge.ts#L95)
 - Parameters: `options`: `LoadEvidenceOptions`
 
 ##### `loadEvidenceSnapshot` — Summary
@@ -98,16 +98,16 @@ The snapshot is consumed once per `generateLiveDocs()` invocation.
 - `glob` - `glob`
 - `node:fs/promises`
 - `node:path` - `path`
-- [`pathUtils.normalizeWorkspacePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`pathUtils.normalizeWorkspacePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
 ### Observed Evidence
 #### Vitest Integration Tests
-- [evidence.test.ts](../../../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
-- [generation.test.ts](../../../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
-- [polyglot-fixtures.test.ts](../../../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
-- [rosettaParity.test.ts](../../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
+- [evidence.test.ts](../../../tests/integration/live-docs/evidence.test.ts.mdmd.md)
+- [generation.test.ts](../../../tests/integration/live-docs/generation.test.ts.mdmd.md)
+- [polyglot-fixtures.test.ts](../../../tests/integration/live-docs/polyglot-fixtures.test.ts.mdmd.md)
+- [rosettaParity.test.ts](../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
 
 #### Vitest Unit Tests
 - [generator.test.ts](./generator.test.ts.mdmd.md)

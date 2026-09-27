@@ -22,7 +22,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { beforeAll, describe, it } from "vitest";
 
-import { generateLiveDocs } from "../../../packages/server/src/features/live-docs/generator";
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,

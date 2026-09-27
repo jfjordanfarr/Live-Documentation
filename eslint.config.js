@@ -44,7 +44,7 @@ module.exports = tseslint.config(
         typescript: {
           project: [
             "./packages/shared/tsconfig.json",
-            "./packages/server/tsconfig.json",
+            "./packages/generator/tsconfig.json",
             "./packages/scripts/tsconfig.json",
             "./packages/scripts/src/live-docs/explorer/client/tsconfig.json"
           ],

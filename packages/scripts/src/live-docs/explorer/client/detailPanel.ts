@@ -706,8 +706,8 @@ function resolveRelativePathToWorkspace(
   }
   
   // Get the directory of the source doc, stripping the Live Docs root prefix.
-  // e.g., ".live-documentation/source/packages/server/src/main.ts.md" → "packages/server/src"
-  //        ".mdmd/layer-4/packages/server/src/main.ts.mdmd.md"       → "packages/server/src"
+  // e.g., ".live-documentation/source/packages/generator/src/generator.ts.md" → "packages/generator/src"
+  //        ".mdmd/layer-4/packages/generator/src/generator.ts.mdmd.md"       → "packages/generator/src"
   let sourceDir = fromDocPath;
   
   // Remove the Live Doc filename

@@ -81,16 +81,6 @@ cs update
 cs install scip-java
 ```
 
-### Python fixtures fail
-Ensure Python dependencies are installed in a virtualenv:
-```bash
-cd tests/integration/benchmarks/fixtures/python/requests
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-scip-python index .
-```
-
 ### Slow container startup
 The first build downloads ~2GB of language toolchains. Subsequent rebuilds use cached layers.
 

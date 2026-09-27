@@ -362,9 +362,9 @@ function usage(): string {
     `  path/to/file.ts#SymbolName   Hash-separated (preferred, markdown-compatible)\n` +
     `  path/to/file.ts:SymbolName   Colon-separated (Windows-safe alternative)\n` +
     `\nExamples:\n` +
-    `  npm run live-docs:inspect -- --from packages/server/src/main.ts --to packages/shared/src/index.ts\n` +
-    `  npm run live-docs:inspect -- --from packages/server/src/main.ts#startServer --to packages/shared/src/index.ts#GraphStore --json\n` +
-    `  npm run live-docs:inspect -- --from packages/server/src/index.ts --direction inbound --json\n`;
+    `  npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/shared/src/live-docs/core.ts\n` +
+    `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/shared/src/live-docs/core.ts#analyzeSourceFile --json\n` +
+    `  npm run live-docs:inspect -- --from packages/shared/src/config/liveDocumentationConfig.ts --direction inbound --json\n`;
 }
 
 main().catch((error) => {

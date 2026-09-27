@@ -23,7 +23,7 @@ Record the key architectural decisions made during Live Documentation developmen
 ### Diagnostic Architecture _(Superseded 2026-02-18)_
 
 - **Original decision**: A Node.js language server, coordinated by a thin VS Code extension, owning graph construction and lint diagnostics.
-- **What happened**: The diagnostics subsystem was removed on 2026-02-18 (see the audit trail below). What remains is a 60-line server shell and the generator code that happens to live in `packages/server`; both are scheduled for removal or relocation, and the extension is being rescoped (see "Explorer Panel in the Editor").
+- **What happened**: The diagnostics subsystem was removed on 2026-02-18 (see the audit trail below). The server shell was removed on 2026-09-27 and the generator moved to `packages/generator`; the extension is being rescoped (see "Explorer Panel in the Editor").
 
 ### Symbol Ingestion Strategy _(Superseded; see "Link Sources")_
 

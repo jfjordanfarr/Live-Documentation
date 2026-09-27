@@ -196,7 +196,7 @@ function processInline(
     );
 
     // Auto-link bare relative paths that look like file references
-    // e.g., ../packages/server/src/main.ts → clickable link
+    // e.g., ../packages/generator/src/generator.ts → clickable link
     // Skip paths already in quotes or parentheses (likely in HTML attributes)
     text = text.replace(
         /(?<!["\w])(\.\.?\/?[\w\-./]+\.(?:ts|js|md|json|css|html))(?!["\w])/g,

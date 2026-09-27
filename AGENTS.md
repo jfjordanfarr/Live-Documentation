@@ -22,25 +22,25 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 ## Workspace facts
 
 - Linux devcontainer, bash, Node 22 (`.nvmrc`), TypeScript 5.
-- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/server` (the Live Doc generator under `features/live-docs/`; the name predates the language server's removal), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
+- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/generator` (the Live Doc generator and the evidence bridge), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
 - Live Docs for this repo are generated into `.mdmd/layer-4/`, one per tracked source file. Shipped defaults are `.live-documentation/source/*.md`.
 - `.mdmd/layer-1` through `layer-3` are authored docs. Many are stale; see Status.
 - `AI-Agent-Workspace/ChatHistory/` is the full chat record from October 2025 to April 2026. It is historical reference only, never a source of current facts.
 
 ## Commands that matter
 
-| Command                                                                                         | What it does                                                                    |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                              |
-| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                |
-| `npm run test:unit`                                                                             | Vitest, 879 tests (about 30 s)                                                  |
-| `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                   |
+| Command                                                                                         | What it does                                                                      |
+| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                                |
+| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                  |
+| `npm run test:unit`                                                                             | Vitest, 829 tests (about 30 s)                                                    |
+| `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                     |
 | `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s) |
-| `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope |
-| `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                    |
-| `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                     |
-| `npm run live-docs:visualize`                                                                   | Build the static Explorer into `dist/explorer/`                                 |
-| `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                 |
+| `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope   |
+| `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                      |
+| `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                       |
+| `npm run live-docs:visualize`                                                                   | Build the static Explorer into `dist/explorer/`                                   |
+| `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                   |
 
 After changing source, run `live-docs:generate` and commit the regenerated docs with the code.
 

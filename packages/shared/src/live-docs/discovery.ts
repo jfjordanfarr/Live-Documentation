@@ -87,7 +87,7 @@ async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | nu
  * const files = await discoverTargetFiles({
  *   workspaceRoot,
  *   config,
- *   include: new Set(["packages/server/src/index.ts"]),
+ *   include: new Set(["packages/generator/src/generator.ts"]),
  *   changedOnly: false
  * });
  * ```

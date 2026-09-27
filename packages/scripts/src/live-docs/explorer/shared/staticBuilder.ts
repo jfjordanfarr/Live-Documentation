@@ -8,7 +8,7 @@
  * const bundle = await buildStaticExplorer({
  *   workspaceRoot: process.cwd(),
  *   outputDir: './dist/explorer',
- *   includeLocalMaps: ['packages/server/src/main.ts'] // Optional: pre-compute specific focus nodes
+ *   includeLocalMaps: ['packages/generator/src/generator.ts'] // Optional: pre-compute specific focus nodes
  * });
  * ```
  *

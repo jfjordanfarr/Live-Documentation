@@ -10,7 +10,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 
-import { generateLiveDocs } from "../../packages/server/src/features/live-docs/generator";
+import { generateLiveDocs } from "../../packages/generator/src/generator";
 
 interface ParsedArgs {
   help: boolean;

@@ -12,7 +12,7 @@
  * npm run live-docs:visualize -- --static --output ./docs/explorer
  *
  * # Include pre-computed Local Maps for specific nodes
- * npm run live-docs:visualize -- --static --local-maps packages/server/src/main.ts
+ * npm run live-docs:visualize -- --static --local-maps packages/generator/src/generator.ts
  *
  * # Include all Local Maps (large output)
  * npm run live-docs:visualize -- --static --all-local-maps

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/core.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-core-ts
-- Generated At: 2026-09-27T08:33:37.586Z
+- Generated At: 2026-09-27T09:36:40.209Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T08:33:37.586Z","inputHash":"14a9756f07c4cfac"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T09:36:40.209Z","inputHash":"14a9756f07c4cfac"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceAnalysisResult` {#symbol-sourceanalysisresult}
@@ -329,8 +329,8 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [rosettaParity.test.ts](../../../../tests/integration/live-docs/rosettaParity.test.ts.mdmd.md)
 
 #### Vitest Unit Tests
-- [generator.test.ts](../../../server/src/features/live-docs/generator.test.ts.mdmd.md)
-- [renderPublicSymbolLines.test.ts](../../../server/src/features/live-docs/renderPublicSymbolLines.test.ts.mdmd.md)
+- [generator.test.ts](../../../generator/src/generator.test.ts.mdmd.md)
+- [renderPublicSymbolLines.test.ts](../../../generator/src/renderPublicSymbolLines.test.ts.mdmd.md)
 - [aspnet.test.ts](./adapters/aspnet.test.ts.mdmd.md)
 - [c.docstring.test.ts](./adapters/c.docstring.test.ts.mdmd.md)
 - [csharp.hangfire.test.ts](./adapters/csharp.hangfire.test.ts.mdmd.md)
