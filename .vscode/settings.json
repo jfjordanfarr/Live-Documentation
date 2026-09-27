@@ -1,23 +1,6 @@
 {
-    "chat.promptFilesRecommendations": {
-        "speckit.constitution": true,
-        "speckit.specify": true,
-        "speckit.plan": true,
-        "speckit.tasks": true,
-        "speckit.implement": true
-    },
-    "chat.tools.terminal.autoApprove": {
-        ".specify/scripts/bash/": true,
-        ".specify/scripts/powershell/": true,
-        "Push-Location": true,
-        "Pop-Location": true,
-        "tsc": true
-    },
-    "github.copilot.chat.byok.ollamaModel": "qwen3-coder:30b",
     "typescript.tsserver.watchOptions": {
-        "excludeDirectories": [
-            "**/tests/integration/benchmarks/fixtures"
-        ]
+        "excludeDirectories": ["**/tests/integration/benchmarks/fixtures"]
     },
     "java.project.import.exclusions": [
         "**/tests/integration/benchmarks/fixtures/java/**",
@@ -29,4 +12,3 @@
     },
     "markdown.validate.enabled": true
 }
-

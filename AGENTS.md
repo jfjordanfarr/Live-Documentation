@@ -1,0 +1,64 @@
+# Live Documentation: working notes for agents
+
+This is the one place agents are told how to work in this repository. Vendor-specific files (`CLAUDE.md`, `.github/copilot-instructions.md`) only point here.
+
+## What this is
+
+Live Documentation turns a folder of source files into a map you can look at. It writes one markdown file per source file describing what that file exposes and what it is wired to. The Explorer (a static web page), the CLI, and the VS Code panel are renderings of those files and nothing more. It exists so a person can see how a system's pieces connect without reading the code or drawing the diagram by hand.
+
+The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read it before proposing features.
+
+## How to work here
+
+- **You own the code.** This is a single-owner repository where nearly every line was written by an agent. Nothing is "pre-existing" or "not my code." If a file can't be justified, delete it.
+- **Stop at forks.** When there are two reasonable ways forward, or an assumption would decide the design, stop and ask. Do not pick one and keep going.
+- **Fix causes, not gates.** Never lower a threshold, exclude a path, skip a test, or add a workaround to make a check pass. If a check is wrong, fix the check and say so. A passing suite is not the goal; being correct is.
+- **Say what's true.** Disagree with the owner when the text says otherwise. Don't flatter. Don't invent deadlines or time estimates. Report failures with their output.
+- **Prefer deletion.** The simplest correct form is the most correct form. All duplication is a smell. Excess code is a liability someone has to carry.
+- **Read the whole file** when asked to read a file. No sampling.
+- **Git needs care.** Never run bulk `git checkout`, `git restore`, or `git clean`. Commit only when asked. Commit messages must make sense to an outsider: no internal IDs, no "Option C."
+- **Keep the product separate from this workspace.** This repo's own conventions (the `.mdmd` root, `layer-4`, the `.mdmd.md` extension) come from `.live-docs.config.json`. Product code reads configuration; it never hardcodes these.
+
+## Workspace facts
+
+- Linux devcontainer, bash, Node 22 (`.nvmrc`), TypeScript 5.
+- npm workspaces: `packages/shared` (analysis engine and language adapters), `packages/scripts` (Explorer client and static builder, `inspect` pathfinder), `packages/server` (the Live Doc generator under `features/live-docs/`, plus a vestigial language server), `packages/extension` (vestigial), `packages/cli` (not yet publishable). CLI entry points are `scripts/live-docs/*.ts`.
+- Live Docs for this repo are generated into `.mdmd/layer-4/`, one per tracked source file. Shipped defaults are `.live-documentation/source/*.md`.
+- `.mdmd/layer-1` through `layer-3` are authored docs. Many are stale; see Status.
+- `AI-Agent-Workspace/ChatHistory/` is the full chat record from October 2025 to April 2026. It is historical reference only, never a source of current facts.
+
+## Commands that matter
+
+| Command                                                                                         | What it does                                                                    |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                              |
+| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                |
+| `npm run test:unit`                                                                             | Vitest, 879 tests (about 30 s)                                                  |
+| `npm run test:e2e`                                                                              | Playwright against the built Explorer, 29 tests (about 2 min)                   |
+| `npm run test:integration`                                                                      | Mocha suites through the VS Code Electron harness; needs `xvfb-run` here        |
+| `npm run live-docs:generate`                                                                    | Regenerate `.mdmd/layer-4`. `--dry-run` reports drift; `--changed` limits scope |
+| `npm run live-docs:lint`                                                                        | Structural and link checks on generated docs                                    |
+| `npm run live-docs:inspect -- --from A [--to B] [--direction inbound\|outbound\|both] [--json]` | Dependency pathfinding. Run it before and after risky edits                     |
+| `npm run live-docs:visualize`                                                                   | Build the static Explorer into `dist/explorer/`                                 |
+| `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                 |
+
+After changing source, run `live-docs:generate` and commit the regenerated docs with the code.
+
+## Documentation rules
+
+- Markdown is canonical. Everything the Explorer or CLI shows must be derivable from the Live Docs. If a picture needs a fact the docs can't carry, grow the doc format rather than add a side channel.
+- Never hand-edit a `LIVE-DOC:BEGIN` … `LIVE-DOC:END` region. Fix the generator.
+- Authored `Purpose` and `Notes` explain what a file is for and what a maintainer must know. Write them for a new reader, not as a changelog. A chat-log citation is not required.
+- Every authored doc is either current or historical. Historical docs say so in their first lines and are never linked from current ones.
+- No requirement-ID schemes (`CAP-`, `REQ-`, `UC-`, `LD-`). Name things in plain words.
+
+## Explorer client (`packages/scripts/src/live-docs/explorer/client/`)
+
+- Layout math lives in pure modules with Vitest tests; DOM modules render from them. No jsdom tests: they pass when the UI is wrong. Visual behavior is verified with Playwright.
+- The visual language is fixed at every scale: inputs on the left (green), outputs on the right (blue), wires between them. Fade the irrelevant; never boost the relevant. Text stays the same size at every zoom level. No emoji anywhere in the UI.
+- Prefer a symbol's origin file over a barrel re-export when resolving links.
+- Pins are a continuous spectrum (zero pins is browsing, all pins is the full local map), not a set of modes.
+
+## Status (2026-09-26)
+
+A cleanup pass is planned; the order of work is in the vision doc. Until it lands, do not invest in: `packages/extension` and the language server in `packages/server/src/main.ts` (to be removed); `packages/shared/src/inference/*` and `testing/fixtureOracles` (a benchmark-only inference path, to be replaced by tree-sitter adapters); `live-docs:report` (it compares the analyzer to itself); `tech-debt` and `audit:network`. The Circuit Board and Local Map views are being folded into one file-scale view.
