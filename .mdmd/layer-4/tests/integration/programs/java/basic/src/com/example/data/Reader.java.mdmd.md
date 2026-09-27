@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/basic/src/com/example/data/Reader.java
 - Live Doc ID: LD-test-tests-integration-programs-java-basic-src-com-example-data-reader-java
-- Generated At: 2026-09-27T18:53:06.774Z
+- Generated At: 2026-09-27T20:19:23.315Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Loads synthetic records for the Java basic benchmark, illustrating how data modu
 Keep the sample values predictable; analyzer regressions rely on this deterministic dataset.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.774Z","inputHash":"845df90d5b65968a"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.315Z","inputHash":"862a43b53c1f8a5e"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Reader` {#symbol-reader}
@@ -28,6 +28,7 @@ Loads synthetic records for the fixtures.
 #### `load` {#symbol-load}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/basic/src/com/example/data/Reader.java#L21)
+- Returns: `List`
 
 ##### `load` — Summary
 Loads records for the provided dataset identifier.

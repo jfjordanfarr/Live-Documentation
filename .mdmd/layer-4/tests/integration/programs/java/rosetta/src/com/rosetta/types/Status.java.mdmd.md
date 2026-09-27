@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-types-status-java
-- Generated At: 2026-09-27T18:53:07.173Z
+- Generated At: 2026-09-27T20:19:23.576Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definition for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.types package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.173Z","inputHash":"d0c098059abc0efb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.576Z","inputHash":"94cfc157938f49cb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Status` {#symbol-status}
@@ -24,6 +24,18 @@ See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHi
 
 ##### `Status` — Summary
 Status enumeration for records.
+
+#### `PENDING` {#symbol-pending}
+- Type: field
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java#L7)
+
+#### `ACTIVE` {#symbol-active}
+- Type: field
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java#L8)
+
+#### `COMPLETE` {#symbol-complete}
+- Type: field
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/types/Status.java#L9)
 
 #### `getValue` {#symbol-getvalue}
 - Type: method

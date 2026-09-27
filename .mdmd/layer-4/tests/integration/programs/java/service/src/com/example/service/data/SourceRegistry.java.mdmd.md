@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/data/SourceRegistry.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-data-sourceregistry-java
-- Generated At: 2026-09-27T18:53:07.311Z
+- Generated At: 2026-09-27T20:19:23.656Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Maintains the in-memory dataset catalog for the Java service benchmark so resolv
 Sample values stay intentionally small; tweak them only if the benchmark needs additional dependency edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.311Z","inputHash":"520ffa24b2b968d9"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.656Z","inputHash":"3be982aadfa248db"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SourceRegistry (class)` {#symbol-sourceregistry-class}
@@ -29,6 +29,7 @@ Sample values stay intentionally small; tweak them only if the benchmark needs a
 #### `resolve` {#symbol-resolve}
 - Type: method
 - Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/data/SourceRegistry.java#L18)
+- Returns: `List`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

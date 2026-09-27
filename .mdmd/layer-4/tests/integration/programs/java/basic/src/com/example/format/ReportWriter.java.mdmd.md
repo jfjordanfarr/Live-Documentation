@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java
 - Live Doc ID: LD-test-tests-integration-programs-java-basic-src-com-example-format-reportwriter-java
-- Generated At: 2026-09-27T18:53:06.806Z
+- Generated At: 2026-09-27T20:19:23.333Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Transforms record collections into summaries for the Java basic benchmark, tying
 Do not reorder the dependency on `Catalog`; it exists to highlight formatter-to-data module edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.806Z","inputHash":"63304336fc17bdfa"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.333Z","inputHash":"fb97926c99cc2063"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReportWriter` {#symbol-reportwriter}
@@ -28,6 +28,7 @@ Formats `Record` collections into human-readable summaries.
 #### `write` {#symbol-write}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/basic/src/com/example/format/ReportWriter.java#L21)
+- Parameters: `records`: `List`
 
 ##### `write` — Summary
 Writes a summary string for the supplied records.

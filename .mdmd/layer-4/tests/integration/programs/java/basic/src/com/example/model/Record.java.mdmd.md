@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/basic/src/com/example/model/Record.java
 - Live Doc ID: LD-test-tests-integration-programs-java-basic-src-com-example-model-record-java
-- Generated At: 2026-09-27T18:53:06.829Z
+- Generated At: 2026-09-27T20:19:23.350Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Defines the immutable `Record` used throughout the Java basic benchmark so the a
 Field names should stay aligned with formatter expectations; change them only with corresponding pipeline updates.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.829Z","inputHash":"1e1cb626ff52fb35"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.350Z","inputHash":"232b726de568ab8b"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Record` {#symbol-record}
@@ -28,6 +28,14 @@ Immutable metric record used by the reporting fixtures.
 ##### `Record` — Parameters
 - `dataset`: dataset identifier associated with each metric
 - `value`: metric value captured for the dataset
+
+#### `dataset` {#symbol-dataset}
+- Type: field
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/basic/src/com/example/model/Record.java#L9)
+
+#### `value` {#symbol-value}
+- Type: field
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/basic/src/com/example/model/Record.java#L9)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

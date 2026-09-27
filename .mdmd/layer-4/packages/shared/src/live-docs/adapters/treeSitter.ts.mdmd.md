@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/treeSitter.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-treesitter-ts
-- Generated At: 2026-09-27T18:53:03.197Z
+- Generated At: 2026-09-27T20:19:20.640Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:03.197Z","inputHash":"fb8c7b593be34e05"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.640Z","inputHash":"fb8c7b593be34e05"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SyntaxNode` {#symbol-syntaxnode}
@@ -60,4 +60,8 @@ Parses `source` with the named grammar. The caller owns the tree and should `del
 - [csharp.hangfire.test.ts](./csharp.hangfire.test.ts.mdmd.md)
 - [csharp.test.ts](./csharp.test.ts.mdmd.md)
 - [dotnetConfig.test.ts](./dotnetConfig.test.ts.mdmd.md)
+- [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
+- [python.resolution.test.ts](./python.resolution.test.ts.mdmd.md)
+- [python.test.ts](./python.test.ts.mdmd.md)
+- [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

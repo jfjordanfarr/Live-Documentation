@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.resolution.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-resolution-test-ts
-- Generated At: 2026-09-27T19:11:41.753Z
+- Generated At: 2026-09-27T20:19:20.472Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Validates Python import resolution logic including local modules, relative impor
 Tests cover the fixture patterns used in `python/basics` and `python/pipeline` benchmark fixtures to ensure Live Doc dependency links resolve correctly.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T19:11:41.753Z","inputHash":"1df08d1a0fd1bd7c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.472Z","inputHash":"1df08d1a0fd1bd7c"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -35,7 +35,8 @@ _No public symbols detected_
 #### Vitest Unit Tests
 - packages/shared/src/languages: [languages/index.ts](../../languages/index.ts.mdmd.md)
 - packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
-- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [python.ts](./python.ts.mdmd.md)
+- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [python.ts](./python.ts.mdmd.md), [treeSitter.ts](./treeSitter.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-index-ts
-- Generated At: 2026-09-27T18:53:02.973Z
+- Generated At: 2026-09-27T20:19:20.267Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:02.973Z","inputHash":"a5cd48145f320980"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.267Z","inputHash":"a5cd48145f320980"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
@@ -94,6 +94,7 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [powershell.test.ts](./powershell.test.ts.mdmd.md)
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
 - [python.resolution.test.ts](./python.resolution.test.ts.mdmd.md)
+- [python.test.ts](./python.test.ts.mdmd.md)
 - [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 - [ruby.docstring.test.ts](./ruby.docstring.test.ts.mdmd.md)
 - [ruby.typeref.test.ts](./ruby.typeref.test.ts.mdmd.md)

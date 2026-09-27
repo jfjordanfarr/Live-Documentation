@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/AppService.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-appservice-java
-- Generated At: 2026-09-27T18:53:07.210Z
+- Generated At: 2026-09-27T20:19:23.600Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Coordinates repository and analyzer dependencies for the Java service benchmark 
 Leave the constructor and `generate` method focused on delegation; additional logic belongs in the collaborators.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.210Z","inputHash":"59f47877e496447c"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.600Z","inputHash":"b562faf937b766c4"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `AppService (class)` {#symbol-appservice-class}
@@ -25,10 +25,12 @@ Leave the constructor and `generate` method focused on delegation; additional lo
 #### `AppService (constructor)` {#symbol-appservice-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/AppService.java#L11)
+- Parameters: `repository`: [`Repository`](./data/Repository.java.mdmd.md#symbol-repository-class); `analyzer`: [`Analyzer`](./analytics/Analyzer.java.mdmd.md#symbol-analyzer-class)
 
 #### `generate` {#symbol-generate}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/AppService.java#L16)
+- Returns: [`Summary`](./model/Summary.java.mdmd.md#symbol-summary)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

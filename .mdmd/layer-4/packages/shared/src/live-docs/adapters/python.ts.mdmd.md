@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/python.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-python-ts
-- Generated At: 2026-09-27T20:06:57.200Z
+- Generated At: 2026-09-27T20:19:20.543Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 - File existence is checked against the directory listing, not `stat` alone, because the workspace may sit on a case-insensitive mount and Python imports are case-sensitive.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:06:57.200Z","inputHash":"3a044b7ed3d4a645"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.543Z","inputHash":"3a044b7ed3d4a645"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
@@ -51,5 +51,6 @@ Language adapter for Python (`.py`): tree-sitter symbols and import resolution t
 #### Vitest Unit Tests
 - [python.docstring.test.ts](./python.docstring.test.ts.mdmd.md)
 - [python.resolution.test.ts](./python.resolution.test.ts.mdmd.md)
+- [python.test.ts](./python.test.ts.mdmd.md)
 - [python.typeref.test.ts](./python.typeref.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

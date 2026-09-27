@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/ProcessorConfig.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-types-processorconfig-java
-- Generated At: 2026-09-27T18:53:07.145Z
+- Generated At: 2026-09-27T20:19:23.560Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Type definition for the Java Rosetta Stone fixture.
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Part of the com.rosetta.types package.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.145Z","inputHash":"9d7a5025c26fd526"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.560Z","inputHash":"2cf24b1a695d8a1f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorConfig (class)` {#symbol-processorconfig-class}

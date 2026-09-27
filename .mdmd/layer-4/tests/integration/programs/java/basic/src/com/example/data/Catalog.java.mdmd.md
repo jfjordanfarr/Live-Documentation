@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/basic/src/com/example/data/Catalog.java
 - Live Doc ID: LD-test-tests-integration-programs-java-basic-src-com-example-data-catalog-java
-- Generated At: 2026-09-27T18:53:06.749Z
+- Generated At: 2026-09-27T20:19:23.298Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies dataset captions for the Java basic benchmark so summaries can demonstr
 Catalog entries stay intentionally small; expand them only when the fixture needs new graph edges.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.749Z","inputHash":"04f55938299df0e2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.298Z","inputHash":"3ec28266a9ec7cfb"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Catalog` {#symbol-catalog}

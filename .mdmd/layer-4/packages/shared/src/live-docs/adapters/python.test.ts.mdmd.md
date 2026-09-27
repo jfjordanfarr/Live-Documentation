@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: packages/shared/src/live-docs/adapters/python.test.ts
 - Live Doc ID: LD-test-packages-shared-src-live-docs-adapters-python-test-ts
-- Generated At: 2026-09-27T20:03:29.976Z
+- Generated At: 2026-09-27T20:19:20.491Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Tests the Python adapter's resolution rules on small temporary workspaces: re-ex
 - Each test writes its own files, so the cases read as small Python programs; `python.resolution.test.ts` and `python.typeref.test.ts` hold the older cases the rewrite had to keep passing.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:29.976Z","inputHash":"7a4d9204e89117a2"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.491Z","inputHash":"7a4d9204e89117a2"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -32,7 +32,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Targets -->
 ### Targets
-_No targets documented yet_
+#### Vitest Unit Tests
+- packages/shared/src/languages: [languages/index.ts](../../languages/index.ts.mdmd.md)
+- packages/shared/src/live-docs: [core.ts](../core.ts.mdmd.md)
+- packages/shared/src/live-docs/adapters: [adapters/index.ts](./index.ts.mdmd.md), [python.ts](./python.ts.mdmd.md), [treeSitter.ts](./treeSitter.ts.mdmd.md)
+- packages/shared/src/tooling: [pathUtils.ts](../../tooling/pathUtils.ts.mdmd.md)
 <!-- LIVE-DOC:END Targets -->
 
 <!-- LIVE-DOC:BEGIN Supporting Fixtures -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/languages/index.ts
 - Live Doc ID: LD-implementation-packages-shared-src-languages-index-ts
-- Generated At: 2026-09-27T20:03:29.475Z
+- Generated At: 2026-09-27T20:19:19.906Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Central registry for language syntax configurations. Exports all `LanguageSyntax
 Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:03:29.475Z","inputHash":"8fea4e2682df8706"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:19.906Z","inputHash":"8fea4e2682df8706"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LanguageSyntax` {#symbol-languagesyntax}
@@ -213,5 +213,6 @@ True if the identifier is a framework type to filter as noise, false otherwise
 - [c.docstring.test.ts](../live-docs/adapters/c.docstring.test.ts.mdmd.md)
 - [python.docstring.test.ts](../live-docs/adapters/python.docstring.test.ts.mdmd.md)
 - [python.resolution.test.ts](../live-docs/adapters/python.resolution.test.ts.mdmd.md)
+- [python.test.ts](../live-docs/adapters/python.test.ts.mdmd.md)
 - [python.typeref.test.ts](../live-docs/adapters/python.typeref.test.ts.mdmd.md)
 <!-- LIVE-DOC:END Observed Evidence -->

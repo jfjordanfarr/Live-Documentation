@@ -1,680 +1,610 @@
-import { existsSync, readdirSync } from "node:fs";
+/**
+ * Java adapter: tree-sitter symbols and compiler-style name resolution across
+ * the workspace.
+ *
+ * A file's symbols are the types it declares, top-level and nested, and the
+ * members those types expose (public or protected, or any member of an
+ * interface), with Javadoc from the comment above each declaration.
+ *
+ * Dependencies come from every type name the file uses, resolved the way javac
+ * resolves a simple name: a nested type of an enclosing type, a type declared
+ * in the same file, a single-type import, a type of the same package, then a
+ * type of an on-demand (`.*`) import. A qualified name is looked up as written.
+ * The workspace's types are tabled once per generation run from the `package`
+ * declarations of every `.java` file, so a package split across `src/main` and
+ * `src/test` is one package, as it is to the compiler. Names inside strings and
+ * comments are never references.
+ */
+import { glob } from "glob";
 import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import path from "node:path";
 
-import type {
-  DependencyEntry,
-  PublicSymbolEntry,
-  SourceAnalysisResult,
-  SymbolDocumentation,
-  SymbolDocumentationException,
-  SymbolDocumentationExample,
-  SymbolDocumentationLink,
-  SymbolDocumentationLinkKind,
-  SymbolDocumentationParameter,
-  TypeReference
-} from "../core";
-import type { LanguageAdapter } from "./index";
+import { javaSyntax } from "../../languages";
+import { normalizeWorkspacePath } from "../../tooling/pathUtils";
+import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
+import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { parseJavaDoc } from "./java.javadoc";
+import { parseSource, type SyntaxNode } from "./treeSitter";
 
-// Captures: [1] docblock, [2] access, [3] kind, [4] name, [5] extends clause, [6] implements clause
-// Uses non-greedy +? and lookahead to opening paren (records) or brace (classes) to separate clauses
-const TYPE_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:(?:abstract|final|sealed|static)\s+)*(class|interface|enum|record)\s+([A-Za-z_][A-Za-z0-9_$]*)(?:<[^>]+>)?(?:\s+extends\s+([A-Za-z0-9_$.,<>\s]+?))?(?:\s+implements\s+([A-Za-z0-9_$.,<>\s]+?))?(?=\s*[({])/g;
-const MEMBER_DECLARATION_PATTERN = /((?:\s*\/\*\*[\s\S]*?\*\/\s*)?)(public|protected)\s+(?:static\s+|final\s+|abstract\s+|default\s+|synchronized\s+|strictfp\s+)*(?:([^\s(]+)\s+)?([A-Za-z_][A-Za-z0-9_$]*)\s*\(/g;
-const IMPORT_PATTERN = /^\s*import\s+([^;]+);/gm;
-const PACKAGE_PATTERN = /^\s*package\s+([A-Za-z_][A-Za-z0-9_$.]*)\s*;/m;
-const BUILT_IN_PACKAGE_PREFIX = "java.";
+// ---------------------------------------------------------------------------
+// Facts about one compilation unit
+// ---------------------------------------------------------------------------
 
-/**
- * Extracts the package declaration from Java source content.
- * @returns The package name (e.g., "com.example.app") or undefined if none found
- */
-function extractPackage(content: string): string | undefined {
-  const match = PACKAGE_PATTERN.exec(content);
-  return match?.[1]?.trim();
+interface JavaImport {
+  /** The imported name's parts; `a.b.C` or, for an on-demand import, the package or type `a.b`. */
+  parts:    string[];
+  wildcard: boolean;
+  isStatic: boolean;
 }
 
-/**
- * Computes the source root directory by subtracting the package path from the file path.
- *
- * Given:
- *   - absolutePath: /project/src/com/example/app/App.java
- *   - packageName: com.example.app
- *
- * Returns: /project/src
- *
- * This enables resolving other imports like `com.example.data.Reader` to
- * `/project/src/com/example/data/Reader.java`
- */
-function computeSourceRoot(absolutePath: string, packageName: string | undefined): string | undefined {
-  if (!packageName) {
-    // No package declaration — file is in the default package
-    // Source root is the directory containing the file
-    return path.dirname(absolutePath);
-  }
-
-  // Convert package name to path segments: com.example.app → com/example/app
-  const packagePath = packageName.replace(/\./g, path.sep);
-
-  // The file path should end with /{packagePath}/{ClassName}.java
-  // We need to find where the package path starts in the file path
-  const normalizedAbsPath = path.normalize(absolutePath);
-  const dirPath = path.dirname(normalizedAbsPath);
-
-  // Check if the directory ends with the package path
-  if (dirPath.endsWith(packagePath)) {
-    return dirPath.slice(0, dirPath.length - packagePath.length - 1); // -1 for trailing separator
-  }
-
-  // Fallback: could not determine source root
-  return undefined;
+interface DeclaredMember {
+  name:           string;
+  kind:           string;
+  line:           number;
+  character:      number;
+  documentation?: SymbolDocumentation;
+  typeReferences: TypeReference[];
+  published:      boolean;
 }
 
-/**
- * Resolves a Java import specifier to a workspace-relative file path.
- *
- * Given:
- *   - specifier: com.example.data.Reader
- *   - sourceRoot: /project/src
- *   - workspaceRoot: /project
- *
- * Returns: src/com/example/data/Reader.java (workspace-relative, if file exists)
- */
-function resolveJavaImport(
-  specifier: string,
-  sourceRoot: string | undefined,
-  workspaceRoot: string
-): string | undefined {
-  if (!sourceRoot) {
-    return undefined;
-  }
-
-  // Handle wildcard imports (com.example.data.*) — cannot resolve to a specific file
-  if (specifier.endsWith(".*")) {
-    return undefined;
-  }
-
-  // Convert fully-qualified name to path: com.example.data.Reader → com/example/data/Reader.java
-  const relativePath = specifier.replace(/\./g, path.sep) + ".java";
-  const absolutePath = path.join(sourceRoot, relativePath);
-
-  // Verify the file exists
-  if (existsSync(absolutePath)) {
-    // Return workspace-relative path (forward slashes for consistency)
-    return path.relative(workspaceRoot, absolutePath).replace(/\\/g, "/");
-  }
-
-  return undefined;
+interface DeclaredType {
+  name:           string;
+  /** Package-qualified, with enclosing types: `com.acme.store.Inventory.Listener`. */
+  qualifiedName:  string;
+  kind:           string;
+  line:           number;
+  character:      number;
+  documentation?: SymbolDocumentation;
+  typeReferences: TypeReference[];
+  members:        DeclaredMember[];
+  nested:         DeclaredType[];
 }
 
-/** Language adapter for Java (`.java`). Extracts classes, interfaces, enums, annotated types, and `import` dependencies. */
-export const javaAdapter: LanguageAdapter = {
-  id: "java-basic",
-  extensions: [".java"],
-  async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
-    const content = await fs.readFile(absolutePath, "utf8");
-    const symbols = extractSymbols(content);
+/** A type name used somewhere in the file, with the types it is written inside, innermost first. */
+interface TypeUse {
+  chain:     string[];
+  enclosing: string[];
+}
 
-    // Compute source root from package declaration
-    const packageName = extractPackage(content);
-    const sourceRoot = computeSourceRoot(absolutePath, packageName);
+interface FileFacts {
+  package:  string;
+  imports:  JavaImport[];
+  types:    DeclaredType[];
+  typeUses: TypeUse[];
+}
 
-    const dependencies = extractDependencies(content, sourceRoot, workspaceRoot);
-
-    // Detect same-package references (classes used without an explicit import)
-    const samePackageDeps = detectSamePackageDependencies(
-      content, absolutePath, packageName, sourceRoot, workspaceRoot, dependencies
-    );
-    dependencies.push(...samePackageDeps);
-
-    if (symbols.length === 0 && dependencies.length === 0) {
-      return {
-        symbols: [],
-        dependencies: []
-      } as SourceAnalysisResult;
-    }
-
-    return {
-      symbols,
-      dependencies
-    } as SourceAnalysisResult;
-  }
+const TYPE_DECLARATIONS: Record<string, string> = {
+  class_declaration:           "class",
+  interface_declaration:       "interface",
+  enum_declaration:            "enum",
+  record_declaration:          "record",
+  annotation_type_declaration: "annotation"
 };
 
-function extractSymbols(content: string): PublicSymbolEntry[] {
-  const results: PublicSymbolEntry[] = [];
-  let match: RegExpExecArray | null;
+const JDK_PACKAGES = ["java.", "javax.", "jdk."];
 
-  while ((match = TYPE_DECLARATION_PATTERN.exec(content)) !== null) {
-    const declarationIndex = match.index + (match[1] ? match[1].length : 0);
-    const { line, character } = computePosition(content, declarationIndex);
-    const documentation = parseJavaDoc(match[1]);
-    const kind = match[3];
-    const extendsClause = match[5]?.trim();
-    const implementsClause = match[6]?.trim();
+function position(node: SyntaxNode): { line: number; character: number } {
+  return { line: node.startPosition.row + 1, character: node.startPosition.column + 1 };
+}
 
-    // Extract type references from inheritance
-    const typeReferences: TypeReference[] = [];
-    if (extendsClause) {
-      // For interfaces, extends can have multiple types; for classes, just one
-      const types = extendsClause.split(",").map(t => t.trim().split("<")[0].trim()).filter(Boolean);
-      for (const typeName of types) {
-        typeReferences.push({
-          name: typeName,
-          role: "extends"
-        });
+/** The identifiers of a dotted name: `scoped_identifier`, `scoped_type_identifier`, `field_access` or a lone identifier. */
+function nameChain(node: SyntaxNode | null): string[] | undefined {
+  if (!node) return undefined;
+  switch (node.type) {
+    case "identifier":
+    case "type_identifier":
+      return [node.text];
+    case "scoped_identifier":
+    case "scoped_type_identifier": {
+      const parts: string[] = [];
+      for (const child of node.namedChildren) {
+        if (child.type === "type_arguments") continue;
+        const inner = nameChain(child);
+        if (!inner) return undefined;
+        parts.push(...inner);
       }
+      return parts;
     }
-    if (implementsClause) {
-      const types = implementsClause.split(",").map(t => t.trim().split("<")[0].trim()).filter(Boolean);
-      for (const typeName of types) {
-        typeReferences.push({
-          name: typeName,
-          role: "implements"
-        });
-      }
+    case "field_access": {
+      const object = nameChain(node.childForFieldName("object"));
+      const field  = node.childForFieldName("field");
+      return object && field ? [...object, field.text] : undefined;
     }
-
-    results.push({
-      name: match[4],
-      kind,
-      location: {
-        line,
-        character
-      },
-      documentation: documentation ?? undefined,
-      typeReferences: typeReferences.length > 0 ? typeReferences : undefined
-    } as PublicSymbolEntry);
-  }
-
-  TYPE_DECLARATION_PATTERN.lastIndex = 0;
-
-  while ((match = MEMBER_DECLARATION_PATTERN.exec(content)) !== null) {
-    const returnType = match[3] ? match[3].trim() : "";
-    if (returnType === "class" || returnType === "interface" || returnType === "enum" || returnType === "record") {
-      continue;
-    }
-
-    const declarationIndex = match.index + (match[1] ? match[1].length : 0);
-    const { line, character } = computePosition(content, declarationIndex);
-    const documentation = parseJavaDoc(match[1]);
-
-    const kind = returnType ? "method" : "constructor";
-
-    results.push({
-      name: match[4],
-      kind,
-      location: {
-        line,
-        character
-      },
-      documentation: documentation ?? undefined
-    } as PublicSymbolEntry);
-  }
-
-  MEMBER_DECLARATION_PATTERN.lastIndex = 0;
-
-  results.sort((a, b) => {
-    const lineDiff = (a.location?.line ?? 0) - (b.location?.line ?? 0);
-    if (lineDiff !== 0) {
-      return lineDiff;
-    }
-    const charDiff = (a.location?.character ?? 0) - (b.location?.character ?? 0);
-    if (charDiff !== 0) {
-      return charDiff;
-    }
-    return a.name.localeCompare(b.name);
-  });
-
-  return results;
-}
-
-function extractDependencies(
-  content: string,
-  sourceRoot: string | undefined,
-  workspaceRoot: string
-): DependencyEntry[] {
-  const imports = new Set<string>();
-  let match: RegExpExecArray | null;
-
-  while ((match = IMPORT_PATTERN.exec(content)) !== null) {
-    let specifier = match[1]?.trim();
-    if (!specifier) {
-      continue;
-    }
-
-    if (specifier.startsWith("static ")) {
-      specifier = specifier.slice(7).trim();
-    }
-
-    if (specifier.startsWith(BUILT_IN_PACKAGE_PREFIX)) {
-      continue;
-    }
-
-    imports.add(specifier);
-  }
-
-  IMPORT_PATTERN.lastIndex = 0;
-
-  return Array.from(imports)
-    .sort((a, b) => a.localeCompare(b))
-    .map((specifier) => ({
-      specifier,
-      resolvedPath: resolveJavaImport(specifier, sourceRoot, workspaceRoot),
-      symbols: extractImportedSymbols(specifier),
-      kind: "import"
-    })) as DependencyEntry[];
-}
-
-/**
- * Detects same-package class references that have no explicit `import` statement.
- *
- * In Java, classes in the same package can reference each other without importing.
- * This function lists sibling `.java` files in the same package directory, extracts
- * each file's class name (from filename), and checks for word-boundary references
- * in the source code.
- */
-function detectSamePackageDependencies(
-  content: string,
-  absolutePath: string,
-  packageName: string | undefined,
-  sourceRoot: string | undefined,
-  workspaceRoot: string,
-  existingDeps: DependencyEntry[]
-): DependencyEntry[] {
-  if (!sourceRoot || !packageName) return [];
-
-  const packageDir = path.join(
-    sourceRoot,
-    packageName.replace(/\./g, path.sep)
-  );
-  const currentFile = path.basename(absolutePath);
-
-  // Collect class names already covered by explicit imports
-  const alreadyResolved = new Set(
-    existingDeps
-      .filter(d => d.resolvedPath)
-      .map(d => path.basename(d.resolvedPath!, ".java"))
-  );
-
-  let siblings: string[];
-  try {
-    siblings = readdirSync(packageDir).filter(
-      f => f.endsWith(".java") && f !== currentFile
-    );
-  } catch {
-    return [];
-  }
-
-  // Strip package + import declarations from content for body-only scanning
-  const bodyContent = content
-    .replace(/^\s*package\s+[^;]+;/m, "")
-    .replace(/^\s*import\s+[^;]+;/gm, "");
-
-  const results: DependencyEntry[] = [];
-  for (const sibling of siblings) {
-    const className = sibling.replace(/\.java$/, "");
-    if (alreadyResolved.has(className)) continue;
-
-    // Check for word-boundary reference to the class name in the code body
-    const ref = new RegExp(`\\b${className}\\b`);
-    if (ref.test(bodyContent)) {
-      const fqn = `${packageName}.${className}`;
-      const resolvedPath = path.relative(
-        workspaceRoot,
-        path.join(packageDir, sibling)
-      ).replace(/\\/g, "/");
-
-      results.push({
-        specifier: fqn,
-        resolvedPath,
-        symbols: [className],
-        kind: "import"
-      } as DependencyEntry);
-    }
-  }
-
-  return results;
-}
-
-/**
- * Extracts the imported symbol name(s) from a Java import specifier.
- *
- * @remarks
- * Java imports can be:
- * - Single class: `com.example.data.Reader` → `['Reader']`
- * - Static member: `com.example.Utils.helper` → `['helper']`
- * - Wildcard: `com.example.data.*` → `[]` (cannot determine specific symbols)
- *
- * @param specifier - The fully-qualified import specifier
- * @returns Array of symbol names imported
- */
-function extractImportedSymbols(specifier: string): string[] {
-  // Wildcard imports don't specify which symbols are used
-  if (specifier.endsWith(".*")) {
-    return [];
-  }
-
-  // Extract the last segment (class name or static member)
-  const lastDot = specifier.lastIndexOf(".");
-  if (lastDot === -1) {
-    return [specifier]; // No package, just the class name
-  }
-
-  const symbolName = specifier.slice(lastDot + 1);
-  return symbolName ? [symbolName] : [];
-}
-
-function computePosition(content: string, index: number): { line: number; character: number } {
-  let line = 1;
-  let lastLineStart = 0;
-  for (let i = 0; i < index; i += 1) {
-    if (content[i] === "\n") {
-      line += 1;
-      lastLineStart = i + 1;
-    }
-  }
-
-  return {
-    line,
-    character: index - lastLineStart + 1
-  };
-}
-
-function parseJavaDoc(raw?: string): SymbolDocumentation | undefined {
-  if (!raw || !raw.includes("/**")) {
-    return undefined;
-  }
-
-  const commentBlock = extractNearestJavaDoc(raw);
-  if (!commentBlock) {
-    return undefined;
-  }
-
-  const lines = commentBlock
-    .replace(/^\/\*\*/u, "")
-    .replace(/\*\/$/u, "")
-    .split(/\r?\n/)
-    .map((line) => line.replace(/^\s*\*\s?/u, "").replace(/\s+$/u, ""));
-
-  while (lines.length > 0 && lines[0].trim() === "") {
-    lines.shift();
-  }
-  while (lines.length > 0 && lines[lines.length - 1].trim() === "") {
-    lines.pop();
-  }
-
-  const tagStartIndex = lines.findIndex((line) => line.trim().startsWith("@"));
-  const textLines = tagStartIndex >= 0 ? lines.slice(0, tagStartIndex) : lines.slice();
-  const tagLines = tagStartIndex >= 0 ? lines.slice(tagStartIndex) : [];
-
-  const documentation: SymbolDocumentation = {
-    source: "javadoc"
-  };
-
-  const textBlock = normalizeInlineTags(textLines.join("\n")).trim();
-  if (textBlock) {
-    const paragraphs = textBlock.split(/\n\s*\n/);
-    documentation.summary = paragraphs[0]?.trim() || undefined;
-    if (paragraphs.length > 1) {
-      const remainder = paragraphs.slice(1).join("\n\n").trim();
-      if (remainder) {
-        documentation.remarks = remainder;
-      }
-    }
-  }
-
-  parseJavaDocTags(tagLines, documentation);
-
-  return hasDocumentationContent(documentation) ? documentation : undefined;
-}
-
-function extractNearestJavaDoc(raw: string): string | undefined {
-  const commentEnd = raw.lastIndexOf("*/");
-  if (commentEnd === -1) {
-    return undefined;
-  }
-
-  const trailing = raw.slice(commentEnd + 2);
-  if (trailing.trim().length > 0) {
-    return undefined;
-  }
-
-  const commentStart = raw.lastIndexOf("/**", commentEnd);
-  if (commentStart === -1) {
-    return undefined;
-  }
-
-  return raw.slice(commentStart, commentEnd + 2);
-}
-
-function parseJavaDocTags(lines: string[], documentation: SymbolDocumentation): void {
-  if (!lines.length) {
-    return;
-  }
-
-  let currentTag: string | undefined;
-  let currentTarget: string | undefined;
-  let buffer: string[] = [];
-
-  const flush = (): void => {
-    if (!currentTag) {
-      return;
-    }
-    const text = normalizeInlineTags(buffer.join(" ").replace(/\s+/gu, " ").trim());
-    applyJavaDocTag(documentation, currentTag, currentTarget, text);
-    currentTag = undefined;
-    currentTarget = undefined;
-    buffer = [];
-  };
-
-  for (const rawLine of lines) {
-    const trimmed = rawLine.trim();
-    if (!trimmed) {
-      continue;
-    }
-
-    if (trimmed.startsWith("@")) {
-      flush();
-      const match = /^@(\w+)(?:\s+([^\s]+))?(?:\s+(.*))?$/u.exec(trimmed);
-      if (!match) {
-        currentTag = trimmed.slice(1);
-        buffer = [];
-        continue;
-      }
-      const normalizedTag = match[1].toLowerCase();
-      let target: string | undefined = match[2];
-      let remainder: string | undefined = match[3];
-      if (!javaDocTagSupportsTarget(normalizedTag)) {
-        const combined = [target, remainder].filter(Boolean).join(" ").trim();
-        target = undefined;
-        remainder = combined || undefined;
-      }
-      currentTag = match[1];
-      currentTarget = target;
-      const remainderText = remainder?.trim();
-      buffer = remainderText ? [remainderText] : [];
-      continue;
-    }
-
-    if (currentTag) {
-      buffer.push(trimmed);
-    }
-  }
-
-  flush();
-}
-
-function javaDocTagSupportsTarget(tag: string): boolean {
-  switch (tag) {
-    case "param":
-    case "throws":
-    case "exception":
-    case "see":
-      return true;
+    case "generic_type":
+      return nameChain(node.namedChildren[0] ?? null);
     default:
-      return false;
+      return undefined;
   }
 }
 
-function applyJavaDocTag(
-  documentation: SymbolDocumentation,
-  tag: string,
-  target: string | undefined,
-  text: string
-): void {
-  const appendBlock = (current: string | undefined, addition?: string): string | undefined => {
-    if (!addition) {
-      return current;
-    }
-    const trimmed = addition.trim();
-    if (!trimmed) {
-      return current;
-    }
-    if (!current) {
-      return trimmed;
-    }
-    return `${current}\n\n${trimmed}`;
-  };
+function modifiersOf(node: SyntaxNode): Set<string> {
+  const modifiers = node.namedChildren.find((child) => child.type === "modifiers");
+  return new Set(modifiers?.children.filter((child) => !child.isNamed || child.type.endsWith("annotation")).map((child) => child.type) ?? []);
+}
 
-  switch (tag.toLowerCase()) {
-    case "param": {
-      if (!target) {
-        return;
+/** The Javadoc block that sits right above a declaration. */
+function javadocOf(node: SyntaxNode): SymbolDocumentation | undefined {
+  const previous = node.previousNamedSibling;
+  return previous?.type === "block_comment" ? parseJavaDoc(previous.text) : undefined;
+}
+
+class FileExtractor {
+  private readonly facts: FileFacts = { package: "", imports: [], types: [], typeUses: [] };
+
+  extract(root: SyntaxNode): FileFacts {
+    for (const child of root.namedChildren) {
+      if (child.type === "package_declaration") {
+        this.facts.package = nameChain(child.namedChildren.find((part) => part.type !== "modifiers" && !part.type.endsWith("annotation")) ?? null)?.join(".") ?? "";
+      } else if (child.type === "import_declaration") {
+        this.readImport(child);
+      } else if (child.type in TYPE_DECLARATIONS) {
+        this.facts.types.push(this.readType(child, [], []));
       }
-      const normalizedTarget = target.trim();
-      if (!normalizedTarget) {
-        return;
+    }
+    return this.facts;
+  }
+
+  private readImport(node: SyntaxNode): void {
+    const name = node.namedChildren.find((child) => child.type === "scoped_identifier" || child.type === "identifier");
+    const parts = nameChain(name ?? null);
+    if (!parts) return;
+    this.facts.imports.push({
+      parts,
+      wildcard: node.namedChildren.some((child) => child.type === "asterisk"),
+      isStatic: node.children.some((child) => child.type === "static")
+    });
+  }
+
+  private readType(node: SyntaxNode, enclosing: string[], outerTypeParameters: string[]): DeclaredType {
+    const nameNode      = node.childForFieldName("name")!;
+    const name          = nameNode.text;
+    const qualifiedName = [enclosing[0] ?? this.facts.package, name].filter(Boolean).join(".");
+    const kind          = TYPE_DECLARATIONS[node.type];
+    const typeParameters = [...outerTypeParameters, ...this.typeParameterNames(node)];
+    const scope         = [qualifiedName, ...enclosing];
+    const { line, character } = position(nameNode);
+
+    const typeReferences: TypeReference[] = [];
+    const superclass = node.childForFieldName("superclass");
+    if (superclass) this.collectTypeNames(superclass, "extends", typeReferences, typeParameters, scope);
+    const interfaces = node.childForFieldName("interfaces");
+    if (interfaces) this.collectTypeNames(interfaces, "implements", typeReferences, typeParameters, scope);
+    for (const child of node.namedChildren) {
+      if (child.type === "extends_interfaces") this.collectTypeNames(child, "extends", typeReferences, typeParameters, scope);
+    }
+    for (const parameter of node.childForFieldName("type_parameters")?.namedChildren ?? []) {
+      for (const bound of parameter.namedChildren.filter((child) => child.type === "type_bound")) {
+        this.collectTypeNames(bound, "generic-constraint", typeReferences, typeParameters, scope);
       }
-      if (normalizedTarget.startsWith("<") && normalizedTarget.endsWith(">")) {
-        const typeParameters = documentation.typeParameters ?? [];
-        typeParameters.push({
-          name: normalizedTarget.slice(1, -1),
-          description: text || undefined
+    }
+    this.visitAnnotations(node, scope);
+
+    const declared: DeclaredType = {
+      name, qualifiedName, kind, line, character,
+      documentation: javadocOf(node),
+      typeReferences,
+      members: [],
+      nested:  []
+    };
+
+    const implicitlyPublic = kind === "interface" || kind === "annotation";
+    for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
+      const member = this.readParameterAsField(parameter, typeParameters, scope);
+      if (member) declared.members.push(member);
+    }
+    const body = node.childForFieldName("body");
+    for (const child of body?.namedChildren ?? []) {
+      this.readMember(child, declared, scope, typeParameters, implicitlyPublic);
+    }
+    return declared;
+  }
+
+  private readMember(node: SyntaxNode, owner: DeclaredType, scope: string[], typeParameters: string[], implicitlyPublic: boolean): void {
+    if (node.type in TYPE_DECLARATIONS) {
+      owner.nested.push(this.readType(node, scope, typeParameters));
+      return;
+    }
+    if (node.type === "enum_body_declarations") {
+      for (const child of node.namedChildren) this.readMember(child, owner, scope, typeParameters, implicitlyPublic);
+      return;
+    }
+    if (node.type === "enum_constant") {
+      const nameNode = node.childForFieldName("name")!;
+      owner.members.push({ name: nameNode.text, kind: "field", ...position(nameNode), documentation: javadocOf(node), typeReferences: [], published: true });
+      this.visitExpressions(node, scope);
+      return;
+    }
+
+    const modifiers = modifiersOf(node);
+    const published = implicitlyPublic || modifiers.has("public") || modifiers.has("protected");
+    this.visitAnnotations(node, scope);
+
+    switch (node.type) {
+      case "method_declaration":
+      case "constructor_declaration":
+      case "annotation_type_element_declaration": {
+        const nameNode       = node.childForFieldName("name")!;
+        const ownTypeParameters = [...typeParameters, ...this.typeParameterNames(node)];
+        const typeReferences: TypeReference[] = [];
+        const returnType = node.childForFieldName("type");
+        if (returnType) this.collectTypeNames(returnType, "return", typeReferences, ownTypeParameters, scope);
+        for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
+          const type = parameter.childForFieldName("type") ?? parameter.namedChildren.find((child) => child.type.endsWith("type") || child.type === "type_identifier" || child.type === "scoped_type_identifier");
+          const parameterName = parameter.childForFieldName("name")?.text ?? parameter.namedChildren.find((child) => child.type === "variable_declarator")?.childForFieldName("name")?.text;
+          if (type) this.collectTypeNames(type, "parameter", typeReferences, ownTypeParameters, scope, parameterName);
+        }
+        for (const child of node.namedChildren) {
+          if (child.type === "throws") this.visitTypes(child, scope, ownTypeParameters);
+        }
+        owner.members.push({
+          name:          nameNode.text,
+          kind:          node.type === "constructor_declaration" ? "constructor" : "method",
+          ...position(nameNode),
+          documentation: javadocOf(node),
+          typeReferences,
+          published
         });
-        documentation.typeParameters = typeParameters;
+        const body = node.childForFieldName("body");
+        if (body) this.visitExpressions(body, scope, ownTypeParameters);
         return;
       }
-      const parameters = documentation.parameters ?? [];
-      parameters.push({
-        name: normalizedTarget,
-        description: text || undefined
-      } as SymbolDocumentationParameter);
-      documentation.parameters = parameters;
-      return;
-    }
-    case "return": {
-      documentation.returns = appendBlock(documentation.returns, text);
-      return;
-    }
-    case "value": {
-      documentation.value = appendBlock(documentation.value, text);
-      return;
-    }
-    case "throws":
-    case "exception": {
-      const exceptions = documentation.exceptions ?? [];
-      exceptions.push({
-        type: target,
-        description: text || undefined
-      } as SymbolDocumentationException);
-      documentation.exceptions = exceptions;
-      return;
-    }
-    case "see": {
-      if (!target && !text) {
+      case "field_declaration":
+      case "constant_declaration": {
+        const type = node.childForFieldName("type");
+        const typeReferences: TypeReference[] = [];
+        if (type) this.collectTypeNames(type, "property", typeReferences, typeParameters, scope);
+        for (const declarator of node.namedChildren.filter((child) => child.type === "variable_declarator")) {
+          const nameNode = declarator.childForFieldName("name")!;
+          owner.members.push({ name: nameNode.text, kind: "field", ...position(nameNode), documentation: javadocOf(node), typeReferences, published });
+          const value = declarator.childForFieldName("value");
+          if (value) this.visitExpressions(value, scope, typeParameters);
+        }
         return;
       }
-      registerJavaDocLink(documentation, target, text);
-      return;
-    }
-    case "example": {
-      const examples = documentation.examples ?? [];
-      examples.push({
-        description: text || undefined
-      } as SymbolDocumentationExample);
-      documentation.examples = examples;
-      return;
-    }
-    case "deprecated":
-    case "since":
-    case "implnote":
-    case "implspec":
-    case "implremark": {
-      const fragments = documentation.rawFragments ?? [];
-      fragments.push(`@${tag}${text ? ` ${text}` : ""}`.trim());
-      documentation.rawFragments = fragments;
-      return;
-    }
-    default: {
-      const fragments = documentation.rawFragments ?? [];
-      fragments.push(`@${tag}${text ? ` ${text}` : ""}`.trim());
-      documentation.rawFragments = fragments;
+      default:
+        this.visitExpressions(node, scope, typeParameters);
     }
   }
-}
 
-function registerJavaDocLink(
-  documentation: SymbolDocumentation,
-  target: string | undefined,
-  text: string | undefined
-): void {
-  const entries = documentation.links ?? [];
-  const linkTarget = target ?? text;
-  if (!linkTarget) {
-    return;
+  private readParameterAsField(parameter: SyntaxNode, typeParameters: string[], scope: string[]): DeclaredMember | undefined {
+    const nameNode = parameter.childForFieldName("name");
+    const type     = parameter.childForFieldName("type");
+    if (!nameNode) return undefined;
+    const typeReferences: TypeReference[] = [];
+    if (type) this.collectTypeNames(type, "property", typeReferences, typeParameters, scope);
+    return { name: nameNode.text, kind: "field", ...position(nameNode), typeReferences, published: true };
   }
-  const normalizedTarget = linkTarget.trim();
-  if (!normalizedTarget) {
-    return;
-  }
-  const label = text && text !== linkTarget ? text.trim() : undefined;
-  const kind: SymbolDocumentationLinkKind = /:\/\//u.test(normalizedTarget) ? "href" : "cref";
-  const key = `${kind}|${normalizedTarget}|${label ?? ""}`;
-  const existingKeys = new Set(entries.map((link) => `${link.kind}|${link.target}|${link.text ?? ""}`));
-  if (existingKeys.has(key)) {
-    return;
-  }
-  entries.push({
-    kind,
-    target: normalizedTarget,
-    text: label
-  } as SymbolDocumentationLink);
-  documentation.links = entries;
-}
 
-function normalizeInlineTags(value: string): string {
-  const normalized = value
-    .replace(/\{@code\s+([^}]+)\}/gu, (_match: string, code: string) => `\`${code.trim()}\``)
-    .replace(/\{@literal\s+([^}]+)\}/gu, (_match: string, literal: string) => literal.trim())
-    .replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/gu, (_match: string, target: string, label?: string) => {
-      const normalizedTarget = target.trim();
-      if (/^https?:\/\//iu.test(normalizedTarget)) {
-        const linkText = label ? label.trim() : normalizedTarget;
-        return `[${linkText}](${normalizedTarget})`;
+  private typeParameterNames(node: SyntaxNode): string[] {
+    return (node.childForFieldName("type_parameters")?.namedChildren ?? [])
+      .map((parameter) => parameter.namedChildren.find((child) => child.type === "type_identifier" || child.type === "identifier")?.text ?? "")
+      .filter(Boolean);
+  }
+
+  /** Records the type names a type expression mentions as references, and as uses. */
+  private collectTypeNames(node: SyntaxNode, role: TypeReference["role"], into: TypeReference[], typeParameters: string[], scope: string[], parameterName?: string): void {
+    const visit = (current: SyntaxNode, currentRole: TypeReference["role"]): void => {
+      switch (current.type) {
+        case "type_identifier":
+        case "scoped_type_identifier": {
+          const chain = nameChain(current);
+          if (!chain) return;
+          this.useType(chain, scope, typeParameters);
+          const name = chain.join(".");
+          if (chain.length === 1 && (javaSyntax.isFrameworkType(name) || typeParameters.includes(name))) return;
+          if (!into.some((reference) => reference.name === name && reference.role === currentRole && reference.parameterName === parameterName)) {
+            into.push(parameterName ? { name, role: currentRole, parameterName } : { name, role: currentRole });
+          }
+          if (current.type === "scoped_type_identifier") {
+            for (const child of current.namedChildren) {
+              if (child.type === "type_arguments") visit(child, "type-argument");
+            }
+          }
+          return;
+        }
+        case "type_arguments":
+          for (const child of current.namedChildren) visit(child, "type-argument");
+          return;
+        case "generic_type": {
+          const [head, ...rest] = current.namedChildren;
+          if (head) visit(head, currentRole);
+          for (const child of rest) visit(child, "type-argument");
+          return;
+        }
+        default:
+          for (const child of current.namedChildren) visit(child, currentRole);
       }
-      const linkText = label ? label.trim() : undefined;
-      return linkText ? `${linkText} (${normalizedTarget})` : `\`${normalizedTarget}\``;
-    })
-    .replace(/<\/?p\s*>/giu, (match) => (match.startsWith("</") ? "\n\n" : "\n\n"))
-    .replace(/<br\s*\/?\s*>/giu, "\n");
+    };
+    visit(node, role);
+  }
 
-  return normalized
-    .replace(/\n{3,}/g, "\n\n")
-    .replace(/[ \t]+\n/g, "\n")
-    .trimEnd();
+  private visitAnnotations(node: SyntaxNode, scope: string[]): void {
+    const modifiers = node.namedChildren.find((child) => child.type === "modifiers");
+    for (const annotation of modifiers?.namedChildren ?? []) {
+      if (!annotation.type.endsWith("annotation")) continue;
+      const chain = nameChain(annotation.childForFieldName("name"));
+      if (chain) this.useType(chain, scope, []);
+      const argumentList = annotation.childForFieldName("arguments");
+      if (argumentList) this.visitExpressions(argumentList, scope, []);
+    }
+  }
+
+  /** Every type name written in a subtree, as a use. */
+  private visitTypes(node: SyntaxNode, scope: string[], typeParameters: string[]): void {
+    if (node.type === "type_identifier" || node.type === "scoped_type_identifier") {
+      const chain = nameChain(node);
+      if (chain) this.useType(chain, scope, typeParameters);
+      if (node.type === "scoped_type_identifier") {
+        for (const child of node.namedChildren) {
+          if (child.type === "type_arguments") this.visitTypes(child, scope, typeParameters);
+        }
+      }
+      return;
+    }
+    for (const child of node.namedChildren) this.visitTypes(child, scope, typeParameters);
+  }
+
+  /** Statements and expressions: type names in declarations, casts and `new`, plus the qualifier of a static call or field. */
+  private visitExpressions(node: SyntaxNode, scope: string[], typeParameters: string[] = []): void {
+    switch (node.type) {
+      case "type_identifier":
+      case "scoped_type_identifier":
+        this.visitTypes(node, scope, typeParameters);
+        return;
+      case "method_invocation":
+      case "field_access":
+      case "method_reference": {
+        const object = node.type === "method_reference" ? node.namedChildren[0] : node.childForFieldName("object");
+        const chain  = nameChain(object ?? null);
+        if (chain && object && object.type !== "type_identifier" && object.type !== "scoped_type_identifier") this.facts.typeUses.push({ chain, enclosing: scope });
+        for (const child of node.namedChildren) {
+          if (object && child.id === object.id && chain) continue;
+          this.visitExpressions(child, scope, typeParameters);
+        }
+        return;
+      }
+      case "marker_annotation":
+      case "annotation": {
+        const chain = nameChain(node.childForFieldName("name"));
+        if (chain) this.useType(chain, scope, typeParameters);
+        const argumentList = node.childForFieldName("arguments");
+        if (argumentList) this.visitExpressions(argumentList, scope, typeParameters);
+        return;
+      }
+      case "local_variable_declaration":
+      case "class_declaration":
+      case "interface_declaration":
+      case "enum_declaration":
+      case "record_declaration":
+        break;
+      default:
+        break;
+    }
+    if (node.type in TYPE_DECLARATIONS) {
+      // A local or anonymous type declared inside a method body: its uses count, its symbols do not.
+      for (const child of node.namedChildren) this.visitExpressions(child, scope, typeParameters);
+      return;
+    }
+    for (const child of node.namedChildren) this.visitExpressions(child, scope, typeParameters);
+  }
+
+  private useType(chain: string[], scope: string[], typeParameters: string[]): void {
+    if (chain.length === 1 && (javaSyntax.isFrameworkType(chain[0]) || typeParameters.includes(chain[0]))) return;
+    this.facts.typeUses.push({ chain, enclosing: scope });
+  }
 }
 
-function hasDocumentationContent(doc: SymbolDocumentation): boolean {
-  return Boolean(
-    doc.summary ||
-      doc.remarks ||
-      doc.returns ||
-      doc.value ||
-      (doc.parameters && doc.parameters.length > 0) ||
-      (doc.typeParameters && doc.typeParameters.length > 0) ||
-      (doc.exceptions && doc.exceptions.length > 0) ||
-      (doc.examples && doc.examples.length > 0) ||
-      (doc.links && doc.links.length > 0) ||
-      (doc.rawFragments && doc.rawFragments.length > 0)
+// ---------------------------------------------------------------------------
+// Per-file facts, cached by modification time
+// ---------------------------------------------------------------------------
+
+const factsCache = new Map<string, { mtimeMs: number; facts: FileFacts }>();
+
+async function fileFacts(absolutePath: string): Promise<FileFacts> {
+  const stats  = await fs.stat(absolutePath);
+  const cached = factsCache.get(absolutePath);
+  if (cached && cached.mtimeMs === stats.mtimeMs) return cached.facts;
+  const content = await fs.readFile(absolutePath, "utf8");
+  const tree    = await parseSource("java", content);
+  try {
+    const facts = new FileExtractor().extract(tree.rootNode);
+    factsCache.set(absolutePath, { mtimeMs: stats.mtimeMs, facts });
+    return facts;
+  } finally {
+    tree.delete();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The workspace's types, by qualified name and by package
+// ---------------------------------------------------------------------------
+
+interface TypeRecord {
+  file: string;
+  type: DeclaredType;
+}
+
+interface TypeTable {
+  byQualifiedName: Map<string, TypeRecord[]>;
+  byPackage:       Map<string, Map<string, TypeRecord[]>>;
+}
+
+const tableCache = new WeakMap<WorkspaceFileIndex, Promise<TypeTable>>();
+
+async function listJavaFiles(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string[]> {
+  if (fileIndex) {
+    return Array.from(fileIndex).filter((file) => file.endsWith(".java")).sort();
+  }
+  const files = await glob("**/*.java", {
+    cwd:                  workspaceRoot,
+    ignore:               ["**/node_modules/**", "**/target/**", "**/build/**", "**/out/**"],
+    nodir:                true,
+    windowsPathsNoEscape: true
+  });
+  return files.map((file) => normalizeWorkspacePath(file)).sort();
+}
+
+function tableType(table: TypeTable, packageName: string, file: string, type: DeclaredType): void {
+  const records = table.byQualifiedName.get(type.qualifiedName) ?? [];
+  records.push({ file, type });
+  table.byQualifiedName.set(type.qualifiedName, records);
+  if (!type.qualifiedName.includes(".") || type.qualifiedName === `${packageName}.${type.name}`) {
+    const inPackage = table.byPackage.get(packageName) ?? new Map<string, TypeRecord[]>();
+    inPackage.set(type.name, records);
+    table.byPackage.set(packageName, inPackage);
+  }
+  for (const nested of type.nested) tableType(table, packageName, file, nested);
+}
+
+async function buildTypeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {
+  const table: TypeTable = { byQualifiedName: new Map(), byPackage: new Map() };
+  for (const file of await listJavaFiles(workspaceRoot, fileIndex)) {
+    let facts: FileFacts;
+    try {
+      facts = await fileFacts(path.join(workspaceRoot, file));
+    } catch {
+      continue;
+    }
+    for (const type of facts.types) tableType(table, facts.package, file, type);
+  }
+  return table;
+}
+
+function typeTable(workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<TypeTable> {
+  if (!fileIndex) return buildTypeTable(workspaceRoot, undefined);
+  let pending = tableCache.get(fileIndex);
+  if (!pending) {
+    pending = buildTypeTable(workspaceRoot, fileIndex);
+    tableCache.set(fileIndex, pending);
+  }
+  return pending;
+}
+
+/** A simple type name, resolved as javac resolves it from inside `enclosing`. */
+function resolveSimple(name: string, enclosing: string[], facts: FileFacts, table: TypeTable): TypeRecord[] {
+  for (const outer of enclosing) {
+    const nested = table.byQualifiedName.get(`${outer}.${name}`);
+    if (nested) return nested;
+  }
+  const own = facts.types.find((type) => type.name === name);
+  if (own) return table.byQualifiedName.get(own.qualifiedName) ?? [];
+  for (const entry of facts.imports) {
+    if (entry.wildcard || entry.isStatic || entry.parts[entry.parts.length - 1] !== name) continue;
+    const records = table.byQualifiedName.get(entry.parts.join("."));
+    if (records) return records;
+  }
+  const samePackage = table.byPackage.get(facts.package)?.get(name);
+  if (samePackage) return samePackage;
+  for (const entry of facts.imports) {
+    if (!entry.wildcard || entry.isStatic) continue;
+    const container = entry.parts.join(".");
+    const records   = table.byPackage.get(container)?.get(name) ?? table.byQualifiedName.get(`${container}.${name}`);
+    if (records) return records;
+  }
+  return [];
+}
+
+/** A name chain, resolved to the innermost type it names: as a qualified name first, then a simple name and its nested types. */
+function resolveChain(chain: string[], enclosing: string[], facts: FileFacts, table: TypeTable): TypeRecord[] {
+  for (let length = chain.length; length >= 2; length -= 1) {
+    const records = table.byQualifiedName.get(chain.slice(0, length).join("."));
+    if (records) return records;
+  }
+  let records = resolveSimple(chain[0], enclosing, facts, table);
+  for (const part of chain.slice(1)) {
+    const inner = records.flatMap((record) => table.byQualifiedName.get(`${record.type.qualifiedName}.${part}`) ?? []);
+    if (inner.length === 0) break;
+    records = inner;
+  }
+  return records;
+}
+
+// ---------------------------------------------------------------------------
+// Adapter output
+// ---------------------------------------------------------------------------
+
+function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
+  const entries: PublicSymbolEntry[] = [];
+  const add = (type: DeclaredType): void => {
+    entries.push({
+      name:           type.name,
+      kind:           type.kind,
+      qualifiedName:  type.qualifiedName !== type.name ? type.qualifiedName : undefined,
+      location:       { line: type.line, character: type.character },
+      documentation:  type.documentation,
+      typeReferences: type.typeReferences.length > 0 ? type.typeReferences : undefined
+    });
+    for (const member of type.members) {
+      if (!member.published) continue;
+      entries.push({
+        name:           member.name,
+        kind:           member.kind,
+        location:       { line: member.line, character: member.character },
+        documentation:  member.documentation,
+        typeReferences: member.typeReferences.length > 0 ? member.typeReferences : undefined
+      });
+    }
+    for (const nested of type.nested) add(nested);
+  };
+  for (const type of facts.types) add(type);
+  return entries.sort((left, right) =>
+    (left.location!.line - right.location!.line) ||
+    (left.location!.character - right.location!.character) ||
+    left.name.localeCompare(right.name)
   );
 }
+
+function isJdk(parts: string[]): boolean {
+  const name = parts.join(".");
+  return JDK_PACKAGES.some((prefix) => name.startsWith(prefix));
+}
+
+function toDependencies(facts: FileFacts, thisFile: string, table: TypeTable): DependencyEntry[] {
+  const byTarget = new Map<string, Set<string>>();
+  const link = (record: TypeRecord): void => {
+    if (record.file === thisFile) return;
+    const symbols = byTarget.get(record.file) ?? new Set<string>();
+    symbols.add(record.type.name);
+    byTarget.set(record.file, symbols);
+  };
+
+  for (const use of facts.typeUses) {
+    for (const record of resolveChain(use.chain, use.enclosing, facts, table)) link(record);
+  }
+
+  const external: DependencyEntry[] = [];
+  for (const entry of facts.imports) {
+    if (isJdk(entry.parts)) continue;
+    const typeParts = entry.isStatic && !entry.wildcard ? entry.parts.slice(0, -1) : entry.parts;
+    const records   = entry.wildcard && !entry.isStatic
+      ? (table.byPackage.has(typeParts.join(".")) ? [] : table.byQualifiedName.get(typeParts.join(".")) ?? [])
+      : table.byQualifiedName.get(typeParts.join(".")) ?? [];
+    if (records.length > 0) {
+      for (const record of records) link(record);
+      continue;
+    }
+    if (entry.wildcard && !entry.isStatic && table.byPackage.has(typeParts.join("."))) continue;
+    const specifier = `${entry.parts.join(".")}${entry.wildcard ? ".*" : ""}`;
+    external.push({ specifier, symbols: entry.wildcard ? [] : [entry.parts[entry.parts.length - 1]], kind: "import" });
+  }
+
+  const dependencies: DependencyEntry[] = Array.from(byTarget.entries())
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([file, symbols]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(symbols).sort(), kind: "import" as const }));
+  return [...dependencies, ...external.sort((left, right) => left.specifier.localeCompare(right.specifier))];
+}
+
+/** Language adapter for Java (`.java`): tree-sitter symbols and javac-style name resolution across the workspace. */
+export const javaAdapter: LanguageAdapter = {
+  id:         "java",
+  extensions: [".java"],
+  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+    const facts    = await fileFacts(absolutePath);
+    const table    = await typeTable(workspaceRoot, fileIndex);
+    const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
+    return {
+      symbols:      toSymbols(facts),
+      dependencies: toDependencies(facts, thisFile, table)
+    };
+  }
+};

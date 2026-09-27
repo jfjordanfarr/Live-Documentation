@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/model/Summary.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-model-summary-java
-- Generated At: 2026-09-27T18:53:07.384Z
+- Generated At: 2026-09-27T20:19:23.712Z
 
 ## Authored
 ### Purpose
@@ -15,11 +15,23 @@ Defines the summary record emitted by the Java service benchmark, capturing labe
 Field ordering should stay aligned with `SummaryBuilder`; modify both together if requirements change.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.384Z","inputHash":"0bac5f5ee684bbab"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.712Z","inputHash":"ad5bde94e801c825"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Summary` {#symbol-summary}
 - Type: record
+- Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/model/Summary.java#L3)
+
+#### `label` {#symbol-label}
+- Type: field
+- Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/model/Summary.java#L3)
+
+#### `average` {#symbol-average}
+- Type: field
+- Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/model/Summary.java#L3)
+
+#### `alert` {#symbol-alert}
+- Type: field
 - Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/model/Summary.java#L3)
 <!-- LIVE-DOC:END Public Symbols -->
 

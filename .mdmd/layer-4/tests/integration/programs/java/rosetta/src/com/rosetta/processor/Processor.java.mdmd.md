@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/processor/Processor.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-processor-processor-java
-- Generated At: 2026-09-27T18:53:07.068Z
+- Generated At: 2026-09-27T20:19:23.508Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Core processing logic for the Java Rosetta Stone fixture. Tests import and stati
 See [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Exercises both direct imports and type-only references.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.068Z","inputHash":"7fe0aa3cf990103d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.508Z","inputHash":"f2983f259de55d5f"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Processor` {#symbol-processor}
@@ -34,6 +34,8 @@ This module exercises multiple import patterns:
 #### `run` {#symbol-run}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/processor/Processor.java#L38)
+- Returns: [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
+- Parameters: `records`: `List`; `config`: [`ProcessorConfig`](../types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
 
 ##### `run` — Summary
 Processes a batch of records and generates a report.
@@ -55,6 +57,7 @@ Summary report of processed records
 #### `summarize` {#symbol-summarize}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/processor/Processor.java#L63)
+- Parameters: `report`: [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 
 ##### `summarize` — Summary
 Creates a formatted summary string from a report.
@@ -70,7 +73,7 @@ Human-readable summary
 ### Dependencies
 - [`Helpers`](../helpers/Helpers.java.mdmd.md#symbol-helpers)
 - [`ModelFactory`](../models/ModelFactory.java.mdmd.md#symbol-modelfactory)
-- [`Record`](../models/Record.java.mdmd.md#symbol-record)
+- [`Record`](../models/Record.java.mdmd.md#symbol-record-class)
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 - [`ProcessorConfig`](../types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
 <!-- LIVE-DOC:END Dependencies -->

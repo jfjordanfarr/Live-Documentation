@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/helpers/HelpersTest.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-helpers-helperstest-java
-- Generated At: 2026-09-27T18:53:06.952Z
+- Generated At: 2026-09-27T20:19:23.432Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ JUnit 5 tests for the Java Rosetta Helpers class (format, sum, average utilities
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses `@Nested` classes for `FormatTests`, `SumTests`, and `AverageTests`. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.952Z","inputHash":"6fa67712e0412fcf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.432Z","inputHash":"8a1b1ddaf29fc459"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `HelpersTest` {#symbol-helperstest}
@@ -28,6 +28,18 @@ Unit tests for the Helpers class.
 ##### `HelpersTest` — Remarks
 This test file exercises name-matched test detection:
 HelpersTest.java should automatically back Helpers.java.
+
+#### `FormatTests` {#symbol-formattests}
+- Type: class
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/helpers/HelpersTest.java#L23)
+
+#### `SumTests` {#symbol-sumtests}
+- Type: class
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/helpers/HelpersTest.java#L36)
+
+#### `AverageTests` {#symbol-averagetests}
+- Type: class
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/helpers/HelpersTest.java#L54)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

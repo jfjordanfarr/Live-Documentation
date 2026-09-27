@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/processor/ProcessorTest.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-processor-processortest-java
-- Generated At: 2026-09-27T18:53:07.100Z
+- Generated At: 2026-09-27T20:19:23.526Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ JUnit 5 tests for the Java Rosetta Processor class. Part of the polyglot Rosetta
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses `@Nested` and `@DisplayName` annotations for structured test organization. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.100Z","inputHash":"8b9a9fed32c4d6cf"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.526Z","inputHash":"1cf9e05404956504"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ProcessorTest` {#symbol-processortest}
@@ -28,6 +28,14 @@ Unit tests for the Processor class.
 ##### `ProcessorTest` — Remarks
 This test file exercises name-matched test detection:
 ProcessorTest.java should automatically back Processor.java.
+
+#### `RunTests` {#symbol-runtests}
+- Type: class
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/processor/ProcessorTest.java#L25)
+
+#### `SummarizeTests` {#symbol-summarizetests}
+- Type: class
+- Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/processor/ProcessorTest.java#L55)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -36,7 +44,7 @@ ProcessorTest.java should automatically back Processor.java.
 - `org.junit.jupiter.api.DisplayName` - `DisplayName`
 - `org.junit.jupiter.api.Nested` - `Nested`
 - `org.junit.jupiter.api.Test` - `Test`
-- [`Record`](../models/Record.java.mdmd.md#symbol-record)
+- [`Record`](../models/Record.java.mdmd.md#symbol-record-class)
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 - [`Processor`](./Processor.java.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->

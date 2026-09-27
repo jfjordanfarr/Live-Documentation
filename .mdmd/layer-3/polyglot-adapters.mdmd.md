@@ -19,6 +19,7 @@ Document the language adapters that turn a source file into its public symbols, 
 - **What no compiler sees** is handled by `csharp.dependencies.ts`: `ConfigurationManager.AppSettings[...]` and `ConnectionStrings[...]` keys (literals, or constants declared in this file or another), `ChannelFactory<T>(name)` endpoint names, `IConfiguration` indexer keys, types named in strings for reflection, and Hangfire job targets. Those resolve through the same type table.
 - **Configuration files publish what code reaches into them by.** `.config` files (`dotnetConfig.ts`) publish appSettings keys, connection-string names, WCF endpoint names and service names, and depend on the types their `contract` and `service name` attributes name. JSON files (`json.ts`) publish every key path joined with `:`, the way `IConfiguration` addresses nested settings. Markup files (`aspnet.ts`, `html.ts`) publish element ids. This is what lets a generated link to a key, an endpoint or an element land on a real anchor.
 - **Python is parsed with tree-sitter** (`python.ts`, since 2026-09-27). A module's symbols are its top-level classes, functions and assignments and the public members of its classes (methods, properties, fields, nested classes), with docstrings parsed by `python.docstring.ts` (NumPy, Google and reStructuredText). Imports resolve the way the interpreter resolves them: an absolute module is looked up beside the importing file, at the root of its package, at the workspace root and under `src/`; a `from` import depends on the module's own file and on the file where each name is defined, followed through the re-exports of a package's `__init__.py`; an aliased module import is followed through the attributes used on it; a wildcard import links the module's public names the file actually uses. Imports inside functions and under `TYPE_CHECKING` count; import text inside strings and comments does not. Per-file facts are cached by modification time and read on demand, so following a re-export parses the barrel once.
+- **Java is parsed with tree-sitter** (`java.ts`, since 2026-09-27). A file's symbols are the types it declares, top-level and nested, and the members those types expose (public or protected, or any member of an interface), with Javadoc from `java.javadoc.ts`. Every type name the file uses is resolved the way javac resolves a simple name: a nested type of an enclosing type, a type declared in the same file, a single-type import, a type of the same package, then a type of an on-demand import; a qualified name is looked up as written. The workspace's types are tabled once per run from `package` declarations, so a package split across `src/main/java` and `src/test/java` is one package, as it is to the compiler.
 - The other languages still use hand-written scanners. C# parses XML documentation comments (`csharp.xmldoc.ts`); C extracts Doxygen-style comments (`c.ts`).
 
 ### Adapter Inventory
@@ -29,7 +30,7 @@ Document the language adapters that turn a source file into its public symbols, 
 | **C#**          | `csharp.ts`              | `.cs`                        | tree-sitter; types, members, XML docs, signatures; compiler-style name resolution    |
 | **.NET config** | `dotnetConfig.ts`        | `.config`                    | Settings, connection strings, WCF endpoints and services; contract and service types |
 | **Python**      | `python.ts`              | `.py`                        | tree-sitter; classes, functions, members, docstrings; imports followed to origins    |
-| **Java**        | `java.ts`                | `.java`                      | Package imports, same-package resolution                                             |
+| **Java**        | `java.ts`                | `.java`                      | tree-sitter; types, members, Javadoc; javac-style name resolution                    |
 | **Rust**        | `rust.ts`                | `.rs`                        | `use`, `mod`, `pub` paths                                                            |
 | **Ruby**        | `ruby.ts`                | `.rb`                        | `require`, `require_relative`                                                        |
 | **Go**          | `go.ts`                  | `.go`                        | `import` blocks, test file skipping                                                  |
@@ -45,6 +46,7 @@ Document the language adapters that turn a source file into its public symbols, 
 - **`treeSitter.ts`**: one parser per grammar, loaded on first use.
 - **`csharp.dependencies.ts`**: the C# dependencies no compiler sees (configuration, reflection, Hangfire).
 - **`csharp.xmldoc.ts`**: XML documentation comment parser with multi-paragraph support.
+- **`java.javadoc.ts`**: Javadoc block parser (`@param`, `@return`, `@throws`, `@see`, inline `{@link}` and `{@code}`).
 - **`python.docstring.ts`**: stateful docstring parser supporting the major Python docstring conventions.
 
 ### Strategy

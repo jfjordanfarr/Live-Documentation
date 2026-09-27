@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
 - Live Doc ID: LD-test-tests-integration-programs-java-rosetta-src-com-rosetta-app-main-java
-- Generated At: 2026-09-27T18:53:06.861Z
+- Generated At: 2026-09-27T20:19:23.373Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Java Rosetta Stone fixture. Demonstrates package imports and
 Part of the cross-language Rosetta Stone benchmark suite; see [2026-01-14.1.md](../../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:06.861Z","inputHash":"1816427177eef39f"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.373Z","inputHash":"340837626b657480"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Main (class)` {#symbol-main-class}
@@ -50,7 +50,7 @@ Formatted summary of the processing results
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`ModelFactory`](../models/ModelFactory.java.mdmd.md#symbol-modelfactory)
-- [`Record`](../models/Record.java.mdmd.md#symbol-record)
+- [`Record`](../models/Record.java.mdmd.md#symbol-record-class)
 - [`Report`](../models/Report.java.mdmd.md#symbol-report-class)
 - [`Processor`](../processor/Processor.java.mdmd.md#symbol-processor)
 <!-- LIVE-DOC:END Dependencies -->

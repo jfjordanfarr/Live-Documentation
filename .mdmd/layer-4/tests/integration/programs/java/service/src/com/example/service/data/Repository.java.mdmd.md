@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/java/service/src/com/example/service/data/Repository.java
 - Live Doc ID: LD-test-tests-integration-programs-java-service-src-com-example-service-data-repository-java
-- Generated At: 2026-09-27T18:53:07.278Z
+- Generated At: 2026-09-27T20:19:23.637Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Fetches datasets for the Java service benchmark, logging access and routing thro
 Keep the logging call and delegation intact; they ensure both util and registry modules appear in the graph.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:07.278Z","inputHash":"f0e9c9e07c630439"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:23.637Z","inputHash":"82c6ec7008a9e8c7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Repository (class)` {#symbol-repository-class}
@@ -25,10 +25,12 @@ Keep the logging call and delegation intact; they ensure both util and registry 
 #### `Repository (constructor)` {#symbol-repository-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/data/Repository.java#L11)
+- Parameters: `registry`: [`SourceRegistry`](./SourceRegistry.java.mdmd.md#symbol-sourceregistry-class)
 
 #### `fetch` {#symbol-fetch}
 - Type: method
 - Source: [source](../../../../../../../../../../../../tests/integration/programs/java/service/src/com/example/service/data/Repository.java#L15)
+- Returns: `List`
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -5,43 +5,47 @@
 - Archetype: implementation
 - Code Path: packages/shared/src/live-docs/adapters/java.ts
 - Live Doc ID: LD-implementation-packages-shared-src-live-docs-adapters-java-ts
-- Generated At: 2026-03-11T20:19:01.252Z
+- Generated At: 2026-09-27T20:19:20.346Z
 
 ## Authored
 ### Purpose
-Parses Java sources to translate Javadoc summaries, tags, and imports into the Live Docs schema, as delivered in the Nov 13 adapter addition and fixture refresh <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md#L1460-L1508>.
+The Java adapter: tree-sitter symbols (types, nested types and the members they expose, with Javadoc) and javac-style resolution of every type name a file uses against a workspace table of qualified type names.
 
 ### Notes
-- Keep the polyglot integration test and updated Java fixtures in sync with any parser changes; those assets were extended alongside the original rollout to catch regressions <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-13.md#L1488-L1508>.
+- Measured against `scip-java` on the four Java sample programs; `java/warehouse` is the one built to defeat a line scanner, and the adapter matches every compiler edge on all four.
+- The table is keyed by package as declared, not by directory, so `src/main/java` and `src/test/java` halves of a package see each other; it is built once per generation run on the file index, and per-file facts are cached by modification time.
+- The qualifier of a static call or field access (`Registry.register(...)`, `Unit.EACH`) is resolved as a type name; a local variable that shadows a type name would be mistaken for it.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-03-11T20:19:01.252Z","inputHash":"717eadaa967e91b6"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:19:20.346Z","inputHash":"d8b6c6218c188e33"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/java.ts#L110)
+- Source: [source](../../../../../../../packages/shared/src/live-docs/adapters/java.ts#L598)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `javaAdapter` — Summary
-Language adapter for Java (`.java`). Extracts classes, interfaces, enums, annotated types, and `import` dependencies.
+Language adapter for Java (`.java`): tree-sitter symbols and javac-style name resolution across the workspace.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:fs` - `existsSync`, `promises`, `readdirSync`
-- `node:path`
+- `./java.javadoc` - `parseJavaDoc`
+- `glob` - `glob`
+- `node:fs` - `promises`
+- `node:path` - `path`
+- [`index.javaSyntax`](../../languages/index.ts.mdmd.md#symbol-javasyntax)
 - [`index.LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter) (type-only)
+- [`index.WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex) (type-only)
+- [`treeSitter.SyntaxNode`](./treeSitter.ts.mdmd.md#symbol-syntaxnode)
+- [`treeSitter.parseSource`](./treeSitter.ts.mdmd.md#symbol-parsesource)
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
-- [`core.SymbolDocumentationExample`](../core.ts.mdmd.md#symbol-symboldocumentationexample) (type-only)
-- [`core.SymbolDocumentationException`](../core.ts.mdmd.md#symbol-symboldocumentationexception) (type-only)
-- [`core.SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
-- [`core.SymbolDocumentationLinkKind`](../core.ts.mdmd.md#symbol-symboldocumentationlinkkind) (type-only)
-- [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Observed Evidence -->
