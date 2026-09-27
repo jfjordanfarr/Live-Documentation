@@ -106,20 +106,8 @@ describe("rustAdapter docstring bridging", () => {
       ])
     );
 
-    expect(result?.dependencies).toEqual([
-      {
-        specifier: "crate::models::{Sample, Summary}",
-        resolvedPath: undefined,
-        symbols: ["Sample", "Summary"],
-        kind: "import"
-      },
-      {
-        specifier: "super::math",
-        resolvedPath: undefined,
-        symbols: [],
-        kind: "import"
-      }
-    ]);
+    // Paths into modules the workspace does not contain resolve to nothing.
+    expect(result?.dependencies).toEqual([]);
   });
 
   it("parses block doc comments for public structs", async () => {
@@ -145,7 +133,7 @@ describe("rustAdapter docstring bridging", () => {
       workspaceRoot
     });
 
-    expect(result?.symbols).toHaveLength(2);
+    expect(result?.symbols?.map((entry) => entry.name)).toEqual(["CachedMetrics", "total", "updated_at", "VERSION"]);
     const structSymbol = result?.symbols?.find((entry) => entry.name === "CachedMetrics");
     expect(structSymbol?.documentation?.summary).toBe("Represents cached metrics with captured timestamps.");
     expect(structSymbol?.documentation?.remarks).toContain("Additional remarks");

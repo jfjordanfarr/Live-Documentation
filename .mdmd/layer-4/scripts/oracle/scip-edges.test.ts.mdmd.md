@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: scripts/oracle/scip-edges.test.ts
 - Live Doc ID: LD-test-scripts-oracle-scip-edges-test-ts
-- Generated At: 2026-09-27T10:16:24.374Z
+- Generated At: 2026-09-27T20:50:50.376Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ _Pending authored purpose_
 _Pending notes_
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T10:16:24.374Z","inputHash":"34b4f7396e565935"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:50.376Z","inputHash":"011e97a7e975bae0"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -28,6 +28,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject)
 - [`scip-edges.ScipIndex`](./scip-edges.ts.mdmd.md#symbol-scipindex)
+- [`scip-edges.cargoProjects`](./scip-edges.ts.mdmd.md#symbol-cargoprojects)
 - [`scip-edges.edgesFromIndex`](./scip-edges.ts.mdmd.md#symbol-edgesfromindex)
 - [`scip-edges.readProjects`](./scip-edges.ts.mdmd.md#symbol-readprojects)
 - `vitest` - `describe`, `expect`, `it`

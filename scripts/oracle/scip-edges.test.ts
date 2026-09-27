@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { edgesFromIndex, readProjects, type OracleProject, type ScipIndex } from "./scip-edges";
+import { cargoProjects, edgesFromIndex, readProjects, type OracleProject, type ScipIndex } from "./scip-edges";
 
 const DEFINITION = 1;
 const REFERENCE  = 0;
@@ -144,6 +144,65 @@ describe("edgesFromIndex", () => {
 
     expect(result.edges.map((edge) => edge.to)).toEqual(["A/Models/Item.cs", "B/Models/Item.cs"]);
     expect(result.ambiguous).toEqual([{ from: "Use.cs", symbol: "Models/Item#", candidates: ["A/Models/Item.cs", "B/Models/Item.cs"] }]);
+  });
+});
+
+describe("edgesFromIndex on Cargo crates", () => {
+  it("narrows a crate-root reference to the referencing file's own crate", () => {
+    const projects: OracleProject[] = [
+      { name: "stockroom",              directory: "src",   references: [],            members: ["src/lib.rs", "src/report.rs"] },
+      { name: "stockroom src/main.rs",  directory: "src",   references: ["stockroom"], members: ["src/main.rs"] },
+      { name: "stockroom tests/api.rs", directory: "tests", references: ["stockroom"], members: ["tests/api.rs"] }
+    ];
+    const crateRoot = "rust-analyzer cargo stockroom 0.1.0 crate/";
+    const item      = "rust-analyzer cargo stockroom 0.1.0 report/write().";
+    const result = edgesFromIndex(
+      index([
+        { relative_path: "src/lib.rs",    occurrences: [occurrence(crateRoot, DEFINITION)] },
+        { relative_path: "src/main.rs",   occurrences: [occurrence(crateRoot, DEFINITION), occurrence(item, REFERENCE)] },
+        { relative_path: "tests/api.rs",  occurrences: [occurrence(crateRoot, DEFINITION), occurrence(item, REFERENCE)] },
+        { relative_path: "src/report.rs", occurrences: [occurrence(crateRoot, REFERENCE), occurrence(item, DEFINITION)] }
+      ], "rust-analyzer"),
+      { projects, projectFile: "Cargo.toml" }
+    );
+
+    expect(result.edges).toEqual([
+      { from: "src/main.rs",   to: "src/report.rs", symbols: ["report/write()."] },
+      { from: "src/report.rs", to: "src/lib.rs",    symbols: ["crate/"] },
+      { from: "tests/api.rs",  to: "src/report.rs", symbols: ["report/write()."] }
+    ]);
+    expect(result.ambiguous).toEqual([]);
+  });
+});
+
+describe("cargoProjects", () => {
+  it("reads the library and every binary, test, example and bench as crates that see the library", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-cargo-"));
+    try {
+      fs.writeFileSync(path.join(root, "Cargo.toml"), "[package]\nname = \"stock-room\"\nversion = \"0.1.0\"\n");
+      const files = ["Cargo.toml", "src/lib.rs", "src/main.rs", "src/report.rs", "src/stock/item.rs", "src/bin/tool.rs", "tests/api.rs", "examples/demo.rs"];
+      expect(cargoProjects(root, files)).toEqual([
+        { name: "stock_room",                  directory: "src",      references: [],             members: ["src/lib.rs", "src/report.rs", "src/stock/item.rs"] },
+        { name: "stock_room examples/demo.rs", directory: "examples", references: ["stock_room"], members: ["examples/demo.rs"] },
+        { name: "stock_room src/bin/tool.rs",  directory: "src/bin",  references: ["stock_room"], members: ["src/bin/tool.rs"] },
+        { name: "stock_room src/main.rs",      directory: "src",      references: ["stock_room"], members: ["src/main.rs"] },
+        { name: "stock_room tests/api.rs",     directory: "tests",    references: ["stock_room"], members: ["tests/api.rs"] }
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("gives a package without a library its binary and all of src", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "oracle-cargo-"));
+    try {
+      fs.writeFileSync(path.join(root, "Cargo.toml"), "[package]\nname = \"tool\"\n");
+      expect(cargoProjects(root, ["Cargo.toml", "src/main.rs", "src/util.rs"])).toEqual([
+        { name: "tool src/main.rs", directory: "src", references: [], members: ["src/main.rs", "src/util.rs"] }
+      ]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/processor_test.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-processor-test-rs
-- Generated At: 2026-09-27T18:53:08.390Z
+- Generated At: 2026-09-27T20:50:54.179Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Unit tests for the Rust Rosetta processor module. Part of the polyglot Rosetta S
 Created as part of Goal 2 (Rosetta Tests) during [Dev Day 60](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-16.1.md). Uses Rust's `#[cfg(test)]` inline test module pattern. Exercises name-matched test detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.390Z","inputHash":"1bc1e1047effc0ce"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.179Z","inputHash":"677ee924f330dc28"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,6 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`main`](./main.rs.mdmd.md)
 - [`models.Record`](./models.rs.mdmd.md#symbol-record)
 - [`models.Report`](./models.rs.mdmd.md#symbol-report)
 - [`processor.run`](./processor.rs.mdmd.md#symbol-run)

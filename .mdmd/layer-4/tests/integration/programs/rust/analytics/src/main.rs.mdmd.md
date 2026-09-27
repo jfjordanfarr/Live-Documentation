@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-main-rs
-- Generated At: 2026-09-27T18:53:08.156Z
+- Generated At: 2026-09-27T20:50:53.989Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Acts as the entry point for the Rust analytics benchmark, invoking IO and metric
 Maintain parity with the supporting modules; this file should stay lightweight to keep the dependency graph focused.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.156Z","inputHash":"7779370896bfd60d"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:53.989Z","inputHash":"9a15da0f1430f7ec"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 _No public symbols detected_
@@ -23,10 +23,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `analytics::run_analysis`
-- `io::load_series`
-- [`analytics`](./analytics.rs.mdmd.md)
-- [`io`](./io.rs.mdmd.md)
+- [`analytics.run_analysis`](./analytics.rs.mdmd.md#symbol-run_analysis)
+- [`io.load_series`](./io.rs.mdmd.md#symbol-load_series)
 - [`metrics`](./metrics.rs.mdmd.md)
 - [`models`](./models.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

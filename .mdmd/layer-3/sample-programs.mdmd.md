@@ -10,16 +10,16 @@ Describe the sample programs under `tests/integration/programs/`: what each one 
 
 Every directory below holds committed source. The seven vendored fixtures that were pinned clones of third-party repositories (ky, libuv, Newtonsoft.Json, mux, OkHttp, Requests, log) were retired on 2026-09-27; see [Architectural Decisions](architectural-decisions.mdmd.md).
 
-| Language   | Fixtures                                   | Read by                                                                 |
-| ---------- | ------------------------------------------ | ----------------------------------------------------------------------- |
-| TypeScript | `basic`, `layered`, `rosetta`              | all: the oracle; `rosetta`: Rosetta parity                              |
-| C          | `basics`, `modular`, `rosetta`             | `rosetta`: Rosetta parity. No indexer for C is installed                |
-| C#         | `basic`, `webforms`, `estate`, `rosetta`   | all: the oracle; `rosetta`: Rosetta parity                              |
-| Go         | `rosetta`, `depot`                         | all: the oracle; `rosetta`: Rosetta parity                              |
-| Java       | `basic`, `service`, `rosetta`, `warehouse` | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
-| Python     | `basics`, `pipeline`, `rosetta`, `ledger`  | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
-| Ruby       | `basic`, `cli`, `rosetta`                  | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
-| Rust       | `basics`, `analytics`, `rosetta`           | all: the oracle; `rosetta`: Rosetta parity                              |
+| Language   | Fixtures                                      | Read by                                                                 |
+| ---------- | --------------------------------------------- | ----------------------------------------------------------------------- |
+| TypeScript | `basic`, `layered`, `rosetta`                 | all: the oracle; `rosetta`: Rosetta parity                              |
+| C          | `basics`, `modular`, `rosetta`                | `rosetta`: Rosetta parity. No indexer for C is installed                |
+| C#         | `basic`, `webforms`, `estate`, `rosetta`      | all: the oracle; `rosetta`: Rosetta parity                              |
+| Go         | `rosetta`, `depot`                            | all: the oracle; `rosetta`: Rosetta parity                              |
+| Java       | `basic`, `service`, `rosetta`, `warehouse`    | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
+| Python     | `basics`, `pipeline`, `rosetta`, `ledger`     | all: the oracle; `basics`: polyglot fixtures; `rosetta`: Rosetta parity |
+| Ruby       | `basic`, `cli`, `rosetta`                     | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
+| Rust       | `basics`, `analytics`, `rosetta`, `stockroom` | all: the oracle; `rosetta`: Rosetta parity                              |
 
 `rosetta-manifest.json` at the root describes the canonical program the eight Rosetta implementations share: the nodes, the twelve edges, and the symbols each edge travels through. The parity suite's constants are drawn from it.
 
@@ -29,7 +29,7 @@ The paired "trivial, then incrementally less trivial" programs of the retired ac
 
 A fixture that has been measured carries an `expected/` directory.
 
-- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, and `scip-python` for a directory of `.py` files. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read.
+- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, and `scip-python` for a directory of `.py` files. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read. For a Cargo package the crates are read from the conventional layout, so a `crate::` reference resolves to the referencing file's own crate root instead of every root of the package.
 - `hand-verified-edges.json` is authored: the hops no compiler can see, each with the evidence a reader can check, and `remote: true` where the hop crosses a deployment.
 
 `npm run oracle:compare -- <fixture>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. The reports are recorded under "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md): the C# baseline of 2026-09-27 and the tree-sitter result that replaced it, and the same day's baseline of the other scanners.
@@ -49,6 +49,10 @@ A fixture that has been measured carries an `expected/` directory.
 ## The depot program
 
 `go/depot` is a stock-keeping module written on 2026-09-27 for the Go adapter; its [README](../../tests/integration/programs/go/depot/README.md) lists the shapes it exercises, from a package spread over files that use each other's declarations to a local variable that shadows a sibling file's function.
+
+## The stockroom program
+
+`rust/stockroom` is a stock-keeping crate written on 2026-09-27 for the Rust adapter, with a library and a binary in one package; its [README](../../tests/integration/programs/rust/stockroom/README.md) lists the shapes it exercises. It is also the program that showed rust-analyzer naming every crate root `crate/`, which the oracle now resolves from Cargo's layout.
 
 ## The WebForms fixture
 

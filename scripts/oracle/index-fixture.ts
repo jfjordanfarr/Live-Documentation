@@ -13,7 +13,8 @@
  *   .sln or .csproj at the root   scip-dotnet      needs the dotnet SDK; the tool is built for an
  *                                                  older runtime, so it runs with DOTNET_ROLL_FORWARD=Major
  *   go.mod                        scip-go
- *   Cargo.toml                    rust-analyzer    its `scip` subcommand
+ *   Cargo.toml                    rust-analyzer    its `scip` subcommand; crates are read from Cargo's
+ *                                                  conventional layout (lib, main, src/bin, tests, examples, benches)
  *   pom.xml                       scip-java        drives Maven, which downloads its plugins on first use
  *   tsconfig.json                 scip-typescript  the copy in this repository's node_modules
  *   any .py file                  scip-python      the fixture directory's name is the project name;
@@ -28,7 +29,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { copyFixture, listFixtureFiles } from "./fixture";
-import { convertScipIndex, readProjects, type IndexContext, type OracleProject } from "./scip-edges";
+import { cargoProjects, convertScipIndex, readProjects, type IndexContext, type OracleProject } from "./scip-edges";
 
 interface Detected {
   projectFile?: string;
@@ -82,9 +83,10 @@ const INDEXERS: Indexer[] = [
     command: () => ({ command: "scip-go", args: ["--output", "index.scip"] })
   },
   {
-    name:    "rust-analyzer",
-    detect:  (files) => marker(files, "Cargo.toml"),
-    command: () => ({ command: "rust-analyzer", args: ["scip", ".", "--output", "index.scip"] })
+    name:     "rust-analyzer",
+    detect:   (files) => marker(files, "Cargo.toml"),
+    command:  () => ({ command: "rust-analyzer", args: ["scip", ".", "--output", "index.scip"] }),
+    projects: (workDir) => cargoProjects(workDir, listFixtureFiles(workDir))
   },
   {
     name:    "scip-java",

@@ -13,6 +13,10 @@
  * - scip-go also indexes the test binaries it generates outside the module, under the
  *   Go build cache. No source file exists for those documents, so they are listed under
  *   `outside` and take no part in the edges.
+ * - rust-analyzer names every crate root of a Cargo package `crate/`, so the library, the
+ *   binary and each integration test define the same symbol. A `crate::` path means the
+ *   referencing file's own crate, so that one symbol is narrowed to the root of the crate
+ *   the file belongs to, with crates read from Cargo's conventional layout.
  */
 import * as fs from "node:fs";
 import path from "node:path";
@@ -42,6 +46,8 @@ export interface OracleProject {
   name:       string;
   directory:  string;
   references: string[];
+  /** The project's documents, listed explicitly where directories do not decide membership (Cargo crates share `src/`). */
+  members?:   string[];
 }
 
 /** `from` references at least one symbol that `to` defines. */
@@ -81,6 +87,9 @@ export interface IndexContext {
 
 /** SCIP's Definition role bit; the binding exposes the same value. */
 const DEFINITION_ROLE = 1;
+
+/** rust-analyzer's symbol for a crate root; the same in every crate of a package. */
+const CRATE_ROOT = "crate/";
 
 /** A symbol is `<scheme> <manager> <package-name> <version> <descriptors>`, with a space inside the first four fields doubled. Only the descriptors are shown. */
 const PACKAGE_FIELDS = /^(?:(?:[^ ]| {2})+ ){4}/;
@@ -149,14 +158,37 @@ function visibleProjects(projects: OracleProject[], name: string): Set<string> {
 }
 
 function projectOf(projects: OracleProject[], documentPath: string): OracleProject | undefined {
+  const member = projects.find((project) => project.members?.includes(documentPath));
+  if (member) return member;
   let best: OracleProject | undefined;
   for (const project of projects) {
+    if (project.members) continue;
     const inside = project.directory === "." || documentPath.startsWith(`${project.directory}/`);
     if (inside && (!best || project.directory.length > best.directory.length)) {
       best = project;
     }
   }
   return best;
+}
+
+/** Cargo's conventional targets of the package at `packageDir`: the library owns every other file under `src/`; each binary, test, example and bench is its own crate that sees the library. */
+export function cargoProjects(packageDir: string, files: string[]): OracleProject[] {
+  const manifest = fs.readFileSync(path.join(packageDir, "Cargo.toml"), "utf8");
+  const name     = (/^\[package\][^[]*?^\s*name\s*=\s*"([^"]+)"/msu.exec(manifest)?.[1] ?? path.basename(packageDir)).replace(/-/g, "_");
+  const sources  = files.filter((file) => file.endsWith(".rs"));
+  const isOwnRoot = (file: string): boolean =>
+    file === "src/main.rs" || /^src\/bin\/[^/]+\.rs$/u.test(file) || /^src\/bin\/[^/]+\/main\.rs$/u.test(file) ||
+    /^(tests|examples|benches)\/[^/]+\.rs$/u.test(file) || /^(tests|examples|benches)\/[^/]+\/main\.rs$/u.test(file);
+  const hasLibrary = sources.includes("src/lib.rs");
+  const projects: OracleProject[] = [];
+  if (hasLibrary) {
+    projects.push({ name, directory: "src", references: [], members: sources.filter((file) => file.startsWith("src/") && !isOwnRoot(file)) });
+  }
+  for (const root of sources.filter(isOwnRoot).sort()) {
+    const members = root === "src/main.rs" && !hasLibrary ? sources.filter((file) => file.startsWith("src/") && !isOwnRoot(file) || file === root) : [root];
+    projects.push({ name: `${name} ${root}`, directory: toPosix(path.dirname(root)), references: hasLibrary ? [name] : [], members });
+  }
+  return projects;
 }
 
 /** Derives the edges from an already-decoded index. Pure; the unit test drives it with plain objects. */
@@ -194,8 +226,10 @@ export function edgesFromIndex(index: ScipIndex, context: IndexContext): OracleE
       const holders = definitions.get(symbol);
       if (!holders || holders.has(from)) continue;
 
+      const own        = projectOf(projects, from)?.name ?? "";
       const candidates = Array.from(holders)
         .filter((holder) => visible.has(projectOf(projects, holder)?.name ?? ""))
+        .filter((holder) => displaySymbol(symbol) !== CRATE_ROOT || (projectOf(projects, holder)?.name ?? "") === own)
         .sort();
       if (candidates.length === 0) continue;
 

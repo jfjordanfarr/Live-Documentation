@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/processor.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-processor-rs
-- Generated At: 2026-09-27T18:53:08.368Z
+- Generated At: 2026-09-27T20:50:54.165Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,13 @@ Rust Rosetta Stone fixture module. Part of the cross-language benchmark suite.
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust use statement and pub use re-export detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.368Z","inputHash":"79373f421ab45220"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.165Z","inputHash":"7fddd275091c12ad"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `run` {#symbol-run}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/rosetta/src/processor.rs#L31)
+- Returns: [`Report`](./models.rs.mdmd.md#symbol-report)
 
 ##### `run` — Summary
 Processes a batch of records and generates a report.
@@ -42,6 +43,7 @@ Summary report of processed records
 #### `summarize` {#symbol-summarize}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/rosetta/src/processor.rs#L52)
+- Parameters: `report`: [`Report`](./models.rs.mdmd.md#symbol-report)
 
 ##### `summarize` — Summary
 Creates a formatted summary string from a report.
@@ -58,10 +60,11 @@ Human-readable summary
 - [`helpers.average`](./helpers.rs.mdmd.md#symbol-average)
 - [`helpers.format`](./helpers.rs.mdmd.md#symbol-format)
 - [`helpers.sum`](./helpers.rs.mdmd.md#symbol-sum)
+- [`main`](./main.rs.mdmd.md)
 - [`models.Record`](./models.rs.mdmd.md#symbol-record)
 - [`models.Report`](./models.rs.mdmd.md#symbol-report)
 - [`models.validate_config`](./models.rs.mdmd.md#symbol-validate_config)
-- [`types`](./types.rs.mdmd.md)
+- [`types.ProcessorConfig`](./types.rs.mdmd.md#symbol-processorconfig)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

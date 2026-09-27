@@ -75,7 +75,7 @@ export function createSymbolSlug(name: string): string | undefined {
 export function toModuleLabel(workspaceRelativePath: string): string {
   const baseName = path.basename(workspaceRelativePath);
   const withoutExtension = baseName.replace(/\.[^.]+$/, "");
-  if (withoutExtension === "__init__") {
+  if (baseName === "__init__.py" || baseName === "mod.rs") {
     const packageName = path.basename(path.dirname(workspaceRelativePath));
     if (packageName && packageName !== ".") {
       return packageName;

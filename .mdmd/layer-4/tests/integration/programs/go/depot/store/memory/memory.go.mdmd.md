@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/store/memory/memory.go
 - Live Doc ID: LD-test-tests-integration-programs-go-depot-store-memory-memory-go
-- Generated At: 2026-09-27T20:30:56.169Z
+- Generated At: 2026-09-27T20:50:52.371Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@
 - The package name differs from the directory name, so an importer refers to it as `memstore` unless it aliases the import; the adapter takes the name from the package clause. Embeds `store.Base`, which is recorded as an extends reference.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:30:56.169Z","inputHash":"8cbd2baaa9d0e011"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:52.371Z","inputHash":"8cbd2baaa9d0e011"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Memory` {#symbol-memory}
@@ -29,7 +29,7 @@ Memory is a store.Inventory that forgets everything when the process ends.
 #### `New` {#symbol-new}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/depot/store/memory/memory.go#L17)
-- Returns: [`Memory`](#symbol-memory)
+- Returns: [`Memory`](../../../../rust/stockroom/src/store/memory.rs.mdmd.md#symbol-memory)
 
 ##### `New` — Summary
 New makes an empty inventory.

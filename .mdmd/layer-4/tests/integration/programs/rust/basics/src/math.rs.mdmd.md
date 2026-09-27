@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/basics/src/math.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-basics-src-math-rs
-- Generated At: 2026-09-27T18:53:08.223Z
+- Generated At: 2026-09-27T20:50:54.052Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Mathematical operations module for the `rust-basics` polyglot benchmark fixture.
 - Uses `use crate::utils;` syntax to import the sibling module, which the Rust adapter now resolves via the `resolveUseStatement()` function added on [2026-01-13](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-13.1.md).
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.223Z","inputHash":"94744b4fce741bdb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.052Z","inputHash":"9ef7462b938997ab"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sum` {#symbol-sum}
@@ -30,7 +30,8 @@ Mathematical operations module for the `rust-basics` polyglot benchmark fixture.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`utils`](./utils.rs.mdmd.md)
+- [`main`](./main.rs.mdmd.md)
+- [`utils.is_even`](./utils.rs.mdmd.md#symbol-is_even)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->

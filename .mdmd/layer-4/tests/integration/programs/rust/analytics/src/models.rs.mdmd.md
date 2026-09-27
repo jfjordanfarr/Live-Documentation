@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/models.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-models-rs
-- Generated At: 2026-09-27T18:53:08.188Z
+- Generated At: 2026-09-27T20:50:54.018Z
 
 ## Authored
 ### Purpose
@@ -15,16 +15,36 @@ Declares the data structures consumed across the Rust analytics benchmark so the
 Struct fields should remain open and descriptive; changing them affects every dependent module in the fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.188Z","inputHash":"5b39c571a27605be"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.018Z","inputHash":"df8f123fb0f6903a"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Sample` {#symbol-sample}
 - Type: struct
 - Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L2)
 
+#### `label (field overload 1)` {#symbol-label-field-overload-1}
+- Type: field
+- Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L3)
+
+#### `value` {#symbol-value}
+- Type: field
+- Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L4)
+
 #### `Summary` {#symbol-summary}
 - Type: struct
 - Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L7)
+
+#### `label (field overload 2)` {#symbol-label-field-overload-2}
+- Type: field
+- Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L8)
+
+#### `average` {#symbol-average}
+- Type: field
+- Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L9)
+
+#### `alert` {#symbol-alert}
+- Type: field
+- Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/models.rs#L10)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

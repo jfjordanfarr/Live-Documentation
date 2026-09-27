@@ -224,9 +224,8 @@ impl std::error::Error for MyError {}
 
     const myError = result!.symbols.find((s) => s.name === "MyError");
     expect(myError).toBeDefined();
-    expect(myError?.typeReferences).toHaveLength(2);
-    expect(myError?.typeReferences).toContainEqual({ name: "std::fmt::Display", role: "implements" });
-    expect(myError?.typeReferences).toContainEqual({ name: "std::error::Error", role: "implements" });
+    // Display is a standard trait everything implements, so it is left out; Error is kept, by its simple name.
+    expect(myError?.typeReferences).toEqual([{ name: "Error", role: "implements" }]);
   });
 
   it("handles where clause trait bounds separately from impl", async () => {

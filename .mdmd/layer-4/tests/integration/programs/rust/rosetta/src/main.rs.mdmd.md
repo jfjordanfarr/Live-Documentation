@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/main.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-rosetta-src-main-rs
-- Generated At: 2026-09-27T18:53:08.295Z
+- Generated At: 2026-09-27T20:50:54.121Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Entry point for the Rust Rosetta Stone fixture. Demonstrates mod declarations an
 See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md). Tests Rust's module system detection.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.295Z","inputHash":"04eb5f47610a1eb5"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.121Z","inputHash":"b1a0af60961c7e12"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `main` {#symbol-main}
@@ -34,13 +34,13 @@ Formatted summary of the processing results
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `models::{create_record, Report}` - `Report`, `create_record`
-- `processor::{run, summarize}` - `run`, `summarize`
 - [`helpers`](./helpers.rs.mdmd.md)
 - [`helpers_test`](./helpers_test.rs.mdmd.md)
-- [`models`](./models.rs.mdmd.md)
+- [`models.Report`](./models.rs.mdmd.md#symbol-report)
+- [`models.create_record`](./models.rs.mdmd.md#symbol-create_record)
 - [`pipeline_test`](./pipeline_test.rs.mdmd.md)
-- [`processor`](./processor.rs.mdmd.md)
+- [`processor.run`](./processor.rs.mdmd.md#symbol-run)
+- [`processor.summarize`](./processor.rs.mdmd.md#symbol-summarize)
 - [`processor_test`](./processor_test.rs.mdmd.md)
 - [`types`](./types.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

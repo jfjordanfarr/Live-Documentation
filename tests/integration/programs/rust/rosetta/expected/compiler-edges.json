@@ -3,9 +3,19 @@
   "projectFile": "Cargo.toml",
   "projects": [
     {
-      "name": "rosetta",
-      "directory": ".",
-      "references": []
+      "name": "rust_rosetta_fixture src/main.rs",
+      "directory": "src",
+      "references": [],
+      "members": [
+        "src/helpers.rs",
+        "src/helpers_test.rs",
+        "src/main.rs",
+        "src/models.rs",
+        "src/pipeline_test.rs",
+        "src/processor.rs",
+        "src/processor_test.rs",
+        "src/types.rs"
+      ]
     }
   ],
   "documents": [

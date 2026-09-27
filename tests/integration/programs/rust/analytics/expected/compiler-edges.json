@@ -3,9 +3,16 @@
   "projectFile": "Cargo.toml",
   "projects": [
     {
-      "name": "analytics",
-      "directory": ".",
-      "references": []
+      "name": "rust_analytics_fixture src/main.rs",
+      "directory": "src",
+      "references": [],
+      "members": [
+        "src/analytics.rs",
+        "src/io.rs",
+        "src/main.rs",
+        "src/metrics.rs",
+        "src/models.rs"
+      ]
     }
   ],
   "documents": [

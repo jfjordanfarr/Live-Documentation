@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/metrics.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-metrics-rs
-- Generated At: 2026-09-27T18:53:08.174Z
+- Generated At: 2026-09-27T20:50:54.005Z
 
 ## Authored
 ### Purpose
@@ -15,12 +15,14 @@ Implements the summarization and alert thresholds for the Rust analytics benchma
 Preserve the inline documentation and threshold values—they ensure the analyzer sees rich symbol metadata in this fixture.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.174Z","inputHash":"274a77ee80594f9b"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:54.005Z","inputHash":"da60025370de9e61"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `summarize` {#symbol-summarize}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/metrics.rs#L27)
+- Returns: [`Summary`](./models.rs.mdmd.md#symbol-summary)
+- Parameters: `samples`: [`Sample`](./models.rs.mdmd.md#symbol-sample)
 
 ##### `summarize` — Summary
 Computes aggregate statistics for a batch of samples.
@@ -52,6 +54,7 @@ assert_eq!(summary.label, "sensor-a");
 #### `is_alert` {#symbol-is_alert}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/analytics/src/metrics.rs#L49)
+- Parameters: `summary`: [`Summary`](./models.rs.mdmd.md#symbol-summary)
 
 ##### `is_alert` — Summary
 Flags summaries whose average exceeds the alert threshold.
@@ -65,6 +68,7 @@ Flags summaries whose average exceeds the alert threshold.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`main`](./main.rs.mdmd.md)
 - [`models.Sample`](./models.rs.mdmd.md#symbol-sample)
 - [`models.Summary`](./models.rs.mdmd.md#symbol-summary)
 <!-- LIVE-DOC:END Dependencies -->

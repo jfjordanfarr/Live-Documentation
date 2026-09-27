@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/programs/rust/analytics/src/io.rs
 - Live Doc ID: LD-test-tests-integration-programs-rust-analytics-src-io-rs
-- Generated At: 2026-09-27T18:53:08.135Z
+- Generated At: 2026-09-27T20:50:53.975Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Supplies deterministic sample data for the Rust analytics benchmark so the analy
 Adjust the shape of the sample sets only when the benchmark needs new dependency edges; keep labels simple for readability.
 
 ## Generated
-<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T18:53:08.135Z","inputHash":"dd9c973bc7bd18fb"}]} -->
+<!-- LIVE-DOC:PROVENANCE {"generators":[{"tool":"live-docs-generator","version":"0.1.0","generatedAt":"2026-09-27T20:50:53.975Z","inputHash":"c05d011e05a39bf7"}]} -->
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `load_series` {#symbol-load_series}
@@ -25,7 +25,8 @@ Adjust the shape of the sample sets only when the benchmark needs new dependency
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`models`](./models.rs.mdmd.md)
+- [`main`](./main.rs.mdmd.md)
+- [`models.Sample`](./models.rs.mdmd.md#symbol-sample)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Targets -->
