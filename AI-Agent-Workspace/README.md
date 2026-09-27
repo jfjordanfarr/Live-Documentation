@@ -8,6 +8,6 @@ The record of building this repository with AI coding agents, and the memory tho
 - `scripts/` holds helper scripts from the same period.
 - `tmp/` is scratch space, not tracked.
 
-Everything from the Copilot era is **historical**. It describes nothing about the current state of the code, and links inside it may point at documents that no longer exist; that is expected, and they are not maintained. Facts about the project today live in [AGENTS.md](../AGENTS.md); the intent lives in [the vision](../.mdmd/layer-1/vision.mdmd.md). The owner keeps the archive until the modernization is complete because it still holds signals of his intent worth mining; when signals conflict, the newer one wins.
+Everything from the Copilot era is **historical**. It describes nothing about the current state of the code, and links inside it may point at documents that no longer exist; that is expected, and they are not maintained. Facts about the project today live in [AGENTS.md](../AGENTS.md); the intent lives in [the vision](../.mdmd/layer-1/vision.mdmd.md). The owner keeps the archive until the modernization is complete because it still holds signals of their intent worth mining; when signals conflict, the newer one wins.
 
 The transcripts are excluded from the Explorer bundle by `bundleExclude` in `.live-docs.config.json`. `ChatHistory/`, `Notes/` and `scripts/` are excluded from the SlopCop audits; `Memory/` and this file are audited.

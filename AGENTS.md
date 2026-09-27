@@ -10,7 +10,7 @@ The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read
 
 ## What the owner has said
 
-His standing preferences, his answers at every fork so far, and ideas without a home live under `AI-Agent-Workspace/Memory/`: [owner.md](AI-Agent-Workspace/Memory/owner.md), [direction.md](AI-Agent-Workspace/Memory/direction.md) and [ideas.md](AI-Agent-Workspace/Memory/ideas.md). Read them after this file. They are plain markdown so that an agent of any vendor reads the same facts. When the owner says something that changes how to work here or where the project goes, add it there with the date, in his words where you can. A vendor's private memory may point at these files; it must not hold a second copy.
+The owner's standing preferences, their answers at every fork so far, and ideas without a home live under `AI-Agent-Workspace/Memory/`: [owner.md](AI-Agent-Workspace/Memory/owner.md), [direction.md](AI-Agent-Workspace/Memory/direction.md) and [ideas.md](AI-Agent-Workspace/Memory/ideas.md). Read them after this file. They are plain markdown so that an agent of any vendor reads the same facts. When the owner says something that changes how to work here or where the project goes, add it there with the date, in their words where you can. A vendor's private memory may point at these files; it must not hold a second copy.
 
 ## How to work here
 

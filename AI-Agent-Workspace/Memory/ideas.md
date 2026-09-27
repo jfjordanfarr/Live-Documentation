@@ -4,8 +4,8 @@ _Current as of 2026-09-27. Unprioritised. Mined from the planning documents reti
 
 ## Asked for or loved by the owner
 
-- **Reachability.** Told that about 40% of the non-test lines were unreachable from any user command, he said: "Man oh man, I wish our tool had the capability to tell me that." (2026-09-26) This is the vision's `reachable`. A related finding from dogfooding `inspect` (2026-09-27): `--direction inbound` without `--to` returns every path, capped at 200, which explodes through hub modules; the question "which files does my change reach, and at what hop distance?" wants the set, not the paths.
-- **Prose reference report.** Resolve backticked names in markdown against the file index, the symbol index, npm scripts and configuration keys, and report the ones that resolve to nothing, per document. A report, never a gate, because shell fragments, placeholders, configuration values and deliberately historical names all look like dead references. He called it "a wonderful hard problem" (2026-09-27).
+- **Reachability.** Told that about 40% of the non-test lines were unreachable from any user command, they said: "Man oh man, I wish our tool had the capability to tell me that." (2026-09-26) This is the vision's `reachable`. A related finding from dogfooding `inspect` (2026-09-27): `--direction inbound` without `--to` returns every path, capped at 200, which explodes through hub modules; the question "which files does my change reach, and at what hop distance?" wants the set, not the paths.
+- **Prose reference report.** Resolve backticked names in markdown against the file index, the symbol index, npm scripts and configuration keys, and report the ones that resolve to nothing, per document. A report, never a gate, because shell fragments, placeholders, configuration values and deliberately historical names all look like dead references. They called it "a wonderful hard problem" (2026-09-27).
 
 ## The Explorer as found on 2026-09-26
 
@@ -24,5 +24,5 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 ## Positioning
 
-- The peers as the owner sees them (December 2025): Windsurf Codemaps, GitLab Knowledge Graph, Google CodeWiki. What he cares about: MIT licence, offline, markdown-first, "vastly more secure". The README carries a comparison table.
+- The peers as the owner sees them (December 2025): Windsurf Codemaps, GitLab Knowledge Graph, Google CodeWiki. What they care about: MIT licence, offline, markdown-first, "vastly more secure". The README carries a comparison table.
 - The README still promises "redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph" at release. Agent context is no longer the goal (see [direction.md](direction.md)); revisit that paragraph when the README is rewritten.
