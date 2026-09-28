@@ -105,3 +105,45 @@ _Added the same evening after the owner's reply: "D is, I would say, desirable _
 **What stays canonical.** The file should carry the docs' bytes, not only the derived graph, in a collapsed text block, and derive the graph on load the way every other consumer does. A person opening the file in a text editor then reads markdown, not JSON, and the import gets the canonical form back without a render step.
 
 **The staged path, so the risk is bought in slices.** C first: the single file with save, draft, provenance and import, tested in the matrix. Then D-lite: the in-file scanner for the pure adapters, measured against the CLI. Then D in full, if the measurement holds and the size is bearable. Each slice is useful on its own and none forecloses the next.
+
+## The synthesis: one text, one engine, one viewer, and hosts that add two functions
+
+_Added the same evening, after the owner declined to answer with a hard yes and asked instead: "If my goal is to maximize many differing/competing interests, how might we maximize all elegantly and realistically?" For the end user: shareability (portability and ease of engaging with a bundle), editability, overall depth, and security and privacy. For the developer: simplicity and maintainability, with dependencies minimised "except where they are demonstrably safe assets worth more than the liability to take them on"._
+
+**The principle.** There is one canonical text: the Live Docs, with their generated and authored regions, and the board text. There is one engine that derives everything from the text: parse, graph, paths, maps. There is one viewer, the World Map and the Local Map, which is also the editor of the board text. Hosts add exactly two functions, save and scan, and nothing else:
+
+| Host                       | Reads             | Writes                                  | Scans                                  |
+| -------------------------- | ----------------- | --------------------------------------- | -------------------------------------- |
+| A text editor              | the text          | the text                                | no                                     |
+| The single file            | the text inside   | a new copy of itself                    | later, and only the pure adapters      |
+| The workbench: VS Code, CLI | the text on disk | the text in place                       | everything, with every adapter         |
+
+Every edit in every host is, in the end, an edit to the text, so every host can read what every other host wrote. Nothing lives anywhere the text cannot express, which is the rule this repository already keeps for its pictures.
+
+**How the seven goals fall out of it.**
+
+- Shareability: the single file opens on a double click, offline, with no install, and lands on the World Map with the help button; the docs sit collapsed beneath. The text alone is the zero-dependency form for anyone who has nothing but an editor.
+- Editability: the viewer is the editor in the file and in the workbench; the text is editable in anything; a person can make a thing true by fiat in either, and an imagined piece is one line.
+- Depth: depth lives in the doc grammar and the engine, never in the bundle. Every growth of the grammar reaches every host on the day it lands, because all of them derive from the same text. The one depth that does not travel into the file by itself is scanning, and that is the optional layer.
+- Security and privacy: the viewer has no network code, and the file's own policy forbids a network call even if code inside were compromised; data is parsed, never executed; the file carries a provenance hash the workbench checks before importing; the trim is exactly what is in the file, and the file states what it left out. And a Live Doc is shape, not source: a snapshot shares symbols, dependencies and doors, not code, which is a privacy property of the format itself.
+- Simplicity: one grammar, one engine, one viewer, thin hosts. Fewer things than today, which has five views, a bundle of three kinds of file, and dead server endpoints.
+- Maintainability: the strict grammar and the round trip test the text; the oracle fixtures test the engine; a Playwright matrix over the built file in three browser engines tests the hosts; the seam is the only host-specific code.
+- Dependencies: none added. Inlining is string work at build time; compression, hashing and storage are native to browsers; tree-sitter is already here. One may leave: the zip library, once the single file is the download.
+
+**Where the goals still compete, and the resolution.**
+
+- Depth against size and simplicity in the file: layering. Scanning stays in the workbench first; the file gains the pure adapters later or never; the text carries the results either way.
+- Editability against security: the editable thing is text, the data is inert, the policy forbids the network, and the hash names the build.
+- Shareability against privacy: sharing more is leaking more, so the trim is the file's contents and the file says what is missing; the levels are the owner's, World Map only, with the Local Map, without endpoints.
+- Ease of access against an organisation's rules: a file that runs code may be forbidden somewhere; then the text still works and the workbench still renders it. Degradation is downward through the table and loses nothing that was written.
+- Simplicity against several hosts: the seam, two functions, is the whole cost.
+
+**Realistically, in order, with what each step deletes.**
+
+1. The board text's grammar and lint, the last of the vision's five growths. The estate's hand-verified file stops being a board's source.
+2. The World Map and the Local Map as one viewer over the graph, the vision's steps 3 to 5. The five old views go.
+3. The single file: inline the build, embed the text and the provenance, save as a new copy, draft in storage, import with drift. The three-kind bundle, the dead endpoints and probably the zip library go.
+4. The workbench host with the seam, which is the vision's editor panel. Thin, and nothing goes.
+5. Scanning inside the file for the pure adapters, measured byte for byte against the CLI over the sample programs. Optional, and only when asked for.
+
+**A name, on trial.** The owner asked what to call the bundle. An atlas is a book of maps: one file holding an estate's maps, the docs they were drawn from, and the tool that draws them. "Board" names the surface already and could name the file too. Theirs to pick, as with the map names.
