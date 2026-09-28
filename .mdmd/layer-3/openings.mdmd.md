@@ -53,7 +53,7 @@ The shared vocabulary, the route grammar, the object-name rules and the home of 
 - Convention routing (`MapHttpRoute` templates expanded per controller) and minimal APIs (`app.MapGet`); a Web API without attribute routing serves nothing the docs can see.
 - WCF contracts by name as a fallback when the addresses in two configuration files differ, and hostnames in configuration to confirm an HTTP match instead of the home-and-away presumption.
 - Contract files as a second source of served openings: OpenAPI, WSDL, gRPC, GraphQL, AsyncAPI. The survey names maintained parsers for all but WSDL 2.0.
-- Lockfiles for resolved versions; SBOM files (CycloneDX, SPDX), which the owner named as the first iteration of the beard; infrastructure files (ARM, Bicep, Terraform) for districts, tunnels and identities.
+- Lockfiles for resolved versions; SBOM files (CycloneDX, SPDX), which the owner named as the first iteration of the built-on layer; infrastructure files (ARM, Bicep, Terraform) for districts, tunnels and identities.
 - A folder's kind beyond what its project file says: a folder of `.sql` scripts is a database, and nothing says so yet.
 - What a person declares: districts, tunnels, edges no scan can see, and where the pieces sit. Open; the direction memory holds the proposal and the owner's words.
 
