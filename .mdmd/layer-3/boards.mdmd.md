@@ -54,7 +54,7 @@ The estate sample's board, `tests/integration/programs/csharp/estate/board.md`: 
 ### Not covered
 
 - Snapshots. A `From` outside the workspace is reported; the join reads one graph. The vision's step 5 brings the second graph.
-- Wires between regions implied from their members, and what a closed region shows on its boundary. A survey of how canvases and diagram tools collapse groups was gathered for it.
+- Wires between regions implied from their members, and what a closed region shows on its boundary. [A survey](../../AI-Agent-Workspace/Research/2026-09-28-groups-and-nested-boards.md) of how canvases and diagram tools collapse groups was gathered for it: every one derives a closed box's wires from its children and stores nothing, and none closes a group because the camera moved.
 - The viewer writing Layout and Legend on save, the single self-saving file that carries a board with its docs and provenance, and the import that brings a returned file home with the difference shown. The proposal is the probe record's board-file.md.
 - A board as a thing on another board, which the owner called a stretch goal.
 - How a board is found when no host names it: a path the CLI takes, the file VS Code opens, the text inside a bundle, until a feature needs more.
