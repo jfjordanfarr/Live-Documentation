@@ -219,6 +219,20 @@ export interface PublicSymbolEntry {
 // ============================================================================
 
 /**
+ * How a dependency was observed, when it was not read from source.
+ *
+ * @remarks
+ * Within a folder, edges are observed from source: an import, a reference, a
+ * type the language resolves. Between systems they are observed from a
+ * contract (a route, a procedure or a table that one file serves under a name
+ * and another calls by that name) or from configuration (an address one
+ * configuration file listens on and another points at). The picture draws the
+ * three differently, so every edge says which it is; source is the default and
+ * carries no mark.
+ */
+export type DependencyBasis = "contract" | "configuration";
+
+/**
  * Describes a dependency imported or exported from a source file.
  */
 export interface DependencyEntry {
@@ -229,6 +243,8 @@ export interface DependencyEntry {
   isTypeOnly?: boolean;
   location?: LocationInfo;
   symbolTargets?: Record<string, string>;
+  /** How the dependency was observed, when not from source. */
+  basis?: DependencyBasis;
 }
 
 /**

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-09-27T23:21:29.966Z
+- Generated At: 2026-09-28T16:48:37.858Z
 
 ## Authored
 ### Purpose
@@ -88,18 +88,19 @@ Default file extension for generated Live Doc files (`".md"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L94)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L95)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
 Default glob patterns selecting workspace artifacts that receive Live Docs.
 
 Covers TypeScript, JavaScript, PowerShell, C#/.NET view files, Python, Java,
-Ruby, Rust, C/C++, Go, HTML/CSS, JSON, and static assets (images, fonts,
-media). Static assets receive stub-only Live Docs for graph connectivity.
+Ruby, Rust, C/C++, Go, HTML/CSS, JSON, SQL scripts, .NET project files, npm
+package manifests, and static assets (images, fonts, media). Static assets
+receive stub-only Live Docs for graph connectivity.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L180)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L185)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -112,7 +113,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L204)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L209)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 

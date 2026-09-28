@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Web.config
-- Generated At: 2026-09-27T23:21:34.781Z
+- Generated At: 2026-09-28T16:48:42.612Z
 
 ## Authored
 ### Purpose
@@ -32,4 +32,5 @@ _Pending notes_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
+- [`App.net.tcp://hub.onprem.example:8731/PaymentHub`](../Hub/App.config.mdmd.md#symbol-nettcphubonpremexample8731paymenthub) (configuration)
 <!-- LIVE-DOC:END Dependencies -->

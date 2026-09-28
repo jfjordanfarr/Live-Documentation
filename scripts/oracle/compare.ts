@@ -55,6 +55,11 @@ export interface Report {
     found:   HandVerifiedEdge[];
     missing: HandVerifiedEdge[];
   };
+  /** Project references the compiler lists, as edges between project files, against what the project adapter found. */
+  projects?: {
+    found:   AdapterEdge[];
+    missing: AdapterEdge[];
+  };
   beyondCompiler: AdapterEdge[];
   unresolved:     Array<{ from: string; raw: string }>;
 }
@@ -128,6 +133,22 @@ function buildReport(fixtureDir: string, compiler: OracleEdges, handVerified: Ha
     };
   }
 
+  const projectFile = (project: { name: string; directory: string }) => (project.directory ? `${project.directory}/` : "") + `${project.name}.csproj`;
+  const byName      = new Map(compiler.projects.map((project) => [project.name, project]));
+  const references: AdapterEdge[] = [];
+  for (const project of compiler.projects) {
+    for (const reference of project.references) {
+      const target = byName.get(reference);
+      if (target) references.push({ from: projectFile(project), to: projectFile(target) });
+    }
+  }
+  if (references.length > 0) {
+    report.projects = {
+      found:   references.filter((edge) => adapterKeys.has(`${edge.from}|${edge.to}`)),
+      missing: references.filter((edge) => !adapterKeys.has(`${edge.from}|${edge.to}`))
+    };
+  }
+
   return report;
 }
 
@@ -150,6 +171,14 @@ function printReport(report: Report): void {
     for (const edge of report.handVerified.missing) {
       lines.push(`  missing  ${edge.from} -> ${edge.to}${edge.remote ? "  (remote)" : ""}`);
       lines.push(`           via ${edge.via}`);
+    }
+  }
+
+  if (report.projects) {
+    lines.push("");
+    lines.push(`Project references: ${report.projects.found.length} found, ${report.projects.missing.length} missing`);
+    for (const edge of report.projects.missing) {
+      lines.push(`  missing  ${edge.from} -> ${edge.to}`);
     }
   }
 

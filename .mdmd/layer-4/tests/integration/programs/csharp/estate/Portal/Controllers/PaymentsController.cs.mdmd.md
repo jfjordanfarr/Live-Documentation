@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs
-- Generated At: 2026-09-27T23:21:34.997Z
+- Generated At: 2026-09-28T17:02:52.250Z
 
 ## Authored
 ### Purpose
@@ -24,11 +24,19 @@ _Pending notes_
 ##### `PaymentsController` — Summary
 Receives the browser's payment requests and forwards them to the gateway.
 
+#### `POST api/payments` {#symbol-post-apipayments}
+- Type: route
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L14)
+
 #### `Post` {#symbol-post}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L16)
 - Returns: `IHttpActionResult`
 - Parameters: `request`: [`PaymentRequestModel`](../Models/PaymentRequestModel.cs.mdmd.md#symbol-paymentrequestmodel)
+
+#### `GET api/payments/{paymentId}` {#symbol-get-apipaymentspaymentid}
+- Type: route
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Portal/Controllers/PaymentsController.cs#L26)
 
 #### `Get` {#symbol-get}
 - Type: method

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs
-- Generated At: 2026-09-27T23:21:34.710Z
+- Generated At: 2026-09-28T17:02:52.063Z
 
 ## Authored
 ### Purpose
@@ -24,11 +24,19 @@ _Pending notes_
 ##### `PaymentsController` — Summary
 Bridges the portal's REST calls into WCF calls on the on-prem hub.
 
+#### `POST api/payments` {#symbol-post-apipayments}
+- Type: route
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs#L13)
+
 #### `Post` {#symbol-post}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs#L15)
 - Returns: `IHttpActionResult`
 - Parameters: `request`: [`PaymentRequest`](../../Contracts/PaymentRequest.cs.mdmd.md#symbol-paymentrequest)
+
+#### `GET api/payments/{paymentId}` {#symbol-get-apipaymentspaymentid}
+- Type: route
+- Source: [source](../../../../../../../../../tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs#L22)
 
 #### `Get` {#symbol-get}
 - Type: method

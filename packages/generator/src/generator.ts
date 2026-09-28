@@ -184,7 +184,7 @@ export async function generateLiveDocs(
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
     const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig);
 
-    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex);
+    const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
 
     const docPaths = resolveLiveDocPaths(
       workspaceRoot,

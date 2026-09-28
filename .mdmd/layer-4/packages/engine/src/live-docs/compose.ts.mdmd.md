@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-09-28T02:41:12.725Z
+- Generated At: 2026-09-28T17:01:35.415Z
 
 ## Authored
 ### Purpose
@@ -56,7 +56,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L520)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L522)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -66,7 +66,9 @@ Composes the `Dependencies` section of a Live Doc.
 A dependency that resolves inside the workspace becomes one line per imported
 symbol, each linking to the symbol's anchor in the target doc, or one line
 for the whole module when no symbol is named. An external dependency keeps
-its specifier and the symbols taken from it.
+its specifier and the symbols taken from it. A dependency observed from a
+contract or from configuration carries its basis as a qualifier, on lines of
+its own even when a source-observed dependency names the same file.
 
 ##### `composeDependencies` — Parameters
 - `args.analysis`: Analyzer output describing imported and re-exported modules.
@@ -78,7 +80,7 @@ its specifier and the symbols taken from it.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L705)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L711)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary

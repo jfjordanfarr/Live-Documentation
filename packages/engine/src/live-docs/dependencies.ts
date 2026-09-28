@@ -156,13 +156,15 @@ export function mergeDependencyEntries(
 
   const map = new Map<string, DependencyEntry>();
 
+  const keyOf = (entry: DependencyEntry): string => `${displayDependencyKey(entry)}|${entry.basis ?? ""}`;
+
   for (const entry of base) {
     const clone = cloneDependency(entry);
-    map.set(displayDependencyKey(clone), clone);
+    map.set(keyOf(clone), clone);
   }
 
   for (const entry of extras) {
-    const key = displayDependencyKey(entry);
+    const key = keyOf(entry);
     const existing = map.get(key);
     if (existing) {
       for (const symbol of entry.symbols) {
@@ -206,7 +208,8 @@ function cloneDependency(entry: DependencyEntry): DependencyEntry {
     kind: entry.kind,
     isTypeOnly: entry.isTypeOnly,
     location: entry.location ? { ...entry.location } : undefined,
-    symbolTargets: entry.symbolTargets ? { ...entry.symbolTargets } : undefined
+    symbolTargets: entry.symbolTargets ? { ...entry.symbolTargets } : undefined,
+    basis: entry.basis
   };
 }
 

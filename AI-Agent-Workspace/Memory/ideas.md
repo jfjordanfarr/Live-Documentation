@@ -27,6 +27,8 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 - **Ruby, C and PowerShell** still use hand-written scanners. No indexer is installed to measure Ruby (scip-ruby needs a Sorbet project) or C (scip-clang needs a compilation database), so they cannot be measured the way the other languages were. Either an indexer or a different oracle, such as what breaks when a symbol is removed, comes before rewriting them.
 
+- **Openings not yet read** (2026-09-28, from [Openings](../../.mdmd/layer-3/openings.mdmd.md)): Web API convention routing (`MapHttpRoute` templates expanded per controller) and minimal APIs; WCF contracts by name when addresses differ; hostnames in configuration to confirm an HTTP match, in place of the home-and-away presumption; contract files (OpenAPI, WSDL, gRPC, GraphQL, AsyncAPI) as a second source of served openings, for which the survey names maintained parsers; lockfiles for resolved versions; SBOM files, the owner's first iteration of the beard; infrastructure files for districts, tunnels and identities. Also the three estate edges no scan gives: a designer's fields to control ids, endpoint names built by concatenation at run time, a row type matched by result columns.
+
 - **CRLF in the working copy.** 95 source files still carry CRLF line endings from before the 2026-09-27 normalization. Git normalizes them on commit and the generator no longer copies them into docs, so nothing is wrong in the repository; rewriting the working copy is a bulk checkout left to the owner, who rated it "Low priority" (2026-09-28).
 
 ## Positioning

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/App.config
-- Generated At: 2026-09-27T23:21:34.855Z
+- Generated At: 2026-09-28T16:48:42.674Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,10 @@ _Pending notes_
 #### `Estate.Payments.PaymentService` {#symbol-estatepaymentspaymentservice}
 - Type: service
 - Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/PaymentService/App.config#L10)
+
+#### `net.tcp://payments.onprem.example:8732/PaymentService` {#symbol-nettcppaymentsonpremexample8732paymentservice}
+- Type: address
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/PaymentService/App.config#L11)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

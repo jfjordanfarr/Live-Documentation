@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/index.ts
-- Generated At: 2026-09-27T23:21:30.673Z
+- Generated At: 2026-09-28T16:48:38.336Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Public Symbols
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L26)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L28)
 
 ##### `WorkspaceFileIndex` — Summary
 Set of workspace-relative file paths for cross-file reference resolution.
@@ -31,7 +31,7 @@ analysis begins.
 
 #### `LanguageAdapter` {#symbol-languageadapter}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L37)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L39)
 
 ##### `LanguageAdapter` — Summary
 Contract for a language-specific source analyser.
@@ -44,7 +44,7 @@ whose `extensions` list matches the file under inspection.
 
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L79)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L89)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.
@@ -71,8 +71,11 @@ Analyzer output when an adapter understands the file extension, otherwise `null`
 - [`java.javaAdapter`](./java.ts.mdmd.md#symbol-javaadapter)
 - [`json.jsonAdapter`](./json.ts.mdmd.md#symbol-jsonadapter)
 - [`powershell.powershellAdapter`](./powershell.ts.mdmd.md#symbol-powershelladapter)
+- [`project.projectAdapter`](./project.ts.mdmd.md#symbol-projectadapter)
 - [`python.pythonAdapter`](./python.ts.mdmd.md#symbol-pythonadapter)
 - [`ruby.rubyAdapter`](./ruby.ts.mdmd.md#symbol-rubyadapter)
 - [`rust.rustAdapter`](./rust.ts.mdmd.md#symbol-rustadapter)
+- [`sql.sqlAdapter`](./sql.ts.mdmd.md#symbol-sqladapter)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

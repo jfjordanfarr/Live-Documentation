@@ -291,4 +291,112 @@ describe("csharpAdapter", () => {
       ]);
     });
   });
+
+  describe("openings", () => {
+    it("publishes the routes a controller serves, from its prefix and its actions' attributes", async () => {
+      await write("Gateway/Controllers/PaymentsController.cs", [
+        "using System.Web.Http;",
+        "namespace Estate.Gateway.Controllers",
+        "{",
+        "    [RoutePrefix(\"api/payments\")]",
+        "    public class PaymentsController : ApiController",
+        "    {",
+        "        [HttpPost]",
+        "        [Route(\"\")]",
+        "        public IHttpActionResult Post() => Ok();",
+        "        [HttpGet]",
+        "        [Route(\"{paymentId:guid}\")]",
+        "        public IHttpActionResult Get(string paymentId) => Ok();",
+        "        [Route(\"~/api/health\")]",
+        "        public IHttpActionResult GetHealth() => Ok();",
+        "        [AcceptVerbs(\"PUT\", \"PATCH\")]",
+        "        [Route(\"{paymentId}\")]",
+        "        public IHttpActionResult Amend(string paymentId) => Ok();",
+        "        public IHttpActionResult Helper() => Ok();",
+        "    }",
+        "}"
+      ]);
+
+      const { symbols } = await analyze("Gateway/Controllers/PaymentsController.cs");
+
+      expect(symbols.filter((symbol) => symbol.kind === "route").map((symbol) => `${symbol.name} @${symbol.location?.line}`)).toEqual([
+        "POST api/payments @7",
+        "GET api/payments/{paymentId} @10",
+        "GET api/health @13",
+        "PATCH api/payments/{paymentId} @15",
+        "PUT api/payments/{paymentId} @15"
+      ]);
+    });
+
+    it("links a client to the controller that serves what it calls, away from home, observed from a contract", async () => {
+      const clientPath = await write("Portal/Services/GatewayClient.cs", [
+        "using System;",
+        "using System.Net.Http;",
+        "using System.Threading.Tasks;",
+        "namespace Estate.Portal.Services",
+        "{",
+        "    public sealed class GatewayClient",
+        "    {",
+        "        private static readonly HttpClient Http = new HttpClient();",
+        "        private readonly Uri baseUrl;",
+        "        public const string Receipts = \"api/receipts\";",
+        "        public async Task Post(object request) { await Http.PostAsJsonAsync(new Uri(baseUrl, \"api/payments\"), request); }",
+        "        public async Task Get(string id) { await Http.GetAsync(new Uri(baseUrl, \"api/payments/\" + id)); }",
+        "        public async Task Receipt(string id) { await Http.GetStringAsync($\"{Receipts}/{id}\"); }",
+        "        public async Task Ping() { await Http.SendAsync(new HttpRequestMessage(HttpMethod.Head, \"api/health\")); }",
+        "        public async Task Missing() { await Http.DeleteAsync(\"api/nothing/1\"); }",
+        "    }",
+        "}"
+      ]);
+      const gateway = "Gateway/Controllers/PaymentsController.cs";
+      const portal  = "Portal/Controllers/PaymentsController.cs";
+      const route   = (sourcePath: string, anchor: string) => ({ liveDocPath: "d", sourcePath, anchor, kind: "route" });
+      const symbolIndex = new Map([
+        ["POST api/payments",            [route(portal, "symbol-post-apipayments"), route(gateway, "symbol-post-apipayments")]],
+        ["GET api/payments/{paymentId}", [route(gateway, "symbol-get-apipaymentspaymentid")]],
+        ["GET api/receipts/{id}",        [route(gateway, "symbol-get-apireceiptsid")]],
+        ["HEAD api/health",              [route(gateway, "symbol-head-apihealth")]]
+      ]);
+      const fileIndex = new Set(["Portal/Portal.csproj", "Gateway/Gateway.csproj", "Portal/Services/GatewayClient.cs"]);
+
+      const result = await csharpAdapter.analyze({ absolutePath: clientPath, workspaceRoot, fileIndex, symbolIndex });
+
+      expect(result?.dependencies).toEqual([
+        { specifier: gateway, resolvedPath: gateway, symbols: ["GET api/payments/{paymentId}", "GET api/receipts/{id}", "HEAD api/health", "POST api/payments"], kind: "import", basis: "contract" },
+        { specifier: "DELETE api/nothing/1", symbols: [], kind: "import", basis: "contract" }
+      ]);
+    });
+
+    it("links a data context to its connection string, and to the procedure and table it names, folding constants", async () => {
+      await write("PaymentService/App.config", ["<configuration><connectionStrings><add name=\"PaymentsDb\" connectionString=\"x\" /></connectionStrings></configuration>"]);
+      const contextPath = await write("PaymentService/Data/PaymentsContext.cs", [
+        "using System.Data.Entity;",
+        "namespace Estate.Payments.Data",
+        "{",
+        "    [Table(\"Payment\", Schema = \"dbo\")]",
+        "    public class Payment { }",
+        "    public class PaymentsContext : DbContext",
+        "    {",
+        "        public const string ConnectionName = \"PaymentsDb\";",
+        "        public const string PostPaymentProcedure = \"dbo.usp_PostPayment\";",
+        "        public PaymentsContext() : base(\"name=\" + ConnectionName) { }",
+        "        public void Post() { Database.SqlQuery<int>(\"EXEC \" + PostPaymentProcedure + \" @AccountNumber\"); }",
+        "        public void Audit() { Database.ExecuteSqlCommand(\"INSERT INTO dbo.Audit (Note) VALUES ('x')\"); }",
+        "    }",
+        "}"
+      ]);
+      const symbolIndex = new Map([
+        ["dbo.usp_PostPayment", [{ liveDocPath: "d", sourcePath: "Database/dbo.usp_PostPayment.sql", anchor: "symbol-dbousp_postpayment", kind: "procedure" }]],
+        ["dbo.Payment",         [{ liveDocPath: "d", sourcePath: "Database/dbo.Payment.sql",         anchor: "symbol-dbopayment",         kind: "table" }]]
+      ]);
+
+      const result = await csharpAdapter.analyze({ absolutePath: contextPath, workspaceRoot, symbolIndex });
+
+      expect(result?.dependencies).toEqual([
+        { specifier: "PaymentService/App.config",       resolvedPath: "PaymentService/App.config",       symbols: ["PaymentsDb"],          kind: "import" },
+        { specifier: "Database/dbo.Payment.sql",         resolvedPath: "Database/dbo.Payment.sql",         symbols: ["dbo.Payment"],         kind: "import", basis: "contract" },
+        { specifier: "Database/dbo.usp_PostPayment.sql", resolvedPath: "Database/dbo.usp_PostPayment.sql", symbols: ["dbo.usp_PostPayment"], kind: "import", basis: "contract" }
+      ]);
+    });
+  });
 });

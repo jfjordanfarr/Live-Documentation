@@ -181,7 +181,7 @@ describe("JSON Adapter", () => {
     });
 
     it("ignores version strings", async () => {
-      const jsonPath = path.join(tempDir, "package.json");
+      const jsonPath = path.join(tempDir, "deps.json");
       fs.writeFileSync(jsonPath, JSON.stringify({
         dependencies: {
           "lodash": "^4.17.21",
@@ -220,7 +220,7 @@ describe("JSON Adapter", () => {
     });
 
     it("ignores scoped npm package names", async () => {
-      const jsonPath = path.join(tempDir, "package.json");
+      const jsonPath = path.join(tempDir, "deps.json");
       fs.writeFileSync(jsonPath, JSON.stringify({
         dependencies: {
           "@types/node": "^20.0.0"
@@ -333,5 +333,44 @@ describe("JSON Adapter", () => {
         "key Hangfire:Workers"
       ]);
     });
+  });
+});
+
+describe("JSON Adapter on package.json", () => {
+  let tempDir: string;
+
+  beforeEach(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "json-adapter-package-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it("publishes the package, links workspace packages by name and keeps the rest external with their ranges", async () => {
+    const manifestPath = path.join(tempDir, "packages", "explorer", "package.json");
+    fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
+    fs.writeFileSync(manifestPath, JSON.stringify({
+      name: "@live-documentation/explorer",
+      version: "0.0.0",
+      main: "./src/index.ts",
+      scripts: { build: "tsc" },
+      dependencies: { "@live-documentation/engine": "*", d3: "^7.9.0" },
+      devDependencies: { vitest: "^3.0.0" },
+      peerDependencies: { typescript: "" }
+    }));
+    const symbolIndex = new Map([
+      ["@live-documentation/engine", [{ liveDocPath: "d", sourcePath: "packages/engine/package.json", anchor: "symbol-live-documentationengine", kind: "package" }]]
+    ]);
+
+    const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex: new Set(["packages/explorer/src/index.ts"]), symbolIndex });
+
+    expect(result?.symbols).toEqual([{ name: "@live-documentation/explorer", kind: "package", location: { line: 1, character: 1 } }]);
+    expect(result?.dependencies).toEqual([
+      { specifier: "packages/engine/package.json", resolvedPath: "packages/engine/package.json", symbols: ["@live-documentation/engine"], kind: "import" },
+      { specifier: "d3@^7.9.0",      symbols: [], kind: "import" },
+      { specifier: "typescript",     symbols: [], kind: "import" },
+      { specifier: "vitest@^3.0.0",  symbols: [], kind: "import" }
+    ]);
   });
 });

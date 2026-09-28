@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/dependencies.ts
-- Generated At: 2026-09-28T02:39:06.008Z
+- Generated At: 2026-09-28T16:48:38.917Z
 
 ## Authored
 ### Purpose
@@ -61,7 +61,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L238)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L241)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -79,14 +79,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L379)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L382)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L403)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L406)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.

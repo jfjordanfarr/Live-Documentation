@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/Payment.cs
-- Generated At: 2026-09-27T23:21:34.876Z
+- Generated At: 2026-09-28T16:48:42.691Z
 
 ## Authored
 ### Purpose
@@ -46,5 +46,5 @@ A row of dbo.Payment.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`dbo.Payment`](../../Database/SqlServer/dbo.Payment.sql.mdmd.md#symbol-dbopayment) (contract)
 <!-- LIVE-DOC:END Dependencies -->

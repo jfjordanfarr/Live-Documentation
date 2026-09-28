@@ -40,7 +40,9 @@ describe("deriveLiveDocGraph", () => {
       { label: "node:path", symbols: ["join"], qualifiers: [] },
       { label: "types.Widget", link: "../types.ts.md#symbol-widget", qualifiers: ["type-only"] },
       { label: "missing", link: "../missing.ts.md", qualifiers: [] },
-      { label: "index", link: "../index.ts.md", qualifiers: ["re-export"] }
+      { label: "index", link: "../index.ts.md", qualifiers: ["re-export"] },
+      { label: "types.POST api/widgets", link: "../types.ts.md#symbol-post-apiwidgets", qualifiers: ["contract"] },
+      { label: "net.tcp://hub:8731/Hub", qualifiers: ["configuration"] }
     ]
   });
   const index = doc("src/index.ts", { dependencies: [{ label: "walk", link: "./graph/walk.ts.md", qualifiers: ["re-export"] }] });
@@ -57,6 +59,8 @@ describe("deriveLiveDocGraph", () => {
       { kind: "import", label: "types.Widget", link: "../types.ts.md#symbol-widget", to: "src/types.ts", toSymbol: "symbol-widget", typeOnly: true },
       { kind: "import", label: "missing", link: "../missing.ts.md" },
       { kind: "re-export", label: "index", link: "../index.ts.md", to: "src/index.ts" },
+      { kind: "import", label: "types.POST api/widgets", link: "../types.ts.md#symbol-post-apiwidgets", to: "src/types.ts", toSymbol: "symbol-post-apiwidgets", basis: "contract" },
+      { kind: "import", label: "net.tcp://hub:8731/Hub", basis: "configuration" },
       { kind: "returns", label: "Edge", link: "#symbol-edge", to: "src/graph/walk.ts", toSymbol: "symbol-edge", from: "symbol-walk" },
       { kind: "parameter", label: "Widget", link: "../types.ts.md#symbol-widget", to: "src/types.ts", toSymbol: "symbol-widget", from: "symbol-walk", parameter: "from" }
     ]);

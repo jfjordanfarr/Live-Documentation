@@ -88,10 +88,13 @@ export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".md";
  * Default glob patterns selecting workspace artifacts that receive Live Docs.
  *
  * Covers TypeScript, JavaScript, PowerShell, C#/.NET view files, Python, Java,
- * Ruby, Rust, C/C++, Go, HTML/CSS, JSON, and static assets (images, fonts,
- * media). Static assets receive stub-only Live Docs for graph connectivity.
+ * Ruby, Rust, C/C++, Go, HTML/CSS, JSON, SQL scripts, .NET project files, npm
+ * package manifests, and static assets (images, fonts, media). Static assets
+ * receive stub-only Live Docs for graph connectivity.
  */
 export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
+  "package.json",
+  "packages/*/package.json",
   "packages/**/src/**/*.ts",
   "packages/**/src/**/*.tsx",
   "packages/**/src/**/*.js",
@@ -150,6 +153,8 @@ export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
   "tests/**/*.html",
   "tests/**/*.css",
   "tests/**/*.json",
+  "tests/**/*.sql",
+  "tests/**/*.csproj",
   // Static assets — stub-like Live Docs for graph connectivity (2025-11-08 vision)
   "tests/**/*.png",
   "tests/**/*.jpg",

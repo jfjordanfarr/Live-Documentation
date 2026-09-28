@@ -150,6 +150,30 @@ describe("composeDependencies", () => {
     ]);
   });
 
+  it("keeps a dependency observed from a contract or from configuration on lines of its own, with its basis as the qualifier", () => {
+    const headings = computePublicSymbolHeadingInfo([]);
+    const dependencies = composeDependencies({
+      analysis: {
+        symbols: [],
+        dependencies: [
+          { specifier: "packages/engine/src/api.ts", resolvedPath: "packages/engine/src/api.ts", symbols: ["ApiOptions"], kind: "import" },
+          { specifier: "packages/engine/src/api.ts", resolvedPath: "packages/engine/src/api.ts", symbols: ["POST api/widgets"], kind: "import", basis: "contract" },
+          { specifier: "net.tcp://hub:8731/Hub", symbols: [], kind: "import", basis: "configuration" }
+        ]
+      },
+      docDir,
+      liveDocsRootAbsolute,
+      docExtension: ".md",
+      headings
+    });
+
+    expect(dependencies).toEqual([
+      { label: "net.tcp://hub:8731/Hub", qualifiers: ["configuration"] },
+      { label: "api.ApiOptions", link: "../api.ts.md#symbol-apioptions", qualifiers: [] },
+      { label: "api.POST api/widgets", link: "../api.ts.md#symbol-post-apiwidgets", qualifiers: ["contract"] }
+    ]);
+  });
+
   it("composes only what the grammar can write back", () => {
     const headings = computePublicSymbolHeadingInfo([{ name: "walk", kind: "function", location: { line: 1, character: 1 } }]);
     const doc = {

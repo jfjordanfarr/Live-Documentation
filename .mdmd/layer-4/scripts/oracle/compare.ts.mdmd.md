@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-09-28T01:00:43.581Z
+- Generated At: 2026-09-28T16:48:40.850Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L176)
+- Source: [source](../../../../scripts/oracle/compare.ts#L205)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.

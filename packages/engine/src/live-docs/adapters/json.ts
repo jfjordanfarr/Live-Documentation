@@ -11,6 +11,11 @@
  * - Workspace-relative paths: `"packages/engine/src/index.ts"`
  * - Bare filenames: `"expected.json"` (resolved relative to JSON file's directory)
  *
+ * A `package.json` is a manifest rather than configuration: its package is its
+ * one public symbol, and what it depends on is a dependency, linked to the
+ * workspace package of that name when there is one and external otherwise,
+ * with the range as written.
+ *
  * @module
  */
 
@@ -18,8 +23,46 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
+import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+
+/** The kind of the symbol a package manifest publishes. */
+export const PACKAGE_KIND = "package";
+
+const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
+
+/** What a `package.json` says: the package it names and the packages it stands on. */
+function analyzePackageManifest(parsed: unknown, thisFile: string, symbolIndex: WorkspaceSymbolIndex | undefined): SourceAnalysisResult {
+  const manifest = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? (parsed as Record<string, unknown>) : {};
+  const symbols: PublicSymbolEntry[] = typeof manifest.name === "string" && manifest.name ? [{ name: manifest.name, kind: PACKAGE_KIND, location: { line: 1, character: 1 } }] : [];
+
+  const linked = new Map<string, Set<string>>();
+  const external = new Set<string>();
+  for (const field of DEPENDENCY_FIELDS) {
+    const block = manifest[field];
+    if (!block || typeof block !== "object" || Array.isArray(block)) continue;
+    for (const [name, range] of Object.entries(block as Record<string, unknown>)) {
+      const packages = (symbolIndex?.get(name) ?? []).filter((location) => location.kind === PACKAGE_KIND && location.sourcePath !== thisFile);
+      if (packages.length > 0) {
+        for (const location of packages) {
+          const names = linked.get(location.sourcePath) ?? new Set<string>();
+          names.add(name);
+          linked.set(location.sourcePath, names);
+        }
+      } else {
+        external.add(typeof range === "string" && range ? `${name}@${range}` : name);
+      }
+    }
+  }
+
+  const dependencies: DependencyEntry[] = Array.from(linked.entries())
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const }));
+  for (const specifier of Array.from(external).sort()) {
+    dependencies.push({ specifier, symbols: [], kind: "import" });
+  }
+  return { symbols, dependencies };
+}
 
 // ============================================================================
 // Pattern Detection
@@ -183,7 +226,7 @@ export const jsonAdapter: LanguageAdapter = {
   id: "json-config",
   extensions: [".json"],
 
-  async analyze({ absolutePath, workspaceRoot, fileIndex }): Promise<SourceAnalysisResult | null> {
+  async analyze({ absolutePath, workspaceRoot, fileIndex, symbolIndex }): Promise<SourceAnalysisResult | null> {
     let content: string;
     try {
       content = await fs.readFile(absolutePath, "utf8");
@@ -200,6 +243,10 @@ export const jsonAdapter: LanguageAdapter = {
         symbols: [],
         dependencies: []
       };
+    }
+
+    if (path.basename(absolutePath) === "package.json") {
+      return analyzePackageManifest(parsed, normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath)), symbolIndex);
     }
 
     const symbols: PublicSymbolEntry[] = collectKeyPaths(parsed).map((keyPath) => ({ name: keyPath, kind: "key" }));

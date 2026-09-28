@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import type { SourceAnalysisResult } from "../core";
+import type { SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
 import { aspNetMarkupAdapter } from "./aspnet";
 import { cAdapter } from "./c";
 import { csharpAdapter } from "./csharp";
@@ -11,9 +11,11 @@ import { htmlAdapter } from "./html";
 import { javaAdapter } from "./java";
 import { jsonAdapter } from "./json";
 import { powershellAdapter } from "./powershell";
+import { projectAdapter } from "./project";
 import { pythonAdapter } from "./python";
 import { rubyAdapter } from "./ruby";
 import { rustAdapter } from "./rust";
+import { sqlAdapter } from "./sql";
 
 /**
  * Set of workspace-relative file paths for cross-file reference resolution.
@@ -48,6 +50,12 @@ export interface LanguageAdapter {
      * validate targets without filesystem crawling.
      */
     fileIndex?: WorkspaceFileIndex;
+    /**
+     * The workspace symbol index, present on the main pass and absent while
+     * the index itself is being built. An adapter that matches a call to the
+     * file serving it, by route, address, procedure or table, looks here.
+     */
+    symbolIndex?: WorkspaceSymbolIndex;
   }): Promise<SourceAnalysisResult | null>;
 }
 
@@ -62,9 +70,11 @@ const ADAPTERS: readonly LanguageAdapter[] = [
   javaAdapter,
   jsonAdapter,
   powershellAdapter,
+  projectAdapter,
   pythonAdapter,
   rubyAdapter,
-  rustAdapter
+  rustAdapter,
+  sqlAdapter
 ];
 
 /**
@@ -80,6 +90,7 @@ export async function analyzeWithLanguageAdapters(options: {
   absolutePath: string;
   workspaceRoot: string;
   fileIndex?: WorkspaceFileIndex;
+  symbolIndex?: WorkspaceSymbolIndex;
 }): Promise<SourceAnalysisResult | null> {
   const extension = path.extname(options.absolutePath).toLowerCase();
   if (!extension) {

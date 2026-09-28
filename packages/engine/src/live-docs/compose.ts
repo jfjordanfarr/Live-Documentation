@@ -508,7 +508,9 @@ function normalizeDocText(value?: string): string[] | undefined {
  * A dependency that resolves inside the workspace becomes one line per imported
  * symbol, each linking to the symbol's anchor in the target doc, or one line
  * for the whole module when no symbol is named. An external dependency keeps
- * its specifier and the symbols taken from it.
+ * its specifier and the symbols taken from it. A dependency observed from a
+ * contract or from configuration carries its basis as a qualifier, on lines of
+ * its own even when a source-observed dependency names the same file.
  *
  * @param args.analysis - Analyzer output describing imported and re-exported modules.
  * @param args.docDir - Directory containing the Live Doc being written.
@@ -536,7 +538,8 @@ export function composeDependencies(args: {
   >();
 
   for (const dependency of args.analysis.dependencies) {
-    const key = displayDependencyKey(dependency);
+    // A separator that sorts before every character keeps `a` before `a/b`, as it was before the basis joined the key.
+    const key = `${displayDependencyKey(dependency)}\u0000${dependency.basis ?? ""}`;
     const bucket =
       grouped.get(key) ?? {
         entry: dependency,
@@ -567,6 +570,9 @@ export function composeDependencies(args: {
     }
     if (dependency.isTypeOnly) {
       qualifiers.push("type-only");
+    }
+    if (dependency.basis) {
+      qualifiers.push(dependency.basis);
     }
 
     if (dependency.resolvedPath) {

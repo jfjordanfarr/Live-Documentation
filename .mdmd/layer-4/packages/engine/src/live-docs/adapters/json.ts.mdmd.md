@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/json.ts
-- Generated At: 2026-09-27T23:21:30.808Z
+- Generated At: 2026-09-28T16:48:38.436Z
 
 ## Authored
 ### Purpose
@@ -20,9 +20,16 @@ Polyglot language adapter for JSON configuration files, enabling Live Documentat
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `PACKAGE_KIND` {#symbol-package_kind}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L30)
+
+##### `PACKAGE_KIND` — Summary
+The kind of the symbol a package manifest publishes.
+
 #### `collectKeyPaths` {#symbol-collectkeypaths}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L169)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L212)
 
 ##### `collectKeyPaths` — Summary
 Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
@@ -30,7 +37,7 @@ nested settings (`Hangfire:Queue`). Arrays are not descended into.
 
 #### `jsonAdapter` {#symbol-jsonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L182)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/json.ts#L225)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `jsonAdapter` — Summary
@@ -46,5 +53,6 @@ Language adapter for JSON and JSONC files. Publishes key paths as public symbols
 - [`core.DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`core.PublicSymbolEntry`](../core.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
+- [`core.WorkspaceSymbolIndex`](../core.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

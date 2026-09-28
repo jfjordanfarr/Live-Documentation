@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs
-- Generated At: 2026-09-27T23:21:32.912Z
+- Generated At: 2026-09-28T16:48:41.456Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,10 @@ Mirrors the fixture-local doc but keeps repository-relative links, making the in
 - Type: class
 - Source: [source](../../../../../../../../tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs#L10)
 - Extends: `ControllerBase`
+
+#### `POST api/telemetry` {#symbol-post-apitelemetry}
+- Type: route
+- Source: [source](../../../../../../../../tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs#L12)
 
 #### `Record` {#symbol-record}
 - Type: method

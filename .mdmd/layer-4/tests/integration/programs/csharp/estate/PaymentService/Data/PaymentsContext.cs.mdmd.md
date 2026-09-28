@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/PaymentsContext.cs
-- Generated At: 2026-09-27T23:21:34.897Z
+- Generated At: 2026-09-28T16:48:42.730Z
 
 ## Authored
 ### Purpose
@@ -50,6 +50,8 @@ where the linked-server read of the Oracle account balance happens.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dbo.usp_PostPayment`](../../Database/SqlServer/dbo.usp_PostPayment.sql.mdmd.md#symbol-dbousp_postpayment) (contract)
+- [`App.PaymentsDb`](../App.config.mdmd.md#symbol-paymentsdb)
 - [`Payment`](./Payment.cs.mdmd.md#symbol-payment)
 - [`PostPaymentRow`](./PostPaymentRow.cs.mdmd.md#symbol-postpaymentrow)
 <!-- LIVE-DOC:END Dependencies -->

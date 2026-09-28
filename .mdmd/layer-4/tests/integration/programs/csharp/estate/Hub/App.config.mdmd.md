@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Hub/App.config
-- Generated At: 2026-09-27T23:21:34.798Z
+- Generated At: 2026-09-28T16:48:42.627Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,10 @@ _Pending notes_
 - Type: service
 - Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L5)
 
+#### `net.tcp://hub.onprem.example:8731/PaymentHub` {#symbol-nettcphubonpremexample8731paymenthub}
+- Type: address
+- Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L6)
+
 #### `PaymentService.Consumer.Production` {#symbol-paymentserviceconsumerproduction}
 - Type: endpoint
 - Source: [source](../../../../../../../../tests/integration/programs/csharp/estate/Hub/App.config#L12)
@@ -31,7 +35,9 @@ _Pending notes_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `net.tcp://payments-staging.onprem.example:8732/PaymentService` (configuration)
 - [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md#symbol-ipaymenthub)
 - [`IPaymentService`](../Contracts/IPaymentService.cs.mdmd.md#symbol-ipaymentservice)
 - [`PaymentHub`](./PaymentHub.cs.mdmd.md#symbol-paymenthub)
+- [`App.net.tcp://payments.onprem.example:8732/PaymentService`](../PaymentService/App.config.mdmd.md#symbol-nettcppaymentsonpremexample8732paymentservice) (configuration)
 <!-- LIVE-DOC:END Dependencies -->

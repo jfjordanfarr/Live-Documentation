@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.ts
-- Generated At: 2026-09-28T02:39:05.351Z
+- Generated At: 2026-09-28T16:48:38.142Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 ### Public Symbols
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L857)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1225)
 - Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
@@ -27,7 +27,7 @@ The workspace files that declare a qualified type name, for adapters of other fi
 
 #### `csharpAdapter` {#symbol-csharpadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L867)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L1235)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `csharpAdapter` — Summary
@@ -52,5 +52,15 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`coreTypes.WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
+- [`openings.ROUTE_KIND`](../openings.ts.mdmd.md#symbol-route_kind)
+- [`openings.SqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-interface)
+- [`openings.chooseServers`](../openings.ts.mdmd.md#symbol-chooseservers)
+- [`openings.matchRoute`](../openings.ts.mdmd.md#symbol-matchroute)
+- [`openings.matchSqlObject`](../openings.ts.mdmd.md#symbol-matchsqlobject)
+- [`openings.routeSegments`](../openings.ts.mdmd.md#symbol-routesegments)
+- [`openings.routeSymbolName`](../openings.ts.mdmd.md#symbol-routesymbolname)
+- [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
+- [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

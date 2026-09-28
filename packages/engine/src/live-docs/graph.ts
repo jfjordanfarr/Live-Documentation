@@ -47,6 +47,9 @@ export interface GraphFile extends LiveDoc {
 /** How an edge arose: a dependency line, or a type reference on a symbol. */
 export type EdgeKind = "import" | "re-export" | "returns" | "parameter" | "extends" | "implements" | "constraint";
 
+/** How an edge was observed when not from source: see `DependencyBasis`. */
+export type EdgeBasis = "contract" | "configuration";
+
 /** One reference a doc makes, resolved against the corpus. */
 export interface GraphEdge {
   kind: EdgeKind;
@@ -64,6 +67,8 @@ export interface GraphEdge {
   parameter?: string;
   /** The dependency is type-only. */
   typeOnly?: boolean;
+  /** The dependency was observed from a contract or from configuration rather than from source. */
+  basis?: EdgeBasis;
 }
 
 /** The name of the file the generator writes the graph to, under the docs root. */
@@ -118,6 +123,10 @@ export function deriveLiveDocGraph(docs: Iterable<{ docPath: string; doc: LiveDo
       };
       if (dependency.qualifiers.includes("type-only")) {
         edge.typeOnly = true;
+      }
+      const basis = dependency.qualifiers.find((qualifier): qualifier is EdgeBasis => qualifier === "contract" || qualifier === "configuration");
+      if (basis) {
+        edge.basis = basis;
       }
       file.edges.push(edge);
     }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-09-28T00:41:37.953Z
+- Generated At: 2026-09-28T16:48:39.436Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `GET open` (contract)
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)

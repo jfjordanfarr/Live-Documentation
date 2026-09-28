@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Scripts/portal.js
-- Generated At: 2026-09-27T23:21:35.144Z
+- Generated At: 2026-09-28T16:48:42.902Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`PaymentsController.GET api/payments/{paymentId}`](../Controllers/PaymentsController.cs.mdmd.md#symbol-get-apipaymentspaymentid) (contract)
+- [`PaymentsController.POST api/payments`](../Controllers/PaymentsController.cs.mdmd.md#symbol-post-apipayments) (contract)
 - [`Default.paymentForm`](../Pages/Default.aspx.mdmd.md#symbol-paymentform)
 - [`Default.paymentStatus`](../Pages/Default.aspx.mdmd.md#symbol-paymentstatus)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/estate/Portal/Services/GatewayClient.cs
-- Generated At: 2026-09-27T23:21:35.164Z
+- Generated At: 2026-09-28T16:48:42.922Z
 
 ## Authored
 ### Purpose
@@ -42,6 +42,8 @@ same cloud; the only ties are the base URL in Web.config and the route strings h
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`PaymentsController.GET api/payments/{paymentId}`](../../Gateway/Controllers/PaymentsController.cs.mdmd.md#symbol-get-apipaymentspaymentid) (contract)
+- [`PaymentsController.POST api/payments`](../../Gateway/Controllers/PaymentsController.cs.mdmd.md#symbol-post-apipayments) (contract)
 - [`PaymentRequestModel`](../Models/PaymentRequestModel.cs.mdmd.md#symbol-paymentrequestmodel)
 - [`PaymentResultModel`](../Models/PaymentResultModel.cs.mdmd.md#symbol-paymentresultmodel)
 <!-- LIVE-DOC:END Dependencies -->

@@ -44,6 +44,12 @@ describe("oracle:compare", () => {
         const handVerified = JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "hand-verified-edges.json"), "utf8")) as { edges: unknown[] };
         expect(report.handVerified.found.length + report.handVerified.missing.length).toBe(handVerified.edges.length);
       }
+      const expectedReferences = (JSON.parse(fs.readFileSync(path.join(fixtureDir, "expected", "compiler-edges.json"), "utf8")) as { projects: Array<{ references: string[] }> }).projects
+        .reduce((count, project) => count + project.references.length, 0);
+      if (expectedReferences > 0) {
+        expect(report.projects).toBeDefined();
+        expect(report.projects!.found.length + report.projects!.missing.length).toBe(expectedReferences);
+      }
     });
   }
 });

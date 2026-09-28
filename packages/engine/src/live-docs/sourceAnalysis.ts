@@ -14,7 +14,7 @@ import ts from "typescript";
 
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
-import type { SourceAnalysisResult, PublicSymbolEntry } from "./coreTypes";
+import type { SourceAnalysisResult, PublicSymbolEntry, WorkspaceSymbolIndex } from "./coreTypes";
 import {
   collectDependencies,
   mergeDependencyEntries,
@@ -22,7 +22,9 @@ import {
   augmentWithReExportedSymbols
 } from "./dependencies";
 import { inferDomDependencies } from "./heuristics/dom";
+import { inferRouteDependencies } from "./heuristics/routes";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
+import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 // ============================================================================
 // Constants
@@ -48,6 +50,7 @@ const EMPTY_ANALYSIS_RESULT: SourceAnalysisResult = {
  * @param absolutePath - Absolute filesystem path to the source file under inspection.
  * @param workspaceRoot - Workspace root used to normalise relative dependency paths.
  * @param fileIndex - Optional set of workspace file paths for cross-file reference resolution.
+ * @param symbolIndex - The workspace symbol index, when built, so that a call can find the file that serves it.
  *
  * @returns Analyzer output describing exported symbols and detected dependencies.
  *
@@ -62,14 +65,16 @@ const EMPTY_ANALYSIS_RESULT: SourceAnalysisResult = {
 export async function analyzeSourceFile(
   absolutePath: string,
   workspaceRoot: string,
-  fileIndex?: WorkspaceFileIndex
+  fileIndex?: WorkspaceFileIndex,
+  symbolIndex?: WorkspaceSymbolIndex
 ): Promise<SourceAnalysisResult> {
   const extension = path.extname(absolutePath).toLowerCase();
 
   const adapterResult = await analyzeWithLanguageAdapters({
     absolutePath,
     workspaceRoot,
-    fileIndex
+    fileIndex,
+    symbolIndex
   });
 
   if (adapterResult) {
@@ -105,6 +110,17 @@ export async function analyzeSourceFile(
     });
     if (domDependencies.length > 0) {
       dependencies = mergeDependencyEntries(dependencies, domDependencies);
+    }
+    if (symbolIndex) {
+      const routeDependencies = inferRouteDependencies({
+        sourceFile,
+        sourcePath: normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath)),
+        fileIndex,
+        symbolIndex
+      });
+      if (routeDependencies.length > 0) {
+        dependencies = mergeDependencyEntries(dependencies, routeDependencies);
+      }
     }
   }
 

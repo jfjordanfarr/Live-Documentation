@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graph.ts
-- Generated At: 2026-09-28T00:41:40.505Z
+- Generated At: 2026-09-28T16:48:39.011Z
 
 ## Authored
 ### Purpose
@@ -48,23 +48,30 @@ One doc of the graph: the parsed doc, and what the corpus adds to it.
 ##### `EdgeKind` — Summary
 How an edge arose: a dependency line, or a type reference on a symbol.
 
+#### `EdgeBasis` {#symbol-edgebasis}
+- Type: type
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L51)
+
+##### `EdgeBasis` — Summary
+How an edge was observed when not from source: see `DependencyBasis`.
+
 #### `GraphEdge` {#symbol-graphedge}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L54)
 
 ##### `GraphEdge` — Summary
 One reference a doc makes, resolved against the corpus.
 
 #### `GRAPH_INDEX_FILE` {#symbol-graph_index_file}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L70)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L75)
 
 ##### `GRAPH_INDEX_FILE` — Summary
 The name of the file the generator writes the graph to, under the docs root.
 
 #### `deriveLiveDocGraph` {#symbol-derivelivedocgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L82)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L87)
 - Returns: [`LiveDocGraph`](#symbol-livedocgraph)
 - Parameters: `docs`: `Iterable`; `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -77,14 +84,14 @@ Derives the graph from parsed docs.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L185)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L194)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L202)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L211)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 - Parameters: `location`: [`DocLocation`](#symbol-doclocation)
 
