@@ -21,6 +21,10 @@ const graph = deriveLiveDocGraph(
       ]
     }),
     doc("a/inner/q.ts", { dependencies: [{ label: "x", link: "../x.ts.md", qualifiers: [] }] }),
+    doc("a/a.csproj", {
+      symbols: [{ name: "A", slug: "symbol-a", kind: "web", flags: [], references: [], sections: [] }],
+      dependencies: [{ label: "EntityFramework@6.4.4", symbols: [], qualifiers: [] }, { label: "System.Web", symbols: [], qualifiers: [] }, { label: "q", link: "./inner/q.ts.md", qualifiers: [] }]
+    }),
     doc("b/y.ts", {
       dependencies: [
         { label: "x.POST api/x", link: "../a/x.ts.md#symbol-post-apix", qualifiers: ["contract"] },
@@ -58,7 +62,7 @@ describe("deriveBoardGraph", () => {
 
   it("gives each thing the files under its folder, the nested thing keeping its own", () => {
     expect(derived.things.map((entry) => [entry.thing.name, entry.folder, entry.files])).toEqual([
-      ["A", "a", ["a/x.ts"]],
+      ["A", "a", ["a/a.csproj", "a/x.ts"]],
       ["Q", "a/inner", ["a/inner/q.ts"]],
       ["B", "b", ["b/y.ts", "b/z.ts"]],
       ["D", undefined, []],
@@ -72,13 +76,22 @@ describe("deriveBoardGraph", () => {
     expect(derived.things.find((entry) => entry.thing.name === "D")?.doors).toEqual([{ name: "usp_Do", kind: "procedure" }]);
   });
 
-  it("implies one wire per pair of things, door and basis, counting the edges, and adds the declared connections", () => {
+  it("collects what a thing stands on from its manifests' externals", () => {
+    expect(derived.things.find((entry) => entry.thing.name === "A")?.standsOn).toEqual([
+      { label: "EntityFramework@6.4.4", manifest: "a/a.csproj" },
+      { label: "System.Web", manifest: "a/a.csproj" }
+    ]);
+    expect(derived.things.find((entry) => entry.thing.name === "B")?.standsOn).toEqual([]);
+  });
+
+  it("implies one wire per pair of things, door and basis, keeping the edges behind it, and adds the declared connections", () => {
     expect(derived.wires).toEqual([
-      { from: "B", to: "A", basis: "source", edges: 2 },
-      { from: "B", to: "A", door: { name: "GET api/none" }, basis: "declared", edges: 1, over: "HTTPS" },
-      { from: "B", to: "A", door: { name: "POST api/x", kind: "route" }, basis: "contract", edges: 1 },
-      { from: "B", to: "D", door: { name: "usp_Do", kind: "procedure" }, basis: "declared", edges: 1 },
-      { from: "Q", to: "A", basis: "source", edges: 1 }
+      { from: "A", to: "Q", basis: "source", edges: 1, lines: [{ from: "a/a.csproj", to: "a/inner/q.ts", label: "q" }] },
+      { from: "B", to: "A", basis: "source", edges: 2, lines: [{ from: "b/y.ts", to: "a/x.ts", label: "x.helper" }, { from: "b/z.ts", to: "a/x.ts", label: "x" }] },
+      { from: "B", to: "A", door: { name: "GET api/none" }, basis: "declared", edges: 1, lines: [], over: "HTTPS" },
+      { from: "B", to: "A", door: { name: "POST api/x", kind: "route" }, basis: "contract", edges: 1, lines: [{ from: "b/y.ts", to: "a/x.ts", label: "x.POST api/x" }] },
+      { from: "B", to: "D", door: { name: "usp_Do", kind: "procedure" }, basis: "declared", edges: 1, lines: [] },
+      { from: "Q", to: "A", basis: "source", edges: 1, lines: [{ from: "a/inner/q.ts", to: "a/x.ts", label: "x" }] }
     ]);
   });
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-09-28T01:11:43.174Z
+- Generated At: 2026-09-28T23:04:08.974Z
 
 ## Authored
 ### Purpose
@@ -27,21 +27,21 @@ Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}.
 
 #### `viewNameToUrl` {#symbol-viewnametourl}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L31)
 
 ##### `viewNameToUrl` — Summary
 Maps an internal {@link ViewName} back to the URL-facing string used in query parameters.
 
 #### `InitialUrlState` {#symbol-initialurlstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L43)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L45)
 
 ##### `InitialUrlState` — Summary
 State parsed from the initial URL on page load.
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L53)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L55)
 
 ##### `parseInitialState` — Summary
 Parse initial view and node from URL parameters.
@@ -49,7 +49,7 @@ Priority: URL params > defaults (Membrane view for cold start)
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L88)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L90)
 
 ##### `updateUrlState` — Summary
 Update URL to reflect current view and focused node without page reload.

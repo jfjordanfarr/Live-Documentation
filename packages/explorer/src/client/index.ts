@@ -1,6 +1,6 @@
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { createDetailPanel } from "./detailPanel";
-import { setActiveView } from "./dom";
+import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
@@ -31,6 +31,7 @@ import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { createMembraneView } from "./views/membraneView";
+import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
@@ -118,7 +119,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (initialState.hasUrlState) {
       return initialState.view;
     }
-    return persistedNav?.view ?? initialState.view;
+    // A bundle that carries a board opens on the World Map, the outside of everything.
+    return persistedNav?.view ?? (bundle.board ? "world" : initialState.view);
   };
 
   const state: ExplorerState = {
@@ -250,6 +252,12 @@ function startExplorer(bundle: StaticExplorerData): void {
     onSelectNode: node => handleNodeClick(node),
     testCoverage,
     nodesById
+  });
+
+  const worldMapView = createWorldMapView({
+    root: requireElement("world-root"),
+    graph: bundle.graph,
+    board: bundle.board
   });
 
   syncFilterControls();
@@ -769,6 +777,10 @@ function startExplorer(bundle: StaticExplorerData): void {
   function renderCurrentView(): void {
     if (state.view === "sources") {
       doRenderSourcesView();
+      return;
+    }
+    if (state.view === "world") {
+      worldMapView.render();
       return;
     }
     if (graphData.nodes.length === 0) {

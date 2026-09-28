@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-09-28T16:48:39.436Z
+- Generated At: 2026-09-28T23:04:08.807Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ _No public symbols detected_
 - `GET open` (contract)
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
+- [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)
 - [`download.DownloadBundleType`](./download.ts.mdmd.md#symbol-downloadbundletype)
 - [`download.DownloadFormat`](./download.ts.mdmd.md#symbol-downloadformat)
@@ -60,6 +61,7 @@ _No public symbols detected_
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`state.PathResult`](./views/localView/state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
+- [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`template.context-name`](../shared/template.html.mdmd.md#symbol-contextname)

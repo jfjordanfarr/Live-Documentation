@@ -28,6 +28,9 @@
 
     <!-- View Navigation -->
     <div class="sidebar-section">
+      <div class="nav-item" data-view="world" onclick="switchView(event, 'world')">
+        <span class="nav-icon nav-icon--world"></span><span>World Map</span>
+      </div>
       <div class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
         <span class="nav-icon">📊</span><span>Knowledge Sources</span>
       </div>
@@ -158,6 +161,10 @@
   </div>
 
   <div id="main">
+    <div id="view-world" class="view-container">
+      <div id="world-root" class="world-root"></div>
+    </div>
+
     <div id="view-sources" class="view-container">
       <div id="sources-container" class="sources-view"></div>
     </div>

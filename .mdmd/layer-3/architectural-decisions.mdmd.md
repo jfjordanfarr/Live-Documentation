@@ -129,6 +129,14 @@ Record the key architectural decisions made during Live Documentation developmen
 - **A kind changed upstream**: a SQL function's symbol kind is `sql-function`, so that a source language's `function` symbols are never doors and are never matched as SQL objects.
 - **Left open**: snapshots as a second graph, wires between regions implied from their members, the viewer writing the layout, the traded file, and the vision's picture words, piece, district and tunnel, which would become thing, region and crossing.
 
+### The World Map in the Explorer _(Recorded 2026-09-28)_
+
+- **Decision**: the World Map is a view of the Explorer, drawn from the bundle's board text and the graph by the same modules the CLI uses, `board.ts` and `boardGraph.ts`, running in the browser. The static builder carries a board when `--board` names one, and this repository's build carries its own. The board probe's rendering was ported into `views/worldMap/` as three pure modules with tests, the camera, the geometry and the model, and one that draws: pieces by the legend's shape, regions around what they hold, doors where a road lands, roads in the air for calls and on the board for uses, a declared crossing as a warm sleeve where a road leaves one region for another, strands and tokens for what things stand on, a free orthographic camera, snapping, two themes, help behind a control, and a pinned panel with the evidence: which files carry a wire and on what basis.
+- **Why**: the vision's step 5, and the owner's go-ahead on the order: the viewer over the graph and the board first, then the single file.
+- **Positions**: a moved thing keeps its place in the browser's storage, keyed by the board's path, and "save board" downloads the board text with its Layout rewritten, which is a static host's only way of writing back; the workbench writing in place is the editor panel's work.
+- **Not yet**: the zoom into a thing and the Local Map inside, which the probe drew and the consolidation of step 3 builds; the retirement of the older views and their specs, on the owner's word; and the force graph's library, which the page template loads from a CDN at run time, a network call the vision forbids, to be resolved in that retirement.
+- **Measured**: a Playwright suite drives the view through its handle: things and regions drawn, hover and pin, a wire's evidence, a moved thing kept across a reload and written into the text, a turn and top-down with text at a fixed size, and a pointer drag.
+
 ### Generator Gaps Noted by Earlier Specs _(Recorded 2026-09-27; unprioritised)_
 
 Requirements written in 2025 and never implemented, kept as observations rather than commitments:

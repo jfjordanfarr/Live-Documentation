@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-09-27T23:21:29.638Z
+- Generated At: 2026-09-28T23:04:10.252Z
 
 ## Authored
 ### Purpose
@@ -220,6 +220,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `view-sources` {#symbol-viewsources}
+- Type: variable
+
+#### `view-world` {#symbol-viewworld}
+- Type: variable
+
+#### `world-root` {#symbol-worldroot}
 - Type: variable
 <!-- LIVE-DOC:END Public Symbols -->
 

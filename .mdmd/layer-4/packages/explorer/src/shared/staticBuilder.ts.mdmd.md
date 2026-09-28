@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticBuilder.ts
-- Generated At: 2026-09-28T01:11:44.561Z
+- Generated At: 2026-09-28T23:04:10.224Z
 
 ## Authored
 ### Purpose
@@ -27,14 +27,14 @@ Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L50)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L53)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L69)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L72)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary

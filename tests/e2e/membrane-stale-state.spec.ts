@@ -112,8 +112,9 @@ test.describe("Membrane Map — Stale URL State Scrubbing", () => {
     await page.goto("/");
     await page.waitForSelector("text=nodes", { timeout: 10_000 });
 
+    // The first file in path order may sit at the workspace root (package.json does); take one that lives in a directory.
     const graph = await getStaticGraph(page);
-    const firstId = graph.nodes[0]?.id ?? null;
+    const firstId = graph.nodes.find((node) => node.id.includes("/"))?.id ?? null;
     const realDir = firstId
       ? firstId.split("/").slice(0, -1).join("/") || null
       : null;

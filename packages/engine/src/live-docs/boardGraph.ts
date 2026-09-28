@@ -4,13 +4,13 @@
  * @remarks
  * A board names things and where their docs come from; the graph holds every
  * doc of the workspace. This module joins them: which files each thing has,
- * the doors it serves, the wires between things that the file-level edges
- * imply, the declared connections as wires of their own, and what the join
- * found wanting. A wire is what Structurizr calls an implied relationship: an
- * edge between files of two things is a wire between the things, grouped by
- * the door it lands on and the basis it was observed with. Nothing here reads
- * the file system, so a host that holds a board and a graph can draw the
- * board wherever it runs.
+ * the doors it serves, what it stands on, the wires between things that the
+ * file-level edges imply, the declared connections as wires of their own, and
+ * what the join found wanting. A wire is what Structurizr calls an implied
+ * relationship: an edge between files of two things is a wire between the
+ * things, grouped by the door it lands on and the basis it was observed with.
+ * Nothing here reads the file system, so a host that holds a board and a
+ * graph can draw the board wherever it runs.
  *
  * @module
  */
@@ -32,6 +32,14 @@ export interface WireDoor {
   kind?: string;
 }
 
+/** One file-level edge behind a wire: the evidence a hover shows. */
+export interface WireLine {
+  from: string;
+  to: string;
+  /** The dependency label as the doc writes it. */
+  label: string;
+}
+
 /** One wire between two things. */
 export interface Wire {
   from: string;
@@ -40,8 +48,18 @@ export interface Wire {
   basis: WireBasis;
   /** How many file-level edges the wire stands for; one for a declared connection. */
   edges: number;
+  /** The file-level edges behind the wire; empty for a declared connection. */
+  lines: WireLine[];
   /** The technology a declared connection names. */
   over?: string;
+}
+
+/** Something a thing stands on that lives outside it: what a manifest names and no doc answers to. */
+export interface StandsOn {
+  /** The label as the manifest's doc writes it, `name@version` for a package. */
+  label: string;
+  /** The manifest file that names it. */
+  manifest: string;
 }
 
 /** A thing of the board with what the graph says about it. */
@@ -53,6 +71,8 @@ export interface BoardThing {
   files: string[];
   /** The doors the docs say the thing serves, then the doors it declares, without repeats. */
   doors: Door[];
+  /** What its manifests name that nothing in the workspace answers to, without repeats. */
+  standsOn: StandsOn[];
 }
 
 /** A board joined to the graph. */
@@ -62,6 +82,9 @@ export interface BoardGraph {
   /** What the join found wanting: a `From` with no docs, a declared door nothing serves. Reports, not refusals. */
   issues: BoardIssue[];
 }
+
+/** The symbol kinds a manifest's doc publishes: a project's kind from `adapters/project.ts`, a package from `adapters/json.ts`. */
+const MANIFEST_KINDS: ReadonlySet<string> = new Set(["library", "program", "web", "package"]);
 
 // ============================================================================
 // The join
@@ -79,7 +102,7 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
   const boardDir = dirname(boardPath);
 
   const things: BoardThing[] = board.things.map((thing) => {
-    const entry: BoardThing = { thing, files: [], doors: [] };
+    const entry: BoardThing = { thing, files: [], doors: [], standsOn: [] };
     if (thing.from !== undefined) {
       const folder = normalizePath(`${boardDir}/${thing.from}`);
       if (folder.startsWith("../") || folder === ".." || folder.startsWith("/")) {
@@ -106,21 +129,31 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
     if (entry.folder !== undefined && entry.files.length === 0) {
       issues.push({ message: `${entry.thing.name} has no docs under ${entry.folder}` });
     }
-    const seen = new Set<string>();
-    const add = (door: Door): void => {
+    const seenDoors = new Set<string>();
+    const addDoor = (door: Door): void => {
       const key = `${door.kind}\u0000${door.name}`;
-      if (!seen.has(key)) {
-        seen.add(key);
+      if (!seenDoors.has(key)) {
+        seenDoors.add(key);
         entry.doors.push(door);
       }
     };
+    const seenLabels = new Set<string>();
     for (const codePath of entry.files) {
-      for (const door of doorsOf(graph.files[codePath])) {
-        add(door);
+      const file = graph.files[codePath];
+      for (const door of doorsOf(file)) {
+        addDoor(door);
+      }
+      if (file.symbols.some((symbol) => MANIFEST_KINDS.has(symbol.kind))) {
+        for (const dependency of file.dependencies) {
+          if (dependency.link === undefined && !seenLabels.has(dependency.label)) {
+            seenLabels.add(dependency.label);
+            entry.standsOn.push({ label: dependency.label, manifest: codePath });
+          }
+        }
       }
     }
     for (const door of entry.thing.serves) {
-      add(door);
+      addDoor(door);
     }
   }
 
@@ -138,11 +171,13 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
         const door = edge.toSymbol ? doorNamed(graph.files[edge.to], edge.toSymbol) : undefined;
         const basis: WireBasis = edge.basis ?? "source";
         const key = wireKey(entry.thing.name, target.thing.name, door, basis);
+        const line: WireLine = { from: codePath, to: edge.to, label: edge.label };
         const wire = wires.get(key);
         if (wire) {
           wire.edges += 1;
+          wire.lines.push(line);
         } else {
-          wires.set(key, { from: entry.thing.name, to: target.thing.name, ...(door ? { door } : {}), basis, edges: 1 });
+          wires.set(key, { from: entry.thing.name, to: target.thing.name, ...(door ? { door } : {}), basis, edges: 1, lines: [line] });
         }
       }
     }
@@ -157,7 +192,7 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
         issues.push({ message: `${connection.from} to ${connection.to}.${connection.door}: ${connection.to} serves no such door` });
       }
     }
-    const wire: Wire = { from: connection.from, to: connection.to, ...(door ? { door } : {}), basis: "declared", edges: 1 };
+    const wire: Wire = { from: connection.from, to: connection.to, ...(door ? { door } : {}), basis: "declared", edges: 1, lines: [] };
     if (connection.over !== undefined) {
       wire.over = connection.over;
     }

@@ -1,0 +1,574 @@
+/* The World Map: a board seen at an angle, pieces floating above it, wires door to door. */
+
+.world-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.world {
+  position: absolute;
+  inset: 0;
+  --w-bg: #e3e6eb;
+  --w-board: #ffffff;
+  --w-text: #0f141b;
+  --w-muted: #4b5563;
+  --w-faint: #8b95a5;
+  --w-green: #059669;
+  --w-blue: #0284c7;
+  --w-warm: #c17f16;
+  --w-panel: #ffffff;
+  --w-line: #c3cad4;
+  --w-halo: rgba(255, 255, 255, 0.9);
+  --w-shadow: 0.26;
+  background: var(--w-bg);
+  color: var(--w-text);
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.world[data-theme="dark"] {
+  --w-bg: #0b0d11;
+  --w-board: #14171d;
+  --w-text: #e6ebf2;
+  --w-muted: #94a1b3;
+  --w-faint: #5f6d80;
+  --w-green: #34d399;
+  --w-blue: #38bdf8;
+  --w-warm: #e2b45f;
+  --w-panel: #161b23;
+  --w-line: #283040;
+  --w-halo: rgba(11, 13, 17, 0.8);
+  --w-shadow: 0.55;
+}
+
+.world-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: opacity 0.45s;
+}
+
+.world-svg.panning {
+  cursor: grabbing;
+}
+
+.world .w-piece {
+  cursor: pointer;
+}
+
+.world .w-face {
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-bench {
+  fill: var(--w-board);
+  stroke: var(--w-line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-region {
+  stroke: none;
+}
+
+.world .w-grid {
+  stroke: var(--w-text);
+  stroke-opacity: 0.05;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-shadow {
+  fill: #000;
+}
+
+.world .w-road {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-ground-road {
+  fill: none;
+  stroke-width: 2;
+  stroke-opacity: 0.55;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-road-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+
+.world .w-flow {
+  fill: none;
+  stroke: #ffffff;
+  stroke-opacity: 0.5;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 3 21;
+  vector-effect: non-scaling-stroke;
+  animation: world-flow 1.4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes world-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world .w-flow {
+    animation: none;
+  }
+}
+
+.world .w-tunnel {
+  fill: none;
+  stroke: var(--w-warm);
+  stroke-width: 10;
+  stroke-opacity: 0.22;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.world .w-tunnel-dashed {
+  fill: none;
+  stroke: var(--w-warm);
+  stroke-width: 2;
+  stroke-opacity: 0.6;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.world .w-portal {
+  fill: none;
+  stroke: var(--w-warm);
+  stroke-width: 1.5;
+}
+
+.world .w-root {
+  fill: none;
+  stroke: var(--w-muted);
+  stroke-opacity: 0.6;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.world .w-door {
+  stroke-width: 2;
+  fill: var(--w-board);
+  cursor: pointer;
+}
+
+.world .w-door.in {
+  stroke: var(--w-green);
+}
+
+.world .w-door.out {
+  stroke: var(--w-blue);
+}
+
+.world .w-spoke {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.world .w-spoke-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+
+.world .w-spoke.package {
+  stroke: var(--w-text);
+}
+
+.world .w-spoke.reference {
+  stroke: var(--w-faint);
+}
+
+.world .w-station {
+  fill: var(--w-board);
+  stroke: var(--w-text);
+  stroke-width: 1.5;
+}
+
+.world text {
+  font: 600 13px system-ui, -apple-system, "Segoe UI", sans-serif;
+  fill: var(--w-text);
+  paint-order: stroke;
+  stroke: var(--w-halo);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.world text.w-sub {
+  font-weight: 400;
+  font-size: 11px;
+  fill: var(--w-muted);
+}
+
+.world text.w-zone {
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  fill: var(--w-muted);
+}
+
+.world text.w-doorlabel {
+  font-weight: 500;
+  font-size: 11px;
+  fill: var(--w-text);
+  display: none;
+}
+
+.world text.w-tokenlabel {
+  font-weight: 500;
+  font-size: 11px;
+  fill: var(--w-muted);
+}
+
+.world text.w-tokenlabel.package {
+  fill: var(--w-text);
+}
+
+.world text.w-tokenlabel tspan.k {
+  fill: var(--w-faint);
+  font-weight: 400;
+}
+
+.world text.w-tag {
+  font-weight: 500;
+  font-size: 11px;
+  fill: var(--w-warm);
+}
+
+.world .dim {
+  opacity: 0.12;
+}
+
+.world .dim-soft {
+  opacity: 0.35;
+}
+
+.world [data-piece],
+.world .w-road-group,
+.world .w-token {
+  transition: opacity 0.25s;
+}
+
+.world.under .w-road-group {
+  opacity: 0.15;
+}
+
+.world:not(.under) .w-layer-under {
+  display: none;
+}
+
+.world-hud {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.world-crumbs {
+  pointer-events: auto;
+  font-size: 13px;
+  color: var(--w-muted);
+  padding-top: 5px;
+}
+
+.world-crumbs b {
+  color: var(--w-text);
+  font-weight: 600;
+}
+
+.world-tools {
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.world-tools button,
+.world-help button,
+.world-tour button {
+  background: var(--w-panel);
+  color: var(--w-text);
+  border: 1px solid var(--w-line);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font: 12px system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.world-tools button:hover {
+  border-color: var(--w-muted);
+}
+
+.world-tools button.on {
+  border-color: var(--w-blue);
+  color: var(--w-blue);
+}
+
+.world-help-btn {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--w-line);
+  background: var(--w-panel);
+  color: var(--w-text);
+  font: 600 15px system-ui, sans-serif;
+  cursor: pointer;
+  z-index: 4;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.world-help-btn:hover,
+.world-help-btn.on {
+  border-color: var(--w-blue);
+  color: var(--w-blue);
+}
+
+.world-help {
+  position: absolute;
+  right: 16px;
+  bottom: 56px;
+  width: 390px;
+  max-height: calc(100% - 90px);
+  overflow: auto;
+  display: none;
+  padding: 14px 16px;
+  background: var(--w-panel);
+  border: 1px solid var(--w-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--w-muted);
+  z-index: 4;
+}
+
+.world-help.on {
+  display: block;
+}
+
+.world-help h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--w-text);
+}
+
+.world-help h4 {
+  margin: 12px 0 3px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--w-faint);
+}
+
+.world-help p {
+  margin: 0 0 4px;
+}
+
+.world-help b {
+  color: var(--w-text);
+  font-weight: 600;
+}
+
+.world-help i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid;
+  vertical-align: -1px;
+  margin: 0 3px 0 1px;
+}
+
+.world-help kbd {
+  font: 11px ui-monospace, Consolas, monospace;
+  background: var(--w-bg);
+  border: 1px solid var(--w-line);
+  border-radius: 3px;
+  padding: 0 4px;
+  color: var(--w-text);
+}
+
+.world-help button {
+  margin-top: 10px;
+  color: var(--w-blue);
+  border-color: var(--w-blue);
+}
+
+.world-tour {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 540px;
+  max-width: calc(100% - 40px);
+  display: none;
+  padding: 12px 16px;
+  background: var(--w-panel);
+  border: 1px solid var(--w-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--w-text);
+  z-index: 6;
+}
+
+.world-tour.on {
+  display: block;
+}
+
+.world-tour .step {
+  color: var(--w-faint);
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.world-tour .row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.world-tour button.primary {
+  color: var(--w-blue);
+  border-color: var(--w-blue);
+}
+
+.world-evidence {
+  position: absolute;
+  display: none;
+  max-width: 440px;
+  padding: 10px 12px;
+  background: var(--w-panel);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--w-line);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  pointer-events: none;
+  z-index: 5;
+  color: var(--w-text);
+}
+
+.world-evidence.pinned {
+  pointer-events: auto;
+  border-color: var(--w-blue);
+}
+
+.world-evidence .close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  border: 0;
+  background: none;
+  color: var(--w-faint);
+  font: 14px system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.world-evidence .h {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 3px;
+  padding-right: 18px;
+}
+
+.world-evidence .tier {
+  color: var(--w-faint);
+  font-weight: 400;
+  margin-left: 8px;
+  font-size: 11px;
+}
+
+.world-evidence .via {
+  color: var(--w-text);
+  margin-top: 6px;
+}
+
+.world-evidence .f {
+  color: var(--w-muted);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+}
+
+.world-evidence .k {
+  color: var(--w-muted);
+}
+
+.world-evidence .src {
+  color: var(--w-faint);
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.world-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--w-muted);
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.world-empty code {
+  color: var(--w-text);
+  font: 12px ui-monospace, Consolas, monospace;
+}
+
+body.world-active #controls {
+  display: none;
+}
+
+.nav-icon--world::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  transform: rotate(45deg) scale(0.8);
+  border-radius: 1px;
+}

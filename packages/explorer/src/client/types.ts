@@ -10,7 +10,7 @@ import type { ExplorerNodePayload } from "../shared/types";
  *
  * Created 2025-11-22 with the initial Explorer scaffold.
  */
-export type ViewName = "circuit" | "map" | "graph" | "sources" | "membrane";
+export type ViewName = "circuit" | "map" | "graph" | "sources" | "membrane" | "world";
 
 /** Toggle flags for the Explorer filter panel. */
 export interface ExplorerFilters {

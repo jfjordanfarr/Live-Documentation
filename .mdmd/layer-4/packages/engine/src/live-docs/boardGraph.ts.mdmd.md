@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/boardGraph.ts
-- Generated At: 2026-09-28T21:15:51.135Z
+- Generated At: 2026-09-28T23:04:08.193Z
 
 ## Authored
 ### Purpose
@@ -30,30 +30,44 @@ How a wire is known: the basis of the edges it stands for, or `declared` for a c
 ##### `WireDoor` — Summary
 A door a wire lands on; the kind is absent when a declared connection names a door nothing serves.
 
-#### `Wire` {#symbol-wire}
+#### `WireLine` {#symbol-wireline}
 - Type: interface
 - Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L36)
+
+##### `WireLine` — Summary
+One file-level edge behind a wire: the evidence a hover shows.
+
+#### `Wire` {#symbol-wire}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L44)
 
 ##### `Wire` — Summary
 One wire between two things.
 
+#### `StandsOn` {#symbol-standson}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L58)
+
+##### `StandsOn` — Summary
+Something a thing stands on that lives outside it: what a manifest names and no doc answers to.
+
 #### `BoardThing` {#symbol-boardthing}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L66)
 
 ##### `BoardThing` — Summary
 A thing of the board with what the graph says about it.
 
 #### `BoardGraph` {#symbol-boardgraph}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L59)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L79)
 
 ##### `BoardGraph` — Summary
 A board joined to the graph.
 
 #### `deriveBoardGraph` {#symbol-deriveboardgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L77)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L100)
 - Returns: [`BoardGraph`](#symbol-boardgraph)
 - Parameters: `board`: [`Board`](./board.ts.mdmd.md#symbol-board); `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -67,7 +81,7 @@ Joins a board to the graph of the workspace it sits in.
 
 #### `doorsOf` {#symbol-doorsof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L171)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L206)
 - Returns: [`Door`](./board.ts.mdmd.md#symbol-door)[]
 - Parameters: `file`: [`GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
 

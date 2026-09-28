@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
-- Generated At: 2026-09-27T23:21:27.513Z
+- Generated At: 2026-09-28T23:04:09.021Z
 
 ## Authored
 ### Purpose
@@ -33,4 +33,5 @@ _No public symbols detected_
 - [`sources`](./styles/sources.css.mdmd.md)
 - [`theme`](./styles/theme.css.mdmd.md)
 - [`view-shared`](./styles/view-shared.css.mdmd.md)
+- [`world`](./styles/world.css.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

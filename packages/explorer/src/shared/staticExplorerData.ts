@@ -21,6 +21,15 @@ export interface StaticExplorerData {
 
     /** Which Live Doc links to which bundled file, for the Force Graph's related-documentation edges. */
     relatedDocLinks?: RelatedDocLink[];
+
+    /** The board the World Map draws, as its text and its workspace-relative path, so that the client parses and joins it itself. */
+    board?: BundledBoard;
+}
+
+/** A board's text, verbatim, and where it sits in the workspace. */
+export interface BundledBoard {
+    path: string;
+    text: string;
 }
 
 /**

@@ -20,7 +20,8 @@ Document the visualization command center that renders the Live Doc graph as int
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
   - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
   - **Force Graph**: Force-directed layout for spatial discovery (accessibility relaxed vs primary views).
-  - **Membrane Map** _(default view since 2026-03-31)_: Zoomable treemap unifying Circuit Board and Local Map. Directory-as-membrane nesting with continuous pin spectrum (no discrete modes). See [Membrane Map architecture](membrane-map.mdmd.md).
+  - **Membrane Map** _(default view from 2026-03-31 to 2026-09-28)_: Zoomable treemap unifying Circuit Board and Local Map. Directory-as-membrane nesting with continuous pin spectrum (no discrete modes). See [Membrane Map architecture](membrane-map.mdmd.md).
+  - **World Map** _(since 2026-09-28; the landing view when the bundle carries a board)_: the outside of everything. A board's things drawn by their kind, regions around what they hold, doors, wires with their basis and their evidence, declared crossings, and what things stand on, read from the board text the bundle carries and the graph, by the engine's `board.ts` and `boardGraph.ts` in the browser. `views/worldMap/` holds the camera, the geometry and the model as pure modules with tests, and one module that draws. The design is in [Boards](boards.mdmd.md) and the decisions log under "The World Map in the Explorer"; the zoom into a thing and the inside are step 3's work.
 - The **[Membrane Map](membrane-map.mdmd.md)** succeeds Circuit Board and Local Map and has been the default view since 2026-03-31. The older views remain while their remaining behaviour is folded into it.
 - The Local Map was split into a modular `localView/` directory on 2025-12-04 to support column-aware anchor registration, gradient connections, and type-reference edge rendering.
 - Symbol anchors (`symbolAnchors.ts`, created 2025-12-03) normalise identifiers so connection routing works across different payload formats.
@@ -140,6 +141,14 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 - [packages/explorer/src/client/views/membraneView/aggregation.ts](../layer-4/packages/explorer/src/client/views/membraneView/aggregation.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/index.ts](../layer-4/packages/explorer/src/client/views/membraneView/index.ts.mdmd.md)
 
+#### World Map
+
+- [packages/explorer/src/client/views/worldMap/index.ts](../layer-4/packages/explorer/src/client/views/worldMap/index.ts.mdmd.md)
+- [packages/explorer/src/client/views/worldMap/controller.ts](../layer-4/packages/explorer/src/client/views/worldMap/controller.ts.mdmd.md)
+- [packages/explorer/src/client/views/worldMap/model.ts](../layer-4/packages/explorer/src/client/views/worldMap/model.ts.mdmd.md)
+- [packages/explorer/src/client/views/worldMap/layout.ts](../layer-4/packages/explorer/src/client/views/worldMap/layout.ts.mdmd.md)
+- [packages/explorer/src/client/views/worldMap/projection.ts](../layer-4/packages/explorer/src/client/views/worldMap/projection.ts.mdmd.md)
+
 #### Static Distribution
 
 - [packages/explorer/src/shared/staticExplorerData.ts](../layer-4/packages/explorer/src/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
@@ -149,4 +158,5 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 - `npm run live-docs:visualize` builds a static Explorer bundle; manual smoke tests validate view switching and connection rendering.
 - Unit tests for symbol anchor normalisation live in `symbolAnchors.test.ts`.
+- The World Map's camera, geometry and model: [projection.test.ts](../layer-4/packages/explorer/src/client/views/worldMap/projection.test.ts.mdmd.md), [layout.test.ts](../layer-4/packages/explorer/src/client/views/worldMap/layout.test.ts.mdmd.md), [model.test.ts](../layer-4/packages/explorer/src/client/views/worldMap/model.test.ts.mdmd.md); and what it draws and does, driven through its handle: [world-map.spec.ts](../layer-4/tests/e2e/world-map.spec.ts.mdmd.md).
 - December 2025 chat sessions (12/03–12/06) document the Local Map refinements: gradient connections, column-aware anchors, type-reference edges, and origin-over-barrel preference for inheritance links.

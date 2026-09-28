@@ -13,6 +13,9 @@
  *
  * # Pretty-print JSON for debugging
  * npm run live-docs:visualize -- --pretty
+ *
+ * # Carry a board for the World Map
+ * npm run live-docs:visualize -- --board .mdmd/layer-3/board.mdmd.md
  * ```
  */
 
@@ -30,6 +33,7 @@ interface CliOptions {
     outputDir: string;
     prettyPrint: boolean;
     configPath?: string;
+    boardPath?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -47,6 +51,8 @@ function parseArgs(args: string[]): CliOptions {
             options.prettyPrint = true;
         } else if (arg === "--config") {
             options.configPath = args[++i];
+        } else if (arg === "--board") {
+            options.boardPath = args[++i];
         } else {
             throw new Error(`Unknown argument '${arg}'.`);
         }
@@ -84,7 +90,8 @@ async function main(): Promise<void> {
         workspaceRoot,
         outputDir: options.outputDir,
         config,
-        prettyPrint: options.prettyPrint
+        prettyPrint: options.prettyPrint,
+        boardPath: options.boardPath
     });
 
     console.log("\nStatic explorer build complete!");

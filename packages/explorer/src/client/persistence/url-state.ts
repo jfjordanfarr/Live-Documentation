@@ -10,8 +10,8 @@ import { decompressSnapshot } from "./compressed-url-state";
 
 /**
  * Map between URL/config view names and internal state view names.
- * URL uses: circuit, local, membrane, force, sources (matches config schema)
- * Internal uses: circuit, map, membrane, graph, sources
+ * URL uses: circuit, local, membrane, force, sources, world (matches config schema)
+ * Internal uses: circuit, map, membrane, graph, sources, world
  */
 /** Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}. */
 export const viewNameToInternal = (name: string): ViewName => {
@@ -20,6 +20,7 @@ export const viewNameToInternal = (name: string): ViewName => {
     case "force": return "graph";
     case "sources": return "sources";
     case "membrane": return "membrane";
+    case "world": return "world";
     case "circuit":
     default:
       return "circuit";
@@ -33,6 +34,7 @@ export const viewNameToUrl = (name: ViewName): string => {
     case "graph": return "force";
     case "sources": return "sources";
     case "membrane": return "membrane";
+    case "world": return "world";
     case "circuit":
     default:
       return "circuit";

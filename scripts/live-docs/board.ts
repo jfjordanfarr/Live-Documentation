@@ -87,6 +87,9 @@ export function renderBoardReport(boardPath: string, title: string, derived: Boa
     for (const door of entry.doors) {
       lines.push(`    serves ${door.name} (${door.kind})`);
     }
+    if (entry.standsOn.length) {
+      lines.push(`    stands on ${entry.standsOn.map((item) => item.label).join(", ")}`);
+    }
   }
   lines.push("", `Wires (${derived.wires.length}):`);
   for (const wire of derived.wires) {

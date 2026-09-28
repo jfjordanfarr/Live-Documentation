@@ -34,6 +34,8 @@ export function setActiveView(view: ViewName): void {
     document.body.classList.remove("force-graph-active");
   }
 
+  document.body.classList.toggle("world-active", view === "world");
+
   // Toggle zoom-controls-active class for views that support our zoom buttons
   if (view === "circuit" || view === "map" || view === "membrane") {
     document.body.classList.add("zoom-controls-active");

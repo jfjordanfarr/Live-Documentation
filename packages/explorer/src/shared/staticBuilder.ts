@@ -42,6 +42,9 @@ export interface BuildStaticExplorerOptions {
     /** Pretty-print the JSON (larger, easier to read). */
     prettyPrint?: boolean;
 
+    /** A board file to carry in the bundle, relative to the workspace root or absolute; the World Map draws it. */
+    boardPath?: string;
+
     /** Logger for progress output. */
     logger?: Pick<Console, "log" | "error">;
 }
@@ -74,6 +77,7 @@ export async function buildStaticExplorer(
         outputDir,
         config = normalizeLiveDocumentationConfig(DEFAULT_LIVE_DOCUMENTATION_CONFIG),
         prettyPrint = false,
+        boardPath,
         logger = console
     } = options;
 
@@ -109,6 +113,12 @@ export async function buildStaticExplorer(
         bundledMarkdownTree: bundledMarkdownCount > 0 ? bundledMarkdownTree : undefined,
         relatedDocLinks: relatedDocLinks.length > 0 ? relatedDocLinks : undefined
     };
+    if (boardPath) {
+        const absolute = path.resolve(workspaceRoot, boardPath);
+        const relative = path.relative(workspaceRoot, absolute).split(path.sep).join("/");
+        staticData.board = { path: relative, text: await fs.readFile(absolute, "utf8") };
+        logger.log(`Board: ${relative}`);
+    }
 
     const dataFile = path.join(outputDir, "explorer-data.json");
     const jsonContent = prettyPrint

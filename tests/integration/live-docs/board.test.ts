@@ -48,7 +48,7 @@ describe("the estate's board", () => {
         expect(wire, `${edge.from} to ${edge.to}: ${edge.via}`).toBeDefined();
       }
 
-      expect(derived.wires.filter((wire) => wire.basis === "declared")).toEqual([{ from: "CLOUD", to: "ON-PREM", basis: "declared", edges: 1, over: "IPsec tunnel" }]);
+      expect(derived.wires.filter((wire) => wire.basis === "declared")).toEqual([{ from: "CLOUD", to: "ON-PREM", basis: "declared", edges: 1, lines: [], over: "IPsec tunnel" }]);
       expect(derived.things.find((entry) => entry.thing.name === "gateway")?.doors.map((door) => door.name)).toContain("POST api/payments");
       expect(derived.things.find((entry) => entry.thing.name === "oracle")?.doors).toEqual([{ name: "CENTRAL.ACCOUNT", kind: "table" }]);
     } finally {

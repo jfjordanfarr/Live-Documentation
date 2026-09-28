@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticExplorerData.ts
-- Generated At: 2026-09-28T01:11:44.578Z
+- Generated At: 2026-09-28T23:04:10.238Z
 
 ## Authored
 ### Purpose
@@ -24,16 +24,23 @@ What `explorer-data.json` holds: the graph index and the related markdown that L
 ##### `StaticExplorerData` — Summary
 The bundle.
 
+#### `BundledBoard` {#symbol-bundledboard}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L30)
+
+##### `BundledBoard` — Summary
+A board's text, verbatim, and where it sits in the workspace.
+
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L29)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L38)
 
 ##### `BundledMarkdownTreeNode` — Summary
 A node in the bundled markdown directory tree.
 
 #### `RelatedDocLink` {#symbol-relateddoclink}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L55)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L64)
 
 ##### `RelatedDocLink` — Summary
 A link from a Live Doc to a bundled markdown file.
