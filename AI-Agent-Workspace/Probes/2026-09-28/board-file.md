@@ -73,3 +73,35 @@ What this costs that the survey's tools do not pay: a single-file build (inlinin
 - **The viewer beside the docs (E).** Off by default, a flag on the build, or on by default and ignored by git.
 - **Committing a traded file.** Never, by this proposal. A board repository for non-developers to fetch a file from is the owner's call.
 - **The board file's name and words.** The sketch in the chat used "pieces", "districts", "tunnels", "edges", "layout"; on trial like the map names.
+
+## D's risks and how to mitigate them
+
+_Added the same evening after the owner's reply: "D is, I would say, desirable _but very risky_. That does not mean it's wrong or that the risk isn't worth it. But how might we mitigate those risks?" They also asked whether browser storage could carry some of the save-versus-download problem, and whether a single self-reproducing file makes the VS Code surface more complicated or more portable._
+
+**The hard line.** A double-clicked file opens under `file://`, and there a page cannot fetch its sibling files, register a service worker, or stream a WASM module from a URL. So the file must inline everything: scripts, styles, the data, and any WASM as bytes. The moment a second file is needed, the user needs a server, and the portability the owner wants is gone. Everything below assumes one file and nothing else.
+
+**Browser storage.** Yes, for the draft, not for the artifact. The board text is the live state of the page; serialising the file is cheap enough to do at save time, so nothing needs "prepping". What storage buys is safety: the pending board text kept in local storage, keyed by the board's name and provenance stamp, so that a closed tab or a reload does not lose an hour of dragging, and an "unsaved draft from 19:40, restore?" on the next open. Storage under `file://` exists in the major browsers but some share it across every local file, hence the key. Session storage dies with the tab and is the wrong one.
+
+**Save.** Download a copy, named exactly as the opened file, so that the browser's own "replace?" makes overwriting the file one click; where the file system API exists (Chromium) save in place after the first pick; where a host exists (the VS Code webview) hand the new artifact to the host, which writes it. Each save is a whole new file, never a patch, so a failed save leaves the old file intact. The file carries a save counter and a timestamp in its provenance so that two copies can be told apart.
+
+**Hosts, and the VS Code question.** The owner asks whether a single file complicates the VS Code surface. It adds a seam, not a surface. The viewer is one artifact in every host; two functions sit behind a seam, save and scan, and each host supplies its own: a plain browser downloads and scans with the in-file engine, the VS Code webview posts to the extension host, which writes in place and runs the Node generator with every adapter. So the viewer code becomes more portable, not less, and the hosts shrink to those two functions plus loading the file. The webview's constraints are known: a content security policy with a nonce for the inline script and permission for WASM, and a local resource root for the file.
+
+**Security.** Three separate things.
+
+- The file calls nothing. A content security policy in the file itself, in a `meta` tag, with `connect-src 'none'` and no remote sources of any kind, so that even a compromised script inside could not reach a network. This matches the owner's standing want of no network calls.
+- The file never executes its data. Board text, docs and snapshots are parsed and rendered as text nodes, never as HTML or code, so a hostile board text is inert.
+- The file says what it is. The provenance block carries the tool's version and commit and a hash of the viewer code; the import in the repository checks the hash against a known build before it reads anything, and refuses a file whose engine is not one it knows. Between colleagues the trust model is the same as any document that runs code, and the policy above is what makes it safer than most.
+
+**Safety of the repository.** The import validates the board text against the grammar before touching the repository, shows the difference, and applies positions as they come while declarations are shown to accept. It never writes into a generated region.
+
+**Browser differences.** Workers from a local file, storage on `file://`, WASM under a content security policy, the decompression API and Safari's habits are all things to test rather than assume. The mitigation is a Playwright matrix already in reach: build the file, open it from `file://` in Chromium, Firefox and WebKit, render, move a piece, save with the download intercepted, open the saved file, and compare it to the original with only the layout changed. If a browser refuses a worker from a local file, the scan runs on the main thread yielding progress.
+
+**Size.** C adds text to a few megabytes of viewer. D adds grammars and the TypeScript compiler, tens of megabytes as plain base64. Mitigations: D is a separate build, not the default; a board's file carries only the grammars its systems' languages need; and the browsers' native decompression API lets the inlined code and WASM be stored gzipped, which cuts them by more than half. The file states its size and contents in the collapsed provenance so nobody is surprised.
+
+**Correctness of the in-file scanner.** The generator runs on Node against a file system and the PowerShell adapter shells out. Mitigations: C first, then a D that scans only the languages whose adapters are pure, with PowerShell marked "needs the desktop tool" in the file itself; a file-access seam in the generator so the same code runs over a picked folder in the browser and over the file system on Node; and a measurement, the sample programs scanned in the browser under Playwright must produce byte-identical docs to the CLI's, which the round-trip suite and the oracle fixtures make cheap to state.
+
+**Two truths.** A traded file and the repository drift. The provenance stamp names the commit and run the file came from, and the import shows the difference rather than choosing.
+
+**What stays canonical.** The file should carry the docs' bytes, not only the derived graph, in a collapsed text block, and derive the graph on load the way every other consumer does. A person opening the file in a text editor then reads markdown, not JSON, and the import gets the canonical form back without a render step.
+
+**The staged path, so the risk is bought in slices.** C first: the single file with save, draft, provenance and import, tested in the matrix. Then D-lite: the in-file scanner for the pure adapters, measured against the CLI. Then D in full, if the measurement holds and the size is bearable. Each slice is useful on its own and none forecloses the next.
