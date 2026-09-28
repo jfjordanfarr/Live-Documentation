@@ -120,6 +120,15 @@ Record the key architectural decisions made during Live Documentation developmen
 - **Measured**: `oracle:compare` on the estate went from 8 to 17 of 20 hand-verified edges, with the compiler's 37 unchanged, and gained a bucket for project references, 3 of 3. The three left are the ones no scan of the files gives: a designer's fields, endpoint names built at run time, a row type matched by result columns.
 - **What it changes upstream**: `.sql`, `.csproj` and `package.json` files now get Live Docs under the default globs, so this repository's five package manifests and the sample programs' project files and scripts have docs; a `package.json` is read as a manifest, not as configuration keys.
 
+### The Board Text: Two Nouns and a Legend _(Recorded 2026-09-28)_
+
+- **Decision**: what a person declares about an estate is one markdown file in the Live Doc family, the board: things and connections, with `Holds`, `Serves` and `From` carrying what four nouns would have; a kind as any word, drawn through a legend of shipped shapes and tints with defaults for the kinds manifests publish; and a layout of positions that a person or the tool writes. Lint checks names, holding and legend words. The join to the graph reports a folder with no docs or a declared door nothing serves rather than refusing them, because a board may name what is not beside it.
+- **Why**: the owner's challenge, "make the case to me that it should be any more complex than 'Thing' and 'Connection'", and the case failed; their want that people "define the whole enum set themselves as they need it"; the prior-art survey, in which every surviving grammar pairs a small fixed vocabulary with an open key-value layer; and the rule that a picture's facts come from the docs.
+- **Where it joins**: `boardGraph.ts` gives each doc to the thing whose folder contains it, the deepest winning, and makes one wire per pair of things, door and basis from the file-level edges, which is Structurizr's implied relationship; a declared connection is a wire with `declared` as its basis.
+- **Measured**: the estate sample's board draws every remote hand-verified edge as a wire between two things, six edges as five wires with their doors and bases, eleven wires in all with the shared library and the declared tunnel; this repository's own board reads seven things and ten wires from its docs.
+- **A kind changed upstream**: a SQL function's symbol kind is `sql-function`, so that a source language's `function` symbols are never doors and are never matched as SQL objects.
+- **Left open**: snapshots as a second graph, wires between regions implied from their members, the viewer writing the layout, the traded file, and the vision's picture words, piece, district and tunnel, which would become thing, region and crossing.
+
 ### Generator Gaps Noted by Earlier Specs _(Recorded 2026-09-27; unprioritised)_
 
 Requirements written in 2025 and never implemented, kept as observations rather than commitments:
