@@ -24,6 +24,8 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 - **Ruby, C and PowerShell** still use hand-written scanners. No indexer is installed to measure Ruby (scip-ruby needs a Sorbet project) or C (scip-clang needs a compilation database), so they cannot be measured the way the other languages were. Either an indexer or a different oracle, such as what breaks when a symbol is removed, comes before rewriting them.
 
+- **CRLF in the working copy.** 95 source files still carry CRLF line endings from before the 2026-09-27 normalization. Git normalizes them on commit and the generator no longer copies them into docs, so nothing is wrong in the repository; rewriting the working copy is a bulk checkout left to the owner, who rated it "Low priority" (2026-09-28).
+
 ## Positioning
 
 - The peers as the owner sees them (December 2025): Windsurf Codemaps, GitLab Knowledge Graph, Google CodeWiki. What they care about: MIT licence, offline, markdown-first, "vastly more secure". The README carries a comparison table.
