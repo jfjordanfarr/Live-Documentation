@@ -1,6 +1,6 @@
 # Where the project is going, in the owner's words
 
-_Current as of 2026-09-27. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is the agreed statement of intent and the Status section of [AGENTS.md](../../AGENTS.md) says where the code stands. This file records what the owner decided at each fork, with the date, so that nobody re-litigates it and nobody imports older certainty from the chat archive. Add to it when they decides something new._
+_Current as of 2026-09-27. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is the agreed statement of intent and the Status section of [AGENTS.md](../../AGENTS.md) says where the code stands. This file records what the owner decided at each fork, with the date, so that nobody re-litigates it and nobody imports older certainty from the chat archive. Add to it when they decide something new._
 
 ## The September 2026 reframe
 
@@ -14,7 +14,7 @@ Said on 2026-09-26, the day they returned, unless dated otherwise:
 - **Deletion.** "Deletion is a joy. The less code we have, the less code we have to maintain." The list they approved on 2026-09-27 is in the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md).
 - **The design is not specified** (2026-09-27, on seeing Membrane Map open questions written as a backlog): "What I've been describing today would be a different kind of visualization, potentially 3D, which would enable one to intuit things inside and outside a software system just by looking at it... We have summits we have climbed. But they are likey not the highest summit." Shareable URLs and the like are nice-to-haves; the aim is "to maximize many 'nice-to-haves' simultaneously _and elegantly_." Do not write open questions that presume the current design. "Uncertainty here should feel healthy."
 - **The use case they keep returning to.** Map a local directory to a node on a canvas, plop down another node pointed at another directory, and show colleagues how the consumer payment portal talks to its API, to the WCF router on-prem over a tunnel, to the WCF service, to the databases. Then export that canvas state "to something just as interactable".
-- **A stretch goal they name and defers** (2026-09-27): an animated "flyover" timeline that highlights a system's components in action, shareable. Not in the vision.
+- **A stretch goal they name and defer** (2026-09-27): an animated "flyover" timeline that highlights a system's components in action, shareable. Not in the vision.
 
 ## Answers at forks
 

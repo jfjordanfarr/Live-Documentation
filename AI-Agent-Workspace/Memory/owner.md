@@ -2,7 +2,7 @@
 
 _Current as of 2026-09-27. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
-The owner of this repository is its only human contributor. They act as product manager and architect and expects the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
+The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
 ## What the tool has to serve
 
@@ -12,7 +12,7 @@ Their day job is public-facing, PCI-DSS-secured applications at a mid-sized mult
 
 What they want from the tool at work (2026-09-26): "I just want to be able to show non-software people what I do and they can _see it_ the way I understand it. I don't want to keep drawing bespoke diagrams for XYZ questions from the business at work."
 
-## How they works with an agent
+## How they work with an agent
 
 - **Engaged, and asks to be asked.** "I want you to always feel free to stop and ask me questions rather than make assumptions. I am a highly engaged user and monitor the process closely." (2026-09-26)
 - **Autonomy on the engine work.** "At this point, I think I'm comfortable enough to say that I trust your judgment... I actually want you to have and feel a lot of autonomy in this work." They declined per-checkpoint reviews. "If your common sense is obviously superior to mine at a point of disagreement, please make it known to me and we will quite likely go with your path (or an intersting hybrid/synthesis)." (2026-09-27)
@@ -20,7 +20,7 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 - **Commits.** "Feel free to stage and commit as you need, so long as you are confident in the safety and quality of the. commit." One `main` branch with gated commits until there is a release and end users to endanger; they push. (2026-09-27)
 - **Git.** The rules in AGENTS.md (never bulk `git checkout`, `git restore` or `git clean`; commit only when asked) exist because of a severe work-loss incident on 2025-11-15; the record is in that day's chat log.
 - **Renames.** "If it seems semantically smoother and more correct to do the rename, do the rename." (2026-09-27)
-- **Honesty over comfort.** They can propose things that are wrong and wants to be told, and they value pushback. They also notices imported certainty: when conclusions mined from the chat archive were written into current documents as decisions, they said "So much certainty going in. Hmm..." (2026-09-27). Old material becomes dated history or an open question, never a current decision, unless they re-affirms it.
+- **Honesty over comfort.** They can propose things that are wrong and want to be told, and they value pushback. They also notice imported certainty: when conclusions mined from the chat archive were written into current documents as decisions, they said "So much certainty going in. Hmm..." (2026-09-27). Old material becomes dated history or an open question, never a current decision, unless they re-affirm it.
 - **The old chat record** stays "until modernization effort complete". Mine it for the spirit of their intent; when signals conflict, the newer one wins. Before deleting a file, read the record of why it was written.
 - **Names.** Requirement-ID schemes bother them: "It's just relatively inuman/beurocratic and leaves me worried that it creates subtle semantic biases toward mediocrity." Plain words.
 - **No grilling needed.** They know Matt Pocock's "Grill Me" technique (question the user until consensus) and decided it was unnecessary here: "typical steering being the way user preference nudges can be applied if anything falls off course." (2026-09-27)
@@ -31,5 +31,5 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 - **Aligned whitespace.** "I personally have a _major_ preference to utilize languages which allow me to use an arbitrary number of spaces/tabs so that I can visually align things which are semantically aligned... I optimize for readability to the human eye." Tables and parallel code are hand-aligned. "Let me know if the linters get in your way. Feel free to adjust so long as it isn't a matter of substantive code quality." Adjust lint and format configuration freely for style; never weaken a substantive rule. (2026-09-27)
 - **Cut, don't boost.** "A master audio producer will prefer to cut frequencies they don't like rather than boost frequencies they do like during EQ." Fade the irrelevant; never highlight the relevant. No emoji anywhere.
-- **Direction and colour.** They wants inputs and outputs colour-coded on consistent sides, configurable is fine, and they are "happy to be shown other designs", including HTML mock-ups. They expects three dimensions for distributed systems: "2 dimensions simply aren't enough to handle the number of things that are mutually related to one another."
+- **Direction and colour.** They want inputs and outputs colour-coded on consistent sides, configurable is fine, and they are "happy to be shown other designs", including HTML mock-ups. They expect three dimensions for distributed systems: "2 dimensions simply aren't enough to handle the number of things that are mutually related to one another."
 - **They read designs through exact ASCII diagrams.** By their own account (2025-12-05) they are borderline aphantasic, which is also why the visualizations matter to them; a diagram must be precise down to pin placement.
