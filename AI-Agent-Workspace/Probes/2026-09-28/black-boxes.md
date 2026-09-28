@@ -95,3 +95,14 @@ Whether it can be known in general, from what exists today:
 
 9. **Manifests as Live Docs**: an adapter per package manager so that a project file's dependencies are in the docs, or manifests read at render time as this page does.
 10. **The camera's buttons**: left-drag pans and right-drag orbits, as built, or the force graph's convention with left-drag orbiting.
+
+## Round 10: the World Map
+
+The owner, on round 9: "Super slick. This is awesome." Then, done in this round:
+
+- "the camera rotation should be opposite-directional (moving mouse right = rotating left is more natural to end users and matches behavior of force-directed graph)." Both axes of the orbit now follow the force graph's convention.
+- "clicks on any system should pin the popover and require dismissing (or change its contents when clicking on another system). The pinned popover element should contain a clickable link to dive inside that system." A click pins the panel to a piece, a wire or a token; a click elsewhere, the close mark or Escape dismisses it; clicking another piece moves it; a pinned piece's panel carries "open Gateway". Hover no longer changes a pinned panel.
+- "I still think we can get away with less text." The explainer, the walkthrough and the panels lost about half their words.
+- The names, proposed by the owner and used here on trial: the outer view is the **World Map** ("or 'Global Map' or 'Multi-Map' or 'Canvas'"), and what opens inside a piece is its **Local Map**, which "one could manifest into view in either the 2D mode (membrane map, once we get it actually looking as good as the original Local Map) or 3D mode (force-directed graph)". Zooming in far enough on a piece is the transition, as built.
+
+Acknowledged and left: "You're right about connectors not always drawing on top of their proper receiving point. But this is something we can work with."

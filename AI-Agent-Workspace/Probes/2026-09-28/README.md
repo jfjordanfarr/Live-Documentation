@@ -253,3 +253,5 @@ On the hosted page, the same evening: "HOLY SHIT THIS IS SO GOOD. WOW! Yeah this
 ![The board from a free orthographic camera](shots/board-20-orbit.png)
 
 ![The explainer behind the question mark](shots/board-21-help.png)
+
+On round 9: "Super slick. This is awesome." Round 10 followed: the orbit turns the way the force graph's does, a click pins the panel and the pinned panel opens the piece, the text was halved, and the views took the names the owner proposed on trial: the World Map outside, the Local Map inside, reached by zooming in far enough. "Overall, I think this is the right direction and we could really work with this."
