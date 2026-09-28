@@ -37,7 +37,7 @@ The whole workspace as a physics layout. Files that talk to each other settle ne
 
 ### Knowledge Sources
 
-Provenance of the bundle (commit, time), graph statistics, and health warnings: files with unusually high fan-out (likely barrel files) or fan-in, and isolated files with no connections at all. The export controls described below live here too.
+Graph statistics and health warnings: files with unusually high fan-out (likely barrel files) or fan-in, and isolated files with no connections at all. The export controls described below live here too.
 
 ### Local Map and Circuit Board
 
@@ -58,37 +58,29 @@ Two earlier views that remain available. The Local Map shows one file in the cen
 
 Every change to the view — the active view, the focused file, pinned symbols, expanded cards, path endpoints — is written into the page URL. Copy the address bar and send it; the recipient lands on the same picture. Because the bundle is static, the link works from any host that serves the folder, including GitHub Pages.
 
-### Local Map data as JSON
+### The graph as data
 
-To get one file's neighbourhood as data rather than a picture, ask the builder to precompute it:
-
-```bash
-npm run live-docs:visualize -- --local-maps packages/shared/src/types.ts
-# writes dist/explorer/local-maps/packages-shared-src-types.ts.json
-```
-
-`--all-local-maps` writes one file per node (large).
+The picture is drawn from the graph index, which the generator writes to `<root>/index.json` (`.mdmd/index.json` in this repository) after every run. It holds every Live Doc as parsed, every link resolved to the file it lands on, and each file's inbound and outbound neighbours. Read it directly when you want the data rather than the picture; it is never committed, so regenerate to refresh it.
 
 ---
 
 ## Publishing the bundle
 
 ```bash
-npm run live-docs:visualize -- --commit "$(git rev-parse HEAD)" --ref "$(git rev-parse --abbrev-ref HEAD)"
+npm run live-docs:visualize
 ```
 
-| Path                 | Contents                                                                  |
-| -------------------- | ------------------------------------------------------------------------- |
-| `index.html`         | The viewer                                                                |
-| `explorer-data.json` | Graph, symbol index, every Live Doc, bundled related markdown, provenance |
-| `static/`            | Scripts and styles                                                        |
-| `local-maps/`        | Precomputed Local Map JSON, if requested                                  |
+| Path                 | Contents                                         |
+| -------------------- | ------------------------------------------------ |
+| `index.html`         | The viewer                                       |
+| `explorer-data.json` | The graph index and the bundled related markdown |
+| `static/`            | Scripts and styles                               |
 
 Copy `dist/explorer/` to any static host. This repository's own Explorer is published to GitHub Pages by the `pages.yml` workflow.
 
 ### Bundle size
 
-Expect roughly 5 MB for 600 files. Everything a Live Doc links to is bundled so it can be read offline; use `bundleExclude` in your config to keep large or private markdown out (see [Getting Started](getting-started.mdmd.md#configuration)).
+Expect roughly 3 MB for 600 files. Everything a Live Doc links to is bundled so it can be read offline; use `bundleExclude` in your config to keep large or private markdown out (see [Getting Started](getting-started.mdmd.md#configuration)).
 
 ---
 

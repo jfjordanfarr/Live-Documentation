@@ -34,7 +34,6 @@ describe("subgraph-builder", () => {
       dependents: [],
       missingDependencies: [],
       publicSymbols: [],
-      symbolDocumentation: undefined,
       ...overrides
     };
   }

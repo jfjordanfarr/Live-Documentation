@@ -11,7 +11,7 @@ When you change a file, what else moves? Live Documentation answers with depende
 
 ## The Inspect CLI
 
-`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code. Every example below is real output from this repository as of 2026-09-27; the bracketed Live Doc path after each file is shortened to `[…]`.
+`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code. Every example below is real output from this repository as of 2026-09-28; the bracketed Live Doc path after each file is shortened to `[…]`.
 
 ### Find the path between two files
 
@@ -72,12 +72,13 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts --direct
 ```
 
 ```
-Terminal both paths from packages/generator/src/generator.ts (max depth 25, 7 path(s) listed, limit 200).
-  1. packages/generator/src/generator.ts […] -> packages/generator/src/generator.test.ts […]
-  2. packages/generator/src/generator.ts […] -> packages/generator/src/renderPublicSymbolLines.test.ts […]
-  3. packages/generator/src/generator.ts […] -> tests/integration/live-docs/generation.test.ts […]
+Terminal both paths from packages/generator/src/generator.ts (max depth 25, 8 path(s) listed, limit 200).
+  1. packages/generator/src/generator.ts […] -> tests/integration/live-docs/round-trip.test.ts […]
+  2. packages/generator/src/generator.ts […] -> tests/integration/live-docs/rosettaParity.test.ts […]
   ...
+  6. packages/generator/src/generator.ts […] -> scripts/oracle/compare.ts […] -> tests/integration/live-docs/oracle.test.ts […]
   7. packages/generator/src/generator.ts […] -> scripts/live-docs/generate.ts […]
+  8. packages/generator/src/generator.ts […] -> packages/generator/src/generator.test.ts […]
 ```
 
 ---
@@ -87,7 +88,7 @@ Terminal both paths from packages/generator/src/generator.ts (max depth 25, 7 pa
 Add `--json` for scripts and automation:
 
 ```bash
-npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/scripts/src/live-docs/graph/liveDocGraph.ts --json
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/shared/src/live-docs/graphFiles.ts --json
 ```
 
 ```json
@@ -100,17 +101,17 @@ npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/s
     "docPath": ".mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md"
   },
   "to": {
-    "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts",
-    "docPath": ".mdmd/layer-4/packages/scripts/src/live-docs/graph/liveDocGraph.ts.mdmd.md"
+    "codePath": "packages/shared/src/live-docs/graphFiles.ts",
+    "docPath": ".mdmd/layer-4/packages/shared/src/live-docs/graphFiles.ts.mdmd.md"
   },
   "nodes": [
     { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
-    { "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts", "docPath": "..." }
+    { "codePath": "packages/shared/src/live-docs/graphFiles.ts", "docPath": "..." }
   ],
   "hops": [
     {
       "from": { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
-      "to": { "codePath": "packages/scripts/src/live-docs/graph/liveDocGraph.ts", "docPath": "..." }
+      "to": { "codePath": "packages/shared/src/live-docs/graphFiles.ts", "docPath": "..." }
     }
   ]
 }
@@ -128,21 +129,20 @@ npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/s
 ### When there is no path
 
 ```bash
-npm run live-docs:inspect -- --from packages/scripts/src/live-docs/graph/liveDocGraph.ts --to scripts/live-docs/inspect.ts
+npm run live-docs:inspect -- --from packages/shared/src/live-docs/graphFiles.ts --to scripts/live-docs/inspect.ts
 ```
 
 ```
-No dependency path found from packages/scripts/src/live-docs/graph/liveDocGraph.ts to scripts/live-docs/inspect.ts (outbound).
+No dependency path found from packages/shared/src/live-docs/graphFiles.ts to scripts/live-docs/inspect.ts (outbound).
 Closest reachable frontier:
-  - packages/shared/src/config/liveDocumentationConfig.ts […] — terminal
-  - packages/shared/src/tooling/pathUtils.ts […] — terminal
-  - packages/scripts/src/live-docs/explorer/shared/types.ts […] — terminal
-  - packages/scripts/src/live-docs/graph/liveDocGraph.ts […] — missing-doc (missing glob)
-  - packages/scripts/src/live-docs/graph/liveDocGraph.ts […] — missing-doc (missing node:fs)
-  ...
+  - packages/shared/src/live-docs/document.ts […] — terminal
+  - packages/shared/src/live-docs/graph.ts […] — terminal
+  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing glob)
+  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing node:fs)
+  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing node:path)
 ```
 
-The dependency runs the other way (the inspector imports the graph builder), so the search stops at the builder's own leaves: workspace files with no further dependencies and the external modules that have no Live Doc.
+The dependency runs the other way (the inspector reads the graph), so the search stops at the reader's own leaves: workspace files with no further dependencies and the external modules that have no Live Doc.
 
 ---
 
@@ -171,7 +171,7 @@ npm run live-docs:inspect -- --from packages/shared/src/tooling/pathUtils.ts --d
 Verify the import chain is what you expect:
 
 ```bash
-npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/scripts/src/live-docs/graph/liveDocGraph.ts
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/shared/src/live-docs/graphFiles.ts
 ```
 
 ### Finding a file's tests

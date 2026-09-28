@@ -46,17 +46,11 @@ export interface InitialUrlState {
   hasUrlState: boolean;
 }
 
-/** Optional configuration object supplied by the `viewerConfig` JSON block in the HTML template. */
-export interface ViewerConfig {
-  defaultView?: string;
-  initialFocusNode?: string;
-}
-
 /**
  * Parse initial view and node from URL parameters.
- * Priority: URL params > viewerConfig > defaults (Membrane view for cold start)
+ * Priority: URL params > defaults (Membrane view for cold start)
  */
-export const parseInitialState = (viewerConfig: ViewerConfig | null): InitialUrlState => {
+export const parseInitialState = (): InitialUrlState => {
   const params = new URLSearchParams(window.location.search);
 
   // Compressed state (?s=) takes highest priority — it encodes the full
@@ -80,15 +74,6 @@ export const parseInitialState = (viewerConfig: ViewerConfig | null): InitialUrl
       view: urlView ? viewNameToInternal(urlView) : "map",
       nodeId: urlNode,
       hasUrlState: true
-    };
-  }
-
-  // Fall back to viewerConfig
-  if (viewerConfig) {
-    return {
-      view: viewerConfig.defaultView ? viewNameToInternal(viewerConfig.defaultView) : "membrane",
-      nodeId: viewerConfig.initialFocusNode ?? null,
-      hasUrlState: false
     };
   }
 

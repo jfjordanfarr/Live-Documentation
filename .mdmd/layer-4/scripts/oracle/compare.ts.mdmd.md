@@ -4,14 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-09-27T23:21:31.948Z
+- Generated At: 2026-09-28T00:41:40.791Z
 
 ## Authored
 ### Purpose
-The `oracle:compare` command: runs the shipped generator over a copy of a sample program and lists where its Dependencies sections disagree with the program's compiler-derived and hand-verified expectations.
+The `oracle:compare` command: runs the shipped generator over a copy of a sample program and lists where the dependency edges of its graph disagree with the program's compiler-derived and hand-verified expectations.
 
 ### Notes
 - Prints a list, never a score, and exits 0 either way; the integration suite `oracle.test.ts` asserts only that every expected edge is accounted for.
+- Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
 
 ## Generated
@@ -26,7 +27,7 @@ What the comparison found, bucket by bucket.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L177)
+- Source: [source](../../../../scripts/oracle/compare.ts#L176)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
@@ -41,8 +42,7 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`document.linkTarget`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-linktarget-function)
-- [`document.parseLiveDoc`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`graphFiles.readLiveDocGraph`](../../packages/shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

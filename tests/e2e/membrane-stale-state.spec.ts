@@ -8,17 +8,21 @@ function buildStateUrl(payload: Record<string, unknown>): string {
   return `/?s=${compressed}`;
 }
 
+/** The bundle's graph index, reduced to each file's id and symbol names. */
 async function getStaticGraph(page: import("@playwright/test").Page): Promise<{
   nodes: Array<{ id: string; publicSymbols?: string[] }>;
 }> {
   return page.evaluate(async () => {
-    const win = window as Window & {
-      __staticExplorerDataPromise?: Promise<{
-        graph: { nodes: Array<{ id: string; publicSymbols?: string[] }> };
-      }>;
+    const response = await fetch("./explorer-data.json");
+    const data = (await response.json()) as {
+      graph: { files: Record<string, { codePath: string; symbols: Array<{ name: string }> }> };
     };
-    const data = await win.__staticExplorerDataPromise;
-    return data?.graph ?? { nodes: [] };
+    return {
+      nodes: Object.values(data.graph.files).map((file) => ({
+        id: file.codePath,
+        publicSymbols: file.symbols.map((symbol) => symbol.name.replace(/ \([^()]*\)$/u, ""))
+      }))
+    };
   });
 }
 

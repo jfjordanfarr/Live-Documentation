@@ -9,8 +9,7 @@ export {
   viewNameToUrl,
   parseInitialState,
   updateUrlState,
-  type InitialUrlState,
-  type ViewerConfig
+  type InitialUrlState
 } from "./url-state";
 
 export {

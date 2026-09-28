@@ -1,235 +1,184 @@
-import * as path from "path";
-
-import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+/**
+ * The Explorer's view of the graph.
+ *
+ * @remarks
+ * The Explorer client reads the derived graph index like every other consumer
+ * and projects it into the node-and-link payload its views were written
+ * against. The projection is one pure function, so the client runs it on the
+ * bundle the static builder wrote. It keeps the shape the views expect, quirks
+ * included, until the views read the graph directly.
+ */
+import { symbolName } from "@live-documentation/shared/live-docs/document";
+import type { GraphEdge, GraphFile, LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import type {
+    ExplorerDependencyReference,
     ExplorerGraphPayload,
     ExplorerLinkPayload,
     ExplorerNodePayload,
     ExplorerPublicSymbol,
     ExplorerTypeReference
 } from "./types";
-import {
-    buildLiveDocGraph,
-    type LiveDocGraph,
-    type LiveDocGraphNode,
-    type ParsedTypeReference
-} from "../../graph/liveDocGraph";
 
-type InheritanceLinkKind = "extends" | "implements";
+const ROLE_OF_KIND = {
+    returns: "return",
+    parameter: "parameter",
+    extends: "extends",
+    implements: "implements",
+    constraint: "constraint"
+} as const;
+
+const ROLE_OF_LINE = {
+    Returns: "return",
+    Extends: "extends",
+    Implements: "implements",
+    Constraints: "constraint"
+} as const;
+
+const isReference = (edge: GraphEdge): boolean => edge.kind !== "import" && edge.kind !== "re-export";
 
 /**
- * Builds the full Explorer graph payload from the Live Doc graph,
- * including nodes, dependency/inheritance links, and statistics.
+ * Projects the graph into the Explorer's node-and-link payload.
  */
-export async function buildExplorerGraph(
-    workspaceRoot: string,
-    config?: LiveDocumentationConfig
-): Promise<ExplorerGraphPayload> {
-    const graph = await buildLiveDocGraph({ workspaceRoot, config });
-    const nodes = Array.from(graph.nodes.values());
-
+export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     const links: ExplorerLinkPayload[] = [];
-    const seenLinks = new Set<string>();
+    const seen = new Set<string>();
     let missingDependencyCount = 0;
 
-    const nodePayloads: ExplorerNodePayload[] = nodes.map(node => {
-        const dependents = Array.from(graph.inbound.get(node.codePath) ?? []);
+    const addLink = (
+        source: string,
+        target: string,
+        kind: ExplorerLinkPayload["kind"],
+        sourceSymbol?: string,
+        targetSymbol?: string
+    ): void => {
+        if (source === target) {
+            return;
+        }
+        const key = `${source}|${target}|${kind}|${sourceSymbol ?? ""}|${targetSymbol ?? ""}`;
+        if (seen.has(key)) {
+            return;
+        }
+        seen.add(key);
+        links.push({ source, target, kind, sourceSymbol, targetSymbol });
+    };
 
-        const dependencyReferences = node.rawDependencies.map<ExplorerNodePayload["dependencies"][number]>(dep => {
-            const targetId = dep.codePath;
-            const targetNode = targetId ? graph.nodes.get(targetId) : undefined;
-            const resolved = Boolean(targetNode);
-            const label = dep.label || targetId || dep.raw;
-            const kind: InheritanceLinkKind | "dependency" =
-                dep.role === "extends" ? "extends" :
-                dep.role === "implements" ? "implements" :
-                "dependency";
-            return {
-                targetId: targetId,
-                targetDocPath: targetNode?.docPath ?? dep.docPath,
-                targetSymbol: dep.anchor,
-                sourceSymbol: dep.sourceAnchor,
-                label,
-                raw: dep.raw,
-                resolved,
-                kind
-            };
-        });
+    const nodes: ExplorerNodePayload[] = Object.values(graph.files).map(file => {
+        const nameOfSlug = new Map(file.symbols.map(symbol => [symbol.slug, symbolName(symbol)]));
+        const dependencies: ExplorerDependencyReference[] = [];
 
-        const missingDependencies = dependencyReferences.filter(reference => !reference.resolved);
+        for (const edge of file.edges) {
+            if (!isReference(edge)) {
+                dependencies.push({
+                    targetId: edge.to,
+                    targetDocPath: edge.to ? graph.files[edge.to].docPath : undefined,
+                    targetSymbol: edge.toSymbol,
+                    label: edge.label,
+                    raw: edge.link ?? edge.label,
+                    resolved: edge.to !== undefined,
+                    kind: "dependency"
+                });
+            } else if (edge.to && edge.to !== file.codePath) {
+                const role = ROLE_OF_KIND[edge.kind as keyof typeof ROLE_OF_KIND];
+                const sourceSymbol = nameOfSlug.get(edge.from) ?? edge.from ?? "";
+                dependencies.push({
+                    targetId: edge.to,
+                    targetDocPath: graph.files[edge.to].docPath,
+                    targetSymbol: edge.toSymbol,
+                    sourceSymbol,
+                    label: `${role}: ${edge.label}`,
+                    raw: `${sourceSymbol} ${role} ${edge.label}`,
+                    resolved: true,
+                    kind: edge.kind === "extends" || edge.kind === "implements" ? edge.kind : "dependency"
+                });
+            }
+        }
+
+        const missingDependencies = dependencies.filter(reference => !reference.resolved);
         missingDependencyCount += missingDependencies.length;
 
-        dependencyReferences
-            .filter(reference => reference.resolved && reference.targetId)
-            .forEach(reference => {
-                addLink(node.codePath, reference.targetId!, reference.kind as InheritanceLinkKind | "dependency", {
-                    sourceSymbol: reference.sourceSymbol,
-                    targetSymbol: reference.targetSymbol
-                });
-            });
-
-        // Build extended symbol information with type references
-        const publicSymbolsExtended = buildPublicSymbolsExtended(node, graph);
+        for (const reference of dependencies) {
+            if (reference.resolved && reference.targetId) {
+                addLink(file.codePath, reference.targetId, reference.kind, reference.sourceSymbol, reference.targetSymbol);
+            }
+        }
 
         return {
-            id: node.codePath,
-            name: path.basename(node.codePath),
-            codePath: node.codePath,
-            codeRelativePath: toRelativePath(workspaceRoot, node.codePath),
-            docPath: node.docPath,
-            docRelativePath: toRelativePath(workspaceRoot, node.docPath),
-            archetype: node.archetype,
-            dependencies: dependencyReferences,
-            dependents,
+            id: file.codePath,
+            name: file.codePath.slice(file.codePath.lastIndexOf("/") + 1),
+            codePath: file.codePath,
+            codeRelativePath: file.codePath,
+            docPath: file.docPath,
+            docRelativePath: file.docPath,
+            archetype: file.archetype ?? "implementation",
+            dependencies,
+            dependents: file.inbound,
             missingDependencies,
-            publicSymbols: node.publicSymbols,
-            publicSymbolsExtended,
-            symbolDocumentation: node.symbolDocumentation
-        } satisfies ExplorerNodePayload;
+            publicSymbols: file.symbols.map(symbolName),
+            publicSymbolsExtended: publicSymbolsExtendedOf(file)
+        };
     });
 
-    // Create edges for type references (param/return types that reference other files)
-    // These enable connections to be drawn from the providing file to the consuming symbol
-    // Note: extends/implements flow through rawDependencies above with correct link kinds
-    for (const nodePayload of nodePayloads) {
-        if (!nodePayload.publicSymbolsExtended) continue;
-        
-        for (const symbol of nodePayload.publicSymbolsExtended) {
-            if (!symbol.typeReferences) continue;
-            
-            for (const typeRef of symbol.typeReferences) {
-                if (!typeRef.isResolved || !typeRef.targetId) continue;
-                
-                // Skip extends/implements — they're routed through rawDependencies
-                // with their own link kind (pink/gold styling in the visualizer)
-                if (typeRef.role === "extends" || typeRef.role === "implements") continue;
-                
-                // Create an edge from the target file to this file
-                // Direction: target provides the type, this file's symbol consumes it
-                addLink(nodePayload.id, typeRef.targetId, "type-reference", {
-                    sourceSymbol: symbol.name,
-                    targetSymbol: typeRef.typeName
-                });
+    // Type references become edges of their own kind, after every dependency edge:
+    // the providing file is the target, the consuming symbol the source.
+    for (const node of nodes) {
+        for (const symbol of node.publicSymbolsExtended ?? []) {
+            for (const reference of symbol.typeReferences ?? []) {
+                if (!reference.isResolved || !reference.targetId) {
+                    continue;
+                }
+                if (reference.role === "extends" || reference.role === "implements") {
+                    continue;
+                }
+                addLink(node.id, reference.targetId, "type-reference", symbol.name, reference.typeName);
             }
         }
     }
 
     return {
-        nodes: nodePayloads,
+        nodes,
         links,
         stats: {
-            nodes: nodePayloads.length,
+            nodes: nodes.length,
             links: links.length,
             missingDependencies: missingDependencyCount
         }
-    } satisfies ExplorerGraphPayload;
-
-    function addLink(
-        source: string,
-        target: string,
-        kind: InheritanceLinkKind | "dependency" | "type-reference",
-        metadata?: { sourceSymbol?: string; targetSymbol?: string }
-    ) {
-        if (source === target) {
-            return;
-        }
-        if (!graph.nodes.has(source) || !graph.nodes.has(target)) {
-            return;
-        }
-        const key = `${source}|${target}|${kind}|${metadata?.sourceSymbol ?? ""}|${metadata?.targetSymbol ?? ""}`;
-        if (seenLinks.has(key)) {
-            return;
-        }
-        seenLinks.add(key);
-        links.push({
-            source,
-            target,
-            kind,
-            sourceSymbol: metadata?.sourceSymbol,
-            targetSymbol: metadata?.targetSymbol
-        });
-    }
-}
-
-/** Resolves a doc-relative path to an absolute, normalised file-system path. */
-export function normalizeDocPath(workspaceRoot: string, targetPath: string): string {
-    const absolute = path.isAbsolute(targetPath)
-        ? targetPath
-        : path.resolve(workspaceRoot, targetPath);
-    return path.normalize(absolute);
-}
-
-function toRelativePath(workspaceRoot: string, absolutePath: string): string {
-    const relative = path.relative(workspaceRoot, absolutePath);
-    const normalized = relative.replace(/\\/g, "/");
-    return normalized || ".";
+    };
 }
 
 /**
- * Builds extended symbol information with resolved type references.
- *
- * @param node The Live Doc graph node to process.
- * @param graph The full Live Doc graph for resolving type reference targets.
- * @returns Array of extended symbol objects with type references.
+ * Each symbol with its type references. A reference to another file is
+ * resolved; a reference to a type of the same file, or to no doc, is not, which
+ * is how the views tell a self-reference from a cross-file one. A bare type
+ * name keeps its `[]` suffix, as the views were written to expect.
  */
-function buildPublicSymbolsExtended(
-    node: LiveDocGraphNode,
-    graph: LiveDocGraph
-): ExplorerPublicSymbol[] {
-    const extended: ExplorerPublicSymbol[] = [];
-    const docDir = path.dirname(node.docPath);
-
-    for (const symbolName of node.publicSymbols) {
-        const docEntry = node.symbolDocumentation[symbolName];
-        const parsedTypeRefs = (docEntry as { typeReferences?: ParsedTypeReference[] })?.typeReferences;
-
-        if (!parsedTypeRefs || parsedTypeRefs.length === 0) {
-            // No type references — include symbol without extended info
-            extended.push({ name: symbolName });
-            continue;
-        }
-
-        // Convert ParsedTypeReference to ExplorerTypeReference, resolving targets
-        const typeReferences: ExplorerTypeReference[] = parsedTypeRefs.map(ref => {
-            let targetId: string | undefined;
-
-            if (ref.isResolved && ref.targetDocPath) {
-                // Join the relative doc path with the current doc's directory,
-                // then normalize to collapse ../.. segments.
-                // Use path.join (NOT path.resolve) to preserve relative paths.
-                const joinedDocPath = path.join(docDir, ref.targetDocPath);
-                const normalizedDocPath = path.normalize(joinedDocPath);
-                
-                // Try to resolve the doc path to a code path via the graph
-                targetId = graph.docToCode.get(normalizedDocPath);
-
-                // If not found with normalized path, try case-insensitive match on Windows
-                if (!targetId) {
-                    for (const [docPath, codePath] of graph.docToCode.entries()) {
-                        if (path.normalize(docPath).toLowerCase() === normalizedDocPath.toLowerCase()) {
-                            targetId = codePath;
-                            break;
-                        }
-                    }
+function publicSymbolsExtendedOf(file: GraphFile): ExplorerPublicSymbol[] {
+    const referenceEdges = file.edges.filter(isReference);
+    let next = 0;
+    return file.symbols.map(symbol => {
+        const typeReferences: ExplorerTypeReference[] = [];
+        for (const line of symbol.references) {
+            const entries = line.role === "Parameters"
+                ? line.parameters.flatMap(parameter => parameter.types.map(type => ({ type, role: "parameter" as const, parameterName: parameter.name })))
+                : line.types.map(type => ({ type, role: ROLE_OF_LINE[line.role], parameterName: undefined }));
+            for (const { type, role, parameterName } of entries) {
+                if (!type.link) {
+                    typeReferences.push({ typeName: `${type.name}${type.array ? "[]" : ""}`, role, parameterName, isResolved: false });
+                    continue;
                 }
+                const edge = referenceEdges[next++];
+                const targetId = edge.to !== undefined && edge.to !== file.codePath ? edge.to : undefined;
+                typeReferences.push({
+                    typeName: type.name,
+                    role,
+                    parameterName,
+                    isResolved: targetId !== undefined,
+                    targetId,
+                    targetAnchor: edge.toSymbol
+                });
             }
-
-            return {
-                typeName: ref.typeName,
-                role: ref.role,
-                parameterName: ref.parameterName,
-                isResolved: ref.isResolved && Boolean(targetId),
-                targetId,
-                targetAnchor: ref.targetAnchor
-            };
-        });
-
-        extended.push({
-            name: symbolName,
-            typeReferences
-        });
-    }
-
-    return extended;
+        }
+        const name = symbolName(symbol);
+        return typeReferences.length > 0 ? { name, typeReferences } : { name };
+    });
 }

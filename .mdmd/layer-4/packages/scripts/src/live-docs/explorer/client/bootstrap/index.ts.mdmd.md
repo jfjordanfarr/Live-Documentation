@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-Orchestrates Explorer initialization: loads graph data, detects static vs server mode, initializes UI panels, and hydrates persisted state. The main `bootstrapExplorer()` function is the Explorer's entry point.
+Barrel for the entry heuristics that choose which file to focus when neither the URL nor local storage names one.
 
 ### Notes
-Extracted from client/index.ts during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Consolidates bootstrap logic that was previously scattered across the monolithic index.ts.
+- Extracted from client/index.ts on 2025-12-19. Only the entry heuristics live here; the client's initialization is in `index.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/panels/index.ts
-- Generated At: 2026-09-27T23:21:27.159Z
+- Generated At: 2026-09-28T00:41:37.986Z
 
 ## Authored
 ### Purpose
@@ -52,13 +52,9 @@ Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups
 - Type: type (type-only)
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/index.ts#L22)
 
-#### `StaticDocsMap` {#symbol-staticdocsmap}
-- Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/index.ts#L23)
-
 #### `NavigateToNodeCallback` {#symbol-navigatetonodecallback}
 - Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/index.ts#L24)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/panels/index.ts#L23)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -68,7 +64,6 @@ Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups
 - [`omnisearch.initOmnisearch`](./omnisearch.ts.mdmd.md#symbol-initomnisearch) (re-export)
 - [`sources-view.NavigateToNodeCallback`](./sources-view.ts.mdmd.md#symbol-navigatetonodecallback) (re-export)
 - [`sources-view.SourcesViewConfig`](./sources-view.ts.mdmd.md#symbol-sourcesviewconfig) (re-export)
-- [`sources-view.StaticDocsMap`](./sources-view.ts.mdmd.md#symbol-staticdocsmap) (re-export)
 - [`sources-view.renderSourcesView`](./sources-view.ts.mdmd.md#symbol-rendersourcesview) (re-export)
 - [`tuning.RenderCallback`](./tuning.ts.mdmd.md#symbol-rendercallback) (re-export)
 - [`tuning.TuningChangeCallback`](./tuning.ts.mdmd.md#symbol-tuningchangecallback) (re-export)

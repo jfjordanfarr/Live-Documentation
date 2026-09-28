@@ -4,15 +4,14 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { buildLiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
-  type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
 import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
-import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc } from "@live-documentation/shared/live-docs/document";
+import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/shared/live-docs/document";
+import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
@@ -173,20 +172,26 @@ async function main(): Promise<void> {
 
   const issues: LintIssue[] = [];
   const warnings: LintWarning[] = [];
+  const docs: Array<{ docPath: string; doc: LiveDoc }> = [];
 
   await Promise.all(
     files.map(async (absolutePath) => {
       const content = await fs.readFile(absolutePath, "utf8");
       const relativePath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");
 
-      validateStructure(relativePath, content, issues);
+      const doc = validateStructure(relativePath, content, issues);
+      if (doc) {
+        docs.push({ docPath: relativePath, doc });
+      }
       validateAuthoredSections(relativePath, content, warnings);
       validateRelativeLinks(relativePath, content, issues);
     })
   );
 
-  // Validate graph connectivity (detect islands)
-  await validateConnectivity(workspaceRoot, config, warnings);
+  // The graph is derived only from docs the grammar accepted; a structural failure is reported on its own.
+  if (issues.length === 0) {
+    validateConnectivity(deriveLiveDocGraph(docs, config), warnings);
+  }
 
   if (warnings.length > 0) {
     console.warn("\nLive Doc lint warnings:");
@@ -207,14 +212,16 @@ async function main(): Promise<void> {
   console.log(`live-docs:lint — ${files.length} file(s) validated`);
 }
 
-function validateStructure(file: string, content: string, issues: LintIssue[]): void {
+/** Parses the doc through the grammar, recording a refusal as an issue. */
+function validateStructure(file: string, content: string, issues: LintIssue[]): LiveDoc | undefined {
   try {
-    parseLiveDoc(content);
+    return parseLiveDoc(content);
   } catch (error) {
     if (!(error instanceof LiveDocSyntaxError)) {
       throw error;
     }
     issues.push({ file, message: error.message });
+    return undefined;
   }
 }
 
@@ -291,20 +298,12 @@ function validateRelativeLinks(file: string, content: string, issues: LintIssue[
  * - Cruft from deleted infrastructure
  * - Truly standalone utility files (rare)
  */
-async function validateConnectivity(
-  workspaceRoot: string,
-  config: LiveDocumentationConfig,
-  warnings: LintWarning[]
-): Promise<void> {
-  const graph = await buildLiveDocGraph({ workspaceRoot, config });
+function validateConnectivity(graph: LiveDocGraph, warnings: LintWarning[]): void {
   const islands: string[] = [];
 
-  for (const [codePath, node] of graph.nodes) {
-    const hasDependencies = node.dependencies.size > 0;
-    const hasDependents = (graph.inbound.get(codePath)?.size ?? 0) > 0;
-    
-    if (!hasDependencies && !hasDependents) {
-      islands.push(codePath);
+  for (const file of Object.values(graph.files)) {
+    if (file.outbound.length === 0 && file.inbound.length === 0) {
+      islands.push(file.codePath);
     }
   }
 

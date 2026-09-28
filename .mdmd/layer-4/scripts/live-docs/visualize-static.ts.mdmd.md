@@ -8,14 +8,12 @@
 
 ## Authored
 ### Purpose
-CLI entry point for generating fully static Live Documentation Explorer bundles. Enables offline viewing, GitHub Pages deployment, and embedding in documentation portals (Teams, Slack, wikis) without requiring a running server.
+CLI entry point for building the static Explorer bundle, for offline viewing and static hosting.
 
 ### Notes
-- Created 2025-12-07 during the Static Explorer feature development
-- Accepts `--output <dir>` (default `dist/explorer/`) and `--clean` flags
-- Delegates actual bundle generation to `staticBuilder.buildStaticExplorer()`
-- Outputs byte counts for each generated file to provide build feedback
-- Invoked via `npm run live-docs:visualize:static`
+- Created 2025-12-07.
+- Accepts `--output <dir>` (default `dist/explorer/`), `--config <file>` and `--pretty`; the Local Map precomputation and provenance flags went on 2026-09-28.
+- Delegates to `staticBuilder.buildStaticExplorer()` and prints the file, edge and related-markdown counts and the bundle size. Invoked as `npm run live-docs:visualize`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -29,6 +29,7 @@ import {
   renderLiveDoc,
   type LiveDoc
 } from "@live-documentation/shared/live-docs/document";
+import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
 import {
   normalizeWorkspacePath,
   toWorkspaceFileUri,
@@ -64,6 +65,8 @@ export interface LiveDocGeneratorResult {
   files: LiveDocWriteRecord[];
   deleted: number;
   deletedFiles: string[];
+  /** Workspace-relative path of the graph index written after the run; absent on a dry run. */
+  index?: string;
 }
 
 type LiveDocWriteKind = "created" | "updated" | "unchanged" | "skipped";
@@ -86,7 +89,9 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
  * Discovers all workspace files matching the configured globs, analyses each for
  * public symbols and dependencies, and renders deterministic markdown docs under
  * the configured base layer directory. A doc is rewritten only when its generated
- * content changed, and only then does its `Generated At` line move.
+ * content changed, and only then does its `Generated At` line move. After a run
+ * that writes, the graph index is derived from every doc on disk and written to
+ * `<root>/index.json`.
  *
  * Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
  * and `--include` (explicit file subset) modes. Stale Live Docs whose source
@@ -256,13 +261,20 @@ export async function generateLiveDocs(
     });
   }
 
+  let index: string | undefined;
+  if (!options.dryRun) {
+    index = await writeLiveDocGraph(await readLiveDocGraph({ workspaceRoot, config: normalizedConfig }), workspaceRoot);
+    logger.info(`Wrote the graph index to ${index}`);
+  }
+
   return {
     processed: targetFiles.length,
     written,
     skipped,
     files: results,
     deleted: deletedFiles.length,
-    deletedFiles
+    deletedFiles,
+    index
   };
 }
 

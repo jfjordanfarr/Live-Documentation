@@ -7,7 +7,7 @@
  * @module inspect/emit-result-symbol
  */
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import { resolveAnchorToSymbolName } from "./symbol-reference";
 import type { Direction, SymbolHop, SymbolReference } from "./types";

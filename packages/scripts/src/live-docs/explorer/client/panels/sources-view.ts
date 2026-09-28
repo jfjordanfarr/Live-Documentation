@@ -12,10 +12,6 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import type { ViewerConfig } from "../persistence";
-
-/** Static docs map type (nodeId → markdown content) */
-export type StaticDocsMap = Map<string, string> | undefined;
 
 /** Callback for navigating to a node from health warnings */
 export type NavigateToNodeCallback = (nodeId: string) => void;
@@ -41,8 +37,6 @@ export interface BundledDocsData {
 /** Sources view configuration */
 export interface SourcesViewConfig {
   graphData: ExplorerGraphPayload;
-  viewerConfig: ViewerConfig | null;
-  staticDocs: StaticDocsMap;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   nodesById: Map<string, ExplorerNodePayload>;
   /** Navigate to node in Local Map view (for health warnings) */
@@ -244,7 +238,7 @@ function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): strin
  * Render the Sources view panel showing graph statistics and health information.
  */
 export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, viewerConfig, staticDocs, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onFocusNode, onDownload, bundledDocs, onViewBundledDoc } = config;
+  const { graphData, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onFocusNode, onDownload, bundledDocs, onViewBundledDoc } = config;
 
   const container = requireElement<HTMLDivElement>("sources-container");
 
@@ -288,10 +282,6 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     })
     .sort((a, b) => a.id.localeCompare(b.id));
 
-  // Determine data source
-  const isStaticMode = !!staticDocs || document.getElementById("explorer-data")?.textContent;
-  const dataSourceLabel = isStaticMode ? "Static bundle (embedded/fetched)" : "Server /graph endpoint";
-
   // Build archetype breakdown string
   const archetypeList = Array.from(archetypeCounts.entries())
     .sort((a, b) => b[1] - a[1])
@@ -309,15 +299,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
       <h2><span class="panel-icon">🔌</span> Data Provenance</h2>
       <div class="sources-row">
         <span class="sources-row-label">Data source</span>
-        <span class="sources-row-value neutral">${escapeHtml(dataSourceLabel)}</span>
-      </div>
-      <div class="sources-row">
-        <span class="sources-row-label">Viewer config</span>
-        <span class="sources-row-value ${viewerConfig ? "positive" : "neutral"}">${viewerConfig ? "Present" : "Not provided"}</span>
-      </div>
-      <div class="sources-row">
-        <span class="sources-row-label">Knowledge feeds</span>
-        <span class="sources-row-value neutral">0 discovered (server-only feature)</span>
+        <span class="sources-row-value neutral">The graph index in the static bundle</span>
       </div>
     </div>
 

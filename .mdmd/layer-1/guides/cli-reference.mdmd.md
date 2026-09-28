@@ -21,7 +21,7 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 
 #### `live-docs:generate`
 
-Scans your workspace and materializes the documentation mirror.
+Scans your workspace, materializes the documentation mirror, and writes the graph index to `<root>/index.json`, which is derived from the docs and never committed.
 
 ```bash
 # Preview changes without writing
@@ -63,7 +63,7 @@ npm run live-docs:lint -- --workspace /path/to/repo
 
 **What's Enforced:**
 
-- The `Metadata`, `Authored` and `Generated` headings and the `Public Symbols` and `Dependencies` markers are present
+- Every doc parses under the Live Doc grammar; a refusal names the line
 - Relative links only (no absolute paths)
 
 **What's Warned About:**
@@ -137,9 +137,6 @@ npm run live-docs:visualize -- --output ./public --pretty
 | Flag | Description |
 |------|-------------|
 | `--output <dir>` | Output directory (default: `dist/explorer/`) |
-| `--local-maps <path...>` | Precompute Local Map JSON for these files into `local-maps/` |
-| `--all-local-maps` | Precompute Local Map JSON for every file (large) |
-| `--commit <hash>`, `--ref <name>` | Stamp provenance into the bundle |
 | `--config <file>` | Path to config file |
 | `--pretty` | Pretty-print JSON for debugging |
 

@@ -4,52 +4,50 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/detailPanel.ts
-- Generated At: 2026-09-27T23:21:26.866Z
+- Generated At: 2026-09-28T00:41:37.728Z
 
 ## Authored
 ### Purpose
-
-Manages the Explorer's right-hand detail panel. Fetches and displays Live Doc metadata, dependency lists, and public symbols for the currently selected node.
+The Explorer's detail panel: renders a selected file's Live Doc from the graph in the bundle, with its metadata, its authored block as markdown and its generated sections as navigable lists, and downloads the doc rendered back to markdown.
 
 ### Notes
-
 - Created 2025-11-21 during the explorer modularisation.
-- Exposes a `DetailPanelApi` with `setNode()` to update the panel and `getFocusedNode()` to query the current selection.
-- Populates the sidebar with "Open in Editor", "Open in Local View", and dependency links.
-- Added "Open in Membrane Map" button and `onOpenInMembraneMap` callback in [Dev Day 84](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md), wired through `DetailPanelApi` so the Explorer can navigate from any detail view into the Membrane Map with the selected node focused.
+- Since 2026-09-28 the panel reads the graph's file for a node instead of splitting the doc's markdown by regex, and `renderLiveDoc` gives back the doc's bytes for the download; the fetches from the retired server went with it.
+- Added "Open in Membrane Map" button and `onOpenInMembraneMap` callback on 2026-03-28, wired through `DetailPanelApi` so the Explorer can navigate from any detail view into the Membrane Map with the selected node focused.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L19)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L16)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L31)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L28)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L71)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/detailPanel.ts#L59)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
 ##### `createDetailPanel` — Summary
-Creates the detail panel component for viewing Live Doc markdown
-and node metadata in server or static mode.
+Creates the detail panel component for viewing a file's Live Doc
+and node metadata.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
-- [`types.ExplorerDetailPayload`](../shared/types.ts.mdmd.md#symbol-explorerdetailpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
+- [`document.renderLiveDoc`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

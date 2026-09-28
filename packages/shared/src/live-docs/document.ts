@@ -13,8 +13,6 @@
  * @module
  */
 
-import { posix } from "node:path";
-
 // ============================================================================
 // The model
 // ============================================================================
@@ -121,6 +119,15 @@ const EXTERNAL_RE_EXPORT = "- Re-exported from external module";
 
 /** The authored block a new doc starts with. */
 export const DEFAULT_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_", "", "### Notes", "_Pending notes_"].join("\n");
+
+/**
+ * The name of a symbol without the parenthesised suffix a heading carries to
+ * tell it from another of the same name, such as `Widget (interface)` or
+ * `parse (method overload 2)`.
+ */
+export function symbolName(symbol: Pick<SymbolBlock, "name">): string {
+  return symbol.name.replace(/ \([^()]*\)$/u, "");
+}
 
 // ============================================================================
 // Rendering
@@ -486,49 +493,6 @@ export function authoredBlockOf(text: string | undefined): string {
   const end = /^## Generated[ \t]*$/mu.exec(text.slice(from));
   const block = text.slice(from, end ? from + end.index : undefined).replace(/\r\n/gu, "\n").trim();
   return block || DEFAULT_AUTHORED_BLOCK;
-}
-
-// ============================================================================
-// Links
-// ============================================================================
-
-/** The Live Doc a link in a doc points at, and the source file that doc mirrors. */
-export interface LinkTarget {
-  /** Workspace-relative path of the target doc, with forward slashes. */
-  docPath: string;
-  /** Workspace-relative path of the source file the target doc mirrors. */
-  codePath: string;
-  /** The fragment of the link, without `#`. */
-  anchor?: string;
-}
-
-/**
- * Resolves a doc-relative link to the Live Doc it names.
- *
- * @param docPath - Workspace-relative path of the doc holding the link, with forward slashes.
- * @param link - The link as written, relative to the doc, with an optional `#fragment`.
- * @param config - The root, base layer and extension of the docs.
- * @returns The target, or undefined when the link leaves the workspace or does not name a Live Doc.
- */
-export function linkTarget(
-  docPath: string,
-  link: string,
-  config: { root: string; baseLayer: string; extension: string }
-): LinkTarget | undefined {
-  const [target, fragment] = link.split("#", 2);
-  if (!target || /^[a-z]+:\/\//iu.test(target)) {
-    return undefined;
-  }
-  const resolved = posix.normalize(posix.join(posix.dirname(docPath), target));
-  const prefix = `${posix.normalize(config.root)}/${posix.normalize(config.baseLayer)}/`;
-  if (resolved.startsWith("../") || posix.isAbsolute(resolved) || !resolved.startsWith(prefix)) {
-    return undefined;
-  }
-  const rest = resolved.slice(prefix.length);
-  if (!rest.toLowerCase().endsWith(config.extension.toLowerCase())) {
-    return undefined;
-  }
-  return { docPath: resolved, codePath: rest.slice(0, -config.extension.length), anchor: fragment || undefined };
 }
 
 // ============================================================================

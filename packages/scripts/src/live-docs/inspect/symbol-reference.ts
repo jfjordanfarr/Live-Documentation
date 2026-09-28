@@ -7,8 +7,9 @@
  * @module inspect/symbol-reference
  */
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+import { symbolName } from "@live-documentation/shared/live-docs/document";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import { resolveArtifactIdentifier } from "./resolve-artifact";
 import type { SymbolReference } from "./types";
@@ -47,8 +48,8 @@ export function symbolMatchesAnchor(symbol: string, anchor: string): boolean {
 }
 
 /**
- * Attempts to resolve an anchor slug to a proper symbol name by looking up
- * the target node's publicSymbols array.
+ * Resolves an anchor slug to the name of the symbol that carries it in the
+ * file's doc: by its slug first, then by name.
  * Returns the matched symbol name or the original anchor if no match found.
  */
 export function resolveAnchorToSymbolName(
@@ -59,21 +60,18 @@ export function resolveAnchorToSymbolName(
   if (!anchor) {
     return undefined;
   }
-  
-  const node = graph.nodes.get(codePath);
-  if (!node) {
+
+  const file = graph.files[codePath];
+  if (!file) {
     return anchor;
   }
-  
-  // Try to find a matching symbol in publicSymbols
-  for (const symbol of node.publicSymbols) {
-    if (symbolMatchesAnchor(symbol, anchor)) {
-      return symbol;
-    }
+
+  const bySlug = file.symbols.find((symbol) => symbol.slug === anchor);
+  if (bySlug) {
+    return symbolName(bySlug);
   }
-  
-  // No match found, return as-is (might be a valid symbol name already)
-  return anchor;
+  const byName = file.symbols.map(symbolName).find((name) => symbolMatchesAnchor(name, anchor));
+  return byName ?? anchor;
 }
 
 /**

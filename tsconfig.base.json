@@ -17,9 +17,7 @@
     "composite": true,
     "outDir": "dist",
     "paths": {
-      "@live-documentation/shared": ["packages/shared/src/index"],
       "@live-documentation/shared/*": ["packages/shared/src/*"],
-      "@live-documentation/scripts": ["packages/scripts/src/index"],
       "@live-documentation/scripts/*": ["packages/scripts/src/*"],
       "@live-documentation/generator/*": ["packages/generator/src/*"]
     }

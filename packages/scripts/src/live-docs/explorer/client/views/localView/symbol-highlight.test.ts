@@ -28,7 +28,6 @@ describe("symbol-highlight", () => {
       dependents: [],
       missingDependencies: [],
       publicSymbols: [],
-      symbolDocumentation: undefined
     };
   }
 

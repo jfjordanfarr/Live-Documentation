@@ -1,26 +1,26 @@
 /**
  * Symbol-aware graph pathfinding using BFS.
- * 
+ *
  * Extends the file-level pathfinding to track symbol transitions through
- * the graph's rawDependencies edges.
- * 
+ * the graph's edges.
+ *
  * @module inspect/pathfind-symbol
  */
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import { symbolMatchesAnchor } from "./symbol-reference";
 import type { Direction, SymbolHop, SymbolPathSearchResult, SymbolReference } from "./types";
 
 /**
  * Symbol-aware path search using BFS.
- * 
+ *
  * When both from and to have symbols, finds a path where:
- * - The first hop originates from the fromSymbol (via sourceAnchor)
- * - The last hop arrives at the toSymbol (via anchor)
- * 
- * The algorithm tracks symbol transitions through the graph's rawDependencies.
- * 
+ * - The first hop originates from the fromSymbol (the edge's `from`)
+ * - The last hop arrives at the toSymbol (the edge's `toSymbol`)
+ *
+ * The algorithm tracks symbol transitions through the graph's edges.
+ *
  * @param graph - The Live Doc graph
  * @param from - Source symbol reference
  * @param to - Target symbol reference
@@ -36,7 +36,7 @@ export function searchSymbolPath(
   maxDepth: number
 ): SymbolPathSearchResult {
   // Create a composite key for visited tracking using normalized anchors
-  const makeKey = (hop: SymbolHop): string => 
+  const makeKey = (hop: SymbolHop): string =>
     hop.symbol ? `${hop.codePath}#${hop.symbol.toLowerCase()}` : hop.codePath;
 
   const startHop: SymbolHop = { codePath: from.codePath, symbol: from.symbol };
@@ -47,7 +47,7 @@ export function searchSymbolPath(
 
   while (queue.length > 0) {
     const current = queue.shift()!;
-    
+
     // Check if we've reached the target
     if (current.hop.codePath === to.codePath) {
       // If to has a symbol, we need to match it (handle anchor format differences)
@@ -56,10 +56,6 @@ export function searchSymbolPath(
       }
       // Use symbolMatchesAnchor to handle format differences between user input and anchor slugs
       if (current.hop.symbol && symbolMatchesAnchor(to.symbol, current.hop.symbol)) {
-        return { path: current.path, found: true };
-      }
-      // Also check direct match for when both are symbol names (sourceAnchor case)
-      if (current.hop.symbol === to.symbol) {
         return { path: current.path, found: true };
       }
     }
@@ -90,15 +86,15 @@ export function searchSymbolPath(
 
 /**
  * Gets symbol-aware neighbors for a given hop.
- * 
+ *
  * For outbound direction:
- * - If current hop has a symbol, only follow edges where sourceAnchor matches
- * - Returns the target codePath and anchor (target symbol)
- * 
+ * - If current hop has a symbol, only follow edges whose `from` matches it
+ * - Returns the target code path and the target symbol
+ *
  * For inbound direction:
- * - If current hop has a symbol, only follow edges where anchor matches
- * - Returns the source codePath and sourceAnchor
- * 
+ * - If current hop has a symbol, only follow edges whose `toSymbol` matches it
+ * - Returns the source code path and the source symbol
+ *
  * @param graph - The Live Doc graph
  * @param current - Current hop position
  * @param direction - Traversal direction
@@ -110,71 +106,56 @@ export function getSymbolNeighbors(
   direction: Direction
 ): SymbolHop[] {
   const neighbors: SymbolHop[] = [];
-  const node = graph.nodes.get(current.codePath);
-  
-  if (!node) {
+  const file = graph.files[current.codePath];
+
+  if (!file) {
     return neighbors;
   }
 
   if (direction === "outbound") {
-    // Look at rawDependencies from this node
-    for (const dep of node.rawDependencies) {
-      if (!dep.codePath || !graph.nodes.has(dep.codePath)) {
+    for (const edge of file.edges) {
+      if (!edge.to || edge.to === current.codePath) {
         continue;
       }
 
       // If current hop has a symbol, only follow edges from that symbol
-      if (current.symbol && dep.sourceAnchor && dep.sourceAnchor !== current.symbol) {
+      if (current.symbol && edge.from && !symbolMatchesAnchor(current.symbol, edge.from)) {
         continue;
       }
 
-      // Add the neighbor with its target symbol (anchor)
-      neighbors.push({
-        codePath: dep.codePath,
-        symbol: dep.anchor
-      });
+      neighbors.push({ codePath: edge.to, symbol: edge.toSymbol });
     }
 
-    // Also add file-level dependencies if no symbol filter or symbol matches
+    // Also add file-level dependencies if no symbol filter
     if (!current.symbol) {
-      for (const depPath of node.dependencies) {
-        if (!neighbors.some(n => n.codePath === depPath)) {
-          neighbors.push({ codePath: depPath });
+      for (const codePath of file.outbound) {
+        if (!neighbors.some((neighbor) => neighbor.codePath === codePath)) {
+          neighbors.push({ codePath });
         }
       }
     }
   } else {
     // Inbound: look at nodes that depend on this one
-    const inboundNodes = graph.inbound.get(current.codePath) ?? new Set<string>();
-    
-    for (const srcPath of inboundNodes) {
-      const srcNode = graph.nodes.get(srcPath);
-      if (!srcNode) {
-        continue;
-      }
+    for (const sourcePath of file.inbound) {
+      const source = graph.files[sourcePath];
 
-      // Find edges from srcNode that point to current node
-      for (const dep of srcNode.rawDependencies) {
-        if (dep.codePath !== current.codePath) {
+      // Find edges from the source that point to the current node
+      for (const edge of source.edges) {
+        if (edge.to !== current.codePath) {
           continue;
         }
 
         // If current hop has a symbol, only follow edges to that symbol
-        // Use symbolMatchesAnchor to handle format differences (user's symbol vs anchor slug)
-        if (current.symbol && dep.anchor && !symbolMatchesAnchor(current.symbol, dep.anchor)) {
+        if (current.symbol && edge.toSymbol && !symbolMatchesAnchor(current.symbol, edge.toSymbol)) {
           continue;
         }
 
-        // Add the source with its sourceAnchor
-        neighbors.push({
-          codePath: srcPath,
-          symbol: dep.sourceAnchor
-        });
+        neighbors.push({ codePath: sourcePath, symbol: edge.from });
       }
 
       // Also add file-level if no symbol filter
-      if (!current.symbol && !neighbors.some(n => n.codePath === srcPath)) {
-        neighbors.push({ codePath: srcPath });
+      if (!current.symbol && !neighbors.some((neighbor) => neighbor.codePath === sourcePath)) {
+        neighbors.push({ codePath: sourcePath });
       }
     }
   }

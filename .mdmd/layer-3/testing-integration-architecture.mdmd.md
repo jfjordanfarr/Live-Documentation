@@ -1,6 +1,6 @@
 # Integration Testing
 
-_Current as of 2026-09-27._
+_Current as of 2026-09-28._
 
 Integration suites run the real generator and the real CLI over fixture workspaces. They live under `tests/integration/live-docs/` and run as the `integration` Vitest project (`npm run test:integration`). Nothing in them touches the VS Code API; the Electron harness that once hosted them was retired on 2026-09-27.
 
@@ -8,8 +8,9 @@ Integration suites run the real generator and the real CLI over fixture workspac
 
 | Suite                       | What it proves                                                                                                                                                                      |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `generation.test.ts`        | Regeneration is deterministic and preserves authored sections                                                                                                                       |
+| `generation.test.ts`        | Regeneration is deterministic, preserves authored sections, and writes the graph index the docs derive to                                                                          |
 | `round-trip.test.ts`        | Every committed Live Doc, and every doc generated for the sample programs, parses and renders back to the same bytes                                                                |
+| `graph.test.ts`             | The graph of this repository: every link a committed doc writes lands on a file in the graph, and every edge is mirrored inbound                                                    |
 | `polyglot-fixtures.test.ts` | C#, Java and Python fixtures generate the expected symbols, XML-doc sections and resolved dependency links                                                                          |
 | `inspect-cli.test.ts`       | `live-docs:inspect`, spawned through `tsx`, finds paths across WebForms, Razor, Blazor, queue-worker, SPA, reflection and PowerShell fixtures, over docs the generator writes first |
 | `rosettaParity.test.ts`     | The same program in eight languages yields the same topology; a canonical edge must be found in at least 6 of 8 languages                                                           |

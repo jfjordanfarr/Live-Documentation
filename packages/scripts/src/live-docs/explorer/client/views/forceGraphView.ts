@@ -14,7 +14,6 @@ import type {
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../../shared/types";
-import type { ServerBundledDocsState } from "../dataLoader";
 import { requireElement } from "../dom";
 import type { ExplorerState } from "../types";
 
@@ -65,9 +64,7 @@ export interface ForceGraphViewOptions {
   graphData: ExplorerGraphPayload;
   nodesById: Map<string, ExplorerNodePayload>;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
-  isStaticMode: boolean;
   relatedDocLinks?: RelatedDocLink[];
-  serverBundledDocs: ServerBundledDocsState;
   onShowBundledDoc: (docPath: string) => void;
   onFocusNode: (node: ExplorerNodePayload) => void;
 }
@@ -84,9 +81,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     graphData,
     nodesById,
     resolveLinkEndpoint,
-    isStaticMode,
     relatedDocLinks,
-    serverBundledDocs,
     onShowBundledDoc,
     onFocusNode
   } = options;
@@ -128,8 +123,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
     // Add Related Documentation nodes and links when enabled
     if (state.filters.showRelatedDocs) {
-      const links = isStaticMode ? relatedDocLinks : serverBundledDocs.relatedDocLinks;
-      if (links && links.length > 0) {
+      if (relatedDocLinks && relatedDocLinks.length > 0) {
         const existingNodeIds = new Set(graphNodes.map(n => n.id));
 
         const liveDocPaths = new Set<string>();
@@ -143,7 +137,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const relatedSourcePaths = new Set<string>();
         const relatedLinks: Array<{ source: string; target: string }> = [];
 
-        for (const link of links) {
+        for (const link of relatedDocLinks) {
           const normalizedTarget = link.targetPath.replace(/\\/g, "/");
           if (liveDocPaths.has(normalizedTarget)) {
             continue;

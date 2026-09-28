@@ -4,17 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts
-- Generated At: 2026-09-27T23:21:27.453Z
+- Generated At: 2026-09-28T00:41:38.180Z
 
 ## Authored
 ### Purpose
-
 Manages URL-based state persistence for the Explorer. Parses initial state from URL parameters and updates the URL as users navigate, enabling shareable deep links to specific artifacts and views.
 
 ### Notes
-
-- Extracted from client/index.ts during Dev Day 50 (12/19). The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL↔state synchronization without page reloads.
-- On [Dev Day 86](../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) the default fallback view was changed from `"sources"` (Circuit Board) to `"membrane"` to reflect the Membrane Map's promotion to cold-start default. `updateUrlState()` was also updated to write an explicit `?view=` parameter for non-membrane views, since membrane is now the implicit default.
+- Extracted from client/index.ts on 2025-12-19. The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL and state synchronization without page reloads.
+- On 2026-03-31 the default fallback view was changed from `"sources"` to `"membrane"` to reflect the Membrane Map's promotion to cold-start default. `updateUrlState()` was also updated to write an explicit `?view=` parameter for non-membrane views, since membrane is now the implicit default.
+- The viewer-configuration fallback in `parseInitialState()` went on 2026-09-28: nothing wrote one.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -40,24 +39,17 @@ Maps an internal {@link ViewName} back to the URL-facing string used in query pa
 ##### `InitialUrlState` — Summary
 State parsed from the initial URL on page load.
 
-#### `ViewerConfig` {#symbol-viewerconfig}
-- Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L50)
-
-##### `ViewerConfig` — Summary
-Optional configuration object supplied by the `viewerConfig` JSON block in the HTML template.
-
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L59)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L53)
 
 ##### `parseInitialState` — Summary
 Parse initial view and node from URL parameters.
-Priority: URL params > viewerConfig > defaults (Membrane view for cold start)
+Priority: URL params > defaults (Membrane view for cold start)
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: const
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L103)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts#L88)
 
 ##### `updateUrlState` — Summary
 Update URL to reflect current view and focused node without page reload.

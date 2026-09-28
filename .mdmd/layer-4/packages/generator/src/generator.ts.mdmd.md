@@ -4,22 +4,22 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
-- Generated At: 2026-09-27T23:21:26.769Z
+- Generated At: 2026-09-28T00:41:37.681Z
 
 ## Authored
 ### Purpose
-Coordinates Live Documentation generation by analyzing source files, merging authored sections, recording provenance, and writing deterministic markdown mirrors for each artifact.
+Coordinates Live Documentation generation: analyzes source files, carries authored sections forward, writes deterministic markdown mirrors, prunes stale docs, and writes the graph index after every run.
 
 ### Notes
-- Refactored into a layer-agnostic pipeline to support both Stage‑0 and System docs; see [2025-11-10 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md).
-- Exposes `__testUtils` hooks to validate rendering behaviour as documented in [2025-11-08 summary](../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md).
+- After the docs are written, every doc on disk is read back through the grammar and the graph derived from them is written to `<root>/index.json` (since 2026-09-28). A preserved orphan the grammar refuses fails that step with its path and line; the docs already written stay written. A dry run writes nothing, the index included.
+- A doc is rewritten only when its rendered text differs from what is on disk, and only then does its `Generated At` line move.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L60)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L61)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -29,7 +29,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L100)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L105)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -38,7 +38,9 @@ Entry point for the Live Documentation generation pipeline.
 Discovers all workspace files matching the configured globs, analyses each for
 public symbols and dependencies, and renders deterministic markdown docs under
 the configured base layer directory. A doc is rewritten only when its generated
-content changed, and only then does its `Generated At` line move.
+content changed, and only then does its `Generated At` line move. After a run
+that writes, the graph index is derived from every doc on disk and written to
+`<root>/index.json`.
 
 Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
 and `--include` (explicit file subset) modes. Stale Live Docs whose source
@@ -77,6 +79,8 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 - [`document.authoredBlockOf`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
 - [`document.parseLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graphFiles.readLiveDocGraph`](../../shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`graphFiles.writeLiveDocGraph`](../../shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
 - [`pathUtils.normalizeWorkspacePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)

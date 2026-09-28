@@ -4,32 +4,30 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts
-- Generated At: 2026-09-27T23:21:27.937Z
+- Generated At: 2026-09-28T00:41:38.460Z
 
 ## Authored
 ### Purpose
-
-Renders the Force-directed 3D graph view for the Live Docs Explorer, including the "Related Documentation" overlay that displays purple nodes for test/asset companions of the focused node. [AI-Agent-Workspace/ChatHistory/2026/02/2026-02-20.1.md]
+Renders the force-directed 3D graph view for the Live Docs Explorer, including the Related Documentation overlay: purple nodes for the markdown files that Live Docs link to, from the bundle's `relatedDocLinks`.
 
 ### Notes
-
-- Created 2026-02-20 during the Explorer monolith refactor (1763 → 941 lines) that extracted this view alongside `dataLoader.ts` and `download.ts`.
-- Exposes `createForceGraphView()` factory returning a `ForceGraphViewApi` with `render()`, `focusNode()`, and `dispose()` methods.
-- Depends on the external `3d-force-graph` library; the graph container is resolved via `requireElement('forceGraphContainer')`.
+- Created 2026-02-20 during the Explorer monolith refactor (1763 to 941 lines) that extracted this view alongside `download.ts`.
+- Exposes `createForceGraphView()`, returning a `ForceGraphViewApi` with `render()`.
+- Depends on the external `3d-force-graph` library.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L26)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L25)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L33)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L32)
 - Returns: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `ForceGraphNode` — Summary
@@ -37,28 +35,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L39)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L38)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L63)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L62)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L76)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L73)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L81)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/views/forceGraphView.ts#L78)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -68,7 +66,6 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`dataLoader.ServerBundledDocsState`](../dataLoader.ts.mdmd.md#symbol-serverbundleddocsstate) (type-only)
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/generation.test.ts
-- Generated At: 2026-09-27T23:21:33.852Z
+- Generated At: 2026-09-28T00:41:41.854Z
 
 ## Authored
 ### Purpose
@@ -30,5 +30,7 @@ _No public symbols detected_
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graph.LiveDocGraph`](../../../packages/shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graphFiles.readLiveDocGraph`](../../../packages/shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - `vitest` - `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

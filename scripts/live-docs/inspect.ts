@@ -13,7 +13,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { buildLiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 import {
   type Direction,
   hasSymbolReference,
@@ -36,8 +35,7 @@ import {
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/shared/config/liveDocumentationConfig";
-
-// Import from extracted modules
+import { readLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
 
 interface ParsedArgs {
   help: boolean;
@@ -79,10 +77,6 @@ async function main(): Promise<void> {
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
-  const hasExplicitConfigOverrides = Boolean(
-    args.configPath || args.root || args.baseLayer || args.extension
-  );
-
   let configFileInput: LiveDocumentationConfigInput = {};
   let resolvedConfigPath: string | undefined;
   if (args.configPath) {
@@ -101,7 +95,7 @@ async function main(): Promise<void> {
     configFileInput = await readConfigFile(resolvedConfigPath);
   }
 
-  let configInput: LiveDocumentationConfig = normalizeLiveDocumentationConfig({
+  const configInput: LiveDocumentationConfig = normalizeLiveDocumentationConfig({
     ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
     ...configFileInput,
     root: args.root ?? configFileInput.root ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.root,
@@ -109,26 +103,9 @@ async function main(): Promise<void> {
     extension: args.extension ?? configFileInput.extension ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension
   });
 
-  let graph = await buildLiveDocGraph({ workspaceRoot, config: configInput });
-  if (graph.nodes.size === 0 && !hasExplicitConfigOverrides) {
-    // Back-compat fallback: workspaces may use the MDMD-convention layout
-    // (.mdmd/layer-4/*.mdmd.md) rather than the default (.live-documentation/source/*.md).
-    // Only attempt this when the user did not explicitly choose a config (flags or --config).
-    const legacyConfig = normalizeLiveDocumentationConfig({
-      ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-      root: ".mdmd",
-      baseLayer: "layer-4",
-      extension: ".mdmd.md"
-    });
+  const graph = await readLiveDocGraph({ workspaceRoot, config: configInput });
 
-    const legacyGraph = await buildLiveDocGraph({ workspaceRoot, config: legacyConfig });
-    if (legacyGraph.nodes.size > 0) {
-      configInput = legacyConfig;
-      graph = legacyGraph;
-    }
-  }
-
-  if (graph.nodes.size === 0) {
+  if (Object.keys(graph.files).length === 0) {
     console.error("No Live Docs found. Generate Live Documentation before running inspect.");
     process.exit(1);
     return;

@@ -28,7 +28,6 @@ function createNode(
     dependents: [],
     missingDependencies: [],
     publicSymbols: [],
-    symbolDocumentation: undefined,
     ...overrides
   };
 }

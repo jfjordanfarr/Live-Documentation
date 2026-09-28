@@ -25,7 +25,6 @@ function createNode(id: string, docRelativePath: string): ExplorerNodePayload {
     dependents: [],
     missingDependencies: [],
     publicSymbols: [],
-    symbolDocumentation: undefined
   };
 }
 

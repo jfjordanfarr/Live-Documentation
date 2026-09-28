@@ -4,50 +4,39 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/graph.ts
-- Generated At: 2026-09-27T23:21:29.413Z
+- Generated At: 2026-09-28T00:41:39.343Z
 
 ## Authored
 ### Purpose
-
-Builds the `ExplorerGraphPayload` from the Live Doc graph — the canonical JSON data structure that powers all Explorer views. Walks every `LiveDocGraphNode`, extracts public symbols, dependency links, archetype metadata, and graph-wide statistics, producing the self-contained payload embedded in the static bundle.
+Projects the graph index into the `ExplorerGraphPayload` the Explorer views render: nodes with dependency references and type references, links, and statistics. One pure function, which the client runs on the bundle it loads.
 
 ### Notes
-
-- Created [2025-11-22](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as `server/graph.ts` during initial Explorer scaffolding (`f1e2dec0`).
-- Relocated from `server/` to `shared/` on [2026-03-09](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-09.1.md) during server retirement — this file was always a build-time graph transformer, not server runtime code.
-- `normalizeDocPath` is the single path-resolution function shared between graph construction and static output; keeping it colocated prevents divergence.
+- Created 2025-11-22 as `server/graph.ts`, moved to `shared/` on 2026-03-09, and rewritten on 2026-09-28 to read the graph index instead of building a graph of its own.
+- It keeps the shape the views were written against, quirks included: a type reference to a symbol of the same file, or to a doc the graph lacks, is reported unresolved; a bare type name keeps its `[]` suffix; type references become `type-reference` links after every dependency link. Those go when the views read the graph directly (vision step 3).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `buildExplorerGraph` {#symbol-buildexplorergraph}
+#### `explorerGraphOf` {#symbol-explorergraphof}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/graph.ts#L25)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/graph.ts#L43)
+- Returns: [`ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
-##### `buildExplorerGraph` — Summary
-Builds the full Explorer graph payload from the Live Doc graph,
-including nodes, dependency/inheritance links, and statistics.
-
-#### `normalizeDocPath` {#symbol-normalizedocpath}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/graph.ts#L156)
-
-##### `normalizeDocPath` — Summary
-Resolves a doc-relative path to an absolute, normalised file-system path.
+##### `explorerGraphOf` — Summary
+Projects the graph into the Explorer's node-and-link payload.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.ExplorerDependencyReference`](./types.ts.mdmd.md#symbol-explorerdependencyreference) (type-only)
 - [`types.ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](./types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 - [`types.ExplorerTypeReference`](./types.ts.mdmd.md#symbol-explorertypereference) (type-only)
-- [`LiveDocGraph`](../../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph)
-- [`liveDocGraph.LiveDocGraphNode`](../../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraphnode)
-- [`liveDocGraph.ParsedTypeReference`](../../graph/liveDocGraph.ts.mdmd.md#symbol-parsedtypereference)
-- [`liveDocGraph.buildLiveDocGraph`](../../graph/liveDocGraph.ts.mdmd.md#symbol-buildlivedocgraph)
-- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- `path`
+- [`document.symbolName`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
+- [`graph.GraphEdge`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphedge) (type-only)
+- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

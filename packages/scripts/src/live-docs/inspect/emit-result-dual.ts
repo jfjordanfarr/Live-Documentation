@@ -9,7 +9,7 @@
 
 import path from "node:path";
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import { describeNode } from "./describe-node";
 import { resolveAnchorToSymbolName } from "./symbol-reference";
@@ -72,8 +72,8 @@ export function emitDualDirectionResult(
     for (let i = 0; i < pathNodes.length - 1; i++) {
       const fromNode = pathNodes[i];
       const toNode = pathNodes[i + 1];
-      const fromDoc = graph.nodes.get(fromNode)?.docPath ?? "";
-      const toDoc = graph.nodes.get(toNode)?.docPath ?? "";
+      const fromDoc = graph.files[fromNode]?.docPath ?? "";
+      const toDoc = graph.files[toNode]?.docPath ?? "";
       console.log(`    ${i + 1}. ${fromNode}${fromDoc ? ` [${fromDoc}]` : ""} → ${toNode}${toDoc ? ` [${toDoc}]` : ""}`);
     }
     console.log();
@@ -91,8 +91,8 @@ export function emitDualDirectionResult(
     for (let i = 0; i < pathNodes.length - 1; i++) {
       const fromNode = pathNodes[i];
       const toNode = pathNodes[i + 1];
-      const fromDoc = graph.nodes.get(fromNode)?.docPath ?? "";
-      const toDoc = graph.nodes.get(toNode)?.docPath ?? "";
+      const fromDoc = graph.files[fromNode]?.docPath ?? "";
+      const toDoc = graph.files[toNode]?.docPath ?? "";
       console.log(`    ${i + 1}. ${fromNode}${fromDoc ? ` [${fromDoc}]` : ""} ← ${toNode}${toDoc ? ` [${toDoc}]` : ""}`);
     }
     console.log();

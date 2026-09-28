@@ -3,7 +3,7 @@
  * Compares what the shipped generator says about a fixture with what the oracle says.
  *
  * Runs the generator over a temporary copy of the fixture with the default
- * configuration, reads the Dependencies section of every Live Doc it wrote, and
+ * configuration, reads the dependency edges of the graph it wrote, and
  * lists every disagreement with `expected/compiler-edges.json` and, when present,
  * `expected/hand-verified-edges.json`. It prints a list, not a score, and it exits 0
  * either way: the list is the measurement.
@@ -21,7 +21,7 @@ import {
   LIVE_DOCUMENTATION_DEFAULT_GLOBS,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/shared/config/liveDocumentationConfig";
-import { linkTarget, parseLiveDoc } from "@live-documentation/shared/live-docs/document";
+import { readLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
 
 import { copyFixture } from "./fixture";
 import type { OracleEdges } from "./scip-edges";
@@ -73,23 +73,22 @@ async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[];
   const workDir = copyFixture(fixtureDir, "oracle-compare-");
   try {
     const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
-    const result = await generateLiveDocs({
+    await generateLiveDocs({
       workspaceRoot: workDir,
       config,
       logger:        { info: () => undefined, warn: () => undefined, error: (message) => console.error(message) }
     });
 
+    const graph = await readLiveDocGraph({ workspaceRoot: workDir, config });
     const edges: AdapterEdge[]          = [];
     const unresolved: Report["unresolved"] = [];
-    for (const record of result.files) {
-      if (record.change === "skipped") continue;
-      const doc = parseLiveDoc(fs.readFileSync(path.resolve(workDir, record.docPath), "utf8"));
-      for (const dependency of doc.dependencies) {
-        const target = dependency.link ? linkTarget(record.docPath, dependency.link, config) : undefined;
-        if (target) {
-          edges.push({ from: record.sourcePath, to: target.codePath });
+    for (const file of Object.values(graph.files)) {
+      for (const edge of file.edges) {
+        if (edge.kind !== "import" && edge.kind !== "re-export") continue;
+        if (edge.to) {
+          edges.push({ from: file.codePath, to: edge.to });
         } else {
-          unresolved.push({ from: record.sourcePath, raw: dependency.label });
+          unresolved.push({ from: file.codePath, raw: edge.label });
         }
       }
     }

@@ -33,7 +33,6 @@ function dir(
     dependents: [],
     missingDependencies: [],
     publicSymbols: [],
-    symbolDocumentation: undefined,
   }));
   return { name, path, children: childMap, nodes };
 }

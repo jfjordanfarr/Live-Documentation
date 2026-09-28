@@ -17,7 +17,6 @@ function fileNode(name: string, path: string) {
     dependents: [],
     missingDependencies: [],
     publicSymbols: [],
-    symbolDocumentation: undefined,
   };
 }
 

@@ -1,45 +1,33 @@
 /**
  * @file detailPanel.ts
  * @description Detail panel component for the Live Docs Explorer.
- * 
- * Supports two modes:
- * - **Server mode**: Fetches doc content from `/details` endpoint
- * - **Static mode**: Uses embedded markdown from `StaticExplorerData.docs`
- * 
- * Renders full Live Documentation markdown with proper formatting.
+ *
+ * Renders a file's Live Doc from the graph in the bundle: its metadata, its
+ * authored block as markdown, and its generated sections as navigable lists.
  */
+import { renderLiveDoc } from "@live-documentation/shared/live-docs/document";
+import type { GraphFile } from "@live-documentation/shared/live-docs/graph";
+
 import { requireElement } from "./dom";
 import { renderMarkdown } from "./markdown";
-import type {
-  ExplorerDetailPayload,
-  ExplorerNodePayload
-} from "../shared/types";
+import type { ExplorerNodePayload } from "../shared/types";
 
 /** Public API surface of the Explorer detail panel component. */
 export interface DetailPanelApi {
-  showNode(node: ExplorerNodePayload): Promise<void>;
+  showNode(node: ExplorerNodePayload): void;
   showBundledDoc(docPath: string, content: string): void;
   setLoading(node: ExplorerNodePayload): void;
   hide(): void;
   /** Download the current node's markdown file */
-  downloadCurrentDoc(): Promise<void>;
+  downloadCurrentDoc(): void;
   /** Get the current node (if any) */
   getCurrentNode(): ExplorerNodePayload | null;
 }
 
 /** Configuration options for the Explorer detail panel. */
 export interface DetailPanelOptions {
-  /**
-   * Embedded docs from static bundle (keyed by node ID).
-   * If provided, the panel operates in static mode.
-   */
-  staticDocs?: Record<string, string>;
-
-  /**
-   * Embedded bundled markdown from static bundle (keyed by path).
-   * Used to check if a link target is available as a bundled doc.
-   */
-  bundledMarkdown?: Record<string, string>;
+  /** The graph's files, keyed by code path: what the panel renders a node from. */
+  files: Record<string, GraphFile>;
 
   /**
    * Callback when user clicks a node link in the documentation.
@@ -65,27 +53,24 @@ export interface DetailPanelOptions {
 }
 
 /**
- * Creates the detail panel component for viewing Live Doc markdown
- * and node metadata in server or static mode.
+ * Creates the detail panel component for viewing a file's Live Doc
+ * and node metadata.
  */
 export function createDetailPanel(
   nodesById: Map<string, ExplorerNodePayload>,
-  options: DetailPanelOptions = {}
+  options: DetailPanelOptions
 ): DetailPanelApi {
-  const { staticDocs, bundledMarkdown: _bundledMarkdown, onNodeClick, onBundledDocClick, onOpenInCircuitBoard, onOpenInMembraneMap } = options;
-  const isStaticMode = staticDocs !== undefined;
+  const { files, onNodeClick, onBundledDocClick, onOpenInCircuitBoard, onOpenInMembraneMap } = options;
 
   const panel = requireElement<HTMLDivElement>("detail-panel");
   const title = requireElement<HTMLHeadingElement>("detail-title");
   const body = requireElement<HTMLDivElement>("detail-body");
   const closeButton = requireElement<HTMLButtonElement>("detail-close");
 
-  // Hide "Open in Editor" button in static mode
-  if (isStaticMode) {
-    const editorButton = document.querySelector<HTMLButtonElement>('[onclick="openInEditor()"]');
-    if (editorButton) {
-      editorButton.style.display = "none";
-    }
+  // A static page cannot open an editor
+  const editorButton = document.querySelector<HTMLButtonElement>('[onclick="openInEditor()"]');
+  if (editorButton) {
+    editorButton.style.display = "none";
   }
 
   // Track current node for action buttons
@@ -135,7 +120,7 @@ export function createDetailPanel(
     currentBundledDoc = null; // Clear bundled doc state when showing a graph node
   }
 
-  async function showNode(node: ExplorerNodePayload): Promise<void> {
+  function showNode(node: ExplorerNodePayload): void {
     setLoading(node);
 
     // Show Circuit Board, Local Map, and Membrane Map buttons (these are graph nodes)
@@ -153,23 +138,10 @@ export function createDetailPanel(
     }
 
     try {
-      if (isStaticMode && staticDocs) {
-        // Static mode: use embedded markdown
-        const markdown = staticDocs[node.id];
-        if (markdown) {
-          body.innerHTML = renderDocumentation(markdown, node, nodesById, onNodeClick);
-        } else {
-          body.innerHTML = renderFallbackDetails(node, nodesById);
-        }
-      } else {
-        // Server mode: fetch from API
-        const response = await fetch(`/details?docPath=${encodeURIComponent(node.docPath)}`);
-        if (!response.ok) {
-          throw new Error("Failed to load details");
-        }
-        const details = (await response.json()) as ExplorerDetailPayload;
-        body.innerHTML = renderServerDetails(node, details, nodesById, onNodeClick);
-      }
+      const file = files[node.id];
+      body.innerHTML = file
+        ? renderDocumentation(file, node, nodesById, onNodeClick)
+        : renderFallbackDetails(node, nodesById);
       // Attach delegated click handler for node-link elements
       attachNodeLinkHandlers(body, onNodeClick);
       // Attach delegated click handler for bundled doc links
@@ -180,7 +152,7 @@ export function createDetailPanel(
     }
   }
 
-  async function downloadCurrentDoc(): Promise<void> {
+  function downloadCurrentDoc(): void {
     // Handle bundled doc download (non-graph markdown files)
     if (currentBundledDoc) {
       const fileName = currentBundledDoc.path.split("/").pop() ?? "document.md";
@@ -197,29 +169,16 @@ export function createDetailPanel(
     }
     
     if (!currentNode) return;
-    
+
     try {
-      let markdown: string;
-      
-      if (isStaticMode && staticDocs) {
-        // Static mode: use embedded markdown
-        markdown = staticDocs[currentNode.id] ?? "";
-      } else {
-        // Server mode: fetch from doc endpoint
-        const response = await fetch(`/doc?docPath=${encodeURIComponent(currentNode.docPath)}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch markdown");
-        }
-        markdown = await response.text();
-      }
-      
-      if (!markdown) {
-        console.warn("No markdown content available for download");
+      const file = files[currentNode.id];
+      if (!file) {
+        console.warn("No Live Doc available for download");
         return;
       }
-      
-      // Create download
-      const blob = new Blob([markdown], { type: "text/markdown" });
+
+      // The doc renders back to the bytes the generator wrote
+      const blob = new Blob([renderLiveDoc(file)], { type: "text/markdown" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -291,89 +250,29 @@ export function createDetailPanel(
 }
 
 /**
- * Parsed sections from a Live Documentation file.
- */
-interface ParsedLiveDoc {
-  /** Raw metadata key-value pairs */
-  metadata: Record<string, string>;
-  /** Authored section markdown (Purpose, Notes, etc.) */
-  authored: string;
-  /** Generated section markdown (Public Symbols, Dependencies) */
-  generated: string;
-}
-
-/**
- * Parse a Live Documentation markdown file into its sections.
- * Live Docs have structure: # Title > ## Metadata > ## Authored > ## Generated
- * 
- * IMPORTANT: In multiline mode, $ matches end-of-line (not just end-of-string),
- * so (?=\n## |$) incorrectly matches after ### subsection headers.
- * We use (?=\n## \w) to match only level-2 headers (##) not level-3+ (###).
- */
-function parseLiveDocSections(markdown: string): ParsedLiveDoc {
-  const result: ParsedLiveDoc = { metadata: {}, authored: "", generated: "" };
-  
-  // Find section boundaries using ## headers.
-  // Use (?=\n## \w) lookahead to stop at next level-2 header (## Foo) but not
-  // level-3+ headers (### Foo). The \w ensures we match "## G" in "## Generated"
-  // but not "## #" in "### Purpose".
-  const metadataMatch = markdown.match(/^## Metadata\s*\n([\s\S]*?)(?=\n## \w)/m);
-  const authoredMatch = markdown.match(/^## Authored\s*\n([\s\S]*?)(?=\n## \w)/m);
-  const generatedMatch = markdown.match(/^## Generated\s*\n([\s\S]*?)$/m);
-  
-  // Parse metadata as key-value pairs
-  if (metadataMatch) {
-    const lines = metadataMatch[1].trim().split("\n");
-    for (const line of lines) {
-      const kvMatch = line.match(/^- ([^:]+):\s*(.+)$/);
-      if (kvMatch) {
-        result.metadata[kvMatch[1].trim()] = kvMatch[2].trim();
-      }
-    }
-  }
-  
-  if (authoredMatch) {
-    result.authored = authoredMatch[1].trim();
-  }
-  
-  if (generatedMatch) {
-    result.generated = generatedMatch[1].trim();
-  }
-  
-  return result;
-}
-
-/**
- * Render full Live Documentation with hybrid approach:
- * - Metadata: Terse badge rendering
- * - Authored: Full markdown rendering with smart links
- * - Generated: Structured badge/list rendering with clickable navigation
+ * Render a file's Live Doc:
+ * - Metadata: terse badge rendering
+ * - Authored: full markdown rendering with smart links
+ * - Generated: structured list rendering with clickable navigation
  */
 function renderDocumentation(
-  markdown: string,
+  file: GraphFile,
   node: ExplorerNodePayload,
   nodesById: Map<string, ExplorerNodePayload>,
   onNodeClick?: (nodeId: string) => void
 ): string {
-  const parsed = parseLiveDocSections(markdown);
   const parts: string[] = [];
-  
-  // 1. Metadata section - terse badge rendering with generated timestamp
-  const generatedAt = parsed.metadata["Generated At"];
-  parts.push(renderNodeMetadata(node, generatedAt));
-  
-  // 2. Authored section - full markdown rendering
-  if (parsed.authored) {
-    const authoredHtml = renderAuthoredContent(parsed.authored, node, nodesById, onNodeClick);
-    parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
-  }
-  
-  // 3. Generated section - structured rendering
-  if (parsed.generated || node.publicSymbols.length > 0 || node.dependencies.length > 0) {
-    const generatedHtml = renderGeneratedContent(parsed.generated, node, nodesById, onNodeClick);
+
+  parts.push(renderNodeMetadata(node, file.generatedAt));
+
+  const authoredHtml = renderAuthoredContent(file.authored, node, nodesById, onNodeClick);
+  parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
+
+  if (node.publicSymbols.length > 0 || node.dependencies.length > 0 || node.dependents.length > 0) {
+    const generatedHtml = renderGeneratedContent(node, nodesById, onNodeClick);
     parts.push(`<div class="doc-generated">${generatedHtml}</div>`);
   }
-  
+
   return parts.join("");
 }
 
@@ -426,7 +325,6 @@ function renderAuthoredContent(
  * Render generated content (Public Symbols, Dependencies) with structured badge/list style.
  */
 function renderGeneratedContent(
-  rawGenerated: string,
   node: ExplorerNodePayload,
   nodesById: Map<string, ExplorerNodePayload>,
   onNodeClick?: (nodeId: string) => void
@@ -606,37 +504,6 @@ function renderFallbackDetails(
     parts.push(sectionHtml("Dependents", listHtml(dependents)));
   }
 
-  return parts.join("");
-}
-
-/**
- * Render details from server API response.
- * Uses the new 'authored' field if available, falls back to 'purpose' for backward compatibility.
- */
-function renderServerDetails(
-  node: ExplorerNodePayload,
-  details: ExplorerDetailPayload,
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
-): string {
-  const parts: string[] = [];
-  
-  // Metadata section with Generated At timestamp
-  parts.push(`<div class="doc-metadata">${renderNodeMetadata(node, details.generatedAt)}</div>`);
-  
-  // Authored section - use full 'authored' field if available, otherwise fall back to 'purpose'
-  const authoredContent = details.authored || details.purpose;
-  if (authoredContent) {
-    const authoredHtml = renderAuthoredContent(authoredContent, node, nodesById, onNodeClick);
-    parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
-  }
-  
-  // Generated content section
-  const generatedHtml = renderGeneratedContent("", node, nodesById, onNodeClick);
-  if (generatedHtml) {
-    parts.push(`<div class="doc-generated">${generatedHtml}</div>`);
-  }
-  
   return parts.join("");
 }
 

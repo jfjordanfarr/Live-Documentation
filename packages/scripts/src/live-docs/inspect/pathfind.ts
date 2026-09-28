@@ -1,19 +1,19 @@
 /**
  * File-level graph pathfinding using BFS.
- * 
+ *
  * Provides breadth-first search for finding paths between nodes in the
  * Live Doc dependency graph at the file level (not symbol-aware).
- * 
+ *
  * @module inspect/pathfind
  */
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 
 import type { Direction, FrontierEntry, PathSearchResult } from "./types";
 
 /**
  * Performs a BFS search from a source node to a target node.
- * 
+ *
  * @param graph - The Live Doc graph
  * @param from - Source node code path
  * @param to - Target node code path
@@ -45,7 +45,7 @@ export function searchGraph(
     if (current.depth >= maxDepth) {
       frontierMap.set(`${current.node}|max-depth`, {
         node: current.node,
-        docPath: graph.nodes.get(current.node)?.docPath,
+        docPath: graph.files[current.node]?.docPath,
         reason: "max-depth"
       });
       continue;
@@ -65,7 +65,7 @@ export function searchGraph(
     if (!enqueued) {
       frontierMap.set(`${current.node}|terminal`, {
         node: current.node,
-        docPath: graph.nodes.get(current.node)?.docPath,
+        docPath: graph.files[current.node]?.docPath,
         reason: "terminal"
       });
     }
@@ -74,19 +74,17 @@ export function searchGraph(
   // Add missing dependency entries for outbound searches
   if (direction === "outbound") {
     for (const node of visited) {
-      const graphNode = graph.nodes.get(node);
-      if (!graphNode) {
+      const file = graph.files[node];
+      if (!file) {
         continue;
       }
-      for (const dependency of graphNode.rawDependencies) {
-        const targetId = dependency.codePath;
-        if (!targetId || !graph.nodes.has(targetId)) {
-          const missingKey = targetId ?? dependency.raw;
-          frontierMap.set(`${node}|missing|${missingKey}`, {
+      for (const edge of file.edges) {
+        if (!edge.to) {
+          frontierMap.set(`${node}|missing|${edge.label}`, {
             node,
-            docPath: graphNode.docPath,
+            docPath: file.docPath,
             reason: "missing-doc",
-            missingDependency: missingKey
+            missingDependency: edge.label
           });
         }
       }
@@ -98,26 +96,27 @@ export function searchGraph(
 
 /**
  * Gets the neighbors of a node based on traversal direction.
- * 
+ *
  * @param graph - The Live Doc graph
  * @param node - The node to get neighbors for
  * @param direction - "outbound" for dependencies, "inbound" for dependents
- * @returns Set of neighbor node code paths
+ * @returns The neighbouring code paths
  */
 export function getNeighbors(
   graph: LiveDocGraph,
   node: string,
   direction: Direction
-): Set<string> {
-  if (direction === "outbound") {
-    return graph.nodes.get(node)?.dependencies ?? new Set<string>();
+): readonly string[] {
+  const file = graph.files[node];
+  if (!file) {
+    return [];
   }
-  return graph.inbound.get(node) ?? new Set<string>();
+  return direction === "outbound" ? file.outbound : file.inbound;
 }
 
 /**
  * Reconstructs a path from the parent map built during BFS.
- * 
+ *
  * @param parents - Map from node to its parent in the BFS tree
  * @param start - Start node
  * @param target - End node

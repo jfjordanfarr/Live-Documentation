@@ -10,6 +10,8 @@ import {
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
 } from "../../../packages/shared/src/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "../../../packages/shared/src/live-docs/graph";
+import { readLiveDocGraph } from "../../../packages/shared/src/live-docs/graphFiles";
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;
@@ -102,6 +104,12 @@ describe("Live Docs generator", () => {
 
       const secondPass = await fs.readFile(docPath, "utf8");
       assert.strictEqual(firstPass, secondPass, "Regeneration should be deterministic");
+
+      // The run also writes the graph index, which is the graph the docs derive to.
+      const written = JSON.parse(await fs.readFile(path.join(workspaceRoot, DEFAULT_LIVE_DOC_ROOT, "index.json"), "utf8")) as LiveDocGraph;
+      assert.deepStrictEqual(written, JSON.parse(JSON.stringify(await readLiveDocGraph({ workspaceRoot, config }))));
+      assert.deepStrictEqual(Object.keys(written.files), ["packages/app/src/example.ts"]);
+      assert.strictEqual(written.files["packages/app/src/example.ts"].authored.includes("Existing purpose"), true);
     } finally {
       await fs.rm(workspaceRoot, { recursive: true, force: true });
     }

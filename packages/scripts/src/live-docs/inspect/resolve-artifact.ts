@@ -1,22 +1,22 @@
 /**
  * Artifact identifier resolution utilities.
- * 
+ *
  * Handles resolving user-provided paths (code paths, doc paths, relative paths)
  * to canonical code path identifiers in the Live Doc graph.
- * 
+ *
  * @module inspect/resolve-artifact
  */
 
 import path from "node:path";
 
-import type { LiveDocGraph } from "@live-documentation/scripts/live-docs/graph/liveDocGraph";
 import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
 import { normalizeWorkspacePath } from "@live-documentation/shared/tooling/pathUtils";
 
 /**
  * Resolves an artifact identifier (code path, doc path, or relative path) to a
  * canonical code path in the graph.
- * 
+ *
  * @param input - The user-provided identifier
  * @param workspaceRoot - Absolute path to workspace root
  * @param config - Live Documentation configuration
@@ -30,30 +30,22 @@ export function resolveArtifactIdentifier(
   graph: LiveDocGraph
 ): string | undefined {
   const normalizedInput = normalizeInputIdentifier(input, workspaceRoot);
-
-  if (graph.nodes.has(normalizedInput)) {
-    return normalizedInput;
+  const candidates = [normalizedInput, stripLiveDocDecorations(normalizedInput, config)];
+  for (const candidate of candidates) {
+    if (graph.files[candidate]) {
+      return candidate;
+    }
+    const byDocPath = Object.values(graph.files).find((file) => file.docPath === candidate);
+    if (byDocPath) {
+      return byDocPath.codePath;
+    }
   }
-
-  if (graph.docToCode.has(normalizedInput)) {
-    return graph.docToCode.get(normalizedInput);
-  }
-
-  const stripped = stripLiveDocDecorations(normalizedInput, config);
-  if (graph.nodes.has(stripped)) {
-    return stripped;
-  }
-
-  if (graph.docToCode.has(stripped)) {
-    return graph.docToCode.get(stripped);
-  }
-
   return undefined;
 }
 
 /**
  * Normalizes a user-provided identifier to a workspace-relative path.
- * 
+ *
  * @param input - The raw user input
  * @param workspaceRoot - Absolute path to workspace root
  * @returns Normalized workspace-relative path
@@ -78,7 +70,7 @@ export function normalizeInputIdentifier(input: string, workspaceRoot: string): 
 /**
  * Strips Live Doc path decorations (root, baseLayer, extension) from a path
  * to recover the original code path.
- * 
+ *
  * @param value - The potentially decorated path
  * @param config - Live Documentation configuration
  * @returns The stripped path

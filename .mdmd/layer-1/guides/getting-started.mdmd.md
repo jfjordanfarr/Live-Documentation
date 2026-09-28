@@ -111,13 +111,13 @@ npm run live-docs:generate -- --config .live-docs.config.json
 
 ## What Can You Do?
 
-| Task                         | How                                                                              |
-| ---------------------------- | -------------------------------------------------------------------------------- |
-| See the shape of a codebase  | Build the Explorer and browse the Membrane Map                                   |
-| Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer        |
-| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph |
-| Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                      |
-| Consume as data              | `live-docs:inspect -- --json`, or the raw markdown                               |
+| Task                         | How                                                                                        |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| See the shape of a codebase  | Build the Explorer and browse the Membrane Map                                             |
+| Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer                  |
+| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph           |
+| Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                                |
+| Consume as data              | The graph index at `<root>/index.json`, `live-docs:inspect -- --json`, or the raw markdown |
 
 ---
 

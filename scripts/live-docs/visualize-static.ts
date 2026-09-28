@@ -1,24 +1,18 @@
 /**
  * @file visualize-static.ts
- * @description CLI for building static explorer bundles.
+ * @description CLI for building the static Explorer bundle.
  *
  * ## Usage
  *
  * ```bash
  * # Basic usage - outputs to ./dist/explorer
- * npm run live-docs:visualize -- --static
+ * npm run live-docs:visualize
  *
  * # Custom output directory
- * npm run live-docs:visualize -- --static --output ./docs/explorer
- *
- * # Include pre-computed Local Maps for specific nodes
- * npm run live-docs:visualize -- --static --local-maps packages/generator/src/generator.ts
- *
- * # Include all Local Maps (large output)
- * npm run live-docs:visualize -- --static --all-local-maps
+ * npm run live-docs:visualize -- --output ./docs/explorer
  *
  * # Pretty-print JSON for debugging
- * npm run live-docs:visualize -- --static --pretty
+ * npm run live-docs:visualize -- --pretty
  * ```
  */
 
@@ -34,19 +28,13 @@ import {
 
 interface CliOptions {
     outputDir: string;
-    localMaps: string[];
-    allLocalMaps: boolean;
     prettyPrint: boolean;
-    commitHash?: string;
-    gitRef?: string;
     configPath?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
     const options: CliOptions = {
         outputDir: "./dist/explorer",
-        localMaps: [],
-        allLocalMaps: false,
         prettyPrint: false
     };
 
@@ -55,21 +43,12 @@ function parseArgs(args: string[]): CliOptions {
 
         if (arg === "--output" || arg === "-o") {
             options.outputDir = args[++i] ?? options.outputDir;
-        } else if (arg === "--local-maps" || arg === "-l") {
-            // Collect all following non-flag arguments
-            while (i + 1 < args.length && !args[i + 1].startsWith("-")) {
-                options.localMaps.push(args[++i]);
-            }
-        } else if (arg === "--all-local-maps") {
-            options.allLocalMaps = true;
         } else if (arg === "--pretty" || arg === "-p") {
             options.prettyPrint = true;
-        } else if (arg === "--commit") {
-            options.commitHash = args[++i];
-        } else if (arg === "--ref") {
-            options.gitRef = args[++i];
         } else if (arg === "--config") {
             options.configPath = args[++i];
+        } else {
+            throw new Error(`Unknown argument '${arg}'.`);
         }
     }
 
@@ -105,20 +84,13 @@ async function main(): Promise<void> {
         workspaceRoot,
         outputDir: options.outputDir,
         config,
-        includeLocalMaps: options.localMaps,
-        includeAllLocalMaps: options.allLocalMaps,
-        buildOptions: {
-            prettyPrint: options.prettyPrint
-        },
-        commitHash: options.commitHash,
-        gitRef: options.gitRef
+        prettyPrint: options.prettyPrint
     });
 
     console.log("\nStatic explorer build complete!");
-    console.log(`  Nodes: ${result.stats.nodeCount}`);
-    console.log(`  Links: ${result.stats.linkCount}`);
-    console.log(`  Symbols: ${result.stats.symbolCount}`);
-    console.log(`  Local Maps: ${result.stats.localMapCount}`);
+    console.log(`  Files: ${result.stats.fileCount}`);
+    console.log(`  Edges: ${result.stats.edgeCount}`);
+    console.log(`  Related markdown: ${result.stats.bundledMarkdownCount}`);
     console.log(`  Total Size: ${formatBytes(result.stats.totalSizeBytes)}`);
     console.log(`\nOpen ${path.join(result.outputDir, "index.html")} in a browser to view.`);
 }

@@ -1,5 +1,4 @@
 import { inferDefaultEntryNodeId } from "./bootstrap";
-import { createDataLoader } from "./dataLoader";
 import { createDetailPanel } from "./detailPanel";
 import { setActiveView } from "./dom";
 import { downloadDocs, type DownloadBundleType, type DownloadFormat } from "./download";
@@ -8,7 +7,6 @@ import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph
 import { initOmnisearch } from "./panels/omnisearch";
 import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
-import { parseExplorerGraphPayload } from "./parsers";
 import {
   findPath,
   initPathfind,
@@ -33,11 +31,9 @@ import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { createMembraneView } from "./views/membraneView";
-import type { StaticExplorerViewerConfig, BundledMarkdownTreeNode, RelatedDocLink } from "../shared/staticExplorerData";
-import type {
-  ExplorerGraphPayload,
-  ExplorerNodePayload
-} from "../shared/types";
+import { explorerGraphOf } from "../shared/graph";
+import type { StaticExplorerData } from "../shared/staticExplorerData";
+import type { ExplorerNodePayload } from "../shared/types";
 import type { PathResult } from "./views/localView/state";
 
 declare global {
@@ -64,158 +60,53 @@ attachGlobalErrorHandler();
 void bootstrapExplorer();
 
 /**
- * Static data bundle shape (when loading from explorer-data.json).
- */
-interface StaticBundle {
-  graph?: unknown;
-  docs?: Record<string, string>;
-  bundledMarkdown?: Record<string, string>;
-  bundledMarkdownTree?: BundledMarkdownTreeNode;
-  relatedDocLinks?: RelatedDocLink[];
-  viewerConfig?: StaticExplorerViewerConfig;
-}
-
-/**
- * Result from loading explorer data.
- */
-interface LoadedExplorerData {
-  graphData: ExplorerGraphPayload;
-  staticDocs?: Record<string, string>;
-  bundledMarkdown?: Record<string, string>;
-  bundledMarkdownTree?: BundledMarkdownTreeNode;
-  relatedDocLinks?: RelatedDocLink[];
-  viewerConfig?: StaticExplorerViewerConfig;
-}
-
-/**
- * Bootstrap the explorer, supporting both server mode and static mode.
- * 
- * Static mode detection:
- * 1. Check for inline `<script id="explorer-data">` JSON
- * 2. Check for `?data=<url>` query parameter
- * 3. Check for `./explorer-data.json` file
- * 4. Fall back to server `/graph` endpoint
+ * Bootstrap the explorer from the bundle the static builder wrote.
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    const { graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, relatedDocLinks, viewerConfig } = await loadExplorerData();
-    startExplorer(graphData, staticDocs, bundledMarkdown, bundledMarkdownTree, relatedDocLinks, viewerConfig);
+    startExplorer(await loadExplorerData());
   } catch (error) {
     reportFatalExplorerError(error);
   }
 }
 
-async function loadExplorerData(): Promise<LoadedExplorerData> {
-  // 1. Check for inline data
-  const inlineElement = document.getElementById("explorer-data");
-  if (inlineElement?.textContent) {
-    console.log("Loading explorer data from inline script");
-    const staticData = JSON.parse(inlineElement.textContent) as StaticBundle;
-    if (staticData.graph) {
-      return {
-        graphData: parseExplorerGraphPayload(staticData.graph),
-        staticDocs: staticData.docs,
-        bundledMarkdown: staticData.bundledMarkdown,
-        bundledMarkdownTree: staticData.bundledMarkdownTree,
-        relatedDocLinks: staticData.relatedDocLinks,
-        viewerConfig: staticData.viewerConfig
-      };
-    }
-    return { graphData: parseExplorerGraphPayload(staticData) };
+/**
+ * Loads the bundle: from the URL named by `?data=`, or from `explorer-data.json` beside the page.
+ */
+async function loadExplorerData(): Promise<StaticExplorerData> {
+  const dataUrl = new URLSearchParams(window.location.search).get("data") ?? "./explorer-data.json";
+  const response = await fetch(dataUrl, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(
+      `No explorer data at ${dataUrl} (${response.status}). Build a static bundle first with \`npm run live-docs:visualize\`.`
+    );
   }
-
-  // 2. Check for data URL parameter
-  const params = new URLSearchParams(window.location.search);
-  const dataUrl = params.get("data");
-  if (dataUrl) {
-    console.log(`Loading explorer data from URL: ${dataUrl}`);
-    const response = await fetch(dataUrl, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`Failed to load explorer data from ${dataUrl} (${response.status})`);
-    }
-    const staticData = (await response.json()) as StaticBundle;
-    if (staticData.graph) {
-      return {
-        graphData: parseExplorerGraphPayload(staticData.graph),
-        staticDocs: staticData.docs,
-        bundledMarkdown: staticData.bundledMarkdown,
-        bundledMarkdownTree: staticData.bundledMarkdownTree,
-        relatedDocLinks: staticData.relatedDocLinks,
-        viewerConfig: staticData.viewerConfig
-      };
-    }
-    return { graphData: parseExplorerGraphPayload(staticData) };
+  const bundle = (await response.json()) as Partial<StaticExplorerData>;
+  if (!bundle.graph || typeof bundle.graph.files !== "object") {
+    throw new Error(`${dataUrl} is not an Explorer bundle: it holds no graph.`);
   }
-
-  // 3. Try static explorer-data.json (for static builds)
-  try {
-    const staticResponse = await fetch("./explorer-data.json", { cache: "no-store" });
-    if (staticResponse.ok) {
-      console.log("Loading explorer data from explorer-data.json");
-      const staticData = (await staticResponse.json()) as StaticBundle;
-      if (staticData.graph) {
-        return {
-          graphData: parseExplorerGraphPayload(staticData.graph),
-          staticDocs: staticData.docs,
-          bundledMarkdown: staticData.bundledMarkdown,
-          bundledMarkdownTree: staticData.bundledMarkdownTree,
-          relatedDocLinks: staticData.relatedDocLinks,
-          viewerConfig: staticData.viewerConfig
-        };
-      }
-      return { graphData: parseExplorerGraphPayload(staticData) };
-    }
-  } catch {
-    // Static file not found — no data available
-  }
-
-  throw new Error(
-    "No explorer data found. Build a static bundle first with `npm run live-docs:visualize`."
-  );
+  return bundle as StaticExplorerData;
 }
 
-function startExplorer(
-  graphData: ExplorerGraphPayload,
-  staticDocs?: Record<string, string>,
-  bundledMarkdown?: Record<string, string>,
-  bundledMarkdownTree?: BundledMarkdownTreeNode,
-  relatedDocLinks?: RelatedDocLink[],
-  viewerConfig?: StaticExplorerViewerConfig
-): void {
+function startExplorer(bundle: StaticExplorerData): void {
+  const graphData = explorerGraphOf(bundle.graph);
+  const files = bundle.graph.files;
+  const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = bundle;
   console.log("Live Docs Explorer graph loaded", graphData);
-  
-  // Determine if we're in static mode (embedded docs) vs server mode (fetch on demand)
-  const isStaticMode = !!staticDocs;
-  
-  if (staticDocs) {
-    console.log(`Static mode: ${Object.keys(staticDocs).length} docs embedded`);
-  }
   if (bundledMarkdown) {
     console.log(`Bundled markdown: ${Object.keys(bundledMarkdown).length} referenced files`);
   }
-  if (bundledMarkdownTree) {
-    console.log("Bundled markdown tree loaded");
-  }
-  if (viewerConfig) {
-    console.log("Viewer config loaded:", viewerConfig);
-  }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Data Loader (bundled docs — lazy server fetch or embedded static data)
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const dataLoader = createDataLoader({
-    isStaticMode,
-    bundledMarkdownTree,
-    bundledMarkdown,
-    relatedDocLinks
-  });
+  // Related markdown, as the Knowledge Sources view lists it
+  const bundledDocs = bundledMarkdownTree && bundledMarkdown
+    ? { tree: bundledMarkdownTree, count: Object.keys(bundledMarkdown).length }
+    : undefined;
 
   // ─────────────────────────────────────────────────────────────────────────
   // URL + LocalStorage State
   // ─────────────────────────────────────────────────────────────────────────
 
-  const initialState = parseInitialState(viewerConfig ?? null);
+  const initialState = parseInitialState();
 
   const defaults = { filters: getDefaultFilters(), tuning: getDefaultTuning() };
   const persistedUi = readPersistedUi();
@@ -286,17 +177,16 @@ function startExplorer(
     const node = nodesById.get(nodeId);
     if (node) {
       state.focusedNode = node;
-      void detailPanel.showNode(node);
+      detailPanel.showNode(node);
     }
   };
 
   const detailPanel = createDetailPanel(nodesById, {
-    staticDocs,
-    bundledMarkdown,
+    files,
     onNodeClick: handleDocNodeClick,
     onBundledDocClick: (docPath: string) => {
       // Show the bundled doc in the detail panel
-      void showBundledDocInDetailPanel(docPath);
+      showBundledDocInDetailPanel(docPath);
     },
     onOpenInCircuitBoard: openInCircuitBoardView,
     onOpenInMembraneMap: openInMembraneMapView,
@@ -322,7 +212,7 @@ function startExplorer(
     onSelectNode: node => handleNodeClick(node),
     onRecenterNode: node => handleNodeDoubleClick(node),
     onOpenLocalView: node => {
-      void openLocalViewForNode(node);
+      openLocalViewForNode(node);
     },
     testCoverage
   });
@@ -343,15 +233,13 @@ function startExplorer(
     graphData,
     nodesById,
     resolveLinkEndpoint,
-    isStaticMode,
     relatedDocLinks,
-    serverBundledDocs: dataLoader.serverBundledDocs,
     onShowBundledDoc: (docPath: string) => {
-      void showBundledDocInDetailPanel(docPath);
+      showBundledDocInDetailPanel(docPath);
     },
     onFocusNode: (node: ExplorerNodePayload) => {
       state.focusedNode = node;
-      void detailPanel.showNode(node);
+      detailPanel.showNode(node);
     }
   });
 
@@ -397,14 +285,7 @@ function startExplorer(
       schedulePersistUi();
       // Only re-render Force Graph (Related Docs only affect that view)
       if (state.view === "graph") {
-        // In server mode, ensure bundled docs (including relatedDocLinks) are loaded first
-        if (!isStaticMode && event.target.checked && !dataLoader.serverBundledDocs.loaded) {
-          void dataLoader.loadServerBundledDocs().then(() => {
-            forceGraphView.render();
-          });
-        } else {
-          forceGraphView.render();
-        }
+        forceGraphView.render();
       }
     });
   }
@@ -428,7 +309,7 @@ function startExplorer(
   };
 
   globalWindow.downloadCurrentDoc = () => {
-    void detailPanel.downloadCurrentDoc();
+    detailPanel.downloadCurrentDoc();
   };
 
   globalWindow.openInLocalView = () => {
@@ -437,7 +318,7 @@ function startExplorer(
     if (!target) {
       return;
     }
-    void openLocalViewForNode(target);
+    openLocalViewForNode(target);
   };
 
   globalWindow.openInGraphView = () => {
@@ -523,7 +404,7 @@ function startExplorer(
   // Initialize omnisearch (using imported function)
   initOmnisearch({
     graphData,
-    onSelect: node => void selectNode(node)
+    onSelect: node => selectNode(node)
   });
 
   // ==================
@@ -585,7 +466,7 @@ function startExplorer(
 
       // Click handler to navigate to this node
       hopEl.addEventListener("click", () => {
-        void handleNodeClick(hop.node);
+        handleNodeClick(hop.node);
       });
 
       pathEl.appendChild(hopEl);
@@ -612,7 +493,7 @@ function startExplorer(
 
       // Center on first node in path (suppress detail panel since we just hid it)
       const firstNode = result.path[0].node;
-      void handleNodeClick(firstNode, { suppressDetailPanel: true });
+      handleNodeClick(firstNode, { suppressDetailPanel: true });
 
       // Render the path visualization strip
       renderPathVisualization(result);
@@ -717,7 +598,7 @@ function startExplorer(
           state.view = "map";
           setActiveView("map");
         }
-        void selectNode(from.node, { suppressDetailPanel: true });
+        selectNode(from.node, { suppressDetailPanel: true });
         // Update status to indicate single-node exploration
         const statusEl = document.getElementById("pathfind-status");
         if (statusEl) {
@@ -795,13 +676,11 @@ function startExplorer(
           ? "URL"
           : !initialState.hasUrlState && persistedNav?.nodeId && nodesById.has(persistedNav.nodeId)
             ? "localStorage"
-            : !initialState.hasUrlState && initialState.nodeId && nodesById.has(initialState.nodeId)
-              ? "viewerConfig"
-              : "heuristic";
+            : "heuristic";
       console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
       // Use setTimeout to ensure view is fully rendered before focusing
       setTimeout(() => {
-        void selectNode(focusNode, { suppressDetailPanel: true });
+        selectNode(focusNode, { suppressDetailPanel: true });
         // For circuit view, expand the directory and scroll to the node
         if (state.view === "circuit") {
           circuitView.expandAndScrollToNode(focusNode.id);
@@ -825,7 +704,7 @@ function startExplorer(
     suppressDetailPanel?: boolean;
   }
 
-  async function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): Promise<void> {
+  function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
     state.selectedNode = node;
     state.focusedNode = node;
     const contextName = document.getElementById("context-name");
@@ -837,11 +716,11 @@ function startExplorer(
     renderCurrentView();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {
-      await detailPanel.showNode(node);
+      detailPanel.showNode(node);
     }
   }
 
-  async function focusSidebar(node: ExplorerNodePayload, options?: SelectNodeOptions): Promise<void> {
+  function focusSidebar(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
     state.focusedNode = node;
     const contextName = document.getElementById("context-name");
     if (contextName instanceof HTMLElement) {
@@ -851,16 +730,16 @@ function startExplorer(
     schedulePersistNav();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {
-      await detailPanel.showNode(node);
+      detailPanel.showNode(node);
     }
   }
 
-  function handleNodeClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
-    return focusSidebar(node, options);
+  function handleNodeClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
+    focusSidebar(node, options);
   }
 
-  function handleNodeDoubleClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void | Promise<void> {
-    return selectNode(node, options);
+  function handleNodeDoubleClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
+    selectNode(node, options);
   }
 
   function highlightSelectedCards(): void {
@@ -868,7 +747,7 @@ function startExplorer(
     localView.highlightSelection();
   }
 
-  async function openLocalViewForNode(target?: ExplorerNodePayload): Promise<void> {
+  function openLocalViewForNode(target?: ExplorerNodePayload): void {
     const node = target ?? state.selectedNode;
     if (!node) {
       return;
@@ -881,7 +760,7 @@ function startExplorer(
     // Switch to Local Map and select the node (suppress detail panel since we just hid it)
     state.view = "map";
     setActiveView("map");
-    await selectNode(node, { suppressDetailPanel: true });
+    selectNode(node, { suppressDetailPanel: true });
     // Populate FROM field with the node and CLEAR TO field (exploration mode)
     pathfindApi.setFrom({ node, symbol: undefined });
     pathfindApi.setTo(undefined);
@@ -889,7 +768,7 @@ function startExplorer(
 
   function renderCurrentView(): void {
     if (state.view === "sources") {
-      void doRenderSourcesView();
+      doRenderSourcesView();
       return;
     }
     if (graphData.nodes.length === 0) {
@@ -906,25 +785,16 @@ function startExplorer(
     }
   }
 
-  const downloadCtx = {
-    graphData,
-    isStaticMode,
-    staticDocs,
-    bundledMarkdown,
-    dataLoader
-  };
+  const downloadCtx = { files, bundledMarkdown };
 
-  async function doRenderSourcesView(): Promise<void> {
+  function doRenderSourcesView(): void {
     const canBulkDownload = true;
-    const bundledDocsData = await dataLoader.loadServerBundledDocs();
 
     renderSourcesView({
       graphData,
-      viewerConfig: viewerConfig ?? null,
-      staticDocs: staticDocs ? new Map(Object.entries(staticDocs)) : undefined,
       resolveLinkEndpoint,
       nodesById,
-      bundledDocs: bundledDocsData,
+      bundledDocs,
       onNavigateToNode: (nodeId: string) => {
         const node = nodesById.get(nodeId);
         if (node) {
@@ -932,7 +802,7 @@ function startExplorer(
           setActiveView("map");
           updateUrlState("map", node.id);
           schedulePersistNav();
-          void selectNode(node);
+          selectNode(node);
         }
       },
       onFocusNode: (nodeId: string) => {
@@ -940,11 +810,11 @@ function startExplorer(
         if (node) {
           updateUrlState(state.view, node.id);
           schedulePersistNav();
-          void selectNode(node);
+          selectNode(node);
         }
       },
       onViewBundledDoc: (docPath: string) => {
-        void showBundledDocInDetailPanel(docPath);
+        showBundledDocInDetailPanel(docPath);
       },
       onDownload: canBulkDownload
         ? (bundleType: DownloadBundleType, format: DownloadFormat) => void downloadDocs(bundleType, format, downloadCtx)
@@ -952,8 +822,8 @@ function startExplorer(
     });
   }
 
-  async function showBundledDocInDetailPanel(docPath: string): Promise<void> {
-    const content = await dataLoader.fetchBundledDocContent(docPath);
+  function showBundledDocInDetailPanel(docPath: string): void {
+    const content = bundledMarkdown?.[docPath];
     if (content) {
       detailPanel.showBundledDoc(docPath, content);
     } else {

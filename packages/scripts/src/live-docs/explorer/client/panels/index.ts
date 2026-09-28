@@ -20,6 +20,5 @@ export {
 export {
   renderSourcesView,
   type SourcesViewConfig,
-  type StaticDocsMap,
   type NavigateToNodeCallback
 } from "./sources-view";

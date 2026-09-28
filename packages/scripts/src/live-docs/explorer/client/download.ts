@@ -10,9 +10,10 @@
 
 import JSZip from "jszip";
 
-import type { DataLoaderApi } from "./dataLoader";
+import { renderLiveDoc } from "@live-documentation/shared/live-docs/document";
+import type { GraphFile } from "@live-documentation/shared/live-docs/graph";
+
 import type { DownloadBundleType, DownloadFormat } from "./panels/sources-view";
-import type { ExplorerGraphPayload } from "../shared/types";
 
 export type { DownloadBundleType, DownloadFormat };
 
@@ -26,78 +27,28 @@ export interface DocEntry {
   type: "live" | "related";
 }
 
-/** Options controlling which docs are collected and how they are fetched. */
+/** What the download draws on: the graph's files and the bundled related markdown. */
 export interface DownloadContext {
-  graphData: ExplorerGraphPayload;
-  isStaticMode: boolean;
-  staticDocs?: Record<string, string>;
+  files: Record<string, GraphFile>;
   bundledMarkdown?: Record<string, string>;
-  dataLoader: DataLoaderApi;
 }
 
 /**
- * Collect documents based on bundle type.
+ * Collect documents based on bundle type. A Live Doc is rendered from the graph,
+ * which gives back the bytes the generator wrote.
  */
-async function collectDocs(bundleType: DownloadBundleType, ctx: DownloadContext): Promise<DocEntry[]> {
+function collectDocs(bundleType: DownloadBundleType, ctx: DownloadContext): DocEntry[] {
   const docs: DocEntry[] = [];
 
-  // Collect Live Docs if requested
   if (bundleType === "live" || bundleType === "all") {
-    for (const node of ctx.graphData.nodes) {
-      let markdown: string | undefined;
-
-      if (ctx.isStaticMode && ctx.staticDocs) {
-        markdown = ctx.staticDocs[node.id];
-      } else {
-        try {
-          const response = await fetch(`/doc?docPath=${encodeURIComponent(node.docPath)}`);
-          if (response.ok) {
-            markdown = await response.text();
-          }
-        } catch {
-          console.warn(`Failed to fetch doc for ${node.id}`);
-        }
-      }
-
-      if (markdown) {
-        docs.push({
-          relativePath: node.docRelativePath || `${node.name}.md`,
-          content: markdown,
-          type: "live"
-        });
-      }
+    for (const file of Object.values(ctx.files)) {
+      docs.push({ relativePath: file.docPath, content: renderLiveDoc(file), type: "live" });
     }
   }
 
-  // Collect Related Docs if requested
-  if (bundleType === "related" || bundleType === "all") {
-    if (ctx.isStaticMode && ctx.bundledMarkdown) {
-      const bundledPaths = Object.keys(ctx.bundledMarkdown).sort();
-      for (const docPath of bundledPaths) {
-        const markdown = ctx.bundledMarkdown[docPath];
-        docs.push({
-          relativePath: docPath,
-          content: markdown,
-          type: "related"
-        });
-      }
-    } else if (!ctx.isStaticMode && ctx.dataLoader.serverBundledDocs.paths && ctx.dataLoader.serverBundledDocs.paths.length > 0) {
-      const bundledPaths = ctx.dataLoader.serverBundledDocs.paths.sort();
-      for (const docPath of bundledPaths) {
-        try {
-          const response = await fetch(`/bundled-docs?path=${encodeURIComponent(docPath)}`);
-          if (response.ok) {
-            const markdown = await response.text();
-            docs.push({
-              relativePath: docPath,
-              content: markdown,
-              type: "related"
-            });
-          }
-        } catch {
-          console.warn(`Failed to fetch bundled doc: ${docPath}`);
-        }
-      }
+  if ((bundleType === "related" || bundleType === "all") && ctx.bundledMarkdown) {
+    for (const docPath of Object.keys(ctx.bundledMarkdown).sort()) {
+      docs.push({ relativePath: docPath, content: ctx.bundledMarkdown[docPath], type: "related" });
     }
   }
 
@@ -232,12 +183,7 @@ export async function downloadDocs(
   ctx: DownloadContext
 ): Promise<void> {
   try {
-    // Ensure bundled docs are loaded in server mode if needed
-    if (!ctx.isStaticMode && (bundleType === "related" || bundleType === "all")) {
-      await ctx.dataLoader.loadServerBundledDocs();
-    }
-
-    const docs = await collectDocs(bundleType, ctx);
+    const docs = collectDocs(bundleType, ctx);
 
     if (docs.length === 0) {
       alert("No documentation content available to download.");

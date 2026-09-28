@@ -4,67 +4,52 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts
-- Generated At: 2026-09-27T23:21:29.596Z
+- Generated At: 2026-09-28T00:41:39.367Z
 
 ## Authored
 ### Purpose
-Core builder module for creating fully static Live Documentation Explorer bundles. Produces a self-contained `dist/explorer/` package with HTML viewer, graph JSON, symbol index, and pre-computed Local Maps that can be deployed to GitHub Pages or embedded in documentation portals without a running server.
+Builds the static Explorer bundle: `explorer-data.json`, holding the graph index and the related markdown, the viewer page, and the scripts and styles.
 
 ### Notes
-- Created 2025-12-07 as part of the Static Explorer feature (LD-406)
-- Exposes two public APIs: `buildStaticExplorer()` for full bundles and `buildLocalMapJson()` for headless single-node queries
-- Uses lazy imports to avoid circular dependencies with server modules
-- Transforms the server HTML template into a static viewer that loads `explorer-data.json`
-- Pre-computed Local Maps enable offline symbol-level navigation for configured focus nodes
+- Created 2025-12-07. Since 2026-09-28 it reads the graph index and no longer writes a symbol index, a provenance stamp, copies of the docs or precomputed Local Maps; the client derives what it needs from the graph.
+- The related-markdown scanner reads doc text, so each file of the graph is rendered back to markdown for it, which gives the bytes the generator wrote.
+- `buildAssets` is imported lazily to keep esbuild out of the module graph until it is needed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L57)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L32)
 
 ##### `BuildStaticExplorerOptions` — Summary
-Options controlling what is included in a static explorer build.
+Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L87)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L50)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L114)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L69)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
-Build a complete static explorer bundle.
-
-#### `buildLocalMapJson` {#symbol-buildlocalmapjson}
-- Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts#L284)
-
-##### `buildLocalMapJson` — Summary
-Build a single Local Map JSON for a focus node.
-This is the headless API that LLMs and scripts can consume.
+Build a complete static Explorer bundle.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `fs/promises`
 - [`bundledMarkdownScanner.scanAndBundleMarkdown`](./bundledMarkdownScanner.ts.mdmd.md#symbol-scanandbundlemarkdown)
-- [`localMapBuilder.buildLocalMapData`](./localMapBuilder.ts.mdmd.md#symbol-buildlocalmapdata)
-- [`localMapBuilder.buildTestCoverageMap`](./localMapBuilder.ts.mdmd.md#symbol-buildtestcoveragemap)
-- [`LocalMapData`](./localMapData.ts.mdmd.md#symbol-localmapdata) (type-only)
-- [`staticExplorerData.STATIC_EXPLORER_SCHEMA_VERSION`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_schema_version)
-- [`staticExplorerData.STATIC_EXPLORER_VERSION`](./staticExplorerData.ts.mdmd.md#symbol-static_explorer_version)
-- [`staticExplorerData.StaticExplorerBuildOptions`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerbuildoptions)
-- [`StaticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata)
-- [`staticExplorerData.StaticExplorerProvenance`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerprovenance)
-- [`staticExplorerData.buildSymbolIndex`](./staticExplorerData.ts.mdmd.md#symbol-buildsymbolindex)
-- [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
-- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`StaticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`LiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`document.renderLiveDoc`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graphFiles.readLiveDocGraph`](../../../../../shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->

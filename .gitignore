@@ -64,3 +64,7 @@ reports/e2e/
 **/obj/
 **/target/
 **/bin/
+
+# The derived graph index the generator writes; never committed
+.mdmd/index.json
+

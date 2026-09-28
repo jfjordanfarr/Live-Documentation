@@ -14,8 +14,8 @@ Document the visualization command center that renders the Live Doc graph as int
 ### Notes
 
 - Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with client and shared modules.
-- The shared layer (`explorer/shared/`) builds the graph payload from Layer-4 Live Docs and bundles HTML/CSS/JS assets into a static Explorer.
-- The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`.
+- The shared layer (`explorer/shared/`) builds the static bundle: the derived graph index from `packages/shared` plus the related markdown, with the HTML/CSS/JS assets. `graph.ts` there is the projection from the graph index to the node-and-link payload the views render; the client runs it on load (since 2026-09-28).
+- The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`. The client paths that still fetched from it went on 2026-09-28.
 - The client (`explorer/client/`) currently renders four view modes:
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
   - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
@@ -31,7 +31,7 @@ Document the visualization command center that renders the Live Doc graph as int
 - Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
 - The Explorer is strictly read-only. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.
-- **Static Distribution (LD-810–LD-819)**: Enable zero-server distribution via JSON bundles, GitHub Pages embedding, and standalone HTML viewers. The `StaticExplorerData` schema wraps the graph payload with provenance metadata and a symbol index for client-side search. Distribution scenarios include GitHub Pages (alongside Layer-1 markdown), Hosted Showcase bundles (REQ-H1), Teams Card embedding, and offline analysis.
+- **Static distribution**: the bundle is `index.html`, `static/`, and `explorer-data.json`, which holds the graph index and the related markdown. Any static host serves it; this repository's is published to GitHub Pages.
 
 ### Pathfinding Rendering
 
@@ -60,19 +60,15 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 #### Shared
 
-- [packages/scripts/src/live-docs/explorer/shared/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/index.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/shared/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/localMapBuilder.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/localMapData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/localMapData.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — Schema for JSON bundles with provenance and symbol index
+- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
 
 #### Client Core
 
 - [packages/scripts/src/live-docs/explorer/client/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/index.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/parsers.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/parsers.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/dom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/dom.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/errors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/errors.ts.mdmd.md)
 - [packages/scripts/src/live-docs/explorer/client/detailPanel.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/detailPanel.ts.mdmd.md)
@@ -146,8 +142,8 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 #### Static Distribution
 
-- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — Schema for JSON bundles with provenance and symbol index
-- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md) — Builds static explorer bundles
+- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
+- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md) — Builds the bundle
 
 ## Evidence
 

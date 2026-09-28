@@ -4,47 +4,45 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/download.ts
-- Generated At: 2026-09-27T23:21:26.904Z
+- Generated At: 2026-09-28T00:41:37.757Z
 
 ## Authored
 ### Purpose
-
-Collects Live Documentation entries and exports them as flattened markdown or ZIP archives. Supports both single-document and full-bundle downloads across server and static modes. [AI-Agent-Workspace/ChatHistory/2026/02/2026-02-20.1.md]
+Collects the Live Docs, rendered back from the graph, and the bundled related markdown, and exports them as one flattened markdown file or a ZIP that keeps the directory structure.
 
 ### Notes
-
-- Created 2026-02-20 during the Explorer monolith refactor that brought `index.ts` from 1763 → 941 lines.
-- Re-exports `DownloadBundleType` and `DownloadFormat` enums from `panels/sources-view.ts` to keep the public API co-located with the download logic.
-- Uses JSZip for multi-file archive creation; the library is loaded dynamically in the browser bundle.
+- Created 2026-02-20 during the Explorer monolith refactor that brought `index.ts` from 1763 to 941 lines.
+- Re-exports `DownloadBundleType` and `DownloadFormat` from `panels/sources-view.ts` to keep the public API co-located with the download logic.
+- Uses JSZip for multi-file archive creation.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DownloadBundleType` {#symbol-downloadbundletype}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L17)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L18)
 
 #### `DownloadFormat` {#symbol-downloadformat}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L17)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L18)
 
 #### `DocEntry` {#symbol-docentry}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L20)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L21)
 
 ##### `DocEntry` — Summary
 A single document entry for download.
 
 #### `DownloadContext` {#symbol-downloadcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L30)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L31)
 
 ##### `DownloadContext` — Summary
-Options controlling which docs are collected and how they are fetched.
+What the download draws on: the graph's files and the bundled related markdown.
 
 #### `downloadDocs` {#symbol-downloaddocs}
 - Type: function
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L229)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/client/download.ts#L180)
 - Parameters: `bundleType`: [`DownloadBundleType`](./panels/sources-view.ts.mdmd.md#symbol-downloadbundletype); `format`: [`DownloadFormat`](./panels/sources-view.ts.mdmd.md#symbol-downloadformat); `ctx`: [`DownloadContext`](#symbol-downloadcontext)
 
 ##### `downloadDocs` — Summary
@@ -54,8 +52,8 @@ Main download function — collects docs and exports in the selected format.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `jszip` - `JSZip`
-- [`dataLoader.DataLoaderApi`](./dataLoader.ts.mdmd.md#symbol-dataloaderapi) (type-only)
 - [`sources-view.DownloadBundleType`](./panels/sources-view.ts.mdmd.md#symbol-downloadbundletype) (type-only)
 - [`sources-view.DownloadFormat`](./panels/sources-view.ts.mdmd.md#symbol-downloadformat) (type-only)
-- [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`document.renderLiveDoc`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

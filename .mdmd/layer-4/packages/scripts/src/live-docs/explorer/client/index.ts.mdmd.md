@@ -4,16 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/index.ts
-- Generated At: 2026-09-27T23:21:27.113Z
+- Generated At: 2026-09-28T00:41:37.953Z
 
 ## Authored
 ### Purpose
-Bootstrap entry point for the Explorer client. Fetches the graph payload, initialises the Circuit, Local Map, and Force Graph views, and wires up global navigation and toolbar handlers.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
+Bootstrap entry point for the Explorer client: loads the bundle, projects its graph index into the payload the views render, initialises the views and the detail panel, and wires the global navigation and toolbar handlers.
 
 ### Notes
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was modularised.
+- Since 2026-09-28 the bundle is loaded from `explorer-data.json` beside the page, or from the URL named by `?data=`; the fetches from the retired server and their lazy loader are gone.
 - Exposes `window.switchView`, `window.openInEditor`, and zoom controls to the HTML template.
-- Delegates rendering to `createCircuitView`, `createLocalView`, and the optional `ForceGraph3D` library.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -24,7 +24,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
-- [`dataLoader.createDataLoader`](./dataLoader.ts.mdmd.md#symbol-createdataloader)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)
 - [`download.DownloadBundleType`](./download.ts.mdmd.md#symbol-downloadbundletype)
@@ -38,7 +37,6 @@ _No public symbols detected_
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
-- [`parsers.parseExplorerGraphPayload`](./parsers.ts.mdmd.md#symbol-parseexplorergraphpayload)
 - [`pathfind.PathfindEndpoint`](./pathfind.ts.mdmd.md#symbol-pathfindendpoint)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
 - [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
@@ -61,9 +59,8 @@ _No public symbols detected_
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`state.PathResult`](./views/localView/state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
-- [`staticExplorerData.BundledMarkdownTreeNode`](../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
-- [`staticExplorerData.RelatedDocLink`](../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
-- [`staticExplorerData.StaticExplorerViewerConfig`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerviewerconfig) (type-only)
+- [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
+- [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`template.context-name`](../shared/template.html.mdmd.md#symbol-contextname)
 - [`template.pathfind-path`](../shared/template.html.mdmd.md#symbol-pathfindpath)
 - [`template.pathfind-status`](../shared/template.html.mdmd.md#symbol-pathfindstatus)
@@ -71,6 +68,5 @@ _No public symbols detected_
 - [`template.sidebar-toggle`](../shared/template.html.mdmd.md#symbol-sidebartoggle)
 - [`template.stats-line`](../shared/template.html.mdmd.md#symbol-statsline)
 - [`template.view-map`](../shared/template.html.mdmd.md#symbol-viewmap)
-- [`types.ExplorerGraphPayload`](../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

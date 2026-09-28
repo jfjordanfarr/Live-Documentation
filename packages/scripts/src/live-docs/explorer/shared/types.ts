@@ -109,7 +109,6 @@ export interface ExplorerNodePayload {
     publicSymbols: string[];
     /** Extended symbol information with type references. */
     publicSymbolsExtended?: ExplorerPublicSymbol[];
-    symbolDocumentation: Record<string, unknown> | undefined;
 }
 
 /**
@@ -144,44 +143,13 @@ export interface ExplorerGraphStats {
 }
 
 /**
- * Top-level payload returned by the explorer server's `/graph` endpoint.
+ * The node-and-link payload the Explorer views render.
  *
  * Contains the complete graph (all nodes and edges) plus summary statistics.
- * Also serialised to `dist/explorer/explorer-data.json` by the static builder
- * for offline/GitHub Pages deployment.
+ * The client projects it from the graph index in the bundle.
  */
 export interface ExplorerGraphPayload {
     nodes: ExplorerNodePayload[];
     links: ExplorerLinkPayload[];
     stats: ExplorerGraphStats;
-}
-
-/**
- * Payload returned by the explorer server's `/detail?nodeId=<path>` endpoint.
- *
- * Provides the full detail for a single node — intended for the right-panel
- * detail view in the Local Map. Includes the authored markdown (Purpose,
- * Notes, etc.) and all structured metadata the Live Doc encodes.
- *
- * @remarks
- * Added on 2026-01-03 as part of the "Full Authored rendering, archetype
- * badges, markdown download" feature. The `purpose` field is deprecated in
- * favour of the richer `authored` field which preserves the full authored
- * section markdown.
- */
-export interface ExplorerDetailPayload {
-    archetype: string;
-    /** @deprecated Use authored instead. Kept for backward compatibility. */
-    purpose: string;
-    /** Full authored section markdown (Purpose, Notes, etc.) */
-    authored: string;
-    /** ISO timestamp when the Live Doc was generated */
-    generatedAt?: string;
-    publicSymbols: string[];
-    dependencies: ExplorerDependencyReference[];
-    dependents: string[];
-    missingDependencies: ExplorerDependencyReference[];
-    docRelativePath: string;
-    codeRelativePath: string;
-    symbolDocumentation: Record<string, unknown> | undefined;
 }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/persistence/index.ts
-- Generated At: 2026-09-27T23:21:27.414Z
+- Generated At: 2026-09-28T00:41:38.148Z
 
 ## Authored
 ### Purpose
@@ -36,69 +36,65 @@ Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups
 - Type: type (type-only)
 - Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L12)
 
-#### `ViewerConfig` {#symbol-viewerconfig}
-- Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L13)
-
 #### `PERSISTED_UI_KEY` {#symbol-persisted_ui_key}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L18)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L17)
 
 #### `PERSISTED_UI_VERSION` {#symbol-persisted_ui_version}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L19)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L18)
 
 #### `PersistedUiV1` {#symbol-persisteduiv1}
 - Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L20)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L19)
 
 #### `getDefaultFilters` {#symbol-getdefaultfilters}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L21)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L20)
 
 #### `getDefaultTuning` {#symbol-getdefaulttuning}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L22)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L21)
 
 #### `readPersistedUi` {#symbol-readpersistedui}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L23)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L22)
 
 #### `applyPersistedUi` {#symbol-applypersistedui}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L24)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L23)
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L25)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L24)
 
 #### `PersistUiScheduler` {#symbol-persistuischeduler}
 - Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L26)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L25)
 
 #### `PERSISTED_NAV_KEY` {#symbol-persisted_nav_key}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L29)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L28)
 
 #### `PERSISTED_NAV_VERSION` {#symbol-persisted_nav_version}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L30)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L29)
 
 #### `PersistedNavV1` {#symbol-persistednavv1}
 - Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L31)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L30)
 
 #### `readPersistedNav` {#symbol-readpersistednav}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L32)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L31)
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: unknown
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L33)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L32)
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type (type-only)
-- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L34)
+- Source: [source](../../../../../../../../../packages/scripts/src/live-docs/explorer/client/persistence/index.ts#L33)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -119,7 +115,6 @@ Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups
 - [`local-storage.readPersistedNav`](./local-storage.ts.mdmd.md#symbol-readpersistednav) (re-export)
 - [`local-storage.readPersistedUi`](./local-storage.ts.mdmd.md#symbol-readpersistedui) (re-export)
 - [`url-state.InitialUrlState`](./url-state.ts.mdmd.md#symbol-initialurlstate) (re-export)
-- [`url-state.ViewerConfig`](./url-state.ts.mdmd.md#symbol-viewerconfig) (re-export)
 - [`url-state.parseInitialState`](./url-state.ts.mdmd.md#symbol-parseinitialstate) (re-export)
 - [`url-state.updateUrlState`](./url-state.ts.mdmd.md#symbol-updateurlstate) (re-export)
 - [`url-state.viewNameToInternal`](./url-state.ts.mdmd.md#symbol-viewnametointernal) (re-export)

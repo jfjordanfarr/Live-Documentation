@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/types.ts
-- Generated At: 2026-09-27T23:21:29.655Z
+- Generated At: 2026-09-28T00:41:39.412Z
 
 ## Authored
 ### Purpose
-Shared type definitions used by both the Explorer server and client. Defines the shape of graph payloads, node payloads, link payloads, and detail responses exchanged over the HTTP API.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-21.md]
+The node-and-link payload the Explorer views render, projected from the graph index by `explorerGraphOf`.
 
 ### Notes
-- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client/server/shared modules.
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client, server and shared modules. The HTTP API these types once described was retired on 2026-03-10; the detail payload it answered with went on 2026-09-28.
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 
 ## Generated
@@ -95,7 +95,7 @@ for type-reference navigation in the Local Map.
 
 #### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L128)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L127)
 
 ##### `ExplorerLinkPayload` — Summary
 A directed edge in the explorer graph, connecting two node IDs.
@@ -112,7 +112,7 @@ in the dependency columns rather than just file-level cards.
 
 #### `ExplorerGraphStats` {#symbol-explorergraphstats}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L140)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L139)
 
 ##### `ExplorerGraphStats` — Summary
 Summary statistics for the explorer graph, rendered in the Circuit Board
@@ -120,31 +120,13 @@ header and used by the static builder to emit a quick-access overview.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L153)
+- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L151)
 
 ##### `ExplorerGraphPayload` — Summary
-Top-level payload returned by the explorer server's `/graph` endpoint.
+The node-and-link payload the Explorer views render.
 
 Contains the complete graph (all nodes and edges) plus summary statistics.
-Also serialised to `dist/explorer/explorer-data.json` by the static builder
-for offline/GitHub Pages deployment.
-
-#### `ExplorerDetailPayload` {#symbol-explorerdetailpayload}
-- Type: interface
-- Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/types.ts#L172)
-
-##### `ExplorerDetailPayload` — Summary
-Payload returned by the explorer server's `/detail?nodeId=<path>` endpoint.
-
-Provides the full detail for a single node — intended for the right-panel
-detail view in the Local Map. Includes the authored markdown (Purpose,
-Notes, etc.) and all structured metadata the Live Doc encodes.
-
-##### `ExplorerDetailPayload` — Remarks
-Added on 2026-01-03 as part of the "Full Authored rendering, archetype
-badges, markdown download" feature. The `purpose` field is deprecated in
-favour of the richer `authored` field which preserves the full authored
-section markdown.
+The client projects it from the graph index in the bundle.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -12,9 +12,6 @@ const withTrailingSeparator = (value: string): string => {
   return normalized.endsWith("/") ? normalized : `${normalized}/`;
 };
 
-const sharedSrcEntry = toPosix(path.join(sharedSrc, "index.ts"));
-const scriptsSrcEntry = toPosix(path.join(scriptsSrc, "index.ts"));
-
 export default defineConfig({
   resolve: {
     // Prefer sources over any compiled twin sitting beside them; otherwise a stray
@@ -22,16 +19,8 @@ export default defineConfig({
     extensions: [".ts", ".tsx", ".mts", ".mjs", ".js", ".json"],
     alias: [
       {
-        find: /^@live-documentation\/shared$/u,
-        replacement: sharedSrcEntry
-      },
-      {
         find: /^@live-documentation\/shared\/(.+)$/u,
         replacement: `${withTrailingSeparator(sharedSrc)}$1`
-      },
-      {
-        find: /^@live-documentation\/scripts$/u,
-        replacement: scriptsSrcEntry
       },
       {
         find: /^@live-documentation\/scripts\/(.+)$/u,

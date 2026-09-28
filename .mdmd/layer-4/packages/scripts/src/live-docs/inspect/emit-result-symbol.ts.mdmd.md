@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result-symbol.ts
-- Generated At: 2026-09-27T23:21:29.746Z
+- Generated At: 2026-09-28T00:41:39.470Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracted from inspect.ts during Dev Day 50 (12/19). Symbol paths include both t
 #### `emitSymbolPathResult` {#symbol-emitsymbolpathresult}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result-symbol.ts#L32)
-- Parameters: `symbolPath`: [`SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop)[]; `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `symbolPath`: [`SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop)[]; `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitSymbolPathResult` — Summary
 Emits a successful symbol-aware path result.
@@ -49,9 +49,9 @@ Emits a "symbol path not found" result.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`LiveDocGraph`](../graph/liveDocGraph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`symbol-reference.resolveAnchorToSymbolName`](./symbol-reference.ts.mdmd.md#symbol-resolveanchortosymbolname)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop) (type-only)
 - [`types.SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference) (type-only)
+- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
