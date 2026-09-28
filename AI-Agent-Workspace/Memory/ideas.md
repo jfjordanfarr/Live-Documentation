@@ -1,6 +1,6 @@
 # Ideas and observations without a home yet
 
-_Current as of 2026-09-27. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
+_Current as of 2026-09-28. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
 
 ## Asked for or loved by the owner
 
@@ -17,6 +17,7 @@ Inputs to the consolidation (vision step 3), not a backlog:
 - Accessibility targets stated in December 2025 and not re-affirmed since: WCAG 2.1 AA, contrast (1.4.3), name/role/value (4.1.2), reduced motion for the force view. Raise them when the views are redesigned.
 - A February 2026 idea: colour force-graph nodes by a deterministic cluster. The co-activation code is gone; the idea does not need it.
 - The multi-path rendering design (every shortest path merged into one DAG, near-miss paths dashed, symbol-divergent paths colour-coded) survives in [the Explorer doc](../../.mdmd/layer-3/live-documentation-explorer.mdmd.md) and does not depend on any one view.
+- **The Playwright suite is plumbing, not a verdict on the UI.** Its 29 specs check the Membrane Map's mechanics: state surviving a reload, cards staying inside their membranes, stale URL state degrading cleanly, pixel-stable layout. The owner, 2026-09-28: "I didn't feel that the UI had been fully understood/worked-out enough to make _totally_ useful playwright tests. Still, I suspect that having the baseline plumbing to make it happen was valuable. I just don't want to give the impression that the playwright test suite is all figured out." Read a green run as "the client still draws what it drew", nothing more; the views are being redesigned.
 
 ## Engine
 

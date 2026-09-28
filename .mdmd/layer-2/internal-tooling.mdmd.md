@@ -36,7 +36,7 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 | `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, polyglot fixtures, CLI pathfinding, Rosetta parity, the oracle (~20 s)   |
 | `npm run test:e2e`         | Playwright against a built Explorer (`tests/e2e/`): Membrane Map behaviour and visual stability                                                                |
 
-Both Vitest projects import TypeScript sources directly, so neither needs a build first. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
+Both Vitest projects import TypeScript sources directly, so neither needs a build first. The Playwright specs check the Membrane Map's plumbing (state in the URL, containment, stable layout), not whether the picture is right; the owner said as much on 2026-09-28, and the views are being redesigned (vision step 3). The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
 
 ---
 
