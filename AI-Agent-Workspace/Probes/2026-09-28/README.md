@@ -255,3 +255,16 @@ On the hosted page, the same evening: "HOLY SHIT THIS IS SO GOOD. WOW! Yeah this
 ![The explainer behind the question mark](shots/board-21-help.png)
 
 On round 9: "Super slick. This is awesome." Round 10 followed: the orbit turns the way the force graph's does, a click pins the panel and the pinned panel opens the piece, the text was halved, and the views took the names the owner proposed on trial: the World Map outside, the Local Map inside, reached by zooming in far enough. "Overall, I think this is the right direction and we could really work with this."
+
+### Forks closed by the owner's words
+
+Of the twenty forks in this record, the ten above, the eight from the board and the two in [black-boxes.md](black-boxes.md), the owner's verdict of 2026-09-28 closed eight. The picture they settle is now in [the vision](../../../.mdmd/layer-1/vision.mdmd.md).
+
+- **1 and 8, which way the chain reads and the composition of the canvas.** Neither a law nor a composition: "In 3D, I see that you're still worried about the left-to-right semantics. This is a mistake in my opinion." Pieces sit where a person puts them; a wire carries its own direction from the caller's blue door to the server's green one.
+- **2, depth at file scale.** None: "2D inside the black box of a software system, and 3D outside of one."
+- **6 and 10, the pages and which to carry forward.** The board is the reference build. The other pages stay hosted until the owner says otherwise; nothing is deleted.
+- **11, the board's colour.** "A cloud white blank surface", with "a deep dark gray black background for those folks".
+- **15, what opens a piece.** "zooming in on an object sufficiently closely in the world map should cause a transition into the local map for that object", and the link in a pinned panel: "The pinned popover element should contain a clickable link to dive inside that system and see its guts." The double-click stays as a convenience, unmentioned.
+- **17, the inside of a piece.** The Local Map, "in either the 2D mode (membrane map, once we get it actually looking as good as the original Local Map) or 3D mode (force-directed graph)".
+
+Ten remain open: 3, a folder's public surface, the wall or the barrel; 4 and 16, the shared library as a tile on the board or a token beneath the pieces; 5 and 18, where a board's declared districts, tunnel, edges and positions are written, on which the owner said the same day that "the world map is like the canvas that the user is expected to build upon" and that saving and sharing what a person declares is "extremely underdefined and underexplored"; 7, what a click on a card inside does; 9, a wire that would cross a card; 12, uniform pieces or sized by contents; 13, how the built-on layer is drawn, on which the owner's first iteration is "just checking whether an SBOM format file exists in a directory that was opened as an object in the world map"; 14, doors that slide to visible faces or stay put; and the two from rounds 8 and 9, manifests as Live Docs or read at render time, and which mouse button orbits.

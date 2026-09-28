@@ -31,13 +31,25 @@ The tool leads with the first two, because the single-folder map is what works t
 | System | a repository or app       | endpoints: routes, service contracts, stored procedures | remote endpoints: HTTP calls, service proxies, connection strings |
 | Zone   | cloud, on-prem, a network | —                                                       | —                                                                 |
 
-What holds at every scale is the model: a thing exposes and consumes, and the picture shows what flows in, what flows out, and what is connected to what. How that is drawn is open. Today it is cards with pins and wires; it may become something three-dimensional that a person reads at a glance. Two things are settled taste rather than design: focusing on something fades what is unrelated to it, and whatever convention marks direction is the same everywhere it appears.
+What holds at every scale is the model: a thing exposes and consumes, and the picture shows what flows in, what flows out, and what is connected to what. How that is drawn was open until the probes of 2026-09-28; the picture below is what they settled. Two things were settled taste before any of it: focusing on something fades what is unrelated to it, and whatever convention marks direction is the same everywhere it appears.
 
 ## Scale is a design law, not a zoom slider
 
-Each scale is its own designed experience, complete on its own terms. The closest view, one file with its public symbols, consumers flanking it, and wires crossing between them, should feel intimate and exact. The furthest, systems as shapes on a canvas, should feel like a map. The mechanics are continuous: the same model, the same fading, the same navigation everywhere. The renderings are crafted separately, and which renderings will exist is not decided; the current views are precedents, not the plan. You move between scales; the view does not morph under you. From any scale, the next one out should be visible enough to pull you toward it.
+Each scale is its own designed experience, complete on its own terms. The closest view, one file with its public symbols, consumers flanking it, and wires crossing between them, should feel intimate and exact. The furthest, systems as pieces on a board, should feel like a map. The mechanics are continuous: the same model, the same fading, the same navigation everywhere. The renderings are crafted separately; which they are is the next section. You move between scales; the view does not morph under you. From any scale, the next one out should be visible enough to pull you toward it.
 
 The upper limit of scale is set by what the data can honestly support, not by the renderer.
+
+## The picture (2026-09-28)
+
+Two views, named on trial the **World Map** and the **Local Map**, each reached from the other by zooming.
+
+The World Map is the outside of everything: a blank board, white by default and deep dark for those who prefer it, seen at an isometric angle through an orthographic camera that pans, orbits and zooms without anything on it changing size. Each system is a closed piece floating above the board, a cube for a service, a tile for a library, a drum for a database, and nothing inside a piece shows from outside. A piece has doors: green where it serves an opening, a route, a service endpoint, a stored procedure, a table; blue where it calls one. Wires run door to door through the air, blue from the caller to green at the server, and a wire's evidence is a hover away. Districts such as cloud and on-prem are tints on the board, light blue and light orange, and a tunnel between districts is a declared object drawn where the wire crosses. What a piece stands on, its packages and project references, hangs beneath it, so a long beard means a heavy dependence. Pieces sit where a person put them, placed smoothly with snapping as an option, and there is no left-to-right law between systems: the reason for leaving two dimensions was that ordinal space could not hold the dependency shapes honestly, and the board should feel like plopping pieces down in a game.
+
+The Local Map is the inside of one system, its folders, files and symbols, in two dimensions as the folder-scale map once the Membrane Map is as good as the original Local Map, or in three as the force-directed graph. Inside a system the left-to-right law holds.
+
+Between them: zooming into a piece far enough opens it, and the map inside renders at reading size while the board recedes, dimmed. Text never resizes. A hover peeks, a click pins, and a pinned panel carries the link inside. The camera turns the way the force graph's does. Explanations live behind a help control, never on the screen.
+
+The board that settled this, the owner's words on it and the forks still open are recorded under `AI-Agent-Workspace/Probes/2026-09-28/`.
 
 ## Where edges come from
 
@@ -72,6 +84,6 @@ The order of work:
 
 1. Done 2026-09-27: the process scaffolding from an earlier way of working retired, and current docs separated from historical ones.
 2. Done 2026-09-28, except that C, Ruby and PowerShell keep their hand-written scanners until an oracle exists to measure a replacement: tree-sitter in the shipped adapters, C# first; a strict grammar and round-trip test for generated markdown; one derived graph index that every consumer reads; accuracy measured against the oracles above.
-3. Consolidate the Explorer into one file-scale view and one folder-scale view that you move between, using the visual vocabulary above. A disposable three-dimensional probe over the index comes first, to learn what the picture needs that the docs do not yet say.
+3. Consolidate the Explorer into the Local Map: one file-scale and one folder-scale rendering that you move between, in the picture above. The disposable probe came first, on 2026-09-28, and settled the picture. It also found what the picture needs that the docs do not yet say, which is the doc format's next growth: how each edge is known, and where, on every edge; the openings a system serves and calls; what a system stands on, from its manifests; what kind of system a folder is; and what a person declares, districts, tunnels, the edges no scan can see, and where the pieces sit.
 4. Add `reachable`: what is reachable from a system's entry points, the dual of impact analysis.
-5. Then the canvas.
+5. Then the World Map, drawn from those facts.
