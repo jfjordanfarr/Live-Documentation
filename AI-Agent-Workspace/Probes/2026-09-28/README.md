@@ -245,3 +245,11 @@ One page, plain SVG, no three.js: the estate as pieces on a board. A blank white
 18. Where a board's declared districts, tunnel and positions are written so that it can be shared.
 
 The page is `AI-Agent-Workspace/tmp/probes/black-boxes/index.html`, disposable like the others; `node build.cjs` rebuilds it and `shoot.cjs` takes its screenshots.
+
+### The owner's answer
+
+On the hosted page, the same evening: "HOLY SHIT THIS IS SO GOOD. WOW! Yeah this is -- this is exactly the direction I'm looking for. Absolutely phenomenal." What they wished for: the force graph's freedom of movement, "Could probably keep the camera orthogonal so it still feels isometric even when panning and things stay sane sizes"; a light mode without its "haze"; less parenthetical text on hover; and "A simple question mark element in a corner which allows one to bring up a guided walkthrough or an explainer modal/popover of the UI" in place of the on-screen legend. They also named the district colours as their firm's convention, light blue for cloud and light orange for on-prem, and asked whether a directory's outside dependencies can be known in general. All four wishes went in as rounds 8 and 9; the answer to the question, and two forks it adds, are in [black-boxes.md](black-boxes.md).
+
+![The board from a free orthographic camera](shots/board-20-orbit.png)
+
+![The explainer behind the question mark](shots/board-21-help.png)

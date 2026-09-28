@@ -69,3 +69,29 @@ Keys: Q E rotate, T top-down, U built on, S size by contents, G snap, D dark, R 
 - The lid transition does not carry the doors to the wall pins; the pins re-seat to the left and right edges by role. Continuity of identity is kept by the labels, not continuity of position.
 - Shadows are a fixed offset, not lit from the same side as the faces.
 - Thirty pieces are untested; nothing here would break, but the wires would.
+
+## Rounds 8 and 9: after the owner's yes
+
+The owner, on the hosted round-7 page: "HOLY SHIT THIS IS SO GOOD. WOW! Yeah this is -- this is exactly the direction I'm looking for." Then four things, all done the same evening:
+
+- "I can pan around as freely as I could in the force-directed graph view. Full 3D with these primitives seems great. Could probably keep the camera orthogonal so it still feels isometric even when panning and things stay sane sizes." The camera is now an orthographic one with a free azimuth and elevation: drag with the right button, or hold Shift, to orbit about the middle of the screen; quarter turns and top-down remain as tweens, and top-down squares the board to the screen with the whole board in view. Nothing scales but the world; text, doors and tokens keep their size.
+- "the light mode feels low-contrast, whereas the dark mode feels much much higher-contrast. I get the impression of a 'haze' over the scene in the light mode." The board stays white; the page behind it is a darker grey, the pieces' sides, strokes, text and shadows are darker, and the district tints are stronger. "I sincerely appreciate the light blue for cloud and light orange for onprem. Those are the conventions I normally use in my diagrams at my firm."
+- "too much parenthetical text on the hover over an object." The piece panel now says what it stands on in one line, "1 package, 2 framework assemblies, the Contracts project", with the project file named beneath, and the built-on tokens carry their kind.
+- "the tutorial text in the lower-left corner is unwelcome. A simple question mark element in a corner which allows one to bring up a guided walkthrough or an explainer modal/popover of the UI is fine." The legend is gone. A question mark in the corner opens an explainer, and its button starts a five-step walkthrough that drives the page: a piece, a wire, the built-on layer, opening a piece, the camera.
+
+### The owner's question about what a piece stands on
+
+"It feels like PaymentService depends on its own csproj, which would really be a thing inside the black box. Is there a way for us to know that a directory has dependencies on something that is not member to that directory?"
+
+What the strands and tokens show are things named in the project file that live outside the directory: packages with versions, framework assemblies, and other projects. The project file is inside the box; what it names is not. The wording now says so.
+
+Whether it can be known in general, from what exists today:
+
+- The docs already carry it for some languages. An import that resolves to no file in the folder is an outside dependency, and the graph index holds 469 such edges for this repository: TypeScript's `three`, `playwright`, node's built-ins. The tree-sitter C# adapter records none for the estate, because it drops framework namespaces as builtin names, so for C# the docs are silent on `System.ServiceModel`.
+- Versions live only in manifests: `.csproj` and `packages.config`, `package.json`, `requirements.txt` and `pyproject.toml`, `go.mod`, `Cargo.toml`, `Gemfile`, `pom.xml`. That is a short, well-known list, one small reader each, not open-ended pattern matching.
+- The vision's rule is to grow the doc format rather than add a side channel. The parsimonious form is a Live Doc for the manifest itself, whose dependencies section lists what it names, with versions; then the beard is derived from the docs like everything else, as the set of what a directory's files consume that is not in the directory. This is a fork for the owner, recorded below.
+
+### Forks added
+
+9. **Manifests as Live Docs**: an adapter per package manager so that a project file's dependencies are in the docs, or manifests read at render time as this page does.
+10. **The camera's buttons**: left-drag pans and right-drag orbits, as built, or the force graph's convention with left-drag orbiting.
