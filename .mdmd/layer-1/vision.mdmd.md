@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-09-26._
+_Current as of 2026-09-28._
 
 **Live Documentation turns a folder of source files into a map you can look at.**
 
@@ -64,14 +64,14 @@ The map's edges are checked against oracles that share no mechanism with the ana
 - Not editor-bound. The VS Code panel hosts the same static Explorer with a file watcher; nothing works only there.
 - Not a specification. The map records interface and wiring, not behavior.
 
-## Where this stands (September 2026)
+## Where this stands (2026-09-28)
 
-Works today: the single-folder map for TypeScript and JavaScript through the compiler API; adapters of varying depth for C, C#, Go, Java, Python, Ruby, Rust, PowerShell, ASP.NET markup, HTML, CSS, and JSON; deterministic regeneration with authored sections preserved; `inspect` pathfinding; a static Explorer with a good file-scale view.
+Works today: the single-folder map for TypeScript and JavaScript through the compiler API, and for C#, Python, Java, Go and Rust through tree-sitter, each measured against its compiler's own resolution; hand-written scanners for C, Ruby, PowerShell, ASP.NET markup, HTML, CSS and JSON, with no oracle yet for C or Ruby; one grammar that renders and parses every Live Doc, proved by a round trip over the whole corpus; deterministic regeneration with authored sections preserved; one graph index derived from the docs, which `inspect`, lint, the oracle and the Explorer all read; a static Explorer whose views predate the index and read it through a projection.
 
-Being fixed, in this order:
+The order of work:
 
-1. Retire the process scaffolding from an earlier way of working, and separate current docs from historical ones.
-2. Make the engine honest: tree-sitter in the shipped adapters, C# first; a strict grammar and round-trip test for generated markdown; one derived graph index that every consumer reads; accuracy measured against the oracles above.
-3. Consolidate the Explorer into one file-scale view and one folder-scale view that you move between, using the visual vocabulary above.
+1. Done 2026-09-27: the process scaffolding from an earlier way of working retired, and current docs separated from historical ones.
+2. Done 2026-09-28, except that C, Ruby and PowerShell keep their hand-written scanners until an oracle exists to measure a replacement: tree-sitter in the shipped adapters, C# first; a strict grammar and round-trip test for generated markdown; one derived graph index that every consumer reads; accuracy measured against the oracles above.
+3. Consolidate the Explorer into one file-scale view and one folder-scale view that you move between, using the visual vocabulary above. A disposable three-dimensional probe over the index comes first, to learn what the picture needs that the docs do not yet say.
 4. Add `reachable`: what is reachable from a system's entry points, the dual of impact analysis.
 5. Then the canvas.
