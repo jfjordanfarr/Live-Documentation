@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-09-28T16:48:40.850Z
+- Generated At: 2026-09-28T21:15:53.161Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,13 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 
 ##### `Report` — Summary
 What the comparison found, bucket by bucket.
+
+#### `fixtureGlobs` {#symbol-fixtureglobs}
+- Type: function
+- Source: [source](../../../../scripts/oracle/compare.ts#L68)
+
+##### `fixtureGlobs` — Summary
+The default globs anchor on this workspace's layout; a fixture is its own workspace, so keep only the extensions.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function

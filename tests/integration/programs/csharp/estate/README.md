@@ -25,6 +25,8 @@ Two expectation files sit under `expected/`, and they measure different things.
 - `compiler-edges.json` is produced by `npm run oracle:index -- <this directory>`. It runs `scip-dotnet` over `Estate.sln` in a temporary copy and records every file-to-file edge the C# compiler resolved, with the symbols that carry it, plus every document the index contained. Nothing is filtered. Regenerate it after changing any C# file.
 - `hand-verified-edges.json` lists the hops no compiler can see, each with the evidence a reader can check in the two files: configuration keys, endpoint names and addresses, routes, element ids, stored-procedure and table names. Edges marked `remote` cross a deployment boundary.
 
+`board.md` is the estate as a board: its projects and databases as things, two regions and the tunnel between them. `tests/integration/live-docs/board.test.ts` generates the docs over a copy of the fixture, joins the board to them, and checks that every `remote` edge above appears as a wire between two things.
+
 `npm run oracle:compare -- <this directory>` runs the shipped generator over a copy of the fixture and prints where its Dependencies sections disagree with both files. It is a list, not a score.
 
 ## Things worth knowing

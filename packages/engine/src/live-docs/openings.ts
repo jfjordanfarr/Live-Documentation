@@ -25,7 +25,7 @@ export const ROUTE_KIND = "route";
 /** The kind of a symbol that is an address a service listens on. */
 export const ADDRESS_KIND = "address";
 /** The kinds of symbols a database script declares. */
-export const SQL_OBJECT_KINDS: ReadonlySet<string> = new Set(["procedure", "table", "view", "function"]);
+export const SQL_OBJECT_KINDS: ReadonlySet<string> = new Set(["procedure", "table", "view", "sql-function"]);
 
 const HTTP_METHODS: ReadonlySet<string> = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]);
 
@@ -234,10 +234,10 @@ export function sqlDeclaredName(raw: string): string {
   return raw.split(".").map((part) => part.replace(/^\[|\]$/gu, "").replace(/^"|"$/gu, "").trim()).join(".");
 }
 
-/** The kind of a `CREATE` statement, as a symbol kind. */
+/** The kind of a `CREATE` statement, as a symbol kind. A SQL function is `sql-function`, so that it is never mistaken for a function of a source language. */
 function sqlKind(keyword: string): string {
   const lower = keyword.toLowerCase();
-  return lower === "proc" ? "procedure" : lower;
+  return lower === "proc" ? "procedure" : lower === "function" ? "sql-function" : lower;
 }
 
 /** SQL text without its comments and string literals, positions kept. */

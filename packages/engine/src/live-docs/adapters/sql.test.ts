@@ -60,7 +60,7 @@ describe("sqlAdapter", () => {
     expect(result?.symbols.map((symbol) => `${symbol.kind} ${symbol.name} @${symbol.location?.line}`)).toEqual([
       "table dbo.Payment @1",
       "view dbo.RecentPayments @3",
-      "function dbo.fn_Balance @5"
+      "sql-function dbo.fn_Balance @5"
     ]);
     expect(result?.dependencies).toEqual([]);
   });

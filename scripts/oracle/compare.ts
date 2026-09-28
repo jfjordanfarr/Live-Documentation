@@ -65,7 +65,7 @@ export interface Report {
 }
 
 /** The default globs anchor on this workspace's layout; a fixture is its own workspace, so keep only the extensions. */
-function fixtureGlobs(): string[] {
+export function fixtureGlobs(): string[] {
   const extensions = new Set(LIVE_DOCUMENTATION_DEFAULT_GLOBS.map((pattern) => pattern.slice(pattern.lastIndexOf("/") + 1)));
   return Array.from(extensions).map((suffix) => `**/${suffix}`);
 }

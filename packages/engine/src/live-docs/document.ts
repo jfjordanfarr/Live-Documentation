@@ -499,7 +499,7 @@ export function authoredBlockOf(text: string | undefined): string {
 // Reader
 // ============================================================================
 
-class Reader {
+export class Reader {
   private readonly lines: string[];
   private index = 0;
 
