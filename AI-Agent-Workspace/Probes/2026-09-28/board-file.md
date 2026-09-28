@@ -140,7 +140,7 @@ Every edit in every host is, in the end, an edit to the text, so every host can 
 
 **Realistically, in order, with what each step deletes.**
 
-1. The board text's grammar and lint, the last of the vision's five growths. The estate's hand-verified file stops being a board's source.
+1. The board text's grammar and lint, the last of the vision's five growths, proposed in [board-text.md](board-text.md). The estate's hand-verified file stops being a board's source.
 2. The World Map and the Local Map as one viewer over the graph, the vision's steps 3 to 5. The five old views go.
 3. The single file: inline the build, embed the text and the provenance, save as a new copy, draft in storage, import with drift. The three-kind bundle, the dead endpoints and probably the zip library go.
 4. The workbench host with the seam, which is the vision's editor panel. Thin, and nothing goes.
