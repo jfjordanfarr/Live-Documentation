@@ -3,7 +3,7 @@
  * writes it and the client reads it.
  */
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 /** The bundle. */
 export interface StaticExplorerData {

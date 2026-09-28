@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
-- Generated At: 2026-09-28T00:41:40.746Z
+- Generated At: 2026-09-28T01:00:43.526Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,11 @@ _No public symbols detected_
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`LiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`index.Direction`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-direction)
 - [`index.emitDualDirectionResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitdualdirectionresult)
 - [`index.emitDualDirectionSymbolResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
@@ -39,9 +44,4 @@ _No public symbols detected_
 - [`index.resolveSymbolReference`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-resolvesymbolreference)
 - [`index.searchGraph`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-searchgraph)
 - [`index.searchSymbolPath`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-searchsymbolpath)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`LiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`graphFiles.readLiveDocGraph`](../../packages/shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 <!-- LIVE-DOC:END Dependencies -->

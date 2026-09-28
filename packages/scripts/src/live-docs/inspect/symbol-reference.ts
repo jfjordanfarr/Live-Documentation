@@ -7,9 +7,9 @@
  * @module inspect/symbol-reference
  */
 
-import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
-import { symbolName } from "@live-documentation/shared/live-docs/document";
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { symbolName } from "@live-documentation/engine/live-docs/document";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { resolveArtifactIdentifier } from "./resolve-artifact";
 import type { SymbolReference } from "./types";

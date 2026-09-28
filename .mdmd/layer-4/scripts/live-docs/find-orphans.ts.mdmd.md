@@ -24,5 +24,5 @@ _No public symbols detected_
 - `node:fs/promises` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
 <!-- LIVE-DOC:END Dependencies -->

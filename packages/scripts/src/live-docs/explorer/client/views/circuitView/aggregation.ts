@@ -6,7 +6,7 @@ import type { DirectoryNode } from "../../types";
  * Used to drive the visual weight and labels of collapsed directory tiles.
  */
 export interface DirectoryAggregate {
-  /** The directory path key (e.g. "packages/shared/src") */
+  /** The directory path key (e.g. "packages/engine/src") */
   readonly path: string;
   /** Display name (last segment, or collapsed chain like "shared/src") */
   readonly name: string;
@@ -28,7 +28,7 @@ export interface DirectoryAggregate {
  * This is the core progressive-disclosure aggregation: given any directory
  * in the hierarchy, it returns one DirectoryAggregate per effective child
  * directory. Single-child chains are collapsed (e.g. if `packages/` only
- * contains `shared/`, the aggregate is named `packages/shared` and points
+ * contains `shared/`, the aggregate is named `packages/engine` and points
  * to the deeper node).
  *
  * @param parentDir - The directory whose children to aggregate

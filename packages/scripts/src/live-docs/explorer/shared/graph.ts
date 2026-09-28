@@ -8,8 +8,8 @@
  * bundle the static builder wrote. It keeps the shape the views expect, quirks
  * included, until the views read the graph directly.
  */
-import { symbolName } from "@live-documentation/shared/live-docs/document";
-import type { GraphEdge, GraphFile, LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import { symbolName } from "@live-documentation/engine/live-docs/document";
+import type { GraphEdge, GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type {
     ExplorerDependencyReference,

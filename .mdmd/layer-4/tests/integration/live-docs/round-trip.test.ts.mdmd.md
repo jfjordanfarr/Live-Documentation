@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/round-trip.test.ts
-- Generated At: 2026-09-27T23:21:33.935Z
+- Generated At: 2026-09-28T01:00:44.873Z
 
 ## Authored
 ### Purpose
@@ -26,10 +26,10 @@ _No public symbols detected_
 - `node:fs`
 - `node:os`
 - `node:path` - `path`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`document.parseLiveDoc`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`document.renderLiveDoc`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`document.parseLiveDoc`](../../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`document.renderLiveDoc`](../../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

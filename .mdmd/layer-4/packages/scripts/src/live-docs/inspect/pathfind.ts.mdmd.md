@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind.ts
-- Generated At: 2026-09-28T00:41:39.577Z
+- Generated At: 2026-09-28T01:00:43.350Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Implements the breadth-first search for the shortest path between two files of t
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/pathfind.ts#L24)
 - Returns: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
 
 ##### `searchGraph` — Summary
 Performs a BFS search from a source node to a target node.
@@ -38,7 +38,7 @@ Search result with path (if found), visited nodes, and frontier
 #### `getNeighbors` {#symbol-getneighbors}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/pathfind.ts#L105)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
 
 ##### `getNeighbors` — Summary
 Gets the neighbors of a node based on traversal direction.
@@ -69,8 +69,8 @@ Array of node IDs from start to target
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.FrontierEntry`](./types.ts.mdmd.md#symbol-frontierentry) (type-only)
 - [`types.PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

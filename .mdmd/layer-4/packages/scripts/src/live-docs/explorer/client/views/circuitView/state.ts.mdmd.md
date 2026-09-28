@@ -92,11 +92,11 @@ Returns true if any directory is currently expanded.
 Builds the breadcrumb trail for a given directory path.
 Returns an array of { label, path } entries from root to the target.
 
-Example: "packages/shared/src" → [
+Example: "packages/engine/src" → [
   { label: "Root", path: "__root__" },
   { label: "packages", path: "packages" },
-  { label: "shared", path: "packages/shared" },
-  { label: "src", path: "packages/shared/src" }
+  { label: "shared", path: "packages/engine" },
+  { label: "src", path: "packages/engine/src" }
 ]
 
 #### `findContainingDirectory` {#symbol-findcontainingdirectory}

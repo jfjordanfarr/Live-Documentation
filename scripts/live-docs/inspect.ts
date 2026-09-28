@@ -14,6 +14,13 @@ import path from "node:path";
 import process from "node:process";
 
 import {
+  DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+  normalizeLiveDocumentationConfig,
+  type LiveDocumentationConfig,
+  type LiveDocumentationConfigInput
+} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import {
   type Direction,
   hasSymbolReference,
   resolveSymbolReference,
@@ -29,13 +36,6 @@ import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult
 } from "@live-documentation/scripts/live-docs/inspect";
-import {
-  DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  normalizeLiveDocumentationConfig,
-  type LiveDocumentationConfig,
-  type LiveDocumentationConfigInput
-} from "@live-documentation/shared/config/liveDocumentationConfig";
-import { readLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
 
 interface ParsedArgs {
   help: boolean;
@@ -339,9 +339,9 @@ function usage(): string {
     `  path/to/file.ts#SymbolName   Hash-separated (preferred, markdown-compatible)\n` +
     `  path/to/file.ts:SymbolName   Colon-separated (Windows-safe alternative)\n` +
     `\nExamples:\n` +
-    `  npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/shared/src/live-docs/core.ts\n` +
-    `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/shared/src/live-docs/core.ts#analyzeSourceFile --json\n` +
-    `  npm run live-docs:inspect -- --from packages/shared/src/config/liveDocumentationConfig.ts --direction inbound --json\n`;
+    `  npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts\n` +
+    `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json\n` +
+    `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n`;
 }
 
 main().catch((error) => {

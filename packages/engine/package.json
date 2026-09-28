@@ -1,0 +1,35 @@
+{
+  "name": "@live-documentation/engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Live Documentation engine: configuration, language adapters, the analysis of a source file, the grammar of a Live Doc, and the graph derived from the docs.",
+  "license": "MIT",
+  "author": "Jordan Farr <jfjordanfarr@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfjordanfarr/Live-Documentation.git",
+    "directory": "packages/engine"
+  },
+  "type": "commonjs",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"require('node:fs').copyFileSync('src/live-docs/adapters/powershell.emit-ast.ps1', 'dist/live-docs/adapters/powershell.emit-ast.ps1')\""
+  },
+  "dependencies": {
+    "@vscode/tree-sitter-wasm": "^0.3.0",
+    "glob": "^13.0.6",
+    "ignore": "^7.0.5",
+    "minimatch": "^10.2.4",
+    "typescript": "^5.4.0",
+    "web-tree-sitter": "^0.27.0"
+  }
+}

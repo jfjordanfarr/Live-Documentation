@@ -23,7 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - `node:fs`
 - `node:path`
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`graphFiles.readLiveDocGraph`](../../../packages/shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

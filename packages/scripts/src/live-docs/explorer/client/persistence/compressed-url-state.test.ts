@@ -27,9 +27,9 @@ describe("snapshotToPayload", () => {
   });
 
   it("includes selected node when present", () => {
-    const snap: UrlStateSnapshot = { ...DEFAULT_SNAPSHOT, selectedNodeId: "packages/shared/src/types.ts" };
+    const snap: UrlStateSnapshot = { ...DEFAULT_SNAPSHOT, selectedNodeId: "packages/engine/src/types.ts" };
     const payload = snapshotToPayload(snap);
-    expect(payload.n).toBe("packages/shared/src/types.ts");
+    expect(payload.n).toBe("packages/engine/src/types.ts");
   });
 
   it("includes pins when non-empty", () => {
@@ -50,20 +50,20 @@ describe("snapshotToPayload", () => {
   it("includes expanded directories when non-empty", () => {
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      expandedDirectories: new Set(["packages", "packages/shared"]),
+      expandedDirectories: new Set(["packages", "packages/engine"]),
     };
     const payload = snapshotToPayload(snap);
-    expect(payload.e).toEqual(expect.arrayContaining(["packages", "packages/shared"]));
+    expect(payload.e).toEqual(expect.arrayContaining(["packages", "packages/engine"]));
     expect(payload.e).toHaveLength(2);
   });
 
   it("includes expanded cards when non-empty", () => {
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      expandedCards: new Set(["packages/shared/src/types.ts", "packages/server/src/index.ts"]),
+      expandedCards: new Set(["packages/engine/src/types.ts", "packages/server/src/index.ts"]),
     };
     const payload = snapshotToPayload(snap);
-    expect(payload.c).toEqual(expect.arrayContaining(["packages/shared/src/types.ts", "packages/server/src/index.ts"]));
+    expect(payload.c).toEqual(expect.arrayContaining(["packages/engine/src/types.ts", "packages/server/src/index.ts"]));
     expect(payload.c).toHaveLength(2);
   });
 
@@ -208,21 +208,23 @@ describe("compress/decompress round-trip", () => {
     expect(restored.filters).toEqual({ showTests: false, showAssets: false });
   });
 
-  it("produces a URL-safe string (no +, /, = characters)", () => {
+  it("produces a string that survives the query string", () => {
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      selectedNodeId: "packages/shared/src/live-docs/adapters/typescript.ts",
+      selectedNodeId: "packages/engine/src/live-docs/adapters/typescript.ts",
       pinSet: {
         entries: [
-          { nodeId: "packages/shared/src/live-docs/adapters/typescript.ts", symbol: "extractPublicSymbols" },
+          { nodeId: "packages/engine/src/live-docs/adapters/typescript.ts", symbol: "extractPublicSymbols" },
         ],
       },
     };
     const compressed = compressSnapshot(snap);
-    // lz-string's compressToEncodedURIComponent should produce only URL-safe chars
-    expect(compressed).not.toContain("+");
-    expect(compressed).not.toContain("/");
-    expect(compressed).not.toContain("=");
+    // lz-string's URI alphabet is letters, digits, "+", "-" and "$"; a "+" reads back from a
+    // query string as a space, which the decoder restores, so the round trip is what matters.
+    expect(compressed).toMatch(/^[A-Za-z0-9+\-$]+$/u);
+    const readBack = new URLSearchParams(`s=${compressed}`).get("s") ?? "";
+    expect(decompressSnapshot(readBack).selectedNodeId).toBe(snap.selectedNodeId);
+    expect(decompressSnapshot(readBack).pinSet).toEqual(snap.pinSet);
   });
 
   it("returns default snapshot for corrupted input", () => {

@@ -5,16 +5,16 @@ import path from "node:path";
 import process from "node:process";
 
 import {
+  findBrokenAssetReferences,
+  type AssetReferenceIssue
+} from "./assetPaths";
+import {
   compileIgnorePatterns,
   loadSlopcopConfig,
   resolveIgnoreGlobs,
   resolveIncludeGlobs,
   resolveRootDirectories
 } from "./config";
-import {
-  findBrokenAssetReferences,
-  type AssetReferenceIssue
-} from "../../packages/shared/src/tooling/assetPaths";
 
 interface ParsedArgs {
   helpRequested: boolean;

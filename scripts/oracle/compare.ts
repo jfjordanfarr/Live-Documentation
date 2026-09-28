@@ -15,13 +15,13 @@ import * as fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-import { generateLiveDocs } from "@live-documentation/generator/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_DEFAULT_GLOBS,
   normalizeLiveDocumentationConfig
-} from "@live-documentation/shared/config/liveDocumentationConfig";
-import { readLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { generateLiveDocs } from "@live-documentation/generator/generator";
 
 import { copyFixture } from "./fixture";
 import type { OracleEdges } from "./scip-edges";

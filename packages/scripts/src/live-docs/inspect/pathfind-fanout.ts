@@ -7,7 +7,7 @@
  * @module inspect/pathfind-fanout
  */
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { getNeighbors } from "./pathfind";
 import type { Direction, FanoutPath } from "./types";

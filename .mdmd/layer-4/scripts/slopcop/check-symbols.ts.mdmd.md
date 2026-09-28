@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-symbols.ts
-- Generated At: 2026-09-27T23:21:32.037Z
+- Generated At: 2026-09-28T01:00:43.702Z
 
 ## Authored
 ### Purpose
@@ -27,12 +27,12 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`symbolReferences.SymbolReferenceIssue`](../../packages/shared/src/tooling/symbolReferences.ts.mdmd.md#symbol-symbolreferenceissue)
-- [`symbolReferences.SymbolRuleSetting`](../../packages/shared/src/tooling/symbolReferences.ts.mdmd.md#symbol-symbolrulesetting)
-- [`symbolReferences.findSymbolReferenceAnomalies`](../../packages/shared/src/tooling/symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 - [`config.SlopcopSymbolConfig`](./config.ts.mdmd.md#symbol-slopcopsymbolconfig)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)
 - [`config.resolveIgnoreGlobs`](./config.ts.mdmd.md#symbol-resolveignoreglobs)
 - [`config.resolveIncludeGlobs`](./config.ts.mdmd.md#symbol-resolveincludeglobs)
+- [`symbolReferences.SymbolReferenceIssue`](./symbolReferences.ts.mdmd.md#symbol-symbolreferenceissue)
+- [`symbolReferences.SymbolRuleSetting`](./symbolReferences.ts.mdmd.md#symbol-symbolrulesetting)
+- [`symbolReferences.findSymbolReferenceAnomalies`](./symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 <!-- LIVE-DOC:END Dependencies -->

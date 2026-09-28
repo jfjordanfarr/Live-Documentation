@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-fanout.ts
-- Generated At: 2026-09-28T00:41:39.540Z
+- Generated At: 2026-09-28T01:00:43.313Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ Maximum number of paths to enumerate to avoid combinatorial explosion.
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/pathfind-fanout.ts#L32)
 - Returns: [`FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath)[]
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
 
 ##### `enumerateTerminalPaths` — Summary
 Enumerates all paths from a source node to terminal nodes.
@@ -47,8 +47,8 @@ Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`pathfind.getNeighbors`](./pathfind.ts.mdmd.md#symbol-getneighbors)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -7,8 +7,8 @@
  * @module inspect/describe-node
  */
 
-import { symbolName } from "@live-documentation/shared/live-docs/document";
-import type { GraphFile, LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import { symbolName } from "@live-documentation/engine/live-docs/document";
+import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type { NodeDescriptor, SymbolDescriptor, SymbolParameterDescriptor } from "./types";
 

@@ -17,7 +17,7 @@
       ".playwright-mcp/**"
     ],
     "ignoreTargets": [
-      "packages/shared/src/tooling/__fixtures__/documentation-links/sample-tool.mdmd.md"
+      "scripts/doc-tools/__fixtures__/documentation-links/sample-tool.mdmd.md"
     ]
   },
   "assets": {

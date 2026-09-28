@@ -14,7 +14,7 @@ Document the visualization command center that renders the Live Doc graph as int
 ### Notes
 
 - Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with client and shared modules.
-- The shared layer (`explorer/shared/`) builds the static bundle: the derived graph index from `packages/shared` plus the related markdown, with the HTML/CSS/JS assets. `graph.ts` there is the projection from the graph index to the node-and-link payload the views render; the client runs it on load (since 2026-09-28).
+- The shared layer (`explorer/shared/`) builds the static bundle: the derived graph index from `packages/engine` plus the related markdown, with the HTML/CSS/JS assets. `graph.ts` there is the projection from the graph index to the node-and-link payload the views render; the client runs it on load (since 2026-09-28).
 - The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`. The client paths that still fetched from it went on 2026-09-28.
 - The client (`explorer/client/`) currently renders four view modes:
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.

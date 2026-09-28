@@ -4,12 +4,12 @@ import * as os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig
-} from "../../../packages/shared/src/config/liveDocumentationConfig";
-import { parseLiveDoc, renderLiveDoc } from "../../../packages/shared/src/live-docs/document";
+} from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { parseLiveDoc, renderLiveDoc } from "../../../packages/engine/src/live-docs/document";
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 const REPO_ROOT = path.resolve(__dirname, "..", "..", "..");
 const PROGRAMS = path.join(REPO_ROOT, "tests", "integration", "programs");

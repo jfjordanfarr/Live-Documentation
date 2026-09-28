@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-asset-paths.ts
-- Generated At: 2026-09-27T23:21:32.005Z
+- Generated At: 2026-09-28T01:00:43.662Z
 
 ## Authored
 ### Purpose
@@ -27,8 +27,8 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`assetPaths.AssetReferenceIssue`](../../packages/shared/src/tooling/assetPaths.ts.mdmd.md#symbol-assetreferenceissue)
-- [`assetPaths.findBrokenAssetReferences`](../../packages/shared/src/tooling/assetPaths.ts.mdmd.md#symbol-findbrokenassetreferences)
+- [`assetPaths.AssetReferenceIssue`](./assetPaths.ts.mdmd.md#symbol-assetreferenceissue)
+- [`assetPaths.findBrokenAssetReferences`](./assetPaths.ts.mdmd.md#symbol-findbrokenassetreferences)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)
 - [`config.resolveIgnoreGlobs`](./config.ts.mdmd.md#symbol-resolveignoreglobs)

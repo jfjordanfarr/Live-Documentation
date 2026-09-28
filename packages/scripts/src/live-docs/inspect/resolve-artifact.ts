@@ -9,9 +9,9 @@
 
 import path from "node:path";
 
-import type { LiveDocumentationConfig } from "@live-documentation/shared/config/liveDocumentationConfig";
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
-import { normalizeWorkspacePath } from "@live-documentation/shared/tooling/pathUtils";
+import type { LiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 
 /**
  * Resolves an artifact identifier (code path, doc path, or relative path) to a

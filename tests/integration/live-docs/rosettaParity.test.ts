@@ -22,11 +22,11 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { beforeAll, describe, it } from "vitest";
 
-import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig
-} from "../../../packages/shared/src/config/liveDocumentationConfig";
+} from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 // ---------------------------------------------------------------------------
 // Constants

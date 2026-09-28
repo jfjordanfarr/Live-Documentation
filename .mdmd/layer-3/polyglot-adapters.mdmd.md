@@ -13,7 +13,7 @@ Document the language adapters that turn a source file into its public symbols, 
 
 ### Notes
 
-- Adapters live in `packages/shared/src/live-docs/adapters/` and implement one `LanguageAdapter` interface: `analyze({ absolutePath, workspaceRoot, fileIndex })` returns symbols and dependencies for one file. The barrel (`adapters/index.ts`) dispatches by file extension; TypeScript and JavaScript are handled by the core with the TypeScript compiler API instead.
+- Adapters live in `packages/engine/src/live-docs/adapters/` and implement one `LanguageAdapter` interface: `analyze({ absolutePath, workspaceRoot, fileIndex })` returns symbols and dependencies for one file. The barrel (`adapters/index.ts`) dispatches by file extension; TypeScript and JavaScript are handled by the core with the TypeScript compiler API instead.
 - **C# is parsed with tree-sitter** (`csharp.ts`, since 2026-09-27). The grammar comes from `@vscode/tree-sitter-wasm` and runs on `web-tree-sitter` (`treeSitter.ts`); that package's own JavaScript entry cannot be required from Node, so only its `.wasm` files are used. The adapter extracts each file's declarations and every name it uses, builds a workspace-wide table of qualified type names once per generation run (cached on the file index), and resolves names the way the compiler does: enclosing types, then enclosing namespaces from the inside out, then `using` directives and aliases. A partial class is linked to the peer file that declares the members it uses. Per-file facts are cached by modification time, so the symbol-index pass and the document pass parse each file once.
 - **What no compiler sees** is handled by `csharp.dependencies.ts`: `ConfigurationManager.AppSettings[...]` and `ConnectionStrings[...]` keys (literals, or constants declared in this file or another), `ChannelFactory<T>(name)` endpoint names, `IConfiguration` indexer keys, types named in strings for reflection, and Hangfire job targets. Those resolve through the same type table.
 - **Configuration files publish what code reaches into them by.** `.config` files (`dotnetConfig.ts`) publish appSettings keys, connection-string names, WCF endpoint names and service names, and depend on the types their `contract` and `service name` attributes name. JSON files (`json.ts`) publish every key path joined with `:`, the way `IConfiguration` addresses nested settings. Markup files (`aspnet.ts`, `html.ts`) publish element ids. This is what lets a generated link to a key, an endpoint or an element land on a real anchor.
@@ -62,24 +62,24 @@ Document the language adapters that turn a source file into its public symbols, 
 
 ### Components
 
-- [packages/shared/src/live-docs/adapters/index.ts](../layer-4/packages/shared/src/live-docs/adapters/index.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/python.ts](../layer-4/packages/shared/src/live-docs/adapters/python.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/python.docstring.ts](../layer-4/packages/shared/src/live-docs/adapters/python.docstring.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/csharp.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/csharp.xmldoc.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/csharp.dependencies.ts](../layer-4/packages/shared/src/live-docs/adapters/csharp.dependencies.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/treeSitter.ts](../layer-4/packages/shared/src/live-docs/adapters/treeSitter.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/dotnetConfig.ts](../layer-4/packages/shared/src/live-docs/adapters/dotnetConfig.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/java.ts](../layer-4/packages/shared/src/live-docs/adapters/java.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/rust.ts](../layer-4/packages/shared/src/live-docs/adapters/rust.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/ruby.ts](../layer-4/packages/shared/src/live-docs/adapters/ruby.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/go.ts](../layer-4/packages/shared/src/live-docs/adapters/go.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/c.ts](../layer-4/packages/shared/src/live-docs/adapters/c.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/powershell.ts](../layer-4/packages/shared/src/live-docs/adapters/powershell.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/html.ts](../layer-4/packages/shared/src/live-docs/adapters/html.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/css.ts](../layer-4/packages/shared/src/live-docs/adapters/css.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/json.ts](../layer-4/packages/shared/src/live-docs/adapters/json.ts.mdmd.md)
-- [packages/shared/src/live-docs/adapters/aspnet.ts](../layer-4/packages/shared/src/live-docs/adapters/aspnet.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/index.ts](../layer-4/packages/engine/src/live-docs/adapters/index.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/python.ts](../layer-4/packages/engine/src/live-docs/adapters/python.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/python.docstring.ts](../layer-4/packages/engine/src/live-docs/adapters/python.docstring.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/csharp.ts](../layer-4/packages/engine/src/live-docs/adapters/csharp.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/csharp.xmldoc.ts](../layer-4/packages/engine/src/live-docs/adapters/csharp.xmldoc.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/csharp.dependencies.ts](../layer-4/packages/engine/src/live-docs/adapters/csharp.dependencies.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/treeSitter.ts](../layer-4/packages/engine/src/live-docs/adapters/treeSitter.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/dotnetConfig.ts](../layer-4/packages/engine/src/live-docs/adapters/dotnetConfig.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/java.ts](../layer-4/packages/engine/src/live-docs/adapters/java.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/rust.ts](../layer-4/packages/engine/src/live-docs/adapters/rust.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/ruby.ts](../layer-4/packages/engine/src/live-docs/adapters/ruby.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/go.ts](../layer-4/packages/engine/src/live-docs/adapters/go.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/c.ts](../layer-4/packages/engine/src/live-docs/adapters/c.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/powershell.ts](../layer-4/packages/engine/src/live-docs/adapters/powershell.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/html.ts](../layer-4/packages/engine/src/live-docs/adapters/html.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/css.ts](../layer-4/packages/engine/src/live-docs/adapters/css.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/json.ts](../layer-4/packages/engine/src/live-docs/adapters/json.ts.mdmd.md)
+- [packages/engine/src/live-docs/adapters/aspnet.ts](../layer-4/packages/engine/src/live-docs/adapters/aspnet.ts.mdmd.md)
 
 ## Evidence
 

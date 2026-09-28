@@ -5,8 +5,8 @@
  * Renders a file's Live Doc from the graph in the bundle: its metadata, its
  * authored block as markdown, and its generated sections as navigable lists.
  */
-import { renderLiveDoc } from "@live-documentation/shared/live-docs/document";
-import type { GraphFile } from "@live-documentation/shared/live-docs/graph";
+import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 
 import { requireElement } from "./dom";
 import { renderMarkdown } from "./markdown";

@@ -88,6 +88,11 @@ Record the key architectural decisions made during Live Documentation developmen
 - **What went with it**: the earlier in-memory graph builder in `packages/scripts`; the bundle's symbol index, whose symbol kinds were guessed from name casing; the bundle's provenance stamp, whose analyzer versions were a hard-coded string; the precomputed Local Map JSON files (`--local-maps`), which nothing read; the viewer configuration hint, which nothing wrote; and every client path that fetched from the HTTP server retired on 2026-03-10. The bundle for this repository shrank from 4.4 MB to 2.6 MB.
 - **Edge shape**: `kind` is `import` or `re-export` for a dependency line and `returns`, `parameter`, `extends`, `implements` or `constraint` for a type reference; `to` and `toSymbol` name the resolved target and its anchor; `from` names the referencing symbol's anchor; `link` keeps what was written, so an external module (no link) and a link nothing answers to (link, no target) are told apart. A type reference to a symbol of the same file resolves to the file itself; the adjacency lists exclude such self edges.
 
+### Package Names _(Recorded 2026-09-28)_
+
+- **Decision**: `packages/shared` became `packages/engine`, the word the vision uses for what it holds: configuration, the language adapters, the analysis of a source file, the grammar of a Live Doc, and the graph derived from the docs. The markdown-audit library that lived under its `tooling/` folder (SlopCop's link, asset and symbol checks, and the documentation-link enforcer) moved beside the scripts that are its only callers, under `scripts/slopcop/` and `scripts/doc-tools/`, as the oracle's converter already did; `tooling/` keeps the path and slug helpers the engine itself uses. An unused `uri/` module went. Entries above this one name the old paths as they were.
+- **Rationale**: the owner deferred both renames until the index step "decides where things live" (2026-09-27). With the index in the engine and every consumer reading it, the boundary is clear: the engine is everything that turns source into docs and docs into a graph, and nothing that only audits this repository's markdown.
+
 ### Generator Gaps Noted by Earlier Specs _(Recorded 2026-09-27; unprioritised)_
 
 Requirements written in 2025 and never implemented, kept as observations rather than commitments:
@@ -146,5 +151,5 @@ The following decisions were explored and explicitly removed from scope during t
 ### Implementation Traceability
 
 - [scripts/live-docs/generate.ts](../layer-4/scripts/live-docs/generate.ts.mdmd.md) implements the generation pipeline
-- Symbol ingestion relies on the TypeScript compiler API and the polyglot adapters under `packages/shared/src/live-docs/adapters/`
+- Symbol ingestion relies on the TypeScript compiler API and the polyglot adapters under `packages/engine/src/live-docs/adapters/`
 - Integration suites under `tests/integration/live-docs/` validate key hypotheses

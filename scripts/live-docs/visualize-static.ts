@@ -19,12 +19,12 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import { buildStaticExplorer } from "@live-documentation/scripts/live-docs/explorer/shared/staticBuilder";
 import {
     DEFAULT_LIVE_DOCUMENTATION_CONFIG,
     normalizeLiveDocumentationConfig,
     type LiveDocumentationConfigInput
-} from "@live-documentation/shared/config/liveDocumentationConfig";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { buildStaticExplorer } from "@live-documentation/scripts/live-docs/explorer/shared/staticBuilder";
 
 interface CliOptions {
     outputDir: string;

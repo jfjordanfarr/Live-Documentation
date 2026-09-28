@@ -1,7 +1,7 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
-const sharedSrc = path.resolve(__dirname, "packages/shared/src");
+const sharedSrc = path.resolve(__dirname, "packages/engine/src");
 const scriptsSrc = path.resolve(__dirname, "packages/scripts/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
@@ -41,7 +41,7 @@ export default defineConfig({
         test: {
           name: "unit",
           include: [
-            "packages/shared/src/**/*.test.ts",
+            "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",
             "packages/scripts/src/**/*.test.ts",
             "scripts/**/*.test.ts",

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/graph.ts
-- Generated At: 2026-09-28T00:41:39.343Z
+- Generated At: 2026-09-28T01:00:43.127Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Projects the graph index into the `ExplorerGraphPayload` the Explorer views rend
 - Type: function
 - Source: [source](../../../../../../../../packages/scripts/src/live-docs/explorer/shared/graph.ts#L43)
 - Returns: [`ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `explorerGraphOf` — Summary
 Projects the graph into the Explorer's node-and-link payload.
@@ -29,14 +29,14 @@ Projects the graph into the Explorer's node-and-link payload.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.symbolName`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
+- [`graph.GraphEdge`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphedge) (type-only)
+- [`graph.GraphFile`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`types.ExplorerDependencyReference`](./types.ts.mdmd.md#symbol-explorerdependencyreference) (type-only)
 - [`types.ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkPayload`](./types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](./types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](./types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 - [`types.ExplorerTypeReference`](./types.ts.mdmd.md#symbol-explorertypereference) (type-only)
-- [`document.symbolName`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
-- [`graph.GraphEdge`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphedge) (type-only)
-- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

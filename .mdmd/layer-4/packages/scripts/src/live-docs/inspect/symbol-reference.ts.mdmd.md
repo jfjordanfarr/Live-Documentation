@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/symbol-reference.ts
-- Generated At: 2026-09-28T00:41:39.616Z
+- Generated At: 2026-09-28T01:00:43.391Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,7 @@ Handles the symbol-prefix format used in Live Doc anchors.
 #### `resolveAnchorToSymbolName` {#symbol-resolveanchortosymbolname}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/symbol-reference.ts#L55)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `resolveAnchorToSymbolName` — Summary
 Resolves an anchor slug to the name of the symbol that carries it in the
@@ -72,7 +72,7 @@ Checks if an input string contains a symbol reference.
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/symbol-reference.ts#L125)
 - Returns: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `resolveSymbolReference` — Summary
 Resolves a symbol reference to a validated SymbolReference.
@@ -84,9 +84,9 @@ returned to allow partial matches during path search.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`LiveDocumentationConfig`](../../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`document.symbolName`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`resolve-artifact.resolveArtifactIdentifier`](./resolve-artifact.ts.mdmd.md#symbol-resolveartifactidentifier)
 - [`types.SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference) (type-only)
-- [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`document.symbolName`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

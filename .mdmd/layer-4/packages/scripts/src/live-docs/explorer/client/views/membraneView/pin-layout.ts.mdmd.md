@@ -115,7 +115,7 @@ Compute hierarchical cross-column directory bands (Strategy B+C).
 
 1. Groups flow nodes by immediate parent directory → leaf bands
 2. Builds a directory trie relative to the LCA
-3. Collapses single-child chains (e.g. packages → shared → src → packages/shared/src)
+3. Collapses single-child chains (e.g. packages → shared → src → packages/engine/src)
 4. At branching trie nodes, creates parent bands wrapping child bands
 5. Assigns bandRow at each nesting level via greedy interval scheduling
 

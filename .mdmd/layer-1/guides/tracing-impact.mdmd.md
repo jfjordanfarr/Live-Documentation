@@ -16,13 +16,13 @@ When you change a file, what else moves? Live Documentation answers with depende
 ### Find the path between two files
 
 ```bash
-npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/shared/src/live-docs/core.ts
+npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts
 ```
 
 ```
-Path from scripts/live-docs/generate.ts to packages/shared/src/live-docs/core.ts (2 hop(s), outbound).
+Path from scripts/live-docs/generate.ts to packages/engine/src/live-docs/core.ts (2 hop(s), outbound).
   1. scripts/live-docs/generate.ts […] -> packages/generator/src/generator.ts […]
-  2. packages/generator/src/generator.ts […] -> packages/shared/src/live-docs/core.ts […]
+  2. packages/generator/src/generator.ts […] -> packages/engine/src/live-docs/core.ts […]
 ```
 
 Each hop names the file and the Live Doc the edge was read from.
@@ -32,7 +32,7 @@ Each hop names the file and the Live Doc the edge was read from.
 Trace connections between specific symbols, not just files, with `path#Symbol`:
 
 ```bash
-npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/shared/src/live-docs/core.ts#analyzeSourceFile --json
+npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json
 ```
 
 ```json
@@ -41,11 +41,11 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generate
   "direction": "outbound",
   "length": 1,
   "from": { "codePath": "packages/generator/src/generator.ts", "symbol": "generateLiveDocs" },
-  "to": { "codePath": "packages/shared/src/live-docs/core.ts", "symbol": "analyzeSourceFile" },
+  "to": { "codePath": "packages/engine/src/live-docs/core.ts", "symbol": "analyzeSourceFile" },
   "hops": [
     {
       "from": { "codePath": "packages/generator/src/generator.ts", "symbol": "generateLiveDocs" },
-      "to": { "codePath": "packages/shared/src/live-docs/core.ts", "symbol": "analyzeSourceFile" }
+      "to": { "codePath": "packages/engine/src/live-docs/core.ts", "symbol": "analyzeSourceFile" }
     }
   ]
 }
@@ -54,7 +54,7 @@ npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generate
 ### See what depends on a file (inbound)
 
 ```bash
-npm run live-docs:inspect -- --from packages/shared/src/config/liveDocumentationConfig.ts --direction inbound
+npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound
 ```
 
 Without `--to`, the result is a fan-out: every terminal path away from the file, up to 200 of them. For a module as widely used as the configuration loader that list is long. `--max-depth` shortens it and `--json` returns the paths as data.
@@ -88,7 +88,7 @@ Terminal both paths from packages/generator/src/generator.ts (max depth 25, 8 pa
 Add `--json` for scripts and automation:
 
 ```bash
-npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/shared/src/live-docs/graphFiles.ts --json
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/engine/src/live-docs/graphFiles.ts --json
 ```
 
 ```json
@@ -101,17 +101,17 @@ npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/s
     "docPath": ".mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md"
   },
   "to": {
-    "codePath": "packages/shared/src/live-docs/graphFiles.ts",
-    "docPath": ".mdmd/layer-4/packages/shared/src/live-docs/graphFiles.ts.mdmd.md"
+    "codePath": "packages/engine/src/live-docs/graphFiles.ts",
+    "docPath": ".mdmd/layer-4/packages/engine/src/live-docs/graphFiles.ts.mdmd.md"
   },
   "nodes": [
     { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
-    { "codePath": "packages/shared/src/live-docs/graphFiles.ts", "docPath": "..." }
+    { "codePath": "packages/engine/src/live-docs/graphFiles.ts", "docPath": "..." }
   ],
   "hops": [
     {
       "from": { "codePath": "scripts/live-docs/inspect.ts", "docPath": "..." },
-      "to": { "codePath": "packages/shared/src/live-docs/graphFiles.ts", "docPath": "..." }
+      "to": { "codePath": "packages/engine/src/live-docs/graphFiles.ts", "docPath": "..." }
     }
   ]
 }
@@ -129,17 +129,17 @@ npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/s
 ### When there is no path
 
 ```bash
-npm run live-docs:inspect -- --from packages/shared/src/live-docs/graphFiles.ts --to scripts/live-docs/inspect.ts
+npm run live-docs:inspect -- --from packages/engine/src/live-docs/graphFiles.ts --to scripts/live-docs/inspect.ts
 ```
 
 ```
-No dependency path found from packages/shared/src/live-docs/graphFiles.ts to scripts/live-docs/inspect.ts (outbound).
+No dependency path found from packages/engine/src/live-docs/graphFiles.ts to scripts/live-docs/inspect.ts (outbound).
 Closest reachable frontier:
-  - packages/shared/src/live-docs/document.ts […] — terminal
-  - packages/shared/src/live-docs/graph.ts […] — terminal
-  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing glob)
-  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing node:fs)
-  - packages/shared/src/live-docs/graphFiles.ts […] — missing-doc (missing node:path)
+  - packages/engine/src/live-docs/document.ts […] — terminal
+  - packages/engine/src/live-docs/graph.ts […] — terminal
+  - packages/engine/src/live-docs/graphFiles.ts […] — missing-doc (missing glob)
+  - packages/engine/src/live-docs/graphFiles.ts […] — missing-doc (missing node:fs)
+  - packages/engine/src/live-docs/graphFiles.ts […] — missing-doc (missing node:path)
 ```
 
 The dependency runs the other way (the inspector reads the graph), so the search stops at the reader's own leaves: workspace files with no further dependencies and the external modules that have no Live Doc.
@@ -163,7 +163,7 @@ Either way, the result is encoded in the page URL, so a path you found can be se
 See every consumer before changing a shared function:
 
 ```bash
-npm run live-docs:inspect -- --from packages/shared/src/tooling/pathUtils.ts --direction inbound --json
+npm run live-docs:inspect -- --from packages/engine/src/tooling/pathUtils.ts --direction inbound --json
 ```
 
 ### After adding a dependency
@@ -171,7 +171,7 @@ npm run live-docs:inspect -- --from packages/shared/src/tooling/pathUtils.ts --d
 Verify the import chain is what you expect:
 
 ```bash
-npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/shared/src/live-docs/graphFiles.ts
+npm run live-docs:inspect -- --from scripts/live-docs/inspect.ts --to packages/engine/src/live-docs/graphFiles.ts
 ```
 
 ### Finding a file's tests

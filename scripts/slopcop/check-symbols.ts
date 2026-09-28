@@ -15,7 +15,7 @@ import {
   findSymbolReferenceAnomalies,
   type SymbolReferenceIssue,
   type SymbolRuleSetting
-} from "../../packages/shared/src/tooling/symbolReferences";
+} from "./symbolReferences";
 
 interface ParsedArgs {
   helpRequested: boolean;

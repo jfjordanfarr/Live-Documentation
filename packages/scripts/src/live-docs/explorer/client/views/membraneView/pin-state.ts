@@ -306,9 +306,9 @@ export function deserializePins(data: ReadonlyArray<{ n: string; s: string; h?: 
  * Compute the set of directory IDs that must be expanded so all
  * pinned nodes are visible in the membrane layout.
  *
- * For each pinned node ID (a file path like `"packages/shared/src/types.ts"`),
- * we derive the ancestor directories (`"packages"`, `"packages/shared"`,
- * `"packages/shared/src"`) and add them to the result set.
+ * For each pinned node ID (a file path like `"packages/engine/src/types.ts"`),
+ * we derive the ancestor directories (`"packages"`, `"packages/engine"`,
+ * `"packages/engine/src"`) and add them to the result set.
  *
  * @param set - Current pin state
  * @returns Set of directory IDs that should be expanded

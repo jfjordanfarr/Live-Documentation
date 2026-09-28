@@ -8,10 +8,10 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig,
   type LiveDocumentationConfigInput
-} from "@live-documentation/shared/config/liveDocumentationConfig";
-import { hasMeaningfulAuthoredContent } from "@live-documentation/shared/live-docs/core";
-import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/shared/live-docs/document";
-import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { hasMeaningfulAuthoredContent } from "@live-documentation/engine/live-docs/core";
+import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/engine/live-docs/document";
+import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;

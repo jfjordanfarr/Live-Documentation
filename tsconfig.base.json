@@ -17,13 +17,13 @@
     "composite": true,
     "outDir": "dist",
     "paths": {
-      "@live-documentation/shared/*": ["packages/shared/src/*"],
+      "@live-documentation/engine/*": ["packages/engine/src/*"],
       "@live-documentation/scripts/*": ["packages/scripts/src/*"],
       "@live-documentation/generator/*": ["packages/generator/src/*"]
     }
   },
   "references": [
-    { "path": "packages/shared" },
+    { "path": "packages/engine" },
     { "path": "packages/generator" },
     { "path": "packages/scripts" }
   ]

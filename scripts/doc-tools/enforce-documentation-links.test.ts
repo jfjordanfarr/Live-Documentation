@@ -3,8 +3,8 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { DEFAULT_RULES } from "./documentationLinks";
 import { runCli, EXIT_CODES } from "./enforce-documentation-links";
-import { DEFAULT_RULES } from "../../packages/shared/src/tooling/documentationLinks";
 
 interface WorkspaceHandle {
   root: string;
@@ -57,21 +57,18 @@ describe("enforce-documentation-links CLI", () => {
 function createWorkspace(): WorkspaceHandle {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "docs-link-cli-"));
   const docPath = ".mdmd/layer-4/tooling/sample-tool.mdmd.md";
-  const codePath = "packages/shared/src/tooling/__fixtures__/documentation-links/sample-tool.ts";
+  const codePath = "scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts";
 
   const docAbsolute = path.join(root, docPath);
   fs.mkdirSync(path.dirname(docAbsolute), { recursive: true });
-  const sourceDoc = path.resolve(
-    __dirname,
-    "../../packages/shared/src/tooling/__fixtures__/documentation-links/sample-tool.mdmd.md"
-  );
+  const sourceDoc = path.resolve(__dirname, "./__fixtures__/documentation-links/sample-tool.mdmd.md");
   fs.copyFileSync(sourceDoc, docAbsolute);
   const docSource = fs.readFileSync(docAbsolute, "utf8");
   fs.writeFileSync(
     docAbsolute,
     docSource.replaceAll(
       "./sample-tool.ts",
-      "../../../packages/shared/src/tooling/__fixtures__/documentation-links/sample-tool.ts"
+      "../../../scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts"
     )
   );
 

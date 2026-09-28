@@ -7,7 +7,7 @@
  * @module inspect/emit-result
  */
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { describeNode } from "./describe-node";
 import { MAX_ENUMERATED_PATHS } from "./pathfind-fanout";

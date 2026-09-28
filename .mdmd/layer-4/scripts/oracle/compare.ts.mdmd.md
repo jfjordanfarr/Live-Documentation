@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-09-28T00:41:40.791Z
+- Generated At: 2026-09-28T01:00:43.581Z
 
 ## Authored
 ### Purpose
@@ -38,11 +38,11 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - `node:fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`graphFiles.readLiveDocGraph`](../../packages/shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

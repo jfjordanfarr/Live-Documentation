@@ -7,7 +7,7 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} from "@live-documentation/shared/config/liveDocumentationConfig";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
 
 import { generateLiveDocs } from "./generator";
 

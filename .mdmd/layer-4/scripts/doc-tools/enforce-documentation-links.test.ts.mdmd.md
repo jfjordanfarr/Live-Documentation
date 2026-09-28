@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/doc-tools/enforce-documentation-links.test.ts
-- Generated At: 2026-09-27T23:21:31.785Z
+- Generated At: 2026-09-28T01:00:43.461Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:os` - `os`
 - `node:path` - `path`
-- [`documentationLinks.DEFAULT_RULES`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-default_rules)
+- [`documentationLinks.DEFAULT_RULES`](./documentationLinks.ts.mdmd.md#symbol-default_rules)
 - [`enforce-documentation-links.EXIT_CODES`](./enforce-documentation-links.ts.mdmd.md#symbol-exit_codes)
 - [`enforce-documentation-links.runCli`](./enforce-documentation-links.ts.mdmd.md#symbol-runcli)
 - `vitest` - `afterEach`, `describe`, `expect`, `it`, `vi`

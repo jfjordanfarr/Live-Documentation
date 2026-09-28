@@ -7,7 +7,7 @@
  * @module inspect/pathfind-symbol
  */
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { symbolMatchesAnchor } from "./symbol-reference";
 import type { Direction, SymbolHop, SymbolPathSearchResult, SymbolReference } from "./types";

@@ -10,11 +10,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
@@ -23,11 +23,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
@@ -36,12 +36,12 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/parse.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts",
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/parse.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts",
             "scripts/oracle/compare.ts",
             "scripts/oracle/fixture.ts",
             "scripts/oracle/scip-edges.ts"
@@ -53,11 +53,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
@@ -66,11 +66,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         }
@@ -85,11 +85,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
@@ -98,11 +98,11 @@
           "targets": [
             "packages/generator/src/evidenceBridge.ts",
             "packages/generator/src/generator.ts",
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
@@ -327,322 +327,322 @@
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/config/liveDocumentationConfig.test.ts",
+          "path": "packages/engine/src/config/liveDocumentationConfig.test.ts",
           "targets": [
-            "packages/shared/src/config/liveDocumentationConfig.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/languages/index.test.ts",
+          "path": "packages/engine/src/languages/index.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts"
+            "packages/engine/src/languages/index.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/aspnet.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/aspnet.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/aspnet.ts",
-            "packages/shared/src/live-docs/adapters/html.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/aspnet.ts",
+            "packages/engine/src/live-docs/adapters/html.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/c.docstring.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/c.docstring.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/c.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/core.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/c.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/core.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/csharp.hangfire.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/csharp.hangfire.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/csharp.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/csharp.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/csharp.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/csharp.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/csharp.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/csharp.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/css.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/css.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/css.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/css.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/dotnetConfig.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/dotnetConfig.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/csharp.ts",
-            "packages/shared/src/live-docs/adapters/dotnetConfig.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/csharp.ts",
+            "packages/engine/src/live-docs/adapters/dotnetConfig.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/go.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/go.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/go.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/go.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/html.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/html.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/html.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/html.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/java.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/java.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/java.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/java.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/java.typeref.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/java.typeref.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/java.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/java.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/json.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/json.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/json.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/json.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/powershell.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/powershell.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/powershell.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/powershell.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/python.docstring.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/python.docstring.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/python.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/python.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/python.resolution.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/python.resolution.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/python.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/python.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/python.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/python.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/python.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/python.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/python.typeref.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/python.typeref.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/python.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/python.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/ruby.docstring.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/ruby.docstring.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/ruby.ts",
-            "packages/shared/src/live-docs/core.ts"
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/ruby.ts",
+            "packages/engine/src/live-docs/core.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/ruby.typeref.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/ruby.typeref.test.ts",
           "targets": [
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/ruby.ts",
-            "packages/shared/src/live-docs/core.ts"
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/ruby.ts",
+            "packages/engine/src/live-docs/core.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/rust.docstring.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/rust.docstring.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/rust.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/rust.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/rust.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/rust.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/rust.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/rust.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/adapters/rust.typeref.test.ts",
+          "path": "packages/engine/src/live-docs/adapters/rust.typeref.test.ts",
           "targets": [
-            "packages/shared/src/languages/index.ts",
-            "packages/shared/src/live-docs/adapters/index.ts",
-            "packages/shared/src/live-docs/adapters/rust.ts",
-            "packages/shared/src/live-docs/adapters/treeSitter.ts",
-            "packages/shared/src/live-docs/core.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/languages/index.ts",
+            "packages/engine/src/live-docs/adapters/index.ts",
+            "packages/engine/src/live-docs/adapters/rust.ts",
+            "packages/engine/src/live-docs/adapters/treeSitter.ts",
+            "packages/engine/src/live-docs/core.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/core.docstring.test.ts",
+          "path": "packages/engine/src/live-docs/core.docstring.test.ts",
           "targets": [
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/core.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/core.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/live-docs/generator.test.ts",
+          "path": "packages/engine/src/live-docs/generator.test.ts",
           "targets": [
-            "packages/shared/src/config/liveDocumentationConfig.ts",
-            "packages/shared/src/live-docs/markdown.ts",
-            "packages/shared/src/live-docs/schema.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/config/liveDocumentationConfig.ts",
+            "packages/engine/src/live-docs/markdown.ts",
+            "packages/engine/src/live-docs/schema.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/tooling/assetPaths.test.ts",
+          "path": "packages/engine/src/tooling/assetPaths.test.ts",
           "targets": [
-            "packages/shared/src/tooling/assetPaths.ts"
+            "packages/engine/src/tooling/assetPaths.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/tooling/documentationLinks.test.ts",
+          "path": "packages/engine/src/tooling/documentationLinks.test.ts",
           "targets": [
-            "packages/shared/src/tooling/documentationLinks.ts",
-            "packages/shared/src/tooling/githubSlugger.ts",
-            "packages/shared/src/tooling/githubSluggerRegex.ts",
-            "packages/shared/src/tooling/markdownShared.ts",
-            "packages/shared/src/tooling/pathUtils.ts"
+            "packages/engine/src/tooling/documentationLinks.ts",
+            "packages/engine/src/tooling/githubSlugger.ts",
+            "packages/engine/src/tooling/githubSluggerRegex.ts",
+            "packages/engine/src/tooling/markdownShared.ts",
+            "packages/engine/src/tooling/pathUtils.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/tooling/githubSlugger.test.ts",
+          "path": "packages/engine/src/tooling/githubSlugger.test.ts",
           "targets": [
-            "packages/shared/src/tooling/githubSlugger.ts",
-            "packages/shared/src/tooling/githubSluggerRegex.ts"
+            "packages/engine/src/tooling/githubSlugger.ts",
+            "packages/engine/src/tooling/githubSluggerRegex.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/tooling/markdownLinks.test.ts",
+          "path": "packages/engine/src/tooling/markdownLinks.test.ts",
           "targets": [
-            "packages/shared/src/tooling/markdownLinks.ts",
-            "packages/shared/src/tooling/markdownShared.ts"
+            "packages/engine/src/tooling/markdownLinks.ts",
+            "packages/engine/src/tooling/markdownShared.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/shared/src/tooling/symbolReferences.test.ts",
+          "path": "packages/engine/src/tooling/symbolReferences.test.ts",
           "targets": [
-            "packages/shared/src/tooling/githubSlugger.ts",
-            "packages/shared/src/tooling/githubSluggerRegex.ts",
-            "packages/shared/src/tooling/markdownShared.ts",
-            "packages/shared/src/tooling/symbolReferences.ts"
+            "packages/engine/src/tooling/githubSlugger.ts",
+            "packages/engine/src/tooling/githubSluggerRegex.ts",
+            "packages/engine/src/tooling/markdownShared.ts",
+            "packages/engine/src/tooling/symbolReferences.ts"
           ],
           "fixtures": []
         },
         {
           "path": "scripts/doc-tools/enforce-documentation-links.test.ts",
           "targets": [
-            "packages/shared/src/tooling/documentationLinks.ts",
-            "packages/shared/src/tooling/githubSlugger.ts",
-            "packages/shared/src/tooling/githubSluggerRegex.ts",
-            "packages/shared/src/tooling/markdownShared.ts",
-            "packages/shared/src/tooling/pathUtils.ts",
+            "packages/engine/src/tooling/documentationLinks.ts",
+            "packages/engine/src/tooling/githubSlugger.ts",
+            "packages/engine/src/tooling/githubSluggerRegex.ts",
+            "packages/engine/src/tooling/markdownShared.ts",
+            "packages/engine/src/tooling/pathUtils.ts",
             "scripts/doc-tools/enforce-documentation-links.ts"
           ],
           "fixtures": []

@@ -13,7 +13,7 @@ import {
 import {
   findBrokenMarkdownLinks,
   type MarkdownLinkIssue
-} from "../../packages/shared/src/tooling/markdownLinks";
+} from "./markdownLinks";
 
 interface ParsedArgs {
   helpRequested: boolean;

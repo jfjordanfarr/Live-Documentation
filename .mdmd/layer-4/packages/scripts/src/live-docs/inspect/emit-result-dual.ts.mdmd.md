@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result-dual.ts
-- Generated At: 2026-09-28T00:41:39.451Z
+- Generated At: 2026-09-28T01:00:43.227Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracted from inspect.ts during Dev Day 50 (12/19). Bidirectional mode is usefu
 #### `emitDualDirectionResult` {#symbol-emitdualdirectionresult}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result-dual.ts#L30)
-- Parameters: `outboundResult`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult); `inboundResult`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `outboundResult`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult); `inboundResult`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitDualDirectionResult` — Summary
 Emits results for a dual-direction (both forward and reverse) file-level search.
@@ -37,7 +37,7 @@ Reports both paths if found, clearly labeling the direction of each.
 #### `emitDualDirectionSymbolResult` {#symbol-emitdualdirectionsymbolresult}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result-dual.ts#L127)
-- Parameters: `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `outboundResult`: [`SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult); `inboundResult`: [`SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `outboundResult`: [`SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult); `inboundResult`: [`SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitDualDirectionSymbolResult` — Summary
 Emits results for a dual-direction symbol path search.
@@ -54,11 +54,11 @@ Emits results for a dual-direction symbol path search.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`describe-node.describeNode`](./describe-node.ts.mdmd.md#symbol-describenode)
 - [`symbol-reference.resolveAnchorToSymbolName`](./symbol-reference.ts.mdmd.md#symbol-resolveanchortosymbolname)
 - [`types.PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult) (type-only)
 - [`types.SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop) (type-only)
 - [`types.SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult) (type-only)
 - [`types.SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

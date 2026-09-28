@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/doc-tools/enforce-documentation-links.ts
-- Generated At: 2026-09-27T23:21:31.798Z
+- Generated At: 2026-09-28T01:00:43.474Z
 
 ## Authored
 ### Purpose
@@ -19,14 +19,14 @@ Provide the CLI entry point for documentation-link enforcement so `npm run docs:
 ### Public Symbols
 #### `EXIT_CODES` {#symbol-exit_codes}
 - Type: const
-- Source: [source](../../../../scripts/doc-tools/enforce-documentation-links.ts#L33)
+- Source: [source](../../../../scripts/doc-tools/enforce-documentation-links.ts#L34)
 
 ##### `EXIT_CODES` — Summary
 Numeric exit codes used by the documentation-link enforcement CLI.
 
 #### `runCli` {#symbol-runcli}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/enforce-documentation-links.ts#L48)
+- Source: [source](../../../../scripts/doc-tools/enforce-documentation-links.ts#L49)
 
 ##### `runCli` — Summary
 CLI entry point for the documentation-link enforcement tool.
@@ -44,10 +44,10 @@ Numeric exit code: `0` on success, `3` when violations are found,
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`documentationLinks.DEFAULT_RULES`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-default_rules)
-- [`documentationLinks.DocumentationLinkEnforcementResult`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-documentationlinkenforcementresult)
-- [`documentationLinks.DocumentationLinkViolation`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-documentationlinkviolation)
-- [`documentationLinks.DocumentationRule`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-documentationrule)
-- [`documentationLinks.runDocumentationLinkEnforcement`](../../packages/shared/src/tooling/documentationLinks.ts.mdmd.md#symbol-rundocumentationlinkenforcement)
-- [`pathUtils.normalizeWorkspacePath`](../../packages/shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`pathUtils.normalizeWorkspacePath`](../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`documentationLinks.DEFAULT_RULES`](./documentationLinks.ts.mdmd.md#symbol-default_rules)
+- [`documentationLinks.DocumentationLinkEnforcementResult`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkenforcementresult)
+- [`documentationLinks.DocumentationLinkViolation`](./documentationLinks.ts.mdmd.md#symbol-documentationlinkviolation)
+- [`documentationLinks.DocumentationRule`](./documentationLinks.ts.mdmd.md#symbol-documentationrule)
+- [`documentationLinks.runDocumentationLinkEnforcement`](./documentationLinks.ts.mdmd.md#symbol-rundocumentationlinkenforcement)
 <!-- LIVE-DOC:END Dependencies -->

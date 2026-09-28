@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/download.ts
-- Generated At: 2026-09-28T00:41:37.757Z
+- Generated At: 2026-09-28T01:00:41.631Z
 
 ## Authored
 ### Purpose
@@ -52,8 +52,8 @@ Main download function — collects docs and exports in the selected format.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `jszip` - `JSZip`
+- [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graph.GraphFile`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`sources-view.DownloadBundleType`](./panels/sources-view.ts.mdmd.md#symbol-downloadbundletype) (type-only)
 - [`sources-view.DownloadFormat`](./panels/sources-view.ts.mdmd.md#symbol-downloadformat) (type-only)
-- [`document.renderLiveDoc`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

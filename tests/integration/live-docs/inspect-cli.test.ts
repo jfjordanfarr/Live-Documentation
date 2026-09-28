@@ -5,8 +5,8 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, beforeAll, describe, it } from "vitest";
 
+import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
-import { normalizeLiveDocumentationConfig } from "../../../packages/shared/src/config/liveDocumentationConfig";
 
 interface InspectRunResult {
   exitCode: number;

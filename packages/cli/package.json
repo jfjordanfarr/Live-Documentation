@@ -37,7 +37,7 @@
     "watch": "tsc -p tsconfig.json --watch"
   },
   "dependencies": {
-    "@live-documentation/shared": "file:../shared",
+    "@live-documentation/engine": "file:../engine",
     "@live-documentation/scripts": "file:../scripts",
     "glob": "^13.0.6"
   },

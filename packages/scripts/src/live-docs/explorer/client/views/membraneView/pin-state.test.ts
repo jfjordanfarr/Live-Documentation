@@ -381,36 +381,36 @@ describe("getRequiredExpansions", () => {
   });
 
   it("computes ancestor directories for a deeply nested file", () => {
-    const set = addPin(EMPTY_PIN_SET, "packages/shared/src/types.ts", "MyType");
+    const set = addPin(EMPTY_PIN_SET, "packages/engine/src/types.ts", "MyType");
     const dirs = getRequiredExpansions(set);
     expect(dirs.size).toBe(3);
     expect(dirs.has("packages")).toBe(true);
-    expect(dirs.has("packages/shared")).toBe(true);
-    expect(dirs.has("packages/shared/src")).toBe(true);
+    expect(dirs.has("packages/engine")).toBe(true);
+    expect(dirs.has("packages/engine/src")).toBe(true);
     // Should NOT include the file itself
-    expect(dirs.has("packages/shared/src/types.ts")).toBe(false);
+    expect(dirs.has("packages/engine/src/types.ts")).toBe(false);
   });
 
   it("deduplicates ancestors shared by multiple pinned nodes", () => {
-    let set = addPin(EMPTY_PIN_SET, "packages/shared/src/a.ts", "fnA");
-    set = addPin(set, "packages/shared/src/b.ts", "fnB");
+    let set = addPin(EMPTY_PIN_SET, "packages/engine/src/a.ts", "fnA");
+    set = addPin(set, "packages/engine/src/b.ts", "fnB");
     const dirs = getRequiredExpansions(set);
-    // Both share packages, packages/shared, packages/shared/src
+    // Both share packages, packages/engine, packages/engine/src
     expect(dirs.size).toBe(3);
   });
 
   it("unions ancestors from different subtrees", () => {
     let set = addPin(EMPTY_PIN_SET, "packages/server/src/index.ts", "main");
-    set = addPin(set, "packages/shared/src/types.ts", "MyType");
+    set = addPin(set, "packages/engine/src/types.ts", "MyType");
     const dirs = getRequiredExpansions(set);
     // packages, packages/server, packages/server/src,
-    // packages/shared, packages/shared/src = 5 unique dirs
+    // packages/engine, packages/engine/src = 5 unique dirs
     expect(dirs.size).toBe(5);
     expect(dirs.has("packages")).toBe(true);
     expect(dirs.has("packages/server")).toBe(true);
     expect(dirs.has("packages/server/src")).toBe(true);
-    expect(dirs.has("packages/shared")).toBe(true);
-    expect(dirs.has("packages/shared/src")).toBe(true);
+    expect(dirs.has("packages/engine")).toBe(true);
+    expect(dirs.has("packages/engine/src")).toBe(true);
   });
 
   it("handles path-populated pins identically to manual pins", () => {

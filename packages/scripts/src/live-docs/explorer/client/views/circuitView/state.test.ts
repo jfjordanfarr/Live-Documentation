@@ -45,8 +45,8 @@ describe("CircuitBoardState", () => {
 
   describe("expandDirectory", () => {
     it("adds a directory to the expanded set", () => {
-      const state = expandDirectory(createInitialState(), "packages/shared");
-      expect(state.expandedDirectories.has("packages/shared")).toBe(true);
+      const state = expandDirectory(createInitialState(), "packages/engine");
+      expect(state.expandedDirectories.has("packages/engine")).toBe(true);
       expect(state.expandedDirectories.size).toBe(1);
     });
 
@@ -58,24 +58,24 @@ describe("CircuitBoardState", () => {
 
     it("allows expanding multiple directories", () => {
       let state = createInitialState();
-      state = expandDirectory(state, "packages/shared");
+      state = expandDirectory(state, "packages/engine");
       state = expandDirectory(state, "packages/scripts");
       expect(state.expandedDirectories.size).toBe(2);
-      expect(state.expandedDirectories.has("packages/shared")).toBe(true);
+      expect(state.expandedDirectories.has("packages/engine")).toBe(true);
       expect(state.expandedDirectories.has("packages/scripts")).toBe(true);
     });
   });
 
   describe("collapseDirectory", () => {
     it("removes a directory from the expanded set", () => {
-      let state = expandDirectory(createInitialState(), "packages/shared");
-      state = collapseDirectory(state, "packages/shared");
+      let state = expandDirectory(createInitialState(), "packages/engine");
+      state = collapseDirectory(state, "packages/engine");
       expect(state.expandedDirectories.size).toBe(0);
     });
 
     it("is idempotent — collapsing non-expanded returns same state", () => {
       const state = createInitialState();
-      const result = collapseDirectory(state, "packages/shared");
+      const result = collapseDirectory(state, "packages/engine");
       expect(result).toBe(state);
     });
 
@@ -149,12 +149,12 @@ describe("buildBreadcrumbs", () => {
   });
 
   it("builds crumbs for a nested path", () => {
-    const crumbs = buildBreadcrumbs("packages/shared/src");
+    const crumbs = buildBreadcrumbs("packages/engine/src");
     expect(crumbs).toEqual([
       { label: "Root", path: "__root__" },
       { label: "packages", path: "packages" },
-      { label: "shared", path: "packages/shared" },
-      { label: "src", path: "packages/shared/src" }
+      { label: "engine", path: "packages/engine" },
+      { label: "src", path: "packages/engine/src" }
     ]);
   });
 
@@ -174,8 +174,8 @@ describe("findContainingDirectory", () => {
   });
 
   it("returns parent directory for nested files", () => {
-    const node = createNode("packages/shared/src/file.ts", "packages/shared/src/file.ts");
-    expect(findContainingDirectory(node)).toBe("packages/shared/src");
+    const node = createNode("packages/engine/src/file.ts", "packages/engine/src/file.ts");
+    expect(findContainingDirectory(node)).toBe("packages/engine/src");
   });
 
   it("returns __root__ for empty id", () => {

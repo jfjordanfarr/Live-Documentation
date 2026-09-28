@@ -16,8 +16,8 @@ module.exports = tseslint.config(
       "**/*.d.ts",
       "eslint.config.js",
       "AI-Agent-Workspace/**",
-      // Generated CommonJS shims that live alongside TypeScript sources in the shared package.
-      "packages/shared/src/**/*.js",
+      // Generated CommonJS shims that live alongside TypeScript sources in the engine package.
+      "packages/engine/src/**/*.js",
     ]
   },
   {
@@ -39,7 +39,7 @@ module.exports = tseslint.config(
       "import/resolver": {
         typescript: {
           project: [
-            "./packages/shared/tsconfig.json",
+            "./packages/engine/tsconfig.json",
             "./packages/generator/tsconfig.json",
             "./packages/scripts/tsconfig.json",
             "./packages/scripts/src/live-docs/explorer/client/tsconfig.json"

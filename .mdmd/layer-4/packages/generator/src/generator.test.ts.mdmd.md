@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/generator.test.ts
-- Generated At: 2026-09-27T23:21:26.750Z
+- Generated At: 2026-09-28T01:00:41.538Z
 
 ## Authored
 ### Purpose
@@ -24,9 +24,9 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:os`
 - `node:path`
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

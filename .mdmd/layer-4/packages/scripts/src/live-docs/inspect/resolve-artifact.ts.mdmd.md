@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/resolve-artifact.ts
-- Generated At: 2026-09-28T00:41:39.594Z
+- Generated At: 2026-09-28T01:00:43.369Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracted from inspect.ts during Dev Day 50 (12/19). Works in tandem with symbol
 #### `resolveArtifactIdentifier` {#symbol-resolveartifactidentifier}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/resolve-artifact.ts#L26)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `resolveArtifactIdentifier` — Summary
 Resolves an artifact identifier (code path, doc path, or relative path) to a
@@ -51,7 +51,7 @@ Normalized workspace-relative path
 #### `stripLiveDocDecorations` {#symbol-striplivedocdecorations}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/resolve-artifact.ts#L78)
-- Parameters: `config`: [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- Parameters: `config`: [`LiveDocumentationConfig`](../../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `stripLiveDocDecorations` — Summary
 Strips Live Doc path decorations (root, baseLayer, extension) from a path
@@ -68,7 +68,7 @@ The stripped path
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
-- [`LiveDocumentationConfig`](../../../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`pathUtils.normalizeWorkspacePath`](../../../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`LiveDocumentationConfig`](../../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`pathUtils.normalizeWorkspacePath`](../../../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

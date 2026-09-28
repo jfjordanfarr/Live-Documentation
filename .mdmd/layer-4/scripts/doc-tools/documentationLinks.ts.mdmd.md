@@ -1,0 +1,187 @@
+# scripts/doc-tools/documentationLinks.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: scripts/doc-tools/documentationLinks.ts
+- Generated At: 2026-09-28T01:00:43.447Z
+
+## Authored
+### Purpose
+Supplies the shared engine that parses Live Doc anchors, maps code files to documentation targets, and enforces breadcrumb comments so maintainer workflows can guarantee every artifact cites its Layer‑4 mirror.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-13-safe-to-commit-orchestration--audit-gaps]
+
+### Notes
+- Introduced while building the docs-to-code validation pipeline on November 2, including the CLI demo that intentionally broke `main.ts` to prove mismatched breadcrumb detection.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-02.SUMMARIZED.md#turn-12-enforcement-demonstration]
+- Powers `npm run docs:links:enforce` and the `safe:commit` gate, with follow-up runs on November 3 and beyond confirming zero violations once anchors were repaired.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `DocumentationRule` {#symbol-documentationrule}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L24)
+
+##### `DocumentationRule` — Summary
+Declares a bidirectional mapping between documentation files and code files.
+
+Each rule identifies which doc globs contain `live-docs:code` (or legacy `mdmd:code`)
+markers pointing at files matched by `codeGlobs`, enabling the enforcement bridge to
+verify that breadcrumb comments exist in source files.
+
+#### `DEFAULT_RULES` {#symbol-default_rules}
+- Type: const
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L40)
+- Returns: [`DocumentationRule`](#symbol-documentationrule)[]
+
+##### `DEFAULT_RULES` — Summary
+Built-in rule set mapping Live Documentation files to source code
+under `packages/` and `scripts/`.
+
+Includes both the default layout (`.live-documentation/source/`)  and the
+MDMD-convention layout (`.mdmd/layer-4/`) used by this workspace.
+
+#### `DocumentationAnchorSummary` {#symbol-documentationanchorsummary}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L59)
+
+##### `DocumentationAnchorSummary` — Summary
+Parsed heading anchor within a documentation file, enriched with
+the code paths it covers and backlinks it contains.
+
+#### `DocumentationDocumentAnchors` {#symbol-documentationdocumentanchors}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L83)
+- Extends: `ParsedDocumentationAnchors`
+
+##### `DocumentationDocumentAnchors` — Summary
+A parsed documentation file's anchors annotated with the rule that produced them.
+
+#### `ResolvedDocumentationTarget` {#symbol-resolveddocumentationtarget}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L91)
+
+##### `ResolvedDocumentationTarget` — Summary
+A fully resolved mapping from a code file to the documentation section
+that describes it, including backlink status.
+
+#### `DocumentationTargetMap` {#symbol-documentationtargetmap}
+- Type: type
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L109)
+
+##### `DocumentationTargetMap` — Summary
+Maps workspace-relative code file paths to their resolved documentation targets.
+
+#### `ParseDocumentationAnchorsOptions` {#symbol-parsedocumentationanchorsoptions}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L112)
+
+##### `ParseDocumentationAnchorsOptions` — Summary
+Options for {@link parseDocumentationAnchors}.
+
+#### `DocumentationLinkViolation` {#symbol-documentationlinkviolation}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L122)
+
+##### `DocumentationLinkViolation` — Summary
+A single violation detected by the documentation-link enforcement pass.
+
+#### `DocumentationLinkEnforcementResult` {#symbol-documentationlinkenforcementresult}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L150)
+
+##### `DocumentationLinkEnforcementResult` — Summary
+Aggregate result from a documentation-link enforcement run.
+
+#### `RunDocumentationLinkEnforcementOptions` {#symbol-rundocumentationlinkenforcementoptions}
+- Type: interface
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L162)
+
+##### `RunDocumentationLinkEnforcementOptions` — Summary
+Options for {@link runDocumentationLinkEnforcement}.
+
+#### `parseDocumentationAnchors` {#symbol-parsedocumentationanchors}
+- Type: function
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L181)
+- Returns: `ParsedDocumentationAnchors`
+- Parameters: `_unnamed_`: [`ParseDocumentationAnchorsOptions`](#symbol-parsedocumentationanchorsoptions)
+
+##### `parseDocumentationAnchors` — Summary
+Parses heading anchors from a documentation file, collecting
+`live-docs:code` markers and inline backlinks for each section.
+
+##### `parseDocumentationAnchors` — Parameters
+- `docPath`: Workspace-relative path to the documentation file.
+- `options`: Workspace root and optional pre-loaded content.
+
+##### `parseDocumentationAnchors` — Returns
+Parsed anchors with code paths and backlinks.
+
+#### `resolveCodeToDocumentationMap` {#symbol-resolvecodetodocumentationmap}
+- Type: function
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L248)
+- Returns: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
+- Parameters: `documents`: [`DocumentationDocumentAnchors`](#symbol-documentationdocumentanchors)[]; `targetMap`: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
+
+##### `resolveCodeToDocumentationMap` — Summary
+Builds a code-file-to-documentation-target map from parsed documents.
+
+When a code file appears under multiple anchors, the mapping prefers
+the anchor that contains a backlink to the code file.
+
+##### `resolveCodeToDocumentationMap` — Parameters
+- `documents`: Parsed documentation files with rule metadata.
+- `targetMap`: Optional existing map to merge into.
+
+##### `resolveCodeToDocumentationMap` — Returns
+The (mutated) target map.
+
+#### `formatDocumentationLinkComment` {#symbol-formatdocumentationlinkcomment}
+- Type: function
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L293)
+- Parameters: `target`: [`ResolvedDocumentationTarget`](#symbol-resolveddocumentationtarget)
+
+##### `formatDocumentationLinkComment` — Summary
+Formats a breadcrumb comment string for a given code file and target.
+
+The comment is intended to appear as the first line of the code file,
+pointing back to the documentation section that describes it.
+
+##### `formatDocumentationLinkComment` — Parameters
+- `filePath`: Workspace-relative path to the code file.
+- `target`: Resolved documentation target with label and slug.
+
+##### `formatDocumentationLinkComment` — Returns
+Formatted comment string (e.g. `// Live Documentation: path.mdmd.md#slug`).
+
+##### `formatDocumentationLinkComment` — Exceptions
+- _Unknown_: If the file extension does not support line comments.
+
+#### `runDocumentationLinkEnforcement` {#symbol-rundocumentationlinkenforcement}
+- Type: function
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L316)
+- Returns: [`DocumentationLinkEnforcementResult`](#symbol-documentationlinkenforcementresult)
+- Parameters: `options`: [`RunDocumentationLinkEnforcementOptions`](#symbol-rundocumentationlinkenforcementoptions)
+
+##### `runDocumentationLinkEnforcement` — Summary
+Runs the full documentation-link enforcement pass across the workspace.
+
+Scans documentation files for `live-docs:code` (or legacy `mdmd:code`) markers, resolves them to code
+files, and verifies that each code file contains the correct breadcrumb
+comment pointing back to its documentation section. Optionally auto-fixes.
+
+##### `runDocumentationLinkEnforcement` — Parameters
+- `options`: Workspace root, rules, fix mode, and optional include list.
+
+##### `runDocumentationLinkEnforcement` — Returns
+Aggregate enforcement result with violations.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `glob` - `globSync`
+- `node:fs` - `fs`
+- `node:path` - `path`
+- [`githubSlugger.createSlugger`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-createslugger)
+- [`pathUtils.normalizeWorkspacePath`](../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`markdownShared.extractReferenceDefinitions`](../slopcop/markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
+<!-- LIVE-DOC:END Dependencies -->

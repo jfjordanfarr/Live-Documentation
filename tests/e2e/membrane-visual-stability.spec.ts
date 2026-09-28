@@ -58,7 +58,7 @@ test.describe("Membrane Map — Pin-Active Visual Stability", () => {
   }) => {
     // Seed a pin-active state for liveDocumentationConfig.ts
     // using __internals__ (the catch-all pin symbol) plus a few named symbols
-    const targetNode = "packages/shared/src/config/liveDocumentationConfig.ts";
+    const targetNode = "packages/engine/src/config/liveDocumentationConfig.ts";
     const stateUrl = buildStateUrl({
       p: [
         { n: targetNode, s: "__internals__" },
@@ -109,7 +109,7 @@ test.describe("Membrane Map — Pin-Active Visual Stability", () => {
   test("pin-active SVG connections are present after settling", async ({
     page,
   }) => {
-    const targetNode = "packages/shared/src/config/liveDocumentationConfig.ts";
+    const targetNode = "packages/engine/src/config/liveDocumentationConfig.ts";
     const stateUrl = buildStateUrl({
       p: [
         { n: targetNode, s: "__internals__" },

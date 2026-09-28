@@ -9,7 +9,7 @@
 
 import path from "node:path";
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import { describeNode } from "./describe-node";
 import { resolveAnchorToSymbolName } from "./symbol-reference";

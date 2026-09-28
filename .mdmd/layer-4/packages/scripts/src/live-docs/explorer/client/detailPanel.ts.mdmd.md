@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/client/detailPanel.ts
-- Generated At: 2026-09-28T00:41:37.728Z
+- Generated At: 2026-09-28T01:00:41.602Z
 
 ## Authored
 ### Purpose
@@ -45,9 +45,9 @@ and node metadata.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graph.GraphFile`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
-- [`document.renderLiveDoc`](../../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`graph.GraphFile`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

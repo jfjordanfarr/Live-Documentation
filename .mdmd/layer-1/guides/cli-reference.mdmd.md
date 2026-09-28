@@ -86,7 +86,7 @@ The "Oracle of Bacon" for code. Traces dependency chains through the Live Doc gr
 
 ```bash
 # Quick summary of an artifact
-npm run live-docs:inspect -- packages/shared/src/types.ts
+npm run live-docs:inspect -- packages/engine/src/types.ts
 
 # Find path between two files
 npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts

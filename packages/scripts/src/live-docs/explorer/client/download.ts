@@ -10,8 +10,8 @@
 
 import JSZip from "jszip";
 
-import { renderLiveDoc } from "@live-documentation/shared/live-docs/document";
-import type { GraphFile } from "@live-documentation/shared/live-docs/graph";
+import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 
 import type { DownloadBundleType, DownloadFormat } from "./panels/sources-view";
 

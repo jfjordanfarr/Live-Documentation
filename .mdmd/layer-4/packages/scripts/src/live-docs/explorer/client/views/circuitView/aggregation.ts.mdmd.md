@@ -14,7 +14,7 @@ Computes per-directory aggregate metrics (file count, symbol count, cross-bounda
 ### Notes
 
 - Extracted from the monolithic `circuitView.ts` (741 lines) during the Circuit Board progressive disclosure refactoring on [Dev Day 78](../../../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-17.1.md). The refactoring followed the same pure-function decomposition pattern established by the Local Map's 7 test files.
-- `computeChildAggregates` is the core generalized API: given any `DirectoryNode` in the hierarchy, it returns one `DirectoryAggregate` per effective child directory with single-child chains collapsed (e.g. `packages/shared/src` when `packages/` and `shared/` each have only one child).
+- `computeChildAggregates` is the core generalized API: given any `DirectoryNode` in the hierarchy, it returns one `DirectoryAggregate` per effective child directory with single-child chains collapsed (e.g. `packages/engine/src` when `packages/` and `shared/` each have only one child).
 - `findDirectoryByPath` enables the controller to walk the hierarchy tree to locate a specific directory node during drill-down navigation and sibling strip computation.
 - `computeAggregateWeight` and `computeFileWeight` determine the proportional area of directory tiles and file cards respectively in the squarified layout. The weight formula uses file count as the primary factor with a 0.25× dependency bonus.
 - The deprecated `computeDirectoryAggregates` wraps `computeChildAggregates(root)` for backward compatibility with existing call sites.
@@ -42,7 +42,7 @@ Computes aggregate metrics for the children of a given directory node.
 This is the core progressive-disclosure aggregation: given any directory
 in the hierarchy, it returns one DirectoryAggregate per effective child
 directory. Single-child chains are collapsed (e.g. if `packages/` only
-contains `shared/`, the aggregate is named `packages/shared` and points
+contains `shared/`, the aggregate is named `packages/engine` and points
 to the deeper node).
 
 ##### `computeChildAggregates` — Parameters

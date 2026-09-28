@@ -2,8 +2,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { normalizeLiveDocumentationConfig } from "../../../packages/shared/src/config/liveDocumentationConfig";
-import { readLiveDocGraph } from "../../../packages/shared/src/live-docs/graphFiles";
+import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const config = normalizeLiveDocumentationConfig(

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/pathfind-symbol.ts
-- Generated At: 2026-09-28T00:41:39.559Z
+- Generated At: 2026-09-28T01:00:43.333Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Extends pathfinding to symbol-level granularity. When users specify symbol ancho
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/pathfind-symbol.ts#L31)
 - Returns: [`SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `to`: [`SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
 
 ##### `searchSymbolPath` — Summary
 Symbol-aware path search using BFS.
@@ -45,7 +45,7 @@ Search result with path and found status
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/pathfind-symbol.ts#L103)
 - Returns: [`SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop)[]
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `current`: [`SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `current`: [`SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop); `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction)
 
 ##### `getSymbolNeighbors` — Summary
 Gets symbol-aware neighbors for a given hop.
@@ -69,10 +69,10 @@ Array of neighboring symbol hops
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`symbol-reference.symbolMatchesAnchor`](./symbol-reference.ts.mdmd.md#symbol-symbolmatchesanchor)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.SymbolHop`](./types.ts.mdmd.md#symbol-symbolhop) (type-only)
 - [`types.SymbolPathSearchResult`](./types.ts.mdmd.md#symbol-symbolpathsearchresult) (type-only)
 - [`types.SymbolReference`](./types.ts.mdmd.md#symbol-symbolreference) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

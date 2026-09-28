@@ -4,14 +4,15 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
+
 import {
   DEFAULT_RULES,
   runDocumentationLinkEnforcement,
   type DocumentationLinkEnforcementResult,
   type DocumentationLinkViolation,
   type DocumentationRule
-} from "../../packages/shared/src/tooling/documentationLinks";
-import { normalizeWorkspacePath } from "../../packages/shared/src/tooling/pathUtils";
+} from "./documentationLinks";
 
 interface ParsedArgs {
   helpRequested: boolean;

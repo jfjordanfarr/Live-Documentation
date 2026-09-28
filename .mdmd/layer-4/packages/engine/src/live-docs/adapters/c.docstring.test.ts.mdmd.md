@@ -1,0 +1,32 @@
+# packages/engine/src/live-docs/adapters/c.docstring.test.ts
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: packages/engine/src/live-docs/adapters/c.docstring.test.ts
+- Generated At: 2026-09-27T23:21:30.270Z
+
+## Authored
+### Purpose
+Exercises `cAdapter` against synthetic `.c/.h` fixtures to confirm Doxygen summaries, parameters, examples, and include resolution flow into Live Docs, matching the scenarios scoped in the Nov 14 implementation plan and validated during the ship review <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L3620-L3705> <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
+
+### Notes
+- Runs as part of the Nov 14 `safe:commit -- --benchmarks` sweep to lock the adapter’s behaviour, and should grow alongside any new Doxygen tag support <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L4028-L4088>.
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+_No public symbols detected_
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `node:fs/promises`
+- `node:os`
+- `node:path`
+- [`c.cAdapter`](./c.ts.mdmd.md#symbol-cadapter)
+- [`core.composeSymbolBlocks`](../core.ts.mdmd.md#symbol-composesymbolblocks)
+- [`core.computePublicSymbolHeadingInfo`](../core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
+- [`document.renderSymbolBlocks`](../document.ts.mdmd.md#symbol-rendersymbolblocks)
+- `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
+<!-- LIVE-DOC:END Dependencies -->

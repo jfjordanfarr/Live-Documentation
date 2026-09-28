@@ -4,14 +4,14 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { describe, it } from "vitest";
 
-import { generateLiveDocs } from "../../../packages/generator/src/generator";
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
-} from "../../../packages/shared/src/config/liveDocumentationConfig";
-import type { LiveDocGraph } from "../../../packages/shared/src/live-docs/graph";
-import { readLiveDocGraph } from "../../../packages/shared/src/live-docs/graphFiles";
+} from "../../../packages/engine/src/config/liveDocumentationConfig";
+import type { LiveDocGraph } from "../../../packages/engine/src/live-docs/graph";
+import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
+import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 const DEFAULT_LIVE_DOC_ROOT = DEFAULT_LIVE_DOCUMENTATION_CONFIG.root;
 const DEFAULT_LIVE_DOC_LAYER = DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer;

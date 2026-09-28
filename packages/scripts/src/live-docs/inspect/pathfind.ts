@@ -7,7 +7,7 @@
  * @module inspect/pathfind
  */
 
-import type { LiveDocGraph } from "@live-documentation/shared/live-docs/graph";
+import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type { Direction, FrontierEntry, PathSearchResult } from "./types";
 

@@ -45,7 +45,7 @@ function buildNodesById(...nodes: ExplorerNodePayload[]): Map<string, ExplorerNo
 
 describe("parentDirectory", () => {
   it("returns parent path for nested file", () => {
-    expect(parentDirectory("packages/shared/types.ts")).toBe("packages/shared");
+    expect(parentDirectory("packages/engine/types.ts")).toBe("packages/engine");
   });
 
   it("returns empty string for root-level file", () => {
@@ -434,8 +434,8 @@ describe("computePinLayout", () => {
 
     it("computes LCA for files in different directories", () => {
       const a = makeNode("packages/server/handler.ts", ["A"]);
-      const b = makeNode("packages/shared/types.ts", ["B"]);
-      const links = [makeLink("packages/server/handler.ts", "packages/shared/types.ts", undefined, "symbol-b")];
+      const b = makeNode("packages/engine/types.ts", ["B"]);
+      const links = [makeLink("packages/server/handler.ts", "packages/engine/types.ts", undefined, "symbol-b")];
       const nodesById = buildNodesById(a, b);
       let pinSet: PinSet = EMPTY_PIN_SET;
       pinSet = addPin(pinSet, "packages/server/handler.ts", "A");
@@ -655,9 +655,9 @@ describe("computeDirectoryBands", () => {
       const nodes = new Map([
         ["scripts/fixture-tools/manifest.ts", makeFlowNode("scripts/fixture-tools/manifest.ts", 0, "scripts/fixture-tools")],
         ["scripts/fixture-tools/doc.ts", makeFlowNode("scripts/fixture-tools/doc.ts", 1, "scripts/fixture-tools")],
-        ["packages/shared/src/config/config.ts", makeFlowNode("packages/shared/src/config/config.ts", 0, "packages/shared/src/config")],
-        ["packages/shared/src/live-docs/archetype.ts", makeFlowNode("packages/shared/src/live-docs/archetype.ts", 1, "packages/shared/src/live-docs")],
-        ["packages/shared/src/live-docs/schema.ts", makeFlowNode("packages/shared/src/live-docs/schema.ts", 1, "packages/shared/src/live-docs")],
+        ["packages/engine/src/config/config.ts", makeFlowNode("packages/engine/src/config/config.ts", 0, "packages/engine/src/config")],
+        ["packages/engine/src/live-docs/archetype.ts", makeFlowNode("packages/engine/src/live-docs/archetype.ts", 1, "packages/engine/src/live-docs")],
+        ["packages/engine/src/live-docs/schema.ts", makeFlowNode("packages/engine/src/live-docs/schema.ts", 1, "packages/engine/src/live-docs")],
         ["packages/server/src/features/live-docs/generator.ts", makeFlowNode("packages/server/src/features/live-docs/generator.ts", 1, "packages/server/src/features/live-docs")],
       ]);
       const bands = computeDirectoryBands(nodes, "");
@@ -674,7 +674,7 @@ describe("computeDirectoryBands", () => {
       expect(pkgBand.children.length).toBe(2);
 
       // Inside packages: shared/src (parent) + server/src/features/live-docs (leaf)
-      const sharedSrc = pkgBand.children.find(b => b.directory === "packages/shared/src")!;
+      const sharedSrc = pkgBand.children.find(b => b.directory === "packages/engine/src")!;
       const serverLeaf = pkgBand.children.find(b => b.directory === "packages/server/src/features/live-docs")!;
       expect(sharedSrc).toBeDefined();
       expect(serverLeaf).toBeDefined();
@@ -682,14 +682,14 @@ describe("computeDirectoryBands", () => {
 
       // Inside shared/src: config (leaf) + live-docs (leaf)
       expect(sharedSrc.children).toHaveLength(2);
-      const configBand = sharedSrc.children.find(b => b.directory === "packages/shared/src/config")!;
-      const liveDocsBand = sharedSrc.children.find(b => b.directory === "packages/shared/src/live-docs")!;
+      const configBand = sharedSrc.children.find(b => b.directory === "packages/engine/src/config")!;
+      const liveDocsBand = sharedSrc.children.find(b => b.directory === "packages/engine/src/live-docs")!;
       expect(configBand).toBeDefined();
       expect(liveDocsBand).toBeDefined();
-      expect(configBand.allNodeIds).toEqual(["packages/shared/src/config/config.ts"]);
+      expect(configBand.allNodeIds).toEqual(["packages/engine/src/config/config.ts"]);
       expect(liveDocsBand.allNodeIds).toEqual([
-        "packages/shared/src/live-docs/archetype.ts",
-        "packages/shared/src/live-docs/schema.ts",
+        "packages/engine/src/live-docs/archetype.ts",
+        "packages/engine/src/live-docs/schema.ts",
       ]);
     });
 

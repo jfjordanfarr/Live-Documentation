@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/emit-result.ts
-- Generated At: 2026-09-28T00:41:39.496Z
+- Generated At: 2026-09-28T01:00:43.268Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracted from inspect.ts during Dev Day 50 (12/19). This module focuses on file
 #### `emitPathResult` {#symbol-emitpathresult}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result.ts#L25)
-- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitPathResult` — Summary
 Emits a successful path result.
@@ -34,7 +34,7 @@ Emits a successful path result.
 #### `emitNotFound` {#symbol-emitnotfound}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result.ts#L78)
-- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `result`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult)
+- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `result`: [`PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult)
 
 ##### `emitNotFound` — Summary
 Emits a "path not found" result with frontier information.
@@ -51,7 +51,7 @@ Emits a "path not found" result with frontier information.
 #### `emitFanoutResult` {#symbol-emitfanoutresult}
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/emit-result.ts#L128)
-- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `fanout`: [`FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath)[]; `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `direction`: [`Direction`](./types.ts.mdmd.md#symbol-direction); `fanout`: [`FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath)[]; `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `emitFanoutResult` — Summary
 Emits fanout (terminal paths) result.
@@ -68,11 +68,11 @@ Emits fanout (terminal paths) result.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`describe-node.describeNode`](./describe-node.ts.mdmd.md#symbol-describenode)
 - [`pathfind-fanout.MAX_ENUMERATED_PATHS`](./pathfind-fanout.ts.mdmd.md#symbol-max_enumerated_paths)
 - [`types.Direction`](./types.ts.mdmd.md#symbol-direction) (type-only)
 - [`types.FanoutPath`](./types.ts.mdmd.md#symbol-fanoutpath) (type-only)
 - [`types.HopDescriptor`](./types.ts.mdmd.md#symbol-hopdescriptor) (type-only)
 - [`types.PathSearchResult`](./types.ts.mdmd.md#symbol-pathsearchresult) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

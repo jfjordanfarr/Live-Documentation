@@ -18,9 +18,9 @@ import {
     DEFAULT_LIVE_DOCUMENTATION_CONFIG,
     normalizeLiveDocumentationConfig,
     type LiveDocumentationConfig
-} from "@live-documentation/shared/config/liveDocumentationConfig";
-import { renderLiveDoc } from "@live-documentation/shared/live-docs/document";
-import { readLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 
 import { scanAndBundleMarkdown } from "./bundledMarkdownScanner";
 import type { StaticExplorerData } from "./staticExplorerData";

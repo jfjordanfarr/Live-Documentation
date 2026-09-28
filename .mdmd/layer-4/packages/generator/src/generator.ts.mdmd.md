@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
-- Generated At: 2026-09-28T00:41:37.681Z
+- Generated At: 2026-09-28T01:00:41.558Z
 
 ## Authored
 ### Purpose
@@ -58,30 +58,30 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 - `glob` - `glob`
 - `node:fs/promises`
 - `node:path` - `path`
-- [`LiveDocumentationConfig`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`core.SourceAnalysisResult`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
-- [`core.WorkspaceFileIndex`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
-- [`core.WorkspaceSymbolIndex`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
-- [`core.analyzeSourceFile`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
-- [`core.buildWorkspaceSymbolIndex`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)
-- [`core.cleanupEmptyParents`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
-- [`core.composeDependencies`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
-- [`core.composeReExports`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
-- [`core.composeSymbolBlocks`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
-- [`core.computePublicSymbolHeadingInfo`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
-- [`core.directoryExists`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
-- [`core.discoverTargetFiles`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
-- [`core.hasMeaningfulAuthoredContent`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`core.resolveArchetype`](../../shared/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
-- [`document.LiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
-- [`document.LiveDocSyntaxError`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
-- [`document.authoredBlockOf`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
-- [`document.parseLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`document.renderLiveDoc`](../../shared/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`graphFiles.readLiveDocGraph`](../../shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
-- [`graphFiles.writeLiveDocGraph`](../../shared/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
-- [`pathUtils.normalizeWorkspacePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
-- [`pathUtils.toWorkspaceFileUri`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
-- [`pathUtils.toWorkspaceRelativePath`](../../shared/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
+- [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`core.SourceAnalysisResult`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
+- [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
+- [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
+- [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
+- [`core.buildWorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)
+- [`core.cleanupEmptyParents`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
+- [`core.composeDependencies`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
+- [`core.composeReExports`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
+- [`core.composeSymbolBlocks`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
+- [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
+- [`core.directoryExists`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
+- [`core.discoverTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
+- [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
+- [`core.resolveArchetype`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-resolvearchetype)
+- [`document.LiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDocSyntaxError`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
+- [`document.authoredBlockOf`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.parseLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`document.renderLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
+- [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
+- [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
+- [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts
-- Generated At: 2026-09-28T00:41:39.384Z
+- Generated At: 2026-09-28T01:00:43.168Z
 
 ## Authored
 ### Purpose
@@ -47,5 +47,5 @@ The `related:` prefix on target IDs distinguishes bundled docs from Live Doc nod
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`graph.LiveDocGraph`](../../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

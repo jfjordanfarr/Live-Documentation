@@ -26,14 +26,14 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
-- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`core.hasMeaningfulAuthoredContent`](../../packages/shared/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
-- [`document.LiveDoc`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
-- [`document.LiveDocSyntaxError`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
-- [`document.authoredBlockOf`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
-- [`document.parseLiveDoc`](../../packages/shared/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
-- [`graph.LiveDocGraph`](../../packages/shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
-- [`graph.deriveLiveDocGraph`](../../packages/shared/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
+- [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
+- [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`core.hasMeaningfulAuthoredContent`](../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
+- [`document.LiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.LiveDocSyntaxError`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
+- [`document.authoredBlockOf`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
+- [`document.parseLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 <!-- LIVE-DOC:END Dependencies -->

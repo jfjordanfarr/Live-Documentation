@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/shared/config/liveDocumentationConfig";
+import { LIVE_DOCUMENTATION_FILE_EXTENSION } from "@live-documentation/engine/config/liveDocumentationConfig";
 
 interface CliOptions {
   help: boolean;

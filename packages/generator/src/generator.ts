@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   type LiveDocumentationConfig,
   normalizeLiveDocumentationConfig
-} from "@live-documentation/shared/config/liveDocumentationConfig";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
 import {
   analyzeSourceFile,
   buildWorkspaceSymbolIndex,
@@ -21,20 +21,20 @@ import {
   type SourceAnalysisResult,
   type WorkspaceFileIndex,
   type WorkspaceSymbolIndex
-} from "@live-documentation/shared/live-docs/core";
+} from "@live-documentation/engine/live-docs/core";
 import {
   LiveDocSyntaxError,
   authoredBlockOf,
   parseLiveDoc,
   renderLiveDoc,
   type LiveDoc
-} from "@live-documentation/shared/live-docs/document";
-import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/shared/live-docs/graphFiles";
+} from "@live-documentation/engine/live-docs/document";
+import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   normalizeWorkspacePath,
   toWorkspaceFileUri,
   toWorkspaceRelativePath
-} from "@live-documentation/shared/tooling/pathUtils";
+} from "@live-documentation/engine/tooling/pathUtils";
 
 interface GenerateLiveDocsOptions {
   workspaceRoot: string;

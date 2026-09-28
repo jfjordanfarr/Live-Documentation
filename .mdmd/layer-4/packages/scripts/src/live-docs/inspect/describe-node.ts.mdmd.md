@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/scripts/src/live-docs/inspect/describe-node.ts
-- Generated At: 2026-09-28T00:41:39.430Z
+- Generated At: 2026-09-28T01:00:43.204Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Builds the node descriptors of inspect output: code path, doc path and, with `--
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/describe-node.ts#L23)
 - Returns: [`NodeDescriptor`](./types.ts.mdmd.md#symbol-nodedescriptor)
-- Parameters: `graph`: [`LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
+- Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
 ##### `describeNode` — Summary
 Creates a descriptor for a node in the graph.
@@ -37,7 +37,7 @@ Node descriptor with optional symbol information
 - Type: function
 - Source: [source](../../../../../../../packages/scripts/src/live-docs/inspect/describe-node.ts#L56)
 - Returns: [`SymbolDescriptor`](./types.ts.mdmd.md#symbol-symboldescriptor)[]
-- Parameters: `file`: [`GraphFile`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
+- Parameters: `file`: [`GraphFile`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile)
 
 ##### `buildSymbolDescriptors` — Summary
 Builds symbol descriptors from a file's public symbols: one per name, with the
@@ -52,10 +52,10 @@ Array of symbol descriptors with documentation
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.symbolName`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
+- [`graph.GraphFile`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`types.NodeDescriptor`](./types.ts.mdmd.md#symbol-nodedescriptor) (type-only)
 - [`types.SymbolDescriptor`](./types.ts.mdmd.md#symbol-symboldescriptor) (type-only)
 - [`types.SymbolParameterDescriptor`](./types.ts.mdmd.md#symbol-symbolparameterdescriptor) (type-only)
-- [`document.symbolName`](../../../../shared/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
-- [`graph.GraphFile`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
-- [`graph.LiveDocGraph`](../../../../shared/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

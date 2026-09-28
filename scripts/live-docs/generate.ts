@@ -8,7 +8,7 @@ import {
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput,
   normalizeLiveDocumentationConfig
-} from "@live-documentation/shared/config/liveDocumentationConfig";
+} from "@live-documentation/engine/config/liveDocumentationConfig";
 
 import { generateLiveDocs } from "../../packages/generator/src/generator";
 

@@ -8,13 +8,13 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 
 ## One run
 
-1. **Discover targets.** The configured globs select source files ([discovery.ts](../layer-4/packages/shared/src/live-docs/discovery.ts.mdmd.md)). `--changed` narrows the set to files git reports as modified; `--include` names an explicit subset.
+1. **Discover targets.** The configured globs select source files ([discovery.ts](../layer-4/packages/engine/src/live-docs/discovery.ts.mdmd.md)). `--changed` narrows the set to files git reports as modified; `--include` names an explicit subset.
 2. **Build the indexes.** A file index (every target path) lets adapters resolve references to other workspace files. A symbol index (every public symbol name across the workspace) lets a doc link a dependency to the doc that defines it.
-3. **Analyze each file.** The language adapter for the file returns its public symbols, its dependencies, and any docstrings ([core.ts](../layer-4/packages/shared/src/live-docs/core.ts.mdmd.md)).
+3. **Analyze each file.** The language adapter for the file returns its public symbols, its dependencies, and any docstrings ([core.ts](../layer-4/packages/engine/src/live-docs/core.ts.mdmd.md)).
 4. **Render the generated sections.** `Public Symbols` and `Dependencies` always; `Re-Exported Symbol Anchors` when a file re-exports symbols from elsewhere. Every link is relative to the doc's own directory.
-5. **Merge and write.** The existing doc is read through the grammar ([document.ts](../layer-4/packages/shared/src/live-docs/document.ts.mdmd.md)) so that its authored block and its timestamp carry forward; a doc the grammar refuses keeps both and has everything else replaced. The whole doc is then rendered from the model. The doc is written only when its rendered text differs from what is on disk; `--dry-run` reports instead of writing.
+5. **Merge and write.** The existing doc is read through the grammar ([document.ts](../layer-4/packages/engine/src/live-docs/document.ts.mdmd.md)) so that its authored block and its timestamp carry forward; a doc the grammar refuses keeps both and has everything else replaced. The whole doc is then rendered from the model. The doc is written only when its rendered text differs from what is on disk; `--dry-run` reports instead of writing.
 6. **Prune.** Docs whose source file no longer exists are deleted, unless they contain authored content. Pruning is skipped under `--changed` and `--include`.
-7. **Write the graph index.** Every doc on disk is read back through the grammar and the graph is derived from them ([graph.ts](../layer-4/packages/shared/src/live-docs/graph.ts.mdmd.md)): each doc's parsed model, every link resolved to the file it lands on, and the inbound and outbound adjacency. It is written to `<root>/index.json` (here `.mdmd/index.json`), which is gitignored. A doc the grammar refuses, such as a preserved orphan written by hand, stops this step with its path and line; the docs written in steps 5 and 6 stay written.
+7. **Write the graph index.** Every doc on disk is read back through the grammar and the graph is derived from them ([graph.ts](../layer-4/packages/engine/src/live-docs/graph.ts.mdmd.md)): each doc's parsed model, every link resolved to the file it lands on, and the inbound and outbound adjacency. It is written to `<root>/index.json` (here `.mdmd/index.json`), which is gitignored. A doc the grammar refuses, such as a preserved orphan written by hand, stops this step with its path and line; the docs written in steps 5 and 6 stay written.
 
 ## What a run keeps
 
@@ -30,7 +30,7 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 
 ## Configuration
 
-Root, base layer, extension, archetype globs, and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/shared/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout.
+Root, base layer, extension, archetype globs, and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout.
 
 ## History
 
