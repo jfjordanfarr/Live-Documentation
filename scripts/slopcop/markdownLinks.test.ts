@@ -108,6 +108,34 @@ describe("markdown link audit", () => {
     expect(issues).toHaveLength(0);
   });
 
+  it("ignores links inside fenced code blocks and inline code spans", () => {
+    const workspace = createWorkspace();
+    const docPath = path.join(workspace, "grammar.md");
+    writeFileSync(
+      docPath,
+      [
+        "A sketch of the grammar:",
+        "",
+        "````",
+        "- From: [`../portal`](../portal/)",
+        "```",
+        "[Still inside](../gateway/)",
+        "````",
+        "",
+        "~~~",
+        "[Also inside](snapshots/hub/)",
+        "~~~",
+        "",
+        "Inline `[kind:][namespace/]name` and ``[a](b.md)`` are examples too.",
+        "[Flag me](missing.md)"
+      ].join("\n")
+    );
+
+    const issues = findBrokenMarkdownLinks(docPath, { workspaceRoot: workspace });
+
+    expect(issues.map(issue => [issue.target, issue.line])).toEqual([["missing.md", 14]]);
+  });
+
   it("applies ignore target patterns", () => {
     const workspace = createWorkspace();
     const docPath = path.join(workspace, "docs.md");

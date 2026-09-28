@@ -37,6 +37,46 @@ export function extractReferenceDefinitions(content: string): Map<string, Refere
 }
 
 /**
+ * The content with every fenced code block and inline code span replaced by
+ * spaces of the same length, so that an offset into the result is an offset
+ * into the original. Markdown inside code is literal text: a link or a heading
+ * written there is an example, not a link or a heading. The fence rules are
+ * CommonMark's, as the symbol audit applies them: a run of three or more
+ * backticks or tildes opens a block, and only a run of the same character at
+ * least as long closes it.
+ */
+export function maskCode(content: string): string {
+  let inFence = false;
+  let fenceChar = "";
+  let fenceLength = 0;
+  return content
+    .split("\n")
+    .map((line) => {
+      const fence = /^ {0,3}((`{3,})|(~{3,}))([^`~].*)?$/.exec(line);
+      if (fence) {
+        const run = fence[2] ?? fence[3];
+        if (!inFence) {
+          inFence = true;
+          fenceChar = run[0];
+          fenceLength = run.length;
+        } else if (run[0] === fenceChar && run.length >= fenceLength) {
+          inFence = false;
+        }
+        return blank(line);
+      }
+      if (inFence) {
+        return blank(line);
+      }
+      return line.replace(/(`+)[^`\n]*?\1/g, blank);
+    })
+    .join("\n");
+}
+
+function blank(text: string): string {
+  return " ".repeat(text.length);
+}
+
+/**
  * Computes a sorted array of byte offsets where each line begins.
  *
  * Used with {@link toLineAndColumn} for efficient offset-to-position lookups.

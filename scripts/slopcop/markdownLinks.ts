@@ -4,6 +4,7 @@ import path from "node:path";
 import {
   computeLineStarts,
   extractReferenceDefinitions,
+  maskCode,
   parseLinkTarget,
   toLineAndColumn
 } from "./markdownShared";
@@ -33,13 +34,14 @@ const EXTERNAL_SCHEME = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
  * targets cannot be resolved on disk.
  *
  * External URLs, fragment-only links, and targets matching any
- * `ignoreTargetPatterns` are skipped.
+ * `ignoreTargetPatterns` are skipped, and so is anything inside a fenced
+ * code block or an inline code span, which is an example rather than a link.
  */
 export function findBrokenMarkdownLinks(
   filePath: string,
   options: MarkdownLinkAuditOptions
 ): MarkdownLinkIssue[] {
-  const content = fs.readFileSync(filePath, "utf8");
+  const content = maskCode(fs.readFileSync(filePath, "utf8"));
   const definitions = extractReferenceDefinitions(content);
   const lineStarts = computeLineStarts(content);
   const ignorePatterns = options.ignoreTargetPatterns ?? [];

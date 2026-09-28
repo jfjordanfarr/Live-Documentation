@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/markdownLinks.ts
-- Generated At: 2026-09-28T01:00:43.735Z
+- Generated At: 2026-09-28T20:40:08.942Z
 
 ## Authored
 ### Purpose
@@ -19,21 +19,21 @@ Detects broken local markdown links for the SlopCop markdown audit by walking in
 ### Public Symbols
 #### `MarkdownLinkIssue` {#symbol-markdownlinkissue}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L12)
+- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L13)
 
 ##### `MarkdownLinkIssue` — Summary
 A broken link detected in a markdown file.
 
 #### `MarkdownLinkAuditOptions` {#symbol-markdownlinkauditoptions}
 - Type: interface
-- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L21)
+- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L22)
 
 ##### `MarkdownLinkAuditOptions` — Summary
 Configuration for scanning markdown files for broken local links.
 
 #### `findBrokenMarkdownLinks` {#symbol-findbrokenmarkdownlinks}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L38)
+- Source: [source](../../../../scripts/slopcop/markdownLinks.ts#L40)
 - Returns: [`MarkdownLinkIssue`](#symbol-markdownlinkissue)[]
 - Parameters: `options`: [`MarkdownLinkAuditOptions`](#symbol-markdownlinkauditoptions)
 
@@ -42,7 +42,8 @@ Scans a markdown file for inline and reference-style links whose local
 targets cannot be resolved on disk.
 
 External URLs, fragment-only links, and targets matching any
-`ignoreTargetPatterns` are skipped.
+`ignoreTargetPatterns` are skipped, and so is anything inside a fenced
+code block or an inline code span, which is an example rather than a link.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -51,6 +52,7 @@ External URLs, fragment-only links, and targets matching any
 - `node:path` - `path`
 - [`markdownShared.computeLineStarts`](./markdownShared.ts.mdmd.md#symbol-computelinestarts)
 - [`markdownShared.extractReferenceDefinitions`](./markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
+- [`markdownShared.maskCode`](./markdownShared.ts.mdmd.md#symbol-maskcode)
 - [`markdownShared.parseLinkTarget`](./markdownShared.ts.mdmd.md#symbol-parselinktarget)
 - [`markdownShared.toLineAndColumn`](./markdownShared.ts.mdmd.md#symbol-tolineandcolumn)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/markdownShared.ts
-- Generated At: 2026-09-28T01:00:43.745Z
+- Generated At: 2026-09-28T20:40:08.951Z
 
 ## Authored
 ### Purpose
@@ -39,9 +39,22 @@ Parses all reference-link definitions (`[id]: url`) from markdown content.
 ##### `extractReferenceDefinitions` — Returns
 Map from lowercased reference identifier to its definition.
 
+#### `maskCode` {#symbol-maskcode}
+- Type: function
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L48)
+
+##### `maskCode` — Summary
+The content with every fenced code block and inline code span replaced by
+spaces of the same length, so that an offset into the result is an offset
+into the original. Markdown inside code is literal text: a link or a heading
+written there is an example, not a link or a heading. The fence rules are
+CommonMark's, as the symbol audit applies them: a run of three or more
+backticks or tildes opens a block, and only a run of the same character at
+least as long closes it.
+
 #### `computeLineStarts` {#symbol-computelinestarts}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L47)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L87)
 
 ##### `computeLineStarts` — Summary
 Computes a sorted array of byte offsets where each line begins.
@@ -56,7 +69,7 @@ Array of 0-based byte offsets for each line start.
 
 #### `toLineAndColumn` {#symbol-tolineandcolumn}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L66)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L106)
 
 ##### `toLineAndColumn` — Summary
 Converts a 0-based byte offset to a 1-based line and column number
@@ -71,7 +84,7 @@ using a precomputed line-start array.
 
 #### `parseLinkTarget` {#symbol-parselinktarget}
 - Type: function
-- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L96)
+- Source: [source](../../../../scripts/slopcop/markdownShared.ts#L136)
 
 ##### `parseLinkTarget` — Summary
 Extracts the URL portion from a raw markdown link target string,
