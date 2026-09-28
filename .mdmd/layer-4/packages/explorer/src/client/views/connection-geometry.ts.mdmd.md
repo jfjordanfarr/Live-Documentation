@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/connection-geometry.ts
-- Generated At: 2026-09-28T01:11:43.429Z
+- Generated At: 2026-09-28T02:41:13.532Z
 
 ## Authored
 ### Purpose
@@ -81,7 +81,7 @@ The stub length in pixels
 #### `computeBezierPath` {#symbol-computebezierpath}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L102)
-- Returns: [`PathResult`](./localView/state.ts.mdmd.md#symbol-pathresult)
+- Returns: [`PathResult`](#symbol-pathresult)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point); `tuning`: [`BezierTuningParams`](#symbol-beziertuningparams)
 
 ##### `computeBezierPath` — Summary

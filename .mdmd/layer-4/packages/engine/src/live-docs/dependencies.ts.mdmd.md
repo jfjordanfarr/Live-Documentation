@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/dependencies.ts
-- Generated At: 2026-09-27T23:21:31.389Z
+- Generated At: 2026-09-28T02:39:06.008Z
 
 ## Authored
 ### Purpose
@@ -46,8 +46,8 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L149)
-- Returns: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]
-- Parameters: `base`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)[]
+- Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
+- Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
 ##### `mergeDependencyEntries` — Summary
 Merges additional dependency entries into a base list, combining symbols.

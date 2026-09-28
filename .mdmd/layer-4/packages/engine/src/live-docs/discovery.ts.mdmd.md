@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-09-27T23:21:31.427Z
+- Generated At: 2026-09-28T02:39:06.046Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `discoverTargetFiles()` supports `--changed` mode via git intersection for fast iterations
 - `buildWorkspaceSymbolIndex()` performs a lightweight pre-scan of all targets to collect exported symbols
-- `resolveTypeToLiveDoc()` looks up a type name in the index and returns its Live Doc path/anchor
+- `resolveTypeToLiveDoc()` in `compose.ts` looks up a type name in the index; each location records whether its file declares the symbol or only re-exports it
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 
 ## Generated
@@ -97,9 +97,9 @@ const index = await buildWorkspaceSymbolIndex({
 
 #### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L278)
-- Returns: [`ResolvedSymbolLocation`](./core.ts.mdmd.md#symbol-resolvedsymbollocation)
-- Parameters: `index`: [`WorkspaceSymbolIndex`](./core.ts.mdmd.md#symbol-workspacesymbolindex)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L279)
+- Returns: [`ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation)
+- Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `resolveTypeToLiveDoc` — Summary
 Resolves a type name to its Live Doc location using the workspace symbol index.

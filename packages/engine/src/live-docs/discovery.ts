@@ -237,7 +237,8 @@ export async function buildWorkspaceSymbolIndex(options: {
         liveDocPath,
         sourcePath,
         anchor: heading.slug,
-        kind: symbol.kind
+        kind: symbol.kind,
+        ...(symbol.isReExport ? { isReExport: true } : {})
       };
 
       // Register by primary name

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/jsDoc.ts
-- Generated At: 2026-09-27T23:21:31.507Z
+- Generated At: 2026-09-28T02:39:06.127Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ JSDoc/TSDoc documentation extraction for Live Documentation. Parses JSDoc commen
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/jsDoc.ts#L41)
-- Returns: [`SymbolDocumentation`](./core.ts.mdmd.md#symbol-symboldocumentation)
+- Returns: [`SymbolDocumentation`](./coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 - Parameters: `node`: `ts.Node`
 
 ##### `extractJsDocDocumentation` — Summary

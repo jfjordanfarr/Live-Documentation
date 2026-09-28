@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java
-- Generated At: 2026-09-27T23:21:36.793Z
+- Generated At: 2026-09-28T02:39:10.494Z
 
 ## Authored
 ### Purpose
@@ -50,7 +50,7 @@ Adds a line for the item and how much of it is on hand.
 #### `build` {#symbol-build}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java#L32)
-- Returns: [`Report`](../../../../../../../../rosetta/src/com/rosetta/models/Report.java.mdmd.md#symbol-report-class)
+- Returns: [`Report`](#symbol-report)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

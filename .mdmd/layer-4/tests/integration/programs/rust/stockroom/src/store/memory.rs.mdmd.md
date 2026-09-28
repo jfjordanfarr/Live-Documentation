@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/store/memory.rs
-- Generated At: 2026-09-27T23:21:39.206Z
+- Generated At: 2026-09-28T02:39:12.022Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@
 #### `Memory` {#symbol-memory}
 - Type: struct
 - Source: [source](../../../../../../../../../tests/integration/programs/rust/stockroom/src/store/memory.rs#L8)
-- Implements: [`Inventory`](../../../../java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java.mdmd.md#symbol-inventory)
+- Implements: [`Inventory`](./mod.rs.mdmd.md#symbol-inventory)
 
 ##### `Memory` — Summary
 An inventory kept in memory, with listeners.
@@ -34,7 +34,7 @@ An empty inventory.
 #### `listen` {#symbol-listen}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/rust/stockroom/src/store/memory.rs#L20)
-- Parameters: `listener`: [`Listener`](../../../../java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java.mdmd.md#symbol-listener)
+- Parameters: `listener`: [`Listener`](./mod.rs.mdmd.md#symbol-listener)
 
 ##### `listen` — Summary
 Registers a listener.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/stock/quantity.go
-- Generated At: 2026-09-27T23:21:35.807Z
+- Generated At: 2026-09-28T02:39:10.087Z
 
 ## Authored
 ### Purpose
@@ -62,8 +62,8 @@ Quantity is an amount of stock in a unit.
 #### `Plus` {#symbol-plus}
 - Type: method
 - Source: [source](../../../../../../../../tests/integration/programs/go/depot/stock/quantity.go#L27)
-- Returns: [`Quantity`](../../../java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java.mdmd.md#symbol-quantity)
-- Parameters: `other`: [`Quantity`](../../../java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java.mdmd.md#symbol-quantity)
+- Returns: [`Quantity`](#symbol-quantity)
+- Parameters: `other`: [`Quantity`](#symbol-quantity)
 
 ##### `Plus` — Summary
 Plus adds another quantity of the same unit.
@@ -71,7 +71,7 @@ Plus adds another quantity of the same unit.
 #### `format` {#symbol-format}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/go/depot/stock/quantity.go#L35)
-- Parameters: `q`: [`Quantity`](../../../java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java.mdmd.md#symbol-quantity)
+- Parameters: `q`: [`Quantity`](#symbol-quantity)
 
 ##### `format` — Summary
 format renders a quantity for a report line; item.go uses it.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/java.javadoc.ts
-- Generated At: 2026-09-27T23:21:30.691Z
+- Generated At: 2026-09-28T02:39:05.537Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Parses one Javadoc block comment into structured documentation: summary and rema
 #### `parseJavaDoc` {#symbol-parsejavadoc}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.javadoc.ts#L17)
-- Returns: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
+- Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `parseJavaDoc` — Summary
 Parses one Javadoc block comment, `/** ... *\/`, into structured documentation; anything else yields nothing.

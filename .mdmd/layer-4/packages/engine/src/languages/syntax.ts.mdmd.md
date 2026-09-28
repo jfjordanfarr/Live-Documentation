@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/languages/syntax.ts
-- Generated At: 2026-09-27T23:21:30.192Z
+- Generated At: 2026-09-28T02:39:05.210Z
 
 ## Authored
 ### Purpose
@@ -77,8 +77,8 @@ for C, C#, Java, TypeScript, and Rust.
 #### `createLanguageSyntax` {#symbol-createlanguagesyntax}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/languages/syntax.ts#L161)
-- Returns: [`LanguageSyntax`](./index.ts.mdmd.md#symbol-languagesyntax)
-- Parameters: `config`: [`LanguageSyntaxConfig`](./index.ts.mdmd.md#symbol-languagesyntaxconfig)
+- Returns: [`LanguageSyntax`](#symbol-languagesyntax)
+- Parameters: `config`: [`LanguageSyntaxConfig`](#symbol-languagesyntaxconfig)
 
 ##### `createLanguageSyntax` — Summary
 Creates a {@link LanguageSyntax} implementation from declarative
@@ -101,7 +101,7 @@ A fully conformant {@link LanguageSyntax} object
 #### `createSyncStripper` {#symbol-createsyncstripper}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/languages/syntax.ts#L191)
-- Parameters: `syntax`: [`LanguageSyntax`](./index.ts.mdmd.md#symbol-languagesyntax)
+- Parameters: `syntax`: [`LanguageSyntax`](#symbol-languagesyntax)
 
 ##### `createSyncStripper` — Summary
 Creates a synchronous wrapper around the async stripComments method.

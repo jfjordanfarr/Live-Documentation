@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/circuitView/aggregation.ts
-- Generated At: 2026-09-28T01:11:43.305Z
+- Generated At: 2026-09-28T02:39:06.725Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ Used to drive the visual weight and labels of collapsed directory tiles.
 #### `computeChildAggregates` {#symbol-computechildaggregates}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/aggregation.ts#L37)
-- Returns: [`DirectoryAggregate`](../membraneView/aggregation.ts.mdmd.md#symbol-directoryaggregate)[]
+- Returns: [`DirectoryAggregate`](#symbol-directoryaggregate)[]
 - Parameters: `parentDir`: [`DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode)
 
 ##### `computeChildAggregates` — Summary
@@ -75,7 +75,7 @@ Computes aggregate metrics for each top-level directory in a hierarchy.
 #### `computeAggregateWeight` {#symbol-computeaggregateweight}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/aggregation.ts#L162)
-- Parameters: `aggregate`: [`DirectoryAggregate`](../membraneView/aggregation.ts.mdmd.md#symbol-directoryaggregate)
+- Parameters: `aggregate`: [`DirectoryAggregate`](#symbol-directoryaggregate)
 
 ##### `computeAggregateWeight` — Summary
 Computes the total weight for a directory aggregate.

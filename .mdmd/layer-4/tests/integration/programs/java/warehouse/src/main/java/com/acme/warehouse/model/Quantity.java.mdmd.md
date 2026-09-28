@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java
-- Generated At: 2026-09-27T23:21:36.741Z
+- Generated At: 2026-09-28T02:39:10.457Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ An amount of stock in some unit.
 #### `none` {#symbol-none}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java#L12)
-- Returns: [`Quantity`](../../../../../../../../../rust/stockroom/src/stock/quantity.rs.mdmd.md#symbol-quantity)
+- Returns: [`Quantity`](#symbol-quantity)
 - Parameters: `unit`: [`Unit`](./Unit.java.mdmd.md#symbol-unit)
 
 ##### `none` — Summary
@@ -47,8 +47,8 @@ A quantity of nothing, in the given unit.
 #### `plus` {#symbol-plus}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java#L17)
-- Returns: [`Quantity`](../../../../../../../../../rust/stockroom/src/stock/quantity.rs.mdmd.md#symbol-quantity)
-- Parameters: `other`: [`Quantity`](../../../../../../../../../rust/stockroom/src/stock/quantity.rs.mdmd.md#symbol-quantity)
+- Returns: [`Quantity`](#symbol-quantity)
+- Parameters: `other`: [`Quantity`](#symbol-quantity)
 
 ##### `plus` — Summary
 This quantity plus another of the same unit.

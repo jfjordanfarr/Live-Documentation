@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/stock/quantity.rs
-- Generated At: 2026-09-27T23:21:39.188Z
+- Generated At: 2026-09-28T02:39:12.006Z
 
 ## Authored
 ### Purpose
@@ -49,7 +49,7 @@ An amount of stock in a unit.
 #### `none` {#symbol-none}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/rust/stockroom/src/stock/quantity.rs#L17)
-- Parameters: `unit`: [`Unit`](../../../../java/warehouse/src/main/java/com/acme/warehouse/model/Unit.java.mdmd.md#symbol-unit)
+- Parameters: `unit`: [`Unit`](#symbol-unit-enum)
 
 ##### `none` — Summary
 A quantity of nothing, in the given unit.
@@ -57,7 +57,7 @@ A quantity of nothing, in the given unit.
 #### `plus` {#symbol-plus}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/rust/stockroom/src/stock/quantity.rs#L22)
-- Parameters: `other`: [`Quantity`](../../../../java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java.mdmd.md#symbol-quantity)
+- Parameters: `other`: [`Quantity`](#symbol-quantity)
 
 ##### `plus` — Summary
 This quantity plus another of the same unit.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-09-27T23:21:31.254Z
+- Generated At: 2026-09-28T02:41:12.725Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` as `rendering.ts`, which produced markdown lines directly; on 2026-09-27 it was recast to produce the model instead, and the line formatting moved into the grammar module.
 - `computePublicSymbolHeadingInfo` disambiguates symbols that share a name (`Widget (interface)`, `draw (function overload 2)`) and keeps every anchor unique within a doc.
-- A type reference resolves through the workspace symbol index; when several files declare the name, the origin file wins over a barrel, then the file closest to the one being documented. A type declared in the same file links within the doc.
+- A type reference resolves through the workspace symbol index. A type the file itself declares links within the doc, whatever other files declare under that name. Otherwise, among files of the same language, a declaration wins over a barrel that only re-exports the name, then the nearest file. A name never resolves into a file of another language (decided 2026-09-28 after the Local Map drew a wire no code justified).
 - Dependencies are grouped by resolved file: an imported symbol links to its anchor, an alias links to the original name, and an external module keeps its specifier and the symbols taken from it.
 
 ## Generated
@@ -21,9 +21,9 @@ Turns a source file's analysis into the document model: headings with unique anc
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L55)
-- Returns: [`PublicSymbolHeadingInfo`](./core.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
-- Parameters: `symbols`: [`PublicSymbolEntry`](./core.ts.mdmd.md#symbol-publicsymbolentry)[]
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L56)
+- Returns: [`PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
+- Parameters: `symbols`: [`PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
 ##### `computePublicSymbolHeadingInfo` — Summary
 Computes display names and slugs for public symbol headings.
@@ -40,7 +40,7 @@ Array of heading info with display names and slugs
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L190)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L191)
 - Returns: [`SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)[]
 
 ##### `composeSymbolBlocks` — Summary
@@ -56,7 +56,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L499)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L520)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -78,7 +78,7 @@ its specifier and the symbols taken from it.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L684)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L705)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -89,6 +89,7 @@ barrel re-exports, linking to the module it comes from.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
+- [`index.getSyntaxByPath`](../languages/index.ts.mdmd.md#symbol-getsyntaxbypath)
 - [`coreConstants.RESERVED_HEADING_NAMES`](./coreConstants.ts.mdmd.md#symbol-reserved_heading_names)
 - [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)

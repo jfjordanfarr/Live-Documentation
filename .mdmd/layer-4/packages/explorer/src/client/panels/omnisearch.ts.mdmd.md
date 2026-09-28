@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/omnisearch.ts
-- Generated At: 2026-09-28T01:11:43.004Z
+- Generated At: 2026-09-28T02:39:06.483Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ Omnisearch configuration
 #### `initOmnisearch` {#symbol-initomnisearch}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/panels/omnisearch.ts#L45)
-- Parameters: `config`: [`OmnisearchConfig`](./index.ts.mdmd.md#symbol-omnisearchconfig)
+- Parameters: `config`: [`OmnisearchConfig`](#symbol-omnisearchconfig)
 
 ##### `initOmnisearch` — Summary
 Initialize the omnisearch panel with keyboard shortcuts and fuzzy search.

@@ -90,6 +90,7 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
             name: exportedName,
             kind: declarationKind,
             isTypeOnly: specifier.isTypeOnly,
+            isReExport: true,
             location: getNodeLocation(specifier.name, sourceFile)
           });
         }

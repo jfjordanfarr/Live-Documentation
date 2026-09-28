@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/symbolExtraction.ts
-- Generated At: 2026-09-27T23:21:31.557Z
+- Generated At: 2026-09-28T02:39:06.187Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ TypeScript AST symbol extraction for Live Documentation. Walks the AST of TypeSc
 - `collectTypeReferencesFromFunction/Class/Interface/TypeAlias()` extract type dependencies
 - Filters out primitive types (string, number, boolean, etc.) from type references
 - Handles edge cases: `export =`, `export default`, namespace re-exports, type-only exports
+- A symbol that an `export { … }` declaration only re-exports is marked `isReExport`, so the workspace symbol index can tell a declaration from a re-export (since 2026-09-28)
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,7 +39,7 @@ The appropriate ScriptKind for parsing
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/symbolExtraction.ts#L62)
-- Returns: [`PublicSymbolEntry`](./core.ts.mdmd.md#symbol-publicsymbolentry)[]
+- Returns: [`PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 - Parameters: `sourceFile`: `ts.SourceFile`
 
 ##### `collectExportedSymbols` — Summary

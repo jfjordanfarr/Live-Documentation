@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.dependencies.ts
-- Generated At: 2026-09-27T23:21:30.325Z
+- Generated At: 2026-09-28T02:39:05.292Z
 
 ## Authored
 ### Purpose
@@ -101,7 +101,7 @@ True when the path names an existing file.
 #### `resolveReflectionTargets` {#symbol-resolvereflectiontargets}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.dependencies.ts#L192)
-- Returns: [`DependencyEntry`](../core.ts.mdmd.md#symbol-dependencyentry)[]
+- Returns: [`DependencyEntry`](../coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `resolveType`: [`TypeResolver`](#symbol-typeresolver)
 
 ##### `resolveReflectionTargets` — Summary

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/pipeline/src/pipeline.py
-- Generated At: 2026-09-27T23:21:37.918Z
+- Generated At: 2026-09-28T02:39:11.278Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ Maintain the dataclass wrapper and sequencing—they model the minimal integrati
 #### `build_report` {#symbol-build_report}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/python/pipeline/src/pipeline.py#L14)
-- Returns: [`Report`](../../rosetta/src/models.py.mdmd.md#symbol-report)
+- Returns: [`Report`](#symbol-report)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

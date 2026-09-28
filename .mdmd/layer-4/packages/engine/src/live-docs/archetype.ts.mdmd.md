@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-09-28T01:00:41.216Z
+- Generated At: 2026-09-28T02:41:12.681Z
 
 ## Authored
 ### Purpose

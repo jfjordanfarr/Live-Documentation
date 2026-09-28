@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/Types/Entry.cs
-- Generated At: 2026-09-27T23:21:35.435Z
+- Generated At: 2026-09-28T02:39:09.936Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ A timestamped entry in the data pipeline.
 #### `Entry (constructor)` {#symbol-entry-constructor}
 - Type: constructor
 - Source: [source](../../../../../../../../../tests/integration/programs/csharp/rosetta/src/Types/Entry.cs#L12)
-- Parameters: `status`: [`Status`](./Status.cs.mdmd.md#symbol-status)
+- Parameters: `status`: [`Status`](#symbol-status)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

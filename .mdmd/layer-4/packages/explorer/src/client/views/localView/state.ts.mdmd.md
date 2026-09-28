@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/state.ts
-- Generated At: 2026-09-28T01:11:43.826Z
+- Generated At: 2026-09-28T02:41:13.811Z
 
 ## Authored
 ### Purpose
@@ -132,7 +132,7 @@ Clears the entire pinned path.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L187)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
-- Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `path`: [`PathResult`](../connection-geometry.ts.mdmd.md#symbol-pathresult)
+- Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `path`: [`PathResult`](#symbol-pathresult)
 
 ##### `setActivePath` — Summary
 Sets the active path result for path mode rendering.

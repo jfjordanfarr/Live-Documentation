@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/rosetta/src/Models/Record.cs
-- Generated At: 2026-09-27T23:21:35.352Z
+- Generated At: 2026-09-28T02:39:09.896Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,7 @@ A data record to be processed.
 #### `Create` {#symbol-create}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/csharp/rosetta/src/Models/Record.cs#L23)
-- Returns: [`Record`](../../../basic/src/Diagnostics/Models/Record.cs.mdmd.md#symbol-record)
+- Returns: [`Record`](#symbol-record-class)
 
 ##### `Create` — Summary
 Factory method for creating records with sensible defaults.

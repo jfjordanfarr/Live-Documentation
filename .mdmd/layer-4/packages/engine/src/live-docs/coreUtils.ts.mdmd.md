@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/coreUtils.ts
-- Generated At: 2026-09-27T23:21:31.355Z
+- Generated At: 2026-09-28T02:39:05.979Z
 
 ## Authored
 ### Purpose
@@ -91,7 +91,7 @@ The value wrapped in backticks with internal backticks escaped
 #### `formatDependencyQualifier` {#symbol-formatdependencyqualifier}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L104)
-- Parameters: `dependency`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)
+- Parameters: `dependency`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `formatDependencyQualifier` — Summary
 Formats dependency qualifiers (re-export, type-only) for display.
@@ -135,7 +135,7 @@ Checks if a node has the `default` modifier.
 #### `getNodeLocation` {#symbol-getnodelocation}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L163)
-- Returns: [`LocationInfo`](./core.ts.mdmd.md#symbol-locationinfo)
+- Returns: [`LocationInfo`](./coreTypes.ts.mdmd.md#symbol-locationinfo)
 - Parameters: `node`: `ts.Node`; `sourceFile`: `ts.SourceFile`
 
 ##### `getNodeLocation` — Summary
@@ -144,7 +144,7 @@ Gets the source location (1-indexed line and character) of a node.
 #### `displayDependencyKey` {#symbol-displaydependencykey}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/coreUtils.ts#L178)
-- Parameters: `entry`: [`DependencyEntry`](./core.ts.mdmd.md#symbol-dependencyentry)
+- Parameters: `entry`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)
 
 ##### `displayDependencyKey` — Summary
 Gets the display key for a dependency entry.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-09-28T01:11:43.026Z
+- Generated At: 2026-09-28T02:39:06.502Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ Download format
 #### `DownloadCallback` {#symbol-downloadcallback}
 - Type: type
 - Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L26)
-- Parameters: `bundleType`: [`DownloadBundleType`](../download.ts.mdmd.md#symbol-downloadbundletype); `format`: [`DownloadFormat`](../download.ts.mdmd.md#symbol-downloadformat)
+- Parameters: `bundleType`: [`DownloadBundleType`](#symbol-downloadbundletype); `format`: [`DownloadFormat`](#symbol-downloadformat)
 
 ##### `DownloadCallback` — Summary
 Callback for downloading documentation
@@ -69,7 +69,7 @@ Sources view configuration
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L240)
-- Parameters: `config`: [`SourcesViewConfig`](./index.ts.mdmd.md#symbol-sourcesviewconfig)
+- Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary
 Render the Sources view panel showing graph statistics and health information.

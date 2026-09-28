@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-09-28T01:11:43.859Z
+- Generated At: 2026-09-28T02:39:07.150Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Function to resolve a node by ID.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L38)
 - Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
-- Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](../../bootstrap/entry-heuristics.ts.mdmd.md#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver); `shouldIncludeNode`: [`NodeFilter`](#symbol-nodefilter)
+- Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver); `shouldIncludeNode`: [`NodeFilter`](#symbol-nodefilter)
 
 ##### `createLocalSubgraph` — Summary
 Creates a local subgraph centered on a node.
@@ -71,7 +71,7 @@ These enable the "French Corset" wraparound bezier visualization.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L163)
 - Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
-- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](../../bootstrap/entry-heuristics.ts.mdmd.md#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver)
+- Parameters: `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver)
 
 ##### `buildPathSubgraph` — Summary
 Builds a subgraph for path mode visualization.

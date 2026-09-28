@@ -13,6 +13,7 @@
 
 import path from "node:path";
 
+import { getSyntaxByPath } from "../languages";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";
 import type {
   PublicSymbolEntry,
@@ -236,9 +237,10 @@ interface ResolvedTypeLocation {
  * Resolves a type name to its Live Doc location using the workspace symbol index.
  *
  * @remarks
- * When multiple files export the same symbol (an origin file and a barrel that
- * re-exports it), the origin file wins, then the file closest to the one being
- * rendered. A type declared in the file itself links within the doc.
+ * A type the file itself declares links within the doc, whatever other files
+ * declare under the same name. Otherwise the candidates are the files written
+ * in the same language: one that declares the type wins over a barrel that only
+ * re-exports it, then the file closest to the one being rendered.
  */
 function resolveTypeToLiveDoc(
   typeName: string,
@@ -250,19 +252,37 @@ function resolveTypeToLiveDoc(
     return undefined;
   }
 
-  const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
-  const selfRefs = locations.filter((loc) => loc.sourcePath === currentSourcePath);
-
-  if (external.length > 0) {
-    const sorted = external.slice().sort(createProximityAwareComparator(currentSourcePath));
-    return { location: sorted[0], isSelfReference: false };
+  const here = locations.filter((loc) => loc.sourcePath === currentSourcePath);
+  const declaredHere = here.find((loc) => !loc.isReExport);
+  if (declaredHere) {
+    return { location: declaredHere, isSelfReference: true };
   }
 
-  if (selfRefs.length > 0) {
-    return { location: selfRefs[0], isSelfReference: true };
+  const language = languageOf(currentSourcePath);
+  const elsewhere = locations
+    .filter((loc) => loc.sourcePath !== currentSourcePath && languageOf(loc.sourcePath) === language)
+    .sort(compareDeclarationsFirst(currentSourcePath));
+  if (elsewhere.length > 0) {
+    return { location: elsewhere[0], isSelfReference: false };
   }
 
-  return undefined;
+  return here.length > 0 ? { location: here[0], isSelfReference: true } : undefined;
+}
+
+/** Orders candidates: a file that declares the symbol before one that re-exports it, then by proximity. */
+function compareDeclarationsFirst(currentSourcePath: string) {
+  const byProximity = createProximityAwareComparator(currentSourcePath);
+  return (a: ResolvedSymbolLocation, b: ResolvedSymbolLocation): number => {
+    if (Boolean(a.isReExport) !== Boolean(b.isReExport)) {
+      return a.isReExport ? 1 : -1;
+    }
+    return byProximity(a, b);
+  };
+}
+
+/** The language a file is written in, by the registry, or its extension when the registry does not know it. */
+function languageOf(sourcePath: string): string {
+  return getSyntaxByPath(sourcePath)?.id ?? path.extname(sourcePath).toLowerCase();
 }
 
 function composeReferences(
@@ -417,7 +437,8 @@ function composeDocSections(symbol: PublicSymbolEntry): DocSection[] {
         if (exampleLines.length > 0 && exampleLines[exampleLines.length - 1] !== "") {
           exampleLines.push("");
         }
-        exampleLines.push(example.language ? `\`\`\`${example.language}` : "```", example.code, "```");
+        const code = example.code.replace(/\r\n?/gu, "\n");
+        exampleLines.push(example.language ? `\`\`\`${example.language}` : "```", code, "```");
       }
     });
     pushSection("Examples", exampleLines);

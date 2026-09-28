@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-math.ts
-- Generated At: 2026-09-28T01:11:43.648Z
+- Generated At: 2026-09-28T02:39:06.969Z
 
 ## Authored
 ### Purpose
@@ -114,7 +114,7 @@ Number of columns needed
 #### `getColumnRole` {#symbol-getcolumnrole}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-math.ts#L152)
-- Returns: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
+- Returns: [`ColumnRole`](#symbol-columnrole)
 
 ##### `getColumnRole` — Summary
 Determines the column role for a given column index.
@@ -149,7 +149,7 @@ The hop index (0-based)
 #### `generateColumnLabel` {#symbol-generatecolumnlabel}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-math.ts#L177)
-- Parameters: `role`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
+- Parameters: `role`: [`ColumnRole`](#symbol-columnrole)
 
 ##### `generateColumnLabel` — Summary
 Generates a label for a column based on its role and hop index.

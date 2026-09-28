@@ -55,6 +55,9 @@ export interface ResolvedSymbolLocation {
    * The kind of symbol (e.g., "class", "interface", "type", "function").
    */
   kind: string;
+
+  /** True when the file re-exports the symbol rather than declaring it. */
+  isReExport?: boolean;
 }
 
 /**
@@ -183,6 +186,9 @@ export interface PublicSymbolEntry {
 
   /** Whether this is a type-only export. */
   isTypeOnly?: boolean;
+
+  /** True when the file only re-exports the symbol from elsewhere and declares nothing itself. */
+  isReExport?: boolean;
 
   /** Source location where the symbol is defined. */
   location?: LocationInfo;

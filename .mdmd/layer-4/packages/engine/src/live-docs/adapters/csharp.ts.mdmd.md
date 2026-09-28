@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.ts
-- Generated At: 2026-09-27T23:21:30.408Z
+- Generated At: 2026-09-28T02:39:05.351Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Harvests public symbols, XML doc comments, and dependency edges from C# sources,
 #### `resolveWorkspaceTypes` {#symbol-resolveworkspacetypes}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.ts#L857)
-- Parameters: `fileIndex`: [`WorkspaceFileIndex`](../core.ts.mdmd.md#symbol-workspacefileindex)
+- Parameters: `fileIndex`: [`WorkspaceFileIndex`](./index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `resolveWorkspaceTypes` — Summary
 The workspace files that declare a qualified type name, for adapters of other file kinds.

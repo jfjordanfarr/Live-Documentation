@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/rust.rustdoc.ts
-- Generated At: 2026-09-27T23:21:31.111Z
+- Generated At: 2026-09-28T02:39:05.779Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Parses the lines of a rustdoc comment into structured documentation: summary and
 #### `parseRustDocumentation` {#symbol-parserustdocumentation}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.rustdoc.ts#L24)
-- Returns: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
+- Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `parseRustDocumentation` — Summary
 Parses the lines of a doc comment (`///` or `/** *\/`, markers removed) into structured documentation: summary, remarks, and the `# Arguments`, `# Returns`, `# Errors`, `# Panics` and `# Examples` sections rustdoc readers expect.

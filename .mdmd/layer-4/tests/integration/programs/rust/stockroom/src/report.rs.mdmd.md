@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/src/report.rs
-- Generated At: 2026-09-27T23:21:39.134Z
+- Generated At: 2026-09-28T02:39:11.978Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Reports for the stockroom sample program: one line per item on hand, a generic `
 #### `write` {#symbol-write}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/stockroom/src/report.rs#L7)
-- Parameters: `inventory`: [`Inventory`](../../../java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java.mdmd.md#symbol-inventory)
+- Parameters: `inventory`: [`Inventory`](./store/mod.rs.mdmd.md#symbol-inventory)
 
 ##### `write` — Summary
 One line per item on hand, in SKU order.

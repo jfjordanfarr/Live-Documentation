@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/ledger/ledger/storage/repository.py
-- Generated At: 2026-09-27T23:21:37.609Z
+- Generated At: 2026-09-28T02:39:11.045Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ Keeps accounts by name; one shared instance serves the process.
 #### `shared` {#symbol-shared}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/python/ledger/ledger/storage/repository.py#L17)
-- Returns: [`Repository`](../../../../java/service/src/com/example/service/data/Repository.java.mdmd.md#symbol-repository-class)
+- Returns: [`Repository`](#symbol-repository)
 
 #### `save` {#symbol-save}
 - Type: method

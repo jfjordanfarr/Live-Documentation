@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/python/rosetta/src/models.py
-- Generated At: 2026-09-27T23:21:38.152Z
+- Generated At: 2026-09-28T02:39:11.447Z
 
 ## Authored
 ### Purpose
@@ -58,7 +58,7 @@ Summary report produced by the processor.
 #### `create_record` {#symbol-create_record}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/python/rosetta/src/models.py#L30)
-- Returns: [`Record`](../../../java/basic/src/com/example/model/Record.java.mdmd.md#symbol-record)
+- Returns: [`Record`](#symbol-record)
 
 ##### `create_record` — Summary
 Factory for creating records with sensible defaults.

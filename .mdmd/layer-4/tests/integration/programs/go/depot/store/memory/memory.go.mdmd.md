@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/depot/store/memory/memory.go
-- Generated At: 2026-09-27T23:21:35.883Z
+- Generated At: 2026-09-28T02:39:10.123Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ Memory is a store.Inventory that forgets everything when the process ends.
 #### `New` {#symbol-new}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/depot/store/memory/memory.go#L17)
-- Returns: [`Memory`](../../../../rust/stockroom/src/store/memory.rs.mdmd.md#symbol-memory)
+- Returns: [`Memory`](#symbol-memory)
 
 ##### `New` — Summary
 New makes an empty inventory.
@@ -36,7 +36,7 @@ New makes an empty inventory.
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/go/depot/store/memory/memory.go#L22)
 - Returns: [`Quantity`](../../stock/quantity.go.mdmd.md#symbol-quantity)
-- Parameters: `item`: [`Item`](../../report/format.go.mdmd.md#symbol-item); `delta`: [`Quantity`](../../stock/quantity.go.mdmd.md#symbol-quantity)
+- Parameters: `item`: [`Item`](#symbol-item); `delta`: [`Quantity`](../../stock/quantity.go.mdmd.md#symbol-quantity)
 
 ##### `Receive` — Summary
 Receive adds stock of an item.
@@ -52,7 +52,7 @@ OnHand is everything on hand, by SKU.
 #### `Item` {#symbol-item}
 - Type: method
 - Source: [source](../../../../../../../../../tests/integration/programs/go/depot/store/memory/memory.go#L47)
-- Returns: [`Item`](../../report/format.go.mdmd.md#symbol-item)
+- Returns: [`Item`](#symbol-item)
 
 ##### `Item` — Summary
 Item is the item behind a SKU, if the inventory has seen it.

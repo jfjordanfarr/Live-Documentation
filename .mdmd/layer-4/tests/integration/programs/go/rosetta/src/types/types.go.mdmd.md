@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/types/types.go
-- Generated At: 2026-09-27T23:21:36.090Z
+- Generated At: 2026-09-28T02:39:10.224Z
 
 ## Authored
 ### Purpose
@@ -87,7 +87,7 @@ ProcessorConfig holds configuration for processing operations.
 #### `NewProcessorConfig` {#symbol-newprocessorconfig}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/types/types.go#L34)
-- Returns: [`ProcessorConfig`](../../../../java/rosetta/src/com/rosetta/types/ProcessorConfig.java.mdmd.md#symbol-processorconfig-class)
+- Returns: [`ProcessorConfig`](#symbol-processorconfig)
 
 ##### `NewProcessorConfig` — Summary
 NewProcessorConfig creates a ProcessorConfig with the given parameters.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/sourceAnalysis.ts
-- Generated At: 2026-09-28T01:00:41.487Z
+- Generated At: 2026-09-28T02:41:12.958Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/sourceAnalysis.ts#L62)
-- Parameters: `fileIndex`: [`WorkspaceFileIndex`](./core.ts.mdmd.md#symbol-workspacefileindex)
+- Parameters: `fileIndex`: [`WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 
 ##### `analyzeSourceFile` — Summary
 Produces symbol and dependency analysis for a single source artifact.

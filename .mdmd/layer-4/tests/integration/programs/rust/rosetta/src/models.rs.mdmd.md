@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/rosetta/src/models.rs
-- Generated At: 2026-09-27T23:21:38.997Z
+- Generated At: 2026-09-28T02:39:11.921Z
 
 ## Authored
 ### Purpose
@@ -75,7 +75,7 @@ Creates a new report with the current timestamp.
 #### `create_record` {#symbol-create_record}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/rust/rosetta/src/models.rs#L58)
-- Returns: [`Record`](../../../java/basic/src/com/example/model/Record.java.mdmd.md#symbol-record)
+- Returns: [`Record`](#symbol-record)
 
 ##### `create_record` — Summary
 Factory function for creating records with sensible defaults.

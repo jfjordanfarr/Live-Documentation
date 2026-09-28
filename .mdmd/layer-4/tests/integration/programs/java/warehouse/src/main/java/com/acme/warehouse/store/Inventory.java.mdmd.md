@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java
-- Generated At: 2026-09-27T23:21:36.848Z
+- Generated At: 2026-09-28T02:39:10.524Z
 
 ## Authored
 ### Purpose
@@ -68,7 +68,7 @@ Everything on hand, by item.
 #### `listen` {#symbol-listen}
 - Type: method
 - Source: [source](../../../../../../../../../../../../../../tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/Inventory.java#L34)
-- Parameters: `listener`: [`Listener`](../../../../../../../../../go/depot/store/inventory.go.mdmd.md#symbol-listener)
+- Parameters: `listener`: [`Listener`](#symbol-listener)
 
 ##### `listen` — Summary
 Registers a listener; the default keeps none.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/go/rosetta/src/models/models.go
-- Generated At: 2026-09-27T23:21:36.017Z
+- Generated At: 2026-09-28T02:39:10.187Z
 
 ## Authored
 ### Purpose
@@ -60,7 +60,7 @@ Report represents a summary produced by the processor.
 #### `CreateRecord` {#symbol-createrecord}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/programs/go/rosetta/src/models/models.go#L27)
-- Returns: [`Record`](../../../../java/basic/src/com/example/model/Record.java.mdmd.md#symbol-record)
+- Returns: [`Record`](#symbol-record)
 
 ##### `CreateRecord` — Summary
 CreateRecord is a factory for creating records with sensible defaults.

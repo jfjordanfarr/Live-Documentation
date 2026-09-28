@@ -76,6 +76,50 @@ describe("composeSymbolBlocks", () => {
       }
     ]);
   });
+
+  it("links a type declared here within the doc, whatever other files declare under that name", () => {
+    const symbolIndex: WorkspaceSymbolIndex = new Map([
+      ["PathResult", [
+        { liveDocPath: ".live-documentation/source/packages/explorer/src/state.ts.md", sourcePath: "packages/explorer/src/state.ts", anchor: "symbol-pathresult", kind: "interface" },
+        { liveDocPath: ".live-documentation/source/packages/engine/src/contracts/dependencies.ts.md", sourcePath: sourceRelativePath, anchor: "symbol-pathresult", kind: "interface" }
+      ]]
+    ]);
+    const headings = computePublicSymbolHeadingInfo([
+      { name: "walk", kind: "function", typeReferences: [{ name: "PathResult", role: "return" }] }
+    ]);
+    const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
+
+    expect(block.references).toEqual([{ role: "Returns", types: [{ name: "PathResult", link: "#symbol-pathresult" }] }]);
+  });
+
+  it("links a type this file only re-exports to the file that declares it", () => {
+    const symbolIndex: WorkspaceSymbolIndex = new Map([
+      ["Widget", [
+        { liveDocPath: ".live-documentation/source/packages/engine/src/contracts/dependencies.ts.md", sourcePath: sourceRelativePath, anchor: "symbol-widget", kind: "type", isReExport: true },
+        { liveDocPath: ".live-documentation/source/packages/engine/src/types.ts.md", sourcePath: "packages/engine/src/types.ts", anchor: "symbol-widget", kind: "interface" }
+      ]]
+    ]);
+    const headings = computePublicSymbolHeadingInfo([
+      { name: "walk", kind: "function", typeReferences: [{ name: "Widget", role: "return" }] }
+    ]);
+    const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
+
+    expect(block.references).toEqual([{ role: "Returns", types: [{ name: "Widget", link: "../types.ts.md#symbol-widget" }] }]);
+  });
+
+  it("never links a type to a file of another language", () => {
+    const symbolIndex: WorkspaceSymbolIndex = new Map([
+      ["Quantity", [
+        { liveDocPath: ".live-documentation/source/src/model/Quantity.java.md", sourcePath: "src/model/Quantity.java", anchor: "symbol-quantity", kind: "class" }
+      ]]
+    ]);
+    const headings = computePublicSymbolHeadingInfo([
+      { name: "walk", kind: "function", typeReferences: [{ name: "Quantity", role: "return" }] }
+    ]);
+    const [block] = composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath, symbolIndex, liveDocsRootAbsolute });
+
+    expect(block.references).toEqual([{ role: "Returns", types: [{ name: "Quantity" }] }]);
+  });
 });
 
 describe("composeDependencies", () => {

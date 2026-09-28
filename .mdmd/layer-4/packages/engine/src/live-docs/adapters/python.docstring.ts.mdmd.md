@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/python.docstring.ts
-- Generated At: 2026-09-27T23:21:30.898Z
+- Generated At: 2026-09-28T02:39:05.661Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ Creates an empty mutable docstring state for accumulating parsed content.
 #### `parseDocstring` {#symbol-parsedocstring}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.docstring.ts#L64)
-- Returns: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
+- Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `parseDocstring` — Summary
 Parses a Python docstring into structured documentation.
@@ -195,7 +195,7 @@ Parses NumPy-style entries (name on one line, description indented below).
 #### `normalizeExample` {#symbol-normalizeexample}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.docstring.ts#L808)
-- Returns: [`SymbolDocumentationExample`](../core.ts.mdmd.md#symbol-symboldocumentationexample)
+- Returns: [`SymbolDocumentationExample`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationexample)
 
 ##### `normalizeExample` — Summary
 Normalizes a Python example block, detecting `>>>` interactive sessions.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/models/Record.java
-- Generated At: 2026-09-27T23:21:36.325Z
+- Generated At: 2026-09-28T02:39:10.311Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ A data record to be processed.
 #### `create` {#symbol-create}
 - Type: method
 - Source: [source](../../../../../../../../../../../tests/integration/programs/java/rosetta/src/com/rosetta/models/Record.java#L26)
-- Returns: [`Record`](../../../../../basic/src/com/example/model/Record.java.mdmd.md#symbol-record)
+- Returns: [`Record`](#symbol-record-class)
 
 ##### `create` — Summary
 Static factory for creating records (used by tests).

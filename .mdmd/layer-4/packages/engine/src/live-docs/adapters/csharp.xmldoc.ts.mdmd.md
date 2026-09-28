@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.xmldoc.ts
-- Generated At: 2026-09-27T23:21:30.430Z
+- Generated At: 2026-09-28T02:39:05.372Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ Used to detect unsupported tags that may appear in documentation.
 #### `buildDocumentationFromLines` {#symbol-builddocumentationfromlines}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L56)
-- Returns: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
+- Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `buildDocumentationFromLines` — Summary
 Builds a SymbolDocumentation object from raw XML doc comment lines.
@@ -72,7 +72,7 @@ Normalized text content, or undefined if not found
 #### `extractParameterTags` {#symbol-extractparametertags}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L163)
-- Returns: [`SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter)[]
+- Returns: [`SymbolDocumentationParameter`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationparameter)[]
 
 ##### `extractParameterTags` — Summary
 Extracts parameter or typeparam documentation tags.
@@ -87,7 +87,7 @@ Array of parsed parameter documentation
 #### `extractExceptionTags` {#symbol-extractexceptiontags}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L186)
-- Returns: [`SymbolDocumentationException`](../core.ts.mdmd.md#symbol-symboldocumentationexception)[]
+- Returns: [`SymbolDocumentationException`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationexception)[]
 
 ##### `extractExceptionTags` — Summary
 Extracts exception documentation tags.
@@ -101,7 +101,7 @@ Array of parsed exception documentation, sorted by type
 #### `extractExampleTags` {#symbol-extractexampletags}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L215)
-- Returns: [`SymbolDocumentationExample`](../core.ts.mdmd.md#symbol-symboldocumentationexample)[]
+- Returns: [`SymbolDocumentationExample`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationexample)[]
 
 ##### `extractExampleTags` — Summary
 Extracts example documentation tags.
@@ -115,7 +115,7 @@ Array of parsed examples with optional code blocks
 #### `extractLinkTags` {#symbol-extractlinktags}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L249)
-- Returns: [`SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink)[]
+- Returns: [`SymbolDocumentationLink`](../coreTypes.ts.mdmd.md#symbol-symboldocumentationlink)[]
 
 ##### `extractLinkTags` — Summary
 Extracts <see> and <seealso> link tags.
@@ -222,7 +222,7 @@ Formatted reference text
 #### `hasStructuredContent` {#symbol-hasstructuredcontent}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/csharp.xmldoc.ts#L496)
-- Parameters: `doc`: [`SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation)
+- Parameters: `doc`: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `hasStructuredContent` — Summary
 Checks if a documentation object has any structured content.
