@@ -128,3 +128,67 @@ The most valuable thing the probes produced. Grouped by what it would take.
 ## Where the pages are
 
 `AI-Agent-Workspace/tmp/probes/cards-in-depth/index.html`, `.../membranes-as-volumes/index.html`, `.../estate-canvas/index.html`. Each opens by double-click, exposes a `window.probe` API described in its findings, and has a `shoot.cjs` that reproduces every screenshot. They read the index as it was on 2026-09-28 and will drift from the docs after that; they are not to be maintained.
+
+## Rounds 2 to 4: the owner's verdict, and the estate as a place
+
+_Added later the same day._
+
+The owner looked at the nine round-1 screenshots and said: "Not gonna lie, I can see the screenshots and they all came out pretty mid. Can you please fire up more subagents and keep iterating based on critiques of the screenshots you stored in `shots/` and my cumulative user intent?" Then the rule that shaped everything after: "consider whether it might be wise to stick to 2D inside the black box of a software system, and 3D outside of one (between software systems/rigging up many)."
+
+The evidence agreed with the hint, so the loop changed shape. The file and folder probes stopped where they were; their findings stand as inputs to a two-dimensional interior. The iteration went into one target, written up in [brief-2.md](brief-2.md): the estate as a place, three dimensions between systems, and inside each box a real HTML panel in the Local Map's own card design, placed in the scene by three.js's CSS3D renderer so text is crisp and never resizes. Two builders took it, one evolving the round-1 page and one starting fresh from a diorama composition. Between rounds a critic judged every screenshot against [critic.md](critic.md), a rubric built from the owner's words, and ranked the faults. The first page went four rounds, the second two. The coordinator looked at every screenshot before anything went back to the owner.
+
+Why round 1 was mid, in three faults: everything was drawn at once, so the resting state was a hairball; the craft was at debug level, grey slabs, hairline wires, illegible text, a legend a quarter of the screen; and depth was spent on tilt, which costs legibility, instead of on the space between systems, which is the only place it paid.
+
+### What the rounds changed
+
+- **Round 2**: a floor, lights and shadows, two zone slabs, fog; boxes standing on their cruft, showing their guts through the faces; the databases as drums; the interior as an HTML panel with the Local Map's cards, pins, gradient wires and corset stubs; opening a box moves the camera to one panel pixel per screen pixel; a request traced end to end across six boxes.
+- **Round 3**: the chain made the line, the shared library receded behind it; cruft as a counted cluster; interiors dimming with their boxes and nothing on the path lit above its resting value; stand-in cards for files beyond the wall, so an empty consumers column names the Portal file that consumes the focused one; every label off every other label.
+- **Round 4**: every system whole in the frame; a band at the panel's mid-height that wall pins own, so a wall wire runs straight and branches into its columns instead of looping along the ceiling; four wires into one pin meet at a junction with the count; the evidence card off the conduit it explains; every arrow in provision order.
+- **The diorama, two rounds**: a horizon; the tunnel as a lit tube the conduit passes through; count badges on the conduits; the open box with lid and floor in perspective around the panel; cards measured to their content so nothing truncates; one Bezier per wire that passes behind a card in depth when it would cross it; and an experiment with the zones stacked in depth.
+
+### The two pages side by side
+
+| Choice                         | The first page                                                               | The diorama                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Resting camera                 | steep, from the Oracle end, the chain climbing to the top-right corner       | low, with a horizon, the chain a band across the middle                       |
+| Composition                    | one row, a second view mirrored from the Portal end                          | one row, or the zones stacked in depth with the tunnel receding               |
+| The open box                   | the panel over the dimmed world, neighbours named at the frame's edges       | the panel inside the box, lid and floor in perspective, wall pins with counts |
+| A click on a card              | re-layout into dependencies, card, consumers, with stand-ins beyond the wall | nothing moves; the unrelated fade; the wall pin fans into the rows it touches |
+| A wire that would cross a card | a bus at pin height with branches into the columns                           | one Bezier that passes behind the card, which the panel's depth allows        |
+| Many wires into one pin        | a junction with the count and one trunk into the row                         | count badges on the conduits between boxes                                    |
+| Cruft                          | a cluster of nubs on stalks with the count beside                            | solid shapes at the foot with the count                                       |
+
+![The first page at rest, round 4](shots/estate-40-canvas-at-rest.png)
+
+![The diorama at rest, round 2](shots/place-30-canvas-at-rest.png)
+
+![The diorama with the zones stacked in depth](shots/place-39-depth-stacked.png)
+
+![The first page, Gateway open, the bus at pin height](shots/estate-42-gateway-open.png)
+
+![The diorama, Gateway open, the panel inside the box](shots/place-32-gateway-open.png)
+
+![The first page, a card focused with stand-ins beyond the wall](shots/estate-43-gateway-paymentscontroller.png)
+
+![The first page, one request from the Oracle table to the Portal page](shots/estate-46-request-path.png)
+
+![The diorama, the same request](shots/place-36-request-path.png)
+
+### What the rounds taught, beyond round 1
+
+- The interior belongs in two dimensions and in the browser's own text: an HTML panel in the scene is crisper than any texture, and the Local Map's grammar transferred whole.
+- The wall pin held as the junction at every scale: the same pin, the same height, in the world and in the panel, so a conduit meets the panel where it met the wall.
+- A wall pin owns a band of the panel's height; cards stack above and below it; a wall wire runs straight at pin height and bends only into its column.
+- A badge replaces a fan or is not shown; a fan beside a count is two statements of one fact.
+- Dimmed lines lose alpha, they do not gain dashes, because dashes mean a tier; the warm hue is the tunnel's alone.
+- A chain of seven systems in a 16:9 frame is a band with sky above it. Stacking the zones in depth fills the frame and gives the tunnel length, at the cost of a chain that zigzags.
+- What the docs cannot carry gained two items: what kind of system a box is (a web app, a WCF service, a database; the drums are a guess from a folder name), and which of two equal-length dependency paths is the call path, since the docs do not distinguish a call from a read.
+
+### Forks added by these rounds
+
+7. **A click on a card**: re-layout into columns with stand-ins beyond the wall, which is the Local Map's answer and the owner's "once pinning of symbols begins... a layout rearrangement must begin"; or nothing moves and the unrelated fade, which is the Membrane Map doctrine's "the spatial layout never changes". Both are the owner's words; both are built.
+8. **Composition at the canvas**: one row, or the zones stacked in depth.
+9. **A wire that would cross a card**: corset stubs, or a real pass behind the card that depth allows.
+10. **Which page to carry forward**, or which parts of each.
+
+The pages are `AI-Agent-Workspace/tmp/probes/estate-canvas/index.html` and `AI-Agent-Workspace/tmp/probes/estate-place/index.html`; each has a `probe.direction` switch, and the diorama a `probe.composition("row" | "depth")` switch. They are disposable, like the round-1 pages.
