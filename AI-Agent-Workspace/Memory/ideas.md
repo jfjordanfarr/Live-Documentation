@@ -22,6 +22,7 @@ Inputs to the consolidation (vision step 3), not a backlog:
 - The default Membrane Map screen is mostly an empty tile; the emoji navigation icons render as boxes; dark theme only; unusable at phone width; five views overlap in purpose.
 - `explorer-data.json` was 16.6 MB, 11.4 MB of it chat transcripts. The transcripts are now excluded from the bundle.
 - The client still calls endpoints of the HTTP server removed on 2026-03-10 (`/bundled-docs`, `/details`, `/doc`, `/open?codePath=`) from `dataLoader.ts`, `detailPanel.ts`, `download.ts` and `index.ts`; on static hosting they return 404 and the client falls back to bundled data. Dead paths to remove.
+- The page template loads the force graph's library from a CDN at run time, a network call the vision forbids; keeping the force graph offline means shipping its library, a dependency to weigh. To resolve in the retirement of the older views (2026-09-28).
 - Accessibility targets stated in December 2025 and not re-affirmed since: WCAG 2.1 AA, contrast (1.4.3), name/role/value (4.1.2), reduced motion for the force view. Raise them when the views are redesigned.
 - A February 2026 idea: colour force-graph nodes by a deterministic cluster. The co-activation code is gone; the idea does not need it.
 - The multi-path rendering design (every shortest path merged into one DAG, near-miss paths dashed, symbol-divergent paths colour-coded) survives in [the Explorer doc](../../.mdmd/layer-3/live-documentation-explorer.mdmd.md) and does not depend on any one view.
