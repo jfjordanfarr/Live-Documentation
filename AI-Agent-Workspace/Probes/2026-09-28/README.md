@@ -1,6 +1,6 @@
 # Three probes in depth, 2026-09-28
 
-_A record for the owner and for whoever designs the Explorer's next views. The probes were disposable pages built in one day and are not committed; this folder keeps what they taught. It holds the brief the builders followed ([brief.md](brief.md)), the digest of the owner's own words the brief was checked against ([archive-digest.md](archive-digest.md)), each builder's findings verbatim ([cards-in-depth.md](cards-in-depth.md), [membranes-as-volumes.md](membranes-as-volumes.md), [estate-canvas.md](estate-canvas.md)), and nine screenshots under `shots/`. Nothing here is a decision; the forks at the end are the owner's to call._
+_A record for the owner and for whoever designs the Explorer's next views. The probes were disposable pages built in one day and are not committed; this folder keeps what they taught. It holds the brief the builders followed ([brief.md](brief.md)), the digest of the owner's own words the brief was checked against ([archive-digest.md](archive-digest.md)), each builder's findings verbatim ([cards-in-depth.md](cards-in-depth.md), [membranes-as-volumes.md](membranes-as-volumes.md), [estate-canvas.md](estate-canvas.md), [estate-place.md](estate-place.md)), the findings of the board the coordinating agent built in the afternoon ([black-boxes.md](black-boxes.md)), and the screenshots of every round under `shots/`. Nothing here is a decision; the forks at the end of each section are the owner's to call._
 
 ## What was asked and what was built
 
@@ -192,3 +192,56 @@ Why round 1 was mid, in three faults: everything was drawn at once, so the resti
 10. **Which page to carry forward**, or which parts of each.
 
 The pages are `AI-Agent-Workspace/tmp/probes/estate-canvas/index.html` and `AI-Agent-Workspace/tmp/probes/estate-place/index.html`; each has a `probe.direction` switch, and the diorama a `probe.composition("row" | "depth")` switch. They are disposable, like the round-1 pages.
+
+## The board: the owner's second verdict, and the estate as pieces
+
+_Added the same afternoon. The rounds above were shown to the owner as hosted pages; what follows is their verdict, verbatim, and the probe the coordinating agent then built itself. The full findings are in [black-boxes.md](black-boxes.md)._
+
+"Huh. Dang I did not love those at all. Is it possible that we could look to videogames for inspiration?" Then the frame that replaces the morning's:
+
+- "It is a total mess to be able to see _inside_ each black box of software. **I think we should not be able to see inside the boxes** until we zoom in enough that we go to a new view. So long as the transition feels seamless, it's fine."
+- "In 3D, I see that you're still worried about the left-to-right semantics. This is a mistake in my opinion. We're opening ourselves up to 3D specifically because we think that there is insufficient ordinal space to appropriately show dependency shapes honestly."
+- "you _could_ reimagine the outer multi-software canvas as a 2D canvas which you plop boxes down on, and each box you point to a directory... and you can wire those boxes together along the openings that each expose."
+- "3D seems good when your universe is big and your nodes and connections are many. 2D seems good when you're trying to work with UI elements."
+- "consider whether or not 3D might mean 'faked 3D' (i.e. isometric perspective) or something like that. Think outside the box. What are you drawing and who are you drawing it for? These probes really lack vision."
+- "Rather than spinning up a subagent, can you maybe work on this yourself? If I had to make a guess as to why the subagents were uninspired, my only guess is that they lacked sufficient familiarity with my user intents and the overall vision."
+
+And while the first build rendered: "be more abstract"; "A cloud white blank surface upon which you plop isometric-looking markers is great too", or "a deep dark gray black background for those folks"; "floating cubes in the sky above the isometric ground could be a great way to see these things being wired up"; "the outermost interaction surface feels like plopping pieces down on a board game. Wargames system design haha!"; "Try smooth placement first", with snapping as "a slider or checkbox".
+
+### What was built
+
+One page, plain SVG, no three.js: the estate as pieces on a board. A blank white surface, or a deep dark one; two declared districts as faint tints; pieces of one size floating above the board with shadows beneath, a cube for a service, a tile for the shared library, a drum for a database with no source. Doors on the faces the viewer can see, green where a piece serves and blue where it calls. Wires in the air from the caller's blue door to the server's green door, with the request's flow along them and the evidence on hover. Strands of what each piece is built on hanging from its underside, and a layer of tokens on the board for the references two or more pieces share. The tunnel as a warm sleeve where the wire crosses between districts. Quarter-turn rotation and a top-down projection of the same board. Nothing inside a piece shows until the viewer wheels into it, when the lid unfolds into the folder map in the Local Map's grammar, the piece's doors as its wall pins. Pieces are dragged anywhere and stay there; snapping is a toggle.
+
+![The board at rest](shots/board-01-at-rest.png)
+
+![The board a quarter turn on](shots/board-06-rotated.png)
+
+![The built-on layer: tokens for the references two or more pieces share](shots/board-04-built-on.png)
+
+![The lid of Gateway unfolding into its folder map](shots/board-10-lid-opening.png)
+
+![Inside Gateway: the folder map, the piece's doors as wall pins](shots/board-11-inside-gateway.png)
+
+![The dark board](shots/board-14-dark.png)
+
+### What it taught
+
+- A board is a better frame than a scene. Once the boxes are closed, the pieces uniform and the surface blank, the reader's attention goes to the wires and the doors, which is where the facts are.
+- The third dimension earns its place twice at this scale: volume, so the pieces read as things one placed, and height, so what a piece is built on can hang beneath it. Everything else, including position, is better two-dimensional. The top-down toggle shows the same board flat and loses only those two things.
+- Doors that slide to the faces the viewer can see keep every wire visible under rotation; the cost is that a door is not a fixed place on a piece.
+- Shared references belong on the board, under the pieces, not underground: the tokens with spokes read at a glance which pieces stand on the same thing, which is the SBOM question at this scale.
+- The lid unfolding into the panel is a seamless enough transition to satisfy "we go to a new view": the piece's outline becomes the panel's frame, and the panel's text is the browser's own at one size throughout.
+- The docs still cannot say what a system's openings are, what it is built on, what kind of system it is, or where the zones and the tunnel lie. This page declares all four from the fixture's expected files, project files and README.
+
+### Forks from the board
+
+11. The board's colour by default: white, or the deep dark one.
+12. Uniform pieces, or sized by contents.
+13. The built-on layer: tokens with spokes, or only the strands and the hover list, or another drawing.
+14. Doors that slide to visible faces, or doors fixed to the facing wall.
+15. What opens a piece: the wheel past a threshold, a double-click, or both.
+16. The shared library: a tile on the board, or only a token beneath the pieces that stand on it.
+17. The inside of a piece: the folder map as drawn here, or the Membrane Map's rendering once step 3 consolidates the views.
+18. Where a board's declared districts, tunnel and positions are written so that it can be shared.
+
+The page is `AI-Agent-Workspace/tmp/probes/black-boxes/index.html`, disposable like the others; `node build.cjs` rebuilds it and `shoot.cjs` takes its screenshots.
