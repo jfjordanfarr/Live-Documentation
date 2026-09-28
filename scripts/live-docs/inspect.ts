@@ -21,21 +21,22 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
-  type Direction,
-  hasSymbolReference,
-  resolveSymbolReference,
-  resolveArtifactIdentifier,
+  enumerateTerminalPaths,
   searchGraph,
   searchSymbolPath,
-  enumerateTerminalPaths,
-  emitPathResult,
-  emitNotFound,
-  emitFanoutResult,
-  emitSymbolPathResult,
-  emitSymbolPathNotFound,
+  type Direction
+} from "@live-documentation/engine/live-docs/pathfind";
+
+import {
   emitDualDirectionResult,
-  emitDualDirectionSymbolResult
-} from "@live-documentation/scripts/live-docs/inspect";
+  emitDualDirectionSymbolResult,
+  emitFanoutResult,
+  emitNotFound,
+  emitPathResult,
+  emitSymbolPathNotFound,
+  emitSymbolPathResult
+} from "./inspect/emit";
+import { hasSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
 
 interface ParsedArgs {
   help: boolean;

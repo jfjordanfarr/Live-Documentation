@@ -29,7 +29,7 @@ test.describe("Membrane Map — Font Size Invariance", () => {
     const medianBefore = sorted[Math.floor(sorted.length / 2)];
 
     // Drill deeper: expand the persistence directory
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Measure again at the deeper level
     const deeperSizes = await measureFontSizes(page, selector);

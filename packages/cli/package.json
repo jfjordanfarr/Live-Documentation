@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@live-documentation/engine": "file:../engine",
-    "@live-documentation/scripts": "file:../scripts",
+    "@live-documentation/explorer": "file:../explorer",
     "glob": "^13.0.6"
   },
   "engines": {

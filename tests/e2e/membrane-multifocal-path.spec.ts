@@ -24,12 +24,12 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.ts");
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
 
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.test.ts");
     await page.waitForTimeout(500);
 
     const activePinnedCards = await page.evaluate(() => {
@@ -46,10 +46,10 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     });
 
     expect(activePinnedCards).toContain(
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.ts",
     );
     expect(activePinnedCards).toContain(
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.test.ts",
     );
 
     const activeCount = await countElements(page, ".membrane-card__pin-all--active");
@@ -70,9 +70,9 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
   }) => {
     const pathUrl = buildStateUrl({
       p: [
-        { n: "packages/scripts/src/live-docs/explorer/client/index.ts", s: "__internals__", h: 0 },
-        { n: "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts", s: "__internals__", h: 1 },
-        { n: "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts", s: "__internals__", h: 2 },
+        { n: "packages/explorer/src/client/index.ts", s: "__internals__", h: 0 },
+        { n: "packages/explorer/src/client/persistence/compressed-url-state.ts", s: "__internals__", h: 1 },
+        { n: "packages/explorer/src/client/persistence/compressed-url-state.test.ts", s: "__internals__", h: 2 },
       ],
     });
 
@@ -91,12 +91,12 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
         .sort();
     });
 
-    expect(renderedCardIds).toContain("packages/scripts/src/live-docs/explorer/client/index.ts");
+    expect(renderedCardIds).toContain("packages/explorer/src/client/index.ts");
     expect(renderedCardIds).toContain(
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.ts",
     );
     expect(renderedCardIds).toContain(
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.test.ts",
     );
 
     const hopLabels = await page.evaluate(() => {
@@ -125,9 +125,9 @@ test.describe("Membrane Map — Multi-Focal & Path-As-Pins", () => {
     ).toBeGreaterThan(0);
     const innermost = ancestorDirs.reduce((a, b) => (b.length > a.length ? b : a), "");
     for (const nodeId of [
-      "packages/scripts/src/live-docs/explorer/client/index.ts",
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
-      "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+      "packages/explorer/src/client/index.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.test.ts",
     ]) {
       expect(
         nodeId.startsWith(`${innermost}/`),

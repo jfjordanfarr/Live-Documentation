@@ -1,0 +1,135 @@
+# packages/explorer/src/shared/types.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/explorer/src/shared/types.ts
+- Generated At: 2026-09-28T01:11:44.600Z
+
+## Authored
+### Purpose
+The node-and-link payload the Explorer views render, projected from the graph index by `explorerGraphOf`.
+
+### Notes
+- Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client, server and shared modules. The HTTP API these types once described was retired on 2026-03-10; the detail payload it answered with went on 2026-09-28.
+- Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `ExplorerLinkKind` {#symbol-explorerlinkkind}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L16)
+
+##### `ExplorerLinkKind` — Summary
+Discriminant for the relationship kind carried on explorer graph edges.
+
+The core values (`"dependency"`, `"extends"`, `"implements"`) correspond to
+the relationship kinds the Live Doc parser extracts from markdown dependency
+bullets and symbol documentation. The branded `string &` intersection allows
+future link kinds to flow through without breaking existing switch statements.
+
+##### `ExplorerLinkKind` — Remarks
+Created 2025-11-21 as a plain `string` in the original monolithic explorer
+script; narrowed to a branded union on 2025-11-25 when symbol-level edge
+metadata was threaded through the pipeline to honour the headless/UI parity
+principle. Was the subject of a barrel-file resolution bug (2025-12-18)
+where the symbol index resolved it to `index.ts` instead of this file.
+
+#### `ExplorerDependencyReference` {#symbol-explorerdependencyreference}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L37)
+
+##### `ExplorerDependencyReference` — Summary
+A single dependency edge from the perspective of the owning node.
+
+Replaces the original bare `string[]` dependency representation that existed
+prior to 2025-11-25. The user's assertion of headless/UI parity on 2025-11-24
+drove the refactor: the UI must surface everything the Live Doc encodes,
+including the target symbol anchor, originating source symbol, link kind,
+and whether the target could be resolved to a known graph node.
+
+##### `ExplorerDependencyReference` — Remarks
+`raw` preserves the verbatim markdown link source text,
+while `label` is the human-readable display name. `resolved` is `false` when
+the target path could not be matched to any node in the graph — these edges
+populate `missingDependencies` on the node payload.
+
+#### `ExplorerTypeReference` {#symbol-explorertypereference}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L57)
+
+##### `ExplorerTypeReference` — Summary
+Represents a type reference for a public symbol, enabling type-aware navigation.
+
+##### `ExplorerTypeReference` — Remarks
+When a symbol's return type, parameter type, or inheritance clause references
+a type defined in another Live Doc, we capture this information to enable
+click-to-navigate in the Local Map view.
+
+#### `ExplorerPublicSymbol` {#symbol-explorerpublicsymbol}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L75)
+
+##### `ExplorerPublicSymbol` — Summary
+Extended symbol information including type references.
+
+#### `ExplorerNodePayload` {#symbol-explorernodepayload}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L97)
+
+##### `ExplorerNodePayload` — Summary
+The full payload for a single node in the explorer graph.
+
+Serialised to JSON by the explorer HTTP server and consumed by the client
+to render the Circuit Board treemap, Force Graph, and Local Map views.
+Each node maps 1:1 to a tracked workspace artifact and its corresponding
+Live Doc.
+
+##### `ExplorerNodePayload` — Remarks
+Originally defined inline in the monolithic `visualize-explorer.ts` on
+2025-11-21 with `dependencies: string[]`. Extended on 2025-11-25 with
+structured `ExplorerDependencyReference` and `missingDependencies` to
+honour headless/UI parity. `publicSymbolsExtended` was added 2025-12-05
+for type-reference navigation in the Local Map.
+
+#### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L127)
+
+##### `ExplorerLinkPayload` — Summary
+A directed edge in the explorer graph, connecting two node IDs.
+
+`source` and `target` are node IDs (code paths) or objects carrying an `id`
+property — the dual representation accommodates both raw JSON and D3's
+force-simulation node references which replace string IDs with object refs.
+
+##### `ExplorerLinkPayload` — Remarks
+Originally `source: string; target: string; kind: string;` on 2025-11-21.
+`sourceSymbol`/`targetSymbol` were added on 2025-11-25 to carry symbol-level
+anchor information, enabling the Local Map to highlight individual symbols
+in the dependency columns rather than just file-level cards.
+
+#### `ExplorerGraphStats` {#symbol-explorergraphstats}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L139)
+
+##### `ExplorerGraphStats` — Summary
+Summary statistics for the explorer graph, rendered in the Circuit Board
+header and used by the static builder to emit a quick-access overview.
+
+#### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L151)
+
+##### `ExplorerGraphPayload` — Summary
+The node-and-link payload the Explorer views render.
+
+Contains the complete graph (all nodes and edges) plus summary statistics.
+The client projects it from the graph index in the bundle.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+_No dependencies documented yet_
+<!-- LIVE-DOC:END Dependencies -->

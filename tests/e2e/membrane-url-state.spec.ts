@@ -20,7 +20,7 @@ test.describe("Membrane Map — URL State Persistence", () => {
     await goToMembraneMap(page);
 
     // Drill into a specific directory
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Capture the current URL after navigation
     const urlBefore = page.url();

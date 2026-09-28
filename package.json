@@ -30,11 +30,11 @@
   "workspaces": [
     "packages/engine",
     "packages/generator",
-    "packages/scripts",
+    "packages/explorer",
     "packages/cli"
   ],
   "scripts": {
-    "build": "npm run build -w packages/engine && npm run build -w packages/scripts && npm run build -w packages/generator",
+    "build": "npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",
     "lint": "eslint .",
     "format": "prettier --check .",
     "test:unit": "vitest run --project unit",

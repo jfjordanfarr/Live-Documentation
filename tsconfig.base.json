@@ -18,13 +18,13 @@
     "outDir": "dist",
     "paths": {
       "@live-documentation/engine/*": ["packages/engine/src/*"],
-      "@live-documentation/scripts/*": ["packages/scripts/src/*"],
+      "@live-documentation/explorer/*": ["packages/explorer/src/*"],
       "@live-documentation/generator/*": ["packages/generator/src/*"]
     }
   },
   "references": [
     { "path": "packages/engine" },
     { "path": "packages/generator" },
-    { "path": "packages/scripts" }
+    { "path": "packages/explorer" }
   ]
 }

@@ -54,7 +54,7 @@ test.describe("Membrane Map — Focus Layout", () => {
     }
 
     // Now drill into persistence to focus on it
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // After focus: the persistence directory content should occupy a large portion
     // of the viewport. Measure the focused directory's membrane.

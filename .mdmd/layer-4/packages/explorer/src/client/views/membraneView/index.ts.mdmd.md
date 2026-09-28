@@ -1,0 +1,93 @@
+# packages/explorer/src/client/views/membraneView/index.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/explorer/src/client/views/membraneView/index.ts
+- Generated At: 2026-09-28T01:11:44.222Z
+
+## Authored
+### Purpose
+
+View controller for the Membrane Map, orchestrating layout computation, browse-mode rendering, focal overlay management, pin state transitions, pan/zoom interaction, focus-based directory drill-down, and bidirectional URL state persistence via lz-string compression.
+
+### Notes
+
+- Created during [Dev Day 80 Step 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) as the minimal browse-mode controller, then augmented in Steps 6–9 with pin state wiring, focal overlay integration, SVG connection drawing, hop badge attachment, path breadcrumb rendering, keyboard shortcuts, and compressed URL state.
+- `createMembraneView` is a closure-based controller (not a class) returning a `MembraneViewApi` with `render`, `zoomIn`, `zoomOut`, `resetZoom`, and `redrawConnections` — the closure captures mutable state (transform, expandedDirectories, pinSet, focusedDirectory, expandedCards) and re-renders imperatively on each state change.
+- `expandedCards` state (added [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md)) tracks which file cards are expanded in browse mode; included in `structuralKey()` to trigger re-renders when cards expand/collapse.
+- `redrawConnections()` is a lightweight re-render that reuses stored pin-active artifacts (`lastPinSvg`, `lastPinAnchors`, `lastPinConns`, `lastPinScale`) to re-measure anchor positions and redraw SVG paths without triggering a full FLIP animation. Called from tuning slider handlers when column gap or bezier parameters change.
+- Focus-based drill-down: clicking a collapsed tile sets `focusedDirectory`, clears expansions outside the ancestor path, and triggers `fitToViewport` to auto-zoom; double-clicking an expanded membrane navigates focus up to the parent directory.
+- Bundle edge rendering is commented out for MVP with a clear re-enablement path once progressive-disclosure or hover-only rendering is implemented.
+- `persistToUrl` writes the full membrane state (view, selected node, pin set, expanded directories, transform, filters) to the URL via `writeUrlState` on every render; `readUrlState` restores on initialization, enabling shareable deep links.
+- [Dev Day 84](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md): auto-focus bug fix — initial render now derives the parent directory from `selectedNode.docRelativePath` (not `codeRelativePath`) to match the treemap's `docRelativePath`-keyed hierarchy; `trySelectionOnlyUpdate` fast-path declines when auto-focus would change `focusedDirectory`. Also added `openInMembraneMapView` helper and `onPinAllSymbols` callback wiring for both browse and pin-active modes, with detail panel auto-open suppressed on initial load (`{ suppressDetailPanel: true }`).
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `MembraneViewOptions` {#symbol-membraneviewoptions}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L55)
+
+##### `MembraneViewOptions` — Summary
+Options for creating a Membrane Map view controller.
+
+#### `MembraneViewApi` {#symbol-membraneviewapi}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L65)
+
+##### `MembraneViewApi` — Summary
+Public API surface returned by {@link createMembraneView}.
+
+#### `createMembraneView` {#symbol-createmembraneview}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L86)
+- Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
+- Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
+
+##### `createMembraneView` — Summary
+Initialise the Membrane Map view and return its public API.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`compressed-url-state.UrlStateSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot) (type-only)
+- [`compressed-url-state.readUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate) (type-only)
+- [`compressed-url-state.scrubSnapshot`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot) (type-only)
+- [`compressed-url-state.writeUrlState`](../../persistence/compressed-url-state.ts.mdmd.md#symbol-writeurlstate) (type-only)
+- [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`types.TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap) (type-only)
+- [`layoutUtils.LayoutRect`](../layoutUtils.ts.mdmd.md#symbol-layoutrect)
+- [`layoutUtils.buildHierarchy`](../layoutUtils.ts.mdmd.md#symbol-buildhierarchy)
+- [`aggregation.DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
+- [`aggregation.computeAllAggregates`](./aggregation.ts.mdmd.md#symbol-computeallaggregates) (type-only)
+- [`animation.animateTransition`](./animation.ts.mdmd.md#symbol-animatetransition)
+- [`animation.capturePositions`](./animation.ts.mdmd.md#symbol-capturepositions)
+- [`browse-renderer.renderBrowseMode`](./browse-renderer.ts.mdmd.md#symbol-renderbrowsemode)
+- [`detail-levels.DetailLevel`](./detail-levels.ts.mdmd.md#symbol-detaillevel)
+- [`detail-levels.FocalSpec`](./detail-levels.ts.mdmd.md#symbol-focalspec)
+- [`detail-levels.resolveDetailLevels`](./detail-levels.ts.mdmd.md#symbol-resolvedetaillevels)
+- [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor)
+- [`focal-overlay.attachHopBadges`](./focal-overlay.ts.mdmd.md#symbol-attachhopbadges)
+- [`focal-overlay.drawConnections`](./focal-overlay.ts.mdmd.md#symbol-drawconnections)
+- [`focal-overlay.markConnectedEndpoints`](./focal-overlay.ts.mdmd.md#symbol-markconnectedendpoints)
+- [`focal-overlay.renderFocalOverlay`](./focal-overlay.ts.mdmd.md#symbol-renderfocaloverlay)
+- [`focal-overlay.renderPathBreadcrumb`](./focal-overlay.ts.mdmd.md#symbol-renderpathbreadcrumb)
+- [`focal-overlay.setupHoverDimming`](./focal-overlay.ts.mdmd.md#symbol-setuphoverdimming)
+- [`layout.computeMembraneLayout`](./layout.ts.mdmd.md#symbol-computemembranelayout)
+- [`pin-active-renderer.renderPinActiveLayout`](./pin-active-renderer.ts.mdmd.md#symbol-renderpinactivelayout)
+- [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
+- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
+- [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin) (type-only)
+- [`pin-state.areAllSymbolsPinned`](./pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
+- [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
+- [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)
+- [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
+- [`pin-state.removePinsForNode`](./pin-state.ts.mdmd.md#symbol-removepinsfornode) (type-only)
+- [`pin-state.togglePin`](./pin-state.ts.mdmd.md#symbol-togglepin) (type-only)
+- [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
+- [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
+<!-- LIVE-DOC:END Dependencies -->

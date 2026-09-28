@@ -196,32 +196,32 @@ The testing strategy is:
 
 #### Pure-Math Modules (no DOM dependency)
 
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts` — Core types: `MembraneNode`, `MembraneLink`, `PinSet`, `PinEntry`
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts` — Recursive squarify engine with focus-aware weight boosting
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts` — `isBarrelFile()`, `applyBarrelSemantics()`, `getAncestorDirectories()`
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts` — `resolveDetailLevels()` (full/summary/badge/hidden)
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts` — Cross-membrane edge aggregation
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts` — Pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts` — Front/back trace classification + geometry (French Corset stubs)
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts` — `aggregateEdges()`, `renderBundledEdges()`
+- `packages/explorer/src/client/views/membraneView/types.ts` — Core types: `MembraneNode`, `MembraneLink`, `PinSet`, `PinEntry`
+- `packages/explorer/src/client/views/membraneView/layout.ts` — Recursive squarify engine with focus-aware weight boosting
+- `packages/explorer/src/client/views/membraneView/hierarchy.ts` — `isBarrelFile()`, `applyBarrelSemantics()`, `getAncestorDirectories()`
+- `packages/explorer/src/client/views/membraneView/detail-levels.ts` — `resolveDetailLevels()` (full/summary/badge/hidden)
+- `packages/explorer/src/client/views/membraneView/edge-bundling.ts` — Cross-membrane edge aggregation
+- `packages/explorer/src/client/views/membraneView/pin-state.ts` — Pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
+- `packages/explorer/src/client/views/membraneView/routing.ts` — Front/back trace classification + geometry (French Corset stubs)
+- `packages/explorer/src/client/views/membraneView/svg-connections.ts` — `aggregateEdges()`, `renderBundledEdges()`
 
 #### DOM Modules
 
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/browse-renderer.ts` — DOM factory for collapsed tiles and expanded membranes
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts` — Symbol expansion panels, pin anchors, SVG connection overlay
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts` — Recursive directory aggregate computation
-- `packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts` — Controller: pan/zoom, focus path, pin dispatch, URL state sync
+- `packages/explorer/src/client/views/membraneView/browse-renderer.ts` — DOM factory for collapsed tiles and expanded membranes
+- `packages/explorer/src/client/views/membraneView/focal-overlay.ts` — Symbol expansion panels, pin anchors, SVG connection overlay
+- `packages/explorer/src/client/views/membraneView/aggregation.ts` — Recursive directory aggregate computation
+- `packages/explorer/src/client/views/membraneView/index.ts` — Controller: pan/zoom, focus path, pin dispatch, URL state sync
 
 #### Shared (promoted from view-specific locations)
 
-- `packages/scripts/src/live-docs/explorer/client/views/squarify.ts` — Squarified treemap layout (promoted from `circuitView/`)
-- `packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts` — Bézier paths, gradient generation (promoted from `localView/`)
+- `packages/explorer/src/client/views/squarify.ts` — Squarified treemap layout (promoted from `circuitView/`)
+- `packages/explorer/src/client/views/connection-geometry.ts` — Bézier paths, gradient generation (promoted from `localView/`)
 
 #### Persistence
 
-- `packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts` — Shareable Membrane URL state: versioned compressed payloads for pins, expansions, transform, and display filters
-- `packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts` — Legacy URL parsing + cold-start/default-view semantics for Explorer boot
-- `packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts` — Versioned UI and navigation fallback persisted across browser sessions
+- `packages/explorer/src/client/persistence/compressed-url-state.ts` — Shareable Membrane URL state: versioned compressed payloads for pins, expansions, transform, and display filters
+- `packages/explorer/src/client/persistence/url-state.ts` — Legacy URL parsing + cold-start/default-view semantics for Explorer boot
+- `packages/explorer/src/client/persistence/local-storage.ts` — Versioned UI and navigation fallback persisted across browser sessions
 
 ### Related Architecture
 

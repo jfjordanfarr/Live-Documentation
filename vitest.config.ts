@@ -2,7 +2,7 @@ import path from "node:path";
 import { defineConfig } from "vitest/config";
 
 const sharedSrc = path.resolve(__dirname, "packages/engine/src");
-const scriptsSrc = path.resolve(__dirname, "packages/scripts/src");
+const explorerSrc = path.resolve(__dirname, "packages/explorer/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");
@@ -23,8 +23,8 @@ export default defineConfig({
         replacement: `${withTrailingSeparator(sharedSrc)}$1`
       },
       {
-        find: /^@live-documentation\/scripts\/(.+)$/u,
-        replacement: `${withTrailingSeparator(scriptsSrc)}$1`
+        find: /^@live-documentation\/explorer\/(.+)$/u,
+        replacement: `${withTrailingSeparator(explorerSrc)}$1`
       },
       {
         find: /^@live-documentation\/generator\/(.+)$/u,
@@ -43,7 +43,7 @@ export default defineConfig({
           include: [
             "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",
-            "packages/scripts/src/**/*.test.ts",
+            "packages/explorer/src/**/*.test.ts",
             "scripts/**/*.test.ts",
             "tests/integration/slopcop/**/*.test.ts"
           ]

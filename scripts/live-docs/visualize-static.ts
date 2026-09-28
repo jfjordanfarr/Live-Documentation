@@ -24,7 +24,7 @@ import {
     normalizeLiveDocumentationConfig,
     type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { buildStaticExplorer } from "@live-documentation/scripts/live-docs/explorer/shared/staticBuilder";
+import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
 
 interface CliOptions {
     outputDir: string;

@@ -17,10 +17,10 @@ test.describe("Membrane Map — Layout Containment", () => {
 
     // The initial state shows the Explorer client folder with its subdirectories
     // as collapsed tiles. Click persistence to expand it.
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Pin all symbols on compressed-url-state.ts to enter pin-active mode.
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.ts");
 
     // Wait for pin-active mode to render
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
@@ -38,7 +38,7 @@ test.describe("Membrane Map — Layout Containment", () => {
     await goToMembraneMap(page);
 
     // Expand the persistence directory to see file cards inside it
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // In browse mode at the leaf directory — check containment
     const violations = await findContainmentViolations(page);

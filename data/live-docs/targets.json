@@ -107,222 +107,222 @@
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.test.ts",
+          "path": "packages/explorer/src/client/persistence/compressed-url-state.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts",
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/persistence/compressed-url-state.ts",
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/membraneView/pin-state.ts",
+            "packages/explorer/src/client/views/symbolAnchors.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.test.ts",
+          "path": "packages/explorer/src/client/views/circuitView/aggregation.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/circuitView/aggregation.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/circuitView/state.test.ts",
+          "path": "packages/explorer/src/client/views/circuitView/state.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/views/circuitView/state.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.test.ts",
+          "path": "packages/explorer/src/client/views/connection-geometry.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts"
+            "packages/explorer/src/client/views/connection-geometry.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.test.ts",
+          "path": "packages/explorer/src/client/views/localView/layout-math.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+            "packages/explorer/src/client/views/localView/layout-math.ts",
+            "packages/explorer/src/client/views/localView/state.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.test.ts",
+          "path": "packages/explorer/src/client/views/localView/layout-measure.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/localView/layout-measure.ts",
+            "packages/explorer/src/client/views/localView/state.ts",
+            "packages/explorer/src/client/views/localView/types.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.test.ts",
+          "path": "packages/explorer/src/client/views/localView/pan-zoom.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/localView/connections.ts",
+            "packages/explorer/src/client/views/localView/pan-zoom.ts",
+            "packages/explorer/src/client/views/localView/runtime.ts",
+            "packages/explorer/src/client/views/localView/state.ts",
+            "packages/explorer/src/client/views/localView/types.ts",
+            "packages/explorer/src/client/views/symbolAnchors.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/state-integration.test.ts",
+          "path": "packages/explorer/src/client/views/localView/state-integration.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+            "packages/explorer/src/client/views/localView/state.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/state.test.ts",
+          "path": "packages/explorer/src/client/views/localView/state.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts"
+            "packages/explorer/src/client/views/localView/state.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.test.ts",
+          "path": "packages/explorer/src/client/views/localView/subgraph-builder.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/localView/state.ts",
+            "packages/explorer/src/client/views/localView/subgraph-builder.ts",
+            "packages/explorer/src/client/views/localView/types.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.test.ts",
+          "path": "packages/explorer/src/client/views/localView/symbol-highlight.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/localView/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/localView/state.ts",
+            "packages/explorer/src/client/views/localView/symbol-highlight.ts",
+            "packages/explorer/src/client/views/localView/types.ts",
+            "packages/explorer/src/client/views/symbolAnchors.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/detail-levels.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/membraneView/detail-levels.ts",
+            "packages/explorer/src/client/views/membraneView/types.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/edge-bundling.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/membraneView/edge-bundling.ts",
+            "packages/explorer/src/client/views/membraneView/types.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/hierarchy.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/membraneView/hierarchy.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/layout.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/squarify.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/membraneView/layout.ts",
+            "packages/explorer/src/client/views/membraneView/types.ts",
+            "packages/explorer/src/client/views/squarify.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/pin-layout.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-layout.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/views/membraneView/pin-layout.ts",
+            "packages/explorer/src/client/views/membraneView/pin-state.ts",
+            "packages/explorer/src/client/views/symbolAnchors.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/pin-state.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/animation.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/connection-geometry.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/membraneView/animation.ts",
+            "packages/explorer/src/client/views/membraneView/focal-overlay.ts",
+            "packages/explorer/src/client/views/membraneView/pin-state.ts",
+            "packages/explorer/src/client/views/membraneView/routing.ts",
+            "packages/explorer/src/client/views/membraneView/types.ts",
+            "packages/explorer/src/client/views/symbolAnchors.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/routing.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts"
+            "packages/explorer/src/client/views/connection-geometry.ts",
+            "packages/explorer/src/client/views/membraneView/routing.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.test.ts",
+          "path": "packages/explorer/src/client/views/membraneView/svg-connections.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/membraneView/edge-bundling.ts",
+            "packages/explorer/src/client/views/membraneView/svg-connections.ts",
+            "packages/explorer/src/client/views/membraneView/types.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/squarify.test.ts",
+          "path": "packages/explorer/src/client/views/squarify.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/types.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts",
-            "packages/scripts/src/live-docs/explorer/client/views/squarify.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/client/types.ts",
+            "packages/explorer/src/client/views/layoutUtils.ts",
+            "packages/explorer/src/client/views/squarify.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.test.ts",
+          "path": "packages/explorer/src/client/views/symbolAnchors.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts"
+            "packages/explorer/src/client/views/symbolAnchors.ts"
           ],
           "fixtures": []
         },
         {
-          "path": "packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.test.ts",
+          "path": "packages/explorer/src/shared/bundledMarkdownScanner.test.ts",
           "targets": [
-            "packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts",
-            "packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts",
-            "packages/scripts/src/live-docs/explorer/shared/types.ts"
+            "packages/explorer/src/shared/bundledMarkdownScanner.ts",
+            "packages/explorer/src/shared/staticExplorerData.ts",
+            "packages/explorer/src/shared/types.ts"
           ],
           "fixtures": []
         },

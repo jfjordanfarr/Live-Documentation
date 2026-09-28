@@ -9,7 +9,7 @@ import { compressToEncodedURIComponent } from "lz-string";
  * The Explorer client's own folder has that shape; `persistence/` inside it
  * holds a module and its test, which the pinning specs use as a pair.
  */
-export const FIXTURE_DIR = "packages/scripts/src/live-docs/explorer/client";
+export const FIXTURE_DIR = "packages/explorer/src/client";
 export const FIXTURE_ENTRY = `${FIXTURE_DIR}/index.ts`;
 export const FIXTURE_SUBDIR = `${FIXTURE_DIR}/persistence`;
 export const FIXTURE_FILE = `${FIXTURE_SUBDIR}/compressed-url-state.ts`;

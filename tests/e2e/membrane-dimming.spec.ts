@@ -28,8 +28,8 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.ts");
 
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(300);
@@ -83,10 +83,10 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Pin all on compressed-url-state.ts
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.ts");
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(300);
 
@@ -102,8 +102,8 @@ test.describe("Membrane Map — Dimming Model", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
-    await pinAllOnCard(page, "packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
+    await pinAllOnCard(page, "packages/explorer/src/client/persistence/compressed-url-state.ts");
 
     await page.waitForSelector(".pin-active-root", { timeout: 5_000 });
     await page.waitForTimeout(500);

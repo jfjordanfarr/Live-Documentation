@@ -13,7 +13,7 @@ Document the visualization command center that renders the Live Doc graph as int
 
 ### Notes
 
-- Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/scripts` structure with client and shared modules.
+- Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/explorer` structure with client and shared modules.
 - The shared layer (`explorer/shared/`) builds the static bundle: the derived graph index from `packages/engine` plus the related markdown, with the HTML/CSS/JS assets. `graph.ts` there is the projection from the graph index to the node-and-link payload the views render; the client runs it on load (since 2026-09-28).
 - The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`. The client paths that still fetched from it went on 2026-09-28.
 - The client (`explorer/client/`) currently renders four view modes:
@@ -55,95 +55,95 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 #### Build Utilities
 
-- [packages/scripts/src/live-docs/explorer/shared/graph.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/graph.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/buildAssets.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/buildAssets.ts.mdmd.md)
+- [packages/explorer/src/shared/graph.ts](../layer-4/packages/explorer/src/shared/graph.ts.mdmd.md)
+- [packages/explorer/src/shared/buildAssets.ts](../layer-4/packages/explorer/src/shared/buildAssets.ts.mdmd.md)
 
 #### Shared
 
-- [packages/scripts/src/live-docs/explorer/shared/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/bundledMarkdownScanner.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
+- [packages/explorer/src/shared/types.ts](../layer-4/packages/explorer/src/shared/types.ts.mdmd.md)
+- [packages/explorer/src/shared/bundledMarkdownScanner.ts](../layer-4/packages/explorer/src/shared/bundledMarkdownScanner.ts.mdmd.md)
+- [packages/explorer/src/shared/staticBuilder.ts](../layer-4/packages/explorer/src/shared/staticBuilder.ts.mdmd.md)
+- [packages/explorer/src/shared/staticExplorerData.ts](../layer-4/packages/explorer/src/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
 
 #### Client Core
 
-- [packages/scripts/src/live-docs/explorer/client/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/dom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/dom.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/errors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/errors.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/detailPanel.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/detailPanel.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/markdown.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/markdown.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/pathfind.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/pathfind.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/graph-helpers.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/graph-helpers.ts.mdmd.md)
+- [packages/explorer/src/client/index.ts](../layer-4/packages/explorer/src/client/index.ts.mdmd.md)
+- [packages/explorer/src/client/types.ts](../layer-4/packages/explorer/src/client/types.ts.mdmd.md)
+- [packages/explorer/src/client/dom.ts](../layer-4/packages/explorer/src/client/dom.ts.mdmd.md)
+- [packages/explorer/src/client/errors.ts](../layer-4/packages/explorer/src/client/errors.ts.mdmd.md)
+- [packages/explorer/src/client/detailPanel.ts](../layer-4/packages/explorer/src/client/detailPanel.ts.mdmd.md)
+- [packages/explorer/src/client/markdown.ts](../layer-4/packages/explorer/src/client/markdown.ts.mdmd.md)
+- [packages/explorer/src/client/pathfind.ts](../layer-4/packages/explorer/src/client/pathfind.ts.mdmd.md)
+- [packages/explorer/src/client/graph-helpers.ts](../layer-4/packages/explorer/src/client/graph-helpers.ts.mdmd.md)
 
 #### Bootstrap (entry point heuristics)
 
-- [packages/scripts/src/live-docs/explorer/client/bootstrap/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/bootstrap/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/bootstrap/entry-heuristics.ts.mdmd.md)
+- [packages/explorer/src/client/bootstrap/index.ts](../layer-4/packages/explorer/src/client/bootstrap/index.ts.mdmd.md)
+- [packages/explorer/src/client/bootstrap/entry-heuristics.ts](../layer-4/packages/explorer/src/client/bootstrap/entry-heuristics.ts.mdmd.md)
 
 #### Panels (UI controls)
 
-- [packages/scripts/src/live-docs/explorer/client/panels/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/omnisearch.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/sources-view.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/panels/tuning.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/panels/tuning.ts.mdmd.md)
+- [packages/explorer/src/client/panels/index.ts](../layer-4/packages/explorer/src/client/panels/index.ts.mdmd.md)
+- [packages/explorer/src/client/panels/omnisearch.ts](../layer-4/packages/explorer/src/client/panels/omnisearch.ts.mdmd.md)
+- [packages/explorer/src/client/panels/sources-view.ts](../layer-4/packages/explorer/src/client/panels/sources-view.ts.mdmd.md)
+- [packages/explorer/src/client/panels/tuning.ts](../layer-4/packages/explorer/src/client/panels/tuning.ts.mdmd.md)
 
 #### Persistence (state management)
 
-- [packages/scripts/src/live-docs/explorer/client/persistence/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/local-storage.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/url-state.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/persistence/compressed-url-state.ts.mdmd.md) — lz-string URL state compression for Membrane Map shareability
+- [packages/explorer/src/client/persistence/index.ts](../layer-4/packages/explorer/src/client/persistence/index.ts.mdmd.md)
+- [packages/explorer/src/client/persistence/local-storage.ts](../layer-4/packages/explorer/src/client/persistence/local-storage.ts.mdmd.md)
+- [packages/explorer/src/client/persistence/url-state.ts](../layer-4/packages/explorer/src/client/persistence/url-state.ts.mdmd.md)
+- [packages/explorer/src/client/persistence/compressed-url-state.ts](../layer-4/packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md) — lz-string URL state compression for Membrane Map shareability
 
 #### Views
 
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/index.ts.mdmd.md) — Circuit Board controller (progressive disclosure treemap)
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/state.ts.mdmd.md) — Immutable state for expand/collapse
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/aggregation.ts.mdmd.md) — Directory aggregate metrics
-- [packages/scripts/src/live-docs/explorer/client/views/squarify.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/squarify.ts.mdmd.md) — Squarified treemap layout algorithm (shared by Circuit Board and Membrane Map) — Squarified treemap layout algorithm
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView/directoryTile.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/directoryTile.ts.mdmd.md) — Directory tile DOM builder
-- [packages/scripts/src/live-docs/explorer/client/views/circuitView/breadcrumb.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/circuitView/breadcrumb.ts.mdmd.md) — Breadcrumb navigation DOM builder
-- [packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/layoutUtils.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/symbolAnchors.ts.mdmd.md)
+- [packages/explorer/src/client/views/circuitView/index.ts](../layer-4/packages/explorer/src/client/views/circuitView/index.ts.mdmd.md) — Circuit Board controller (progressive disclosure treemap)
+- [packages/explorer/src/client/views/circuitView/state.ts](../layer-4/packages/explorer/src/client/views/circuitView/state.ts.mdmd.md) — Immutable state for expand/collapse
+- [packages/explorer/src/client/views/circuitView/aggregation.ts](../layer-4/packages/explorer/src/client/views/circuitView/aggregation.ts.mdmd.md) — Directory aggregate metrics
+- [packages/explorer/src/client/views/squarify.ts](../layer-4/packages/explorer/src/client/views/squarify.ts.mdmd.md) — Squarified treemap layout algorithm (shared by Circuit Board and Membrane Map) — Squarified treemap layout algorithm
+- [packages/explorer/src/client/views/circuitView/directoryTile.ts](../layer-4/packages/explorer/src/client/views/circuitView/directoryTile.ts.mdmd.md) — Directory tile DOM builder
+- [packages/explorer/src/client/views/circuitView/breadcrumb.ts](../layer-4/packages/explorer/src/client/views/circuitView/breadcrumb.ts.mdmd.md) — Breadcrumb navigation DOM builder
+- [packages/explorer/src/client/views/layoutUtils.ts](../layer-4/packages/explorer/src/client/views/layoutUtils.ts.mdmd.md)
+- [packages/explorer/src/client/views/symbolAnchors.ts](../layer-4/packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md)
 
 #### Local Map (modularised 2025-12-04)
 
-- [packages/scripts/src/live-docs/explorer/client/views/localView/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/index.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/controller.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/render.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/render.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/connections.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/runtime.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/state.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/card-factory.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/card-factory.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/column-factory.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/column-factory.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/connection-geometry.ts.mdmd.md) — Connection geometry utilities (shared by Local Map and Membrane Map)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-math.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-measure.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/layout-renderer.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/layout-renderer.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/pan-zoom.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/subgraph-builder.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/localView/symbol-highlight.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/index.ts](../layer-4/packages/explorer/src/client/views/localView/index.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/controller.ts](../layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/render.ts](../layer-4/packages/explorer/src/client/views/localView/render.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/connections.ts](../layer-4/packages/explorer/src/client/views/localView/connections.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/runtime.ts](../layer-4/packages/explorer/src/client/views/localView/runtime.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/state.ts](../layer-4/packages/explorer/src/client/views/localView/state.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/types.ts](../layer-4/packages/explorer/src/client/views/localView/types.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/card-factory.ts](../layer-4/packages/explorer/src/client/views/localView/card-factory.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/column-factory.ts](../layer-4/packages/explorer/src/client/views/localView/column-factory.ts.mdmd.md)
+- [packages/explorer/src/client/views/connection-geometry.ts](../layer-4/packages/explorer/src/client/views/connection-geometry.ts.mdmd.md) — Connection geometry utilities (shared by Local Map and Membrane Map)
+- [packages/explorer/src/client/views/localView/layout-math.ts](../layer-4/packages/explorer/src/client/views/localView/layout-math.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/layout-measure.ts](../layer-4/packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/layout-renderer.ts](../layer-4/packages/explorer/src/client/views/localView/layout-renderer.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/pan-zoom.ts](../layer-4/packages/explorer/src/client/views/localView/pan-zoom.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/subgraph-builder.ts](../layer-4/packages/explorer/src/client/views/localView/subgraph-builder.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/symbol-highlight.ts](../layer-4/packages/explorer/src/client/views/localView/symbol-highlight.ts.mdmd.md)
 
 #### Membrane Map (in progress — see [architecture doc](membrane-map.mdmd.md))
 
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/types.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/layout.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/hierarchy.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/detail-levels.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/edge-bundling.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/pin-state.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/routing.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/svg-connections.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/browse-renderer.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/browse-renderer.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/focal-overlay.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/aggregation.ts.mdmd.md)
-- [packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts](../layer-4/packages/scripts/src/live-docs/explorer/client/views/membraneView/index.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/types.ts](../layer-4/packages/explorer/src/client/views/membraneView/types.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/layout.ts](../layer-4/packages/explorer/src/client/views/membraneView/layout.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/hierarchy.ts](../layer-4/packages/explorer/src/client/views/membraneView/hierarchy.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/detail-levels.ts](../layer-4/packages/explorer/src/client/views/membraneView/detail-levels.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/edge-bundling.ts](../layer-4/packages/explorer/src/client/views/membraneView/edge-bundling.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/pin-state.ts](../layer-4/packages/explorer/src/client/views/membraneView/pin-state.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/routing.ts](../layer-4/packages/explorer/src/client/views/membraneView/routing.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/svg-connections.ts](../layer-4/packages/explorer/src/client/views/membraneView/svg-connections.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/browse-renderer.ts](../layer-4/packages/explorer/src/client/views/membraneView/browse-renderer.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/focal-overlay.ts](../layer-4/packages/explorer/src/client/views/membraneView/focal-overlay.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/aggregation.ts](../layer-4/packages/explorer/src/client/views/membraneView/aggregation.ts.mdmd.md)
+- [packages/explorer/src/client/views/membraneView/index.ts](../layer-4/packages/explorer/src/client/views/membraneView/index.ts.mdmd.md)
 
 #### Static Distribution
 
-- [packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
-- [packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts](../layer-4/packages/scripts/src/live-docs/explorer/shared/staticBuilder.ts.mdmd.md) — Builds the bundle
+- [packages/explorer/src/shared/staticExplorerData.ts](../layer-4/packages/explorer/src/shared/staticExplorerData.ts.mdmd.md) — What the bundle holds
+- [packages/explorer/src/shared/staticBuilder.ts](../layer-4/packages/explorer/src/shared/staticBuilder.ts.mdmd.md) — Builds the bundle
 
 ## Evidence
 

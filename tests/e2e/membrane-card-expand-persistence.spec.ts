@@ -17,7 +17,7 @@ import { goToMembraneMap, expandDirectory } from "./helpers";
 test.describe("Membrane Map — Card Expansion URL Persistence", () => {
   test("expanding a card updates the URL state", async ({ page }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Verify there's at least one collapsed card to start
     const collapsedBefore = await page
@@ -57,7 +57,7 @@ test.describe("Membrane Map — Card Expansion URL Persistence", () => {
 
   test("expanded cards are restored after page reload", async ({ page }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Expand the first collapsed card
     await page.locator(".membrane-card--collapsed").first().click();
@@ -109,7 +109,7 @@ test.describe("Membrane Map — Card Expansion URL Persistence", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Count available collapsed cards
     const totalCollapsed = await page.locator(".membrane-card--collapsed").count();

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
-- Generated At: 2026-09-28T01:00:43.526Z
+- Generated At: 2026-09-28T01:11:44.691Z
 
 ## Authored
 ### Purpose
@@ -30,18 +30,18 @@ _No public symbols detected_
 - [`liveDocumentationConfig.LiveDocumentationConfigInput`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfiginput)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
-- [`index.Direction`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-direction)
-- [`index.emitDualDirectionResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitdualdirectionresult)
-- [`index.emitDualDirectionSymbolResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
-- [`index.emitFanoutResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitfanoutresult)
-- [`index.emitNotFound`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitnotfound)
-- [`index.emitPathResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitpathresult)
-- [`index.emitSymbolPathNotFound`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitsymbolpathnotfound)
-- [`index.emitSymbolPathResult`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-emitsymbolpathresult)
-- [`index.enumerateTerminalPaths`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-enumerateterminalpaths)
-- [`index.hasSymbolReference`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-hassymbolreference)
-- [`index.resolveArtifactIdentifier`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-resolveartifactidentifier)
-- [`index.resolveSymbolReference`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-resolvesymbolreference)
-- [`index.searchGraph`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-searchgraph)
-- [`index.searchSymbolPath`](../../packages/scripts/src/live-docs/inspect/index.ts.mdmd.md#symbol-searchsymbolpath)
+- [`pathfind.Direction`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-direction)
+- [`pathfind.enumerateTerminalPaths`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-enumerateterminalpaths)
+- [`pathfind.searchGraph`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchgraph)
+- [`pathfind.searchSymbolPath`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-searchsymbolpath)
+- [`emit.emitDualDirectionResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionresult)
+- [`emit.emitDualDirectionSymbolResult`](./inspect/emit.ts.mdmd.md#symbol-emitdualdirectionsymbolresult)
+- [`emit.emitFanoutResult`](./inspect/emit.ts.mdmd.md#symbol-emitfanoutresult)
+- [`emit.emitNotFound`](./inspect/emit.ts.mdmd.md#symbol-emitnotfound)
+- [`emit.emitPathResult`](./inspect/emit.ts.mdmd.md#symbol-emitpathresult)
+- [`emit.emitSymbolPathNotFound`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathnotfound)
+- [`emit.emitSymbolPathResult`](./inspect/emit.ts.mdmd.md#symbol-emitsymbolpathresult)
+- [`resolve.hasSymbolReference`](./inspect/resolve.ts.mdmd.md#symbol-hassymbolreference)
+- [`resolve.resolveArtifactIdentifier`](./inspect/resolve.ts.mdmd.md#symbol-resolveartifactidentifier)
+- [`resolve.resolveSymbolReference`](./inspect/resolve.ts.mdmd.md#symbol-resolvesymbolreference)
 <!-- LIVE-DOC:END Dependencies -->

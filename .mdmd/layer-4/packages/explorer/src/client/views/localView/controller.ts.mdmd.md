@@ -1,0 +1,110 @@
+# packages/explorer/src/client/views/localView/controller.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/explorer/src/client/views/localView/controller.ts
+- Generated At: 2026-09-28T01:11:43.595Z
+
+## Authored
+### Purpose
+Controller class for the Local Map. Orchestrates runtime state, rendering, and Bézier connection drawing in response to selection changes.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+
+### Notes
+- Created 2025-12-04 during localView modularisation.
+- Implements `LocalViewApi.update()` to re-render the 3-column subgraph.
+- Manages scroll sync, column expansion, and SVG layer updates.
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `LocalViewController` {#symbol-localviewcontroller}
+- Type: class
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L101)
+- Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
+
+##### `LocalViewController` — Summary
+Primary controller for the Explorer's Local Map (3-column symbol) view.
+
+Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
+symbol pinning, connection drawing, and multi-hop path visualization.
+Delegates DOM measurement to `layout-measure`, gesture handling to
+`pan-zoom`, graph slicing to `subgraph-builder`, and symbol
+highlighting to `symbol-highlight`.
+
+Pin state is managed exclusively through the observable
+{@link localMapState} store (`pinnedPath`, `hoveredSymbol`, etc.).
+The legacy `pinnedSymbol` private field was removed 2026-02-18 after
+multi-hop stabilised (see 2025-12-19 refactoring and Dev Day 71).
+
+Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
+`isDragging`) are thin pass-throughs to the underlying
+{@link createRuntime | runtime} object; they're exposed so that
+sibling modules (`render`, `connections`, `pan-zoom`) can read/write
+shared state through the controller reference without importing the
+runtime directly.
+
+**History:** Created 2025-12-04 (commit `4504d36a`).  Reduced from
+1 549 to ~860 lines during the 2025-12-19 Phase 1-4 tech-debt
+extraction (commit `15073e19`).  Further reduced by deprecated-field
+removal on 2026-02-18.
+
+**Tech debt:** At ~860 lines this class still exceeds the project's
+500-line guidance.  The 2025-12-19 plan identified `pin-management`
+extraction and runtime-accessor elimination as next steps.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
+- [`layout-measure.CenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-centeralignmentguides)
+- [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
+- [`layout-measure.applyColumnVerticalCentering`](./layout-measure.ts.mdmd.md#symbol-applycolumnverticalcentering)
+- [`layout-measure.applyContainerDimensions`](./layout-measure.ts.mdmd.md#symbol-applycontainerdimensions)
+- [`layout-measure.collectCenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-collectcenteralignmentguides)
+- [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
+- [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
+- [`layout-measure.lookupCenterAnchorPosition`](./layout-measure.ts.mdmd.md#symbol-lookupcenteranchorposition)
+- [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
+- [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)
+- [`pan-zoom.handleDragEnd`](./pan-zoom.ts.mdmd.md#symbol-handledragend)
+- [`pan-zoom.handleDragMove`](./pan-zoom.ts.mdmd.md#symbol-handledragmove)
+- [`pan-zoom.handleWheel`](./pan-zoom.ts.mdmd.md#symbol-handlewheel)
+- [`pan-zoom.startDrag`](./pan-zoom.ts.mdmd.md#symbol-startdrag)
+- [`pan-zoom.startInertia`](./pan-zoom.ts.mdmd.md#symbol-startinertia)
+- [`pan-zoom.zoomByFactor`](./pan-zoom.ts.mdmd.md#symbol-zoombyfactor)
+- [`render.renderLocalView`](./render.ts.mdmd.md#symbol-renderlocalview)
+- [`runtime.clearAnchorRegistry`](./runtime.ts.mdmd.md#symbol-clearanchorregistry)
+- [`runtime.createRuntime`](./runtime.ts.mdmd.md#symbol-createruntime)
+- [`runtime.getAnchor`](./runtime.ts.mdmd.md#symbol-getanchor)
+- [`runtime.getAnchorWithHop`](./runtime.ts.mdmd.md#symbol-getanchorwithhop)
+- [`runtime.registerAnchor`](./runtime.ts.mdmd.md#symbol-registeranchor)
+- [`runtime.registerAnchorWithHop`](./runtime.ts.mdmd.md#symbol-registeranchorwithhop)
+- [`state.LocalMapState`](./state.ts.mdmd.md#symbol-localmapstate)
+- [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult)
+- [`state.StateStore`](./state.ts.mdmd.md#symbol-statestore)
+- [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin)
+- [`state.addPin`](./state.ts.mdmd.md#symbol-addpin)
+- [`state.clearPins`](./state.ts.mdmd.md#symbol-clearpins)
+- [`state.createInitialState`](./state.ts.mdmd.md#symbol-createinitialstate)
+- [`state.createStateStore`](./state.ts.mdmd.md#symbol-createstatestore)
+- [`state.isSymbolPinned`](./state.ts.mdmd.md#symbol-issymbolpinned)
+- [`state.removePin`](./state.ts.mdmd.md#symbol-removepin)
+- [`state.setActivePath`](./state.ts.mdmd.md#symbol-setactivepath)
+- [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
+- [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
+- [`subgraph-builder.createLocalSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-createlocalsubgraph)
+- [`symbol-highlight.applySymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-applysymbolhighlight)
+- [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
+- [`symbol-highlight.computeSymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-computesymbolhighlight)
+- [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
+- [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
+- [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)
+- [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
+- [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
+- [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
+- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
+- [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
+- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
+<!-- LIVE-DOC:END Dependencies -->

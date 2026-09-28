@@ -1,0 +1,62 @@
+# packages/explorer/src/client/views/localView/connections.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/explorer/src/client/views/localView/connections.ts
+- Generated At: 2026-09-28T01:11:43.550Z
+
+## Authored
+### Purpose
+SVG connection drawing for the Local Map. Draws Bézier splines between anchor points in the inbound/center/outbound columns.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+
+### Notes
+- Created 2025-12-04 during localView modularisation.
+- `drawConnections` iterates over edges and maps symbol keys to registered anchors.
+- Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics.
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `MultiHopEntry` {#symbol-multihopentry}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L11)
+
+##### `MultiHopEntry` — Summary
+Represents a hop in the multi-hop visualization chain.
+Each hop has a center node and its associated subgraph.
+
+#### `ConnectionsContext` {#symbol-connectionscontext}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L24)
+
+##### `ConnectionsContext` — Summary
+Ambient context required by {@link drawConnections} to measure DOM
+anchors, read explorer state, and emit SVG paths.
+
+#### `drawConnections` {#symbol-drawconnections}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L78)
+- Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
+
+##### `drawConnections` — Summary
+Main entry point for drawing SVG connection edges in the Local Map view.
+
+Delegates to either multi-hop or single-hop rendering depending on the
+presence of {@link ConnectionsContext.multiHopData}.  Measures DOM anchor
+positions relative to the container, computes Bézier curves, and appends
+`<path>` elements to the SVG overlay.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
+- [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
+- [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult) (type-only)
+- [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
+- [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
+- [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
+- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
+<!-- LIVE-DOC:END Dependencies -->

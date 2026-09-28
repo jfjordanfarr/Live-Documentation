@@ -41,8 +41,8 @@ module.exports = tseslint.config(
           project: [
             "./packages/engine/tsconfig.json",
             "./packages/generator/tsconfig.json",
-            "./packages/scripts/tsconfig.json",
-            "./packages/scripts/src/live-docs/explorer/client/tsconfig.json"
+            "./packages/explorer/tsconfig.json",
+            "./packages/explorer/src/client/tsconfig.json"
           ],
           alwaysTryTypes: true
         }

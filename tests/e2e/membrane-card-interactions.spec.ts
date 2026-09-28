@@ -21,7 +21,7 @@ test.describe("Membrane Map — Card Interactions", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Cards should exist in browse mode
     const totalCards = await countElements(page, ".membrane-card[data-id]");
@@ -54,7 +54,7 @@ test.describe("Membrane Map — Card Interactions", () => {
     page,
   }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // Verify there's at least one collapsed card
     const collapsedBefore = await countElements(
@@ -87,7 +87,7 @@ test.describe("Membrane Map — Card Interactions", () => {
 
   test("pin-all button is present on every file card", async ({ page }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     const cardCount = await countElements(page, ".membrane-card[data-id]");
     expect(cardCount).toBeGreaterThan(0);
@@ -102,7 +102,7 @@ test.describe("Membrane Map — Card Interactions", () => {
 
   test("test-backed cards have gold border styling", async ({ page }) => {
     await goToMembraneMap(page);
-    await expandDirectory(page, "packages/scripts/src/live-docs/explorer/client/persistence");
+    await expandDirectory(page, "packages/explorer/src/client/persistence");
 
     // compressed-url-state.test.ts should have the test-backed styling
     const testBackedCount = await countElements(

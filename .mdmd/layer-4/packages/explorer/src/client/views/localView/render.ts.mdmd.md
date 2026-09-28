@@ -1,0 +1,43 @@
+# packages/explorer/src/client/views/localView/render.ts
+
+## Metadata
+- Layer: 4
+- Archetype: implementation
+- Code Path: packages/explorer/src/client/views/localView/render.ts
+- Generated At: 2026-09-28T01:11:43.769Z
+
+## Authored
+### Purpose
+DOM rendering logic for the Local Map view. Lays out inbound/center/outbound columns and registers anchor rectangles for SVG connection drawing.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+
+### Notes
+- Created 2025-12-04 by extracting rendering code from the monolithic `localView.ts`.
+- Renders directory nodes as expandable groups using `computeDirectoryLayout`.
+- Passes anchor positions to the controller for Bézier spline routing.
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+#### `renderLocalView` {#symbol-renderlocalview}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/render.ts#L13)
+- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller)
+
+##### `renderLocalView` — Summary
+Renders (or re-renders) the Local Map DOM layout from the current controller state.
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- [`column-factory.createHierarchicalColumn`](./column-factory.ts.mdmd.md#symbol-createhierarchicalcolumn)
+- [`column-factory.createStackedColumn`](./column-factory.ts.mdmd.md#symbol-createstackedcolumn)
+- [`column-factory.highlightSymbolInColumn`](./column-factory.ts.mdmd.md#symbol-highlightsymbolincolumn)
+- [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
+- [`layout-math.computeColumnCount`](./layout-math.ts.mdmd.md#symbol-computecolumncount)
+- [`layout-math.computeGridTemplate`](./layout-math.ts.mdmd.md#symbol-computegridtemplate)
+- [`layout-math.generateColumnLabel`](./layout-math.ts.mdmd.md#symbol-generatecolumnlabel)
+- [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult) (type-only)
+- [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin) (type-only)
+- [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
+- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
+<!-- LIVE-DOC:END Dependencies -->
