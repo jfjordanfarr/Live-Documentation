@@ -1,6 +1,6 @@
 # What the first run established
 
-_Written on 2026-09-29 by the agent that sent the explorations out, from everything that came back before the model's usage limit stopped the rest. It gathers what three finished reports and three reader reports agree on and ranks their questions across slices. It is the ground a second run starts from. It decides nothing; where it says a thing is so, the report it names says why._
+_Superseded on 2026-09-29 by [the bearings on both eras](README.md), which joins all seven reports; kept as the ground the second brief was written on. Written on 2026-09-29 by the agent that sent the explorations out, from everything that came back before the model's usage limit stopped the rest. It gathers what three finished reports and three reader reports agree on and ranks their questions across slices. It is the ground a second run starts from. It decides nothing; where it says a thing is so, the report it names says why._
 
 ## What came back
 
