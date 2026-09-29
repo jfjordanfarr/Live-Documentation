@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/index.ts
-- Generated At: 2026-09-29T01:19:54.139Z
+- Generated At: 2026-09-29T14:57:46.246Z
 
 ## Authored
 ### Purpose
@@ -22,11 +22,11 @@ _Pending notes_
 
 #### `WorldMapView` {#symbol-worldmapview}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L24)
 
 #### `createWorldMapView` {#symbol-createworldmapview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L32)
 - Returns: [`WorldMapView`](#symbol-worldmapview)
 - Parameters: `options`: [`WorldMapViewOptions`](#symbol-worldmapviewoptions)
 

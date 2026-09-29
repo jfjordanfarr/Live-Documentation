@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-09-29T14:19:43.424Z
+- Generated At: 2026-09-29T14:57:46.219Z
 
 ## Authored
 ### Purpose
@@ -18,32 +18,32 @@ _Pending notes_
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L65)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L70)
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L142)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1753)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1596)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
 
 #### `NORMALS` {#symbol-normals}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1841)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1680)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -51,10 +51,6 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
 - [`board.renderBoard`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-renderboard)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
-- [`model.buildInsideModel`](./inside/model.ts.mdmd.md#symbol-buildinsidemodel)
-- [`model.isUnder`](./inside/model.ts.mdmd.md#symbol-isunder)
-- [`model.relative`](./inside/model.ts.mdmd.md#symbol-relative)
-- [`panel.InsidePanel`](./inside/panel.ts.mdmd.md#symbol-insidepanel)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
 - [`layout.GRID`](./layout.ts.mdmd.md#symbol-grid)

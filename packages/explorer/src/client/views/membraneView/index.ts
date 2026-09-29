@@ -59,11 +59,15 @@ export interface MembraneViewOptions {
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
   nodesById: Map<string, ExplorerNodePayload>;
+  /** When the bundle carries a board, the crumb above the top folder is the World Map, and this opens it. */
+  world?: { open: () => void };
 }
 
 /** Public API surface returned by {@link createMembraneView}. */
 export interface MembraneViewApi {
   render(): void;
+  /** Opens the map on one folder, as the World Map opens a thing: the folder focused, its ancestors thin, nothing pinned or selected. */
+  focusDirectory(dir: string): void;
   /** Re-measure anchor positions and redraw SVG connections without rebuilding DOM. */
   redrawConnections(): void;
   zoomIn(): void;
@@ -77,6 +81,9 @@ interface MembraneTransform {
   k: number;
 }
 
+/** The band at the foot of the view where the zoom controls sit; a fitted map stays above it. */
+const FOOT = 64;
+
 /** Clamp `value` between `min` and `max` inclusive. */
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -84,7 +91,7 @@ function clamp(value: number, min: number, max: number): number {
 
 /** Initialise the Membrane Map view and return its public API. */
 export function createMembraneView(options: MembraneViewOptions): MembraneViewApi {
-  const { state, graphData, resolveLinkEndpoint: _resolveLinkEndpoint, onSelectNode, testCoverage, nodesById } = options;
+  const { state, graphData, resolveLinkEndpoint: _resolveLinkEndpoint, onSelectNode, testCoverage, nodesById, world } = options;
 
   // DOM elements
   const viewport = requireElement<HTMLDivElement>("membrane-viewport");
@@ -623,6 +630,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     );
 
     container.appendChild(browseResult.root);
+    // What was drawn, which runs below the layout's rectangle when a folder's cards do not fit the tile.
+    const rendered: LayoutRect = { ...layoutViewport, height: Math.max(layoutViewport.height, browseResult.root.offsetHeight) };
 
     // ─── Browse-mode directory breadcrumb ───
     // Shows the current focused-directory path as clickable segments
@@ -641,17 +650,23 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         });
       }
 
-      // Root link (return to top-level)
+      // Root link: the World Map when the bundle carries a board, the outside of every folder; otherwise the top of the tree.
       const rootLink = document.createElement("span");
       rootLink.className = "membrane-browse-breadcrumb__segment membrane-browse-breadcrumb__segment--link";
-      rootLink.textContent = "~";
-      rootLink.addEventListener("click", () => {
-        focusedDirectory = null;
-        expandedDirectories.clear();
-        expandedCards.clear();
-        shouldZoomToFocus = false;
-        render();
-      });
+      if (world) {
+        rootLink.textContent = "World Map";
+        rootLink.dataset.crumb = "world";
+        rootLink.addEventListener("click", () => world.open());
+      } else {
+        rootLink.textContent = "~";
+        rootLink.addEventListener("click", () => {
+          focusedDirectory = null;
+          expandedDirectories.clear();
+          expandedCards.clear();
+          shouldZoomToFocus = false;
+          render();
+        });
+      }
       breadcrumbBar.appendChild(rootLink);
 
       for (let i = 0; i < segments.length; i++) {
@@ -773,9 +788,9 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     // On focus navigation, re-fit to viewport at natural scale (no CSS zoom)
     if (shouldZoomToFocus && focusedDirectory) {
       shouldZoomToFocus = false;
-      fitToViewport(layoutViewport);
+      fitToViewport(rendered);
     } else if (!hasRestoredTransform && transform.x === 0 && transform.y === 0 && transform.k === 1) {
-      fitToViewport(layoutViewport);
+      fitToViewport(rendered);
     }
 
     // ─── FLIP: animate elements from old to new positions ─────────
@@ -816,13 +831,15 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     writeUrlState(snapshot);
   }
 
+  /** Fits a rectangle of the map into the view above the zoom controls, so that a folder's first look shows all of it. */
   function fitToViewport(layoutRect: LayoutRect): void {
     const viewportRect = viewport.getBoundingClientRect();
+    const usableHeight = viewportRect.height - FOOT;
     const scaleX = viewportRect.width / layoutRect.width;
-    const scaleY = viewportRect.height / layoutRect.height;
+    const scaleY = usableHeight / layoutRect.height;
     const scale = clamp(Math.min(scaleX, scaleY) * 0.95, 0.1, 2);
     const cx = (viewportRect.width - layoutRect.width * scale) / 2;
-    const cy = (viewportRect.height - layoutRect.height * scale) / 2;
+    const cy = (usableHeight - layoutRect.height * scale) / 2;
     transform = { x: cx, y: cy, k: scale };
     applyTransform();
   }
@@ -877,8 +894,23 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     }
   }
 
+  function focusDirectory(dir: string): void {
+    pinSet = clearPins();
+    expandedCards.clear();
+    state.selectedNode = null;
+    state.focusedNode = null;
+    focusedDirectory = dir;
+    expandedDirectories.clear();
+    for (const p of buildFocusPath(dir)) {
+      expandedDirectories.add(p);
+    }
+    shouldZoomToFocus = true;
+    render();
+  }
+
   return {
     render,
+    focusDirectory,
     redrawConnections,
     zoomIn: () => zoomByFactor(1.3),
     zoomOut: () => zoomByFactor(1 / 1.3),

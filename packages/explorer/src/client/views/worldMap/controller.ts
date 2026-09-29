@@ -11,8 +11,6 @@
 import { renderBoard, type Board } from "@live-documentation/engine/live-docs/board";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
-import { buildInsideModel, isUnder, relative } from "./inside/model";
-import { InsidePanel } from "./inside/panel";
 import {
   FLOAT,
   GRID,
@@ -75,8 +73,10 @@ export interface WorldMapOptions {
   boardPath: string;
   model: WorldModel;
   graph: LiveDocGraph;
-  /** Opens a file of the graph in the Local Map, from a link in a pinned panel or a card inside a thing. */
+  /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
   onOpenFile?: (file: string) => void;
+  /** Opens a thing's folder in the Membrane Map: the wheel past half the view, a double-click, or the link in its pinned panel. */
+  onOpenThing?: (thing: { name: string; folder: string }) => void;
 }
 
 interface Door {
@@ -130,7 +130,6 @@ const THEMES = {
 };
 
 /** The transform of a panel lying flat on the screen. */
-const IDENTITY = [1, 0, 0, 1, 0, 0];
 
 const BASIS_WORDS: Record<string, string> = {
   source: "from source",
@@ -147,6 +146,7 @@ export class WorldMapController {
   private readonly model: WorldModel;
   private readonly graph: LiveDocGraph;
   private readonly onOpenFile?: (file: string) => void;
+  private readonly onOpenThing?: (thing: { name: string; folder: string }) => void;
 
   private readonly world: HTMLElement;
   private readonly svg: SVGSVGElement;
@@ -179,12 +179,6 @@ export class WorldMapController {
   private tokens: Token[] = [];
   private roadCurves = new Map<string, [Point3, Point3, Point3, Point3]>();
   private tour = { on: false, at: 0 };
-  private readonly insidePanel: InsidePanel;
-  /** The thing opened, and the folders opened inside it, the thing's own first. */
-  private insideThing: string | null = null;
-  private insideTrail: string[] = [];
-  private insideWheel = { sum: 0, at: 0 };
-  private readonly thingOfFile = new Map<string, string>();
   /** What the last press landed on; a click and a double-click are retargeted to the surface by the pointer capture. */
   private lastPressed: Element | null = null;
   private readonly disposers: Array<() => void> = [];
@@ -197,6 +191,7 @@ export class WorldMapController {
     this.model = options.model;
     this.graph = options.graph;
     this.onOpenFile = options.onOpenFile;
+    this.onOpenThing = options.onOpenThing;
 
     this.root.innerHTML = "";
     this.world = element("div", "world", this.root);
@@ -221,22 +216,6 @@ export class WorldMapController {
     this.help = element("div", "world-help", this.world);
     this.tourBox = element("div", "world-tour", this.world);
     this.tourBox.innerHTML = `<div class="step"></div><div class="text"></div><div class="row"><button data-tour="back">back</button><button data-tour="next" class="primary">next</button><button data-tour="done">done</button></div>`;
-    this.insidePanel = new InsidePanel(this.world, {
-      onOpenFile: (file) => this.onOpenFile?.(file),
-      onOpenFolder: (folder) => this.openFolder(folder),
-      onCrumb: (index) => {
-        if (index === 0) {
-          void this.exit();
-        } else {
-          this.openFolder(this.insideTrail[index - 1]);
-        }
-      }
-    });
-    for (const piece of this.model.pieces) {
-      for (const file of piece.files) {
-        this.thingOfFile.set(file, piece.name);
-      }
-    }
 
     this.restPositions = this.initialPositions();
     this.positions = this.loadPositions();
@@ -1092,127 +1071,31 @@ export class WorldMapController {
   }
 
   // ==========================================================================
-  // Inside a thing: the folder map
+  // Opening a thing
   // ==========================================================================
 
-  /** The screen corners of a piece's lid, its top face, from which the panel unfolds. */
+  /** The screen corners of a piece's lid, its top face. */
   private lidCorners(name: string): Point2[] {
     const placed = this.place(name);
     return corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d }).map(([x, y]) => toScreen(this.screen, project(this.camera, this.pivot, x, y, placed.z0 + placed.h)));
   }
 
-  /** The transform that lays the panel onto the lid, from three of the lid's corners. */
-  private lidMatrix(name: string): number[] {
-    const [p0, p1, , p3] = this.lidCorners(name);
-    const box = this.insidePanel.element;
-    const w = box.offsetWidth || 1;
-    const h = box.offsetHeight || 1;
-    return [(p1[0] - p0[0]) / w, (p1[1] - p0[1]) / w, (p3[0] - p0[0]) / h, (p3[1] - p0[1]) / h, p0[0] - box.offsetLeft, p0[1] - box.offsetTop];
-  }
-
-  private drawInside(): void {
-    const piece = this.model.pieces.find((candidate) => candidate.name === this.insideThing);
-    if (!piece?.folder) {
-      return;
-    }
-    const thingFolder = piece.folder;
-    const folder = this.insideTrail[this.insideTrail.length - 1];
-    const model = buildInsideModel({ thing: piece.name, thingFolder, folder, files: piece.files, graph: this.graph, thingOf: (file) => this.thingOfFile.get(file) });
-    const crumbs = ["World Map", piece.name, ...this.insideTrail.slice(1).map((path, i) => relative(path, this.insideTrail[i]))];
-    this.insidePanel.render(model, crumbs, this.viewport());
-    this.writeCrumbs();
-  }
-
-  /** Opens a thing: its lid unfolds into its folder map over the dimmed board. */
-  async enter(name: string): Promise<void> {
+  /** Opens a thing's folder in the Membrane Map, easing the camera back first so that the next wheel over the board does not open it again. */
+  enter(name: string): void {
     const piece = this.model.pieces.find((candidate) => candidate.name === name);
-    if (this.insideThing || !piece?.folder) {
+    if (!piece?.folder || !this.onOpenThing) {
       return;
     }
-    this.insideThing = name;
-    this.insideTrail = [piece.folder];
-    this.insideWheel = { sum: 0, at: 0 };
     this.hover = null;
-    this.pinned = null;
-    this.applyHover();
-    this.drawInside();
-    const box = this.insidePanel.element;
-    box.classList.add("on");
-    const m0 = this.lidMatrix(name);
-    this.world.classList.add("inside");
-    await this.tween(560, (t) => {
-      const k = smooth(t);
-      box.style.transform = `matrix(${m0.map((value, i) => value + (IDENTITY[i] - value) * k).join(",")})`;
-      box.style.opacity = String(0.5 + 0.5 * k);
-    });
-    box.style.transform = "";
-    box.style.opacity = "";
-  }
-
-  /** Folds the folder map back into the lid, and eases the camera out so the next wheel does not open it again. */
-  async exit(): Promise<void> {
-    const name = this.insideThing;
-    if (!name) {
-      return;
-    }
-    if (this.insideTrail.length > 1) {
-      this.insideTrail = [this.insideTrail[0]];
-      this.drawInside();
-    }
-    const box = this.insidePanel.element;
-    const m0 = this.lidMatrix(name);
-    this.world.classList.remove("inside");
-    await this.tween(460, (t) => {
-      const k = smooth(t);
-      box.style.transform = `matrix(${IDENTITY.map((value, i) => value + (m0[i] - value) * k).join(",")})`;
-      box.style.opacity = String(1 - 0.5 * k);
-    });
-    box.classList.remove("on");
-    box.style.transform = "";
-    box.style.opacity = "";
-    this.insideThing = null;
-    this.insideTrail = [];
-    this.writeCrumbs();
+    this.unpin();
     const [p0, p1, , p3] = this.lidCorners(name);
     const span = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p3[0] - p0[0], p3[1] - p0[1]);
     const { width } = this.viewport();
-    if (span > 0.5 * width) {
-      const factor = (0.3 * width) / span;
+    if (width > 0 && span > 0.5 * width) {
       const centre = this.lidCorners(name).reduce<Point2>((sum, p) => [sum[0] + p[0] / 4, sum[1] + p[1] / 4], [0, 0]);
-      const k0 = this.screen.k;
-      await this.tween(400, (t) => {
-        this.zoomBy((k0 * (1 + (factor - 1) * smooth(t))) / this.screen.k, centre[0], centre[1]);
-      });
+      this.zoomBy((0.3 * width) / span, centre[0], centre[1]);
     }
-  }
-
-  /** Opens a folder inside the thing, one level deeper, or back up to one already on the trail. */
-  openFolder(folder: string): void {
-    if (!this.insideThing) {
-      return;
-    }
-    const at = this.insideTrail.indexOf(folder);
-    if (at >= 0) {
-      this.insideTrail = this.insideTrail.slice(0, at + 1);
-    } else if (isUnder(folder, this.insideTrail[this.insideTrail.length - 1])) {
-      this.insideTrail = [...this.insideTrail, folder];
-    } else {
-      return;
-    }
-    this.insideWheel = { sum: 0, at: 0 };
-    this.drawInside();
-  }
-
-  /** One level up: the folder above, or out of the thing. */
-  private up(): void {
-    if (!this.insideThing) {
-      return;
-    }
-    if (this.insideTrail.length > 1) {
-      this.openFolder(this.insideTrail[this.insideTrail.length - 2]);
-    } else {
-      void this.exit();
-    }
+    this.onOpenThing({ name: piece.name, folder: piece.folder });
   }
 
   /** Opens the piece whose lid spans half the view under a screen point, if there is one. */
@@ -1229,7 +1112,7 @@ export class WorldMapController {
       const xs = lid.map((p) => p[0]);
       const ys = lid.map((p) => p[1]);
       if (Math.max(...xs) - Math.min(...xs) > 0.5 * width || Math.max(...ys) - Math.min(...ys) > 0.5 * height) {
-        void this.enter(piece.name);
+        this.enter(piece.name);
         return true;
       }
     }
@@ -1346,23 +1229,6 @@ export class WorldMapController {
     });
 
     on(this.root, "wheel", (event: WheelEvent) => {
-      if (this.insideThing) {
-        if (this.insidePanel.element.contains(event.target as Node)) {
-          return;
-        }
-        event.preventDefault();
-        const now = performance.now();
-        if (now - this.insideWheel.at > 700) {
-          this.insideWheel.sum = 0;
-        }
-        this.insideWheel.at = now;
-        this.insideWheel.sum += event.deltaY;
-        if (this.insideWheel.sum > 260) {
-          this.insideWheel.sum = 0;
-          this.up();
-        }
-        return;
-      }
       event.preventDefault();
       const sx = event.clientX - this.svgLeft();
       const sy = event.clientY - this.svgTop();
@@ -1375,7 +1241,7 @@ export class WorldMapController {
     on(svg, "dblclick", () => {
       const piece = this.lastPressed?.closest<SVGElement>(".w-piece")?.dataset.piece;
       if (piece) {
-        void this.enter(piece);
+        this.enter(piece);
       }
     });
 
@@ -1394,8 +1260,6 @@ export class WorldMapController {
           this.toggleHelp(false);
         } else if (this.pinned) {
           this.unpin();
-        } else if (this.insideThing) {
-          this.up();
         } else {
           this.hover = null;
           this.applyHover();
@@ -1408,9 +1272,6 @@ export class WorldMapController {
       }
       if (key === "d") {
         this.setTheme(this.theme === "dark" ? "light" : "dark");
-        return;
-      }
-      if (this.insideThing) {
         return;
       }
       if (key === "q") {
@@ -1432,7 +1293,7 @@ export class WorldMapController {
 
     on(this.tools, "click", (event: MouseEvent) => {
       const button = (event.target as Element).closest("button");
-      if (!button || (this.insideThing && button.dataset.act !== "theme")) {
+      if (!button) {
         return;
       }
       const actions: Record<string, () => void> = {
@@ -1458,7 +1319,7 @@ export class WorldMapController {
       this.lastPointer = [rect.left - this.svgLeft() - 18, rect.top - this.svgTop() - 18];
       if (anchor.dataset.open !== undefined) {
         event.preventDefault();
-        void this.enter(anchor.dataset.open);
+        this.enter(anchor.dataset.open);
       } else if (anchor.dataset.pinId !== undefined) {
         event.preventDefault();
         this.pin({ kind: anchor.dataset.pinKind as Hover["kind"], id: anchor.dataset.pinId });
@@ -1603,14 +1464,6 @@ export class WorldMapController {
   }
 
   private writeCrumbs(): void {
-    if (this.insideThing) {
-      this.crumbs.innerHTML = `<a href="#" data-crumb-out>World Map</a> &rsaquo; <b>${escapeHtml(this.insideThing)}</b> <span style="color:var(--w-faint)">· Local Map</span>`;
-      this.crumbs.querySelector("a")?.addEventListener("click", (event) => {
-        event.preventDefault();
-        void this.exit();
-      });
-      return;
-    }
     const n = this.model.pieces.length;
     const r = this.model.regions.length;
     const parts = [`${n} thing${n === 1 ? "" : "s"}`];
@@ -1632,9 +1485,9 @@ export class WorldMapController {
 <h4>Doors and wires</h4><p><i style="border-color:var(--w-green)"></i><b>green</b> serves, <i style="border-color:var(--w-blue)"></i><b>blue</b> calls. A wire in the air is one call, flowing the way the request goes; hover it for how it is known. The warm sleeve is a declared crossing.</p>
 <h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
-<h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: its lid unfolds into its folder map, files as cards in dependency order, folders as boxes that open the same way, and the thing's doors as pins on the walls. <kbd>Esc</kbd>, the crumbs, or a wheel out over the board go back up.</p>
+<h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Membrane Map, its folders as membranes. The crumbs there lead back to the board.</p>
 <h4>Moving around</h4><p>Drag to pan. Right-drag or <kbd>Shift</kbd>-drag to orbit. Wheel to zoom. Drag a thing to move it; <b>save board</b> writes the positions into the board text.</p>
-<p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset · <kbd>Esc</kbd> back</p>
+<p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset · <kbd>Esc</kbd> let go</p>
 <button data-act="tour">walk me through it</button>`;
     this.help.querySelector("[data-act=tour]")?.addEventListener("click", () => {
       this.toggleHelp(false);
@@ -1657,8 +1510,8 @@ export class WorldMapController {
       { text: "Each thing on the board is one system, database or person, drawn by its kind. Click one to pin what it serves, calls and stands on; every name in the panel is a link.", go: () => { if (firstPiece) { this.hover = { kind: "piece", id: firstPiece }; this.lastPointer = point; this.applyHover(); } } },
       { text: "A wire is one call, from a blue door to a green one, flowing the way the request goes. Hover it for how it is known and which files carry it.", go: () => { if (firstRoad) { this.hover = { kind: "road", id: firstRoad.id }; this.lastPointer = point; this.applyHover(); } } },
       { text: "The strands under a thing are what it is built with: another thing's code, a dotted line on the board, or a package from its manifests. Built on shows what things share.", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
-      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. Its lid unfolds into its folder map.", go: async () => { this.setUnder(false); const first = this.model.pieces.find((piece) => piece.folder); if (first) { await this.enter(first.name); } } },
-      { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", go: async () => { await this.exit(); await this.orbitTo((-35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
+      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. It opens in the Membrane Map, folder by folder.", go: () => { this.setUnder(false); const first = this.model.pieces.find((piece) => piece.folder); if (first) { this.lastPointer = point; this.pin({ kind: "piece", id: first.name }); } } },
+      { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", go: async () => { this.unpin(); await this.orbitTo((-35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
     ];
   }
 
@@ -1669,9 +1522,6 @@ export class WorldMapController {
     this.tourBox.querySelector(".text")!.textContent = steps[this.tour.at].text;
     (this.tourBox.querySelector<HTMLButtonElement>("[data-tour=back]"))!.disabled = this.tour.at === 0;
     (this.tourBox.querySelector<HTMLElement>("[data-tour=next]"))!.style.display = this.tour.at === steps.length - 1 ? "none" : "";
-    if (this.insideThing && this.tour.at !== 3) {
-      await this.exit();
-    }
     await steps[this.tour.at].go();
   }
 
@@ -1685,12 +1535,9 @@ export class WorldMapController {
     this.tour.on = false;
     this.tourBox.classList.remove("on");
     this.hover = null;
-    this.applyHover();
+    this.unpin();
     if (this.under) {
       this.setUnder(false);
-    }
-    if (this.insideThing) {
-      void this.exit();
     }
   }
 
@@ -1740,11 +1587,7 @@ export class WorldMapController {
       },
       lidCorners: (name) => this.lidCorners(name),
       pointInLid: (name, sx, sy) => pointInPolygon(this.lidCorners(name), [sx, sy]),
-      enter: (name) => this.enter(name),
-      exit: () => this.exit(),
-      openFolder: (folder) => this.openFolder(folder),
-      inside: () => (this.insideThing ? { thing: this.insideThing, folder: this.insideTrail[this.insideTrail.length - 1] } : null),
-      insideNodes: () => [...this.insidePanel.element.querySelectorAll<HTMLElement>("[data-node]")].map((node) => node.dataset.node ?? "")
+      enter: (name) => this.enter(name)
     };
   }
 }
@@ -1777,11 +1620,7 @@ export interface WorldMapApi {
   screenPointOf: (name: string) => Point2;
   lidCorners: (name: string) => Point2[];
   pointInLid: (name: string, sx: number, sy: number) => boolean;
-  enter: (name: string) => Promise<void>;
-  exit: () => Promise<void>;
-  openFolder: (folder: string) => void;
-  inside: () => { thing: string; folder: string } | null;
-  insideNodes: () => string[];
+  enter: (name: string) => void;
 }
 
 // ============================================================================

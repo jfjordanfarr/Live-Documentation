@@ -9,7 +9,7 @@
 
 ### Purpose
 
-Document the Membrane Map: the current default Explorer view and the in-progress replacement for the Circuit Board and Local Map views. The Membrane Map unifies directory-level browsing and symbol-level exploration into a single zoomable treemap where directories render as nested containing rectangles ("membranes"), files render as cards inside their directory membrane, and dependency connections pierce membrane boundaries to show cross-directory coupling.
+Document the Membrane Map: the inside of a thing on the World Map since 2026-09-29, the default Explorer view from 2026-03-31 to 2026-09-28, and the intended successor of the Circuit Board and Local Map views. The Membrane Map unifies directory-level browsing and symbol-level exploration into a single zoomable treemap where directories render as nested containing rectangles ("membranes"), files render as cards inside their directory membrane, and dependency connections pierce membrane boundaries to show cross-directory coupling.
 
 ### Design Origin
 
@@ -17,7 +17,7 @@ The Membrane Map concept emerged from Dev Day 79 (2026-03-22.1.md) when a misund
 
 ### Current Status
 
-- Membrane is now the cold-start default in the static Explorer, but Circuit Board and Local Map still ship while phase-out work continues.
+- Since 2026-09-29 the Membrane Map is where a thing on the World Map opens: focused on the thing's folder, with the World Map as the crumb above the top folder, and a folder's first look fitted above the zoom controls. It was the cold-start default from 2026-03-31 to 2026-09-28; a bundle with a board now lands on the World Map. Circuit Board and Local Map still ship.
 - Shareable Membrane sessions restore through the compressed `?s=` payload and currently round-trip view, selected node, pins, expanded directories, expanded cards, transform, and display filters.
 - Broader Explorer UI and navigation fallback still persist through versioned localStorage when no explicit URL state is present.
 - Playwright coverage is landed and currently spans 13 spec files / 29 tests, including browse mode, pin-active layout, restore behavior, multi-focal/path seeding, default-view behavior, and pin-active visual stability across reload.
@@ -136,14 +136,14 @@ When many connections cross the same membrane boundary, individual lines become 
 
 ### Phase-Out Plan
 
-The Membrane Map is now the default cold-start Explorer surface and the in-progress replacement for both Circuit Board and Local Map. The transition remains additive:
+The Membrane Map is the intended replacement for both Circuit Board and Local Map, and since 2026-09-29 the inside of a thing on the World Map. The transition remains additive:
 
 1. **Prototype phase**: Build the Membrane Map as a new view alongside existing Circuit Board and Local Map, using those as reference implementations for correctness checks.
 2. **Feature parity phase**: Ensure all existing Circuit Board and Local Map functionality is available in the Membrane Map.
 3. **Stabilisation phase**: Run both old and new views in parallel until confidence is established.
 4. **Retirement phase**: Remove Circuit Board and Local Map views; update documentation.
 
-Timeline is not fixed — phase-out occurs when the Membrane Map achieves feature parity and stability.
+Timeline is not fixed — phase-out occurs when the Membrane Map achieves feature parity and stability. The owner's word on 2026-09-29: the Local Map stays until this view is at least matched in quality, and this view then takes its name.
 
 ### Adapter Requirements
 
@@ -164,6 +164,12 @@ This is an adapter-level enhancement documented in [Polyglot Adapters](polyglot-
 | Q7  | Pin directionality with cycles?            | Preserve L/R grammar (Option B). Back-connections rendered as French Corset stubs (Approach X). Hover-promotion deferred.                                                                                                                                                            |
 | Q8  | URL state sharing?                         | Use versioned `?s=` payloads for shareable Membrane state while retaining versioned localStorage for broader Explorer UI/navigation fallback. Startup precedence is explicit URL state → localStorage → viewerConfig → defaults. Legacy `?view=` / `?node=` params remain tolerated. |
 | Q9  | Pathfinder: separate mode or pin strategy? | Pin population strategy. BFS results inject ordered pins into the pin set. Multi-pin renderer handles display. Pathfinder UI preserved for CLI parity but not architecturally load-bearing.                                                                                          |
+
+### Where it goes (2026-09-29)
+
+The owner, on seeing a thing open into a folder map of its own: "If we just open to the Membrane Map, the mess of wires should be gone, as Membrane Map wraps directories." And: "Will want Membrane Map as interior view of a system. It combines the benefits of 'Circuit Board' (folders) and 'Local Map' (symbol connectivity). We just want the membrane map to be as beautiful and functional as the Local Map before it's our default." Then, choosing between improving this view in place and growing the folder map into its concept: the first now, the second as a stretch goal once this view is the default two-dimensional local view, and "don't get rid of the Local Map yet. It still has a fair bit of hard-earned design intuition and style to teach us... the overall visual style and sizing and spacing and coloring shown in the preexisting 'Local Map' should inform a lot of improvements, visually and otherwise, to the 'Membrane Map' (to be renamed 'Local Map' once Local Map truly is at-least-matched-in-quality)." The force graph is the local scale's only three-dimensional view.
+
+So the work on this view is now to bring it to the Local Map's quality in place, judged by eye against the gallery under `AI-Agent-Workspace/Screenshots/` and by the design audit. What the first look after the change showed, on this repository and the estate: the focused folder is one nearly empty tile per subfolder, with its own files in a strip at the foot; no wires until a symbol is pinned, which is the owner's wish, but nothing says what crosses a subfolder's boundary beyond the counts on its badge; dark theme only, while the World Map is light by default; and the March questions below stand.
 
 ### Where this design stopped (March 2026)
 

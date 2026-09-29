@@ -245,14 +245,35 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
   });
 
+  // The World Map is the outside of every folder when the bundle carries a board.
+  const showWorldMap = (): void => {
+    detailPanel.hide();
+    state.view = "world";
+    setActiveView("world");
+    updateUrlState("world", null);
+    schedulePersistNav();
+    renderCurrentView();
+  };
+
   const membraneView = createMembraneView({
     state,
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
     testCoverage,
-    nodesById
+    nodesById,
+    world: bundle.board ? { open: showWorldMap } : undefined
   });
+
+  // A thing on the World Map opens in the Membrane Map, focused on its folder.
+  const openThingInMembraneMap = (thing: { name: string; folder: string }): void => {
+    detailPanel.hide();
+    state.view = "membrane";
+    setActiveView("membrane");
+    updateUrlState("membrane", null);
+    schedulePersistNav();
+    membraneView.focusDirectory(thing.folder);
+  };
 
   const worldMapView = createWorldMapView({
     root: requireElement("world-root"),
@@ -263,7 +284,8 @@ function startExplorer(bundle: StaticExplorerData): void {
       if (node) {
         openLocalViewForNode(node);
       }
-    }
+    },
+    onOpenThing: openThingInMembraneMap
   });
 
   syncFilterControls();

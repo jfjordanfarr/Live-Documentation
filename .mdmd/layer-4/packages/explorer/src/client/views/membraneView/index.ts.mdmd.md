@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/index.ts
-- Generated At: 2026-09-28T01:11:44.222Z
+- Generated At: 2026-09-29T15:09:33.845Z
 
 ## Authored
 ### Purpose
@@ -34,14 +34,14 @@ Options for creating a Membrane Map view controller.
 
 #### `MembraneViewApi` {#symbol-membraneviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L65)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L67)
 
 ##### `MembraneViewApi` — Summary
 Public API surface returned by {@link createMembraneView}.
 
 #### `createMembraneView` {#symbol-createmembraneview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/index.ts#L93)
 - Returns: [`MembraneViewApi`](#symbol-membraneviewapi)
 - Parameters: `options`: [`MembraneViewOptions`](#symbol-membraneviewoptions)
 

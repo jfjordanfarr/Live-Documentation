@@ -12,7 +12,7 @@ import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-
  */
 
 const BOARD_TEXT = ["#view-world svg text"];
-const INSIDE_TEXT = ["#view-world .world-inside .inside-card .name", "#view-world .world-inside .inside-card .path", "#view-world .world-inside .inside-card .row", "#view-world .world-inside .inside-walltext"];
+const MEMBRANE_TEXT = ["#view-membrane .membrane__label", "#view-membrane .membrane__badge", "#view-membrane .membrane-leaf__name", "#view-membrane .membrane-card__header", "#view-membrane .membrane-card__path", "#view-membrane .membrane-card__symbol-summary", "#view-membrane .membrane-card__directory", "#view-membrane .membrane-browse-breadcrumb__segment", "#controls .control-btn"];
 
 interface WorldMapHandle {
   ready: boolean;
@@ -21,8 +21,7 @@ interface WorldMapHandle {
   under: (value: boolean) => void;
   rotate: (quarters?: number) => Promise<void>;
   zoom: (k: number) => number;
-  enter: (name: string) => Promise<void>;
-  openFolder: (folder: string) => void;
+  enter: (name: string) => void;
   pieces: () => string[];
 }
 
@@ -49,8 +48,12 @@ async function boardLabels(page: Page) {
   return boxes;
 }
 
-async function insideText(page: Page) {
-  const boxes = await textBoxes(page, INSIDE_TEXT);
+/** A thing opened into the Membrane Map, its cards settled after the layout's animation. */
+async function openThing(page: Page, name: string) {
+  await page.evaluate((thing) => window.__worldMap!.enter(thing), name);
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("#view-membrane")!).opacity === "1");
+  await page.waitForTimeout(800);
+  const boxes = await textBoxes(page, MEMBRANE_TEXT);
   expect(boxes.length).toBeGreaterThan(5);
   return boxes;
 }
@@ -78,20 +81,10 @@ test.describe("World Map design audit", () => {
     expect(overlaps, describeFaults(overlaps)).toEqual([]);
   });
 
-  test("inside a thing, no labels collide and no card's text is cut off", async ({ page }) => {
+  test("a thing opened into the Membrane Map: no two words collide and nothing is cut off", async ({ page }) => {
     await openWorldMap(page);
-    await page.evaluate(() => window.__worldMap!.enter("engine"));
-    const overlaps = overlapsAmong(await insideText(page));
-    const cut = await truncations(page, INSIDE_TEXT.slice(0, 3));
-    expect([...overlaps, ...cut], describeFaults(overlaps, cut)).toEqual([]);
-  });
-
-  test("one level deeper the same holds", async ({ page }) => {
-    await openWorldMap(page);
-    await page.evaluate(() => window.__worldMap!.enter("engine"));
-    await page.evaluate(() => window.__worldMap!.openFolder("packages/engine/src/live-docs"));
-    const overlaps = overlapsAmong(await insideText(page));
-    const cut = await truncations(page, INSIDE_TEXT.slice(0, 3));
+    const overlaps = overlapsAmong(await openThing(page, "engine"));
+    const cut = await truncations(page, MEMBRANE_TEXT);
     expect([...overlaps, ...cut], describeFaults(overlaps, cut)).toEqual([]);
   });
 });

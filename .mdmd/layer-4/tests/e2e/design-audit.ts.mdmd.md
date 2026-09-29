@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/design-audit.ts
-- Generated At: 2026-09-29T14:19:44.031Z
+- Generated At: 2026-09-29T15:09:34.561Z
 
 ## Authored
 ### Purpose
@@ -62,7 +62,7 @@ the box does not count as text.
 
 #### `describeFaults` {#symbol-describefaults}
 - Type: function
-- Source: [source](../../../../tests/e2e/design-audit.ts#L160)
+- Source: [source](../../../../tests/e2e/design-audit.ts#L162)
 - Parameters: `overlaps`: [`Overlap`](#symbol-overlap)[]; `cut`: [`Truncation`](#symbol-truncation)[]
 
 ##### `describeFaults` — Summary

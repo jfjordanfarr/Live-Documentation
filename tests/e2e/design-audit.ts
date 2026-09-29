@@ -118,8 +118,10 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
         }
         const style = getComputedStyle(node);
         const box = node.getBoundingClientRect();
-        const left = box.left + parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth);
-        const right = box.right - parseFloat(style.paddingRight) - parseFloat(style.borderRightWidth);
+        // The box is on screen, the padding is in CSS pixels: a view drawn under a transform scales one and not the other.
+        const scale = box.width / node.offsetWidth;
+        const left = box.left + (parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth)) * scale;
+        const right = box.right - (parseFloat(style.paddingRight) + parseFloat(style.borderRightWidth)) * scale;
         const rects: DOMRect[] = [];
         const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
         for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {

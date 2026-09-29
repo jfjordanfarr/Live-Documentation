@@ -25,11 +25,7 @@ interface WorldMapHandle {
   tilt: () => Promise<void>;
   screenPointOf: (name: string) => [number, number];
   lidCorners: (name: string) => Array<[number, number]>;
-  enter: (name: string) => Promise<void>;
-  exit: () => Promise<void>;
-  openFolder: (folder: string) => void;
-  inside: () => { thing: string; folder: string } | null;
-  insideNodes: () => string[];
+  enter: (name: string) => void;
 }
 
 declare global {
@@ -158,68 +154,47 @@ test.describe("World Map", () => {
     expect(fontSize).toBe("11px");
   });
 
-  test("opens a thing from its pinned panel: the lid unfolds into its folder map, and Escape folds it back", async ({ page }) => {
+  test("opens a thing from its pinned panel into the Membrane Map, focused on its folder, and the crumb there leads back to the board", async ({ page }) => {
     await openWorldMap(page);
     await page.evaluate(() => window.__worldMap!.pin("piece", "engine"));
     await page.locator("#view-world .world-evidence a[data-open='engine']").click();
-    const inside = page.locator("#view-world .world-inside.on");
-    await expect(inside).toBeVisible();
-    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder: "packages/engine" });
-    await expect(inside.locator(".inside-bar")).toContainText("engine");
-    expect(await inside.locator(".inside-card").count()).toBeGreaterThan(0);
-    expect(await inside.locator(".inside-wallpin").count()).toBeGreaterThan(0);
-    await expect(inside.locator(".inside-walltext").first()).toContainText("·");
-    await page.keyboard.press("Escape");
-    await expect(page.locator("#view-world .world-inside.on")).toHaveCount(0);
-    expect(await page.evaluate(() => window.__worldMap!.inside())).toBeNull();
+    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
+    await expect(page.locator('.nav-item.active[data-view="membrane"]')).toHaveCount(1);
+    const crumbs = page.locator("#view-membrane .membrane-browse-breadcrumb");
+    await expect(crumbs).toContainText("engine");
+    await expect(crumbs.locator("[data-crumb='world']")).toHaveText("World Map");
+    await expect(page.locator('#view-membrane .membrane[data-id="packages/engine"]:not(.membrane--collapsed)')).toHaveCount(1);
+    expect(await page.locator("#view-membrane .membrane-focal-pin--active").count()).toBe(0);
+    await crumbs.locator("[data-crumb='world']").click();
+    await expect(page.locator("#view-world.active")).toHaveCount(1);
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
   });
 
-  test("a folder inside is a box that opens the same way, and the crumbs lead back up", async ({ page }) => {
-    await openWorldMap(page);
-    await page.evaluate(() => window.__worldMap!.enter("engine"));
-    const inside = page.locator("#view-world .world-inside.on");
-    const box = inside.locator(".inside-card.box .name").first();
-    const folder = await box.getAttribute("data-open-folder");
-    expect(folder).toMatch(/^packages\/engine\//u);
-    await box.click();
-    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder });
-    await expect(inside.locator(".inside-bar a[data-crumb='1']")).toHaveText("engine");
-    await inside.locator(".inside-bar a[data-crumb='1']").click();
-    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder: "packages/engine" });
-  });
-
-  test("a card's name opens the file in the Local Map", async ({ page }) => {
-    await openWorldMap(page);
-    await page.evaluate(() => window.__worldMap!.enter("scripts"));
-    const card = page.locator("#view-world .world-inside.on .inside-card:not(.box) .name").first();
-    const file = await card.getAttribute("data-open-file");
-    await card.click();
-    await expect(page.locator("#view-map.active")).toHaveCount(1);
-    await expect.poll(() => new URL(page.url()).searchParams.get("node")).toBe(file);
-  });
-
-  test("wheeling into a thing opens it, and wheeling out over the board goes back", async ({ page }) => {
+  test("wheeling into a thing opens it, and the board is ready for the next look when you come back", async ({ page }) => {
     await openWorldMap(page);
     const box0 = (await page.locator("#view-world svg.world-svg").boundingBox())!;
     const lid = await page.evaluate(() => window.__worldMap!.lidCorners("cli"));
     const sx = box0.x + lid.reduce((sum, p) => sum + p[0], 0) / 4;
     const sy = box0.y + lid.reduce((sum, p) => sum + p[1], 0) / 4;
     await page.mouse.move(sx, sy);
-    for (let i = 0; i < 30 && !(await page.evaluate(() => window.__worldMap!.inside())); i += 1) {
+    for (let i = 0; i < 30 && !(await page.locator("#view-membrane.active").count()); i += 1) {
       await page.mouse.wheel(0, -120);
     }
-    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "cli", folder: "packages/cli" });
-    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
-    await page.mouse.move(box.x + 10, box.y + box.height - 10);
-    await page.mouse.wheel(0, 300);
-    await expect.poll(() => page.evaluate(() => window.__worldMap!.inside())).toBeNull();
+    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
+    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("cli");
+    await page.locator('.nav-item[data-view="world"]').click();
+    await expect(page.locator("#view-world.active")).toHaveCount(1);
+    const after = await page.evaluate(() => window.__worldMap!.lidCorners("cli"));
+    const xs = after.map((p) => p[0]);
+    expect(Math.max(...xs) - Math.min(...xs)).toBeLessThan(box0.width * 0.5);
   });
 
   test("a double-click opens a thing too", async ({ page }) => {
     await openWorldMap(page);
     const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("generator"));
     await page.mouse.dblclick(sx, sy);
-    await expect.poll(() => page.evaluate(() => window.__worldMap!.inside()?.thing)).toBe("generator");
+    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
+    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("generator");
   });
 
   test("drags a thing with the pointer", async ({ page }) => {

@@ -241,7 +241,7 @@ One page, plain SVG, no three.js: the estate as pieces on a board. A blank white
 14. Doors that slide to visible faces, or doors fixed to the facing wall.
 15. What opens a piece: the wheel past a threshold, a double-click, or both.
 16. The shared library: a tile on the board, or only a token beneath the pieces that stand on it.
-17. The inside of a piece: the folder map as drawn here, or the Membrane Map's rendering once step 3 consolidates the views.
+17. The inside of a piece: the folder map as drawn here, or the Membrane Map's rendering once step 3 consolidates the views. Closed 2026-09-29: the Membrane Map, opened at the thing's folder; the folder map drawn here shipped for one afternoon and went, its lid, wall pins and rank layout the stretch goal once the Membrane Map is the default two-dimensional local view.
 18. Where a board's declared districts, tunnel and positions are written so that it can be shared.
 
 The page is `AI-Agent-Workspace/tmp/probes/black-boxes/index.html`, disposable like the others; `node build.cjs` rebuilds it and `shoot.cjs` takes its screenshots.
