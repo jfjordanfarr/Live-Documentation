@@ -91,6 +91,8 @@ Also raised, each once, and smaller: whether "calls no model" is a principle or 
 - **Where the force graph lives:** it is the Local Map's only three-dimensional view ("the interior views would be part of the 'Local Map'... 2D mode (membrane map...) or 3D mode (force-directed graph)", 2026-09-28; "only 3D of local map = force-directed graph view", 2026-09-29).
 - **Probes and mockups against "we implement the real thing":** "You could always whip up some HTML to mock things up" (2026-09-26) and "You are clear to proceed with the two probes (plus bespoke mockups/probes/prototypes...)" (2026-09-28). The December line answered an offer to prototype a command-line feed reader, not design exploration.
 - **When the agent commits:** "Feel free to stage and commit as you need, so long as you are confident in the safety and quality of the. commit." (2026-09-27). `AGENTS.md` said "Commit only when asked" until 2026-09-29.
+- **Which way a wire runs** (question 1): blue "offers" and green uses, at every scale: "Offers!! I Like that! Killer terminology, yeah!" (2026-09-29). The World Map changes to match the Local Map.
+- **Whether a score may only rise** (part of question 6): "I'm willing to renege on that if only for the slightly-longer-time-horizons that the new frontier models can work at." (2026-09-29)
 - **Whether the force graph's library ships inside the page:** "Yeah, probably. Being honest to our principles is important." (2026-09-29). Done the same night: the library is a pinned dependency bundled into the page, which now contacts no host but its own.
 - **Whether any path may be excluded from a check:** exclusions "open a window for 'LLM laziness'" (2026-01-16).
 
