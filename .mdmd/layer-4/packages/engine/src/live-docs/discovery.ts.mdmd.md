@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-09-28T02:39:06.046Z
+- Generated At: 2026-09-29T19:54:52.675Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L95)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L94)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -57,7 +57,7 @@ const files = await discoverTargetFiles({
 
 #### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L178)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L177)
 
 ##### `buildWorkspaceSymbolIndex` — Summary
 Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
@@ -94,28 +94,6 @@ const index = await buildWorkspaceSymbolIndex({
 ##### `buildWorkspaceSymbolIndex` — Links
 - `ResolvedSymbolLocation`
 - `WorkspaceSymbolIndex` — *
-
-#### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L279)
-- Returns: [`ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation)
-- Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
-
-##### `resolveTypeToLiveDoc` — Summary
-Resolves a type name to its Live Doc location using the workspace symbol index.
-
-##### `resolveTypeToLiveDoc` — Remarks
-Returns undefined if the type is not found in the index. When multiple
-symbols with the same name exist, returns the first match (future enhancement:
-could use import context to disambiguate).
-
-##### `resolveTypeToLiveDoc` — Parameters
-- `currentSourcePath`: The source path of the file being rendered (to avoid self-links).
-- `index`: The workspace-wide symbol index.
-- `typeName`: The type name to resolve (e.g., "Widget", "Foo.Bar").
-
-##### `resolveTypeToLiveDoc` — Returns
-The resolved location, or undefined if not found.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -131,7 +109,6 @@ The resolved location, or undefined if not found.
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
-- [`coreUtils.createProximityAwareComparator`](./coreUtils.ts.mdmd.md#symbol-createproximityawarecomparator)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)

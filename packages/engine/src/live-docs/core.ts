@@ -97,8 +97,7 @@ export {
 
 export {
   discoverTargetFiles,
-  buildWorkspaceSymbolIndex,
-  resolveTypeToLiveDoc
+  buildWorkspaceSymbolIndex
 } from "./discovery";
 
 // ============================================================================

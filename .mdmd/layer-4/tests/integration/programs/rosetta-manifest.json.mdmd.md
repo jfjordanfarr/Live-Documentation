@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rosetta-manifest.json
-- Generated At: 2026-09-27T23:21:38.359Z
+- Generated At: 2026-09-29T19:54:58.169Z
 
 ## Authored
 ### Purpose
@@ -16,10 +16,7 @@ Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspa
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `$schema (key overload 1)` {#symbol-schema-key-overload-1}
-- Type: key
-
-#### `schema (key overload 2)` {#symbol-schema-key-overload-2}
+#### `schema` {#symbol-schema}
 - Type: key
 
 #### `description` {#symbol-description}

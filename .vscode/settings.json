@@ -1,14 +1,14 @@
 {
     "typescript.tsserver.watchOptions": {
-        "excludeDirectories": ["**/tests/integration/benchmarks/fixtures"]
+        "excludeDirectories": ["**/tests/integration/programs"]
     },
     "java.project.import.exclusions": [
-        "**/tests/integration/benchmarks/fixtures/java/**",
+        "**/tests/integration/programs/java/**",
         "**/AI-Agent-Workspace/tmp/**",
         "**/node_modules/**"
     ],
     "problems.exclude": {
-        "**/tests/integration/benchmarks/fixtures/**": true
+        "**/tests/integration/programs/**": true
     },
     "markdown.validate.enabled": true
 }

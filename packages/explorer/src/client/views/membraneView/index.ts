@@ -55,7 +55,6 @@ import type { MembraneLayout } from "./types";
 export interface MembraneViewOptions {
   state: ExplorerState;
   graphData: ExplorerGraphPayload;
-  resolveLinkEndpoint: (endpoint: { id: string } | string) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   testCoverage: TestCoverageMap;
   nodesById: Map<string, ExplorerNodePayload>;
@@ -91,7 +90,7 @@ function clamp(value: number, min: number, max: number): number {
 
 /** Initialise the Membrane Map view and return its public API. */
 export function createMembraneView(options: MembraneViewOptions): MembraneViewApi {
-  const { state, graphData, resolveLinkEndpoint: _resolveLinkEndpoint, onSelectNode, testCoverage, nodesById, world } = options;
+  const { state, graphData, onSelectNode, testCoverage, nodesById, world } = options;
 
   // DOM elements
   const viewport = requireElement<HTMLDivElement>("membrane-viewport");
@@ -700,24 +699,6 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
       viewport.appendChild(breadcrumbBar);
     }
-
-    // ─── Bundled edges (membrane-to-membrane connections) ───
-    // Disabled for MVP: the thick arcs between collapsed tiles create
-    // visual noise that overwhelms the treemap layout.  Pin-driven
-    // connections (focal-overlay) provide a cleaner relationship view.
-    // Re-enable once hover-only or progressive-disclosure rendering
-    // is implemented for bundle edges.
-    // if (currentLayout && graphData.links.length > 0) {
-    //   const edgePairs: Array<[string, string]> = graphData.links.map(link => [
-    //     resolveLinkEndpoint(link.source),
-    //     resolveLinkEndpoint(link.target),
-    //   ]);
-    //   const bundles = aggregateEdges(currentLayout, edgePairs, collapsed);
-    //   const bundleSvg = renderBundledEdges(bundles, currentLayout);
-    //   if (bundleSvg) {
-    //     container.appendChild(bundleSvg);
-    //   }
-    // }
 
     // ─── Focal overlay (card-style panels + connections) ───
     // Show focal panels when: (a) any pins are active, or (b) a leaf node

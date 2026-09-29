@@ -55,8 +55,6 @@ export interface LiveDocumentationConfig {
   requireRelativeLinks: boolean;
   /** Header-slug dialect used when generating anchors. */
   slugDialect: LiveDocumentationSlugDialect;
-  /** Toggle for docstring bridge reconciliation once adapters are configured. */
-  enableDocstringBridge: boolean;
   /**
    * Workspace-relative glob patterns for markdown files that Live Docs may link
    * to but that the Explorer must not bundle or show as related documents
@@ -190,7 +188,6 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   archetypeOverrides: {},
   requireRelativeLinks: true,
   slugDialect: "github",
-  enableDocstringBridge: false,
   bundleExclude: []
 };
 
@@ -236,8 +233,6 @@ export function normalizeLiveDocumentationConfig(
     requireRelativeLinks:
       input?.requireRelativeLinks ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.requireRelativeLinks,
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
-    enableDocstringBridge:
-      input?.enableDocstringBridge ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.enableDocstringBridge,
     bundleExclude
   };
 }

@@ -42,7 +42,7 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                                                 |
 | `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                                   |
-| `npm run test:unit`                                                                             | Vitest, 974 tests (about 30 s)                                                                     |
+| `npm run test:unit`                                                                             | Vitest, 952 tests (about 30 s)                                                                     |
 | `npm run test:e2e`                                                                              | Playwright over the Explorer and the estate sample, both built first, 50 tests (about 3 min)       |
 | `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s)                  |
 | `npm run live-docs:generate`                                                                    | Regenerate the mirror and its graph index. `--dry-run` reports drift; `--changed` limits scope     |

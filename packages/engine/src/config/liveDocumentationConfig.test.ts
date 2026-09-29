@@ -16,7 +16,6 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.archetypeOverrides).toEqual({});
     expect(config.requireRelativeLinks).toBe(true);
     expect(config.slugDialect).toBe("github");
-    expect(config.enableDocstringBridge).toBe(false);
     expect(config.bundleExclude).toEqual([]);
   });
 
@@ -44,8 +43,7 @@ describe("normalizeLiveDocumentationConfig", () => {
         "assets/**/*.png": "asset"
       },
       requireRelativeLinks: false,
-      slugDialect: "azure-devops",
-      enableDocstringBridge: true
+      slugDialect: "azure-devops"
     });
 
     expect(config.root).toBe("docs/ld");
@@ -61,7 +59,6 @@ describe("normalizeLiveDocumentationConfig", () => {
     });
     expect(config.requireRelativeLinks).toBe(false);
     expect(config.slugDialect).toBe("azure-devops");
-    expect(config.enableDocstringBridge).toBe(true);
   });
 
   it("falls back to defaults when overrides are blank", () => {

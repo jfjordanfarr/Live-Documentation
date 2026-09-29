@@ -21,7 +21,6 @@ import type {
   ResolvedSymbolLocation,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { createProximityAwareComparator } from "./coreUtils";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
@@ -256,51 +255,4 @@ export async function buildWorkspaceSymbolIndex(options: {
   }
 
   return index;
-}
-
-// ============================================================================
-// Type Resolution
-// ============================================================================
-
-/**
- * Resolves a type name to its Live Doc location using the workspace symbol index.
- *
- * @remarks
- * Returns undefined if the type is not found in the index. When multiple
- * symbols with the same name exist, returns the first match (future enhancement:
- * could use import context to disambiguate).
- *
- * @param typeName - The type name to resolve (e.g., "Widget", "Foo.Bar").
- * @param index - The workspace-wide symbol index.
- * @param currentSourcePath - The source path of the file being rendered (to avoid self-links).
- *
- * @returns The resolved location, or undefined if not found.
- */
-export function resolveTypeToLiveDoc(
-  typeName: string,
-  index: WorkspaceSymbolIndex,
-  currentSourcePath: string
-): ResolvedSymbolLocation | undefined {
-  const locations = index.get(typeName);
-  if (!locations || locations.length === 0) {
-    return undefined;
-  }
-
-  // Filter out self-references (types defined in the current file)
-  const external = locations.filter((loc) => loc.sourcePath !== currentSourcePath);
-
-  // Prefer external definitions; fall back to any match if all are self-refs
-  if (external.length === 0) {
-    // All matches are in the current file — return undefined to avoid self-link
-    // (the type is already visible in the same Live Doc)
-    return undefined;
-  }
-  
-  if (external.length === 1) {
-    return external[0];
-  }
-  
-  // Multiple external matches: prefer origin files over barrels, and closer files
-  const sorted = external.slice().sort(createProximityAwareComparator(currentSourcePath));
-  return sorted[0];
 }

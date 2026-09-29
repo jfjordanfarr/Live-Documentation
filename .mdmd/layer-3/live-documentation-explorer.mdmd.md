@@ -84,7 +84,6 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 
 #### Panels (UI controls)
 
-- [packages/explorer/src/client/panels/index.ts](../layer-4/packages/explorer/src/client/panels/index.ts.mdmd.md)
 - [packages/explorer/src/client/panels/omnisearch.ts](../layer-4/packages/explorer/src/client/panels/omnisearch.ts.mdmd.md)
 - [packages/explorer/src/client/panels/sources-view.ts](../layer-4/packages/explorer/src/client/panels/sources-view.ts.mdmd.md)
 - [packages/explorer/src/client/panels/tuning.ts](../layer-4/packages/explorer/src/client/panels/tuning.ts.mdmd.md)
@@ -132,10 +131,8 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 - [packages/explorer/src/client/views/membraneView/layout.ts](../layer-4/packages/explorer/src/client/views/membraneView/layout.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/hierarchy.ts](../layer-4/packages/explorer/src/client/views/membraneView/hierarchy.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/detail-levels.ts](../layer-4/packages/explorer/src/client/views/membraneView/detail-levels.ts.mdmd.md)
-- [packages/explorer/src/client/views/membraneView/edge-bundling.ts](../layer-4/packages/explorer/src/client/views/membraneView/edge-bundling.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/pin-state.ts](../layer-4/packages/explorer/src/client/views/membraneView/pin-state.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/routing.ts](../layer-4/packages/explorer/src/client/views/membraneView/routing.ts.mdmd.md)
-- [packages/explorer/src/client/views/membraneView/svg-connections.ts](../layer-4/packages/explorer/src/client/views/membraneView/svg-connections.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/browse-renderer.ts](../layer-4/packages/explorer/src/client/views/membraneView/browse-renderer.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/focal-overlay.ts](../layer-4/packages/explorer/src/client/views/membraneView/focal-overlay.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/aggregation.ts](../layer-4/packages/explorer/src/client/views/membraneView/aggregation.ts.mdmd.md)

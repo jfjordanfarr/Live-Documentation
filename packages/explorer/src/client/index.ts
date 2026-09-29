@@ -257,7 +257,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   const membraneView = createMembraneView({
     state,
     graphData,
-    resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
     testCoverage,
     nodesById,

@@ -69,7 +69,7 @@ The Membrane Map does NOT have discrete rendering modes. Instead, user interacti
 | **Multi-focal**                | Pin symbols on 2+ nodes   | Connections for all pinned symbols. “Compare” emerges naturally.                   |
 | **Path**                       | Active BFS result         | Numbered hop badges (①②③④) + breadcrumb bar + animated pulse.                      |
 
-The spatial layout never changes — files stay where directory hierarchy puts them. Only detail level and connection visibility change.
+In browse mode files stay where the folder hierarchy puts them, and only detail level and connection visibility change. Once a symbol is pinned, the layout changes to columns of dependencies, pinned files and dependents inside the folder bands, as the owner asked on 2026-03-24: "once pinning of symbols begins, the irrelevant nodes should not even appear. Indeed, a layout rearrangement must begin."
 
 **Interaction targets:** Clicking a card BODY selects the node (updates detail panel). Clicking a symbol PIN toggles pin state only (does not affect detail panel). Two distinct click targets on the same DOM element.
 
@@ -100,7 +100,7 @@ For languages where namespaces do not align with directories (primarily C#), the
 - **Directory mode** (default): `pathToHierarchy("src/Helpers/ServiceHelper.cs") → ["src", "Helpers"]`
 - **Namespace mode**: `namespaceToHierarchy("App.Services") → ["App", "Services"]`
 
-Everything downstream — pins, connections, edge bundling, zoom, rendering — is identical. The membrane containers simply represent different grouping units.
+Everything downstream — pins, connections, zoom, rendering — is identical. The membrane containers simply represent different grouping units.
 
 **Disagreement between directory and namespace membranes is itself an architectural signal**: a file whose physical location doesn't match its namespace indicates either a misplaced file or a namespace inconsistency. The two modes together with the Force Graph form a three-axis exploration capability:
 
@@ -128,11 +128,9 @@ The layout operates in two distinct phases:
 
 This two-phase model ensures smooth exploration during directory browsing, then gracefully transitions to content-driven growth when the user reaches actual files.
 
-### Edge Bundling
+### Arcs between folders: built twice, rejected
 
-When many connections cross the same membrane boundary, individual lines become visual noise. The Membrane Map aggregates dense cross-membrane connections at the membrane level: a single thick edge with a count badge replaces N individual connections. Expanding either endpoint membrane reveals the individual connections.
-
-> **Status (Dev Day 80)**: Edge bundling is implemented (`edge-bundling.ts`, `svg-connections.ts`) but **disabled** in the browse renderer due to visual noise at the default zoom level. Re-enable when hover-only or progressive-disclosure rendering is implemented for inter-membrane connectivity at collapsed directory levels.
+Drawing the wires that cross a folder's boundary as thick bundled arcs over the browse layout was built in March and switched off for visual noise. On 2026-03-30, after the owner asked "aren't we getting odd wide spanning of directories?... Should it only occur on hover? (won't that cause a re-render with elements moving into place?)", Copilot analysed it and rejected it, together with hover-only reveal and flow elements inside the treemap: the arcs fly to tiles off screen, and a hover state cannot be interacted with. What browse mode offers instead is the crumb bar and a folder tile's `Explore` button, which pins the files that cross its boundary; the owner: "It's slick!" On 2026-04-01 Copilot rebuilt hover arcs from a stale plan anyway, and the owner looked: "By eye, this doesn't appear to look right... I just see a bundle of connectors laying in an arc over each directory I hover over." The work was reverted, and the arc renderer (`edge-bundling.ts`, `svg-connections.ts`), kept switched off since, was deleted on 2026-09-29. Do not re-propose arcs over the browse layout. Copilot's own proposal after the failure, "boundary ports or edge badges on the hovered membrane instead of long free arcs", is close to what the probes of 2026-09-28 reached: one pin on a folder's wall per neighbouring folder, with a count. One idea from the deleted renderer carries over to such pins: an edge belongs to a folder by walking up from each of its ends to the shallowest collapsed folder above it, and an edge whose two ends land in the same folder is internal to it (`edge-bundling.ts`, in git history before 2026-09-29).
 
 ### Phase-Out Plan
 
@@ -175,16 +173,15 @@ So the work on this view is now to bring it to the Local Map's quality in place,
 
 These are the questions the Membrane Map left open as built. They belong to this design, not to whatever comes next: the next visualization is not obliged to answer them and may make them moot. They are recorded so that nothing here is rediscovered the hard way.
 
+Three items once listed here, pruning of stale URL and saved state, wiring of the detail levels, and animation, had landed before the stop (`42c8658b`, `c675a4eb`) and were taken off the list on 2026-09-29.
+
 - **Pinning and layout** — The stated blocker was that pinning should rearrange cards into left-to-right dependency flow instead of switching to a separate renderer, and the owner rejected routing curves around the browse layout: "once pinning of symbols begins, the irrelevant nodes should not even appear. Indeed, a layout rearrangement must begin." That was the gate set at the time for retiring Circuit Board and Local Map.
-- **Browse-mode edge progressive disclosure** — Bundle math and SVG rendering exist, but browse-mode controller wiring remains intentionally disabled until hover/progressive-disclosure avoids noisy thick inter-tile arcs.
-- **Stale persisted-state reconciliation** — Invalid directories, nodes, or pins referenced by URL/localStorage currently rely on best-effort misses rather than explicit pruning/reset. The desired UX for moved or deleted artifacts is still open.
-- **Legacy-view decoupling** — Membrane still imports `DirectoryAggregate` from `circuitView/aggregation.ts`; extracting or re-homing that type remains the architectural blocker before old-view retirement can proceed cleanly.
-- **Detail-level wiring** — `resolveDetailLevels()` exists and is tested, but the live Membrane renderers do not yet consume it.
+- **What crosses a folder's boundary in browse mode** — Arcs were rejected (see above); the crumb bar and the `Explore` button are what landed, and the counts on a folder's badge are all browse mode shows.
+- **Legacy-view decoupling** — The Membrane Map reads `DirectoryAggregate` through its own `aggregation.ts`, which still takes the type from `circuitView/aggregation.ts`; the type must move before the Circuit Board can be deleted.
 - **WCAG AA accessibility** — Raised as a "strong strong bonus" rather than a hard requirement, but planning for compliance early enables wiser design choices before redesigning later. Vanilla HTML/CSS layout techniques are preferred over DOM-heavy absolute positioning for screen reader compatibility. RTL language support is a forward-planning consideration.
-- **Hub nodes**: Files with very high connection counts create visual clutter even with edge bundling. May need dedicated "hub" rendering (minimised card with radial connection summary).
+- **Hub nodes**: Files with very high connection counts create visual clutter even with fading. May need dedicated "hub" rendering (minimised card with radial connection summary).
 - **Performance**: Large workspaces (1000+ files) require lazy rendering — only expand membranes that are visible in the viewport. The current Circuit Board `innerHTML = ""` teardown/rebuild pattern must be replaced with persistent DOM elements that resize.
 - **Hover-promotion routing**: When a back-connection stub is hovered/pinned, what routing algorithm reveals the full traced path? Membrane-gutter pathfinding (treating membrane borders as a rectilinear graph) is the leading approach but is deferred to a future commit.
-- **Animated transitions** — Membrane growth/shift animations should eventually give "the impression of the universe moving around the user." Not yet attempted.
 
 ### Testing Philosophy
 
@@ -192,7 +189,7 @@ DOM testing via jsdom was explicitly rejected (Dev Day 80, Turn 7): jsdom tests 
 
 The testing strategy is:
 
-1. **Pure-math tests** (Vitest) — Layout, hierarchy, detail-levels, edge-bundling, pin-state, routing, SVG connection aggregation, URL state compression. 130+ tests covering algorithmic correctness without any DOM dependency.
+1. **Pure-math tests** (Vitest) — Layout, hierarchy, detail-levels, pin-state, routing, URL state compression. 130+ tests covering algorithmic correctness without any DOM dependency.
 2. **Visual playtesting** (Playwright MCP) — Manual screenshot-based exploration before creating automated E2E tests. Multiple rounds of user-driven visual feedback (Turns 24–32) caught focus-zoom, membrane sizing, and connection rendering issues that no unit test could surface.
 3. **Playwright E2E tests** — Landed and actively expanded. The current suite covers browse mode, pin-active layout, containment, dimming, directory bands, URL restore, expanded-card persistence, multi-focal/path-as-pins, default-view behavior, and pin-active visual stability across reload.
 
@@ -206,10 +203,8 @@ The testing strategy is:
 - `packages/explorer/src/client/views/membraneView/layout.ts` — Recursive squarify engine with focus-aware weight boosting
 - `packages/explorer/src/client/views/membraneView/hierarchy.ts` — `isBarrelFile()`, `applyBarrelSemantics()`, `getAncestorDirectories()`
 - `packages/explorer/src/client/views/membraneView/detail-levels.ts` — `resolveDetailLevels()` (full/summary/badge/hidden)
-- `packages/explorer/src/client/views/membraneView/edge-bundling.ts` — Cross-membrane edge aggregation
 - `packages/explorer/src/client/views/membraneView/pin-state.ts` — Pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
 - `packages/explorer/src/client/views/membraneView/routing.ts` — Front/back trace classification + geometry (French Corset stubs)
-- `packages/explorer/src/client/views/membraneView/svg-connections.ts` — `aggregateEdges()`, `renderBundledEdges()`
 
 #### DOM Modules
 

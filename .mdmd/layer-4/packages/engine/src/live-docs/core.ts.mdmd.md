@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/core.ts
-- Generated At: 2026-09-27T23:21:31.319Z
+- Generated At: 2026-09-29T19:54:52.591Z
 
 ## Authored
 ### Purpose
@@ -178,81 +178,77 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L100)
 
-#### `resolveTypeToLiveDoc` {#symbol-resolvetypetolivedoc}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L101)
-
 #### `inferScriptKind` {#symbol-inferscriptkind}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L109)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L108)
 
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L110)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L109)
 
 #### `collectDependencies` {#symbol-collectdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L118)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L117)
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L119)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L118)
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L120)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L119)
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L121)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L120)
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L122)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L121)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L130)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L129)
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L131)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L130)
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L132)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L131)
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L133)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L132)
 
 #### `extractJsDocDocumentation` {#symbol-extractjsdocdocumentation}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L140)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L139)
 
 #### `detectChangedFiles` {#symbol-detectchangedfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L147)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L146)
 
 #### `parsePorcelainLine` {#symbol-parseporcelainline}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L148)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L147)
 
 #### `execFileAsync` {#symbol-execfileasync}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L149)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L148)
 
 #### `directoryExists` {#symbol-directoryexists}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L157)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L156)
 
 #### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L158)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L157)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L165)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L164)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -306,7 +302,6 @@ Implements the shared Live Docs extraction engine—scanning source trees, colle
 - [`dependencies.shouldInferDomDependencies`](./dependencies.ts.mdmd.md#symbol-shouldinferdomdependencies) (re-export)
 - [`discovery.buildWorkspaceSymbolIndex`](./discovery.ts.mdmd.md#symbol-buildworkspacesymbolindex) (re-export)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
-- [`discovery.resolveTypeToLiveDoc`](./discovery.ts.mdmd.md#symbol-resolvetypetolivedoc) (re-export)
 - [`fileUtils.cleanupEmptyParents`](./fileUtils.ts.mdmd.md#symbol-cleanupemptyparents) (re-export)
 - [`fileUtils.directoryExists`](./fileUtils.ts.mdmd.md#symbol-directoryexists) (re-export)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles) (re-export)
