@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-09-28T01:11:43.089Z
+- Generated At: 2026-09-29T21:00:18.871Z
 
 ## Authored
 ### Purpose
@@ -75,14 +75,14 @@ Returns the shortest path from source to target.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L220)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L221)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L251)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L252)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -90,14 +90,14 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L281)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L282)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L292)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L293)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 

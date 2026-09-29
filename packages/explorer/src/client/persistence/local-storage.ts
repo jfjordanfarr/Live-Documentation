@@ -11,6 +11,9 @@ import type { ExplorerFilters, TuningConfig, ViewName } from "../types";
 // Persisted UI State (tuning + filters)
 // ─────────────────────────────────────────────────────────────────────────
 
+/** Tuning as saved: only the values that were read back, each merged over the defaults when the Explorer starts. */
+type SavedTuning = { [K in keyof TuningConfig]?: Partial<TuningConfig[K]> };
+
 /** localStorage key for persisted UI state (filters + tuning). Version-suffixed to allow future migration. */
 export const PERSISTED_UI_KEY = "live-docs-explorer:ui:v1";
 /** Schema version tag embedded in persisted UI payloads for forward-compatible deserialisation. */
@@ -20,7 +23,7 @@ export const PERSISTED_UI_VERSION = 1 as const;
 export type PersistedUiV1 = {
   version: typeof PERSISTED_UI_VERSION;
   filters?: Partial<ExplorerFilters>;
-  tuning?: Partial<TuningConfig>;
+  tuning?: SavedTuning;
 };
 
 /** Returns the factory-default filter set (tests visible, assets/docs hidden). */
@@ -104,7 +107,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
      
     const parsedTuning = getRecord(parsed, "tuning");
     if (parsedTuning) {
-      const tuning: Partial<TuningConfig> = {};
+      const tuning: SavedTuning = {};
 
       const bezierRaw = getRecord(parsedTuning, "bezier");
       if (bezierRaw) {

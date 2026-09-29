@@ -172,7 +172,7 @@ export function buildWorldModel(board: Board, joined: BoardGraph, graph: LiveDoc
   }
   const tokens: WorldToken[] = [...usersOf.entries()]
     .filter(([, users]) => users.length > 1)
-    .map(([label, users]) => ({ key: label, label, kind: label.includes("@") ? "package" : "reference", users }))
+    .map(([label, users]): WorldToken => ({ key: label, label, kind: label.includes("@") ? "package" : "reference", users }))
     .sort((a, b) => b.users.length - a.users.length || a.label.localeCompare(b.label));
 
   const positions = new Map<string, Point2>();

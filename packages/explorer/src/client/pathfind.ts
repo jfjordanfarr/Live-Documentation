@@ -75,7 +75,8 @@ export function findPath(
       fromEndpoint: { node: fromNode || { id: fromNodeId } as ExplorerNodePayload },
       toEndpoint: { node: toNode || { id: toNodeId } as ExplorerNodePayload },
       searchedNodes: 0,
-      maxDepthReached: false
+      maxDepthReached: false,
+      direction: null
     };
   }
 

@@ -385,7 +385,7 @@ export function pinsToHopData(
 
   return pins
     .sort((a, b) => a.hopIndex - b.hopIndex)
-    .map(pin => {
+    .map((pin): HopData | null => {
       const node = getNodeData(pin.nodeId);
       if (!node) return null;
 

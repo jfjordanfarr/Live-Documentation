@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { isBarrelFile, applyBarrelSemantics } from "./hierarchy";
+import type { ExplorerNodePayload } from "../../../shared/types";
 import type { DirectoryNode } from "../../types";
 
 /** Helper: minimal file node stub for DirectoryNode.nodes. */

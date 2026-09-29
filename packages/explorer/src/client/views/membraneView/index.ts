@@ -711,7 +711,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       && currentLayout?.index.get(selectedNodeId)?.isDirectory === false;
     const hasNonCardPins = pinSet.entries.some(e => !browseResult.cardRenderedIds.has(e.nodeId));
     const hasPins = pinSet.entries.length > 0;
-    let browseOverlay: { svgOverlay: SVGSVGElement; anchors: MeasuredAnchor[] } | null = null;
+    let browseOverlay: { svgOverlay: SVGSVGElement; anchors: readonly MeasuredAnchor[] } | null = null;
     if ((hasNonCardPins || hasSelectedLeaf || hasPins) && currentLayout) {
       const overlay = renderFocalOverlay(
         currentLayout,

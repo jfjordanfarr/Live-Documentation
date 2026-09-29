@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/membraneView/hierarchy.test.ts
-- Generated At: 2026-09-27T23:21:28.872Z
+- Generated At: 2026-09-29T21:00:19.610Z
 
 ## Authored
 ### Purpose
@@ -26,5 +26,6 @@ _No public symbols detected_
 - [`types.DirectoryNode`](../../types.ts.mdmd.md#symbol-directorynode) (type-only)
 - [`hierarchy.applyBarrelSemantics`](./hierarchy.ts.mdmd.md#symbol-applybarrelsemantics)
 - [`hierarchy.isBarrelFile`](./hierarchy.ts.mdmd.md#symbol-isbarrelfile)
+- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
