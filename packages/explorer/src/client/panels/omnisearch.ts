@@ -17,17 +17,6 @@ export interface OmnisearchConfig {
 }
 
 /**
- * Get archetype display icon
- */
-const getArchetypeIcon = (archetype: string): string => {
-  const lower = archetype.toLowerCase();
-  if (lower === "test") return "🧪";
-  if (lower === "asset") return "📄";
-  if (lower === "config") return "⚙️";
-  return "📦";
-};
-
-/**
  * Escape HTML special characters
  */
 const escapeHtml = (str: string): string => {
@@ -114,7 +103,6 @@ export function initOmnisearch(config: OmnisearchConfig): { open: () => void; cl
 
     omnisearchResults.innerHTML = results.map((node, i) => `
       <div class="omnisearch-result ${i === 0 ? 'selected' : ''}" data-index="${i}">
-        <span class="omnisearch-result-icon">${getArchetypeIcon(node.archetype)}</span>
         <div class="omnisearch-result-text">
           <div class="omnisearch-result-name">${escapeHtml(node.name)}</div>
           <div class="omnisearch-result-path">${escapeHtml(node.codeRelativePath)}</div>

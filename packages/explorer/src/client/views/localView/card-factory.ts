@@ -292,7 +292,7 @@ export function createSymbolSection(
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";
-    internalsLabel.innerHTML = `<div class="symbol-label internals-text">⬛ Internals</div>`;
+    internalsLabel.innerHTML = `<div class="symbol-label internals-text">Internals</div>`;
     internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
     internalsRow.appendChild(internalsLabel);
 

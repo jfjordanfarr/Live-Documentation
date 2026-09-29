@@ -79,7 +79,6 @@ function renderHealthWarnings(
     const count = outboundCounts.get(node.id) ?? 0;
     warnings.push(`
       <li>
-        <span class="warning-icon">📤</span>
         <span class="warning-text">
           <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
           has <strong>${count}</strong> outbound dependencies (potential barrel file)
@@ -92,7 +91,6 @@ function renderHealthWarnings(
     const count = inboundCounts.get(node.id) ?? 0;
     warnings.push(`
       <li>
-        <span class="warning-icon">📥</span>
         <span class="warning-text">
           <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
           has <strong>${count}</strong> inbound dependencies (heavily depended-upon)
@@ -145,7 +143,6 @@ function renderIslandWarnings(
       
       items.push(`
         <li>
-          <span class="warning-icon">⊘</span>
           <span class="warning-text">
             <span class="warning-node island-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
             <span class="island-path">${escapeHtml(dir)}</span>
@@ -183,7 +180,6 @@ function renderBundledTreeNode(node: BundledMarkdownTreeNode, depth: number = 0)
       <div class="bundled-tree-folder" style="padding-left: ${indent}px;">
         <div class="bundled-tree-folder-header" data-expanded="false">
           <span class="bundled-tree-toggle">▶</span>
-          <span class="bundled-tree-icon">📁</span>
           <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
         </div>
         <div class="bundled-tree-children" style="display: none;">
@@ -196,7 +192,6 @@ function renderBundledTreeNode(node: BundledMarkdownTreeNode, depth: number = 0)
   // File node - use simple file icon for all markdown files
   return `
     <div class="bundled-tree-file" style="padding-left: ${indent}px;" data-doc-path="${escapeHtml(node.path)}">
-      <span class="bundled-tree-icon">📄</span>
       <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
     </div>
   `;
@@ -209,7 +204,7 @@ function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): strin
   if (!bundledDocs || bundledDocs.count === 0) {
     return `
       <div class="sources-panel">
-        <h2><span class="panel-icon">📚</span> Related Documentation</h2>
+        <h2>Related Documentation</h2>
         <div class="sources-empty">No referenced markdown files found. Live Docs may not contain links to READMEs, specs, or other documentation.</div>
       </div>
     `;
@@ -222,7 +217,7 @@ function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): strin
 
   return `
     <div class="sources-panel">
-      <h2><span class="panel-icon">📚</span> Related Documentation</h2>
+      <h2>Related Documentation</h2>
       <p class="sources-panel-desc">
         ${bundledDocs.count} markdown files referenced from Live Docs (READMEs, chat history, specs, etc.).
         Click any file to view it in the detail panel.
@@ -291,12 +286,12 @@ export function renderSourcesView(config: SourcesViewConfig): void {
   // Render
   container.innerHTML = `
     <div class="sources-header">
-      <h1>📊 Knowledge Sources</h1>
+      <h1>Knowledge Sources</h1>
       <p>Where this graph gets its data, what it knows, and how you can improve it.</p>
     </div>
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">🔌</span> Data Provenance</h2>
+      <h2>Data Provenance</h2>
       <div class="sources-row">
         <span class="sources-row-label">Data source</span>
         <span class="sources-row-value neutral">The graph index in the static bundle</span>
@@ -304,7 +299,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     </div>
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">📈</span> Graph Statistics</h2>
+      <h2>Graph Statistics</h2>
       <div class="sources-row">
         <span class="sources-row-label">Total nodes</span>
         <span class="sources-row-value positive">${nodeCount.toLocaleString()}</span>
@@ -320,19 +315,19 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     </div>
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">⚠️</span> Graph Health Warnings</h2>
+      <h2>Graph Health Warnings</h2>
       ${renderHealthWarnings(highFanoutNodes, highFaninNodes, outboundCounts, inboundCounts)}
     </div>
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">⊘</span> Disconnected Nodes (${islandNodes.length})</h2>
+      <h2>Disconnected Nodes (${islandNodes.length})</h2>
       ${renderIslandWarnings(islandNodes)}
     </div>
 
     ${renderBundledDocsPanel(bundledDocs)}
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">💡</span> How to Improve</h2>
+      <h2>How to Improve</h2>
       <div class="sources-guidance">
         <p>The Explorer builds its graph from <strong>Live Documentation</strong> — markdown files that mirror your source code and declare their dependencies explicitly.</p>
         <p>To enrich the graph:</p>
@@ -346,7 +341,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     </div>
 
     <div class="sources-panel">
-      <h2><span class="panel-icon">📥</span> Export Documentation</h2>
+      <h2>Export Documentation</h2>
       <div class="sources-guidance">
         <p>Download documentation as a combined markdown file or a ZIP archive with preserved directory structure.</p>
         <p>Use this to:</p>

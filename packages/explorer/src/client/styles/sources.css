@@ -61,10 +61,6 @@
   gap: 8px;
 }
 
-.sources-panel h2 .panel-icon {
-  font-size: 18px;
-}
-
 .sources-row {
   display: flex;
   justify-content: space-between;
@@ -126,11 +122,6 @@
 
 .sources-warnings li:last-child {
   margin-bottom: 0;
-}
-
-.sources-warnings .warning-icon {
-  flex-shrink: 0;
-  font-size: 16px;
 }
 
 .sources-warnings .warning-text {
@@ -383,10 +374,6 @@
   text-align: center;
 }
 
-.bundled-tree-icon {
-  flex-shrink: 0;
-}
-
 .bundled-tree-name {
   flex: 1;
   overflow: hidden;
@@ -413,10 +400,6 @@
 .bundled-tree-file:hover {
   background: rgba(0, 200, 150, 0.1);
   color: var(--accent);
-}
-
-.bundled-tree-file .bundled-tree-icon {
-  flex-shrink: 0;
 }
 
 /* Bundled Doc Path Indicator (in detail panel) */

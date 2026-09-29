@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-09-28T02:39:06.502Z
+- Generated At: 2026-09-29T19:31:57.363Z
 
 ## Authored
 ### Purpose
@@ -68,7 +68,7 @@ Sources view configuration
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L240)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L235)
 - Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/omnisearch.ts
-- Generated At: 2026-09-28T02:39:06.483Z
+- Generated At: 2026-09-29T19:31:57.340Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ Omnisearch configuration
 
 #### `initOmnisearch` {#symbol-initomnisearch}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/omnisearch.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/omnisearch.ts#L34)
 - Parameters: `config`: [`OmnisearchConfig`](#symbol-omnisearchconfig)
 
 ##### `initOmnisearch` — Summary

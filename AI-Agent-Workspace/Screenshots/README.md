@@ -35,6 +35,12 @@ Taken after the owner chose the Membrane Map as the inside, the same afternoon, 
 - `2026-09-29/world-map-repo-09-back-from-membrane.png`: the board after the crumb leads back: nothing pinned, the camera where it was.
 - `2026-09-29/world-map-estate-10-open-gateway-membrane.png`: the estate's `gateway` opened by the wheel: `Controllers` and `Wcf` as tiles, and the project file, the settings and `Web.config` as cards.
 
+Taken in the evening after the emoji left the interface, from `dist/explorer`, by a Playwright script clicking the sidebar and the search button, at 1600 by 900.
+
+- `2026-09-29/explorer-no-emoji-01-knowledge-sources.png`: the Knowledge Sources panel, its headings and health warnings in words alone, and the sidebar's older views as plain names beside the World Map's drawn mark.
+- `2026-09-29/explorer-no-emoji-02-search.png`: search for `connection-geometry`: each result is a name, a path and its archetype on a badge, the badge having always carried what the emoji repeated.
+- `2026-09-29/explorer-no-emoji-03-local-map.png`: the Local Map on `connection-geometry.ts`: `Internals` without the box that drew empty, the detail panel's generated date without its stopwatch, and "No dependencies" on the left where the pictures of 2026-09-28 drew the wrong wire from `state.ts`.
+
 ## 2026-09-28
 
 Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (549 files, 2,608 links), at 1600 by 900, while it looked at every view over the graph index that had landed that night. They lay in the ignored `tmp/` folder until 2026-09-29 and are the workspace's only pictures of the Local Map, the view the Membrane Map is to match. Two things in them are wrong and were found this way or later. The wire from `state.ts`'s `PathResult` into `connection-geometry.ts` is the one no code justified: `connection-geometry.ts` declares its own `PathResult`, and the fix, `fe08c9d8`, landed fifteen minutes later. The empty boxes beside the sidebar's names and before `Internals` are emoji the headless browser had no font for.

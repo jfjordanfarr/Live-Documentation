@@ -371,14 +371,6 @@ export function initPathfind(
     );
   }
 
-  function getArchetypeIcon(archetype: string): string {
-    const lower = archetype.toLowerCase();
-    if (lower === "test") return "🧪";
-    if (lower === "asset") return "📄";
-    if (lower === "config") return "⚙️";
-    return "📦";
-  }
-
   function renderResults(
     results: ExplorerNodePayload[],
     container: HTMLElement,
@@ -393,7 +385,6 @@ export function initPathfind(
       .map(
         (node, i) => `
       <div class="pathfind-result ${i === selectedIdx ? "selected" : ""}" data-index="${i}">
-        <span class="pathfind-result-icon">${getArchetypeIcon(node.archetype)}</span>
         <div class="pathfind-result-text">
           <div class="pathfind-result-name">${escapeHtml(node.name)}</div>
           <div class="pathfind-result-path">${escapeHtml(node.codeRelativePath)}</div>

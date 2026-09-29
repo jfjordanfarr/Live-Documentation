@@ -211,7 +211,7 @@ export function createDetailPanel(
     
     // Extract filename from path for title
     const fileName = docPath.split("/").pop() ?? docPath;
-    title.textContent = `📄 ${fileName}`;
+    title.textContent = fileName;
     
     // Hide Circuit Board, Local Map, and Membrane Map buttons (bundled docs aren't graph nodes)
     const circuitBoardBtn = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
@@ -436,7 +436,6 @@ function renderNodeMetadata(node: ExplorerNodePayload, generatedAt?: string): st
       : date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
     generatedAtHtml = `
       <div class="metadata-row generated-row">
-        <span class="metadata-icon">⏱</span>
         <span class="metadata-label">Generated:</span>
         <span class="metadata-value">${formatted}</span>
       </div>

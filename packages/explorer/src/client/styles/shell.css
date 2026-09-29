@@ -370,10 +370,6 @@
     margin-top: 8px;
 }
 
-.metadata-icon {
-    font-size: 12px;
-}
-
 .metadata-label {
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -924,11 +920,6 @@
     background: var(--accent-subtle);
 }
 
-.omnisearch-result-icon {
-    font-size: 16px;
-    opacity: 0.7;
-}
-
 .omnisearch-result-text {
     flex: 1;
     min-width: 0;
@@ -1017,10 +1008,6 @@
     background: var(--accent-muted);
     border-color: var(--accent);
     color: var(--text);
-}
-
-.search-icon {
-    font-size: 14px;
 }
 
 .search-shortcut {

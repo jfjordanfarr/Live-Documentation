@@ -422,7 +422,7 @@ function renderFlowCard(
 
     const internalsLabel = document.createElement("span");
     internalsLabel.className = "membrane-card__symbol-label membrane-card__symbol-label--internals";
-    internalsLabel.textContent = "⬛ Internals";
+    internalsLabel.textContent = "Internals";
     internalsLabel.title = "Internal/private — data flows in but isn't exposed as public symbols";
     internalsLabel.style.cursor = "pointer";
     internalsLabel.addEventListener("click", e => {
