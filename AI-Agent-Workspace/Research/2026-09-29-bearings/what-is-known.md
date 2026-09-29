@@ -4,15 +4,15 @@ _Written on 2026-09-29 by the agent that sent the explorations out, from everyth
 
 ## What came back
 
-| Slice                  | State                                                                                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| January 2026           | [Finished](2026-01.md), thirteen readers, 2026-01-30 read only in part                                                             |
-| February to April 2026 | [Finished](2026-02-to-04.md), one reader: every owner turn, the agent's at the turns                                               |
-| The Claude Code era    | [Finished](claude-code-era.md), one reader                                                                                         |
-| October 2025           | Stopped. Nothing kept                                                                                                              |
-| November 2025          | Stopped. One reader's report: [the first half of 2025-11-08](readers/2025-11-08-first-half.md)                                     |
-| December 2025          | Stopped. Two readers' reports: [2025-12-16](readers/2025-12-16-turning-point.md) and [2025-12-18](readers/2025-12-18-multi-hop.md) |
-| What survives today    | Stopped. Nothing kept                                                                                                              |
+| Slice                  | State                                                                                                                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| January 2026           | [Finished](2026-01.md), thirteen readers, 2026-01-30 read only in part                                                                                                                                       |
+| February to April 2026 | [Finished](2026-02-to-04.md), one reader: every owner turn, the agent's at the turns                                                                                                                         |
+| The Claude Code era    | [Finished](claude-code-era.md), one reader                                                                                                                                                                   |
+| October 2025           | Stopped. Nothing kept                                                                                                                                                                                        |
+| November 2025          | Stopped. [Working notes](readers/2025-11-working-notes.md) covering nearly every day, and one reader's report: [the first half of 2025-11-08](readers/2025-11-08-first-half.md)                              |
+| December 2025          | Stopped. [Working notes](readers/2025-12-working-notes.md) covering every day, and two readers' reports: [2025-12-16](readers/2025-12-16-turning-point.md) and [2025-12-18](readers/2025-12-18-multi-hop.md) |
+| What survives today    | Stopped. [A measurement](readers/what-survives-measurement.md) of every tracked file against the last commit before the return                                                                               |
 
 ## What the finished slices agree on
 
@@ -57,7 +57,7 @@ Smaller, and each raised once: whether the Rosetta programs should be one object
 
 ## What is left for the second run
 
-The four stopped slices, each with what the first run makes worth asking of it.
+The four stopped slices, each with what the first run makes worth asking of it. The stopped explorers' notes, found after this was first written, answer much of November and December already; [the second brief](brief-2.md) asks what they leave open.
 
 - **October 2025**, the first month. Where the project began, as link-aware diagnostics, and what of its founding wants no later slice mentions. Where the rules that every later month repeats were first spoken. Whether anything of drift between prose and code, the founding idea, deserves to come back beside the owner's September wish that prose not rot between links.
 - **November 2025.** The rest of 2025-11-08, the work loss of 2025-11-15 and the rule it left, the move to the layer-4 mirror, the system layer's birth, and the ask of 2025-11-21 for two views in all. Above all: when and how the Local Map was born and what the owner corrected into it, since it is the teacher.
