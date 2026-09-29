@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
-- Generated At: 2026-09-28T16:48:39.229Z
+- Generated At: 2026-09-29T19:21:10.318Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,7 @@ _Pending notes_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@types/lz-string@^1.3.34`
-- `esbuild@^0.27.3`
+- `esbuild@^0.28.2`
 - `glob@^13.0.6`
 - `jszip@^3.10.1`
 - `lz-string@^1.5.0`
