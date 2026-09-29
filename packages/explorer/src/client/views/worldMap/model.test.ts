@@ -60,20 +60,21 @@ describe("buildWorldModel", () => {
   });
 
   it("makes pieces of the rest, shaped by the legend, counted from their docs", () => {
-    expect(model.pieces.map((piece) => [piece.name, piece.shape, piece.region, piece.files, piece.symbols, piece.imagined])).toEqual([
+    expect(model.pieces.map((piece) => [piece.name, piece.shape, piece.region, piece.files.length, piece.symbols, piece.imagined])).toEqual([
       ["portal", "cube", "CLOUD", 2, 1, false],
       ["gateway", "cube", "CLOUD", 2, 2, false],
       ["contracts", "tile", "INNER", 1, 1, false],
       ["warehouse", "drum", "ON-PREM", 0, 0, true],
       ["someone", "figure", undefined, 0, 0, true]
     ]);
-    expect(model.pieces.find((piece) => piece.name === "gateway")?.doors).toEqual([{ name: "POST api/pay", kind: "route" }]);
+    expect(model.pieces.find((piece) => piece.name === "gateway")?.doors).toEqual([{ name: "POST api/pay", kind: "route", file: "gateway/g.cs" }]);
+    expect(model.pieces.find((piece) => piece.name === "contracts")?.files).toEqual(["contracts/c.cs"]);
     expect(model.pieces.find((piece) => piece.name === "portal")?.standsOn.map((item) => item.label)).toEqual(["Newtonsoft.Json@13.0.3", "System.Web"]);
   });
 
-  it("makes roads in the air of calls and on the board of uses, and crossings of declared connections between regions", () => {
+  it("makes roads in the air of calls and on the board of what stands on what, and crossings of declared connections between regions", () => {
     expect(model.roads.map((road) => [road.from, road.to, road.kind, road.door?.name, road.basis, road.count])).toEqual([
-      ["gateway", "contracts", "uses", undefined, "source", 1],
+      ["gateway", "contracts", "stands", undefined, "source", 1],
       ["gateway", "warehouse", "call", "usp_Post", "declared", 1],
       ["portal", "gateway", "call", "POST api/pay", "contract", 1]
     ]);

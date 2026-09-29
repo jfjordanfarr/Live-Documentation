@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/boardGraph.ts
-- Generated At: 2026-09-28T23:04:08.193Z
+- Generated At: 2026-09-29T01:19:52.316Z
 
 ## Authored
 ### Purpose
@@ -51,23 +51,31 @@ One wire between two things.
 ##### `StandsOn` — Summary
 Something a thing stands on that lives outside it: what a manifest names and no doc answers to.
 
-#### `BoardThing` {#symbol-boardthing}
+#### `ServedDoor` {#symbol-serveddoor}
 - Type: interface
 - Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L66)
+- Extends: [`Door`](./board.ts.mdmd.md#symbol-door)
+
+##### `ServedDoor` — Summary
+A door a thing serves, with the file whose doc publishes it; no file when the board declares the door.
+
+#### `BoardThing` {#symbol-boardthing}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L71)
 
 ##### `BoardThing` — Summary
 A thing of the board with what the graph says about it.
 
 #### `BoardGraph` {#symbol-boardgraph}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L79)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L84)
 
 ##### `BoardGraph` — Summary
 A board joined to the graph.
 
 #### `deriveBoardGraph` {#symbol-deriveboardgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L100)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L105)
 - Returns: [`BoardGraph`](#symbol-boardgraph)
 - Parameters: `board`: [`Board`](./board.ts.mdmd.md#symbol-board); `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -81,7 +89,7 @@ Joins a board to the graph of the workspace it sits in.
 
 #### `doorsOf` {#symbol-doorsof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L206)
+- Source: [source](../../../../../../packages/engine/src/live-docs/boardGraph.ts#L211)
 - Returns: [`Door`](./board.ts.mdmd.md#symbol-door)[]
 - Parameters: `file`: [`GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
 

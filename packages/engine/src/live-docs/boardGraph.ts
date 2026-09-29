@@ -62,6 +62,11 @@ export interface StandsOn {
   manifest: string;
 }
 
+/** A door a thing serves, with the file whose doc publishes it; no file when the board declares the door. */
+export interface ServedDoor extends Door {
+  file?: string;
+}
+
 /** A thing of the board with what the graph says about it. */
 export interface BoardThing {
   thing: Thing;
@@ -69,8 +74,8 @@ export interface BoardThing {
   folder?: string;
   /** The files of the graph under that folder, minus those under a thing nested inside it, sorted. */
   files: string[];
-  /** The doors the docs say the thing serves, then the doors it declares, without repeats. */
-  doors: Door[];
+  /** The doors the docs say the thing serves, each with its file, then the doors it declares, without repeats. */
+  doors: ServedDoor[];
   /** What its manifests name that nothing in the workspace answers to, without repeats. */
   standsOn: StandsOn[];
 }
@@ -130,7 +135,7 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
       issues.push({ message: `${entry.thing.name} has no docs under ${entry.folder}` });
     }
     const seenDoors = new Set<string>();
-    const addDoor = (door: Door): void => {
+    const addDoor = (door: ServedDoor): void => {
       const key = `${door.kind}\u0000${door.name}`;
       if (!seenDoors.has(key)) {
         seenDoors.add(key);
@@ -141,7 +146,7 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
     for (const codePath of entry.files) {
       const file = graph.files[codePath];
       for (const door of doorsOf(file)) {
-        addDoor(door);
+        addDoor({ ...door, file: codePath });
       }
       if (file.symbols.some((symbol) => MANIFEST_KINDS.has(symbol.kind))) {
         for (const dependency of file.dependencies) {

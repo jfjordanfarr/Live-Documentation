@@ -74,8 +74,53 @@ test.describe("World Map", () => {
     expect(road).toBeDefined();
     await page.evaluate((id) => window.__worldMap!.hover("road", id), road!);
     const evidence = page.locator("#view-world .world-evidence");
-    await expect(evidence).toContainText("scripts uses engine");
+    await expect(evidence).toContainText("scripts stands on engine");
     await expect(evidence).toContainText("from source");
+    await expect(evidence).toContainText("no call crosses this");
+  });
+
+  test("pins a thing on a click, and the pinned panel links its files to the Local Map", async ({ page }) => {
+    await openWorldMap(page);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("engine"));
+    await page.mouse.click(sx, sy);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    await expect(evidence).toContainText("engine");
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "engine" });
+    const link = evidence.locator("a[data-file]").first();
+    await expect(link).toHaveAttribute("href", /view=local&node=/);
+    const file = await link.getAttribute("data-file");
+    expect(file).toMatch(/^packages\/engine\//u);
+    await link.click();
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
+    await expect.poll(() => new URL(page.url()).searchParams.get("node")).toBe(file);
+  });
+
+  test("a name in the pinned panel pins the thing it names, and a click on the board lets go", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.pin("piece", "scripts"));
+    const evidence = page.locator("#view-world .world-evidence");
+    await evidence.locator("a[data-pin-id='engine']").first().click();
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "engine" });
+    await expect(evidence).toContainText("under");
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    await page.mouse.click(box.x + 8, box.y + box.height - 8);
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
+  });
+
+  test("orbits the way the force graph does: drag right and the camera turns left, drag down and it rises", async ({ page }) => {
+    await openWorldMap(page);
+    const before = await page.evaluate(() => window.__worldMap!.state());
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const cx = box.x + box.width / 2;
+    const cy = box.y + box.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down({ button: "right" });
+    await page.mouse.move(cx + 60, cy + 60, { steps: 4 });
+    await page.mouse.up({ button: "right" });
+    const after = await page.evaluate(() => window.__worldMap!.state());
+    expect(after.theta).toBeLessThan(before.theta);
+    expect(after.phi).toBeGreaterThan(before.phi);
   });
 
   test("keeps a moved thing where it was put and writes it into the board text", async ({ page }) => {

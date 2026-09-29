@@ -71,6 +71,8 @@ export interface WorldMapOptions {
   board: Board;
   boardPath: string;
   model: WorldModel;
+  /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
+  onOpenFile?: (file: string) => void;
 }
 
 interface Door {
@@ -96,6 +98,8 @@ interface Token {
 interface Drag {
   x0: number;
   y0: number;
+  /** What was pressed; the pointer is captured, so later events name the surface instead. */
+  target: Element;
   moved: boolean;
   orbit: boolean;
   theta0: number;
@@ -134,6 +138,7 @@ export class WorldMapController {
   private readonly board: Board;
   private readonly boardPath: string;
   private readonly model: WorldModel;
+  private readonly onOpenFile?: (file: string) => void;
 
   private readonly world: HTMLElement;
   private readonly svg: SVGSVGElement;
@@ -174,6 +179,7 @@ export class WorldMapController {
     this.board = options.board;
     this.boardPath = options.boardPath;
     this.model = options.model;
+    this.onOpenFile = options.onOpenFile;
 
     this.root.innerHTML = "";
     this.world = element("div", "world", this.root);
@@ -486,14 +492,15 @@ export class WorldMapController {
     let index = 0;
     for (const road of this.model.roads) {
       const id = `world-grad-${index++}`;
-      const group = svgElement("g", { class: "w-road-group", "data-road": road.id }, this.layers.roads);
-      if (road.kind === "uses") {
+      const group = svgElement("g", { class: road.kind === "stands" ? "w-road-group w-stand-group" : "w-road-group", "data-road": road.id }, this.layers.roads);
+      if (road.kind === "stands") {
+        // One piece standing on another's code: a dotted line on the board, in the family of the strands and spokes, with no flow along it.
         const from = this.place(road.from);
         const to = this.place(road.to);
         const a = project(this.camera, this.pivot, from.cx, from.cy, 0);
         const b = project(this.camera, this.pivot, to.cx, to.cy, 0);
-        const stroke = this.gradient(id, a, b);
-        svgElement("line", { class: "w-ground-road", x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke, "stroke-dasharray": road.basis === "declared" ? "6 5" : "" }, group);
+        svgElement("line", { class: "w-stand", x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, group);
+        svgElement("circle", { class: "w-station", r: 3, "data-fixed": a.join(",") }, group);
         svgElement("line", { class: "w-road-hit", x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, group);
         continue;
       }
@@ -588,13 +595,23 @@ export class WorldMapController {
     tag.textContent = `${crossing.over ?? "crossing"} · declared`;
   }
 
-  /** Strands beneath a piece: one for each thing it stands on outside itself. */
+  /** The pieces a piece stands on: the things whose code it builds in. */
+  private standsOnPieces(name: string): WorldRoad[] {
+    return this.model.roads.filter((road) => road.kind === "stands" && road.from === name);
+  }
+
+  /** The pieces that stand on a piece. */
+  private standingOn(name: string): WorldRoad[] {
+    return this.model.roads.filter((road) => road.kind === "stands" && road.to === name);
+  }
+
+  /** Strands beneath a piece: one for each thing it stands on, another piece's code or what its manifests name outside. */
   private drawStrands(placed: Placed): void {
     const piece = this.model.pieces.find((candidate) => candidate.name === placed.name);
-    if (!piece || piece.standsOn.length === 0 || placed.form === "tank") {
+    const n = piece ? piece.standsOn.length + this.standsOnPieces(piece.name).length : 0;
+    if (n === 0 || placed.form === "tank") {
       return;
     }
-    const n = piece.standsOn.length;
     const box = corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d });
     const near = box.map((c, i) => [depthOf(this.camera, this.pivot, c[0], c[1]), i] as [number, number]).sort((p, q) => q[0] - p[0])[0][1];
     const edges: Array<[Point2, Point2]> = [[box[near], box[(near + 1) % 4]], [box[near], box[(near + 3) % 4]]];
@@ -648,7 +665,7 @@ export class WorldMapController {
       const name = svgElement("text", { "data-fixed": c.join(","), "text-anchor": "middle", dy: -14 }, group);
       name.textContent = piece.name;
       const sub = svgElement("text", { class: "w-sub", "data-fixed": c.join(","), "text-anchor": "middle", dy: 1 }, group);
-      sub.textContent = piece.imagined ? "imagined" : `${piece.kind ? `${piece.kind} · ` : ""}${piece.files} file${piece.files === 1 ? "" : "s"}`;
+      sub.textContent = piece.imagined ? "imagined" : `${piece.kind ? `${piece.kind} · ` : ""}${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
     }
   }
 
@@ -859,7 +876,7 @@ export class WorldMapController {
     if (pinned && box.dataset.pin === `${h.kind}:${h.id}`) {
       return;
     }
-    let out = this.evidenceFor(h);
+    let out = this.evidenceFor(h, pinned);
     if (pinned) {
       out += `<button class="close" title="dismiss">&times;</button>`;
     }
@@ -876,37 +893,56 @@ export class WorldMapController {
     box.style.top = `${clamp(this.lastPointer[1] + 18, 12, height - rect.height - 12)}px`;
   }
 
-  private evidenceFor(h: Hover): string {
+  /** The panel's words for what the pointer is on: a peek on hover, everything when pinned. */
+  private evidenceFor(h: Hover, full: boolean): string {
     if (h.kind === "road") {
       const road = this.model.roads.find((candidate) => candidate.id === h.id);
       if (!road) {
         return "";
       }
-      const verb = road.kind === "call" ? "calls" : "uses";
+      const verb = road.kind === "call" ? "calls" : "stands on";
       const door = road.door ? `<div>${escapeHtml(road.door.name)}${road.door.kind ? ` <span class="k">· ${escapeHtml(road.door.kind)}</span>` : ""}</div>` : "";
       const over = road.over ? `<div><span class="k">over</span> ${escapeHtml(road.over)}</div>` : "";
-      const lines = road.lines.slice(0, 6).map((line) => `<div class="via">${escapeHtml(line.label)}</div><div class="f">${escapeHtml(line.from)} &rarr; ${escapeHtml(line.to)}</div>`).join("");
-      const more = road.lines.length > 6 ? `<div class="src">and ${road.lines.length - 6} more</div>` : "";
+      const meaning = road.kind === "stands" ? `<div class="k">its code built in; no call crosses this while they run</div>` : "";
+      const shown = full ? road.lines : road.lines.slice(0, 6);
+      const lines = shown.map((line) => `<div class="via">${escapeHtml(line.label)}</div><div class="f">${this.fileLink(line.from)} &rarr; ${this.fileLink(line.to)}</div>`).join("");
+      const more = road.lines.length > shown.length ? `<div class="src">and ${road.lines.length - shown.length} more; click to pin and see them all</div>` : "";
       const source = road.basis === "declared" ? `<div class="src">declared on the board</div>` : `<div class="src">${road.count} edge${road.count === 1 ? "" : "s"} in the docs</div>`;
-      return `<div class="h">${escapeHtml(road.from)} ${verb} ${escapeHtml(road.to)}<span class="tier">${BASIS_WORDS[road.basis]}</span></div>${door}${over}${lines}${more}${source}`;
+      return `<div class="h">${this.pinLink("piece", road.from)} ${verb} ${this.pinLink("piece", road.to)}<span class="tier">${BASIS_WORDS[road.basis]}</span></div>${door}${over}${meaning}${lines}${more}${source}`;
     }
     if (h.kind === "piece") {
       const piece = this.model.pieces.find((candidate) => candidate.name === h.id);
       if (!piece) {
         return "";
       }
-      const ins = this.doors.filter((door) => door.piece === h.id && door.role === "in");
-      const outs = this.doors.filter((door) => door.piece === h.id && door.role === "out");
-      const regions = regionsOf(this.model, piece.name).map((region) => region.name);
-      const packages = piece.standsOn.filter((item) => item.label.includes("@")).length;
-      const references = piece.standsOn.length - packages;
-      const stands = [packages ? `${packages} package${packages === 1 ? "" : "s"}` : "", references ? `${references} reference${references === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
+      const folder = piece.folder ?? "";
+      const inside = (file: string): string => (folder && file.startsWith(`${folder}/`) ? file.slice(folder.length + 1) : file);
+      const regions = regionsOf(this.model, piece.name);
+      const calls = [...new Set(this.model.roads.filter((road) => road.kind === "call" && road.from === piece.name).map((road) => road.to))];
+      const calledBy = [...new Set(this.model.roads.filter((road) => road.kind === "call" && road.to === piece.name).map((road) => road.from))];
+      const onPieces = this.standsOnPieces(piece.name).map((road) => road.to);
+      const under = this.standingOn(piece.name).map((road) => road.from);
+      const packages = piece.standsOn.filter((item) => item.label.includes("@"));
+      const references = piece.standsOn.filter((item) => !item.label.includes("@"));
       const manifests = [...new Set(piece.standsOn.map((item) => item.manifest))];
-      return `<div class="h">${escapeHtml(piece.name)}<span class="tier">${escapeHtml(piece.kind ?? "thing")}${regions.length ? ` · ${escapeHtml(regions.join(" · "))}` : ""}</span></div>`
-        + (piece.imagined ? `<div>imagined: no folder yet</div>` : `<div>${piece.files} file${piece.files === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}</div>`)
-        + (ins.length ? `<div class="via"><span class="k">serves</span> ${ins.map((door) => escapeHtml(door.label)).join(", ")}</div>` : "")
-        + (outs.length ? `<div class="via"><span class="k">calls</span> ${outs.map((door) => escapeHtml(door.label.replace(/^to /u, ""))).join(", ")}</div>` : "")
-        + (stands ? `<div class="via"><span class="k">stands on</span> ${escapeHtml(stands)}</div><div class="src">named in ${escapeHtml(manifests.join(", "))}</div>` : "")
+      const stands = [
+        ...onPieces.map((name) => this.pinLink("piece", name)),
+        packages.length ? `${packages.length} package${packages.length === 1 ? "" : "s"}` : "",
+        references.length ? `${references.length} reference${references.length === 1 ? "" : "s"}` : ""
+      ].filter(Boolean).join(", ");
+      const files = full && piece.files.length ? `<div class="list">${piece.files.map((file) => `<span class="f">${this.fileLink(file, inside(file))}</span>`).join("")}</div>` : "";
+      const served = piece.doors.map((door) => (full
+        ? `<span class="f">${escapeHtml(door.name)} <span class="k">· ${escapeHtml(door.kind)}${door.file ? ` in ${this.fileLink(door.file, inside(door.file))}` : ", declared"}</span></span>`
+        : escapeHtml(door.name)));
+      const standsList = full && piece.standsOn.length ? `<div class="list">${piece.standsOn.map((item) => `<span class="f">${escapeHtml(item.label)} <span class="k">in ${this.fileLink(item.manifest, inside(item.manifest))}</span></span>`).join("")}</div>` : "";
+      const named = piece.standsOn.length && !full ? `<div class="src">named in ${manifests.map((manifest) => this.fileLink(manifest, inside(manifest))).join(", ")}</div>` : "";
+      return `<div class="h">${escapeHtml(piece.name)}<span class="tier">${escapeHtml(piece.kind ?? "thing")}${regions.length ? ` · ${regions.map((region) => this.pinLink("region", region.name)).join(" · ")}` : ""}</span></div>`
+        + (piece.imagined ? `<div>imagined: no folder yet</div>` : `<div>${piece.files.length} file${piece.files.length === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}</div>${files}`)
+        + (served.length ? `<div class="via"><span class="k">serves</span> ${full ? `<div class="list">${served.join("")}</div>` : served.join(", ")}</div>` : "")
+        + (calls.length ? `<div class="via"><span class="k">calls</span> ${calls.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
+        + (calledBy.length ? `<div class="via"><span class="k">called by</span> ${calledBy.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
+        + (stands ? `<div class="via"><span class="k">stands on</span> ${stands}</div>${standsList}${named}` : "")
+        + (under.length ? `<div class="via"><span class="k">under</span> ${under.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (piece.folder ? `<div class="src">${escapeHtml(piece.folder)}</div>` : "");
     }
     if (h.kind === "token") {
@@ -914,24 +950,43 @@ export class WorldMapController {
       if (!token) {
         return "";
       }
-      return `<div class="h">${escapeHtml(token.label)}<span class="tier">${token.kind}</span></div><div><span class="k">under</span> ${token.users.map(escapeHtml).join(", ")}</div><div class="src">named in the manifests</div>`;
+      const rows: string[] = [];
+      for (const user of token.users) {
+        const item = this.model.pieces.find((candidate) => candidate.name === user)?.standsOn.find((candidate) => candidate.label === token.label);
+        rows.push(`<span class="f">${this.pinLink("piece", user)}${item ? ` <span class="k">in ${this.fileLink(item.manifest)}</span>` : ""}</span>`);
+      }
+      return `<div class="h">${escapeHtml(token.label)}<span class="tier">${token.kind}</span></div>`
+        + (full ? `<div class="via"><span class="k">under</span></div><div class="list">${rows.join("")}</div>` : `<div><span class="k">under</span> ${token.users.map((user) => this.pinLink("piece", user)).join(", ")}</div><div class="src">named in the manifests</div>`);
     }
     if (h.kind === "door") {
       const door = this.doors.find((candidate) => candidate.key === h.id);
       if (!door) {
         return "";
       }
-      return `<div class="h">${escapeHtml(door.label)}<span class="tier">${door.role === "in" ? "a door that serves" : "a door that calls"}</span></div><div class="k">${escapeHtml(door.sub)}</div>`;
+      const served = door.role === "in" ? this.model.pieces.find((candidate) => candidate.name === door.piece)?.doors.find((candidate) => candidate.name === door.label) : undefined;
+      const where = served?.file ? `<div class="src">in ${this.fileLink(served.file)}</div>` : "";
+      return `<div class="h">${escapeHtml(door.label)}<span class="tier">${door.role === "in" ? "a door that serves" : "a door that calls"}</span></div><div class="k">${escapeHtml(door.sub)}</div><div><span class="k">on</span> ${this.pinLink("piece", door.piece)}</div>${where}`;
     }
     if (h.kind === "region") {
       const region = this.model.regions.find((candidate) => candidate.name === h.id);
       if (!region) {
         return "";
       }
-      return `<div class="h">${escapeHtml(region.name)}<span class="tier">${escapeHtml(region.kind ?? "region")}</span></div><div><span class="k">holds</span> ${region.pieces.map(escapeHtml).join(", ")}</div>`;
+      const isRegion = (name: string): boolean => this.model.regions.some((candidate) => candidate.name === name);
+      return `<div class="h">${escapeHtml(region.name)}<span class="tier">${escapeHtml(region.kind ?? "region")}</span></div><div><span class="k">holds</span> ${region.holds.map((name) => this.pinLink(isRegion(name) ? "region" : "piece", name)).join(", ")}</div>`;
     }
     const crossing = this.model.crossings.find((candidate) => candidate.id === h.id);
-    return crossing ? `<div class="h">${escapeHtml(crossing.from)} and ${escapeHtml(crossing.to)}<span class="tier">declared</span></div>${crossing.over ? `<div><span class="k">over</span> ${escapeHtml(crossing.over)}</div>` : ""}` : "";
+    return crossing ? `<div class="h">${this.pinLink("region", crossing.from)} and ${this.pinLink("region", crossing.to)}<span class="tier">declared</span></div>${crossing.over ? `<div><span class="k">over</span> ${escapeHtml(crossing.over)}</div>` : ""}<div class="src">declared on the board</div>` : "";
+  }
+
+  /** A name in a panel that pins the thing it names. */
+  private pinLink(kind: Hover["kind"], id: string): string {
+    return `<a href="#" class="pin" data-pin-kind="${escapeHtml(kind)}" data-pin-id="${escapeHtml(id)}">${escapeHtml(id)}</a>`;
+  }
+
+  /** A file in a panel that opens in the Local Map. */
+  private fileLink(file: string, text = file): string {
+    return `<a class="file" href="${escapeHtml(localMapHref(file))}" data-file="${escapeHtml(file)}">${escapeHtml(text)}</a>`;
   }
 
   pin(h: Hover): void {
@@ -970,6 +1025,7 @@ export class WorldMapController {
       this.drag = {
         x0: event.clientX,
         y0: event.clientY,
+        target,
         moved: false,
         orbit,
         theta0: this.camera.theta,
@@ -1001,7 +1057,8 @@ export class WorldMapController {
           this.positions.set(drag.piece, [clamp(drag.pos0[0] + w[0] - drag.world0[0], this.bench.x + padX, this.bench.x + this.bench.w - padX), clamp(drag.pos0[1] + w[1] - drag.world0[1], this.bench.y + padY, this.bench.y + this.bench.d - padY)]);
           this.draw();
         } else if (drag.orbit) {
-          this.setCamera(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 - (event.clientY - drag.y0) * 0.005, drag.pivot);
+          // The world follows the pointer, as it does in the force graph: drag right and the camera turns left, drag down and the camera rises.
+        this.setCamera(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 + (event.clientY - drag.y0) * 0.005, drag.pivot);
         } else if (!drag.piece) {
           this.screen = { ...this.screen, x: drag.screen0.x + event.clientX - drag.x0, y: drag.screen0.y + event.clientY - drag.y0 };
           this.applyCamera();
@@ -1021,7 +1078,7 @@ export class WorldMapController {
       }
     });
 
-    on(svg, "pointerup", (event: PointerEvent) => {
+    on(svg, "pointerup", () => {
       const drag = this.drag;
       this.drag = null;
       svg.classList.remove("panning");
@@ -1036,7 +1093,7 @@ export class WorldMapController {
         this.savePositions();
         this.draw();
       } else if (drag && !drag.moved && !drag.orbit) {
-        const h = this.hoverAt(event.target as Element, true);
+        const h = this.hoverAt(drag.target, true);
         if (h) {
           this.pin(h);
         } else {
@@ -1118,6 +1175,22 @@ export class WorldMapController {
       actions[button.dataset.act ?? ""]?.();
     });
 
+    on(this.evidence, "click", (event: MouseEvent) => {
+      const anchor = (event.target as Element).closest<HTMLAnchorElement>("a[data-pin-id], a[data-file]");
+      if (!anchor) {
+        return;
+      }
+      const rect = this.evidence.getBoundingClientRect();
+      this.lastPointer = [rect.left - this.svgLeft() - 18, rect.top - this.svgTop() - 18];
+      if (anchor.dataset.pinId !== undefined) {
+        event.preventDefault();
+        this.pin({ kind: anchor.dataset.pinKind as Hover["kind"], id: anchor.dataset.pinId });
+      } else if (anchor.dataset.file !== undefined && this.onOpenFile && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+        event.preventDefault();
+        this.onOpenFile(anchor.dataset.file);
+      }
+    });
+
     on(this.helpButton, "click", () => this.toggleHelp());
     on(this.tourBox, "click", (event: MouseEvent) => {
       const button = (event.target as Element).closest("button");
@@ -1143,14 +1216,14 @@ export class WorldMapController {
   }
 
   private hoverAt(target: Element, forClick = false): Hover | null {
-    const door = forClick ? null : target.closest<SVGElement>("[data-door]");
+    const door = target.closest<SVGElement>("[data-door]");
     const road = target.closest<SVGElement>("[data-road]");
     const crossing = target.closest<SVGElement>("[data-crossing]");
     const token = target.closest<SVGElement>("[data-token]");
     const piece = target.closest<SVGElement>(".w-piece");
     const region = target.closest<SVGElement>("[data-region]");
     if (door?.dataset.door) {
-      return { kind: "door", id: door.dataset.door };
+      return forClick && door.dataset.piece ? { kind: "piece", id: door.dataset.piece } : { kind: "door", id: door.dataset.door };
     }
     if (road?.dataset.road) {
       return { kind: "road", id: road.dataset.road };
@@ -1271,8 +1344,9 @@ export class WorldMapController {
 
   private writeHelp(): void {
     this.help.innerHTML = `<h3>World Map</h3><p>Each thing on the board is a system, a database, a person, or something imagined. Click one for its facts. A tinted region holds the things inside it.</p>
-<h4>Doors and wires</h4><p><i style="border-color:var(--w-green)"></i><b>green</b> serves, <i style="border-color:var(--w-blue)"></i><b>blue</b> calls. A wire in the air is one call, flowing the way the request goes; hover it for how it is known. A line on the board is one thing using another's code. The warm sleeve is a declared crossing.</p>
-<h4>Under a thing</h4><p>Strands: what it stands on outside itself, from its manifests. <b>built on</b>: what two or more things share.</p>
+<h4>Doors and wires</h4><p><i style="border-color:var(--w-green)"></i><b>green</b> serves, <i style="border-color:var(--w-blue)"></i><b>blue</b> calls. A wire in the air is one call, flowing the way the request goes; hover it for how it is known. The warm sleeve is a declared crossing.</p>
+<h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
+<h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
 <h4>Moving around</h4><p>Drag to pan. Right-drag or <kbd>Shift</kbd>-drag to orbit. Wheel to zoom. Drag a thing to move it; <b>save board</b> writes the positions into the board text.</p>
 <p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset · <kbd>Esc</kbd> back</p>
 <button data-act="tour">walk me through it</button>`;
@@ -1294,9 +1368,9 @@ export class WorldMapController {
     const { width, height } = this.viewport();
     const point: Point2 = [width * 0.5, height * 0.42];
     return [
-      { text: "Each thing on the board is one system, database or person, drawn by its kind. Click one for what it serves, calls and stands on.", go: () => { if (firstPiece) { this.hover = { kind: "piece", id: firstPiece }; this.lastPointer = point; this.applyHover(); } } },
+      { text: "Each thing on the board is one system, database or person, drawn by its kind. Click one to pin what it serves, calls and stands on; every name in the panel is a link.", go: () => { if (firstPiece) { this.hover = { kind: "piece", id: firstPiece }; this.lastPointer = point; this.applyHover(); } } },
       { text: "A wire is one call, from a blue door to a green one, flowing the way the request goes. Hover it for how it is known and which files carry it.", go: () => { if (firstRoad) { this.hover = { kind: "road", id: firstRoad.id }; this.lastPointer = point; this.applyHover(); } } },
-      { text: "The strands under a thing are what it stands on outside itself. Built on shows what things share.", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
+      { text: "The strands under a thing are what it is built with: another thing's code, a dotted line on the board, or a package from its manifests. Built on shows what things share.", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
       { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", go: async () => { this.setUnder(false); await this.orbitTo((-35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
     ];
   }
@@ -1443,6 +1517,17 @@ function escapeHtml(text: string): string {
 
 function basename(path: string): string {
   return path.split("/").pop() ?? path;
+}
+
+/** The page's URL opened on the Local Map at a file, so a link can be followed in a new tab as well as in place. */
+function localMapHref(file: string): string {
+  const url = new URL(window.location.href);
+  for (const key of ["view", "node", "s"]) {
+    url.searchParams.delete(key);
+  }
+  url.searchParams.set("view", "local");
+  url.searchParams.set("node", file);
+  return `${url.pathname}?${url.searchParams.toString()}`;
 }
 
 /** A colour between two hex colours. */

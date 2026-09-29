@@ -50,7 +50,8 @@ describe("the estate's board", () => {
 
       expect(derived.wires.filter((wire) => wire.basis === "declared")).toEqual([{ from: "CLOUD", to: "ON-PREM", basis: "declared", edges: 1, lines: [], over: "IPsec tunnel" }]);
       expect(derived.things.find((entry) => entry.thing.name === "gateway")?.doors.map((door) => door.name)).toContain("POST api/payments");
-      expect(derived.things.find((entry) => entry.thing.name === "oracle")?.doors).toEqual([{ name: "CENTRAL.ACCOUNT", kind: "table" }]);
+      // Declared on the board and published by the docs too, so the door carries the file that publishes it.
+      expect(derived.things.find((entry) => entry.thing.name === "oracle")?.doors).toEqual([{ name: "CENTRAL.ACCOUNT", kind: "table", file: "Database/Oracle/CENTRAL.ACCOUNT.sql" }]);
     } finally {
       fs.rmSync(workDir, { recursive: true, force: true });
     }

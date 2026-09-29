@@ -282,3 +282,5 @@ _Added late on 2026-09-28. Not a probe: the board probe ported into the product,
 - `shots/world-map-repo-01-at-rest.png`: this repository's own board, six things and one region, every wire from source.
 
 The pages: `dist/explorer/index.html?view=world` after `npm run live-docs:visualize`, and the estate's bundle, built by a scratch script into `dist/estate/`. Neither is committed. What the pictures still owe the probe: the zoom into a thing and the inside, which are step 3's work.
+
+On 2026-09-29 the owner looked: "This is really cool! An exciting early prototype of this new view! Lots to still solidify, but we'll get there." Their questions and nits, and what changed the same night, are in the decisions log under "The World Map in the Explorer"; the pictures after the change are under `AI-Agent-Workspace/Screenshots/2026-09-29/`. Of the nine open forks, 4 and 16 moved: the shared library is a tile on the board and also what the pieces stand on, its lines drawn in the family of the strands; the owner had asked why it was not "part of the dangling dependencies under the other systems", and now it is.

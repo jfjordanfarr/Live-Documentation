@@ -257,7 +257,13 @@ function startExplorer(bundle: StaticExplorerData): void {
   const worldMapView = createWorldMapView({
     root: requireElement("world-root"),
     graph: bundle.graph,
-    board: bundle.board
+    board: bundle.board,
+    onOpenFile: (file: string) => {
+      const node = nodesById.get(file);
+      if (node) {
+        openLocalViewForNode(node);
+      }
+    }
   });
 
   syncFilterControls();

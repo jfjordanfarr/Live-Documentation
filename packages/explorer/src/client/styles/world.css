@@ -95,10 +95,12 @@
   vector-effect: non-scaling-stroke;
 }
 
-.world .w-ground-road {
+.world .w-stand {
   fill: none;
-  stroke-width: 2;
+  stroke: var(--w-muted);
   stroke-opacity: 0.55;
+  stroke-width: 1.6;
+  stroke-dasharray: 2 5;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
@@ -281,6 +283,10 @@
 
 .world.under .w-road-group {
   opacity: 0.15;
+}
+
+.world.under .w-road-group.w-stand-group {
+  opacity: 1;
 }
 
 .world:not(.under) .w-layer-under {
@@ -493,6 +499,29 @@
 .world-evidence.pinned {
   pointer-events: auto;
   border-color: var(--w-blue);
+  border-left-width: 3px;
+  max-height: min(70vh, 560px);
+  overflow: auto;
+}
+
+.world-evidence a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--w-line);
+  text-underline-offset: 2px;
+}
+
+.world-evidence a:hover {
+  color: var(--w-blue);
+  text-decoration-color: var(--w-blue);
+}
+
+.world-evidence .list {
+  margin: 2px 0 2px 10px;
+}
+
+.world-evidence .list .f {
+  display: block;
 }
 
 .world-evidence .close {

@@ -71,8 +71,8 @@ describe("deriveBoardGraph", () => {
     ]);
   });
 
-  it("collects the doors a thing serves from its docs and its declaration", () => {
-    expect(derived.things.find((entry) => entry.thing.name === "A")?.doors).toEqual([{ name: "POST api/x", kind: "route" }]);
+  it("collects the doors a thing serves from its docs, each with its file, and from its declaration", () => {
+    expect(derived.things.find((entry) => entry.thing.name === "A")?.doors).toEqual([{ name: "POST api/x", kind: "route", file: "a/x.ts" }]);
     expect(derived.things.find((entry) => entry.thing.name === "D")?.doors).toEqual([{ name: "usp_Do", kind: "procedure" }]);
   });
 

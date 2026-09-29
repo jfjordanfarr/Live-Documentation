@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-09-28T23:04:10.015Z
+- Generated At: 2026-09-29T01:19:54.111Z
 
 ## Authored
 ### Purpose
@@ -29,21 +29,21 @@ What the pointer is on.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L132)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L136)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1384)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1458)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
 
 #### `NORMALS` {#symbol-normals}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1456)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1541)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

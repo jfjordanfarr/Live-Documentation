@@ -4,14 +4,15 @@
  * @remarks
  * A thing that holds things is a region; every other thing is a piece. A wire
  * between two pieces is a road: in the air, door to door, when it lands on a
- * door or was observed beyond source; on the board when it is an import or a
- * project reference. A declared connection between two regions is a crossing.
- * What two or more pieces stand on is a token they share. Pure; the renderer
- * draws what this returns.
+ * door or was observed beyond source, which is a call; on the board when it is
+ * an import or a project reference, which is one piece standing on another's
+ * code. A declared connection between two regions is a crossing. What two or
+ * more pieces stand on outside the board is a token they share. Pure; the
+ * renderer draws what this returns.
  */
 
-import { legendFor, SHAPES, TINTS, type Board, type Door } from "@live-documentation/engine/live-docs/board";
-import type { BoardGraph, StandsOn, WireBasis, WireDoor, WireLine } from "@live-documentation/engine/live-docs/boardGraph";
+import { legendFor, SHAPES, TINTS, type Board } from "@live-documentation/engine/live-docs/board";
+import type { BoardGraph, ServedDoor, StandsOn, WireBasis, WireDoor, WireLine } from "@live-documentation/engine/live-docs/boardGraph";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type { Shape } from "./layout";
@@ -27,9 +28,11 @@ export interface WorldPiece {
   /** The region that holds it, when one does. */
   region?: string;
   folder?: string;
-  files: number;
+  /** The files of its docs, sorted. */
+  files: string[];
   symbols: number;
-  doors: Door[];
+  doors: ServedDoor[];
+  /** What its manifests name outside the workspace. */
   standsOn: StandsOn[];
   /** No folder and no docs: a thing imagined and not yet built. */
   imagined: boolean;
@@ -53,8 +56,8 @@ export interface WorldRoad {
   id: string;
   from: string;
   to: string;
-  /** In the air, door to door, or on the board. */
-  kind: "call" | "uses";
+  /** A call in the air, door to door; or one piece standing on another's code, a line on the board. */
+  kind: "call" | "stands";
   door?: WireDoor;
   basis: WireBasis;
   count: number;
@@ -137,7 +140,7 @@ export function buildWorldModel(board: Board, joined: BoardGraph, graph: LiveDoc
         shape,
         region: holderOf.get(entry.thing.name),
         folder: entry.folder,
-        files: entry.files.length,
+        files: entry.files,
         symbols: entry.files.reduce((count, file) => count + (graph.files[file]?.symbols.length ?? 0), 0),
         doors: entry.doors,
         standsOn: entry.standsOn,
@@ -152,7 +155,7 @@ export function buildWorldModel(board: Board, joined: BoardGraph, graph: LiveDoc
     const fromPiece = pieceNames.has(wire.from);
     const toPiece = pieceNames.has(wire.to);
     if (fromPiece && toPiece) {
-      const kind = wire.door || wire.basis !== "source" ? "call" : "uses";
+      const kind = wire.door || wire.basis !== "source" ? "call" : "stands";
       roads.push({ id: `${wire.from}>${wire.to}:${wire.door?.name ?? ""}:${wire.basis}`, from: wire.from, to: wire.to, kind, door: wire.door, basis: wire.basis, count: wire.edges, lines: wire.lines, over: wire.over });
     } else if (isRegion.has(wire.from) && isRegion.has(wire.to)) {
       crossings.push({ id: `${wire.from}>${wire.to}`, from: wire.from, to: wire.to, over: wire.over });

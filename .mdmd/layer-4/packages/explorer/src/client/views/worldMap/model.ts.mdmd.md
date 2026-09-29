@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/model.ts
-- Generated At: 2026-09-28T23:04:10.135Z
+- Generated At: 2026-09-29T01:19:54.205Z
 
 ## Authored
 ### Purpose
@@ -18,50 +18,50 @@ _Pending notes_
 ### Public Symbols
 #### `Tint` {#symbol-tint}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L20)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L21)
 
 #### `WorldPiece` {#symbol-worldpiece}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L23)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L24)
 
 ##### `WorldPiece` — Summary
 A thing drawn as a solid on the board.
 
 #### `WorldRegion` {#symbol-worldregion}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L39)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L42)
 
 ##### `WorldRegion` — Summary
 A thing that holds things, drawn as a tinted region around them.
 
 #### `WorldRoad` {#symbol-worldroad}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L52)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L55)
 
 ##### `WorldRoad` — Summary
 A wire between two pieces.
 
 #### `WorldCrossing` {#symbol-worldcrossing}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L69)
 
 ##### `WorldCrossing` — Summary
 A declared connection between two regions.
 
 #### `WorldToken` {#symbol-worldtoken}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L77)
 
 ##### `WorldToken` — Summary
 Something two or more pieces stand on.
 
 #### `WorldModel` {#symbol-worldmodel}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L81)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L84)
 
 #### `buildWorldModel` {#symbol-buildworldmodel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L95)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L98)
 - Returns: [`WorldModel`](#symbol-worldmodel)
 - Parameters: `board`: [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board); `joined`: [`BoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph); `graph`: [`LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -70,7 +70,7 @@ Builds what the World Map draws.
 
 #### `regionsOf` {#symbol-regionsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L186)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L189)
 - Returns: [`WorldRegion`](#symbol-worldregion)[]
 - Parameters: `model`: [`WorldModel`](#symbol-worldmodel)
 
@@ -81,11 +81,11 @@ The region a piece is in, at every depth, nearest first.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
-- [`board.Door`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-door)
 - [`board.SHAPES`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-shapes)
 - [`board.TINTS`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-tints)
 - [`board.legendFor`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-legendfor)
 - [`BoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph) (type-only)
+- [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`boardGraph.StandsOn`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-standson) (type-only)
 - [`boardGraph.WireBasis`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wirebasis) (type-only)
 - [`boardGraph.WireDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wiredoor) (type-only)

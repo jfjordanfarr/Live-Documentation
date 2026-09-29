@@ -15,6 +15,8 @@ export interface WorldMapViewOptions {
   root: HTMLElement;
   graph: LiveDocGraph;
   board?: { path: string; text: string };
+  /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
+  onOpenFile?: (file: string) => void;
 }
 
 export interface WorldMapView {
@@ -26,7 +28,7 @@ export interface WorldMapView {
 
 /** Creates the World Map over the bundle's board, or a note saying the bundle has none. */
 export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
-  const { root, graph, board } = options;
+  const { root, graph, board, onOpenFile } = options;
   if (!board) {
     return noBoard(root, "This bundle carries no board. Build it with <code>npm run live-docs:visualize -- --board &lt;board.md&gt;</code> to draw a World Map.");
   }
@@ -47,7 +49,7 @@ export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
   return {
     render: () => {
       if (!controller) {
-        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model });
+        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model, onOpenFile });
         (window as Window & { __worldMap?: WorldMapApi }).__worldMap = controller.api;
       }
       if (!rendered) {
