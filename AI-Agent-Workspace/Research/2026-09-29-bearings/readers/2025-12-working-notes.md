@@ -163,7 +163,7 @@ _The working notes of the December 2025 explorer of [the brief](../brief.md), wr
 
 ### 12-08.1
 
-- 251: "**independent **improvement****. If I extract X module from Y file, can that module be improved independently? If so, that's a right-sized module!"
+- 251: "**independent **improvement\*\*\*\*. If I extract X module from Y file, can that module be improved independently? If so, that's a right-sized module!"
 - 862: semantic colours for relationship types removed from connectors; "Blue output to green input, 10% full color at either end, 80% gradient between, total 4 stop gradient -- self-reference "Nubs" just get the solid color of their pin"; "Every change happens by your hand, and development continues linearly with only us for maximum auditability."
 
 ### 12-08.2 (polyglot symbol connections; configuration archetype idea; authored-section discipline)
@@ -427,7 +427,7 @@ _The working notes of the December 2025 explorer of [the brief](../brief.md), wr
 - 296-299: authored-section three contexts again
 - 537: layer-1/2 + spec-kit audited against chats using tech-debt stale list; "we will describe a unified vision and row our oars in a single unified direction"
 - 791: "the vision of the project is a very PM-centric thing. Don't hesitate, when faced with a fork-in-the-road decision or true roadblock ... to simply stop and ask me."
-- 817: "**You will almost certainly find **redundancy****... Spec-kit is great for starting a greenfield project, but we're not so greenfield anymore... it's okay for us to **mature out** of the spec-kit docs"
+- 817: "**You will almost certainly find **redundancy\***\*... Spec-kit is great for starting a greenfield project, but we're not so greenfield anymore... it's okay for us to **mature out\*\* of the spec-kit docs"
 - 819: PEERS: "This has been an incredibly productive three months and we have built up something really rather astonishing in that span of time, very nearly polished enough to compete in earnest with Google CodeWiki, Gitlab Knowledge Graph, and Windsurf Codemaps, but all made by a single cybernetic developer pair on a shoestring budget, given away for free and made vastly more secure. This workspace houses a noble goal and every effort we put into doing this right will pay off for large swathes of people once we are publication-ready."
 - 1226: VISION 12-19: "What we have built up is a system which can be used on virtually any folder of interconnected files and automatically map out the public surface of those connections via an incredibly simple trick: generating MarkDown files mirroring the contents of that folder. Using markdown headers as lightweight AST, we essentially have created the pseudocode surface of any arbitrary workspace, and ... we let you explore it in rich detail like you've never been able to before, visually bridging the gap between what folks commonly experience as node-based workflows (i.e. Unreal Engine "blueprints") and code-based workflows (standard code), allowing software professionals and non-experts to fully and deeply understand exactly what happens within the contents of a folder, giving all stakeholders of any workspace a common visual language ... and providing the ability to **share** (via our awesome hyperlinking system) the winding paths between those files with one another ... Finally, we expose headless versions of everything that we do so that **even AI assistants** can interpret the exact same ground truth facts"
 - 1228: "I want our README to reflect the profundity of what we're building and what we're aiming for."
