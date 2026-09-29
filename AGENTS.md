@@ -33,7 +33,7 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 - `AI-Agent-Workspace/Probes/` holds dated records of design probes: the brief, each builder's findings and a few screenshots. The probe pages themselves are disposable and never committed.
 - `AI-Agent-Workspace/Screenshots/` holds dated pictures of the built Explorer, taken by the agent after changing it, each named in the folder's README. The probe records keep their own pictures.
 - `AI-Agent-Workspace/Research/` holds dated surveys of formats and prior art, gathered for a design step, with a source for every claim. A survey records what existed on its date and decides nothing.
-- `AI-Agent-Workspace/ChatHistory/` is the chat record. October 2025 to April 2026 are full transcripts of the GitHub Copilot era: historical reference only, never a source of current facts, kept until the modernization is complete. From September 2026 it holds only the owner's prompts, verbatim, from the Claude Code sessions.
+- `AI-Agent-Workspace/ChatHistory/` is the chat record. October 2025 to April 2026 are full transcripts of the GitHub Copilot era: historical reference only, never a source of current facts, kept until the modernization is complete. From September 2026 it holds both sides of each Claude Code session, the owner's prompts and Claude's messages verbatim, rebuilt by `node AI-Agent-Workspace/scripts/claude-code-transcript.mjs`; run it near the end of a session, because Claude Code deletes its logs, and never read the logs' reasoning blocks.
 - The workspace mount is case-insensitive (a Windows-backed volume), so a file-existence probe must check the directory listing: `Account.py` finds `account.py`.
 
 ## Commands that matter
