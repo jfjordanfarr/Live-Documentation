@@ -42,8 +42,7 @@ function runSafeCommitCheck() {
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
 
     if (flags.includeE2E) {
-      runNpmScript('Explorer visualization build', ['run', 'live-docs:visualize']);
-      runNpmScript('Playwright E2E tests', ['run', 'test:e2e']);
+      runNpmScript('Playwright E2E tests, over both bundles built first', ['run', 'test:e2e']);
     }
   } catch (error) {
     console.error('\nSafe to commit check failed.');
