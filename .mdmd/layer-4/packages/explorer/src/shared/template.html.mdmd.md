@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-09-28T23:04:10.252Z
+- Generated At: 2026-09-29T19:47:02.828Z
 
 ## Authored
 ### Purpose
@@ -97,9 +97,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `omnisearch-trigger` {#symbol-omnisearchtrigger}
-- Type: variable
-
-#### `open-in-editor-btn` {#symbol-openineditorbtn}
 - Type: variable
 
 #### `pathfind-clear` {#symbol-pathfindclear}

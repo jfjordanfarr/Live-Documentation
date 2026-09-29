@@ -41,7 +41,6 @@ declare global {
   interface Window {
     __liveDocsExplorerError?: unknown;
     switchView: (event: MouseEvent, viewName: ViewName) => void;
-    openInEditor: () => void;
     openInLocalView: () => void;
     openInGraphView: () => void;
     openInCircuitBoard: () => void;
@@ -333,15 +332,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null);
     schedulePersistNav();
     renderCurrentView();
-  };
-
-  globalWindow.openInEditor = () => {
-    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
-    const target = state.focusedNode ?? state.selectedNode;
-    if (!target) {
-      return;
-    }
-    void fetch(`/open?codePath=${encodeURIComponent(target.codePath)}`);
   };
 
   globalWindow.downloadCurrentDoc = () => {

@@ -4,16 +4,16 @@ Live Documentation is built for environments that need offline, auditable toolin
 
 ## No network access
 
-The generator, the CLI and the static-site builder open no sockets. They read source files, write markdown, and write a folder of static files. The Explorer page, once served, fetches only its own bundled data files from the same origin it was loaded from; it contacts no other host.
+The generator, the CLI and the static-site builder open no sockets. They read source files, write markdown, and write a folder of static files. The Explorer page, once served, fetches its bundled data file from the same origin it was loaded from, with one exception: it loads the force graph's library, `3d-force-graph`, from `unpkg.com` when it opens (`packages/explorer/src/shared/template.html`). Where that host cannot be reached, every view but the Force Graph still works, and the Force Graph says the library failed to load. Links to web pages written in a doc open only when clicked.
 
 There is no LLM integration, no telemetry, and no update check.
 
 ### How to verify
 
-Search the product code for network APIs. The only hits should be the Explorer client loading its own bundle:
+Search the product code and the page template for network APIs and scripts loaded from elsewhere. The hits should be the Explorer client loading its own data, the force graph's script tag, and a comment in the route heuristic that names `fetch`:
 
 ```bash
-grep -rn "fetch(\|http\.request\|https\.request\|net\.connect\|WebSocket\|createServer" packages/*/src scripts --include=*.ts | grep -v "\.test\."
+grep -rnE "fetch\(|http\.request|https\.request|net\.connect|WebSocket|createServer|src=\"(https?:)?//" packages/*/src scripts --include=*.ts --include=*.html | grep -v "\.test\."
 ```
 
 Run the test suites with no network stack at all. If this passes, nothing the tests exercise needs the internet:
@@ -36,18 +36,18 @@ CI cannot run that recipe, because GitHub Actions needs the network to check out
 
 Production dependencies are kept to a minimum. Everything else is a development dependency.
 
-| Package                       | Used by             | Purpose                                            |
-| ----------------------------- | ------------------- | -------------------------------------------------- |
-| `typescript`                  | shared              | TypeScript and JavaScript analysis via the compiler API |
-| `@vscode/tree-sitter-wasm`    | shared              | Tree-sitter grammars for the other languages       |
-| `glob`, `ignore`, `minimatch` | shared, scripts, cli | File discovery and path matching                  |
-| `esbuild`                     | scripts             | Bundles the Explorer client into the static site   |
-| `lz-string`, `jszip`          | scripts             | Compressed URL state and downloadable exports in the Explorer |
+| Package                                       | Used by                              | Purpose                                                       |
+| --------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `typescript`                                  | engine                               | TypeScript and JavaScript analysis via the compiler API       |
+| `web-tree-sitter`, `@vscode/tree-sitter-wasm` | engine                               | The tree-sitter runtime and its grammars for other languages  |
+| `glob`, `minimatch`, `ignore`                 | engine, explorer; `glob` also in cli | File discovery and path matching                              |
+| `esbuild`                                     | explorer                             | Bundles the Explorer client into the static site              |
+| `lz-string`, `jszip`                          | explorer                             | Compressed URL state and downloadable exports in the Explorer |
 
-No production dependency runs a `postinstall` script. Check with:
+One production dependency runs an install script: `esbuild`'s `postinstall` (`node install.js`) checks that the binary for your platform, which arrives as an optional dependency, is present and runs; if it is missing, it installs it with npm or downloads it from `registry.npmjs.org` and checks its SHA-256. `npm ci --ignore-scripts` skips it. List every install script among the production dependencies, and check for known vulnerabilities, with:
 
 ```bash
-npm ls --json --omit=dev | node -e "const t=JSON.parse(require('fs').readFileSync(0,'utf8'));const walk=(d)=>{for(const [n,v] of Object.entries(d.dependencies??{})){if(v.scripts?.postinstall)console.log(n);walk(v);}};walk(t);console.log('done')"
+npm ls --parseable --all --omit=dev | node -e "for (const dir of require('fs').readFileSync(0, 'utf8').trim().split('\n').slice(1)) { const p = require(dir + '/package.json'); for (const k of ['preinstall', 'install', 'postinstall']) if (p.scripts?.[k]) console.log(p.name, k + ':', p.scripts[k]); }"
 npm audit
 ```
 
@@ -63,4 +63,4 @@ Include a description, reproduction steps, and the impact you expect. Critical i
 
 ---
 
-_Last updated 2026-09-27._
+_Last updated 2026-09-29._

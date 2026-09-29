@@ -67,12 +67,6 @@ export function createDetailPanel(
   const body = requireElement<HTMLDivElement>("detail-body");
   const closeButton = requireElement<HTMLButtonElement>("detail-close");
 
-  // A static page cannot open an editor
-  const editorButton = document.querySelector<HTMLButtonElement>('[onclick="openInEditor()"]');
-  if (editorButton) {
-    editorButton.style.display = "none";
-  }
-
   // Track current node for action buttons
   let currentNode: ExplorerNodePayload | null = null;
   // Track current bundled doc (for non-graph markdown files)
