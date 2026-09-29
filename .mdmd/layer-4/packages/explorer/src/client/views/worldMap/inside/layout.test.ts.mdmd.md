@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/worldMap/inside/layout.test.ts
-- Generated At: 2026-09-29T01:55:09.092Z
+- Generated At: 2026-09-29T14:19:43.466Z
 
 ## Authored
 ### Purpose
@@ -21,9 +21,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`layout.CARD_W`](./layout.ts.mdmd.md#symbol-card_w)
 - [`layout.GAP`](./layout.ts.mdmd.md#symbol-gap)
 - [`layout.HEAD_H`](./layout.ts.mdmd.md#symbol-head_h)
+- [`layout.MAX_CARD_W`](./layout.ts.mdmd.md#symbol-max_card_w)
+- [`layout.MIN_CARD_W`](./layout.ts.mdmd.md#symbol-min_card_w)
 - [`layout.ROW_H`](./layout.ts.mdmd.md#symbol-row_h)
 - [`layout.X0`](./layout.ts.mdmd.md#symbol-x0)
 - [`layout.Y0`](./layout.ts.mdmd.md#symbol-y0)

@@ -411,7 +411,7 @@ export class WorldMapController {
       if (region.depth > 0) {
         polygon.setAttribute("fill-opacity", "0.85");
       }
-      const label = svgElement("text", { class: "w-zone", "data-fixed": this.P(rect.x + 18, rect.y + rect.d - 14), "text-anchor": "start", dy: "4" }, this.layers.labels);
+      const label = svgElement("text", { class: "w-zone", "data-fixed": this.P(rect.x + 18, rect.y + rect.d - 14), "text-anchor": "start", dy: "4", "data-dy": "4" }, this.layers.labels);
       label.textContent = region.name;
     }
     if (this.snap) {
@@ -568,7 +568,7 @@ export class WorldMapController {
       const q = project(this.camera, this.pivot, to[0], to[1]);
       svgElement("line", { class: "w-tunnel-dashed", x1: p[0], y1: p[1], x2: q[0], y2: q[1] }, group);
       svgElement("line", { class: "w-road-hit", x1: p[0], y1: p[1], x2: q[0], y2: q[1] }, group);
-      const tag = svgElement("text", { class: "w-tag", "data-fixed": this.P((from[0] + to[0]) / 2, (from[1] + to[1]) / 2), "text-anchor": "middle", dy: "-8" }, this.layers.labels);
+      const tag = svgElement("text", { class: "w-tag", "data-fixed": this.P((from[0] + to[0]) / 2, (from[1] + to[1]) / 2), "text-anchor": "middle", dy: "-8", "data-dy": "-8" }, this.layers.labels);
       tag.textContent = `${crossing.over ?? "crossing"} · declared`;
     }
     for (const door of this.doors) {
@@ -624,7 +624,7 @@ export class WorldMapController {
         return Math.abs(label[0] - at[0]) * this.screen.k < 100 && (Math.abs(tagY - (label[1] * this.screen.k - 14)) < 16 || Math.abs(tagY - (label[1] * this.screen.k + 1)) < 16);
       });
     const dy = !collides(24) ? 24 : !collides(-22) ? -22 : !collides(44) ? 44 : 24;
-    const tag = svgElement("text", { class: "w-tag", "data-fixed": at.join(","), "text-anchor": "middle", dy }, this.layers.labels);
+    const tag = svgElement("text", { class: "w-tag", "data-fixed": at.join(","), "text-anchor": "middle", dy, "data-dy": dy }, this.layers.labels);
     tag.textContent = `${crossing.over ?? "crossing"} · declared`;
   }
 
@@ -683,7 +683,7 @@ export class WorldMapController {
       }
       svgElement("rect", { class: "w-station", "data-fixed": c.join(","), x: -6, y: -6, width: 12, height: 12, rx: 2 }, group);
       const labelGroup = svgElement("g", { class: "w-token", "data-token": token.key, "data-users": token.users.join(" ") }, this.layers.labels);
-      const text = svgElement("text", { class: `w-tokenlabel ${token.kind}`, "data-fixed": c.join(","), "text-anchor": "middle", dy: 22 }, labelGroup);
+      const text = svgElement("text", { class: `w-tokenlabel ${token.kind}`, "data-fixed": c.join(","), "text-anchor": "middle", dy: 22, "data-dy": 22 }, labelGroup);
       text.textContent = token.label;
       const kind = svgElement("tspan", { class: "k" }, text);
       kind.textContent = ` · ${token.kind}`;
@@ -715,6 +715,62 @@ export class WorldMapController {
     for (const node of this.svg.querySelectorAll<SVGElement>("[data-fixed]")) {
       const [x, y] = (node.dataset.fixed ?? "0,0").split(",").map(Number);
       node.setAttribute("transform", `translate(${x} ${y}) scale(${1 / this.screen.k})`);
+    }
+    this.settleLabels();
+  }
+
+  /**
+   * Keeps labels off each other. A thing's name stays where it is, since it
+   * names the thing. The line under a name, its kind and its files, goes
+   * when it would cover another label, as it does when the world is zoomed
+   * out and names draw together. A region's label, a crossing's tag and a
+   * token's label move a step up or down from where they rest until they
+   * cover nothing, in that order, each keeping clear of the ones settled
+   * before it. Labels keep their size while the world scales, so this runs
+   * after every camera move.
+   */
+  private settleLabels(): void {
+    if (!this.world.isConnected) {
+      return;
+    }
+    const visible = (node: SVGElement): boolean => node.style.display !== "none" && node.getBoundingClientRect().width > 0;
+    const placed: DOMRect[] = [];
+    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text:not(.w-sub)")) {
+      if (visible(node)) {
+        placed.push(node.getBoundingClientRect());
+      }
+    }
+    const covered = (box: DOMRect): number => placed.reduce((sum, other) => sum + Math.max(0, Math.min(box.right, other.right) - Math.max(box.left, other.left) - 1) * Math.max(0, Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) - 1), 0);
+    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text.w-sub")) {
+      node.style.display = "";
+      const box = node.getBoundingClientRect();
+      if (covered(box) > 0) {
+        node.style.display = "none";
+      } else {
+        placed.push(box);
+      }
+    }
+    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36] };
+    for (const kind of ["w-zone", "w-tag", "w-tokenlabel"]) {
+      for (const node of this.layers.labels.querySelectorAll<SVGElement>(`text.${kind}`)) {
+        if (!visible(node)) {
+          continue;
+        }
+        const rest = Number(node.dataset.dy ?? node.getAttribute("dy") ?? "0");
+        let best = { dy: rest, cover: Number.POSITIVE_INFINITY };
+        for (const step of steps[kind]) {
+          node.setAttribute("dy", String(rest + step));
+          const cover = covered(node.getBoundingClientRect());
+          if (cover < best.cover) {
+            best = { dy: rest + step, cover };
+          }
+          if (cover === 0) {
+            break;
+          }
+        }
+        node.setAttribute("dy", String(best.dy));
+        placed.push(node.getBoundingClientRect());
+      }
     }
   }
 

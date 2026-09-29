@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { CARD_W, GAP, HEAD_H, ROW_H, X0, Y0, layoutInside, pinOf } from "./layout";
+import { GAP, HEAD_H, MAX_CARD_W, MIN_CARD_W, ROW_H, X0, Y0, layoutInside, pinOf } from "./layout";
 import type { InsideModel } from "./model";
 
 const model: InsideModel = {
@@ -23,7 +23,7 @@ const model: InsideModel = {
 };
 
 describe("layoutInside", () => {
-  const layout = layoutInside(model, { width: 1600, height: 900 });
+  const layout = layoutInside(model);
 
   it("stacks a column's nodes by name and puts providers left of consumers", () => {
     const a = layout.nodes.get("t/a.ts")!;
@@ -31,11 +31,19 @@ describe("layoutInside", () => {
     const box = layout.nodes.get("t/box")!;
     expect(a.y).toBe(Y0);
     expect(a.x).toBeGreaterThanOrEqual(X0);
-    expect(layoutInside({ ...model, walls: [{ role: "out", counterpart: "a-long-folder-name/inside", count: 12, nodes: [], lines: [] }] }, { width: 1600, height: 900 }).nodes.get("t/a.ts")!.x).toBeGreaterThan(a.x);
+    expect(layoutInside({ ...model, walls: [{ role: "out", counterpart: "a-long-folder-name/inside", count: 12, nodes: [], lines: [] }] }).nodes.get("t/a.ts")!.x).toBeGreaterThan(a.x);
     expect(c.x).toBeGreaterThan(a.x);
     expect(box.x).toBe(c.x);
     expect(box.y).toBe(Y0);
     expect(c.y).toBe(box.y + box.h + GAP);
+  });
+
+  it("makes a card as wide as its longest line, within bounds, and a column as wide as its widest card", () => {
+    const wide = layoutInside(model, (text, font) => (font === "row" && text === "A" ? 300 : text.length * 7));
+    expect(wide.nodes.get("t/a.ts")!.w).toBe(Math.min(MAX_CARD_W, Math.ceil(300 + 5 * 7 + 42)));
+    expect(wide.nodes.get("t/c.ts")!.w).toBe(MIN_CARD_W);
+    expect(wide.nodes.get("t/c.ts")!.x).toBe(wide.nodes.get("t/a.ts")!.x + wide.nodes.get("t/a.ts")!.w + 50);
+    expect(layoutInside(model, () => 10_000).nodes.get("t/a.ts")!.w).toBe(MAX_CARD_W);
   });
 
   it("makes a card as tall as its rows and Internals, and a box as tall as its neighbours", () => {
@@ -52,7 +60,7 @@ describe("layoutInside", () => {
 
   it("puts a wire's end on the row named, or on the last row, at the side asked for", () => {
     const a = layout.nodes.get("t/a.ts")!;
-    expect(pinOf(layout, "t/a.ts", "symbol-b", "out")).toEqual([a.x + CARD_W, a.y + 1 + HEAD_H + ROW_H + ROW_H / 2]);
+    expect(pinOf(layout, "t/a.ts", "symbol-b", "out")).toEqual([a.x + a.w, a.y + 1 + HEAD_H + ROW_H + ROW_H / 2]);
     expect(pinOf(layout, "t/a.ts", undefined, "in")).toEqual([a.x, a.y + 1 + HEAD_H + ROW_H * 2 + ROW_H / 2]);
     expect(pinOf(layout, "t/box", "t/a.ts", "in")[1]).toBe(layout.nodes.get("t/box")!.y + 1 + HEAD_H + ROW_H / 2);
     expect(pinOf(layout, "nowhere", undefined, "in")).toEqual([0, 0]);

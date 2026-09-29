@@ -3,24 +3,37 @@
  *
  * @remarks
  * Columns by rank, providers left; cards stacked in a column by name; a card
- * as tall as its rows and a closed box as tall as its neighbours; wall pins
- * down the left edge for what the folder calls and down the right edge for
- * what it serves. Sizes are in pixels at reading size and never scale. Pure.
+ * as wide as its longest line and as tall as its rows, a closed box as tall as
+ * its neighbours; wall pins down the left edge for what the folder calls and
+ * down the right edge for what it serves, with room for their labels. Sizes
+ * are in pixels at reading size and never scale. Pure; the panel measures the
+ * text and this module lays it out.
  */
 
 import type { InsideModel, InsideWall } from "./model";
 
-export const CARD_W = 220;
 export const ROW_H = 20;
 export const HEAD_H = 46;
 export const GAP = 22;
-/** The least room left of the first column, and right of the last, for the wall labels. */
-export const X0 = 70;
-/** Room per character of the longest wall label, beyond a margin of 24. */
-const LABEL_PX = 7;
 export const Y0 = 60;
 export const WALL_STEP = 40;
 export const WALL_Y0 = 40;
+/** The least room left of the first column, and right of the last, for the wall labels. */
+export const X0 = 70;
+/** Room between a column's right edge and the next column, for the wires to bend in. */
+export const WIRE_GAP = 50;
+export const MIN_CARD_W = 200;
+export const MAX_CARD_W = 460;
+/** Room per character of the longest wall label, beyond a margin of 24. */
+const LABEL_PX = 7;
+
+/** The fonts a card sets its words in, for measuring. */
+export type MeasureFont = "name" | "path" | "row" | "kind";
+export type Measure = (text: string, font: MeasureFont) => number;
+
+/** Widths by character when nothing measures: near system-ui at each size. */
+const FALLBACK_PX: Record<MeasureFont, number> = { name: 7.6, path: 6.6, row: 6.6, kind: 5.6 };
+export const fallbackMeasure: Measure = (text, font) => text.length * FALLBACK_PX[font];
 
 export interface PlacedNode {
   id: string;
@@ -45,17 +58,21 @@ export interface InsideLayout {
   walls: PlacedWall[];
 }
 
-/** Lays the folder map out for a viewport, in map pixels. */
-export function layoutInside(model: InsideModel, viewport: { width: number; height: number }): InsideLayout {
-  const maxRank = Math.max(0, ...[...model.rank.values()]);
+/** Lays the folder map out in map pixels, each card as wide as its words. */
+export function layoutInside(model: InsideModel, measure: Measure = fallbackMeasure): InsideLayout {
   const labelRoom = (role: "in" | "out"): number => Math.max(X0, 24 + LABEL_PX * Math.max(0, ...model.walls.filter((wall) => wall.role === role).map((wall) => `${wall.counterpart} · ${wall.count}`.length)));
   const left = labelRoom("out");
   const right = labelRoom("in");
-  const columnWidth = clamp((viewport.width - 40 - left - right - CARD_W) / Math.max(1, maxRank), 250, 300);
   const columns = new Map<number, string[]>();
   for (const node of model.nodes) {
     const rank = model.rank.get(node.id) ?? 0;
     columns.set(rank, [...(columns.get(rank) ?? []), node.id]);
+  }
+  const counts = new Map<string, number>();
+  for (const edge of model.edges) {
+    if (edge.from !== edge.to) {
+      counts.set(`${edge.from}\u0000${edge.to}`, (counts.get(`${edge.from}\u0000${edge.to}`) ?? 0) + edge.count);
+    }
   }
   const neighboursOfBox = (id: string): string[] => {
     const set = new Set<string>();
@@ -69,22 +86,37 @@ export function layoutInside(model: InsideModel, viewport: { width: number; heig
     }
     return [...set].sort((a, b) => a.localeCompare(b));
   };
+  const basename = (id: string): string => id.slice(id.lastIndexOf("/") + 1);
+  const widthOf = (id: string, rows: string[]): number => {
+    const node = model.nodes.find((candidate) => candidate.id === id)!;
+    const lines = [measure(node.name, "name") + 26];
+    if (node.kind === "file") {
+      lines.push(measure(node.sub, "path") + 26, ...node.rows.map((row) => measure(row.name, "row") + measure(row.kind, "kind") + 42));
+    } else {
+      lines.push(measure(`${node.files.length} files`, "path") + 26, ...rows.map((neighbour) => measure(basename(neighbour), "row") + measure(String(counts.get(`${id}\u0000${neighbour}`) ?? counts.get(`${neighbour}\u0000${id}`) ?? 0), "kind") + 42));
+    }
+    return Math.ceil(Math.max(MIN_CARD_W, Math.min(MAX_CARD_W, ...[Math.max(...lines)])));
+  };
   const nodes = new Map<string, PlacedNode>();
+  let x = left;
   let maxX = 0;
   let maxY = 0;
-  for (const [rank, ids] of [...columns.entries()].sort((a, b) => a[0] - b[0])) {
-    ids.sort((a, b) => a.slice(a.lastIndexOf("/") + 1).localeCompare(b.slice(b.lastIndexOf("/") + 1)));
+  for (const [, ids] of [...columns.entries()].sort((a, b) => a[0] - b[0])) {
+    ids.sort((a, b) => basename(a).localeCompare(basename(b)));
     let y = Y0;
-    const x = left + rank * columnWidth;
+    let columnWidth = MIN_CARD_W;
     for (const id of ids) {
       const node = model.nodes.find((candidate) => candidate.id === id)!;
       const rows = node.kind === "file" ? [...node.rows.map((row) => row.slug ?? row.name), ""] : neighboursOfBox(id);
+      const w = widthOf(id, rows);
       const h = HEAD_H + ROW_H * Math.max(1, rows.length) + 2;
-      nodes.set(id, { id, kind: node.kind, x, y, w: CARD_W, h, rows });
+      nodes.set(id, { id, kind: node.kind, x, y, w, h, rows });
       y += h + GAP;
-      maxX = Math.max(maxX, x + CARD_W);
+      columnWidth = Math.max(columnWidth, w);
       maxY = Math.max(maxY, y);
     }
+    maxX = x + columnWidth;
+    x += columnWidth + WIRE_GAP;
   }
   const outs = model.walls.filter((wall) => wall.role === "out");
   const ins = model.walls.filter((wall) => wall.role === "in");

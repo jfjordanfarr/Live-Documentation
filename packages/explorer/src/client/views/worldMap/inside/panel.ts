@@ -9,10 +9,30 @@
  * `model.ts` and where from `layout.ts`, both pure and tested.
  */
 
-import { layoutInside, pinOf, type InsideLayout } from "./layout";
+import { layoutInside, pinOf, type InsideLayout, type Measure, type MeasureFont } from "./layout";
 import { neighboursOf, type InsideModel } from "./model";
 
 const SVG = "http://www.w3.org/2000/svg";
+
+/** The fonts the stylesheet sets a card's words in, for measuring them before they are laid out. */
+const FONTS: Record<MeasureFont, string> = {
+  name: "600 13px system-ui, -apple-system, \"Segoe UI\", sans-serif",
+  path: "11px ui-monospace, Consolas, monospace",
+  row: "12px system-ui, -apple-system, \"Segoe UI\", sans-serif",
+  kind: "italic 11px system-ui, -apple-system, \"Segoe UI\", sans-serif"
+};
+
+/** Measures text with a canvas in the card's fonts; the layout's own estimate when the canvas is unavailable. */
+function makeMeasure(): Measure | undefined {
+  const context = document.createElement("canvas").getContext("2d");
+  if (!context) {
+    return undefined;
+  }
+  return (text, font) => {
+    context.font = FONTS[font];
+    return context.measureText(text).width;
+  };
+}
 
 export interface InsidePanelCallbacks {
   onOpenFile: (file: string) => void;
@@ -26,6 +46,7 @@ export class InsidePanel {
   private readonly bar: HTMLElement;
   private readonly scroll: HTMLElement;
   private readonly map: HTMLElement;
+  private readonly measure = makeMeasure();
   private model: InsideModel | null = null;
 
   constructor(parent: HTMLElement, private readonly callbacks: InsidePanelCallbacks) {
@@ -60,13 +81,14 @@ export class InsidePanel {
   /** Draws a folder map, sized to the viewport, and returns its layout. */
   render(model: InsideModel, crumbs: string[], viewport: { width: number; height: number }): InsideLayout {
     this.model = model;
-    const layout = layoutInside(model, viewport);
-    const width = clamp(layout.width + 2, 620, viewport.width - 40);
-    const height = clamp(layout.height + 46, 380, viewport.height - 76);
+    const layout = layoutInside(model, this.measure);
+    // The map is eight pixels wider and taller than the layout so the wall pins on its edges do not make it scroll.
+    const width = clamp(layout.width + 10, 620, viewport.width - 40);
+    const height = clamp(layout.height + 54, 380, viewport.height - 76);
     Object.assign(this.element.style, { width: `${width}px`, height: `${height}px`, left: `${Math.round((viewport.width - width) / 2)}px`, top: `${Math.round(Math.max(56, (viewport.height - height) / 2))}px` });
     this.writeBar(model, crumbs, width);
     this.map.innerHTML = "";
-    Object.assign(this.map.style, { width: `${layout.width}px`, height: `${layout.height}px` });
+    Object.assign(this.map.style, { width: `${layout.width + 8}px`, height: `${layout.height + 8}px` });
     this.scroll.scrollTop = 0;
     this.scroll.scrollLeft = 0;
     const svg = svgElement("svg", { class: "inside-wires", width: layout.width, height: layout.height }, this.map);

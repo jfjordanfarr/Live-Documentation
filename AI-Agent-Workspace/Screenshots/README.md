@@ -20,3 +20,11 @@ Taken later the same night, after the zoom into a thing landed, the same way.
 - `2026-09-29/world-map-estate-08-inside-hover.png`: the project file's card hovered; what it is not wired to fades.
 - `2026-09-29/world-map-repo-04-inside-engine.png`: inside this repository's `engine`: the files of `src/config` and `src/tooling` flat, `src/languages` and `src/live-docs` as boxes whose rows are their neighbours with counts, and the five things that stand on the engine as pins on the right wall.
 - `2026-09-29/world-map-repo-05-inside-live-docs.png`: one level deeper, `src/live-docs` with eighty files and `boardGraph.ts` hovered: dense at rest, legible on hover.
+
+Taken after the owner's second look, the same day, when the design audit landed.
+
+- `2026-09-29/world-map-repo-06-built-on-settled.png`: the built-on layer with the labels settled: the token labels clear of the things' lines, `PRODUCT` clear of `tests`.
+- `2026-09-29/world-map-estate-09-built-on-settled.png`: the estate's built-on layer, its two token labels no longer on `hub`.
+- `2026-09-29/world-map-repo-07-inside-engine-measured.png`: inside `engine` with cards as wide as their words; nothing cut off.
+- `2026-09-29/membrane-map-estate-gateway.png`: the Membrane Map as it stands, for the conversation about the inside: the estate's `Gateway` folder focused, its two subfolders as tiles filling the space and its files in a strip at the foot, no wires until a symbol is pinned.
+- `2026-09-29/membrane-map-repo-live-docs.png`: the same over this repository's `src/live-docs`: the `adapters` tile fills the folder, the files sit below the fold.
