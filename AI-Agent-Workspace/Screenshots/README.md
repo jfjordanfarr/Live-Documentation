@@ -12,3 +12,11 @@ Taken from `dist/explorer` (this repository's board) and the estate bundle at `d
 - `2026-09-29/world-map-estate-04-follow-file-link.png`: after clicking `App.config` in that panel: the Local Map at `Hub/App.config`.
 - `2026-09-29/world-map-estate-05-built-on.png`: the built-on layer, the lines to `contracts` kept while the calls fade. The token labels still collide near `hub`.
 - `2026-09-29/world-map-repo-03-click-pins.png`: this repository's `engine` pinned: ninety-nine files as links, the panel scrolling.
+
+Taken later the same night, after the zoom into a thing landed, the same way.
+
+- `2026-09-29/world-map-estate-06-lid-unfolding.png`: `gateway` opening, the lid caught halfway through unfolding into the panel while the board dims.
+- `2026-09-29/world-map-estate-07-inside-gateway.png`: inside `gateway`: five cards in dependency order, provision left to right; `contracts · 13` and `hub · 1` as pins on the left wall, what it calls; `portal · 2` on the right wall, wired to the two routes it serves.
+- `2026-09-29/world-map-estate-08-inside-hover.png`: the project file's card hovered; what it is not wired to fades.
+- `2026-09-29/world-map-repo-04-inside-engine.png`: inside this repository's `engine`: the files of `src/config` and `src/tooling` flat, `src/languages` and `src/live-docs` as boxes whose rows are their neighbours with counts, and the five things that stand on the engine as pins on the right wall.
+- `2026-09-29/world-map-repo-05-inside-live-docs.png`: one level deeper, `src/live-docs` with eighty files and `boardGraph.ts` hovered: dense at rest, legible on hover.

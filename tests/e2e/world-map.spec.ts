@@ -24,6 +24,12 @@ interface WorldMapHandle {
   rotate: (quarters?: number) => Promise<void>;
   tilt: () => Promise<void>;
   screenPointOf: (name: string) => [number, number];
+  lidCorners: (name: string) => Array<[number, number]>;
+  enter: (name: string) => Promise<void>;
+  exit: () => Promise<void>;
+  openFolder: (folder: string) => void;
+  inside: () => { thing: string; folder: string } | null;
+  insideNodes: () => string[];
 }
 
 declare global {
@@ -150,6 +156,70 @@ test.describe("World Map", () => {
     expect(down.phi).toBeCloseTo(Math.PI / 2, 5);
     const fontSize = await page.locator("#view-world text.w-zone").first().evaluate((node) => getComputedStyle(node).fontSize);
     expect(fontSize).toBe("11px");
+  });
+
+  test("opens a thing from its pinned panel: the lid unfolds into its folder map, and Escape folds it back", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.pin("piece", "engine"));
+    await page.locator("#view-world .world-evidence a[data-open='engine']").click();
+    const inside = page.locator("#view-world .world-inside.on");
+    await expect(inside).toBeVisible();
+    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder: "packages/engine" });
+    await expect(inside.locator(".inside-bar")).toContainText("engine");
+    expect(await inside.locator(".inside-card").count()).toBeGreaterThan(0);
+    expect(await inside.locator(".inside-wallpin").count()).toBeGreaterThan(0);
+    await expect(inside.locator(".inside-walltext").first()).toContainText("·");
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#view-world .world-inside.on")).toHaveCount(0);
+    expect(await page.evaluate(() => window.__worldMap!.inside())).toBeNull();
+  });
+
+  test("a folder inside is a box that opens the same way, and the crumbs lead back up", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.enter("engine"));
+    const inside = page.locator("#view-world .world-inside.on");
+    const box = inside.locator(".inside-card.box .name").first();
+    const folder = await box.getAttribute("data-open-folder");
+    expect(folder).toMatch(/^packages\/engine\//u);
+    await box.click();
+    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder });
+    await expect(inside.locator(".inside-bar a[data-crumb='1']")).toHaveText("engine");
+    await inside.locator(".inside-bar a[data-crumb='1']").click();
+    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "engine", folder: "packages/engine" });
+  });
+
+  test("a card's name opens the file in the Local Map", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.enter("scripts"));
+    const card = page.locator("#view-world .world-inside.on .inside-card:not(.box) .name").first();
+    const file = await card.getAttribute("data-open-file");
+    await card.click();
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
+    await expect.poll(() => new URL(page.url()).searchParams.get("node")).toBe(file);
+  });
+
+  test("wheeling into a thing opens it, and wheeling out over the board goes back", async ({ page }) => {
+    await openWorldMap(page);
+    const box0 = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    const lid = await page.evaluate(() => window.__worldMap!.lidCorners("cli"));
+    const sx = box0.x + lid.reduce((sum, p) => sum + p[0], 0) / 4;
+    const sy = box0.y + lid.reduce((sum, p) => sum + p[1], 0) / 4;
+    await page.mouse.move(sx, sy);
+    for (let i = 0; i < 30 && !(await page.evaluate(() => window.__worldMap!.inside())); i += 1) {
+      await page.mouse.wheel(0, -120);
+    }
+    expect(await page.evaluate(() => window.__worldMap!.inside())).toEqual({ thing: "cli", folder: "packages/cli" });
+    const box = (await page.locator("#view-world svg.world-svg").boundingBox())!;
+    await page.mouse.move(box.x + 10, box.y + box.height - 10);
+    await page.mouse.wheel(0, 300);
+    await expect.poll(() => page.evaluate(() => window.__worldMap!.inside())).toBeNull();
+  });
+
+  test("a double-click opens a thing too", async ({ page }) => {
+    await openWorldMap(page);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("generator"));
+    await page.mouse.dblclick(sx, sy);
+    await expect.poll(() => page.evaluate(() => window.__worldMap!.inside()?.thing)).toBe("generator");
   });
 
   test("drags a thing with the pointer", async ({ page }) => {

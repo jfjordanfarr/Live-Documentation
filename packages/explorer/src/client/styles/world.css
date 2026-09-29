@@ -21,6 +21,9 @@
   --w-line: #c3cad4;
   --w-halo: rgba(255, 255, 255, 0.9);
   --w-shadow: 0.26;
+  --w-card: #ffffff;
+  --w-cardline: #c3cad4;
+  --w-rowline: #e6eaf0;
   background: var(--w-bg);
   color: var(--w-text);
   font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -39,6 +42,9 @@
   --w-line: #283040;
   --w-halo: rgba(11, 13, 17, 0.8);
   --w-shadow: 0.55;
+  --w-card: #1c2230;
+  --w-cardline: #303a4b;
+  --w-rowline: #252d3b;
 }
 
 .world-svg {
@@ -522,6 +528,256 @@
 
 .world-evidence .list .f {
   display: block;
+}
+
+.world-evidence .open {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--w-blue);
+}
+
+/* Inside a thing: the folder map as a panel over the dimmed board. */
+
+.world.inside .world-svg {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.world.inside .world-tools button:not([data-act="theme"]) {
+  display: none;
+}
+
+.world-inside {
+  position: absolute;
+  display: none;
+  transform-origin: 0 0;
+  background: var(--w-panel);
+  border: 1px solid var(--w-line);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+  color: var(--w-text);
+  box-sizing: border-box;
+}
+
+.world-inside.on {
+  display: block;
+}
+
+.inside-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--w-line);
+  font-size: 13px;
+  color: var(--w-muted);
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.inside-bar b {
+  color: var(--w-text);
+  font-weight: 600;
+}
+
+.inside-bar a {
+  color: var(--w-blue);
+  text-decoration: none;
+}
+
+.inside-bar .hint {
+  margin-left: auto;
+  color: var(--w-faint);
+  font-size: 11px;
+}
+
+.inside-scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44px;
+  bottom: 0;
+  overflow: auto;
+}
+
+.inside-map {
+  position: relative;
+}
+
+.inside-wires {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.inside-wire {
+  fill: none;
+  transition: opacity 0.25s;
+}
+
+.inside-wire.basis {
+  stroke-dasharray: 5 4;
+}
+
+.inside-wire.wall {
+  opacity: 0.55;
+}
+
+.inside-stub {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: opacity 0.25s;
+}
+
+.inside-stub.basis {
+  stroke-dasharray: 3 3;
+}
+
+.inside-wallpin {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: var(--w-panel);
+  box-sizing: border-box;
+  z-index: 1;
+  transition: opacity 0.25s;
+}
+
+.inside-wallpin.in {
+  border-color: var(--w-green);
+}
+
+.inside-wallpin.out {
+  border-color: var(--w-blue);
+}
+
+.inside-walltext {
+  position: absolute;
+  font-size: 11px;
+  color: var(--w-muted);
+  white-space: nowrap;
+}
+
+.inside-walltext b {
+  color: var(--w-text);
+  font-weight: 600;
+}
+
+.inside-card {
+  position: absolute;
+  background: var(--w-card);
+  border: 1px solid var(--w-cardline);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+  transition: opacity 0.25s;
+}
+
+.inside-card.box {
+  border-style: double;
+  border-width: 3px;
+  padding-top: 0;
+}
+
+.inside-card .name {
+  display: block;
+  height: 19px;
+  line-height: 19px;
+  padding: 8px 12px 0;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--w-text);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inside-card .name:hover {
+  color: var(--w-blue);
+}
+
+.inside-card .path {
+  height: 13px;
+  line-height: 13px;
+  padding: 0 12px 6px;
+  font: 11px ui-monospace, Consolas, monospace;
+  color: var(--w-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inside-card .row {
+  position: relative;
+  height: 20px;
+  line-height: 19px;
+  padding: 0 14px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top: 1px solid var(--w-rowline);
+  box-sizing: border-box;
+}
+
+.inside-card .row .kind {
+  float: right;
+  color: var(--w-faint);
+  font-style: italic;
+  font-size: 11px;
+}
+
+.inside-card .row.internals {
+  color: var(--w-muted);
+  font-style: italic;
+}
+
+.inside-card .pin {
+  position: absolute;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--w-card);
+  border: 2px solid;
+  box-sizing: border-box;
+}
+
+.inside-card .pin.in {
+  left: -6px;
+  border-color: var(--w-green);
+}
+
+.inside-card .pin.out {
+  right: -6px;
+  border-color: var(--w-blue);
+}
+
+.inside-card.dim {
+  opacity: 0.18;
+}
+
+.inside-wire.dim,
+.inside-stub.dim {
+  opacity: 0.1;
+}
+
+.inside-wallpin.dim {
+  opacity: 0.2;
 }
 
 .world-evidence .close {

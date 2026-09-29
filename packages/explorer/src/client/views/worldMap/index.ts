@@ -49,7 +49,7 @@ export function createWorldMapView(options: WorldMapViewOptions): WorldMapView {
   return {
     render: () => {
       if (!controller) {
-        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model, onOpenFile });
+        controller = new WorldMapController({ root, board: parsed, boardPath: board.path, model, graph, onOpenFile });
         (window as Window & { __worldMap?: WorldMapApi }).__worldMap = controller.api;
       }
       if (!rendered) {
