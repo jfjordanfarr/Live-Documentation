@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-09-28T01:11:43.450Z
+- Generated At: 2026-09-29T21:00:19.166Z
 
 ## Authored
 ### Purpose
@@ -20,14 +20,14 @@ Renders the force-directed 3D graph view for the Live Docs Explorer, including t
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L25)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L27)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L34)
 - Returns: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `ForceGraphNode` — Summary
@@ -35,28 +35,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L38)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L40)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L62)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L51)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L73)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L62)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L78)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L67)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -66,6 +66,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `3d-force-graph` - `ForceGraph3D`, `ForceGraph3DInstance`
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`staticExplorerData.RelatedDocLink`](../../shared/staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)

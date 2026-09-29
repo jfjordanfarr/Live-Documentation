@@ -4,13 +4,13 @@ Live Documentation is built for environments that need offline, auditable toolin
 
 ## No network access
 
-The generator, the CLI and the static-site builder open no sockets. They read source files, write markdown, and write a folder of static files. The Explorer page, once served, fetches its bundled data file from the same origin it was loaded from, with one exception: it loads the force graph's library, `3d-force-graph`, from `unpkg.com` when it opens (`packages/explorer/src/shared/template.html`). Where that host cannot be reached, every view but the Force Graph still works, and the Force Graph says the library failed to load. Links to web pages written in a doc open only when clicked.
+The generator, the CLI and the static-site builder open no sockets. They read source files, write markdown, and write a folder of static files. The Explorer page, once served, fetches its bundled data file from the same origin it was loaded from; it contacts no other host. Every library it uses, the force graph's included, is bundled into it at build time. Links to web pages written in a doc open only when clicked.
 
 There is no LLM integration, no telemetry, and no update check.
 
 ### How to verify
 
-Search the product code and the page template for network APIs and scripts loaded from elsewhere. The hits should be the Explorer client loading its own data, the force graph's script tag, and a comment in the route heuristic that names `fetch`:
+Search the product code and the page template for network APIs and scripts loaded from elsewhere. The hits should be the Explorer client loading its own data and a comment in the route heuristic that names `fetch`:
 
 ```bash
 grep -rnE "fetch\(|http\.request|https\.request|net\.connect|WebSocket|createServer|src=\"(https?:)?//" packages/*/src scripts --include=*.ts --include=*.html | grep -v "\.test\."
@@ -36,13 +36,14 @@ CI cannot run that recipe, because GitHub Actions needs the network to check out
 
 Production dependencies are kept to a minimum. Everything else is a development dependency.
 
-| Package                                       | Used by                              | Purpose                                                       |
-| --------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
-| `typescript`                                  | engine                               | TypeScript and JavaScript analysis via the compiler API       |
-| `web-tree-sitter`, `@vscode/tree-sitter-wasm` | engine                               | The tree-sitter runtime and its grammars for other languages  |
-| `glob`, `minimatch`, `ignore`                 | engine, explorer; `glob` also in cli | File discovery and path matching                              |
-| `esbuild`                                     | explorer                             | Bundles the Explorer client into the static site              |
-| `lz-string`, `jszip`                          | explorer                             | Compressed URL state and downloadable exports in the Explorer |
+| Package                                       | Used by                              | Purpose                                                                     |
+| --------------------------------------------- | ------------------------------------ | --------------------------------------------------------------------------- |
+| `typescript`                                  | engine                               | TypeScript and JavaScript analysis via the compiler API                     |
+| `web-tree-sitter`, `@vscode/tree-sitter-wasm` | engine                               | The tree-sitter runtime and its grammars for other languages                |
+| `glob`, `minimatch`, `ignore`                 | engine, explorer; `glob` also in cli | File discovery and path matching                                            |
+| `esbuild`                                     | explorer                             | Bundles the Explorer client into the static site                            |
+| `lz-string`, `jszip`                          | explorer                             | Compressed URL state and downloadable exports in the Explorer               |
+| `3d-force-graph`                              | explorer                             | The Force Graph view; it brings `three`, and both are bundled into the page |
 
 One production dependency runs an install script: `esbuild`'s `postinstall` (`node install.js`) checks that the binary for your platform, which arrives as an optional dependency, is present and runs; if it is missing, it installs it with npm or downloads it from `registry.npmjs.org` and checks its SHA-256. `npm ci --ignore-scripts` skips it. List every install script among the production dependencies, and check for known vulnerabilities, with:
 

@@ -8,6 +8,8 @@
  * monolith below the 1000-line threshold.
  */
 
+import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
+
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
@@ -40,19 +42,6 @@ export interface ForceGraphData {
   links: ForceGraphLink[];
 }
 
-interface ForceGraphInstance {
-  (container: HTMLElement): ForceGraphInstance;
-  graphData(data: ForceGraphData): ForceGraphInstance;
-  nodeLabel(labelAccessor: string | ((node: ForceGraphNode) => string)): ForceGraphInstance;
-  nodeColor(colorAccessor: (node: ForceGraphNode) => string): ForceGraphInstance;
-  linkColor(colorAccessor: (link: ForceGraphLink) => string): ForceGraphInstance;
-  linkWidth(widthAccessor: (link: ForceGraphLink) => number): ForceGraphInstance;
-  onNodeClick(handler: (node: ForceGraphNode) => void): ForceGraphInstance;
-}
-
-type ForceGraphFactory = () => ForceGraphInstance;
-
-declare const ForceGraph3D: ForceGraphFactory | undefined;
 
 // ─────────────────────────────────────────────────────────────────────────
 // Factory
@@ -86,7 +75,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     onFocusNode
   } = options;
 
-  let forceGraphInstance: ForceGraphInstance | null = null;
+  let forceGraphInstance: ForceGraph3DInstance | null = null;
 
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
@@ -220,17 +209,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return;
     }
 
-    if (typeof ForceGraph3D !== "function") {
-      container.innerHTML = '<div style="padding:20px;color:#f88;">ForceGraph3D failed to load.</div>';
-      return;
-    }
-
-    const instance = ForceGraph3D();
-    forceGraphInstance = instance(container)
+    // The library types its callbacks for any node and link; the ones it hands back are this view's own.
+    forceGraphInstance = new ForceGraph3D(container)
       .graphData(dataForGraph)
       .nodeLabel("name")
       .nodeColor(node => {
-        const archetype = (node.archetype || "").toLowerCase();
+        const archetype = ((node as ForceGraphNode).archetype || "").toLowerCase();
         switch (archetype) {
           case "implementation":
             return "#0091ff";
@@ -248,19 +232,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
             return "#888";
         }
       })
-      .linkColor((link: ForceGraphLink) => {
-        if (link.kind === "related-doc") {
+      .linkColor(link => {
+        if ((link as ForceGraphLink).kind === "related-doc") {
           return "rgba(153, 102, 204, 0.4)";
         }
         return "rgba(255, 255, 255, 0.2)";
       })
-      .linkWidth((link: ForceGraphLink) => {
-        if (link.kind === "related-doc") {
+      .linkWidth(link => {
+        if ((link as ForceGraphLink).kind === "related-doc") {
           return 0.5;
         }
         return 1;
       })
-      .onNodeClick(node => {
+      .onNodeClick(clicked => {
+        const node = clicked as ForceGraphNode;
         if (node.id.startsWith("related:")) {
           const docPath = node.id.slice("related:".length);
           onShowBundledDoc(docPath);

@@ -29,6 +29,8 @@ export async function buildExplorerAssets(): Promise<ExplorerAssets> {
         bundle: true,
         format: "esm",
         sourcemap: true,
+        // The force graph brings three.js, which unminified makes the bundle several times larger.
+        minify: true,
         target: "es2022",
         logLevel: "silent",
         loader: { ".ts": "ts" }

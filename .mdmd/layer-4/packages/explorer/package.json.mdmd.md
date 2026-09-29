@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
-- Generated At: 2026-09-29T19:21:10.318Z
+- Generated At: 2026-09-29T21:00:18.573Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ _Pending notes_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `3d-force-graph@^1.80.0`
 - `@types/lz-string@^1.3.34`
 - `esbuild@^0.28.2`
 - `glob@^13.0.6`
