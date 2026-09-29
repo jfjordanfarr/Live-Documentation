@@ -178,12 +178,12 @@
   cursor: pointer;
 }
 
-.world .w-door.in {
-  stroke: var(--w-green);
+.world .w-door.offers {
+  stroke: var(--w-blue);
 }
 
-.world .w-door.out {
-  stroke: var(--w-blue);
+.world .w-door.uses {
+  stroke: var(--w-green);
 }
 
 .world .w-spoke {

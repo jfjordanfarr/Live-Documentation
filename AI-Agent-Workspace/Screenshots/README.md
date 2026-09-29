@@ -45,6 +45,12 @@ Taken later that night, after the force graph's library moved from `unpkg.com` i
 
 - `2026-09-29/explorer-bundled-force-graph.png`: the Force Graph drawn from the bundled library, as it was drawn from the CDN in the pictures of 2026-09-28.
 
+Taken after the owner chose what a wire's colours mean ("Offers!! I Like that!"), from the estate bundle at `dist/explorer/samples/estate`, the same way: blue is now the side that offers and green the side that uses, on the World Map as on the Local Map, and a wire runs from blue to green.
+
+- `2026-09-29/world-map-offers-01-estate-at-rest.png`: the estate at rest. `gateway`'s doors toward `portal` are blue, the routes it offers; its door toward `hub` is green, what it uses; the two databases show only blue doors, the tables and procedures they offer.
+- `2026-09-29/world-map-offers-02-wire-hovered.png`: the wire from `gateway`'s route to `portal` hovered, the rest faded: "portal calls gateway", with the route and the two files that carry it.
+- `2026-09-29/world-map-offers-03-help.png`: the help: "blue offers, green uses, as inside a system", a wire flowing "from what is offered to where it is used". Compare `explorer-no-emoji-03-local-map.png` above, where each wire leaves a blue pin on the file that offers a name and enters a green pin on the file that uses it.
+
 ## 2026-09-28
 
 Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (549 files, 2,608 links), at 1600 by 900, while it looked at every view over the graph index that had landed that night. They lay in the ignored `tmp/` folder until 2026-09-29 and are the workspace's only pictures of the Local Map, the view the Membrane Map is to match. Two things in them are wrong and were found this way or later. The wire from `state.ts`'s `PathResult` into `connection-geometry.ts` is the one no code justified: `connection-geometry.ts` declares its own `PathResult`, and the fix, `fe08c9d8`, landed fifteen minutes later. The empty boxes beside the sidebar's names and before `Internals` are emoji the headless browser had no font for.
