@@ -34,3 +34,18 @@ Taken after the owner chose the Membrane Map as the inside, the same afternoon, 
 - `2026-09-29/world-map-repo-08-open-engine-membrane.png`: `engine` pinned and opened: the Membrane Map focused on `packages/engine`, the World Map as the crumb above it, `src` as one tile with its counts and the package's own files as cards at the foot, the whole folder fitted above the zoom controls.
 - `2026-09-29/world-map-repo-09-back-from-membrane.png`: the board after the crumb leads back: nothing pinned, the camera where it was.
 - `2026-09-29/world-map-estate-10-open-gateway-membrane.png`: the estate's `gateway` opened by the wheel: `Controllers` and `Wcf` as tiles, and the project file, the settings and `Web.config` as cards.
+
+## 2026-09-28
+
+Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (549 files, 2,608 links), at 1600 by 900, while it looked at every view over the graph index that had landed that night. They lay in the ignored `tmp/` folder until 2026-09-29 and are the workspace's only pictures of the Local Map, the view the Membrane Map is to match. Two things in them are wrong and were found this way or later. The wire from `state.ts`'s `PathResult` into `connection-geometry.ts` is the one no code justified: `connection-geometry.ts` declares its own `PathResult`, and the fix, `fe08c9d8`, landed fifteen minutes later. The empty boxes beside the sidebar's names and before `Internals` are emoji the headless browser had no font for.
+
+- `2026-09-28/01-membrane-browse-cold.png`: the Membrane Map opened on `packages/cli/src`: one card, `index.ts`, in an otherwise empty membrane, with the crumbs `~ / packages / cli / src` above.
+- `2026-09-28/02-membrane-focused-views-dir.png`: the Membrane Map on `packages/explorer/src/client/views`: its three subfolders as large, nearly empty tiles carrying counts of files, symbols, wires out and wires in and an `Explore` button, and the folder's own files in a strip along the foot.
+- `2026-09-28/03-membrane-pin-all-connection-geometry.png`: every symbol of `connection-geometry.ts` pinned in the Membrane Map: the treemap gives way to three columns, dependencies, pinned and dependents, inside the folder bands, with the unrelated symbols of the other cards faded.
+- `2026-09-28/04-local-map-connection-geometry.png`: the Local Map on `connection-geometry.ts`: the files it uses on the left, the files that use it on the right grouped by folder, its tests as tags on the cards. Each wire leaves the blue pin on the right of the file that provides a symbol and enters the green pin on the left of the file that uses it.
+- `2026-09-28/05-local-map-core-hub.png`: the Local Map on `packages/engine/src/live-docs/core.ts`, the most connected file: a tall centre card with dozens of files on each side, the wires gathered into trunks between the columns.
+- `2026-09-28/06-circuit-board.png`: the Circuit Board on `packages/cli/src`: one small card alone in the middle of the canvas.
+- `2026-09-28/07-force-graph.png`: the force graph of the whole repository, files as green and blue spheres in loose clusters.
+- `2026-09-28/08-force-graph-core-selected.png`: the same after `core.ts` became the context: nothing in the picture marks it.
+- `2026-09-28/09-crop-local-map-corset-card.png`: the centre card of the fourth picture at twice the scale: a green pin before and a blue pin after every symbol, and small arrow badges beside some of them.
+- `2026-09-28/10-crop-membrane-back-connection-stubs.png`: the third picture at the same scale: `state.ts`'s `PathResult` wired to `connection-geometry.ts`, its other symbols faded, and a short stub in place of a full curve on `setActivePath`'s green pin.
