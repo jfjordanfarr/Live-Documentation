@@ -11,6 +11,8 @@ module.exports = tseslint.config(
       "**/dist/**",
       "out/**",
       "**/out/**",
+      // Playwright's report, whose trace viewer is bundled JavaScript.
+      "reports/**",
       "tests/integration/programs/**",
       "node_modules/**",
       "**/*.d.ts",
