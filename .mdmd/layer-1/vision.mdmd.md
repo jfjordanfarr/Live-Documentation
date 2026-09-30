@@ -2,6 +2,8 @@
 
 _Current as of 2026-09-28._
 
+_Design clarification, 2026-09-30: the owner has [reopened the dimensional split and separation of views](../../AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md#turn-19). File symbols and system endpoints pose the same interface-display problem: show relevant connections and selectively reveal contents while preserving orientation. The September 28 picture below records the design explored then; its allocation of 2D/3D and separate renderings is under exploration, with no replacement chosen._
+
 **Live Documentation turns a folder of source files into a map you can look at.**
 
 It writes one markdown file per source file, describing what that file exposes and what it is wired to. Everything else the tool shows, whether the Explorer picture, the CLI answers, or the VS Code panel, is a rendering of those files and nothing more.

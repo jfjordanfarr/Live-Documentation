@@ -4,6 +4,8 @@ _Current as of 2026-09-30. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is t
 
 ## The September 2026 reframe
 
+- **One interface problem across scales; dimensions remain open** (2026-09-30). The owner describes exposed file symbols and system endpoints as the same visual problem: “you clearly are up against 2 copies of the same problem.” The common task is to show relevant connected internals and hide, abstract or bundle irrelevant contents. They explicitly reopen whether either map needs two or three dimensions and whether separate maps are wiser; light/dark aesthetics do not decide this. Existing views have complementary strengths: readable symbol interfaces in the Local Map, spatial placement in the World Map. This qualifies the older dimensional split and separate-renderer answers below; it selects no replacement. Port placement, depth/occlusion, selective detail and preserved orientation must be considered together. [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-19).
+
 - **Preserve orientation through navigation** (2026-09-30). The owner adopted this as a foundational design need, beyond responsive sizing or decluttering. Changing file, scale or evidence should preserve understandable subject and surroundings; assess the transitions, not only screenshots. Their aim: “The Explorer should be my window into it.” [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-16). Particular layouts and transition mechanics remain design hypotheses until tried.
 
 Said on 2026-09-26, the day they returned, unless dated otherwise:
