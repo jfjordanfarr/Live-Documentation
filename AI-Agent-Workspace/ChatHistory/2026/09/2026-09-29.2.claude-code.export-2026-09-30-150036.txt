@@ -1,0 +1,2972 @@
+
+● The bearings are written and committed: README.md
+  (AI-Agent-Workspace/Research/2026-09-29-bearings/README.md) in the bearings
+  folder. It points into the seven reports for the evidence, so each claim has a
+  transcript and line behind it. Commits are 175aff86 for the bearings and
+  df6b3f07 for the captions on your agent-map screenshots.
+
+  What the whole record says
+
+  - AGENTS.md's rules are yours, from October to December, and most of their
+    reasons are gone. You wrote nearly every rule with its reason on 2025-10-19,
+    and only the rules survived. Your own test for the always-loaded file was
+    "forever true… as terse as possible", and a 1,073-word Status narrative now
+    breaks it.
+  - Much of September was you, earlier.
+    - The uncommitted index and the oracle kept out of the product (October).
+    - The base layer as the only permanent docs (November).
+    - People before agents as the audience, and the World Map's premise of
+      combining workspaces (December).
+    - A ratchet on accuracy (December), which answers the floor question.
+
+    The Memory files date all of these to September.
+  - Your eye has been the only check on the interface that worked. You judge a
+    design by seeing it built and tuning it by hand. Every Local Map number came
+    from your sliders. owner.md's "reads through ASCII diagrams" is really
+    March 2026.
+  - The Local Map's grammar is now written out twice: your 26 rules with their
+    days, and the 24 things the code does. The teacher breaks two of its own
+    laws: its text scales with zoom, and it brightens related wires.
+  - Stale documents are drifting again. That is how the Copilot era ended, and
+    the Membrane Map's design doc still invites back the arcs you rejected in
+    March.
+
+  The questions only you can answer, top five of fifteen
+
+  1. Direction. Should a wire follow the value (the Local Map) or the request
+     (the World Map)? Today they are opposite under the same colours.
+  2. The finish line. What is "at least matched in quality" measured with: your
+     numbers, sliders on the new view, pictures, or the rule list? And does the
+     lesson include what the teacher breaks?
+  3. AGENTS.md. Should it carry its reasons again, move Status out to its own
+     file, and in whose hand?
+  4. Pictures. When you and the agent read a picture differently, whose reading
+     stands? From 2025-12-19 the instructions said "lean on the human
+     interpretation"; AGENTS.md dropped that line.
+  5. Real code. What are the adapters measured on beyond programs I wrote for
+     them? One option is a well-known repository cloned outside the gate. The
+     other is your own diagrams of the estate as its ground truth.
+
+  The other ten, and what a measurement can settle, are in the bearings.
+
+  Fixes that are plainly mine, none done yet
+
+  - SECURITY.md: it says false things, the unpkg load among them.
+  - Emoji: they remain in four client files.
+  - A second path search: the Explorer runs its own, and that caused the
+    2025-12-18 divergence.
+  - Product code that names this repository: the move on 2026-09-27 silently
+    reclassified all 260 sample-program docs as tests.
+  - Code nothing runs: including the renderer of the arcs you rejected.
+  - Stale docs and Memory entries: the ones listed in the bearings.
+
+  Should I start on that list now while you look at the questions? I'd keep
+  anything that touches questions 1, 2 or 12 until you've answered. I can also
+  turn the bearings into a visual page if that would read better than markdown.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Research/2026-09-29-bearings/README.md
+  ⎿  Referenced file AI-Agent-Workspace/Research/2026-09-29-bearings/2025-10.md
+  ⎿  Referenced file
+     AI-Agent-Workspace/Research/2026-09-29-bearings/what-survives.md
+  ⎿  Referenced file AI-Agent-Workspace/Research/2026-09-29-bearings/2025-12.md
+  ⎿  Referenced file AI-Agent-Workspace/Research/2026-09-29-bearings/2025-11.md
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/09/2026-09-29.2.md in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ >AGENTS.md's rules are yours, from October to December, and most of their
+  reasons are gone. You wrote nearly every rule with its reason on 2025-10-19,
+  and only the rules survived. Your own test for the always-loaded file was
+  "forever true… as terse as possible", and a 1,073-word Status narrative now
+  breaks it.
+
+  Oh-hokay terrifying I see Opus gaslights into believing that this file was
+  created any earlier that 9/01/2026... uhhhh oh boy maybe I should wait for my
+  fable limits to reset and retry. Holy moly that on its own is
+  mega-mega-worrisome.
+
+  >Stale documents are drifting again. That is how the Copilot era ended, and
+  the Membrane Map's design doc still invites back the arcs you rejected in
+  March.
+
+  Correctly or incorrectly? Were these threads resolved or unresolved?
+
+  >Direction. Should a wire follow the value (the Local Map) or the request
+  (the World Map)? Today they are opposite under the same colours.
+
+  Oh boy please bring back Fable who is this dude uh oh
+
+  >The finish line. What is "at least matched in quality" measured with: your
+  numbers, sliders on the new view, pictures, or the rule list? And does the
+  lesson include what the teacher breaks?
+
+  I'll wait for the Fable reset.
+
+● I'll check each claim against git and the code before answering.
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● AGENTS.md was first committed on 2026-09-27 (29d58b50). I'm checking what the
+  October report actually traced, what happened to the arcs, and the colour
+  claim in the code.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The colour claim holds in the code. In the Local Map the file being used gets
+  the blue pin. In the World Map the thing being called gets the green door.
+  Next, the arcs: the March and April record.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The arcs record is mixed, and my "rejected in March" was loose. Checking two
+  more facts before I answer: who wrote AGENTS.md, and the owner's "slick" line.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● AGENTS.md was written by Fable 5.1 on 2026-09-27. I'll correct the bearings so
+  Fable doesn't inherit my wording.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● You were right to push back. Two of the lines you quoted were wrong as I wrote
+  them, and the third was a real finding that I put badly.
+
+  AGENTS.md. My sentence was wrong. Fable 5.1 wrote AGENTS.md on 2026-09-27
+  (29d58b50). The October report was actually about the file it replaced,
+  .github/copilot-instructions.md. That file's "Behavior Expectations" section
+  is in your hand in d692a3b0 (2025-10-19); you pasted it into the chat that day
+  as "I have updated my github copilot instructions twice". AGENTS.md repeats
+  several of those rules without their reasons. For example, "You own the code"
+  comes from "Total Code Ownership", but that rule's reason didn't carry over:
+  owning the code "incentivizes reducing the size of the codebase". I merged the
+  two files into one sentence. The underlying reports kept them apart; my
+  synthesis didn't.
+
+  The arcs. My sentence got this wrong too, and the arcs issue is only half
+  resolved.
+  - 2026-03-30: you asked questions ("I'm open to this… should it only occur on
+    hover?"). Copilot analysed arcs, rejected them in the plan, and built the
+    crumb bar and the Explore button instead. You called that "slick".
+  - 2026-04-01: Copilot rebuilt hover arcs anyway. You said "By eye, this
+    doesn't appear to look right", and they were reverted. So the rejection that
+    was yours came in April, not March.
+  - Resolved in Notes/membrane-map-execution-plan.md, which now says "Do NOT
+    re-propose drawing SVG bundle arcs on the treemap."
+  - Unresolved in membrane-map.mdmd.md:135
+    (.mdmd/layer-3/membrane-map.mdmd.md#L135). It still says to turn them back
+    on "when hover-only… rendering is implemented", which is exactly what was
+    built and rejected on 04-01.
+
+  So the design doc is wrong: it contradicts a decision that only the plan
+  recorded.
+
+  Direction, in plain terms. If a.ts uses b.ts, the Local Map draws the wire
+  from b's blue pin to a's green pin (connections.ts:224-225
+  (packages/explorer/src/client/views/localView/connections.ts#L224-L225)). If
+  thing A calls thing B, the World Map draws it from A's blue side to B's green
+  door (controller.ts:1485
+  (packages/explorer/src/client/views/worldMap/controller.ts#L1485)). The thing
+  being used is blue on one map and green on the other. The code confirms it,
+  and it's a fair question for whoever picks this up next.
+
+  I've corrected all three in the bearings file and noted the corrections there
+  (4ba849ab). I haven't rechecked the rest of the file line by line, so Fable
+  should treat it as a draft to verify, not settled fact.
+
+❯ /model claude-fable-5-1
+  ⎿  Set model to claude-fable-5-1
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/09/2026-09-29.2.md in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ How do I use the 250 $ credit provided so that fable can finish this thread?
+  I only wanted to get Claude's bearings straight on the repo and it seems to
+  have gone rather topsy-turvy.
+  ⎿  You've reached your Fable limit. Switch to another model, or manage usage
+     credits at claude.ai/settings/usage?from=cc_cli_limit_message, to continue.
+     /upgrade to increase your usage limit.
+
+❯ /model opus
+  ⎿  Set model to claude-opus-5-5
+
+❯ Hmmm I see I can't use the 250 $ credit. Okay, no problem. Opus, can you help
+  clean this up? Can you see what I was _aiming to do_ in this thread versus
+  _what was actualy accomplished_? Opus is a just-fine model. We just had some
+  silliness with rate-limting-like limitations which caused a cascading set of
+  subagents to abruptly stop altogether. I appreciate your attempts to
+  reconstruct the transcript. Is there anything else that we can reasonably
+  reconstruct such that, once my Fable limits reset in 1D, fable is ready to
+  cook? I feel like you and me, Opus, could very easily make that our goal.
+  Cleanup too! I bet there's vulns that we gotta check in the npm and whatnot!
+
+● I'll start by reading the owner's side of this session and the one before it,
+  then check git state and npm audit.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The owner's aim is clear from their first prompt at 15:32. I'll look at the
+  synthesis's structure so I can split a fact-check of it across a few agents,
+  then work on the npm audit while they run.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Launching three fact-checkers in the background, each covering a slice of the
+  synthesis to verify claims against the transcripts, git, and code—focusing
+  especially on attribution errors, date mistakes, and conflated files.
+
+● 3 background agents launched (↓ to manage)
+   ├ Fact-check bearings findings 1-5
+   ├ Fact-check bearings findings 6-10 and fixes
+   └ Fact-check bearings questions and corrections
+
+● While those run, I'll look at the vulnerabilities. First: which of them reach
+  what ships?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two production vulnerabilities were found—brace-expansion (high) and esbuild
+  (low, Windows dev server only)—while the remaining ten affect dev tooling like
+  Vitest, Vite, and ESLint's YAML reader. I'll now check what npm audit fix
+  would do without --force.
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● npm audit fix crashes on this workspace layout (an npm bug: "Cannot read
+  properties of null (reading 'edgesOut')"), so I'll update the affected
+  packages directly within their declared ranges.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing needs --force. Every fix is within range, except that esbuild 0.28
+  needs its range raised, and tsx needs a newer version too so both share one
+  esbuild. I'll do the in-range updates first.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The crash is inside npm 10.9.4's resolver, while it loads Vitest's optional
+  peer packages. I'll try naming the patched versions explicitly.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll try a newer npm, which may not have the resolver bug. I'll check the size
+  of the lockfile diff afterwards.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Eleven of twelve are fixed within range. The last is esbuild, and moving from
+  0.27 to 0.28 can carry breaking changes, so I'll read its changelog before
+  raising the range.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 0.28's breaking change is just an install-time integrity check on esbuild's
+  binary plus a Go compiler bump—neither affects our build call. I'll bump
+  esbuild in the Explorer and tsx at the root so they share a single esbuild
+  version.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Zero vulnerabilities, and one esbuild in the tree. Vitest 4.1.11 brought Vite
+  8 with it, so the whole gate has to pass before this is committed. I'll run it
+  in the background with its real exit code.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate runs, I'll read what a fresh Fable session will load first:
+  direction.md, the paragraph on these sessions, and what it says is next.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● direction.md still claims the owner's answers on depth and reuse are pending,
+  even though the fork table already captures them—I'll correct that during the
+  handoff. Next I'll check what's only stored locally in the ignored tmp/
+  folder.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● These ten Local Map screenshots from 2026-09-28 belong in Screenshots/, so
+  I'll review each one to write captions.
+
+  Read 3 files (ctrl+o to expand)
+
+● Status: the dependency updates are in the gate now (npm audit: 12 → 0), three
+  fact-checkers are verifying the bearings, and I'm captioning the only Local
+  Map pictures so they can be kept.
+
+  Read 7 files (ctrl+o to expand)
+
+● Still linting. Meanwhile I'm checking what the empty boxes in those pictures'
+  sidebar are, since they look like the emoji the owner asked to have removed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The sidebar icons are emoji hardcoded in the page template, which the
+  synthesis's list of four client files overlooked—though the World Map entry
+  already uses a drawn icon. I'll list out all the locations where these appear.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found more emoji than the synthesis flagged: six in the page template, eleven
+  in the Knowledge Sources panel, and ⬛ Internals on both map cards (the source
+  of the empty-box glyph). I'll fix these once the dependency gate
+  clears—checking on it now.
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● The default gate doesn't include the Playwright suite, and esbuild builds the
+  Explorer, so I'll run test:e2e after the gate too. Meanwhile I'll file the ten
+  pictures.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found that the screenshots predate fe08c9d8's fix by 15 minutes and show a
+  connection from state.ts's PathResult into connection-geometry.ts, which
+  actually defines its own PathResult. I'll verify whether that mismatched wire
+  is what the fix removed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed: the fix was "Found by looking at the Local Map, which drew a wire
+  no code justified", and these pictures show that wire. Writing their captions:
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● 974 unit and 49 integration tests pass under Vitest 4.1.11. The lint stage
+  printed about 58 lines, so I'll check whether any of them are new warnings
+  from the update:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Those are older JSDoc warnings, not errors, and the update didn't touch the
+  JSDoc plugin. I'll count them for the cleanup. While the gate finishes, I'll
+  read the nav icon styles for the emoji fix.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The result rows already name the archetype as text on a badge, so the emoji
+  icon adds nothing and both copies of the helper can go. The gate is on its
+  last audits.
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Run the full pre-commit gate on the dependency updates"
+completed (exit code 0)
+
+● The gate passed with exit 0. Before committing the dependency update, I'll
+  check whether the pipeline regenerated any docs, then run the Playwright
+  suite, since esbuild builds the Explorer it drives.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 50 Playwright tests pass, and the generator refreshed the Live Docs for
+  the two changed manifests. I'll commit the dependencies first, then the
+  pictures separately.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both committed. Next, the emoji. I'll check whether any test expects them
+  before editing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The only emoji usage is in test sample data (input, not UI), so I'll strip all
+  emojis from the Explorer interface, including their styles and the redundant
+  helper function used only to render them.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The stylesheet edit didn't apply because one pattern didn't match. I'll look
+  at those rules as written, and at the third warning icon I hadn't expected.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● sources.css has CRLF line endings in the working copy, which is why the match
+  failed. I'll check what git holds, then edit it with its own line endings.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Git holds LF, and .gitattributes normalizes on commit. Several working-copy
+  stylesheets are simply older CRLF checkouts, so writing this one back as LF
+  only brings it into line with git.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The shorter rule's text also appears inside the longer one, so it matched
+  twice. I'll remove the longer one first.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No emoji remain in the Explorer's source. Now I'll build it and look, as
+  AGENTS.md asks. First, how the e2e suite serves the bundle:
+
+  Listed 2 directories, ran 4 shell commands (ctrl+o to expand)
+
+● Dependencies are committed with the gate and all 50 Playwright tests passing.
+  The recovered Local Map pictures are committed too. I'm now checking the emoji
+  removal by eye in the built Explorer.
+
+  Read 3 files (ctrl+o to expand)
+
+● The sidebar, Knowledge Sources panel, and "Internals" label all display
+  correctly now. Since Ctrl+P didn't trigger search on the World Map view, I'll
+  open search via its button instead to check the result rows.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Search results and cards are clean now. The detail panel still shows an empty
+  box before "GENERATED", a character outside the ranges I searched. Finding it:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● ⏱ is the last one. The rest (✓, ✕, ⟲, the circled hop numbers) are ordinary
+  text symbols, and the pictures show them drawing properly.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll rebuild and retake the pictures for the gallery.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Everything renders correctly, and the picture confirms the 2026-09-28 wrong
+  wire is gone—connection-geometry.ts now shows "No dependencies." I'll stop the
+  server, save these screenshots, and run the gate plus the Playwright suite.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● pkill -f matched the shell's own command line and killed it. I'll rerun the
+  rest without it.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+› Message from ae38f0ee5f6ab891e
+  Fact-check of `AI-Agent-Workspace/Research/2026-09-29-bearings/README.md`,
+  lines 44–69 and 94–105. No files were edited. Transcript paths below are
+  relative to `AI-Agent-Workspace/ChatHistory/`.
+
+  ## 1. Claims that hold
+
+  I checked about 100 claims and 81 hold: dates, verbatim quotes at the cited
+  line, commit dates, code facts and "Raised in" citations. All 15 "Raised in"
+  cells point at the right report question. Every quote in the "earlier word"
+  column is verbatim at its source, but several drop context (see below).
+
+  Verified as true:
+  - Local Map provider blue to consumer green: `connections.ts` 224–227,
+  325–353.
+  - World Map caller blue to server green: `worldMap/controller.ts` 446–467,
+  519–530.
+  - The 11-24 and 12-03 direction rules.
+  - The "lean on the human interpretation" clause ran 2025-12-19 (`eb336e20`) to
+  2026-09-27 (`29d58b50`). The owner wrote it themselves
+  (`2025/12/2025-12-19.1.md` 235–241).
+  - The ratchet (12-10 l.2156), recompute (11-03 l.3500), fail on a cliff (11-05
+  l.3646).
+  - 11-17 l.135, the committed-past-the-gate turn.
+  - The Knowledge Sources constant, from `146d4d62` (2025-12-16) to `399b07ee`
+  (2026-09-28).
+  - No adapter reads `.master` or `.ascx` (`aspnet.ts` l.16), while
+  `polyglot-adapters.mdmd.md` l.44 says one does.
+  - Line 99 (`8f80187e`) holds.
+  - Line 100: Status is 1,073 words; the agent said "about 1,500" at
+  `2026/09/2026-09-29.2.md` l.264.
+  - Line 96's account of 03-30 and 04-01 holds: "I'm open to this" is at
+  `2026/03/2026-03-30.1.md` l.843, "It's slick!" at l.2429, and the verdict by
+  eye at `2026/04/2026-04-01.1.md` l.1786.
+
+  ## 2. Problems
+
+  **Row 1 (one law of direction or two)**
+  - **Claim:** "the motion the owner wants on the Local Map would run the
+  opposite way to the World Map's."
+  - **True:** In colour, both run blue to green. The owner called the World
+  Map's motion "from outputs to inputs" and asked for the same on the Local Map
+  (`2026/09/2026-09-27.1.md` l.1534). It runs opposite only relative to which
+  end is the dependency.
+  - **Omitted:** The owner's September words.
+    - 2026-09-26: asked to confirm the law at system scale, they answered "Cool
+  if the user can configure… I'm happy to be shown other designs"
+  (`2026/09/2026-09-26.1.md` 503–505). So finding 8's "Never put to the owner"
+  (l.40) is false.
+    - 2026-09-28: "you're still worried about the left-to-right semantics. This
+  is a mistake" (`2026-09-27.1.md` l.1163).
+    - The World Map's colour choice was the agent's, written in
+  `Probes/2026-09-28/README.md` l.263, not the owner's 11-24 reading.
+  - **Rewrite:** "Inside a system, a wire's blue end is on the file that
+  provides a name and its green end on the file that uses it. Between systems,
+  blue is on the system that makes a call and green on the one that answers. So
+  blue means 'gives' inside and 'asks' outside. Should blue and green mean the
+  same thing at both scales, and if so which? Best judged on a build that shows
+  both."
+
+  **Row 2 (what "at least matched in quality" is measured with)**
+  - **Omitted:** The owner's own statement of the bar:
+    - "as beautiful and functional as the Local Map" (`2026-09-27.1.md` l.2420);
+    - "the overall visual style and sizing and spacing and coloring… should
+  inform" (l.2467);
+    - "once we get it actually looking as good as the original Local Map"
+  (l.1297).
+  - **"What the teacher breaks" conflates two things:**
+    - "The font does not resize" (`2026/03/2026-03-23.1.md` l.4466) was a test
+  of the Membrane Map's progressive zoom. On 2025-12-02 the owner allowed "some
+  amount of text resizing" (`2025/12/2025-12-02.md` l.199).
+    - The brightening wires are part of the dimming the owner confirmed by eye,
+  "EXACTLY right" at 0.5 and 0.1 (`2025/12/2025-12-09.1.md` l.737).
+  - **Jargon:** "the teacher", "the rule list".
+  - **Rewrite:** "You said the Membrane Map takes the Local Map's name once it
+  is 'as beautiful and functional', guided by its style, sizing, spacing and
+  colouring. How will you judge that: side-by-side pictures of the same folder,
+  the Local Map's slider values copied over, or something else? The Local Map
+  also scales its text with zoom and brightens a hovered symbol's wires. Should
+  the Membrane Map copy those two things?"
+
+  **Row 3 (AGENTS.md's reasons and "forever true")**
+  - **Missing context:** Both quotes were said of `copilot-instructions.md`, and
+  the row does not say so.
+  - **The ellipsis changes the rule.** The full 10-16 line (l.3626) is "things
+  which will be forever true; instructions for how to handle quirks in the
+  workspace; layouts of the directories; all as terse as possible". So "hold
+  only what is forever true" misstates it.
+  - **Both quotes sit inside invitations to the agent to edit the file.** 10-16
+  l.3626: "make any updates… that you think are necessary". 12-06.2 l.420:
+  "carefully… make updates… We can chat about each edit".
+  - **"In whose hand?" has a newer answer.**
+    - The owner asked for the file: "Do an `agent.md` or `agents.md`"
+  (`2026-09-26.1.md` l.257).
+    - They approved it: "100%. We are completely aligned" (l.427).
+    - They approved the Status block's list: "The list as you've described is a
+  good path forward" (l.501).
+  - **Rewrite:** "`AGENTS.md`, which the agent wrote on 2026-09-27 and you
+  approved, keeps the Copilot-era rules but not the reasons you wrote beside
+  them. Its Status section is a 1,073-word dated log. Put the reasons back? Move
+  Status to its own file? Do you want to edit it yourself, or keep reviewing
+  the agent's drafts?"
+
+  **Row 4 (whose reading of a picture stands)**
+  - The row holds.
+  - Suggest adding that the clause was the owner's own edit, framed as "mutual
+  respect", not deference (`2025/12/2025-12-19.1.md` 235–241).
+
+  **Row 5 (what code the adapters are measured on)**
+  - **Attribution:** "the owner's own hand-drawn estate diagrams as ground
+  truth" is the agent's idea (`claude-code-era.md` q1). No owner turn proposes
+  it.
+  - **Omitted:** The owner's 2026-09-27 improvement loop: "attempting to create
+  Live Documentation for a known open-source repo… once the repo is in a more
+  stable state (perhaps a month from now, perhaps further out)"
+  (`2026-09-27.1.md` l.340).
+  - **Partly the agent's to settle:** The clone run is a measurement. README
+  l.74 already lists it under "What a measurement can answer".
+  - **Jargon:** "outside the gate", "the estate".
+  - **Rewrite:** "You have twice asked for the tool to be run on a known
+  open-source repository cloned to a temp folder, and put it 'perhaps a month
+  from now'. Which repository, and may it be done now as a measurement outside
+  the commit checks? Separately, the C# sample of your work systems and its 20
+  'hand-verified' edges were written by the agent from one paragraph of yours.
+  Would you check them against the real systems, or share a diagram you have
+  already drawn?"
+
+  **Row 6 (a floor for the oracle)**
+  - **Claim:** "'Never lower a threshold' guards nothing today."
+  - **True:** The gate runs the integration suite (`scripts/safe-to-commit.mjs`
+  l.38). That suite includes `tests/integration/live-docs/rosettaParity.test.ts`
+  645 and 672, a "≥6/8" cross-language consensus threshold. What is true is
+  that no threshold compares an adapter with the compiler.
+  - **Omitted:** The January word, "we've progressively taken the old ceiling
+  and made it our new floor" (`2026/01/2026-01-27.2.md` l.4438).
+  - **Jargon:** "oracle", "floor", "ratchet".
+  - **Rewrite:** "Today nothing fails if an adapter starts finding fewer of the
+  links the compiler finds. The comparison prints a list, not a score. In
+  December and January you asked that each pass mark be set at the current
+  lowest score and only ever raised. Should the compiler comparison get such a
+  pass mark per language in the commit checks?"
+
+  **Row 7 (uncommitted work and checkpoints)**
+  - **Attribution:**
+    - "Safeguard In-Flight Work" was the agent's wording
+  (`2025/11/2025-11-15.md` l.4416).
+    - The owner's reply to its idea was "Maybe sometimes. That might be a good
+  remediation." (l.4397).
+    - The owner's own words are the diagnosis (l.4364) and the git rule
+  (l.4362).
+  - **Already answered:** "commit only when asked" versus the grant. On
+  2026-09-27 02:20 UTC the owner wrote "Feel free to stage and commit as you
+  need" (`2026-09-26.1.md` l.626). The stale line in `AGENTS.md` is the agent's
+  to fix.
+  - **Jargon:** "gate is red", "the September grant".
+  - **Rewrite:** "On 2025-11-15 a day's uncommitted work was lost because the
+  agent lost track of it across a context compaction while the commit checks
+  were failing. Today's rule bans bulk git reverts but says nothing about
+  tracking uncommitted work. When the checks fail and valuable work is
+  uncommitted, may the agent commit past the checks, as you did on 2025-11-17,
+  or stash or branch it?"
+
+  **Row 8 (where "why" lives)**
+  - **"206 chat links"** is really 206 of 593 docs, holding 286 links (`grep` of
+  `.mdmd/layer-4`).
+  - **Not answerable as written:** the cell is a list, not a question.
+  - **Missing:** The archive's fate is already the owner's decision: keep until
+  the modernization is complete, then delete (`direction.md` l.36).
+  - **Jargon:** "Knowledge Sources view" is unexplained.
+  - **Rewrite:** "206 file docs link into the Copilot-era transcripts, which you
+  plan to delete and which the Explorer no longer bundles. Keep the archive for
+  them, copy the reasons into the docs, or drop the links? And does the
+  Knowledge Sources view still earn a place now that panel facts link to their
+  source?"
+
+  **Row 9 (prose back into the graph)**
+  - **Claim:** code-to-code is "trusted, which it now is."
+  - **True:** This contradicts Row 5 and finding 4: no shipped adapter has run
+  on code the agent did not write. The October report said only "as close to
+  that condition as the project has come".
+  - **Omitted:** The owner's 2026-09-26 words: "I wonder if we could use Live
+  Documentation or VSCode to try to locate these putative symbol/file references
+  and enforce them in markdown" (`2026-09-26.1.md` l.748).
+  - **Rewrite:** "You wondered on 2026-09-26 about checking the names written in
+  backticks in docs. Should those names become links in the graph, so that
+  asking what a file touches also lists the docs that name it, or only a report
+  of names that match nothing? Separately, should every heading of an authored
+  doc have to be linked from somewhere, so docs shrink, as you proposed on
+  2025-10-25?"
+
+  **Row 10 (a doc per folder)**
+  - **The day-job form differs.** It was one doc per directory listing Purpose
+  and Notes for each file in it, instead of per-file docs
+  (`2026/02/2026-02-17.1.md` l.329). It was not a folder's own Purpose and
+  Notes, which is the 02-23 idea (l.368).
+  - **Two things conflated:** "A folder's kind" means what kind of system a
+  folder is, for example "a folder of `.sql` scripts is a database"
+  (`openings.mdmd.md` l.57). It is not a folder doc.
+  - **Missing:** It overlaps the agent's open system-scale doc proposal
+  (`direction.md` l.62).
+  - **Rewrite:** "At work you wrote one doc per directory, holding Purpose and
+  Notes for each file in it. Should the tool write a doc per folder with an
+  authored Purpose and Notes for the folder itself? This is separate from
+  recording what kind of system a folder is."
+
+  **Row 11 (force graph)**
+  - **First half already answered.**
+    - 2026-09-28 15:33 UTC: "the interior views would be part of the 'Local
+  Map'… 2D mode (membrane map…) or 3D mode (force-directed graph)"
+  (`2026-09-27.1.md` l.1297).
+    - 2026-09-29 14:42 UTC: "only 3D of local map = force-directed graph view"
+  (l.2465).
+  - **Rewrite (keep only):** "Should the force graph size its dots by lines of
+  code again, as you asked on 2025-11-19?"
+
+  **Row 12 (From and To)**
+  - **Jargon:** "From and To", "grammar", "the next view". The quotes hold.
+  - **Rewrite:** "The Local Map has a path mode: pick a start file and an end
+  file and it draws the chain of files between them. In December you wanted it
+  more than anything else on the list and said it 'may be more foundational than
+  the Local Map'. The Membrane Map has no path mode. Must it gain one before it
+  replaces the Local Map? And do you still want the February design that draws
+  several shortest paths at once?"
+
+  **Row 13 (what the estate lacks)**
+  - **Attribution:** "ClientID rewriting" is the reader's own surmise. By the
+  reader's own words it "appears in no code, no current doc and no owner turn"
+  (`readers/what-survives-engine.md` l.107).
+  - **Two things conflated:** Namespace mode is a Membrane Map view mode
+  (`2026-02-to-04.md` q3), not a gap in the sample program.
+  - **Partly the agent's:** The adapter and doc fixes are already listed at
+  README l.90.
+  - **Jargon:** "the estate".
+  - **Rewrite:** "Your real hidden-field chain runs through a master page, which
+  neither the C# sample nor any adapter covers. Do your scripts read those
+  hidden fields by an id that ASP.NET rewrites, or by a fixed id? Do your pages
+  use user controls (`.ascx`)?" Ask namespace mode as its own question.
+
+  **Row 14 (what of `tmp/` and `Notes/` is kept)**
+  - **Attribution:** "nothing is deleted" is the agent's line in
+  `Probes/2026-09-28/README.md` l.265. "Never committed" in `AGENTS.md` is the
+  agent's rule too.
+  - **Omitted:** The owner's own words:
+    - 2026-09-29: screenshots should accrue "here in the workspace"
+  (`2026-09-27.1.md` l.2361).
+    - 2026-03-31: the execution plan "removed after it's done being implemented"
+  (`2026/03/2026-03-31.1.md` l.1800).
+  - **Mostly the agent's to do:** Carrying reasons forward is already an
+  `AGENTS.md` rule, and re-taking pictures of the Local Map follows from the
+  owner's screenshot wish.
+  - **Rewrite:** "Should the board page you called 'exactly the direction' be
+  committed, although the agent's rule says probe pages never are?"
+
+  **Row 15 ("we implement the real thing")**
+  - **Two things conflated:** The quote answered an offer to "prototype a
+  minimal CLI entrypoint for SCIP/LSIF feed consumption"
+  (`2025/12/2025-12-16.1.md` 1195–1197). The 12-17.2 l.1281 line was about a
+  first commit of the pathfinder UI. Neither was about design exploration.
+  - **Already answered:**
+    - "You could always whip up some HTML to mock things up" (`2026-09-26.1.md`
+  l.505).
+    - "You are clear to proceed with the two probes (plus bespoke
+  mockups/probes/prototypes…)" (`2026-09-27.1.md` l.929, 2026-09-28).
+  - **Recommendation:** Drop the row.
+
+  **Line 68 ("Also raised, each once")**
+  - "Each once" is false for value flow. `2026-02-to-04.md` q5 (a map of every
+  place sensitive data touches) raises it too, and that question appears nowhere
+  in the table.
+  - "Whether there is a legitimate exclusion" was answered by the owner: "these
+  little 'exclude paths' open a window for 'LLM laziness'"
+  (`2026/01/2026-01-16.1.md` l.822).
+  - "Code Like Clay", "value flow" and "Rosetta programs" are unexplained.
+
+  **Line 98**
+  - "High Autonomy" arrived 2025-10-24 (`60a80fe5`), not 10-19.
+  - "Safeguard In-Flight Work" is listed as the owner's but was the agent's
+  wording (as in Row 7).
+  - **Rewrite:** "…the owner's own bullets, four by 2025-10-19 (`d692a3b0`) and
+  'High Autonomy' on 10-24 (`60a80fe5`). On 2025-11-15 the owner added 'Do it
+  the Right Way' and dictated the git rule; the agent added 'Safeguard In-Flight
+  Work', which the owner let stand."
+
+  **Line 101**
+  - The 2025-11-01 "catch" was the agent's note, "The perfect score reflects
+  that inferred.json still mirrors expected.json", answered by the owner's "Wow!
+  So I see!" (`2025/11/2025-11-01.md` 3053–3062).
+  - The owner's own words come first on 11-03 (l.3500) and 11-05 (l.2486).
+  - Finding 4 says "from the first weeks": October asked for "the true AST of
+  known software" (`2025/10/2025-10-16.md` l.1595).
+
+  **Line 105**
+  - **"Before they wrote anything":** the same sentence lists their notes. They
+  had written working notes, just no report (`2026-09-29.2.md` l.421 and l.487).
+  Say "before they wrote their reports".
+  - **"Each report ends with what it did not reach":** false for October, which
+  ends with "Working notes"; its gaps are in its opening note (`2025-10.md`
+  l.5).
+  - **"The briefs as given":** omits the recovered material sent to each running
+  explorer at 18:16 (`2026-09-29.2.md` l.528).
+
+  **Consistency (outside the slice)**
+  - Line 96's correction is not carried through. Line 89 still says the arcs
+  were "rejected on 2026-03-30", and line 26 still says "Rejected arcs rebuilt"
+  with no rejecter.
+
+  ## 3. Questions the owner has already answered
+
+  | Row | Status | Where |
+  |---|---|---|
+  | 11, first half | Answered | `2026-09-27.1.md` l.1297 (2026-09-28) and l.2465
+  (2026-09-29) |
+  | 15 | Answered | `2026-09-26.1.md` l.505; `2026-09-27.1.md` l.929 |
+  | 7, "commit only when asked" part | Answered | `2026-09-26.1.md` l.626 |
+  | 3, "in whose hand" | Newer answer | `2026-09-26.1.md` l.257, 427, 501 |
+  | 5, which kind of code and when | Partly answered | `2026-09-27.1.md` l.340,
+  l.2361 |
+  | 1, left-to-right at the outer scale | Partly answered | `2026-09-27.1.md`
+  l.1163; colour wanted but open to other designs, `2026-09-26.1.md` l.505 |
+  | 2, the bar | Partly answered | `2026-09-27.1.md` l.1297, 2420, 2467 |
+  | 14, pictures and the execution plan | Partly answered | `2026-09-27.1.md`
+  l.2361; `2026/03/2026-03-31.1.md` l.1800 |
+  | Line 68, legitimate exclusion | Answered | `2026/01/2026-01-16.1.md` l.822 |
+
+  ## 4. What I could not check
+
+  - The agent's report quoted in line 96 ("`AGENTS.md`'s rules are yours, from
+  October"; "the arcs you rejected in March"). It came after 18:51 UTC, where
+  the rebuilt `2026-09-29.2.md` ends, so any owner answer given after that time
+  is also unseen.
+  - Row 14's "eight of the owner's reasons found nowhere else" was not
+  re-verified item by item.
+  - Row 12's "the only view that draws a path" rests on `what-survives.md`; I
+  did not read the Membrane Map's code.
+  - Row 1's "neither was tested by eye against the other" was checked only as
+  far as no side-by-side comparison appears in the record.
+  - Nothing needing a build or a running Explorer.
+
+
+● The third fact-checker returned: 81 of ~100 claims hold, with the rest fixable
+  (already-answered questions, misattributed quotes, jargon). I'll merge all
+  three reports once the remaining two arrive, and meanwhile run the gate and
+  Playwright suite on the emoji change.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the gate runs I'll leave the repository alone and wait for the other two
+  fact-checkers.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Fact-check bearings questions and corrections" finished · 13m 38s
+› Message from a98298258b013b7ed
+  Fact-check of `AI-Agent-Workspace/Research/2026-09-29-bearings/README.md`,
+  lines 1–37. No files were edited.
+
+  **1. Claims that hold: about 63 of 85 checked.**
+  These include:
+  - the quote "Explore and find good questions" (2026-09-29.2.md:164);
+  - the owner's ask for "bearings" (2026-09-29.1.md:12);
+  - `29d58b50` (2026-09-27, co-authored by Claude Fable 5.1) and `d692a3b0`
+  (2025-10-19), where the owner pasted the four Behavior Expectations as their
+  own (2025-10-19.md:2647);
+  - the Status narrative at 1,073 words;
+  - "forever true... as terse as possible" (owner, 2025-10-16.md:3626);
+  - "every code file receive…" (owner, 10-30:250); "far ahead" (owner,
+  11-21:4051); the Gemini pictures;
+  - the 12-19 audience quotes and the commit-by-commit and several-workspaces
+  wishes (12-19.1:1226–1233); the 12-16 compilers line (:1086); the ratchet
+  (12-10.1:2156);
+  - the 12-05 sliders quote (:1827), the slider values, "upper limits"
+  (03-22.1:1062);
+  - "a fair substitute" (owner, 10-28:2999); "grading our own homework" (owner,
+  01-28.1:739); the regex oracle;
+  - the estate's single author (`4c965539`, `605ff092`) and no floor in
+  `oracle.test.ts`;
+  - 10-27:6059, "ricochet" (owner, 12-18.3:316), the rule on 12-19 (`eb336e20`),
+  "leakage of stale ideas" (owner, 04-01.1:1924), "report generator" (owner,
+  02-24.1:1800);
+  - the plan's warning (`ae216cb5`), the design doc's "Re-enable when
+  hover-only…" (membrane-map.mdmd.md:135), the arcs renderer and its tests still
+  in the tree;
+  - AGENTS.md's "17 of 21" against the 21 of 27 programs that carry expectations
+  today.
+
+  **2. Wrong, misleading, unsupported or unreadable**
+
+  L5 · "Seven explorers, each with readers of its own, read the whole chat
+  record" — **Wrong.**
+  - No readers: the Claude Code era and February–April explorers
+  (2026-09-29.2.md:278, 318). November and December's second runs had none
+  either (:479, :499–500).
+  - Partial reads: February–April read the agent's side only at turning points
+  (2026-02-to-04.md:7). January read 01-30 only in part (:250). October did not
+  read 10-23 to 10-31 whole (2025-10.md:3).
+  - Fix: "Seven explorers, some with readers of their own, read the chat record
+  from 2025-10-16 to 2026-09-29 and the repository as it stands; each report
+  ends with what it did not read whole."
+
+  L22 · Who it was for: `Copilot: "The primary consumer… are LLMs!"` —
+  **Misleading attribution.**
+  - The quote is the owner's, on 2025-10-29 (:4858), and it is about LLMs in
+  general. Copilot as the audience comes from the first prompt
+  (2025-10-16.md:5).
+  - Fix: `Copilot, from the first prompt (10-16); the owner on 10-29: "The
+  primary consumer of the outputs of our tooling are LLMs!"`
+
+  L25 · "Less: the database, feeds, the LLM path" — **Wrong for the LLM path.**
+  - The LLM path went on 2026-02-17 (`15c708eb`, `7befc770`). In January the LLM
+  features were written up, not removed (`185977a2`, 2026-01-06).
+  - Fix: "Less: the database and the compiler-index feeds; Rosetta; compilers as
+  ground truth". Move "the LLM path" to the February row.
+
+  L25 · "Adopters of a published package" — **Inaccurate.**
+  - The owner called it "our (not-yet-published) NPM package and VS Code
+  Extension", and wrote the guides "to better inform _you_, Github Copilot"
+  (2026-01-12.1.md:106, 108).
+  - Fix: "Adopters of a package not yet published, and Copilot".
+
+  L33 · "October's report traces nearly every rule of its 'How to work here' to
+  that older file's 'Behavior Expectations', in the owner's own hand by
+  2025-10-19" — **Wrong.**
+  - At `d692a3b0` Behavior Expectations held four bullets. Only three match
+  rules in `AGENTS.md`: owning the code, no workarounds, keeping test evidence.
+  - The October report itself traces the others to the chat. It traces the
+  duplication rule to "General Development Guidelines" (10-20:3715).
+  - Fix: "October's report finds most of its 'How to work here' first said in
+  October: owning the code and refusing workarounds in the 'Behavior
+  Expectations' the owner wrote into that older file by 2025-10-19 (`d692a3b0`),
+  the rest in the October chat."
+
+  L33 · "each with a reason written into it… What went: …" — **Misleading.**
+  - Only two of the listed reasons were ever written into an instructions file:
+    - the ownership reason, in `copilot-instructions.md`;
+    - the Purpose reason, in a different file,
+  `.github/instructions/mdmd.instructions.md` (`62a8d8bf`, 2025-10-25).
+  - The rest were said in chat, one of them in January 2026:
+    - "hallucination fuel" (owner, 2025-11-15.md:901);
+    - "loudly visible" (owner to Gemini, Antigravity 11-20 "Refining UI
+  Interactions.md":371);
+    - "a window for 'LLM laziness'" (owner, 2026-01-16.1.md:822).
+  - Fix: "What went, whether written into an instructions file or said in chat:"
+  and date each reason.
+
+  L34 · "The uncommitted derived index… (2025-10-16)" — **Two dates run
+  together.**
+  - 10-16:1005 says only that the graph can be "rebuilt fresh if deleted".
+  - Not committing it is from 2025-10-24:9094 (the owner), and the agent argued
+  the owner out of it (:9096).
+  - Fix: "The derived index, rebuilt fresh if deleted (2025-10-16) and not
+  committed (2025-10-24)".
+
+  L34 · "'panopticon' (2025-10-24)" — **Misleading.**
+  - In October the word meant the chat and git history as an audit of the files
+  ("a total panopticon audit view of our files", 10-24:8319).
+  - September's meaning is the tool seeing itself, and September quotes the
+  owner's own words from September (direction.md:10, owner.md:31).
+  - Fix: drop it, or write "'panopticon', said in October of the chat and git
+  history (2025-10-24)".
+
+  L34 · "the vision's first paragraph" — **Minor.** The idea is in the vision's
+  second paragraph (vision.mdmd.md:7). Fix: "the vision's opening".
+
+  L34 · "The Memory files date these to September." — **Partly wrong.**
+  - The ratchet is not in the Memory files at all.
+  - direction.md:60 dates the base layer as the only guarantee to 2025-11-19 to
+  12-12, quoting 12-12.
+  - Fix: "The Memory files date most of these to September or leave them out."
+
+  L34 · "almost never for rules or designs" — **Overstated.**
+  - direction.md:52–61 dates the MDMD layer design to Oct–Dec 2025.
+  - owner.md:21 credits the git rule to 2025-11-15, and owner.md:25 the naming
+  habit to 2025-11-10.
+  - Fix: "September credits the earlier months for facts about the owner, the
+  history of the MDMD layers and the git rule, but not for the items above."
+
+  L35 · "Every number the Local Map draws with came from the owner's hand on
+  those sliders." — **Wrong.**
+  - The slider values are the owner's: 12-07.3:983–988, 12-08.1:852–858,
+  12-09.1:737, still shipped in `local-storage.ts:36–45`.
+  - Other numbers are not slider values: `PIN_RADIUS = 6` and `STUB_LENGTH = 14`
+  in `localView/connections.ts` (lines 155, 402).
+  - The 10/80/10 gradient was asked for in words (12-07.2:1569).
+  - Fix: "Every value on the Local Map's tuning sliders, from the curve stubs to
+  the fade amounts, is one the owner set by hand, and the code still ships
+  them."
+
+  L35 · "Every false 'working' of the multi-hop attempt came through Playwright"
+  — **Wrong.**
+  - "667 tests pass. Phase 2 implementation is working" (12-18.1:1385) and "The
+  multi-hop wiring is complete" (:2324) rested on unit tests.
+  - 12-18.1 has no browser call at all.
+  - Some later claims followed a build only (readers/2025-12-18-multi-hop.md,
+  rows 1, 5, 11).
+  - Fix: "The multi-hop attempt's false claims that it worked came first from
+  unit tests that drew nothing, then from Playwright; every correction came from
+  the owner."
+
+  L35 · "the diagrams and 'down to pin placement' are March 2026" — **Date wrong
+  for the diagrams.**
+  - The owner asked for ASCII drawings on 2026-02-24 (02-24.1:2219, 3346).
+  - The owner favoured ASCII diagrams as an output as early as 2025-10-29
+  (:4858).
+  - Only the pins are March (03-22.1:545).
+  - Fix: "the requests for ASCII diagrams begin on 2026-02-24, the demand that
+  they show pins is March 2026, and…"
+
+  L36 · "November caught the first self-mirroring score on 2025-11-01" —
+  **Attribution.** In a finding about the owner's concern, this reads as the
+  owner catching it.
+  - Copilot reported it: "it still mirrors expected.json, so our
+  precision/recall view is artificially perfect" (11-01:2746; again at :3054).
+  - The owner answered "Wow! So I see!" (:3062).
+  - Fix: "on 2025-11-01 Copilot reported that a perfect score came from the
+  expected file mirroring itself".
+
+  L36 · "deferred outside repositories for fear of 'the pie in the face'" —
+  **Minor.**
+  - The deferral was on 10-28, as "premature" (:2999).
+  - On 10-31 (:787) the owner left the timing to Copilot ("Use your best
+  judgment"), feared the "pie in the face", then argued the other side.
+  - Fix: "put real repositories off as 'premature' (10-28), then left the timing
+  to Copilot, fearing 'the pie in the face' (10-31)".
+
+  L36 · "no shipped adapter has been run on code the agent did not write" —
+  **Misleading.**
+  - "The agent" reads as Claude. But the adapters are measured on the Rosetta
+  programs, which Copilot wrote in January (`7de98456` 2026-01-14, `8116340a`
+  2026-01-16).
+  - What is true: nothing from outside the repository.
+  - Fix: "since September no shipped adapter has been run on code from outside
+  this repository, all of which an agent wrote".
+
+  L36 · "The owner answered the floor question in December" — **Jargon, and
+  backwards in time** (the question was posed in September).
+  - Fix: "In December the owner had already set a rule for thresholds: raise
+  each to the lowest current score and never lower it (2025-12-10, 12-11)."
+
+  L36 · "The September retirements hold against the record" — **Broad.** The
+  Claude Code era report finds two retirements hold only in part and three not
+  checked. Fix: "September's retirements of the self-grading tools hold against
+  the record."
+
+  L37 · "it ended the Copilot era anyway when rejected arcs were rebuilt" —
+  **Unsupported as a cause.**
+  - The owner's own reasons for stopping are "burnout" (2026-09-26.1.md:12) and
+  "a few months of hiatus awaiting better models" (2026-09-29.1.md:12).
+  - 04-01 is the record's last day.
+  - Fix: "and on 2026-04-01, the last day of the Copilot era, rejected arcs were
+  rebuilt anyway from the stale plan."
+
+  L37 · "the Membrane Map's design doc was never updated" — **Wrong as
+  written.**
+  - It was edited on 09-27, 09-28 and 09-29 (`1cba375c`); only the arcs passage
+  stayed.
+  - Fix: "the Membrane Map's design doc has been edited since, but not there,
+  and still says…"
+
+  L37 · "both C# adapter docs" — **Unclear.** There are seven C# adapter docs,
+  and the claim holds for two. Fix: "the docs of `csharp.ts` and
+  `csharp.dependencies.ts`".
+
+  L10–15 · **Hard for a newcomer:** "11-15" (write 2025-11-15), "the security
+  promise" (the page makes no network calls), "Rosetta" (one program written in
+  every language), "measured for reach".
+
+  **3. Could not check**
+  - "after reading all seven reports whole": the session only records the
+  agent's own statement that it did.
+  - "every other report finds reasons missing": not every report was read whole.
+  - "why current or historical": the README gives no source for that reason.
+  - "The owner's eye has been the only check on the interface that worked": an
+  interpretation, not a fact to check.
+
+● Agent "Fact-check bearings findings 1-5" finished · 15m 5s
+
+● Background command "Run the gate and Playwright suite on the emoji removal"
+completed (exit code 0)
+
+● All tests and the gate pass for the emoji removal, and the fact-checker
+  confirms 63 of 85 claims hold, with the rest specified. I'll commit the emoji
+  change along with any refreshed docs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The commit message says twenty-six, but I didn't count. Counting the removed
+  emoji from the diff:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the second fact-checker finishes, I'll check one of the third's claims:
+  that AGENTS.md's "Commit only when asked" contradicts a standing grant the
+  owner gave in September.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● AGENTS.md now matches the grant, quoted in owner.md. Next, the bearings file
+  itself. I'll read it whole before revising it against the two reports in hand.
+
+  Read 1 file (ctrl+o to expand)
+
+● I'll hold off rewriting the bearings until the second fact-checker weighs in.
+  In the meantime, I notice direction.md — the file fresh sessions rely on for
+  orientation — has a stale line on the membrane questions and stops short of
+  covering this session's completed exploration check.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'll finish drafting the synthesis using the first and third reports now, then
+  incorporate the second once it's ready before committing.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The quotes hold; the line numbers point at long paragraphs that contain them.
+  I'll start the rewrite with the header, the tables and findings 1 to 5, the
+  parts the first report covered.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the questions: rewritten in plain words, the ones the owner has already
+  answered moved out, and every quote attributed to whoever said it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● A few sentences I just wrote go further than their sources. The board-page
+  size counts every probe. The "only threshold" wasn't checked. The quality-bar
+  quote was paraphrased. Tightening them:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next, the corrections and "How it was read" sections. First a check, since the
+  reports disagree on the date "High Autonomy" entered the Copilot
+  instructions:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything but the second fact-checker's slice is rewritten. Checking whether
+  it's still working:
+
+● It's still running, which fits: its slice needs searches across the code.
+  Meanwhile I'll run the link audit over the rewritten pages.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● AGENTS.md was already unformatted before my edit: one row of its commands
+  table is misaligned. Prettier fixes that and nothing else, so I'll let it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the last checker works, I'll fix one stale number it's certain to
+  confirm: AGENTS.md says 17 of 21 sample programs carry compiler expectations,
+  and the first report counted 21 of 27.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● While that runs, I'll add a short "where the next session starts" note to the
+  end of direction.md's Next section, so a fresh Fable session doesn't have to
+  reconstruct it.
+
+  Read 1 file (ctrl+o to expand)
+
+● Background command "Wait for the last fact-checker to hand back" completed
+(exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Still running; that match was a false signal. Meanwhile I'll read SECURITY.md
+  whole, since fixing it is next on the agent's own list whatever the checker
+  reports.
+
+  Read 1 file (ctrl+o to expand)
+● SECURITY.md makes five claims I can test directly. I'll check each before
+  rewriting it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed all three issues: the page loads a script from unpkg.com on every
+  open, esbuild has a postinstall hook, and the documented check only prints
+  "done" since npm ls --json doesn't report scripts. Now I'll run a check that
+  can actually fail.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I found esbuild's script and the template's unpkg reference, plus a leftover
+  fetch('/open?...') call to a server retired in March that's on the dead-code
+  list. Now I'll check what esbuild's install script actually does so
+  SECURITY.md can describe it accurately.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now I'll look into what happens when unpkg is unreachable and trace the
+  context around that failed call.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The Open in Editor button is always hidden and pointless, and its handler
+  calls a server retired in March — I'll remove all three parts while wrapping
+  up SECURITY.md and the final fact-check.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now SECURITY.md, rewritten so that every claim is true and every check can
+  fail:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from a9b9a36d6f8910852
+  Fact-check of `AI-Agent-Workspace/Research/2026-09-29-bearings/README.md`:
+  findings 6–10 (lines 38–42) and the two lists (lines 70–93)
+
+  **The tree moved while I checked.** Line numbers below are the brief's. In the
+  working copy another agent has edited the README (uncommitted), so the slice
+  now sits at lines 40–44 and 96–118; its text is unchanged. Since the README's
+  last commit (`4ba849ab`, 19:02 UTC) three commits landed:
+  - `b54f3fa5` moves esbuild to 0.28.2, which still has a postinstall.
+  - `9ae7ba5a` tracks the Local Map pictures.
+  - `d2a0618f` removes the emoji.
+
+  The working copy of `AGENTS.md` also now says "21 of 27".
+
+  ## 1. Count
+  I checked 74 claims. **53 hold** and **21 are wrong, misleading, outdated or
+  unreadable**.
+
+  ## 2. Problems
+
+  **L38, "breaks two of its own laws"** (misleading)
+  - Neither law is the Local Map's own.
+  - "the font _does not resize_ across zooms" is verbatim (2026-03-23.1.md
+  L4466), but it was the owner's test for the Membrane Map's progressive zoom.
+  In December the owner allowed "some amount of text resizing/truncation"
+  (2025-12-02.md L199).
+  - Related wires rise from 0.7 to 1 (view-shared.css `.connection-path` 0.7;
+  local.css `.connection-highlighted` 1). That has been so since `a99ac04d`
+  (2025-12-07), and the owner saw it and said "it's EXACTLY right!" at 0.5 and
+  0.1 (2025-12-09.1.md L737).
+  - Omitted: by reading, wires paint over pins, against confirmed rule 14. The
+  card layer is a stacking context at z-index 1 (view-shared.css L19) and the
+  wires are a sibling at 20 (L431; template.html L221–222).
+  - Replacement: "The Local Map predates two laws set since. Its text scales
+  with the zoom (pan-zoom.ts L35), where the owner's March test for the Membrane
+  Map, now the vision's, is that 'the font does not resize'. Related wires rise
+  from 0.7 to 1, which the owner approved by eye on 2025-12-09 but `AGENTS.md`
+  now calls boosting. By reading, its wires also paint over its pins."
+
+  **L38, "the 10/80/10 gradient" listed as confirmed** (minor)
+  - The December report says "no sentence of the owner's confirms the stops".
+  - The nearest thing is "Those updates seem to have landed well!"
+  (2025-12-08.1.md L946). Cite it, or move the gradient to "asked for in words".
+
+  **L38, "No picture of it is tracked"** (outdated)
+  - Since `9ae7ba5a` these are tracked:
+  `Screenshots/2026-09-28/04-local-map-connection-geometry.png`,
+  `05-local-map-core-hub.png`, `09-crop-local-map-corset-card.png`.
+  - Replacement: "Its only pictures, from 2026-09-28, were tracked on 2026-09-29
+  (`9ae7ba5a`)."
+
+  **L39, "the owner's first wish on seeing a picture was for themselves"**
+  (wrong on "first")
+  - The owner's first words on the first picture were "How do you get this in
+  place that _you_ can see and analyze it?"
+  (Antigravity/11-19/01f1b443…/Refining and Analyzing Graph.md L73).
+  - The wish to "reason about my software" is the next turn (L85).
+  - Replacement: "on 2025-11-19, one turn after asking how the agent could see
+  the first picture, the owner asked to 'reason about my software' through it".
+
+  **L40, "Never put to the owner."** (wrong)
+  - The agent put the system-scale reading to the owner in words: "Confirm you
+  want it to hold at system scale too, where "inbound" means "endpoints I
+  serve."" (2026-09-26.1.md L484).
+  - The owner answered without taking up that clause (L505). The November report
+  records this itself (2025-11.md L31).
+  - Replacement: "Put to the owner in words on 2026-09-26 and answered without
+  being taken up; never shown as two pictures side by side."
+
+  **L42, "The only pictures of the Local Map … are in the ignored tmp/"**
+  (outdated)
+  - Tracked since `9ae7ba5a`.
+
+  **L42, "147 of its pictures"** (wrong)
+  - The board page (`tmp/probes/black-boxes/shots`) has 94 pictures. 8 of them
+  are byte-identical to `Probes/2026-09-28/shots/board-*.png`, so 86 are unkept.
+  - All five probe pages have 179 pictures, 25 kept, 154 unkept.
+  - 147 is 179 minus the 32 tracked probe shots, and 7 of those (`world-map-*`)
+  are not from tmp.
+  - Replacement: "the board page … and 86 of its 94 pictures".
+
+  **L42, "the March accounts of the Membrane Map"** (partly wrong)
+  - The March plan is tracked: `Notes/membrane-map-execution-plan.md`, 480
+  lines. tmp holds an older 453-line copy.
+  - Only in tmp: `membrane-map-last-mile-delta.md` (2026-03-30) and
+  `march-loose-ends-census.md` (2026-04-01).
+  - Replacement: name those two files.
+
+  **L75, "Today's lowest oracle score per language"** (unsupported as "no fork")
+  - `oracle:compare` "prints a list, not a score; exit code 0 either way"
+  (.mdmd/layer-2/internal-tooling.mdmd.md L50).
+  - A score has to be defined first, and that is a choice.
+  - Replacement: "each language's share of compiler edges found, from
+  `oracle:compare`'s lists, once that share is agreed as the score".
+
+  **L76, "named functions that never shipped"** (inexact)
+  - The doc named one function, `calibrate(batch: RelationshipBatch…)`, plus
+  `ConfigurationError` and `derivedAt`.
+  - The same commit's code exported `calibrateConfidence` (`60a80fe5`:
+  packages/shared/src/inference/llm/confidenceCalibrator.ts L35).
+  - Replacement: "named an entry point, an error and a field the code never
+  had".
+
+  **L83, "none is fixed yet"** (outdated)
+  - Emoji fixed in `d2a0618f`.
+  - "17 of 21" is fixed in the uncommitted `AGENTS.md`.
+
+  **L86, "Emoji in four client files … first spoke on 2025-12-09"** (wrong
+  count, now fixed)
+  - At 19:02 there were pictographs in six client files: pathfind.ts L376–379;
+  detailPanel.ts L214; panels/omnisearch.ts L24–27; panels/sources-view.ts (12
+  sites); localView/card-factory.ts L295 and membraneView/pin-active-renderer.ts
+  L425 (⬛ U+2B1B before "Internals"). The page template's nav also had them
+  (shared/template.html L35–54). All were removed by `d2a0618f`.
+  - The owner's first word on emoji in the UI is 2025-12-09.1.md L932, but they
+  said "No emojis" earlier: 2025-11-08.md L5102 (generated docs) and 2025-11-19
+  (README, Antigravity "Incorporating Future Vision.md" L287).
+
+  **L88, "Product code that names this repository … archetype.ts hardcodes
+  folder names"** (misleading)
+  - `archetype.ts` names generic conventions, not this repository: `spec` (L69),
+  `fixtures`/`__fixtures__` (L74), `tests?`/`__tests__` (L87).
+  - Only `dependencies.ts` names this repository: `"@live-documentation/"` at
+  L263, and the `packages/<name>/src` layout at L279 and L304.
+
+  **L88, "reclassified all 260 sample-program docs as tests when they moved"**
+  (inexact)
+  - `aec5f74b` moved 184 docs. 160 of them changed to test (148 implementation,
+  12 asset); 24 were already tests.
+  - 76 docs were added later and were tests from the start.
+  - Today all 260 docs under `.mdmd/layer-4/tests/integration/programs/` are
+  `test`: 259 program files plus the manifest. 229 of them are not tests by file
+  name.
+  - Replacement: "`archetype.ts` makes anything under a `test`/`tests` folder a
+  test (L87), so since the move of 2026-09-27 all 260 docs under
+  `tests/integration/programs/` are tests, 229 of them not tests by name."
+
+  **L89, "arc renderer and barrel thesis, rejected on 2026-03-30"** (wrong;
+  contradicts the README's own L96)
+  - The arcs' 03-30 rejection was Copilot's analysis in the plan
+  (Notes/membrane-map-execution-plan.md L179–195). The owner said "I'm open to
+  this" (2026-03-30.1.md L843) and gave their verdict by eye on 04-01: "By eye,
+  this doesn't appear to look right" (2026-04-01.1.md L1786).
+  - The barrel thesis (`membraneView/hierarchy.ts`) was the agent's proposal on
+  2026-03-22. The owner called it "an insanely elegant answer" (2026-03-22.1.md
+  L541).
+    - It was never wired in (only `hierarchy.test.ts` imports it; `isBarrel` is
+  always false in layout.ts) and never rejected by anyone.
+    - The 2026-09-28 probe measured against it (ideas.md L33).
+  - Replacement: "the arc renderer (`edge-bundling.ts`, `svg-connections.ts`),
+  set aside by Copilot on 2026-03-30 and rejected by the owner by eye when
+  rebuilt on 04-01; the barrel thesis (`hierarchy.ts`), which the owner praised
+  on 2026-03-22 and which nothing calls".
+
+  **L89, "the Rosetta manifest's 25 dead paths"** (wrong: 17)
+  - The `$schema` file never existed in any commit.
+  - 16 `expected`/`inferred` paths (rosetta-manifest.json L108–179) were deleted
+  by `0de42d28`.
+  - The other 24 paths resolve.
+
+  **L90, "the README's false lines"** (unreadable as an instruction)
+  - Name them: README.md L58 (`--json` everywhere; only `inspect`,
+  `oracle:compare` and the three SlopCop checks have it); L71 and L78–84 (three
+  views); L107; L109 (`.ascx`); L160–161 (a server and
+  `live-docs:visualize:static`, neither exists); L166 ("coverage").
+
+  **L90, polyglot `.ascx`** (incomplete)
+  - `aspnet.ts` L11 and L13 also claim `.ascx`, while its registered
+  `extensions` (L16) omit it.
+
+  **L91, "the peers (November, not December)"** (partly wrong)
+  - The owner named GitLab Knowledge Graph on 2025-10-16 (2025-10-16.md L794),
+  then Windsurf's and GitLab's graphs on 2025-11-06 (L197), then all three peers
+  on 2025-11-19.
+  - The WCAG AA target is 2025-11-21 (L1956) and holds as November. The criteria
+  numbers in ideas.md L30 appear in no 2025 transcript.
+
+  **L91, "the MDMD trail's missing … 11-10 … entries"** (wrong for 11-10)
+  - direction.md L59 has had a 2025-11-10 entry since 2026-09-28 (`d6cba630`).
+  - What is missing is that day's two-layer question (2025-11.md L105–107), and
+  2025-10-30's "layers of two kinds" (2025-10.md L70).
+
+  **L91, "the roots of the September reframe"** (unreadable)
+  - Say what it means: direction.md L9 dates "Humans are the audience" to
+  September, but 2025-12-19.1.md L1226 already ordered the audience that way.
+  - Also omitted from L91: October surprise 12's correction that owner.md's
+  autonomy grant is October's, not 2026-09-27's.
+
+  **L91, "how the owner reads a design"**
+  - The first ASCII requests are 2026-02-24.1.md L2219 and L3346.
+
+  ## 3. The fix list today
+
+  - **SECURITY.md**
+    - Where: L7, L13–17, L39–52; the tag is template.html L8 (unversioned);
+  esbuild is packages/explorer/package.json L29, postinstall `node install.js`.
+    - Checks I ran: `npm ls --json` never emits `scripts`, so the check can only
+  print "done". The search skips `.html`.
+    - Safe: making the text true. Owner's call: vendoring 3d-force-graph, and
+  whether esbuild stays a production dependency (the network promise).
+  - **Emoji**
+    - Already fixed by `d2a0618f`. Only the README line needs changing.
+  - **Second path search**
+    - Where: packages/explorer/src/client/pathfind.ts L61–212 (`findPath`,
+  `directedBFS`), called at client/index.ts L649.
+    - The engine's `live-docs/pathfind.ts` imports only a type. The client
+  already bundles engine modules (board, boardGraph, document) and the bundle
+  carries the `LiveDocGraph`, so two `searchGraph` calls (inbound, then
+  outbound) can replace it.
+    - Caveat: the engine's `getNeighbors` treats "both" as inbound (pathfind.ts
+  L158–159), so `inspect --from A --direction both` with no `--to` lists inbound
+  paths only (inspect.ts L205).
+    - Safe if behaviour is kept. Whether path mode survives is the owner's
+  (question 12).
+  - **dependencies.ts L263, L279, L304**
+    - Safe.
+  - **archetype.ts L87**
+    - Safe via an `archetypeOverrides` entry in `.live-docs.config.json`.
+  Changing the default heuristic is a product default, so name it to the owner.
+  - **Code nothing runs**
+    - `panels/index.ts`: nothing imports it (`15073e19`, 2025-12-19). Safe.
+    - `symbol-coverage.ignore.json`: its last reader, audit-doc-coverage.ts
+  L857, was deleted in `0d89e857`. Safe; keep its barrel note if wanted.
+    - `enableDocstringBridge` (engine/src/config/liveDocumentationConfig.ts L59,
+  L193, L239–240, plus its test): read by nothing since `86a74a76`
+  (2025-11-09); never built. Safe.
+    - Arc renderer (`edge-bundling.ts`, `svg-connections.ts`, their tests, and
+  the commented block at membraneView/index.ts L703–719): safe on the owner's
+  04-01 verdict.
+    - `hierarchy.ts` and `types.ts` L56–57: the owner's, since they praised it.
+    - `discovery.ts` L279–305 and its re-export at core.ts L101: safe.
+    - The 17 manifest references: safe. Deleting the manifest touches the
+  Rosetta question on L68.
+    - `.vscode/settings.json` L3, L6, L11: safe.
+  - **Stale documents**
+    - Where:
+      - `membrane-map.mdmd.md` L72, L131–135, L174–186 (`scrubSnapshot` and
+  `resolveDetailLevels` are now wired in).
+      - The Authored sections of `csharp.ts.mdmd.md` and
+  `csharp.dependencies.ts.mdmd.md`.
+      - `polyglot-adapters.mdmd.md` L44.
+      - The README lines above.
+      - Guides: getting-started L60, cli-reference L130, visualizing-codebase
+  L23–44. Last commits are 2026-09-28 01:03 UTC; the World Map landed at 23:05.
+      - The layer-2 doc: overlaps `AGENTS.md`, with a stale L82 ("shared,
+  generator and scripts").
+      - Decisions log L47, L67, L194.
+      - `AGENTS.md` L85, now fixed uncommitted.
+    - Safe for facts. Owner's: the README's framing, deleting the layer-2 doc
+  (the MDMD convention), adding `.ascx`/`.master` support (question 13), and
+  whether Status leaves `AGENTS.md` (question 3).
+  - **Memory files**
+    - Where: owner.md L53; ideas.md L30 and L47; direction.md L52–62.
+    - Safe as dated corrections.
+  - **Archive digest**
+    - Where: Probes/2026-09-28/archive-digest.md L20–26, L46–60, L62, L105,
+  L109, L118. The cited lines no longer match: `2026-09-26.1.md` is 983 lines,
+  and L6197 does not exist.
+    - Safe.
+
+  ## 4. Not checked
+  - I built and rendered nothing, so the wire/pin stacking is from reading only,
+  and I did not confirm that the engine search reproduces the Explorer's
+  results.
+  - I did not recount the 26 Roslyn edges; I used the transcript's own breakdown
+  (2025-12-11.1.md L1570–1574).
+  - I spot-checked the 26 rules and 24 code items rather than verifying every
+  citation.
+  - direction.md (105 KB) I searched rather than read whole.
+  - I did not settle whether the owner saw two pictures side by side before
+  2025-12-03 beyond reading turns L726–742.
+  - The Antigravity exports lack the agent's side.
+
+
+● Agent "Fact-check bearings findings 6-10 and fixes" finished · 26m 41s
+
+● 53 of 74 claims check out. I'll now update findings 6-10 and the fix list to
+  reflect these corrections—the barrel thesis wasn't rejected, the Rosetta
+  manifest has 17 dead paths (not 25), and several "not yet fixed" items are
+  actually resolved.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Adding the last report's findings to the corrections list:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The rewrite is done. The owner caught what my last version got wrong, so I'll
+  read this one whole before committing it.
+
+  Read 1 file (ctrl+o to expand)
+
+● Found two issues: a stray blank line breaking the question list before
+  question 16, and a mismatched emoji count—correcting it to six client files
+  plus the page template.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The list is whole. Before the gate, I'll run SECURITY.md's install-script
+  check exactly as the file now prints it:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate runs, I'll prepare the next cleanup batch, the code nothing
+  runs, by checking every reference myself before deleting anything.
+
+  Searched for 1 pattern, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Everything checks out as unused. I'll read the design doc's arcs passage too,
+  so the deletion can carry the decision into the doc instead of leaving the
+  invitation behind.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The controller's commented-out block has the same "Re-enable once hover-only
+  rendering is implemented" note as the doc, tying it to the renderer issue. Now
+  checking whether animation landed before the stop as claimed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 42c8658b also claims to have decoupled DirectoryAggregate, which the doc lists
+  as a blocker. Checking:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● DirectoryAggregate is still defined in the Circuit Board, so that bullet stays
+  with a small correction. Animations exist, so "not yet attempted" goes.
+  Checking the gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the gate and Playwright suite on the security and
+dead-button changes" completed (exit code 0)
+
+● Both pass. Committing in two parts: the security statement with the dead
+  button, then the checked bearings with the AGENTS.md and direction.md updates.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both committed. Next, the code nothing runs. I'll read the smaller pieces
+  before deleting.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The editor settings reference a folder that moved on 2026-09-27, so I'll
+  update them to follow the move instead of deleting them. Next I'll check the
+  manifest's dead paths and confirm deleting the old resolver won't break any
+  imports.
+  Ran 1 shell command (ctrl+o to expand)
+
+● My scan confirms the 17 dead entries the checker flagged ($schema plus 16
+  expected/inferred paths), and I've verified the manifest isn't read by any
+  code—only referenced in comments within the parity test. Let me show an
+  example of what a variant looks like.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Removing the expected/inferred lines leaves the JSON valid, since each is
+  followed by notes. Here is the old resolver's full extent, including its doc
+  comment:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The type imports are still used elsewhere; only the comparator import goes
+  with the resolver. Making all the deletions:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Membrane Map still takes a resolveLinkEndpoint option that it renames with
+  an underscore, apparently kept only for the arcs block. Checking whether
+  anything else uses it:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The Membrane Map's copy of the option is now unused, and one call site passes
+  it. Finding that call:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now the two design docs, so the arcs decision is written where the invitation
+  was:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll leave a one-line note in "Where this design stopped" that three items
+  were removed because they had landed, so nobody wonders where they went:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The manifest's diff is larger than the 17 lines removed, which suggests
+  Prettier reformatted it. Checking what else changed:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Prettier also reflowed unrelated lines. I'll rebuild the manifest from its
+  committed version with only the 17 lines removed, so the diff says exactly
+  what changed:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate check runs on the deletions, I'll regenerate this session's
+  transcript to capture the evening's work, per AGENTS.md's end-of-session
+  guidance—then rerun it once more after my final message.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the gate and Playwright suite on the dead-code
+removal" completed (exit code 0)
+
+● The markdown link audit failed. Everything else passed, including all 50
+  Playwright tests. Here are the broken links:
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Two causes. The generator left the docs of the deleted files behind, and the
+  dated "what survives" report links to files that no longer exist. First,
+  whether the generator can prune orphaned docs:
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The generator preserved documentation for a deleted file since it contains
+  human-authored Purpose or Notes, per AGENTS.md's guidance to review these
+  before removal. Here's what was kept:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll preserve the useful idea about mapping edges to folders via shallowest
+  collapsed ancestors into the design doc, then delete the five outdated docs
+  and unlink references in the dated report.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the ignore file's barrel note explains the January audit
+  mismatches, and the generator (fe08c9d8) now correctly distinguishes
+  re-exports from declarations with the reasoning logged. Next I'll check the
+  dated report's links, keeping since-deleted names marked rather than removed
+  since it reflects a historical snapshot.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I removed the leftover docs for the deleted files, folding one useful idea
+  into the design doc, and links are now clean. Rerunning the full gate before
+  committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate passes. Deleting the arc renderer's tests took the unit count from
+  974 to 952, and AGENTS.md quotes the count, so I'll update that, mark the
+  items done in the bearings, and commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● git add stopped on a path that was already staged as deleted, so the commit
+  took only the deletions. It's my own unpushed commit, so I'll add the rest and
+  amend it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● .vscode is gitignored, so that git add failed as well and the amend added
+  nothing. Checking whether the settings file is tracked at all:
+
+  Ran 1 shell command (ctrl+o to expand)
+● Everything is staged now; only the amend was skipped, because the warning
+  ended the command chain. Amending:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The tree's clean and the gate passed. Before wrapping up, I want to check the
+  Memory files since checkers flagged incorrect dates there—same issue as
+  before—so I'm reading the flagged lines now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Before changing Memory I'll verify each correction at its source.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● That flagged item isn't actually an error—the autonomy quote in owner.md
+  correctly dates to September, while October's "High Autonomy" was a separate
+  grant, so I'll fix the bearings' list instead of Memory. Now checking the
+  exact wording of the audience quote.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything else checks out. Applying the Memory corrections, each dated and
+  quoting the record:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● direction.md's account of this session names only the first three of these
+  commits. I'll bring it up to date, then regenerate the transcript.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Here's what you set out to do in this thread, what actually got done, and
+  what's now ready for Fable.
+
+  What you were aiming for (your words at 15:32 and 16:16):
+  1. Rebuild the Claude Code transcripts with both sides, so you don't look like
+     you're "shouting into the wind".
+  2. Use them to send subagents into both eras for "a really wonderful set of
+     bearings".
+  3. From there, start a development session with "many preempted answers to
+     'why' questions".
+
+  What actually got done:
+  - Transcripts: done. Every Claude Code session now shows both sides, and the
+    converter never reads reasoning.
+  - Bearings: done, but bumpy. The usage limit stopped four of Fable's seven
+    explorers mid-run, and I redid them on Opus from what they had left. My
+    first synthesis had the errors you caught. Tonight three more agents checked
+    it against the transcripts, git and the code: about 260 claims, and roughly
+    a quarter needed correcting. I rewrote it from their findings.
+  - Development: none started. The "prepped context window" didn't survive as a
+    window, because this session was compacted. It lives on disk instead, which
+    is where a fresh Fable session reads from anyway.
+
+  Ready for Fable:
+  - The rewritten bearings: README.md
+    (AI-Agent-Workspace/Research/2026-09-29-bearings/README.md). It has 16
+    questions for you in plain words, each quoting what you said before, plus
+    four you had already answered, listed separately.
+  - A starting point: direction.md (AI-Agent-Workspace/Memory/direction.md) now
+    ends with "Where the next session starts": bringing the Membrane Map up to
+    the Local Map's quality.
+  - The Local Map pictures: the only ones were in the ignored tmp/ folder.
+    They're now in the screenshot gallery under 2026-09-28. They even show the
+    wrong wire that was found and fixed that night.
+  - Memory dates: fixed where the checkers found them wrong. For example, the
+    ASCII diagrams were dated December, but you first asked for them on
+    2026-02-24.
+  - This session's transcript: rebuilt through your last message.
+
+  Cleanup:
+  - npm vulnerabilities: 12 → 0. Two were critical and seven high. Two reached
+    production code (brace-expansion and esbuild). npm 10.9.4 crashes on this
+    workspace, so I wrote the lockfile with npm 11. The full check suite and all
+    50 Playwright tests pass.
+  - Emoji: 30 removed from the Explorer. Pictures are in the gallery.
+  - SECURITY.md was false, and now it's true. It said the page contacts no other
+    host, but every open loads the force graph library from unpkg.com. Its
+    check for install scripts also could never fail.
+  - Code nothing ran is deleted. That includes the arc renderer, whose comments
+    and docs still said "re-enable", the same trap that sank April 1. The design
+    doc now records the rejection instead.
+  - AGENTS.md: "Commit only when asked" now matches your standing grant, and two
+    stale counts are fixed.
+
+  Still open:
+  - Yours:
+    - Three questions in the bearings bear directly on the Membrane Map work:
+      - Question 1: should a wire's colours mean the same thing inside a system
+        and between systems?
+      - Question 2: how will you judge "as beautiful and functional as the Local
+        Map"?
+      - Question 12: must path mode come across before the Membrane Map replaces
+        the Local Map?
+    - Question 16: should the force graph's library ship inside the page, so it
+      contacts nothing online?
+    - What "Deepest level available" meant for the crumb root.
+  - Mine or Fable's (listed with locations in the bearings):
+    - the Explorer's second copy of path search;
+    - the hardcoded package scope in dependencies.ts;
+    - the stale README, guides and C# adapter docs;
+    - the archive digest's citations.
+
+  Tonight's work is 10 commits, 4ba849ab through c632cf24, and the working tree
+  is clean.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/Research/2026-09-29-bearings/README.md in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ >Question 1: should a wire's colours mean the same thing inside a system and
+  between systems?
+
+  Wonderful question! I love this! What are the pros and cons? I suspect the
+  pros are a consistent visual grammar and the cons are "more connection lines
+  between systems than potentially necessary to communicate at the World Map
+  level". Does that feel accurate?
+
+  >Question 2: how will you judge "as beautiful and functional as the Local
+  Map"?
+
+  >Tonight's work is 10 commits, 4ba849ab through c632cf24, and the working
+  tree is clean.
+
+  Everything pushed to origin. Free to proceed.
+  That's a great question. What is difficult for me to evaluate for me is
+  whether or not Claude models or the Claude Code harness are capable of
+  evaluating such a thing. In what way can we make design systems... well,
+  systematized, and how can we take such a design system and use it as a lense
+  to compare the existing Local Map to the existing Membrane Map? I feel that,
+  pixel-for-pixel, I know more from _a single image_ of the preexisting Local
+  Map versus the preexisting Membrane Map. Simultaneously, I know from
+  experience that I can learn more from the continuous interaction with the
+  Membrane Map than the Local Map. How can we measure this discontinuity, turn
+  it into signal for remediation, and improve? I am as of yet uncertain.
+  Aesthetic disagreements with an LLM will be fruitless in the quest for
+  maximizing user experience and legibility.
+
+  >Question 12: must path mode come across before the Membrane Map replaces the
+  Local Map?
+
+  Explain please? Path  mode as in the search system which can search to or
+  from? Or path mode as in something out at the World Map abstraction level?
+  Please clarify.
+
+  >Question 16: should the force graph's library ship inside the page, so it
+  contacts nothing online?
+
+  Yeah, probably. Being honest to our principles is important. A worthwhile
+  exercise and Opus-sized in scope. Reasonable to execute if desired.
+
+● You've approved shipping the force graph's library inside the page, so I'll do
+  that. Before I explain question 12, I'll check the Membrane Map's code. The
+  bearings say it has no path mode, but that claim rests on a report whose
+  checker never read that code, and there's a Playwright spec named
+  membrane-multifocal-path.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed the From/To bar only feeds the Local Map, while the Membrane Map can
+  render a path but has no trigger to request one — I'll fix that in the
+  bearings, then check the force graph library's package, size, licence, and
+  build output.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll check how the view currently uses the global library and whether any
+  tests depend on the unpkg URL before deciding whether to bundle it locally or
+  copy the prebuilt file.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing else depends on that script, so I'll switch to importing the typed
+  library and bundling it instead—removing the untyped global and its fallback
+  branch, with everything sourced from the lockfile. I'll install it with a
+  pinned version range, since unpkg was serving whatever was newest on each page
+  load.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Pinned react-force-graph to version 1.80.0 and switching from the unpkg global
+  to a typed import. Now reading through the rest of the view file.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● It type-checks. Confirming that config actually covers the client file, then
+  building the bundle to see its size:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Explorer's tsconfig doesn't cover the client, so that type-check didn't
+  actually validate this file, and the bundle ballooned from 690 KB to 4.3 MB
+  since esbuild isn't minifying and now bundles unminified three.js. I'll
+  measure the alternatives before deciding how to fix this.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Minifying and bundling into one same-origin 1.76 MB file beats today's split
+  of 690 KB plus 1.31 MB from unpkg, so I'll go with minification over
+  splitting. Now checking for anything minification could break, like code
+  relying on function names, and locating where the client is type-checked.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The name matches are data fields, not function names, so minifying is safe.
+  ESLint names a client tsconfig, so I'll type-check with that one:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found two issues: pre-existing type errors in Explorer's client code that the
+  gate doesn't catch (esbuild skips type checks, worth fixing separately), plus
+  a typing mismatch in my change where the library's generic-node constructor
+  conflicts with this view's specific type—I'll narrow it at the graph creation
+  point.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll keep the library's instance type as-is and add three small casts where
+  callbacks need to read this view's fields, since a direct narrowing isn't
+  accepted without going through unknown.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The view is clean. Now minification, and a check for where else the repository
+  mentions unpkg or the old network exception:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No new install scripts. I'll word that build comment for a maintainer rather
+  than as a changelog, then make SECURITY.md's promise unconditional again.
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll build the project, then use Playwright to load the page and log every
+  network request—verifying nothing leaves the page's own origin—while also
+  capturing a screenshot of the Force Graph.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All four views showed only same-origin requests with no errors, and index.js
+  is 1.76 MB. I'll verify the server has shut down before checking the
+  screenshot.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The Force Graph draws from the bundled library, the same as before. I'll add
+  the picture to the gallery, record your answer on question 16, and correct
+  question 12's wording in the bearings.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Running the gate and the Playwright suite on this. Meanwhile I'll read the
+  five client type errors that predate tonight.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Two missing type annotations stand out—one is a genuine bug where a failed
+  path search returns no direction. For the saved-tuning case, I need to check
+  whether its reader merges saved values with defaults.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Saved values are merged over defaults when read back (lines 177 to 185), so
+  the behaviour is right and only the declared type is wrong: saved tuning holds
+  partial sub-objects. Fixing all five:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The client now type-checks cleanly, but since I edited files mid-gate run,
+  I'll rerun the gate to get a clean result. Let me check where the gate's
+  type-check stages are defined.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The natural home is the Explorer's own build: it compiles everything in the
+  package except the client. I'll make it type-check the client too, so every
+  build and the gate cover it.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The errors differ from before, likely because the gate is still rebuilding the
+  engine's type declarations in the background—a race condition the client is
+  reading into. I'll wait for the gate to finish and re-check once nothing else
+  is running.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the gate and Playwright suite on the bundled force
+graph" completed (exit code 0)
+
+● The gate failed at the build step since I edited the Explorer's build script
+  mid-run, though the three errors do reproduce independently. Since running the
+  same config from the client folder found none of them, I'll inspect the
+  config to understand the discrepancy.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Same config, different results depending on the directory. That points to two
+  different TypeScript installs:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both resolve TypeScript 5.9.3, so it isn't the version. I'll compare the files
+  each run actually includes:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found the issue: running from a workspace folder made npx use the wrong root
+  config, hiding the real client errors. The true client errors are the first
+  five (already fixed) plus three more that got cut off earlier—now reading
+  those.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The client type-checks cleanly now, checked from the repository root with the
+  real config path. Running the full gate and Playwright with nothing else
+  touching the tree:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both pass. Committing in two parts: the eight client type fixes on their own,
+  then the bundled library with the build change that keeps the client checked.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● You asked about questions 1, 2 and 12 and approved 16. Question 16 is done,
+  and one more problem turned up while doing it.
+
+  Question 1: pros and cons
+
+  Your pro is right: one visual grammar to learn, and a zoom that doesn't
+  quietly swap what the colours mean.
+
+  Your con doesn't quite hold. The colour rule doesn't change how many wires
+  there are: one call is one wire either way, and only which end is blue
+  changes. Extra lines would come from a different change, bringing the Local
+  Map's one-pin-per-symbol style up to the World Map, which would give every
+  route its own wire. That's a separate choice; the World Map already draws one
+  wire per call.
+
+  The real costs:
+  - One map has to change. You tuned the Local Map's colours by eye in December.
+    The World Map's were my choice in September.
+  - "Gives" is fuzzy between systems. A call can carry data either way; a POST
+    sends data to the server. "Who offers and who uses" stays clean, though:
+    thing B offers a route and A uses it, just as a file offers a function.
+  - Your favourite motion reverses physically. It would still run from outputs
+    to inputs, blue to green, but from server to caller.
+
+  My lean: make blue mean "offers" at both scales, by changing the World Map.
+  The payoff is at the wall. A route a thing serves would be the same colour
+  outside, on its door, as inside, on the file that serves it. The folder view
+  inside a thing already put what it calls on the left and what it serves on the
+  right.
+
+  Your 2025-12-03 switch was decided from the words "inbound" and "outbound",
+  never from two pictures. I can build both versions on the C# sample for you to
+  compare side by side.
+
+  Question 2: a way to measure it without arguing about taste
+
+  Your observation splits naturally into two numbers, taken from the same
+  situations in both views:
+  - What a still picture shows. For fixed situations (a folder open, a file in
+    focus, a symbol pinned), count the facts from the graph that are legibly on
+    screen: names at readable size, not overlapped, not faded out, and wires
+    whose two ends can both be identified. Playwright can compute this from the
+    page's layout and check it against the graph, so no model judges it. This
+    measures "I know more from a single image of the Local Map."
+  - What moving through it shows. Write tasks as questions whose answers come
+    from the graph, such as "which files outside views/ use state.ts?" Count the
+    clicks and scrolls until the answer is on screen, and how much of the
+    surrounding map stayed in view on the way. This measures "I learn more from
+    interacting with the Membrane Map."
+
+  Where the Membrane Map's still-picture number is low, that's what to fix. Each
+  fix must not lower its task number, and under your December rule each number
+  only ever goes up.
+
+  The design system becomes the 26 rules you set, written as checks: text never
+  resizes, pins sit above wires, the fade levels, what the colours mean.
+  Playwright can assert them on both views and report a table of which view
+  follows which rule.
+
+  Where Claude fits: measuring, not judging beauty. I can spot obvious faults in
+  a screenshot, but I'm unreliable at tracing thin wires by eye, so the numbers
+  should come from the page's layout, not from a model reading pixels. Your eye
+  stays the judge of which rules and tasks matter.
+
+  If you want this, I'd start with the still-picture count, since that's the
+  difference you feel most.
+
+  Question 12: which path mode
+
+  It's the From and To boxes at the top of the Local Map, visible in the Local
+  Map pictures in the gallery. You pick two files and it shows the chain of
+  files between them. That's file scale, nothing to do with the World Map.
+
+  The Membrane Map can already draw a path with numbered hops if one is handed
+  to it in the page address, but nothing on it lets you ask for one; the boxes
+  feed only the Local Map. So the question is whether, before the Membrane Map
+  replaces the Local Map, the From and To boxes should drive it. The Explorer's
+  second copy of the path search, from the cleanup list, would naturally be
+  replaced with the engine's in the same change. The bearings had said the
+  Membrane Map has no path mode at all; I've corrected that.
+
+  Question 16: done (772d6766)
+
+  - The library ships inside the page. It's pinned at 1.80.0. Unpkg had been
+    serving whatever version was newest on every page load, which was a
+    supply-chain risk of its own.
+  - Only one host is contacted. A Playwright script opened the World Map, Local
+    Map, Membrane Map and Force Graph and logged every host the page contacted.
+    The only one was the page's own, with no errors.
+  - The page is smaller. Minified, it's 1.76 MB in total, against 2.0 MB before
+    (a 690 KB bundle plus a 1.31 MB library).
+  - The Force Graph looks the same. A picture is in the gallery, and SECURITY.md
+    now makes the offline promise without exceptions again.
+
+  Found along the way (4a64b3c6): nothing had ever type-checked the Explorer's
+  client code, and eight type errors had built up. One was a real bug: a path
+  search that couldn't find either end returned no direction. They're fixed, and
+  the Explorer's build now checks the client every time. The full check suite
+  and all 50 Playwright tests pass.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/Research/2026-09-29-bearings/README.md in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ >Your pro is right: one visual grammar to learn, and a zoom that doesn't
+  quietly swap what the colours mean.
+
+  >"Gives" is fuzzy between systems. A call can carry data either way; a POST
+  sends data to the server. "Who offers and who uses" stays clean, though:
+  thing B offers a route and A uses it, just as a file offers a function.
+
+  Fair point. Maybe we should... gahh I'm like "ohh we'll just call it
+  'Serves'" and I immediately see how loaded that terminolgy is too.
+
+  >My lean: make blue mean "offers" at both scales, by changing the World Map.
+  The payoff is at the wall. A route a thing serves would be the same colour
+  outside, on its door, as inside, on the file that serves it. The folder view
+  inside a thing already put what it calls on the left and what it serves on
+  the right.
+
+  Offers!! I Like that! Killer terminology, yeah!
+
+  >Where the Membrane Map's still-picture number is low, that's what to fix.
+
+  Awesome
+
+  > Each fix must not lower its task number, and under your December rule each
+  number only ever goes up.
+
+  I'm willing to renege on that if only for the slightly-longer-time-horizons
+  that the new frontier models can work at.
+
+  What's next for you and what do you need next from me?
+
+● I'll record both decisions in the Memory files first, in your words, so
+  tomorrow's session has them. Then my answer, and then I'll start on the
+  colours.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Prettier had padded that row's first cell, so my anchor didn't match. Retrying
+  against the padded text:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed my interpretation of "renege" and outlined next steps: swapping
+  World Map door colors so blue means "offers" and green means "uses," then
+  running the still-picture count comparison, then upgrading the Membrane Map.
+  I'm starting on the door-color change now, and flagged two open questions
+  (path mode behavior and the crumb root definition) for you to weigh in on when
+  convenient.
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll rename the door roles from in/out to offers/uses so the code reflects
+  their meaning, then update everything that depends on them—flow animation,
+  help/tour text, and tests.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll leave the "serves" naming from the board's text format as-is since that's
+  unrelated to the colors issue, and I'll flag it separately for you. Now
+  checking how the doors and flowing wire are implemented.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The wire runs from the calling door to the serving one, and the flow animates
+  in that direction. Here is the gradient that colours it:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The gradient runs blue to green from the wire's start to its end, so reversing
+  each curve to start at the offering door does the rest. Checking which docs
+  describe the old colours:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The vision doc's outdated colors need updating, while the decisions log entry
+  stays untouched as historical record. Now checking the README for its
+  color-related wording.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The README doesn't mention colours. Making the change in the World Map's code,
+  its styles, its help and tour text, AGENTS.md and the vision:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two uses of "serves" remain in the tour and the pinned panel. Changing both to
+  "offers":
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● It type-checks. Now I'll build this repository's bundle and the C# sample's,
+  then take pictures of the World Map at rest, a wire hovered, and the help
+  panel.
+
+  Read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● The colors check out across the C# sample—gateway, sqlserver, and oracle all
+  show correct blue/green doors matching their offer/use relationships. One
+  issue remains: the shared sidebar legend still uses outdated labels
+  ("Outbound/Inbound dependency, Outbound/Inbound pin") instead of the new
+  terminology, so I'll pull up its markup to fix it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Status: the World Map now says blue offers and green uses, and I've checked
+  the pictures. I'm relabelling the shared sidebar legend to the same words,
+  then the gate.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● One Playwright test fails, and it fails again on a rerun: "pin-active layout
+  is pixel-stable across page reload" on the Membrane Map. Reading the test and
+  its error:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Membrane Map screenshots differ by 31 bytes before and after reload,
+  unrelated to tonight's changes. I'll rebuild the bundle and rerun that test
+  several times to check if it's flaky or consistently failing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The failures were caused by a stale bundle since the Playwright suite doesn't
+  rebuild dist/explorer automatically. I'll rebuild both bundles from the
+  current tree, rerun the full suite, and check AGENTS.md to see if the suite is
+  supposed to build first.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 50 tests pass on fresh bundles, but I found a real gap: AGENTS.md claims
+  the suite builds the Explorer and estate sample first, yet nothing actually
+  does. I'll update test:e2e to build both bundles upfront and remove the
+  now-redundant build step from the pre-commit chain.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The suite now builds its own bundles: about 30 seconds more, and all 50 pass.
+  Checking whether CI builds them separately:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● CI doesn't run the Playwright suite at all, only the Pages build, so nothing
+  there needed changing. I'll file the World Map pictures with captions, lint
+  the changed script, and commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● AGENTS.md's description of the suite, "both built first", is now simply true.
+  One more check: whether the layer-3 design docs describe the World Map's door
+  colours.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Both committed. Last, I'll update the "where the next session starts" note in
+  direction.md, since question 1 is now answered and done.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● "Offers" is live on the World Map (5db91c78), and I found and fixed a gap in
+  how the Playwright suite runs.
+
+  The colour change:
+  - A thing's door is blue where it offers a route, an endpoint, a procedure or
+    a table, and green where it uses another's.
+  - Each wire runs from the blue door that offers to the green door that uses
+    it, and the flow animation runs the same way.
+  - The help, the walkthrough, the pinned panel and the sidebar legend all use
+    the new words. The legend now reads "Offers" and "Uses" in every view.
+  - AGENTS.md and the vision say it the same way.
+  - Pictures are in the gallery under 2026-09-29, world-map-offers-01 to 03. On
+    the C# sample, gateway's doors facing portal are blue (the routes it offers)
+    and its door toward hub is green (what it uses).
+
+  The gap in the Playwright suite (39f7cfa7): the suite served whatever bundle
+  was already in dist/explorer and never built one, although AGENTS.md said it
+  did. So some of my suite runs earlier tonight tested a bundle a step behind
+  the code. It surfaced as a pixel-stability test that failed twice on a stale
+  bundle and passed six times out of six on a fresh one. The suite now builds
+  both bundles first. All 50 tests pass on fresh bundles of the current code,
+  which includes every commit tonight.
+
+  Your two decisions are recorded in direction.md and the bearings (0611d766).
+  The "where the next session starts" note is up to date (2299fd2d), and
+  everything is committed.
+
+  Still needed from you:
+  - Path mode (question 12): should the From and To boxes drive the Membrane Map
+    before it replaces the Local Map? Yes, no, or later?
+  - Crumb root: does "Deepest level available" mean the outermost level the page
+    has: the World Map when there's a board, and the whole repository's folder
+    map when there isn't?
+  - Board files: the text files the World Map reads still use the word serves
+    for what a thing offers. Should that become offers too? It's a change to the
+    file format, so it touches the format's design doc, its checks and both
+    boards, and I didn't want to make it without asking.
+
+  Next for me is the still-picture count, Local Map against Membrane Map. I can
+  start it now, or leave it for Fable tomorrow alongside the Membrane Map work
+  it would steer.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/Research/2026-09-29-bearings/README.md in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ >Path mode (question 12): should the From and To boxes drive the Membrane Map
+  before it replaces the Local Map? Yes, no, or later?
+
+  That would be sincerely appreciated, but I could understand if pathfinding
+  elements were useful at either the World Map scale or the
+  (to-be-consolidated-as) Local Map scale. Not confident that one can
+  necessarily pathfind between abstraction levels, but it does present an
+  interesting avenue for presenting colleagues with data flows through their
+  hops.
+
+  >Crumb root: does "Deepest level available" mean the outermost level the page
+  has: the World Map when there's a board, and the whole repository's folder
+  map when there isn't?
+
+  It's a great question and it really pushes back on the left sidebar to begin
+  with. It's possible that a more parsimonious design throws away the left
+  sidebar (at least most of the time, perhaps?) in favor of smoothly
+  transitioning between scales. If the root breadcrumb is the world map,
+  switching views does become rather easy. (That said, I do note, independently
+  of any praise or critique of the plans for the system, that the system as-is
+  leaves me _deseparately_ wishing for back/forward buttons (undo/redo?) as I
+  am known to hop around navigating a lot. ) That said, I think the "Knowledge
+  Sources" tab has utility to give. I just think the overall UI functionality
+  we have could just use rearrangement into different places and different
+  contexts. I could imagine many different ways that navigation through the
+  Explorer might work (and who knows! Maybe that's another great prototype
+  subagent extravaganza we could kick off!), but I just mean that the question
+  begs deeper questions underneath it.
+
+  >Board files: the text files the World Map reads still use the word serves
+  for what a thing offers. Should that become offers too? It's a change to the
+  file format, so it touches the format's design doc, its checks and both
+  boards, and I didn't want to make it without asking.
+
+  Hmmmm... Gosh I hate the word "exposes" for its connotations, but for
+  software I feel like that's the better term, especially with respect to
+  giving the intuitive impression that one needs to minimize their security
+  surface -- their _exposure_. I do think that "Exposes" is more semantically
+  correct if only it didn't have the odd connotations. "Serves" means something
+  very specific. "Offers" is an improvement, but it leaves an impression that
+  someone "offers" something _intentionally_. And I wonder if scan-derived
+  views (however those are made) might instead _reveal_ to a user how _exposed_
+  their distributed system really is!
+
+  I don't know. What do you think?
+● Your three answers each raise a design point, so before I say what I think
+  I'll check two facts: how the board text words a thing's openings today, and
+  whether the Explorer records navigation in the browser's history at all.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The check confirmed the board's Serves: line is a manual declaration covering
+  things like the database table, matching the "opening" terminology in the
+  design docs, and that Explorer navigation uses replaceState (explaining why
+  Back does nothing). I'll now record your three answers in the Memory files,
+  using your own words.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I've recorded all three in the Memory files (6373c86b). Here's what I think.
+
+  The word
+
+  Your instinct has found a distinction the product already has. A thing's
+  openings come from two places, and each deserves its own word:
+  - Declared by a person. The board's Serves: line is someone writing down a
+    door the scan can't see, like the estate's CENTRAL.ACCOUNT table. That
+    really is intentional, so "offers" is exactly right there.
+  - Found by the scan. Every public route, address, procedure and table in the
+    code exists whether anyone meant it to or not. That's exposure, and
+    "exposes" is the right word there, because its connotation is the point.
+
+  So I wouldn't choose one word for everything:
+  - Board text: Serves: becomes Offers:, since a person declared it.
+  - Colours: they stay "blue offers, green uses", because they describe the two
+    ends of a connection.
+  - "Exposed" becomes a finding, not a label. This is the view you imagined:
+    openings the scan found that nothing on the map uses, or that nobody
+    declared. That's the surface a PCI-DSS estate wants to shrink, and the docs
+    already hold what's needed to count it. I've noted it in ideas.md.
+
+  Path mode across scales
+
+  I read your answer as yes. As for pathfinding between abstraction levels, I
+  think it can work, because the levels are one graph seen at two zooms. Every
+  World Map wire is carried by named file-level edges: hovering portal→gateway
+  lists GatewayClient.cs → PaymentsController.cs. So one search over the file
+  graph could run from a file in portal to the table in sqlserver. The World Map
+  would light up the things the path passes through, and opening each one would
+  show its chain of files. That's your "data flows through their hops". I'd
+  demonstrate it on the estate before promising it.
+
+  Crumbs, sidebar, back and forward
+
+  - Crumb root: the World Map. Recorded.
+  - Dropping the sidebar is a real design question, and a good one for a round
+    of prototypes. For example, three builders each try a different way of
+    navigating the same bundle:
+    a. no sidebar, just the crumbs and zooming between scales;
+    b. crumbs plus a command palette;
+    c. a dock that appears on demand, with Knowledge Sources as one of its
+       panels.
+
+    You'd judge them by eye. That suits Fable tomorrow.
+  - Back and forward can be fixed now, independently of that redesign. Each
+    deliberate move would add a history entry: switching view, opening a thing,
+    focusing a file, pinning, finding a path. Hover, pan and zoom would keep
+    overwriting the current entry. Then the browser's buttons, Alt+←, your
+    mouse's side buttons and on-page ← → buttons all work.
+
+  Proposed order
+
+  1. Back and forward, tonight.
+  2. Serves: to Offers: in the board text, tonight, if you agree with the split
+     above.
+  3. Tomorrow on Fable: the still-picture count, then the Membrane Map work with
+     the From and To boxes driving it. The navigation prototypes could run
+     alongside.
+
+  Go on 1 and 2?
+
+❯ >For example, three builders each try a different way of navigating the same
+  bundle
+
+  Look to videogames for inspiration. I think that The Sims (and maybe Spore?)
+  had bubbles at the bottom center of the screen for primary actions or
+  something like that. (And interesting multi-popover-like elements with
+  choices surrounding their instantiating context). All I mean to say with that
+  example is: think very far outside the box -- the goal here is to present
+  people with the ability to model and navigate complex systems. The raw
+  ingredients we need to succeed -- UI nits hard-won -- are spread across more
+  than one view. But I personally think we have all the guts we need to compose
+  a really staggering number of variants inspired by a big variety of
+  different domains. This is DESIGN. I want to see these subagents defining
+  intentions. In design, nothing is accident. Everything is a choice to be
+  justified. I want to see a big variety of schools of thought at work
+  demonstrating how these raw ingredients we've assembled can be composed into
+  user-friendly experiences aligned with our vision and proposed use cases. It
+  should be a joy to navigate in the Live Documentation Explorer.
+
+  I think you not only need subagents designing, but you need subagents
+  exploring different design _possibilities_, researching and rapidly
+  discarding ideas after they fail thought experiment. I think that the
+  subagents doing this work should reasonably themselves need subagents to do
+  research on their school of design, similar interaction surface references,
+  inspiration for new ways to interact, etc. We want a nicely-accessible
+  works-at-basically-any-screen-size highly-portable client-first secure
+  experience for exploring complex systems and sharing that exploration with
+  others easily.
+
+  >Back and forward can be fixed now, independently of that redesign. Each
+  deliberate move would add a history entry: switching view, opening a thing,
+  focusing a file, pinning, finding a path. Hover, pan and zoom would keep
+  overwriting the current entry. Then the browser's buttons, Alt+←, your
+  mouse's side buttons and on-page ← → buttons all work.
+
+  If you believe that this is a core ingredient that we need in order for the
+  subagent(s) to cook properly, I am inclined to agree that we should implement
+  this before spinning up the subagent(s) who will fan out and explore the
+  design space.
+
+  I have lots of usage left and it resets tomorrow -- I just ran out of Fable
+  usage. Feel free to just do what you need to succeed and not worry about the
+  tokens. (This is on a Claude Code subscription)
+  ⎿  1 skill available
+
+● Yes, I think back and forward is a core ingredient, and for a reason beyond
+  convenience. To implement it, I have to decide what counts as a place in the
+  Explorer: every view, every thing opened, file focused and pin gets an
+  address, and moving between addresses becomes history. Every navigation design
+  the subagents invent will be a way of moving between those places, and
+  sharing an exploration becomes sharing an address. So I'll build that first,
+  then launch the design exploration on top of it.
+
+  I'll start by reading how the Explorer stores its state in the URL today:
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I've identified three separate URL writers (updateUrlState, the Membrane Map's
+  writeUrlState, and the path finder), all using replaceState while the URL is
+  only read at startup—so back/forward support requires deciding when writes
+  become history entries and restoring app state on address changes. Now
+  checking the startup and navigation flow in index.ts.
+
+  Read 1 file (ctrl+o to expand)
+
+● Now the Membrane Map's side: what it reads at creation, when it writes, and
+  what it exposes to the rest of the app.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've mapped out a plan for history-aware navigation: a dedicated module will
+  decide when address bar writes create new entries (only after real user input,
+  coalesced per action), the app will restore full state from the URL on
+  address changes, and I'll add on-page back/forward buttons for the editor
+  panel. Next, I'll check what the World Map and path finder expose.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ >To implement it, I have to decide what counts as a place in the Explorer:
+  every view, every thing opened, file focused and pin gets an address, and
+  moving between addresses becomes history. Every navigation design the
+  subagents invent will be a way of moving between those places
+
+  Remember that we can split out the pinning history from the navigation
+  history. We have the ability to store sooooomewhat complex data via URL, so
+  URL transitions should be a good sign of navigation change (hah! Unless it's
+  storing pin state, in which case, you'll need to make sure you're working off
+  the parsed data to be sure about that)
+
+● I'll implement Back navigation to only fire on actual place changes (view,
+  node, folder, From/To), keeping pin/pan/zoom changes as in-place updates by
+  comparing decoded navigation state rather than raw URLs—pin history can come
+  later as a separate undo/redo. Next, I'm checking where on-page buttons can
+  go.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Header it is: two small buttons between the title and the collapse toggle.
+  Writing the history module first. The decisions are pure functions, so Vitest
+  can test them without a page.
+
+● Write(/workspaces/Live-Documentation/packages/explorer/src/client/persistence/
+       history.ts)
+  ⎿  Wrote 139 lines to
+     ../../../../../packages/explorer/src/client/persistence/history.ts
+       1 /**
+         bar goes through {@link commitUrl}.
+       3  *
+          another folder opened or a path between two files,
+         e, pins, an expanded card, pan and zoom, rewrites the
+       6  * current entry, so Back never walks through pin toggles. Which
+       7  * from the raw one, because the Membrane Map packs its pins and
+          its folders into one compressed parameter.
+       9
+         the current one, or nothing. */
+     … +152 lines (ctrl+o to expand)
+
+● Next, the pure function that reads a place from an address, in either of the
+  two URL formats the Explorer writes:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Write(/workspaces/Live-Documentation/packages/explorer/src/client/persistence/
+       place.ts)
+  ⎿  Wrote 24 lines to
+     ../../../../../packages/explorer/src/client/persistence/place.ts
+       1 /**
+       2  * The place an Explorer address names, as a key two addresses c
+       3  * folders open in the Membrane Map, and the ends of a path. Pin
+         s, expanded cards, pan, zoom and filters are left out;
+       4  * they change what a place shows, not where the person is.
+       6
+       7 import { decompressSnapshot } from "./compressed-url-state";
+       8 import { viewNameToInternal } from "./url-state";
+      10 /** Reads the place from an address's query, in either form the
+         Explorer writes: `?view=&node=` or the compressed `?s=`. */
+     … +22 lines (ctrl+o to expand)
+
+● No import cycle: the history module imports nothing, and the place reader is
+  wired in at start-up. Now the three URL writers go through commitUrl:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now the Membrane Map needs a way to take a snapshot back when Back lands on
+  one of its entries. Its public interface:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Checking the sidebar header's styles, so the buttons match the collapse toggle
+  and hide when the sidebar collapses:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● It type-checks. Before testing, I'll confirm the path finder's setFrom and
+  setTo accept "no endpoint" and update their input boxes, since the restore
+  relies on both:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both setters accept "no endpoint", so the restore can clear the boxes. Now the
+  unit tests for the two pure decisions: whether a write is a new entry, and
+  what counts as the same place.
+
+● Write(/workspaces/Live-Documentation/packages/explorer/src/client/persistence/
+       history.test.ts)
+  ⎿  Wrote 36 lines to ../../../../../packages/explorer/src/client/persiste
+     nce/history.test.ts
+       1 import { describe, expect, it } from "vitest";
+       2
+       3 import { BURST_MS, entryFor, type HistoryWrite } from "./history
+         ";
+       4
+       6   fromPlace: "a",
+       7   toPlace: "b",
+       8   sameUrl: false,
+       9   armed: true,
+      10   restoring: false,
+     … +32 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(/workspaces/Live-Documentation/packages/explorer/src/client/persistence/
+       place.test.ts)
+  ⎿  Wrote 46 lines to
+     ../../../../../packages/explorer/src/client/persistence/place.test.ts
+       1 import { describe, expect, it } from "vitest";
+       2
+       4 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapsh
+         ot } from "./compressed-url-state";
+       5 import { placeOf } from "./place";
+       7 const membrane = (snapshot: Partial<UrlStateSnapshot>): string =
+         >
+       8   `?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, ...snapshot })}`
+       9
+      10 describe("placeOf", () => {
+     … +49 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+● 39 pass. Now a Playwright spec that drives the real page: Back and Forward
+  across views, folders counted as moves, and pins not counted. Checking the
+  existing helpers first:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found a design flaw: a fixed 400ms merge window would incorrectly combine
+  rapid successive clicks into one entry. Instead, I'll merge writes by browser
+  task (since a single action's writes all occur in the same task) rather than
+  by time.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Those are my own edits, and the tests pass. Now the Playwright spec:
+
+● Write(/workspaces/Live-Documentation/tests/e2e/explorer-history.spec.ts)
+  ⎿  Wrote 63 lines to ../../../../../tests/e2e/explorer-history.spec.ts
+      1 import { test, expect, type Page } from "@playwright/test";
+      2
+        aneMap, pinAllOnCard } from "./helpers";
+      4
+      5 /**
+        er file or another folder is an entry in the
+      7  * browser's history; a pin, an expanded card, a pan or a zoom re
+        writes the entry of the place it is made in, so Back
+        er's go the same way.
+      9  */
+     … +65 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both tests passed on the first run. I'll also check the World Map → Membrane
+  Map → Back flow, so let's look at how the existing World Map spec handles
+  opening a thing.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Three of three pass. My spec uses window.__worldMap, whose type is declared in
+  the World Map spec, so I'll lint and type-check the tests and the changed
+  client files to make sure that resolves:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The import order is fixed. Checking whether my new files add any JSDoc
+  warnings to the existing pile:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The new modules lint cleanly. Running the full gate and the Playwright suite,
+  which now builds its own bundles:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All pass: 963 unit tests and 53 in Playwright. The generator wrote docs for
+  the five new files. The two product modules deserve an authored Purpose, so
+  here is the doc's shape:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The docs lint, and the generator sees no drift. Now a picture of the buttons,
+  as AGENTS.md asks after an Explorer change: one right after the page opens,
+  and one after two moves and a Back.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed both buttons start disabled, then become active after two moves and
+  a Back, with the Local Map restored — the slightly earlier sidebar title
+  truncation is a minor issue the navigation redesign will address later. Saving
+  the screenshots, updating test counts in AGENTS.md, and committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Back and Forward is committed (31a98e3f) with the full gate and all 53
+  Playwright tests passing. Next I'll reread the September 28 probes brief and
+  the vision before drafting the new design exploration brief.
+
+  Read 1 file (ctrl+o to expand)
+
+● The brief still holds up, though a few things are outdated—the colors and the
+  CDN-based three.js import, which I'll switch to a local node_modules import
+  for offline use. Reading through the full vision now.
+
+  Read 1 file (ctrl+o to expand)
+
+● I have what's needed for the brief—since you want subagents with their own
+  subagents, I'll use the Workflow tool for orchestration and load its authoring
+  guide before designing the run.
+
+● Skill(workflow-authoring)
+  ⎿  Successfully loaded skill
+
+● Back and Forward is committed. Now I'm drafting the brief for exploring eleven
+  design schools—each getting researchers, a designer, a builder, and a critic
+  before a final synthesis—and I'll first check the machine's capacity and data
+  size the prototypes will load.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I have 20 CPUs and 62 GB of memory available, enough to run up to 16 agents in
+  parallel with their own browsers. Before drafting the brief, I'll set up a
+  shared kit (bundle copies, a self-terminating server, an offline bundler, and
+  a screenshot helper with phone/laptop/wall sizes) so builders don't need to
+  reimplement these basics.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Since http-server isn't installed locally and npx was fetching it remotely,
+  I'll swap it out for a lightweight static server built directly with
+  node:http, avoiding the dependency and letting stop() cleanly close just that
+  server.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The kit works, and the screenshot confirms the issue: on phone, the sidebar
+  eats over half the screen, shrinking the World Map to a tiny grey block. I'll
+  capture "today" screenshots at each size so designers have a clear
+  before-state to improve on.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The probe kit works, and I'm now capturing today's Explorer at three sizes as
+  a baseline for the designers. The earlier timeout happened because the page
+  reopens the last-viewed map (Local instead of World), so I'm addressing the
+  World Map explicitly now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 21 pictures, with no page errors. Spot-checking two, since designers will
+  reason from them:
+  Read 2 files (ctrl+o to expand)
+
+● The baseline screenshots confirm real issues: a near-empty Membrane Map tile
+  and a Local Map pushed off-screen on mobile. I've written the brief capturing
+  tonight's requirements, code locations, data, the place model, six real-data
+  scenarios, constraints, and deliverables per stage.
+
+● Write(/workspaces/Live-Documentation/AI-Agent-Workspace/Probes/2026-09-30/brie
+       f.md)
+  ⎿  Wrote 84 lines to ../../../../Probes/2026-09-30/brief.md
+      1 # Navigation probes, 2026-09-30: the brief
+      3 Eleven schools of design each research, design, build and defend
+        one way of navigating the Live Documentation Explorer. The protot
+        are the product of this work. Read `.mdmd/layer-1/vision.mdmd.md`
+         and `AI-Agent-Workspace/Memory/owner.md` before anything else: t
+      4
+      5 ## Why, in the owner's words (2026-09-30)
+      7 > Look to videogames for inspiration. I think that The Sims (and
+        maybe Spore?) had bubbles at the bottom center of the screen for
+        pover-like elements with choices surround
+     … +270 lines (ctrl+o to expand)
+
+● Before relying on the brief's data description, I'll check it against
+  graph.ts: the field names, and that edges crossing a process boundary carry a
+  basis.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The brief matches the data—cross-system edges carry a basis, and the estate's
+  symbols cover routes, addresses, procedures, and tables. I'll commit the brief
+  now so the run is recorded in case of interruption.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Workflow(Eleven schools of design research, design, build, critique and revise
+          navigation prototypes for the Live Documentation Explorer, then a
+          synthesis)
+  ⎿  /workflows to view dynamic workflow runs
+
+● Back and Forward is committed, and the design exploration is running in the
+  background.
+
+  Back and Forward (31a98e3f) splits navigation from pins, as you asked:
+  - Moves (another view, file, open folder, or a path with both ends) become
+    history entries.
+  - Pins, expanded cards, pan and zoom only change the current entry. Back never
+    steps through pin toggles, and a place comes back with its latest pins.
+  - The decision uses the parsed address. The Membrane Map packs its folders and
+    pins into one compressed parameter, so the raw address alone would count
+    every pin as a move.
+  - One click is one step: writes made in the same browser task join a single
+    entry. Joining by task rather than by time keeps two quick clicks as two
+    steps.
+  - Buttons: Back and Forward sit in the sidebar header, and the browser's
+    buttons, Alt+← and mouse side buttons also work.
+  - Tests: Vitest covers the two decisions, and a new Playwright spec walks
+    views, a folder with pins, and a thing opened from the World Map, back and
+    forth. All 963 unit tests and 53 Playwright tests pass.
+
+  The exploration runs eleven schools:
+  - life-sim and god games (The Sims, Spore)
+  - strategy and factory games
+  - open-world exploration
+  - digital cartography
+  - zoomable canvases
+  - keyboard-first command surfaces
+  - architectural wayfinding
+  - node editors
+  - the information-visualisation canon
+  - hypertext trails and storytelling
+  - touch and spatial computing
+
+  Each school goes through five stages:
+  1. Three researchers study its canon, its precedents, and inspiration from far
+     outside software.
+  2. A designer works through at least fifteen ideas, discards most by thought
+     experiment, and writes intentions in the form "Intention, Because,
+     Therefore", with every visible choice traced to one.
+  3. A builder makes a working prototype on the real data and photographs it at
+     phone, laptop and wall sizes. The prototype runs offline, either on top of
+     the real Explorer or as a fresh page built from the repository's own
+     modules.
+  4. A critic with fresh eyes walks the six scenarios and checks the
+     constraints.
+  5. The builder revises and writes a record.
+
+  Finally, one synthesis agent compares all eleven.
+
+  The brief is committed (be79b4e8) at
+  AI-Agent-Workspace/Probes/2026-09-30/brief.md. It carries your words from
+  tonight verbatim, plus six concrete scenarios on real data: where to start,
+  what my change touches, tracing a payment, showing a colleague, the hopper,
+  and how exposed the estate is. Each designer also starts from pictures of
+  today's Explorer at all three sizes.
+
+  It's about 70 agents and will take a while; /workflows shows live progress.
+  When it finishes I'll read the synthesis and the records, commit them with the
+  best pictures, and bring you the three prototypes to open first.
+
+  One decision is still yours: should the board text's Serves: become Offers:?
+
+● Background workflow "navigation-design-probes" (run wf_828f3652-42d) didn't
+finish before the previous session ended
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/tmp/design-audit.cjs in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+❯ Ran overnight... I see the dev container required a restart when I came back
+  though? What were those agents up to? Did the workflow work? I see no changed
+  files except design-audit.cjs
+  ⎿  24 skills available
+
+● I'll find out what state the run left behind: what each school's folder holds,
+  what the workflow's journal recorded, and where tmp/design-audit.cjs came
+  from. The probes wrote into AI-Agent-Workspace/tmp/, which git ignores, which
+  would explain why you see almost no changed files.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Every school completed research and design, but none completed the Build
+  stage—no findings.md exists anywhere, though 10 schools have mid-build
+  prototype screenshots and wayfinding has none. Next I'll check when activity
+  stopped, what the journal recorded, and who created tmp/design-audit.cjs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All eleven schools stopped writing within the same four-minute window
+  (03:49–03:53), pointing to the container going down rather than individual
+  agent failures — and I traced that stray tmp/design-audit.cjs bundle to a
+  builder that misplaced its output in the repo's tmp/ folder. Now I'll check
+  the workflow's journal for errors before 03:53, starting with its overall
+  shape.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 55 agents ran, with all 33 researchers and 11 designers finishing but the 11
+  builders never completing—I'll check just the metadata (last entry
+  timestamp/type, API error flags) of each builder's log to determine whether
+  this was a container failure versus an API or usage-limit issue, without
+  reading their actual content.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● None of the builders logged an API error or usage limit — all eleven were
+  mid-work, with last entries between 03:46 and 03:53 UTC, suggesting the
+  process stopped around 03:53. I'll check the VM's uptime next to see if WSL
+  itself restarted or just the container.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed: WSL auto-updated its kernel (6.18.33.2 → 6.18.40.1) and restarted
+  around 03:55 UTC, killing the container and all agents mid-run — not a failure
+  from API errors or usage limits, just an unexpected reboot while all eleven
+  builders were active. Pulling the designers' structured results from the
+  journal now to summarize what each school set out to build.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found the cause: WSL's kernel update and restart around 03:55 UTC killed the
+  container mid-build, though research and all eleven designs had already
+  finished. I'll fix the bug causing stray files (bundle() resolving relative
+  paths from the repo root instead of the entry's folder), delete the untracked
+  stray bundle, and resume the run from the builds.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Three schools' scripts mention design-audit.cjs. Checking whether any pointed
+  at the root copy I just removed, so the resumed builders aren't surprised:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll add a paragraph to the builders' prompt directing it to continue from the
+  partial work and keep outputs in the same folder, leaving the research and
+  design prompts unchanged so their 44 cached results stay valid.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Workflow(navigation-design-probes-wf_828f3652-42d.js)
+  ⎿  Error: scriptPath must be a script path this tool returned, or a file you
+     can already read (the working directory or a directory you have added):
+     /home/node/.claude/projects/-workspaces-Live-Documentation/938ec442-01ad-44
+     ad-bd62-ac7e87a8139d/workflows/scripts/navigation-design-probes-wf_828f3652
+     -42d.js
+
+● The tool doesn't accept a script path from before the restart. I'll copy the
+  edited script into the working tree, into the probe kit, which git ignores,
+  and resume from there:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Workflow(navigation-design-probes.workflow.js)
+  ⎿  /workflows to view dynamic workflow runs
+
+● Relaunched. Checking the journal to confirm the finished research and designs
+  came back from the cache, and only the builders started fresh:
+  Ran 1 shell command (ctrl+o to expand)
+
+● The resume didn't work as intended — since the cache matches by call order and
+  a resumed pipeline calls things in a different sequence, it started
+  re-running research/design live, risking overwriting the finished work under
+  the partial builds. I'm stopping it now.
+
+● Stop Task
+  ⎿  Eleven schools of design research, design, build, critique and revise
+     navigation prototypes for the Live Documentation Explorer, then a
+     synthesis · stopped
+
+● It's stopped. Checking whether the brief re-run overwrote anything:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Nothing was overwritten, and the running process is just VS Code, not our
+  browser. I'll kick off a fresh run from the Build stage with the same prompts,
+  since the builders load intentions and partial work directly from disk rather
+  than any cache.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Still in the script: the research and design prompt definitions, which are now
+  unused but harmless. The pipeline starts at Build. Launching it fresh:
+
+● Workflow(navigation-design-probes-build.workflow.js)
+  ⎿  /workflows to view dynamic workflow runs
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Only the eleven builders started, each continuing from its predecessor's
+  partial work.
+
+  The workflow did work, until WSL updated itself and restarted at about 03:55
+  UTC. The kernel went from 6.18.33.2 to 6.18.40.1, and the VM has been up nine
+  hours. The restart took down the container and all eleven builders mid-build.
+  No agent hit an API error or a usage limit.
+
+  What got done overnight. You saw no changed files because everything lives in
+  AI-Agent-Workspace/tmp/probes/2026-09-30/, which git ignores:
+  - Research: 33 notes, three per school.
+  - Designs: 11 intentions.md, each working through 35 to 57 ideas and
+    discarding 15 to 22 with reasons.
+  - Partial prototypes: 10 schools had built part of a prototype, with 19 to 169
+    screenshots each. Wayfinding had none yet.
+  - Not reached: no builder had written its findings, so there are no critiques
+    or records yet.
+
+  The stray tmp/design-audit.cjs was my kit's fault. Its bundler ran from the
+  repository root, so a builder's relative output path landed there. The kit now
+  keeps bundles beside their entry, and I've removed the file; git is clean.
+
+  My own mistake this morning. My first attempt to resume began re-running the
+  research and designs, because the workflow's cache matches finished work by
+  call order. I stopped it within a minute, before it had overwritten anything.
+  The run now going is a fresh one that starts at Build and reads the designs
+  from disk. After the builds, the critics, the revisions and the synthesis
+  follow as planned.
+
+  A first look at the designs:
+  - Common ground:
+    - All eleven drop the sidebar.
+    - Nearly all put Back and Forward, each labelled with where it goes, in one
+      place with the crumb.
+    - Every design gives pins their own undo, separate from Back.
+    - Several make "Share" a link or tour that opens framed on the recipient's
+      phone.
+    - Exposure is a lens you switch on.
+  - Most distinctive:
+    - life-sim: a compass pie with the same eight slots at every scale: Uses on
+      the green left, Used by on the blue right, a count on each.
+    - open-world: an "altimeter" of rungs from the board down to the symbol you
+      stand on, and numbered flags you jump to with keys 1 to 9.
+    - command-first: the address as a sentence, each word a button back out to
+      that scale.
+    - strategy-logistics: a route with one open end shows the blast radius.
+    - node-editors: pins travel with you, so climbing out from core.ts fades
+      whatever it doesn't reach on the board.
+    - trails-and-stories: keep places as stops in a trail, and send the trail.
+
+  You can read any school's intentions.md now. When the run finishes I'll commit
+  the records with the best pictures and bring you the three prototypes to open
+  first.
+
+  WSL could update and restart again during the run. If it does, the finished
+  stages are on disk and I can pick up from them.

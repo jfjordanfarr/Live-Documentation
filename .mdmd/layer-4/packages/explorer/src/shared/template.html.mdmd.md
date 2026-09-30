@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-09-30T01:36:13.429Z
+- Generated At: 2026-09-30T16:22:05.474Z
 
 ## Authored
 ### Purpose
@@ -21,214 +21,214 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `circuit-connections` {#symbol-circuitconnections}
+#### `circuit-connections` {#symbol-circuit-connections}
 - Type: variable
 
-#### `circuit-container` {#symbol-circuitcontainer}
+#### `circuit-container` {#symbol-circuit-container}
 - Type: variable
 
-#### `circuit-viewport` {#symbol-circuitviewport}
+#### `circuit-viewport` {#symbol-circuit-viewport}
 - Type: variable
 
-#### `context-bar` {#symbol-contextbar}
+#### `context-bar` {#symbol-context-bar}
 - Type: variable
 
-#### `context-name` {#symbol-contextname}
+#### `context-name` {#symbol-context-name}
 - Type: variable
 
 #### `controls` {#symbol-controls}
 - Type: variable
 
-#### `detail-body` {#symbol-detailbody}
+#### `detail-body` {#symbol-detail-body}
 - Type: variable
 
-#### `detail-close` {#symbol-detailclose}
+#### `detail-close` {#symbol-detail-close}
 - Type: variable
 
-#### `detail-panel` {#symbol-detailpanel}
+#### `detail-panel` {#symbol-detail-panel}
 - Type: variable
 
-#### `detail-title` {#symbol-detailtitle}
+#### `detail-title` {#symbol-detail-title}
 - Type: variable
 
-#### `download-doc-btn` {#symbol-downloaddocbtn}
+#### `download-doc-btn` {#symbol-download-doc-btn}
 - Type: variable
 
-#### `filter-toggle-assets` {#symbol-filtertoggleassets}
+#### `filter-toggle-assets` {#symbol-filter-toggle-assets}
 - Type: variable
 
-#### `filter-toggle-related-docs` {#symbol-filtertogglerelateddocs}
+#### `filter-toggle-related-docs` {#symbol-filter-toggle-related-docs}
 - Type: variable
 
-#### `filter-toggle-tests` {#symbol-filtertoggletests}
+#### `filter-toggle-tests` {#symbol-filter-toggle-tests}
 - Type: variable
 
-#### `graph-svg` {#symbol-graphsvg}
+#### `graph-svg` {#symbol-graph-svg}
 - Type: variable
 
-#### `history-back` {#symbol-historyback}
+#### `history-back` {#symbol-history-back}
 - Type: variable
 
-#### `history-forward` {#symbol-historyforward}
+#### `history-forward` {#symbol-history-forward}
 - Type: variable
 
 #### `main` {#symbol-main}
 - Type: variable
 
-#### `map-connections` {#symbol-mapconnections}
+#### `map-connections` {#symbol-map-connections}
 - Type: variable
 
-#### `map-container` {#symbol-mapcontainer}
+#### `map-container` {#symbol-map-container}
 - Type: variable
 
-#### `map-viewport` {#symbol-mapviewport}
+#### `map-viewport` {#symbol-map-viewport}
 - Type: variable
 
-#### `membrane-connections` {#symbol-membraneconnections}
+#### `membrane-connections` {#symbol-membrane-connections}
 - Type: variable
 
-#### `membrane-container` {#symbol-membranecontainer}
+#### `membrane-container` {#symbol-membrane-container}
 - Type: variable
 
-#### `membrane-viewport` {#symbol-membraneviewport}
+#### `membrane-viewport` {#symbol-membrane-viewport}
 - Type: variable
 
 #### `omnisearch` {#symbol-omnisearch}
 - Type: variable
 
-#### `omnisearch-input` {#symbol-omnisearchinput}
+#### `omnisearch-input` {#symbol-omnisearch-input}
 - Type: variable
 
-#### `omnisearch-results` {#symbol-omnisearchresults}
+#### `omnisearch-results` {#symbol-omnisearch-results}
 - Type: variable
 
-#### `omnisearch-trigger` {#symbol-omnisearchtrigger}
+#### `omnisearch-trigger` {#symbol-omnisearch-trigger}
 - Type: variable
 
-#### `pathfind-clear` {#symbol-pathfindclear}
+#### `pathfind-clear` {#symbol-pathfind-clear}
 - Type: variable
 
-#### `pathfind-from` {#symbol-pathfindfrom}
+#### `pathfind-from` {#symbol-pathfind-from}
 - Type: variable
 
-#### `pathfind-from-clear` {#symbol-pathfindfromclear}
+#### `pathfind-from-clear` {#symbol-pathfind-from-clear}
 - Type: variable
 
-#### `pathfind-from-group` {#symbol-pathfindfromgroup}
+#### `pathfind-from-group` {#symbol-pathfind-from-group}
 - Type: variable
 
-#### `pathfind-from-results` {#symbol-pathfindfromresults}
+#### `pathfind-from-results` {#symbol-pathfind-from-results}
 - Type: variable
 
-#### `pathfind-from-symbol` {#symbol-pathfindfromsymbol}
+#### `pathfind-from-symbol` {#symbol-pathfind-from-symbol}
 - Type: variable
 
-#### `pathfind-go` {#symbol-pathfindgo}
+#### `pathfind-go` {#symbol-pathfind-go}
 - Type: variable
 
-#### `pathfind-path` {#symbol-pathfindpath}
+#### `pathfind-path` {#symbol-pathfind-path}
 - Type: variable
 
-#### `pathfind-status` {#symbol-pathfindstatus}
+#### `pathfind-status` {#symbol-pathfind-status}
 - Type: variable
 
-#### `pathfind-to` {#symbol-pathfindto}
+#### `pathfind-to` {#symbol-pathfind-to}
 - Type: variable
 
-#### `pathfind-to-clear` {#symbol-pathfindtoclear}
+#### `pathfind-to-clear` {#symbol-pathfind-to-clear}
 - Type: variable
 
-#### `pathfind-to-group` {#symbol-pathfindtogroup}
+#### `pathfind-to-group` {#symbol-pathfind-to-group}
 - Type: variable
 
-#### `pathfind-to-results` {#symbol-pathfindtoresults}
+#### `pathfind-to-results` {#symbol-pathfind-to-results}
 - Type: variable
 
-#### `pathfind-to-symbol` {#symbol-pathfindtosymbol}
+#### `pathfind-to-symbol` {#symbol-pathfind-to-symbol}
 - Type: variable
 
-#### `pathfind-toolbar` {#symbol-pathfindtoolbar}
+#### `pathfind-toolbar` {#symbol-pathfind-toolbar}
 - Type: variable
 
 #### `sidebar` {#symbol-sidebar}
 - Type: variable
 
-#### `sidebar-toggle` {#symbol-sidebartoggle}
+#### `sidebar-toggle` {#symbol-sidebar-toggle}
 - Type: variable
 
-#### `sources-container` {#symbol-sourcescontainer}
+#### `sources-container` {#symbol-sources-container}
 - Type: variable
 
-#### `stats-line` {#symbol-statsline}
+#### `stats-line` {#symbol-stats-line}
 - Type: variable
 
-#### `tuning-column-gap` {#symbol-tuningcolumngap}
+#### `tuning-column-gap` {#symbol-tuning-column-gap}
 - Type: variable
 
-#### `tuning-column-gap-value` {#symbol-tuningcolumngapvalue}
+#### `tuning-column-gap-value` {#symbol-tuning-column-gap-value}
 - Type: variable
 
-#### `tuning-hover-dim-connections` {#symbol-tuninghoverdimconnections}
+#### `tuning-hover-dim-connections` {#symbol-tuning-hover-dim-connections}
 - Type: variable
 
-#### `tuning-hover-dim-connections-value` {#symbol-tuninghoverdimconnectionsvalue}
+#### `tuning-hover-dim-connections-value` {#symbol-tuning-hover-dim-connections-value}
 - Type: variable
 
-#### `tuning-hover-dim-symbols` {#symbol-tuninghoverdimsymbols}
+#### `tuning-hover-dim-symbols` {#symbol-tuning-hover-dim-symbols}
 - Type: variable
 
-#### `tuning-hover-dim-symbols-value` {#symbol-tuninghoverdimsymbolsvalue}
+#### `tuning-hover-dim-symbols-value` {#symbol-tuning-hover-dim-symbols-value}
 - Type: variable
 
-#### `tuning-self-loop-taper` {#symbol-tuningselflooptaper}
+#### `tuning-self-loop-taper` {#symbol-tuning-self-loop-taper}
 - Type: variable
 
-#### `tuning-self-loop-taper-value` {#symbol-tuningselflooptapervalue}
+#### `tuning-self-loop-taper-value` {#symbol-tuning-self-loop-taper-value}
 - Type: variable
 
-#### `tuning-stub-factor` {#symbol-tuningstubfactor}
+#### `tuning-stub-factor` {#symbol-tuning-stub-factor}
 - Type: variable
 
-#### `tuning-stub-factor-value` {#symbol-tuningstubfactorvalue}
+#### `tuning-stub-factor-value` {#symbol-tuning-stub-factor-value}
 - Type: variable
 
-#### `tuning-stub-max-offset` {#symbol-tuningstubmaxoffset}
+#### `tuning-stub-max-offset` {#symbol-tuning-stub-max-offset}
 - Type: variable
 
-#### `tuning-stub-max-offset-value` {#symbol-tuningstubmaxoffsetvalue}
+#### `tuning-stub-max-offset-value` {#symbol-tuning-stub-max-offset-value}
 - Type: variable
 
-#### `tuning-stub-min` {#symbol-tuningstubmin}
+#### `tuning-stub-min` {#symbol-tuning-stub-min}
 - Type: variable
 
-#### `tuning-stub-min-value` {#symbol-tuningstubminvalue}
+#### `tuning-stub-min-value` {#symbol-tuning-stub-min-value}
 - Type: variable
 
-#### `tuning-vertical-offset` {#symbol-tuningverticaloffset}
+#### `tuning-vertical-offset` {#symbol-tuning-vertical-offset}
 - Type: variable
 
-#### `tuning-vertical-offset-value` {#symbol-tuningverticaloffsetvalue}
+#### `tuning-vertical-offset-value` {#symbol-tuning-vertical-offset-value}
 - Type: variable
 
-#### `view-circuit` {#symbol-viewcircuit}
+#### `view-circuit` {#symbol-view-circuit}
 - Type: variable
 
-#### `view-graph` {#symbol-viewgraph}
+#### `view-graph` {#symbol-view-graph}
 - Type: variable
 
-#### `view-map` {#symbol-viewmap}
+#### `view-map` {#symbol-view-map}
 - Type: variable
 
-#### `view-membrane` {#symbol-viewmembrane}
+#### `view-membrane` {#symbol-view-membrane}
 - Type: variable
 
-#### `view-sources` {#symbol-viewsources}
+#### `view-sources` {#symbol-view-sources}
 - Type: variable
 
-#### `view-world` {#symbol-viewworld}
+#### `view-world` {#symbol-view-world}
 - Type: variable
 
-#### `world-root` {#symbol-worldroot}
+#### `world-root` {#symbol-world-root}
 - Type: variable
 <!-- LIVE-DOC:END Public Symbols -->
 

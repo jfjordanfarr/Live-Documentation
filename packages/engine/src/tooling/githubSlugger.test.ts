@@ -10,11 +10,25 @@ describe("github slugger", () => {
       .toBe("heading-with-a-periodtxt");
     expect(slug("I ♥ unicode"))
       .toBe("i--unicode");
-    // GitHub collapses ASCII hyphens when they appear between non-Latin words.
+    // Upstream github-slugger preserves literal hyphens, including in mixed scripts.
     expect(slug("Привет non-latin 你好"))
-      .toBe("привет-nonlatin-你好");
+      .toBe("привет-non-latin-你好");
     expect(slug("😄 unicode emoji"))
       .toBe("-unicode-emoji");
+  });
+
+  it("preserves date and turn anchors used by provenance links", () => {
+    // github-slugger 2.0.0: https://github.com/Flet/github-slugger/blob/2.0.0/regex.js
+    expect(slug("2026-09-30")).toBe("2026-09-30");
+    expect(slug("Owner · 2026-09-29 15:32 UTC")).toBe("owner--2026-09-29-1532-utc");
+    const slugger = createSlugger();
+    expect(slugger.slug("a-b")).toBe("a-b");
+    expect(slugger.slug("ab")).toBe("ab");
+    expect(slugger.slug("a-b")).toBe("a-b-1");
+  });
+
+  it("removes the full ASCII punctuation range from colon through at-sign", () => {
+    expect(slug("a:b;c<d=e>f?g@h-i_j")).toBe("abcdefgh-i_j");
   });
 
   it("respects maintainCase flag", () => {

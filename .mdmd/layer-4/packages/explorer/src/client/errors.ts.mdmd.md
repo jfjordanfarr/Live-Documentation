@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/errors.ts
-- Generated At: 2026-09-28T01:11:42.806Z
+- Generated At: 2026-09-30T16:22:03.975Z
 
 ## Authored
 ### Purpose
@@ -35,7 +35,7 @@ Installs a `window.error` listener that delegates to {@link reportFatalExplorerE
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`template.detail-body`](../shared/template.html.mdmd.md#symbol-detailbody)
-- [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detailpanel)
-- [`template.stats-line`](../shared/template.html.mdmd.md#symbol-statsline)
+- [`template.detail-body`](../shared/template.html.mdmd.md#symbol-detail-body)
+- [`template.detail-panel`](../shared/template.html.mdmd.md#symbol-detail-panel)
+- [`template.stats-line`](../shared/template.html.mdmd.md#symbol-stats-line)
 <!-- LIVE-DOC:END Dependencies -->

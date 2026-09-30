@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml
-- Generated At: 2026-09-27T23:21:32.469Z
+- Generated At: 2026-09-30T16:22:06.206Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Models the Blazor Server host page that renders hidden telemetry attributes cons
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `telemetry-endpoint` {#symbol-telemetryendpoint}
+#### `telemetry-endpoint` {#symbol-telemetry-endpoint}
 - Type: variable
 <!-- LIVE-DOC:END Public Symbols -->
 

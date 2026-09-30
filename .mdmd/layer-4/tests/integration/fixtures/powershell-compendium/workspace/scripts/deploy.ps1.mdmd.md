@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/deploy.ps1
-- Generated At: 2026-09-27T23:21:32.876Z
+- Generated At: 2026-09-30T16:22:06.417Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Fixture entry point that simulates an ops deployment script for inspect CLI regr
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Invoke-Deployment` {#symbol-invokedeployment}
+#### `Invoke-Deployment` {#symbol-invoke-deployment}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/fixtures/powershell-compendium/workspace/scripts/deploy.ps1#L17)
 

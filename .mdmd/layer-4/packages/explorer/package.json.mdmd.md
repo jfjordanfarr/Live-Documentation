@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
-- Generated At: 2026-09-29T21:00:18.573Z
+- Generated At: 2026-09-30T16:22:03.899Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ _Pending notes_
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `@live-documentation/explorer` {#symbol-livedocumentationexplorer}
+#### `@live-documentation/explorer` {#symbol-live-documentationexplorer}
 - Type: package
 - Source: [source](../../../../packages/explorer/package.json#L1)
 <!-- LIVE-DOC:END Public Symbols -->
@@ -30,5 +30,5 @@ _Pending notes_
 - `jszip@^3.10.1`
 - `lz-string@^1.5.0`
 - `minimatch@^10.2.4`
-- [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-livedocumentationengine)
+- [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-live-documentationengine)
 <!-- LIVE-DOC:END Dependencies -->

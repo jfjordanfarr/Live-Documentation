@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-09-30T01:36:12.181Z
+- Generated At: 2026-09-30T16:22:04.250Z
 
 ## Authored
 ### Purpose
@@ -108,17 +108,17 @@ Initialize the pathfind toolbar with search and symbol selection
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`history.commitUrl`](./persistence/history.ts.mdmd.md#symbol-commiturl)
-- [`template.pathfind-clear`](../shared/template.html.mdmd.md#symbol-pathfindclear)
-- [`template.pathfind-from`](../shared/template.html.mdmd.md#symbol-pathfindfrom)
-- [`template.pathfind-from-clear`](../shared/template.html.mdmd.md#symbol-pathfindfromclear)
-- [`template.pathfind-from-results`](../shared/template.html.mdmd.md#symbol-pathfindfromresults)
-- [`template.pathfind-from-symbol`](../shared/template.html.mdmd.md#symbol-pathfindfromsymbol)
-- [`template.pathfind-go`](../shared/template.html.mdmd.md#symbol-pathfindgo)
-- [`template.pathfind-to`](../shared/template.html.mdmd.md#symbol-pathfindto)
-- [`template.pathfind-to-clear`](../shared/template.html.mdmd.md#symbol-pathfindtoclear)
-- [`template.pathfind-to-results`](../shared/template.html.mdmd.md#symbol-pathfindtoresults)
-- [`template.pathfind-to-symbol`](../shared/template.html.mdmd.md#symbol-pathfindtosymbol)
-- [`template.pathfind-toolbar`](../shared/template.html.mdmd.md#symbol-pathfindtoolbar)
+- [`template.pathfind-clear`](../shared/template.html.mdmd.md#symbol-pathfind-clear)
+- [`template.pathfind-from`](../shared/template.html.mdmd.md#symbol-pathfind-from)
+- [`template.pathfind-from-clear`](../shared/template.html.mdmd.md#symbol-pathfind-from-clear)
+- [`template.pathfind-from-results`](../shared/template.html.mdmd.md#symbol-pathfind-from-results)
+- [`template.pathfind-from-symbol`](../shared/template.html.mdmd.md#symbol-pathfind-from-symbol)
+- [`template.pathfind-go`](../shared/template.html.mdmd.md#symbol-pathfind-go)
+- [`template.pathfind-to`](../shared/template.html.mdmd.md#symbol-pathfind-to)
+- [`template.pathfind-to-clear`](../shared/template.html.mdmd.md#symbol-pathfind-to-clear)
+- [`template.pathfind-to-results`](../shared/template.html.mdmd.md#symbol-pathfind-to-results)
+- [`template.pathfind-to-symbol`](../shared/template.html.mdmd.md#symbol-pathfind-to-symbol)
+- [`template.pathfind-toolbar`](../shared/template.html.mdmd.md#symbol-pathfind-toolbar)
 - [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/common/logging.ps1
-- Generated At: 2026-09-27T23:21:32.806Z
+- Generated At: 2026-09-30T16:22:06.367Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ The function body stays intentionally simple so adapter tests can focus on dot-s
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Write-DeploymentLog` {#symbol-writedeploymentlog}
+#### `Write-DeploymentLog` {#symbol-write-deploymentlog}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/powershell-compendium/common/logging.ps1#L1)
 <!-- LIVE-DOC:END Public Symbols -->

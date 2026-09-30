@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx
-- Generated At: 2026-09-27T23:21:35.533Z
+- Generated At: 2026-09-30T16:22:07.952Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Keeps the `aspNetMarkupAdapter` exercised: the test expects dependencies to `Def
 #### `form1` {#symbol-form1}
 - Type: variable
 
-#### `widget-container` {#symbol-widgetcontainer}
+#### `widget-container` {#symbol-widget-container}
 - Type: variable
 
 #### `WidgetToggleHidden` {#symbol-widgettogglehidden}

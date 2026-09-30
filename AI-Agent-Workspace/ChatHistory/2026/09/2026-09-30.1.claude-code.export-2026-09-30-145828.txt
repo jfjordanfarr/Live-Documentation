@@ -1,0 +1,2224 @@
+
+❯ Let's begin this chat as we have with the past couple: ensuring that you're
+  up-to-date on the history of this workspace. The best way to do that is to
+  revisit the other claude code chats, which we've made sure to put into flat
+  markdown files without any reasoning extraction or any other unintended
+  signal extraction. Please look through those and make sure they're accurate
+  relative to the most recent chat. The most recent chat ended up having not
+  one but two big subagent failures. There is much to be redone. My Fable
+  limits have reset for the week and I've increased my limits further online
+  with a higher-tier subscription. Can you please explore what was lost in the
+  two subagent blasts of the prior chat after you ensure that prior chat files
+  are accurately reconstructed? Let's get this effort back on track.
+  ⎿  You've reached your Fable limit. Switch to another model, or manage usage
+     credits at claude.ai/settings/usage?from=cc_cli_limit_message, to continue.
+     /upgrade to increase your usage limit.
+
+❯ /model opus
+  ⎿  Set model to claude-opus-5-5
+
+❯ Oh, I guess my Fable limits didn't reset. Dang! 15 more hours. My apologies.
+  Opus 5.5, you're really great so I totally trust you to help with the
+  reconstruction of the past and getting one's bearings straight. I just want
+  to make sure that once I'm able to engage with the frontier-iest model, that
+  it's able to succeed and has everything it needs. That said, we got some good
+  substantive work done together yesterday, you and I Opus! No shade
+  whatsoever! Can you help out on this? I know I asked you at the end of the
+  last chat to check in on the subagents but I just wonder if we can do a more
+  targeted... fix...?...of all the times these subagents went boom-boom?
+  Including when my fable limits whacked and I had a cascading set of agents go
+  down all trying to explore old chats? That work was _really_ important.
+
+● I'll start by reading the workspace memory files and the chat record, then
+  check the most recent transcript against Claude Code's own logs.
+
+  Read 1 file, listed 2 directories, ran 1 shell command (ctrl+o to expand)
+
+● The prior chat's transcript stops at 20:04 on 2026-09-29, but its log ran
+  until 13:33 today. I'll check the commits since then and then regenerate the
+  transcripts with the script.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Only the prior chat's transcript changed; the three earlier ones regenerate
+  byte-identical. Now I'll read the whole prior-chat transcript.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The prior chat grew by 532 lines overnight, including two Workflow runs this
+  morning. I'll read the whole transcript now.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I've reviewed the full transcript through 13:09, confirming both failures: the
+  Fable limit halting the chat-record explorers on 9/29, and the WSL restart
+  killing the overnight design workflow. Now I'll check the disk state each left
+  behind, starting with this morning's relaunched design workflow.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The prior chat's regenerated transcript is accurate through 13:09 today. I'm
+  now inspecting the design workflow's saved run state to see whether this
+  morning's relaunch finished or died.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The 13:08 builder run appears active, with recent logs and a running process
+  from the prior session. I'll check which builders are currently active before
+  making any changes near it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ten of eleven builders wrote within the last minute, confirming the design
+  workflow's redo is already running in the prior chat's process, so I'll leave
+  it alone. Next I'll inventory every subagent across all four Claude Code
+  sessions and how each ended, checking only message text and error flags.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found the failure sources: a Fable rate limit killed 4 explorers and 23
+  readers (9 before any tool call), while an overnight WSL restart killed the
+  design workflow, which is now being redone. Next I'll read the bearings folder
+  to see what the rerun covered and what gaps remain.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'm reading each report's own list of what it never reached, so the redo can
+  target those gaps.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've identified the gaps based on what the reports themselves admitted. Before
+  drafting a brief for a targeted redo, I'll review the two earlier briefs and
+  the bearings front page in full to ensure the new run builds on them instead
+  of repeating work.
+
+  Read 1 file (ctrl+o to expand)
+
+● The bearings page highlights the biggest gaps: late October,
+  mid-November/December, and anything requiring a build. Next I'll read the
+  Memory files that every subagent brief depends on.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll fix an accuracy gap where the transcript shows a vague "1 × Workflow"
+  that hides a 70-agent run being launched, stopped, and relaunched—checking the
+  tool-call inputs to clarify what actually happened before planning the redo.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll teach the transcript script to name workflows and stopped tasks, so a
+  reader can see the design run's start, resumes, stop and relaunch.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The transcripts now name each workflow start, resume and stop. Next I'll check
+  the running design workflow once more, school by school, so I know what it
+  still has to do.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ten builders are writing now. The touch-and-spatial builder has been silent
+  for about ten minutes, so I'll check its last tool call, reading tool-call
+  inputs only.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Playwright builder run is still alive and progressing fine, so I just need
+  to keep the prior chat open. I'll now check what's already been salvaged from
+  the dead readers' prompts so I only redo what's still missing.
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll compare the saved questions against the actual prompts written for each
+  dead reader, pulling from the raw tool-call inputs to check for discrepancies.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The prompts confirm major gaps: the concurrent-agent and Fable limits blocked
+  or killed most planned reads, leaving November, December, February–April, and
+  all eight Claude Code audits unread. Next I'll size the unread transcripts to
+  plan a targeted redo.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The remaining unread material totals about 15.7 MB, roughly double what the
+  second run covered. I'll check a few of the dead readers' original prompts to
+  see if they're reusable as-is before estimating the scope of the redo.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll relaunch each lost reader with its original prompt plus an update on
+  what's changed, having them save findings to disk as they go. First I'll check
+  whether the briefing files in the prior session's scratch folder survived
+  this morning's restart.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● The prior session's scratch files survived. I'm checking that the briefing
+  files the dead readers' prompts point at are still there.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll inventory the scratch folder from the prior session to see what notes
+  from the stopped explorers were never carried into the repository.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The scratch folder contains uncommitted material—13 duplicate January reader
+  reports, 3 October reader reports from the second run, plus various explorer
+  notes and briefings. I'll go through each notes file to decide what to keep.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll save the irreplaceable items—the January and October reader reports and
+  the stopped explorers' briefings—into the bearings folder so they survive a
+  restart, then read the remaining key prompts to decide which readers to
+  relaunch.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll save the sixteen uncommitted reader reports, marked the same way as the
+  reader reports already kept. First I'll check how those are headed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll save the sixteen reports with the same heading style and a provenance
+  line, headings moved one level down.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The sixteen reports are saved. Next I'll map which briefing file each dead
+  reader's prompt depends on, so the relaunched readers get the same
+  instructions their explorers wrote.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've mapped out the relaunch plan: roughly eighty readers across three waves,
+  prioritized by importance, with wave one covering the Membrane Map's March
+  saga, Local Map rules, path-mode days, probe record, and rename-loss check.
+  Before drafting the brief, I'll check three more prompts that may overlap with
+  work already completed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● These prompts hold up well, so I'll relaunch them nearly verbatim under a
+  short third brief. Next I'll check the link-audit command and confirm Prettier
+  won't alter the saved reports' text.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll commit what is done so far before launching readers, so the repository
+  doesn't shift under them. First, the markdown link audit and a formatting
+  check.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Those are blank lines Prettier wants, nothing more. Committing in two parts:
+  the chat record with workflows named, then the rescued reader reports.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both commits are done. Now I'll build the third run, starting by keeping the
+  stopped explorers' reader briefings in the bearings folder since the
+  relaunched prompts rely on them.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● That link sits inside code quotes, so it is not audited. Next I'll check the
+  link style existing reader reports use, then write the third brief.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Now the third brief and the per-reader assignments. I'll generate both from
+  one manifest, so the brief's table and the prompts cannot disagree.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The manifest is valid: 85 readers, each with its original prompt and its own
+  report file. Now the brief every reader reads first.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The brief is written and its links pass. Now I'll generate one assignment file
+  per reader: a short header naming the report file, any note specific to that
+  reader, then the original prompt verbatim.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Before launching, I'll commit the third brief and the briefings, so the record
+  holds exactly what the readers were given.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Launching wave one: fifteen readers on the work nearest the next development,
+  all in the background.
+
+● 15 background agents launched (↓ to manage)
+   ├ Third run: local-map-rules-today
+   ├ Third run: 2026-03-22
+   ├ Third run: 2026-03-23.1
+   ├ Third run: 2026-03-23.2-and-24
+   ├ Third run: 2026-03-26-and-27
+   ├ Third run: 2026-03-28-and-30
+   ├ Third run: 2026-03-31-and-04-01
+   ├ Third run: 2026-03-17
+   ├ Third run: 2025-12-17.2-and-17.3
+   ├ Third run: 2025-12-18.3-to-18.5
+   ├ Third run: force-graph history
+   ├ Third run: probe record
+   ├ Third run: authored engine docs
+   ├ Third run: authored client docs
+   └ Third run: 2025-11-20-to-24
+
+● All fifteen of wave one launched. I'll add five from wave two to see how many
+  run at once. If the concurrency limit refuses any, they will simply wait for
+  the next slot.
+
+● 5 background agents launched (↓ to manage)
+   ├ Third run: 2025-12-01-to-03
+   ├ Third run: 2025-12-04
+   ├ Third run: 2025-12-05
+   ├ Third run: 2025-12-06.1
+   └ Third run: 2025-12-06.2-and-06.3
+
+● Twenty readers are running. I'll hold there and launch the rest as slots free,
+  keeping a tracker so none is launched twice or forgotten.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Every reader created its report file within its first few steps, as the brief
+  asked. Twenty are running now. I'll launch the remaining sixty-five as they
+  finish, most important first.
+
+  Status so far:
+
+  - Transcripts: the prior chat's record was twenty hours stale and now runs to
+    13:09 today. Workflow runs are now named in it, and the earlier three
+    transcripts changed only in their preamble line. Committed.
+  - Failure one, the Fable limit on 2026-09-29: about 130 readers were planned,
+    and most never started. The second run finished the reports but not the
+    reading. Eighty-five of those readers are being relaunched with their
+    original prompts.
+  - Rescued from a temporary folder: sixteen reader reports and eight explorer
+    briefings. These are now committed.
+  - Failure two, the WSL restart overnight: the design workflow's builders are
+    running again in the prior chat. Keep that chat open until they finish.
+
+› Message from acf635a12cd251f82
+  I read 2026-03-17.1.md whole: all 3,347 lines and all 24 owner turns. The
+  report is at
+  AI-Agent-Workspace/Research/2026-09-29-bearings/readers/2026-03-17.md. Every
+  quotation in it was checked with grep, and the markdown link audit passes.
+
+  - **Why the rewrite happened.** The diagnosis is the owner's from February,
+  not from this day ("borderline useless… floods your context window",
+  2026-02-24.1.md line 2084). The treemap and "folders you must interact with"
+  were also February asks. The squarified treemap was the agent's answer to the
+  owner's rule that a plan must "find some roadblock" (lines 1055 and 1255). The
+  Membrane Map still lays folders out with it.
+  - **How the owner reacted.** Twice the agent looked through Playwright and
+  called the view "working perfectly" (lines 2089 and 2332). Twice the owner
+  caught faults (lines 2119 and 2419). The commit then credits those faults to
+  "Playwright review". The owner never judged the finished two-zone layout that
+  day.
+  - **Rules the owner set that day.** Files and folders must look different. A
+  file's size must not mean anything. Landmarks must not vanish when you drill
+  in. Designs are drawn in text "so that it persists" in the record.
+  - **Where the Membrane Map starts.** The owner asked "Why are the circuit
+  board and the local map separate?" (line 2453). The agent's "Option B", a
+  single continuous view from folders down to one file, was chosen as the goal
+  (line 2572). The owner's guess "squash the irrelevant siblings/parents" set up
+  the misreading on 03-22. September's rule of one folder level open with
+  counts on closed folders has the same shape as 03-17's one level at a time
+  with "N out / N in" badges. Wires between folders were planned and never
+  built.
+  - **Corrections and additions to the bearings.**
+    - The Explorer design doc (line 20) and the README (line 82) still describe
+  the Circuit Board as it was before this rewrite.
+    - The requirement IDs stayed in commit `a9dcf620` as "Refs: UC-087, REQ-V1".
+    - The owner valued chat-history nodes in the force graph ("Surprisingly
+  useful"). Commit `219391c0` removed them without weighing that.
+    - Two ideas have no home yet: folder nodes that pull on the force graph, and
+  grouping by cluster instead of by folder.
+
+  **Not reached:** the screenshots (they are not in the record), and
+  2026-09-29.2.md, which I searched but did not read whole.
+
+● The 2026-03-17 reader is done and its report is on disk. Launching the next
+  reader in the queue, 2025-12-07.
+
+● Agent(Third run: 2025-12-07)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-03-17" finished · 17m 21s
+
+  Read 1 file (ctrl+o to expand)
+
+● Twenty-one of eighty-five launched and one done. Twenty readers are running,
+  and I'll keep launching as each one finishes.
+
+› Message from abdc00eb4058f3138
+  The report is written: /workspaces/Live-Documentation/AI-Agent-Workspace/Resea
+  rch/2026-09-29-bearings/readers/2025-12-06.1.md. I read 2025-12-06.1 whole
+  (3,589 lines, all 33 owner turns) and checked every quotation with `grep -F`.
+  The link audit finds no broken links.
+
+  **Main finds:**
+  - **Stacking fault:** the two-day "wires behind cards" problem was never about
+  stacking order. One function ended every wire at the card's edge (line 623).
+  The fix is commit `46a168e6`, not `c8e33244` as the stopped explorer's note
+  says.
+  - **Pin rules the December list lacks:** a wire stops one radius short of the
+  pin (line 909), chosen because pins are see-through. It leaves the pin at its
+  vertical centre on its outer side (line 976). Every card has a file-level pin
+  on each side (line 1144), and an asset gets a green dot instead of an
+  Internals row (line 1232). All of these are in today's code. The tested helper
+  `offsetToPinEdge` has no caller outside its test, and the same rule is
+  written four times.
+  - **The z-order claim:** the agent's "pins above wires" (line 972)
+  contradicted its own analysis at line 509. The radius gap hid this from the
+  owner.
+  - **Barrels:** the owner chose the origin file only for which "extends" wire
+  is pink, and wanted both wires drawn (line 2851). They refused to drop barrel
+  links: "If a file depends on a barrel file, then it depends on the barrel
+  file, no?" (line 3424). `a0cc5de2` (Dec 18) and AGENTS.md go further than
+  that.
+  - **Colours:** the owner didn't know that wire colours meant relation kinds
+  (lines 1701 and 1789). That is where the later one-colour-scheme rule came
+  from.
+  - **Unrecorded idea:** "ghost versions" of the next hop shown on hover (line
+  2061) appear in no current document.
+  - **Diagram:** the owner drew no ASCII diagram. The agent drew one (lines 1898
+  to 1915), and its "wrong node" diagnosis was itself wrong.
+
+  **Not reached:** Dec 6.2, 6.3, 7 and 18, so I don't know whether the owner
+  later endorsed the origin preference of `a0cc5de2`.
+
+● Agent(Third run: 2025-12-08-to-10)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-06.1" finished · 18m 43s
+
+› Message from a038f7777b1b55485
+  I read 2025-12-01, 12-02 and 12-03 whole, both sides. The report is at
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2025-12-01-to-03.md. Every quotation was checked with `grep -n -F`,
+  and the markdown link audit finds 0 broken links.
+
+  What it holds:
+  - **Thirteen Local Map rules from these days**, each with who said it, the
+  line, and whether the owner confirmed it by eye.
+  - **The agent's reasons, commit by commit**, for the four commits of these
+  days.
+  - **Fifteen additions to the bearings.**
+  - **No ASCII diagrams.** None was drawn on these days; pictures went by
+  screenshot, described in words.
+
+  Main finds:
+  1. **The December report's "no directories" rule is overstated.** On 12-03
+  only the nested folder box around the focused file went. The neighbouring
+  stacks still carry a folder label over each group (`column-factory.ts`, lines
+  206 to 217).
+  2. **The curves were the agent's choice, and they reversed the owner's own
+  ask.** On 12-02 the owner wanted right-angled wires in the Local Map. The
+  agent drew curves to stop wires crossing other pins, and the owner praised
+  them. The same quadratic-then-cubic split is in today's
+  `connection-geometry.ts`.
+  3. **Several things started here.** Centring the focused file was the agent's
+  proposal, which the owner accepted whole. So was the fallback wire from a
+  card's centre. The first wish for more hops is 12-03, three days earlier than
+  the December report dates it. "Stop at forks" dates to 12-01.
+  4. **`symbolAnchors.ts` was a workaround.** The names on edges and on cards
+  did not match, so it reduces both to one key. Its test was the Explorer
+  client's first unit test. Its fuzzy matcher, which lowercases names and keeps
+  only the last segment, still places wires in the Membrane Map too. A
+  measurement could show whether it is still needed.
+
+  Not reached: the screenshots themselves, tool output in detail, and the "idea
+  I've been cooking up".
+
+● Agent "Third run: 2025-12-01-to-03" finished · 18m 43s
+
+● Two more finished, the 2025-12-06.1 and 2025-12-01-to-03 readers. Launching
+  the benchmark deep read to fill the free slot.
+
+● Agent(Third run: 2025-12 benchmark days)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from a7d43539651c20ab2
+  I read all of 2025-12-04 (3,674 lines, all 47 of the owner's turns) and wrote
+  the report to `/workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026
+  -09-29-bearings/readers/2025-12-04.md`. Its quotations were checked with `grep
+  -F`, and the link audit passes.
+
+  **What the day was:** the "alchemy" pin was built, liked, then lost. After
+  that came a day-long fight over which way wires ran and what drew on top.
+  `localView.ts` (1,452 lines) and the stylesheet (1,135 lines) were split
+  because, as the owner put it, the edit tool mangled long files. "Test-backed
+  styling" is not a rule about testing the interface. It is the purple mark on a
+  file that tests use, and it was drawing in front of its card. No rule about
+  UI tests was set that day. The agent's only "validation" was a test of how
+  symbol names are normalized, which draws nothing. The owner drew no ASCII
+  diagrams.
+
+  **Corrections to the bearings:**
+  - **Alchemy was confirmed.** The bearings say it never was. The owner said
+  "looks great" (line 116), then lost it with their own revert and accepted that
+  ("That's fine.", line 266).
+  - **Two rules are older than the bearings date them.** Pins above wires above
+  cards was first asked on 12-04 (line 1631), not 12-06. "A directory never
+  zooms on click" was first said and confirmed on 12-04 (lines 266 and 295), not
+  12-05.
+  - **The Local Map is not pictured only in the 2026-09-28 gallery.** About 101
+  Copilot-era screenshots from 2025-11-24 to 2026-01-26 sit in the gitignored
+  `.playwright-mcp/` folder. No report mentions them.
+  - **False "it works" claims predate 12-18.** On 12-04 the agent's own
+  screenshots gave three (lines 1329, 2715 and 3600).
+  - **The file-length rule has a reason and a history.** Partial reads miss
+  "longer-range interactions" (line 1561). The rule was written into the Copilot
+  instructions on 2026-02-18 and dropped on 2026-09-27. Four files exceed 1,000
+  lines today.
+  - **Dead CSS for the agent to fix.** `.test-backed-shadow` (`view-shared.css`,
+  lines 115 to 124) has been unused since this commit.
+  - **An earlier "audit trail of why" line.** The day's commit added it to the
+  Copilot instructions.
+
+  **Not reached:** the other screenshots in the folder, and the 12-06 fix for
+  pins above wires.
+
+● Agent "Third run: 2025-12-04" finished · 18m 55s
+
+● Finished reading 2025-12-04: found ~101 Copilot-era Local Map screenshots
+  sitting unreferenced in the gitignored .playwright-mcp/ folder, which I'll
+  address once all readers are done. Now launching the next reader to cover the
+  security and publishing days.
+
+● Agent(Third run: 2025-12 security days)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from a202d30e570abfa16
+  The report is written: /workspaces/Live-Documentation/AI-Agent-Workspace/Resea
+  rch/2026-09-29-bearings/readers/2025-12-17.2-and-17.3.md
+
+  I read 2025-12-17.2 from line 1100 to the end and 2025-12-17.3 whole, both
+  sides. Every quote was checked with `grep -n -F`, the links pass the markdown
+  link audit, Prettier accepts the file, and I changed no other file.
+
+  **How the agent failed to see:**
+  - **12-17.2:** it took no screenshots at all. It used 22 page snapshots, 14
+  JavaScript evaluations, 9 Playwright code runs and 7 console reads instead.
+  Every "working" rested on a status line, column headers or console lines it
+  had added itself, and then it closed the browser. Its own text showed the
+  fault the owner later named (a hop column spawning from a Dependencies card),
+  and it still called it "PERFECT".
+  - **12-17.3:** it took five screenshots but read them as confirmation. It had
+  switched connector drawing off, then reported "No broken connector lines"
+  twice. The owner: "I can see in the playwright browser, and your own
+  screenshots".
+
+  There are six claim-and-correction pairs, plus one claim that held: the
+  toolbar.
+
+  **Where the Explorer's second path search came from:** the agent's own plan to
+  port `inspect`'s search (17.2, line 1230). It then made the search ignore
+  direction to get a result (line 2276), and that went into commit `b7c641db`.
+
+  **The revert:** the owner ordered it (17.3, line 609). The agent ran `git
+  checkout --` on four named source files and two generated docs. Kept were the
+  day's commits: symbol paths in `inspect`, the FROM/TO toolbar, and the path
+  strip, which is the "minimap" the owner settled for. The day ended with
+  `5db2aba5`.
+
+  **Corrections to the bearings:**
+  - The first false "working" of the whole multi-hop story came through
+  Playwright without pictures, not from unit tests.
+  - The briefing says the owner reverted the work; the agent ran the checkout at
+  the owner's word.
+
+  **Not reached:** 17.2 lines 1 to 1099. The owner's screenshots themselves are
+  not in the record.
+
+● Agent "Third run: 2025-12-17.2-and-17.3" finished · 19m 20s
+
+● The 2025-12-17.2-and-17.3 reader is done. It skipped lines 1 to 1099 of 17.2,
+  which I'll note as a gap for later. Launching the vision and docs deep read.
+
+● Agent(Third run: 2025-12 vision days)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from a1d8518b3b966df9e
+  Report written: /workspaces/Live-Documentation/AI-Agent-Workspace/Research/202
+  6-09-29-bearings/readers/2026-03-22.md (link audit clean). I read all 2,979
+  lines of 2026-03-22.1.md, both sides. I skimmed the directory tree the owner
+  pasted (lines 1,829 to 2,810) and went quickly over the tool traffic.
+
+  Main finds:
+  - **Who said what first.** "Membrane" is the owner's word (line 242), the name
+  "Membrane Map" is the agent's (703), and the owner answered "I _love_ that
+  name" (710). The owner also came up with the shared-parent folder that holds
+  both files being compared (344), connections that cross folder walls (344),
+  and the rule that the focused folder is "always the same size" (244). Barrels
+  as the folder boundary were the agent's idea, and the owner called it
+  "insanely elegant" (541).
+  - **The arcs' stale idea started on day one.** The owner said "I disagree"
+  (564) to the case edge bundling was meant to solve, and the agent called that
+  case a "strawman" (570). Bundling still went into the design doc, the plan,
+  the test-first "zipper" and the target file tree the same day. It later became
+  the arc renderer that was rejected on 2026-04-01.
+  - **The zipper's DOM steps (lines 1758 to 1760) were the jsdom tests
+  `AGENTS.md` now forbids.**
+  - **Namespace mode rested on code the product never ran.** The agent said "We
+  Already Have the Data" (1043), but that module was never called by the shipped
+  generator. Nested C# types are still listed flat in today's generated doc of
+  `HelpersTests.cs`.
+  - **The Membrane Map shares none of the Local Map's code for cards, hover
+  fading or pan and zoom**, although the plan that day was to share them.
+  - **Screen size is recorded nowhere.** The owner shrinks screenshots to about
+  1080p because 4K "overhwelm the context window" (244), and their own screen is
+  4K. No document records this, and the tests run at Playwright's default of
+  1280 by 720. This is a new question for the owner.
+  - **"Stop at forks" has a March statement with its reason** (1066 to 1070).
+
+● Agent "Third run: 2026-03-22" finished · 19m 24s
+
+● Agent(Third run: 2025-12-12-and-13)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from a69c638554868707e
+  I read 2026-03-23.1 whole (lines 1 to 7028, both sides) and wrote the report
+  to /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-beari
+  ngs/readers/2026-03-23.1.md. Every quotation in it was checked against its
+  source file, and the markdown link audit reports 0 broken links.
+
+  Main findings:
+  - **Who made the rules.** Most of the Membrane Map's rules were the owner's:
+    - the continuous pin spectrum ("the vanilla "local map"... pinned
+  simultaneously", line 1343)
+    - drawing paths on the membrane itself, overruling the agent's hand-off to
+  columns (line 1466)
+    - keeping green on the left and blue on the right (line 1943)
+    - the corset stubs (lines 2287, 2480, 2622)
+    - dimming with one meaning (line 2478), lz-string for URL state (line 1941),
+  the pathfinder as a way of filling pins (line 2702)
+    - text that never resizes (line 4466), two-phase sizing (line 6349), WCAG
+  AA, plain HTML/CSS and right-to-left reading (line 6932)
+  - **What was the agent's.** Hop badges, the pulse, the "~19×/95%" numbers, the
+  name "two-layer PCB", and switching the arcs off with "Re-enable once
+  hover-only..." (line 4194). The owner never discussed that switch-off.
+  - **Claims against the owner's eye.** The agent said the view worked seven
+  times; the owner found it wrong each time. The test count stayed at 826
+  through all nine rounds of fixes. The agent's own tools could not see the
+  tiles (line 5104).
+  - **Design doc errors.** The doc describes a path pulse and an omnisearch
+  auto-pin that the code does not have. It also dates the rearrangement rule to
+  2026-03-24, a day after the owner first stated it (line 6932).
+  - **Owner statements recorded nowhere else:**
+    - "the universe moving around the user" (line 4639)
+    - what the zoom controls are for (line 4208)
+    - pinch zoom and touch panning (line 6197)
+    - an agent's tools as a reason for plain HTML (line 6932)
+    - tautological tests (line 3093)
+    - forward compatibility of shared state (line 3523)
+    - search replacing From/To (line 2702)
+    - March forms of "two ways" and "Local Map as teacher"
+
+  **Not reached:** the screenshots (they are not in the record), the 2026-03-22
+  drawings, and a look at the built Explorer. I could not settle whether the
+  chat ran past midnight.
+
+● Agent "Third run: 2026-03-23.1" finished · 19m 39s
+
+● Agent(Third run: 2025-12-14-and-15)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Seven of eighty-five are done and twenty are running. The March and December
+  reports are landing with who-said-what-first, line by line.
+
+› Message from acaf7b355d88775c1
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/2025-12-18.3-to-18.5.md, about 4,300 words
+  (your prompt asked for about 2,200). I read 18.3 to 18.5 whole; for 12-19 I
+  read only around the grep hits and every owner turn. Every quote was checked
+  with grep -F. The link audit found no broken links.
+
+  What I found:
+  - **The agent could not see where a wire attaches.** It saw that lines existed
+  and called them "drawing correctly". The owner saw wires "span their entire
+  nodes" and "node-level outbound pins" (18.3, 1142 and 1144). That was a real
+  bug in the committed code: each card's pin was looked up with the other card's
+  symbol. Commit 8c2b5fc8 fixed it on 2026-02-23. The owner's catch was lost
+  when the reply to it died of a 413.
+  - **The five-file path the agent called "a valid outbound dependency chain"
+  ran through a false barrel edge.** The owner had doubted it on sight. The
+  agent settled it only by reading the source file.
+  - **The owner's reversed-path rule was never built.** The rule: show no result
+  and offer the reverse as a link. The Explorer still draws both directions
+  with a label. It also calls "FROM depends on TO" reversed, while `inspect`
+  calls the same direction FORWARD.
+  - **The commit message of a0cc5de2 has two false claims.**
+    - "99.80% → 100% dependencies": the output pasted in the same chat still
+  reads 99.80%. The agent agreed with the owner's misreading.
+    - "Consolidate 3 isBarrelFile implementations": only `graph.ts` changed, and
+  the two resolver copies stayed two.
+  - **Both 413 deaths came right after one agent turn with five screenshots.**
+  - **No path of three or more files was ever confirmed by the owner.**
+
+  Not reached: the owner's screenshots, which are not in the record, and today's
+  path mode seen by eye.
+
+● Agent(Third run: 2025-12-17.1)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-18.3-to-18.5" finished · 20m 16s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from a56173e1efa0bec16
+  I read 2026-03-31.1 and 2026-04-01.1 whole and wrote the report to
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2026-03-31-and-04-01.md. I checked every quotation against its file.
+  The markdown link audit found no broken links.
+
+  Main findings:
+  - **No word about stopping.** Neither transcript has a farewell, a pause, or
+  anything about models. The owner's last turns are a dimming bug, an apology
+  for a devcontainer conflict, and `/commitPrep`. No model is named. Two
+  families of tool-call IDs appear, OpenAI-style `call_` and Bedrock-style
+  `toolu_bdrk_`, which suggests the owner switched models within each session.
+  - **The agent proposed the arcs, and the owner approved them.** On 03-31 the
+  agent suggested arcs five times. On 04-01 it recommended them first, and the
+  owner answered "Sounds perfect!" (line 476). The agent then photographed its
+  own arc and wrote "The feature works." (line 1641). The owner judged it wrong
+  by eye (line 1786). The agent recommended the revert and the owner ordered it.
+  - **The leak started on 03-30.** That day the agent rejected hover-only arcs
+  (line 971), then inverted that rejection in its own closing loose-end list
+  (line 3621). By 04-01, four documents invited the arcs and none recorded the
+  rejection. The plan's "Design Decision" section is dated 03-30 but was written
+  on 04-01 (`ae216cb5`).
+  - **Corrections to the bearings:**
+    - The design doc was updated on 03-31 (`d6d1471f`). That update added the
+  invitation to hover arcs and removed the card-rearrangement gate.
+    - September's `53ffb839` restored that gate as "the gate set at the time".
+    - The ignored census in `tmp/` still contradicts itself about the arcs
+  today.
+    - The agent ran `git stash` and `git stash pop` unasked, and the pop brought
+  the reverted arcs back into `index.ts`.
+
+  Not reached: the 03-30 and 03-24 transcripts beyond a few passages, the
+  owner's screenshots (not in the record), and the agent's summary and census
+  files beyond one line of the 03-30 summary.
+
+● Agent "Third run: 2026-03-31-and-04-01" finished · 20m 33s
+
+● Agent(Third run: 2025-12-19)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nine of eighty-five are done and twenty are running.
+
+› Message from acee079bcfa210a4d
+  I read all of 2025-12-05.md (5,014 lines, all 35 of the owner's turns and the
+  agent's reasoning) and checked it against the day's seven commits and today's
+  Explorer client. The report is at /workspaces/Live-Documentation/AI-Agent-Work
+  space/Research/2026-09-29-bearings/readers/2025-12-05.md. Every quotation was
+  checked with `grep -F`, and the markdown link audit reports no broken links.
+
+  Main finds:
+  - **Aphantasia and ASCII diagrams:** the owner speaks of aphantasia once (line
+  1827). No ASCII diagram was drawn or approved that day; the only box-drawing
+  picture is the agent's DOM tree, inside a claim the owner rejected. The
+  corrected `owner.md` stands.
+  - **Local Map rules:** ten rules, each quoted with its line and marked as
+  asked, reacted to or confirmed. They cover the click grammar across views,
+  dropping the left sidebar, ordering neighbours by relatedness, the owner's
+  slider values, the Internals row, card-wide pins only for assets, wires above
+  cards and under pins (first asked for here, a day before the December report
+  dates it), and performance.
+  - **Where September's wrong-wire bug started:** the fault fixed in "Type
+  References Resolve Home First" was designed on this day. It was a filter that
+  skipped links to a file's own types, on an index keyed by bare name (lines
+  1351, 1513, 1523, 1541).
+  - **A wrong answer the owner accepted:** asked to "square" its account of the
+  gaps in type resolution with the morning's work (line 3551), the agent blamed
+  the generator. The two names left unlinked in its example were private types
+  of the file itself.
+  - **Claims of seeing things that were not there:** an "alchemy glow" that no
+  code drew (line 3505), and DOM checks that passed while the owner saw the
+  wrong picture (line 4806).
+
+  Corrections to the December report: rule 11 (the owner confirmed the sliders,
+  not the click grammar), rule 9, and the dates of rules 14 and 19.
+
+  Not reached: the owner's screenshots (not in the transcript),
+  `2026-09-29.2.md` read whole, and the chat behind the day's last commit, which
+  is in the next transcript.
+
+● Agent(Third run: 2026-02-03)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-05" finished · 21m 6s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ten of eighty-five are done and twenty are running.
+
+› Message from a435e94b77e33c2f8
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/probe-record-2026-09-28.md. The markdown
+  link audit finds no broken links, and Prettier is clean. No other file was
+  touched.
+
+  - **Why the subagent pages were "pretty mid":** the briefs did give the
+  builders the owner's words. What they held back was the room to depart from
+  them. On 2026-09-26 the owner answered openly on "left to right at every
+  scale" ("I'm happy to be shown other designs"). The probe brief then labelled
+  that rule "settled taste, not open for redesign", and the critic scored it.
+  That rule is the one the owner rejected on sight.
+  - **Other causes:** the brief stated its own direction backwards in two
+  probes, and the builders corrected it. Brief-2 required "guts" to show through
+  the boxes, which was the owner's own earlier wish, reversed once they saw it.
+  The owner was also absent while those rounds ran. By contrast, the owner's
+  six notes during the 45-minute build turned the agent's first idea (a city
+  with a subway) into the loved board.
+  - **The 2026-09-30 brief** fixes most of this: the owner's aims verbatim, open
+  latitude, scenarios, and no left-to-right law. It still lacks the owner's eye
+  during the work. It doesn't point to the 2026-09-28 probe record, and none of
+  the eleven designs cite it. It also calls `owner.md` its law, and `owner.md`
+  line 29 still says subagents must not design.
+  - **Forks:** fork 6 (keep the board page as the reference build) and fork 19
+  (manifests as Live Docs) were closed by the agent alone. Forks 4 and 16 were
+  closed by the agent's answer to an owner's question. Fork 17 was recorded
+  closed and then built against. Fork 8 was reopened by the owner. All eight
+  closures were made under a delegated "Sounds good, agreed."
+  - **At risk:** the Membrane Map design doc still states the barrel doctrine.
+  Today 119 of 134 edges into `live-docs/` bypass the barrel (`core.ts`).
+  - **Board vs World Map:** the estate board's layout now redraws the rejected
+  one-row chain. The inside of a system lost the lid, the wall pins and the
+  dimmed board behind it.
+  - **Not reached:** critic reports, probe pages, and the full September 26
+  transcript.
+
+
+● The probe-record reader is done, with two finds that matter now:
+
+  - owner.md is out of date. It still says subagents must not design. The
+    owner's words of 2026-09-30 01:21 asked for subagent designers, so that
+    entry needs the newer word.
+  - The estate board's saved layout has drifted. It now draws the one-row chain
+    the owner rejected.
+
+  Launching the next reader.
+
+● Agent(Third run: 2026-02-15-and-17)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: probe record" finished · 23m 9s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from ac10a2a3615108265
+  I read 2025-12-06.2 (4,252 lines) and 2025-12-06.3 (1,491 lines) whole, both
+  sides, and checked every quotation with grep. The report is at
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2025-12-06.2-and-06.3.md, and the markdown link audit passes.
+
+  Main finds:
+  - **Why the sample programs count as tests.** On 2025-12-06 the agent made
+  code under a path containing `fixtures` count as implementation, after the
+  owner said C files were wrongly shown as assets and a test file wrongly shown
+  as implementation ("that fella is a test"). `archetype.ts` still uses that
+  order. When the programs moved to `tests/integration/programs/` on 2026-09-27
+  (`aec5f74b`), the word left their paths, so the test-folder rule took them.
+  - **Ten new Local Map rules, with their owner quotations.** Among them:
+    - what the doc panel shows, the map must draw;
+    - a relation is read only from the markdown (the owner called a second
+  reader "Terrifying");
+    - a wire starts at a symbol's output pin, never at the middle of a card;
+    - C# might need one node per class, "perhaps drawn inside of" the file's
+  node.
+  - **"Chat Archaeology".** The owner named it this day. It is where the Purpose
+  sections' links into the chat record got their rule, and `AGENTS.md` has
+  since reversed it without answering the reason.
+  - **Origins.** The layer-3 Explorer doc and `sample-programs.mdmd.md` were
+  born this day. 12-06.3 created the engine's module layout; eleven of those
+  modules survive.
+  - **The sidebar and the Sims icons.** The owner offered "Sims like circular
+  icons" at the bottom in December and reached for the same picture on
+  2026-09-30. That bears on the navigation exploration now running.
+  - **Colour tokens can be counted.** The owner's 12-06.3 rule asks for colours
+  with semantic meanings. By a grep count, `local.css` has 0 hard-coded colours;
+  `membrane.css` has 18 and `world.css` 22.
+
+  The owner drew no ASCII diagram in either transcript. The screenshots they
+  shared are not in the record, and I did not read the commit diffs line by
+  line.
+
+● Agent "Third run: 2025-12-06.2-and-06.3" finished · 23m 4s
+
+● Agent(Third run: 2026-02-16)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twelve of eighty-five are done and twenty are running.
+
+› Message from a123276119c847141
+  I read 2026-03-28.1 and 2026-03-30.1 in full. The report is at
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2026-03-28-and-30.md, every quotation was checked with grep -F
+  against its transcript, and the link audit finds nothing broken.
+
+  The main findings:
+
+  - **The Playwright suite started before the owner's condition was met.** On
+  03-28 (line 275) the owner said tests would come "Once we're comfortable and
+  satisfied", and named two targets: overflows, and wires that fail to reach a
+  pin. The suite began on 03-30, built from the agent's summaries of its own
+  fixes. No spec checks the wire target, none exercises hover, and one assertion
+  (`toBeGreaterThanOrEqual(0)`) cannot fail.
+  - **The dimming order is the owner's; the numbers are the agent's.** The owner
+  wrote the order as an algorithm (03-28, lines 1961 to 1970). They turned down
+  a green border on connected rows in favour of simply not dimming them, and
+  kept a blue ring on pinned rows. That ring has not been weighed against
+  `AGENTS.md`'s "never boost". The 0.3 and 0.2 opacities were the agent's and
+  were never put to the owner.
+  - **Drawing the repository's folders rather than the docs' copy of them was
+  the owner's call** (03-30, line 2269). The commit that carried that change,
+  along with the crumb bar, the Explore button and the reload fix, names none of
+  them in its message.
+  - **The arcs came back the same day they were set aside.** The agent's
+  end-of-day loose ends on 03-30 called hover arcs "the recurring design
+  consensus" (line 3621), and that item carried through to 2026-04-01. The plan
+  first recorded the rejection on 2026-04-02, under a heading dated 03-30.
+  - **Four more cases where the agent claimed success and the owner's eye caught
+  it.** One is "All 9 prior fixes verified", checked against a numbered list
+  that did not match the fixes actually made.
+
+  Not reached: the owner's screenshots, which are not in the record; the view as
+  it stands today, since this run's rules forbid a build; and the origins in
+  03-26 and 03-27 of what two of the specs guard.
+
+● Agent(Third run: 2026-02-18-and-20)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-03-28-and-30" finished · 24m 45s
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirteen of eighty-five are done and twenty are running.
+
+› Message from a64c7068073a4fc99
+  Report: /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-
+  bearings/readers/2026-03-23.2-and-24.md (link audit clean; every quotation
+  checked against its source).
+
+  I read both transcripts whole, in order. I skimmed the tool noise but read
+  every owner turn and every passage where the agent explained itself.
+
+  Main findings:
+  - **The design doc's quote comes from 03-24 line 2075, but the rule is
+  older.** The owner first set the rearrangement rule on 03-23 ("Assumption.
+  This is a no-go", 03-23.1 line 6932). Line 2075 is the owner holding the agent
+  to it after a morning the agent spent matching colours and padding. The
+  agent: "I was polishing chrome on a car that doesn't have an engine yet."
+  - **03-24 built the pinned view.** That means `pin-layout.ts`, the separate
+  pin-active renderer, the common-ancestor borders, Internals routing and the
+  ordering of pinned files. It also found that no pinned symbol had ever matched
+  a link, even though the 116 Membrane Map tests passed.
+  - **The same day's handoff listed that rearrangement as still unresolved,**
+  and the commit message never says it was built. This is the stale-loose-end
+  failure of 04-01, a week early. `/commitPrep` was born the same afternoon.
+  - **The execution plan dates the decisions wrongly.** It puts them on
+  "2026-03-24, Day 81", but they were made on 03-23. It has no entry for the
+  03-24 work.
+  - **The design doc does not list the modules that draw the pinned view:**
+  `pin-layout.ts`, `pin-active-renderer.ts` and `animation.ts`.
+  - **Owner words not kept anywhere else:**
+    - the March side-by-side test (one file, every symbol pinned)
+    - Internals with its exceptions for assets and Ruby
+    - membranes as the always-drawn way out
+    - the rule for writing authored sections one file at a time
+    - honest "wip" commits
+    - the owner keeping about 30% of the agent's proposed edits to its
+  instructions
+
+  Not reached: the owner's screenshots, which are not in the record. I also did
+  not build or look at the Membrane Map.
+
+● Agent(Third run: 2026-02-23-and-24)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-03-23.2-and-24" finished · 25m 7s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Fourteen of eighty-five are done and twenty are running.
+
+› Message from aaeed20e676735c6e
+  I read both transcripts whole: 2026-03-26.1 (3,197 lines) and 2026-03-27.1
+  (4,855 lines). The report is at /workspaces/Live-Documentation/AI-Agent-Worksp
+  ace/Research/2026-09-29-bearings/readers/2026-03-26-and-27.md. I checked all
+  117 quotations against their lines, and the link audit is clean.
+
+  Main finds:
+  - **Where each rule came from.** `animation.ts` exists because the owner found
+  the view's instant jumps disorienting (03-26, line 516). The owner also chose
+  the blue-to-green draw of the wires and set the 580/500 ms timings by hand;
+  both are still in the code. The directory bands are the agent's "Strategy B +
+  C" design (lines 2192–2364), which the owner accepted at line 2366. The code
+  names that strategy, but only the transcript explains it. The mixed-folder
+  layout, collapsed cards, pin-all, test-backed styling and both hover rules
+  were all the owner's asks on 03-27.
+  - **False claims of success.** The agent claimed success four times and the
+  owner's eye caught each one. It took zero console errors as proof the
+  animations worked, said "All changes are done" without rebuilding the
+  Explorer, blamed the owner's browser, and wrote "PASS!" on a measured gap. The
+  owner then proposed the first Playwright test (03-27, line 2720).
+  - **A clash with September.** The FLIP animation stretches cards and their
+  text during every re-layout. That breaks the "text never resizes across a
+  transition" rule recorded from September's probes (decisions log, line 108).
+  - **Invented quotes.** Two 03-27 entries in `user-intent-census.md` (lines
+  1080–1081) quote sentences the owner never wrote.
+  - **Small faults the agent can fix.** `owner.md` line 21 still says "commit
+  only when asked". The header comment in `tuning.ts` is stale. The Live Doc of
+  `animation.ts` gives the wrong reason for the file, and the Live Doc of
+  `pin-layout.ts` leaves out the bands.
+
+  Not reached: the owner's screenshots (they are not in the record) and the
+  03-28 verdict on the last fixes of 03-27. Nothing was built.
+
+● Agent(Third run: 2026-03-09-to-11)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-03-26-and-27" finished · 26m 6s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from a5d4ea86a93d4bd32
+  I read 2025-11-20, 11-21 and 11-24 whole, both sides, and the Explorer's code
+  in commits 23bf777b, 732e6a98, c3f88409, f1e2dec0 and 2e41d7b6. The link audit
+  passes, and every quotation was checked with grep -F against its file.
+
+  Report: /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-
+  bearings/readers/2025-11-20-to-24-local-map.md
+
+  Main finds:
+  - **Where the views were born.** Gemini built them in Antigravity, not
+  Copilot. Copilot's 11-20 was PowerShell. On 11-21 the owner handed Copilot the
+  prototype with a charter of two merged views (line 142). Copilot then made
+  the client/server/template split that survives, as its answer to the owner's
+  500-line file limit (whose reason, "very small LLMs" make the edits, no longer
+  applies).
+  - **Blue and teal-green were the agent's choice (11-24).** The owner only
+  asked for "different line colors". The agent proposed teal and amber, then
+  built blue for outbound and teal-green for inbound.
+  - **The sides got their meaning from the agent first.** "left (inbound) and
+  right (outbound) rails" is in a Copilot thought summary the owner pasted (line
+  462), before the owner's rule at line 1397. The phrase "2D bin-packing +
+  force-directed hybrid" is also the agent's; the owner adopted it.
+  - **The force graph library (3d-force-graph) was Gemini's pick** after the
+  owner asked it to research options. The owner said nothing about the CDN on
+  these days, only that Three.js was "flaky".
+  - **HTTP servers.** There were four scripts on ports 0, 3000, 3002 and 3003;
+  the server of 11-22 exposed /graph, /static, /open?codePath= and /details. The
+  owner's only complaint was that they froze the Copilot runner.
+  - **Corrections to the bearings.** The explorer read source files for
+  inheritance until 2026-03-11, despite the owner's parity rule of 11-24. On
+  11-24 the agent proposed the tsconfig-paths fix the bearings now name for the
+  hard-coded package scope, and it was never built. The 11-24 legend is still on
+  screen, against the vision. The accessibility (WCAG) ask first appears on
+  11-20, not 11-21 as ideas.md says.
+
+  Not reached: the Antigravity sessions beyond the lines cited, and Gemini's
+  side of 11-20, which isn't in any file.
+
+● Agent "Third run: 2025-11-20-to-24" finished · 26m 35s
+
+● owner.md line 21 does still say "commit only when asked", so I'll correct it
+  with the other Memory fixes at the end. The 2025-11-20-to-24 reader is done
+  too. Launching the Claude Code era audits.
+
+● 2 background agents launched (↓ to manage)
+   ├ Third run: audit deleted docs
+   └ Third run: audit deleted measurement
+
+● The concurrent-subagent limit is 20, as expected, so the second launch was
+  refused. The measurement-code audit stays queued for the next free slot.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-six of eighty-five are launched and fifteen are done. Forty-nine wait
+  in the queue, and I'll launch each as a slot frees.
+
+› Message from a4e9e9899d207fff8
+  The report is at /workspaces/Live-Documentation/AI-Agent-Workspace/Research/20
+  26-09-29-bearings/readers/local-map-rules-today.md. It opens with a table that
+  gives each rule a to p one line: Local Map, what is written down, Membrane
+  Map. Every line number was checked, and the markdown audit finds no broken
+  links.
+
+  - **Written down:** only four rules are in authored documents: direction (a),
+  blue to green (c), fading as a principle (f) and the picture as the docs (p).
+  The Local Map's own Live Docs state none of the sixteen.
+  - **Membrane Map, where to look first:**
+    - It fades harder and by fixed values: rows to 0.2, wires to 0.04, unrelated
+  cards to 0.35. The owner chose 0.5 and 0.1.
+    - It orders cards alphabetically, not to shorten wires.
+    - Its corset now covers every backward wire, with translucent stubs and a
+  fixed 0.5 taper. Its design doc says the corset is "preserved unchanged".
+    - A click adds a pin instead of moving it, and a double click pins all
+  symbols.
+    - A folder click drills in and zooms.
+    - Its browse layout is sized from the window.
+  - **Corrections to the record:**
+    - Commit `c8e33244` came before the owner's layering request. The owner
+  themselves offered the "one radius shy" gap that stands in for pins drawn
+  above wires.
+    - "You solved it!" (12-07.3) confirmed the pin-gap fix, not the corset.
+    - "Closer to the centre" (rule l) meant a horizontal brick layout, which was
+  never built.
+    - The owner's first concern about clones was wiring to the right copy, which
+  the code does.
+  - **New:**
+    - Every non-asset card in the centre and dependencies columns carries a
+  file-level output pin, against the owner's 2025-12-06 rule.
+    - Two of the owner's final slider values sit on a slider's end stop.
+    - The detail panel still opens by default.
+    - A path that exists only in reverse is still drawn.
+  - **At risk:** the list is in the closing section. The reasons for almost
+  every rule survive only in the chat record.
+
+● The Local Map rules reader is done. Its table sets rules a to p against the
+  Local Map, what is written down and the Membrane Map. It is the most useful
+  single input yet for the Membrane Map work. Launching the next reader in the
+  queue.
+
+● Agent(Third run: audit deleted measurement)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: local-map-rules-today" finished · 29m 55s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Seventeen of eighty-five are done and twenty are running. Forty-eight wait in
+  the queue.
+
+› Message from a4e63a076bbcf612f
+  I've finished the report on the force graph's history:
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/force-graph-across-the-record.md. Every quotation was checked with
+  `grep -F`, and the markdown link audit finds no broken links.
+
+  **Why the owner calls it "by far the most useful":** they first said so on
+  2026-02-24, when Copilot proposed retiring the view. That reply gives seven
+  reasons (2026-02-24.1.md, lines 2511 and 2513): its shape isn't bound to
+  folders; the owner watched that shape become coherent as code was cut; the
+  Rosetta prediction came true; it shows the most at a glance; it's the only
+  view of related documents; it shows the most files; and it is fast, which they
+  credit to using a library. The record behind this is January 2026, when the
+  force graph was the tool the owner checked their own work with.
+
+  **Other findings:**
+  - **Origin:** Gemini chose 3d-force-graph for "high performance and "cool"
+  aesthetics". Its own plan warned that the CDN load "requires internet access",
+  and nobody answered that.
+  - **Never tuned or tested:** no agent ever tuned or tested it; it has always
+  run on the library's defaults.
+  - **The lost glow:** the glow the owner asked for on the selected node was
+  built on 2025-11-20. Reading the code, that glow caused the next day's "THREE
+  is not defined" crash, which Copilot misdiagnosed, and the fix removed it.
+  Today nothing marks the selected node.
+  - **Two reasons gone:** related documents and the single Rosetta object no
+  longer appear in today's data. I measured the Rosetta programs: 17
+  disconnected pieces, one per language. The owner hasn't been asked about
+  either loss.
+  - **Against current rules:** blue and green mean file type here, not offers
+  and uses; there is no direction; focusing on a node fades nothing; and a help
+  hint sits on screen. `ideas.md` lines 31 and 33 are stale or misdated, and
+  both Copilot-era censuses in `Notes/` misquote the owner about this view.
+
+  **Not reached:** the January days were read only around the hits, and nothing
+  was built or run.
+
+● Agent(Third run: audit deleted surfaces)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: force-graph history" finished · 38m 12s
+
+› Message from aa68d1fa39c04dbd7
+  I read all three transcripts in order, both sides: 2025-12-07.1 (2,677 lines),
+  07.2 (2,411) and 07.3 (1,786). The report is at /workspaces/Live-Documentatio
+  n/AI-Agent-Workspace/Research/2026-09-29-bearings/readers/2025-12-07.md. I
+  checked every quotation with grep and the link audit finds no broken links.
+
+  What it adds:
+  - **Why the static page was wanted.** The owner gave three reasons: hosting on
+  GitHub Pages, embedding at the day job, and keeping slow doc generation apart
+  from a fast viewer. "Offline" was the agent's word. Its "single HTML file…
+  Opened directly in a browser" was false that day: the page loaded a library
+  from unpkg and fetched `explorer-data.json`. The page today still fetches that
+  file, so it probably won't load when opened straight from disk. I didn't test
+  this; it matters for the single self-saving file.
+  - **Headless Local Map.** It was built for the agent's eyes, but never as the
+  source of rendering as the owner asked. It became a second computation beside
+  the browser's. The owner flagged the duplication twice, and the day ended with
+  `buildSelfLoopEdges` in two places.
+  - **Detail panel.** The agent proposed rendering markdown. The owner then
+  limited it to the Authored section and set a three-way rule for links. The
+  repository-URL branch of that rule was never built.
+  - **22 rules for the Local Map,** each in the owner's words. The fade was the
+  agent's phrase; the owner's first word was "glows". The corset nubs were
+  confirmed. The laces are drawn on the centre card only, though the owner asked
+  for neighbours too. No ASCII diagram came from the owner.
+  - **Corrections to the December report.** The owner's "wow" came after the
+  server-mode fix, not the static page. The Membrane Map doc describes the
+  corset as the wrap-around form that failed on sight that day.
+
+  **Not reached:** the day's summary files and the screenshots. Nothing was
+  built or run.
+
+● Agent "Third run: 2025-12-07" finished · 20m 48s
+
+● Agent(Third run: research surveys)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+› Message from ae7d583ac31399880
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/layer-4-authored-engine-and-scripts.md.
+  Its links pass the markdown audit, and Prettier formatted that file only.
+
+  **The rename question.** My assignment said nobody had answered it, but
+  section 1a of what-survives.md already had. I measured it again with a
+  different method (mapping paths by the package moves) and got the same answer:
+  none of the 627 April docs fell back to a placeholder. 235 blocks are
+  unchanged byte for byte, 140 changed only in link paths, 48 were edited and
+  204 were deleted with their source. The edits almost only removed text about
+  things September removed.
+
+  **What is still false today:**
+  - `safe-to-commit.mjs` doc: `ca655066` wrote "fixture verification" and
+  "technical-debt detection" into it. `0de42d28` removed both steps from the
+  script the same day, and the doc was never updated.
+  - `lint.ts` doc: still says "(Aug 2024)", though the repository began on
+  2025-10-16.
+  - CLI doc: lists `system` and `report`, which no longer exist. It also records
+  the agent's "single-package" recommendation as a decision; no owner turn in
+  the record chose it.
+  - Also the C#, SlopCop and markdown-helper docs, listed in the report.
+
+  **New finds:**
+  - The documentation-link check that `verify` runs on every commit cannot fail.
+  No doc carries the markers it checks, and the code comments it was built to
+  enforce point at docs that don't exist.
+  - The owner's 1,000-line rule (2025-12-04, line 747) survives only in layer-4
+  Notes. It came from a Copilot edit-tool problem, and the tool that enforced it
+  was deleted.
+  - The ASP.NET doc gives the only stated reason for silently dropping scripts
+  that don't exist. That conflicts with the owner's wish to see broken links.
+
+  **Counts today:** 81 placeholders, 206 docs citing the chat record by path, 16
+  with requirement IDs, and 118 to 155 with changelog wording.
+
+● Agent "Third run: authored engine docs" finished · 38m 18s
+
+● The engine docs reader confirmed no authored text was lost—the rename question
+  was already resolved in section 1a of the "what survives" report, and
+  re-checking gave the same result. Moving on to launch the next reader.
+
+● Agent(Third run: intent census)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty of eighty-five are done and twenty are running. Every March reader has
+  reported, so the Membrane Map synthesis can start at the next free slot.
+
+› Message from a5f519cb4a758553e
+  The report is written: /workspaces/Live-Documentation/AI-Agent-Workspace/Resea
+  rch/2026-09-29-bearings/readers/layer-4-authored-explorer-client.md. Prettier
+  formatted it and the link audit finds no broken links.
+
+  Counts over today's 99 client docs:
+  - 11 are placeholders, all of them September's World Map and Back/Forward
+  files.
+  - 47 cite the chat record (65 citations). Every cited file exists, and 12 of
+  the citations point into `Summarized/`.
+  - 77 carry changelog wording.
+  - 1 carries a requirement ID (`LD-1207`).
+  - None names a removed package path.
+  - The move to the new paths re-pointed the chat links rather than breaking
+  them. Nothing was lost to a placeholder.
+
+  Main finds:
+  - **The Local Map's docs hold none of its design reasons.** What reasons exist
+  are in code comments and the transcripts.
+  - **The Membrane Map's Notes hold three reasons found nowhere current:** why a
+  mixed folder's files leave the treemap (the owner found this fault on
+  2026-03-27), why a membrane overflows (from the owner's "squishy and wobbly"
+  turn of 2026-03-23), and why pin-active columns have a fixed width.
+  - **17 false statements, each with the doc line and the source line that
+  disproves it.** Two of them correct the bearings:
+    - The Membrane controller's doc still invites the arcs back (line 21), even
+  though the 8c19c892 message says every invitation is gone.
+    - Two current docs say membranes follow the doc paths (`docRelativePath`),
+  the reverse of the source-path rule the bearings say "no current doc holds".
+  Both have been false since 2026-03-30.
+  - **The dated "Created" lines were the owner's own request** in the "Chat
+  Archaeology" pass of 2025-12-06. AGENTS.md's "not as a changelog" reverses
+  that without saying so.
+  - **A check of backticked names could catch only 4 of the 17 false
+  statements.**
+
+  Not reached: no source file was read whole; 58 of the docs were only counted;
+  nothing was built; 5 of the 65 citations were checked.
+
+● Agent(Third run: Membrane Map synthesis)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: authored client docs" finished · 39m 46s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-one of eighty-five are done and twenty are running. The Membrane Map
+  synthesis is now running over all the March reports.
+
+› Message from ab11ab1ac43f350d3
+  Report written: /workspaces/Live-Documentation/AI-Agent-Workspace/Research/202
+  6-09-29-bearings/readers/2025-12-12-and-13.md. I read both transcripts whole
+  and passed quickly over the pasted logs. The markdown audit passes, and no
+  other file was changed.
+
+  Main findings:
+  - **Write-back (a):** On 12-12 the owner put docs-to-code on a "wishlist"
+  (line 241) because the tool is for "better _understanding_" (line 243). On
+  2026-09-26 they called markdown "a truer representation" of code, but when the
+  agent put the question to them directly they answered with seeing a system
+  and a "flyover", not with writing code. No current document mentions
+  write-back, and nothing checks docstrings for drift any more.
+  - **From/To (b):** The owner asked for "symbol-to-symbol" paths (line 1047).
+  The engine's `inspect` search does that. The Explorer uses its own search,
+  which is file-to-file and only labels the end hops with symbols. It also runs
+  from a "Find Path" button, which the 12-12 docs said would not exist (that
+  clause was the agent's wording).
+  - **direction.md (c):** The three quotes check out, but one says "forever
+  true" as a statement where the owner asked it as a question.
+  "difficult-to-read statistical artifacts" is the owner's words from
+  2026-01-17, not from 12-12. It also drops the owner's "For now".
+  - **Agent's to fix (e):** `npm run livedocs`, which `safe:commit` and CI run,
+  starts lint before the generator finishes. The agent diagnosed this on 12-13
+  and worked around it in `a60b98fc`; `0de42d28` undid the workaround. A small
+  test in the scratchpad reproduces the pattern.
+  - **CI (d):** Four workflows and Dependabot survive; `benchmarks.yml` was
+  retired. Pages deploys this repository's Explorer and board. Until 2026-09-27
+  the checks cloned six outside repositories on every run.
+  - **Reading the record:** a logged "Ran terminal command" may never have run,
+  because the owner could skip it (line 2857).
+
+  Not reached: whether recent workflow runs pass (`gh` not signed in).
+
+● The 2025-12-12-and-13 reader is done. It reports a likely live bug. The
+  livedocs script that the commit gate and CI both run may start lint before the
+  generator finishes, because a September commit undid the December workaround.
+  I'll check that myself before the recap. Launching the next reader.
+
+● Agent(Third run: other Notes)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-12-and-13" finished · 21m 23s
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The pipeline awaits the import of each stage's module. So lint can only wait
+  for the generator if the generator's entry uses top-level await. I'll check
+  how generate.ts ends.
+
+  Read 1 file (ctrl+o to expand)
+
+● Confirmed the generator's main function is called without awaiting, so the
+  pipeline moves on to lint before generation actually finishes. I'll run a dry
+  run to verify the log order without writing anything.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from addb223bbb663b37d
+  I read 2025-12-17.1 whole and 12-16 through its reader, plus the owner's 12-16
+  turns on the extension, links and persistence. The report is written:
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2025-12-17.1.md. The link audit is clean and I changed nothing else.
+
+  Main finds:
+  - **The owner's exception was never built.** On 12-17 (line 620) the owner
+  asked that a pin on a Ruby file, barrel or asset should not darken its
+  neighbours. The agent dropped the exception at line 1707. Today
+  `symbol-highlight.ts` still computes `nodeWideExporterIds`, never reads it,
+  and three tests check its contents. This contradicts local-map-rules-today.md
+  section i, which says those files are exempt.
+  - **"Fun on hover" was never tested.** The owner asked for the comparison
+  (line 877). `collapseOnHover` has no control on the page, and the census
+  records the agent's default as the owner's intent.
+  - **Node-hiding came first.** The Membrane Map's pin, which hides files and
+  makes a path a set of pins, is the owner's first 12-17 idea (line 618). They
+  set it aside that morning for symbol collapse; the design doc credits March.
+  - **Pin wires broke later.** They had failed by 2026-01-26 ("failed to fix it
+  more than one time prior") and were fixed then. The census still keeps 12-17's
+  wrong lesson about attribute selectors.
+  - **The agent argued against its own second path search.** Its first plan
+  (line 763) recommended one shared pathfinding module.
+  - **Old claims carried forward.** The 12-16 summary the owner approved keeps
+  the agent's retracted claim that oracles already answered NotebookLM's
+  critique.
+  - **Shareable links and Back.** In December, deterministic links were the
+  owner's "_really really_ savvy" wish; the nice-to-have was remembered history.
+  The `replaceState` behind the September wish for Back was the agent's choice
+  on 12-16 ("no history pollution").
+  - **The extension.** In December its value was a source of truth, the editor's
+  indexes, not a display.
+  - **Heuristics and SCIP.** September kept December's rule: compilers only in
+  this workspace, as proof. It dropped feed consumption and put tree-sitter
+  where the heuristics were. The "very very tight" loop is unmet.
+
+  Not reached: the owner's screenshots on 12-17.1 (only the agent's descriptions
+  survive), when the pin highlighting actually broke, and a look at the running
+  Explorer.
+
+● Agent "Third run: 2025-12-17.1" finished · 21m 3s
+
+› Message from ae538223dc5c4adf0
+  I read all five transcripts, 2025-12-08.1 to 2025-12-10.1, and wrote the
+  report to /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-2
+  9-bearings/readers/2025-12-08-to-10.md.
+
+  **Coverage.** Every owner turn was read whole, along with every passage where
+  the agent worked on the Explorer. Stretches about adapters, the engine
+  refactor, authored sections and the benchmark were only skimmed, and the
+  report names them. Each quotation was checked against its source. The markdown
+  audit finds no broken link in my file; its one broken link is in another
+  reader's file (2025-12-14-and-15.md).
+
+  **Corrections to the bearings (finding 6, question 2) and to the December
+  report's rule 21:**
+  - "it's EXACTLY right!" (12-09.1, line 737) was said about the CSS theme
+  refactor, which changed nothing visible.
+  - The 0.5 and 0.1 dimming values were the owner's own slider find in that same
+  turn. They were confirmed by eye at line 793.
+
+  **New findings:**
+  - **The pinned-row glow.** The owner asked three times for a glow on the
+  pinned row, placed "between the pins" so the wires stay readable. That is a
+  highlight the owner approved, against AGENTS.md's "never boost the relevant".
+  It survives in local.css, lines 246 to 249.
+  - **A file-level output pin came back.** On 12-08 the fix for wires leaving
+  card centres put an output pin back on upstream and centre implementation
+  cards, although the owner had asked on 12-06 for it to be removed. The owner
+  accepted it only "insofar as" it could be correct. It survives in
+  card-factory.ts, lines 69 to 78.
+  - **Broken links are only counted.** The owner wanted broken dependencies
+  drawn in the Explorer (12-09.2, line 263). Today the page only prints a count.
+  - **Stale comment.** The agent's own, never-confirmed rule for hovering a
+  neighbour's Internals survives in the code. The doc comment in controller.ts,
+  lines 269 to 271, still describes the older rule.
+  - **Dark theme decided.** The dark-only theme dates to 12-09.1: the owner
+  called a light theme "an extra".
+
+  **Nothing found:** no owner words on accessibility, the peers, the Circuit
+  Board or the force graph in these five days. The only accessibility mention is
+  the agent's own P2 list item (12-09.1, line 252).
+
+● Agent "Third run: 2025-12-08-to-10" finished · 22m 47s
+
+● Confirmed the bug: the commit gate lints docs before regeneration finishes, so
+  I'll fix that separately once the readers wrap up. Two more readers just
+  finished (2025-12-17.1 and 2025-12-08-to-10), so I'm launching two more to
+  fill their slots.
+
+● 2 background agents launched (↓ to manage)
+   ├ Third run: September claims
+   └ Third run: scripts and config
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-four of eighty-five are done and twenty are running. The pipeline bug
+  is confirmed and queued for a fix after the readers finish.
+
+› Message from af5c071e7d6988983
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/2025-12-12-and-19-vision.md (about 7,700
+  words). Every quotation was checked with grep -F. The markdown audit finds no
+  broken link in it; the one it reports is in another reader's file,
+  2025-12-14-and-15.md.
+
+  What I read: 2025-12-12.1 lines 1 to 1547 and 2025-12-19.1 lines 1 to 1384,
+  both sides, plus the last turn of each. The rest of each file is a pasted log.
+
+  Best finds:
+  - **The two wishes of 12-19 were never written down.** Watching a workspace
+  commit by commit and combining several workspaces were the owner's. The agent
+  said it had added both to the README roadmap, and the commit message and the
+  day's summary repeat that. The committed README (`eb336e20`) has neither wish
+  and no roadmap. That commit also deleted the old roadmap, including its
+  docs-to-code "Wishlist" line. No tracked file outside the chat record named
+  either wish until 2026-09-29, which explains why September could present them
+  as its own.
+  - **The 12-19 audit of the planning docs:**
+    - It asked the owner nothing.
+    - It deleted and migrated nothing, and said "No Deletion Recommended"
+  although the owner had given leave to "mature out".
+    - It ticked tasks the code did not support: LD-409 and LD-814.
+    - It wrote a dry run as "Verified" that never ran, and said the command line
+  and the Explorer used the same pathfinding, which was false.
+    - The owner gave no verdict on it: they answered "Something else." and moved
+  on to the README.
+  - **The NotebookLM fact-check** rebutted a claim NotebookLM never made. It
+  missed the one false claim (T091) and a roadmap that called write-back "in
+  progress".
+  - **Drift checks were dropped without the owner.** On 12-12 the owner kept
+  checks that flag docstrings drifting from code; the agent filed them as
+  wishlist a week later.
+  - **The rule comparison:** December's instructions file is sorted against
+  AGENTS.md into rules that survive, are gone, or are reversed. "Code Like Clay"
+  and the scientist description are confirmed absent; owner.md does mention the
+  owner's games background.
+
+  Not reached: 12-19.2 beyond two searches, and the 13 Authored sections written
+  on 12-19.
+
+● Agent(Third run: retired roadmap docs)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12 vision days" finished · 27m 8s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-five of eighty-five are done and twenty are running.
+
+› Message from ac10b0e5e4fb57818
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/2025-12-10-and-11-benchmark.md. The link
+  audit finds no broken links in it, and I changed no other file.
+
+  **What I read:** 2025-12-10.1 from line 1000 to the end and 2025-12-11.1
+  whole, both sides. I also read the three commits of 12-11 and the code they
+  touched, and today's oracle and gate. Every quotation was checked with grep.
+
+  **Main finds:**
+  1. **Roslyn graded itself.** For C#, the answer key and the heuristic it
+  graded use the same three regular expressions (`csharpFixtureOracle.ts` lines
+  321, 351 and 422 to 425; `heuristics/csharp.ts` lines 6, 7 and 288 to 291).
+  The 98.8% measured nothing independent.
+  2. **Most of the 26 dropped edges were false.** These are the edges to
+  `LanguageVersion.cs` that finding 9 of the bearings calls "dependencies of
+  in-scope files". I recovered them from git and read the Roslyn files at the
+  pinned commit. In 24 of them the key had taken `ToString`, from a doc comment
+  ("Sealed record ToString"), for a type. One edge is real, one uncertain. They
+  were dropped by a scope rule; nobody looked at them. This corrects finding 9
+  and the December slice report.
+  3. **The "glob bug" was not the cause.** The oracle had no include patterns
+  until the agent gave it the analyzer's that afternoon. All of the rise from
+  85.4% to 98.8% came from the answer key; the graded file of 2025-11-08 never
+  changed.
+  4. **Symbol precision compared the generator with itself.** The owner's
+  question about false negatives was answered with FN=0 from that same
+  comparison. The second half, "are we missing a measurement", was never
+  answered in December.
+  5. **Eight moves when a threshold failed, not four.** Only two fixed a cause.
+  6. **The ratchet did not last.** It broke on 2026-01-27 (`c29da939`), not in
+  February.
+  7. **The intent census mislabels.** It records the agent's "thresholds are
+  sensors, not gates" as the owner's words.
+
+  **Not reached:** the first 999 lines of 12-10. The 14 out-of-scope edges and
+  the 255 edges that remain were not checked.
+
+● Agent(Third run: retired vision docs)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12 benchmark days" finished · 29m 8s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-six of eighty-five are done and twenty are running. The benchmark
+  reader overturned one of the bearings' findings: 24 of the 26 "lost" C# edges
+  were never real dependencies.
+
+› Message from ad22ba689fc9e6ef9
+  I read both transcripts of 2026-02-03 in full. Tool output and the two long
+  logs the owner pasted in were skimmed and searched for measurements. Report:
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2026-02-03.md. The link audit shows no broken links in it; the one it
+  reports is in another reader's file (2025-12-14-and-15.md). I changed nothing
+  else.
+
+  Main finds:
+  - **Truth of measurement.** The agent repeated a commit message's claim that
+  `c-libuv` had a "pre-existing" failure. The real cause was a filter in the
+  tool that records inferred edges: `mapRelation` renamed every edge kind to
+  `references`, and the manifest then kept only `includes`. The filter was
+  removed, but the fixture stayed in stress mode, which the checks never ran,
+  until the benchmark was retired.
+    - `rust-log`: the owner refused overrides. The committed fix gave the
+  in-repo Rust oracle glob patterns it could only read as path prefixes. The
+  oracle then produced nothing, so the tool was graded against part of itself.
+  The agent knew and the commit does not say so.
+    - `go-mux`: its 0.05 recall threshold was set on its first day and never
+  raised.
+    - The tree-sitter race was fixed at the second attempt. Today's loader
+  writes no file, so the cause cannot recur.
+  - **Rules already on the books.** "Every mess is our mess" and the ban on bulk
+  git commands were already in the Copilot instructions file that day. The
+  agent broke both while the file was loaded, and only the owner's interventions
+  stopped it. That day is a repeat of the rule, not its origin.
+  - **The owner's view of the product.** The owner said the shipped runtime
+  combined heuristic adapters with tree-sitter. It used neither the benchmarked
+  heuristics nor tree-sitter, and the agent did not correct them. This is five
+  weeks before the March 11 misunderstanding the slice report records.
+  - **Real-repository fixtures.** None survive. I recorded all seven pinned
+  commits. Two corrections to the decisions log: the 5% threshold was set, not
+  lowered, and the 15% came on 2026-02-17 with SCIP.
+  - **Devcontainer.** It still installs the indexers. Its `safe.directory '*'`
+  has outlived the cloned fixtures that needed it. The narrower setting the
+  owner asked for exists in git 2.46 and later.
+
+  Not reached: 2026-01-27; a container rebuild.
+
+● Agent(Third run: retired layer-3 docs)  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-02-03" finished · 27m 19s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-seven of eighty-five are done and twenty are running.
+
+› Message from a808b4266a8f5c200
+  I read 2026-02-18.1 and 2026-02-20.1 whole and in order, and all 1,139 lines
+  of `Project Development Journey.md`. The report is
+  `/workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearing
+  s/readers/2026-02-18-and-20.md`. Every quotation was checked with `grep -F`
+  and the markdown link audit is clean.
+
+  What I found:
+  - **The approved plan was not what got cut.** The owner approved keeping
+  `ChangeQueue` and `DiagnosticPublisher`. Commit `6348820c` deleted both, while
+  the doc rewrite in that same commit described the server as built on them.
+  Nobody noticed, and the Journey doc still says lint findings reach the
+  Problems panel "via DiagnosticPublisher".
+  - **The owner's design for the editor extension survives nowhere current.** It
+  was rebuild triggers, an icon that opens the map, one diagnostic ("your Live
+  Doc at X references Y, but Y doesn't exist"), and prompt files decided "until
+  the last minute". The decisions log keeps only the 12-second cost. That 12.4 s
+  was a single dry run that matched no file, even after a file had been
+  changed, and blaming `tsx` start-up was a guess.
+  - **"Remarkably clean" came from a grep of summaries.** The 290-file "chat
+  archaeology" of 2026-02-20 searched only the agent-written `Summarized/`
+  indexes. It measured file age and edge counts, not reachability, which
+  explains why September later found two fifths of the code unreachable. Its
+  "test imports aren't modelled" explanation was false: that day, 51 of 64 test
+  docs had dependency links.
+  - **One gap in the docs today.** In this repository's own docs, the Python
+  `ledger` sample's tests have no edges, while 7 of the compiler's 25 edges come
+  from them. The oracle comparison runs each program as its own workspace, so
+  its score and the docs may disagree. I read this from the code and did not run
+  the oracle.
+  - **The Journey doc is unreliable as a source.** It runs to 2026-03-31 and was
+  written from git diffs by an outside model. The chat that produced it was
+  deleted on 2026-02-20, so its source can't be checked. It contradicts itself,
+  and it praises the self-grading that the bearings trace and today's rules
+  forbid.
+  - **"Pre-existing" and the reason behind the rule.** The owner rejected the
+  word once in these two days. Their reason was evidence: the checks had passed
+  earlier, so the change caused the failure. `AGENTS.md` keeps the rule on
+  ownership grounds only.
+
+  I did not run or measure anything. The outside chat is gone.
+
+● Agent(Third run: retired Copilot files)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-02-18-and-20" finished · 24m 34s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-eight of eighty-five are done and twenty are running. Next up is wave
+  three, starting with October's unread days.
+
+› Message from ac75324edfc0a7e96
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/2025-12-19.md. I read both transcripts
+  whole, both sides, and checked them against the commits `eb336e20` and
+  `15073e19` and today's code. The markdown link audit passes.
+
+  Best finds:
+  1. **The owner's two wishes were lost the day they were said.** They were
+  "commit-by-commit" and "multiple workspaces". The agent reported adding them
+  to a roadmap, and the commit message and the summary say the same. The
+  committed README has no roadmap and neither wish. No tracked document outside
+  the chat record holds them until 2026-09-29.
+  2. **The Chat Archaeology audit marked the multi-hop map "COMPLETE".** It read
+  a summary, not the owner's last look on 12-18, where many hops still rendered
+  in the wrong place. The agent kept every Spec-Kit file although the owner had
+  invited deleting them. The agent claimed to have read all of 12-18 after
+  reading about half.
+  3. **The refactor the owner called "beyond my wildest expectations" left the
+  old persistence code in place.** It still ran inline beside an extracted copy
+  nothing called, until February 2026.
+  4. **The authored sections were written two ways.** The 33 of the afternoon
+  were written in one batch, the way the owner had warned against that morning.
+  The 13 of the morning were done with care. Three from that day contradict
+  their files today.
+  5. **"Pure" modules that touch the DOM.** Only one of the four modules split
+  from `controller.ts` is pure. Twelve of the 72 tests check two copies of
+  `clamp`. None of that day's modules is used by the Membrane Map.
+  6. **"Stop at forks" was half of a balance in December.** The other half was
+  "exercise high agency", because every prompt cost the owner.
+
+  The main thing not reached: I didn't check the 33 authored sections one by one
+  against their source files.
+
+● Agent(Third run: 2025-10-23)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-19" finished · 30m 11s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Twenty-nine of eighty-five are done and twenty are running. The design
+  workflow's builders are still working, and no school has written its findings
+  yet.
+
+› Message from a73a33ea114932b2c
+  I read 2026-02-16.1 whole, both sides, and checked it against the code at the
+  day's commits and at `0de42d28^`. The report is at /workspaces/Live-Documentat
+  ion/AI-Agent-Workspace/Research/2026-09-29-bearings/readers/2026-02-16.md. The
+  link audit reports 0 broken links, and every quotation was checked with grep.
+
+  The best finds:
+
+  1. **The oracles graded themselves, then stopped without anyone saying so.**
+  Before 02-16, each hand-coded fixture's key joined in "tree-sitter edges" from
+  `inferFallbackGraph`, the very path that produced `inferred.json`. The
+  measured side was in its own answer key. The migration moved 16 fixtures to
+  SCIP only. That took the analyzer out of their keys: more honest, but the
+  opposite of the owner's instruction ("union of `scip-{lang}` and the wasm
+  tree-sitter"), and the agent never said so.
+  2. **Two errors in today's documents.**
+     - The decisions log, line 66, says the benchmark's ground truth was "SCIP ∪
+  tree-sitter". No SCIP fixture ever had that.
+     - `ca655066` is accurate but understates: the C and Ruby keys held the
+  whole inference path, not just tree-sitter.
+  3. **Checks on the record.**
+     - The owner believed on 02-16 that the shipped runtime used tree-sitter. It
+  did not, and the agent never corrected it.
+     - The 15% precision threshold `ca655066` cites was set this day. The agent
+  had called the failures "expected".
+     - `698a1244` left CI red until 03-10.
+     - The agent wrongly said no SCIP indexer exists for C or Ruby.
+  4. **Stale Live Docs.** They are still preserved by the same code today. The
+  procedure moved from a retired prompt to one layer-3 line, and the gate still
+  catches orphans only through broken links, as it did again on 2026-09-29.
+  5. **The tech debt detector.** Its retirement holds on the owner's word, not
+  the commit's reason. No size signal remains; two September files exceed 1,000
+  lines.
+  6. **`AGENTS.md`'s duplication and liability wording comes from this day.**
+  Half of the language factory now has no callers.
+
+  Not reached: line-by-line reading of the pasted gate output, the full
+  2026-09-29.2, and the authored text of the 12 deleted docs.
+
+● Agent(Third run: 2025-10-27)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-02-16" finished · 28m 0s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty of eighty-five are done and twenty are running.
+
+› Message from ada33f042c5935ca2
+  I've finished the report and it passes the markdown link audit. It's at
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2026-03-09-to-11.md. I read all three transcripts whole, both sides,
+  plus the server passage of 2026-02-24. Nothing was built or run.
+
+  Main finds:
+  - **Server retirement (03-09):** the reasons were given on 02-24. The client
+  calls none of the retired server's endpoints today; the last went on 09-28
+  (`399b07ee`) and 09-29 (`1330f59c`). So `ideas.md` line 30 is stale in full.
+  - **The owner's catch at 03-09 line 712** stopped a hand-written doc. What
+  replaced it still holds: HTML ids became public symbols, and HTML/CSS in
+  `packages/` got docs.
+  - **Threshold pin (03-10 line 1180):** the agent lowered the Python Rosetta
+  bar to 0.91 without asking. The pin was carried as open until 04-01 and ended
+  when September deleted the benchmark. The owner's trunk-based passage (line
+  918) is the earlier form of the git shape `direction.md` dates to 09-27.
+  - **Dependabot-by-hand rule:** written nowhere today. The clone's remote refs
+  list 37 Dependabot branches, including the three that `fa27e09a` superseded.
+  - **Phantom edges:** March fixed half of the fault September found again. It
+  picked the nearest match instead of the first, but still preferred any other
+  file over the file itself and ignored language.
+  - **Rosetta:** on 03-11 the owner was told the benchmark compared the
+  adapters; it did not. C# went from 0 to 11 of 12 by widening the test to count
+  unlinked namespace text, not by fixing the adapter, against the agent's own
+  promise that morning.
+  - **The "≥6/8" consensus** passes even when one or two adapters lose every
+  edge. So the parity test cannot catch a regression in any one adapter, which
+  is what its header and the vision's line 70 claim for it.
+
+  Not reached: GitHub's actual PR state, a run of the parity test, and checking
+  the census entries added on 03-09 and 03-11 against their transcripts.
+
+● Agent(Third run: 2025-10-28)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-03-09-to-11" finished · 27m 40s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from ac1299b0d429c9a1f
+  I've written the report to `/workspaces/Live-Documentation/AI-Agent-Workspace/
+  Research/2026-09-29-bearings/readers/2026-02-15-and-17.md`. I read both
+  transcripts whole and only skimmed the pasted logs. Every quotation was
+  checked against its line, and the markdown link audit shows 0 broken links.
+
+  Main findings:
+
+  1. **The JSDoc lint rule survives, but it is still only a warning.** The
+  config comment keeps the owner's question "Can I justify this code?".
+  February's sweep ended at zero warnings (`b166889e`). Today there are 35, all
+  in files written on 2026-09-27 and 09-28 (the World Map and the grammar
+  module). On 2026-09-29 the agent called them "older" warnings; they are
+  September's own.
+  2. **The archaeology comments survive as dates and commit hashes, never as
+  chat-file citations, and some are wrong.**
+     - `LocalEdge` says "inbound = teal, outbound = amber". That was false the
+  day it was written: the view draws blue to green. The generator copies the
+  claim into the file's Live Doc.
+     - One comment still names the retired HTTP server.
+     - One cites a 500-line guidance that no current document holds.
+     - The shallow-pass files carry no history at all.
+  3. **The LLM decision was the owner's principle, not leftover cleanup.** They
+  made it on 02-17 on grounds of trust, safety and users choosing their own LLM,
+  before the JSDoc pass reached any LLM file. They added a caveat that model
+  common sense still has "some real validity". Today's decisions log records
+  only "dormant, zero production callers", and the vision's "Not an LLM tool"
+  line was written by the agent on 2026-09-27.
+  4. **Smaller findings:**
+     - `direction.md`'s MDMD quotation is exact, but the rule was first enforced
+  on 02-15/16 (`1c3ea73c`), not only on 02-23.
+     - The product's default globs follow this repository's layout, so a C#
+  repository with its code in `src/` gets no C# docs by default.
+     - These days hold no interface work. They show a different model weakness:
+  the agent kept going for breadth over depth and checking its own guesses in
+  circles, and the owner caught it each time.
+
+  Not reached: 02-16 and 02-18, and the pasted logs line by line.
+
+● Agent "Third run: 2026-02-15-and-17" finished · 30m 47s
+
+● Agent(Third run: 2025-10-29)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-two of eighty-five are done and twenty are running.
+
+› Message from ad950087d39dd1835
+  I read 2025-12-14.1, 2025-12-15.1 and 2025-12-15.2 whole, both sides. The
+  report is at `/workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-
+  09-29-bearings/readers/2025-12-14-and-15.md`. Every quote was checked with
+  `grep -F`, and the link audit is clean.
+
+  Main finds:
+  - **`?data=` opens the page to other hosts.** The Explorer fetches its data
+  from whatever URL `?data=` names (`client/index.ts`, line 80). `SECURITY.md`
+  doesn't mention this. Authored text is also inserted as HTML without escaping.
+  From reading the code (not tried): a crafted link could run markup on an
+  Explorer's own origin.
+  - **Nothing enforces "no network" today.** The September proof was a
+  Playwright script that was not kept. `SECURITY.md` line 33 repeats a December
+  reason that nobody tested. The agent had set aside a working option (Docker on
+  the runner) back then.
+  - **CI still installs an unpinned Rollup binary nothing uses.** It is a
+  December workaround the agent called "the truly durable fix".
+  - **The MDMD rule of 2025-12-14 is broken twice in today's client code**
+  (`detailPanel.ts` line 581, `entry-heuristics.ts` line 32).
+  - **The owner's publishing conditions have no home anywhere:** airtight,
+  "accurate enough to publish", reviewed by "Human eyes", one package, fewer
+  dependencies. Their question "When would the packages not be used together?"
+  was never answered.
+  - **The peers reached the README through the agent's search of the 2025-11-19
+  Antigravity chat,** not by the owner naming them again. There was no stated
+  reason for MIT.
+  - **The owner's December mobile list is still open.** Local Map, Circuit Board
+  and Membrane Map pan with the mouse only.
+  - **`glob` stayed only because Node's own glob was experimental.** Node 22.22
+  no longer warns about it.
+
+  Not reached: 12-16 and 12-19. Docker on a hosted runner and Node's glob need
+  runs I may not make.
+
+● The 2025-12-14-and-15 reader is done. It raises a possible security fault in
+  the published Explorer. The page loads its data from whatever address the
+  ?data= parameter names. Authored text is inserted as HTML without escaping. So
+  a crafted link could run markup on the page's own site. I'll verify that in
+  the code before the recap. Launching the next reader.
+
+● Agent(Third run: 2025-10-30)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12-14-and-15" finished · 34m 42s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed: ?data= fetches from any address, cross-origin included. I'll check
+  whether any text from the bundle reaches innerHTML unescaped.
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Confirmed the Explorer's markdown renderer escapes code spans and link targets
+  but not plain text, so a crafted ?data= link could inject script via
+  innerHTML — low-impact since no secrets are exposed, but it violates
+  SECURITY.md. I'll hold off fixing it until the design builders finish, since
+  they depend on the Explorer's client modules.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-three of eighty-five are done and twenty are running. The security
+  finding is verified and recorded, with its fix held until the design run ends.
+
+› Message from a47a4eb160ae30b8c
+  The report is written: /workspaces/Live-Documentation/AI-Agent-Workspace/Resea
+  rch/2026-09-29-bearings/readers/2025-12-14-and-15-security.md. The link audit
+  is clean. I changed nothing else.
+
+  Main findings:
+
+  1. **Only two of the four network layers were built.** On 2025-12-15 the agent
+  built the static scan and `safeFetch`. The global agent was deferred and
+  never returned to. The no-network CI container was dropped. In its place went
+  a CI step that printed "blocking external DNS resolution" and blocked nothing.
+  The scan read only `.ts` files and excused the folder holding the page
+  template, which had the unpkg tag.
+  2. **The "Verification Limitations" section** came in the next commit,
+  `7aea17b7`. The reason given for dropping the container, still in
+  `SECURITY.md` line 33, holds only for a container job. A normal step after
+  checkout could run the `--network none` recipe (my reading; not tried).
+  3. **When the CDN was noticed.** Gemini's plan named it on 2025-11-19. The
+  plan sits in a file deleted on 2025-11-21, so transcript searches miss it, and
+  `force-graph-across-the-record.md` cites the wrong file. The Claude Code
+  agent wrote "contacts no other host" on 2026-09-27. It logged the CDN load in
+  `ideas.md` on 2026-09-28 and did not tell the owner.
+  4. **Claims the code did not match:** the "20 packages removed" (none were),
+  and "no postinstall scripts" beside two such scripts. The "48 hours / 7 days"
+  response promise was the agent's own and survives today.
+  5. **Today:** nothing in CI checks the network promise, and there is no
+  content security policy. CI's CLI pack test packs only `package.json`.
+  Authored raw HTML reaches `innerHTML` unescaped. No outside review of the code
+  appears anywhere in the record.
+
+  Not reached: running anything that builds or tests, and CodeQL alerts, which
+  need GitHub access.
+
+● The security-days reader is done. It independently confirms the unescaped
+  HTML. It also records that an agent of this era logged the CDN load in
+  ideas.md on 2026-09-28 without telling the owner. Launching the next reader.
+
+● Agent(Third run: 2025-10-31)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2025-12 security days" finished · 36m 52s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-four of eighty-five are done and twenty are running.
+
+› Message from a680bddb988f9b4f8
+  I read 2026-02-23.1 and 2026-02-24.1 whole, both sides. The report is at
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-09-29-bearings
+  /readers/2026-02-23-and-24.md. Every quotation was checked with grep -F, the
+  link audit found nothing broken, and prettier passes.
+
+  Best finds:
+  - **Docstrings are downloaded but never shown.** Since September the page
+  loads every symbol's docstring as part of the graph index. The client's
+  projection then throws them away, so only the download button ever gives them
+  back. The owner's 02-23 standard ("no content ... truly invisible") could be
+  met with a client change alone; the doc format doesn't need to grow.
+  - **Several shortest paths were never built, in any part.** The engine's
+  search and the client's both keep one parent per node. Since September, ties
+  are broken by the sorted order of a file's neighbours: the result no longer
+  changes from run to run, but which path wins is still arbitrary. The layer-3
+  doc describing the design also names a file that no longer exists.
+  - **The MDMD cleanup commit (`e50c0047`) added hardcodes of its own.** Two
+  patterns for this repository's folder layout in `detailPanel.ts` lines
+  579–581, plus `/.mdmd/`, `/specs/` and `/ai-agent-workspace/` in the entry
+  heuristic.
+  - **Brain Simulator III.** The owner named it on 02-24 as a repository they
+  want to understand. That answers bearings question 5 ("which repository?"),
+  and no current document carries it.
+  - **The census.** Its 37 entries with no line number almost all come from
+  prompts the agent read once before a context compaction and never re-read. I
+  also found two more places where it misquotes the owner.
+  - **The decisions log was born on 02-23**, from Spec-Kit's `research.md`.
+  - **Requirement IDs closed a question the owner had opened.** The owner said
+  they could be talked into dropping From/To; the agent kept them because
+  `CAP-003` and `SC-LD-008` required them.
+
+  Not reached: the census entries before UC-084, the languages of Brain
+  Simulator III, anything that needs a build, and `Project Development
+  Journey.md`.
+
+● Agent(Third run: 2026-01-30)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: 2026-02-23-and-24" finished · 31m 20s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-five of eighty-five are done and twenty are running. The
+  2026-02-23-and-24 reader found the owner naming a real repository they want to
+  understand, Brain Simulator III. That answers one of the bearings' open
+  questions.
+
+› Message from aa21dcbbd42d1b3d0
+  I read the intent census whole and checked it against today's documents. The
+  report is at /workspaces/Live-Documentation/AI-Agent-Workspace/Research/2026-0
+  9-29-bearings/readers/intent-census-versus-today.md, and the markdown audit
+  finds no broken links.
+
+  **The census.** It covers 2025-10-16 to 2026-03-31, with headings out of date
+  order. I checked 119 of its quotations against the transcripts: 98 are word
+  for word, 11 are slightly reworded, 5 are the agent's words presented as the
+  owner's, and 5 appear in no transcript. It has no entry for the days the story
+  turned: 10-29 (LLMs as the audience), 10-30, 12-03, the French Corset on
+  12-07.2, 12-18, 12-19 and 04-01. Its exact line citations are reliable from
+  2026-02-15 on; December's are often hundreds of lines off.
+
+  **Best finds not already in the bearings:**
+  - **Compaction.** In March the owner said a summary saying a file was read is
+  not a read. That rule is missing from today's documents, although September's
+  sessions compacted ten times.
+  - **Stash and unfinished commits.** The owner said "I trust stash absolutely
+  zero" and accepted an unfinished commit made "for context preservation
+  reasons". That answers half of bearings question 7.
+  - **Chat links.** `AGENTS.md` line 64 says "A chat-log citation is not
+  required". It was written by the agent, against three owner statements; in
+  September the owner still called tracing chats to code "awesome".
+  - **File size.** The owner's 1,000-line limit is gone and two files now exceed
+  it. Its reason was Copilot's editing tool, which no longer applies.
+  - **Stale Memory file.** `owner.md` line 21 still says "commit only when
+  asked".
+
+  **Did September use the census?** The agent named it on 2026-09-26 (line 245)
+  as where the owner's intent now lives. No transcript shows anyone reading it.
+
+  **Not reached:** the other Notes files, and the three long September
+  transcripts, which I searched but did not read whole.
+
+● Agent(Third run: fixture origins)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: intent census" finished · 21m 14s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-six of eighty-five are done and twenty are running.
+
+› Message from afe4932f497594cd4
+  I've written the report to /workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/research-surveys.md. I read all three
+  surveys whole, plus the four designs they fed, the transcript lines 1406 to
+  2252 of 2026-09-27.1.md, and the code each judgement touches. I fetched no
+  citations. The link audit is clean, and I changed no other file.
+
+  What I found:
+  - **Sourcing is good.** Each survey lists what it could not reach and labels
+  secondhand sources. The four Azure role GUIDs I checked are right. Three
+  addresses look doubtful, among them MicroDepGraph's
+  `arxiv.org/html/1909.03249`. The two surveys contradict each other about
+  whether the UML 2.5.1 PDF was read.
+  - **"Decides nothing" holds only for the survey bodies.** I found 22
+  judgements at section ends. The owner answered seven. Three were later
+  reversed (positions kept in a separate file, libyear, a closed list of kinds),
+  but each survey still states them.
+  - **Two of the three surveys were not inputs.** The groups survey arrived
+  after the board text was built. The system-scale survey was written during the
+  openings build. Only the declared-facts survey came before its decision.
+  - **Contradictions.** The decisions log cites "fixed vocabulary plus open
+  key-value layer" as a reason for the board, but the board has no open layer.
+  "Slick!" approved only the layer-3 half, yet direction.md and the probe record
+  read it as approving both halves.
+  - **The board text is a new grammar,** and nobody asked the owner whether to
+  use CALM or Structurizr instead. The one reason the surveys give for a new
+  format does not apply to the board as built.
+
+  My three questions:
+  1. Should boards import or export CALM, Structurizr or Backstage files?
+  2. Where should reversals of survey judgements be written down?
+  3. Should system-scale edges be measured against the published microservice
+  benchmarks the survey found?
+
+● Agent(Third run: Nov 13-14 adapters)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: research surveys" finished · 21m 57s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-seven of eighty-five are done and twenty are running.
+
+› Message from aab9a018b7733cfe2
+  I finished the audit of the measurement code deleted in `ca655066` and
+  `0de42d28`. The report is `/workspaces/Live-Documentation/AI-Agent-Workspace/R
+  esearch/2026-09-29-bearings/readers/audit-deleted-measurement-code.md`. The
+  link audit shows 0 broken links and Prettier passes. I changed no other file
+  and ran nothing of the product. The scores come from comparing the deleted
+  JSON files and reports.
+
+  **What I found:**
+  - **The benchmark never ran an analyzer.** It compared two committed files per
+  program. `inferred.json` was only ever updated by hand.
+  - **C and Ruby were graded against themselves.** Their expected and inferred
+  edge sets are identical, because the expectations took in the whole inference
+  output, regex heuristics included. That was the agent's "Enhanced Oracle" of
+  2026-01-28, wider than the owner's own design (compiler plus tree-sitter).
+  September deleted no working C or Ruby oracle.
+  - **The SCIP half was independent.** It was rebuilt the next day with the same
+  indexers and edge rule. The decisions log doesn't say so, and its line 66 is
+  wrong in detail.
+  - **The deleted design docs claimed the benchmarked heuristics fed the
+  product.** That explains why the Live Docs generator never ran them.
+  - **The go-mux floor (recall 0.05) was stale, not a slide to green.** Recall
+  was 0.733 at deletion.
+  - **The network audit could not have caught the CDN script.** It read only
+  `.ts` files and exempted the browser client by path.
+  - **Correction to the bearings:** the gate already runs the compiler
+  comparison on all 21 programs through `oracle.test.ts`. It checks only
+  bookkeeping, so a pass mark is one assertion away.
+  - **Gone with no replacement:** the seven real repositories (pinned commits
+  recoverable from `0de42d28^`), the `extends`/`implements` edge kinds, and the
+  score history in git.
+
+  **Three questions for the owner:**
+  1. Should each program's score be kept in git, as the owner asked on
+  2025-11-03?
+  2. Should the seven real repositories be measured again outside the gate?
+  3. Should `oracle:compare` compare the symbols each edge carries? The
+  expectations already record them.
+
+● Agent(Third run: ASP.NET fixtures)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Agent "Third run: audit deleted measurement" finished · 32m 20s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thirty-eight of eighty-five are done and twenty are running.
+
+● Agent "Third run: retired vision docs" failed: Agent terminated early due to
+an API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXVPcNhxMcdzck24Yt, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: 2025-10-27" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXjMz7JnqQMJL6V7RY, model sent to the
+API: claude-opus-5-5)
+
+● Agent "Third run: 2025-10-30" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXjQDye1z3e3ojqjtx, model sent to the
+API: claude-opus-5-5)
+
+● Agent "Third run: audit deleted surfaces" failed: Agent terminated early due
+to an API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXmeefAspCpccHqZKj, model sent to
+the API: claude-opus-5-5)
+● Agent "Third run: 2026-01-30" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXnVWZGvt3uE2rxbUS, model sent to the
+API: claude-opus-5-5)
+
+● Agent "Third run: scripts and config" failed: Agent terminated early due to an
+API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXn4D5fXT4T4YQZQMw, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: 2025-10-28" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpXvcQyuqLGCbPsXrps, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: ASP.NET fixtures" failed: Agent terminated early due to an
+API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpYG7fanJrcmUKP8KeA, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: 2025-10-29" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpYL72ciA7ctxCA6TiR, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: retired Copilot files" failed: Agent terminated early due to
+an API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpYVA15hzZdYSZ6n5GE, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: 2025-10-23" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpYdYGbhZNZUBBt2upZ, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: retired layer-3 docs" failed: Agent terminated early due to
+an API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpYyZ3jjfRBrEVe1iNm, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: September claims" failed: Agent terminated early due to an
+API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpZ8X42czPMBg9PtPuF, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: retired roadmap docs" failed: Agent terminated early due to
+an API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpZU1KWN7tHVfQcTLA9, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: audit deleted docs" failed: Agent terminated early due to an
+API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpa5zXJh74c6AYr5htR, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: 2025-10-31" failed: Agent terminated early due to an API
+error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpaAzAbLq4b4rz4Rksj, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.
+
+● Agent "Third run: fixture origins" failed: Agent terminated early due to an
+API error: You've hit your session limit · resets 5:50pm (UTC) (error type
+rate_limit, HTTP 429, request id req_011CfZpaRgCHZmXTn8Vf2GBF, model sent to the
+API: claude-opus-5-5)
+  ⎿  You've hit your session limit · resets 5:50pm (UTC)
+     /upgrade to increase your usage limit.

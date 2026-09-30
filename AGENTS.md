@@ -33,14 +33,14 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 - `AI-Agent-Workspace/Probes/` holds dated records of design probes: the brief, each builder's findings and a few screenshots. The probe pages themselves are disposable and never committed.
 - `AI-Agent-Workspace/Screenshots/` holds dated pictures of the built Explorer, taken by the agent after changing it, each named in the folder's README. The probe records keep their own pictures.
 - `AI-Agent-Workspace/Research/` holds dated surveys of formats and prior art, gathered for a design step, with a source for every claim. A survey records what existed on its date and decides nothing.
-- `AI-Agent-Workspace/ChatHistory/` is the chat record. October 2025 to April 2026 are full transcripts of the GitHub Copilot era: historical reference only, never a source of current facts, kept until the modernization is complete. From September 2026 it holds both sides of each Claude Code session, the owner's prompts and Claude's messages verbatim, rebuilt by `node AI-Agent-Workspace/scripts/claude-code-transcript.mjs`; run it near the end of a session, because Claude Code deletes its logs, and never read the logs' reasoning blocks.
+- `AI-Agent-Workspace/ChatHistory/` is the development system of record. Preserve raw captures; summaries provide a stable, harness-neutral path from a file's provenance to the conversation and verified commits. The naming, source-coverage rules and session handoff routine are in [its README](AI-Agent-Workspace/ChatHistory/README.md). Historical statements are evidence of what was said, never automatically current facts. Never extract private reasoning blocks.
 - The workspace mount is case-insensitive (a Windows-backed volume), so a file-existence probe must check the directory listing: `Account.py` finds `account.py`.
 
 ## Commands that matter
 
 | Command                                                                                         | What it does                                                                                       |
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `npm run build`                                                                                 | `tsc` for the four buildable packages (about 15 s)                                                 |
+| `npm run build`                                                                                 | Type-check/build the engine, Explorer and generator; the CLI package is not included               |
 | `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                                   |
 | `npm run test:unit`                                                                             | Vitest, 963 tests (about 30 s)                                                                     |
 | `npm run test:e2e`                                                                              | Playwright over the Explorer and the estate sample, both built first, 53 tests (about 3 min)       |
@@ -61,7 +61,7 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 
 - Markdown is canonical. Everything the Explorer or CLI shows must be derivable from the Live Docs. If a picture needs a fact the docs can't carry, grow the doc format rather than add a side channel. The graph index is derived from the docs and never committed; consumers read the graph, not the markdown.
 - Never hand-edit a `LIVE-DOC:BEGIN` … `LIVE-DOC:END` region. Fix the generator. The parser refuses anything outside the grammar, so a hand edit fails lint.
-- Authored `Purpose` and `Notes` explain what a file is for and what a maintainer must know. Write them for a new reader, not as a changelog. A chat-log citation is not required.
+- Authored `Purpose` and `Notes` explain what a file is for and what a maintainer must know. Write them for a new reader, not as a changelog. When provenance explains an origin or consequential choice, link the relevant summary turn; its source references and verified commits make that history auditable. Such a citation is optional.
 - Every authored doc is either current or historical. Historical docs say so in their first lines. Current docs may cite them as provenance but never depend on them for facts.
 - Before deleting an authored document, find out why it was written (`git log`, and the chat record under `AI-Agent-Workspace/ChatHistory/`) and carry forward anything still true that lives nowhere else.
 - Anything carried forward from the chat record or a retired document is written as dated history or as an open question, never as a current decision, unless the owner re-affirms it. Old certainty is the easiest thing to import and the hardest to notice.

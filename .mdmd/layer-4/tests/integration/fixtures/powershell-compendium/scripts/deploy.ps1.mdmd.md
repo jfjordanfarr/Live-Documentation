@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1
-- Generated At: 2026-09-27T23:21:32.846Z
+- Generated At: 2026-09-30T16:22:06.393Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Pairs with the module and logging fixtures to exercise dependency fan-out, ensur
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Invoke-Deployment` {#symbol-invokedeployment}
+#### `Invoke-Deployment` {#symbol-invoke-deployment}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1#L12)
 <!-- LIVE-DOC:END Public Symbols -->

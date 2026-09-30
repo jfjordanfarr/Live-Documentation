@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-09-30T01:36:12.084Z
+- Generated At: 2026-09-30T16:22:04.134Z
 
 ## Authored
 ### Purpose
@@ -70,14 +70,14 @@ _No public symbols detected_
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
-- [`template.context-name`](../shared/template.html.mdmd.md#symbol-contextname)
-- [`template.history-back`](../shared/template.html.mdmd.md#symbol-historyback)
-- [`template.history-forward`](../shared/template.html.mdmd.md#symbol-historyforward)
-- [`template.pathfind-path`](../shared/template.html.mdmd.md#symbol-pathfindpath)
-- [`template.pathfind-status`](../shared/template.html.mdmd.md#symbol-pathfindstatus)
+- [`template.context-name`](../shared/template.html.mdmd.md#symbol-context-name)
+- [`template.history-back`](../shared/template.html.mdmd.md#symbol-history-back)
+- [`template.history-forward`](../shared/template.html.mdmd.md#symbol-history-forward)
+- [`template.pathfind-path`](../shared/template.html.mdmd.md#symbol-pathfind-path)
+- [`template.pathfind-status`](../shared/template.html.mdmd.md#symbol-pathfind-status)
 - [`template.sidebar`](../shared/template.html.mdmd.md#symbol-sidebar)
-- [`template.sidebar-toggle`](../shared/template.html.mdmd.md#symbol-sidebartoggle)
-- [`template.stats-line`](../shared/template.html.mdmd.md#symbol-statsline)
-- [`template.view-map`](../shared/template.html.mdmd.md#symbol-viewmap)
+- [`template.sidebar-toggle`](../shared/template.html.mdmd.md#symbol-sidebar-toggle)
+- [`template.stats-line`](../shared/template.html.mdmd.md#symbol-stats-line)
+- [`template.view-map`](../shared/template.html.mdmd.md#symbol-view-map)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

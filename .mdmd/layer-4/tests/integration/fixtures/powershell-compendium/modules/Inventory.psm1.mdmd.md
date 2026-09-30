@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1
-- Generated At: 2026-09-27T23:21:32.833Z
+- Generated At: 2026-09-30T16:22:06.381Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Model a simple inventory module so the adapter can prove it honors Export-Module
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Get-InventorySnapshot` {#symbol-getinventorysnapshot}
+#### `Get-InventorySnapshot` {#symbol-get-inventorysnapshot}
 - Type: function
 - Source: [source](../../../../../../../tests/integration/fixtures/powershell-compendium/modules/Inventory.psm1#L1)
 <!-- LIVE-DOC:END Public Symbols -->

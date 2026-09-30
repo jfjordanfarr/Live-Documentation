@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/modules/Inventory.psm1
-- Generated At: 2026-09-27T23:21:32.891Z
+- Generated At: 2026-09-30T16:22:06.429Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Expose the exported inventory module that the deploy script loads during inspect
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Get-InventorySnapshot` {#symbol-getinventorysnapshot}
+#### `Get-InventorySnapshot` {#symbol-get-inventorysnapshot}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/fixtures/powershell-compendium/workspace/scripts/modules/Inventory.psm1#L8)
 

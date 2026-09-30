@@ -1,0 +1,286 @@
+
+● Committed as 0c9ca70b, tree clean, gate and all 55 Playwright specs green.
+
+  Yes, Playwright can catch those fails, and it now does. The audit at
+  design-audit.ts (tests/e2e/design-audit.ts) collects the screen boxes of a
+  view's visible text and reports any two that intersect, and any text that runs
+  past the box clipping it or under a neighbour on the same line. Specs put the
+  World Map in one state and expect no faults: at rest, built on, after a turn
+  and a zoom out, and inside a thing at two depths. The estate is audited the
+  same way, because visualize-sample.ts (scripts/live-docs/visualize-sample.ts)
+  now builds it into the bundle's samples folder, so the suite's own server
+  serves it at http://localhost:8766/samples/estate/index.html?view=world.
+
+  What it found was all real, and is fixed: token labels on each other and on
+  things' second lines, a region label under a thing's name, two things' second
+  lines meeting once the world is zoomed out, card paths cut off at a fixed
+  width. Labels now settle after every camera move. A thing's name stays put,
+  its second line goes when it would cover another label, and region, crossing
+  and token labels step up or down until clear. Cards are as wide as their
+  words. The first run also caught the audit itself: it passed vacuously while
+  the view was fading in, so specs now wait and assert they saw words. What it
+  cannot judge is taste, so the gallery stays.
+
+  Why you got a mini-view. I built the probe's folder map, reading the vision's
+  "once the Membrane Map is as good as the original Local Map" as a deferral.
+  Your round-ten words had named the Membrane Map as the Local Map's 2D mode,
+  and I should have weighed them more. Your reading of the hairball is right:
+  directories as membranes with cross-membrane wires bundled at their
+  boundaries, and no wires until something is pinned, is what removes it.
+
+  What the Membrane Map is today is in the gallery, estate
+  (AI-Agent-Workspace/Screenshots/2026-09-29/membrane-map-estate-gateway.png)
+  and repo
+  (AI-Agent-Workspace/Screenshots/2026-09-29/membrane-map-repo-live-docs.png):
+  directory tiles with the files in a strip at the foot, no wires until symbols
+  are pinned, dark theme only, and its own design doc lists what stopped in
+  March: pinning must rearrange cards into left-to-right flow, edge disclosure
+  is disabled, detail levels are not wired.
+
+  That leaves a fork I would rather you decide:
+
+  - Open the existing Membrane Map view from "open X", scoped to the thing, and
+    improve it in place. Cheapest today. It drops the lid transition and the
+    wall pins until rebuilt there, and carries the March code's shape: a
+    whole-page view that tears down and rebuilds, coupled to the old Circuit
+    Board.
+  - Grow the inside panel into the Membrane Map's concept. At rest, directories
+    as membranes containing their cards, wires only when a card or symbol is
+    pinned or hovered, cross-membrane wires bundled at the boundary with counts.
+    It keeps the lid, the wall pins as the junction between scales, and the
+    rank layout that is the March blocker's answer. The old view retires with
+    the others, and the inside takes the name.
+
+  I recommend the second. Until you say, the inside stays as it is. Your words
+  are recorded in direction.md, owner.md and the decisions log under "The Inside
+  of a Thing".
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read tests/e2e/membrane-default-view.spec.ts (56 lines)
+  ⎿  Read tests/e2e/world-map.spec.ts (237 lines)
+  ⎿  Referenced file packages/explorer/src/client/views/worldMap/controller.ts
+  ⎿  Read packages/explorer/src/client/views/worldMap/layout.test.ts (91 lines)
+  ⎿  Read packages/explorer/src/client/views/worldMap/index.ts (79 lines)
+
+❯ Getting better everytime! I've been playing around with your latest hosted
+  build. Very cool!
+
+  >Open the existing Membrane Map view from "open X", scoped to the thing, and
+  improve it in place. Cheapest today. It drops the lid transition and the wall
+  pins until rebuilt there, and carries the March code's shape: a whole-page
+  view that tears down and rebuilds, coupled to the old Circuit Board.
+
+  Yes but don't get rid of the Local Map yet. It still has a fair bit of
+  hard-earned design intuition and style to teach us.
+
+  >Grow the inside panel into the Membrane Map's concept. At rest, directories
+  as membranes containing their cards, wires only when a card or symbol is
+  pinned or hovered, cross-membrane wires bundled at the boundary with counts.
+  It keeps the lid, the wall pins as the junction between scales, and the rank
+  layout that is the March blocker's answer. The old view retires with the
+  others, and the inside takes the name.
+
+  Stretch goal. I like this a lot. Let's reach up for it once we've got it as
+  the default local map view. (2D local map view; 3D local map view
+  default/only 3D of local map = force-directed graph view).
+
+  Talk to me about what you mean by "directories as membranes containing their
+  cards" with respect to the fact that directories (more often than not)
+  themselves contain additional directories. How deep do you go? Draw the cards
+  for implementations right there in the directory and draw directory for
+  directories in that directory? Seems straightforward! No doubt, the Membrane
+  Map was complex enough in what I had asked it to do that I had the few-month
+  hiatus on this project, awaiting the next generation of frontier which could
+  tackle something of that difficulty. I think that the overall visual style
+  and sizing and spacing and coloring shown in the preexisting "Local Map"
+  should inform a lot of improvements, visually and otherwise, to the "Membrane
+  Map" (to be renamed "Local Map" once Local Map truly is
+  at-least-matched-in-quality).
+
+  Questions about design reuse for you (with respect to World Map vs Local
+  Map)
+
+  What if we attempted to take the World Map model and tried to apply it to the
+  Local Map? What might that look like?
+
+  What if we attempted to take the Local Map model and apply it to the World
+  Map? What might that look like?
+
+  Does there exist some system which capably answers both needs or is it wiser
+  to keep the two separate? (My default: keep separate). This is me searching
+  for possible design parsimony.
+
+  Oh! Not related to the above request, but just a note from me: I quite like
+  the defaults we have where the world map is bright and the local map is dark
+  by default. I think that is a wonderful juxtoposition and gives one the
+  feeling of inside-versus-outside. That said, I also love variations on
+  light/dark and what they might "feel like" to any given user. For instance,
+  if a user prefers dark outside and light inside, is the world, to them, empty
+  space and the inner areas are the safety of the warm well-lit indoors? Just
+  thoughts I'm having about "feelings" of engaging with the UI with differing
+  settings. Things I thought might be semantically valuable, however trivial,
+  due to the fact that LLMs substantially lack these capabilities and can
+  benefit from the instruction of how certain designs inspire certain human
+  emotions.
+
+● Recording your answers first, then reading the Membrane Map as it stands so
+  the depth and reuse questions get answered from what the code does rather than
+  from memory.
+
+  Searched for 3 patterns, read 7 files, listed 2 directories, ran 21 shell commands (ctrl+o to expand)
+
+● I'll wire "open X", double-click, and wheel-in to focus the Membrane Map on
+  the item's folder, and remove the folder-map panel. First reading the
+  remaining controller and breadcrumb code before making edits.
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● The build passes. Next I'm rewriting the three World Map specs for the new
+  destination, rebuilding both bundles, and running those specs.
+
+  Searched for 2 patterns, read 3 files, ran 8 shell commands (ctrl+o to expand)
+
+● I'll adjust the initial folder view so it fits above the zoom controls instead
+  of overlapping the file cards, then rebuild, rerun the audit, and reshoot the
+  screenshots to confirm the fix.
+
+  Read 1 file, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The fit is correct—the audit failure was a false positive from subtracting
+  unscaled CSS padding against a transformed box. I'm fixing the check,
+  rerunning it, reshooting, and pulling the doc lines to edit next.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● All checks pass: 974 unit tests, 49 integration tests, lint and SlopCop clean.
+  Now updating AGENTS.md's test count, running the full Playwright suite
+  against fresh builds, and drafting the commit message.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The visual-stability spec passed four times in a row on its own. Its wait is a
+  fixed timer from March, so the one failure in the full run was a race in that
+  test, not in the change. Committing.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Committed as 1cba375c, tree clean, awaiting your push. A thing on the World
+  Map now opens into the Membrane Map focused on its folder, by all three ways:
+  the wheel past half the view, a double-click, and the link in the pinned
+  panel. The crumb above the top folder reads "World Map" and leads back to the
+  board, and the board's camera is eased out on the way so the next wheel does
+  not reopen the thing. The folder-map panel is gone; git keeps it at 817f29fc
+  for the stretch goal. The Local Map is untouched.
+
+  The first look showed two faults, both fixed. The folder's cards sat below the
+  fold and under the zoom controls, so a folder's first look is now fitted
+  above them. And the audit's first run on the Membrane Map failed on badges
+  that were not cut: it subtracted CSS padding unscaled from boxes drawn under a
+  transform. The check now scales the padding with the element, and the
+  decisions log says so. Pictures: engine opened (AI-Agent-Workspace/Screenshots
+  /2026-09-29/world-map-repo-08-open-engine-membrane.png), back on the board
+  (AI-Agent-Workspace/Screenshots/2026-09-29/world-map-repo-09-back-from-membran
+  e.png), gateway opened (AI-Agent-Workspace/Screenshots/2026-09-29/world-map-es
+  tate-10-open-gateway-membrane.png).
+
+  ┌─────────────┬────────────────────────────────────────────────────────────┐
+  │    Check    │                           Result                           │
+  ├─────────────┼────────────────────────────────────────────────────────────┤
+  │ Unit        │ 974 passed, eleven fewer with the folder map's tests       │
+  ├─────────────┼────────────────────────────────────────────────────────────┤
+  │ Integration │ 49 passed                                                  │
+  ├─────────────┼────────────────────────────────────────────────────────────┤
+  │             │ 50, all passed; the March pin-active stability spec flaked │
+  │ Playwright  │  once in the full run, then passed four times alone on its │
+  │             │  fixed timer                                               │
+  └─────────────┴────────────────────────────────────────────────────────────┘
+
+  Your words are archived, and the decision, the Local Map as teacher, and the
+  light-and-dark note are in direction.md, owner.md and ideas.md.
+
+  How deep a membrane goes
+
+  Your instinct is the rule I would keep, with one word added: closed. The
+  folder you are in is drawn one level open. Its files are cards. Its subfolders
+  are closed membranes, and a closed membrane carries on its boundary what
+  crosses it: how many wires come in and go out, bundled, the way a thing's
+  doors do on the board and the way the tile badges already count "33 in". Zoom
+  into a subfolder and it opens the same way, the crumbs growing, its ancestors
+  thinning to labelled borders as the March layout already does. So depth is not
+  a number. It is wherever you are, one level deep, all the way down.
+
+  Why not open everything to the leaves? That is the treemap the March design
+  drew. It puts hundreds of cards on screen with wires crossing at every level,
+  which is the hairball you just sent back. Why not two levels? Because the rule
+  would change at the third, and a reader would have to learn the exception.
+
+  Two refinements from the retired folder map are worth keeping. A subfolder
+  with a handful of files and no folders of its own opens flat inside its
+  parent, since a closed box hiding three files costs more clicks than it saves.
+  And a folder with no files of its own is passed through, its subfolders
+  standing in its place under longer names. The engine picture shows why: today
+  it is one empty tile for the source folder, with every file behind a badge.
+
+  Each map's model on the other
+
+  The World Map's model inside a folder: each file a closed piece with its
+  exports as doors, each import a wire between doors, each subfolder a region,
+  the packages it uses as tokens beneath. What it looks like is a circuit board
+  of chips. That is nearly the old Circuit Board, and it is exactly the folder
+  map I just retired, since a card with pin rows is a piece with doors. The
+  container and the pins carry. Two things do not. Count: a board holds a dozen
+  things you place by hand and the text remembers, while a folder holds a
+  hundred files nobody wants to place, so the layout must be computed, and a
+  computed layout needs a law to be stable. Law: inside a system that law is
+  left to right by dependency, which you set, and on the board you refused it. A
+  thing also has a few doors where a file has dozens of exports, so doors
+  become rows and the wall becomes the card's edge.
+
+  The Local Map's model on the board: pin a thing and the board arranges around
+  it, callers left, callees right, the rest faded, symbols listed on each wire.
+  Half of that is already there. A hover peeks, a click pins, the pinned panel
+  lists what a thing serves, calls, is called by and stands on, every name a
+  link, and the unrelated dims. Pin a wire and the panel shows the files behind
+  it, which is the Local Map's symbol view of one edge at board scale. The other
+  half, columns by hop, fails because the board's positions are yours. A map
+  that rearranges around every pinned thing cannot be learned, and the saved
+  layout is the thing you asked to trade.
+
+  One system or two
+
+  One model, one grammar of touch, two renderers. Your default holds for the
+  part that is drawn.
+
+  The model is one already: a tree of containers, thing, folder, file, symbol,
+  with wires at the finest level that bundle at every boundary they cross, and
+  the count on a boundary is the bundle. The graph index and the board join
+  already see it that way; the same file-level lines sit behind a wire on the
+  board and a pin on a card. The grammar of touch is one too and should stay
+  one: hover peeks, click pins, every claim is a link, open by zoom or
+  double-click or link, back by Escape or crumb or wheel, at least two ways to
+  anything. The renderers are two because your rule makes them two: three
+  dimensions outside with positions you author, two inside with a flow that is
+  computed. A single zoomable universe would have to carry both cameras and both
+  laws, and would be the harder thing to make beautiful. So share what is known
+  and how it is touched, and keep separate what is drawn. One share worth
+  taking soon: the World Map's pinned panel, where every claim is a link, is the
+  better of the two panels, and the Membrane Map still opens the old sidebar.
+
+  Light and dark. Recorded in your words, and I read the pairing as you do: the
+  bright board is a table in daylight where pieces are placed, and the dark
+  interior is the machine room where the wires glow. Flipped, the world is night
+  over the estate and the insides are lit windows, a fine feeling too. The
+  practical consequence is small. The Membrane Map is dark only today, while the
+  World Map has both themes and remembers its choice. When the Membrane Map
+  gains a light theme, each scale's theme should be its own setting rather than
+  one switch, so a person can pick either pairing.
+
+  Next is the Membrane Map in place, with the Local Map as the teacher and the
+  depth rule above as the plan unless you say otherwise. The first faults are
+  already listed: an empty tile per subfolder, the files in a strip at the foot,
+  no light theme, "1 files" on a badge, and the boundary pins the depth rule
+  needs. One choice of mine you can flip: when a bundle has a board, the
+  Membrane Map's crumb root is the World Map rather than the whole-repository
+  treemap, since the board is the outside of every folder. The whole-repository
+  treemap stays behind the nav item.

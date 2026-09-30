@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1
-- Generated At: 2026-09-27T23:21:32.860Z
+- Generated At: 2026-09-30T16:22:06.404Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ Provide the dot-sourced logging helper consumed by the PowerShell inspect fixtur
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Write-DeploymentLog` {#symbol-writedeploymentlog}
+#### `Write-DeploymentLog` {#symbol-write-deploymentlog}
 - Type: function
 - Source: [source](../../../../../../../../../tests/integration/fixtures/powershell-compendium/workspace/scripts/common/logging.ps1#L8)
 

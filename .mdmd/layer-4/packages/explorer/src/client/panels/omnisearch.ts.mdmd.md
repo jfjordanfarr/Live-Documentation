@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/omnisearch.ts
-- Generated At: 2026-09-29T19:31:57.340Z
+- Generated At: 2026-09-30T16:22:04.171Z
 
 ## Authored
 ### Purpose
@@ -49,8 +49,8 @@ API for programmatic control
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`template.omnisearch`](../../shared/template.html.mdmd.md#symbol-omnisearch)
-- [`template.omnisearch-input`](../../shared/template.html.mdmd.md#symbol-omnisearchinput)
-- [`template.omnisearch-results`](../../shared/template.html.mdmd.md#symbol-omnisearchresults)
+- [`template.omnisearch-input`](../../shared/template.html.mdmd.md#symbol-omnisearch-input)
+- [`template.omnisearch-results`](../../shared/template.html.mdmd.md#symbol-omnisearch-results)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

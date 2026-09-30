@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/cli/package.json
-- Generated At: 2026-09-28T16:48:37.820Z
+- Generated At: 2026-09-30T16:22:02.622Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ _Pending notes_
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `@live-documentation/cli` {#symbol-livedocumentationcli}
+#### `@live-documentation/cli` {#symbol-live-documentationcli}
 - Type: package
 - Source: [source](../../../../packages/cli/package.json#L1)
 <!-- LIVE-DOC:END Public Symbols -->
@@ -24,6 +24,6 @@ _Pending notes_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `glob@^13.0.6`
-- [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-livedocumentationengine)
-- [`package.@live-documentation/explorer`](../explorer/package.json.mdmd.md#symbol-livedocumentationexplorer)
+- [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-live-documentationengine)
+- [`package.@live-documentation/explorer`](../explorer/package.json.mdmd.md#symbol-live-documentationexplorer)
 <!-- LIVE-DOC:END Dependencies -->

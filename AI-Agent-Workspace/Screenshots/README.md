@@ -4,6 +4,8 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-09-30
 
+The later provenance-restoration pictures are described in [the day's record](2026-09-30/README.md): summary nodes in the Force Graph and a linked summary opened in the reader.
+
 Taken from `dist/explorer` after Back and Forward landed, by a Playwright script clicking the sidebar, at 1600 by 900.
 
 - `2026-09-30/explorer-history-01-fresh.png`: the sidebar just after the page opens on the World Map: Back and Forward faint, with nowhere to go yet.

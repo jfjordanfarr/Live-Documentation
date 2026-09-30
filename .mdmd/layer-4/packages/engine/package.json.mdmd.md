@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/package.json
-- Generated At: 2026-09-28T16:48:37.836Z
+- Generated At: 2026-09-30T16:22:02.639Z
 
 ## Authored
 ### Purpose
@@ -16,7 +16,7 @@ _Pending notes_
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `@live-documentation/engine` {#symbol-livedocumentationengine}
+#### `@live-documentation/engine` {#symbol-live-documentationengine}
 - Type: package
 - Source: [source](../../../../packages/engine/package.json#L1)
 <!-- LIVE-DOC:END Public Symbols -->

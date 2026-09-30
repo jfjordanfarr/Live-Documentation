@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1
-- Generated At: 2026-09-27T23:21:30.821Z
+- Generated At: 2026-09-30T16:22:03.189Z
 
 ## Authored
 ### Purpose
@@ -16,19 +16,19 @@ The script targets Windows PowerShell 5.1 compatibility, resolves dot-sourced pa
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `Resolve-CandidatePath` {#symbol-resolvecandidatepath}
+#### `Resolve-CandidatePath` {#symbol-resolve-candidatepath}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1#L9)
 
-#### `Extract-StringLiterals` {#symbol-extractstringliterals}
+#### `Extract-StringLiterals` {#symbol-extract-stringliterals}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1#L43)
 
-#### `Normalize-HelpString` {#symbol-normalizehelpstring}
+#### `Normalize-HelpString` {#symbol-normalize-helpstring}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1#L77)
 
-#### `Convert-CommentHelpInfo` {#symbol-convertcommenthelpinfo}
+#### `Convert-CommentHelpInfo` {#symbol-convert-commenthelpinfo}
 - Type: function
 - Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1#L95)
 <!-- LIVE-DOC:END Public Symbols -->

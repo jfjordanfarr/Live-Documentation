@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-09-28T02:39:06.530Z
+- Generated At: 2026-09-30T16:22:04.215Z
 
 ## Authored
 ### Purpose
@@ -54,12 +54,12 @@ Initialize the tuning panel with all slider and checkbox controls.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
-- [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuningcolumngap)
-- [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuninghoverdimconnections)
-- [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuninghoverdimsymbols)
-- [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuningselflooptaper)
-- [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuningstubfactor)
-- [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuningstubmaxoffset)
-- [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuningstubmin)
-- [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuningverticaloffset)
+- [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
+- [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-connections)
+- [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-symbols)
+- [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)
+- [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuning-stub-factor)
+- [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuning-stub-max-offset)
+- [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)
+- [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
 <!-- LIVE-DOC:END Dependencies -->

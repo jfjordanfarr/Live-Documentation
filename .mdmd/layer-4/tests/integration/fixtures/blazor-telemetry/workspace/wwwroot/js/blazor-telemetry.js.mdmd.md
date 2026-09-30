@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/blazor-telemetry/workspace/wwwroot/js/blazor-telemetry.js
-- Generated At: 2026-09-27T23:21:32.556Z
+- Generated At: 2026-09-30T16:22:06.257Z
 
 ## Authored
 ### Purpose
@@ -21,5 +21,5 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`_Host.telemetry-endpoint`](../../Pages/_Host.cshtml.mdmd.md#symbol-telemetryendpoint)
+- [`_Host.telemetry-endpoint`](../../Pages/_Host.cshtml.mdmd.md#symbol-telemetry-endpoint)
 <!-- LIVE-DOC:END Dependencies -->

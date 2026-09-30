@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml
-- Generated At: 2026-09-27T23:21:32.995Z
+- Generated At: 2026-09-30T16:22:06.484Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Renders the Razor telemetry page that exposes the instrumentation key for client
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `app-insights-key` {#symbol-appinsightskey}
+#### `app-insights-key` {#symbol-app-insights-key}
 - Type: variable
 <!-- LIVE-DOC:END Public Symbols -->
 

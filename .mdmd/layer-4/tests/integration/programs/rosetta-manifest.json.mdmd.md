@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rosetta-manifest.json
-- Generated At: 2026-09-29T19:54:58.169Z
+- Generated At: 2026-09-30T16:22:09.571Z
 
 ## Authored
 ### Purpose
@@ -25,13 +25,13 @@ Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspa
 #### `tiers` {#symbol-tiers}
 - Type: key
 
-#### `tiers:type-safe` {#symbol-tierstypesafe}
+#### `tiers:type-safe` {#symbol-tierstype-safe}
 - Type: key
 
-#### `tiers:type-safe:description` {#symbol-tierstypesafedescription}
+#### `tiers:type-safe:description` {#symbol-tierstype-safedescription}
 - Type: key
 
-#### `tiers:type-safe:languages` {#symbol-tierstypesafelanguages}
+#### `tiers:type-safe:languages` {#symbol-tierstype-safelanguages}
 - Type: key
 
 #### `tiers:dynamic` {#symbol-tiersdynamic}

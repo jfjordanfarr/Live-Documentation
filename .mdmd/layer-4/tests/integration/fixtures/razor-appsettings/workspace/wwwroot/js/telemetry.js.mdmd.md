@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/wwwroot/js/telemetry.js
-- Generated At: 2026-09-27T23:21:33.080Z
+- Generated At: 2026-09-30T16:22:06.535Z
 
 ## Authored
 ### Purpose
@@ -23,5 +23,5 @@ Simulates a Razor-backed telemetry bootstrapper that scrapes hidden fields from 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`Index.app-insights-key`](../../Pages/Index.cshtml.mdmd.md#symbol-appinsightskey)
+- [`Index.app-insights-key`](../../Pages/Index.cshtml.mdmd.md#symbol-app-insights-key)
 <!-- LIVE-DOC:END Dependencies -->

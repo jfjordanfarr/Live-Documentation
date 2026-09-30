@@ -8,11 +8,11 @@
 
 ## Authored
 ### Purpose
-Locks in the vendored slugger’s behaviour against GitHub’s casing, unicode, and duplicate rules so Live Doc anchors and CLI outputs stay deterministic across the workspace.[AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger]
+Checks the vendored slugger against GitHub-compatible casing, Unicode, punctuation and duplicate-heading behavior so provenance links and generated anchors remain stable.
 
 ### Notes
-- Covers stateless `slug`, stateful `GitHubSlugger`, and `slugWithContext` so regressions surface before doc tooling diverges from GitHub.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-03.md]
-- Reinforced during the November 7 anchor audit that reproduced real headings like “COMP-003 – Heuristic Suite,” ensuring unicode deduping remains correct.[AI-Agent-Workspace/ChatHistory/2025/11/2025-11-07.md]
+- Covers stateless `slug`, stateful `GitHubSlugger`, and `slugWithContext`. Dates and mixed-script names retain literal hyphens; punctuation from colon through at-sign is removed; `a-b` and `ab` remain distinct headings.
+- The punctuation expectations come from github-slugger 2.0.0, rather than copying the local implementation's output. The [September 30 account](../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md#turn-5) links the upstream source and records the regression. See the [original vendoring account](../../../../../../AI-Agent-Workspace/ChatHistory/2025/10/Summarized/2025-10-25.SUMMARIZED.md#turn-32-vendored-github-slugger-lines-50015160) for historical context.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
