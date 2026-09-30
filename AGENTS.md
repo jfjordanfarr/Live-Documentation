@@ -56,7 +56,7 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 | `npm run live-docs:visualize:estate`                                                            | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`        |
 | `npm run safe:commit`                                                                           | The full pre-commit chain. CI runs the same chain as `ci-check`                                    |
 
-After changing source, run `live-docs:generate` and commit the regenerated docs with the code.
+After changing source, run `live-docs:generate` and commit the regenerated docs with the code. For local verification, run the fullest applicable suite with `npm run safe:commit -- --e2e`, including Playwright; the owner prefers the additional machine time for stronger verification (2026-09-30). Keep CI's existing default without Playwright. Report failures and environment blockers explicitly rather than silently falling back to a narrower pass.
 
 ## Documentation rules
 

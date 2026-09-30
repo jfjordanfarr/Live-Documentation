@@ -47,3 +47,13 @@ No transcript, substantive reader passage, or navigation prototype was deleted i
 ## Scope of this review
 
 The inventory covers every third-run filename and unfinished outline. The partial notes and the reports' relevant correction/coverage sections were read; all 52 retained reports were not independently fact-checked line by line. The current-claims follow-up states what was run and what was inspected. Claims that need a running Explorer remain unverified here.
+
+## Retirement of copied delegation briefs
+
+_Follow-up on 2026-09-30, after the owner questioned the committed intermediate artifacts and authorized an ordinary deletion commit._
+
+Codex committed the 52 retained reader reports in `da351049` (2,003,325 bytes before this follow-up). Claude had already committed sixteen other reports in `895e92eb`, and eight copied delegation briefings alongside the third brief in `c4bb37cb`. The [September 30 source export](../../ChatHistory/2026/09/2026-09-30.1.claude-code.export-2026-09-30-145828.txt), lines 169–248, explains the latter: preserve the prompts so interrupted readers could be relaunched. These artifacts were research outputs and delegation scaffolding, not additional user conversations.
+
+The eight files under `briefings/` have now been read in full and retired: October's second-run reader brief, November's reader instructions, December's reader briefing, January's reader prompt, the February–April preamble, and the three what-survives context/preamble files. They totalled 58,014 bytes. They repeat assignment rules, source-reading lists and preliminary context from the main briefs, Memory and the slice reports. Their temporary paths, placeholders and instructions to launch more readers have no current operational purpose. The preliminary survival inventory is superseded by the methods and findings in [what-survives.md](what-survives.md); the Local Map questions remain in [the December report](2025-12.md) and the targeted recovery table above. No unique current instruction or unresolved question needed a new document.
+
+The original briefings remain inspectable in [git at c4bb37cb](https://github.com/jfjordanfarr/Live-Documentation/tree/c4bb37cb/AI-Agent-Workspace/Research/2026-09-29-bearings/briefings). The three links from retained research documents now point there, with dated maintenance notes. This is ordinary file retirement, not a history rewrite. The source captures, substantive reader reports and unreviewed navigation prototypes remain; their retention is not a claim that every report deserves permanent maintenance.

@@ -2,6 +2,8 @@
 
 _Given on 2026-09-30 to every reader of the third run of the explorations of the chat record. The [first brief](brief.md) and the [second](brief-2.md) stand; this one says why the third run exists, what has changed since the readers' own prompts were written, and how to work. It is kept as it was given; it decides nothing._
 
+_Maintenance note, 2026-09-30: the copied delegation briefings were retired after review. The directory link below now points to their committed historical version; this brief is a record of the stopped run, not an instruction to relaunch it. See [the retirement assessment](recovery.md#retirement-of-copied-delegation-briefs)._
+
 ## Why this run exists
 
 On 2026-09-29 the first run's seven explorers planned about 130 readers of the chat record. The session's limit on concurrent subagents refused most of them before they started, and the model's usage limit then stopped about twenty mid-read and four of the explorers before they wrote anything. The second run finished every report, but not every reading: November and December were written from the stopped explorers' notes without whole reads, October's second half and all of February to April were read on the owner's side only, and the Claude Code era's eight planned audits never ran. Each report says what it did not reach.
@@ -33,7 +35,7 @@ So check every claim about "today" against today's code and documents, never aga
 
 Where your prompt says otherwise, these win.
 
-1. **Read first**, whole: [brief.md](brief.md) (its purpose and rules), this file, [the bearings](README.md), your slice's report, then what your prompt names. The briefing files it names under `/tmp/claude-1000/.../938ec442-.../scratchpad/` exist and are unchanged; copies are kept in [briefings/](briefings/). The prompt's reading list of `AGENTS.md`, the vision and the Memory files still applies.
+1. **Read first**, whole: [brief.md](brief.md) (its purpose and rules), this file, [the bearings](README.md), your slice's report, then what your prompt names. The briefing files it names under `/tmp/claude-1000/.../938ec442-.../scratchpad/` exist and are unchanged; copies are kept in [briefings/](https://github.com/jfjordanfarr/Live-Documentation/tree/c4bb37cb/AI-Agent-Workspace/Research/2026-09-29-bearings/briefings). The prompt's reading list of `AGENTS.md`, the vision and the Memory files still applies.
 2. **Your report is a file.** Write it to the path your assignment names, under [readers/](readers/). Create it within your first few steps with its header and the headings of what your prompt asks, and add to it as you learn. A usage limit has stopped this work twice; a report half written is worth something, and one held in your head is worth nothing. Your prompt says to write nothing and to return the report as your final message: here the file is the report, and your final message is a summary of at most 250 words.
 3. **Launch no subagents.** The first run lost most of its readers to the limit on concurrent subagents; this run keeps that pool for readers like you. If your material is more than you can hold at once, read it in consecutive slices and write as you go.
 4. **Read whole, both sides, in order.** Tool output and pasted logs may be passed over quickly; every turn of the owner's, and every passage where the agent explains, plans, draws or answers the owner, never. The agent's side is what the reports so far lack: the reasons behind what was built.
