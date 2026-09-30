@@ -1,5 +1,7 @@
 # Bearings on both eras
 
+_Historical synthesis from 2026-09-29. The interrupted third run's surviving work, corrections and recommended follow-ups are assessed in [What remains worth recovering](recovery.md), dated 2026-09-30. This page's present-tense findings describe its earlier checkpoint._
+
 _Written on 2026-09-29 by the agent that sent the explorations out, from the seven reports below. The same evening the owner caught three errors in it, and three more agents checked every claim against the transcripts, git and the code; this version is rewritten from what they found, and what changed is listed under "Corrections" at the end. The reports hold the evidence, each claim with its transcript and line; this page points to them. It decides nothing._
 
 The owner asked for bearings on the GitHub Copilot era and the Claude Code era before the next stretch of development, and for questions rather than answers fetched to order: "Explore and find good questions." Seven explorers, some with readers of their own, read the chat record from 2025-10-16 to 2026-09-29 and the repository as it stands. None read every day whole; each report says what it did not read.
