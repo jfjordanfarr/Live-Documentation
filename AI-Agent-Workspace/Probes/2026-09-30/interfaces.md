@@ -1,6 +1,6 @@
 # Interfaces from systems to files
 
-_Design experiment, 2026-09-30, built by the root Codex agent. Follows the [shared interface discussion](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-19) and the owner's [request to continue](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-22). The owner has not yet reviewed this experiment. It is not a selected replacement for the Explorer._
+_Design experiment, 2026-09-30, built by the root Codex agent. Follows the [shared interface discussion](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-19) and the owner's [request to continue](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-22). The owner's subsequent review found it a step down from the existing views; see the verdict below. It is not a selected replacement for the Explorer._
 
 ## Question
 
@@ -18,7 +18,7 @@ The disposable working page is `AI-Agent-Workspace/tmp/probes/2026-09-30/interfa
 node AI-Agent-Workspace/tmp/probes/2026-09-30/interfaces/serve.cjs 8878
 ```
 
-Open `http://localhost:8878/` through VS Code's forwarded port. The root agent invoked the connected editor's remote CLI to open this preview, following the successful access route for the first probe. Access to this new preview is awaiting owner confirmation. `/current/` serves the existing Explorer for comparison.
+Open `http://localhost:8878/` through VS Code's forwarded port. The root agent invoked the connected editor's remote CLI to open this preview, following the successful access route for the first probe. The owner subsequently confirmed using it. `/current/` serves the existing Explorer for comparison.
 
 1. In **Payments estate**, inspect **Evidence** for gateway's **Offers GET api/payments/{paymentId}**. Opening evidence leaves the map still.
 2. Open `Gateway/Controllers/PaymentsController.cs` from that evidence. The source card carries the endpoint row; its enclosing folders are exposed and the previous pieces remain placed. Use **Back** to return.
@@ -41,7 +41,17 @@ The following remain unresolved:
 - Board regions and the declared tunnel remain accessible as board text, not spatial drawings. Directory scanning, new connection authoring and merging a returned copy are outside the probe. Saving the HTML demonstrates a portable editable arrangement, not the final product format.
 - Neighboring cards can extend beyond the viewport. Long rows truncate with full text available through hover and evidence. Large all-symbol cards require panning. Keyboard controls and DOM evidence accompany the canvas, but this is not a complete accessibility evaluation.
 
-The root agent's assessment is that symbol/endpoints and evidence now survive the navigation experiment. The harder spatial question remains open: whether these reading surfaces and routes explain dense relationships better than the existing Local, Membrane and World Maps. Owner review is pending.
+The root agent's initial assessment was that symbol/endpoints and evidence survived the navigation experiment. The review below establishes that this did not amount to a successful navigation or visual design.
+
+## Owner's verdict and diagnosis
+
+In [Turn 23](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-23), the owner called the probe “really really rough.” Panning caused connectors to snap into substantially different routes; the root objects did not clearly read as directories, nor did opening them clearly communicate directory navigation. They judged navigability, appearance and feature set a step down from the cumulative Local, Force, Membrane and World Map work and asked the agent to explain its intended direction.
+
+The agent reproduced the routing defect with six ordinary horizontal pans: 6, 7, 7, 7, 3 and 6 of the seven wires changed shape, despite unchanged piece positions. Comparison removed each path's translation and collinear intermediate points; changes were not simply the expected screen movement. The source rebuilds every wire and reruns routing in projected coordinates on every draw, without retaining route choices. Earlier checks tested intersection avoidance and graph identity, not route stability during camera motion. The observation is a design failure, not a request to accept roughness because the checks passed. Diagnostic samples remain in ignored `pan-diagnosis.json` beside the probe.
+
+The root objects are board things backed by directories. The common card renderer gives those containers, nested folders and leaf files essentially the same silhouette. The agent conflated shared interface meanings with identical object presentation; file counts and dashed frames did not communicate containment sufficiently.
+
+The agent initially proposed a narrower comparison of a containing object, its interface and a detailed file card. In [Turn 24](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-24), the owner asked what distinguished that from the Membrane Map. The agent acknowledged that the proposal supplied no meaningful difference and withdrew it. Readable interfaces, explicit containment and stable navigation across scales remain the intended direction; another container/card rendering does not itself advance it. Camera movement must preserve routes under ordinary pan; physical routing and readable interfaces during orbit remain design work. No new renderer is selected and no UI code changed during this diagnosis.
 
 ## Verification and captures
 
