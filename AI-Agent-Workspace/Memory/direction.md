@@ -4,6 +4,8 @@ _Current as of 2026-09-30. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is t
 
 ## The September 2026 reframe
 
+- **Preserve orientation through navigation** (2026-09-30). The owner adopted this as a foundational design need, beyond responsive sizing or decluttering. Changing file, scale or evidence should preserve understandable subject and surroundings; assess the transitions, not only screenshots. Their aim: “The Explorer should be my window into it.” [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-16). Particular layouts and transition mechanics remain design hypotheses until tried.
+
 Said on 2026-09-26, the day they returned, unless dated otherwise:
 
 - **Both maps remain open to design** (2026-09-30). On the assessment that the World Map had found a direction they liked while the interior still needed work: "I don't want to pretend like the world map is totally figured out either though." The board's favourable reception establishes a promising direction, not a finished design. The owner reaffirmed the distinction between what a single picture explains and what continued interaction lets someone discover, then asked to continue workspace cleanup before further design work.
