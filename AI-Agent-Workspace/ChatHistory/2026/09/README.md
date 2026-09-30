@@ -1,6 +1,6 @@
 # September 2026 chat captures
 
-_Historical source inventory, checked on 2026-09-30. The Markdown files were reconstructed by the Claude Code transcript script; the owner later supplied the five text files through Claude Code's export operation. Neither format is a substitute for checking what was captured._
+_Historical source inventory, checked on 2026-09-30. The Claude Markdown files were reconstructed by the Claude Code transcript script; the owner later supplied the five text files through Claude Code's export operation. The Codex record below is maintained separately by the root agent. No format is a substitute for checking what was captured._
 
 The received text filenames all began September 30 because that is when they were exported. On September 30 they were renamed by session identity plus harness and export time, preserving their bytes. Their contents map to five sessions with different start days. The mapping below uses matching conversation passages, not the files' modification times. “Through” is the endpoint stated by the Markdown transcript, not a claim that the actual session ended then.
 
@@ -38,8 +38,12 @@ The Markdown citation paths remain stable. Each renamed export starts with the s
   - Received as `2026-09-30-145828-lets-begin-this-chat-as-we-have-with-the-past-co.txt`.
   - SHA-256: `431197ae0f0d23e56fb5fa76a72ed20113f02c4221eaa16e8e2b1031f02e9f84`.
 
+## Agent-maintained records
+
+- [September 30, session 2: Codex](2026-09-30.2.record.md): recording began during Turn 7, retaining the still-visible final response from Turn 5 and the exchanges from Turn 6 onward. Root-agent conversation only, with verbatim message blocks separate from authored work notes and resumption notes. This is a partial record, not a native export or a recovery of earlier missing messages.
+
 ## Summaries
 
-- [September 30, session 2: Codex](Summarized/2026-09-30.2.SUMMARIZED.md): a contemporaneous partial account of this cleanup and provenance work. No native whole-chat capture is available; the summary records that gap explicitly.
+- [September 30, session 2: Codex](Summarized/2026-09-30.2.SUMMARIZED.md): a contemporaneous partial account of this cleanup and provenance work, with source references to the agent-maintained record for the later exchanges. No native whole-chat capture is available; the summary records that gap explicitly.
 - [September 29, session 1](Summarized/2026-09-29.1.SUMMARIZED.md): complete for both available captures, including the ordering discrepancy and the later commit that preserved the work.
 - The other four sessions have source inventories above; turn-by-turn summaries have not yet been written. An inventory is not a substitute for one.

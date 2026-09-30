@@ -16,6 +16,20 @@ Preserve source bytes. The September inventory records received filenames and SH
 
 The Claude converter describes a historical reconstruction method, not a universal export interface. It reads the retained Claude logs outside the repository and may overwrite the corresponding reconstructed Markdown when run. Do not run it as a generic session-closing action or use it for Codex. Never extract private reasoning blocks. A harness's visible error or notice belongs in the record as that notice, without attempting to recover the hidden content behind it.
 
+## Recording as work proceeds
+
+The owner adopted this routine on 2026-09-30, adding: “Keep only the chat history of the *root* agent if any subagents are involved; do not persist subagent history as it has no conversation turns with the User”. The record contains the user's conversation with the root agent. Subagents must not create or append conversation records or summaries of their delegated threads. Do not copy subagent prompts, replies or agent-to-agent messages into the archive. The root agent may record findings it adopts and link resulting artifacts in its own work notes.
+
+Location: `<year>/<month>/<start-date>.<session>.record.md`, using the same session identity as its summary. This is an **agent-maintained record**, not a harness export. Label the author, harness, recording date and actual coverage. Do not invent message timestamps or fill earlier gaps from compaction summaries. Native captures remain separate sources with their own coverage.
+
+1. **At the beginning of each user turn**, append any preceding visible root-agent responses not already recorded, then the newly received user messages. Include questions, commentary, steering and answers to questions in their observed order. Give each user message a stable `Turn N` heading, aligned with the session summary; identify the turn a response belongs to rather than assuming every message answers the latest prompt. Record ordering uncertainty explicitly.
+2. **Separate messages from interpretation.** Preserve available message text verbatim in labelled fenced blocks, choosing fences long enough to contain the original text. Put work notes outside those blocks. Keep recorded text and cited headings stable; append dated corrections. Mark unavailable wording as a gap, or label a reconstruction as authored. Do not copy private reasoning or tool transcripts; link relevant evidence from work notes.
+3. **During substantial work**, checkpoint consequential findings, decisions, rejected approaches and unfinished work before context is lost. Link relevant files, source turns and verified commits. Distinguish a proposal, an owner decision, reported work and checked results. These notes describe work; they are not additional conversation messages.
+4. **Before finishing**, record outcomes and verification, and refresh a short, revisable `Resumption` section: current task, decisions and constraints, completed work, pending questions and next action. Capture the final response when it is available as a delivered message, normally at the next turn. Until then, leave that coverage gap explicit; an outcome note or prepared response is not proof of delivery.
+5. **After compaction**, read the resumption section and follow links to the source turns needed for the task. Check current instructions and repository state before acting. Do not reread the whole archive on every turn or treat old work notes as current facts.
+
+The linked summary remains the browsing surface. Cite the record's relevant turns as sources and retain its coverage qualifications. Summarizing it does not replace the preserved exchanges or require duplicating their full text in the summary.
+
 ## Durable summaries
 
 The owner chose **linked summaries, with source references** as the Explorer's provenance surface on 2026-09-30. New summaries use this format in every harness. Existing summaries and their anchors remain valid historical artifacts; no bulk rewrite is needed.
@@ -52,4 +66,4 @@ Relative source references remain useful in the repository. In a standalone Expl
 
 ## Codex capture status
 
-On 2026-09-30 the installed VS Code extension (`26.917.62051`) contained a `Copy as Markdown` handler in its bundled application code, but the owner could find no whole-chat export control in the actual extension UI. Code presence does not establish availability. No working export path has been verified for this session. Do not tell the owner that the menu is available, or label a manually reconstructed account as an exported transcript. Preserve a native capture if one becomes available and record its actual coverage.
+On 2026-09-30 the installed VS Code extension (`26.917.62051`) contained a `Copy as Markdown` handler in its bundled application code, but the owner could find no whole-chat export control in the actual extension UI. Code presence does not establish availability. No working export path has been verified for this session. Do not tell the owner that the menu is available, or label a manually reconstructed account as an exported transcript. Preserve a native capture if one becomes available and record its actual coverage. The [agent-maintained session record](2026/09/2026-09-30.2.record.md) begins with later exchanges whose wording remained available; it does not recover the earlier capture gap.
