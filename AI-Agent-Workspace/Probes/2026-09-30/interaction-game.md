@@ -96,8 +96,63 @@ This leaves a concrete visual hypothesis: repeated use should read as commonalit
 
 The owner's [further steering](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-38) invites a small, distinct set of useful views. A provisional division is **arrange systems** (authored placement and connections), **survey structure** (emergent relationships and shared dependencies), and **trace a relationship** (readable interfaces and exact evidence). These are candidate jobs, not a selected count of renderers or a renaming of the current views. A view switch is another paper move: carry the subject and relevant selection, disclose changes in scope, and retain the prior view's return state. Stable identity does not require identical coordinates across views.
 
+_Clarification from [Turn 39](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-39): treating the preceding suggestion as a lean toward separation was too narrow. The owner deliberately supplies competing pressures. One view and several views remain variables; the jobs above must not harden into three modules that own capabilities exclusively._
+
 An extra view earns its place by answering a consequential question more clearly than the others can while retaining their useful properties. Another camera angle or cosmetic variation alone does not establish that need. Conversely, a merged view must demonstrate that it preserves each job; fewer view buttons are not sufficient evidence of simplification.
 
 Replay the same small journey against the relevant existing views and one explicitly different candidate. Record visible facts and hidden-but-reachable facts separately; record actual gestures, the smallest unobscured target used, and any loss of the subject. Keep the observations separate rather than weighting them into an invented overall score. A wire crossing is a cost to inspect, not automatically a correctness failure.
 
 Only implement a candidate after its paper trace explains a concrete improvement and its cost. A new implementation of the Membrane Map's existing interaction is not a new hypothesis. Then substitute native Local Map cards of their actual, unequal sizes and references from the repository or estate sample. Passing the toy case is an early filter, not evidence of general scale or permission to replace a shipped view.
+
+## Boundaries that permit independent improvement
+
+_Analysis added during Turn 39. A comparison and an agent recommendation for what to test, not an approved architecture or implementation plan._
+
+Three different choices had been conflated: which questions a person asks, which arrangements make the answers readable, and which software owns the underlying operations. A path search can support a board overlay, a broad survey and a detailed card sequence. It should not belong exclusively to a Trace view. The same applies to snapshot comparison, reachability and evidence. Conversely, sharing these operations does not require every view to use the same camera, card placement or hit testing.
+
+The strongest boundary to test is **authored placement versus computed presentation**. A saved board arrangement is a person's work. A computed layout is a means of answering the current question and can change under an explicit interaction. Automatic detail disclosure must not silently rewrite saved positions; an intentional arrange command can. Both can coexist on one screen. This separates responsibility without choosing the number of screens.
+
+| Area that could improve independently | Useful growth | What that growth must preserve elsewhere |
+| --- | --- | --- |
+| Authored composition | Planned systems, grouping, nested boards, connection editing, receiving a colleague's revisions | Scanned facts and provenance; interpretive layout must not silently edit this work |
+| Structural overview | Shared foundations, emergent clusters, graph evolution, reachability and component exposure | Exact graph membership and evidence; visual grouping must not become a new architectural fact |
+| Detailed reading | Symbol rows, dense paths, internal references, evidence and usable touch targets | Subject identity and path meaning; distant context stays recoverable |
+| Navigation and inspection | Back/Forward, related documentation, saved selections, transitions between arrangements | Each view's own restorable camera/disclosure state; no global camera model is assumed |
+| Portable document and host | Self-contained editable exports, snapshots, later editor integration | The same canonical content and meaning; renderers do not each implement saving or scanning |
+
+These are responsibilities, not five proposed views. Structural overview and detailed reading may share a rendering, occupy related regions, or be separate arrangements. A common card or control is worthwhile where its behavior is actually the same; a universal scene framework is not justified by this table.
+
+### Candidate combinations
+
+All candidates below assume the existing common document/graph foundation; separation does not inherently mean duplicate business logic.
+
+| Candidate | What it could do especially well | The pressure it must resolve |
+| --- | --- | --- |
+| One adaptive canvas | Keep transitions local; expose detail without losing the containing scene | Large cards, automatic relational layout and saved board positions compete for space; contextual representations must remain unmistakable |
+| An authored board plus one analytical surface | Let manual composition and computed exploration improve independently; combine broad survey and precise reading where they fit | The analytical surface must demonstrate an understandable transition between overview and full-card density; cross-surface journeys must retain context |
+| Separate arrange, survey and trace presentations | Give each arrangement its own legibility, scale and performance budget | More changes of presentation; subjects, evidence, pins and return state must transfer reliably; avoid duplicating shared operations |
+
+The second candidate is the agent's current first comparison to run because it separates the clearest conflicting ownership rule. It has not won. The first remains viable if it keeps those ownership rules separate within one canvas; the third remains viable if detailed reading warrants an independent arrangement. A split purely by 2D/3D or by file/folder/system does not, by itself, resolve these obligations.
+
+### Apply the actual stretch goals as changes
+
+Sources: [vision](../../../.mdmd/layer-1/vision.mdmd.md), [open ideas](../../Memory/ideas.md), [board-file proposal](../2026-09-28/board-file.md), and the owner's Turns 19–39. Historical proposals remain proposals. None of the following is a claim that the capability already works.
+
+| Change to apply to every candidate | Boundary it tests; avoidable redesign to expose |
+| --- | --- |
+| Add a planned service with a declared route, then attach scanned source that disagrees | Entities cannot all require a source file. Declarations and observations must remain distinguishable; connecting a scan must not erase a draft or its evidence |
+| Trace from a file through two systems to a database, then inspect a symbol on that path | Shared relationship/path identity below aggregation. A coarse wire must lead to its exact members; pathfinding cannot be implemented independently in each view |
+| Place two revisions of the same system side by side | Identity must include source/snapshot context, even if the UI names both files alike. Comparing revisions must not merge equal paths; rename correspondence remains a separate question |
+| Close a group, then nest its board inside another | Grouping and exposed boundary interfaces derive from members. Containment must not be limited to an inside/outside pair, nor force consumers to navigate the ancestry tree to follow a relationship |
+| Show a reused component's SBOM exposure and a configuration-derived permission | Relationship meaning and evidence grow in the canonical documents/engine. A permission is not an observed call; absent vulnerability data is not proof of safety. A new overlay should not require new grouping, navigation and saving implementations |
+| Send an editable offline file, receive an edited copy, then inspect it on a phone | Content, declarations, saved arrangement and source coverage travel independently of pixel coordinates or a live workspace. Host I/O and responsive presentation can change separately |
+
+Some changes necessarily grow the grammar or renderer. Avoiding every future edit would require speculative machinery. The useful test is whether one conceptual addition has one semantic implementation and clearly bounded presentation work, or whether it forces each view to reinterpret facts, identity and persistence.
+
+### What the current code establishes
+
+- The [derived graph](../../../packages/engine/src/live-docs/graph.ts) and [board join](../../../packages/engine/src/live-docs/boardGraph.ts) already separate facts from drawing. Build on them. The join currently takes one workspace graph, rejects outside-workspace source folders and assigns files to their deepest containing board thing. Multi-source snapshots and arbitrary grouping require deliberate growth below the camera layer.
+- `WireLine` retains file endpoints and a label; it does not carry the original edge's symbol anchors and reference kind. The [legacy Explorer projection](../../../packages/explorer/src/shared/graph.ts) also drops edge basis/type-only fields from its node/link payload and omits self-links there, while retaining some self-reference information in symbol data. These are specific information boundaries to address for exact tracing, temporal comparison and structural interpretation; a new camera cannot restore information a projection discarded. No defect fix or migration was performed here.
+- [Client composition](../../../packages/explorer/src/client/index.ts) already constructs separate views and bridges a board thing's folder into the Membrane Map. [Navigation history](../../../packages/explorer/src/client/persistence/history.ts) already exists; it must not be proposed as missing. Its [place model](../../../packages/explorer/src/client/persistence/place.ts) and [snapshot](../../../packages/explorer/src/client/persistence/compressed-url-state.ts) are shaped around current files, folders and planar transforms. Future shared navigation needs semantic subject/context plus view-owned restoration, rather than requiring all cameras to fit one transform.
+
+The next paper comparison should replay the same subject and exact relationships through each candidate while applying these changes. Count forced changes in semantic rules and state ownership, not merely view buttons. Then render only the arrangement question the paper model cannot settle: can overview and native symbol cards stay legible and orienting within one analytical surface, or do they earn separate presentations? No engine rewrite or generic plug-in framework is warranted before that comparison.
