@@ -55,6 +55,7 @@ const TOOL_WORDS = {
   Monitor:        ["watch started",    "watches started"],
   ToolSearch:     ["tool lookup",      "tool lookups"],
   ListAgents:     ["subagent listing", "subagent listings"],
+  TaskStop:       ["background task stopped", "background tasks stopped"],
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -102,7 +103,8 @@ async function readLog(logPath) {
         if (block.type === "text" && block.text.trim()) add({ kind: "say", model, text: block.text });
         if (block.type === "tool_use") {
           const input = block.input ?? {};
-          add({ kind: "tool", model, name: block.name, subject: input.description ?? input.to ?? "" });
+          const subject = block.name === "Workflow" ? workflowNamed(input) : (input.description ?? input.to ?? "");
+          add({ kind: "tool", model, name: block.name, subject, resumed: Boolean(input.resumeFromRunId) });
           if (input.description) unseen.push({ time, what: "description", text: input.description });
           for (const written of [input.content, input.new_string]) {
             if (typeof written === "string" && input.file_path) unseen.push({ time, what: "file", file: inRepo(input.file_path), text: written });
@@ -157,6 +159,17 @@ async function readLog(logPath) {
 
   events.sort((a, b) => (a.time < b.time ? -1 : a.time > b.time ? 1 : a.at - b.at));
   return { events: withoutRepeatedPrompts(events), unseen, unknown, modelNames, end };
+}
+
+/**
+ * A workflow by the name its script declares, or, when it was started from a file, by the file's
+ * name less its extensions and the run number Claude Code appends to a saved copy.
+ */
+function workflowNamed(input) {
+  const declared = /\bname:\s*["'`]([^"'`]+)["'`]/.exec(input.script ?? "");
+  if (declared) return declared[1];
+  if (!input.scriptPath) return "unnamed";
+  return path.basename(input.scriptPath).replace(/(\.workflow)?\.m?js$/, "").replace(/-wf_[0-9a-f-]+$/, "");
 }
 
 function isToolResult(entry) {
@@ -371,18 +384,21 @@ function render(session, transcriptPath) {
   const workLine = () => {
     if (work.length === 0) return;
     const tools   = new Map();
-    const launched = [], messaged = [], reported = [], committed = [];
+    const launched = [], messaged = [], reported = [], committed = [], started = [], resumed = [];
     for (const item of work) {
       if      (item.kind === "report")      reported.push(taskOf(item.agent));
       else if (item.kind === "commit")      committed.push(`${item.hash} "${item.subject}"`);
       else if (item.name === "Agent")       launched.push(`"${item.subject}"`);
       else if (item.name === "SendMessage") messaged.push(taskOf(item.subject));
+      else if (item.name === "Workflow")    (item.resumed ? resumed : started).push(`"${item.subject}"`);
       else                                  tools.set(item.name, (tools.get(item.name) ?? 0) + 1);
     }
     const counted = [...tools].map(([name, n]) => (TOOL_WORDS[name] ? count(n, TOOL_WORDS[name]) : `${n} × ${name}`));
     const parts   = [];
     if (counted.length)   parts.push(counted.join(", "));
     if (launched.length)  parts.push(`launched ${launched.length === 1 ? "subagent" : "subagents"} ${listed(launched)}`);
+    if (started.length)   parts.push(`started ${started.length === 1 ? "workflow" : "workflows"} ${listed(started)}`);
+    if (resumed.length)   parts.push(`resumed workflow ${listed(resumed)}${resumed.length > 1 ? ` (${resumed.length} tries)` : ""}`);
     if (messaged.length)  parts.push(`wrote to ${listed([...new Set(messaged)])}`);
     if (reported.length)  parts.push(`received the ${reported.length === 1 ? "report" : "reports"} of ${listed(reported)}`);
     if (committed.length) parts.push(`committed ${listed(committed)}`);
@@ -485,15 +501,17 @@ function preamble(session, transcriptPath, modelOf) {
   const script   = path.relative(path.dirname(transcriptPath), fileURLToPath(import.meta.url)).split(path.sep).join("/");
   const steering = prompts.filter((prompt) => prompt.steering).length;
   const launched = of("tool").filter((tool) => tool.name === "Agent").length;
+  const flows    = of("tool").filter((tool) => tool.name === "Workflow");
+  const runs     = flows.length === 0 ? "" : `, ${count(flows.filter((flow) => !flow.resumed).length, ["workflow", "workflows"])} started and ${count(flows.filter((flow) => flow.resumed).length, ["resume", "resumes"])}`;
 
   return [
     `${title(session.start)}${under(session.start, session.end)} UTC`,
     "",
-    `_Both sides of the session in order, rebuilt from Claude Code's session log by [${path.basename(script)}](${script}). The owner's prompts are verbatim; a line starting with \`>\` in one is the owner quoting Claude. Claude's messages are verbatim except in two places: their headings sit two levels deeper, so that the speakers stay the outline, and their links to files in the repository are rewritten to resolve from this folder. The work between is one line in italics: tool calls counted, subagents and commits named. What Claude Code itself said, an error or a notice, is quoted under an italic line. Commands, tool output, reasoning, the progress lines the editor showed while Claude worked, subagent reports and compaction summaries are not kept._`,
+    `_Both sides of the session in order, rebuilt from Claude Code's session log by [${path.basename(script)}](${script}). The owner's prompts are verbatim; a line starting with \`>\` in one is the owner quoting Claude. Claude's messages are verbatim except in two places: their headings sit two levels deeper, so that the speakers stay the outline, and their links to files in the repository are rewritten to resolve from this folder. The work between is one line in italics: tool calls counted, subagents, workflows and commits named. What Claude Code itself said, an error or a notice, is quoted under an italic line. Commands, tool output, reasoning, the progress lines the editor showed while Claude worked, subagent reports and compaction summaries are not kept._`,
     "",
     `- Model: ${models.map((used, i) => (i === 0 ? modelOf(used.id) : `${modelOf(used.id)} from ${stamp(used.since)}`)).join(", ")}.`,
     `- The owner: ${count(prompts.length - steering, ["prompt", "prompts"])}, and ${count(steering, ["message", "messages"])} sent while Claude was working.`,
-    `- Claude: ${count(of("say").length, ["message", "messages"])}, ${count(of("tool").length, ["tool call", "tool calls"])}, ${count(launched, ["subagent", "subagents"])} launched.`,
+    `- Claude: ${count(of("say").length, ["message", "messages"])}, ${count(of("tool").length, ["tool call", "tool calls"])}, ${count(launched, ["subagent", "subagents"])} launched${runs}.`,
     `- The repository: ${count(of("commit").length, ["commit", "commits"])}. The context: compacted ${count(of("compaction").length, ["time", "times"])}.`,
     "",
   ];
