@@ -51,6 +51,8 @@ The [first review](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-18) con
 
 They also identified the limitation: “What the totality of the Local Map and Membrane Map try to convey are more detailed than that.” At this level of information, the force graph supplies the same facts and may be superior when this probe's wires cross over nodes. This is acceptance of a navigation mechanism, not approval to replace a richer view with the simplified cards. The next comparison must carry symbol-level wiring and folder structure through the same continuity and address crossings over cards. Those remain outstanding design work.
 
+In a [later design discussion](../../ChatHistory/2026/09/2026-09-30.2.record.md#turn-20), the owner identified unnecessary small callouts and subheadings in this probe. The root agent's template review found a slogan, repeated file identification and explanatory subheadings competing with the data. This is an outstanding criticism of the preserved prototype, and the minimal-text guidance now applies to subsequent designs; this discussion did not change the page or its captures.
+
 ## Verification and pictures
 
 The disposable `check.cjs` exercises actual controls at phone (390 × 844), tablet (820 × 1180), laptop (1440 × 900) and wall (2560 × 1440) sizes. It checks stable existing positions, unchanged camera and selected-file bounds on evidence inspection, actual intermediate movement, restoration after panning, readable card dimensions, page overflow, page errors, contacted hosts, reduced motion and direct-file opening. `check-interaction.cjs` additionally samples camera positions, interrupts travel, resizes the viewport, reloads history, pans with touch, checks focus, and opens the actual current Explorer for comparison.
