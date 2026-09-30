@@ -24,6 +24,7 @@
 }
 
 #sidebar.collapsed .sidebar-title,
+#sidebar.collapsed .history-btn,
 #sidebar.collapsed .sidebar-section:not(:has(.sidebar-toggle-btn)),
 #sidebar.collapsed #context-bar {
     display: none;
@@ -45,6 +46,22 @@
 .sidebar-toggle-btn:hover {
     background: var(--accent-subtle);
     color: var(--text-active);
+}
+
+/* Back and Forward between places; a button with nowhere to go is shown faint rather than hidden, so the pair never shifts. */
+.history-btn {
+    font-size: 15px;
+    padding: 2px 6px;
+}
+
+.history-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.history-btn:disabled:hover {
+    background: transparent;
+    color: var(--text-muted);
 }
 
 .sidebar-header {

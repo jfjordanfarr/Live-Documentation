@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-09-29T19:47:02.828Z
+- Generated At: 2026-09-30T01:36:13.429Z
 
 ## Authored
 ### Purpose
@@ -64,6 +64,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `graph-svg` {#symbol-graphsvg}
+- Type: variable
+
+#### `history-back` {#symbol-historyback}
+- Type: variable
+
+#### `history-forward` {#symbol-historyforward}
 - Type: variable
 
 #### `main` {#symbol-main}

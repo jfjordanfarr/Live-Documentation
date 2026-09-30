@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-09-29T19:47:01.520Z
+- Generated At: 2026-09-30T01:36:12.084Z
 
 ## Authored
 ### Purpose
@@ -44,6 +44,12 @@ _No public symbols detected_
 - [`pathfind.initPathfind`](./pathfind.ts.mdmd.md#symbol-initpathfind)
 - [`pathfind.parsePathfindFromUrl`](./pathfind.ts.mdmd.md#symbol-parsepathfindfromurl)
 - [`pathfind.updatePathfindUrl`](./pathfind.ts.mdmd.md#symbol-updatepathfindurl)
+- [`compressed-url-state.readUrlState`](./persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate)
+- [`compressed-url-state.scrubSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot)
+- [`history.canGoBack`](./persistence/history.ts.mdmd.md#symbol-cangoback)
+- [`history.canGoForward`](./persistence/history.ts.mdmd.md#symbol-cangoforward)
+- [`history.onHistoryChange`](./persistence/history.ts.mdmd.md#symbol-onhistorychange)
+- [`history.startHistory`](./persistence/history.ts.mdmd.md#symbol-starthistory)
 - [`index.applyPersistedUi`](./persistence/index.ts.mdmd.md#symbol-applypersistedui)
 - [`index.createPersistNavScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistnavscheduler)
 - [`index.createPersistUiScheduler`](./persistence/index.ts.mdmd.md#symbol-createpersistuischeduler)
@@ -53,6 +59,7 @@ _No public symbols detected_
 - [`index.readPersistedNav`](./persistence/index.ts.mdmd.md#symbol-readpersistednav)
 - [`index.readPersistedUi`](./persistence/index.ts.mdmd.md#symbol-readpersistedui)
 - [`index.updateUrlState`](./persistence/index.ts.mdmd.md#symbol-updateurlstate)
+- [`place.placeOf`](./persistence/place.ts.mdmd.md#symbol-placeof)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`index.createCircuitView`](./views/circuitView/index.ts.mdmd.md#symbol-createcircuitview)
@@ -64,6 +71,8 @@ _No public symbols detected_
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`template.context-name`](../shared/template.html.mdmd.md#symbol-contextname)
+- [`template.history-back`](../shared/template.html.mdmd.md#symbol-historyback)
+- [`template.history-forward`](../shared/template.html.mdmd.md#symbol-historyforward)
 - [`template.pathfind-path`](../shared/template.html.mdmd.md#symbol-pathfindpath)
 - [`template.pathfind-status`](../shared/template.html.mdmd.md#symbol-pathfindstatus)
 - [`template.sidebar`](../shared/template.html.mdmd.md#symbol-sidebar)

@@ -19,6 +19,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
 import type { ViewName } from "../types";
+import { commitUrl } from "./history";
 import type { PinSet } from "../views/membraneView/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/membraneView/pin-state";
 
@@ -239,7 +240,7 @@ export function readUrlState(): UrlStateSnapshot {
 }
 
 /**
- * Write a state snapshot into the URL without triggering navigation.
+ * Write a state snapshot into the URL without reloading the page; the history decides whether it is a new entry.
  * Preserves the `?data=` parameter if present (used for custom data sources).
  */
 export function writeUrlState(snapshot: UrlStateSnapshot): void {
@@ -277,5 +278,5 @@ export function writeUrlState(snapshot: UrlStateSnapshot): void {
   }
 
   const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
-  window.history.replaceState({}, "", newUrl);
+  commitUrl(newUrl);
 }

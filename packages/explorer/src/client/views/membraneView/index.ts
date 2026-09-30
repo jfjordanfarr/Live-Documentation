@@ -72,6 +72,8 @@ export interface MembraneViewApi {
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
+  /** Shows the map as a snapshot recorded it: the folders open, the cards expanded, the pins, the pan and zoom. Back and Forward land here. */
+  applySnapshot(snapshot: UrlStateSnapshot): void;
 }
 
 interface MembraneTransform {
@@ -889,9 +891,27 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     render();
   }
 
+  function applySnapshot(snapshot: UrlStateSnapshot): void {
+    expandedDirectories.clear();
+    for (const dir of snapshot.expandedDirectories) {
+      expandedDirectories.add(dir);
+    }
+    expandedCards.clear();
+    for (const id of snapshot.expandedCards) {
+      expandedCards.add(id);
+    }
+    pinSet = snapshot.pinSet;
+    focusedDirectory = inferFocusFromExpanded(expandedDirectories);
+    shouldZoomToFocus = false;
+    transform = { ...snapshot.transform };
+    render();
+    applyTransform();
+  }
+
   return {
     render,
     focusDirectory,
+    applySnapshot,
     redrawConnections,
     zoomIn: () => zoomByFactor(1.3),
     zoomOut: () => zoomByFactor(1 / 1.3),

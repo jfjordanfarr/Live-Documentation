@@ -26,6 +26,9 @@ import {
   createPersistUiScheduler,
   createPersistNavScheduler
 } from "./persistence";
+import { readUrlState, scrubSnapshot } from "./persistence/compressed-url-state";
+import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
+import { placeOf } from "./persistence/place";
 import type { ExplorerState, ViewName } from "./types";
 import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
@@ -723,6 +726,51 @@ function startExplorer(bundle: StaticExplorerData): void {
     drawLocalConnections: () => localView.drawConnections(),
     drawMembraneConnections: () => membraneView.redrawConnections(),
   });
+
+  // Back and Forward: a move to another place is an entry, and landing on one shows the place its address names.
+  startHistory({ placeOf, restore: restoreFromUrl });
+  const backButton = document.getElementById("history-back");
+  const forwardButton = document.getElementById("history-forward");
+  const syncHistoryButtons = (): void => {
+    if (backButton instanceof HTMLButtonElement) {
+      backButton.disabled = !canGoBack();
+    }
+    if (forwardButton instanceof HTMLButtonElement) {
+      forwardButton.disabled = !canGoForward();
+    }
+  };
+  onHistoryChange(syncHistoryButtons);
+  syncHistoryButtons();
+  backButton?.addEventListener("click", () => window.history.back());
+  forwardButton?.addEventListener("click", () => window.history.forward());
+
+  /** Shows the place the address names, after Back or Forward; the history turns any write it makes into a rewrite of that entry. */
+  function restoreFromUrl(): void {
+    const place = parseInitialState();
+    const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
+    detailPanel.hide();
+    state.view = view;
+    setActiveView(view);
+    const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
+    state.selectedNode = node;
+    state.focusedNode = node;
+    const contextName = document.getElementById("context-name");
+    if (node && contextName instanceof HTMLElement) {
+      contextName.textContent = node.codeRelativePath;
+    }
+    const path = parsePathfindFromUrl(nodesById);
+    pathfindApi.setFrom(path.from);
+    pathfindApi.setTo(path.to);
+    if (view === "membrane") {
+      membraneView.applySnapshot(scrubSnapshot(readUrlState(), nodesById));
+    } else {
+      renderCurrentView();
+    }
+    if (path.from && path.to) {
+      pathfindApi.executeFindPath();
+    }
+    highlightSelectedCards();
+  }
 
   interface SelectNodeOptions {
     /** If true, suppress opening the detail panel */

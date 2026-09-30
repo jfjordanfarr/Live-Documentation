@@ -2,6 +2,13 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-09-30
+
+Taken from `dist/explorer` after Back and Forward landed, by a Playwright script clicking the sidebar, at 1600 by 900.
+
+- `2026-09-30/explorer-history-01-fresh.png`: the sidebar just after the page opens on the World Map: Back and Forward faint, with nowhere to go yet.
+- `2026-09-30/explorer-history-02-after-back.png`: after the Local Map, then the Membrane Map, then Back: the Local Map again, and both buttons live.
+
 ## 2026-09-29
 
 Taken from `dist/explorer` (this repository's board) and the estate bundle at `dist/estate` (the board at `tests/integration/programs/csharp/estate/board.md` over generated docs), by a Playwright script driving `window.__worldMap`, at 1600 by 900, after the pinned-panel work.

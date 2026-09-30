@@ -6,6 +6,7 @@
  */
 
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
+import { commitUrl } from "./persistence/history";
 
 /** Pathfind endpoint selection */
 export interface PathfindEndpoint {
@@ -275,7 +276,7 @@ export function updatePathfindUrl(state: PathfindState): void {
 
   // Update URL without reload
   const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
-  window.history.replaceState({}, "", newUrl);
+  commitUrl(newUrl);
 }
 
 /** Return type for initPathfind */

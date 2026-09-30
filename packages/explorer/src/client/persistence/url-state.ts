@@ -2,11 +2,13 @@
  * URL State Management
  * 
  * Handles URL parameter parsing and updates for view navigation
- * without page reloads. Uses replaceState to avoid polluting browser history.
+ * without page reloads. Writes go through the history module, which decides
+ * whether a change is a move Back can return from.
  */
 
 import type { ViewName } from "../types";
 import { decompressSnapshot } from "./compressed-url-state";
+import { commitUrl } from "./history";
 
 /**
  * Map between URL/config view names and internal state view names.
@@ -85,7 +87,6 @@ export const parseInitialState = (): InitialUrlState => {
 
 /**
  * Update URL to reflect current view and focused node without page reload.
- * Uses replaceState to avoid polluting browser history on every interaction.
  */
 export const updateUrlState = (view: ViewName, nodeId: string | null): void => {
   const url = new URL(window.location.href);
@@ -118,5 +119,5 @@ export const updateUrlState = (view: ViewName, nodeId: string | null): void => {
 
   // Build clean URL (no params = no query string)
   const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
-  window.history.replaceState({}, "", newUrl);
+  commitUrl(newUrl);
 };

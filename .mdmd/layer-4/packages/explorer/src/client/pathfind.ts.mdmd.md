@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-09-29T21:00:18.871Z
+- Generated At: 2026-09-30T01:36:12.181Z
 
 ## Authored
 ### Purpose
@@ -23,49 +23,49 @@ Pathfinding module providing FROM/TO omnisearch UI, BFS graph traversal, and pat
 ### Public Symbols
 #### `PathfindEndpoint` {#symbol-pathfindendpoint}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L11)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L12)
 
 ##### `PathfindEndpoint` — Summary
 Pathfind endpoint selection
 
 #### `PathfindState` {#symbol-pathfindstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L17)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L18)
 
 ##### `PathfindState` — Summary
 Pathfind state
 
 #### `PathHop` {#symbol-pathhop}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L23)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L24)
 
 ##### `PathHop` — Summary
 A hop in a path result
 
 #### `PathfindResult` {#symbol-pathfindresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L31)
 
 ##### `PathfindResult` — Summary
 Result of a pathfinding operation
 
 #### `DEFAULT_MAX_HOPS` {#symbol-default_max_hops}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L47)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L48)
 
 ##### `DEFAULT_MAX_HOPS` — Summary
 Default maximum hops to search
 
 #### `PathfindCallbacks` {#symbol-pathfindcallbacks}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L50)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L51)
 
 ##### `PathfindCallbacks` — Summary
 Callbacks for pathfind events
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L61)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L62)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
@@ -75,14 +75,14 @@ Returns the shortest path from source to target.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L221)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L222)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L252)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L253)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -90,14 +90,14 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L282)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L283)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L293)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L294)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 
@@ -107,6 +107,7 @@ Initialize the pathfind toolbar with search and symbol selection
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`history.commitUrl`](./persistence/history.ts.mdmd.md#symbol-commiturl)
 - [`template.pathfind-clear`](../shared/template.html.mdmd.md#symbol-pathfindclear)
 - [`template.pathfind-from`](../shared/template.html.mdmd.md#symbol-pathfindfrom)
 - [`template.pathfind-from-clear`](../shared/template.html.mdmd.md#symbol-pathfindfromclear)
