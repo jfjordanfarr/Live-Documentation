@@ -46,4 +46,7 @@ The Markdown citation paths remain stable. Each renamed export starts with the s
 
 - [September 30, session 2: Codex](Summarized/2026-09-30.2.SUMMARIZED.md): a contemporaneous partial account of this cleanup and provenance work, with source references to the agent-maintained record for the later exchanges. No native whole-chat capture is available; the summary records that gap explicitly.
 - [September 29, session 1](Summarized/2026-09-29.1.SUMMARIZED.md): complete for both available captures, including the ordering discrepancy and the later commit that preserved the work.
-- The other four sessions have source inventories above; turn-by-turn summaries have not yet been written. An inventory is not a substitute for one.
+- [September 26, session 1](Summarized/2026-09-26.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
+- [September 27, session 1](Summarized/2026-09-27.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
+- [September 29, session 2](Summarized/2026-09-29.2.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
+- [September 30, session 1](Summarized/2026-09-30.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.

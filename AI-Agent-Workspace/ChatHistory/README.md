@@ -49,7 +49,11 @@ Once a turn heading is cited, keep its number and anchor stable. Append later ca
 
 ## Session handoff routine
 
-This preserves the useful work of the former `/devHistory.summarizeDay` prompt (at `ae216cb5:.github/prompts/devHistory.summarizeDay.prompt.md`) across harnesses. Ask for “summarize the previous session” to invoke it; it does not depend on a vendor's slash-command UI.
+This preserves the useful work of the former `/devHistory.summarizeDay` prompt (at `ae216cb5:.github/prompts/devHistory.summarizeDay.prompt.md`) across harnesses. It does not depend on a vendor's slash-command UI.
+
+**When to author:** an explicit request at chat end is the normal path. At the start of a new chat, after reading AGENTS.md and Memory, read the five most recent session summaries in full, oldest to newest; read all available if fewer than five. The owner chose five on 2026-09-30 to preserve the former routine. Then identify the immediately preceding session and create or finish its summary if absent or incomplete and source captures are available. Read the resulting handoff, check it against the current repository, and continue the user's task. Respect an explicit user override; do not turn this into an unrequested backfill of every older gap.
+
+If captures are unavailable, state the gap and continue useful work; never manufacture a transcript or claim a still-active session has ended. A summary may be complete for the available captures while those captures remain partial. When a session ends without a summary request, its maintained record supplies the next chat's source material. Compaction within a session uses the current record's resumption notes; it does not allocate a new session or repeat startup. Historical summaries provide context, while current guidance and newer owner decisions govern the work.
 
 1. Identify the session and all its captures in the month inventory. Establish coverage before summarizing. Never silently substitute a research report for the transcript.
 2. Read every capture being summarized in full, in bounded chunks. Write progress into the summary after each chunk, leaving an explicit coverage endpoint until finished. Rehydrate from that file after context compaction. Use existing summaries for navigation, not as substitutes for the source being summarized.

@@ -55,7 +55,7 @@ async function waitForPinActiveSettle(page: import("@playwright/test").Page): Pr
 test.describe("Membrane Map — Pin-Active Visual Stability", () => {
   test("pin-active layout is pixel-stable across page reload", async ({
     page,
-  }) => {
+  }, testInfo) => {
     // Seed a pin-active state for liveDocumentationConfig.ts
     // using __internals__ (the catch-all pin symbol) plus a few named symbols
     const targetNode = "packages/engine/src/config/liveDocumentationConfig.ts";
@@ -81,6 +81,17 @@ test.describe("Membrane Map — Pin-Active Visual Stability", () => {
     await waitForPinActiveSettle(page);
 
     const screenshot2 = await page.screenshot({ type: "png" });
+
+    if (!screenshot1.equals(screenshot2)) {
+      await testInfo.attach("before-reload", {
+        body: screenshot1,
+        contentType: "image/png",
+      });
+      await testInfo.attach("after-reload", {
+        body: screenshot2,
+        contentType: "image/png",
+      });
+    }
 
     // ── Compare pixel buffers ────────────────────────────────────
     // Both buffers are PNG-encoded; Playwright's toMatchSnapshot

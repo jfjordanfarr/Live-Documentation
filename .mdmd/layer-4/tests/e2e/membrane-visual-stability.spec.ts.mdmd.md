@@ -16,6 +16,7 @@ Pixel-stability regression suite for the Membrane Map's pin-active layout. Catch
 - Created on [Dev Day 86](../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-31.1.md) at the user's request for a pixel-comparison Playwright test to guard against connector-before-settle races.
 - Targets `liveDocumentationConfig.ts` because it has 12 exported symbols and >10 inbound importers, producing a dense pin-active layout with multiple SVG connection paths — ideal for catching subtle layout drift.
 - Two scenarios: (1) full viewport pixel comparison — loads a 6-pin URL state, screenshots after settle, reloads, screenshots again, asserts byte-identical PNG buffers; (2) SVG connection assertion — loads a 4-pin state, verifies `.membrane-focal-svg` contains `<path>` elements with non-zero bounding boxes.
+- A failed comparison attaches both original PNGs to the Playwright report. Inspect the changed pixels before attributing a mismatch to connector layout: exact image equality also checks browser painting, which can differ even when card, pin and path geometry agree.
 - The `waitForPinActiveSettle()` helper polls until `.pin-active-root`, `.pin-active-card[data-id]`, and `.membrane-focal-svg` are all present, then flushes an additional animation frame wait (800ms) for connection-path drawing to complete.
 
 ## Generated
