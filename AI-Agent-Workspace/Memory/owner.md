@@ -52,6 +52,8 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 ## Formatting and visual taste
 
+- **Layout must not manufacture debt** (2026-09-30). The owner explicitly accepted “Moving a card must not make the software appear more indebted”: “Wonderful catch. Fully agreed.” Preserve architectural evidence independently of a person's arrangement or camera position. [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-22).
+
 - **Let architecture show through its shape** (2026-09-30). “The design, without attempting to be forceful/judgmental, should emergently show technical debt at first glance from the very shape it produces.” Keep the French Corset's visible internal connectivity and the ideas of backs/undersides in mind, without assuming they require literal camera travel behind a 3D object. The owner identifies accommodating complex connections as the primary reason to consider 3D. They also clarify that “orthogonality” in the preceding turn meant **orthographic projection**, as requested for the World Map, not right-angle routing. [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-21).
 
 - **Minimize unnecessary UI text** (2026-09-30). “Make a real effort to minimize unnecessary text. I absolutely saw evidence of these unnecessary subheadings in your smooth-navigation mockup.” The owner specifically warns against accumulating small text callouts. Apply this across agents and designs: remove decorative or redundant text while preserving useful names, controls and evidence. [Source](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-20).
