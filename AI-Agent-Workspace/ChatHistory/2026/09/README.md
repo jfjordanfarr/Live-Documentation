@@ -1,6 +1,6 @@
 # September 2026 chat captures
 
-_Historical source inventory, checked on 2026-09-30. The Claude Markdown files were reconstructed by the Claude Code transcript script; the owner later supplied the five text files through Claude Code's export operation. The Codex record below is maintained separately by the root agent. No format is a substitute for checking what was captured._
+_Historical source inventory, updated through the October 1 closing of the September 30 Codex session. The Claude Markdown files were reconstructed by the Claude Code transcript script; the owner later supplied the five text files through Claude Code's export operation. The Codex record below is maintained separately by the root agent. No format is a substitute for checking what was captured._
 
 The received text filenames all began September 30 because that is when they were exported. On September 30 they were renamed by session identity plus harness and export time, preserving their bytes. Their contents map to five sessions with different start days. The mapping below uses matching conversation passages, not the files' modification times. “Through” is the endpoint stated by the Markdown transcript, not a claim that the actual session ended then.
 
@@ -40,11 +40,11 @@ The Markdown citation paths remain stable. Each renamed export starts with the s
 
 ## Agent-maintained records
 
-- [September 30, session 2: Codex](2026-09-30.2.record.md): recording began during Turn 7, retaining the still-visible final response from Turn 5 and the exchanges from Turn 6 onward. Root-agent conversation only, with verbatim message blocks separate from authored work notes and resumption notes. This is a partial record, not a native export or a recovery of earlier missing messages.
+- [September 30–October 1, session 2: Codex](2026-09-30.2.record.md): closed at the owner’s request in Turn 45 on October 1, with closeout follow-ups through Turn 47. Recording began during Turn 7; Turn 46 recovered the opening five user messages and 24 visible root-agent replies from the native local root-session log. The existing Turn 5 final response matched. Root-agent conversation only, with verbatim message blocks separate from authored work notes. The opening gap is filled on both sides; this remains a maintained record, not a whole-harness export. Source and extraction scope are recorded under Coverage.
 
 ## Summaries
 
-- [September 30, session 2: Codex](Summarized/2026-09-30.2.SUMMARIZED.md): a contemporaneous partial account of this cleanup and provenance work, with source references to the agent-maintained record for the later exchanges. No native whole-chat capture is available; the summary records that gap explicitly.
+- [September 30–October 1, session 2: Codex](Summarized/2026-09-30.2.SUMMARIZED.md): completed through Turn 47 at the owner’s request, covering cleanup, provenance and Explorer design experiments. Includes verified commits, the positive final probe verdict, opening recovery, the prohibition on extracting reasoning from any harness, and a closed-session handoff. Its source is the maintained root conversation; the final acknowledgment delivered after saving is not yet captured.
 - [September 29, session 1](Summarized/2026-09-29.1.SUMMARIZED.md): complete for both available captures, including the ordering discrepancy and the later commit that preserved the work.
 - [September 26, session 1](Summarized/2026-09-26.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
 - [September 27, session 1](Summarized/2026-09-27.1.SUMMARIZED.md): complete for both available captures, with each owner turn and verified commit references.
