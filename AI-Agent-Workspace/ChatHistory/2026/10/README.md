@@ -8,7 +8,7 @@ _Source inventory for October 2026, maintained by the root agent of each session
 
 ## Owner captures
 
-- [October 1, 15:33, Claude Code terminal export](2026-10-01-153312-hi-claude-fable-51.txt): the owner's copy of the session's visible conversation, taken from the terminal view and re-exported as the session goes; it currently ends at the Turn 6 reply. Prompts are marked `❯`, responses `●`, and tool runs appear only as collapsed counts ("Ran N shell commands"), so the agent-maintained record above is the fuller source for what was done; this capture is the independent source for what was said. Named by the harness after its start time and the first words of the first prompt.
+- [October 1, 15:33, Claude Code terminal export](2026-10-01-153312-hi-claude-fable-51.txt): the owner's copy of the session's visible conversation, taken from the terminal view and re-exported as the session goes; it currently ends at the Turn 9 reply. Prompts are marked `❯`, responses `●`, and tool runs appear only as collapsed counts ("Ran N shell commands"), so the agent-maintained record above is the fuller source for what was done; this capture is the independent source for what was said. Named by the harness after its start time and the first words of the first prompt.
 
 ## Summaries
 

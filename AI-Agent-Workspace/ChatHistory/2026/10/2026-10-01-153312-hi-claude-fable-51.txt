@@ -1380,3 +1380,1892 @@ today" completed (exit code 0)
      -claude-fable-51.txt
   ⎿  Referenced file
      AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md
+
+❯ <ide_selection>The user selected the lines 1 to 1382 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -01-153312-hi-claude-fable-51.txt:
+
+  ❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-A
+    gent-Workspace/Probes/2026-10-01/handoff.md in the IDE. This may or may not
+    be related to the current task.</ide_opened_file>
+
+  ❯ Hi Claude Fable 5.1!
+
+    Today is 10/1/2026 as I write this message. First things first: let's
+  refresh
+    on the workspace. Please read through the following recent chat summaries,
+    and the full chat transcript from the last session:
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md
+
+
+    @AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md
+
+    Based on what you've read, what are the next moves? Further, as a matter of
+    practice, what have I, the user, typically been expecting from AI agents in
+    this workspace in terms of behavior? There should be a lot of rich old chat
+    history context of me telling the AI that I expect certain behaviors.
+
+    This initial prompt from me should cause sufficient exploration and
+  hydration
+    for us to knock it out of the park in yet another productive session.
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARI
+       ZED.md (174 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARI
+       ZED.md (476 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARI
+       ZED.md (58 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARI
+       ZED.md (196 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARI
+       ZED.md (47 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARI
+       ZED.md (468 lines)
+
+  ● I'll read the full last-session record, then the Memory files and the
+    ChatHistory convention, then start this session's record before answering.
+
+    Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+  ● The outputs were saved to files
+  ──── (1289 lines hidden) ────────────────────────────────────────────────────
+  ────┴───────────────────┘
+
+    On the estate Rings shows 3 of 3 facts with all 12 cards in frame and
+  nothing
+    crossed. Every label stayed apart, nothing was cut off, and no route
+  changed
+    under a pan.
+
+    Where the predictions failed, which is the finding. Legible, drawn and
+    off-frame counts held exactly. Occlusion did not: the first measurement
+  read
+    35 of 55 wires over a card, not the 1 I predicted, and the diagnosis was
+  that
+    the fan around a fixed subject is one lane deep. About twelve neighbours
+  fit
+    around a subject at reading size with straight wires; graph.ts has
+  eighteen.
+    The router brought it to 0 of 55, at the price of cables that share
+  channels
+    and of four cards in frame fewer than predicted. The other rule that broke
+  on
+    sight: drawing every reference between showing rows put 82 wires on screen,
+    because every consumer of graph.ts also uses document.ts, so chords now
+  join
+    kept cards only.
+
+    For your eye, the four pictures are in the probe folder, the estate state
+    (AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-state.png) first.
+  In
+    my opinion it is the first still picture of the five-file set with every
+  fact
+    legible and nothing hidden. The repository picture is honest and dense:
+    document.ts alone on the left, seventeen consumers spilling off the top and
+    bottom, and a trunk of some twenty wires rising from one pin. The page is
+  live
+    at http://localhost:8882/repository/ and /estate/ for the transitions and
+  the
+    hover, which no number covers.
+
+    Next, unless you redirect. The trunk as one drawn cable that fans at the
+  far
+    end, a second ring of names, and your verdict on whether this placement
+    belongs in the Membrane Map's pin mode or in place of the Local Map's
+  columns.
+
+  ❯ /compact
+    ⎿  Compacted
+    ⎿  Referenced file
+  ../../home/node/.claude/projects/-workspaces-Live-Documenta
+       tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/bjhc3juy6.txt
+    ⎿  Referenced file
+  ../../home/node/.claude/projects/-workspaces-Live-Documenta
+       tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/brovul2fz.txt
+    ⎿  Referenced file
+  ../../home/node/.claude/projects/-workspaces-Live-Documenta
+       tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/blvr216mq.txt
+    ⎿  Referenced file
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01-153312-hi
+       -claude-fable-51.txt
+    ⎿  Referenced file
+       AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ Relative to the table you've just provided me, I can tell that at least a few
+  biases remain in this "deck" of measurements:
+  - There is no punishment for harsh angled turns in the connectors as seen in
+  screenshots of the "rings" proposed visualization
+  - There is no bonus/benefit to bringing things which are collocated closer
+  together (common folders, etc.). TONS of design discussions with respect to
+  the Membrane Map, infinite pinning, trying to arrange directories and cards
+  to minimize the churn and maximize the readability... all things yet
+  unmeasured
+  - While legible facts in a single frame may be a good metric, one could also
+  argue that this benefits maximizing information into a single frame, rather
+  than rewarding designs which allow the user to navigate so fluidly and so
+  frequently that user-directed motion is part of the process of taking in the
+  totality of the connections (doesn't mean that's necessarily true, it's just
+  a bias which is shutting down a potential design door).
+
+  I see the measurements and yet I can still confidently say based on what I've
+  seen in the screenshots that the existing Local Map is far more informative
+  about the shapes and connections of classes, and the Membrane Map is far more
+  informative about directory collocation/containment and long-distance
+  multi-hop chains. They rank low in the metrics, but perhaps we need to expand
+  the metrics we measure (ensuring that plenty of them are at least somewhat
+  at odds with each other to avoid systemic biases which allow design cheats to
+  win).
+
+  Here is one reason why, compared to the
+  @AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-state.png
+  screenshot, I think the local map is more readable: on the local map, there
+  is a real sense of directionality. You have a good idea of where things come
+  from and go to. Same on the Membrane Map. They make the tradeoff of higher
+  legibility in exchange for lower ability to describe those abstract
+  relationships which true linear space cannot easily describe (common
+  libraries used by many files, etc.).
+  @AI-Agent-Workspace/Probes/2026-10-01/analysis-surface/03-local-map-graph.png
+
+
+  My question with respect to your "82 wires":
+
+  "Is that the shape of the software?"
+
+  If so... maybe uh... maybe stuck with 82 wires eh? You're absolutely right
+  that it's easier to reason about graph.ts when it is not exploding out
+  connectors to neighbors, but that's uh... I mean that's really what that file
+  does. Should there be a way to subset that? Yes. And there is! It's called
+  symbol pinning! Pin a symbol and only see its interactors! Pin many symbols
+  and see all their interactors! Over in the membrane map, the opposite default
+  is taken but the result is the same: once you pin all symbols on a node you
+  should see the same kind of mess.
+
+  I'm open to ways to reduce that mess which don't lie to the user, but I'm not
+  open to having the user open the shape of their software and believe it's
+  all fine and dandy when it's not.
+  ⎿  Read AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-state.png
+     (223KB)
+
+● I'll record this turn first, then check the facts I want to lean on before
+  answering: the exact chord rule and counts in the probe, whether the Local Map
+  draws neighbour-to-neighbour wires, and the two pictures you compared.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I'll gather the independent facts needed to answer: the probe record and its
+  chord rule, the Local Map's wire code, both compared pictures, the Memory
+  files to update, and the docs audit command. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Still gathering: the Local Map's wire rules, the two pictures you compared,
+  and the Memory files I will add to.
+
+  Searched for 3 patterns, read 2 files, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Looking at the two pictures with every reference drawn, then I will write the
+  record, Memory and the probe note in one pass.
+
+  Read 2 files (ctrl+o to expand)
+● Both pictures are in. Now writing the probe note, Memory, the inventory line
+  and the record, all independent of each other.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ Yeah the new screenshots you're collecting show clearly that our measurement
+  system allows for a bit of cheating: we should absolutely punish
+  wires-crossing-over-other-wires. We want to minimize the amount of object
+  collision that's going to occur in the layout and attempt as best we can to
+  arrange the elements so that the user understands the system they are
+  observing intuitively.
+
+● Your mid-turn message is noted: wire-over-wire crossings go into the measure
+  set, and I am recording the message now before the audits and the commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Audits are clean. Committing the record, the capture, the probe note with its
+  pictures, and Memory.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Yes. It is the shape of the software, and the probe now draws it. Commit
+  f4f4004c carries your message, the capture, the pictures and Memory.
+
+  What the honest picture shows. The kept-only chord rule hid 27 references on
+  the repository and 24 on the estate, and the deck charged nothing because they
+  fall outside the five-file scope. Restored to "every reference between two
+  showing rows", same states, same frame:
+
+  ┌────────────┬────────────┬────────────┬──────────────────────────────────┐
+  │   Bundle   │   Wires    │   Routed   │ Folded on compact cards, counted │
+  ├────────────┼────────────┼────────────┼──────────────────────────────────┤
+  │ Repository │ 82, was 55 │  13, was 5 │                       37, was 64 │
+  ├────────────┼────────────┼────────────┼──────────────────────────────────┤
+  │ Estate     │ 38, was 14 │ 31, was 10 │                        2, was 26 │
+  └────────────┴────────────┴────────────┴──────────────────────────────────┘
+
+  The estate picture, estate-rings-all-references.png
+  (AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-all-references.png),
+  is the finding. The three hubs use the same six contract files the service
+  uses, so twenty-four chords cross from right to left, and every one has to go
+  around the subject, which sits in the middle of the only road between its
+  providers and its consumers. A fixed center is an obstacle to every chord by
+  construction. The Local Map never meets that problem because it never draws a
+  chord at all; I confirmed in its wire code that it draws only within a hop.
+  That is the same omission, equally unpriced.
+
+  The deck's biases, yours and two more. Your three stand: turns, collocation,
+  and single-frame legibility rewarding cramming. Answering them turned up two
+  others. Anything outside the five-file scope could be hidden for free, which
+  is how the chord rule passed. And the router bought occlusion 0 with bends and
+  shared channels that no test priced. Rings cheated the deck twice, and your
+  eye caught both.
+
+  The expanded deck I propose, each measure with what it pulls against so that
+  no one design can max the board. The expected-best column is the paper
+  prediction; the numbers go into the deck file before any run.
+
+  Measure: Turns: wires with a heading change of 45° or more within 40 px
+  Prices: harsh corners
+  Pulls against: occlusion, which routing trades for turns
+  Expected best: Local Map
+  ────────────────────────────────────────
+  Measure: Crossings: wire pairs that cross, per your mid-turn message
+  Prices: wire over wire
+  Pulls against: drawing every reference, folder grouping
+  Expected best: Local Map
+  ────────────────────────────────────────
+  Measure: Shared channels: wires within 6 px of another for over 40 px
+  Prices: trunks and cables
+  Pulls against: occlusion, bundling
+  Expected best: Membrane
+  ────────────────────────────────────────
+  Measure: Flow: wires running rightward from the offering pin to the using pin
+  Prices: directionality
+  Pulls against: the fixed center, folder grouping
+  Expected best: Local Map, all of them
+  ────────────────────────────────────────
+  Measure: Folder adjacency: cards whose nearest card shares their folder
+  Prices: collocation
+  Pulls against: flow, wire angle
+  Expected best: Membrane, all of them
+  ────────────────────────────────────────
+  Measure: Folder legible: cards in frame whose folder is readable
+  Prices: containment
+  Pulls against: compact cards
+  Expected best: Membrane
+  ────────────────────────────────────────
+  Measure: Symbols shown: public symbols legible on drawn cards, of their total
+  Prices: class shape
+  Pulls against: cards in frame
+  Expected best: Local Map
+  ────────────────────────────────────────
+  Measure: Hidden among drawn: references between two drawn cards not drawn
+  Prices: the 82 wires
+  Pulls against: turns, crossings, channels
+  Expected best: Rings
+  ────────────────────────────────────────
+  Measure: Churn: cards that move after one pin or keep, count and px
+  Prices: stability
+  Pulls against: nearest-clear-spot placement
+  Expected best: Membrane
+  ────────────────────────────────────────
+  Measure: Tour: pans to make every drawn fact legible with a known card kept in
+
+  frame
+  Prices: the cost of motion
+  Pulls against: single-frame legibility
+  Expected best: Rings
+  ────────────────────────────────────────
+  Measure: A chain scope: four files across three folders, three hops,
+  graph-known answer
+  Prices: multi-hop chains
+  Pulls against: the star-shaped five-file set
+  Expected best: Membrane
+
+  On your third bias, the honest limit: a number can price the cost of motion,
+  never its value. The deck will show legible-in-frame and
+  legible-within-the-tour side by side, so a design that spreads out and keeps
+  orientation is not ranked below one that crams. Whether moving is part of
+  understanding stays with your eye on the live page.
+
+  The subset and the honest reductions. Symbol pinning in Rings would do what
+  the Local Map's does: fold the rows and wires not touching the pinned symbol,
+  with counts on the cards. The one further reduction I would defend is
+  bundling, where wires on a shared run are drawn as one cable carrying its
+  count and hover separates them. Every reference is still drawn, and the
+  channel measure charges for it. Whether that counts as honest in your book is
+  yours to say.
+
+  Three forks before I build.
+
+  - The measure set and the chain scope above: yes, or edit it. Predictions
+    first, then all three views re-measured, Rings with every reference drawn.
+  - Whether Rings continues. My opinion: its two gains were a subject that never
+    moves, which the Local Map now has, and the compact card, which buys cards
+    in frame by hiding class shape. The ring loses flow and puts the subject in
+    the way of every chord. I would re-measure it under the expanded deck and
+    then stop it unless the numbers surprise us.
+  - One line for AGENTS.md's Explorer section, on your yes: a picture never
+    hides a reference silently; a reduction says what it hides and leaves a way
+    back, and the person's pins are the subset.
+
+❯ >The one further reduction I would defend is bundling, where wires on a
+  shared run are drawn as one cable carrying its count and hover separates
+  them.
+
+  Reasonable but we'd need to come to agreements on what the scope of bundling
+  is. Bundling when there are multiple recipient targets in a directory (bundle
+  to directory)? Bundling when there are multiple recipient symbol targets on
+  a single node (bundle on leaving selected node and unbundle close to
+  recipient node?)
+
+  >The measure set and the chain scope above: yes, or edit it. Predictions
+  first, then all three views re-measured, Rings with every reference drawn.
+
+  I think the only measure I'd remove is the one which punishes hard angles. I
+  don't want to preclude a design which includes right-angle connectors if it's
+  a valuable visualization. (I'm more of a bezier curve person myself but I
+  have absolutely found great use in right angle connectors before). That was
+  my mistake; my subsequent "punish wire crossings" rule handily takes care of
+  the actual root issue in that case. Minus that one unnecessary rule, the list
+  is agreed.
+
+  >Whether Rings continues. My opinion: its two gains were a subject that never
+  moves, which the Local Map now has, and the compact card, which buys cards
+  in frame by hiding class shape. The ring loses flow and puts the subject in
+  the way of every chord. I would re-measure it under the expanded deck and
+  then stop it unless the numbers surprise us.
+
+  The compact card. Does any other view have that? (read: Membrane Map default
+  has no pinned symbols on any node, default collapsed. XD )
+
+  Do we keep Rings? Sure, if you think it's a valuable system for dealing with
+  the peculiarities of laying out elements in the space. But Rings is just one
+  experiment of many. Don't get too attached. The previous Astra experiment
+  was, in my opinion, substantially more novel in the ways that it attempted to
+  tackle things. I'd try to take inspiration from the many different ways
+  things are drawn.
+
+  >One line for AGENTS.md's Explorer section, on your yes: a picture never
+  hides a reference silently; a reduction says what it hides and leaves a way
+  back, and the person's pins are the subset.
+
+  Not sure if that's AGENTS.md-grade, but it's a design suggestion. The root of
+  the suggestion is, though, my statement that if a system is doing something
+  ugly, it's not the responsibility of the Explorer to hide that ugliness. When
+  Live Documentation is showing the user the results which derive from _scans_
+  (not user-authored designs out in the world map or whatnot), it should
+  strive to be an accurate picture. That is all. Those Local Map-like views are
+  all about trying to understand the connectivity between files in a folder in
+  a way which derives from measurement by the system. The World Map view(s)
+  are more about trying to understand, design, describe, and share information
+  about a system or multiple systems which interact. From what I've seen so
+  far, the design appears to be sliding towards a more measured exploratory
+  experience "inside" a thing and a more creative authorial experience
+  "outside" a thing. I don't know if that sticks for ever, but it's an
+  observation I'm seeing.
+
+● Recording your message first, then Memory, then the deck's new section with
+  predictions before any instrument code.
+
+  Searched for 3 patterns, read 6 files, listed 1 directory, ran 8 shell commands (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/Memory/direction.md in the
+  IDE. This may or may not be related to the current task.</ide_opened_file>
+  With respect to bundling, spatial layouts, angle-connectors and more: don't
+  be scared to let folks customize/configure easily. I know the original Local
+  Map had a "Tuning Panel", in which I could quickly test out permutations of
+  style params to get the bezier curves looking nice and the columns of cards
+  looking nice. It worked, and I think I even left those controls in (who knows
+  if they still work haha!). But what I mean to say is that if we think that
+  there are many valid mutually exclusive ways to look at the same info, don't
+  let it scare you. It is possible that figuring out panning to the right node
+  in the force graph + finding a way to smoothly transition between the force
+  graph view of a node and the MembraneMap/LocalMap view of a node may be the
+  whole secret sauce we need. So long as it is not disorienting and easy to
+  switch, that's great. So long as it is easy and not disorienting to
+  bundle/unbundle directories, that's great.
+
+  I want you to feel that difficult tension when you're designing -- the
+  opposing forces of "simplicity/elegance/unification" and "purpose-built/right
+  -sized/use-case-scoped/no-perfect-sauce-only-perfect-sauces". Working with
+  competing goals that you are trying to simultaneously maximize is one of the
+  most fruitful ways to get real gains and make real progress. The hard mental
+  work lies there at those junctions of criticality between competing ideas.
+
+● Your message on configuration and the tension is recorded now, and I will
+  carry it into Memory in the same write. Then the deck section with
+  predictions.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The deck section comes first, with the predictions written before the
+  instrument changes.
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Writing the pure geometry module and its unit test now, alongside the last two
+  DOM lookups I need for the Membrane's folder containers and its pin-all
+  control.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Geometry checks out. I'll now extend the page reader with sampled paths,
+  provider ends, cards, folder labels, new scores, churn, the tour runner, and
+  chain journey types, while also adding a keep button to the probe's search
+  results. · summary
+
+  Read 2 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Type-checking with the DOM library the e2e files assume, linting the new
+  files, and starting the probe's measurement run in the background.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Both measurement runs are in progress. While they run I will checkpoint the
+  record and peek at the probe run's interim output.
+
+  Read 1 file (ctrl+o to expand)
+
+● Background command "Run the probe's expanded measurement over both bundles and
+scopes" completed (exit code 0)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The probe results show crossings are being overcounted because every weave
+  within a shared cable gets counted, inflating the metric. I'll add a minimum
+  crossing angle filter, document this refinement, and restart the Explorer
+  runs. · summary
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Run the expanded deck over the shipped Explorer bundles,
+both scopes" completed (exit code 0)
+
+● The Explorer run has completed. I'll check its log for the missing Membrane
+  chain row and fix a reading issue I spotted: a provider's endpoint was matched
+  by the first card with that id, causing Membrane to pull some files twice.
+  · summary
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Rerun the probe's measurement with the refined crossings"
+completed (exit code 0)
+
+● The Membrane's chain walk needs a look before I trust its numbers. Restarting
+  the Explorer run with the longer timeout and the provider-end fix, and looking
+  at two pictures meanwhile.
+
+  Read 1 file, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Before I trust the crossing counts I want to see them on a picture. I will
+  expose the crossing points from the geometry and overlay them on the estate
+  Rings state.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Rerun the expanded deck over the Explorer bundles with the
+longer timeout and the provider-end fix" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Two things to chase: the repository chain Membrane test failed again after
+  three minutes, and the overlay spec was not discovered. Reading the failure
+  and the probe config.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+● The overlays confirm every dot is a real crossing, but Local Map's crossings
+  cluster within 60 px of the subject's pins while Rings' are more spread out.
+  I'll report crossings beyond 80 px of the pins as a second number. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Rerun the repository chain's Membrane test alone with the
+Escape fallback" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both runs again from clean, now with the far-crossings column, in parallel;
+  the diagnostic spec has done its job and goes.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the final runs go, I will checkpoint the refinements in the record, lint
+  the changed files again, and look at two pictures from the previous run that
+  the final run will reproduce.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Both final runs are still in progress: the Explorer run is a third of the way
+  through and the probe run is on its last case. Nothing else depends on
+  anything but their results, so I will wait for their notifications, then write
+  the measured section, the pictures and Memory, run the gate, and commit.
+
+● Background command "Final run of the expanded deck over the Rings probe, after
+removing the overlay diagnostic" completed (exit code 0)
+
+● The probe's final run is done. Reading its numbers while the Explorer run
+  finishes.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Final run of the expanded deck over the Explorer bundles"
+completed (exit code 0)
+
+● All twelve passed. Reading the final Explorer numbers and copying the pictures
+  worth keeping.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything is measured. Now the write-up: the deck's measured section with the
+  comparison tables, the pictures named in the screenshots README, Memory, and
+  the record.
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The commit set is clear: the instrument, its geometry and tests, the deck, the
+  probe record and the pictures in one commit, then the record and Memory with
+  its hash. All of it waits on the gate, which is running in the background now.
+
+● Background command "Run the full pre-commit gate with Playwright, sixth time
+today" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate stopped at the SlopCop symbol audit. Reading what it flagged.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two headings in the deck's new section duplicate earlier ones. Renaming them
+  and re-running the symbol audit before the gate goes again.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is running again with the headings fixed; everything that remains
+  (the two commits and the reply) depends on its result, so I am waiting for its
+  notification.
+
+● Background command "Run the full pre-commit gate with Playwright, seventh time
+today" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The seventh gate passed in full. Committing the work, then the record with its
+  hash.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Four regenerated Live Docs are left over from the gate's generator run, two of
+  them new. I need their current content before committing them with real
+  authored purposes.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All four authored sections go in one pass, then the Live Docs lint and the
+  commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The expanded deck is built, measured over the Local Map, the Membrane Map and
+  Rings on both scopes, and committed: d0515485 holds the instrument and the
+  deck, b250ff6d the record and Memory, 9577c466 the regenerated Live Docs. The
+  seventh gate of the day passed in full, with 66 Playwright tests and 18 new
+  Vitest cases for the geometry.
+
+  Three different winners, as you asked for. The five-file set on this
+  repository, every reference drawn:
+
+  ┌──────────────────────────────┬───────────┬─────────────────┬────────────┐
+  │           Measure            │ Local Map │  Membrane Map   │   Rings    │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Facts legible of 15          │ 4         │ 2               │ 11         │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Crossings in the open, of    │ 3 of 162  │ 5 of 272        │ 505 of     │
+  │ all                          │           │                 │ 1003       │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Wires flowing, backward, of  │ 70, 0 of  │ 98, 110 of 208  │ 46, 21 of  │
+  │ drawn                        │ 70        │                 │ 82         │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Folder adjacency             │ 16 of 17  │ 36 of 37        │ 3 of 18    │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Symbols shown at reading     │ 38 of 47  │ 60 of 60        │ 32 of 68   │
+  │ size                         │           │                 │            │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ References hidden among      │ 66 of 116 │ 140 of 268      │ 37 of 119  │
+  │ drawn cards                  │           │                 │            │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Cards moved by one pin       │ 17 of 19  │ 3 of 3, 25      │ 0 of 20    │
+  │                              │           │ removed         │            │
+  ├──────────────────────────────┼───────────┼─────────────────┼────────────┤
+  │ Facts a tour can reach, of   │ 5 of 10   │ 3 of 15         │ 14 of 15   │
+  │ drawn                        │           │                 │            │
+  └──────────────────────────────┴───────────┴─────────────────┴────────────┘
+
+  Your eye and the numbers now agree. The Local Map wins flow and crossings, the
+  Membrane folders and symbols, Rings facts, honesty, churn and the tour, and
+  nothing wins everything. The full tables, the estate, the chain scopes and the
+  predictions against them are in the deck's measured section (AI-Agent-Workspa
+  ce/Probes/2026-10-01/still-picture-deck.md#the-second-scoreboard-measured).
+
+  What the new measures found, for you to weigh. None is fixed.
+
+  - The Membrane's pin-active columns are hop depth, not direction, so half its
+    wires run backward on the repository. Picture (AI-Agent-Workspace/Screenshot
+    s/2026-10-01/still-picture-membrane-dependents-columns.png).
+  - The pathfinder's path mode draws the Local Map's grammar backward: every
+    wire leaves the dependent and enters the dependency's green "uses" pin.
+    Picture (AI-Agent-Workspace/Screenshots/2026-10-01/still-picture-local-map-p
+    ath-mode.png). And Clear returns the state without the camera, leaving the
+    subject 3,846 px below the frame.
+  - A fact whose two cards sit further apart than the frame cannot be seen whole
+    by any pan at reading size. That is 5 of the Local Map's 10 drawn facts and
+    12 of the Membrane's 15 on the repository. The first deck had called them
+    "one pan away". This is the ring's capacity finding from the other side.
+  - The Membrane's own walk along a chain, pin all of A, then B, then C, ends at
+    the folder's fitted scale with every name under 9 px. The camera question
+    from the first scoreboard, met again.
+
+  One measure was refined after the first run, and I want you to know why.
+  Crossings first counted every weave inside a shared cable, which gave 2,062
+  points for 70 wires and meant nothing. A crossing now needs 15 degrees between
+  the wires, and the score also reports points more than 80 px from any pin. I
+  drew every counted point on the live pages before trusting it: the Local Map's
+  (AI-Agent-Workspace/Screenshots/2026-10-01/still-picture-crossings-local-map.
+  png) all sit in the fan at the subject's pins, the ring's out where the chords
+  cut the spokes.
+
+  Your two mid-turn messages. Crossings are in, and the Tuning Panel still
+  exists in the template, so configurability has a precedent to grow from. On
+  bundling scope, my opinion: bundling on leaving the node and unbundling near
+  the recipient is the honest one, because every wire stays drawn and the
+  channel measure prices it; bundling to a directory hides which file, and would
+  have to say so. The force-graph transition stays the standing focus item,
+  untouched this turn.
+
+  The fork, before any next design. The tables name four floors no view meets
+  together: flow at the Local Map's level, folders at the Membrane's, facts and
+  honesty at the ring's, and no fact's ends further apart than the frame. I
+  would hold the next probe to all four and take it from the many ways things
+  are drawn rather than from Rings, which the probe record now reads plainly as
+  a trade of direction and folders for stillness and honesty. Whether that next
+  probe starts from the Local Map with chords drawn and routed, from the
+  Membrane with direction restored, or from somewhere new is yours.
+
+❯ >The Membrane's pin-active columns are hop depth, not direction, so half its
+  wires run backward on the repository
+
+  Absolutely true! Real standing defect detected! Nice work!
+
+  >The pathfinder's path mode draws the Local Map's grammar backward: every
+  wire leaves the dependent and enters the dependency's green "uses" pin.
+
+  Spectacular! Another known standing defect! You've rediscovered it
+  independently. Absolutely true that it remains unsolved!
+
+  >A fact whose two cards sit further apart than the frame cannot be seen whole
+  by any pan at reading size. That is 5 of the Local Map's 10 drawn facts and
+  12 of the Membrane's 15 on the repository. The first deck had called them
+  "one pan away". This is the ring's capacity finding from the other side.
+
+  Hey, an absolutely fair and good point. The local map should get dinged for
+  making you pan to get what you need, even if it's a bit more aesthetically
+  pleasing than any of the other visualizations (except World Map) so far.
+
+  >The Membrane's own walk along a chain, pin all of A, then B, then C, ends at
+  the folder's fitted scale with every name under 9 px. The camera question
+  from the first scoreboard, met again.
+
+  These are great observations. Really well explored.
+
+  >bundling on leaving the node and unbundling near the recipient is the honest
+  one
+
+  We should test this and directory bundling and see whether we like one or the
+  other more, or whether a synthesis is best.
+
+  >The tables name four floors no view meets together: flow at the Local Map's
+  level, folders at the Membrane's, facts and honesty at the ring's, and no
+  fact's ends further apart than the frame. I would hold the next probe to all
+  four and take it from the many ways things are drawn rather than from Rings,
+  which the probe record now reads plainly as a trade of direction and folders
+  for stillness and honesty. Whether that next probe starts from the Local Map
+  with chords drawn and routed, from the Membrane with direction restored, or
+  from somewhere new is yours.
+
+  Rings is cool, but is there any way that you can leverage the hints of map
+  shape given to you by the fact of directory membership? In what ways can the
+  knowledge of directory membership/directory distance be helpful in dealing
+  with some of the shortcomings of the ring visualization model? Is that
+  perhaps a dead end for me to ask about? Have we asked this before? Have we
+  talked about how to draw directories before in this workspace? How to draw
+  code files? How to draw their connections? Any dead ends to throw out early?
+
+● Recording this turn first. Then two things in parallel: the archive mined for
+  every earlier discussion of drawing directories, files and their connections,
+  and my own read of the current doctrine, before I answer the ring question.
+
+  Read 1 file (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ Mine Copilot-era archive for drawing discussions
+   └ Mine September 2026 material for drawing discussions
+
+  Read 2 files (ctrl+o to expand)
+
+● While the two archive sweeps run, I will carry this turn's verdicts into
+  Memory and re-read the vision's section on the inside scale, which the answer
+  has to respect.
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The vision settles one part of the answer already: inside a system the
+  left-to-right law holds, so whatever directories could do for the ring, they
+  cannot restore a direction the circle gave up. The two archive sweeps are
+  still running; the rest of the answer waits on what they bring back.
+
+› Message from Explore
+  ## How to draw directories, files and connections in the Explorer: what the
+  September–October 2026 material says
+
+  I read every file in scope. Some files repeat others, and I checked them
+  rather than citing them:
+  - The `.txt` harness exports repeat the `.md`/record sessions.
+  - The October terminal capture repeats the 10-01 record through the Turn 6
+  reply.
+
+  The bearings readers and the 2026-09-28 archive digest quote older owner
+  words. Where I cite those, I give the date the words were said and the
+  September file that surfaced them. All paths are absolute. Inside each
+  section, items are in date order.
+
+  ---
+
+  ### 1. Directories
+
+  1. **2026-09-26** · `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHis
+  tory/2026/09/2026-09-26.1.md`, "Claude (Fable 5.1) · 22:35 UTC", "On the
+  waffling" · agent: "The unifying idea is force-directed layout **at every
+  level of a hierarchy**, with semantic zoom: a system is a node; open it and
+  its packages are force-laid-out inside; open a package and its files cluster
+  inside that; open a file and its symbols wire up." → A proposal to nest force
+  layout by directory, marked "not proposing to build that today". Nobody took
+  it up.
+
+  2. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes/
+  2026-09-28/cards-in-depth.md`, "Open questions" · Probe A builder (subagent):
+  "Order depth by coupling (this probe) or by directory distance, so the folder
+  pull shows in the column?" → Directory distance as the placement order around
+  a focus card. **Never answered.**
+
+  3. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes/
+  2026-09-28/membranes-as-volumes.md`, "Keep and throw away" · Probe B builder:
+  "Keep: wall pins at the mean height of their wires, level with their box; the
+  closed box as a card whose rows are folders; the backplane; the
+  translation-only camera on enter". Also: "per-folder pins with counts read at
+  rest, per-file on hover". The same day, `/workspaces/Live-Documentation/AI-Age
+  nt-Workspace/Probes/2026-09-28/README.md` concluded "The barrel is not the
+  membrane, on this repository's data" (80 of 95 wires bypass `core.ts`). →
+  Proposes:
+     - one wall pin per neighbouring folder, with a count;
+     - a closed folder drawn as a card whose rows are its neighbouring folders.
+
+     Wall versus barrel is listed as open fork 3.
+
+  4. **2026-09-28** · README.md, "The board: the owner's second verdict" ·
+  owner: "**I think we should not be able to see inside the boxes** until we
+  zoom in enough that we go to a new view. So long as the transition feels
+  seamless, it's fine." → Settled: things are closed from outside, and contents
+  appear only after a transition (the lid).
+
+  5. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Researc
+  h/2026-09-28-groups-and-nested-boards.md`, "The agent's judgement" · agent:
+  "So the rule for a closed region on the World Map is the rule the docs already
+  follow: derive, never store." Also: "Nothing surveyed collapses a group
+  because the camera moved." → A closed group shows boundary doors and counted
+  wires derived from its members. Closing it is a click, not a side effect of
+  zooming. The survey cites Holten's hierarchical edge bundles (abstract only).
+
+  6. **2026-09-29 13:57 and 14:42** · `/workspaces/Live-Documentation/AI-Agent-W
+  orkspace/ChatHistory/2026/09/2026-09-27.1.md`, owner turns at those times ·
+  owner:
+     - "If we just open to the Membrane Map, the mess of wires should be gone,
+  as Membrane Map wraps directories."
+     - On "directories as membranes containing their cards … cross-membrane
+  wires bundled at the boundary with counts": "Stretch goal. I like this a lot."
+
+     → A thing opens into the Membrane Map. The folder-map panel (lid, wall
+  pins, rank layout) is parked in git at `817f29fc`.
+
+  7. **2026-09-29** · same file, "Claude (Fable 5.1) · 14:44", "How deep a
+  membrane goes" · agent: "The folder you are in is drawn one level open. Its
+  files are cards. Its subfolders are closed membranes, and a closed membrane
+  carries on its boundary what crosses it … So depth is not a number. It is
+  wherever you are, one level deep, all the way down." Small folders open flat
+  inside their parent; folders with no files of their own are passed through.
+  Owner, `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/09/
+  2026-09-29.2.md`, 17:16 UTC: "Agreed; one level depth render is reasonable". →
+  **Settled depth rule.**
+
+  8. **2026-09-30** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Researc
+  h/2026-09-29-bearings/readers/local-map-rules-today.md`, "Where to look
+  first", rule f · reader: "Folders are still out as containers, but their names
+  came back: a side column groups its cards under a small folder label". In the
+  Membrane Map, by contrast, "cards are sorted alphabetically inside each
+  folder group … so the order owes nothing to where the wires land." Rule l,
+  "nearer the more related", was "never built". → Records how column grouping by
+  folder works today.
+
+  9. **2026-09-30** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Researc
+  h/2026-09-29-bearings/readers/force-graph-across-the-record.md`, the "Folders
+  that pull (2026-03-17)" row · owner, said 2026-03-17: "perhaps in the future
+  we could even have nodes for folders to get an optional bit of tug caused by
+  the file system itself. Might allow us to see if there are competing tugs that
+  might help us organize our file system more harmoniously with the actual
+  needs of the software". → Never built. An agent had argued on 2026-02-24 that
+  folder nodes "would pollute the Force Graph".
+
+  10. **2026-09-30** · `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHi
+  story/2026/09/2026-09-30.2.record.md`, Turn 32 · owner: "I never specified
+  that the directories should be *closed* when we first see them. Oh boy peering
+  through each directory as an open door is so disorienting!" → Settled:
+  directories are closed on first sight.
+
+  11. **2026-09-30** · same record, Turn 36 · owner: "One thing that 3D *cannot*
+  do (or any spatial system which is fully literal) is provide the impression
+  of the omnipresence of these directories." → Opens up abstract, non-literal
+  placement for heavily reused files and folders. Nothing was selected.
+
+  12. **2026-09-30** · same record, Turn 43 · owner: "a big blue box with like
+  one or two implementation files sitting in there. The Membrane Map gets
+  poppin' when you start doing many many hops of symbol pinning." → The Membrane
+  Map is to be judged by multi-file pinning, not by its browse treemap.
+
+  13. **2026-10-01** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-10-01/handoff.md`, "What was built" · Codex (GPT-6 Astra): "Directories
+  have a folder glyph, a child-directory list and clickable breadcrumbs. … No
+  spatial placement is fabricated for unboarded directories". Owner (Turn 45):
+  "definitely more polished than the last pass". → Directories shown as a list
+  rather than as space. Experiment only.
+
+  14. **2026-10-01** · `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHi
+  story/2026/10/2026-10-01.1.record.md`, Turn 7 · owner: "There is no
+  bonus/benefit to bringing things which are collocated closer together (common
+  folders, etc.). TONS of design discussions … trying to arrange directories and
+  cards to minimize the churn and maximize the readability... all things yet
+  unmeasured". → Two measures were added: "Folder adjacency" and "Folder
+  legible". Their scores (`/workspaces/Live-Documentation/AI-Agent-Workspace/Pro
+  bes/2026-10-01/still-picture-deck.md`, second scoreboard):
+
+      | View | Folder adjacency |
+      | --- | --- |
+      | Local Map | 16 of 17 |
+      | Membrane Map | 36 of 37 |
+      | Rings | 3 of 18 |
+
+  15. **2026-10-01** · same record, Turn 9 · owner: "Rings is cool, but is there
+  any way that you can leverage the hints of map shape given to you by the fact
+  of directory membership? … Is that perhaps a dead end for me to ask about?
+  Have we asked this before?" → Open. This is the question being answered now.
+
+  ### 2. Files (cards)
+
+  16. **2026-09-26** · `2026-09-26.1.md`, owner turn at 22:34 UTC (cited in
+  archive-digest L117) · owner: "The closest-up interaction with our software is
+  to see a, say, C# class, with all of tis public symbols displayed, and
+  upstream/downstream consumers flanking it, wires crossing over into them." →
+  Sets the target for the close-up view.
+
+  17. **2026-09-28 02:26** · `2026-09-27.1.md` · owner: "after doing enough
+  pinning, I realized that many consumers/dependencies make sense in many
+  different positions when drawn in 2D space, once a sufficient level of
+  complexity has been reached." → The reason one fixed placement per card fails
+  at scale.
+
+  18. **2026-09-28** · `cards-in-depth.md`, "What was built" and "What depth
+  bought" · Probe A builder: "Level 1, the default, cuts a neighbour's unwired
+  rows first and recedes only if that still overflows; level 2 keeps every row;
+  level 0 is pins, wires and names." Also: "Depth carries one ordinal a 2D
+  column cannot: coupling as distance." The coordinator had framed it in
+  `2026-09-27.1.md` line 904: "in 3D can ring the file". → Proposes cutting
+  unwired rows before spending space. The hub ring was built as recession, not
+  as a ring.
+
+  19. **2026-09-29** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Resear
+  ch/2026-09-29-bearings/what-survives.md`, Local Map rules 9–16 · doc: "Nothing
+  is truncated: text wraps, and every public symbol is drawn in the order of
+  the file". The Internals row "is always last". → Records the card anatomy the
+  Local Map ships, which the owner made the quality bar ("the overall visual
+  style and sizing and spacing and coloring shown in the preexisting 'Local Map'
+  should inform …", 2026-09-29 14:42).
+
+  20. **2026-09-30** · `2026-09-30.2.record.md`, Turn 19 · owner: "What is the
+  difference between an exposed symbol on an implementation/test file and an
+  exposed API endpoint on a system? Nothing." Also: "The World Map fails to
+  display its symbols neatly like the Local Map displays its cards neatly. The
+  Local Map fails to arrange its nodes neatly like the World Map does." → Treats
+  cards and system doors as one interface problem. Open.
+
+  21. **2026-09-30** · same record, Turn 25 · owner: "Could this be a
+  Force-Directed Graph whose nodes are legible cards? I don't know." Agent,
+  10-01 record Turn 3: "**Force-positioned full cards with pins as anchors.**
+  Your suggestion. Cards repel, wires are springs between pin positions, the
+  subject is held at center." → **Still untried** (depth.md and
+  analysis-surface.md both say so).
+
+  22. **2026-09-30** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-09-30/interaction-game.md` · root Codex agent: "If the design promises
+  all four full cards in this viewport without overlap or smaller text, it has
+  already contradicted the arithmetic." On widely used files: "use two tokens
+  bearing the same C identity, one beside each context". → Two paper rules: a
+  full-card budget, and contextual copies of one identity. The copies are
+  untested.
+
+  23. **2026-10-01** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-10-01/rings.md`, rule 4 · Fable 5.1: "Any other card shows only the rows
+  that carry a reference to or from the subject, plus Internals, and a count of
+  the symbols it is not showing." Owner (Turn 8): "The compact card. Does any
+  other view have that? (read: Membrane Map default has no pinned symbols on any
+  node, default collapsed. XD )". → The compact card is not new. Hiding rows is
+  now charged by the "Symbols shown" measure: Local 38/47, Membrane 60/60,
+  Rings 32/68.
+
+  24. **2026-10-01** · `rings.md`, "Open, and next" · Fable 5.1: "**Capacity is
+  the real finding.** At scale 1 in a 1340 by 1000 frame, about twelve
+  neighbours fit around a fixed subject with straight wires and about fourteen
+  with routed ones; `graph.ts` has eighteen." → A hard limit on full cards
+  around any fixed subject.
+
+  ### 3. Connections
+
+  25. **2026-09-26** · `2026-09-26.1.md`, owner 22:34 UTC · owner: "I want to
+  see the wires cross. I want to see things which talk to each other cluster
+  together more closely." → The standing goal.
+
+  26. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-09-28/README.md`, "The scale ladder" and "What the probes changed…" ·
+  coordinating agent:
+      - "**The wall pin is the junction between scales.**"
+      - "Both builders of the two 3D scales reached for the corset principle at
+  their own scale: a wire that would cross a card, or run backwards, dips behind
+  and the cards occlude it."
+
+      → Doctrine proposals. Fork 9 (corset stubs, or a real pass behind the
+  card) stays open.
+
+  27. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-09-28/brief-2.md`, "Lines" · coordinator: "Many wires to one pin become
+  one bundle with a count badge, never a fan of forty hairlines." README adds:
+  "A badge replaces a fan or is not shown; a fan beside a count is two
+  statements of one fact." → Count badges and junctions. The only bundling that
+  read well at that point.
+
+  28. **2026-09-28** · README, the board verdict · owner: "In 3D, I see that
+  you're still worried about the left-to-right semantics. This is a mistake in
+  my opinion." Vision
+  (`/workspaces/Live-Documentation/.mdmd/layer-1/vision.mdmd.md`): "Inside a
+  system the left-to-right law holds." → Settled: no direction law between
+  systems; left-to-right holds inside a system.
+
+  29. **2026-09-29 22:46** · `2026-09-29.2.md` · owner: "Offers!! I Like that!
+  Killer terminology, yeah!" → Settled: blue offers, green uses, at every scale.
+
+  30. **2026-09-30** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-09-30/interfaces.md`, "Owner's verdict and diagnosis" · Codex: "6, 7, 7,
+  7, 3 and 6 of the seven wires changed shape, despite unchanged piece
+  positions." → Settled constraint: panning the camera must never reroute a
+  wire. It is now the "route invariance" test.
+
+  31. **2026-09-30** · `2026-09-30.2.record.md`, Turn 21 · owner: "The primary
+  thing I think we need 3D for is the inability for 2 dimensions to align a flow
+  of complex connections." → States why the extra dimension is wanted at all.
+
+  32. **2026-09-30** · `interaction-game.md` · Codex:
+      - "A wire crossing is a cost to inspect, not automatically a correctness
+  failure."
+      - "**A prettier lie:** remove one string … Fewer crossings have not
+  improved the answer."
+
+      → Reducing crossings never justifies dropping facts.
+
+  33. **2026-10-01** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-10-01/analysis-surface.md` · Codex: "Adjacent references cross the
+  gutter; longer references use fixed upper lanes. Panning never changes those
+  paths." Owner (Turn 44): "the connector lines appear to draw behind the card
+  surface whose pin they intend to connect to (which is too bad, since the
+  default bezier curves you came up with are better, and the 'wrapping-around'
+  illusion is far better …)". → Fixed in handoff.md: "Long cables stay behind
+  cards, with short foreground segments joining the actual pins".
+
+  34. **2026-10-01** · 10-01 record, Turn 3 · Fable 5.1: "**A matrix as the
+  survey.** Rows offer, columns use, a cell is a reference. … Poor for
+  navigation, strong for survey". → Proposed, untried.
+
+  35. **2026-10-01** · `rings.md`, lesson 4 · Fable 5.1: the router "takes the
+  shortest eight-connected path on an 8 px grid around every card, pulled tight
+  and with rounded corners … routed wires share channels and read as cables". →
+  Routing removed occlusion but created bends and shared channels, which the
+  "channels" measure now prices.
+
+  36. **2026-10-01** · 10-01 record, Turn 7 · owner: "Is that the shape of the
+  software? … I'm not open to having the user open the shape of their software
+  and believe it's all fine and dandy when it's not." Mid-turn: "we should
+  absolutely punish wires-crossing-over-other-wires." → Every reference is drawn
+  again, and a crossings measure was added. Work notes: the Local Map draws
+  "never a chord between two neighbours"; rings.md: "A fixed center is an
+  obstacle to every chord by construction."
+
+  37. **2026-10-01** · same record, Turn 8 · owner: "I don't want to preclude a
+  design which includes right-angle connectors if it's a valuable visualization.
+  (I'm more of a bezier curve person myself but I have absolutely found great
+  use in right angle connectors before)". → The "turns" measure was withdrawn.
+
+  38. **2026-10-01** · same record, Turns 8–9 · owner: "Bundling when there are
+  multiple recipient targets in a directory (bundle to directory)? Bundling when
+  there are multiple recipient symbol targets on a single node (bundle on
+  leaving selected node and unbundle close to recipient node?)". Agent:
+  "bundling to a directory hides which file, and would have to say so." Owner
+  (Turn 9): "We should test this and directory bundling and see whether we like
+  one or the other more, or whether a synthesis is best." → Open. Both bundling
+  scopes are to be tested.
+
+  39. **2026-10-01** · same record, Turn 8 (sent mid-turn) · owner: "if we think
+  that there are many valid mutually exclusive ways to look at the same info,
+  don't let it scare you. … So long as it is easy and not disorienting to
+  bundle/unbundle directories, that's great." → Configurability is allowed; the
+  Tuning Panel is the precedent.
+
+  40. **2026-10-01** · `still-picture-deck.md`, second scoreboard, and the
+  record's Turn 9 · Fable 5.1: "The Membrane's pin-active columns are hop depth,
+  not direction, so half its wires run backward on the repository". Owner:
+  "Real standing defect detected!" The path mode's reversed wire direction:
+  "Another known standing defect!" → Two confirmed connection defects.
+
+  ### 4. Dead ends and verdicts
+
+  41. **2025-11-21** (surfaced in `/workspaces/Live-Documentation/AI-Agent-Works
+  pace/Research/2026-09-29-bearings/readers/2025-11-20-to-24-local-map.md`) ·
+  owner: "The local view need not be radial, and can take on the form of the
+  Circuit Board view with directories, nodes, and edges reduced down to only
+  what is salient to the selected element." → Gemini's radial "sonar" Local
+  View, which "rebuilds a separate radial layout each time a node is selected",
+  was replaced by three columns by 2025-11-24. The reader says the owner
+  "disliked Gemini's radial rendering". The record does not say whether the
+  radial view used directories.
+
+  42. **2025-12-03, 12-07, 12-17** (`/workspaces/Live-Documentation/AI-Agent-Wor
+  kspace/Probes/2026-09-28/archive-digest.md`, "(a) Tried and abandoned") ·
+  owner:
+      - On removing directory containers from the Local Map (praised): "you
+  threw out the directories…"
+      - On wraparound corset curves: "it just looks like a bit of programmatic
+  tangled mess" (replaced by short stubs).
+      - On multi-hop Local Map columns: "This is absolutely not functional at
+  all."
+
+  43. **2026-03-22 to 04-01**
+  (`/workspaces/Live-Documentation/.mdmd/layer-3/membrane-map.mdmd.md`, "Arcs
+  between folders: built twice, rejected") · doc: "Do not re-propose arcs over
+  the browse layout." The reasons given: "the arcs fly to tiles off screen, and
+  a hover state cannot be interacted with". Owner on 04-01: "I just see a bundle
+  of connectors laying in an arc over each directory I hover over." Also 03-30
+  (bearings reader): "it should be okay, I think, to abandon
+  squarification/treemapping for a flow layout when we want to see
+  cross-directory interactions".
+
+  44. **2026-09-27** · `/workspaces/Live-Documentation/.mdmd/layer-3/architectur
+  al-decisions.mdmd.md`, "System Layer and Co-activation Clustering (Retired
+  2026-09-27)" · doc: "The vision's 'a system is a folder' supersedes finding
+  systems by clustering, and the owner found the output noisy." → Grouping files
+  by statistical clustering was rejected in favour of folders.
+
+  45. **2026-09-28** · `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes
+  /2026-09-28/README.md`, "Rounds 2 to 4" · owner: "Not gonna lie, I can see the
+  screenshots and they all came out pretty mid." The README's diagnosis:
+  "everything was drawn at once, so the resting state was a hairball … depth was
+  spent on tilt". → The 3D file and folder depth probes stopped. Rule: "2D
+  inside the black box of a software system, and 3D outside of one".
+
+  46. **2026-09-28** · same README, "The board" · owner: "Huh. Dang I did not
+  love those at all." (estate pages with see-through boxes). Then, on the board:
+  "HOLY SHIT THIS IS SO GOOD. WOW! Yeah this is -- this is exactly the
+  direction I'm looking for." → See-through volumes were dropped. Closed pieces,
+  doors and the lid were adopted.
+
+  47. **2026-09-30** · `2026-09-30.2.record.md`, Turn 18 · owner, on the
+  simplified-card orientation probe: "by the wires crossing over nodes all over
+  the place, one could argue that the 3D force-directed graph performs
+  superior." → The navigation was liked; the reduced cards were rejected.
+
+  48. **2026-09-30** · same record, Turns 23–24 · owner: "The demo on port 8878
+  is really really rough." and "Uh huh, what's different between that and the
+  membrane map?" → The interfaces probe failed:
+      - wires changed route under a pan;
+      - "containers, nested folders and leaf files essentially the same
+  silhouette" (interfaces.md).
+
+      The agent's follow-up comparison was withdrawn.
+
+  49. **2026-09-30** ·
+  `/workspaces/Live-Documentation/AI-Agent-Workspace/Probes/2026-09-30/depth.md`
+  and Turns 26–33 · owner: "Looks like we've got a high bar to clear on beating
+  the current visualizations!" depth.md: "A camera maneuver had been mistaken
+  for a layout solution." Also: "Directory ancestry and dependency connectivity
+  are different structures. A pleasing journey down the former can hide the
+  latter." → Both failed:
+      - quarter-turn wiring depth;
+      - walking into directories (the owner's Turn 28 named the cost in advance:
+  cross-branch connections become "harder to draw").
+
+  50. **2026-10-01** · 10-01 record, Turn 8, and `rings.md`, last line · owner:
+  "Rings is just one experiment of many. Don't get too attached. The previous
+  Astra experiment was, in my opinion, substantially more novel". Fable 5.1's
+  summary of Rings: "it keeps its subject still and its facts near, and pays in
+  crossings, direction and folders". → Not killed. The agent recommends stopping
+  Rings unless new numbers surprise.
+
+  ---
+
+  ### Has anyone proposed using directories to place cards in a ring or around a
+  subject?
+
+  **No one has proposed directory distance as the placement rule in a radial,
+  ring or subject-centred layout.** The nearest attempts:
+
+  - **Rings rule 3** (2026-10-01, `rings.md`): "Cards are ordered around each
+  side, kept cards nearest the horizontal, the rest by folder so siblings stay
+  adjacent." Folder membership was a *secondary* sort key inside the ring.
+  Lesson 2 then let each card's angle follow its wires, and folder adjacency
+  measured 3 of 18. The record does not say whether the folder ordering survived
+  lesson 2; that is unclear.
+  - **The concentric proposal itself** (Turn 3): "Rings of distance hold full
+  cards". This is graph distance (hops), not directory distance.
+  - **Probe A** (2026-09-28): "Order depth by coupling (this probe) or by
+  directory distance". Directory distance as an order around a focus card, in
+  columns with depth rather than a ring. Unanswered.
+  - **Owner, 2026-03-17**, surfaced 2026-09-30: folders exerting "an optional
+  bit of tug" in the force graph. Force-directed, not radial. Never built.
+  - **Agent, 2026-09-26**: force layout nested "at every level of a hierarchy".
+  Never built.
+  - **Older radial or ring ideas that did not use directories**, as far as the
+  text says:
+    - the 2025-11 radial "sonar" view, which the owner moved away from;
+    - "in 3D can ring the file" (2026-09-28), built as recession instead;
+    - the March "hub" note in the Membrane Map doc: "minimised card with radial
+  connection summary".
+  - **Shipped today, in subject-centred column layouts:** the Local Map groups
+  side-column cards under folder labels, and the Membrane Map draws "folder
+  bands" across its pinned columns.
+  - **Prior art in the surveys:** Holten's hierarchical edge bundling (cited
+  from the abstract only) and Furnas's degree-of-interest with distance, both in
+  the 2026-09-28 research. Nobody turned either into a proposal.
+
+  ### Summary
+
+  1. **Settled:** a folder is drawn one level open with closed subfolders that
+  carry counts on their boundary, and directories are closed on first sight.
+  2. **Settled:** blue offers and green uses; left-to-right holds inside a
+  system and not between systems; panning never reroutes a wire; every reference
+  is drawn, and pinning is how a person narrows the picture.
+  3. **Open:** bundle to the directory, bundle and unbundle per node, or a mix
+  (to be tested); force-positioned full cards (untried); the matrix survey;
+  contextual copies of hub files; wall versus barrel; and the Turn 9
+  directory-distance question.
+  4. **Open:** the four floors from the second scoreboard, which no view meets
+  together: flow at the Local Map's level, folders at the Membrane's, facts at
+  the ring's, and no fact wider than the frame. Also open: the Membrane
+  hop-depth defect and the reversed path mode.
+  5. **Rejected:** hover arcs between folders, see-through boxes, 3D tilt and
+  orbit inside a system, walking into directories, cards that all look alike,
+  radial "sonar", wraparound corset curves, multi-hop columns, folders found by
+  clustering, and dropping chords to tidy the picture. The "turns" penalty was
+  withdrawn so right-angle connectors stay allowed.
+
+
+● The September sweep is back with a sourced list; I will spot-check its key
+  quotes before relying on them, while the Copilot-era sweep finishes.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Agent "Mine September 2026 material for drawing discussions" finished · 11m 1s
+
+● The spot checks hold, though I'm noting one nuance: the March rejection of
+  arcs in the treemap was Copilot's analysis, while the owner's actual principle
+  allows abandoning the treemap for a flow layout when cross-directory
+  interactions matter. I'll checkpoint these findings while the Copilot-era
+  sweep finishes. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The survey's September half is written; its Copilot-era half and the answer
+  itself wait on the second sweep, which is still running.
+
+› Message from Explore
+  Sweep of the Copilot-era archive for how the Explorer draws directories, file
+  cards and connections
+
+  I covered every transcript and summary under 2025/10–12 and 2026/01–04,
+  including the five Antigravity (Gemini) transcripts from 2025-11-19 and
+  2025-11-20. Those use "### User Input" headings instead of the handle marker.
+  Drawing talk starts on 2025-11-19/20 and is heaviest on 2025-11-21 to 12-07,
+  2025-12-17/18 and 2026-02-24, then dense again from 2026-03-17 to 04-01.
+  October 2025 and most of January to mid-March 2026 have almost nothing on
+  drawing; there, "membrane" means the MDMD document convention.
+
+  All paths below sit under
+  `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/`. Line numbers
+  point to the line the quote is on, or to where the turn starts. The owner's
+  handle is `jfjordanfarr:`, and "User:" from 2025-12-11 on.
+
+  ---
+
+  ## 1. Directories
+
+  1. **2025-11-20** — `2025/11/Antigravity/11-20/83f976da-…/Refining Interaction
+  and Code Quality.md` L41 — owner: "And the Circuit Board view needs to be
+  capable of having _a thing in a thing_ if it's true inheritance. That is: a
+  visual card could contain a visual card. Don't get married to the circuit
+  board aesthetic."
+     - Decided: containment is drawn as real DOM elements nested inside each
+  other. At L55 he adds that containment could follow "directory versus
+  inheritance structure".
+
+  2. **2025-11-21 / 11-24** — `2025/11/2025-11-21.md` L2606, L2834;
+  `2025/11/2025-11-24.md` L269, L1317 — owner: "By default, the Circuit Board
+  view attempts to **center** the directory with the highest number of
+  cumulative inbound and outbound connections (for better visual layout)" /
+  "Think of it almost like the force graph rules, but at the directory level." /
+  "If we find that there is no reasonable way to bin our Circuit Board by
+  directory alone, we may instead spring for using the materialized "System"
+  views (automatically detected clusters of related functionality) to bin our
+  files."
+     - Proposed: the most-connected directory sits at the centre, and
+  directories are arranged to keep related ones close. Subdirectories must stay
+  inside their parents.
+     - Two fallbacks: group by clusters instead of directories, and keep
+  "parity" with the IDE's file tree.
+     - Same day (L2834), on the Local View: "The local view need not be radial,
+  and can take on the form of the Circuit Board view…"
+
+  3. **2025-11-24 → 2025-12-02** — `2025-11-24.md` L1885, L2045, L2139, L2185;
+  `2025/12/2025-12-02.md` L199 — owner: "A directory should be a 2D space inside
+  which we may compose other directories, themselves 2D spaces, each a 2D grid
+  laid out carefully until terminal leaf nodes (files) actually appear." / "It's
+  just like you say: 2D bin-packing + Force directed hybrid." / "The map of the
+  software is the map of the software."
+     - Decided: recursive nested containers, each aiming for a 4:3 shape
+  (L2045). The layout does not respond to window size; on 12-02 he wrote
+  "Resizes should not matter" and rejected the agent's ResizeObserver idea.
+     - The agent built a squarified treemap solver. The owner's verdict at
+  L2545: "Y'know what it isn't? Taller than wide."
+
+  4. **2026-02-24** — `2026/02/2026-02-24.1.md` L2084 — owner: "Right now, the
+  Circuit board is borderline useless for me and you." / "Perhaps that is where
+  we see directory-to-directory dependencies, and perhaps we even swap out
+  directory wrapping for, say, _cluster_ wrapping"
+     - Proposed: rebuild the Circuit Board as a treemap that reveals directory
+  contents step by step (progressive disclosure). Optionally group by cluster
+  instead of by folder.
+
+  5. **2026-03-17** — `2026/03/2026-03-17.1.md` L2572 — owner: "Okay, let's go
+  with Option C with the plan in the back of our mind to, if we can wrangle the
+  design, work our way up to Option B."
+     - Decided: a two-zone layout. Squarified tiles for directories, uniform
+  220×120 cards for files, and dimmed strips for sibling directories.
+     - Option B (one continuous zoomable view) becomes the long-term goal.
+     - The agent's Option C also listed "Directory Connections". The commit
+  message (quoted at `2026-03-22.1.md` L1) does not mention them, so it is
+  unclear whether they were built.
+
+  6. **2026-03-17** — same file, L2958 — owner: "perhaps in the future we could
+  even have nodes for folders to get an optional bit of tug caused by the file
+  system itself. Might allow us to see if there are competing tugs that might
+  help us organize our file system more harmoniously with the actual needs of
+  the software; A thought for another day"
+     - Idea only: folders as nodes that pull on files in the force-directed
+  graph. Never acted on.
+
+  7. **2026-03-22** — `2026/03/2026-03-22.1.md` L244 — owner: "if the Circuit
+  Board view is able to handle the kind of "this-in-a-that"
+  membrane-like-engulfing visual surrounding the active directory (such that the
+  active directory is always the same size, and the parents drift into the
+  background at increasingly large sizes, enveloping one another) more easily
+  with DOM stuff than Canvas stuff, I'd be curious to know."
+     - Origin of the "membrane" idea. The agent confirmed the Circuit Board and
+  Local Map are plain DOM with no canvas, and named the pattern a "zoomable
+  treemap".
+
+  8. **2026-03-22** — same file, L344 (owner) and L381 (agent)
+     - Owner: "The hope is that, emergently, the points at which the two visible
+  Live Documentation artifacts ("nodes" in my above verbiage) share some common
+  directory is the point at which a single membrane engulfs the two files whose
+  connectivity is being examined, connections between those nodes piercing
+  various layers of membrane to reach one another as needed."
+     - Agent: "**The number of membranes a connection line crosses IS the
+  structural distance.**"
+     - Decided: two connected files are wrapped by their lowest common ancestor
+  (LCA) folder. Lines pierce membranes, so the number of membranes crossed acts
+  as directory distance.
+
+  9. **2026-03-22** — same file, L541, L710, L983 — owner: "At first read, this
+  seems an insanely elegant answer." (on the agent's "the membrane border itself
+  _is_ the barrel") / "Membrane Map. I _love_ that name." / "I don't hate that
+  I'd need to toggle back and forth between a directory-based Membrane Map and a
+  Namespace-based Membrane Map. Both seem valid to me."
+     - Decided: a barrel file (an index file that re-exports a folder) is drawn
+  as the membrane border itself.
+     - A C# namespace mode was added as a toggle. It was deferred to a later
+  commit on 03-23 (`2026-03-23.1.md` L823).
+
+  10. **2026-03-23** — `2026/03/2026-03-23.1.md` L4639, L6197, L6349 — owner:
+  "The active directory area should be _completely static_ in size." / "It's
+  only when we get down to directories with these actual non-compressible units
+  in them -- things with _symbols_ which _connect_ -- that we can no longer keep
+  the focused directory's membrane the same constant size, and the membrane(s)
+  must start growing to accommodate the neighbors."
+     - Decided, a two-phase sizing model:
+       - While browsing directories, the focused directory keeps a constant
+  size.
+       - At the file and symbol level, membranes grow (L6197: "_squishy_ and
+  _wobbly_").
+
+  11. **2026-03-24 / 03-26** — `2026-03-24.1.md` L3587; `2026-03-26.1.md` L2167
+  (agent), L2366 (owner)
+     - Owner, 03-24: "So we still need the "contiguous membrane" for LCA (last
+  common ancestor), along with all the complexity of sharing LCA ancestors with
+  neighbors along the dependency chain for which this is true."
+     - Owner, 03-26: "But I'm in agreement, let's try B+C first and if it still
+  isn't enough to do what we need, we can start finding edge cases where Option
+  A will have to suffice."
+     - Decided: membrane bands hold their members, and outsiders are pushed out
+  of a band (Strategy B). The LCA membrane always wraps everything (Strategy C).
+     - Duplicated, gappy membranes (Strategy A) are kept only as a last resort.
+     - The agent called this "**layered graph drawing** (Sugiyama-style)" with
+  cluster constraints.
+
+  12. **2026-03-30** — `2026/03/2026-03-30.1.md` L996 — owner: "And it should be
+  okay, I think, to abandon squarification/treemapping for a flow layout when
+  we want to see cross-directory interactions."
+     - Decided: the treemap is for browsing. A flow layout with membrane bands
+  takes over once pins are active.
+
+  ## 2. Files as cards / nodes
+
+  13. **2025-11-24 / 12-04** — `2025-11-24.md` L404; `2025/12/2025-12-04.md`
+  L116 — owner: "it would be great to arrange the symbols on the periphery of
+  the nodes (i.e. evenly spaced along the left and right sides of the node
+  cards) such that it would be straightforward to draw right-angled connector
+  lines to and from symbols in that view." / "We should try connecting a green
+  line between the symbol's left green pin and the start of the symbol's name,
+  and connect a blue line from the end of the symbol's name over to the blue pin
+  for that symbol."
+     - Decided: a symbol row has a pin on each edge, with the name centred
+  between them.
+
+  14. **2025-11-24** — `2025-11-24.md` L934 — owner: "I'd love to see, if test
+  files are visualized, that the unit test file for a given file rests _behind_
+  the original file's node."
+     - Proposed a "test-backed" card style. It became a purple glow or shadow
+  behind the card (12-04).
+
+  15. **2025-11-24 → 2025-12-03** — `2025-11-24.md` L1397;
+  `2025/12/2025-12-03.md` L742 — owner (11-24): "we should put the things which
+  depend on the active code file to its left and things which it depends on to
+  its right" → owner (12-03): "Uh, yes. Switch these. For sure. Inputs are left,
+  outputs are right."
+     - Decided: inputs (dependencies) on the left, outputs (dependents) on the
+  right. Green pins are inbound, blue pins outbound.
+     - This reverses his own 11-24 wording, and is the left-in/right-out grammar
+  used from then on.
+
+  16. **2025-12-05** — `2025-12-05.md` L3553 — owner: "That should always happen
+  as the _last_ "public symbol" entry in the Local Map visualization, and it
+  will ensure that things which feed into the private contents of the active
+  artifact themselves align lower on their grid column, allowing public
+  relationships to stay closer to the top and center, where the majority of
+  attention can be invested."
+     - Decided: an "Internals" black-box pseudo-symbol row sits last on each
+  card, with an input pin only.
+
+  17. **2025-12-06** — `2025-12-06.2.md` L3344 — owner: "It's possible that the
+  Local Map becomes a place where every distinct public symbol-carrying "clump"
+  warrants its own node (perhaps independent of, and perhaps drawn inside of,
+  the node corresponding to the file that holds it?)."
+     - Open question about C# with many classes per file. It came back on 03-22
+  as nested classes and namespace mode, and was not resolved.
+
+  18. **2026-02-24** — `2026-02-24.1.md` L1844, L2084 — owner: "we could be
+  agnostically rendering a block of markdown into a defined area of a Card-like
+  UI element (i.e. the box area of the picture for a pokemon card) followed in
+  the remainder of the card by the nicely-rendered list of public symbols" /
+  "Indeed, the card component becomes the universal node detail renderer."
+     - Proposed: the card absorbs the content of the Detail Panel. The agent
+  (L2321) added "compact cards" at leaf level showing name, symbols, Internals
+  row and test backing.
+
+  19. **2026-03-23 → 03-28** — `2026-03-23.1.md` L1343; `2026-03-27.1.md` L1346;
+  `2026-03-28.1.md` L2286 — owner: "the vanilla "local map" we have now is just
+  a de-facto render of all public symbols (including the "Internals"
+  psuedo-symbol) of the focused node pinned simultaneously." / "All nodes should
+  be "collapsed" by default when no symbol pinning has occurred." / "I expect
+  the "pin all symbols" button to be present on all nodes at all times, period."
+     - Decided: cards are collapsed by default. Pinning drives what is shown,
+  and pin-all reproduces the Local Map.
+     - 03-27 L1857: no emoji pin button, and a collapsed card shows no symbols
+  rather than only "Internals".
+
+  ## 3. Connections / wires
+
+  20. **2025-11-20 / 11-24** — `Antigravity/11-20/…/Refining UI Interactions.md`
+  L37; `2025-11-24.md` L269 — owner: "I am a fine of the kind of
+  soundboard-like wires-going-behind-the-rectangles-to-hook-rectangles-together
+  kind of look. I want to see wires from symbol to symbol if I can, or file to
+  symbol." / "For the other connections, we can either choose to hide them or to
+  render them _behind_ all other elements (as if it is a sound mixing board in
+  which plugs are coming in from the back -- I believe Ableton Live did
+  something akin to this)."
+     - Founding metaphor: symbol-to-symbol wires that run behind the cards and
+  appear only on hover or click.
+
+  21. **2025-12-05** — `2025-12-05.md` L1820 — owner: "A node which connects to
+  the focused artifact 2 times should render _closer_ to the center grid column
+  of the Local Map, with 3 connections, even closer, and so on."
+     - Proposed ordering to cut crossings: brick-like sub-columns. Nodes that
+  feed lower symbols go lower in their column. He calls it "juggling competing
+  interests".
+
+  22. **2025-12-06** — `2025-12-06.1.md` L824 — owner: "The uppermost element
+  should be the *pins*, the second depth element should be the *connectors* and
+  the third depth element should be the *cards* (nodes themselves). Connectors
+  should draw _above_ cards and _below_ pins."
+     - Decided the stacking order: pins, then connectors, then cards. It took
+  about two days of fighting with CSS stacking.
+
+  23. **2025-12-06 → 12-08** — `2025-12-06.1.md` L1040; `2025-12-07.2.md` L1569;
+  `2025-12-08.1.md` L862 — owner: "Why do our lines not always _begin_ blue and
+  _end_ green via some gradient?" / "a connector line is 10% blue, 80% gradient
+  blue-to-green, and 10% green, based on length."
+     - Decided: every cross-node connector uses the same blue-to-green gradient.
+  Relationship type is shown only by badges.
+
+  24. **2025-12-07** — `2025-12-07.2.md` L232, L1386 — owner: "**begin** blue
+  connector lines off of the public symbols whose outputs will be used, then
+  **wrap the connector back around behind the parent node, resurfacing back near
+  the input of the public symbols consuming them?**" / "start from the premise
+  that you are going to fake this going-behind-the-card visual by creating cute
+  little tiny nubby connector lines off the salient pins."
+     - Decided: the "French Corset" self-loop, short stubs that suggest a wire
+  running behind the card. Tuned with sliders on 12-07.3.
+
+  25. **2025-12-07** — `2025-12-07.2.md` L1567 — owner: "The idea that we could
+  fade the irrelevant instead of boosting the relevant would be precisely in
+  line with the anecdote I gave about audio engineering an EQ many chats ago
+  (don't boost what you like, cut what you don't)."
+     - Decided: on hover or pin, dim unrelated nodes, symbols and lines. The
+  exact order of operations was respecified on 03-28 (`2026-03-28.1.md` L1957).
+
+  26. **2025-12-18** — `2025-12-18.1.md` L1437; `2025-12-18.3.md` L1142 — owner:
+  "it would be preferable that each vertical column draws connections only to
+  its immediate neighbors." / "Like a google search with an obvious typo, we
+  should show no results and offer the reverse (via hyperlink) as the
+  functioning alternative rather than draw the crazy connectors which span their
+  entire nodes, reaching backwards and to the left in order to find their
+  targets."
+     - Rules for multi-hop paths: no lines that skip a column, and never draw a
+  path against the dependency direction.
+
+  27. **2026-03-22** — `2026-03-22.1.md` L564 (owner), L496 (agent) — owner: "I
+  disagree. When we're doing pathfinding, we're starting from a _single_
+  somewhere and ending at a _single_ somewhere."
+     - Pushback on the agent's dense cross-cutting scenario. The agent had
+  proposed "**edge bundling at the membrane level**" (L496). Its outcome is item
+  39.
+
+  28. **2026-03-23** — `2026-03-23.1.md` L1943, L2287, L2622, L6932 — owner: "We
+  genuinely are in cases where additional spatial dimensions would plausibly be
+  required to ensure this ordinality in the face of cycles." / "I think an
+  inter-card corset is the most visually understandable and truthful of what
+  we've seen in the options presented." / "the _existing_ French Corset
+  visualizations, if separately applied to the outbound pin of a right node and
+  inbound pin of a left node, are visually sufficient to cover the entire
+  looping-back-over-multiple-nodes."
+     - Decided: keep the left/right pin grammar (agent's Option B). Wires that
+  loop back across cards become corset stubs, and a fully drawn loop line on
+  hover is deferred.
+     - Not chosen: Option A ("Direction lives on the LINE, not the pin") and
+  Option C ("Four-edge port routing").
+     - L6932 also flags a future right-to-left flip of the flow direction.
+
+  29. **2026-03-26** — `2026-03-26.1.md` L514, L1443 — owner: "I suspect that
+  each re-render should animate those lines starting from their outbound (blue,
+  right) connector pin over to their respective inbound (green, left) connector
+  pin, each time the redraw would be required." / "We will need to make sure
+  that connector animation awaits the complete transform animations of any nodes
+  whose pins they extend from/to."
+     - Decided: connectors draw themselves blue-to-green after the nodes settle.
+     - Same timing issue elsewhere: `2026-01-26.1.md` L3202 (redraw after column
+  centring) and `2026-03-31.1.md` L1704 (a pixel-stability E2E test).
+
+  ## 4. Dead ends and rejected approaches
+
+  30. **2025-11-20** — `Antigravity/11-20/…/Refining Interaction and Code
+  Quality.md` L199, L201 — owner: "all supported by these rather DOM-unfriendly
+  looking SVG elements. Why can we not render HTML cards again?" / "Let's, for
+  now, cut out the idea of CSS animations"
+     - Dropped Gemini's SVG-drawn Circuit Board in favour of HTML cards. CSS
+  animations were cut for causing render artifacts; animation came back only on
+  2026-03-26.
+
+  31. **2025-12-03** — `2025-12-03.md` L1119 (owner), L1139 (agent), L1143
+  (owner) — owner: "You'll see that connectors are traversing their final mile
+  of X distance before rocketing up or down to their intended pin. This
+  inadvertently causes their intersection with several other pins, muddying the
+  interpretation of the visualization."
+     - The agent swapped right-angle elbows for curves so lines "swing" into
+  pins "instead of stair-stepping through other anchors".
+     - The owner kept it: "The juxtaposition between the hard-angled connectors
+  of the Circuit Board view and the smooth-lined connectors of the Local Map
+  help really drive home how these views are foundationally and meaningfully
+  different."
+     - Right angles were dropped in the Local Map. They had been his ask on
+  11-24 L404 and 12-02 L146.
+
+  32. **2025-12-03** — `2025-12-03.md` L984 — owner: "This is elegant as f*ck --
+  you threw out the directories. I honestly think that's smart."
+     - Folder grouping was removed from the Local Map to kill whitespace.
+  Folders returned as membranes in March 2026.
+
+  33. **2025-12-04** — `2025-12-04.md` L266 (and `2025-12-05.md` L256) — owner:
+  "I went to the git view in vs code and reverted the changes to the style and
+  local view typescript files. It's back to working again, but without the
+  highlight for multiple nodes going in."
+     - "Alchemy" pins (a special look for pins with several inbound lines) were
+  reverted because the changes broke the visualization.
+
+  34. **2025-12-04** — `2025-12-04.md` L2826 (and `2025-12-06.1.md` L824) —
+  owner: "because the connector drawings are so noisy in the Circuit Board view
+  now, I suggest that we skip drawing them altogether in that view and opt
+  instead to just highlight the files that are related to it in much the same
+  way we highlight the file itself."
+     - Circuit Board wires were dropped as too noisy and replaced by
+  highlighting.
+
+  35. **2025-12-07** — `2025-12-07.3.md` L336 — owner: "We may wish to rethink
+  the choice of having different line colors for different connection types, and
+  should perhaps allow the colored badges on the public symbols themselves tell
+  the story of the type of connection they hold. It is leaving us with too much
+  visual noise to really handle cleanly by eye."
+     - Per-type connector colours (extends, implements and so on) were removed
+  on 12-08.
+
+  36. **2025-12-17** — `2025-12-17.3.md` L609, L725 — owner: "The Local Map was
+  originally engineered for 3 columns, and if you take a look with Chat
+  Archaeology, you'll see that I forewarned of this day: the day that we would
+  need to see beyond a single hop. That day has come and our architecture was
+  nowhere near ready for it." / "We may have to settle for just the minimap for
+  now."
+     - The multi-hop column rendering was scrapped. Extra columns appeared below
+  the main ones, connectors broke, and pin borders were lost.
+     - A rewrite on 12-18 also produced duplicate nodes and gaps in paths.
+
+  37. **2026-02-24** — `2026-02-24.1.md` L2511 — owner: "I couldn't disagree
+  more with this. The Force Graph view has been, in my experience, by far the
+  most useful view that we offer."
+     - Rejected the agent's proposal to retire the force-directed graph.
+     - The same day the agent proposed impact tracing in "concentric rings, like
+  a ripple" (L2400). I found no owner decision on it.
+
+  38. **2026-03-17** — `2026-03-17.1.md` L2419 — owner: "Whereas the old Circuit
+  Board treated all files as equal-sized nodes deep inside their nested
+  directories, the new approach treats files, visually, as if they are
+  directories."
+     - Rejected squarifying files next to directories, and rejected having all
+  landmarks disappear on drill-down. This led to uniform file cards plus sibling
+  strips.
+
+  39. **2026-03-23 → 2026-04-01, edge bundling** — `2026-03-23.1.md` L4034
+  (agent); `2026-03-30.1.md` L843 (owner), L969–973 (agent);
+  `2026/04/2026-04-01.1.md` L1786, L1922 (owner)
+     - 03-23, agent: "**Disable bundled edges for MVP** — they're too visually
+  noisy; the pin-driven connections suffice"
+     - 03-30, owner: "aren't we getting odd wide spanning of directories?"
+     - 03-30, the agent rejected three things: bundles drawn on the treemap,
+  edges revealed only on hover, and membrane wrapping in browse mode ("Injecting
+  flow elements into a squarify partition breaks the fundamental layout
+  contract"). A breadcrumb bar and an Explore button shipped instead.
+     - 04-01: the hover bundles were rebuilt anyway. Owner: "I just see a bundle
+  of connectors laying in an arc over each directory I hover over. I don't see
+  the layout change or anything like that." All of it was reverted.
+
+  40. **2026-03-23, membrane drill-down** — `2026-03-23.1.md` L4466, L6932 —
+  owner: "Literal zooming is not the answer at all. We will know that we're
+  doing the "progressive zoom" correctly when the font _does not resize_ across
+  zooms." / "Assumption. This is a no-go. You should have paused right there and
+  discussed. The card-like elements must rearrange themselves horizontally to
+  accommodate the left-to-right dependency design language we described."
+     - Rejected CSS transform zoom for drilling into membranes.
+     - Rejected forcing front Bézier curves between cards in a grid; cards must
+  reorder left to right instead.
+
+  ---
+
+  ## Summary (five lines)
+
+  1. Settled for cards: real HTML cards with one pin per symbol, green inputs on
+  the left and blue outputs on the right, a last "Internals" row, and a
+  test-backed glow. From 12-03 on, the owner kept left-in/right-out against
+  every alternative offered.
+  2. Settled for wires: SVG curves drawn above cards and below pins, one uniform
+  10/80/10 blue-to-green gradient, French Corset stubs for self-loops and
+  loop-backs, and dimming of everything unrelated. Right angles, per-type
+  colours, Circuit Board wires and alchemy pins were all dropped.
+  3. Folders went from nested squarified treemap (Nov), to removed from the
+  Local Map (Dec), to two-zone tiles (03-17), to the Membrane Map (03-22 on):
+  LCA membranes, a fixed font while drilling down, and a switch to a flow layout
+  with bands once pins are active. The force-directed graph was kept as the
+  "emergent shape" view.
+  4. Never resolved: how to draw folder-to-folder or cross-folder edges while
+  browsing (bundling was disabled, then rejected, rebuilt and reverted). Also
+  open: cycles, duplicate nodes and "Escher" cases under the left/right grammar,
+  multi-hop layout, barrel files, C# nested classes, and the namespace mode
+  (deferred).
+  5. Also open at the archive's end: whether folders get their own markdown docs
+  (still waffling on 03-17), the right-to-left flip, fully drawn loop-back
+  lines on hover (deferred), the concentric/ring impact trace (no decision),
+  folder nodes in the force graph (idea only), and retiring the Circuit Board
+  and Local Map (planned, not done).
+
+
+● The second sweep is in, with forty sourced items. Writing its half of the
+  survey, checkpointing the record, then the audits and a documentation commit
+  before I answer.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Mine Copilot-era archive for drawing discussions" finished · 17m 43s
+
+● The symbol audit flagged duplicate subheadings in the survey's two halves, and
+  my pipe hid its exit code so the commit went in anyway. Fixing the headings
+  and committing the fix.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Written for: the owner, as the answer to Turn 9.
+
+  The short answer. Directory membership can repair two of the ring's four
+  measured shortcomings and does nothing for the other two, and the record says
+  why. The question is not a dead end. The ring is the wrong host for it. The
+  whole archive's record on drawing directories, files and connections is now
+  one survey (AI-Agent-Workspace/Research/2026-10-01-drawing-directories-files-c
+  onnections.md), sourced line by line, committed as 281fe218.
+
+  Have we asked this before? In pieces, and never answered. Nobody proposed
+  directory distance as the placement rule of a ring. The nearest, all yours:
+
+  - 2025-11-21: the Circuit Board should "center the directory with the highest
+    number of cumulative inbound and outbound connections... Think of it almost
+    like the force graph rules, but at the directory level."
+  - 2025-12-05: "A node which connects to the focused artifact 2 times should
+    render closer to the center grid column of the Local Map, with 3
+    connections, even closer." Coupling as distance, in columns.
+  - 2026-03-22: two connected files engulfed by the membrane they share, and the
+    agent's reading, "The number of membranes a connection line crosses IS the
+    structural distance." Directory distance drawn on the wire, not the
+    placement.
+  - 2026-03-17: folder nodes as "an optional bit of tug" in the force graph.
+    Never built.
+  - 2026-09-28: Probe A's "order depth by coupling or by directory distance?"
+    Unanswered.
+
+  What directories do for the ring, against its four measured faults. Folders
+  nowhere (3 of 18): sectors by folder fix it outright, and one label per sector
+  fixes folder legibility. Crossings in the open: a sector turns the subject's
+  fan to one folder into one cable that splits inside the sector, which is your
+  "bundle to directory", and takes the spoke crossings with it; the chords
+  between folders still go around the subject, which is the circle's geometry,
+  not its ordering. Flow: nothing. A circle has no left and right. The vision's
+  law, "inside a system the left-to-right law holds", and your own move away
+  from the radial sonar view in November 2025 ("The local view need not be
+  radial") say the same thing from two years apart. Capacity: only by closing a
+  folder into a card with wall pins and counts, Probe B's "closed box as a card
+  whose rows are folders" under the one-level depth rule you agreed on
+  2026-09-29. That mechanism is the Membrane's, not the ring's.
+
+  So directory membership helps the ring exactly where it is weakest and cannot
+  touch where it is wrong, and what survives the repair is "subject fixed,
+  folders grouped and closable, every reference drawn", which is a column
+  layout. Directory distance as the radius is the wrong "near": your standing
+  wish is "things which talk to each other cluster together more closely", which
+  is coupling, and your own depth-probe warning applies, "Directory ancestry
+  and dependency connectivity are different structures. A pleasing journey down
+  the former can hide the latter." The synthesis is group by membership, order
+  by coupling, break ties by directory distance.
+
+  Dead ends to throw out early, each with its source in the survey:
+
+  - Radial local views: tried as the sonar in November 2025 and as Rings this
+    week, both lose direction.
+  - Arcs or bundles over the browse treemap, and hover-only reveal: built twice,
+    reverted, "Do not re-propose."
+  - Pinning without rearranging, and literal zoom for drilling: your "a layout
+    rearrangement must begin" and "the font does not resize across zooms".
+  - The barrel as the membrane border: false on this repository, 80 of 95 wires
+    bypass it.
+  - Directory containers inside the Local Map's columns (thrown out in December
+    2025 and praised), the Circuit Board's wires (dropped for noise), per-type
+    wire colours, and multi-hop columns ("absolutely not functional at all").
+  - Walking into directories to see connections, see-through boxes, and 3D tilt
+    inside a system.
+  - Dropping chords to tidy, and a fan beside a count ("two statements of one
+    fact").
+  - Clustering as the grouping: retired, a system is a folder.
+
+  One design meets the four floors on paper, and it is reachable from either
+  shipped view. The Local Map's columns with the subject fixed; each side column
+  a stack of folder groups ordered by coupling to the subject; a group closable
+  into a folder card carrying one wall pin per symbol in play with a count, and
+  open as its file cards; a frame-fit rule that opens what fits at reading size
+  and closes the rest, so no fact's ends ever sit further apart than the frame;
+  every reference drawn, with chords between cards of one column routed around
+  the column's outside as cables, which is precisely where your two bundling
+  scopes can be switched and compared on the deck; and a path that would run
+  against the direction never drawn, "show no results and offer the reverse", as
+  you ruled on 2025-12-18, which is also the fix for the path-mode defect. Call
+  it the Local Map with folder cards, or the Membrane's pin mode with direction
+  restored. They are the same design.
+
+  Two forks. First, build that as the next disposable probe, judged on the deck
+  and the four floors, with a switch between node bundling, directory bundling
+  and both: yes, edit, or no. Second, the two confirmed defects: my opinion is
+  to fix the path mode in the shipped Local Map now by your December rule, since
+  the Local Map stays and the change is small, and to let the probe be the
+  Membrane's column fix rather than patching hop-depth columns that the design
+  replaces.
+
+● Written for: the owner, as the answer to Turn 9.
+
+  The short answer. Directory membership can repair two of the ring's four
+  measured shortcomings and does nothing for the other two, and the record says
+  why. The question is not a dead end. The ring is the wrong host for it. The
+  whole archive's record on drawing directories, files and connections is now
+  one survey (AI-Agent-Workspace/Research/2026-10-01-drawing-directories-files-c
+  onnections.md), sourced line by line, committed as 281fe218.
+
+  Have we asked this before? In pieces, and never answered. Nobody proposed
+  directory distance as the placement rule of a ring. The nearest, all yours:
+
+  - 2025-11-21: the Circuit Board should "center the directory with the highest
+    number of cumulative inbound and outbound connections... Think of it almost
+    like the force graph rules, but at the directory level."
+  - 2025-12-05: "A node which connects to the focused artifact 2 times should
+    render closer to the center grid column of the Local Map, with 3
+    connections, even closer." Coupling as distance, in columns.
+  - 2026-03-22: two connected files engulfed by the membrane they share, and the
+    agent's reading, "The number of membranes a connection line crosses IS the
+    structural distance." Directory distance drawn on the wire, not the
+    placement.
+  - 2026-03-17: folder nodes as "an optional bit of tug" in the force graph.
+    Never built.
+  - 2026-09-28: Probe A's "order depth by coupling or by directory distance?"
+    Unanswered.
+
+  What directories do for the ring, against its four measured faults. Folders
+  nowhere (3 of 18): sectors by folder fix it outright, and one label per sector
+  fixes folder legibility. Crossings in the open: a sector turns the subject's
+  fan to one folder into one cable that splits inside the sector, which is your
+  "bundle to directory", and takes the spoke crossings with it; the chords
+  between folders still go around the subject, which is the circle's geometry,
+  not its ordering. Flow: nothing. A circle has no left and right. The vision's
+  law, "inside a system the left-to-right law holds", and your own move away
+  from the radial sonar view in November 2025 ("The local view need not be
+  radial") say the same thing from two years apart. Capacity: only by closing a
+  folder into a card with wall pins and counts, Probe B's "closed box as a card
+  whose rows are folders" under the one-level depth rule you agreed on
+  2026-09-29. That mechanism is the Membrane's, not the ring's.
+
+  So directory membership helps the ring exactly where it is weakest and cannot
+  touch where it is wrong, and what survives the repair is "subject fixed,
+  folders grouped and closable, every reference drawn", which is a column
+  layout. Directory distance as the radius is the wrong "near": your standing
+  wish is "things which talk to each other cluster together more closely", which
+  is coupling, and your own depth-probe warning applies, "Directory ancestry
+  and dependency connectivity are different structures. A pleasing journey down
+  the former can hide the latter." The synthesis is group by membership, order
+  by coupling, break ties by directory distance.
+
+  Dead ends to throw out early, each with its source in the survey:
+
+  - Radial local views: tried as the sonar in November 2025 and as Rings this
+    week, both lose direction.
+  - Arcs or bundles over the browse treemap, and hover-only reveal: built twice,
+    reverted, "Do not re-propose."
+  - Pinning without rearranging, and literal zoom for drilling: your "a layout
+    rearrangement must begin" and "the font does not resize across zooms".
+  - The barrel as the membrane border: false on this repository, 80 of 95 wires
+    bypass it.
+  - Directory containers inside the Local Map's columns (thrown out in December
+    2025 and praised), the Circuit Board's wires (dropped for noise), per-type
+    wire colours, and multi-hop columns ("absolutely not functional at all").
+  - Walking into directories to see connections, see-through boxes, and 3D tilt
+    inside a system.
+  - Dropping chords to tidy, and a fan beside a count ("two statements of one
+    fact").
+  - Clustering as the grouping: retired, a system is a folder.
+
+  One design meets the four floors on paper, and it is reachable from either
+  shipped view. The Local Map's columns with the subject fixed; each side column
+  a stack of folder groups ordered by coupling to the subject; a group closable
+  into a folder card carrying one wall pin per symbol in play with a count, and
+  open as its file cards; a frame-fit rule that opens what fits at reading size
+  and closes the rest, so no fact's ends ever sit further apart than the frame;
+  every reference drawn, with chords between cards of one column routed around
+  the column's outside as cables, which is precisely where your two bundling
+  scopes can be switched and compared on the deck; and a path that would run
+  against the direction never drawn, "show no results and offer the reverse", as
+  you ruled on 2025-12-18, which is also the fix for the path-mode defect. Call
+  it the Local Map with folder cards, or the Membrane's pin mode with direction
+  restored. They are the same design.
+
+  Two forks. First, build that as the next disposable probe, judged on the deck
+  and the four floors, with a switch between node bundling, directory bundling
+  and both: yes, edit, or no. Second, the two confirmed defects: my opinion is
+  to fix the path mode in the shipped Local Map now by your December rule, since
+  the Local Map stays and the change is small, and to let the probe be the
+  Membrane's column fix rather than patching hop-depth columns that the design
+  replaces.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read .mdmd/layer-4/tests/e2e/still-picture.spec.ts.mdmd.md (71 lines)
+  ⎿  Read AI-Agent-Workspace/tmp/probes/2026-10-01/rings/playwright.config.ts
+     (17 lines)
+  ⎿  Read reports/still-picture/rings.md (72 lines)
+  ⎿  Referenced file
+     AI-Agent-Workspace/tmp/probes/2026-10-01/rings/rings.spec.ts
+  ⎿  Referenced file tests/e2e/still-picture.spec.ts
