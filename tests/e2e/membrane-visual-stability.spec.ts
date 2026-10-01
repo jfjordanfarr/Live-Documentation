@@ -9,10 +9,22 @@ import { compressToEncodedURIComponent } from "lz-string";
  * finished settling into their final DOM positions.
  *
  * Method: navigate to a deterministic pin-active URL for a well-connected
- * node, wait for layout to settle, capture a pixel buffer.  Then reload
- * the exact same URL, wait the same way, capture again.  The two images
- * must match — any flaky connector-before-settle race will cause pixel
- * drift between the two captures.
+ * node, wait for layout to settle, read the layout's geometry: every
+ * card's box, every pin's box, every wire's path data and the camera.
+ * Then reload the exact same URL, wait the same way, read it again. The
+ * two readings must be identical to the last digit — a connector drawn
+ * before its card settles produces different path data on one of the two
+ * loads, which is exactly the race this guards.
+ *
+ * Until 2026-10-01 the test compared two PNG screenshots byte for byte.
+ * Four full-suite runs went 52/53, 52/53, 53/54 and 54/54 on the same
+ * code, and decoding the differing pairs found 5 to 32 pixels at the
+ * sidebar checkbox edges or at pin rims, differing by 1 to 6 of 255,
+ * with every card and wire in the same place: the rasterizer's noise, not
+ * the layout's. A check that fails on raster noise cannot say whether the
+ * layout raced, so the check now reads the geometry the raster is made
+ * from. The screenshots are still taken and attached when they differ, as
+ * evidence, not as the verdict.
  *
  * The node chosen (`liveDocumentationConfig.ts`) has 12 exported symbols
  * and >10 inbound importers, producing a dense pin-active layout with
@@ -52,6 +64,39 @@ async function waitForPinActiveSettle(page: import("@playwright/test").Page): Pr
   await page.waitForTimeout(800);
 }
 
+/** The layout as numbers: each card's and pin's box, each wire's path data, and the camera, in document order. */
+async function readLayoutGeometry(page: import("@playwright/test").Page): Promise<{
+  camera: string;
+  cards: Array<[string, number, number, number, number]>;
+  pins: Array<[string, string, string, number, number, number, number]>;
+  wires: Array<[string, string, string, string, string]>;
+}> {
+  return page.evaluate(() => {
+    const box = (el: Element): [number, number, number, number] => {
+      const r = el.getBoundingClientRect();
+      return [r.x, r.y, r.width, r.height];
+    };
+    const camera = getComputedStyle(document.querySelector("#membrane-container")!).transform;
+    const cards = [...document.querySelectorAll<HTMLElement>(".pin-active-card[data-id]")].map(
+      (card): [string, number, number, number, number] => [card.dataset.id!, ...box(card)],
+    );
+    const pins = [...document.querySelectorAll<HTMLElement>(".pin-active-card .membrane-focal-pin")].map(
+      (pin): [string, string, string, number, number, number, number] => {
+        const row = pin.closest<HTMLElement>("[data-node-id][data-symbol]");
+        const side = pin.classList.contains("membrane-focal-pin--outbound") ? "out" : "in";
+        return [row?.dataset.nodeId ?? "", row?.dataset.symbol ?? "", side, ...box(pin)];
+      },
+    );
+    const wires = [...document.querySelectorAll<SVGElement>(".membrane-focal-svg .membrane-connection")].map(
+      (wire): [string, string, string, string, string] => {
+        const data = (wire as unknown as HTMLElement).dataset;
+        return [data.sourceId ?? "", data.sourceSymbol ?? "", data.targetId ?? "", data.targetSymbol ?? "", wire.getAttribute("d") ?? wire.getAttribute("points") ?? ""];
+      },
+    );
+    return { camera, cards, pins, wires };
+  });
+}
+
 test.describe("Membrane Map — Pin-Active Visual Stability", () => {
   test("pin-active layout is pixel-stable across page reload", async ({
     page,
@@ -74,12 +119,14 @@ test.describe("Membrane Map — Pin-Active Visual Stability", () => {
     await page.goto(stateUrl);
     await waitForPinActiveSettle(page);
 
+    const geometry1 = await readLayoutGeometry(page);
     const screenshot1 = await page.screenshot({ type: "png" });
 
     // ── Reload and second render ─────────────────────────────────
     await page.reload();
     await waitForPinActiveSettle(page);
 
+    const geometry2 = await readLayoutGeometry(page);
     const screenshot2 = await page.screenshot({ type: "png" });
 
     if (!screenshot1.equals(screenshot2)) {
@@ -93,28 +140,17 @@ test.describe("Membrane Map — Pin-Active Visual Stability", () => {
       });
     }
 
-    // ── Compare pixel buffers ────────────────────────────────────
-    // Both buffers are PNG-encoded; Playwright's toMatchSnapshot
-    // doesn't support comparing two runtime buffers, so we compare
-    // the raw byte length first (different layouts produce different
-    // PNG sizes) and then do a pixel-level diff via Buffer.compare.
-    //
-    // A strict byte-equality check catches even sub-pixel connector
-    // drift: if an SVG path renders 1px differently due to a race,
-    // the PNG stream will differ.
-    expect(
-      screenshot1.length,
-      "Pixel buffer sizes should be identical across renders " +
-        `(got ${screenshot1.length} vs ${screenshot2.length})`,
-    ).toBe(screenshot2.length);
-
-    // Byte-for-byte comparison
-    const pixelDiff = Buffer.compare(screenshot1, screenshot2);
-    expect(
-      pixelDiff,
-      "Pixel buffers should be byte-identical across page reload " +
-        "(connector paths may be drawing before nodes settle)",
-    ).toBe(0);
+    // ── Compare the geometry ─────────────────────────────────────
+    // The layout is deterministic in CSS pixels, so every number must
+    // come back the same to the last digit. A wire measured before its
+    // card settled differs in its path data; a card that landed
+    // elsewhere differs in its box. Nothing is rounded.
+    expect(geometry1.cards.length, "the layout rendered cards").toBeGreaterThan(0);
+    expect(geometry1.wires.length, "the layout drew wires").toBeGreaterThan(0);
+    expect(geometry2.camera, "the camera is the same after reload").toBe(geometry1.camera);
+    expect(geometry2.cards, "every card is in the same place after reload").toEqual(geometry1.cards);
+    expect(geometry2.pins, "every pin is in the same place after reload").toEqual(geometry1.pins);
+    expect(geometry2.wires, "every wire has the same path after reload (connectors may be drawing before cards settle)").toEqual(geometry1.wires);
   });
 
   test("pin-active SVG connections are present after settling", async ({
