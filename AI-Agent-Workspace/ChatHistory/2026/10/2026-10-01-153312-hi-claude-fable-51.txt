@@ -1,0 +1,823 @@
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/Probes/2026-10-01/handoff.md in the IDE. This may or may not
+  be related to the current task.</ide_opened_file>
+
+❯ Hi Claude Fable 5.1!
+
+  Today is 10/1/2026 as I write this message. First things first: let's refresh
+  on the workspace. Please read through the following recent chat summaries,
+  and the full chat transcript from the last session:
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARIZED.md
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARIZED.md
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARIZED.md
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md
+
+  Based on what you've read, what are the next moves? Further, as a matter of
+  practice, what have I, the user, typically been expecting from AI agents in
+  this workspace in terms of behavior? There should be a lot of rich old chat
+  history context of me telling the AI that I expect certain behaviors.
+
+  This initial prompt from me should cause sufficient exploration and hydration
+  for us to knock it out of the park in yet another productive session.
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARI
+     ZED.md (174 lines)
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARI
+     ZED.md (476 lines)
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARI
+     ZED.md (58 lines)
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARI
+     ZED.md (196 lines)
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARI
+     ZED.md (47 lines)
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARI
+     ZED.md (468 lines)
+
+● I'll read the full last-session record, then the Memory files and the
+  ChatHistory convention, then start this session's record before answering.
+
+  Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● The outputs were saved to files because of their size. I'll read each saved
+  file in full now.
+
+  Read 6 files (ctrl+o to expand)
+
+● I've gone through all the summaries, the full turn record, Memory files,
+  archive conventions, and handoff probe record. Next I'll verify the
+  environment against the handoff—checking probe servers, temp directories, and
+  the Codex log with the uncaptured closing message—before starting this
+  session's record. · summary
+
+  Read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● I found the previous session's missing closing acknowledgment in the Codex
+  root log, referencing the closeout commit. I'll fill that gap in the prior
+  record's summary and inventory, then start this session's log with your
+  message verbatim and locate the documentation audit command. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Verifying my edits now: running the repository's link and heading audits
+  directly over the five changed or new archive files, since the normal CLI
+  skips the chat archive.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Hydration is complete, and I closed the one gap the last session left behind.
+  Its final message had never been captured. It was present in the Codex root
+  log as a visible final-answer entry, so I recorded it under Turn 47
+  (AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md#turn-47) by the
+  same visible-message rule the earlier opening recovery used, updated the
+  summary and inventory, and opened this session's record at
+  2026-10-01.1.record.md
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md). Link and
+  heading audits pass over all five files. Committed as 93d40a5a, documentation
+  only, tree clean.
+
+  Environment against the handoff: no probe servers are running, so the two
+  October 1 probes must be rebuilt and served from their ignored directories
+  before anyone can look at them. Node is 22. Nothing else drifted.
+
+  Next moves
+
+  Where the last session stopped: the handoff probe
+  (AI-Agent-Workspace/Probes/2026-10-01/handoff.md) got your warmest verdict
+  yet, but you also said it is "definitely not the last probe", and no
+  production replacement has been selected. Every probe so far has left the same
+  thing unsolved. Several branches of readable symbol cards cannot yet share
+  one legible picture with stable routes. Membrane shows the branches but
+  crowds; the analytical strip stays readable but makes you travel.
+
+  My recommendation, in order:
+
+  - Build the still-picture instrument first. You welcomed the two measures on
+    September 29 and they were never built: the graph facts one still picture
+    shows legibly, and the steps a set of known-answer questions takes. Without
+    a number, the next probe will again be judged by taste alone. This also
+    serves your "board game rules" ask, since the questions can be played on
+    paper first.
+  - Then one probe aimed only at multi-branch legibility. Same real data, same
+    five-file pin set that broke both views, judged by the instrument against
+    Local, Membrane and the analytical strip. Force-positioned full cards are
+    the one idea you named that nobody has tried. The handoff composition stays
+    as the frame so the board, its camera and the minimap are not re-litigated.
+  - Fix two owner-confirmed defects in parallel. The Force Graph cannot focus a
+    file, which you called a standing defect. And the exact-image reload test
+    still fails intermittently; four full runs went 52/53, 52/53, 53/54, 54/54.
+    That is a gate that sometimes exits red for a reason nobody has found, and
+    "fix causes, not gates" applies to it.
+  - Defer unless you say otherwise: the board's Serves-to-Offers wording, the
+    eleven unreviewed navigation prototypes still occupying most of the ignored
+    temp directory, Node 26 after it becomes LTS, and the Ruby, C and PowerShell
+    oracle gap.
+
+  Two forks only you can close. First, whether this session keeps probing or
+  starts folding the handoff composition into the shipped Explorer, and if the
+  latter, which view hosts it, since the vision still names the Membrane Map as
+  the inside to be brought to Local Map quality in place. Second, whether the
+  eleven prototypes get a real review or get retired.
+
+  What you have expected from agents here
+
+  I pulled these from your own dated words across the record, not from the
+  summaries' paraphrases.
+
+  - Lead developer, not assistant. "I do expect a bit more
+    ownership/drive/lead-developer-behavior from the AI agent." Nothing is
+    pre-existing; the panopticon exists so no agent can say "was already broken
+    when I got here."
+  - Keep rolling, but stop at real forks. You would rather return to a short
+    transcript that stopped with good questions than to work built on a guessed
+    assumption. Routine calls are mine; design-deciding assumptions are yours.
+    No grilling needed.
+  - Honesty over comfort. Disagree when the text says otherwise. Do not flatter.
+    Do not import old certainty; archive material becomes dated history or an
+    open question until you re-affirm it. Report failures with their output and
+    never weaken a gate to pass.
+  - Your understanding must not run away from you. Explain changes at the
+    whole-system level, say what was deliberate, and correct you when you
+    misread a diff.
+  - The record is a system of record. Preserve each prompt and the preceding
+    visible response at the start of every turn, root agent only, summaries with
+    verified commits, five summaries read at startup. Never extract reasoning
+    from any harness trace. Linear history, commit messages an outsider can
+    read.
+  - Verify hard, look at what you built. The full local suite with Playwright
+    every time; CI's default untouched; live-docs:inspect around risky edits;
+    screenshots of Explorer changes so a sense of the UI accrues.
+  - Design is the root agent's own work. Subagents may gather and critique; they
+    do not design, do not keep conversation records, and the root cleans up
+    after them. You flagged on September 30 that a refilled Claude subscription
+    spawning subagents "could be a super disaster", so I will keep delegation
+    narrow and visible.
+  - Design practice. Check the chat history for earlier attempts before
+    building. Play an interaction on paper before rendering it. Treat your
+    competing suggestions as variables held together, not successive decisions.
+    Preserve orientation through every transition. Compare at equivalent loci
+    against Local, Force, Membrane and World. "Failed experiements are awesome",
+    and no downbeat framing when one fails.
+  - Taste. Minimal visible text, icons with accessible names. No emoji. Fade the
+    irrelevant, never boost the relevant. Every stated fact is a link. At least
+    two ways to do anything. Blue offers, green uses, everywhere. Light
+    outside, dark inside by default. Explainers behind a help control.
+  - Simplicity with completeness. "A thing should be as simple as possible, and
+    no simpler." Deletion is a joy, by ordinary commit, never git backflips,
+    never bulk checkout or clean. Investigate questionable files and remove what
+    has no justified purpose.
+  - Plain words. No requirement-ID schemes; names stay on trial until earned;
+    refer to you neutrally.
+
+  You also wrote that Claude models tend to be more assertive and less doggedly
+  persistent than the GPT family. I read that as a request to hold both: push on
+  the design, and keep pushing after a probe fails.
+
+❯ >I closed the one gap the last session left behind. Its final message had
+  never been captured. It was present in the Codex root log as a visible
+  final-answer entry, so I recorded it under Turn 47 by the same
+  visible-message rule the earlier opening recovery used, updated the summary
+  and inventory
+
+  A message at the end wrapping up being missed seems fairly typical and to be
+  expected based on the recording protocol I've setup.
+
+  >Build the still-picture instrument first. You welcomed the two measures on
+  September 29 and they were never built: the graph facts one still picture
+  shows legibly, and the steps a set of known-answer questions takes. Without a
+  number, the next probe will again be judged by taste alone. This also serves
+  your "board game rules" ask, since the questions can be played on paper
+  first.
+
+  I quite like this. Can you discuss what qualifications/tests/criteria we can
+  make such that, even though each asks a simple question, it is effectively
+  helping catch/prevent design mishaps?
+
+  >Then one probe aimed only at multi-branch legibility. Same real data, same
+  five-file pin set that broke both views, judged by the instrument against
+  Local, Membrane and the analytical strip. Force-positioned full cards are the
+  one idea you named that nobody has tried. The handoff composition stays as
+  the frame so the board, its camera and the minimap are not re-litigated.
+
+  Indeed, the final probe from Astra was just polish on its prior probe. Cool,
+  but not wildly unique or different like what it came from. We got a grand
+  total of one unique novel design from that session, and I still feel like we
+  need to keep exploring different ideas. How do we draw more physicalized
+  space versus more abstract space, and when? Why? How do we transition? Do we
+  go all physicalized? All abstract? Infinite ability to go in and out or a
+  genuine dividing line between inside and outside?  Authoring
+  views/interactions versus exploratory/analytical views/interactions? So many
+  unanswered questions.
+
+  >Fix two owner-confirmed defects in parallel. The Force Graph cannot focus a
+  file, which you called a standing defect. And the exact-image reload test
+  still fails intermittently; four full runs went 52/53, 52/53, 53/54, 54/54.
+  That is a gate that sometimes exits red for a reason nobody has found, and
+  "fix causes, not gates" applies to it.
+
+  Would be cool to know how to zoom to an element in the force graph. Hopefully
+  that means we will be able to salvage/reuse that knowledge. I love the force
+  graph. I love all the visualizations we've built! Just not sure how to
+  _unify_ it all into a continuous exploration/authoring experience, y'know?
+
+  >Defer unless you say otherwise: the board's Serves-to-Offers wording, the
+  eleven unreviewed navigation prototypes still occupying most of the ignored
+  temp directory, Node 26 after it becomes LTS, and the Ruby, C and PowerShell
+  oracle gap.
+
+  Bah, naming. Hardest problem in programming. We don't have to relitigate in
+  this session, but "Exposes" and "Consumes"/"Utilizes"/"Uses" could be fine.
+  Fair point, though. I don't feel fully settled on this.
+
+  >Two forks only you can close. First, whether this session keeps probing or
+  starts folding the handoff composition into the shipped Explorer, and if the
+  latter, which view hosts it, since the vision still names the Membrane Map as
+  the inside to be brought to Local Map quality in place. Second, whether the
+  eleven prototypes get a real review or get retired.
+
+  Hmm... on the one hand, "only I can close these", and on the other hand, the
+  designs and the walls we hit during them will primarily be the guide of this
+  too. Yes, I'm imparting some human preference here but I'm also discovering
+  just as much as dictating. We have a slab of marble and we're trying to find
+  the sculpture inside it with our chisel.
+
+  >Lead developer, not assistant. "I do expect a bit more
+  ownership/drive/lead-developer-behavior from the AI agent." Nothing is
+  pre-existing; the panopticon exists so no agent can say "was already broken
+  when I got here."
+
+  True but September-2026-sourced. There is nearly a year of precedent that I
+  think has not been well-mined. Not all of it will be 100% relevant since the
+  model frontier has moved forward, but I can nearly guarantee some useful old
+  information still remains to be mined with respect to agent behavior
+  expectations.
+
+  >design-deciding assumptions are yours. No grilling needed.
+
+  Grilling would be nice except on the no-brainer stuff. Further: design
+  assumptions may be found/discovered rather than dictated.
+
+  >a refilled Claude subscription spawning subagents "could be a super
+  disaster", so I will keep delegation narrow and visible.
+
+  I suspected it could be a disaster if each tries to alter the same chat file.
+  The only "disasters" so far are just several cases where subagent runs got
+  halted. A couple of rate limit halts and a unexpected update to WSL. So far
+  the subagent success rate (as in, the rate at which a subagent-producing
+  operation completes with all subagents having finished their handback) is
+  currently less than 50% in this workspace. Not a reason to totally throw out
+  the tool, but just something to be cognizant of.
+
+  >You also wrote that Claude models tend to be more assertive and less
+  doggedly persistent than the GPT family. I read that as a request to hold
+  both: push on the design, and keep pushing after a probe fails.
+
+  I did make that observation. That's true. I've seen some folks I respect
+  hooking up GPT-6-family models as code reviewers which can be called out to
+  from the Claude Code harness. I don't have such a setup myself, but hopefully
+  that gives an idea how other practitioners are leveraging what's (currently)
+  great about each model family.
+
+● I'll record this exchange first, then look at three things in parallel: the
+  shape of the pre-September archive so I can mine it for behavior expectations,
+  the force graph's camera code, and the Playwright failure site.
+
+  Searched for 1 pattern, read 2 files, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● The report stops at December 10 even though the archive runs to April, so the
+  later transcripts must use a different speaker marker. I'll check that format
+  before mining the remaining months.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I have the full mined set now. I'll record today's clarifications and the
+  mined expectations in Memory, note the work in this session's record, audit
+  the links and commit, then write the reply.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ >The report stops at December 10 even though the archive runs to April,
+
+  Yep-yep! Advances in the export format. Used to be {githubHandle}:, and now
+  it's just User:
+
+● Confirmed: the owner marker switched from the GitHub handle to User: on
+  December 11, and re-running extraction with both markers now covers all 111
+  transcripts through April. I'll fix the one wrong relative path the audit
+  caught, log your mid-turn message, and commit. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both commits are in: the archive closeout earlier, and now caf42832 with
+  Memory updated and the mined expectations. The tree is clean. AGENTS.md is
+  untouched; the mined list sits in owner.md as dated history until you say
+  which parts still hold.
+
+  Force graph focus. The bundled library already has what is needed: a camera
+  call that takes a target point, a look-at point and a duration, and a
+  zoom-to-fit call that takes a node filter. The shipped view in
+  forceGraphView.ts (packages/explorer/src/client/views/forceGraphView.ts) never
+  calls either and exposes only a render function. Focusing a file means
+  finding the node in the live graph data, where the simulation writes its
+  coordinates, placing the camera on the ray from the origin through that node
+  at a fixed distance, and animating there with the node as the look-at. Framing
+  a neighborhood is the zoom-to-fit call with a filter of the node and its
+  neighbors. One wrinkle: positions keep drifting while the simulation cools, so
+  a focus on page load has to wait for the engine-stop event or re-aim each
+  tick. It is the same "camera travels, subject stays put" move the orientation
+  probe made, which is why it transfers: a focus method on the view, wired to
+  the sidebar selection and to the URL state that Back already carries.
+
+  The instrument
+
+  What makes a simple question catch mishaps is the discipline around it, not
+  the question. The criteria I'd hold every test to:
+
+  - The answer exists outside the renderer. A test measures the picture against
+    the graph: how many of the references between the pinned symbols are
+    legible, never how many wires were drawn. No view can win by drawing fewer
+    facts.
+  - It names a mishap we actually hit. Each test is a historical failure turned
+    into a number: routes that changed shape under a pan, wires passing under
+    cards they do not end at, labels colliding, text cut off, a five-pin
+    neighborhood that grew to forty-two cards, cards turned edge-on, directories
+    open on first sight. A test with no failure behind it is decoration.
+  - It discriminates, and we predict first. Before running, we write the
+    expected number for Local, Membrane, Force and the probe. If all four score
+    alike, the test teaches nothing and goes. If a prediction is wrong, our
+    model of the design is wrong. That is the paper falsification you asked for.
+  - It is invariant under what should not matter. Pan, zoom, theme, pin order,
+    dragging a card. Same counts before and after. This is "moving a card must
+    not make the software appear more indebted" as a test, and it is the one the
+    second Codex probe failed.
+  - It has a cost side. Every abstraction hides facts. A view must report how
+    many it hid and how many steps recover one, so a calmer picture cannot win
+    by silence.
+  - It is quantized at a fixed frame. Counts, steps and pixels at a named
+    viewport and pin set. No weighted scores. Board-game numbers.
+
+  The deck I'd start with, one row per view, same five-file pin set, same
+  viewport: legible facts over facts in scope; occlusions, where the Local Map
+  sets the bar; collisions and cut-offs from the audit that already exists;
+  route shape after translation is removed, across six pans; hidden facts and
+  the clicks to reveal each; and one journey with a known answer, counting
+  clicks, the smallest target, the subject's screen displacement between frames,
+  and the viewport error after Back. What it cannot do is judge whether a
+  picture is good. Your eye stays the verdict. The instrument stops a probe
+  regressing on what we already know and gives two probes a scoreboard.
+
+  Physical space, abstract space
+
+  My answer to when: position carries meaning only where a person put it. The
+  board is physical because its arrangement is authored information. Gateway
+  sits there because you put it there, and that is a fact about your estate as
+  you understand it. Nothing the scan produces has such a fact behind it. A
+  computed layout is an explanation, and an explanation may be redrawn for each
+  question. That is the authored-versus-computed boundary from last session
+  restated, and it maps onto physical-versus-abstract exactly.
+
+  So neither all physical nor all abstract, and the dividing line is not inside
+  versus outside a system. It is placed versus computed. That also answers the
+  nesting question. You can go in and out indefinitely. The presentation turns
+  physical whenever you reach a layer someone arranged, which a nested board
+  would be, and abstract whenever you reach a layer the scan produced. Two
+  presentations alternate as needed, with no universal renderer.
+
+  The atmosphere file you described is the proof that abstract space is
+  required. In any literal space a file every other file uses must sit
+  somewhere, and wherever it sits lies about half its consumers. Abstract space
+  can draw it beside each context that uses it, provided every copy is visibly
+  one identity with one evidence trail.
+
+  A transition preserves orientation when one thing refuses to move. The rule
+  I'd test: the subject you acted on stays where it is on screen while
+  everything else reflows around it. The orientation probe did that at file
+  scale and you liked it. The handoff did its cousin, the world contracting into
+  the corner, and you liked that too. Both are cases of never moving the
+  subject and its context at the same time. Smooth or instant matters less than
+  that invariant.
+
+  Authoring versus analysis are modes, not necessarily views. Authoring needs
+  stable physical space and writes to it. Analysis needs freedom to rearrange
+  and must never write to the authored layout. They share a screen only if
+  analysis is a lens over the board that cannot touch it, which the pinned panel
+  already is in miniature.
+
+  Directions that are different in kind from last session, ranked by what they
+  would tell us:
+
+  - Subject-fixed concentric explanation. The pinned thing sits at the center
+    and never moves. Rings of distance hold full cards with left-in, right-out
+    kept per card and not globally. Cycles and multiple branches live naturally
+    in rings. It is the Force Graph's idea in two dimensions with real cards,
+    and the Local Map's cards without the single axis. Untested.
+  - Force-positioned full cards with pins as anchors. Your suggestion. Cards
+    repel, wires are springs between pin positions, the subject is held at
+    center. The instrument would show at once whether readable cards survive the
+    forces.
+  - A matrix as the survey. Rows offer, columns use, a cell is a reference.
+    Cycles show as symmetric cells and the atmosphere file as a dense row, and
+    it scales where node-link drawings fail. Poor for navigation, strong for
+    survey, and paired with cards for tracing it is a view nobody here has
+    drawn.
+  - The handoff at every boundary. Whatever you enter becomes the frame and
+    whatever you left docks as context, any depth, nested boards included. This
+    is the architecture question rather than a rendering, and it decides what
+    the subject-stays-put rule applies to.
+
+  The first two can be played with the four-card deck before any code.
+
+  Eleven months of expectations
+
+  I extracted every turn of yours from the transcripts between October 2025 and
+  April 2026, filtered for expectation language, read the matching turns in
+  context, and read the last Copilot instructions file you wrote in full. The
+  dated, sourced list is in owner.md (AI-Agent-Workspace/Memory/owner.md#what-th
+  e-copilot-era-asked-for-2025-10-16-to-2026-04-01). What September's list
+  lacked:
+
+  - No workarounds, do it the right way, and a wall is where to pause and get
+    excited. "Obstacles are almost always where joyous real development
+    happens."
+  - An assumption at a design fork is a no-go. "Stop generating implementations
+    and discuss."
+  - Plan in the chat, then execute with low chatter. Strike pitons: write
+    progress before reading more.
+  - Read the whole file. "The user can always tell."
+  - Exclusion windows are cheat windows, and a test that cannot fail is a
+    hallucination.
+  - Nondeterminism is sampled and judged statistically. You asked for p-values
+    and accepted Benjamini-Hochberg.
+  - "How would I do this manually? Then automate that."
+  - Module boundaries follow independent improvement. December 8, the origin of
+    last session's boundary.
+  - Authored sections need code, doc and chat held together. Search before
+    building. Keep it DRY.
+  - Visual disagreements go to the human; on text facts, correct you. "Mutual
+    respect, free of sycophancy."
+  - Small scripts over terminal tricks.
+  - Headless and UI parity. Playtest by eye, then write the tests.
+  - The March antecedent of orientation. Instant movement was "leaving me
+    disoriented" on March 26.
+
+  I propose carrying the first, second, third, fourth, fifth, tenth and twelfth
+  into AGENTS.md, a line or two each, on your yes or no. The rest are there in
+  spirit or belong in Memory. Importing eleven-month-old certainty into the one
+  file every agent reads is your call, so I have not touched it.
+
+  Recorded today: grilling welcome except on no-brainers; design discovered as
+  much as dictated; subagents are a halting risk and a shared-file risk rather
+  than a banned tool, and the root-only record rule already covers the file; the
+  openings word stays open with your new candidates; a missed closing message
+  is expected under the protocol. The GPT-6 reviewer setup is recorded as an
+  observation, not a plan.
+
+  Next, unless you redirect: the paper deck of six tests over the four-card
+  exercise with predictions for each existing view written down first, then the
+  instrument as a Playwright measurement over the shipped bundles. The
+  concentric probe comes after it has a scoreboard to be judged on.
+
+● Both commits are in: the archive closeout earlier, and now caf42832 with
+  Memory updated and the mined expectations. The tree is clean. AGENTS.md is
+  untouched; the mined list sits in owner.md as dated history until you say
+  which parts still hold.
+
+  Force graph focus. The bundled library already has what is needed: a camera
+  call that takes a target point, a look-at point and a duration, and a
+  zoom-to-fit call that takes a node filter. The shipped view in
+  forceGraphView.ts (packages/explorer/src/client/views/forceGraphView.ts) never
+  calls either and exposes only a render function. Focusing a file means
+  finding the node in the live graph data, where the simulation writes its
+  coordinates, placing the camera on the ray from the origin through that node
+  at a fixed distance, and animating there with the node as the look-at. Framing
+  a neighborhood is the zoom-to-fit call with a filter of the node and its
+  neighbors. One wrinkle: positions keep drifting while the simulation cools, so
+  a focus on page load has to wait for the engine-stop event or re-aim each
+  tick. It is the same "camera travels, subject stays put" move the orientation
+  probe made, which is why it transfers: a focus method on the view, wired to
+  the sidebar selection and to the URL state that Back already carries.
+
+  The instrument
+
+  What makes a simple question catch mishaps is the discipline around it, not
+  the question. The criteria I'd hold every test to:
+
+  - The answer exists outside the renderer. A test measures the picture against
+    the graph: how many of the references between the pinned symbols are
+    legible, never how many wires were drawn. No view can win by drawing fewer
+    facts.
+  - It names a mishap we actually hit. Each test is a historical failure turned
+    into a number: routes that changed shape under a pan, wires passing under
+    cards they do not end at, labels colliding, text cut off, a five-pin
+    neighborhood that grew to forty-two cards, cards turned edge-on, directories
+    open on first sight. A test with no failure behind it is decoration.
+  - It discriminates, and we predict first. Before running, we write the
+    expected number for Local, Membrane, Force and the probe. If all four score
+    alike, the test teaches nothing and goes. If a prediction is wrong, our
+    model of the design is wrong. That is the paper falsification you asked for.
+  - It is invariant under what should not matter. Pan, zoom, theme, pin order,
+    dragging a card. Same counts before and after. This is "moving a card must
+    not make the software appear more indebted" as a test, and it is the one the
+    second Codex probe failed.
+  - It has a cost side. Every abstraction hides facts. A view must report how
+    many it hid and how many steps recover one, so a calmer picture cannot win
+    by silence.
+  - It is quantized at a fixed frame. Counts, steps and pixels at a named
+    viewport and pin set. No weighted scores. Board-game numbers.
+
+  The deck I'd start with, one row per view, same five-file pin set, same
+  viewport: legible facts over facts in scope; occlusions, where the Local Map
+  sets the bar; collisions and cut-offs from the audit that already exists;
+  route shape after translation is removed, across six pans; hidden facts and
+  the clicks to reveal each; and one journey with a known answer, counting
+  clicks, the smallest target, the subject's screen displacement between frames,
+  and the viewport error after Back. What it cannot do is judge whether a
+  picture is good. Your eye stays the verdict. The instrument stops a probe
+  regressing on what we already know and gives two probes a scoreboard.
+
+  Physical space, abstract space
+
+  My answer to when: position carries meaning only where a person put it. The
+  board is physical because its arrangement is authored information. Gateway
+  sits there because you put it there, and that is a fact about your estate as
+  you understand it. Nothing the scan produces has such a fact behind it. A
+  computed layout is an explanation, and an explanation may be redrawn for each
+  question. That is the authored-versus-computed boundary from last session
+  restated, and it maps onto physical-versus-abstract exactly.
+
+  So neither all physical nor all abstract, and the dividing line is not inside
+  versus outside a system. It is placed versus computed. That also answers the
+  nesting question. You can go in and out indefinitely. The presentation turns
+  physical whenever you reach a layer someone arranged, which a nested board
+  would be, and abstract whenever you reach a layer the scan produced. Two
+  presentations alternate as needed, with no universal renderer.
+
+  The atmosphere file you described is the proof that abstract space is
+  required. In any literal space a file every other file uses must sit
+  somewhere, and wherever it sits lies about half its consumers. Abstract space
+  can draw it beside each context that uses it, provided every copy is visibly
+  one identity with one evidence trail.
+
+  A transition preserves orientation when one thing refuses to move. The rule
+  I'd test: the subject you acted on stays where it is on screen while
+  everything else reflows around it. The orientation probe did that at file
+  scale and you liked it. The handoff did its cousin, the world contracting into
+  the corner, and you liked that too. Both are cases of never moving the
+  subject and its context at the same time. Smooth or instant matters less than
+  that invariant.
+
+  Authoring versus analysis are modes, not necessarily views. Authoring needs
+  stable physical space and writes to it. Analysis needs freedom to rearrange
+  and must never write to the authored layout. They share a screen only if
+  analysis is a lens over the board that cannot touch it, which the pinned panel
+  already is in miniature.
+
+  Directions that are different in kind from last session, ranked by what they
+  would tell us:
+
+  - Subject-fixed concentric explanation. The pinned thing sits at the center
+    and never moves. Rings of distance hold full cards with left-in, right-out
+    kept per card and not globally. Cycles and multiple branches live naturally
+    in rings. It is the Force Graph's idea in two dimensions with real cards,
+    and the Local Map's cards without the single axis. Untested.
+  - Force-positioned full cards with pins as anchors. Your suggestion. Cards
+    repel, wires are springs between pin positions, the subject is held at
+    center. The instrument would show at once whether readable cards survive the
+    forces.
+  - A matrix as the survey. Rows offer, columns use, a cell is a reference.
+    Cycles show as symmetric cells and the atmosphere file as a dense row, and
+    it scales where node-link drawings fail. Poor for navigation, strong for
+    survey, and paired with cards for tracing it is a view nobody here has
+    drawn.
+  - The handoff at every boundary. Whatever you enter becomes the frame and
+    whatever you left docks as context, any depth, nested boards included. This
+    is the architecture question rather than a rendering, and it decides what
+    the subject-stays-put rule applies to.
+
+  The first two can be played with the four-card deck before any code.
+
+  Eleven months of expectations
+
+  I extracted every turn of yours from the transcripts between October 2025 and
+  April 2026, filtered for expectation language, read the matching turns in
+  context, and read the last Copilot instructions file you wrote in full. The
+  dated, sourced list is in owner.md (AI-Agent-Workspace/Memory/owner.md#what-th
+  e-copilot-era-asked-for-2025-10-16-to-2026-04-01). What September's list
+  lacked:
+
+  - No workarounds, do it the right way, and a wall is where to pause and get
+    excited. "Obstacles are almost always where joyous real development
+    happens."
+  - An assumption at a design fork is a no-go. "Stop generating implementations
+    and discuss."
+  - Plan in the chat, then execute with low chatter. Strike pitons: write
+    progress before reading more.
+  - Read the whole file. "The user can always tell."
+  - Exclusion windows are cheat windows, and a test that cannot fail is a
+    hallucination.
+  - Nondeterminism is sampled and judged statistically. You asked for p-values
+    and accepted Benjamini-Hochberg.
+  - "How would I do this manually? Then automate that."
+  - Module boundaries follow independent improvement. December 8, the origin of
+    last session's boundary.
+  - Authored sections need code, doc and chat held together. Search before
+    building. Keep it DRY.
+  - Visual disagreements go to the human; on text facts, correct you. "Mutual
+    respect, free of sycophancy."
+  - Small scripts over terminal tricks.
+  - Headless and UI parity. Playtest by eye, then write the tests.
+  - The March antecedent of orientation. Instant movement was "leaving me
+    disoriented" on March 26.
+
+  I propose carrying the first, second, third, fourth, fifth, tenth and twelfth
+  into AGENTS.md, a line or two each, on your yes or no. The rest are there in
+  spirit or belong in Memory. Importing eleven-month-old certainty into the one
+  file every agent reads is your call, so I have not touched it.
+
+  Recorded today: grilling welcome except on no-brainers; design discovered as
+  much as dictated; subagents are a halting risk and a shared-file risk rather
+  than a banned tool, and the root-only record rule already covers the file; the
+  openings word stays open with your new candidates; a missed closing message
+  is expected under the protocol. The GPT-6 reviewer setup is recorded as an
+  observation, not a plan.
+
+  Next, unless you redirect: the paper deck of six tests over the four-card
+  exercise with predictions for each existing view written down first, then the
+  instrument as a Playwright measurement over the shipped bundles. The
+  concentric probe comes after it has a scoreboard to be judged on.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/ideas.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/3eeacb
+     d0-e572-4003-8f9c-3061895f1a2a/scratchpad/hits2.md
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/b8rnve2vz.txt  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/3eeacb
+     d0-e572-4003-8f9c-3061895f1a2a/scratchpad/hits.md
+
+❯ >I propose carrying the first, second, third, fourth, fifth, tenth and
+  twelfth into AGENTS.md, a line or two each, on your yes or no. The rest are
+  there in spirit or belong in Memory. Importing eleven-month-old certainty
+  into the one file every agent reads is your call, so I have not touched it.
+
+  Agreed; Go ahead and do so.
+
+  >Recorded today: grilling welcome except on no-brainers; design discovered as
+  much as dictated; subagents are a halting risk and a shared-file risk rather
+  than a banned tool, and the root-only record rule already covers the file;
+  the openings word stays open with your new candidates; a missed closing
+  message is expected under the protocol. The GPT-6 reviewer setup is recorded
+  as an observation, not a plan.
+
+  Yeah don't let the priors scare you off from subagents. Just don't spin up a
+  ludicrous number of them. I'd say a max of 5 concurrent agents is a
+  reasonable target.
+
+  >Next, unless you redirect: the paper deck of six tests over the four-card
+  exercise with predictions for each existing view written down first, then the
+  instrument as a Playwright measurement over the shipped bundles. The
+  concentric probe comes after it has a scoreboard to be judged on.
+
+  Phenomenal. Agreed. You're clear to proceed.
+
+● Recording your message first, then AGENTS.md and Memory, then the deck and the
+  instrument.
+
+  Searched for 4 patterns, read 7 files, listed 3 directories, ran 5 shell commands (ctrl+o to expand)
+
+● Reading the remaining Local Map controller code, then I will write AGENTS.md
+  and Memory changes and the paper deck.
+
+  Read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Now the AGENTS.md and Memory edits.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Guidance edits are in and the link audit passes. Committing, then gathering
+  what the instrument needs.
+
+  Searched for 4 patterns, ran 6 shell commands (ctrl+o to expand)
+
+● Three more reads I need for honest paper predictions: the Local Map's fit
+  rule, the page skeleton around the map, and the shared view styles.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The Local Map never shrinks below 0.6 and keeps the subject centered, which
+  changes the paper predictions. Writing the deck now with the predictions
+  before any measurement.
+
+  Searched for 2 patterns, read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Write(tests/e2e/still-picture.ts)
+  ⎿  Wrote 653 lines to tests/e2e/still-picture.ts
+       1 /**
+       3  *
+       4  * Six quantized measures of one view in one state, each taken a
+         gainst the
+         t no view can
+       6  * score by drawing less. The deck that defines them, with the p
+       7  * written before this code existed, is
+       8  * `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`.
+       9  *
+         scope is a set
+     … +806 lines (ctrl+o to expand)
+
+● Write(tests/e2e/still-picture.spec.ts)
+  ⎿  Wrote 324 lines to tests/e2e/still-picture.spec.ts
+       1 import fs from "node:fs";
+       2 import path from "node:path";
+       3
+       4 import { test, expect, type Page } from "@playwright/test";
+       5
+       6 import {
+       7   LOCAL_MAP,
+       8   MEMBRANE_MAP,
+       9   backEnabled,
+      10   boxOf,
+     … +379 lines (ctrl+o to expand)
+
+● Running the instrument against the built bundles.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found two issues: the Local Map's symbol rows lack their own clickable box due
+  to display: contents, requiring clicks on the label instead, and the estate's
+  Membrane truncates a long address symbol. I'll review the scoreboard and
+  label CSS to fix the click target. · summary
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll fix two issues before the next run: make each test write its own
+  scoreboard row so results survive Playwright's worker restarts after a
+  failure, and update the Membrane's symbol label to wrap text like the Local
+  Map does instead of clipping it. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The Membrane and estate rows are added, but the repository Local Map journey
+  fails since the GraphFile row falls outside the viewport and needs a counted
+  pan gesture. I'll check the failure screenshot next. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The repository Local Map now passes. Checking its row and the pictures it
+  took, to make sure the numbers describe what the eye sees.
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the orientation bug: pinning GraphFile collapses unrelated
+  neighbor rows, re-centers columns, and shoves the subject card 862 px
+  off-frame. Next I'll check the collapse default and the return picture before
+  deciding on a fix. · summary
+
+  Searched for 2 patterns, read 7 files, ran 6 shell commands (ctrl+o to expand)
+
+● Still working through the instrument's results. The one-off screenshot script
+  failed; checking why, then writing the results into the deck and the records.
+
+  Read 1 file, ran 8 shell commands (ctrl+o to expand)
+
+● All links resolve. Removing the temporary audit script and waiting for the
+  full gate, which is running in the background.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full pre-commit gate with Playwright" completed
+(exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The gate stopped at lint: two import-order errors in the new spec. Fixing the
+  order and checking the two files before restarting the gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is running again in the background with the import order fixed. I
+  will commit once it passes.
+● Background command "Rerun the full pre-commit gate with Playwright" completed
+(exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The Playwright stage failed only because its web server timed out—everything
+  else (lint, build, unit, integration tests) passed. I'll kill a leftover
+  orphaned static server still running from my screenshot script and rerun the
+  gate. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The third gate run is in progress. Nothing else depends on anything but its
+  result, so I will wait for its notification and then commit.
