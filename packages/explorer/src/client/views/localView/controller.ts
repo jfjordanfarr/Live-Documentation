@@ -676,10 +676,31 @@ export class LocalViewController implements LocalViewApi {
   /**
    * Reapplies vertical centering to columns after symbol collapse/uncollapse.
    * Called when pinning/unpinning causes cards to change height.
+   *
+   * The subject keeps its place on screen while the columns re-center around
+   * it. A change of what is disclosed must not move what the person is looking
+   * at: before this compensation, pinning a symbol on a file with a long
+   * dependents column moved the selected card 862 px off the frame (measured
+   * by the still-picture instrument, 2026-10-01).
    */
   private reapplyVerticalCentering(): void {
-    if (this.contentRoot) {
-      this.applyColumnVerticalCentering(this.contentRoot);
+    if (!this.contentRoot) {
+      return;
+    }
+    const focus =
+      this.contentRoot.querySelector<HTMLElement>(".node-card.local-focus") ??
+      this.contentRoot.querySelector<HTMLElement>(".local-column.center .node-card");
+    const before = focus?.getBoundingClientRect();
+    this.applyColumnVerticalCentering(this.contentRoot);
+    if (!focus || !before) {
+      return;
+    }
+    const after = focus.getBoundingClientRect();
+    const dx = after.left - before.left;
+    const dy = after.top - before.top;
+    if (dx !== 0 || dy !== 0) {
+      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x - dx, y: this.mapTransform.y - dy };
+      this.updateMapTransform();
     }
   }
 

@@ -335,11 +335,12 @@
 
 .membrane-focal-row__label {
     flex: 1;
+    min-width: 0;
     font-size: 10px;
     color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .membrane-focal-row__label--wildcard {
@@ -728,11 +729,13 @@
 
 .membrane-card__symbol-label {
     flex: 1;
+    min-width: 0;
     font-size: 10px;
     color: rgba(255, 255, 255, 0.7);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* A long name wraps rather than clips, as the Local Map's does; a cut-off symbol is a fault the design audit names. */
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .membrane-card__symbol-label--internals {
