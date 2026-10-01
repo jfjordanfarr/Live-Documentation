@@ -107,3 +107,26 @@ Read against the pictures above, in [Turn 7](../../ChatHistory/2026/10/2026-10-0
 Pictures: [the repository with every reference drawn](rings/repository-rings-all-references.png) and [the estate](rings/estate-rings-all-references.png). What they show that the kept-only pictures hid: on the estate the three hubs use the same six contract files the service uses, so twenty-four chords cross from the right half-plane to the left, and every one has to go around the subject, which sits in the middle of the only road between its providers and its consumers. On the repository the chords from the consumers to `document.ts` box the subject in a frame of cables. A fixed center is an obstacle to every chord by construction. The Local Map never meets the problem because it never draws a chord, which is the same omission, equally unpriced.
 
 The measures the deck lacks, each named with the measure it pulls against, are proposed in the reply of Turn 7 and enter the deck on the owner's yes, with predictions written before any run.
+
+## On the expanded deck, 2026-10-01
+
+Measured by the expanded instrument ([the deck's second section](still-picture-deck.md#the-expanded-deck-2026-10-01)) with every reference between showing rows drawn, over the five-file sets and the new chain scopes. The comparison with the Local Map and the Membrane Map is in the deck's measured section; what is Rings' own:
+
+| Rings | Crossings (points / in the open / wires crossed) | Channels (wires / longest px) | Flow (flowing / backward of drawn) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Churn after the pin | Tour (pans / legible after of drawn / unreachable) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Repository, five files | 1003 / 505 / 81 of 82 | 73 of 82 / 1351 | 46 / 21 of 82 | 3 of 18 | 3 of 9 | 32 of 68 | 37 of 119 | 0 of 20 moved | 2 / 14 of 15 / 1 |
+| Repository, chain | 2080 / 1664 / 99 of 100 | 97 of 100 / 1871 | 32 / 55 of 100 | 4 of 25 | 2 of 11 | 42 of 148 | 61 of 161 | | 2 / 7 of 7 / 0 |
+| Estate, five files | 210 / 139 / 38 of 38 | 35 of 38 / 760 | 18 / 18 of 38 | 3 of 9 | 5 of 12 | 22 of 49 | 2 of 40 | 0 of 10 moved | 0 / 3 of 3 / 0 |
+| Estate, chain | 29 / 10 / 12 of 12 | 8 of 12 / 288 | 4 / 1 of 12 | 0 of 2 | 4 of 7 | 17 of 28 | 1 of 13 | | 0 / 2 of 4 / 2 |
+
+The chain journeys: on the estate, keep B on its card and C and D from the search, 5 gestures, the subject unmoved, 2 of 3 hops and 4 of 4 names legible at the end ([picture](rings/estate-chain-rings-answer.png)); on the repository, 6 gestures, the subject carried 807 px by the pan that reached B's card, and 0 of 3 hops legible, because `index.ts` has twenty-four providers and the ring around it is full three deep ([the chain state](rings/repository-chain-rings-state.png): 28 cards, 100 wires, 95 of them routed, 22 cards placed behind others).
+
+What the numbers say about the ring, with the pictures beside them:
+
+- **Crossings are the ring's cost, and they are in the open.** Half of the repository's thousand crossing points and two thirds of the estate's lie more than 80 px from any pin, where the chords that go around the subject cut across the spokes. The Local Map's crossings sit in the fan at the subject's pins; the ring's sit where the eye reads the wires. [The counted points over the estate state](rings/estate-rings-crossings-counted.png) shows where.
+- **Flow is lost**, as the owner saw: 46 of 82 wires run rightward on the repository, 18 of 38 on the estate, with 21 and 18 running outright backward. The per-card left-in right-out rule holds on every card and still does not add up to a direction for the picture.
+- **Folders are nowhere**: 3 of 18 cards sit beside a sibling on the repository, 0 of 2 on the estate chain, and the compact card dropped its path, so 3 of 9 cards in frame say where they live.
+- **The subject never moves** under a pin (0 of 20 cards moved, 0 px) and everything drawn in scope is a short tour away (2 pans for 14 of 15 facts; the fifteenth has its ends further apart than the frame). Those two numbers are what the ring was built for, and they hold.
+- **Hidden among drawn is honest now**: 37 of 119 references among the twenty drawn cards have no wire, every one of them a folded row on a compact card and counted on it.
+
+The ring, in one sentence: it keeps its subject still and its facts near, and pays in crossings, direction and folders, which is the trade the owner's eye named before the numbers did.

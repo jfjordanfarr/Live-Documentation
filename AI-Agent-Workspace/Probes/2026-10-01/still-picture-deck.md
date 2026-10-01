@@ -132,3 +132,148 @@ Open, for the owner, because each is a design choice rather than a defect with o
 - **The Force Graph** has no focus, no DOM and no scriptable journey; every row it gets is a statement of that until the focus method lands.
 
 The floor for the next probe is these two tables. A new rendering of the five-file set must show more than 4 facts at reading size, cross no card with a wire it does not end at, keep its routes under a pan, and answer the `GraphFile` question in one gesture with the subject unmoved; and it must say how many facts it hid and what recovers them.
+
+## The expanded deck, 2026-10-01
+
+_Written after the owner read the first scoreboard and the Rings probe against it ([Turn 7](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-7), [Turn 8](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-8)): three biases named by their eye (turns in wires, cards of one folder sitting together, and single-frame legibility rewarding cramming), two found while answering (references outside the scope could be hidden for free; the router bought occlusion with bends and shared channels nobody priced), and their rule that the measures be plural and at odds "to avoid systemic biases which allow design cheats to win". A measure for harsh turns was proposed and withdrawn by the owner: right-angle connectors may be a valuable design, and crossings price the fault underneath. The predictions below are written before the instrument grew and are not edited afterwards._
+
+### Nine more measures, each with the measure it pulls against
+
+| Test | Question, as a number | Pulls against | The mishap it names |
+| --- | --- | --- | --- |
+| 7 Crossings | Of the drawn wires, how many pairs cross, and how many wires take part in a crossing. A crossing is an intersection of two paths more than 24 px from either wire's ends, so two wires leaving one pin are not crossing at their stub. Counted over the whole drawing, so a pan cannot change it | Drawing every reference (13); folder grouping (10) | The Rings picture with every reference drawn, where chords box the subject; the owner's mid-turn rule, "punish wires-crossing-over-other-wires" |
+| 8 Shared channels | How many wires run within 6 px of another wire for more than 40 px, beyond the stubs, and the longest such run | Occlusion (2), which routing trades for channels; bundling, if adopted | The trunk of twenty wires beside the Rings subject; cables that read as one wire |
+| 9 Flow | How many drawn wires run from the offering end to the using end with the using end to the right, never running back left by more than 24 px; and how many run backward outright | A fixed center (Rings); folder grouping (10) | The ring that lost "a real sense of directionality" (the owner, Turn 7) |
+| 10 Folder adjacency | Of the drawn cards that have a same-folder card drawn, how many have a same-folder card as their nearest neighbour (box to box; a tie counts). Counted over the whole drawing | Flow (9); the angle a wire points at | "No bonus/benefit to bringing things which are collocated closer together" (the owner, Turn 7); the Membrane's reason to exist |
+| 11 Folder legible | Of the cards fully in frame that sit in a folder, how many have the folder's name legible: on the card as its path, or as the label of the container drawn around it | Compact cards; cards in frame | The compact card that dropped its path to fit |
+| 12 Symbols shown | Of the public symbols of the cards that meet the frame, how many have a legible row | Cards in frame (1) | "The Local Map is far more informative about the shapes and connections of classes" (the owner, Turn 7): the compact card hides the class |
+| 13 Hidden among drawn | Of the references between two drawn cards, how many have no wire. Test 5 with the scope widened to whatever the view drew | Crossings (7); channels (8) | The 27 chords the Rings probe dropped at no charge; "Is that the shape of the software?" |
+| 14 Churn | After the journey's one pin gesture: of the cards present before and after, how many moved more than 8 px, the sum of their displacements, and the cards added and removed | Nearest-clear-spot placement (Rings); columns that re-center (Local Map) | The Membrane design talks about "minimizing the churn"; the Local Map subject that jumped 862 px |
+| 15 Tour | From the state, the pans (each at most a frame) that make every drawn fact legible at least once, planned greedily from the picture and then executed by mouse; the pans after which no card that was fully in frame before remains ("blind"); and the facts no pan can make legible (an endpoint under reading size, or endpoints further apart than the frame) | Legible facts in one frame (1) | The single-frame bias: "rewarding designs which allow the user to navigate so fluidly and so frequently that user-directed motion is part of the process" (the owner, Turn 7). A number can price motion's cost, never its value; this one keeps a spread-out design from being ranked under a crammed one |
+
+Two things the measures do not do, said plainly. None of them rewards motion; the owner's eye on the live page does that. And none weighs the others: the rows stand side by side, and a design that maxes one by sinking another is read as such.
+
+### The chain scope
+
+The five-file sets are stars around one file. A second scope per bundle is a chain: four files, A uses B uses C uses D, in four folders, with no shortcut among the four, chosen from the graph by a script that required every hop to name a symbol. The facts in scope are the hops' references; a hop is legible when any of its facts is.
+
+| Bundle | A | B | C | D | Hop symbols |
+| --- | --- | --- | --- | --- | --- |
+| This repository | `packages/explorer/src/client/index.ts` | `client/persistence/compressed-url-state.ts` | `client/views/membraneView/pin-state.ts` | `client/views/symbolAnchors.ts` | `readUrlState`, `scrubSnapshot`; `EMPTY_PIN_SET`, `PinSet`, `deserializePins`; `normalizeSymbolIdentifier` |
+| The estate | `Portal/Services/GatewayClient.cs` | `Gateway/Controllers/PaymentsController.cs` | `Gateway/Wcf/HubProxy.cs` | `Contracts/IPaymentHub.cs` | the `GET` and `POST` routes; `HubProxy`; `IPaymentHub` |
+
+States: the Local Map at "A selected" (its single-file state) and at "path A to D" through the pathfinder toolbar (its multi-file state); the Membrane with every symbol of the four pinned; Rings with A as the subject and B, C, D kept. The journey asks "how does A reach D?", whose answer the graph knows (the path A, B, C, D), and counts the gestures from A's single-file state to a picture in which the hops are legible, each click, typed query and pan one gesture: the Local Map and the Membrane through the pathfinder (click FROM, type, pick, click TO, type, pick, Find Path), Rings by keeping B on its card and C and D from the search, which the probe page gains a keep button for. Reported: gestures, smallest target, how far A moved, hops legible of 3, names legible of 4, history entry, return error.
+
+### Predictions for the expanded deck, written before measurement
+
+The five-file sets, in the states of the first scoreboard, Rings with every reference drawn.
+
+| Measure, this repository | Local Map | Membrane Map | Rings |
+| --- | --- | --- | --- |
+| 7 Crossings: pairs; wires crossed of drawn | 40; 30 of 70 | 120; 100 of 207 | 150; 60 of 82 |
+| 8 Channels: wires of drawn; longest run px | 30 of 70; 120 | 80 of 207; 400 | 45 of 82; 500 |
+| 9 Flow: flowing of drawn; backward | 70 of 70; 0 | 180 of 207; 10 | 50 of 82; 20 |
+| 10 Folder adjacency | 14 of 17 | 40 of 40 | 5 of 16 |
+| 11 Folder legible | 5 of 5 | 7 of 7 | 3 of 9 |
+| 12 Symbols shown | 28 of 60 | 20 of 80 | 40 of 95 |
+| 13 Hidden among drawn | 55 of 125 | 120 of 330 | 37 of 119 |
+| 14 Churn: moved of present; px; added; removed | 14 of 19; 3000; 0; 0 | 4 of 4; 2500; 12; 30 | 0 of 20; 0; 0; 0 |
+| 15 Tour: pans; blind; legible after of drawn; unreachable | 2; 0; 10 of 10; 0 | 5; 1; 15 of 15; 0 | 2; 0; 15 of 15; 0 |
+
+| Measure, the estate | Local Map | Membrane Map | Rings |
+| --- | --- | --- | --- |
+| 7 Crossings | 5; 8 of 17 | 30; 40 of 71 | 60; 30 of 38 |
+| 8 Channels | 6 of 17; 80 | 30 of 71; 300 | 25 of 38; 400 |
+| 9 Flow | 17 of 17; 0 | 65 of 71; 3 | 22 of 38; 10 |
+| 10 Folder adjacency | 4 of 5 | 20 of 20 | 3 of 8 |
+| 11 Folder legible | 6 of 6 | 10 of 10 | 5 of 12 |
+| 12 Symbols shown | 20 of 30 | 25 of 60 | 20 of 45 |
+| 13 Hidden among drawn | 10 of 27 | 40 of 110 | 2 of 40 |
+| 14 Churn | 6 of 9; 1200; 0; 0 | 3 of 3; 800; 8; 15 | 0 of 12; 0; 0; 0 |
+| 15 Tour | 1; 0; 2 of 2; 0 | 2; 0; 3 of 3; 0 | 0; 0; 3 of 3; 0 |
+
+The chain scopes, headline numbers:
+
+| Chain, this repository | Local Map, A selected | Local Map, path A to D | Membrane Map, four pinned | Rings, A subject, three kept |
+| --- | --- | --- | --- | --- |
+| Hops legible of 3 | 1 | 3 | 1 (drawn 3, two off frame) | 2: `index.ts` has about twenty-five providers, so the ring is full |
+| Journey: gestures; A moved px; hops legible; names legible of 4 | 7; 400; 3; 4 | | 7; 600; 3; 2 | 5; 0; 2; 4 |
+
+| Chain, the estate | Local Map, A selected | Local Map, path A to D | Membrane Map, four pinned | Rings |
+| --- | --- | --- | --- | --- |
+| Hops legible of 3 | 1 | 3 | 2 | 3 |
+| Journey | 7; 300; 3; 4 | | 7; 400; 3; 3 | 5; 0; 3; 4 |
+
+What the predictions claim, if they hold: the Local Map wins flow, symbols and crossings and loses hidden-among-drawn; the Membrane wins folder adjacency, folder legibility and the chain's drawn hops and loses crossings and the tour; Rings wins hidden-among-drawn, churn and the tour and loses flow, folders and symbols. Three different winners is what a deck at odds with itself looks like. If one view wins everything, the measures are not at odds and the deck is wrong.
+
+### Refinements made during the first run
+
+Three things the first run taught about the instrument, changed before the final run and recorded here rather than folded into the definitions above. **Crossings** first counted every weave of two wires inside a shared cable (2,062 points for the Local Map's 70 wires), so a crossing now needs an angle of at least 15 degrees between the two wires, with the weave left to test 8; and because the eye told a fan at a pin from a crossing in the open, the score also reports the points more than 80 px from both wires' ends. A disposable overlay drew every counted point on the live pages, and each dot sat on a real crossing: [the Local Map's](../../Screenshots/2026-10-01/still-picture-crossings-local-map.png) all in the fan at the subject's pins, [the ring's](rings/estate-rings-crossings-counted.png) out where the chords cut the spokes. A wire's **provider end** was found by the first card carrying the provider's id, and the Membrane draws some files twice, so both ends are now weighed against every card of the provider and of the consumer. And the Membrane's chain walk carried its header off screen, so its return move falls back to Escape and says so.
+
+### The second scoreboard, measured
+
+Measured on 2026-10-01 at 1600 by 1000 by `tests/e2e/still-picture.spec.ts` over the shipped bundles and by the probe's own spec over Rings, with every reference between showing rows drawn. The first six tests' columns are in `reports/still-picture/scoreboard.md` and unchanged from the first scoreboard except where noted; the tables below are the expanded measures, in the order of the definitions above. "Crossings" is points, points in the open, and wires crossed of wires drawn; "Channels" is wires sharing a channel of wires drawn, and the longest run; "Flow" is wires flowing and wires backward of wires drawn; "Churn" is cards moved of cards present, the sum of their displacements, cards added and removed; "Tour" is pans, blind pans, facts legible after the tour of facts drawn, and facts no pan can reach.
+
+#### This repository, five files, 15 facts
+
+| View | Legible of 15 | Crossings | Channels | Flow | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Churn after the pin | Tour |
+| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local Map | 4 | 162 / 3 / 45 of 70 | 66 of 70 / 1904 | 70 / 0 of 70 | 16 of 17 | 5 of 5 | 38 of 47 | 66 of 116 | 17 of 19 / 7314 / 0 / 0 | 1 / 0 / 5 of 10 / 5 |
+| Membrane Map | 2 | 272 / 5 / 71 of 208 | 95 of 208 / 4184 | 98 / 110 of 208 | 36 of 37 | 7 of 7 | 60 of 60 | 140 of 268 | 3 of 3 / 1750 / 4 / 25 | 2 / 2 / 3 of 15 / 12 |
+| Rings | 11 | 1003 / 505 / 81 of 82 | 73 of 82 / 1351 | 46 / 21 of 82 | 3 of 18 | 3 of 9 | 32 of 68 | 37 of 119 | 0 of 20 / 0 / 0 / 0 | 2 / 0 / 14 of 15 / 1 |
+
+#### The estate, five files, 3 facts
+
+| View | Legible of 3 | Crossings | Channels | Flow | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Churn after the pin | Tour |
+| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local Map | 0 | 16 / 0 / 9 of 17 | 14 of 17 / 680 | 17 / 0 of 17 | 9 of 9 | 6 of 6 | 27 of 34 | 12 of 25 | 6 of 8 / 462 / 0 / 0 | 1 / 0 / 2 of 2 / 0 |
+| Membrane Map | 0 | 407 / 14 / 61 of 71 | 60 of 71 / 1120 | 67 / 4 of 71 | 15 of 15 | 10 of 10 | 41 of 43 | 23 of 73 | 4 of 4 / 1753 / 4 / 2 | 1 / 0 / 1 of 3 / 2 |
+| Rings | 3 | 210 / 139 / 38 of 38 | 35 of 38 / 760 | 18 / 18 of 38 | 3 of 9 | 5 of 12 | 22 of 49 | 2 of 40 | 0 of 10 / 0 / 0 / 0 | 0 / 0 / 3 of 3 / 0 |
+
+#### This repository, the chain, 7 facts on 3 hops
+
+| View and state | Legible of 7 | Crossings | Channels | Flow | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Tour |
+| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local Map, `index.ts` selected | 0 | 0 / 0 / 0 of 57 | 53 of 57 / 3424 | 57 / 0 of 57 | 20 of 21 | 3 of 3 | 28 of 40 | 89 of 146 | 1 / 1 / 1 of 2 / 1 |
+| Local Map, path `index.ts` to `symbolAnchors.ts` | 6 | 0 / 0 / 0 of 7 | 4 of 7 / 96 | 0 / 7 of 7 | no siblings | 3 of 3 | 29 of 29 | 0 of 7 | |
+| Membrane Map, four pinned | 0 | 365 / 54 / 67 of 181 | 114 of 181 / 2424 | 121 / 60 of 181 | 37 of 38 | 8 of 8 | 60 of 60 | 153 of 297 | 3 / 2 / 3 of 7 / 4 |
+| Rings, `index.ts` subject, three kept | 0 | 2080 / 1664 / 99 of 100 | 97 of 100 / 1871 | 32 / 55 of 100 | 4 of 25 | 2 of 11 | 42 of 148 | 61 of 161 | 2 / 0 / 7 of 7 / 0 |
+
+| Chain journey, how does `index.ts` reach `symbolAnchors.ts` | Gestures | Smallest target px | A moved px | Hops legible of 3 | Names legible of 4 | History entry | Return error px |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: |
+| Local Map, through the pathfinder; return by Clear | 7 | 33 | 518 | 2 | 3 | yes | 3846 |
+| Membrane Map, pin all of A, then B, then C; return by Escape | 5 | 13 | 1755 | 0 | 0 | yes | 283 |
+| Rings, keep B on its card, C and D from the search; return by unkeeping | 6 | 20 | 807 | 0 | 1 | no | 807 |
+
+#### The estate, the chain, 4 facts on 3 hops
+
+| View and state | Legible of 4 | Crossings | Channels | Flow | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Tour |
+| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local Map, `GatewayClient.cs` selected | 0 | 18 / 0 / 9 of 11 | 9 of 11 / 232 | 11 / 0 of 11 | 2 of 2 | 5 of 5 | 20 of 21 | 3 of 11 | 0 / 0 / 0 of 2 / 2 |
+| Local Map, path `GatewayClient.cs` to `IPaymentHub.cs` | 2 | 0 / 0 / 0 of 4 | 2 of 4 / 64 | 0 / 4 of 4 | no siblings | 3 of 3 | 15 of 16 | 0 of 4 | |
+| Membrane Map, four pinned | 1 | 170 / 88 / 37 of 44 | 34 of 44 / 920 | 42 / 2 of 44 | 10 of 10 | 7 of 9 | 35 of 47 | 16 of 47 | 1 / 0 / 2 of 2 / 0 |
+| Rings, `GatewayClient.cs` subject, three kept | 2 | 29 / 10 / 12 of 12 | 8 of 12 / 288 | 4 / 1 of 12 | 0 of 2 | 4 of 7 | 17 of 28 | 1 of 13 | 0 / 0 / 2 of 4 / 2 |
+
+| Chain journey, how does `GatewayClient.cs` reach `IPaymentHub.cs` | Gestures | Smallest target px | A moved px | Hops legible of 3 | Names legible of 4 | History entry | Return error px |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: |
+| Local Map, through the pathfinder | 7 | 33 | 518 | 2 | 4 | yes | 270 |
+| Membrane Map, pin all of A, then B, then C | 3 | 16 | 1252 | 0 | 3 | yes | 0 |
+| Rings, keep B, then C and D from the search | 5 | 20 | 0 | 2 | 4 | no | 0 |
+
+No label collided and no text was cut off in any state; no route changed under the six pans in any view; the Local Map's wires crossed no card.
+
+### The second scoreboard against its predictions
+
+- **Three different winners, as the deck requires.** The Local Map wins flow (every wire rightward in every state), crossings in the open (3 and 0) and shares symbols with the Membrane; the Membrane wins folder adjacency and legibility, symbols shown (60 of 60: its pin-active cards are open, not collapsed as predicted) and channels by share; Rings wins facts legible, hidden among drawn, churn (nothing moves under a pin) and the tour (14 of 15 facts within two pans). No view wins everything. The measures pull against each other as designed.
+- **Folder legibility was predicted exactly** (5 of 5, 7 of 7, 3 of 9), hidden-among-drawn for Rings exactly (37 of 119), and churn in order (the Local Map's columns re-center 17 of 19 cards by 7,314 px in total when a symbol is pinned, twice the prediction; the Membrane replaces the picture, 25 cards removed and 4 added).
+- **Flow in the Membrane was the wrong prediction.** 98 of 208 wires flow and 110 run backward on the repository, against a predicted 10 backward. The Membrane's pin-active columns are hop depth from the pinned files, not direction, so a file one hop away may be a provider or a consumer, and the wires run both ways between columns. On the estate 67 of 71 flow. [The repository state](../../Screenshots/2026-10-01/still-picture-membrane-dependents-columns.png) shows the columns labelled by hop.
+- **The path mode draws the Local Map's grammar backward.** In the state the pathfinder builds, 0 of 7 and 0 of 4 wires flow: the path runs FROM to TO left to right, FROM depends on TO, and each wire leaves the dependent's right edge and enters the dependency's green "uses" pin, the reverse of blue offers on the right and green uses on the left everywhere else in the view. [Picture](../../Screenshots/2026-10-01/still-picture-local-map-path-mode.png). And Clear, the return move, leaves the subject 3,846 px from where it started on the repository and 270 on the estate: the view returns to the subject's state without returning the camera to it. [Picture](../../Screenshots/2026-10-01/still-picture-local-map-after-clear.png).
+- **The tour found the class of fact that no pan recovers.** At scale 1, a fact whose two cards sit further apart than the frame can never be seen whole: 5 of the Local Map's 10 drawn facts on the repository, 12 of the Membrane's 15, 1 of Rings' 15. The deck's test 5 had called them "off frame, one pan recovers"; the pan brings one end in and pushes the other out. Only a zoom shows both, and a zoom takes the text under reading size. This is the capacity finding of the Rings probe from the other side: at reading size, a frame holds about a dozen cards, and a view that puts a fact's ends more than a frame apart has hidden it.
+- **The chain was harder than predicted for every view.** The Local Map's single-file state showed no hop legibly (predicted 1): `index.ts` has twenty-five providers and the column runs off the frame. Its path state showed 2 of 3 hops (predicted 3), the fourth column partly off frame. The Membrane drew all three hops in both bundles and none legibly on the repository, every one off frame, and its own walk (pin all of A, then B, then C, 3 to 5 gestures) ends at the folder's fitted scale with every name under reading size and A carried 1,755 px ([picture](../../Screenshots/2026-10-01/still-picture-membrane-chain-walk.png)); on the estate the same walk shows 0 of 3 hops at reading size. Rings showed 2 of 3 hops on the estate in 5 gestures with the subject unmoved, as predicted, and 0 of 3 on the repository, where the ring around `index.ts` is three deep (28 cards, 95 of 100 wires routed, 22 cards placed behind others).
+- **Crossings, as refined, say what the eye said.** The Local Map's 162 points are 3 in the open; the Membrane's 272 are 5; the ring's 1,003 are 505. The chords that make Rings honest about the shape are the wires that cross everything on the way around the subject.
+
+### What the owner's eye said against the numbers
+
+Set beside their reading in Turn 7: the Local Map "far more informative about the shapes and connections of classes" is symbols shown (38 of 47 at reading size with every wire flowing) and the Membrane "far more informative about directory collocation/containment" is folder adjacency and folder legibility (36 of 37, 7 of 7). Both views' "real sense of directionality" is flow, which the ring lacks (46 of 82). The eye and the expanded deck agree; the first deck could not say so because it did not ask.
+
+The floor for the next design, from these tables: flow at the Local Map's level, folders at the Membrane's, facts legible and hidden-among-drawn at the ring's, and no fact's ends further apart than the frame at reading size. No view has all four, and the deck now says which a design trades for which.

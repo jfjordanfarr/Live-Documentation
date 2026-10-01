@@ -45,7 +45,8 @@ export default defineConfig({
             "packages/generator/src/**/*.test.ts",
             "packages/explorer/src/**/*.test.ts",
             "scripts/**/*.test.ts",
-            "tests/integration/slopcop/**/*.test.ts"
+            "tests/integration/slopcop/**/*.test.ts",
+            "tests/e2e/**/*.test.ts"
           ]
         }
       },
