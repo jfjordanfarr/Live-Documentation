@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { compressToEncodedURIComponent } from "lz-string";
 
 import { goToMembraneMap, expandDirectory } from "./helpers";
 
@@ -14,6 +15,44 @@ import { goToMembraneMap, expandDirectory } from "./helpers";
  */
 
 test.describe("Membrane Map — URL State Persistence", () => {
+  test("a shared multi-pin view restores its camera before measuring wires", async ({ page }) => {
+    const provider = "packages/engine/src/live-docs/document.ts";
+    const consumer = "packages/engine/src/live-docs/graph.ts";
+    const encoded = compressToEncodedURIComponent(JSON.stringify({
+      v: 1,
+      w: "membrane",
+      n: consumer,
+      p: [{ n: provider, s: "LiveDoc" }, { n: consumer, s: "GraphFile" }],
+      t: [80, -120, 0.65],
+    }));
+    await page.goto(`/?s=${encoded}`);
+
+    const container = page.locator("#membrane-container");
+    const wire = page.locator(
+      `.membrane-connection--front[data-source-id="${provider}"][data-target-id="${consumer}"][data-target-symbol="graphfile"]`,
+    ).first();
+    await expect(wire).toBeAttached();
+    await expect(container).toHaveCSS("transform", "matrix(0.65, 0, 0, 0.65, 80, -120)");
+
+    // The rendered cable must meet the actual rendered symbol pin, including
+    // when a fresh page opens at a non-default saved scale and translation.
+    const separation = await wire.evaluate((element, id) => {
+      const path = element as SVGPathElement;
+      const point = path.getPointAtLength(0).matrixTransform(path.getScreenCTM()!);
+      const pin = document.querySelector<HTMLElement>(
+        `.membrane-card__symbol-row[data-node-id="${id}"][data-symbol="LiveDoc"] .membrane-focal-pin--outbound`,
+      )!;
+      const rect = pin.getBoundingClientRect();
+      return Math.hypot(point.x - rect.x - rect.width / 2, point.y - rect.y - rect.height / 2);
+    }, provider);
+    expect(separation, "Cable starts at the offered symbol's pin rim").toBeLessThanOrEqual(8);
+
+    await page.reload();
+    await expect(wire).toBeAttached();
+    await expect(container).toHaveCSS("transform", "matrix(0.65, 0, 0, 0.65, 80, -120)");
+    await expect(page.locator(".membrane-card__symbol-row--pinned")).toHaveCount(2);
+  });
+
   test("page refresh preserves navigated directory context", async ({
     page,
   }) => {

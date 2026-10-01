@@ -267,6 +267,10 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   }
 
   function render(): void {
+    // URL restoration and reset change the camera without a pointer event.
+    // Apply it before measuring cards so SVG anchors use the same scale.
+    applyTransform();
+
     // ─── Fast path: selection-only change ─────────────────────────
     if (trySelectionOnlyUpdate()) return;
 
@@ -905,7 +909,6 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     shouldZoomToFocus = false;
     transform = { ...snapshot.transform };
     render();
-    applyTransform();
   }
 
   return {
