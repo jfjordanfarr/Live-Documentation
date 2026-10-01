@@ -4,7 +4,7 @@ _A survey gathered on 2026-10-01 from the workspace's own record, for the owner'
 
 ## September and October 2026
 
-### Directories
+### Directories, September and October 2026
 
 - **2026-09-26**, [the first session](../ChatHistory/2026/09/2026-09-26.1.md), agent: force-directed layout "at every level of a hierarchy", a system's packages laid out inside it, a package's files inside that. Proposed and not taken up.
 - **2026-09-28**, [Probe A, cards in depth](../Probes/2026-09-28/cards-in-depth.md), open questions: "Order depth by coupling (this probe) or by directory distance, so the folder pull shows in the column?" Never answered.
@@ -21,7 +21,7 @@ _A survey gathered on 2026-10-01 from the workspace's own record, for the owner'
 - **2026-10-01**, [the handoff probe](../Probes/2026-10-01/handoff.md): directories as a glyph, a child list and crumbs, with "No spatial placement ... fabricated for unboarded directories". Liked as polish, an experiment only.
 - **2026-10-01**, [the record](../ChatHistory/2026/10/2026-10-01.1.record.md), Turn 7, the owner: "There is no bonus/benefit to bringing things which are collocated closer together (common folders, etc.)." Two measures followed, folder adjacency and folder legibility; on the five-file set the Local Map scored 16 of 17, the Membrane 36 of 37, Rings 3 of 18 ([the deck](../Probes/2026-10-01/still-picture-deck.md#the-second-scoreboard-measured)).
 
-### Files as cards
+### Files as cards, September and October 2026
 
 - **2026-09-26**, the owner: "The closest-up interaction with our software is to see a, say, C# class, with all of tis public symbols displayed, and upstream/downstream consumers flanking it, wires crossing over into them."
 - **2026-09-28** at 02:26, the owner: "after doing enough pinning, I realized that many consumers/dependencies make sense in many different positions when drawn in 2D space, once a sufficient level of complexity has been reached."
@@ -32,7 +32,7 @@ _A survey gathered on 2026-10-01 from the workspace's own record, for the owner'
 - **2026-09-30**, [the interaction game](../Probes/2026-09-30/interaction-game.md): a full-card budget ("If the design promises all four full cards in this viewport without overlap or smaller text, it has already contradicted the arithmetic"), and for widely used files "two tokens bearing the same C identity, one beside each context". The copies are untested.
 - **2026-10-01**, [the Rings record](../Probes/2026-10-01/rings.md): the compact card showing only rows in play, which the owner noted the Membrane's collapsed default already is; and the capacity finding, about twelve full cards around a fixed subject at reading size.
 
-### Connections
+### Connections, September and October 2026
 
 - **2026-09-26**, the owner: "I want to see the wires cross. I want to see things which talk to each other cluster together more closely."
 - **2026-09-28**, the probes' README: "The wall pin is the junction between scales." And [brief 2](../Probes/2026-09-28/brief-2.md): "Many wires to one pin become one bundle with a count badge, never a fan of forty hairlines"; the README: "A badge replaces a fan or is not shown; a fan beside a count is two statements of one fact."
@@ -45,7 +45,7 @@ _A survey gathered on 2026-10-01 from the workspace's own record, for the owner'
 - **2026-10-01**, the record, Turns 7 and 8, the owner: "Is that the shape of the software?"; "we should absolutely punish wires-crossing-over-other-wires"; right-angle connectors not precluded; both bundling scopes (to a directory; leaving a node and unbundling near the recipient) to be tested; "many valid mutually exclusive ways to look at the same info" allowed.
 - **2026-10-01**, the second scoreboard, confirmed by the owner in Turn 9 as standing defects: the Membrane's pin-active columns are hop depth, not direction; the pathfinder's path mode draws the Local Map's grammar backward.
 
-### Dead ends and verdicts
+### Dead ends and verdicts, September and October 2026
 
 - **2025-11-21**, surfaced by [the bearings reader for November](2026-09-29-bearings/readers/2025-11-20-to-24-local-map.md): the owner moved away from Gemini's radial "sonar" local view within days: "The local view need not be radial, and can take on the form of the Circuit Board view with directories, nodes, and edges reduced down to only what is salient to the selected element." Columns followed by 2025-11-24.
 - **2025-12-03 to 12-17**, [the archive digest](../Probes/2026-09-28/archive-digest.md): directory containers removed from the Local Map and praised ("you threw out the directories..."); wraparound corset curves "just looks like a bit of programmatic tangled mess", replaced by stubs; multi-hop columns "absolutely not functional at all".
@@ -65,7 +65,7 @@ No one has proposed directory distance as the placement rule of a radial, ring o
 
 The sweep covered every transcript and summary of the era, including the five Gemini sessions of 2025-11-19 and 11-20 under `ChatHistory/2025/11/Antigravity/`. Drawing talk begins on 2025-11-19, is heaviest from 2025-11-21 to 12-07, on 12-17 and 12-18 and on 2026-02-24, then dense again from 2026-03-17 to 04-01. Line numbers are the sweep's and point at the quoted line.
 
-### Directories
+### Directories, October 2025 to April 2026
 
 - **2025-11-20**, [Gemini session, Refining Interaction and Code Quality](../ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining%20Interaction%20and%20Code%20Quality.md) line 41, the owner: "And the Circuit Board view needs to be capable of having _a thing in a thing_ if it's true inheritance. That is: a visual card could contain a visual card. Don't get married to the circuit board aesthetic." Containment drawn as nested elements, following directory or inheritance structure.
 - **2025-11-21** and **11-24**, [2025-11-21.md](../ChatHistory/2025/11/2025-11-21.md) lines 2606 and 2834, [2025-11-24.md](../ChatHistory/2025/11/2025-11-24.md) lines 269 and 1317, the owner: "By default, the Circuit Board view attempts to **center** the directory with the highest number of cumulative inbound and outbound connections (for better visual layout)"; "Think of it almost like the force graph rules, but at the directory level."; and the fallback, "If we find that there is no reasonable way to bin our Circuit Board by directory alone, we may instead spring for using the materialized "System" views (automatically detected clusters of related functionality) to bin our files." The most-connected directory at the centre, related directories kept close, subdirectories inside their parents.
@@ -77,7 +77,7 @@ The sweep covered every transcript and summary of the era, including the five Ge
 - **2026-03-24** and **03-26**, [2026-03-24.1.md](../ChatHistory/2026/03/2026-03-24.1.md) line 3587 and [2026-03-26.1.md](../ChatHistory/2026/03/2026-03-26.1.md) line 2366: membrane bands hold their members and push outsiders out, the common-ancestor membrane wraps everything, duplicated gappy membranes only as a last resort; the agent named it layered graph drawing with cluster constraints.
 - **2026-03-30**, [2026-03-30.1.md](../ChatHistory/2026/03/2026-03-30.1.md) line 996, the owner: "And it should be okay, I think, to abandon squarification/treemapping for a flow layout when we want to see cross-directory interactions."
 
-### Files as cards
+### Files as cards, October 2025 to April 2026
 
 - **2025-11-24** and **12-04**, [2025-11-24.md](../ChatHistory/2025/11/2025-11-24.md) line 404 and [2025-12-04.md](../ChatHistory/2025/12/2025-12-04.md) line 116, the owner: symbols "evenly spaced along the left and right sides of the node cards", a green pin at the start of the name and a blue pin after it.
 - **2025-11-24**, line 934: the unit test file "rests _behind_ the original file's node"; the test-backed glow followed.
@@ -87,7 +87,7 @@ The sweep covered every transcript and summary of the era, including the five Ge
 - **2026-02-24**, line 1844 and 2084: the card as "the universal node detail renderer", with a rendered markdown area above the symbols; the agent added compact cards at leaf level.
 - **2026-03-23** to **03-28**, [2026-03-23.1.md](../ChatHistory/2026/03/2026-03-23.1.md) line 1343, [2026-03-27.1.md](../ChatHistory/2026/03/2026-03-27.1.md) line 1346, [2026-03-28.1.md](../ChatHistory/2026/03/2026-03-28.1.md) line 2286, the owner: the Local Map "is just a de-facto render of all public symbols (including the "Internals" psuedo-symbol) of the focused node pinned simultaneously."; "All nodes should be "collapsed" by default when no symbol pinning has occurred."; "I expect the "pin all symbols" button to be present on all nodes at all times, period."
 
-### Connections
+### Connections, October 2025 to April 2026
 
 - **2025-11-20** and **11-24**, [Refining UI Interactions](../ChatHistory/2025/11/Antigravity/11-20/83f976da-d7f4-4c75-a16d-561dfbea1a4b/Refining%20UI%20Interactions.md) line 37 and [2025-11-24.md](../ChatHistory/2025/11/2025-11-24.md) line 269, the owner: "I am a fine of the kind of soundboard-like wires-going-behind-the-rectangles-to-hook-rectangles-together kind of look. I want to see wires from symbol to symbol if I can, or file to symbol."; the others "render _behind_ all other elements (as if it is a sound mixing board in which plugs are coming in from the back)".
 - **2025-12-05**, [2025-12-05.md](../ChatHistory/2025/12/2025-12-05.md) line 1820, the owner: "A node which connects to the focused artifact 2 times should render _closer_ to the center grid column of the Local Map, with 3 connections, even closer, and so on." Coupling as distance in the column, with nodes that feed lower symbols placed lower; "juggling competing interests".
@@ -98,7 +98,7 @@ The sweep covered every transcript and summary of the era, including the five Ge
 - **2026-03-23**, [2026-03-23.1.md](../ChatHistory/2026/03/2026-03-23.1.md) lines 1943, 2287, 2622 and 6932, the owner: "We genuinely are in cases where additional spatial dimensions would plausibly be required to ensure this ordinality in the face of cycles."; the inter-card corset "the most visually understandable and truthful of what we've seen"; loop-backs over several cards as corset stubs on each end; a right-to-left flip of the flow noted for the future. Not chosen: direction on the line rather than the pin, and four-edge port routing.
 - **2026-03-26**, [2026-03-26.1.md](../ChatHistory/2026/03/2026-03-26.1.md) lines 514 and 1443: connectors animate blue to green after the nodes settle.
 
-### Dead ends and verdicts
+### Dead ends and verdicts, October 2025 to April 2026
 
 - **2025-11-20**, the Gemini SVG Circuit Board dropped for HTML cards ("Why can we not render HTML cards again?"); CSS animations cut until March 2026.
 - **2025-12-03**, [2025-12-03.md](../ChatHistory/2025/12/2025-12-03.md) lines 1119 to 1143: right-angled connectors "traversing their final mile of X distance before rocketing up or down to their intended pin" replaced by curves that swing into pins; the owner kept the hard angles for the Circuit Board as a deliberate contrast. Line 984: "This is elegant as f*ck -- you threw out the directories. I honestly think that's smart."
