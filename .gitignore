@@ -53,9 +53,9 @@ AI-Agent-Workspace/ollama-traces/
 # Ignore generated Playwright MCP assets
 .playwright-mcp/
 
-# Playwright E2E test artifacts
+# Playwright E2E test artifacts and the still-picture scoreboard it writes
 test-results/
-reports/e2e/
+reports/
 
 # Live Documentation staging outputs
 
