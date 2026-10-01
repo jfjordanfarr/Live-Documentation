@@ -821,3 +821,214 @@
 
 ● The third gate run is in progress. Nothing else depends on anything but its
   result, so I will wait for its notification and then commit.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-01-153312-hi-claude-fable-51.txt
+  in the IDE. This may or may not be related to the current
+  task.</ide_opened_file>
+
+❯ How's it looking? Harness got disrupted with a brief internet outage at my
+  house. Just a DNS reset or DHCP reset or whatnot. Are you able to check on
+  the terminal and continue on?
+
+● Checking the gate first, then recording your message.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Two things now: a watcher that wakes me when the gate finishes, and the
+  October inventory updated to list the capture you just exported.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Status while the gate finishes:
+
+  - Your three decisions are in. AGENTS.md carries the seven re-affirmed
+    expectations, Memory records the ceiling of five concurrent subagents,
+    committed as 0c75d266.
+  - The deck is written with the six criteria, six tests, the four-card paper
+    play and predictions per view written before any measurement, at
+    still-picture-deck.md
+    (AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md).
+  - The instrument exists and runs as a Playwright spec over both bundles. Its
+    first run found four things. Two were fixed: the estate's Membrane clipped a
+    54-character address symbol, so symbol labels now wrap like the Local
+    Map's, and pinning a symbol in the Local Map moved the selected card 862 px
+    off the frame, so the camera now compensates when the columns re-center (0
+    px after). Two are left open for you: pinning from a folder keeps the
+    folder's half-scale camera, and the detail panel covers the consumers it
+    just found.
+  - The predictions were wrong in one big place. The Local Map fits at scale 1
+    centered on the subject, not the 0.6 floor I predicted, so it is the only
+    view with facts at reading size on the repository run (4 of 15). The
+    Membrane shows 2 of 15 legible with 13 drawn off frame and 3 wires crossing
+    cards they do not end at.
+  - The gate is on its third run. Lint, build, 965 unit and 49 integration tests
+    passed; Playwright was midway when your message arrived, and the outage did
+    not kill it. A watcher will wake me when it exits, and I commit on green.
+
+  Your terminal export is listed in the October inventory as a capture and will
+  go in the same commit.
+
+● Background command "Stop the orphaned server and rerun the full gate"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the third gate run to finish and print its
+result" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Two independent steps now: decode the two captures to see what actually
+  differed, and rewrite the check so it compares the layout's geometry rather
+  than raster bytes.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The decode matches earlier sessions: 32 pixels within the checkbox edges, each
+  off by 1/255, with nothing found in the diagram. I'll now run the rewritten
+  check five times before the full gate. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The fourth gate run is under way with the rewritten stability check included.
+  Nothing else is pending until it reports, so I am waiting on its notification
+  and will commit on green.
+
+● Background command "Run the full pre-commit gate with Playwright, fourth time"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the fourth gate run and print its result"
+completed (exit code 0)
+
+● All checks pass: lint, 965 unit tests, 49 integration tests, unchanged Live
+  Docs, and all 60 Playwright tests including the rewritten one. I'll now commit
+  the work in four separate, self-contained pieces. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything is committed and the tree is clean. The outage did not cost
+  anything: the gate kept running in the terminal, and the only disruption was
+  that one of its notifications arrived late.
+
+  What landed, in five commits after the guidance one you approved
+
+  - 05b90ad2 fixes the two view defects the instrument found. Membrane symbol
+    names wrap instead of clipping. The Local Map's selected card no longer
+    jumps when you pin a symbol; it stays put while the columns re-center around
+    it.
+  - c41609e9 rewrites the flaky reload test. It compared screenshot bytes and
+    failed on 32 checkbox-edge pixels off by 1 of 255, which I decoded and
+    confirmed against the September 30 findings. It now compares every card box,
+    pin box, wire path and the camera across the reload, to the last digit. Ten
+    consecutive runs pass, and the full gate went 60 of 60.
+  - d369338e is the deck, the instrument and the first scoreboard, at
+    still-picture-deck.md
+    (AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md), with five
+    pictures named in the day's screenshots
+    (AI-Agent-Workspace/Screenshots/2026-10-01/README.md).
+  - 9e526661 and c1e0dc96 carry the session record through your last message,
+    plus your terminal export listed in the October inventory.
+
+  What the first scoreboard says
+
+  ┌──────────────────────────┬───────────────┬───────────┬─────────────────┐
+  │ View, five-file set on   │ Facts legible │ Cards in  │   Wires over    │
+  │     this repository      │     of 15     │   frame   │  foreign cards  │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Local Map at graph.ts    │             4 │   5 of 19 │               0 │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Membrane Map, all pinned │             2 │   7 of 42 │        3 of 207 │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Force Graph              │             0 │       n/a │             n/a │
+  └──────────────────────────┴───────────────┴───────────┴─────────────────┘
+
+  My biggest wrong prediction was the Local Map. It fits at scale 1 centered on
+  the subject and lets the columns run off the frame, not the 0.6 floor I
+  predicted, so it is the only view with facts at reading size. The Membrane's
+  42 cards matched the probe's count, and 13 of its 15 facts are drawn but off
+  frame, each one pan away. Routes never changed under six pans in either view,
+  and no label collided anywhere.
+
+  Open for you, each a design choice rather than a defect with one answer
+
+  - Pinning from a folder view keeps the folder's half-scale camera, so the
+    consumers it finds are drawn at 5 px.
+  - On the estate the detail panel opens over the dependents column and covers
+    all four consumers it just found.
+  - A pinned file at depth one sits under the column heading "Dependents".
+  - The Force Graph has no way to locate a file, so the instrument can ask it
+    nothing. The focus method from my earlier reply is the first step toward a
+    measurable row.
+
+  Next by the order you agreed: the subject-fixed concentric probe, judged on
+  these two tables.
+
+● Everything is committed and the tree is clean. The outage did not cost
+  anything: the gate kept running in the terminal, and the only disruption was
+  that one of its notifications arrived late.
+
+  What landed, in five commits after the guidance one you approved
+
+  - 05b90ad2 fixes the two view defects the instrument found. Membrane symbol
+    names wrap instead of clipping. The Local Map's selected card no longer
+    jumps when you pin a symbol; it stays put while the columns re-center around
+    it.
+  - c41609e9 rewrites the flaky reload test. It compared screenshot bytes and
+    failed on 32 checkbox-edge pixels off by 1 of 255, which I decoded and
+    confirmed against the September 30 findings. It now compares every card box,
+    pin box, wire path and the camera across the reload, to the last digit. Ten
+    consecutive runs pass, and the full gate went 60 of 60.
+  - d369338e is the deck, the instrument and the first scoreboard, at
+    still-picture-deck.md
+    (AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md), with five
+    pictures named in the day's screenshots
+    (AI-Agent-Workspace/Screenshots/2026-10-01/README.md).
+  - 9e526661 and c1e0dc96 carry the session record through your last message,
+    plus your terminal export listed in the October inventory.
+
+  What the first scoreboard says
+
+  ┌──────────────────────────┬───────────────┬───────────┬─────────────────┐
+  │ View, five-file set on   │ Facts legible │ Cards in  │   Wires over    │
+  │     this repository      │     of 15     │   frame   │  foreign cards  │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Local Map at graph.ts    │             4 │   5 of 19 │               0 │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Membrane Map, all pinned │             2 │   7 of 42 │        3 of 207 │
+  ├──────────────────────────┼───────────────┼───────────┼─────────────────┤
+  │ Force Graph              │             0 │       n/a │             n/a │
+  └──────────────────────────┴───────────────┴───────────┴─────────────────┘
+
+  My biggest wrong prediction was the Local Map. It fits at scale 1 centered on
+  the subject and lets the columns run off the frame, not the 0.6 floor I
+  predicted, so it is the only view with facts at reading size. The Membrane's
+  42 cards matched the probe's count, and 13 of its 15 facts are drawn but off
+  frame, each one pan away. Routes never changed under six pans in either view,
+  and no label collided anywhere.
+
+  Open for you, each a design choice rather than a defect with one answer
+
+  - Pinning from a folder view keeps the folder's half-scale camera, so the
+    consumers it finds are drawn at 5 px.
+  - On the estate the detail panel opens over the dependents column and covers
+    all four consumers it just found.
+  - A pinned file at depth one sits under the column heading "Dependents".
+  - The Force Graph has no way to locate a file, so the instrument can ask it
+    nothing. The focus method from my earlier reply is the first step toward a
+    measurable row.
+
+  Next by the order you agreed: the subject-fixed concentric probe, judged on
+  these two tables.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/3eeacb
+     d0-e572-4003-8f9c-3061895f1a2a/scratchpad/gate2.log
+  ⎿  Read reports/still-picture/scoreboard.md (44 lines)
+  ⎿  Referenced file tests/e2e/still-picture.ts
+  ⎿  Referenced file tests/e2e/still-picture.spec.ts
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/bbpcvx33t.txt
