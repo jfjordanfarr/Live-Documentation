@@ -3269,3 +3269,475 @@ today" completed (exit code 0)
   ⎿  Referenced file
      AI-Agent-Workspace/tmp/probes/2026-10-01/rings/rings.spec.ts
   ⎿  Referenced file tests/e2e/still-picture.spec.ts
+
+❯ <ide_selection>The user selected the lines 1 to 3271 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -01-153312-hi-claude-fable-51.txt:
+
+  ❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-A
+    gent-Workspace/Probes/2026-10-01/handoff.md in the IDE. This may or may not
+    be related to the current task.</ide_opened_file>
+
+  ❯ Hi Claude Fable 5.1!
+
+    Today is 10/1/2026 as I write this message. First things first: let's
+  refresh
+    on the workspace. Please read through the following recent chat summaries,
+    and the full chat transcript from the last session:
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARIZED.md
+
+
+  @AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md
+
+
+    @AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md
+
+    Based on what you've read, what are the next moves? Further, as a matter of
+    practice, what have I, the user, typically been expecting from AI agents in
+    this workspace in terms of behavior? There should be a lot of rich old chat
+    history context of me telling the AI that I expect certain behaviors.
+
+    This initial prompt from me should cause sufficient exploration and
+  hydration
+    for us to knock it out of the park in yet another productive session.
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-26.1.SUMMARI
+       ZED.md (174 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARI
+       ZED.md (476 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.1.SUMMARI
+       ZED.md (58 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARI
+       ZED.md (196 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.1.SUMMARI
+       ZED.md (47 lines)
+    ⎿  Read
+  AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARI
+       ZED.md (468 lines)
+
+  ● I'll read the full last-session record, then the Memory files and the
+    ChatHistory convention, then start this session's record before answering.
+
+    Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+  ● The outputs were saved to files
+  ──── (3178 lines hidden) ────────────────────────────────────────────────────
+  he membrane border: false on this repository, 80 of 95 wires
+      bypass it.
+    - Directory containers inside the Local Map's columns (thrown out in
+  December
+      2025 and praised), the Circuit Board's wires (dropped for noise),
+  per-type
+      wire colours, and multi-hop columns ("absolutely not functional at all").
+    - Walking into directories to see connections, see-through boxes, and 3D
+  tilt
+      inside a system.
+    - Dropping chords to tidy, and a fan beside a count ("two statements of one
+      fact").
+    - Clustering as the grouping: retired, a system is a folder.
+
+    One design meets the four floors on paper, and it is reachable from either
+    shipped view. The Local Map's columns with the subject fixed; each side
+  column
+    a stack of folder groups ordered by coupling to the subject; a group
+  closable
+    into a folder card carrying one wall pin per symbol in play with a count,
+  and
+    open as its file cards; a frame-fit rule that opens what fits at reading
+  size
+    and closes the rest, so no fact's ends ever sit further apart than the
+  frame;
+    every reference drawn, with chords between cards of one column routed
+  around
+    the column's outside as cables, which is precisely where your two bundling
+    scopes can be switched and compared on the deck; and a path that would run
+    against the direction never drawn, "show no results and offer the reverse",
+  as
+    you ruled on 2025-12-18, which is also the fix for the path-mode defect.
+  Call
+    it the Local Map with folder cards, or the Membrane's pin mode with
+  direction
+    restored. They are the same design.
+
+    Two forks. First, build that as the next disposable probe, judged on the
+  deck
+    and the four floors, with a switch between node bundling, directory
+  bundling
+    and both: yes, edit, or no. Second, the two confirmed defects: my opinion
+  is
+    to fix the path mode in the shipped Local Map now by your December rule,
+  since
+    the Local Map stays and the change is small, and to let the probe be the
+    Membrane's column fix rather than patching hop-depth columns that the
+  design
+    replaces.
+
+  ❯ /compact
+    ⎿  Compacted
+    ⎿  Read .mdmd/layer-4/tests/e2e/still-picture.spec.ts.mdmd.md (71 lines)
+    ⎿  Read AI-Agent-Workspace/tmp/probes/2026-10-01/rings/playwright.config.ts
+       (17 lines)
+    ⎿  Read reports/still-picture/rings.md (72 lines)
+    ⎿  Referenced file
+       AI-Agent-Workspace/tmp/probes/2026-10-01/rings/rings.spec.ts
+    ⎿  Referenced file tests/e2e/still-picture.spec.ts
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ >Two forks. First, build that as the next disposable probe, judged on the
+  deck and the four floors, with a switch between node bundling, directory
+  bundling and both: yes, edit, or no. Second, the two confirmed defects: my
+  opinion is to fix the path mode in the shipped Local Map now by your December
+  rule, since the Local Map stays and the change is small, and to let the
+  probe be the Membrane's column fix rather than patching hop-depth columns
+  that the design replaces.
+
+  Agreed on all fronts. You are clear to proceed. Let me know when you need any
+  additional guidance that can't be provided from chat history mining.
+
+● Recording the Turn 9 reply and your message first, then the path-mode fix in
+  the shipped Local Map, then the probe.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● I'll now read through the pathfinder client, Local Map state, its render and
+  connections modules, and the engine's pathfinder to understand how path state
+  is currently laid out, since the fix depends on it. · summary
+
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The image confirms the bug: wires are drawn in search order, so each one runs
+  from consumer to provider. I'll now check the wire-drawing module, camera
+  code, and styles, then re-examine the picture after clearing. · summary
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● Found that path mode wiring is wrong in both directions—the drawer treats the
+  consumer's blue pin as the provider end, causing provider-first paths to reach
+  backwards and consumer-first paths to flow from the wrong pins. Next I'll
+  check how the path's pins and camera flags are handled on Clear, then
+  reproduce the lost camera issue in a browser. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Running the reproduction against the served bundle now.
+
+  Searched for 2 patterns, ran 5 shell commands (ctrl+o to expand)
+
+● Found it: the Local Map's drag surface covers the whole view, including the
+  pathfinder toolbar, so toolbar clicks are treated as drags that mark the
+  camera as user-adjusted and block re-fitting. I'll finalize the fix and its
+  tests now. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+● I'm applying these changes: the pathfinder now draws only in the map's reading
+  direction (with the reverse offered as a link), the path drawer uses the
+  provider's blue pin and consumer's green pin, stale hop data resets on every
+  render, and toolbar clicks no longer trigger a drag. · summary
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Type-check and unit tests pass, with one unused import to drop. Removing it,
+  rebuilding both bundles, and rerunning the browser script with the reverse
+  link clicked so I can look at the result.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Both bundles consistently refuse the consumer-first question, link the reverse
+  case, draw wires left to right, and Clear ties back to the pixel. I'll review
+  the images before writing the tests, keeping the address tied to the
+  originally selected file's path. · summary
+
+  Read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● All checks are green. Rebuilding both bundles and running the new Playwright
+  spec against them.
+
+  Searched for 1 pattern, read 2 files, ran 12 shell commands (ctrl+o to expand)
+
+● Found two bugs: a running fit animation loses the compensation state, and
+  leaving path mode unconditionally clears pins on every toolbar keystroke.
+  Fixing both issues now, then rebuilding and rerunning. · summary
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Re-measure the Local Map rows of the still-picture deck in
+the background" completed (exit code 0)
+
+  Searched for 2 patterns, read 2 files, ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Re-measure the two chain rows of the Local Map in the
+background" completed (exit code 0)
+
+  Searched for 1 pattern, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Re-measure the Local Map's two chain rows with the
+corrected test filter" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Compare and score the drawn path in the chain's own order,
+then re-measure the two chain rows" completed (exit code 0)
+
+  Searched for 2 patterns, read 2 files, listed 1 directory, ran 9 shell commands (ctrl+o to expand)
+
+● Background command "Run the full pre-commit gate with Playwright in the
+background" completed (exit code 0)
+  ⎿  2 skills available
+
+● The full gate passed, 69 of 69 Playwright tests. Committing the fix with its
+  tests, docs and pictures, then the record and Memory.
+
+  Read 2 files, ran 8 shell commands (ctrl+o to expand)
+
+● The probe page is written. Fixing the route test's import, starting the
+  probe's server on port 8883, and taking the first look at both bundles.
+
+  Searched for 1 pattern, read 8 files, ran 13 shell commands (ctrl+o to expand)
+
+● Measurement is running in the background. Meanwhile, checkpointing the probe's
+  build in the record and waiting for the deck's result.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Type-check the probe's spec and run the deck over the
+probe in the background" completed (exit code 0)
+
+  Searched for 4 patterns, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The deck is running again over the probe. Waiting for its result before
+  reading the scoreboard.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Put a folder row's file name on its own line and rerun the
+deck over the probe" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Label each group by the shortest unique tail of its path,
+then rerun the deck over the probe" completed (exit code 0)
+
+● All eight pass. Reading the probe's scoreboard and looking at the pictures the
+  instrument took.
+
+  Read 6 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Place a kept provider chain on the left, then re-measure
+the chain scopes" completed (exit code 0)
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Let a kept file's folder follow the folder it serves so a
+chain stacks in order, then re-measure the chains" completed (exit code 0)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Both agreed pieces are done and committed. The tree is clean.
+
+  The path mode, fixed in the shipped Local Map (c394d186). It had three causes,
+  each confirmed in a browser before I changed anything:
+
+  - The wire drawer took the dependent's blue pin as the start of every path
+    wire, so a provider-first path reached backwards across the columns and a
+    dependent-first path flowed from the wrong pins. The search accepted either
+    direction.
+  - Clear lost the camera because the Local Map's drag surface was the whole
+    view, toolbar included. Every click in the pathfinder started a drag and
+    marked the camera as yours, after which no render would re-fit it. The wires
+    vanished because the previous path's hop data was never reset.
+  - Every keystroke in a toolbar field left path mode unconditionally, which
+    re-rendered, re-fitted and cleared your own pins.
+
+  Now, by your rule of 2025-12-18: a path is drawn only when TO depends on FROM,
+  so what offers stands left of what uses it and every wire leaves a blue pin
+  and enters a green one. When the files connect only the other way, nothing is
+  drawn. The status says so and offers "show B to A" as a link that swaps the
+  ends. References between the path's files that run against it are counted, not
+  drawn. Clear returns to the file you had, to the pixel, wires and address
+  included. A path is framed from its first file at reading size, and the
+  toolbar sits in the view's flow with the map staying put under it when a
+  status line appears. Kept by three Playwright tests over the estate, unit
+  tests, and the deck's chain journey, which now takes the offered link as one
+  more gesture. The deck's path rows went from every wire backward to every wire
+  flowing on both bundles, and the return error from 3,846 px to 0. One cost:
+  the chains are asked dependent-first, so the journey costs one more click, and
+  that 13 px link is now the smallest target on the deck. Pictures are in the
+  day's screenshots README (AI-Agent-Workspace/Screenshots/2026-10-01/README.md#
+  the-path-mode-set-right-that-night).
+
+  The folder-columns probe, predictions written first (79dc04ec), then built,
+  measured and recorded (f00d387d). The record is folder-columns.md
+  (AI-Agent-Workspace/Probes/2026-10-01/folder-columns.md); the page is live at
+  http://localhost:8883/repository/ and /estate/, with the bundling switch in
+  the sidebar. On the repository's five files:
+
+  ┌───────────────────┬────────────┬─────────────┬───────────┬─────────────┐
+  │      Measure      │ Local Map  │  Membrane   │   Rings   │   Folder    │
+  │                   │            │             │           │   columns   │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Facts legible of  │ 4          │ 2           │ 11        │ 11          │
+  │ 15                │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Flow, flowing /   │ 70 / 0     │ 98 / 110    │ 46 / 21   │ 73 / 9      │
+  │ backward          │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Folder adjacency, │ 16 of 17,  │ 36 of 37, 7 │ 3 of 18,  │ 18 of 18, 7 │
+  │  legible          │ 5 of 5     │  of 7       │ 3 of 9    │  of 7       │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Hidden among      │ 66 of 116  │ 140 of 268  │ 37 of 119 │ 37 of 119   │
+  │ drawn             │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Crossings in the  │ 3          │ 5           │ 505       │ 465         │
+  │ open              │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Tour, reachable   │ 5 of 10    │ 3 of 15     │ 14 of 15  │ 15 of 15    │
+  │ of drawn          │            │             │           │             │
+  └───────────────────┴────────────┴─────────────┴───────────┴─────────────┘
+
+  It meets the four floors on paper and in the numbers, and the first picture
+  whose tour reaches every drawn fact. The 9 backward wires are chords routed
+  around a column, which the measure counts as backward whichever way they go.
+  It pays where I predicted but four times more than I predicted: the chords
+  from document.ts to the consumers of graph.ts run down the gutter as a band
+  through the spokes' fan. Bundling changes no fact; by folder it turns seventy
+  wires into seven counted cables, and the instrument's crossing count rises
+  because every whole wire now converges on a trunk, which is the measure's
+  reading and not the eye's. Chains are worse than Rings on the estate (1 of 3
+  hops against 2), because a column has one dimension to stack them in.
+
+  Two findings for your eye, neither decided:
+
+  - The gutter is the weak place. Chords could get a lane outside the column
+    instead of between it and the subject, at the price of longer wires.
+  - A kept chain wants a column of its own or a second dimension. That is the
+    December 2025 multi-hop question again, which you closed on the
+    implementation rather than the idea.
+
+  One limitation of the instrument surfaced: a closed folder card's rows name
+  their files but carry no file identity the reader accepts, so facts into a
+  closed group count as drawn and not legible. The all-open rows sit beside the
+  fitted ones for that reason.
+
+  What I did not do: nothing in the shipped Membrane Map changed, as agreed. If
+  the grammar holds for your eye, this probe is the Membrane's pin mode with
+  direction restored, and the shipped fix becomes a layout rule rather than a
+  new view.
+● Both agreed pieces are done and committed. The tree is clean.
+
+  The path mode, fixed in the shipped Local Map (c394d186). It had three causes,
+  each confirmed in a browser before I changed anything:
+
+  - The wire drawer took the dependent's blue pin as the start of every path
+    wire, so a provider-first path reached backwards across the columns and a
+    dependent-first path flowed from the wrong pins. The search accepted either
+    direction.
+  - Clear lost the camera because the Local Map's drag surface was the whole
+    view, toolbar included. Every click in the pathfinder started a drag and
+    marked the camera as yours, after which no render would re-fit it. The wires
+    vanished because the previous path's hop data was never reset.
+  - Every keystroke in a toolbar field left path mode unconditionally, which
+    re-rendered, re-fitted and cleared your own pins.
+
+  Now, by your rule of 2025-12-18: a path is drawn only when TO depends on FROM,
+  so what offers stands left of what uses it and every wire leaves a blue pin
+  and enters a green one. When the files connect only the other way, nothing is
+  drawn. The status says so and offers "show B to A" as a link that swaps the
+  ends. References between the path's files that run against it are counted, not
+  drawn. Clear returns to the file you had, to the pixel, wires and address
+  included. A path is framed from its first file at reading size, and the
+  toolbar sits in the view's flow with the map staying put under it when a
+  status line appears. Kept by three Playwright tests over the estate, unit
+  tests, and the deck's chain journey, which now takes the offered link as one
+  more gesture. The deck's path rows went from every wire backward to every wire
+  flowing on both bundles, and the return error from 3,846 px to 0. One cost:
+  the chains are asked dependent-first, so the journey costs one more click, and
+  that 13 px link is now the smallest target on the deck. Pictures are in the
+  day's screenshots README (AI-Agent-Workspace/Screenshots/2026-10-01/README.md#
+  the-path-mode-set-right-that-night).
+
+  The folder-columns probe, predictions written first (79dc04ec), then built,
+  measured and recorded (f00d387d). The record is folder-columns.md
+  (AI-Agent-Workspace/Probes/2026-10-01/folder-columns.md); the page is live at
+  http://localhost:8883/repository/ and /estate/, with the bundling switch in
+  the sidebar. On the repository's five files:
+
+  ┌───────────────────┬────────────┬─────────────┬───────────┬─────────────┐
+  │      Measure      │ Local Map  │  Membrane   │   Rings   │   Folder    │
+  │                   │            │             │           │   columns   │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Facts legible of  │ 4          │ 2           │ 11        │ 11          │
+  │ 15                │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Flow, flowing /   │ 70 / 0     │ 98 / 110    │ 46 / 21   │ 73 / 9      │
+  │ backward          │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Folder adjacency, │ 16 of 17,  │ 36 of 37, 7 │ 3 of 18,  │ 18 of 18, 7 │
+  │  legible          │ 5 of 5     │  of 7       │ 3 of 9    │  of 7       │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Hidden among      │ 66 of 116  │ 140 of 268  │ 37 of 119 │ 37 of 119   │
+  │ drawn             │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Crossings in the  │ 3          │ 5           │ 505       │ 465         │
+  │ open              │            │             │           │             │
+  ├───────────────────┼────────────┼─────────────┼───────────┼─────────────┤
+  │ Tour, reachable   │ 5 of 10    │ 3 of 15     │ 14 of 15  │ 15 of 15    │
+  │ of drawn          │            │             │           │             │
+  └───────────────────┴────────────┴─────────────┴───────────┴─────────────┘
+
+  It meets the four floors on paper and in the numbers, and the first picture
+  whose tour reaches every drawn fact. The 9 backward wires are chords routed
+  around a column, which the measure counts as backward whichever way they go.
+  It pays where I predicted but four times more than I predicted: the chords
+  from document.ts to the consumers of graph.ts run down the gutter as a band
+  through the spokes' fan. Bundling changes no fact; by folder it turns seventy
+  wires into seven counted cables, and the instrument's crossing count rises
+  because every whole wire now converges on a trunk, which is the measure's
+  reading and not the eye's. Chains are worse than Rings on the estate (1 of 3
+  hops against 2), because a column has one dimension to stack them in.
+
+  Two findings for your eye, neither decided:
+
+  - The gutter is the weak place. Chords could get a lane outside the column
+    instead of between it and the subject, at the price of longer wires.
+  - A kept chain wants a column of its own or a second dimension. That is the
+    December 2025 multi-hop question again, which you closed on the
+    implementation rather than the idea.
+
+  One limitation of the instrument surfaced: a closed folder card's rows name
+  their files but carry no file identity the reader accepts, so facts into a
+  closed group count as drawn and not legible. The all-open rows sit beside the
+  fitted ones for that reason.
+
+  What I did not do: nothing in the shipped Membrane Map changed, as agreed. If
+  the grammar holds for your eye, this probe is the Membrane's pin mode with
+  direction restored, and the shipped fix becomes a layout rule rather than a
+  new view.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file packages/explorer/src/client/views/localView/connections.ts
+  ⎿  Read packages/explorer/src/client/views/localView/subgraph-builder.ts (239
+     lines)
+  ⎿  Referenced file packages/explorer/src/client/views/localView/render.ts
+  ⎿  Read packages/explorer/src/client/views/localView/state.ts (308 lines)
+  ⎿  Referenced file packages/explorer/src/client/pathfind.ts
