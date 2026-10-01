@@ -1032,3 +1032,351 @@ completed (exit code 0)
   ⎿  Referenced file tests/e2e/still-picture.spec.ts
   ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
      tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/bbpcvx33t.txt
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-01-153312-hi-claude-fable-51.txt
+  in the IDE. This may or may not be related to the current
+  task.</ide_opened_file>
+
+❯ >05b90ad2 fixes the two view defects the instrument found. Membrane symbol
+  names wrap instead of clipping. The Local Map's selected card no longer jumps
+  when you pin a symbol; it stays put while the columns re-center around it.
+
+  Slick! I feel like the wrap-versus-clip is more of a design choice, but I'm
+  stoked for the second change!
+
+  >c41609e9 rewrites the flaky reload test. It compared screenshot bytes and
+  failed on 32 checkbox-edge pixels off by 1 of 255, which I decoded and
+  confirmed against the September 30 findings. It now compares every card box,
+  pin box, wire path and the camera across the reload, to the last digit. Ten
+  consecutive runs pass, and the full gate went 60 of 60.
+
+  Slick again! Awesome.
+
+  >9e526661 and c1e0dc96 carry the session record through your last message,
+  plus your terminal export listed in the October inventory.
+
+  Yeah the claude code harness has an "Export Conversation" button, and I'll
+  keep using that to help ensure the record is accurate (and reduce the
+  likelihood that you'd need to attempt to visit some jsonl file in some random
+  place). Hopefully it helps. Only harness I've seen that I can't do exports
+  from is Codex so far.
+
+  >Open for you, each a design choice rather than a defect with one answer
+
+  Hmmm. Yeah, all difficult. Leaving open for now and hoping some natural
+  boundaries whack us and help us make some of those choices. Feel free to be
+  opinionated and creative.
+
+  >Next by the order you agreed: the subject-fixed concentric probe, judged on
+  these two tables.
+
+  Awesome. Yes. New exploration of the design space!
+
+● I'll record this turn first, then plan the concentric probe in the chat before
+  building anything.
+  Searched for 1 pattern, read 1 file, listed 2 directories, ran 5 shell commands (ctrl+o to expand)
+
+● Record appended. Now I'll gather the instrument module, Playwright config, the
+  earlier probe's build/serve scripts, and the Local Map card renderer and
+  styles needed for the probe. · summary
+
+  Searched for 2 patterns, read 1 file, listed 3 directories, ran 4 shell commands (ctrl+o to expand)
+
+● I'll review the symbol normalizer and TypeScript path setup needed for the
+  probe spec, then compute both subjects' neighborhoods from the built bundles
+  so predictions are based on actual counts. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both graph.ts and PaymentService.cs show lopsided provider/consumer ratios,
+  with one kept file in each run beyond distance one. I'll check the Explorer's
+  frame size to keep the probe measurement consistent, then draft the paper plan
+  and predictions before writing any code. · summary
+
+  Read 1 file, listed 1 directory (ctrl+o to expand)
+
+● Noting that the Explorer's 1600x1000 frame leaves a 1340x1000 content area
+  next to the 260px sidebar, I'll apply the same layout to the probe. First I'll
+  write the probe record—rules, the four-card paper play, and predictions for
+  both runs—before writing any code. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Predictions are on paper. Now building the probe page: a serve script, a
+  bridge bundle of the Explorer's own graph projection, the pure layout module,
+  the page and its styles.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the four modules of the page: the scene (what is drawn, pure), the layout
+  (where, pure), the DOM module, and the page with its styles.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the DOM module, the page, its styles, a first-look screenshot script, and
+  a test of the pure layout's guarantees.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found the fan rule too strict—it blocks cards behind the one at the
+  horizontal edge instead of checking actual wire paths. I'll rewrite the layout
+  around sampled wire polylines, using the DOM module to measure pin offsets
+  before placement so cards can nest where wires diverge. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I found the issue: fixed angles per card cause placement conflicts. I'll have
+  each card search nearby angles based on its wire direction and settle on the
+  clearest spot closest to the subject. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Found the bug: the wireless card gets placed first and blocks other cards'
+  wires since it defaults to angle 0. I'll fix this by placing wireless cards
+  last. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Now debugging the synthetic failure directly: printing where each card lands
+  and what blocks the one that finds no place.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The synthetic set reveals a true dead end in the current placement logic. I'll
+  fix this by ordering cards based on where their wires point at the subject's
+  edge instead of by size, and by falling back to placing a card by its box
+  alone (marked as crossed) when no clear spot exists in the sector. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The layout now always places every card, and marks the ones whose wires had to
+  cross something. Taking the first look at both bundles, with the crossed
+  count added to the page's status line.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I need to fix two issues: chords are being drawn to all cards instead of just
+  the kept ones (since every graph.ts consumer also uses document.ts), and the
+  radius placement is overflowing the frame, so I'll widen the angle search
+  across the full side to fit it properly. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The estate picture now shows two issues: the chord still cuts through the
+  subject's corner instead of taking the corridor, and the side labels collide
+  with cards. I'll reroute the chord down through the corridor, drop the labels,
+  then write the probe's spec and run it. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The instrument never saw the page become ready, so something broke in the
+  rename. Checking the page's own error output and the failure context.
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● First results are in: two predictions matched but the card-crossing check
+  failed badly (35/55 instead of 1), caused by passing the subject box argument
+  incorrectly so chords skip the corridor rule; also a stale hash address let
+  old route-test pans leak into the journey, dropping its score to 1/5. I'll fix
+  both issues and re-measure wire-card crossings before touching the layout.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The crossings come from the six cards forced behind others, each with many
+  connecting wires—not from the chords themselves. I'll build an
+  obstacle-avoiding router and use it for any wire whose straight path would
+  cross a card. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now wiring the router into the page: a wire keeps its simple curve when that
+  crosses no foreign card, and is routed otherwise. Then the instrument runs
+  again.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Occlusion is now 0 of 55 and 0 of 14, with the subject unmoved and the return
+  exact. Looking at what the routed wires did to the picture.
+  Read 3 files (ctrl+o to expand)
+
+● The wires cross their own endpoint cards since the router treats endpoints as
+  free space and the 16px gaps are too narrow to route through, forcing detours
+  around clusters. I'll widen the gaps to a routable width, mark endpoint cards
+  as obstacles beyond their pin stubs, and re-measure. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Found that cells were blocked whenever they merely touched a box, sealing in
+  stub ends near the subject's edge—I'll switch to blocking by cell centers
+  instead. Also reducing the 36 px gaps to match the 8 px routing margin, which
+  should recover four cards in frame. · summary
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● The layout looks solid overall, but I noticed the simple curves from the
+  subject's lower pins crossing back over the subject's own top-right
+  corner—something the instrument misses since the subject is the endpoint,
+  though visually it's a crossing. I'll run one more pass with the gap tightened
+  to what the router actually needs. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the final results: 11 of 15 facts legible on the repository, no
+  foreign card wiring, subject unmoved, and 4 of 5 answers legible there, with
+  everything in frame and legible on the estate. I'll now take a last look at
+  the images, copy them into the probe record's folder, and check the direction
+  file's closing section so it references this probe. · summary
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Probe results are finalized—I'll record the measured section with the three
+  views, update the direction file, checkpoint the session, then run the link
+  audit and full gate before committing. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Links and assets pass. Starting the full gate in the background and checking
+  what the commit will hold.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is running in the background. Nothing else depends on anything but
+  its result, so I will wait for its notification, then commit the probe record
+  with its pictures, the direction note, the session record and the re-exported
+  capture.
+
+● Background command "Run the full pre-commit gate with Playwright, fifth time
+today" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The fifth gate passed in full: lint with 0 errors, 965 unit, 49 integration,
+  docs audits clean, 60 of 60 Playwright. Committing the probe first, then the
+  record with its hash.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both commits are in and the tree is clean. The Rings probe is built, measured,
+  and recorded.
+
+  What Rings is. The subject sits at the center of the frame and never moves.
+  What it uses fills the left half, what uses it fills the right, each card as
+  close as its wires allow, with the Local Map's cards, pins and blue-to-green
+  wires unchanged. A card shows only the symbols in play with the subject and
+  counts the rest; keeping a card shows everything and draws its chords. Wires
+  that cannot run straight are routed through the gaps between cards. The rules,
+  the four-card paper play and the predictions were written before any code, in
+  rings.md (AI-Agent-Workspace/Probes/2026-10-01/rings.md).
+
+  What the deck says, same five files, same frame:
+
+  ┌─────────────┬────────────┬─────────┬──────────────┬───────────────────┐
+  │    This     │   Facts    │ Cards   │ Wires over   │ Journey: subject  │
+  │ repository  │ legible of │   in    │   foreign    │  moved, answers   │
+  │             │     15     │  frame  │    cards     │      legible      │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Local Map   │          4 │ 5 of 19 │            0 │ 0 px, 2 of 5      │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Membrane    │          2 │ 7 of 42 │            3 │ 742 px, 0 of 5    │
+  │ Map         │            │         │              │                   │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Rings       │         11 │ 9 of 20 │            0 │ 0 px, 4 of 5      │
+  └─────────────┴────────────┴─────────┴──────────────┴───────────────────┘
+
+  On the estate Rings shows 3 of 3 facts with all 12 cards in frame and nothing
+  crossed. Every label stayed apart, nothing was cut off, and no route changed
+  under a pan.
+
+  Where the predictions failed, which is the finding. Legible, drawn and
+  off-frame counts held exactly. Occlusion did not: the first measurement read
+  35 of 55 wires over a card, not the 1 I predicted, and the diagnosis was that
+  the fan around a fixed subject is one lane deep. About twelve neighbours fit
+  around a subject at reading size with straight wires; graph.ts has eighteen.
+  The router brought it to 0 of 55, at the price of cables that share channels
+  and of four cards in frame fewer than predicted. The other rule that broke on
+  sight: drawing every reference between showing rows put 82 wires on screen,
+  because every consumer of graph.ts also uses document.ts, so chords now join
+  kept cards only.
+
+  For your eye, the four pictures are in the probe folder, the estate state
+  (AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-state.png) first. In
+  my opinion it is the first still picture of the five-file set with every fact
+  legible and nothing hidden. The repository picture is honest and dense:
+  document.ts alone on the left, seventeen consumers spilling off the top and
+  bottom, and a trunk of some twenty wires rising from one pin. The page is live
+  at http://localhost:8882/repository/ and /estate/ for the transitions and the
+  hover, which no number covers.
+
+  Next, unless you redirect. The trunk as one drawn cable that fans at the far
+  end, a second ring of names, and your verdict on whether this placement
+  belongs in the Membrane Map's pin mode or in place of the Local Map's columns.
+
+● Both commits are in and the tree is clean. The Rings probe is built, measured,
+  and recorded.
+
+  What Rings is. The subject sits at the center of the frame and never moves.
+  What it uses fills the left half, what uses it fills the right, each card as
+  close as its wires allow, with the Local Map's cards, pins and blue-to-green
+  wires unchanged. A card shows only the symbols in play with the subject and
+  counts the rest; keeping a card shows everything and draws its chords. Wires
+  that cannot run straight are routed through the gaps between cards. The rules,
+  the four-card paper play and the predictions were written before any code, in
+  rings.md (AI-Agent-Workspace/Probes/2026-10-01/rings.md).
+
+  What the deck says, same five files, same frame:
+
+  ┌─────────────┬────────────┬─────────┬──────────────┬───────────────────┐
+  │    This     │   Facts    │ Cards   │ Wires over   │ Journey: subject  │
+  │ repository  │ legible of │   in    │   foreign    │  moved, answers   │
+  │             │     15     │  frame  │    cards     │      legible      │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Local Map   │          4 │ 5 of 19 │            0 │ 0 px, 2 of 5      │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Membrane    │          2 │ 7 of 42 │            3 │ 742 px, 0 of 5    │
+  │ Map         │            │         │              │                   │
+  ├─────────────┼────────────┼─────────┼──────────────┼───────────────────┤
+  │ Rings       │         11 │ 9 of 20 │            0 │ 0 px, 4 of 5      │
+  └─────────────┴────────────┴─────────┴──────────────┴───────────────────┘
+
+  On the estate Rings shows 3 of 3 facts with all 12 cards in frame and nothing
+  crossed. Every label stayed apart, nothing was cut off, and no route changed
+  under a pan.
+
+  Where the predictions failed, which is the finding. Legible, drawn and
+  off-frame counts held exactly. Occlusion did not: the first measurement read
+  35 of 55 wires over a card, not the 1 I predicted, and the diagnosis was that
+  the fan around a fixed subject is one lane deep. About twelve neighbours fit
+  around a subject at reading size with straight wires; graph.ts has eighteen.
+  The router brought it to 0 of 55, at the price of cables that share channels
+  and of four cards in frame fewer than predicted. The other rule that broke on
+  sight: drawing every reference between showing rows put 82 wires on screen,
+  because every consumer of graph.ts also uses document.ts, so chords now join
+  kept cards only.
+
+  For your eye, the four pictures are in the probe folder, the estate state
+  (AI-Agent-Workspace/Probes/2026-10-01/rings/estate-rings-state.png) first. In
+  my opinion it is the first still picture of the five-file set with every fact
+  legible and nothing hidden. The repository picture is honest and dense:
+  document.ts alone on the left, seventeen consumers spilling off the top and
+  bottom, and a trunk of some twenty wires rising from one pin. The page is live
+  at http://localhost:8882/repository/ and /estate/ for the transitions and the
+  hover, which no number covers.
+
+  Next, unless you redirect. The trunk as one drawn cable that fans at the far
+  end, a second ring of names, and your verdict on whether this placement
+  belongs in the Membrane Map's pin mode or in place of the Local Map's columns.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/bjhc3juy6.txt
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/brovul2fz.txt
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/3eeacbd0-e572-4003-8f9c-3061895f1a2a/tool-results/blvr216mq.txt
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01-153312-hi
+     -claude-fable-51.txt
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md

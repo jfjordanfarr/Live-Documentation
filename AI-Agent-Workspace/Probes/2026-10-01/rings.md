@@ -94,3 +94,16 @@ What a still picture cannot show and this record does not claim: the transition 
 - **The transitions need the owner's eye**, not a number; the journey's numbers only say that nothing moved.
 - **If the direction holds**, the ring placement and the router are a layout the Membrane Map's pin-active mode could adopt with its own cards, or the Local Map could adopt in place of its two columns, since the cards, pins and wire grammar are the Local Map's unchanged.
 
+
+## The owner's reading, 2026-10-01
+
+Read against the pictures above, in [Turn 7](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-7): the deck prices neither the harsh turns of the routed wires, nor cards of one folder sitting together, nor the designs in which moving is part of reading; and by their eye the Local Map is "far more informative about the shapes and connections of classes", the Membrane Map "far more informative about directory collocation/containment and long-distance multi-hop chains", and both have "a real sense of directionality" that the ring loses. On the first lesson above, the 82 wires: "Is that the shape of the software?" It is. Every one of the 27 chords that lesson dropped is a reference in the docs; the rule hid them and the deck charged nothing, because they fall outside the five-file scope. Rule 5 is restored on the page as it was written: every reference between two showing rows is drawn, and the subset is the person's to make by pinning. What that draws, same states, same frame:
+
+| Bundle | Wires | Routed | Cards placed behind others | References not drawn, their rows folded on compact cards |
+| --- | ---: | ---: | ---: | ---: |
+| This repository | 82 (was 55) | 13 (was 5) | 1 | 37 (was 64) |
+| The estate | 38 (was 14) | 31 (was 10) | 3 | 2 (was 26) |
+
+Pictures: [the repository with every reference drawn](rings/repository-rings-all-references.png) and [the estate](rings/estate-rings-all-references.png). What they show that the kept-only pictures hid: on the estate the three hubs use the same six contract files the service uses, so twenty-four chords cross from the right half-plane to the left, and every one has to go around the subject, which sits in the middle of the only road between its providers and its consumers. On the repository the chords from the consumers to `document.ts` box the subject in a frame of cables. A fixed center is an obstacle to every chord by construction. The Local Map never meets the problem because it never draws a chord, which is the same omission, equally unpriced.
+
+The measures the deck lacks, each named with the measure it pulls against, are proposed in the reply of Turn 7 and enter the deck on the owner's yes, with predictions written before any run.
