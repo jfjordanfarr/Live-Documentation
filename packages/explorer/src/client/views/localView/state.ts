@@ -32,8 +32,9 @@ export interface HoveredSymbol {
 }
 
 /**
- * Represents a computed path between two nodes.
- * Used for FROM-TO pathfinding mode.
+ * A path the Local Map draws, one column per file.
+ * Each file depends on the one before it, so the picture reads left to right
+ * from what offers to what uses; a path the other way is never set here.
  */
 export interface PathResult {
   /** Ordered list of node IDs from origin to destination */
@@ -42,8 +43,6 @@ export interface PathResult {
   fromSymbol?: string;
   /** The symbol at the destination (TO) */
   toSymbol?: string;
-  /** Whether path was found in reverse direction (and should be swapped) */
-  isReversed: boolean;
 }
 
 /**
@@ -189,16 +188,6 @@ export function setActivePath(state: LocalMapState, path: PathResult | null): Lo
     ...state,
     activePath: path,
     pinnedPath: path ? [] : state.pinnedPath // Clear pins when entering path mode
-  };
-}
-
-/**
- * Clears the active path, returning to exploration mode.
- */
-export function clearActivePath(state: LocalMapState): LocalMapState {
-  return {
-    ...state,
-    activePath: null
   };
 }
 

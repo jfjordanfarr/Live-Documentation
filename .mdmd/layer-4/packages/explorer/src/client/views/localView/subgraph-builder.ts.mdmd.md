@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-09-28T02:39:07.150Z
+- Generated At: 2026-10-01T21:05:42.473Z
 
 ## Authored
 ### Purpose
@@ -69,7 +69,7 @@ These enable the "French Corset" wraparound bezier visualization.
 
 #### `buildPathSubgraph` {#symbol-buildpathsubgraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L163)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L168)
 - Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
 - Parameters: `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver)
 
@@ -84,6 +84,11 @@ For a path [A, B, C]:
 - C is the "destination" (TO)
 - B is intermediate
 - Edges are filtered to only include A→B and B→C connections
+
+A link's direction is relative to the earlier of its two files: "inbound"
+when the later file depends on the earlier (the link runs with the path, and
+the path drawer draws it), "outbound" when the earlier file depends on the
+later (the link runs against the path and is counted, not drawn).
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

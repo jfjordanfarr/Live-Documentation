@@ -294,6 +294,13 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
   await pick("from", a);
   await pick("to", d);
   moves.take(await press(page, "#pathfind-go"));
+  await page.waitForSelector("#view-map.has-path, #pathfind-status a", { timeout: 10_000 });
+  // The Local Map draws a path only in its reading direction, what offers left of what uses it.
+  // Asked the other way round it offers the reverse question as a link; taking it is one more gesture.
+  const offered = await page.locator("#pathfind-status a").count();
+  if (offered > 0) {
+    moves.take(await press(page, "#pathfind-status a"));
+  }
   await page.waitForSelector("#view-map.has-path", { timeout: 10_000 });
   await page.waitForSelector("#map-connections .connection-path", { timeout: 10_000 });
   await page.waitForTimeout(1200);
@@ -301,6 +308,13 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
   const after = await boxOf(page, subject);
   const picture = await readPicture(page, LOCAL_MAP, names);
   const hops = scoreHops(graph, chain, picture);
+  // The pathfinder draws a shortest path of its own choosing; when it is not the deck's chain, say which it drew and how it reads.
+  // The strip lists the path provider first; the deck's chain is listed dependent first, so it is read backwards to compare and to score.
+  const drawn = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>("#pathfind-path .pathfind-path-hop-name")].map(el => el.title));
+  const drawnChain = [...drawn].reverse();
+  const drawnNote = drawnChain.join(" ") === chain.join(" ")
+    ? "the map drew the deck's chain"
+    : `the map drew ${drawn.join(" to ")}, another shortest path, of whose ${drawnChain.length - 1} hops ${scoreHops(graph, drawnChain, picture).legible} are legible; the chain's own hops are scored above`;
   const namesLegible = await legibleNames(page, LOCAL_MAP, chain);
   const historyEntry = (await backEnabled(page)) && !backBefore;
   const pathRow: Scoreboard = {
@@ -339,7 +353,12 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
       namesLegible,
       historyEntry,
       returnErrorPx: centerDistance(start, returned),
-      notes: ["through the pathfinder: click FROM, type, pick, click TO, type, pick, Find Path", "return move: Clear, not counted among the gestures"]
+      notes: [
+        "through the pathfinder: click FROM, type, pick, click TO, type, pick, Find Path",
+        offered > 0 ? "asked with the dependent first, the map offered the reverse question and one click took it" : "asked in the map's reading direction",
+        drawnNote,
+        "return move: Clear, not counted among the gestures"
+      ]
     },
     pathRow
   };

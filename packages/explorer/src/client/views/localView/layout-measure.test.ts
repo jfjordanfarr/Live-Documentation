@@ -11,9 +11,34 @@
 
 import { describe, expect, it } from "vitest";
 
-import { clamp, computeFitTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { clamp, computeFitTransform, computePathFitTransform, type Bounds, type LayoutExtents } from "./layout-measure";
 
 describe("layout-measure", () => {
+  describe("computePathFitTransform", () => {
+    const frame = { width: 1340, height: 880 } as DOMRect;
+    const bounds = (left: number, top: number, width: number, height: number): Bounds =>
+      ({ left, top, width, height, right: left + width, bottom: top + height });
+
+    it("centres a path that fits the frame, at reading size", () => {
+      const transform = computePathFitTransform(bounds(40, 20, 1000, 200), frame);
+      expect(transform.k).toBe(1);
+      expect(transform.x + 40 + 500).toBeCloseTo(670);
+      expect(transform.y + 20 + 100).toBeCloseTo(440);
+    });
+
+    it("puts the first file at the left edge when the path is wider than the frame", () => {
+      const transform = computePathFitTransform(bounds(40, 20, 1700, 200), frame);
+      expect(transform.k).toBe(1);
+      // the content's left lands one padding (2% of the frame, 26.8 px) inside the frame
+      expect(transform.x + 40).toBeCloseTo(26.8);
+      expect(transform.y + 20 + 100).toBeCloseTo(440);
+    });
+
+    it("never shrinks the text to make the path fit", () => {
+      expect(computePathFitTransform(bounds(0, 0, 4000, 200), frame).k).toBe(1);
+    });
+  });
+
   describe("clamp", () => {
     it("returns value when within range", () => {
       expect(clamp(5, 0, 10)).toBe(5);

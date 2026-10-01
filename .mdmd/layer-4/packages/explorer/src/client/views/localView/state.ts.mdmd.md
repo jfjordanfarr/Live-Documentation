@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/state.ts
-- Generated At: 2026-09-28T02:41:13.811Z
+- Generated At: 2026-10-01T21:05:42.441Z
 
 ## Authored
 ### Purpose
@@ -37,22 +37,23 @@ Represents a hovered symbol (temporary highlight, not pinned).
 
 #### `PathResult` {#symbol-pathresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L38)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L39)
 
 ##### `PathResult` — Summary
-Represents a computed path between two nodes.
-Used for FROM-TO pathfinding mode.
+A path the Local Map draws, one column per file.
+Each file depends on the one before it, so the picture reads left to right
+from what offers to what uses; a path the other way is never set here.
 
 #### `LocalMapState` {#symbol-localmapstate}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L52)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L51)
 
 ##### `LocalMapState` — Summary
 The complete state shape for Local Map visualization.
 
 #### `createInitialState` {#symbol-createinitialstate}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L72)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `createInitialState` — Summary
@@ -60,7 +61,7 @@ Creates a fresh initial state with sensible defaults.
 
 #### `StateSubscriber` {#symbol-statesubscriber}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L86)
 - Parameters: `state`: `T`; `prevState`: `T`
 
 ##### `StateSubscriber` — Summary
@@ -68,7 +69,7 @@ Subscriber callback type for state changes.
 
 #### `StateStore` {#symbol-statestore}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L104)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L103)
 
 ##### `StateStore` — Summary
 Observable state store with type-safe subscriptions.
@@ -87,7 +88,7 @@ unsubscribe();
 
 #### `createStateStore` {#symbol-createstatestore}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L118)
 - Returns: [`StateStore`](#symbol-statestore)
 - Parameters: `initialState`: `T`
 
@@ -102,7 +103,7 @@ A StateStore instance
 
 #### `addPin` {#symbol-addpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L154)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L153)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `pin`: [`SymbolPin`](#symbol-symbolpin)
 
@@ -112,7 +113,7 @@ Pins at higher hopIndexes are removed (truncates the path).
 
 #### `removePin` {#symbol-removepin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L166)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L165)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
@@ -121,7 +122,7 @@ Removes all pins from the given hopIndex onward.
 
 #### `clearPins` {#symbol-clearpins}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L176)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L175)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
@@ -130,7 +131,7 @@ Clears the entire pinned path.
 
 #### `setActivePath` {#symbol-setactivepath}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L187)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L186)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `path`: [`PathResult`](#symbol-pathresult)
 
@@ -138,18 +139,9 @@ Clears the entire pinned path.
 Sets the active path result for path mode rendering.
 Clears any existing pinned path since path mode takes precedence.
 
-#### `clearActivePath` {#symbol-clearactivepath}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L198)
-- Returns: [`LocalMapState`](#symbol-localmapstate)
-- Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
-
-##### `clearActivePath` — Summary
-Clears the active path, returning to exploration mode.
-
 #### `setHoveredSymbol` {#symbol-sethoveredsymbol}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L208)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L197)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate); `hovered`: [`HoveredSymbol`](#symbol-hoveredsymbol)
 
@@ -158,7 +150,7 @@ Sets the hovered symbol (or clears it with null).
 
 #### `setFocusedNode` {#symbol-setfocusednode}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L228)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L217)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
@@ -167,7 +159,7 @@ Sets the focused node ID (center of view).
 
 #### `setMaxHops` {#symbol-setmaxhops}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L241)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L230)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
@@ -176,7 +168,7 @@ Updates the maximum hop count.
 
 #### `toggleCollapseUnrelated` {#symbol-togglecollapseunrelated}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L255)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L244)
 - Returns: [`LocalMapState`](#symbol-localmapstate)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
@@ -185,7 +177,7 @@ Toggles the collapse-unrelated mode.
 
 #### `getPinnedNodeIds` {#symbol-getpinnednodeids}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L269)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L258)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `getPinnedNodeIds` — Summary
@@ -193,7 +185,7 @@ Returns the IDs of all nodes in the pinned path.
 
 #### `getPinnedSymbolsForNode` {#symbol-getpinnedsymbolsfornode}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L276)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L265)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `getPinnedSymbolsForNode` — Summary
@@ -201,7 +193,7 @@ Returns the symbols pinned on a specific node.
 
 #### `isSymbolPinned` {#symbol-issymbolpinned}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L285)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L274)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `isSymbolPinned` — Summary
@@ -209,7 +201,7 @@ Checks if a specific symbol is pinned.
 
 #### `getHopIndexForSymbol` {#symbol-gethopindexforsymbol}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L292)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L281)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `getHopIndexForSymbol` — Summary
@@ -217,7 +209,7 @@ Returns the hop index for a pinned symbol, or -1 if not pinned.
 
 #### `isHoveredSymbolPinned` {#symbol-ishoveredsymbolpinned}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L304)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L293)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `isHoveredSymbolPinned` — Summary
@@ -225,7 +217,7 @@ Returns true if the hovered symbol is part of the pinned path.
 
 #### `getRequiredColumnCount` {#symbol-getrequiredcolumncount}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L313)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/state.ts#L302)
 - Parameters: `state`: [`LocalMapState`](#symbol-localmapstate)
 
 ##### `getRequiredColumnCount` — Summary

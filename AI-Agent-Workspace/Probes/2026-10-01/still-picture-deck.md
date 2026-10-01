@@ -277,3 +277,29 @@ No label collided and no text was cut off in any state; no route changed under t
 Set beside their reading in Turn 7: the Local Map "far more informative about the shapes and connections of classes" is symbols shown (38 of 47 at reading size with every wire flowing) and the Membrane "far more informative about directory collocation/containment" is folder adjacency and folder legibility (36 of 37, 7 of 7). Both views' "real sense of directionality" is flow, which the ring lacks (46 of 82). The eye and the expanded deck agree; the first deck could not say so because it did not ask.
 
 The floor for the next design, from these tables: flow at the Local Map's level, folders at the Membrane's, facts legible and hidden-among-drawn at the ring's, and no fact's ends further apart than the frame at reading size. No view has all four, and the deck now says which a design trades for which.
+
+### The path mode set right, measured again that night
+
+_The owner confirmed the path mode's reversed grammar as a standing defect in [Turn 9](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-9) and agreed in [Turn 10](../../ChatHistory/2026/10/2026-10-01.1.record.md#turn-10) to fix it in the shipped Local Map by their rule of 2025-12-18. The fix is described in the record; these are the deck's rows before and after, same bundles, same chains, same frame._
+
+| Local Map, the path state | Legible | Drawn of facts | Crossings | Flow (flowing / backward of drawn) | Symbols shown | Hidden among drawn |
+| --- | ---: | ---: | --- | --- | --- | --- |
+| Repository, before | 6 of 7 | 7 of 7 | 0 / 0 / 0 of 7 | 0 / 7 of 7 | 14 of 14 | 0 of 7 |
+| Repository, after | 0 of 7 | 0 of 7 | 0 / 0 / 0 of 5 | 5 / 0 of 5 | 9 of 9 | 0 of 5 |
+| Estate, before | 2 of 4 | 4 of 4 | 0 / 0 / 0 of 4 | 0 / 4 of 4 | 15 of 16 | 0 of 4 |
+| Estate, after | 2 of 4 | 4 of 4 | 0 / 0 / 0 of 4 | 4 / 0 of 4 | 15 of 16 | 0 of 4 |
+
+| Chain journey through the pathfinder, return by Clear | Gestures | Smallest target px | A moved px | Hops legible of 3 | Names legible of 4 | Return error px |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Repository, before | 7 | 33 | 518 | 2 | 3 | 3846 |
+| Repository, after | 8 | 13 | 729 | 0 | 1 | 0 |
+| Estate, before | 7 | 33 | 518 | 2 | 4 | 270 |
+| Estate, after | 8 | 13 | 539 | 2 | 4 | 0 |
+
+What the rows say:
+
+- **Flow is the defect, and it is gone.** Every wire of both paths ran backward; every wire now flows. The crossings stay at 0: a path is one column per file and its wires cross nothing.
+- **The journey costs one more gesture**, and it is the smallest target of the deck. The chains are asked with the dependent first, `index.ts` to `symbolAnchors.ts`, which runs against the map's reading direction; the map now draws nothing and offers "show symbolAnchors.ts to index.ts" as a link, 13 px tall, and one click on it draws the path. The old journey drew at once, backward. The owner's rule prices the question asked the wrong way round at one click and tells the person which way the dependency runs.
+- **Clear returns to the pixel** on both bundles, where it had left the repository's subject 3,846 px below the frame and the estate's 270 px off. Every click in the toolbar had been starting a drag that marked the camera as the person's own; the toolbar is no longer a drag surface.
+- **The repository's path is another shortest path.** The deck's chain goes through `compressed-url-state.ts` and `pin-state.ts`; the search, now walking the provider's dependents, found `symbolAnchors.ts` to `controller.ts` to `localView/index.ts` to `client/index.ts`, also four files. The chain's own facts are therefore not drawn, which the row reports as 0 of 7 and the journey as 0 of 3 hops; the journey's note names the path drawn and says that 2 of its 3 hops are legible. The measure is honest about what it was asked; a chain scope fixes the facts, and a pathfinder is free to find any shortest path. On the estate the two coincide.
+- **A moved further** because the file asked about is now the path's last column, at the right, with the path framed from its first file at the left edge; the subject of the question is the path, and the person's file keeps its highlight at the end of it.

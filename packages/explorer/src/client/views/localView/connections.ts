@@ -48,8 +48,8 @@ export interface ConnectionsContext {
    */
   multiHopData?: MultiHopEntry[];
   /**
-   * Active pathfinding result. When provided, use path-mode connection drawing
-   * where all columns are "center" columns with different hopIndex values.
+   * The drawn path, when the view is in path mode. Its wires come from the
+   * path subgraph in `runtime.currentSubgraph`, one column per file.
    */
   activePath?: PathResult;
 }
@@ -67,18 +67,35 @@ interface AnchorMeasurement {
   columnPosition: "left" | "center" | "right";
 }
 
+interface Point {
+  x: number;
+  y: number;
+}
+
+/**
+ * Pin radius in CSS pixels (half of the 11.33px anchor width).
+ * Paths stop one radius shy of the pin center so they don't overlap the circle.
+ */
+const PIN_RADIUS = 6;
+
 /**
  * Main entry point for drawing SVG connection edges in the Local Map view.
  *
- * Delegates to either multi-hop or single-hop rendering depending on the
- * presence of {@link ConnectionsContext.multiHopData}.  Measures DOM anchor
- * positions relative to the container, computes Bézier curves, and appends
- * `<path>` elements to the SVG overlay.
+ * Delegates to the path drawer when a path is active, to the multi-hop drawer
+ * when {@link ConnectionsContext.multiHopData} is present, and otherwise to the
+ * single-hop drawer. Each measures DOM anchor positions relative to the
+ * container, computes Bézier curves, and appends `<path>` elements to the SVG
+ * overlay.
  */
 export function drawConnections(context: ConnectionsContext): void {
   const { runtime, state } = context;
   const { overlay, container, currentSubgraph, mapTransform } = runtime;
   overlay.innerHTML = "";
+
+  if (context.activePath && context.activePath.nodeIds.length > 0) {
+    drawPathConnections(context);
+    return;
+  }
 
   // Multi-hop path: delegate to dedicated drawing logic
   if (context.multiHopData && context.multiHopData.length > 0 && context.getAnchorWithHop) {
@@ -99,87 +116,27 @@ export function drawConnections(context: ConnectionsContext): void {
   }
   const bounds = extents.content;
 
-  const rootRect = container.getBoundingClientRect();
-  const scale = mapTransform.k || 1;
-
-  const positionCache = new Map<HTMLElement, AnchorMeasurement | null>();
-  const measureAnchor = (anchor: HTMLElement | null): AnchorMeasurement | null => {
-    if (!anchor) {
-      return null;
-    }
-    if (positionCache.has(anchor)) {
-      return positionCache.get(anchor) ?? null;
-    }
-    const rect = anchor.getBoundingClientRect();
-    // Hidden elements (display: none or collapsed) return zero-sized rects.
-    // Treat them as unmeasurable so edges skip them instead of drawing garbage paths.
-    if (rect.width === 0 && rect.height === 0) {
-      positionCache.set(anchor, null);
-      return null;
-    }
-    const cardElem = anchor.closest(".node-card");
-    const cardRect = cardElem instanceof HTMLElement ? cardElem.getBoundingClientRect() : null;
-    const columnElem = anchor.closest(".local-column");
-    let columnPosition: "left" | "center" | "right" = "center";
-    const position = columnElem instanceof HTMLElement ? columnElem.dataset.position : undefined;
-    if (position === "left" || position === "right" || position === "center") {
-      columnPosition = position;
-    }
-    const measurement: AnchorMeasurement = {
-      centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
-      centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
-      leftX: (rect.left - rootRect.left) / scale,
-      rightX: (rect.right - rootRect.left) / scale,
-      topY: (rect.top - rootRect.top) / scale,
-      bottomY: (rect.bottom - rootRect.top) / scale,
-      isSymbol: anchor.classList.contains("symbol-anchor"),
-      cardLeft: cardRect ? (cardRect.left - rootRect.left) / scale : (rect.left - rootRect.left) / scale,
-      cardRight: cardRect ? (cardRect.right - rootRect.left) / scale : (rect.right - rootRect.left) / scale,
-      columnPosition
-    };
-    positionCache.set(anchor, measurement);
-    return measurement;
-  };
+  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
 
   const segments: Array<{
     edge: LocalEdge;
     renderDirection: "inbound" | "outbound";
-    source: { x: number; y: number };
-    target: { x: number; y: number };
+    source: Point;
+    target: Point;
   }> = [];
 
   const centerId = currentSubgraph.center.id;
 
-  // Pin radius in CSS pixels (half of the 11.33px anchor width).
-  // Paths stop one radius shy of the pin center so they don't overlap the circle.
-  const PIN_RADIUS = 6;
-
   // Get center card bounds for self-loop routing
   const centerCardBounds = context.getCenterCardBounds?.();
-
-  // Offset a point horizontally by `distance` pixels based on pin direction.
-  // This keeps Y at the pin center while offsetting X to the pin edge.
-  // Outbound pins: connections exit to the right → offset to right edge (+distance)
-  // Inbound pins: connections enter from the left → offset to left edge (-distance)
-  const offsetToEdge = (
-    anchor: AnchorMeasurement,
-    pinDirection: "inbound" | "outbound",
-    distance: number
-  ): { x: number; y: number } => {
-    // Outbound pins emit to the right, inbound pins receive from the left
-    const offsetX = pinDirection === "outbound"
-      ? anchor.centerX + distance  // Right edge for outbound
-      : anchor.centerX - distance; // Left edge for inbound
-    return { x: offsetX, y: anchor.centerY };
-  };
 
   // Self-loop segments need special wraparound rendering
   const selfLoopSegments: Array<{
     edge: LocalEdge;
     source: AnchorMeasurement;
     target: AnchorMeasurement;
-    sourcePoint: { x: number; y: number };
-    targetPoint: { x: number; y: number };
+    sourcePoint: Point;
+    targetPoint: Point;
   }> = [];
 
   currentSubgraph.links.forEach(edge => {
@@ -196,8 +153,8 @@ export function drawConnections(context: ConnectionsContext): void {
         return;
       }
 
-      const sourcePoint = offsetToEdge(providerAnchor, "outbound", PIN_RADIUS);
-      const targetPoint = offsetToEdge(consumerAnchor, "inbound", PIN_RADIUS);
+      const sourcePoint = offsetToEdge(providerAnchor, "outbound");
+      const targetPoint = offsetToEdge(consumerAnchor, "inbound");
       selfLoopSegments.push({ edge, source: providerAnchor, target: consumerAnchor, sourcePoint, targetPoint });
       return;
     }
@@ -222,8 +179,8 @@ export function drawConnections(context: ConnectionsContext): void {
 
     // Offset both endpoints by PIN_RADIUS so paths stop at the pin edge, not center.
     // Provider is always outbound (emitting), consumer is always inbound (receiving).
-    const sourcePoint = offsetToEdge(providerAnchor, "outbound", PIN_RADIUS);
-    const targetPoint = offsetToEdge(consumerAnchor, "inbound", PIN_RADIUS);
+    const sourcePoint = offsetToEdge(providerAnchor, "outbound");
+    const targetPoint = offsetToEdge(consumerAnchor, "inbound");
     const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
     segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint });
   });
@@ -233,25 +190,7 @@ export function drawConnections(context: ConnectionsContext): void {
     return;
   }
 
-  const width = Math.max(bounds.width, 1);
-  const height = Math.max(bounds.height, 1);
-  const svg = document.createElementNS(context.svgNamespace, "svg") as SVGSVGElement;
-  svg.classList.add("connection-svg");
-  svg.setAttribute("width", `${width}`);
-  svg.setAttribute("height", `${height}`);
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.style.position = "absolute";
-  svg.style.left = `${bounds.left}px`;
-  svg.style.top = `${bounds.top}px`;
-  svg.style.width = `${width}px`;
-  svg.style.height = `${height}px`;
-  svg.style.pointerEvents = "none";
-
-  // Create defs element for gradients
-  const defs = document.createElementNS(context.svgNamespace, "defs") as SVGDefsElement;
-  svg.appendChild(defs);
-
-  overlay.appendChild(svg);
+  const { svg, defs } = createOverlaySvg(context, bounds);
 
   let gradientIndex = 0;
   segments.forEach(({ edge, renderDirection, source, target }) => {
@@ -292,11 +231,94 @@ export function drawConnections(context: ConnectionsContext): void {
   overlay.dataset.active = "true";
 }
 
+/**
+ * Returns a function that measures an anchor's position in container
+ * coordinates, unscaled, caching each anchor. Hidden elements (display: none
+ * or collapsed) return zero-sized rects and are treated as unmeasurable so
+ * edges skip them instead of drawing garbage paths.
+ */
+function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: HTMLElement | null) => AnchorMeasurement | null {
+  const rootRect = container.getBoundingClientRect();
+  const positionCache = new Map<HTMLElement, AnchorMeasurement | null>();
+  return (anchor: HTMLElement | null): AnchorMeasurement | null => {
+    if (!anchor) {
+      return null;
+    }
+    if (positionCache.has(anchor)) {
+      return positionCache.get(anchor) ?? null;
+    }
+    const rect = anchor.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) {
+      positionCache.set(anchor, null);
+      return null;
+    }
+    const cardElem = anchor.closest(".node-card");
+    const cardRect = cardElem instanceof HTMLElement ? cardElem.getBoundingClientRect() : null;
+    const columnElem = anchor.closest(".local-column");
+    let columnPosition: "left" | "center" | "right" = "center";
+    const position = columnElem instanceof HTMLElement ? columnElem.dataset.position : undefined;
+    if (position === "left" || position === "right" || position === "center") {
+      columnPosition = position;
+    }
+    const measurement: AnchorMeasurement = {
+      centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
+      centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
+      leftX: (rect.left - rootRect.left) / scale,
+      rightX: (rect.right - rootRect.left) / scale,
+      topY: (rect.top - rootRect.top) / scale,
+      bottomY: (rect.bottom - rootRect.top) / scale,
+      isSymbol: anchor.classList.contains("symbol-anchor"),
+      cardLeft: cardRect ? (cardRect.left - rootRect.left) / scale : (rect.left - rootRect.left) / scale,
+      cardRight: cardRect ? (cardRect.right - rootRect.left) / scale : (rect.right - rootRect.left) / scale,
+      columnPosition
+    };
+    positionCache.set(anchor, measurement);
+    return measurement;
+  };
+}
+
+/**
+ * The point a wire meets a pin: one pin radius outside its centre, to the
+ * right of an outbound pin (wires leave to the right) and to the left of an
+ * inbound pin (wires arrive from the left), level with the pin.
+ */
+function offsetToEdge(anchor: AnchorMeasurement, pinDirection: "inbound" | "outbound"): Point {
+  const offsetX = pinDirection === "outbound"
+    ? anchor.centerX + PIN_RADIUS
+    : anchor.centerX - PIN_RADIUS;
+  return { x: offsetX, y: anchor.centerY };
+}
+
+/** Creates the overlay's SVG, sized and placed over the content bounds, with its gradient defs. */
+function createOverlaySvg(
+  context: ConnectionsContext,
+  bounds: { left: number; top: number; width: number; height: number }
+): { svg: SVGSVGElement; defs: SVGDefsElement } {
+  const width = Math.max(bounds.width, 1);
+  const height = Math.max(bounds.height, 1);
+  const svg = document.createElementNS(context.svgNamespace, "svg") as SVGSVGElement;
+  svg.classList.add("connection-svg");
+  svg.setAttribute("width", `${width}`);
+  svg.setAttribute("height", `${height}`);
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.style.position = "absolute";
+  svg.style.left = `${bounds.left}px`;
+  svg.style.top = `${bounds.top}px`;
+  svg.style.width = `${width}px`;
+  svg.style.height = `${height}px`;
+  svg.style.pointerEvents = "none";
+
+  const defs = document.createElementNS(context.svgNamespace, "defs") as SVGDefsElement;
+  svg.appendChild(defs);
+  context.runtime.overlay.appendChild(svg);
+  return { svg, defs };
+}
+
 function appendConnectionPath(
   svg: SVGSVGElement,
   defs: SVGDefsElement,
-  source: { x: number; y: number },
-  target: { x: number; y: number },
+  source: Point,
+  target: Point,
   renderDirection: "inbound" | "outbound",
   edge: LocalEdge,
   svgNamespace: string,
@@ -389,8 +411,8 @@ function appendConnectionPath(
  */
 function appendSelfLoopPath(
   svg: SVGSVGElement,
-  source: { x: number; y: number },
-  target: { x: number; y: number },
+  source: Point,
+  target: Point,
   _sourceAnchor: AnchorMeasurement,
   _targetAnchor: AnchorMeasurement,
   _cardBounds: { left: number; right: number; top: number; bottom: number },
@@ -477,7 +499,74 @@ function appendSelfLoopPath(
 }
 
 /**
- * Draw connections for multi-hop pathfinding visualization.
+ * Draws the wires of a path: one column per file, each file depending on the
+ * one before it, so what offers stands left of what uses it.
+ *
+ * Every reference between adjacent files that runs with the path leaves the
+ * earlier file's offering pin (blue, right edge) and enters the later file's
+ * using pin (green, left edge), the same grammar as the exploration columns.
+ * A reference that runs against the path, the earlier file depending on the
+ * later, is not drawn: a wire never reaches backwards across the columns (the
+ * owner's rule of 2025-12-18). The toolbar counts those references instead.
+ */
+function drawPathConnections(context: ConnectionsContext): void {
+  const { runtime, state, activePath, getAnchorWithHop } = context;
+  const { overlay, container, currentSubgraph, mapTransform } = runtime;
+
+  if (!activePath || !currentSubgraph || !getAnchorWithHop) {
+    overlay.dataset.active = "false";
+    return;
+  }
+
+  const extents = context.measureLayoutExtents();
+  if (!extents) {
+    overlay.dataset.active = "false";
+    return;
+  }
+  const bounds = extents.content;
+
+  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
+  const columnOf = new Map(activePath.nodeIds.map((id, index) => [id, index] as const));
+
+  const segments: Array<{ edge: LocalEdge; source: Point; target: Point; column: number }> = [];
+  for (const edge of currentSubgraph.links) {
+    // The link runs from the file that depends (its source) to the file it depends on (its target).
+    const providerColumn = columnOf.get(edge.targetId);
+    const consumerColumn = columnOf.get(edge.sourceId);
+    if (providerColumn === undefined || consumerColumn === undefined || consumerColumn !== providerColumn + 1) {
+      continue;
+    }
+    const providerAnchor = measureAnchor(getAnchorWithHop(edge.targetId, "center", providerColumn, "outbound", edge.targetSymbol));
+    const consumerAnchor = measureAnchor(getAnchorWithHop(edge.sourceId, "center", consumerColumn, "inbound", edge.sourceSymbol));
+    if (!providerAnchor || !consumerAnchor) {
+      continue;
+    }
+    segments.push({
+      edge,
+      source: offsetToEdge(providerAnchor, "outbound"),
+      target: offsetToEdge(consumerAnchor, "inbound"),
+      column: providerColumn
+    });
+  }
+
+  if (segments.length === 0) {
+    overlay.dataset.active = "false";
+    return;
+  }
+
+  const { svg, defs } = createOverlaySvg(context, bounds);
+  let gradientIndex = 0;
+  for (const { edge, source, target, column } of segments) {
+    const adjustedSource = { x: source.x - bounds.left, y: source.y - bounds.top };
+    const adjustedTarget = { x: target.x - bounds.left, y: target.y - bounds.top };
+    const gradientId = `conn-grad-hop${column}-${gradientIndex++}`;
+    appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId);
+  }
+  overlay.dataset.active = "true";
+}
+
+/**
+ * Draw connections for multi-hop exploration.
  * 
  * Each hop has three columns:
  *   - upstream (dependencies, hopIndex N)
@@ -489,16 +578,8 @@ function appendSelfLoopPath(
  * the downstream column of hop N containing the center of hop N+1.
  */
 function drawMultiHopConnections(context: ConnectionsContext): void {
-  const { runtime, state, multiHopData, getAnchorWithHop, activePath } = context;
+  const { runtime, state, multiHopData, getAnchorWithHop } = context;
   const { overlay, container, mapTransform } = runtime;
-
-  if (!multiHopData || !getAnchorWithHop) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  // Path mode: all columns are "center" columns with different hopIndex values
-  const isPathMode = !!activePath && activePath.nodeIds.length > 0;
 
   if (!multiHopData || !getAnchorWithHop) {
     overlay.dataset.active = "false";
@@ -512,152 +593,48 @@ function drawMultiHopConnections(context: ConnectionsContext): void {
   }
   const bounds = extents.content;
 
-  const rootRect = container.getBoundingClientRect();
-  const scale = mapTransform.k || 1;
-
-  const positionCache = new Map<HTMLElement, AnchorMeasurement | null>();
-  const measureAnchor = (anchor: HTMLElement | null): AnchorMeasurement | null => {
-    if (!anchor) {
-      return null;
-    }
-    if (positionCache.has(anchor)) {
-      return positionCache.get(anchor) ?? null;
-    }
-    const rect = anchor.getBoundingClientRect();
-    if (rect.width === 0 && rect.height === 0) {
-      positionCache.set(anchor, null);
-      return null;
-    }
-    const cardElem = anchor.closest(".node-card");
-    const cardRect = cardElem instanceof HTMLElement ? cardElem.getBoundingClientRect() : null;
-    const columnElem = anchor.closest(".local-column");
-    let columnPosition: "left" | "center" | "right" = "center";
-    const position = columnElem instanceof HTMLElement ? columnElem.dataset.position : undefined;
-    if (position === "left" || position === "right" || position === "center") {
-      columnPosition = position;
-    }
-    const measurement: AnchorMeasurement = {
-      centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
-      centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
-      leftX: (rect.left - rootRect.left) / scale,
-      rightX: (rect.right - rootRect.left) / scale,
-      topY: (rect.top - rootRect.top) / scale,
-      bottomY: (rect.bottom - rootRect.top) / scale,
-      isSymbol: anchor.classList.contains("symbol-anchor"),
-      cardLeft: cardRect ? (cardRect.left - rootRect.left) / scale : (rect.left - rootRect.left) / scale,
-      cardRight: cardRect ? (cardRect.right - rootRect.left) / scale : (rect.right - rootRect.left) / scale,
-      columnPosition
-    };
-    positionCache.set(anchor, measurement);
-    return measurement;
-  };
-
-  const PIN_RADIUS = 6;
-
-  const offsetToEdge = (
-    anchor: AnchorMeasurement,
-    pinDirection: "inbound" | "outbound",
-    distance: number
-  ): { x: number; y: number } => {
-    const offsetX = pinDirection === "outbound"
-      ? anchor.centerX + distance
-      : anchor.centerX - distance;
-    return { x: offsetX, y: anchor.centerY };
-  };
+  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
 
   const segments: Array<{
     edge: LocalEdge;
     renderDirection: "inbound" | "outbound";
-    source: { x: number; y: number };
-    target: { x: number; y: number };
+    source: Point;
+    target: Point;
     hopIndex: number;
   }> = [];
 
-  // PATH MODE: Draw connections between adjacent path nodes
-  // In path mode, all columns are "center" columns with different hopIndex values.
-  // Edges are deduplicated because the same edge appears in adjacent hop subgraphs.
-  if (isPathMode) {
-    const drawnPathEdges = new Set<string>();
+  for (const hopEntry of multiHopData) {
+    const { hopIndex, centerId, subgraph } = hopEntry;
 
-    for (const hopEntry of multiHopData) {
-      const { subgraph } = hopEntry;
-      
-      subgraph.links.forEach(edge => {
-        // Deduplicate: each edge appears in both adjacent hop subgraphs
-        const edgeKey = `${edge.sourceId}|${edge.targetId}|${edge.sourceSymbol ?? ""}|${edge.targetSymbol ?? ""}`;
-        if (drawnPathEdges.has(edgeKey)) return;
-        drawnPathEdges.add(edgeKey);
+    subgraph.links.forEach(edge => {
+      // Skip self-loops for now in multi-hop (can be extended later)
+      const isSelfLoop = edge.sourceId === centerId && edge.targetId === centerId;
+      if (isSelfLoop) {
+        return;
+      }
 
-        // Find the hopIndex of the edge's source and target nodes
-        const sourceHopIndex = multiHopData.findIndex(h => h.centerId === edge.sourceId);
-        const targetHopIndex = multiHopData.findIndex(h => h.centerId === edge.targetId);
-        
-        // Only draw edges between adjacent path nodes (no self-loops, no gaps)
-        if (sourceHopIndex < 0 || targetHopIndex < 0) {
-          return; // Node not in path
-        }
-        if (Math.abs(sourceHopIndex - targetHopIndex) !== 1) {
-          return; // Not adjacent
-        }
-        
-        // Determine direction: left-to-right is the natural flow
-        const isForward = sourceHopIndex < targetHopIndex;
-        
-        // Connect adjacent path columns left-to-right.
-        // Each node's anchor is looked up with its OWN symbol:
-        //   sourceSymbol belongs to sourceId, targetSymbol belongs to targetId.
-        const providerAnchor = measureAnchor(
-          getAnchorWithHop(edge.sourceId, "center", sourceHopIndex, "outbound", edge.sourceSymbol)
-        );
-        const consumerAnchor = measureAnchor(
-          getAnchorWithHop(edge.targetId, "center", targetHopIndex, "inbound", edge.targetSymbol)
-        );
-        
-        if (!providerAnchor || !consumerAnchor) {
-          return;
-        }
-        
-        const sourcePoint = offsetToEdge(providerAnchor, "outbound", PIN_RADIUS);
-        const targetPoint = offsetToEdge(consumerAnchor, "inbound", PIN_RADIUS);
-        const renderDirection: "inbound" | "outbound" = isForward ? "outbound" : "inbound";
-        segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint, hopIndex: sourceHopIndex });
-      });
-    }
-  } else {
-    // EXPLORATION MODE: Draw connections within each hop (upstream→center, center→downstream)
-    for (const hopEntry of multiHopData) {
-      const { hopIndex, centerId, subgraph } = hopEntry;
+      const isDependency = edge.direction === "outbound";
 
-      subgraph.links.forEach(edge => {
-        // Skip self-loops for now in multi-hop (can be extended later)
-        const isSelfLoop = edge.sourceId === centerId && edge.targetId === centerId;
-        if (isSelfLoop) {
-          return;
-        }
+      // For multi-hop, use hop-aware anchor lookup
+      // Dependencies: upstream(hopN) → center(hopN)
+      // Dependents: center(hopN) → downstream(hopN)
+      const providerAnchor = isDependency
+        ? measureAnchor(getAnchorWithHop(edge.targetId, "upstream", hopIndex, "outbound", edge.targetSymbol))
+        : measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "outbound", edge.targetSymbol));
 
-        const isDependency = edge.direction === "outbound";
+      const consumerAnchor = isDependency
+        ? measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "inbound", edge.sourceSymbol))
+        : measureAnchor(getAnchorWithHop(edge.sourceId, "downstream", hopIndex, "inbound", edge.sourceSymbol));
 
-        // For multi-hop, use hop-aware anchor lookup
-        // Dependencies: upstream(hopN) → center(hopN)
-        // Dependents: center(hopN) → downstream(hopN)
-        const providerAnchor = isDependency
-          ? measureAnchor(getAnchorWithHop(edge.targetId, "upstream", hopIndex, "outbound", edge.targetSymbol))
-          : measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "outbound", edge.targetSymbol));
+      if (!providerAnchor || !consumerAnchor) {
+        return;
+      }
 
-        const consumerAnchor = isDependency
-          ? measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "inbound", edge.sourceSymbol))
-          : measureAnchor(getAnchorWithHop(edge.sourceId, "downstream", hopIndex, "inbound", edge.sourceSymbol));
-
-        if (!providerAnchor || !consumerAnchor) {
-          return;
-        }
-
-        const sourcePoint = offsetToEdge(providerAnchor, "outbound", PIN_RADIUS);
-        const targetPoint = offsetToEdge(consumerAnchor, "inbound", PIN_RADIUS);
-        const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
-        segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint, hopIndex });
-      });
-    }
+      const sourcePoint = offsetToEdge(providerAnchor, "outbound");
+      const targetPoint = offsetToEdge(consumerAnchor, "inbound");
+      const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
+      segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint, hopIndex });
+    });
   }
 
   if (segments.length === 0) {
@@ -665,23 +642,7 @@ function drawMultiHopConnections(context: ConnectionsContext): void {
     return;
   }
 
-  const width = Math.max(bounds.width, 1);
-  const height = Math.max(bounds.height, 1);
-  const svg = document.createElementNS(context.svgNamespace, "svg") as SVGSVGElement;
-  svg.classList.add("connection-svg");
-  svg.setAttribute("width", `${width}`);
-  svg.setAttribute("height", `${height}`);
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.style.position = "absolute";
-  svg.style.left = `${bounds.left}px`;
-  svg.style.top = `${bounds.top}px`;
-  svg.style.width = `${width}px`;
-  svg.style.height = `${height}px`;
-  svg.style.pointerEvents = "none";
-
-  const defs = document.createElementNS(context.svgNamespace, "defs") as SVGDefsElement;
-  svg.appendChild(defs);
-  overlay.appendChild(svg);
+  const { svg, defs } = createOverlaySvg(context, bounds);
 
   let gradientIndex = 0;
   segments.forEach(({ edge, renderDirection, source, target, hopIndex }) => {

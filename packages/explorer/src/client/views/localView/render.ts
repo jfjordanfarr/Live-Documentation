@@ -7,7 +7,7 @@ import {
 } from "./layout-math";
 import type { PathResult, SymbolPin } from "./state";
 import type { LocalSubgraph } from "./types";
-import type { ExplorerNodePayload } from "../../../shared/types";
+
 
 /** Renders (or re-renders) the Local Map DOM layout from the current controller state. */
 export function renderLocalView(controller: LocalViewController): void {
@@ -36,6 +36,7 @@ export function renderLocalView(controller: LocalViewController): void {
   overlay.innerHTML = "";
   container.innerHTML = "";
   controller.currentSubgraph = null;
+  controller.setMultiHopSubgraphs(null);
   controller.contentRoot = null;
   controller.clearAnchors();
 
@@ -106,9 +107,9 @@ export function renderLocalView(controller: LocalViewController): void {
   // Path mode: render a simple linear chain of nodes
   if (activePath && activePath.nodeIds.length > 0) {
     renderPathModeColumns(controller, layoutRoot, activePath, connectionScore);
-    // Always fit viewport to path content (path mode is a fresh visualization)
+    // A path is always framed afresh, from its first file
     controller.applyColumnVerticalCentering(layoutRoot);
-    controller.fitMapToContent();
+    controller.fitMapToPath();
     controller.scheduleConnectionRedraw();
     return;
   }
@@ -306,22 +307,13 @@ function renderMultiHopColumns(
 }
 
 /**
- * Renders path mode: a simple linear chain of nodes in the path.
- * 
- * Path mode is used when a FROM-TO pathfinding result is active.
- * To leverage the existing connection drawing infrastructure, we render
- * the path nodes using the same column structure as exploration mode:
- * 
- * For 2-node path (FROM → TO):
- *   - FROM as center column
- *   - TO as downstream (dependents) column
- *   - Edges from the path subgraph are used for connections
- * 
- * For N-node path (FROM → Hop1 → ... → TO):
- *   - Each node gets its own column as in multi-hop mode
- *   - But only edges between adjacent path nodes are shown
- * 
- * This approach reuses the proven connection drawing infrastructure.
+ * Renders path mode: one column per file of the path, in the path's order.
+ *
+ * The path is set only in the direction the map reads, each file depending on
+ * the one before it, so the first column offers and the last uses. The columns
+ * are center columns with the path index as their hop index; the wires between
+ * adjacent columns are drawn by the path drawer in `connections.ts` from the
+ * path subgraph's links.
  */
 function renderPathModeColumns(
   controller: LocalViewController,
@@ -352,9 +344,6 @@ function renderPathModeColumns(
   // Set the path subgraph as currentSubgraph for connection drawing
   controller.currentSubgraph = pathSubgraph;
 
-  // All path modes (2+ nodes) render a uniform linear chain of center columns.
-  // Each path node gets exactly ONE column — no duplicates.
-  // Connection drawing is handled by the multi-hop path mode in connections.ts.
   layoutRoot.classList.add("path-mode");
   
   for (let i = 0; i < pathSubgraph.nodes.length; i++) {
@@ -399,45 +388,4 @@ function renderPathModeColumns(
       highlightSymbolInColumn(centerColumn, toSymbol);
     }
   }
-
-  // Set up for multi-hop connection drawing
-  // Build hop subgraphs that include edges to the next hop only
-  const hopSubgraphs: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> = [];
-  for (let i = 0; i < pathSubgraph.nodes.length; i++) {
-    const node = pathSubgraph.nodes[i];
-    
-    // Each hop's subgraph contains only edges to/from adjacent path nodes
-    const hopLinks = pathSubgraph.links.filter(edge => {
-      // Include edges connecting to the next node in path
-      if (i < pathSubgraph.nodes.length - 1) {
-        const nextNode = pathSubgraph.nodes[i + 1];
-        if ((edge.sourceId === node.id && edge.targetId === nextNode.id) ||
-            (edge.targetId === node.id && edge.sourceId === nextNode.id)) {
-          return true;
-        }
-      }
-      // Include edges connecting to the previous node in path
-      if (i > 0) {
-        const prevNode = pathSubgraph.nodes[i - 1];
-        if ((edge.sourceId === node.id && edge.targetId === prevNode.id) ||
-            (edge.targetId === node.id && edge.sourceId === prevNode.id)) {
-          return true;
-        }
-      }
-      return false;
-    });
-
-    const hopSubgraph: LocalSubgraph = {
-      center: node,
-      nodes: [node],
-      links: hopLinks,
-      inboundIds: new Set(hopLinks.filter(e => e.targetId === node.id).map(e => e.sourceId)),
-      outboundIds: new Set(hopLinks.filter(e => e.sourceId === node.id).map(e => e.targetId))
-    };
-
-    hopSubgraphs.push({ center: node, subgraph: hopSubgraph });
-  }
-
-  // Store hop subgraphs for multi-hop connection drawing
-  controller.setMultiHopSubgraphs(hopSubgraphs);
 }

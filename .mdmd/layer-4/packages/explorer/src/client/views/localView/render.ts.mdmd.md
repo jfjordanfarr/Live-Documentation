@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/render.ts
-- Generated At: 2026-09-28T01:11:43.769Z
+- Generated At: 2026-10-01T21:05:42.385Z
 
 ## Authored
 ### Purpose
@@ -39,5 +39,4 @@ Renders (or re-renders) the Local Map DOM layout from the current controller sta
 - [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
-- [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

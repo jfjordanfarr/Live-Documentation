@@ -27,21 +27,28 @@ export interface PathHop {
   symbol?: string;
 }
 
-/** Result of a pathfinding operation */
+/** What a search between two files found. */
 export interface PathfindResult {
-  found: boolean;
+  /**
+   * The hops from FROM to TO when TO depends on FROM. This is the only path the
+   * Local Map draws: what offers stands left of what uses it, so FROM must offer
+   * and TO must use. Empty when no such path exists.
+   */
   path: PathHop[];
+  /**
+   * The hops from TO to FROM when only FROM depends on TO: the same files, read in
+   * the direction the map can draw. The map never draws a path against its
+   * reading direction; it says there is none and offers this reverse question
+   * instead (the owner's rule of 2025-12-18). Empty when `path` is found or no
+   * path exists either way.
+   */
+  reversePath: PathHop[];
   fromEndpoint: PathfindEndpoint;
   toEndpoint: PathfindEndpoint;
+  /** Files visited by the searches, counted only when nothing is drawn. */
   searchedNodes: number;
+  /** Whether a search stopped at the hop limit before reaching its target. */
   maxDepthReached: boolean;
-  /**
-   * Which edge direction was followed to find the path:
-   * - "inbound": TO depends on FROM (path follows dependent → dependency chain)
-   * - "outbound": FROM depends on TO (path follows dependency → dependent chain)
-   * - null: No path found
-   */
-  direction: "inbound" | "outbound" | null;
 }
 
 /** Default maximum hops to search */
@@ -55,9 +62,19 @@ export interface PathfindCallbacks {
   onClear: () => void;
 }
 
+function endpointId(endpoint: ExplorerLinkPayload["source"]): string {
+  return typeof endpoint === "string" ? endpoint : endpoint.id;
+}
+
 /**
- * BFS pathfinding between two nodes in the explorer graph.
- * Returns the shortest path from source to target.
+ * Finds the shortest path the Local Map can draw between two files, or the
+ * reverse of it when only the reverse exists.
+ *
+ * A link runs from the file that depends to the file it depends on, so the map's
+ * reading direction, offers on the left and uses on the right, walks a file's
+ * dependents. The search from FROM along dependents reaches TO exactly when TO
+ * depends on FROM; the same search from TO reaches FROM when FROM depends on TO,
+ * and that path is returned as `reversePath`, provider first, never drawn.
  */
 export function findPath(
   fromNodeId: string,
@@ -68,108 +85,86 @@ export function findPath(
 ): PathfindResult {
   const fromNode = nodesById.get(fromNodeId);
   const toNode = nodesById.get(toNodeId);
-
-  if (!fromNode || !toNode) {
-    return {
-      found: false,
-      path: [],
-      fromEndpoint: { node: fromNode || { id: fromNodeId } as ExplorerNodePayload },
-      toEndpoint: { node: toNode || { id: toNodeId } as ExplorerNodePayload },
-      searchedNodes: 0,
-      maxDepthReached: false,
-      direction: null
-    };
-  }
-
-  // Build DIRECTED adjacency lists:
-  // - outboundAdj: source → [targets] (nodes that source depends on)
-  // - inboundAdj: target → [sources] (nodes that depend on target)
-  // Links are stored as source → target where source DEPENDS ON target
-  const outboundAdj = new Map<string, Set<string>>();
-  const inboundAdj = new Map<string, Set<string>>();
-  
-  for (const link of links) {
-    const sourceId = typeof link.source === "string" ? link.source : link.source.id;
-    const targetId = typeof link.target === "string" ? link.target : link.target.id;
-    
-    // source depends on target (outbound from source to target)
-    if (!outboundAdj.has(sourceId)) {
-      outboundAdj.set(sourceId, new Set());
-    }
-    outboundAdj.get(sourceId)!.add(targetId);
-    
-    // target has source as a dependent (inbound to target from source)
-    if (!inboundAdj.has(targetId)) {
-      inboundAdj.set(targetId, new Set());
-    }
-    inboundAdj.get(targetId)!.add(sourceId);
-  }
-
-  // Try to find a path following INBOUND edges (FROM is depended on by... → TO)
-  // This means: FROM → (something that depends on FROM) → ... → TO
-  // Semantically: TO depends (transitively) on FROM
-  const inboundPath = directedBFS(fromNodeId, toNodeId, inboundAdj, nodesById, maxHops);
-  if (inboundPath.found) {
-    return { ...inboundPath, direction: "inbound" as const };
-  }
-
-  // Try to find a path following OUTBOUND edges (FROM depends on... → TO)
-  // This means: FROM → (something FROM depends on) → ... → TO
-  // Semantically: FROM depends (transitively) on TO
-  const outboundPath = directedBFS(fromNodeId, toNodeId, outboundAdj, nodesById, maxHops);
-  if (outboundPath.found) {
-    return { ...outboundPath, direction: "outbound" as const };
-  }
-
-  // No directed path found
-  return {
-    found: false,
+  const nothing: PathfindResult = {
     path: [],
-    fromEndpoint: { node: fromNode },
-    toEndpoint: { node: toNode },
-    searchedNodes: inboundPath.searchedNodes + outboundPath.searchedNodes,
-    maxDepthReached: inboundPath.maxDepthReached || outboundPath.maxDepthReached,
-    direction: null
+    reversePath: [],
+    fromEndpoint: { node: fromNode ?? ({ id: fromNodeId } as ExplorerNodePayload) },
+    toEndpoint: { node: toNode ?? ({ id: toNodeId } as ExplorerNodePayload) },
+    searchedNodes: 0,
+    maxDepthReached: false
+  };
+  if (!fromNode || !toNode) {
+    return nothing;
+  }
+
+  // dependents: file -> the files that depend on it
+  const dependents = new Map<string, Set<string>>();
+  for (const link of links) {
+    const sourceId = endpointId(link.source);
+    const targetId = endpointId(link.target);
+    let set = dependents.get(targetId);
+    if (!set) {
+      set = new Set();
+      dependents.set(targetId, set);
+    }
+    set.add(sourceId);
+  }
+
+  const forward = directedBFS(fromNodeId, toNodeId, dependents, nodesById, maxHops);
+  if (forward.path) {
+    return { ...nothing, path: forward.path };
+  }
+  const reverse = directedBFS(toNodeId, fromNodeId, dependents, nodesById, maxHops);
+  return {
+    ...nothing,
+    reversePath: reverse.path ?? [],
+    searchedNodes: forward.searchedNodes + reverse.searchedNodes,
+    maxDepthReached: forward.maxDepthReached || reverse.maxDepthReached
   };
 }
 
 /**
- * Directed BFS following edges in one direction only.
+ * The references between the files of a drawn path that run against it: an
+ * earlier file, which the picture shows offering, depending on a later one.
+ * The path drawer leaves them out, so the toolbar counts them aloud.
  */
+export function referencesAgainstPath(pathNodeIds: readonly string[], links: ExplorerLinkPayload[]): number {
+  const position = new Map(pathNodeIds.map((id, index) => [id, index] as const));
+  let count = 0;
+  for (const link of links) {
+    const dependent = position.get(endpointId(link.source));
+    const dependency = position.get(endpointId(link.target));
+    if (dependent !== undefined && dependency !== undefined && dependent < dependency) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+interface Search {
+  /** The hops from the start to the target, or null when the target was not reached. */
+  path: PathHop[] | null;
+  searchedNodes: number;
+  maxDepthReached: boolean;
+}
+
+/** Breadth-first search from one file to another along one adjacency. */
 function directedBFS(
   fromNodeId: string,
   toNodeId: string,
   adjacency: Map<string, Set<string>>,
   nodesById: Map<string, ExplorerNodePayload>,
   maxHops: number
-): PathfindResult {
-  const fromNode = nodesById.get(fromNodeId);
-  const toNode = nodesById.get(toNodeId);
-
-  if (!fromNode || !toNode) {
-    return {
-      found: false,
-      path: [],
-      fromEndpoint: { node: fromNode || { id: fromNodeId } as ExplorerNodePayload },
-      toEndpoint: { node: toNode || { id: toNodeId } as ExplorerNodePayload },
-      searchedNodes: 0,
-      maxDepthReached: false,
-      direction: null
-    };
-  }
-
-  const visited = new Set<string>();
+): Search {
+  const visited = new Set<string>([fromNodeId]);
   const parents = new Map<string, string>();
   const queue: Array<{ nodeId: string; depth: number }> = [{ nodeId: fromNodeId, depth: 0 }];
-  visited.add(fromNodeId);
-
   let maxDepthReached = false;
 
   while (queue.length > 0) {
     const { nodeId, depth } = queue.shift()!;
 
     if (nodeId === toNodeId) {
-      // Reconstruct path
       const path: PathHop[] = [];
       let current: string | undefined = toNodeId;
       while (current !== undefined) {
@@ -179,15 +174,7 @@ function directedBFS(
         }
         current = parents.get(current);
       }
-      return {
-        found: true,
-        path,
-        fromEndpoint: { node: fromNode },
-        toEndpoint: { node: toNode },
-        searchedNodes: visited.size,
-        maxDepthReached: false,
-        direction: null // Caller will override with actual direction
-      };
+      return { path, searchedNodes: visited.size, maxDepthReached: false };
     }
 
     if (depth >= maxHops) {
@@ -195,8 +182,7 @@ function directedBFS(
       continue;
     }
 
-    const neighbors = adjacency.get(nodeId) || new Set();
-    for (const neighborId of neighbors) {
+    for (const neighborId of adjacency.get(nodeId) ?? []) {
       if (!visited.has(neighborId)) {
         visited.add(neighborId);
         parents.set(neighborId, nodeId);
@@ -205,15 +191,7 @@ function directedBFS(
     }
   }
 
-  return {
-    found: false,
-    path: [],
-    fromEndpoint: { node: fromNode },
-    toEndpoint: { node: toNode },
-    searchedNodes: visited.size,
-    maxDepthReached,
-    direction: null
-  };
+  return { path: null, searchedNodes: visited.size, maxDepthReached };
 }
 
 /**
@@ -247,10 +225,8 @@ export function parsePathfindFromUrl(
   return result;
 }
 
-/**
- * Update URL with pathfind state.
- */
-export function updatePathfindUrl(state: PathfindState): void {
+/** The page's address with the pathfind state written into it and everything else kept. */
+export function pathfindHref(state: PathfindState): string {
   const url = new URL(window.location.href);
   const params = url.searchParams;
 
@@ -274,9 +250,14 @@ export function updatePathfindUrl(state: PathfindState): void {
     }
   }
 
-  // Update URL without reload
-  const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
-  commitUrl(newUrl);
+  return params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
+}
+
+/**
+ * Update URL with pathfind state.
+ */
+export function updatePathfindUrl(state: PathfindState): void {
+  commitUrl(pathfindHref(state));
 }
 
 /** Return type for initPathfind */
@@ -286,6 +267,8 @@ export interface PathfindApi {
   setTo: (endpoint: PathfindEndpoint | undefined) => void;
   clearAll: () => void;
   executeFindPath: () => void;
+  /** Asks the reverse question: TO becomes FROM and FROM becomes TO, then the path is searched again. */
+  swap: () => void;
 }
 
 /**
@@ -318,7 +301,8 @@ export function initPathfind(
       setFrom: () => {},
       setTo: () => {},
       clearAll: () => {},
-      executeFindPath: () => {}
+      executeFindPath: () => {},
+      swap: () => {}
     };
   }
 
@@ -731,11 +715,24 @@ export function initPathfind(
     }
   }
 
+  function swap(): void {
+    const { from, to } = state;
+    if (!from || !to) {
+      return;
+    }
+    setFrom(to);
+    setTo(from);
+    callbacks.onFromChange(state.from);
+    callbacks.onToChange(state.to);
+    executeFindPath();
+  }
+
   return {
     state,
     setFrom,
     setTo,
     clearAll,
-    executeFindPath
+    executeFindPath,
+    swap
   };
 }

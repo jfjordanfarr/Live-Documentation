@@ -11,7 +11,11 @@ import {
   findPath,
   initPathfind,
   parsePathfindFromUrl,
+  pathfindHref,
+  referencesAgainstPath,
   updatePathfindUrl,
+  DEFAULT_MAX_HOPS,
+  type PathHop,
   type PathfindEndpoint,
   type PathfindResult
 } from "./pathfind";
@@ -38,7 +42,6 @@ import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
-import type { PathResult } from "./views/localView/state";
 
 declare global {
   interface Window {
@@ -439,11 +442,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   // PATHFIND STATE
   // ==================
 
-  /** Current path result, if any (prefixed with _ as used only for state tracking) */
-  let _currentPathResult: PathfindResult | null = null;
-
-  /** Render the path visualization strip */
-  const renderPathVisualization = (result: PathfindResult): void => {
+  /** Render the path visualization strip; an empty path hides it. */
+  const renderPathVisualization = (path: PathHop[]): void => {
     const pathEl = document.getElementById("pathfind-path");
     const viewMapEl = document.getElementById("view-map");
     if (!pathEl) return;
@@ -451,14 +451,14 @@ function startExplorer(bundle: StaticExplorerData): void {
     // Clear previous path
     pathEl.innerHTML = "";
 
-    if (!result.found || result.path.length === 0) {
+    if (path.length === 0) {
       pathEl.hidden = true;
       viewMapEl?.classList.remove("has-path");
       return;
     }
 
     // Build path visualization
-    result.path.forEach((hop, index) => {
+    path.forEach((hop, index) => {
       // Add arrow between hops (except before first)
       if (index > 0) {
         const arrow = document.createElement("span");
@@ -472,7 +472,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       hopEl.className = "pathfind-path-hop";
       
       // Mark endpoints
-      if (index === 0 || index === result.path.length - 1) {
+      if (index === 0 || index === path.length - 1) {
         hopEl.classList.add("endpoint");
       }
 
@@ -504,12 +504,27 @@ function startExplorer(bundle: StaticExplorerData): void {
     viewMapEl?.classList.add("has-path");
   };
 
-  /** Show path result in UI */
-  const showPathResult = (result: PathfindResult): void => {
-    _currentPathResult = result;
+  /** Writes the pathfinder's status line; `tone` colours it. */
+  const setPathStatus = (text: string, tone: "" | "success" | "error"): HTMLElement | null => {
     const statusEl = document.getElementById("pathfind-status");
+    if (!statusEl) return null;
+    statusEl.textContent = text;
+    statusEl.className = tone ? `pathfind-status ${tone}` : "pathfind-status";
+    statusEl.hidden = false;
+    return statusEl;
+  };
 
-    if (result.found && result.path.length > 0) {
+  /**
+   * Shows what the search found. The Local Map draws a path only in its reading
+   * direction, FROM offering on the left and TO using on the right. When the
+   * files connect only the other way, nothing is drawn: the status says so and
+   * offers the reverse question as a link, the owner's rule of 2025-12-18.
+   */
+  const showPathResult = (result: PathfindResult): void => {
+    const fromName = result.fromEndpoint.node.name;
+    const toName = result.toEndpoint.node.name;
+
+    if (result.path.length > 0) {
       // Hide detail panel to avoid blocking the visualization
       detailPanel.hide();
 
@@ -519,69 +534,60 @@ function startExplorer(bundle: StaticExplorerData): void {
         setActiveView("map");
       }
 
-      // Center on first node in path (suppress detail panel since we just hid it)
-      const firstNode = result.path[0].node;
-      handleNodeClick(firstNode, { suppressDetailPanel: true });
+      // Path mode draws over a selected file; when none is selected yet, the
+      // path's first file becomes it. An existing selection is kept, so Clear
+      // returns to the place the person was, address included.
+      if (!state.selectedNode) {
+        selectNode(result.path[0].node, { suppressDetailPanel: true });
+      }
 
-      // Render the path visualization strip
-      renderPathVisualization(result);
+      renderPathVisualization(result.path);
 
-      // Build PathResult for path-mode rendering
-      // "inbound" direction means TO depends on FROM - the expected/natural flow
-      // "outbound" direction means FROM depends on TO - reversed from user intent
-      const isReversed = result.direction === "outbound";
-      const pathResult: PathResult = {
-        nodeIds: result.path.map(hop => hop.nodeId),
+      const nodeIds = result.path.map(hop => hop.nodeId);
+      localView.setActivePath({
+        nodeIds,
         fromSymbol: result.fromEndpoint.symbol,
-        toSymbol: result.toEndpoint.symbol,
-        isReversed
-      };
-      
-      // Set active path - this triggers path-mode rendering
-      // which shows ONLY the path nodes in a linear chain
-      localView.setActivePath(pathResult);
+        toSymbol: result.toEndpoint.symbol
+      });
 
-      // Update status message with direction context
-      const directionHint = isReversed 
-        ? ` (FROM depends on TO)` 
-        : ` (TO depends on FROM)`;
-      if (statusEl) {
-        statusEl.textContent = `Path found: ${result.path.length} nodes${directionHint}`;
-        statusEl.className = "pathfind-status success";
-        statusEl.hidden = false;
-      }
-
-      console.log(
-        "[Pathfind] Path found:",
-        result.path.map(h => h.nodeId).join(" → "),
-        `[direction: ${result.direction}]`
-      );
-    } else {
-      // No path found - hide path visualization
-      renderPathVisualization(result);
-
-      if (statusEl) {
-        const reason = result.maxDepthReached
-          ? `No path within 10 hops (searched ${result.searchedNodes} nodes)`
-          : `No path exists (searched ${result.searchedNodes} nodes)`;
-        statusEl.textContent = reason;
-        statusEl.className = "pathfind-status error";
-        statusEl.hidden = false;
-      }
-
-      console.log(
-        "[Pathfind] No path found:",
-        result.fromEndpoint.node.id,
-        "→",
-        result.toEndpoint.node.id,
-        result.maxDepthReached ? "(max depth reached)" : ""
-      );
+      const against = referencesAgainstPath(nodeIds, graphData.links);
+      const notDrawn = against === 0
+        ? ""
+        : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn`;
+      setPathStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
+      return;
     }
+
+    renderPathVisualization([]);
+
+    if (result.reversePath.length > 0) {
+      const statusEl = setPathStatus(
+        `No path runs from ${fromName} to ${toName}. ${toName} reaches ${fromName} through ${result.reversePath.length} files: `,
+        ""
+      );
+      if (statusEl) {
+        const reverse = document.createElement("a");
+        reverse.href = pathfindHref({ from: result.toEndpoint, to: result.fromEndpoint });
+        reverse.textContent = `show ${toName} to ${fromName}`;
+        reverse.addEventListener("click", event => {
+          event.preventDefault();
+          pathfindApi.swap();
+        });
+        statusEl.appendChild(reverse);
+      }
+      return;
+    }
+
+    setPathStatus(
+      result.maxDepthReached
+        ? `No path within ${DEFAULT_MAX_HOPS} hops either way (searched ${result.searchedNodes} files)`
+        : `No path either way (searched ${result.searchedNodes} files)`,
+      "error"
+    );
   };
 
   /** Clear path result from UI */
   const clearPathResult = (): void => {
-    _currentPathResult = null;
     const statusEl = document.getElementById("pathfind-status");
     if (statusEl) {
       statusEl.hidden = true;
@@ -627,13 +633,7 @@ function startExplorer(bundle: StaticExplorerData): void {
           setActiveView("map");
         }
         selectNode(from.node, { suppressDetailPanel: true });
-        // Update status to indicate single-node exploration
-        const statusEl = document.getElementById("pathfind-status");
-        if (statusEl) {
-          statusEl.textContent = `Exploring: ${from.node.name}`;
-          statusEl.className = "pathfind-status success";
-          statusEl.hidden = false;
-        }
+        setPathStatus(`Exploring: ${from.node.name}`, "success");
         return;
       }
 
@@ -641,7 +641,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       const result = findPath(from.node.id, to.node.id, nodesById, graphData.links);
 
       // Attach symbol information to result
-      if (result.found && result.path.length > 0) {
+      if (result.path.length > 0) {
         // Annotate first hop with from symbol if specified
         if (from.symbol && result.path[0]) {
           result.path[0].symbol = from.symbol;

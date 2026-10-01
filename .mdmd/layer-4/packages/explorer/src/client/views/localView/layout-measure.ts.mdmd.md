@@ -4,14 +4,17 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-09-28T02:39:07.000Z
+- Generated At: 2026-10-01T21:05:42.305Z
 
 ## Authored
 ### Purpose
-Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines optimal zoom/pan to fit content in viewport, and manages column vertical alignment.
+
+Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines the camera that frames the selected card or a drawn path, and manages column vertical alignment.
 
 ### Notes
-Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
+
+- Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
+- `computeFitTransform` frames the focus card with buffers around it, at a scale between 0.6 and 1.45. `computePathFitTransform` frames a drawn path at reading size only: centred when the whole path fits the frame, its first file at the left edge when it is wider, so what the frame cannot hold is to the right and never the start ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -89,16 +92,28 @@ Computes layout extents for the content and focus element.
 ##### `computeFitTransform` — Summary
 Computes the target transform to fit content within the viewport.
 
+#### `computePathFitTransform` {#symbol-computepathfittransform}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L267)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: `DOMRect`
+
+##### `computePathFitTransform` — Summary
+The camera for a drawn path: reading size, level with the frame's middle,
+centred when the whole path fits and otherwise with its first file at the
+left edge. A path is read from its first file, so what the frame cannot hold
+lies to the right, one pan away, and never the start.
+
 #### `buildAnchorGuideKey` {#symbol-buildanchorguidekey}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L264)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L281)
 
 ##### `buildAnchorGuideKey` — Summary
 Builds an anchor guide key for column alignment lookups.
 
 #### `collectCenterAlignmentGuides` {#symbol-collectcenteralignmentguides}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L276)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L293)
 - Returns: [`CenterAlignmentGuides`](#symbol-centeralignmentguides)
 - Parameters: `containerRect`: `DOMRect`
 
@@ -107,7 +122,7 @@ Collects center alignment guides from a column element.
 
 #### `lookupCenterAnchorPosition` {#symbol-lookupcenteranchorposition}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L328)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L345)
 - Parameters: `guides`: [`CenterAlignmentGuides`](#symbol-centeralignmentguides)
 
 ##### `lookupCenterAnchorPosition` — Summary
@@ -115,14 +130,14 @@ Looks up a center anchor position from guides, with fallback.
 
 #### `applyColumnVerticalCentering` {#symbol-applycolumnverticalcentering}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L360)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L377)
 
 ##### `applyColumnVerticalCentering` — Summary
 Applies vertical centering to columns within a layout root.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L408)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L425)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

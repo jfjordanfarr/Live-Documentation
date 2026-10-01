@@ -2,11 +2,17 @@
    PATHFIND TOOLBAR (FROM/TO symbol search)
    ============================================ */
 
+/* The Local Map is a column: the toolbar takes the height it needs (one row of
+   inputs, a status line when there is one, the path strip when a path is drawn)
+   and the map layer fills whatever is left, so nothing overlaps the map. */
+#view-map {
+    display: flex;
+    flex-direction: column;
+}
+
 .pathfind-toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative;
+    flex: none;
     z-index: 100;
     background: var(--bg-deep);
     border-bottom: 1px solid var(--border);
@@ -224,22 +230,29 @@
     font-size: 12px;
 }
 
-/* Adjust map viewport to account for toolbar */
+/* The map layer fills the column under the toolbar; its transform pans and zooms the map inside it */
 #view-map .viewport-layer {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
 }
 
-/* Pathfind status indicator */
+/* Pathfind status indicator: its own line under the inputs, as long as the sentence needs */
 .pathfind-status {
+    display: block;
+    width: fit-content;
+    margin: 8px 0 0;
     font-size: 11px;
+    line-height: 1.4;
     color: var(--text-panel-subtle);
     padding: 4px 8px;
     background: var(--bg-surface);
     border-radius: 4px;
+}
+
+.pathfind-status[hidden] {
+    display: none;
 }
 
 .pathfind-status.success {
@@ -252,6 +265,13 @@
     background: rgba(244, 67, 54, 0.1);
 }
 
+/* The reverse question, offered when the files connect only the other way */
+.pathfind-status a {
+    color: var(--accent);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /* ============================================
    PATH VISUALIZATION STRIP
    ============================================ */
@@ -260,9 +280,10 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    margin: 8px -20px -12px;
     padding: 12px 20px;
     background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-surface) 100%);
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
     overflow-x: auto;
     flex-wrap: nowrap;
 }
@@ -323,7 +344,3 @@
     padding: 0 2px;
 }
 
-/* Adjust viewport when path is shown */
-#view-map.has-path .viewport-layer {
-    top: 120px; /* 60px toolbar + ~60px path strip */
-}

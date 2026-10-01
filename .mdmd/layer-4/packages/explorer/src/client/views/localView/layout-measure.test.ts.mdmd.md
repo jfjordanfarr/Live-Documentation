@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.test.ts
-- Generated At: 2026-09-27T23:21:28.205Z
+- Generated At: 2026-10-01T21:05:42.286Z
 
 ## Authored
 ### Purpose
@@ -25,5 +25,6 @@ _No public symbols detected_
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
 - [`layout-measure.clamp`](./layout-measure.ts.mdmd.md#symbol-clamp)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
+- [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

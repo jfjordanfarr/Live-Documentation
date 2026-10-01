@@ -11,7 +11,9 @@ import { drawConnections } from "./connections";
 import {
   computeLayoutExtents,
   computeFitTransform,
+  computePathFitTransform,
   applyContainerDimensions,
+  withTransformReset,
   applyColumnVerticalCentering as applyColumnVerticalCenteringFn,
   collectCenterAlignmentGuides as collectCenterAlignmentGuidesFn,
   lookupCenterAnchorPosition as lookupCenterAnchorPositionFn,
@@ -118,6 +120,11 @@ export class LocalViewController implements LocalViewApi {
    */
   readonly localMapState: StateStore<LocalMapState>;
 
+  /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
+  private layerObserver: ResizeObserver | null = null;
+  /** The map layer's top edge, transform reset, as last seen by a fit or by {@link keepContentPutWhenLayerMoves}. */
+  private layerTop: number | null = null;
+
   /** Cleanup function for state subscription */
   private stateUnsubscribe: (() => void) | null = null;
 
@@ -153,6 +160,44 @@ export class LocalViewController implements LocalViewApi {
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.subscribeToStateChanges();
+    this.bindLayerObserver();
+  }
+
+  /**
+   * The toolbar above the map takes a status line or the path strip when it has
+   * one, and the map layer below it moves down by that much. The picture must not
+   * move with it: a status line is not a camera move. Whenever the layer's top
+   * edge moves, the transform is shifted the other way by the same amount.
+   */
+  private bindLayerObserver(): void {
+    const layer = this.container.parentElement;
+    if (!layer || typeof ResizeObserver === "undefined") {
+      return;
+    }
+    this.layerObserver = new ResizeObserver(() => this.keepContentPutWhenLayerMoves());
+    this.layerObserver.observe(layer);
+  }
+
+  /** The map layer's top edge in the page, measured with its transform reset. */
+  private measureLayerTop(): number {
+    const layer = this.container.parentElement ?? this.viewport;
+    return withTransformReset(this.container, () => layer.getBoundingClientRect().top);
+  }
+
+  private keepContentPutWhenLayerMoves(): void {
+    const top = this.measureLayerTop();
+    if (this.layerTop !== null && top !== this.layerTop) {
+      const dy = top - this.layerTop;
+      this.mapTransform = { ...this.mapTransform, y: this.mapTransform.y - dy };
+      if (this.mapInitialTransform) {
+        this.mapInitialTransform = { ...this.mapInitialTransform, y: this.mapInitialTransform.y - dy };
+      }
+      if (this.runtime.mapAnimationTarget) {
+        this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, y: this.runtime.mapAnimationTarget.y - dy };
+      }
+      this.updateMapTransform();
+    }
+    this.layerTop = top;
   }
 
   /**
@@ -191,6 +236,8 @@ export class LocalViewController implements LocalViewApi {
       this.stateUnsubscribe();
       this.stateUnsubscribe = null;
     }
+    this.layerObserver?.disconnect();
+    this.layerObserver = null;
   }
 
   /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
@@ -412,6 +459,10 @@ export class LocalViewController implements LocalViewApi {
    * @param path - The path result containing nodeIds and symbols, or null to exit path mode
    */
   setActivePath(path: PathResult | null): void {
+    if (!path && !this.localMapState.getState().activePath) {
+      // Nothing to leave: the person's own pins and camera stay as they are.
+      return;
+    }
     this.localMapState.update(s => setActivePathAction(s, path));
     
     // Also populate the pinnedPath from the path result for rendering
@@ -797,7 +848,11 @@ export class LocalViewController implements LocalViewApi {
 
   private bindPointerEvents(): void {
     this.viewport.addEventListener("mousedown", event => {
-      if ((event.target as HTMLElement | null)?.closest?.(".node-card")) {
+      // A press on a card or in the pathfinder toolbar is not the start of a drag.
+      // A drag marks the camera as the person's own, after which no render re-fits
+      // it; toolbar clicks used to do that too, which left Clear unable to bring
+      // the subject back into the frame (measured 3,846 px off, 2026-10-01).
+      if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar")) {
         return;
       }
       startDrag(this.runtime, event.clientX, event.clientY, this.viewport);
@@ -812,14 +867,33 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * Computes and animates a transform that fits the full content area inside
-   * the viewport, then stores it as {@link mapInitialTransform} for later
+   * Computes and animates a transform that frames the selected card with its
+   * surroundings, then stores it as {@link mapInitialTransform} for later
    * {@link resetZoom} calls.
    */
   fitMapToContent(): void {
+    this.fitMap((extents, frame) => computeFitTransform(extents, frame));
+  }
+
+  /**
+   * Frames a drawn path: reading size, its first file at the left edge when the
+   * path is wider than the frame, centred when it is not.
+   */
+  fitMapToPath(): void {
+    this.fitMap((extents, frame) => computePathFitTransform(extents.content, frame));
+  }
+
+  /**
+   * Measures the content and the map layer's own frame (the transformed layer
+   * under the toolbar, measured with its transform reset, not the whole view),
+   * sizes the container, and animates to the transform `target` computes.
+   */
+  private fitMap(target: (extents: LayoutExtents, frame: DOMRect) => MapTransform): void {
     cancelInertiaFn(this.runtime);
     const extents = computeLayoutExtents(this.container, this.contentRoot);
-    const viewportRect = this.viewport.getBoundingClientRect();
+    const layer = this.container.parentElement ?? this.viewport;
+    const frame = withTransformReset(this.container, () => layer.getBoundingClientRect());
+    this.layerTop = frame.top;
 
     if (!extents) {
       this.mapTransform = { x: 0, y: 0, k: 1 };
@@ -830,15 +904,11 @@ export class LocalViewController implements LocalViewApi {
       return;
     }
 
-    // Apply container dimensions
     applyContainerDimensions(this.container, this.overlay, extents.content);
-
-    // Compute the target transform
-    const target = computeFitTransform(extents, viewportRect);
-
-    animateMapTransformFn(this.runtime, target, () => this.updateMapTransform(), true);
+    const next = target(extents, frame);
+    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
     this.mapHasInitialFit = true;
-    this.mapInitialTransform = { ...target };
+    this.mapInitialTransform = { ...next };
     this.scheduleConnectionRedraw();
   }
 

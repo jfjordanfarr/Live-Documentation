@@ -88,7 +88,9 @@ export function animateMapTransform(
   suppressUserState = false
 ): void {
   cancelAnimationFrame(runtime.mapAnimationFrame);
-  const to = {
+  // The target lives on the runtime so that whoever shifts the camera while the
+  // animation runs (the layer moving under a grown toolbar) can shift it too.
+  runtime.mapAnimationTarget = {
     x: target.x,
     y: target.y,
     k: clamp(target.k, 0.4, 3)
@@ -98,6 +100,7 @@ export function animateMapTransform(
   const start = performance.now();
 
   const step = (now: number) => {
+    const to = runtime.mapAnimationTarget ?? runtime.mapTransform;
     const progress = clamp((now - start) / duration, 0, 1);
     const eased = easeOutCubic(progress);
     runtime.mapTransform = {
@@ -108,8 +111,11 @@ export function animateMapTransform(
     onTransformChange();
     if (progress < 1) {
       runtime.mapAnimationFrame = requestAnimationFrame(step);
-    } else if (!suppressUserState) {
-      runtime.mapUserAdjusted = true;
+    } else {
+      runtime.mapAnimationTarget = null;
+      if (!suppressUserState) {
+        runtime.mapUserAdjusted = true;
+      }
     }
   };
 

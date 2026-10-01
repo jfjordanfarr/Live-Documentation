@@ -159,6 +159,11 @@ export function buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraphLi
  * - C is the "destination" (TO)
  * - B is intermediate
  * - Edges are filtered to only include A→B and B→C connections
+ *
+ * A link's direction is relative to the earlier of its two files: "inbound"
+ * when the later file depends on the earlier (the link runs with the path, and
+ * the path drawer draws it), "outbound" when the earlier file depends on the
+ * later (the link runs against the path and is counted, not drawn).
  */
 export function buildPathSubgraph(
   pathNodeIds: string[],

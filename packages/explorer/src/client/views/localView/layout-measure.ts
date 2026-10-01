@@ -259,6 +259,23 @@ export function computeFitTransform(
 }
 
 /**
+ * The camera for a drawn path: reading size, level with the frame's middle,
+ * centred when the whole path fits and otherwise with its first file at the
+ * left edge. A path is read from its first file, so what the frame cannot hold
+ * lies to the right, one pan away, and never the start.
+ */
+export function computePathFitTransform(content: Bounds, frame: DOMRect): MapTransform {
+  const scale = 1;
+  const horizontalPadding = clamp(frame.width * 0.02, 8, 72);
+  const fits = content.width * scale + horizontalPadding * 2 <= frame.width;
+  const x = fits
+    ? frame.width / 2 - (content.left + content.width / 2) * scale
+    : horizontalPadding - content.left * scale;
+  const y = frame.height / 2 - (content.top + content.height / 2) * scale;
+  return { x, y, k: scale };
+}
+
+/**
  * Builds an anchor guide key for column alignment lookups.
  */
 export function buildAnchorGuideKey(

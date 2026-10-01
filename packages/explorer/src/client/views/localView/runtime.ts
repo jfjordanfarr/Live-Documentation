@@ -67,6 +67,8 @@ export interface LocalViewRuntime {
   dragVelocity: { x: number; y: number };
   mapInertiaFrame: number;
   mapAnimationFrame: number;
+  /** Where a running camera animation is heading, so that a shift applied while it runs is not lost; null when none runs. */
+  mapAnimationTarget: MapTransform | null;
   mapHasInitialFit: boolean;
   mapUserAdjusted: boolean;
   lastCenteredNodeId: string | null;
@@ -97,6 +99,7 @@ export function createRuntime(
     dragVelocity: { x: 0, y: 0 },
     mapInertiaFrame: 0,
     mapAnimationFrame: 0,
+    mapAnimationTarget: null,
     mapHasInitialFit: false,
     mapUserAdjusted: false,
     lastCenteredNodeId: null,

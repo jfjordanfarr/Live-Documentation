@@ -4,19 +4,19 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-09-30T16:22:04.250Z
+- Generated At: 2026-10-01T21:05:41.802Z
 
 ## Authored
 ### Purpose
-Pathfinding module providing FROM/TO omnisearch UI, BFS graph traversal, and path result computation for the Explorer Local Map visualization.
+
+The pathfinder of the Local Map: the FROM and TO toolbar with its fuzzy search and symbol dropdowns, the breadth-first search between two files, the address parameters that make a path shareable, and the count of what a drawn path leaves out.
 
 ### Notes
-- Created 2025-12-17 (Dev Day 48) in chat 2025-12-17.2.md Turn 07 as complete FROM/TO pathfind toolbar implementation
-- BFS is bidirectional: builds both outbound (source→dependencies) and inbound (target→dependents) adjacency lists, tries outbound first then falls back to inbound
-- `PathfindResult.direction` field (added 2025-12-18) indicates whether path was found via "outbound" or "inbound" traversal — essential for correct arrow directionality
-- Fuzzy search over artifact names/paths with type icons (📦 implementation, 🧪 test) in dropdown
-- Symbol dropdown populated from selected artifact's `publicSymbols` metadata
-- Integrates with URL state for shareable pathfind queries (`from`, `to`, `fromSymbol`, `toSymbol` params)
+
+- A path is drawn only in the direction the Local Map reads, what offers on the left and what uses on the right, so `findPath` walks FROM's dependents and finds a path exactly when TO depends on FROM. When only FROM depends on TO it returns the same files as `reversePath`, provider first, which the client offers as a link instead of a drawing; `swap` on the API asks that reverse question. This is the owner's rule of [2025-12-18](../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-18.3.md): "show no results and offer the reverse (via hyperlink)" rather than draw a path against the direction. Until [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10) the search accepted either direction and the map laid the files out in search order, so every wire ran backward; the still-picture instrument measured it.
+- `referencesAgainstPath` counts the references between a drawn path's files that run against it, an earlier file depending on a later one; the path drawer leaves them out, so the status says how many.
+- Created on 2025-12-17 as the FROM/TO pathfind toolbar; the search results show the file's name, path and archetype; the symbol dropdowns come from the file's `publicSymbols`.
+- The address carries `from`, `to`, `fromSymbol` and `toSymbol`; `pathfindHref` writes them into the current address and `updatePathfindUrl` commits that to the history.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -47,42 +47,66 @@ A hop in a path result
 - Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L31)
 
 ##### `PathfindResult` — Summary
-Result of a pathfinding operation
+What a search between two files found.
 
 #### `DEFAULT_MAX_HOPS` {#symbol-default_max_hops}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L48)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L55)
 
 ##### `DEFAULT_MAX_HOPS` — Summary
 Default maximum hops to search
 
 #### `PathfindCallbacks` {#symbol-pathfindcallbacks}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L51)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L58)
 
 ##### `PathfindCallbacks` — Summary
 Callbacks for pathfind events
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L62)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L79)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
 ##### `findPath` — Summary
-BFS pathfinding between two nodes in the explorer graph.
-Returns the shortest path from source to target.
+Finds the shortest path the Local Map can draw between two files, or the
+reverse of it when only the reverse exists.
+
+A link runs from the file that depends to the file it depends on, so the map's
+reading direction, offers on the left and uses on the right, walks a file's
+dependents. The search from FROM along dependents reaches TO exactly when TO
+depends on FROM; the same search from TO reaches FROM when FROM depends on TO,
+and that path is returned as `reversePath`, provider first, never drawn.
+
+#### `referencesAgainstPath` {#symbol-referencesagainstpath}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L131)
+- Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
+
+##### `referencesAgainstPath` — Summary
+The references between the files of a drawn path that run against it: an
+earlier file, which the picture shows offering, depending on a later one.
+The path drawer leaves them out, so the toolbar counts them aloud.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L222)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L200)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
+#### `pathfindHref` {#symbol-pathfindhref}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L229)
+- Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
+
+##### `pathfindHref` — Summary
+The page's address with the pathfind state written into it and everything else kept.
+
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L253)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L259)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -90,14 +114,14 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L283)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L264)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L294)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L277)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 

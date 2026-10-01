@@ -4,16 +4,18 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/runtime.ts
-- Generated At: 2026-09-28T01:11:43.790Z
+- Generated At: 2026-10-01T21:05:42.404Z
 
 ## Authored
 ### Purpose
-Runtime state management for the Local Map. Maintains the anchor registry, drag positions, and references to core DOM elements.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+
+Runtime state management for the Local Map. Maintains the anchor registry, drag positions, the camera transform and the target of a running camera animation, and references to core DOM elements.
 
 ### Notes
+
 - Created 2025-12-04 during the localView modularisation.
 - `AnchorRegistry` maps composite keys (column:nodeId) to bounding rectangles.
-- `LocalViewRuntime` bundles the registry, DOM refs, and drag state.
+- `LocalViewRuntime` bundles the registry, DOM refs, drag state, the transform and `mapAnimationTarget`, where a running animation is heading (null when none runs), so that a shift applied while it runs is not lost.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -68,7 +70,7 @@ current anchor registry. Created by {@link createRuntime}.
 
 #### `createRuntime` {#symbol-createruntime}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L83)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L85)
 - Returns: [`LocalViewRuntime`](#symbol-localviewruntime)
 - Parameters: `viewport`: `HTMLDivElement`; `container`: `HTMLDivElement`; `overlay`: `HTMLDivElement`
 
@@ -79,7 +81,7 @@ starts empty.
 
 #### `registerAnchor` {#symbol-registeranchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L119)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
 
 ##### `registerAnchor` — Summary
@@ -91,7 +93,7 @@ by either original or canonical symbol name.
 
 #### `registerAnchorWithHop` {#symbol-registeranchorwithhop}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L141)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L144)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
 
 ##### `registerAnchorWithHop` — Summary
@@ -101,7 +103,7 @@ to scope the anchor to a specific hop index.
 
 #### `getAnchor` {#symbol-getanchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L171)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L174)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
 
 ##### `getAnchor` — Summary
@@ -115,7 +117,7 @@ Look-up priority:
 
 #### `getAnchorWithHop` {#symbol-getanchorwithhop}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L209)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L212)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
 
 ##### `getAnchorWithHop` — Summary
@@ -125,7 +127,7 @@ hop index. Same priority cascade as `getAnchor`.
 
 #### `clearAnchorRegistry` {#symbol-clearanchorregistry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L244)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L247)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry)
 
 ##### `clearAnchorRegistry` — Summary

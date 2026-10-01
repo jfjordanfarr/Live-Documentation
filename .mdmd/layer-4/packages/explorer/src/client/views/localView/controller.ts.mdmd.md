@@ -4,23 +4,26 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-09-28T01:11:43.595Z
+- Generated At: 2026-10-01T21:05:42.232Z
 
 ## Authored
 ### Purpose
-Controller class for the Local Map. Orchestrates runtime state, rendering, and Bézier connection drawing in response to selection changes.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+
+Controller class for the Local Map. Orchestrates runtime state, rendering, the camera and Bézier connection drawing in response to selection changes, pins and the pathfinder.
 
 ### Notes
-- Created 2025-12-04 during localView modularisation.
-- Implements `LocalViewApi.update()` to re-render the 3-column subgraph.
-- Manages scroll sync, column expansion, and SVG layer updates.
+
+- Created 2025-12-04 during the localView modularisation; renders the columns through `render.ts` and the wires through `connections.ts`.
+- The camera: `fitMapToContent` frames the selected card with its surroundings, `fitMapToPath` frames a drawn path from its first file at reading size, and both measure the map layer's own frame with its transform reset rather than the whole view. A press on a card or in the pathfinder toolbar never starts a drag, because a drag marks the camera as the person's own and no render re-fits it afterwards; toolbar clicks used to do that and left Clear unable to bring the subject back (3,846 px off, measured by the still-picture instrument, [Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)). A layer observer shifts the camera, and any running animation's target, by however much the toolbar above the map grows or shrinks, so a status line is not a camera move.
+- The subject keeps its place on screen when pinning collapses or expands the neighbours' rows (`reapplyVerticalCentering`, 2026-10-01).
+- `setActivePath(null)` is a no-op when no path is active, so a change of a toolbar endpoint does not re-render, re-fit or clear the person's own pins.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L103)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -65,7 +68,9 @@ extraction and runtime-accessor elimination as next steps.
 - [`layout-measure.collectCenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-collectcenteralignmentguides)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
+- [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
 - [`layout-measure.lookupCenterAnchorPosition`](./layout-measure.ts.mdmd.md#symbol-lookupcenteranchorposition)
+- [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
 - [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)
 - [`pan-zoom.handleDragEnd`](./pan-zoom.ts.mdmd.md#symbol-handledragend)

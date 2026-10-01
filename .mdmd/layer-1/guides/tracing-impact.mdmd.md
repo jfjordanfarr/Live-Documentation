@@ -148,7 +148,7 @@ The dependency runs the other way (the inspector reads the graph), so the search
 
 ## Visual Pathfinding in the Explorer
 
-The Explorer's **Local Map** view has From and To inputs: enter both, click **Find Path**, and the hop-by-hop chain renders as columns. If no connection exists in the chosen direction you get a "no path" message; try the other direction, since the search is directional.
+The Explorer's **Local Map** view has From and To inputs: enter both, click **Find Path**, and the hop-by-hop chain renders as columns, reading left to right from the file that offers to the file that uses it. The map draws a path only in that direction, so From must be the file depended on and To the file that depends on it. If the two files connect only the other way round, the status says so and offers the reverse as a link; if they do not connect at all, you get a "no path" message with how far the search looked.
 
 In the **Membrane Map**, pinning a symbol lays out what feeds it and what depends on it, and following pins from card to card walks a path hop by hop. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
