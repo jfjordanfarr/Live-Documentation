@@ -3,23 +3,23 @@
   "projects": [
     {
       "name": "pipeline",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/__init__.py",
-    "src/main.py",
-    "src/metrics.py",
-    "src/pipeline.py",
-    "src/repositories.py",
-    "src/validators.py"
+    "../src/__init__.py",
+    "../src/main.py",
+    "../src/metrics.py",
+    "../src/pipeline.py",
+    "../src/repositories.py",
+    "../src/validators.py"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/main.py",
-      "to": "src/pipeline.py",
+      "from": "../src/main.py",
+      "to": "../src/pipeline.py",
       "symbols": [
         "`src.pipeline`/Report#payload.",
         "`src.pipeline`/Report#status.",
@@ -27,44 +27,44 @@
       ]
     },
     {
-      "from": "src/main.py",
-      "to": "src/validators.py",
+      "from": "../src/main.py",
+      "to": "../src/validators.py",
       "symbols": [
         "`src.validators`/ValidationError#"
       ]
     },
     {
-      "from": "src/metrics.py",
-      "to": "src/validators.py",
+      "from": "../src/metrics.py",
+      "to": "../src/validators.py",
       "symbols": [
         "`src.validators`/ensure_not_empty().",
         "`src.validators`/ensure_positive()."
       ]
     },
     {
-      "from": "src/pipeline.py",
-      "to": "src/metrics.py",
+      "from": "../src/pipeline.py",
+      "to": "../src/metrics.py",
       "symbols": [
         "`src.metrics`/compute_summary()."
       ]
     },
     {
-      "from": "src/pipeline.py",
-      "to": "src/repositories.py",
+      "from": "../src/pipeline.py",
+      "to": "../src/repositories.py",
       "symbols": [
         "`src.repositories`/load_series()."
       ]
     },
     {
-      "from": "src/pipeline.py",
-      "to": "src/validators.py",
+      "from": "../src/pipeline.py",
+      "to": "../src/validators.py",
       "symbols": [
         "`src.validators`/ensure_not_empty()."
       ]
     },
     {
-      "from": "src/repositories.py",
-      "to": "src/validators.py",
+      "from": "../src/repositories.py",
+      "to": "../src/validators.py",
       "symbols": [
         "`src.validators`/ValidationError#"
       ]

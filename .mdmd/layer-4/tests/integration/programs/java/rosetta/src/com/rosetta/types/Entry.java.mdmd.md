@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/types/Entry.java
-- Generated At: 2026-09-27T23:21:36.403Z
+- Generated At: 2026-10-02T20:20:06.407Z
 
 ## Authored
 ### Purpose

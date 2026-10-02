@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/go/rosetta/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:35.901Z
+- Generated At: 2026-10-02T20:20:05.989Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,12 @@ The file-to-file edges the compiler resolved for the `programs/go` sample progra
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](../src/helpers/helpers.go.mdmd.md)
+- [`helpers_test`](../src/helpers/helpers_test.go.mdmd.md)
+- [`main`](../src/main/main.go.mdmd.md)
+- [`pipeline_test`](../src/main/pipeline_test.go.mdmd.md)
+- [`models`](../src/models/models.go.mdmd.md)
+- [`processor`](../src/processor/processor.go.mdmd.md)
+- [`processor_test`](../src/processor/processor_test.go.mdmd.md)
+- [`types`](../src/types/types.go.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

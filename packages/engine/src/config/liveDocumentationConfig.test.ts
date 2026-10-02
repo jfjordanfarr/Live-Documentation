@@ -14,6 +14,7 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.extension).toBe(DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension);
     expect(config.glob).toEqual(DEFAULT_LIVE_DOCUMENTATION_CONFIG.glob);
     expect(config.archetypeOverrides).toEqual({});
+    expect(config.sampleRoots).toEqual([]);
     expect(config.requireRelativeLinks).toBe(true);
     expect(config.slugDialect).toBe("github");
     expect(config.bundleExclude).toEqual([]);
@@ -25,6 +26,13 @@ describe("normalizeLiveDocumentationConfig", () => {
     });
 
     expect(config.bundleExclude).toEqual(["notes/chat/**", "drafts/*.md"]);
+  });
+
+  it("normalizes sample directories without confusing a root with a similarly named sibling", () => {
+    const config = normalizeLiveDocumentationConfig({
+      sampleRoots: [" ./tests/scenarios/ ", "tests\\scenarios", "", "./", "examples"]
+    });
+    expect(config.sampleRoots).toEqual(["tests/scenarios", ".", "examples"]);
   });
 
   it("merges overrides and de-duplicates glob patterns", () => {

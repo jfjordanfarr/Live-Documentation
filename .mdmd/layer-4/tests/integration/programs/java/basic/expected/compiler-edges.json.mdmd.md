@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/java/basic/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:36.105Z
+- Generated At: 2026-10-02T20:20:06.153Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,9 @@ The file-to-file edges the compiler resolved for the `programs/java` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`App`](../src/com/example/app/App.java.mdmd.md)
+- [`Catalog`](../src/com/example/data/Catalog.java.mdmd.md)
+- [`Reader`](../src/com/example/data/Reader.java.mdmd.md)
+- [`ReportWriter`](../src/com/example/format/ReportWriter.java.mdmd.md)
+- [`Record`](../src/com/example/model/Record.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

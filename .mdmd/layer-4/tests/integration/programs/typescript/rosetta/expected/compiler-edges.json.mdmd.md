@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/typescript/rosetta/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:39.541Z
+- Generated At: 2026-10-02T20:20:09.109Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,13 @@ The file-to-file edges the compiler resolved for the `programs/typescript` sampl
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers.test`](../src/helpers.test.ts.mdmd.md)
+- [`helpers`](../src/helpers.ts.mdmd.md)
+- [`main`](../src/main.ts.mdmd.md)
+- [`models`](../src/models.ts.mdmd.md)
+- [`pipeline.test`](../src/pipeline.test.ts.mdmd.md)
+- [`processor.test`](../src/processor.test.ts.mdmd.md)
+- [`processor`](../src/processor.ts.mdmd.md)
+- [`types`](../src/types.ts.mdmd.md)
+- [`tsconfig`](../tsconfig.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

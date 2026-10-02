@@ -3,59 +3,59 @@
   "projects": [
     {
       "name": "ledger",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "ledger/__init__.py",
-    "ledger/cli.py",
-    "ledger/models/__init__.py",
-    "ledger/models/account.py",
-    "ledger/models/entry.py",
-    "ledger/services/__init__.py",
-    "ledger/services/posting.py",
-    "ledger/storage/__init__.py",
-    "ledger/storage/repository.py",
-    "ledger/util/__init__.py",
-    "ledger/util/money.py",
-    "tests/test_money.py",
-    "tests/test_posting.py"
+    "../ledger/__init__.py",
+    "../ledger/cli.py",
+    "../ledger/models/__init__.py",
+    "../ledger/models/account.py",
+    "../ledger/models/entry.py",
+    "../ledger/services/__init__.py",
+    "../ledger/services/posting.py",
+    "../ledger/storage/__init__.py",
+    "../ledger/storage/repository.py",
+    "../ledger/util/__init__.py",
+    "../ledger/util/money.py",
+    "../tests/test_money.py",
+    "../tests/test_posting.py"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "ledger/__init__.py",
-      "to": "ledger/models/account.py",
+      "from": "../ledger/__init__.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#"
       ]
     },
     {
-      "from": "ledger/__init__.py",
-      "to": "ledger/models/entry.py",
+      "from": "../ledger/__init__.py",
+      "to": "../ledger/models/entry.py",
       "symbols": [
         "`ledger.models.entry`/Entry#",
         "`ledger.models.entry`/EntryKind#"
       ]
     },
     {
-      "from": "ledger/__init__.py",
-      "to": "ledger/util/money.py",
+      "from": "../ledger/__init__.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#"
       ]
     },
     {
-      "from": "ledger/cli.py",
-      "to": "ledger/models/account.py",
+      "from": "../ledger/cli.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#balance()."
       ]
     },
     {
-      "from": "ledger/cli.py",
-      "to": "ledger/services/posting.py",
+      "from": "../ledger/cli.py",
+      "to": "../ledger/services/posting.py",
       "symbols": [
         "`ledger.services.posting`/PostingService#",
         "`ledger.services.posting`/PostingService#transfer_units().",
@@ -64,8 +64,8 @@
       ]
     },
     {
-      "from": "ledger/cli.py",
-      "to": "ledger/storage/repository.py",
+      "from": "../ledger/cli.py",
+      "to": "../ledger/storage/repository.py",
       "symbols": [
         "`ledger.storage.repository`/Repository#",
         "`ledger.storage.repository`/Repository#get().",
@@ -75,23 +75,23 @@
       ]
     },
     {
-      "from": "ledger/models/__init__.py",
-      "to": "ledger/models/account.py",
+      "from": "../ledger/models/__init__.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#"
       ]
     },
     {
-      "from": "ledger/models/__init__.py",
-      "to": "ledger/models/entry.py",
+      "from": "../ledger/models/__init__.py",
+      "to": "../ledger/models/entry.py",
       "symbols": [
         "`ledger.models.entry`/Entry#",
         "`ledger.models.entry`/EntryKind#"
       ]
     },
     {
-      "from": "ledger/models/account.py",
-      "to": "ledger/models/entry.py",
+      "from": "../ledger/models/account.py",
+      "to": "../ledger/models/entry.py",
       "symbols": [
         "`ledger.models.entry`/Entry#",
         "`ledger.models.entry`/Entry#amount.",
@@ -101,8 +101,8 @@
       ]
     },
     {
-      "from": "ledger/models/account.py",
-      "to": "ledger/util/money.py",
+      "from": "../ledger/models/account.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#",
         "`ledger.util.money`/Money#is_positive().",
@@ -110,31 +110,31 @@
       ]
     },
     {
-      "from": "ledger/models/entry.py",
-      "to": "ledger/util/money.py",
+      "from": "../ledger/models/entry.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#",
         "`ledger.util.money`/Money#negate()."
       ]
     },
     {
-      "from": "ledger/services/posting.py",
-      "to": "ledger/models/__init__.py",
+      "from": "../ledger/services/posting.py",
+      "to": "../ledger/models/__init__.py",
       "symbols": [
         "`ledger.models`/__init__:"
       ]
     },
     {
-      "from": "ledger/services/posting.py",
-      "to": "ledger/models/account.py",
+      "from": "../ledger/services/posting.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#",
         "`ledger.models.account`/Account#post()."
       ]
     },
     {
-      "from": "ledger/services/posting.py",
-      "to": "ledger/models/entry.py",
+      "from": "../ledger/services/posting.py",
+      "to": "../ledger/models/entry.py",
       "symbols": [
         "`ledger.models.entry`/Entry#",
         "`ledger.models.entry`/EntryKind#",
@@ -143,8 +143,8 @@
       ]
     },
     {
-      "from": "ledger/services/posting.py",
-      "to": "ledger/storage/repository.py",
+      "from": "../ledger/services/posting.py",
+      "to": "../ledger/storage/repository.py",
       "symbols": [
         "`ledger.storage.repository`/Repository#",
         "`ledger.storage.repository`/Repository#save().",
@@ -153,8 +153,8 @@
       ]
     },
     {
-      "from": "ledger/services/posting.py",
-      "to": "ledger/util/money.py",
+      "from": "../ledger/services/posting.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#",
         "`ledger.util.money`/Money#of().",
@@ -162,23 +162,23 @@
       ]
     },
     {
-      "from": "ledger/storage/repository.py",
-      "to": "ledger/__init__.py",
+      "from": "../ledger/storage/repository.py",
+      "to": "../ledger/__init__.py",
       "symbols": [
         "ledger/__init__:"
       ]
     },
     {
-      "from": "ledger/storage/repository.py",
-      "to": "ledger/models/account.py",
+      "from": "../ledger/storage/repository.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#",
         "`ledger.models.account`/Account#name."
       ]
     },
     {
-      "from": "tests/test_money.py",
-      "to": "ledger/util/money.py",
+      "from": "../tests/test_money.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#",
         "`ledger.util.money`/Money#cents.",
@@ -188,29 +188,29 @@
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/__init__.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/__init__.py",
       "symbols": [
         "ledger/__init__:"
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/models/account.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/models/account.py",
       "symbols": [
         "`ledger.models.account`/Account#balance()."
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/services/__init__.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/services/__init__.py",
       "symbols": [
         "`ledger.services`/__init__:"
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/services/posting.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/services/posting.py",
       "symbols": [
         "`ledger.services.posting`/PostingService#",
         "`ledger.services.posting`/PostingService#transfer().",
@@ -219,16 +219,16 @@
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/storage/repository.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/storage/repository.py",
       "symbols": [
         "`ledger.storage.repository`/Repository#",
         "`ledger.storage.repository`/__init__:"
       ]
     },
     {
-      "from": "tests/test_posting.py",
-      "to": "ledger/util/money.py",
+      "from": "../tests/test_posting.py",
+      "to": "../ledger/util/money.py",
       "symbols": [
         "`ledger.util.money`/Money#cents."
       ]

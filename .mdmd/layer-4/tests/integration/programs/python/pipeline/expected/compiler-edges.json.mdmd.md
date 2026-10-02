@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/python/pipeline/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:37.754Z
+- Generated At: 2026-10-02T20:20:07.553Z
 
 ## Authored
 ### Purpose
@@ -37,5 +37,10 @@ The file-to-file edges the compiler resolved for the `programs/python` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`src`](../src/__init__.py.mdmd.md)
+- [`main`](../src/main.py.mdmd.md)
+- [`metrics`](../src/metrics.py.mdmd.md)
+- [`pipeline`](../src/pipeline.py.mdmd.md)
+- [`repositories`](../src/repositories.py.mdmd.md)
+- [`validators`](../src/validators.py.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

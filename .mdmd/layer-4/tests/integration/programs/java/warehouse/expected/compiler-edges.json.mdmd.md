@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/java/warehouse/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:36.651Z
+- Generated At: 2026-10-02T20:20:06.634Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,15 @@ The file-to-file edges the compiler resolved for the `java/warehouse` sample pro
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`App`](../src/main/java/com/acme/warehouse/App.java.mdmd.md)
+- [`Audited`](../src/main/java/com/acme/warehouse/model/Audited.java.mdmd.md)
+- [`Item`](../src/main/java/com/acme/warehouse/model/Item.java.mdmd.md)
+- [`Quantity`](../src/main/java/com/acme/warehouse/model/Quantity.java.mdmd.md)
+- [`Unit`](../src/main/java/com/acme/warehouse/model/Unit.java.mdmd.md)
+- [`Report`](../src/main/java/com/acme/warehouse/report/Report.java.mdmd.md)
+- [`ReportWriter`](../src/main/java/com/acme/warehouse/report/ReportWriter.java.mdmd.md)
+- [`Inventory`](../src/main/java/com/acme/warehouse/store/Inventory.java.mdmd.md)
+- [`MemoryInventory`](../src/main/java/com/acme/warehouse/store/MemoryInventory.java.mdmd.md)
+- [`ReportWriterTest`](../src/test/java/com/acme/warehouse/report/ReportWriterTest.java.mdmd.md)
+- [`MemoryInventoryTest`](../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

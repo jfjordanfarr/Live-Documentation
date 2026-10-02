@@ -3,41 +3,41 @@
   "projects": [
     {
       "name": "rosetta",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/core_types.py",
-    "src/helpers.py",
-    "src/main.py",
-    "src/models.py",
-    "src/processor.py",
-    "src/test_helpers.py",
-    "src/test_pipeline.py",
-    "src/test_processor.py"
+    "../src/core_types.py",
+    "../src/helpers.py",
+    "../src/main.py",
+    "../src/models.py",
+    "../src/processor.py",
+    "../src/test_helpers.py",
+    "../src/test_pipeline.py",
+    "../src/test_processor.py"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/main.py",
-      "to": "src/models.py",
+      "from": "../src/main.py",
+      "to": "../src/models.py",
       "symbols": [
         "`src.models`/Report#",
         "`src.models`/create_record()."
       ]
     },
     {
-      "from": "src/main.py",
-      "to": "src/processor.py",
+      "from": "../src/main.py",
+      "to": "../src/processor.py",
       "symbols": [
         "`src.processor`/run().",
         "`src.processor`/summarize()."
       ]
     },
     {
-      "from": "src/models.py",
-      "to": "src/core_types.py",
+      "from": "../src/models.py",
+      "to": "../src/core_types.py",
       "symbols": [
         "`src.core_types`/Entry#",
         "`src.core_types`/Entry#id.",
@@ -51,8 +51,8 @@
       ]
     },
     {
-      "from": "src/processor.py",
-      "to": "src/core_types.py",
+      "from": "../src/processor.py",
+      "to": "../src/core_types.py",
       "symbols": [
         "`src.core_types`/ProcessorConfig#",
         "`src.core_types`/ProcessorConfig#batch_size.",
@@ -62,8 +62,8 @@
       ]
     },
     {
-      "from": "src/processor.py",
-      "to": "src/helpers.py",
+      "from": "../src/processor.py",
+      "to": "../src/helpers.py",
       "symbols": [
         "`src.helpers`/average().",
         "`src.helpers`/format_value().",
@@ -71,8 +71,8 @@
       ]
     },
     {
-      "from": "src/processor.py",
-      "to": "src/models.py",
+      "from": "../src/processor.py",
+      "to": "../src/models.py",
       "symbols": [
         "`src.models`/Record#",
         "`src.models`/Record#value.",
@@ -85,8 +85,8 @@
       ]
     },
     {
-      "from": "src/test_helpers.py",
-      "to": "src/helpers.py",
+      "from": "../src/test_helpers.py",
+      "to": "../src/helpers.py",
       "symbols": [
         "`src.helpers`/average().",
         "`src.helpers`/format_value().",
@@ -94,8 +94,8 @@
       ]
     },
     {
-      "from": "src/test_pipeline.py",
-      "to": "src/core_types.py",
+      "from": "../src/test_pipeline.py",
+      "to": "../src/core_types.py",
       "symbols": [
         "`src.core_types`/ProcessorConfig#",
         "`src.core_types`/ProcessorConfig#batch_size.",
@@ -104,8 +104,8 @@
       ]
     },
     {
-      "from": "src/test_pipeline.py",
-      "to": "src/models.py",
+      "from": "../src/test_pipeline.py",
+      "to": "../src/models.py",
       "symbols": [
         "`src.models`/Record#",
         "`src.models`/Report#",
@@ -118,16 +118,16 @@
       ]
     },
     {
-      "from": "src/test_pipeline.py",
-      "to": "src/processor.py",
+      "from": "../src/test_pipeline.py",
+      "to": "../src/processor.py",
       "symbols": [
         "`src.processor`/run().",
         "`src.processor`/summarize()."
       ]
     },
     {
-      "from": "src/test_processor.py",
-      "to": "src/models.py",
+      "from": "../src/test_processor.py",
+      "to": "../src/models.py",
       "symbols": [
         "`src.models`/Report#",
         "`src.models`/Report#average.",
@@ -138,8 +138,8 @@
       ]
     },
     {
-      "from": "src/test_processor.py",
-      "to": "src/processor.py",
+      "from": "../src/test_processor.py",
+      "to": "../src/processor.py",
       "symbols": [
         "`src.processor`/run().",
         "`src.processor`/summarize()."

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/rust/rosetta/src/processor.rs
-- Generated At: 2026-09-27T23:21:39.034Z
+- Generated At: 2026-10-02T20:20:08.666Z
 
 ## Authored
 ### Purpose

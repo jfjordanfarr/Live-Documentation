@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Portal/Pages/Default.aspx.designer.cs
-- Generated At: 2026-09-27T23:21:35.109Z
+- Generated At: 2026-10-02T20:20:05.268Z
 
 ## Authored
 ### Purpose

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/rust/stockroom/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:39.087Z
+- Generated At: 2026-10-02T20:20:08.700Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,13 @@ The file-to-file edges the compiler resolved for the `rust/stockroom` sample pro
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`lib`](../src/lib.rs.mdmd.md)
+- [`main`](../src/main.rs.mdmd.md)
+- [`report`](../src/report.rs.mdmd.md)
+- [`stock`](../src/stock.rs.mdmd.md)
+- [`item`](../src/stock/item.rs.mdmd.md)
+- [`quantity`](../src/stock/quantity.rs.mdmd.md)
+- [`memory`](../src/store/memory.rs.mdmd.md)
+- [`store`](../src/store/mod.rs.mdmd.md)
+- [`report`](../tests/report.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

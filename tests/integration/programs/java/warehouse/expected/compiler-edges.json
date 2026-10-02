@@ -1,31 +1,31 @@
 {
   "tool": "scip-java 0.11.2",
-  "projectFile": "pom.xml",
+  "projectFile": "../pom.xml",
   "projects": [
     {
       "name": "warehouse",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/main/java/com/acme/warehouse/App.java",
-    "src/main/java/com/acme/warehouse/model/Audited.java",
-    "src/main/java/com/acme/warehouse/model/Item.java",
-    "src/main/java/com/acme/warehouse/model/Quantity.java",
-    "src/main/java/com/acme/warehouse/model/Unit.java",
-    "src/main/java/com/acme/warehouse/report/Report.java",
-    "src/main/java/com/acme/warehouse/report/ReportWriter.java",
-    "src/main/java/com/acme/warehouse/store/Inventory.java",
-    "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
-    "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-    "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java"
+    "../src/main/java/com/acme/warehouse/App.java",
+    "../src/main/java/com/acme/warehouse/model/Audited.java",
+    "../src/main/java/com/acme/warehouse/model/Item.java",
+    "../src/main/java/com/acme/warehouse/model/Quantity.java",
+    "../src/main/java/com/acme/warehouse/model/Unit.java",
+    "../src/main/java/com/acme/warehouse/report/Report.java",
+    "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
+    "../src/main/java/com/acme/warehouse/store/Inventory.java",
+    "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+    "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+    "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#`<init>`().",
@@ -33,16 +33,16 @@
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#",
         "com/acme/warehouse/model/Quantity#`<init>`()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/model/Unit.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Unit.java",
       "symbols": [
         "com/acme/warehouse/model/Unit#",
         "com/acme/warehouse/model/Unit#EACH.",
@@ -50,24 +50,24 @@
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/report/Report.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/report/Report.java",
       "symbols": [
         "com/acme/warehouse/report/Report#",
         "com/acme/warehouse/report/Report#lines()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
       "symbols": [
         "com/acme/warehouse/report/ReportWriter#`<init>`().",
         "com/acme/warehouse/report/ReportWriter#write()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/store/Inventory.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/store/Inventory.java",
       "symbols": [
         "com/acme/warehouse/store/Inventory#",
         "com/acme/warehouse/store/Inventory#Listener#",
@@ -76,69 +76,69 @@
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/App.java",
-      "to": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "from": "../src/main/java/com/acme/warehouse/App.java",
+      "to": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
       "symbols": [
         "com/acme/warehouse/store/MemoryInventory#",
         "com/acme/warehouse/store/MemoryInventory#`<init>`()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/model/Item.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/model/Item.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/model/Item.java",
-      "to": "src/main/java/com/acme/warehouse/model/Unit.java",
+      "from": "../src/main/java/com/acme/warehouse/model/Item.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Unit.java",
       "symbols": [
         "com/acme/warehouse/model/Unit#",
         "com/acme/warehouse/model/Unit#label()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/model/Quantity.java",
-      "to": "src/main/java/com/acme/warehouse/model/Unit.java",
+      "from": "../src/main/java/com/acme/warehouse/model/Quantity.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Unit.java",
       "symbols": [
         "com/acme/warehouse/model/Unit#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/Report.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/main/java/com/acme/warehouse/report/Report.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#describe()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/Report.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/report/Report.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#unit()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#",
         "com/acme/warehouse/model/Quantity#none()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
-      "to": "src/main/java/com/acme/warehouse/report/Report.java",
+      "from": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "to": "../src/main/java/com/acme/warehouse/report/Report.java",
       "symbols": [
         "com/acme/warehouse/report/Report#",
         "com/acme/warehouse/report/Report#Builder#",
@@ -148,45 +148,45 @@
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
-      "to": "src/main/java/com/acme/warehouse/store/Inventory.java",
+      "from": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "to": "../src/main/java/com/acme/warehouse/store/Inventory.java",
       "symbols": [
         "com/acme/warehouse/store/Inventory#",
         "com/acme/warehouse/store/Inventory#onHand()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/Inventory.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/main/java/com/acme/warehouse/store/Inventory.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/Inventory.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/store/Inventory.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
-      "to": "src/main/java/com/acme/warehouse/model/Audited.java",
+      "from": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Audited.java",
       "symbols": [
         "com/acme/warehouse/model/Audited#"
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#unit()."
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#",
         "com/acme/warehouse/model/Quantity#none().",
@@ -194,8 +194,8 @@
       ]
     },
     {
-      "from": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
-      "to": "src/main/java/com/acme/warehouse/store/Inventory.java",
+      "from": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "to": "../src/main/java/com/acme/warehouse/store/Inventory.java",
       "symbols": [
         "com/acme/warehouse/store/Inventory#",
         "com/acme/warehouse/store/Inventory#Listener#",
@@ -203,24 +203,24 @@
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#`<init>`()."
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#",
         "com/acme/warehouse/model/Quantity#`<init>`()."
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Unit.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Unit.java",
       "symbols": [
         "com/acme/warehouse/model/Unit#",
         "com/acme/warehouse/model/Unit#EACH.",
@@ -228,16 +228,16 @@
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/report/Report.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/report/Report.java",
       "symbols": [
         "com/acme/warehouse/report/Report#",
         "com/acme/warehouse/report/Report#lines()."
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/report/ReportWriter.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/report/ReportWriter.java",
       "symbols": [
         "com/acme/warehouse/report/ReportWriter#",
         "com/acme/warehouse/report/ReportWriter#`<init>`().",
@@ -246,8 +246,8 @@
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
-      "to": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "from": "../src/test/java/com/acme/warehouse/report/ReportWriterTest.java",
+      "to": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
       "symbols": [
         "com/acme/warehouse/store/MemoryInventory#",
         "com/acme/warehouse/store/MemoryInventory#`<init>`().",
@@ -255,24 +255,24 @@
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Item.java",
+      "from": "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Item.java",
       "symbols": [
         "com/acme/warehouse/model/Item#",
         "com/acme/warehouse/model/Item#`<init>`()."
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Quantity.java",
+      "from": "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Quantity.java",
       "symbols": [
         "com/acme/warehouse/model/Quantity#",
         "com/acme/warehouse/model/Quantity#`<init>`()."
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
-      "to": "src/main/java/com/acme/warehouse/model/Unit.java",
+      "from": "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
+      "to": "../src/main/java/com/acme/warehouse/model/Unit.java",
       "symbols": [
         "com/acme/warehouse/model/Unit#",
         "com/acme/warehouse/model/Unit#EACH.",
@@ -280,16 +280,16 @@
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
-      "to": "src/main/java/com/acme/warehouse/store/Inventory.java",
+      "from": "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
+      "to": "../src/main/java/com/acme/warehouse/store/Inventory.java",
       "symbols": [
         "com/acme/warehouse/store/Inventory#",
         "com/acme/warehouse/store/Inventory#Listener#"
       ]
     },
     {
-      "from": "src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
-      "to": "src/main/java/com/acme/warehouse/store/MemoryInventory.java",
+      "from": "../src/test/java/com/acme/warehouse/store/MemoryInventoryTest.java",
+      "to": "../src/main/java/com/acme/warehouse/store/MemoryInventory.java",
       "symbols": [
         "com/acme/warehouse/store/MemoryInventory#",
         "com/acme/warehouse/store/MemoryInventory#`<init>`().",

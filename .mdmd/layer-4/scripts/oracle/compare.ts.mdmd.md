@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-09-28T21:15:53.161Z
+- Generated At: 2026-10-02T20:20:02.606Z
 
 ## Authored
 ### Purpose
@@ -20,21 +20,21 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 ### Public Symbols
 #### `Report` {#symbol-report}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L46)
+- Source: [source](../../../../scripts/oracle/compare.ts#L36)
 
 ##### `Report` — Summary
 What the comparison found, bucket by bucket.
 
 #### `fixtureGlobs` {#symbol-fixtureglobs}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L68)
+- Source: [source](../../../../scripts/oracle/compare.ts#L58)
 
 ##### `fixtureGlobs` — Summary
 The default globs anchor on this workspace's layout; a fixture is its own workspace, so keep only the extensions.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L205)
+- Source: [source](../../../../scripts/oracle/compare.ts#L191)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
@@ -50,6 +50,10 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`files.HandVerifiedEdge`](./files.ts.mdmd.md#symbol-handverifiededge)
+- [`files.HandVerifiedEdges`](./files.ts.mdmd.md#symbol-handverifiededges)
+- [`files.readHandVerifiedEdges`](./files.ts.mdmd.md#symbol-readhandverifiededges)
+- [`files.readOracleEdges`](./files.ts.mdmd.md#symbol-readoracleedges)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

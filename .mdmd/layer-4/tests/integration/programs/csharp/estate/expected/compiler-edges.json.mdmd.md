@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:35.198Z
+- Generated At: 2026-10-02T20:20:05.362Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,25 @@ The file-to-file edges the compiler resolved for the `programs/csharp` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`IPaymentHub`](../Contracts/IPaymentHub.cs.mdmd.md)
+- [`IPaymentService`](../Contracts/IPaymentService.cs.mdmd.md)
+- [`PaymentQuery`](../Contracts/PaymentQuery.cs.mdmd.md)
+- [`PaymentRequest`](../Contracts/PaymentRequest.cs.mdmd.md)
+- [`PaymentResult`](../Contracts/PaymentResult.cs.mdmd.md)
+- [`PaymentsController`](../Gateway/Controllers/PaymentsController.cs.mdmd.md)
+- [`GatewaySettings`](../Gateway/GatewaySettings.cs.mdmd.md)
+- [`HubProxy`](../Gateway/Wcf/HubProxy.cs.mdmd.md)
+- [`PaymentHub`](../Hub/PaymentHub.cs.mdmd.md)
+- [`ServiceRouting`](../Hub/ServiceRouting.cs.mdmd.md)
+- [`Payment`](../PaymentService/Data/Payment.cs.mdmd.md)
+- [`PaymentsContext`](../PaymentService/Data/PaymentsContext.cs.mdmd.md)
+- [`PostPaymentRow`](../PaymentService/Data/PostPaymentRow.cs.mdmd.md)
+- [`PaymentService`](../PaymentService/PaymentService.cs.mdmd.md)
+- [`Globals`](../Portal/App_Code/Globals.cs.mdmd.md)
+- [`PaymentsController`](../Portal/Controllers/PaymentsController.cs.mdmd.md)
+- [`PaymentRequestModel`](../Portal/Models/PaymentRequestModel.cs.mdmd.md)
+- [`PaymentResultModel`](../Portal/Models/PaymentResultModel.cs.mdmd.md)
+- [`Default.aspx`](../Portal/Pages/Default.aspx.cs.mdmd.md)
+- [`Default.aspx.designer`](../Portal/Pages/Default.aspx.designer.cs.mdmd.md)
+- [`GatewayClient`](../Portal/Services/GatewayClient.cs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

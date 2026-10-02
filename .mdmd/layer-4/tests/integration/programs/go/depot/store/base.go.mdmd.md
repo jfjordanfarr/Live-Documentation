@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/go/depot/store/base.go
-- Generated At: 2026-09-27T23:21:35.844Z
+- Generated At: 2026-10-02T20:20:05.934Z
 
 ## Authored
 ### Purpose

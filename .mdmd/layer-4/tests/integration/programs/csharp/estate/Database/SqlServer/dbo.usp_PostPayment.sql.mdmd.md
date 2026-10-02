@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql
-- Generated At: 2026-09-28T16:48:42.515Z
+- Generated At: 2026-10-02T20:20:04.842Z
 
 ## Authored
 ### Purpose

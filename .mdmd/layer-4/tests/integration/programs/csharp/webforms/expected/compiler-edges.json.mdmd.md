@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/csharp/webforms/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:35.489Z
+- Generated At: 2026-10-02T20:20:05.622Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,8 @@ The file-to-file edges the compiler resolved for the `programs/csharp` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`WebForms`](../WebForms.csproj.mdmd.md)
+- [`Globals`](../src/App_Code/Globals.cs.mdmd.md)
+- [`Default.aspx`](../src/Pages/Default.aspx.cs.mdmd.md)
+- [`Default.aspx.designer`](../src/Pages/Default.aspx.designer.cs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

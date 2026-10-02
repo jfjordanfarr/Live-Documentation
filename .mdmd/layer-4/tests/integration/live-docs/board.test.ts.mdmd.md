@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/board.test.ts
-- Generated At: 2026-09-28T21:15:54.359Z
+- Generated At: 2026-10-02T20:20:04.050Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - [`compare.fixtureGlobs`](../../../scripts/oracle/compare.ts.mdmd.md#symbol-fixtureglobs)
+- [`files.readHandVerifiedEdges`](../../../scripts/oracle/files.ts.mdmd.md#symbol-readhandverifiededges)
 - [`fixture.copyFixture`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-copyfixture)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

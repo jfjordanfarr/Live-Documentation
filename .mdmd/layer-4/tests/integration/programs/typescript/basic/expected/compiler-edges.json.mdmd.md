@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/typescript/basic/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:39.261Z
+- Generated At: 2026-10-02T20:20:08.851Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,10 @@ The file-to-file edges the compiler resolved for the `programs/typescript` sampl
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](../src/helpers.ts.mdmd.md)
+- [`index`](../src/index.ts.mdmd.md)
+- [`models`](../src/models.ts.mdmd.md)
+- [`types`](../src/types.ts.mdmd.md)
+- [`util`](../src/util.ts.mdmd.md)
+- [`tsconfig`](../tsconfig.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

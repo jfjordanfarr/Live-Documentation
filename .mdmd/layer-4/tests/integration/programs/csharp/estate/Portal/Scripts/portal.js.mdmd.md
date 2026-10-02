@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Portal/Scripts/portal.js
-- Generated At: 2026-09-28T16:48:42.902Z
+- Generated At: 2026-10-02T20:20:05.314Z
 
 ## Authored
 ### Purpose

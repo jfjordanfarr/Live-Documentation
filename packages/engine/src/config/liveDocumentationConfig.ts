@@ -51,6 +51,8 @@ export interface LiveDocumentationConfig {
   glob: string[];
   /** Optional overrides that assign archetypes to matching paths. */
   archetypeOverrides: Record<string, LiveDocumentationArchetype>;
+  /** Workspace-relative sample directories: code remains implementation, data remains asset, and test names/directories retain their test role. */
+  sampleRoots: string[];
   /** Enforce workspace-relative markdown links for wiki portability. */
   requireRelativeLinks: boolean;
   /** Header-slug dialect used when generating anchors. */
@@ -186,6 +188,7 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   extension: LIVE_DOCUMENTATION_FILE_EXTENSION,
   glob: [...LIVE_DOCUMENTATION_DEFAULT_GLOBS],
   archetypeOverrides: {},
+  sampleRoots: [],
   requireRelativeLinks: true,
   slugDialect: "github",
   bundleExclude: []
@@ -217,6 +220,8 @@ export function normalizeLiveDocumentationConfig(
 
   const inputBundleExclude = Array.isArray(input?.bundleExclude) ? input?.bundleExclude : undefined;
   const bundleExclude = inputBundleExclude ? dedupeStrings(inputBundleExclude) : [];
+  const sampleRoots = dedupeStrings(Array.isArray(input?.sampleRoots) ? input.sampleRoots : [])
+    .map(root => root.replace(/\\/g, "/").replace(/^(?:\.\/)+/, "").replace(/\/+$/, "") || ".");
 
   return {
     root: normalizeStringOption(input?.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root),
@@ -230,6 +235,7 @@ export function normalizeLiveDocumentationConfig(
     ),
     glob,
     archetypeOverrides,
+    sampleRoots: [...new Set(sampleRoots)],
     requireRelativeLinks:
       input?.requireRelativeLinks ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.requireRelativeLinks,
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,

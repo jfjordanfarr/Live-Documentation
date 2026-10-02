@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/webforms/src/Pages/Default.aspx.designer.cs
-- Generated At: 2026-09-27T23:21:35.574Z
+- Generated At: 2026-10-02T20:20:05.699Z
 
 ## Authored
 ### Purpose

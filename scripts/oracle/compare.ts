@@ -23,19 +23,9 @@ import {
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
+import { readOracleEdges, readHandVerifiedEdges, type HandVerifiedEdge, type HandVerifiedEdges } from "./files";
 import { copyFixture } from "./fixture";
 import type { OracleEdges } from "./scip-edges";
-
-interface HandVerifiedEdge {
-  from:    string;
-  to:      string;
-  via:     string;
-  remote?: boolean;
-}
-
-interface HandVerifiedEdges {
-  edges: HandVerifiedEdge[];
-}
 
 interface AdapterEdge {
   from: string;
@@ -68,10 +58,6 @@ export interface Report {
 export function fixtureGlobs(): string[] {
   const extensions = new Set(LIVE_DOCUMENTATION_DEFAULT_GLOBS.map((pattern) => pattern.slice(pattern.lastIndexOf("/") + 1)));
   return Array.from(extensions).map((suffix) => `**/${suffix}`);
-}
-
-function readJson<T>(filePath: string): T | undefined {
-  return fs.existsSync(filePath) ? (JSON.parse(fs.readFileSync(filePath, "utf8")) as T) : undefined;
 }
 
 async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[]; unresolved: Report["unresolved"] }> {
@@ -133,7 +119,7 @@ function buildReport(fixtureDir: string, compiler: OracleEdges, handVerified: Ha
     };
   }
 
-  const projectFile = (project: { name: string; directory: string }) => (project.directory ? `${project.directory}/` : "") + `${project.name}.csproj`;
+  const projectFile = (project: { name: string; directory: string }) => path.posix.join(project.directory, `${project.name}.csproj`);
   const byName      = new Map(compiler.projects.map((project) => [project.name, project]));
   const references: AdapterEdge[] = [];
   for (const project of compiler.projects) {
@@ -203,11 +189,11 @@ function printReport(report: Report): void {
 
 /** Runs the generator over a copy of the fixture and reports its disagreements with the oracle files. */
 export async function compareFixture(fixtureDir: string): Promise<Report> {
-  const compiler = readJson<OracleEdges>(path.join(fixtureDir, "expected", "compiler-edges.json"));
+  const compiler = readOracleEdges(path.join(fixtureDir, "expected", "compiler-edges.json"), fixtureDir);
   if (!compiler) {
     throw new Error(`no expected/compiler-edges.json under ${fixtureDir}; run oracle:index first`);
   }
-  const handVerified = readJson<HandVerifiedEdges>(path.join(fixtureDir, "expected", "hand-verified-edges.json"));
+  const handVerified = readHandVerifiedEdges(path.join(fixtureDir, "expected", "hand-verified-edges.json"), fixtureDir);
   const { edges, unresolved } = await adapterEdges(fixtureDir);
   return buildReport(fixtureDir, compiler, handVerified, edges, unresolved);
 }

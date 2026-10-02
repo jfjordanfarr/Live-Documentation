@@ -1,32 +1,32 @@
 {
   "tool": "scip-go 0.1.26",
-  "projectFile": "go.mod",
+  "projectFile": "../go.mod",
   "projects": [
     {
       "name": "rosetta",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/helpers/helpers.go",
-    "src/helpers/helpers_test.go",
-    "src/main/main.go",
-    "src/main/pipeline_test.go",
-    "src/models/models.go",
-    "src/processor/processor.go",
-    "src/processor/processor_test.go",
-    "src/types/types.go"
+    "../src/helpers/helpers.go",
+    "../src/helpers/helpers_test.go",
+    "../src/main/main.go",
+    "../src/main/pipeline_test.go",
+    "../src/models/models.go",
+    "../src/processor/processor.go",
+    "../src/processor/processor_test.go",
+    "../src/types/types.go"
   ],
   "outside": [
-    "../../home/node/.cache/go-build/05/05ce9d29d599117a201e254292463d4b334f30e4985807855223ef89f2cdd309-d",
-    "../../home/node/.cache/go-build/3d/3d63187b51525a1e3772f3ec9387c72e8f6b11170890203a3b4751030068c298-d",
-    "../../home/node/.cache/go-build/d7/d78c268367bf89c443068a5415262f230ce965c7989cc8aa0511a7f05efa55ad-d"
+    "../../../home/node/.cache/go-build/05/05ce9d29d599117a201e254292463d4b334f30e4985807855223ef89f2cdd309-d",
+    "../../../home/node/.cache/go-build/3d/3d63187b51525a1e3772f3ec9387c72e8f6b11170890203a3b4751030068c298-d",
+    "../../../home/node/.cache/go-build/d7/d78c268367bf89c443068a5415262f230ce965c7989cc8aa0511a7f05efa55ad-d"
   ],
   "edges": [
     {
-      "from": "src/helpers/helpers_test.go",
-      "to": "src/helpers/helpers.go",
+      "from": "../src/helpers/helpers_test.go",
+      "to": "../src/helpers/helpers.go",
       "symbols": [
         "`rosetta/src/helpers`/",
         "`rosetta/src/helpers`/Average().",
@@ -35,8 +35,8 @@
       ]
     },
     {
-      "from": "src/main/main.go",
-      "to": "src/models/models.go",
+      "from": "../src/main/main.go",
+      "to": "../src/models/models.go",
       "symbols": [
         "`rosetta/src/models`/",
         "`rosetta/src/models`/CreateRecord().",
@@ -44,8 +44,8 @@
       ]
     },
     {
-      "from": "src/main/main.go",
-      "to": "src/processor/processor.go",
+      "from": "../src/main/main.go",
+      "to": "../src/processor/processor.go",
       "symbols": [
         "`rosetta/src/processor`/",
         "`rosetta/src/processor`/Run().",
@@ -53,15 +53,15 @@
       ]
     },
     {
-      "from": "src/main/pipeline_test.go",
-      "to": "src/main/main.go",
+      "from": "../src/main/pipeline_test.go",
+      "to": "../src/main/main.go",
       "symbols": [
         "`rosetta/src/main`/"
       ]
     },
     {
-      "from": "src/main/pipeline_test.go",
-      "to": "src/models/models.go",
+      "from": "../src/main/pipeline_test.go",
+      "to": "../src/models/models.go",
       "symbols": [
         "`rosetta/src/models`/",
         "`rosetta/src/models`/CreateRecord().",
@@ -73,8 +73,8 @@
       ]
     },
     {
-      "from": "src/main/pipeline_test.go",
-      "to": "src/processor/processor.go",
+      "from": "../src/main/pipeline_test.go",
+      "to": "../src/processor/processor.go",
       "symbols": [
         "`rosetta/src/processor`/",
         "`rosetta/src/processor`/Run().",
@@ -82,8 +82,8 @@
       ]
     },
     {
-      "from": "src/main/pipeline_test.go",
-      "to": "src/types/types.go",
+      "from": "../src/main/pipeline_test.go",
+      "to": "../src/types/types.go",
       "symbols": [
         "`rosetta/src/types`/",
         "`rosetta/src/types`/ProcessorConfig#",
@@ -93,8 +93,8 @@
       ]
     },
     {
-      "from": "src/models/models.go",
-      "to": "src/types/types.go",
+      "from": "../src/models/models.go",
+      "to": "../src/types/types.go",
       "symbols": [
         "`rosetta/src/types`/",
         "`rosetta/src/types`/Entry#",
@@ -108,8 +108,8 @@
       ]
     },
     {
-      "from": "src/processor/processor_test.go",
-      "to": "src/models/models.go",
+      "from": "../src/processor/processor_test.go",
+      "to": "../src/models/models.go",
       "symbols": [
         "`rosetta/src/models`/",
         "`rosetta/src/models`/CreateRecord().",
@@ -121,8 +121,8 @@
       ]
     },
     {
-      "from": "src/processor/processor_test.go",
-      "to": "src/processor/processor.go",
+      "from": "../src/processor/processor_test.go",
+      "to": "../src/processor/processor.go",
       "symbols": [
         "`rosetta/src/processor`/",
         "`rosetta/src/processor`/Run().",
@@ -130,8 +130,8 @@
       ]
     },
     {
-      "from": "src/processor/processor.go",
-      "to": "src/helpers/helpers.go",
+      "from": "../src/processor/processor.go",
+      "to": "../src/helpers/helpers.go",
       "symbols": [
         "`rosetta/src/helpers`/",
         "`rosetta/src/helpers`/Average().",
@@ -140,8 +140,8 @@
       ]
     },
     {
-      "from": "src/processor/processor.go",
-      "to": "src/models/models.go",
+      "from": "../src/processor/processor.go",
+      "to": "../src/models/models.go",
       "symbols": [
         "`rosetta/src/models`/",
         "`rosetta/src/models`/Record#",
@@ -155,8 +155,8 @@
       ]
     },
     {
-      "from": "src/processor/processor.go",
-      "to": "src/types/types.go",
+      "from": "../src/processor/processor.go",
+      "to": "../src/types/types.go",
       "symbols": [
         "`rosetta/src/types`/",
         "`rosetta/src/types`/NewProcessorConfig().",

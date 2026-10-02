@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/typescript/basic/tsconfig.json
-- Generated At: 2026-09-27T23:21:39.370Z
+- Generated At: 2026-10-02T20:20:08.948Z
 
 ## Authored
 ### Purpose

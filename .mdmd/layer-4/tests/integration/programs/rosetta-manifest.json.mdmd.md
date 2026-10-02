@@ -2,16 +2,18 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/rosetta-manifest.json
-- Generated At: 2026-09-30T16:22:09.571Z
+- Generated At: 2026-10-02T20:20:08.067Z
 
 ## Authored
 ### Purpose
-Registry of Rosetta Stone cross-language benchmark fixtures. Each language implements an isomorphic program structure (main → processor → models/helpers → types) enabling apples-to-apples comparison of dependency detection heuristics across polyglot boundaries.
+Catalog of the eight Rosetta sample programs: their common roles and relationships, concrete source directories and entry points, and available compiler expectations.
 
 ### Notes
-Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-14.1.md) for design rationale. The Rosetta Stone concept ensures each language fixture exercises identical dependency patterns (namespace imports, selective imports, type-only imports) so precision/recall metrics are comparable.
+- Concrete filesystem paths are relative to this manifest. Canonical node globs and import examples describe the language-independent pattern; they are not literal file references.
+- Each variant links its existing compiler observations when its language has an indexer. C and Ruby have no such observations in this collection.
+- The cross-language program originated on January 14, 2026; see the [session summary](../../../../../AI-Agent-Workspace/ChatHistory/2026/01/Summarized/2026-01-14.1.SUMMARIZED.md) for its rationale.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -79,5 +81,18 @@ Created during Dev Day 58; see [2026-01-14.1.md](../../../../../AI-Agent-Workspa
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](./c/rosetta/src/main.c.mdmd.md)
+- [`compiler-edges`](./csharp/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`Main`](./csharp/rosetta/src/App/Main.cs.mdmd.md)
+- [`compiler-edges`](./go/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`main`](./go/rosetta/src/main/main.go.mdmd.md)
+- [`compiler-edges`](./java/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`Main`](./java/rosetta/src/com/rosetta/app/Main.java.mdmd.md)
+- [`compiler-edges`](./python/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`main`](./python/rosetta/src/main.py.mdmd.md)
+- [`main`](./ruby/rosetta/lib/main.rb.mdmd.md)
+- [`compiler-edges`](./rust/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`main`](./rust/rosetta/src/main.rs.mdmd.md)
+- [`compiler-edges`](./typescript/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`main`](./typescript/rosetta/src/main.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

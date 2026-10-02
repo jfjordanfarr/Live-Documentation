@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/python/rosetta/src/main.py
-- Generated At: 2026-09-27T23:21:38.107Z
+- Generated At: 2026-10-02T20:20:07.860Z
 
 ## Authored
 ### Purpose

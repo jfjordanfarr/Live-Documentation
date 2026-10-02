@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/Data/Payment.cs
-- Generated At: 2026-09-28T16:48:42.691Z
+- Generated At: 2026-10-02T20:20:05.036Z
 
 ## Authored
 ### Purpose

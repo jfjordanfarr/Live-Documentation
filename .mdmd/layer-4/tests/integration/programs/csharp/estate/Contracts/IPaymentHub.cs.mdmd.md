@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Contracts/IPaymentHub.cs
-- Generated At: 2026-09-27T23:21:34.616Z
+- Generated At: 2026-10-02T20:20:04.725Z
 
 ## Authored
 ### Purpose

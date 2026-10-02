@@ -2,6 +2,7 @@
   "root": ".mdmd",
   "baseLayer": "layer-4",
   "extension": ".mdmd.md",
+  "sampleRoots": ["tests/integration/programs"],
   "bundleExclude": [
     "AI-Agent-Workspace/ChatHistory/**/!(*.SUMMARIZED).md",
     "AI-Agent-Workspace/ChatHistory/**/*.txt"

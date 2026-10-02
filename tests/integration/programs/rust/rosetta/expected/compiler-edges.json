@@ -1,38 +1,38 @@
 {
   "tool": "rust-analyzer 1.93.1 (01f6ddf 2026-02-11)",
-  "projectFile": "Cargo.toml",
+  "projectFile": "../Cargo.toml",
   "projects": [
     {
       "name": "rust_rosetta_fixture src/main.rs",
-      "directory": "src",
+      "directory": "../src",
       "references": [],
       "members": [
-        "src/helpers.rs",
-        "src/helpers_test.rs",
-        "src/main.rs",
-        "src/models.rs",
-        "src/pipeline_test.rs",
-        "src/processor.rs",
-        "src/processor_test.rs",
-        "src/types.rs"
+        "../src/helpers.rs",
+        "../src/helpers_test.rs",
+        "../src/main.rs",
+        "../src/models.rs",
+        "../src/pipeline_test.rs",
+        "../src/processor.rs",
+        "../src/processor_test.rs",
+        "../src/types.rs"
       ]
     }
   ],
   "documents": [
-    "src/helpers.rs",
-    "src/helpers_test.rs",
-    "src/main.rs",
-    "src/models.rs",
-    "src/pipeline_test.rs",
-    "src/processor.rs",
-    "src/processor_test.rs",
-    "src/types.rs"
+    "../src/helpers.rs",
+    "../src/helpers_test.rs",
+    "../src/main.rs",
+    "../src/models.rs",
+    "../src/pipeline_test.rs",
+    "../src/processor.rs",
+    "../src/processor_test.rs",
+    "../src/types.rs"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/helpers_test.rs",
-      "to": "src/helpers.rs",
+      "from": "../src/helpers_test.rs",
+      "to": "../src/helpers.rs",
       "symbols": [
         "helpers/",
         "helpers/average().",
@@ -41,29 +41,29 @@
       ]
     },
     {
-      "from": "src/helpers_test.rs",
-      "to": "src/main.rs",
+      "from": "../src/helpers_test.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/helpers_test.rs",
+      "from": "../src/main.rs",
+      "to": "../src/helpers_test.rs",
       "symbols": [
         "helpers_test/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/helpers.rs",
+      "from": "../src/main.rs",
+      "to": "../src/helpers.rs",
       "symbols": [
         "helpers/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/models.rs",
+      "from": "../src/main.rs",
+      "to": "../src/models.rs",
       "symbols": [
         "models/",
         "models/Report#",
@@ -71,22 +71,22 @@
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/pipeline_test.rs",
+      "from": "../src/main.rs",
+      "to": "../src/pipeline_test.rs",
       "symbols": [
         "pipeline_test/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/processor_test.rs",
+      "from": "../src/main.rs",
+      "to": "../src/processor_test.rs",
       "symbols": [
         "processor_test/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/processor.rs",
+      "from": "../src/main.rs",
+      "to": "../src/processor.rs",
       "symbols": [
         "processor/",
         "processor/run().",
@@ -94,22 +94,22 @@
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/types.rs",
+      "from": "../src/main.rs",
+      "to": "../src/types.rs",
       "symbols": [
         "types/"
       ]
     },
     {
-      "from": "src/models.rs",
-      "to": "src/main.rs",
+      "from": "../src/models.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/models.rs",
-      "to": "src/types.rs",
+      "from": "../src/models.rs",
+      "to": "../src/types.rs",
       "symbols": [
         "types/",
         "types/Entry#",
@@ -124,15 +124,15 @@
       ]
     },
     {
-      "from": "src/pipeline_test.rs",
-      "to": "src/main.rs",
+      "from": "../src/pipeline_test.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/pipeline_test.rs",
-      "to": "src/models.rs",
+      "from": "../src/pipeline_test.rs",
+      "to": "../src/models.rs",
       "symbols": [
         "models/",
         "models/Record#",
@@ -143,8 +143,8 @@
       ]
     },
     {
-      "from": "src/pipeline_test.rs",
-      "to": "src/processor.rs",
+      "from": "../src/pipeline_test.rs",
+      "to": "../src/processor.rs",
       "symbols": [
         "processor/",
         "processor/run().",
@@ -152,8 +152,8 @@
       ]
     },
     {
-      "from": "src/pipeline_test.rs",
-      "to": "src/types.rs",
+      "from": "../src/pipeline_test.rs",
+      "to": "../src/types.rs",
       "symbols": [
         "types/",
         "types/ProcessorConfig#",
@@ -163,15 +163,15 @@
       ]
     },
     {
-      "from": "src/processor_test.rs",
-      "to": "src/main.rs",
+      "from": "../src/processor_test.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/processor_test.rs",
-      "to": "src/models.rs",
+      "from": "../src/processor_test.rs",
+      "to": "../src/models.rs",
       "symbols": [
         "models/",
         "models/Record#",
@@ -182,8 +182,8 @@
       ]
     },
     {
-      "from": "src/processor_test.rs",
-      "to": "src/processor.rs",
+      "from": "../src/processor_test.rs",
+      "to": "../src/processor.rs",
       "symbols": [
         "processor/",
         "processor/run().",
@@ -191,8 +191,8 @@
       ]
     },
     {
-      "from": "src/processor.rs",
-      "to": "src/helpers.rs",
+      "from": "../src/processor.rs",
+      "to": "../src/helpers.rs",
       "symbols": [
         "helpers/",
         "helpers/average().",
@@ -201,15 +201,15 @@
       ]
     },
     {
-      "from": "src/processor.rs",
-      "to": "src/main.rs",
+      "from": "../src/processor.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/processor.rs",
-      "to": "src/models.rs",
+      "from": "../src/processor.rs",
+      "to": "../src/models.rs",
       "symbols": [
         "models/",
         "models/Record#",
@@ -223,8 +223,8 @@
       ]
     },
     {
-      "from": "src/processor.rs",
-      "to": "src/types.rs",
+      "from": "../src/processor.rs",
+      "to": "../src/types.rs",
       "symbols": [
         "types/",
         "types/ProcessorConfig#",

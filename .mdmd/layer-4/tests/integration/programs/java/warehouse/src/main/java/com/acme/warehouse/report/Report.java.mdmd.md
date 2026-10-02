@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java
-- Generated At: 2026-09-28T02:39:10.494Z
+- Generated At: 2026-10-02T20:20:06.759Z
 
 ## Authored
 ### Purpose

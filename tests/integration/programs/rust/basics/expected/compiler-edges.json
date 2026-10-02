@@ -1,51 +1,51 @@
 {
   "tool": "rust-analyzer 1.93.1 (01f6ddf 2026-02-11)",
-  "projectFile": "Cargo.toml",
+  "projectFile": "../Cargo.toml",
   "projects": [
     {
       "name": "rust_basics_fixture src/main.rs",
-      "directory": "src",
+      "directory": "../src",
       "references": [],
       "members": [
-        "src/main.rs",
-        "src/math.rs",
-        "src/utils.rs"
+        "../src/main.rs",
+        "../src/math.rs",
+        "../src/utils.rs"
       ]
     }
   ],
   "documents": [
-    "src/main.rs",
-    "src/math.rs",
-    "src/utils.rs"
+    "../src/main.rs",
+    "../src/math.rs",
+    "../src/utils.rs"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/main.rs",
-      "to": "src/math.rs",
+      "from": "../src/main.rs",
+      "to": "../src/math.rs",
       "symbols": [
         "math/",
         "math/sum()."
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/utils.rs",
+      "from": "../src/main.rs",
+      "to": "../src/utils.rs",
       "symbols": [
         "utils/",
         "utils/is_even()."
       ]
     },
     {
-      "from": "src/math.rs",
-      "to": "src/main.rs",
+      "from": "../src/math.rs",
+      "to": "../src/main.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/math.rs",
-      "to": "src/utils.rs",
+      "from": "../src/math.rs",
+      "to": "../src/utils.rs",
       "symbols": [
         "utils/",
         "utils/is_even()."

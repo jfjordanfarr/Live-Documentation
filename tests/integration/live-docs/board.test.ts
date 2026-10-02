@@ -13,14 +13,11 @@ import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFile
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
 import { fixtureGlobs } from "../../../scripts/oracle/compare";
+import { readHandVerifiedEdges } from "../../../scripts/oracle/files";
 import { copyFixture } from "../../../scripts/oracle/fixture";
 
 const ESTATE = path.resolve(__dirname, "../programs/csharp/estate");
 const REPOSITORY = path.resolve(__dirname, "../../..");
-
-interface HandVerified {
-  edges: Array<{ from: string; to: string; via: string; remote?: boolean }>;
-}
 
 describe("the estate's board", () => {
   it("draws every remote hand-verified edge as a wire between two things, and the declared tunnel", async () => {
@@ -36,7 +33,7 @@ describe("the estate's board", () => {
       expect(derived.issues).toEqual([]);
 
       const thingOf = (file: string): string | undefined => derived.things.find((entry) => entry.files.includes(file))?.thing.name;
-      const handVerified = JSON.parse(fs.readFileSync(path.join(ESTATE, "expected", "hand-verified-edges.json"), "utf8")) as HandVerified;
+      const handVerified = readHandVerifiedEdges(path.join(ESTATE, "expected", "hand-verified-edges.json"), ESTATE)!;
       const remote = handVerified.edges.filter((edge) => edge.remote);
       expect(remote.length).toBeGreaterThan(0);
       for (const edge of remote) {

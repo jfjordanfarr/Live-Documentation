@@ -3,27 +3,27 @@
   "projects": [
     {
       "name": "basics",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/helpers.py",
-    "src/main.py",
-    "src/util.py"
+    "../src/helpers.py",
+    "../src/main.py",
+    "../src/util.py"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/main.py",
-      "to": "src/helpers.py",
+      "from": "../src/main.py",
+      "to": "../src/helpers.py",
       "symbols": [
         "`src.helpers`/validate_seed()."
       ]
     },
     {
-      "from": "src/main.py",
-      "to": "src/util.py",
+      "from": "../src/main.py",
+      "to": "../src/util.py",
       "symbols": [
         "`src.util`/summarize_values()."
       ]

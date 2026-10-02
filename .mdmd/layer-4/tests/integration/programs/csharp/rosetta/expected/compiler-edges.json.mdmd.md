@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/csharp/rosetta/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:35.231Z
+- Generated At: 2026-10-02T20:20:05.405Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,17 @@ The file-to-file edges the compiler resolved for the `programs/csharp` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`Rosetta`](../Rosetta.csproj.mdmd.md)
+- [`Main`](../src/App/Main.cs.mdmd.md)
+- [`PipelineTests`](../src/App/PipelineTests.cs.mdmd.md)
+- [`Helpers`](../src/Helpers/Helpers.cs.mdmd.md)
+- [`HelpersTests`](../src/Helpers/HelpersTests.cs.mdmd.md)
+- [`ModelFactory`](../src/Models/ModelFactory.cs.mdmd.md)
+- [`Record`](../src/Models/Record.cs.mdmd.md)
+- [`Report`](../src/Models/Report.cs.mdmd.md)
+- [`Processor`](../src/Processor/Processor.cs.mdmd.md)
+- [`ProcessorTests`](../src/Processor/ProcessorTests.cs.mdmd.md)
+- [`Entry`](../src/Types/Entry.cs.mdmd.md)
+- [`ProcessorConfig`](../src/Types/ProcessorConfig.cs.mdmd.md)
+- [`Status`](../src/Types/Status.cs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -102,64 +102,70 @@
       "language": "typescript",
       "path": "typescript/rosetta",
       "tier": "type-safe",
-      "sourceDir": "src",
-      "entryPoint": "src/main.ts",
+      "sourceDir": "typescript/rosetta/src",
+      "entryPoint": "typescript/rosetta/src/main.ts",
+      "compilerEdges": "typescript/rosetta/expected/compiler-edges.json",
       "notes": "Reference implementation. Exercises namespace imports and type-only imports."
     },
     {
       "language": "java",
       "path": "java/rosetta", 
       "tier": "type-safe",
-      "sourceDir": "src/com/rosetta",
-      "entryPoint": "src/com/rosetta/app/Main.java",
+      "sourceDir": "java/rosetta/src/com/rosetta",
+      "entryPoint": "java/rosetta/src/com/rosetta/app/Main.java",
+      "compilerEdges": "java/rosetta/expected/compiler-edges.json",
       "notes": "Package structure with wildcard imports (com.rosetta.models.*)."
     },
     {
       "language": "csharp",
       "path": "csharp/rosetta",
       "tier": "type-safe",
-      "sourceDir": "src",
-      "entryPoint": "src/App/Main.cs",
+      "sourceDir": "csharp/rosetta/src",
+      "entryPoint": "csharp/rosetta/src/App/Main.cs",
+      "compilerEdges": "csharp/rosetta/expected/compiler-edges.json",
       "notes": "Namespace structure with using aliases (using RTypes = Rosetta.Types)."
     },
     {
       "language": "rust",
       "path": "rust/rosetta",
       "tier": "type-safe",
-      "sourceDir": "src",
-      "entryPoint": "src/main.rs",
+      "sourceDir": "rust/rosetta/src",
+      "entryPoint": "rust/rosetta/src/main.rs",
+      "compilerEdges": "rust/rosetta/expected/compiler-edges.json",
       "notes": "Module system with mod declarations and use statements."
     },
     {
       "language": "c",
       "path": "c/rosetta",
       "tier": "type-safe",
-      "sourceDir": "src",
-      "entryPoint": "src/main.c",
+      "sourceDir": "c/rosetta/src",
+      "entryPoint": "c/rosetta/src/main.c",
       "notes": "Header file includes with implementation files."
     },
     {
       "language": "go",
       "path": "go/rosetta",
       "tier": "type-safe",
-      "sourceDir": "src",
-      "entryPoint": "src/main/main.go",
+      "sourceDir": "go/rosetta/src",
+      "entryPoint": "go/rosetta/src/main/main.go",
+      "compilerEdges": "go/rosetta/expected/compiler-edges.json",
       "notes": "Package-per-directory structure with module imports (rosetta/src/models)."
     },
     {
       "language": "python",
       "path": "python/rosetta",
       "tier": "dynamic",
-      "sourceDir": "src",
-      "entryPoint": "src/main.py",
+      "sourceDir": "python/rosetta/src",
+      "entryPoint": "python/rosetta/src/main.py",
+      "compilerEdges": "python/rosetta/expected/compiler-edges.json",
       "notes": "Module imports with aliasing (import models as Models)."
     },
     {
       "language": "ruby",
       "path": "ruby/rosetta",
       "tier": "dynamic",
-      "sourceDir": "lib",
-      "entryPoint": "lib/main.rb",
+      "sourceDir": "ruby/rosetta/lib",
+      "entryPoint": "ruby/rosetta/lib/main.rb",
       "notes": "require_relative for local module loading."
     }
   ],

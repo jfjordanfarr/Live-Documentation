@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/python/basics/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:36.949Z
+- Generated At: 2026-10-02T20:20:06.866Z
 
 ## Authored
 ### Purpose
@@ -37,5 +37,7 @@ The file-to-file edges the compiler resolved for the `programs/python` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](../src/helpers.py.mdmd.md)
+- [`main`](../src/main.py.mdmd.md)
+- [`util`](../src/util.py.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

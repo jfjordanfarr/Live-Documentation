@@ -1,41 +1,41 @@
 {
   "tool": "scip-typescript 0.4.0",
-  "projectFile": "tsconfig.json",
+  "projectFile": "../tsconfig.json",
   "projects": [
     {
       "name": "basic",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/helpers.ts",
-    "src/index.ts",
-    "src/models.ts",
-    "src/types.ts",
-    "src/util.ts"
+    "../src/helpers.ts",
+    "../src/index.ts",
+    "../src/models.ts",
+    "../src/types.ts",
+    "../src/util.ts"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/index.ts",
-      "to": "src/models.ts",
+      "from": "../src/index.ts",
+      "to": "../src/models.ts",
       "symbols": [
         "src/`models.ts`/",
         "src/`models.ts`/createWidget()."
       ]
     },
     {
-      "from": "src/index.ts",
-      "to": "src/util.ts",
+      "from": "../src/index.ts",
+      "to": "../src/util.ts",
       "symbols": [
         "src/`util.ts`/",
         "src/`util.ts`/formatWidget()."
       ]
     },
     {
-      "from": "src/models.ts",
-      "to": "src/types.ts",
+      "from": "../src/models.ts",
+      "to": "../src/types.ts",
       "symbols": [
         "src/`types.ts`/",
         "src/`types.ts`/Widget#",
@@ -47,8 +47,8 @@
       ]
     },
     {
-      "from": "src/util.ts",
-      "to": "src/types.ts",
+      "from": "../src/util.ts",
+      "to": "../src/types.ts",
       "symbols": [
         "src/`types.ts`/",
         "src/`types.ts`/Widget#",

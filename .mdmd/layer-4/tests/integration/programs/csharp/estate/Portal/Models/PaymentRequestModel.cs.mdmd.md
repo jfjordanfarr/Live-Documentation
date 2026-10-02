@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Portal/Models/PaymentRequestModel.cs
-- Generated At: 2026-09-27T23:21:35.021Z
+- Generated At: 2026-10-02T20:20:05.189Z
 
 ## Authored
 ### Purpose

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/typescript/basic/src/models.ts
-- Generated At: 2026-09-27T23:21:39.319Z
+- Generated At: 2026-10-02T20:20:08.901Z
 
 ## Authored
 ### Purpose

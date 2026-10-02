@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/rust/stockroom/src/store/memory.rs
-- Generated At: 2026-09-28T02:39:12.022Z
+- Generated At: 2026-10-02T20:20:08.805Z
 
 ## Authored
 ### Purpose

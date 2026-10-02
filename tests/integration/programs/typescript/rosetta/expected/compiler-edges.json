@@ -1,28 +1,28 @@
 {
   "tool": "scip-typescript 0.4.0",
-  "projectFile": "tsconfig.json",
+  "projectFile": "../tsconfig.json",
   "projects": [
     {
       "name": "rosetta",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/helpers.test.ts",
-    "src/helpers.ts",
-    "src/main.ts",
-    "src/models.ts",
-    "src/pipeline.test.ts",
-    "src/processor.test.ts",
-    "src/processor.ts",
-    "src/types.ts"
+    "../src/helpers.test.ts",
+    "../src/helpers.ts",
+    "../src/main.ts",
+    "../src/models.ts",
+    "../src/pipeline.test.ts",
+    "../src/processor.test.ts",
+    "../src/processor.ts",
+    "../src/types.ts"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/helpers.test.ts",
-      "to": "src/helpers.ts",
+      "from": "../src/helpers.test.ts",
+      "to": "../src/helpers.ts",
       "symbols": [
         "src/`helpers.ts`/",
         "src/`helpers.ts`/average().",
@@ -31,8 +31,8 @@
       ]
     },
     {
-      "from": "src/main.ts",
-      "to": "src/models.ts",
+      "from": "../src/main.ts",
+      "to": "../src/models.ts",
       "symbols": [
         "src/`models.ts`/",
         "src/`models.ts`/Report#",
@@ -40,8 +40,8 @@
       ]
     },
     {
-      "from": "src/main.ts",
-      "to": "src/processor.ts",
+      "from": "../src/main.ts",
+      "to": "../src/processor.ts",
       "symbols": [
         "src/`processor.ts`/",
         "src/`processor.ts`/run().",
@@ -49,8 +49,8 @@
       ]
     },
     {
-      "from": "src/models.ts",
-      "to": "src/types.ts",
+      "from": "../src/models.ts",
+      "to": "../src/types.ts",
       "symbols": [
         "src/`types.ts`/",
         "src/`types.ts`/Entry#",
@@ -65,8 +65,8 @@
       ]
     },
     {
-      "from": "src/pipeline.test.ts",
-      "to": "src/models.ts",
+      "from": "../src/pipeline.test.ts",
+      "to": "../src/models.ts",
       "symbols": [
         "src/`models.ts`/",
         "src/`models.ts`/Record#",
@@ -80,8 +80,8 @@
       ]
     },
     {
-      "from": "src/pipeline.test.ts",
-      "to": "src/processor.ts",
+      "from": "../src/pipeline.test.ts",
+      "to": "../src/processor.ts",
       "symbols": [
         "src/`processor.ts`/",
         "src/`processor.ts`/run().",
@@ -89,8 +89,8 @@
       ]
     },
     {
-      "from": "src/pipeline.test.ts",
-      "to": "src/types.ts",
+      "from": "../src/pipeline.test.ts",
+      "to": "../src/types.ts",
       "symbols": [
         "src/`types.ts`/",
         "src/`types.ts`/ProcessorConfig#",
@@ -100,8 +100,8 @@
       ]
     },
     {
-      "from": "src/processor.test.ts",
-      "to": "src/models.ts",
+      "from": "../src/processor.test.ts",
+      "to": "../src/models.ts",
       "symbols": [
         "src/`models.ts`/",
         "src/`models.ts`/Report#",
@@ -113,8 +113,8 @@
       ]
     },
     {
-      "from": "src/processor.test.ts",
-      "to": "src/processor.ts",
+      "from": "../src/processor.test.ts",
+      "to": "../src/processor.ts",
       "symbols": [
         "src/`processor.ts`/",
         "src/`processor.ts`/run().",
@@ -122,8 +122,8 @@
       ]
     },
     {
-      "from": "src/processor.ts",
-      "to": "src/helpers.ts",
+      "from": "../src/processor.ts",
+      "to": "../src/helpers.ts",
       "symbols": [
         "src/`helpers.ts`/",
         "src/`helpers.ts`/average().",
@@ -132,8 +132,8 @@
       ]
     },
     {
-      "from": "src/processor.ts",
-      "to": "src/models.ts",
+      "from": "../src/processor.ts",
+      "to": "../src/models.ts",
       "symbols": [
         "src/`models.ts`/",
         "src/`models.ts`/Record#",
@@ -147,8 +147,8 @@
       ]
     },
     {
-      "from": "src/processor.ts",
-      "to": "src/types.ts",
+      "from": "../src/processor.ts",
+      "to": "../src/types.ts",
       "symbols": [
         "src/`types.ts`/",
         "src/`types.ts`/ProcessorConfig#",

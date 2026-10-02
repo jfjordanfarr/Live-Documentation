@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/rust/analytics/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:38.784Z
+- Generated At: 2026-10-02T20:20:08.439Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,9 @@ The file-to-file edges the compiler resolved for the `programs/rust` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`analytics`](../src/analytics.rs.mdmd.md)
+- [`io`](../src/io.rs.mdmd.md)
+- [`main`](../src/main.rs.mdmd.md)
+- [`metrics`](../src/metrics.rs.mdmd.md)
+- [`models`](../src/models.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

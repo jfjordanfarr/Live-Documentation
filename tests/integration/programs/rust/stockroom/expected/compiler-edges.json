@@ -1,109 +1,109 @@
 {
   "tool": "rust-analyzer 1.93.1 (01f6ddf 2026-02-11)",
-  "projectFile": "Cargo.toml",
+  "projectFile": "../Cargo.toml",
   "projects": [
     {
       "name": "stockroom",
-      "directory": "src",
+      "directory": "../src",
       "references": [],
       "members": [
-        "src/lib.rs",
-        "src/report.rs",
-        "src/stock.rs",
-        "src/stock/item.rs",
-        "src/stock/quantity.rs",
-        "src/store/memory.rs",
-        "src/store/mod.rs"
+        "../src/lib.rs",
+        "../src/report.rs",
+        "../src/stock.rs",
+        "../src/stock/item.rs",
+        "../src/stock/quantity.rs",
+        "../src/store/memory.rs",
+        "../src/store/mod.rs"
       ]
     },
     {
       "name": "stockroom src/main.rs",
-      "directory": "src",
+      "directory": "../src",
       "references": [
         "stockroom"
       ],
       "members": [
-        "src/main.rs"
+        "../src/main.rs"
       ]
     },
     {
       "name": "stockroom tests/report.rs",
-      "directory": "tests",
+      "directory": "../tests",
       "references": [
         "stockroom"
       ],
       "members": [
-        "tests/report.rs"
+        "../tests/report.rs"
       ]
     }
   ],
   "documents": [
-    "src/lib.rs",
-    "src/main.rs",
-    "src/report.rs",
-    "src/stock.rs",
-    "src/stock/item.rs",
-    "src/stock/quantity.rs",
-    "src/store/memory.rs",
-    "src/store/mod.rs",
-    "tests/report.rs"
+    "../src/lib.rs",
+    "../src/main.rs",
+    "../src/report.rs",
+    "../src/stock.rs",
+    "../src/stock/item.rs",
+    "../src/stock/quantity.rs",
+    "../src/store/memory.rs",
+    "../src/store/mod.rs",
+    "../tests/report.rs"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/lib.rs",
-      "to": "src/report.rs",
+      "from": "../src/lib.rs",
+      "to": "../src/report.rs",
       "symbols": [
         "report/"
       ]
     },
     {
-      "from": "src/lib.rs",
-      "to": "src/stock.rs",
+      "from": "../src/lib.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "src/lib.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/lib.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/Item#"
       ]
     },
     {
-      "from": "src/lib.rs",
-      "to": "src/store/memory.rs",
+      "from": "../src/lib.rs",
+      "to": "../src/store/memory.rs",
       "symbols": [
         "store/memory/",
         "store/memory/Memory#"
       ]
     },
     {
-      "from": "src/lib.rs",
-      "to": "src/store/mod.rs",
+      "from": "../src/lib.rs",
+      "to": "../src/store/mod.rs",
       "symbols": [
         "store/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/report.rs",
+      "from": "../src/main.rs",
+      "to": "../src/report.rs",
       "symbols": [
         "report/",
         "report/write()."
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/stock.rs",
+      "from": "../src/main.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/main.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/Item#",
         "stock/item/Item#sku.",
@@ -111,8 +111,8 @@
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../src/main.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/Quantity#",
         "stock/quantity/Quantity#amount.",
@@ -123,8 +123,8 @@
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/store/memory.rs",
+      "from": "../src/main.rs",
+      "to": "../src/store/memory.rs",
       "symbols": [
         "store/memory/Memory#",
         "store/memory/impl#[Memory][Inventory]receive().",
@@ -133,23 +133,23 @@
       ]
     },
     {
-      "from": "src/main.rs",
-      "to": "src/store/mod.rs",
+      "from": "../src/main.rs",
+      "to": "../src/store/mod.rs",
       "symbols": [
         "store/",
         "store/Inventory#"
       ]
     },
     {
-      "from": "src/report.rs",
-      "to": "src/lib.rs",
+      "from": "../src/report.rs",
+      "to": "../src/lib.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/report.rs",
-      "to": "src/stock.rs",
+      "from": "../src/report.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/",
         "stock/Countable#",
@@ -157,15 +157,15 @@
       ]
     },
     {
-      "from": "src/report.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/report.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/impl#[Item]describe()."
       ]
     },
     {
-      "from": "src/report.rs",
-      "to": "src/store/mod.rs",
+      "from": "../src/report.rs",
+      "to": "../src/store/mod.rs",
       "symbols": [
         "store/",
         "store/Inventory#",
@@ -173,16 +173,16 @@
       ]
     },
     {
-      "from": "src/stock.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/stock.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/",
         "stock/item/Item#"
       ]
     },
     {
-      "from": "src/stock.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../src/stock.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/",
         "stock/quantity/Quantity#",
@@ -191,15 +191,15 @@
       ]
     },
     {
-      "from": "src/stock/item.rs",
-      "to": "src/stock.rs",
+      "from": "../src/stock/item.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "src/stock/item.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../src/stock/item.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/",
         "stock/quantity/Quantity#",
@@ -208,37 +208,37 @@
       ]
     },
     {
-      "from": "src/stock/quantity.rs",
-      "to": "src/lib.rs",
+      "from": "../src/stock/quantity.rs",
+      "to": "../src/lib.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/store/memory.rs",
-      "to": "src/lib.rs",
+      "from": "../src/store/memory.rs",
+      "to": "../src/lib.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/store/memory.rs",
-      "to": "src/stock.rs",
+      "from": "../src/store/memory.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "src/store/memory.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/store/memory.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/Item#",
         "stock/item/Item#sku."
       ]
     },
     {
-      "from": "src/store/memory.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../src/store/memory.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/Quantity#",
         "stock/quantity/Quantity#unit.",
@@ -247,8 +247,8 @@
       ]
     },
     {
-      "from": "src/store/memory.rs",
-      "to": "src/store/mod.rs",
+      "from": "../src/store/memory.rs",
+      "to": "../src/store/mod.rs",
       "symbols": [
         "store/",
         "store/Inventory#",
@@ -256,43 +256,43 @@
       ]
     },
     {
-      "from": "src/store/mod.rs",
-      "to": "src/lib.rs",
+      "from": "../src/store/mod.rs",
+      "to": "../src/lib.rs",
       "symbols": [
         "crate/"
       ]
     },
     {
-      "from": "src/store/mod.rs",
-      "to": "src/stock.rs",
+      "from": "../src/store/mod.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "src/store/mod.rs",
-      "to": "src/stock/item.rs",
+      "from": "../src/store/mod.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/Item#"
       ]
     },
     {
-      "from": "src/store/mod.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../src/store/mod.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/Quantity#"
       ]
     },
     {
-      "from": "src/store/mod.rs",
-      "to": "src/store/memory.rs",
+      "from": "../src/store/mod.rs",
+      "to": "../src/store/memory.rs",
       "symbols": [
         "store/memory/"
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/report.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/report.rs",
       "symbols": [
         "report/",
         "report/count().",
@@ -301,23 +301,23 @@
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/stock.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/stock.rs",
       "symbols": [
         "stock/"
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/stock/item.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/stock/item.rs",
       "symbols": [
         "stock/item/Item#",
         "stock/item/impl#[Item]new()."
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/stock/quantity.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/stock/quantity.rs",
       "symbols": [
         "stock/quantity/Quantity#",
         "stock/quantity/Quantity#amount.",
@@ -328,8 +328,8 @@
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/store/memory.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/store/memory.rs",
       "symbols": [
         "store/memory/Memory#",
         "store/memory/impl#[Memory][Inventory]receive().",
@@ -337,8 +337,8 @@
       ]
     },
     {
-      "from": "tests/report.rs",
-      "to": "src/store/mod.rs",
+      "from": "../tests/report.rs",
+      "to": "../src/store/mod.rs",
       "symbols": [
         "store/",
         "store/Inventory#"

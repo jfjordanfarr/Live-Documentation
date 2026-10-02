@@ -1,50 +1,50 @@
 {
   "tool": "scip-dotnet 0.2.14",
-  "projectFile": "Rosetta.csproj",
+  "projectFile": "../Rosetta.csproj",
   "projects": [
     {
       "name": "Rosetta",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
-    "obj/Debug/net8.0/Rosetta.AssemblyInfo.cs",
-    "obj/Debug/net8.0/Rosetta.GlobalUsings.g.cs",
-    "src/App/Main.cs",
-    "src/App/PipelineTests.cs",
-    "src/Helpers/Helpers.cs",
-    "src/Helpers/HelpersTests.cs",
-    "src/Models/ModelFactory.cs",
-    "src/Models/Record.cs",
-    "src/Models/Report.cs",
-    "src/Processor/Processor.cs",
-    "src/Processor/ProcessorTests.cs",
-    "src/Types/Entry.cs",
-    "src/Types/ProcessorConfig.cs",
-    "src/Types/Status.cs"
+    "../obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
+    "../obj/Debug/net8.0/Rosetta.AssemblyInfo.cs",
+    "../obj/Debug/net8.0/Rosetta.GlobalUsings.g.cs",
+    "../src/App/Main.cs",
+    "../src/App/PipelineTests.cs",
+    "../src/Helpers/Helpers.cs",
+    "../src/Helpers/HelpersTests.cs",
+    "../src/Models/ModelFactory.cs",
+    "../src/Models/Record.cs",
+    "../src/Models/Report.cs",
+    "../src/Processor/Processor.cs",
+    "../src/Processor/ProcessorTests.cs",
+    "../src/Types/Entry.cs",
+    "../src/Types/ProcessorConfig.cs",
+    "../src/Types/Status.cs"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/App/Main.cs",
-      "to": "src/Models/ModelFactory.cs",
+      "from": "../src/App/Main.cs",
+      "to": "../src/Models/ModelFactory.cs",
       "symbols": [
         "Models/ModelFactory#",
         "Models/ModelFactory#CreateRecord()."
       ]
     },
     {
-      "from": "src/App/Main.cs",
-      "to": "src/Models/Report.cs",
+      "from": "../src/App/Main.cs",
+      "to": "../src/Models/Report.cs",
       "symbols": [
         "Models/Report#"
       ]
     },
     {
-      "from": "src/App/Main.cs",
-      "to": "src/Processor/Processor.cs",
+      "from": "../src/App/Main.cs",
+      "to": "../src/Processor/Processor.cs",
       "symbols": [
         "Processor/Processor#",
         "Processor/Processor#Run().",
@@ -52,8 +52,8 @@
       ]
     },
     {
-      "from": "src/App/PipelineTests.cs",
-      "to": "src/Models/Record.cs",
+      "from": "../src/App/PipelineTests.cs",
+      "to": "../src/Models/Record.cs",
       "symbols": [
         "Models/Record#",
         "Models/Record#Create().",
@@ -61,8 +61,8 @@
       ]
     },
     {
-      "from": "src/App/PipelineTests.cs",
-      "to": "src/Models/Report.cs",
+      "from": "../src/App/PipelineTests.cs",
+      "to": "../src/Models/Report.cs",
       "symbols": [
         "Models/Report#",
         "Models/Report#Average.",
@@ -71,8 +71,8 @@
       ]
     },
     {
-      "from": "src/App/PipelineTests.cs",
-      "to": "src/Processor/Processor.cs",
+      "from": "../src/App/PipelineTests.cs",
+      "to": "../src/Processor/Processor.cs",
       "symbols": [
         "Processor/Processor#",
         "Processor/Processor#Run().",
@@ -80,15 +80,15 @@
       ]
     },
     {
-      "from": "src/App/PipelineTests.cs",
-      "to": "src/Types/ProcessorConfig.cs",
+      "from": "../src/App/PipelineTests.cs",
+      "to": "../src/Types/ProcessorConfig.cs",
       "symbols": [
         "Types/ProcessorConfig#"
       ]
     },
     {
-      "from": "src/Helpers/HelpersTests.cs",
-      "to": "src/Helpers/Helpers.cs",
+      "from": "../src/Helpers/HelpersTests.cs",
+      "to": "../src/Helpers/Helpers.cs",
       "symbols": [
         "Helpers/Helpers#",
         "Helpers/Helpers#Average().",
@@ -97,59 +97,59 @@
       ]
     },
     {
-      "from": "src/Models/ModelFactory.cs",
-      "to": "src/Models/Record.cs",
+      "from": "../src/Models/ModelFactory.cs",
+      "to": "../src/Models/Record.cs",
       "symbols": [
         "Models/Record#"
       ]
     },
     {
-      "from": "src/Models/ModelFactory.cs",
-      "to": "src/Types/ProcessorConfig.cs",
+      "from": "../src/Models/ModelFactory.cs",
+      "to": "../src/Types/ProcessorConfig.cs",
       "symbols": [
         "Types/ProcessorConfig#"
       ]
     },
     {
-      "from": "src/Models/Record.cs",
-      "to": "src/Models/ModelFactory.cs",
+      "from": "../src/Models/Record.cs",
+      "to": "../src/Models/ModelFactory.cs",
       "symbols": [
         "Models/ModelFactory#",
         "Models/ModelFactory#ValidateConfig()."
       ]
     },
     {
-      "from": "src/Models/Record.cs",
-      "to": "src/Types/Entry.cs",
+      "from": "../src/Models/Record.cs",
+      "to": "../src/Types/Entry.cs",
       "symbols": [
         "Types/Entry#"
       ]
     },
     {
-      "from": "src/Models/Record.cs",
-      "to": "src/Types/ProcessorConfig.cs",
+      "from": "../src/Models/Record.cs",
+      "to": "../src/Types/ProcessorConfig.cs",
       "symbols": [
         "Types/ProcessorConfig#"
       ]
     },
     {
-      "from": "src/Models/Record.cs",
-      "to": "src/Types/Status.cs",
+      "from": "../src/Models/Record.cs",
+      "to": "../src/Types/Status.cs",
       "symbols": [
         "Types/Status#",
         "Types/Status#Pending."
       ]
     },
     {
-      "from": "src/Models/Report.cs",
-      "to": "src/Models/Record.cs",
+      "from": "../src/Models/Report.cs",
+      "to": "../src/Models/Record.cs",
       "symbols": [
         "Models/Record#"
       ]
     },
     {
-      "from": "src/Processor/Processor.cs",
-      "to": "src/Helpers/Helpers.cs",
+      "from": "../src/Processor/Processor.cs",
+      "to": "../src/Helpers/Helpers.cs",
       "symbols": [
         "Helpers/Helpers#",
         "Helpers/Helpers#Average().",
@@ -158,24 +158,24 @@
       ]
     },
     {
-      "from": "src/Processor/Processor.cs",
-      "to": "src/Models/ModelFactory.cs",
+      "from": "../src/Processor/Processor.cs",
+      "to": "../src/Models/ModelFactory.cs",
       "symbols": [
         "Models/ModelFactory#",
         "Models/ModelFactory#ValidateConfig()."
       ]
     },
     {
-      "from": "src/Processor/Processor.cs",
-      "to": "src/Models/Record.cs",
+      "from": "../src/Processor/Processor.cs",
+      "to": "../src/Models/Record.cs",
       "symbols": [
         "Models/Record#",
         "Models/Record#Value."
       ]
     },
     {
-      "from": "src/Processor/Processor.cs",
-      "to": "src/Models/Report.cs",
+      "from": "../src/Processor/Processor.cs",
+      "to": "../src/Models/Report.cs",
       "symbols": [
         "Models/Report#",
         "Models/Report#Average.",
@@ -184,8 +184,8 @@
       ]
     },
     {
-      "from": "src/Processor/Processor.cs",
-      "to": "src/Types/ProcessorConfig.cs",
+      "from": "../src/Processor/Processor.cs",
+      "to": "../src/Types/ProcessorConfig.cs",
       "symbols": [
         "Types/ProcessorConfig#",
         "Types/ProcessorConfig#`.ctor`().(BatchSize)",
@@ -194,16 +194,16 @@
       ]
     },
     {
-      "from": "src/Processor/ProcessorTests.cs",
-      "to": "src/Models/Record.cs",
+      "from": "../src/Processor/ProcessorTests.cs",
+      "to": "../src/Models/Record.cs",
       "symbols": [
         "Models/Record#",
         "Models/Record#Create()."
       ]
     },
     {
-      "from": "src/Processor/ProcessorTests.cs",
-      "to": "src/Models/Report.cs",
+      "from": "../src/Processor/ProcessorTests.cs",
+      "to": "../src/Models/Report.cs",
       "symbols": [
         "Models/Report#",
         "Models/Report#Average.",
@@ -212,8 +212,8 @@
       ]
     },
     {
-      "from": "src/Processor/ProcessorTests.cs",
-      "to": "src/Processor/Processor.cs",
+      "from": "../src/Processor/ProcessorTests.cs",
+      "to": "../src/Processor/Processor.cs",
       "symbols": [
         "Processor/Processor#",
         "Processor/Processor#Run().",
@@ -221,8 +221,8 @@
       ]
     },
     {
-      "from": "src/Types/Entry.cs",
-      "to": "src/Types/Status.cs",
+      "from": "../src/Types/Entry.cs",
+      "to": "../src/Types/Status.cs",
       "symbols": [
         "Types/Status#"
       ]

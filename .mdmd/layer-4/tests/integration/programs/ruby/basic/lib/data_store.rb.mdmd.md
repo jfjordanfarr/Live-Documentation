@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/ruby/basic/lib/data_store.rb
-- Generated At: 2026-09-27T23:21:38.366Z
+- Generated At: 2026-10-02T20:20:08.080Z
 
 ## Authored
 ### Purpose

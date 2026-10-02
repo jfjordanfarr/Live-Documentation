@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-09-28T02:41:12.681Z
+- Generated At: 2026-10-02T22:17:28.312Z
 
 ## Authored
 ### Purpose
@@ -48,7 +48,7 @@ const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L101)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L113)
 
 ##### `hasMeaningfulAuthoredContent` — Summary
 Checks whether an authored markdown block carries information beyond the default placeholders.

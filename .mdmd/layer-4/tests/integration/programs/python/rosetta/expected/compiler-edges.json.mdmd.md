@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/python/rosetta/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:37.995Z
+- Generated At: 2026-10-02T20:20:07.765Z
 
 ## Authored
 ### Purpose
@@ -37,5 +37,12 @@ The file-to-file edges the compiler resolved for the `programs/python` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`core_types`](../src/core_types.py.mdmd.md)
+- [`helpers`](../src/helpers.py.mdmd.md)
+- [`main`](../src/main.py.mdmd.md)
+- [`models`](../src/models.py.mdmd.md)
+- [`processor`](../src/processor.py.mdmd.md)
+- [`test_helpers`](../src/test_helpers.py.mdmd.md)
+- [`test_pipeline`](../src/test_pipeline.py.mdmd.md)
+- [`test_processor`](../src/test_processor.py.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

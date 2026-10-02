@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/typescript/rosetta/src/main.ts
-- Generated At: 2026-09-27T23:21:39.597Z
+- Generated At: 2026-10-02T20:20:09.152Z
 
 ## Authored
 ### Purpose

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/webforms/src/App_Code/Globals.cs
-- Generated At: 2026-09-27T23:21:35.508Z
+- Generated At: 2026-10-02T20:20:05.640Z
 
 ## Authored
 ### Purpose

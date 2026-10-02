@@ -1,54 +1,54 @@
 {
   "tool": "scip-java 0.11.2",
-  "projectFile": "pom.xml",
+  "projectFile": "../pom.xml",
   "projects": [
     {
       "name": "rosetta",
-      "directory": ".",
+      "directory": "..",
       "references": []
     }
   ],
   "documents": [
-    "src/com/rosetta/app/Main.java",
-    "src/com/rosetta/app/PipelineTest.java",
-    "src/com/rosetta/helpers/Helpers.java",
-    "src/com/rosetta/helpers/HelpersTest.java",
-    "src/com/rosetta/models/ModelFactory.java",
-    "src/com/rosetta/models/Record.java",
-    "src/com/rosetta/models/Report.java",
-    "src/com/rosetta/processor/Processor.java",
-    "src/com/rosetta/processor/ProcessorTest.java",
-    "src/com/rosetta/types/Entry.java",
-    "src/com/rosetta/types/ProcessorConfig.java",
-    "src/com/rosetta/types/Status.java"
+    "../src/com/rosetta/app/Main.java",
+    "../src/com/rosetta/app/PipelineTest.java",
+    "../src/com/rosetta/helpers/Helpers.java",
+    "../src/com/rosetta/helpers/HelpersTest.java",
+    "../src/com/rosetta/models/ModelFactory.java",
+    "../src/com/rosetta/models/Record.java",
+    "../src/com/rosetta/models/Report.java",
+    "../src/com/rosetta/processor/Processor.java",
+    "../src/com/rosetta/processor/ProcessorTest.java",
+    "../src/com/rosetta/types/Entry.java",
+    "../src/com/rosetta/types/ProcessorConfig.java",
+    "../src/com/rosetta/types/Status.java"
   ],
   "outside": [],
   "edges": [
     {
-      "from": "src/com/rosetta/app/Main.java",
-      "to": "src/com/rosetta/models/ModelFactory.java",
+      "from": "../src/com/rosetta/app/Main.java",
+      "to": "../src/com/rosetta/models/ModelFactory.java",
       "symbols": [
         "com/rosetta/models/ModelFactory#",
         "com/rosetta/models/ModelFactory#createRecord()."
       ]
     },
     {
-      "from": "src/com/rosetta/app/Main.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/app/Main.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#"
       ]
     },
     {
-      "from": "src/com/rosetta/app/Main.java",
-      "to": "src/com/rosetta/models/Report.java",
+      "from": "../src/com/rosetta/app/Main.java",
+      "to": "../src/com/rosetta/models/Report.java",
       "symbols": [
         "com/rosetta/models/Report#"
       ]
     },
     {
-      "from": "src/com/rosetta/app/Main.java",
-      "to": "src/com/rosetta/processor/Processor.java",
+      "from": "../src/com/rosetta/app/Main.java",
+      "to": "../src/com/rosetta/processor/Processor.java",
       "symbols": [
         "com/rosetta/processor/Processor#",
         "com/rosetta/processor/Processor#run().",
@@ -56,24 +56,24 @@
       ]
     },
     {
-      "from": "src/com/rosetta/app/PipelineTest.java",
-      "to": "src/com/rosetta/models/ModelFactory.java",
+      "from": "../src/com/rosetta/app/PipelineTest.java",
+      "to": "../src/com/rosetta/models/ModelFactory.java",
       "symbols": [
         "com/rosetta/models/ModelFactory#",
         "com/rosetta/models/ModelFactory#validateConfig()."
       ]
     },
     {
-      "from": "src/com/rosetta/app/PipelineTest.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/app/PipelineTest.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#",
         "com/rosetta/models/Record#create()."
       ]
     },
     {
-      "from": "src/com/rosetta/app/PipelineTest.java",
-      "to": "src/com/rosetta/models/Report.java",
+      "from": "../src/com/rosetta/app/PipelineTest.java",
+      "to": "../src/com/rosetta/models/Report.java",
       "symbols": [
         "com/rosetta/models/Report#",
         "com/rosetta/models/Report#getAverage().",
@@ -82,8 +82,8 @@
       ]
     },
     {
-      "from": "src/com/rosetta/app/PipelineTest.java",
-      "to": "src/com/rosetta/processor/Processor.java",
+      "from": "../src/com/rosetta/app/PipelineTest.java",
+      "to": "../src/com/rosetta/processor/Processor.java",
       "symbols": [
         "com/rosetta/processor/Processor#",
         "com/rosetta/processor/Processor#run().",
@@ -91,16 +91,16 @@
       ]
     },
     {
-      "from": "src/com/rosetta/app/PipelineTest.java",
-      "to": "src/com/rosetta/types/ProcessorConfig.java",
+      "from": "../src/com/rosetta/app/PipelineTest.java",
+      "to": "../src/com/rosetta/types/ProcessorConfig.java",
       "symbols": [
         "com/rosetta/types/ProcessorConfig#",
         "com/rosetta/types/ProcessorConfig#`<init>`()."
       ]
     },
     {
-      "from": "src/com/rosetta/helpers/HelpersTest.java",
-      "to": "src/com/rosetta/helpers/Helpers.java",
+      "from": "../src/com/rosetta/helpers/HelpersTest.java",
+      "to": "../src/com/rosetta/helpers/Helpers.java",
       "symbols": [
         "com/rosetta/helpers/Helpers#",
         "com/rosetta/helpers/Helpers#average().",
@@ -109,16 +109,16 @@
       ]
     },
     {
-      "from": "src/com/rosetta/models/ModelFactory.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/models/ModelFactory.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#",
         "com/rosetta/models/Record#`<init>`()."
       ]
     },
     {
-      "from": "src/com/rosetta/models/ModelFactory.java",
-      "to": "src/com/rosetta/types/ProcessorConfig.java",
+      "from": "../src/com/rosetta/models/ModelFactory.java",
+      "to": "../src/com/rosetta/types/ProcessorConfig.java",
       "symbols": [
         "com/rosetta/types/ProcessorConfig#",
         "com/rosetta/types/ProcessorConfig#getBatchSize().",
@@ -126,31 +126,31 @@
       ]
     },
     {
-      "from": "src/com/rosetta/models/Record.java",
-      "to": "src/com/rosetta/types/Entry.java",
+      "from": "../src/com/rosetta/models/Record.java",
+      "to": "../src/com/rosetta/types/Entry.java",
       "symbols": [
         "com/rosetta/types/Entry#",
         "com/rosetta/types/Entry#`<init>`()."
       ]
     },
     {
-      "from": "src/com/rosetta/models/Record.java",
-      "to": "src/com/rosetta/types/Status.java",
+      "from": "../src/com/rosetta/models/Record.java",
+      "to": "../src/com/rosetta/types/Status.java",
       "symbols": [
         "com/rosetta/types/Status#",
         "com/rosetta/types/Status#PENDING."
       ]
     },
     {
-      "from": "src/com/rosetta/models/Report.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/models/Report.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#"
       ]
     },
     {
-      "from": "src/com/rosetta/processor/Processor.java",
-      "to": "src/com/rosetta/helpers/Helpers.java",
+      "from": "../src/com/rosetta/processor/Processor.java",
+      "to": "../src/com/rosetta/helpers/Helpers.java",
       "symbols": [
         "com/rosetta/helpers/Helpers#",
         "com/rosetta/helpers/Helpers#average().",
@@ -159,24 +159,24 @@
       ]
     },
     {
-      "from": "src/com/rosetta/processor/Processor.java",
-      "to": "src/com/rosetta/models/ModelFactory.java",
+      "from": "../src/com/rosetta/processor/Processor.java",
+      "to": "../src/com/rosetta/models/ModelFactory.java",
       "symbols": [
         "com/rosetta/models/ModelFactory#",
         "com/rosetta/models/ModelFactory#validateConfig()."
       ]
     },
     {
-      "from": "src/com/rosetta/processor/Processor.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/processor/Processor.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#",
         "com/rosetta/models/Record#getValue()."
       ]
     },
     {
-      "from": "src/com/rosetta/processor/Processor.java",
-      "to": "src/com/rosetta/models/Report.java",
+      "from": "../src/com/rosetta/processor/Processor.java",
+      "to": "../src/com/rosetta/models/Report.java",
       "symbols": [
         "com/rosetta/models/Report#",
         "com/rosetta/models/Report#`<init>`().",
@@ -186,24 +186,24 @@
       ]
     },
     {
-      "from": "src/com/rosetta/processor/Processor.java",
-      "to": "src/com/rosetta/types/ProcessorConfig.java",
+      "from": "../src/com/rosetta/processor/Processor.java",
+      "to": "../src/com/rosetta/types/ProcessorConfig.java",
       "symbols": [
         "com/rosetta/types/ProcessorConfig#",
         "com/rosetta/types/ProcessorConfig#`<init>`()."
       ]
     },
     {
-      "from": "src/com/rosetta/processor/ProcessorTest.java",
-      "to": "src/com/rosetta/models/Record.java",
+      "from": "../src/com/rosetta/processor/ProcessorTest.java",
+      "to": "../src/com/rosetta/models/Record.java",
       "symbols": [
         "com/rosetta/models/Record#",
         "com/rosetta/models/Record#create()."
       ]
     },
     {
-      "from": "src/com/rosetta/processor/ProcessorTest.java",
-      "to": "src/com/rosetta/models/Report.java",
+      "from": "../src/com/rosetta/processor/ProcessorTest.java",
+      "to": "../src/com/rosetta/models/Report.java",
       "symbols": [
         "com/rosetta/models/Report#",
         "com/rosetta/models/Report#`<init>`().",
@@ -213,8 +213,8 @@
       ]
     },
     {
-      "from": "src/com/rosetta/processor/ProcessorTest.java",
-      "to": "src/com/rosetta/processor/Processor.java",
+      "from": "../src/com/rosetta/processor/ProcessorTest.java",
+      "to": "../src/com/rosetta/processor/Processor.java",
       "symbols": [
         "com/rosetta/processor/Processor#",
         "com/rosetta/processor/Processor#run().",
@@ -222,8 +222,8 @@
       ]
     },
     {
-      "from": "src/com/rosetta/types/Entry.java",
-      "to": "src/com/rosetta/types/Status.java",
+      "from": "../src/com/rosetta/types/Entry.java",
+      "to": "../src/com/rosetta/types/Status.java",
       "symbols": [
         "com/rosetta/types/Status#"
       ]

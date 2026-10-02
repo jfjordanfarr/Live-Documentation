@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/scip-edges.ts
-- Generated At: 2026-09-27T23:21:31.986Z
+- Generated At: 2026-10-02T20:20:02.665Z
 
 ## Authored
 ### Purpose
@@ -57,7 +57,7 @@ A reference the solution structure could not narrow to one defining file.
 - Source: [source](../../../../scripts/oracle/scip-edges.ts#L68)
 
 ##### `OracleEdges` — Summary
-The written form of a fixture's `expected/compiler-edges.json`.
+Compiler observations in fixture-relative coordinates. Persistence converts locations to JSON-file-relative paths.
 
 #### `IndexContext` {#symbol-indexcontext}
 - Type: interface

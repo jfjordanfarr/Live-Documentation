@@ -28,6 +28,7 @@ import * as fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { writeOracleEdges } from "./files";
 import { copyFixture, listFixtureFiles } from "./fixture";
 import { cargoProjects, convertScipIndex, readProjects, type IndexContext, type OracleProject } from "./scip-edges";
 
@@ -149,8 +150,7 @@ function main(): void {
 
     const outputDir  = path.join(fixtureDir, "expected");
     const outputPath = path.join(outputDir, "compiler-edges.json");
-    fs.mkdirSync(outputDir, { recursive: true });
-    fs.writeFileSync(outputPath, `${JSON.stringify(result, null, 2)}\n`, "utf8");
+    writeOracleEdges(outputPath, fixtureDir, result);
 
     const outside = result.outside.length > 0 ? `, ${result.outside.length} outside the fixture` : "";
     console.log(`${result.tool}: ${result.documents.length} documents, ${result.edges.length} edges, ${result.ambiguous.length} ambiguous${outside}`);

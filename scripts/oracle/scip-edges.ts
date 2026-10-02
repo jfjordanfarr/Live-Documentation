@@ -64,7 +64,7 @@ export interface OracleAmbiguity {
   candidates: string[];
 }
 
-/** The written form of a fixture's `expected/compiler-edges.json`. */
+/** Compiler observations in fixture-relative coordinates. Persistence converts locations to JSON-file-relative paths. */
 export interface OracleEdges {
   tool:         string;
   /** The project file the indexer was pointed at; absent for a language that needs none. */

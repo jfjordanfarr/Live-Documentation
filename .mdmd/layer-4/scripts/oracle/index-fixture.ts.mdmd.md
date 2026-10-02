@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/index-fixture.ts
-- Generated At: 2026-09-27T23:21:31.967Z
+- Generated At: 2026-10-02T20:20:02.647Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ _No public symbols detected_
 - `node:fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`files.writeOracleEdges`](./files.ts.mdmd.md#symbol-writeoracleedges)
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`fixture.listFixtureFiles`](./fixture.ts.mdmd.md#symbol-listfixturefiles)
 - [`scip-edges.IndexContext`](./scip-edges.ts.mdmd.md#symbol-indexcontext)

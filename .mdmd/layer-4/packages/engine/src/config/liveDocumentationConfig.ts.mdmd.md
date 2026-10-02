@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-09-29T19:54:51.695Z
+- Generated At: 2026-10-02T20:19:59.302Z
 
 ## Authored
 ### Purpose
@@ -56,7 +56,7 @@ dialect to use.
 
 #### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L73)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L75)
 
 ##### `LiveDocumentationConfigInput` — Summary
 Partial input shape accepted by {@link normalizeLiveDocumentationConfig}.
@@ -67,28 +67,28 @@ want to override; everything else falls back to
 
 #### `LIVE_DOCUMENTATION_DEFAULT_ROOT` {#symbol-live_documentation_default_root}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L80)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L82)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_ROOT` — Summary
 Default root directory for the Live Docs mirror (`".live-documentation"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` {#symbol-live_documentation_default_base_layer}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L82)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L84)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` — Summary
 Default base-layer subdirectory within the root (`"source"`).
 
 #### `LIVE_DOCUMENTATION_FILE_EXTENSION` {#symbol-live_documentation_file_extension}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L84)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L86)
 
 ##### `LIVE_DOCUMENTATION_FILE_EXTENSION` — Summary
 Default file extension for generated Live Doc files (`".md"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L93)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L95)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
 Default glob patterns selecting workspace artifacts that receive Live Docs.
@@ -100,7 +100,7 @@ receive stub-only Live Docs for graph connectivity.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L183)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L185)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -113,7 +113,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L206)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L209)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 

@@ -34,3 +34,5 @@ Two expectation files sit under `expected/`, and they measure different things.
 - `scip-dotnet` names a type by its innermost namespace only, so the portal's and the gateway's `Controllers.PaymentsController` share one symbol. The converter resolves such collisions by project visibility (a document sees its own project and the projects it references, transitively) and lists anything still ambiguous rather than picking one.
 - The `.sql` files have no compiler. They are here so the chain ends where it really ends.
 - `bin/`, `obj/` and `index.scip` are ignored; the fixture directory itself is never written to by the tooling.
+
+Paths in the expectation JSON files are relative to their containing `expected/` directory (for example, `../Gateway/Web.config`). The oracle reader translates them back to fixture-relative paths for comparison; compiler symbols and hand-verified evidence retain their original meaning.

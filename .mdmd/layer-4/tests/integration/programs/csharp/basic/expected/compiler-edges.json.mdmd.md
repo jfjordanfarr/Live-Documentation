@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/csharp/basic/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:34.459Z
+- Generated At: 2026-10-02T20:20:04.579Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,11 @@ The file-to-file edges the compiler resolved for the `programs/csharp` sample pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`CSharpBasic`](../CSharpBasic.csproj.mdmd.md)
+- [`App`](../src/Diagnostics/App.cs.mdmd.md)
+- [`Repository`](../src/Diagnostics/Data/Repository.cs.mdmd.md)
+- [`FormattedReport`](../src/Diagnostics/Models/FormattedReport.cs.mdmd.md)
+- [`Formatter`](../src/Diagnostics/Models/Formatter.cs.mdmd.md)
+- [`Record`](../src/Diagnostics/Models/Record.cs.mdmd.md)
+- [`ReportService`](../src/Diagnostics/Services/ReportService.cs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/store/MemoryInventory.java
-- Generated At: 2026-09-27T23:21:36.874Z
+- Generated At: 2026-10-02T20:20:06.829Z
 
 ## Authored
 ### Purpose

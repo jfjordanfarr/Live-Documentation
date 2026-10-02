@@ -70,14 +70,26 @@ export function resolveArchetype(
     return "test";
   }
 
-  // Check if this is a fixture directory
-  const isFixturePath = sourcePath.includes("/__fixtures__/") || /\bfixtures\b/.test(sourcePath);
+  // Sample code keeps its own roles even when the sample collection lives under tests/.
+  // Repository-specific roots belong to configuration, not to this path heuristic.
+  const sampleRoot = [...config.sampleRoots].sort((a, b) => b.length - a.length)
+    .find(root => root === "." || sourcePath === root || sourcePath.startsWith(`${root}/`));
+  const isFixturePath = sampleRoot !== undefined || sourcePath.includes("/__fixtures__/") || /\bfixtures\b/.test(sourcePath);
   
   if (isFixturePath) {
     // Fixture files with code extensions are implementation (they have symbols/dependencies)
     // Non-code fixtures (JSON, config, etc.) are assets
     const ext = path.extname(sourcePath).toLowerCase();
     if (IMPLEMENTATION_CODE_EXTENSIONS.has(ext)) {
+      // Ignore the enclosing harness, but retain test directories inside the
+      // sample (for example Cargo's tests/report.rs and JS __tests__/ helpers).
+      const fixtureRoot = sourcePath.match(/^(.*\/)?(?:__fixtures__|fixtures)\//)?.[0];
+      const samplePath = sampleRoot === "." ? sourcePath
+        : sampleRoot !== undefined ? sourcePath.slice(sampleRoot.length + 1)
+        : fixtureRoot ? sourcePath.slice(fixtureRoot.length) : "";
+      if (/(?:^|\/)(?:tests?|__tests__)(?:\/|$)/i.test(path.posix.dirname(samplePath))) {
+        return "test";
+      }
       return "implementation";
     }
     return "asset";

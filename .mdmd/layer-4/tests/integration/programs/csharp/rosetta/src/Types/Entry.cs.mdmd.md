@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/rosetta/src/Types/Entry.cs
-- Generated At: 2026-09-28T02:39:09.936Z
+- Generated At: 2026-10-02T20:20:05.558Z
 
 ## Authored
 ### Purpose

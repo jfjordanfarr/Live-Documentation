@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/rust/rosetta/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:38.935Z
+- Generated At: 2026-10-02T20:20:08.590Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,12 @@ The file-to-file edges the compiler resolved for the `programs/rust` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`helpers`](../src/helpers.rs.mdmd.md)
+- [`helpers_test`](../src/helpers_test.rs.mdmd.md)
+- [`main`](../src/main.rs.mdmd.md)
+- [`models`](../src/models.rs.mdmd.md)
+- [`pipeline_test`](../src/pipeline_test.rs.mdmd.md)
+- [`processor`](../src/processor.rs.mdmd.md)
+- [`processor_test`](../src/processor_test.rs.mdmd.md)
+- [`types`](../src/types.rs.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

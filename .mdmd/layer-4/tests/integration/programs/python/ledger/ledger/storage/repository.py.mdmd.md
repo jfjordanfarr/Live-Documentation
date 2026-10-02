@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: implementation
 - Code Path: tests/integration/programs/python/ledger/ledger/storage/repository.py
-- Generated At: 2026-09-28T02:39:11.045Z
+- Generated At: 2026-10-02T20:20:07.435Z
 
 ## Authored
 ### Purpose

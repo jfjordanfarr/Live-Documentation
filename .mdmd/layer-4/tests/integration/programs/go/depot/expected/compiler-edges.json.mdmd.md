@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: test
+- Archetype: asset
 - Code Path: tests/integration/programs/go/depot/expected/compiler-edges.json
-- Generated At: 2026-09-27T23:21:35.646Z
+- Generated At: 2026-10-02T20:20:05.770Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,17 @@ The file-to-file edges the compiler resolved for the `go/depot` sample program, 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`main`](../cmd/depot/main.go.mdmd.md)
+- [`audit`](../internal/audit/audit.go.mdmd.md)
+- [`count`](../report/count.go.mdmd.md)
+- [`format`](../report/format.go.mdmd.md)
+- [`report`](../report/report.go.mdmd.md)
+- [`report_test`](../report/report_test.go.mdmd.md)
+- [`item`](../stock/item.go.mdmd.md)
+- [`item_test`](../stock/item_test.go.mdmd.md)
+- [`quantity`](../stock/quantity.go.mdmd.md)
+- [`quantity_test`](../stock/quantity_test.go.mdmd.md)
+- [`base`](../store/base.go.mdmd.md)
+- [`inventory`](../store/inventory.go.mdmd.md)
+- [`memory`](../store/memory/memory.go.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

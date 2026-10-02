@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/rust/stockroom/tests/report.rs
-- Generated At: 2026-09-27T23:21:39.244Z
+- Generated At: 2026-10-02T22:17:34.460Z
 
 ## Authored
 ### Purpose
