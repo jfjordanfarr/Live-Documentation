@@ -11,7 +11,6 @@
  * @module
  */
 
-import type { MultiHopEntry } from "./connections";
 import type { ColumnRole, LocalSubgraph, MapTransform } from "./types";
 
 /**
@@ -59,8 +58,6 @@ export interface LocalViewRuntime {
   container: HTMLDivElement;
   overlay: HTMLDivElement;
   currentSubgraph: LocalSubgraph | null;
-  /** Multi-hop subgraphs for rendering and connection drawing. */
-  multiHopSubgraphs: MultiHopEntry[] | null;
   mapTransform: MapTransform;
   isDragging: boolean;
   lastDragPosition: DragPosition | null;
@@ -92,7 +89,6 @@ export function createRuntime(
     container,
     overlay,
     currentSubgraph: null,
-    multiHopSubgraphs: null,
     mapTransform: { x: 0, y: 0, k: 1 },
     isDragging: false,
     lastDragPosition: null,

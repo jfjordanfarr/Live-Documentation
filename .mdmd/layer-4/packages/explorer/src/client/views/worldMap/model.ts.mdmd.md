@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/model.ts
-- Generated At: 2026-09-29T01:19:54.205Z
+- Generated At: 2026-10-02T22:33:03.781Z
 
 ## Authored
 ### Purpose

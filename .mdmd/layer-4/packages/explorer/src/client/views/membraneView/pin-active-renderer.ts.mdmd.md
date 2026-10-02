@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/pin-active-renderer.ts
-- Generated At: 2026-09-28T01:11:44.290Z
+- Generated At: 2026-10-02T21:07:40.072Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,7 @@ Result from renderPinActiveLayout.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L86)
 - Returns: [`PinActiveRenderResult`](#symbol-pinactiverenderresult)
-- Parameters: `pinLayout`: [`PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult); `nodesById`: `ReadonlyMap`; `callbacks`: [`PinActiveCallbacks`](#symbol-pinactivecallbacks); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
+- Parameters: `pinLayout`: [`PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult); `nodesById`: `ReadonlyMap`; `callbacks`: [`PinActiveCallbacks`](#symbol-pinactivecallbacks); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `renderPinActiveLayout` — Summary
 Render the dependency-flow layout when pins are active.
@@ -67,9 +67,9 @@ Creates a horizontal column layout where:
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
 - [`pin-layout.DirectoryBand`](./pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`pin-layout.PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult) (type-only)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.areAllSymbolsPinned`](./pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
-- [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.areAllSymbolsPinned`](../pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
+- [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

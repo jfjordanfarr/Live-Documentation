@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/browse-renderer.ts
-- Generated At: 2026-09-28T01:11:44.006Z
+- Generated At: 2026-10-02T21:07:39.864Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,7 @@ Result from renderBrowseMode, including any card-grid anchors.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L91)
 - Returns: [`BrowseRenderResult`](#symbol-browserenderresult)
-- Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `callbacks`: [`BrowseRenderCallbacks`](#symbol-browserendercallbacks); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `expandedCards`: `ReadonlySet`; `testCoverage`: [`TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap); `detailLevels`: `ReadonlyMap`
+- Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `callbacks`: [`BrowseRenderCallbacks`](#symbol-browserendercallbacks); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `expandedCards`: `ReadonlySet`; `testCoverage`: [`TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap); `detailLevels`: `ReadonlyMap`
 
 ##### `renderBrowseMode` — Summary
 Render the full membrane tree into a positioned DOM subtree.
@@ -66,11 +66,11 @@ A root HTMLElement containing the entire membrane tree
 - [`aggregation.DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
 - [`detail-levels.DetailLevel`](./detail-levels.ts.mdmd.md#symbol-detaillevel)
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.areAllSymbolsPinned`](./pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
-- [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.areAllSymbolsPinned`](../pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
+- [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

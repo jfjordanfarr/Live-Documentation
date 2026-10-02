@@ -177,3 +177,21 @@ test.describe("Local Map path mode", () => {
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
   });
 });
+
+test("pinning a path symbol opens branches, clears the old path status and keeps the clicked row in place", async ({ page }) => {
+  await page.goto(`${BASE}?view=local&node=${encodeURIComponent(DEPENDENT)}&from=${encodeURIComponent(DEPENDENCY)}&to=${encodeURIComponent(DEPENDENT)}`);
+  await page.locator("#view-map.has-path").waitFor();
+  await page.waitForTimeout(800);
+  const label = page.locator(".path-origin .symbol-row:not(.internals-row) .symbol-label-wrapper").first();
+  const before = (await label.boundingBox())!;
+  const symbol = await label.evaluate(element => element.parentElement!.dataset.symbol!);
+  await label.click();
+  await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
+  await expect(page.locator("#pathfind-status")).toBeHidden();
+  await expect(page.locator(".branch-mode")).toBeVisible();
+  await page.waitForTimeout(100);
+  const after = (await page.locator(`.node-card[data-id="${DEPENDENCY}"] .symbol-row[data-symbol="${symbol}"] .symbol-label-wrapper`).boundingBox())!;
+  expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);
+  expect(new URL(page.url()).searchParams.has("from")).toBe(false);
+  expect(new URL(page.url()).searchParams.has("to")).toBe(false);
+});

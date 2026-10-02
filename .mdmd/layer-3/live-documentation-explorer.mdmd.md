@@ -9,17 +9,17 @@
 
 ### Purpose
 
-Document the visualization command center that renders the Live Doc graph as interactive views—currently Circuit Board (treemap), Local Map (3-column symbol view), and Force Graph—built as a static bundle for browser-based exploration. The planned [Membrane Map](membrane-map.mdmd.md) will unify Circuit Board and Local Map into a single zoomable treemap with directory-as-membrane nesting, reducing the view count from three to two (Membrane Map + Force Graph).
+Describe the static Explorer that renders the canonical Live Doc graph and authored boards. The existing Local Map provides file and symbol detail; the native Force Graph provides a three-dimensional perspective on file connectivity. Their independent exploration pins and selected identity are shared. Directory browsing, authored boards and knowledge sources have their own presentations; no view retirement has been selected in the current design pass.
 
 ### Notes
 
 - Created 2025-11-21 when `visualize-explorer.ts` was refactored into a modular `packages/explorer` structure with client and shared modules.
 - The shared layer (`explorer/shared/`) builds the static bundle: the derived graph index from `packages/engine` plus the related markdown, with the HTML/CSS/JS assets. `graph.ts` there is the projection from the graph index to the node-and-link payload the views render; the client runs it on load (since 2026-09-28).
 - The HTTP server (`explorer/server/`) was retired on 2026-03-09 in favour of static-only distribution. `graph.ts` and `buildAssets.ts` were relocated to `shared/`. The client paths that still fetched from it went on 2026-09-28.
-- The client (`explorer/client/`) currently renders four view modes:
+- The client (`explorer/client/`) renders these views:
   - **Circuit Board**: Treemap layout where folders are nested rectangles and files are clickable cells.
-  - **Local Map**: 3-column view (inbound → center → outbound) showing symbol-level connections with Bézier splines.
-  - **Force Graph**: Force-directed layout for spatial discovery (accessibility relaxed vs primary views).
+  - **Local Map**: Classic three-column neighborhood, independently pinned branches, and explicit FROM/TO paths, using the same symbol cards and provider-to-consumer connections.
+  - **Force Graph**: Force-directed file connectivity with camera focus, retained exploration pins and a subject-anchored handoff to the Local Map.
   - **Membrane Map** _(default view from 2026-03-31 to 2026-09-28)_: Zoomable treemap unifying Circuit Board and Local Map. Directory-as-membrane nesting with continuous pin spectrum (no discrete modes). See [Membrane Map architecture](membrane-map.mdmd.md). Since 2026-09-29 it is the inside of a thing on the World Map: a thing opens into it focused on its folder, the World Map is the crumb above the top folder, and a folder's first look is fitted above the zoom controls. The owner's call the same day: bring it to the Local Map's quality in place, then rename it Local Map.
   - **World Map** _(since 2026-09-28; the landing view when the bundle carries a board)_: the outside of everything. A board's things drawn by their kind, regions around what they hold, doors, wires with their basis and their evidence, declared crossings, and what things stand on, read from the board text the bundle carries and the graph, by the engine's `board.ts` and `boardGraph.ts` in the browser. `views/worldMap/` holds the camera, the geometry and the model as pure modules with tests, and one module that draws. The design is in [Boards](boards.mdmd.md) and the decisions log under "The World Map in the Explorer". A thing opens, by the wheel past half the view, a double-click or the link in its pinned panel, into the Membrane Map focused on its folder (2026-09-29; for one afternoon it opened into a folder map of its own, retired on the owner's second look, which the decisions log keeps under "The Inside of a Thing"). A hover peeks and a click pins; in a pinned panel every name is a link, a thing's name pinning it and a file opening in the Local Map, so that every claim a panel makes can be traced (2026-09-29). What a thing stands on is another thing's code built in, a dotted line on the board to that thing, and what its manifests name, the strands beneath it. Labels keep off each other: a thing's name stays put, its second line goes when it would cover another label, and a region's label, a crossing's tag and a token's label step up or down until clear, after every camera move; Playwright's design audit checks it, and the estate sample under `samples/estate/` with it.
 - The **[Membrane Map](membrane-map.mdmd.md)** was the default view from 2026-03-31 to 2026-09-28 and is the inside of a thing on the World Map since 2026-09-29. The Circuit Board and the force graph remain until the owner retires them; the Local Map stays as the reference the Membrane Map is measured against (the owner, 2026-09-29: "don't get rid of the Local Map yet. It still has a fair bit of hard-earned design intuition and style to teach us").
@@ -28,11 +28,14 @@ Document the visualization command center that renders the Live Doc graph as int
 
 ### Strategy
 
-- **Membrane Map transition**: Fold what remains of Circuit Board and Local Map into the [Membrane Map](membrane-map.mdmd.md), then remove them.
-- Complete LD-406 through LD-408 by consolidating shared data models, adding focus-mode filtering, and wiring accessibility/telemetry hooks.
+- **Native Local Map and Force Graph**: the [October 2 review](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-02.1.record.md#turn-7) reopened the earlier replacement plan. Improve the existing views and preserve identity, independent branches and orientation during perspective changes. World Map scope semantics remain a separate design question.
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
-- The Explorer is strictly read-only. Editing Live Docs or source files happens in the IDE; the Explorer provides "open in editor" links to bridge the gap.
+- Source and generated Live Docs remain external to the static viewer. The World Map can retain moved placements in the browser and download updated board text.
 - **Static distribution**: the bundle is `index.html`, `static/`, and `explorer-data.json`, which holds the graph index and the related markdown. Any static host serves it; this repository's is published to GitHub Pages.
+
+### Independent exploration
+
+Pinning a symbol or file retains its connections without removing other pins. The Local Map displays the union of those neighborhoods and every relationship between the retained files. Cyclic components share a column; skipped ranks and cycles route above the occupied columns. Counts identify connections outside the current disclosure, including those hidden by filters. Explicit pins and the selected file remain visible through filtering. The native perspective controls preserve the selected identity’s screen position; manual camera gestures end automatic tracking.
 
 ### Pathfinding Rendering
 
@@ -40,7 +43,7 @@ The Local Map supports **path mode** when `FROM` and `TO` inputs are populated. 
 
 A path is drawn only in the direction the map reads. Inside a system what a file offers leaves on the right and what it uses enters on the left, so `FROM` must offer and `TO` must use: the path is found by walking `FROM`'s dependents, and every wire leaves the earlier file's blue pin and enters the later file's green pin. When the two files connect only the other way (`FROM` depends on `TO`), nothing is drawn: the status says no path runs that way and offers the reverse question as a link, which swaps the two ends and draws. This is the owner's rule of 2025-12-18, "like a google search with an obvious typo, we should show no results and offer the reverse (via hyperlink)... rather than draw the crazy connectors which span their entire nodes, reaching backwards"; the drawing had run against it since, and the still-picture instrument measured every wire backward on 2026-10-01. A reference between two files of the path that runs against it (an earlier file depending on a later one) is not drawn either; the status counts them so that the picture says what it leaves out. The file selected before the path stays selected through it, so Clear returns to that file's columns and its address; a path has no selection of its own unless none existed.
 
-Three planned enhancements address this limitation (see `AI-Agent-Workspace/Notes/multi-path-visualization-design.md` for full specification with ASCII diagrams):
+Three historical proposals address this limitation; they remain open rather than authorized work in the October 2 pass (see `AI-Agent-Workspace/Notes/multi-path-visualization-design.md` for full specification with ASCII diagrams):
 
 1. **All-Shortest-Paths Merged DAG** — Replace the single-parent BFS with a multi-parent variant (`Map<string, Set<string>>`) to reconstruct every shortest path. Where paths diverge, the hop column stacks multiple cards vertically. Connections fan out and converge across the DAG.
 
@@ -48,7 +51,7 @@ Three planned enhancements address this limitation (see `AI-Agent-Workspace/Note
 
 3. **Symbol-Divergent Paths Through Same File** — Port the CLI's symbol-aware BFS (`pathfind-symbol.ts`) to the Explorer client. When two shortest paths traverse the same file sequence via different symbols, multiple connection lines route through distinct symbol anchors on the same card. Each chain gets a unique color; hovering highlights the full chain end-to-end.
 
-These enhancements are additive and depend on the multi-hop rendering architecture documented in `AI-Agent-Workspace/Notes/multi-hop-local-map-architecture.md` (dynamic column count, hop-aware anchors, HopChain data model). Each can ship independently in the order listed.
+These proposals were originally described against the multi-hop rendering architecture in `AI-Agent-Workspace/Notes/multi-hop-local-map-architecture.md` (dynamic column count, hop-aware anchors, HopChain data model). The truncating exploration renderer was retired on October 2, 2026; explicit pathfinding and hop-aware anchors remain. Any implementation must be reconsidered against the current independent-branch model.
 
 > **Note (2026-03-22)**: Multi-path pathfinding may be reimplemented on the [Membrane Map](membrane-map.mdmd.md) spatial substrate rather than the current column layout. The column-based rendering described above remains the reference design until the Membrane Map's Path mode is prototyped.
 
@@ -95,7 +98,7 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 - [packages/explorer/src/client/persistence/index.ts](../layer-4/packages/explorer/src/client/persistence/index.ts.mdmd.md)
 - [packages/explorer/src/client/persistence/local-storage.ts](../layer-4/packages/explorer/src/client/persistence/local-storage.ts.mdmd.md)
 - [packages/explorer/src/client/persistence/url-state.ts](../layer-4/packages/explorer/src/client/persistence/url-state.ts.mdmd.md)
-- [packages/explorer/src/client/persistence/compressed-url-state.ts](../layer-4/packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md) — lz-string URL state compression for Membrane Map shareability
+- [packages/explorer/src/client/persistence/compressed-url-state.ts](../layer-4/packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md) — Portable compressed selection and pin state, also carrying Membrane directory disclosure
 
 #### Views
 
@@ -120,7 +123,7 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 - [packages/explorer/src/client/views/localView/card-factory.ts](../layer-4/packages/explorer/src/client/views/localView/card-factory.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/column-factory.ts](../layer-4/packages/explorer/src/client/views/localView/column-factory.ts.mdmd.md)
 - [packages/explorer/src/client/views/connection-geometry.ts](../layer-4/packages/explorer/src/client/views/connection-geometry.ts.mdmd.md) — Connection geometry utilities (shared by Local Map and Membrane Map)
-- [packages/explorer/src/client/views/localView/layout-math.ts](../layer-4/packages/explorer/src/client/views/localView/layout-math.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/branches.ts](../layer-4/packages/explorer/src/client/views/localView/branches.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/layout-measure.ts](../layer-4/packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/layout-renderer.ts](../layer-4/packages/explorer/src/client/views/localView/layout-renderer.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/pan-zoom.ts](../layer-4/packages/explorer/src/client/views/localView/pan-zoom.ts.mdmd.md)
@@ -133,7 +136,7 @@ These enhancements are additive and depend on the multi-hop rendering architectu
 - [packages/explorer/src/client/views/membraneView/layout.ts](../layer-4/packages/explorer/src/client/views/membraneView/layout.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/hierarchy.ts](../layer-4/packages/explorer/src/client/views/membraneView/hierarchy.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/detail-levels.ts](../layer-4/packages/explorer/src/client/views/membraneView/detail-levels.ts.mdmd.md)
-- [packages/explorer/src/client/views/membraneView/pin-state.ts](../layer-4/packages/explorer/src/client/views/membraneView/pin-state.ts.mdmd.md)
+- [packages/explorer/src/client/views/pin-state.ts](../layer-4/packages/explorer/src/client/views/pin-state.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/routing.ts](../layer-4/packages/explorer/src/client/views/membraneView/routing.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/browse-renderer.ts](../layer-4/packages/explorer/src/client/views/membraneView/browse-renderer.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/focal-overlay.ts](../layer-4/packages/explorer/src/client/views/membraneView/focal-overlay.ts.mdmd.md)

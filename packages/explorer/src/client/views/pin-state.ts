@@ -1,5 +1,5 @@
 /**
- * Pin state management for the Membrane Map.
+ * Independent symbol pins shared by the Explorer views.
  *
  * Pure-function module: no DOM, no side effects.
  *
@@ -11,8 +11,8 @@
  * @module pin-state
  */
 
-import type { ExplorerLinkPayload } from "../../../shared/types";
-import { normalizeSymbolIdentifier } from "../../views/symbolAnchors";
+import { normalizeSymbolIdentifier } from "./symbolAnchors";
+import type { ExplorerLinkPayload } from "../../shared/types";
 
 // ─── Types ─────────────────────────────────────────────────────────
 

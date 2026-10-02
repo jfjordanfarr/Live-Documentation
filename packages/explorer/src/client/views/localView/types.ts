@@ -1,4 +1,4 @@
-import type { LocalMapState, PathResult, StateStore, SymbolPin } from "./state";
+import type { LocalMapState, PathResult, StateStore } from "./state";
 import type {
   ExplorerGraphPayload,
   ExplorerLinkKind,
@@ -21,6 +21,8 @@ import type { ExplorerState, TestCoverageMap } from "../../types";
  */
 export interface LocalViewOptions {
   state: ExplorerState;
+  /** Persist shared exploration after an independent pin changes. */
+  onExplorationChange?: (leavingPath?: boolean) => void;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
@@ -34,30 +36,21 @@ export interface LocalViewOptions {
 /**
  * Public contract the Local Map exposes to the parent Explorer application.
  *
- * Originally provided core rendering and zoom controls. Extended on
- * 2025-12-19 with multi-hop path mode methods (`addPinToPath`,
- * `removePinFromPath`, `setActivePath`, `getActivePath`), an observable
- * `localMapState` store, and a `dispose()` cleanup method.
+ * Exposes rendering, camera alignment and explicit FROM/TO pathfinding.
+ * Independent exploration pins belong to the shared Explorer state.
  */
 export interface LocalViewApi {
   render(): void;
+  getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
+  placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   drawConnections(): void;
   highlightSelection(): void;
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
   
-  /** Observable state store for multi-hop visualization. */
+  /** Observable state store for hover and explicit paths. */
   readonly localMapState: StateStore<LocalMapState>;
-  
-  /** Adds a pin to the multi-hop path at a specific hop index. */
-  addPinToPath(nodeId: string, symbol: string, hopIndex: number): void;
-  
-  /** Removes pins from the path starting at a specific hop index. */
-  removePinFromPath(fromHopIndex: number): void;
-  
-  /** Gets the current pinned path. */
-  getPinnedPath(): SymbolPin[];
   
   /** 
    * Sets the active path for path-mode rendering.

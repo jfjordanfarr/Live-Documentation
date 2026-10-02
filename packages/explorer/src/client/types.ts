@@ -1,3 +1,4 @@
+import type { PinSet } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
 
 /**
@@ -58,6 +59,8 @@ export interface TuningConfig {
  * `persistence/local-storage.ts` and consumed by every view.
  */
 export interface ExplorerState {
+  /** Independent exploration branches, retained across perspectives. */
+  pins?: PinSet;
   view: ViewName;
   selectedNode: ExplorerNodePayload | null;
   focusedNode: ExplorerNodePayload | null;

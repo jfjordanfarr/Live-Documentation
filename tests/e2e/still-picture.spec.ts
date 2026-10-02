@@ -81,7 +81,7 @@ const FIVE_REPOSITORY = [
 const CHAIN_REPOSITORY = [
   "packages/explorer/src/client/index.ts",
   "packages/explorer/src/client/persistence/compressed-url-state.ts",
-  "packages/explorer/src/client/views/membraneView/pin-state.ts",
+  "packages/explorer/src/client/views/pin-state.ts",
   "packages/explorer/src/client/views/symbolAnchors.ts"
 ];
 
@@ -506,7 +506,7 @@ for (const run of RUNS) {
         churn,
         tour,
         chain,
-        notes: ["facts drawn are those touching the selected file; the view has no state for a set of files"]
+        notes: ["the unpinned starting picture shows the selected file's neighborhood; independent branches have a separate journey regression"]
       });
 
       expect(still.text!.collisions, still.text!.faults).toBe(0);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.test.ts
-- Generated At: 2026-09-27T23:21:27.368Z
+- Generated At: 2026-10-02T21:07:38.968Z
 
 ## Authored
 ### Purpose
@@ -33,7 +33,7 @@ _No public symbols detected_
 - [`compressed-url-state.payloadToSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
 - [`compressed-url-state.scrubSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot)
 - [`compressed-url-state.snapshotToPayload`](./compressed-url-state.ts.mdmd.md#symbol-snapshottopayload)
-- [`pin-state.EMPTY_PIN_SET`](../views/membraneView/pin-state.ts.mdmd.md#symbol-empty_pin_set)
-- [`pin-state.PinSet`](../views/membraneView/pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
+- [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

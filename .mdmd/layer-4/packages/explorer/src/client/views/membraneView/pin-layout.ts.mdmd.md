@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/pin-layout.ts
-- Generated At: 2026-09-28T01:11:44.330Z
+- Generated At: 2026-10-02T21:07:40.122Z
 
 ## Authored
 ### Purpose
@@ -81,7 +81,7 @@ E.g. "a/b/c" → ["a", "a/b", "a/b/c"].
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-layout.ts#L157)
 - Returns: [`PinLayoutResult`](#symbol-pinlayoutresult)
-- Parameters: `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `nodesById`: `ReadonlyMap`
+- Parameters: `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `nodesById`: `ReadonlyMap`
 
 ##### `computePinLayout` — Summary
 Compute a dependency-flow layout from the current pin state.
@@ -124,9 +124,9 @@ Exported for testing.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.getPinnedNodeIds`](./pin-state.ts.mdmd.md#symbol-getpinnednodeids) (type-only)
-- [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.getPinnedNodeIds`](../pin-state.ts.mdmd.md#symbol-getpinnednodeids) (type-only)
+- [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

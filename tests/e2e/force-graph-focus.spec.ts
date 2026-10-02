@@ -57,10 +57,22 @@ test("manual pan survives a trip to detail and back without restarting the settl
   const x = canvas.x + canvas.width * 0.7, y = canvas.y + canvas.height * 0.7;
   await page.mouse.move(x, y);
   await page.mouse.down({ button: "right" });
-  await page.mouse.move(x + 25, y - 10, { steps: 10 });
+  // Deliver a real drag over several rendered frames. A burst of synthetic
+  // moves can be coalesced before TrackballControls observes the gesture.
+  for (let step = 1; step <= 10; step++) {
+    await page.mouse.move(x + step * 6, y - step * 2);
+    await page.waitForTimeout(25);
+  }
   await page.mouse.up({ button: "right" });
-  await page.waitForTimeout(300);
   const position = (): Promise<{ x: number; y: number }> => page.locator(".force-graph-focus").evaluate(element => ({ x: parseFloat((element as HTMLElement).style.left), y: parseFloat((element as HTMLElement).style.top) }));
+  let previous = await position();
+  let stillFrames = 0;
+  await expect.poll(async () => {
+    const next = await position();
+    stillFrames = Math.hypot(next.x - previous.x, next.y - previous.y) < 0.1 ? stillFrames + 1 : 0;
+    previous = next;
+    return stillFrames;
+  }, { intervals: [100], timeout: 5000 }).toBeGreaterThanOrEqual(3);
   const before = await position();
   expect(Math.hypot(before.x - canvas.width / 2, before.y - canvas.height / 2)).toBeGreaterThan(20);
   await page.locator('.nav-item[data-view="map"]').click();

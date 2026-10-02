@@ -247,3 +247,29 @@
     background: var(--accent-subtle);
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }
+
+.local-file-pin {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 3px;
+    color: var(--text-panel-subtle);
+    background: var(--bg-surface, #202020);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.local-file-pin[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.local-column .node-title { padding-right: 24px; }
+.local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
+button.local-disclosure:hover { color: var(--accent); }
+span.local-disclosure { cursor: default; }
+.branch-symbol-hidden > * { display: none; }
+.branch-mode .local-column-label:empty { min-height: 13px; }
+.symbol-label-wrapper:focus-visible, .local-file-pin:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.perspective-controls { position: absolute; bottom: 18px; right: 18px; z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
+.perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
+.perspective-controls button { padding: 7px 10px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 12px; }
+.perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.perspective-controls button:focus-visible { outline: 2px solid var(--accent); }

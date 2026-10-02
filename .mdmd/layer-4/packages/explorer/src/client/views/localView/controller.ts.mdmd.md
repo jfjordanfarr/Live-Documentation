@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-01T21:05:42.232Z
+- Generated At: 2026-10-02T21:07:39.572Z
 
 ## Authored
 ### Purpose
@@ -15,51 +15,25 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, the c
 
 - Created 2025-12-04 during the localView modularisation; renders the columns through `render.ts` and the wires through `connections.ts`.
 - The camera: `fitMapToContent` frames the selected card with its surroundings, `fitMapToPath` frames a drawn path from its first file at reading size, and both measure the map layer's own frame with its transform reset rather than the whole view. A press on a card or in the pathfinder toolbar never starts a drag, because a drag marks the camera as the person's own and no render re-fits it afterwards; toolbar clicks used to do that and left Clear unable to bring the subject back (3,846 px off, measured by the still-picture instrument, [Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)). A layer observer shifts the camera, and any running animation's target, by however much the toolbar above the map grows or shrinks, so a status line is not a camera move.
-- The subject keeps its place on screen when pinning collapses or expands the neighbours' rows (`reapplyVerticalCentering`, 2026-10-01).
-- `setActivePath(null)` is a no-op when no path is active, so a change of a toolbar endpoint does not re-render, re-fit or clear the person's own pins.
+- Symbol and file pin toggles retain the clicked identity’s screen position. Perspective changes use the same subject anchor; card inspection and recentering retain independent branches. The earlier hover-collapse compensation remains for classic browsing.
+- Explicit pathfinding saves the exploration camera and restores it on Clear, accounting for the toolbar’s changed height. `setActivePath(null)` is a no-op when no path is active; independent pins are retained throughout.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L71)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
-Primary controller for the Explorer's Local Map (3-column symbol) view.
-
-Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
-symbol pinning, connection drawing, and multi-hop path visualization.
-Delegates DOM measurement to `layout-measure`, gesture handling to
-`pan-zoom`, graph slicing to `subgraph-builder`, and symbol
-highlighting to `symbol-highlight`.
-
-Pin state is managed exclusively through the observable
-{@link localMapState} store (`pinnedPath`, `hoveredSymbol`, etc.).
-The legacy `pinnedSymbol` private field was removed 2026-02-18 after
-multi-hop stabilised (see 2025-12-19 refactoring and Dev Day 71).
-
-Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
-`isDragging`) are thin pass-throughs to the underlying
-{@link createRuntime | runtime} object; they're exposed so that
-sibling modules (`render`, `connections`, `pan-zoom`) can read/write
-shared state through the controller reference without importing the
-runtime directly.
-
-**History:** Created 2025-12-04 (commit `4504d36a`).  Reduced from
-1 549 to ~860 lines during the 2025-12-19 Phase 1-4 tech-debt
-extraction (commit `15073e19`).  Further reduced by deprecated-field
-removal on 2026-02-18.
-
-**Tech debt:** At ~860 lines this class still exceeds the project's
-500-line guidance.  The 2025-12-19 plan identified `pin-management`
-extraction and runtime-accessor elimination as next steps.
+Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
 - [`layout-measure.CenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-centeralignmentguides)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
@@ -89,13 +63,8 @@ extraction and runtime-accessor elimination as next steps.
 - [`state.LocalMapState`](./state.ts.mdmd.md#symbol-localmapstate)
 - [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult)
 - [`state.StateStore`](./state.ts.mdmd.md#symbol-statestore)
-- [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin)
-- [`state.addPin`](./state.ts.mdmd.md#symbol-addpin)
-- [`state.clearPins`](./state.ts.mdmd.md#symbol-clearpins)
 - [`state.createInitialState`](./state.ts.mdmd.md#symbol-createinitialstate)
 - [`state.createStateStore`](./state.ts.mdmd.md#symbol-createstatestore)
-- [`state.isSymbolPinned`](./state.ts.mdmd.md#symbol-issymbolpinned)
-- [`state.removePin`](./state.ts.mdmd.md#symbol-removepin)
 - [`state.setActivePath`](./state.ts.mdmd.md#symbol-setactivepath)
 - [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
 - [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
@@ -108,6 +77,10 @@ extraction and runtime-accessor elimination as next steps.
 - [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
+- [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
+- [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)
+- [`pin-state.togglePin`](../pin-state.ts.mdmd.md#symbol-togglepin)
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)

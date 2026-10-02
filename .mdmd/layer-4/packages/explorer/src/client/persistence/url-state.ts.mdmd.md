@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-09-30T01:36:12.320Z
+- Generated At: 2026-10-02T21:07:39.074Z
 
 ## Authored
 ### Purpose
@@ -57,6 +57,7 @@ Update URL to reflect current view and focused node without page reload.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`compressed-url-state.compressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)

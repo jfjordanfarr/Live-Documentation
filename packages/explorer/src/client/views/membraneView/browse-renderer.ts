@@ -12,8 +12,8 @@
 import type { DirectoryAggregate } from "./aggregation";
 import { DetailLevel } from "./detail-levels";
 import type { MeasuredAnchor } from "./focal-overlay";
-import type { PinSet } from "./pin-state";
-import { isSymbolPinned, areAllSymbolsPinned } from "./pin-state";
+import type { PinSet } from "../pin-state";
+import { isSymbolPinned, areAllSymbolsPinned } from "../pin-state";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
 import type { TestCoverageMap } from "../../types";

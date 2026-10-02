@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/membraneView/pin-state.test.ts
-- Generated At: 2026-09-27T23:21:29.088Z
+- Generated At: 2026-10-02T21:07:40.144Z
 
 ## Authored
 ### Purpose
@@ -26,21 +26,21 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`focal-overlay.hopLabel`](./focal-overlay.ts.mdmd.md#symbol-hoplabel)
-- [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)
-- [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin)
-- [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins)
-- [`pin-state.deserializePins`](./pin-state.ts.mdmd.md#symbol-deserializepins)
-- [`pin-state.getPathEntries`](./pin-state.ts.mdmd.md#symbol-getpathentries)
-- [`pin-state.getPinnedNodeIds`](./pin-state.ts.mdmd.md#symbol-getpinnednodeids)
-- [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions)
-- [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
-- [`pin-state.hasActivePath`](./pin-state.ts.mdmd.md#symbol-hasactivepath)
-- [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned)
-- [`pin-state.removePin`](./pin-state.ts.mdmd.md#symbol-removepin)
-- [`pin-state.removePinsForNode`](./pin-state.ts.mdmd.md#symbol-removepinsfornode)
-- [`pin-state.serializePins`](./pin-state.ts.mdmd.md#symbol-serializepins)
-- [`pin-state.setPinsFromPath`](./pin-state.ts.mdmd.md#symbol-setpinsfrompath)
-- [`pin-state.togglePin`](./pin-state.ts.mdmd.md#symbol-togglepin)
+- [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
+- [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin)
+- [`pin-state.clearPins`](../pin-state.ts.mdmd.md#symbol-clearpins)
+- [`pin-state.deserializePins`](../pin-state.ts.mdmd.md#symbol-deserializepins)
+- [`pin-state.getPathEntries`](../pin-state.ts.mdmd.md#symbol-getpathentries)
+- [`pin-state.getPinnedNodeIds`](../pin-state.ts.mdmd.md#symbol-getpinnednodeids)
+- [`pin-state.getRequiredExpansions`](../pin-state.ts.mdmd.md#symbol-getrequiredexpansions)
+- [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections)
+- [`pin-state.hasActivePath`](../pin-state.ts.mdmd.md#symbol-hasactivepath)
+- [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)
+- [`pin-state.removePin`](../pin-state.ts.mdmd.md#symbol-removepin)
+- [`pin-state.removePinsForNode`](../pin-state.ts.mdmd.md#symbol-removepinsfornode)
+- [`pin-state.serializePins`](../pin-state.ts.mdmd.md#symbol-serializepins)
+- [`pin-state.setPinsFromPath`](../pin-state.ts.mdmd.md#symbol-setpinsfrompath)
+- [`pin-state.togglePin`](../pin-state.ts.mdmd.md#symbol-togglepin)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

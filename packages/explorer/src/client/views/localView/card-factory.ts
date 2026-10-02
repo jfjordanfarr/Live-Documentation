@@ -81,6 +81,14 @@ export function createNodeCard(
   header.className = "node-title";
   header.textContent = node.name;
   card.appendChild(header);
+  const pin = document.createElement("button");
+  pin.className = "local-file-pin";
+  pin.title = "Pin file and its connections";
+  pin.setAttribute("aria-label", `Pin ${node.name} and its connections`);
+  pin.setAttribute("aria-pressed", String(controller.isPinned(node.id, "*")));
+  pin.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2h-5v6h-2v-6H6v-2l4-4z"/></svg>';
+  pin.addEventListener("click", event => { event.stopPropagation(); controller.togglePinnedSymbol(node.id, "*"); });
+  card.append(pin);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
@@ -125,8 +133,6 @@ export function createNodeCard(
 
   card.addEventListener("click", event => {
     event.stopPropagation();
-    // Clear any pinned symbol when clicking on a card (but not on a symbol row, which handles its own clicks)
-    controller.clearPinnedSymbol();
     void controller.selectNode(node);
   });
 
@@ -194,6 +200,7 @@ export function createSymbolSection(
     symbolRow.className = "symbol-row";
     symbolRow.dataset.nodeId = node.id;
     symbolRow.dataset.symbol = symbol;
+    symbolRow.classList.toggle("symbol-pinned", controller.isPinned(node.id, symbol));
 
     // Add hover handlers for connection highlighting
     symbolRow.addEventListener("mouseenter", () => {
@@ -205,7 +212,10 @@ export function createSymbolSection(
     // Add click handler for "sticky" pinned highlighting (useful for mobile & exploring large files)
     symbolRow.addEventListener("click", (event) => {
       event.stopPropagation();
+      const targetId = (event.target as HTMLElement).closest<HTMLElement>(".type-badge")?.dataset.targetId;
       controller.togglePinnedSymbol(node.id, symbol);
+      const targetNode = targetId ? controller.options.nodesById.get(targetId) : undefined;
+      if (targetNode) void controller.focusSidebar(targetNode);
     });
 
     const inboundAnchor = document.createElement("div");
@@ -216,6 +226,7 @@ export function createSymbolSection(
 
     const labelWrapper = document.createElement("div");
     labelWrapper.className = "symbol-label-wrapper";
+    makePinAccessible(labelWrapper, node.name, symbol, controller.isPinned(node.id, symbol));
 
     const label = document.createElement("div");
     label.className = "symbol-label";
@@ -269,6 +280,7 @@ export function createSymbolSection(
     internalsRow.className = "symbol-row internals-row";
     internalsRow.dataset.nodeId = node.id;
     internalsRow.dataset.symbol = "__internals__";
+    internalsRow.classList.toggle("symbol-pinned", controller.isPinned(node.id, "__internals__"));
 
     // Add hover handlers for connection highlighting
     internalsRow.addEventListener("mouseenter", () => {
@@ -292,6 +304,7 @@ export function createSymbolSection(
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";
+    makePinAccessible(internalsLabel, node.name, "Internals", controller.isPinned(node.id, "__internals__"));
     internalsLabel.innerHTML = `<div class="symbol-label internals-text">Internals</div>`;
     internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
     internalsRow.appendChild(internalsLabel);
@@ -389,13 +402,9 @@ export function createTypeBadge(
     const firstResolved = refs.find(r => r.isResolved);
     if (firstResolved?.targetId) {
       badge.classList.add("clickable");
-      badge.addEventListener("click", _event => {
-        // Don't stop propagation - let the row's click handler also fire to toggle pin
-        const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
-        if (targetNode) {
-          void controller.focusSidebar(targetNode);
-        }
-      });
+      // The row first retains its symbol, then inspects this referenced type.
+      // This ordering keeps the detail target as the most recently inspected file.
+      badge.dataset.targetId = firstResolved.targetId;
       badge.addEventListener("dblclick", event => {
         event.stopPropagation();
         const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
@@ -407,4 +416,16 @@ export function createTypeBadge(
   }
 
   return badge;
+}
+
+/** Symbol pinning is available to keyboard users as well as pointer users. */
+function makePinAccessible(element: HTMLElement, file: string, symbol: string, pressed: boolean): void {
+  element.tabIndex = 0;
+  element.setAttribute("role", "button");
+  element.setAttribute("aria-label", `Pin ${symbol} in ${file}`);
+  element.setAttribute("aria-pressed", String(pressed));
+  element.title = "Pin this symbol's connections";
+  element.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); element.click(); }
+  });
 }

@@ -11,9 +11,9 @@
 
 import type { MeasuredAnchor } from "./focal-overlay";
 import type { PinLayoutResult, DirectoryBand } from "./pin-layout";
-import type { PinSet } from "./pin-state";
-import { isSymbolPinned, areAllSymbolsPinned } from "./pin-state";
 import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
+import type { PinSet } from "../pin-state";
+import { isSymbolPinned, areAllSymbolsPinned } from "../pin-state";
 
 const REF_BADGE_ICONS: Record<string, string> = {
   return: "→", parameter: "←", extends: "⊲", implements: "◇", constraint: "∈",

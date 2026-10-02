@@ -1,6 +1,7 @@
+import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 
-import { focusedCameraPosition } from "./forceGraphCamera";
+import { focusedCameraPosition, screenAnchorTranslation } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
   it("preserves the viewing direction relative to a panned target", () => {
@@ -22,5 +23,27 @@ describe("Force Graph focus camera", () => {
   it("has a finite fallback when the camera coincides with its target", () => {
     const point = { x: 10, y: 20, z: 30 };
     expect(focusedCameraPosition(point, point, { x: -1, y: -2, z: -3 })).toEqual({ x: -1, y: -2, z: 137 });
+  });
+});
+
+
+describe("perspective screen anchors", () => {
+  it.each([{ x: 0.15, y: 0.25 }, { x: 0.8, y: 0.7 }, { x: 0.5, y: 0.5 }])("keeps an off-axis subject at %j without changing the viewing direction", anchor => {
+    const camera = new PerspectiveCamera(60, 1.6, 0.1, 10000);
+    const target = new Vector3(15, -25, 8);
+    const subject = new Vector3(-8, 13, -50);
+    camera.position.set(80, 60, 180);
+    camera.lookAt(target);
+    camera.updateMatrixWorld();
+    const bearing = camera.getWorldDirection(new Vector3());
+    const offset = screenAnchorTranslation(camera, subject, anchor);
+    camera.position.add(offset);
+    target.add(offset);
+    camera.lookAt(target);
+    camera.updateMatrixWorld();
+    const projected = subject.clone().project(camera);
+    expect((projected.x + 1) / 2).toBeCloseTo(anchor.x, 10);
+    expect((1 - projected.y) / 2).toBeCloseTo(anchor.y, 10);
+    expect(camera.getWorldDirection(new Vector3()).distanceTo(bearing)).toBeLessThan(1e-12);
   });
 });

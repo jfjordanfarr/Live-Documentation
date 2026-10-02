@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-09-30T01:36:12.218Z
+- Generated At: 2026-10-02T21:07:38.991Z
 
 ## Authored
 ### Purpose
@@ -125,8 +125,8 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - `lz-string` - `compressToEncodedURIComponent`, `decompressFromEncodedURIComponent`
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
-- [`pin-state.EMPTY_PIN_SET`](../views/membraneView/pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
-- [`pin-state.PinSet`](../views/membraneView/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.deserializePins`](../views/membraneView/pin-state.ts.mdmd.md#symbol-deserializepins) (type-only)
-- [`pin-state.serializePins`](../views/membraneView/pin-state.ts.mdmd.md#symbol-serializepins) (type-only)
+- [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
+- [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.deserializePins`](../views/pin-state.ts.mdmd.md#symbol-deserializepins) (type-only)
+- [`pin-state.serializePins`](../views/pin-state.ts.mdmd.md#symbol-serializepins) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

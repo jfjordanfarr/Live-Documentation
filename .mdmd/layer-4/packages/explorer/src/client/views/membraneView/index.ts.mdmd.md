@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/index.ts
-- Generated At: 2026-09-30T01:36:13.064Z
+- Generated At: 2026-10-02T21:07:40.010Z
 
 ## Authored
 ### Purpose
@@ -79,16 +79,16 @@ Initialise the Membrane Map view and return its public API.
 - [`layout.computeMembraneLayout`](./layout.ts.mdmd.md#symbol-computemembranelayout)
 - [`pin-active-renderer.renderPinActiveLayout`](./pin-active-renderer.ts.mdmd.md#symbol-renderpinactivelayout)
 - [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
-- [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin) (type-only)
-- [`pin-state.areAllSymbolsPinned`](./pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
-- [`pin-state.clearPins`](./pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
-- [`pin-state.getRequiredExpansions`](./pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)
-- [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
-- [`pin-state.removePinsForNode`](./pin-state.ts.mdmd.md#symbol-removepinsfornode) (type-only)
-- [`pin-state.togglePin`](./pin-state.ts.mdmd.md#symbol-togglepin) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.VisibleConnection`](../pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
+- [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin) (type-only)
+- [`pin-state.areAllSymbolsPinned`](../pin-state.ts.mdmd.md#symbol-areallsymbolspinned) (type-only)
+- [`pin-state.clearPins`](../pin-state.ts.mdmd.md#symbol-clearpins) (type-only)
+- [`pin-state.getRequiredExpansions`](../pin-state.ts.mdmd.md#symbol-getrequiredexpansions) (type-only)
+- [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections) (type-only)
+- [`pin-state.removePinsForNode`](../pin-state.ts.mdmd.md#symbol-removepinsfornode) (type-only)
+- [`pin-state.togglePin`](../pin-state.ts.mdmd.md#symbol-togglepin) (type-only)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

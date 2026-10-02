@@ -1,3 +1,5 @@
+import { EMPTY_PIN_SET, togglePin, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import type { BranchGraph } from "./branches";
 import type {
   ExplorerNodePayload
 } from "../../../shared/types";
@@ -42,15 +44,10 @@ import {
 import {
   type StateStore,
   type LocalMapState,
-  type SymbolPin,
   type PathResult,
   createStateStore,
   createInitialState,
-  addPin,
-  removePin,
-  clearPins,
   setHoveredSymbol,
-  isSymbolPinned,
   setActivePath as setActivePathAction
 } from "./state";
 import {
@@ -70,36 +67,7 @@ import type {
   MapTransform
 } from "./types";
 
-/**
- * Primary controller for the Explorer's Local Map (3-column symbol) view.
- *
- * Implements {@link LocalViewApi} and orchestrates rendering, pan/zoom,
- * symbol pinning, connection drawing, and multi-hop path visualization.
- * Delegates DOM measurement to `layout-measure`, gesture handling to
- * `pan-zoom`, graph slicing to `subgraph-builder`, and symbol
- * highlighting to `symbol-highlight`.
- *
- * Pin state is managed exclusively through the observable
- * {@link localMapState} store (`pinnedPath`, `hoveredSymbol`, etc.).
- * The legacy `pinnedSymbol` private field was removed 2026-02-18 after
- * multi-hop stabilised (see 2025-12-19 refactoring and Dev Day 71).
- *
- * Many public accessors (e.g. `mapTransform`, `currentSubgraph`,
- * `isDragging`) are thin pass-throughs to the underlying
- * {@link createRuntime | runtime} object; they're exposed so that
- * sibling modules (`render`, `connections`, `pan-zoom`) can read/write
- * shared state through the controller reference without importing the
- * runtime directly.
- *
- * **History:** Created 2025-12-04 (commit `4504d36a`).  Reduced from
- * 1 549 to ~860 lines during the 2025-12-19 Phase 1-4 tech-debt
- * extraction (commit `15073e19`).  Further reduced by deprecated-field
- * removal on 2026-02-18.
- *
- * **Tech debt:** At ~860 lines this class still exceeds the project's
- * 500-line guidance.  The 2025-12-19 plan identified `pin-management`
- * extraction and runtime-accessor elimination as next steps.
- */
+/** Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths. */
 export class LocalViewController implements LocalViewApi {
   /** Injected options including graph data, state, and navigation callbacks. */
   readonly options: LocalViewOptions;
@@ -115,10 +83,42 @@ export class LocalViewController implements LocalViewApi {
   private readonly overlay = this.runtime.overlay;
 
   /**
-   * Observable state store for multi-hop pinned path visualization.
-   * Contains pinnedPath[], hoveredSymbol, focusedNodeId, and visualization settings.
+   * Observable state for hover and explicit pathfinding; exploration pins are shared with the other views.
    */
   readonly localMapState: StateStore<LocalMapState>;
+
+  /** The independently disclosed branch graph, absent in classic or path mode. */
+  branches: BranchGraph | null = null;
+  /** Cards whose complete symbol list the person has explicitly opened. */
+  readonly expandedCards = new Set<string>();
+  private renderedPath = false;
+  private restoreExplorationCamera = false;
+  private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
+  /** Shared pins are owned by the application, not this renderer. */
+  get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
+
+  /** Screen position of a file's readable identity, shared across perspectives. */
+  getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
+    const title = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`);
+    if (!title || !title.getClientRects().length) return null;
+    const rect = title.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  }
+
+  /** Keep the file under the person's eye while the surrounding representation changes. */
+  placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void {
+    cancelAnimationFrame(this.runtime.mapAnimationFrame);
+    this.runtime.mapAnimationTarget = null;
+    this.cancelInertia();
+    const current = this.getSubjectAnchor(nodeId);
+    if (!current) return;
+    this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + anchor.x - current.x, y: this.mapTransform.y + anchor.y - current.y };
+    this.mapHasInitialFit = true;
+    this.mapUserAdjusted = true;
+    this.layerTop = this.measureLayerTop();
+    this.updateMapTransform();
+    this.drawConnections();
+  }
 
   /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
   private layerObserver: ResizeObserver | null = null;
@@ -202,7 +202,7 @@ export class LocalViewController implements LocalViewApi {
 
   /**
    * Subscribes to localMapState changes for reactive updates.
-   * Triggers connection redraws when pinnedPath, hoveredSymbol, or activePath changes.
+   * Renders a new explicit path without modifying independent exploration pins.
    */
   private subscribeToStateChanges(): void {
     this.stateUnsubscribe = this.localMapState.subscribe((state, prevState) => {
@@ -213,17 +213,6 @@ export class LocalViewController implements LocalViewApi {
         return;
       }
 
-      // When pinned path length changes (e.g., going from 1→2 hops or 2→1), trigger full re-render
-      // to switch between single-hop and multi-hop layouts
-      const lengthChanged = state.pinnedPath.length !== prevState.pinnedPath.length;
-      if (lengthChanged && (state.pinnedPath.length > 1 || prevState.pinnedPath.length > 1)) {
-        // Defer render to avoid recursive updates
-        requestAnimationFrame(() => this.render());
-      }
-      // Note: We intentionally do NOT scheduleConnectionRedraw when pinnedPath changes for single-hop pins.
-      // The togglePinnedSymbol method already handles the full highlight flow including drawConnections.
-      // Scheduling an async redraw here would overwrite the path highlights applied by highlightSymbolConnections.
-      // Could add more reactive updates here (e.g., hover state changes)
     });
   }
 
@@ -242,7 +231,30 @@ export class LocalViewController implements LocalViewApi {
 
   /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
   render(): void {
+    // Apply pending toolbar displacement before capturing the visible subject.
+    this.keepContentPutWhenLayerMoves();
+    const id = this.options.state.selectedNode?.id;
+    const path = this.localMapState.getState().activePath;
+    const anchor = id && !this.renderedPath && !this.runtime.mapAnimationTarget ? this.getSubjectAnchor(id) : null;
     renderLocalView(this);
+    if (this.restoreExplorationCamera && this.explorationCamera) {
+      cancelAnimationFrame(this.runtime.mapAnimationFrame);
+      this.runtime.mapAnimationTarget = null;
+      this.mapTransform = { ...this.explorationCamera.transform };
+      const layerTop = this.measureLayerTop();
+      this.mapTransform.y += this.explorationCamera.layerTop - layerTop;
+      this.mapInitialTransform = this.explorationCamera.initial;
+      this.mapUserAdjusted = this.explorationCamera.userAdjusted;
+      this.mapHasInitialFit = true;
+      this.layerTop = layerTop;
+      this.updateMapTransform();
+      this.drawConnections();
+      this.restoreExplorationCamera = false;
+      this.explorationCamera = null;
+    } else if (id && anchor && !path) {
+      this.placeSubjectAnchor(id, anchor);
+    }
+    this.renderedPath = !!path;
   }
 
   /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
@@ -256,26 +268,9 @@ export class LocalViewController implements LocalViewApi {
         this.getAnchorWithHop(nodeId, columnRole, hopIndex, direction, symbol),
       measureLayoutExtents: () => this.measureLayoutExtents(),
       getCenterCardBounds: () => this.getCenterCardBounds(),
-      multiHopData: this.runtime.multiHopSubgraphs ?? undefined,
-      activePath: this.localMapState.getState().activePath ?? undefined
+      activePath: this.localMapState.getState().activePath ?? undefined,
+      branches: this.branches ?? undefined
     });
-  }
-
-  /**
-   * Sets multi-hop subgraphs for connection drawing.
-   * Called by render.ts during multi-hop column rendering.
-   */
-  setMultiHopSubgraphs(hopSubgraphs: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> | null): void {
-    if (!hopSubgraphs) {
-      this.runtime.multiHopSubgraphs = null;
-      return;
-    }
-    // Convert to MultiHopEntry format
-    this.runtime.multiHopSubgraphs = hopSubgraphs.map((entry, index) => ({
-      hopIndex: index,
-      centerId: entry.center.id,
-      subgraph: entry.subgraph
-    }));
   }
 
   /** Applies or removes the `selected` / `local-focus` CSS classes on node cards to reflect the current selection. */
@@ -322,7 +317,7 @@ export class LocalViewController implements LocalViewApi {
     if (!currentSubgraph) return;
 
     // If a symbol is pinned and this isn't the pin-triggering call, suppress hover
-    const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
+    const hasPinnedPath = this.pins.entries.length > 0;
     if (hasPinnedPath && !fromPin) return;
 
     // Update hover state in the state store (for reactive updates)
@@ -356,7 +351,7 @@ export class LocalViewController implements LocalViewApi {
    */
   clearSymbolHighlight(force = false): void {
     // Don't clear if we have a pinned symbol (unless forced)
-    const hasPinnedPath = this.localMapState.getState().pinnedPath.length > 0;
+    const hasPinnedPath = this.pins.entries.length > 0;
     if (hasPinnedPath && !force) {
       return;
     }
@@ -373,79 +368,34 @@ export class LocalViewController implements LocalViewApi {
     );
   }
 
-  /**
-   * Toggles "pinned" state for a symbol. When pinned, the highlight persists
-   * even when the mouse leaves the symbol row. Useful for mobile and for
-   * exploring connections in large files.
-   * 
-   * - If clicking the same symbol that's pinned: unpins it
-   * - If clicking a different symbol: pins the new one (replaces old pin)
-   * - If no symbol is pinned: pins the clicked symbol
-   */
+  /** Toggle one independent pin, preserving other branches and the clicked symbol’s screen position. */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
-    const currentState = this.localMapState.getState();
-    const alreadyPinned = isSymbolPinned(currentState, nodeId, symbol);
-    
-    if (alreadyPinned) {
-      // Clicking the same symbol: unpin and clear
-      this.localMapState.update(s => clearPins(s));
-      this.clearSymbolHighlight(true);
-    } else {
-      // Pin the new symbol (clear any previous pin first)
-      this.clearSymbolHighlight(true);
-      
-      const newPin: SymbolPin = { nodeId, symbol, hopIndex: 0 };
-      this.localMapState.update(s => addPin(clearPins(s), newPin));
-      
-      this.highlightSymbolConnections(nodeId, symbol, true);
-      
-      // Mark the pinned row visually
-      this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-        if (row.dataset.nodeId === nodeId && row.dataset.symbol === symbol) {
-          row.classList.add("symbol-pinned");
-        }
-      });
+    const leavingPath = !!this.localMapState.getState().activePath;
+    const selector = symbol === "*"
+      ? `.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`
+      : `.symbol-row[data-node-id="${CSS.escape(nodeId)}"][data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper`;
+    const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    const keyboardFocus = this.container.contains(document.activeElement);
+    this.options.state.pins = togglePin(this.pins, nodeId, symbol);
+    const subject = this.resolveNode(nodeId);
+    if (subject) this.options.state.selectedNode = this.options.state.focusedNode = subject;
+    this.localMapState.update(s => ({ ...s, activePath: null }));
+    this.render();
+    const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    if (before && after) {
+      cancelAnimationFrame(this.runtime.mapAnimationFrame);
+      this.runtime.mapAnimationTarget = null;
+      this.mapHasInitialFit = true;
+      this.mapUserAdjusted = true;
+      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
+      this.updateMapTransform();
+      this.drawConnections();
     }
-  }
-
-  /**
-   * Adds a pin to the multi-hop path at a specific hop index.
-   * Used for building multi-hop traces through the dependency graph.
-   * 
-   * @param nodeId - The node ID where the symbol resides
-   * @param symbol - The symbol name to pin
-   * @param hopIndex - Which hop in the chain (0 = origin)
-   */
-  addPinToPath(nodeId: string, symbol: string, hopIndex: number): void {
-    const newPin: SymbolPin = { nodeId, symbol, hopIndex };
-    this.localMapState.update(s => addPin(s, newPin));
-    
-    // Apply visual highlight for the pinned symbol
-    this.container.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-      if (row.dataset.nodeId === nodeId && row.dataset.symbol === symbol) {
-        row.classList.add("symbol-pinned");
-      }
-    });
-  }
-
-  /**
-   * Removes pins from the path starting at a specific hop index.
-   * Truncates the path, removing this hop and all subsequent hops.
-   * 
-   * @param fromHopIndex - Remove pins from this hop index onward
-   */
-  removePinFromPath(fromHopIndex: number): void {
-    this.localMapState.update(s => removePin(s, fromHopIndex));
-    
-    // Refresh visual state
-    this.scheduleConnectionRedraw();
-  }
-
-  /**
-   * Gets the current pinned path for external inspection.
-   */
-  getPinnedPath(): SymbolPin[] {
-    return this.localMapState.getState().pinnedPath;
+    if (keyboardFocus) {
+      const focusSelector = symbol === "*" ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin` : selector;
+      this.container.querySelector<HTMLElement>(focusSelector)?.focus({ preventScroll: true });
+    }
+    this.options.onExplorationChange?.(leavingPath);
   }
 
   /**
@@ -459,37 +409,22 @@ export class LocalViewController implements LocalViewApi {
    * @param path - The path result containing nodeIds and symbols, or null to exit path mode
    */
   setActivePath(path: PathResult | null): void {
-    if (!path && !this.localMapState.getState().activePath) {
+    const previous = this.localMapState.getState().activePath;
+    if (!path && !previous) {
       // Nothing to leave: the person's own pins and camera stay as they are.
       return;
     }
+    if (path && !previous) {
+      this.explorationCamera = {
+        transform: { ...(this.runtime.mapAnimationTarget ?? this.mapTransform) },
+        initial: this.mapInitialTransform ? { ...this.mapInitialTransform } : null,
+        userAdjusted: this.mapUserAdjusted,
+        layerTop: this.layerTop ?? this.measureLayerTop()
+      };
+    }
+    this.restoreExplorationCamera = !!previous && !path;
     this.localMapState.update(s => setActivePathAction(s, path));
     
-    // Also populate the pinnedPath from the path result for rendering
-    if (path) {
-      // Clear existing pins
-      this.localMapState.update(s => clearPins(s));
-      
-      // Add pins for each node in the path
-      for (let i = 0; i < path.nodeIds.length; i++) {
-        const nodeId = path.nodeIds[i];
-        // Use the appropriate symbol for first/last nodes, or a generic symbol for intermediates
-        let symbol = "";
-        if (i === 0 && path.fromSymbol) {
-          symbol = path.fromSymbol;
-        } else if (i === path.nodeIds.length - 1 && path.toSymbol) {
-          symbol = path.toSymbol;
-        }
-        const pin: SymbolPin = { nodeId, symbol, hopIndex: i };
-        this.localMapState.update(s => addPin(s, pin));
-      }
-    } else {
-      // Exiting path mode - clear all pins
-      this.localMapState.update(s => clearPins(s));
-    }
-    
-    // Trigger re-render with new path mode
-    requestAnimationFrame(() => this.render());
   }
 
   /**
@@ -500,46 +435,10 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * Builds subgraph data for each hop in the pinned path.
-   * Used by render.ts for multi-hop column rendering.
-   * 
-   * @returns Array of { center, subgraph } for each hop, or null if path is empty
-   */
-  buildMultiHopSubgraphs(): Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> | null {
-    const pinnedPath = this.localMapState.getState().pinnedPath;
-    if (pinnedPath.length === 0) {
-      return null;
-    }
-
-    const result: Array<{ center: ExplorerNodePayload; subgraph: LocalSubgraph }> = [];
-
-    for (const pin of pinnedPath) {
-      const node = this.resolveNode(pin.nodeId);
-      if (!node) {
-        // Skip pins that reference nodes no longer in the graph
-        continue;
-      }
-      const subgraph = this.buildLocalSubgraph(node);
-      result.push({ center: node, subgraph });
-    }
-
-    return result.length > 0 ? result : null;
-  }
-
-  /**
    * Checks if a symbol is currently pinned.
    */
   isPinned(nodeId: string, symbol: string): boolean {
-    return isSymbolPinned(this.localMapState.getState(), nodeId, symbol);
-  }
-
-  /**
-   * Clears any pinned symbol without clearing the highlight.
-   * Called when recentering to a new node.
-   */
-  clearPinnedSymbol(): void {
-    this.localMapState.update(s => clearPins(s));
-    this.clearSymbolHighlight(true);
+    return isExplorationPin(this.pins, nodeId, symbol);
   }
 
   /** Zooms the map in by 20%. */
@@ -761,6 +660,7 @@ export class LocalViewController implements LocalViewApi {
    */
   shouldIncludeNode(node: ExplorerNodePayload): boolean {
     const { state } = this.options;
+    if (this.pins.entries.some(pin => pin.nodeId === node.id)) return true;
     const archetype = (node.archetype || "").toLowerCase();
     if (archetype === "test" && !state.filters.showTests && node.id !== state.selectedNode?.id) {
       return false;
@@ -791,10 +691,8 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onSelectNode(node);
   }
 
-  /** Clears any pinned symbol and invokes `onRecenterNode` to re-render with a new centre node. */
+  /** Follow a file while retaining independently pinned branches. */
   async recenterNode(node: ExplorerNodePayload): Promise<void> {
-    // Clear any pinned symbol when recentering to a new node
-    this.clearPinnedSymbol();
     await this.options.onRecenterNode(node);
   }
 

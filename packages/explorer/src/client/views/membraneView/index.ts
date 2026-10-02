@@ -38,8 +38,8 @@ import type { MeasuredAnchor } from "./focal-overlay";
 import { computeMembraneLayout } from "./layout";
 import { renderPinActiveLayout } from "./pin-active-renderer";
 import { computePinLayout } from "./pin-layout";
-import type { PinSet } from "./pin-state";
-import type { VisibleConnection } from "./pin-state";
+import type { PinSet } from "../pin-state";
+import type { VisibleConnection } from "../pin-state";
 import {
   addPin,
   togglePin,
@@ -48,7 +48,7 @@ import {
   areAllSymbolsPinned,
   getVisibleConnections,
   getRequiredExpansions,
-} from "./pin-state";
+} from "../pin-state";
 import type { MembraneLayout } from "./types";
 
 /** Options for creating a Membrane Map view controller. */
@@ -121,7 +121,10 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   let lastDragPos: { x: number; y: number } | null = null;
   let currentLayout: MembraneLayout | null = null;
   let currentAggregates: Map<string, DirectoryAggregate> = new Map();
-  let pinSet: PinSet = urlSnapshot.pinSet;
+  const exploration = {
+    get pins(): PinSet { return state.pins ?? urlSnapshot.pinSet; },
+    set pins(value: PinSet) { state.pins = value; }
+  };
 
   // Tracks which file cards in the card-grid are expanded to show symbols.
   // Cards start collapsed (compact: name, path, internals) and expand on click.
@@ -150,7 +153,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
   /** Compute a fingerprint of everything that changes layout structure. */
   function structuralKey(): string {
     const dirs = [...expandedDirectories].sort().join(",");
-    const pins = pinSet.entries.map(e => `${e.nodeId}:${e.symbol}`).sort().join(",");
+    const pins = exploration.pins.entries.map(e => `${e.nodeId}:${e.symbol}`).sort().join(",");
     const cards = [...expandedCards].sort().join(",");
     return `${focusedDirectory}|${dirs}|${pins}|${cards}|${state.filters.showTests}|${state.filters.showAssets}`;
   }
@@ -225,8 +228,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
 
     if (event.key === "Escape") {
-      if (pinSet.entries.length > 0) {
-        pinSet = clearPins();
+      if (exploration.pins.entries.length > 0) {
+        exploration.pins = clearPins();
         render();
       }
     }
@@ -354,8 +357,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     collapsed.delete(currentLayout.root.id);
 
     // Auto-expand ancestor directories of pinned nodes so they're visible
-    if (pinSet.entries.length > 0) {
-      const required = getRequiredExpansions(pinSet);
+    if (exploration.pins.entries.length > 0) {
+      const required = getRequiredExpansions(exploration.pins);
       for (const dirId of required) {
         collapsed.delete(dirId);
         expandedDirectories.add(dirId);
@@ -368,10 +371,10 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     // Compute per-node detail tiers (Full/Summary/Badge/Hidden) based
     // on the focal specification and dependency edges.
     let detailLevels: Map<string, DetailLevel>;
-    if (pinSet.entries.length > 0) {
+    if (exploration.pins.entries.length > 0) {
       // Pin-active: pinned nodes are focal; derive primary/secondary from
       // the first two unique node IDs in the pin set.
-      const uniqueNodeIds = [...new Set(pinSet.entries.map(e => e.nodeId))];
+      const uniqueNodeIds = [...new Set(exploration.pins.entries.map(e => e.nodeId))];
       const focalSpec: FocalSpec = {
         focal: uniqueNodeIds[0],
         secondary: uniqueNodeIds[1],
@@ -388,8 +391,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     // ─── Pin-Active Layout ─────────────────────────────────────────
     // When pins are active, replace the squarify treemap with a
     // left-to-right dependency-flow layout showing only relevant nodes.
-    if (pinSet.entries.length > 0) {
-      const pinLayout = computePinLayout(pinSet, graphData.links, nodesById);
+    if (exploration.pins.entries.length > 0) {
+      const pinLayout = computePinLayout(exploration.pins, graphData.links, nodesById);
 
       if (pinLayout.relevantNodeIds.size > 0) {
         const pinActiveResult = renderPinActiveLayout(
@@ -402,29 +405,29 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
               render();
             },
             onTogglePin: (nodeId, symbol) => {
-              pinSet = togglePin(pinSet, nodeId, symbol);
+              exploration.pins = togglePin(exploration.pins, nodeId, symbol);
               render();
             },
             onPinAllSymbols: (nodeId) => {
               const payload = nodesById.get(nodeId);
               if (payload) {
-                if (areAllSymbolsPinned(pinSet, nodeId, payload.publicSymbols)) {
-                  pinSet = removePinsForNode(pinSet, nodeId);
+                if (areAllSymbolsPinned(exploration.pins, nodeId, payload.publicSymbols)) {
+                  exploration.pins = removePinsForNode(exploration.pins, nodeId);
                 } else {
                   for (const sym of payload.publicSymbols) {
-                    pinSet = addPin(pinSet, nodeId, sym);
+                    exploration.pins = addPin(exploration.pins, nodeId, sym);
                   }
-                  pinSet = addPin(pinSet, nodeId, "__internals__");
+                  exploration.pins = addPin(exploration.pins, nodeId, "__internals__");
                 }
               }
               render();
             },
             onClearPins: () => {
-              pinSet = clearPins();
+              exploration.pins = clearPins();
               render();
             },
             onNavigateToDirectory: dir => {
-              pinSet = clearPins();
+              exploration.pins = clearPins();
               focusedDirectory = dir;
               const focusPath = buildFocusPath(dir);
               expandedDirectories.clear();
@@ -435,7 +438,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
               render();
             },
           },
-          pinSet,
+          exploration.pins,
         );
 
         container.appendChild(pinActiveResult.root);
@@ -459,7 +462,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         // Draw connections after FLIP animation completes (elements at final positions)
         const flipDone = animateTransition(container, oldPositions, transform.k);
         void flipDone.then(() => {
-          const visibleConns = getVisibleConnections(pinSet, graphData.links);
+          const visibleConns = getVisibleConnections(exploration.pins, graphData.links);
           // Swap source/target for visual rendering: graph links represent dependency
           // direction (consumer→provider) but pin-active layout shows data-flow
           // direction (provider→consumer, left→right). Swapping produces front-traces
@@ -482,7 +485,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             transform.k,
             state.tuning.bezier,
           );
-          markConnectedEndpoints(svgOverlay, container, pinSet);
+          markConnectedEndpoints(svgOverlay, container, exploration.pins);
 
           // Store artifacts for lightweight connection redraw (tuning slider)
           lastPinSvg = svgOverlay;
@@ -493,7 +496,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
         // Render path breadcrumb bar
         const breadcrumb = renderPathBreadcrumb(
-          pinSet,
+          exploration.pins,
           nodesById,
           {
             onClickHop: (nodeId) => {
@@ -501,7 +504,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
               if (node) void onSelectNode(node);
             },
             onClearPath: () => {
-              pinSet = clearPins();
+              exploration.pins = clearPins();
               render();
             },
           },
@@ -563,7 +566,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
           render();
         },
         onTogglePin: (nodeId, symbol) => {
-          pinSet = togglePin(pinSet, nodeId, symbol);
+          exploration.pins = togglePin(exploration.pins, nodeId, symbol);
           render();
         },
         onExpandCard: (nodeId) => {
@@ -573,15 +576,15 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         onPinAllSymbols: (nodeId) => {
           const payload = nodesById.get(nodeId);
           if (payload) {
-            if (areAllSymbolsPinned(pinSet, nodeId, payload.publicSymbols)) {
+            if (areAllSymbolsPinned(exploration.pins, nodeId, payload.publicSymbols)) {
               // Toggle: unpin all
-              pinSet = removePinsForNode(pinSet, nodeId);
+              exploration.pins = removePinsForNode(exploration.pins, nodeId);
             } else {
               // Pin all
               for (const sym of payload.publicSymbols) {
-                pinSet = addPin(pinSet, nodeId, sym);
+                exploration.pins = addPin(exploration.pins, nodeId, sym);
               }
-              pinSet = addPin(pinSet, nodeId, "__internals__");
+              exploration.pins = addPin(exploration.pins, nodeId, "__internals__");
             }
           }
           render();
@@ -609,9 +612,9 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             if (tgtIn && !srcIn) contributingFiles.add(targetId);
           }
           // Pin __internals__ on each contributing file
-          pinSet = clearPins();
+          exploration.pins = clearPins();
           for (const fileId of contributingFiles) {
-            pinSet = addPin(pinSet, fileId, "__internals__");
+            exploration.pins = addPin(exploration.pins, fileId, "__internals__");
           }
           render();
         },
@@ -627,7 +630,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
           render();
         },
       },
-      pinSet,
+      exploration.pins,
       focusedDirectory,
       expandedCards,
       testCoverage,
@@ -715,17 +718,17 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     const hasSelectedLeaf = !!selectedNodeId
       && !browseResult.cardRenderedIds.has(selectedNodeId)
       && currentLayout?.index.get(selectedNodeId)?.isDirectory === false;
-    const hasNonCardPins = pinSet.entries.some(e => !browseResult.cardRenderedIds.has(e.nodeId));
-    const hasPins = pinSet.entries.length > 0;
+    const hasNonCardPins = exploration.pins.entries.some(e => !browseResult.cardRenderedIds.has(e.nodeId));
+    const hasPins = exploration.pins.entries.length > 0;
     let browseOverlay: { svgOverlay: SVGSVGElement; anchors: readonly MeasuredAnchor[] } | null = null;
     if ((hasNonCardPins || hasSelectedLeaf || hasPins) && currentLayout) {
       const overlay = renderFocalOverlay(
         currentLayout,
-        pinSet,
+        exploration.pins,
         nodesById,
         {
           onTogglePin: (nodeId, symbol) => {
-            pinSet = togglePin(pinSet, nodeId, symbol);
+            exploration.pins = togglePin(exploration.pins, nodeId, symbol);
             render();
           },
         },
@@ -739,7 +742,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       }
 
       // Attach hop badges for path-mode nodes
-      attachHopBadges(overlay.panels, pinSet);
+      attachHopBadges(overlay.panels, exploration.pins);
 
       // Append SVG overlay
       container.appendChild(overlay.svgOverlay);
@@ -753,7 +756,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
 
       // Render path breadcrumb bar (outside the container, in the viewport)
       const breadcrumb = renderPathBreadcrumb(
-        pinSet,
+        exploration.pins,
         nodesById,
         {
           onClickHop: (nodeId) => {
@@ -762,7 +765,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
             if (node) void onSelectNode(node);
           },
           onClearPath: () => {
-            pinSet = clearPins();
+            exploration.pins = clearPins();
             render();
           },
         },
@@ -788,7 +791,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       const anchors = browseResult.anchors;
       const k = transform.k;
       void flipDone.then(() => {
-        const visibleConns = getVisibleConnections(pinSet, graphData.links);
+        const visibleConns = getVisibleConnections(exploration.pins, graphData.links);
         const allAnchors = [...ov.anchors, ...anchors];
         drawConnections(ov.svgOverlay, allAnchors, visibleConns, container, k, state.tuning.bezier);
       });
@@ -806,7 +809,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     const snapshot: UrlStateSnapshot = {
       view: state.view,
       selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet,
+      pinSet: exploration.pins,
       expandedDirectories,
       expandedCards,
       transform,
@@ -877,12 +880,12 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
         lastPinSvg, lastPinAnchors, lastPinConns,
         container, lastPinScale, state.tuning.bezier,
       );
-      markConnectedEndpoints(lastPinSvg, container, pinSet);
+      markConnectedEndpoints(lastPinSvg, container, exploration.pins);
     }
   }
 
   function focusDirectory(dir: string): void {
-    pinSet = clearPins();
+    exploration.pins = clearPins();
     expandedCards.clear();
     state.selectedNode = null;
     state.focusedNode = null;
@@ -904,7 +907,7 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
     for (const id of snapshot.expandedCards) {
       expandedCards.add(id);
     }
-    pinSet = snapshot.pinSet;
+    exploration.pins = snapshot.pinSet;
     focusedDirectory = inferFocusFromExpanded(expandedDirectories);
     shouldZoomToFocus = false;
     transform = { ...snapshot.transform };

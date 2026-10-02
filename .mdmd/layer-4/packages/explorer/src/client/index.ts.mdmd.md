@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-01T21:05:41.699Z
+- Generated At: 2026-10-02T21:07:38.840Z
 
 ## Authored
 ### Purpose
@@ -50,6 +50,7 @@ _No public symbols detected_
 - [`pathfind.updatePathfindUrl`](./pathfind.ts.mdmd.md#symbol-updatepathfindurl)
 - [`compressed-url-state.readUrlState`](./persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate)
 - [`compressed-url-state.scrubSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-scrubsnapshot)
+- [`compressed-url-state.writeUrlState`](./persistence/compressed-url-state.ts.mdmd.md#symbol-writeurlstate)
 - [`history.canGoBack`](./persistence/history.ts.mdmd.md#symbol-cangoback)
 - [`history.canGoForward`](./persistence/history.ts.mdmd.md#symbol-cangoforward)
 - [`history.onHistoryChange`](./persistence/history.ts.mdmd.md#symbol-onhistorychange)

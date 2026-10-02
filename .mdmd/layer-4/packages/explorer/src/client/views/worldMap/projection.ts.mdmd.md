@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/projection.ts
-- Generated At: 2026-09-28T23:04:10.169Z
+- Generated At: 2026-10-02T22:33:03.808Z
 
 ## Authored
 ### Purpose

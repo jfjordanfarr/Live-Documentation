@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/persistence/place.test.ts
-- Generated At: 2026-09-30T01:36:12.286Z
+- Generated At: 2026-10-02T21:07:39.046Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,6 @@ _No public symbols detected_
 - [`compressed-url-state.UrlStateSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-urlstatesnapshot)
 - [`compressed-url-state.compressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`place.placeOf`](./place.ts.mdmd.md#symbol-placeof)
-- [`pin-state.addPin`](../views/membraneView/pin-state.ts.mdmd.md#symbol-addpin)
+- [`pin-state.addPin`](../views/pin-state.ts.mdmd.md#symbol-addpin)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

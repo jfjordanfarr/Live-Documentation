@@ -4,17 +4,16 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/state.test.ts
-- Generated At: 2026-09-27T23:21:28.448Z
+- Generated At: 2026-10-02T21:07:39.723Z
 
 ## Authored
 ### Purpose
-Unit tests for the LocalMapState shape, StateStore subscriptions, and pin/hover/focus action functions.
+
+Checks observable-store updates, previous snapshots, subscriber ordering and unsubscribe behavior.
 
 ### Notes
-- Created 2025-12-18 (Dev Day 49) alongside state.ts extraction
-- Tests pure-function behavior: `addPin`, `removePin`, `clearPins`, `setHoveredSymbol`, `setFocusedNode`, `toggleCollapseUnrelated`
-- Validates `getRequiredColumnCount()`, `getPinnedNodeIds()`, `isSymbolPinned()` selectors
-- No jsdom required — these tests run in pure Node environment
+
+These Node tests retain the store’s behavioral checks after the linear pin workflow was retired. Independent pin behavior is covered by the shared pin-state tests and branch graph tests.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -24,22 +23,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`state.LocalMapState`](./state.ts.mdmd.md#symbol-localmapstate)
-- [`state.SymbolPin`](./state.ts.mdmd.md#symbol-symbolpin)
-- [`state.addPin`](./state.ts.mdmd.md#symbol-addpin)
-- [`state.clearPins`](./state.ts.mdmd.md#symbol-clearpins)
-- [`state.createInitialState`](./state.ts.mdmd.md#symbol-createinitialstate)
 - [`state.createStateStore`](./state.ts.mdmd.md#symbol-createstatestore)
-- [`state.getHopIndexForSymbol`](./state.ts.mdmd.md#symbol-gethopindexforsymbol)
-- [`state.getPinnedNodeIds`](./state.ts.mdmd.md#symbol-getpinnednodeids)
-- [`state.getPinnedSymbolsForNode`](./state.ts.mdmd.md#symbol-getpinnedsymbolsfornode)
-- [`state.getRequiredColumnCount`](./state.ts.mdmd.md#symbol-getrequiredcolumncount)
-- [`state.isHoveredSymbolPinned`](./state.ts.mdmd.md#symbol-ishoveredsymbolpinned)
-- [`state.isSymbolPinned`](./state.ts.mdmd.md#symbol-issymbolpinned)
-- [`state.removePin`](./state.ts.mdmd.md#symbol-removepin)
-- [`state.setFocusedNode`](./state.ts.mdmd.md#symbol-setfocusednode)
-- [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
-- [`state.setMaxHops`](./state.ts.mdmd.md#symbol-setmaxhops)
-- [`state.toggleCollapseUnrelated`](./state.ts.mdmd.md#symbol-togglecollapseunrelated)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

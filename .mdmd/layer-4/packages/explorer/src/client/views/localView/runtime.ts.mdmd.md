@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/runtime.ts
-- Generated At: 2026-10-01T21:05:42.404Z
+- Generated At: 2026-10-02T21:07:39.705Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,7 @@ Runtime state management for the Local Map. Maintains the anchor registry, drag 
 ### Public Symbols
 #### `AnchorRegistry` {#symbol-anchorregistry}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L24)
 
 ##### `AnchorRegistry` — Summary
 Two-level map used to store DOM anchor elements keyed by
@@ -34,8 +34,8 @@ direction-qualified symbol identifier (e.g. `"inbound:MyClass"`).
 
 #### `buildRegistryKey` {#symbol-buildregistrykey}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L32)
-- Parameters: `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L31)
+- Parameters: `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `buildRegistryKey` — Summary
 Builds the composite registry key for anchor storage.
@@ -44,8 +44,8 @@ For multi-hop, use {@link buildRegistryKeyWithHop} instead.
 
 #### `buildRegistryKeyWithHop` {#symbol-buildregistrykeywithhop}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L41)
-- Parameters: `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L40)
+- Parameters: `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `buildRegistryKeyWithHop` — Summary
 Builds a hop-aware registry key for multi-hop anchor storage.
@@ -54,14 +54,14 @@ appearing in multiple columns across different hops.
 
 #### `DragPosition` {#symbol-dragposition}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L46)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L45)
 
 ##### `DragPosition` — Summary
 Ephemeral pointer position captured during drag interactions.
 
 #### `LocalViewRuntime` {#symbol-localviewruntime}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L57)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L56)
 
 ##### `LocalViewRuntime` — Summary
 Mutable runtime bag for the Local Map view, holding references to
@@ -70,7 +70,7 @@ current anchor registry. Created by {@link createRuntime}.
 
 #### `createRuntime` {#symbol-createruntime}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L85)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L82)
 - Returns: [`LocalViewRuntime`](#symbol-localviewruntime)
 - Parameters: `viewport`: `HTMLDivElement`; `container`: `HTMLDivElement`; `overlay`: `HTMLDivElement`
 
@@ -81,8 +81,8 @@ starts empty.
 
 #### `registerAnchor` {#symbol-registeranchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L119)
-- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L115)
+- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `registerAnchor` — Summary
 Registers a DOM element as an anchor point for connection drawing.
@@ -93,8 +93,8 @@ by either original or canonical symbol name.
 
 #### `registerAnchorWithHop` {#symbol-registeranchorwithhop}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L144)
-- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L140)
+- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `registerAnchorWithHop` — Summary
 Registers an anchor with hop-aware key for multi-hop visualisation.
@@ -103,8 +103,8 @@ to scope the anchor to a specific hop index.
 
 #### `getAnchor` {#symbol-getanchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L174)
-- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L170)
+- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `getAnchor` — Summary
 Resolves the best-matching anchor element for a connection endpoint.
@@ -117,8 +117,8 @@ Look-up priority:
 
 #### `getAnchorWithHop` {#symbol-getanchorwithhop}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L212)
-- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L208)
+- Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `getAnchorWithHop` — Summary
 Hop-aware variant of {@link getAnchor} for multi-hop path mode.
@@ -127,7 +127,7 @@ hop index. Same priority cascade as `getAnchor`.
 
 #### `clearAnchorRegistry` {#symbol-clearanchorregistry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L247)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L243)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry)
 
 ##### `clearAnchorRegistry` — Summary
@@ -136,7 +136,6 @@ Empties every entry in the given anchor registry.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`connections.MultiHopEntry`](./connections.ts.mdmd.md#symbol-multihopentry) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)

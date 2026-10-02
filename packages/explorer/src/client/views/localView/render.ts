@@ -1,11 +1,7 @@
+import { renderBranches } from "./branch-renderer";
 import { createHierarchicalColumn, createStackedColumn, highlightSymbolInColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
-import {
-  computeColumnCount,
-  computeGridTemplate,
-  generateColumnLabel
-} from "./layout-math";
-import type { PathResult, SymbolPin } from "./state";
+import type { PathResult } from "./state";
 import type { LocalSubgraph } from "./types";
 
 
@@ -36,7 +32,9 @@ export function renderLocalView(controller: LocalViewController): void {
   overlay.innerHTML = "";
   container.innerHTML = "";
   controller.currentSubgraph = null;
-  controller.setMultiHopSubgraphs(null);
+  controller.branches = null;
+  container.classList.remove("symbol-hover-active");
+  overlay.classList.remove("symbol-hover-active");
   controller.contentRoot = null;
   controller.clearAnchors();
 
@@ -84,23 +82,13 @@ export function renderLocalView(controller: LocalViewController): void {
 
   // Check if we're in path mode (FROM-TO pathfinding result)
   const activePath = controller.localMapState.getState().activePath;
-  const pinnedPath = controller.localMapState.getState().pinnedPath;
-  
-  // Determine column count based on mode:
-  // - Path mode: N columns (one per node in path, no Dependencies column)
-  // - Multi-hop exploration: 2*N columns (each hop has Center + Dependents, plus origin Dependencies)
-  // - Single-hop exploration: 3 columns (Dependencies, Center, Dependents)
-  const pathNodeCount = activePath ? activePath.nodeIds.length : 0;
-  const hopCount = Math.max(1, pinnedPath.length);
-  const columnCount = activePath 
-    ? pathNodeCount  // Path mode: one column per node
-    : computeColumnCount(hopCount);  // Exploration mode
+  const columnCount = activePath ? activePath.nodeIds.length : 3;
 
   const layoutRoot = document.createElement("div");
   layoutRoot.className = "local-layout";
   // Apply dynamic grid template based on column count
   layoutRoot.style.setProperty("--local-column-count", String(columnCount));
-  layoutRoot.style.gridTemplateColumns = computeGridTemplate(columnCount);
+  layoutRoot.style.gridTemplateColumns = `repeat(${columnCount}, max-content)`;
   container.appendChild(layoutRoot);
   controller.contentRoot = layoutRoot;
 
@@ -113,15 +101,16 @@ export function renderLocalView(controller: LocalViewController): void {
     controller.scheduleConnectionRedraw();
     return;
   }
-  // Multi-hop exploration: when pinnedPath has multiple entries, render each hop
-  else if (pinnedPath.length > 1) {
-    renderMultiHopColumns(controller, layoutRoot, pinnedPath, connectionScore);
-  } else {
+  // Independent pins disclose branches without changing explicit pathfinding.
+  else if (controller.pins.entries.length > 0) {
+    renderBranches(controller, layoutRoot);
+  }
+  else {
     // Single-hop exploration: classic 3-column layout
-    renderSingleHopColumns(controller, layoutRoot, subgraph, hopCount, connectionScore);
+    renderSingleHopColumns(controller, layoutRoot, subgraph, connectionScore);
   }
 
-  controller.applyColumnVerticalCentering(layoutRoot);
+  if (!controller.branches) controller.applyColumnVerticalCentering(layoutRoot);
 
   if (!controller.mapHasInitialFit && controller.contentRoot) {
     controller.fitMapToContent();
@@ -139,17 +128,16 @@ function renderSingleHopColumns(
   controller: LocalViewController,
   layoutRoot: HTMLElement,
   subgraph: LocalSubgraph,
-  hopCount: number,
   connectionScore: Map<string, number>
 ): void {
   const centerNodes = [subgraph.center];
   const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
   const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
 
-  // Generate column labels based on hop count (single-hop vs multi-hop)
-  const centerLabel = generateColumnLabel("center", 0, hopCount);
-  const upstreamLabel = generateColumnLabel("upstream", 0, hopCount);
-  const downstreamLabel = generateColumnLabel("downstream", 0, hopCount);
+  // The classic one-hop grammar remains the no-pin starting point.
+  const centerLabel = "Selected artifact";
+  const upstreamLabel = "Dependencies (inputs)";
+  const downstreamLabel = "Dependents (outputs)";
 
   const centerColumn = createHierarchicalColumn(
     controller,
@@ -187,123 +175,6 @@ function renderSingleHopColumns(
     connectionScore
   );
   layoutRoot.appendChild(dependentsColumn);
-}
-
-/**
- * Renders multi-hop columns based on the pinned path.
- * 
- * Layout pattern for N hops:
- * - Column 0: Dependencies of hop 0 (upstream)
- * - Column 1: Center of hop 0 (origin)
- * - Column 2: Dependents of hop 0 / Next hop targets
- * - Column 3: Center of hop 1 (if exists)
- * - Column 4: Dependents of hop 1 (if exists)
- * - ...and so on
- */
-function renderMultiHopColumns(
-  controller: LocalViewController,
-  layoutRoot: HTMLElement,
-  pinnedPath: SymbolPin[],
-  connectionScore: Map<string, number>
-): void {
-  const totalHops = pinnedPath.length;
-  
-  // Build subgraphs for each hop
-  const hopSubgraphs = controller.buildMultiHopSubgraphs();
-  if (!hopSubgraphs || hopSubgraphs.length === 0) {
-    // Fallback: render empty state
-    const empty = document.createElement("div");
-    empty.className = "local-column-empty";
-    empty.textContent = "No path data available";
-    layoutRoot.appendChild(empty);
-    return;
-  }
-
-  // Store hop subgraphs in controller for connection drawing
-  controller.setMultiHopSubgraphs(hopSubgraphs);
-
-  // Column 0: Dependencies of origin (first hop)
-  const originSubgraph = hopSubgraphs[0].subgraph;
-  const originOutbound = originSubgraph.nodes.filter(node => originSubgraph.outboundIds.has(node.id));
-  
-  const depColumn = createStackedColumn(
-    controller,
-    generateColumnLabel("upstream", 0, totalHops),
-    originOutbound,
-    "outbound",
-    "No dependencies",
-    { anchors: new Map(), cardCenters: new Map() }, // We'll collect guides after center is rendered
-    "left",
-    connectionScore,
-    0 // hopIndex
-  );
-  depColumn.dataset.hopIndex = "0";
-  depColumn.dataset.columnRole = "upstream";
-  layoutRoot.appendChild(depColumn);
-
-  // For each hop, create center + dependents columns
-  for (let hopIndex = 0; hopIndex < hopSubgraphs.length; hopIndex++) {
-    const { center, subgraph } = hopSubgraphs[hopIndex];
-    const isOrigin = hopIndex === 0;
-    
-    // Center column for this hop
-    const centerLabel = generateColumnLabel("center", hopIndex, totalHops);
-    const centerColumn = createHierarchicalColumn(
-      controller,
-      centerLabel,
-      [center],
-      "center",
-      "No artifact",
-      "center",
-      connectionScore,
-      hopIndex
-    );
-    
-    // Add hop-specific styling
-    if (!isOrigin) {
-      centerColumn.classList.add("hop-center");
-    }
-    centerColumn.dataset.hopIndex = String(hopIndex);
-    centerColumn.dataset.columnRole = "center";
-    layoutRoot.appendChild(centerColumn);
-    
-    // Collect alignment guides from this center column
-    const guides = controller.collectCenterAlignmentGuides(centerColumn);
-    
-    // Update the previous dependencies column with proper alignment
-    // (First dependencies column was created without guides)
-    if (hopIndex === 0 && depColumn) {
-      // Re-sort dependencies column based on center guides
-      // For now, we accept the initial order; proper re-sorting would require DOM manipulation
-    }
-    
-    // Dependents column for this hop
-    // Skip the dependents column for the LAST hop (destination) in multi-hop paths
-    // because "Via N" is misleading — the path ends at the destination, not via its dependents
-    const isLastHop = hopIndex === totalHops - 1;
-    if (isLastHop && totalHops > 1) {
-      // Destination reached — don't show its dependents as "Via" nodes
-      continue;
-    }
-    
-    const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
-    const dependentsLabel = generateColumnLabel("downstream", hopIndex, totalHops);
-    
-    const dependentsColumn = createStackedColumn(
-      controller,
-      dependentsLabel,
-      inboundNodes,
-      "inbound",
-      hopIndex < totalHops - 1 ? "Via next hop" : "No dependents",
-      guides,
-      "right",
-      connectionScore,
-      hopIndex
-    );
-    dependentsColumn.dataset.hopIndex = String(hopIndex);
-    dependentsColumn.dataset.columnRole = "downstream";
-    layoutRoot.appendChild(dependentsColumn);
-  }
 }
 
 /**

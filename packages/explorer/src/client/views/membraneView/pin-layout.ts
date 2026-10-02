@@ -15,9 +15,9 @@
  * @module pin-layout
  */
 
-import type { PinSet } from "./pin-state";
-import { getPinnedNodeIds, getVisibleConnections } from "./pin-state";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../../shared/types";
+import type { PinSet } from "../pin-state";
+import { getPinnedNodeIds, getVisibleConnections } from "../pin-state";
 
 // ─── Types ─────────────────────────────────────────────────────────
 

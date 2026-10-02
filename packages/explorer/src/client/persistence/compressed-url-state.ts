@@ -20,8 +20,8 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 
 import type { ViewName } from "../types";
 import { commitUrl } from "./history";
-import type { PinSet } from "../views/membraneView/pin-state";
-import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/membraneView/pin-state";
+import type { PinSet } from "../views/pin-state";
+import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-state";
 
 // ─── Current Payload Version ───────────────────────────────────────
 
@@ -243,12 +243,15 @@ export function readUrlState(): UrlStateSnapshot {
  * Write a state snapshot into the URL without reloading the page; the history decides whether it is a new entry.
  * Preserves the `?data=` parameter if present (used for custom data sources).
  */
-export function writeUrlState(snapshot: UrlStateSnapshot): void {
+export function writeUrlState(snapshot: UrlStateSnapshot, options: { preservePath?: boolean } = {}): void {
   const url = new URL(window.location.href);
   const params = url.searchParams;
 
   // Preserve data param
   const dataParam = params.get("data");
+  const pathParams = options.preservePath
+    ? [...params.entries()].filter(([key]) => ["from", "to", "fromSymbol", "toSymbol"].includes(key))
+    : [];
 
   // Clear all existing params
   for (const key of [...params.keys()]) {
@@ -276,6 +279,7 @@ export function writeUrlState(snapshot: UrlStateSnapshot): void {
   if (dataParam) {
     params.set("data", dataParam);
   }
+  for (const [key, value] of pathParams) params.set(key, value);
 
   const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
   commitUrl(newUrl);

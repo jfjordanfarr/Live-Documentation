@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { hopLabel } from "./focal-overlay";
+import type { ExplorerLinkPayload } from "../../../shared/types";
 import {
   EMPTY_PIN_SET,
   addPin,
@@ -17,8 +18,7 @@ import {
   serializePins,
   deserializePins,
   getRequiredExpansions,
-} from "./pin-state";
-import type { ExplorerLinkPayload } from "../../../shared/types";
+} from "../pin-state";
 
 // ─── Helpers ───────────────────────────────────────────────────────
 

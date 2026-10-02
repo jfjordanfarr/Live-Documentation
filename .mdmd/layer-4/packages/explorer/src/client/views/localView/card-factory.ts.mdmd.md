@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-09-28T01:11:43.493Z
+- Generated At: 2026-10-02T22:58:01.350Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` funct
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L25)
-- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
 Creates a node card element for the Local Map view.
@@ -35,8 +35,8 @@ The created card element
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L151)
-- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./layout-math.ts.mdmd.md#symbol-columnrole)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L157)
+- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
 Creates the symbol section for a node card, including all public symbols
@@ -53,7 +53,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L318)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L331)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -68,7 +68,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L369)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L382)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary

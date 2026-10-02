@@ -1,3 +1,5 @@
+import { Vector3, type Camera } from "three";
+
 /** A position in the Force Graph's world coordinate system. */
 export interface CameraPoint { x: number; y: number; z: number }
 
@@ -18,4 +20,12 @@ export function focusedCameraPosition(
     y: node.y + dy / length * distance,
     z: node.z + dz / length * distance
   };
+}
+
+/** Translate a camera and its target together to place a world point at a normalized screen anchor. */
+export function screenAnchorTranslation(camera: Camera, point: CameraPoint, anchor: { x: number; y: number }): Vector3 {
+  const original = new Vector3(point.x, point.y, point.z);
+  const projected = original.clone().project(camera);
+  const wanted = new Vector3(anchor.x * 2 - 1, 1 - anchor.y * 2, projected.z).unproject(camera);
+  return original.sub(wanted);
 }

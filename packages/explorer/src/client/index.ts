@@ -30,7 +30,7 @@ import {
   createPersistUiScheduler,
   createPersistNavScheduler
 } from "./persistence";
-import { readUrlState, scrubSnapshot } from "./persistence/compressed-url-state";
+import { readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
 import type { ExplorerState, ViewName } from "./types";
@@ -143,6 +143,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const schedulePersistUi = persistUi.schedule;
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
+  state.pins = scrubSnapshot(readUrlState(), nodesById).pinSet;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -226,6 +227,7 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const localView = createLocalView({
     state,
+    onExplorationChange: persistExploration,
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
@@ -329,8 +331,60 @@ function startExplorer(bundle: StaticExplorerData): void {
     });
   }
 
+  const perspectiveControls = document.createElement("div");
+  perspectiveControls.className = "perspective-controls";
+  perspectiveControls.setAttribute("aria-label", "File perspective");
+  const mapButton = document.createElement("button");
+  mapButton.textContent = "Local Map · 2D";
+  mapButton.addEventListener("click", () => changePerspective("map"));
+  const graphButton = document.createElement("button");
+  graphButton.textContent = "Force Graph · 3D";
+  graphButton.addEventListener("click", () => changePerspective("graph"));
+  const clearPinsButton = document.createElement("button");
+  clearPinsButton.title = "Clear exploration pins";
+  clearPinsButton.setAttribute("aria-label", "Clear exploration pins");
+  clearPinsButton.addEventListener("click", () => { state.pins = { entries: [] }; persistExploration(); renderCurrentView(); });
+  perspectiveControls.append(mapButton, graphButton, clearPinsButton);
+  requireElement("main").append(perspectiveControls);
+
+  function syncPerspectiveControls(): void {
+    perspectiveControls.hidden = state.view !== "map" && state.view !== "graph";
+    mapButton.setAttribute("aria-pressed", String(state.view === "map"));
+    graphButton.setAttribute("aria-pressed", String(state.view === "graph"));
+    const count = state.pins?.entries.length ?? 0;
+    clearPinsButton.hidden = count === 0;
+    clearPinsButton.textContent = `${count} ${count === 1 ? "pin" : "pins"} ×`;
+  }
+
+  /** Change file perspective around the identity the person was last inspecting. */
+  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode): void {
+    if (state.view === view && target?.id === state.selectedNode?.id) return;
+    const source = state.view === "map" ? localView : state.view === "graph" ? forceGraphView : null;
+    const anchor = target && source ? source.getSubjectAnchor(target.id) : null;
+    detailPanel.hide();
+    state.selectedNode = target;
+    state.focusedNode = target;
+    state.view = view;
+    setActiveView(view);
+    updateUrlState(view, target?.id ?? null);
+    schedulePersistNav();
+    renderCurrentView();
+    if (target && anchor) {
+      const viewport = requireElement(`view-${view}`).getBoundingClientRect();
+      // Off-screen subjects cannot provide a visible continuity anchor.
+      if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
+        (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+      }
+    }
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      requireElement(`view-${view}`).animate([{ opacity: 0.25 }, { opacity: 1 }], { duration: 240, easing: "ease-out" });
+    }
+    highlightSelectedCards();
+  }
+
   globalWindow.switchView = (event: MouseEvent, viewName: ViewName) => {
     event.preventDefault();
+    if (viewName === "map" || viewName === "graph") { changePerspective(viewName); return; }
     setActiveView(viewName);
     state.view = viewName;
     updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null);
@@ -351,21 +405,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     openLocalViewForNode(target);
   };
 
-  globalWindow.openInGraphView = () => {
-    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
-    const target = state.focusedNode ?? state.selectedNode;
-    if (!target) {
-      return;
-    }
-    // Hide detail panel when navigating to another view
-    detailPanel.hide();
-    state.selectedNode = target;
-    state.view = "graph";
-    setActiveView("graph");
-    updateUrlState("graph", target.id);
-    schedulePersistNav();
-    renderCurrentView();
-  };
+  globalWindow.openInGraphView = () => changePerspective("graph");
 
   globalWindow.openInCircuitBoard = () => {
     // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
@@ -749,6 +789,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
     detailPanel.hide();
     state.view = view;
+    state.pins = scrubSnapshot(readUrlState(), nodesById).pinSet;
     setActiveView(view);
     const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
     state.selectedNode = node;
@@ -829,16 +870,24 @@ function startExplorer(bundle: StaticExplorerData): void {
     clearPathResult();
     // Hide detail panel to avoid blocking the visualization
     detailPanel.hide();
-    // Switch to Local Map and select the node (suppress detail panel since we just hid it)
-    state.view = "map";
-    setActiveView("map");
-    selectNode(node, { suppressDetailPanel: true });
+    changePerspective("map", node);
     // Populate FROM field with the node and CLEAR TO field (exploration mode)
     pathfindApi.setFrom({ node, symbol: undefined });
     pathfindApi.setTo(undefined);
   }
 
+  /** Keep independent branches in the same portable snapshot as selection and filters. */
+  function persistExploration(leavingPath = false): void {
+    if (leavingPath) clearPathResult();
+    syncPerspectiveControls();
+    const contextName = document.getElementById("context-name");
+    if (contextName && state.selectedNode) contextName.textContent = state.selectedNode.codeRelativePath;
+    writeUrlState({ ...readUrlState(), view: state.view, selectedNodeId: state.selectedNode?.id ?? null,
+      pinSet: state.pins!, filters: state.filters }, { preservePath: !leavingPath });
+  }
+
   function renderCurrentView(): void {
+    syncPerspectiveControls();
     forceGraphView.setActive(state.view === "graph");
     if (state.view === "sources") {
       doRenderSourcesView();

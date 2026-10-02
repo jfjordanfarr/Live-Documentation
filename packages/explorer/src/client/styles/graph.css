@@ -24,3 +24,5 @@
     outline: 2px solid #0091ff;
     outline-offset: 3px;
 }
+
+#graph-svg[data-hovered-node="true"] canvas { cursor: pointer; }

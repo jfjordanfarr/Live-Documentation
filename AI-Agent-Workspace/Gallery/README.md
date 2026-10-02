@@ -98,3 +98,15 @@ The owner's words about these pictures, dated, so that a reader knows what has a
 - 2026-10-01, the handoff: "definitely more polished than the last pass", with the docked board named as the interesting part. ([Turn 45](../ChatHistory/2026/09/2026-09-30.2.record.md#turn-45))
 - 2026-10-01, the Local Map against Rings: "on the local map, there is a real sense of directionality. You have a good idea of where things come from and go to." ([Turn 7](../ChatHistory/2026/10/2026-10-01.1.record.md#turn-7))
 - 2026-10-01, the Local Map against Rings and folder columns, apples to apples: "far more aesthetically pleasing ... there is no grammar to node orientation. Connections fly out in all directions". ([Turn 11](../ChatHistory/2026/10/2026-10-01.1.record.md#turn-11))
+
+## Native file perspectives, October 2
+
+The TypeScript Rosetta processor is selected, with `helpers.format` and the processor file independently pinned. Both pictures use the repaired 609-file graph; tests are shown and assets hidden. They show different presentations of the same exploration state. No owner verdict on this implementation has been recorded yet.
+
+| Picture | Origin |
+| --- | --- |
+| [Native Local Map](rosetta-native/local-map.png) | [October 2 screenshots](../Screenshots/2026-10-02/README.md), `local-native-branches.png` |
+| [Native Force Graph](rosetta-native/force-graph.png) | Same record, `native-perspective-graph.png` |
+| [Two perspectives together](sheets/rosetta-native-perspectives.png) | Rebuild with `bash AI-Agent-Workspace/Gallery/sheets.sh rosetta-native-perspectives.png` |
+
+The [motion recording](../Screenshots/2026-10-02/native-branches-journey.webm) and its [frame sheet](../Screenshots/2026-10-02/native-branches-motion-frames.png) preserve the transition evidence; these two stills alone do not establish continuity.

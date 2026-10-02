@@ -9,8 +9,8 @@
  */
 
 import { animateLineDrawIn } from "./animation";
-import type { PinSet, VisibleConnection } from "./pin-state";
-import { getPinnedNodeIds, isSymbolPinned, getPathEntries, hasActivePath } from "./pin-state";
+import type { PinSet, VisibleConnection } from "../pin-state";
+import { getPinnedNodeIds, isSymbolPinned, getPathEntries, hasActivePath } from "../pin-state";
 import type { PinAnchor, RoutedTrace, FrontTrace, BackTrace } from "./routing";
 import { routeConnection } from "./routing";
 import type { BezierTuningParams } from "../connection-geometry";

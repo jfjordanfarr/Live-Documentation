@@ -61,3 +61,7 @@ sheet graph-ts-journey-routes.png "Five retained files, 40 pins, 24 references: 
   "Outer lanes, by file pair" graph-ts/journey-file-bundles.png \
   "Outer lanes, by directory pair" graph-ts/journey-directory-bundles.png \
   "Behind cards, foreground pin ends" graph-ts/journey-behind-cards.png
+
+sheet rosetta-native-perspectives.png "TypeScript Rosetta: retained branches, two native perspectives" \
+  "Local Map: format and processor pinned" rosetta-native/local-map.png \
+  "Force Graph: same pins and subject anchor" rosetta-native/force-graph.png

@@ -1,27 +1,17 @@
+import { branchDetourPoints, roundedBranchRoute } from "./branch-routing";
+import type { BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
-import type { ColumnRole, LayoutExtents, LocalEdge, LocalSubgraph } from "./types";
+import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState } from "../../types";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
-
-/**
- * Represents a hop in the multi-hop visualization chain.
- * Each hop has a center node and its associated subgraph.
- */
-export interface MultiHopEntry {
-  /** Zero-based hop index (0 = origin) */
-  hopIndex: number;
-  /** The center node ID for this hop */
-  centerId: string;
-  /** The subgraph containing edges for this hop */
-  subgraph: LocalSubgraph;
-}
 
 /**
  * Ambient context required by {@link drawConnections} to measure DOM
  * anchors, read explorer state, and emit SVG paths.
  */
 export interface ConnectionsContext {
+  branches?: BranchGraph;
   runtime: LocalViewRuntime;
   state: ExplorerState;
   svgNamespace: string;
@@ -42,11 +32,6 @@ export interface ConnectionsContext {
   getCenterCardBounds?: () => { left: number; right: number; top: number; bottom: number } | null;
   /** Card bounds for a specific hop's center node */
   getCardBoundsForHop?: (hopIndex: number) => { left: number; right: number; top: number; bottom: number } | null;
-  /**
-   * Multi-hop subgraph data. When provided, connections are drawn for all hops.
-   * When not provided, falls back to single-hop drawing using currentSubgraph.
-   */
-  multiHopData?: MultiHopEntry[];
   /**
    * The drawn path, when the view is in path mode. Its wires come from the
    * path subgraph in `runtime.currentSubgraph`, one column per file.
@@ -81,9 +66,8 @@ const PIN_RADIUS = 6;
 /**
  * Main entry point for drawing SVG connection edges in the Local Map view.
  *
- * Delegates to the path drawer when a path is active, to the multi-hop drawer
- * when {@link ConnectionsContext.multiHopData} is present, and otherwise to the
- * single-hop drawer. Each measures DOM anchor positions relative to the
+ * Draws an explicit path, independent branches, or the classic neighborhood.
+ * Each measures DOM anchor positions relative to the
  * container, computes Bézier curves, and appends `<path>` elements to the SVG
  * overlay.
  */
@@ -97,9 +81,8 @@ export function drawConnections(context: ConnectionsContext): void {
     return;
   }
 
-  // Multi-hop path: delegate to dedicated drawing logic
-  if (context.multiHopData && context.multiHopData.length > 0 && context.getAnchorWithHop) {
-    drawMultiHopConnections(context);
+  if (context.branches) {
+    drawBranchConnections(context);
     return;
   }
 
@@ -323,7 +306,8 @@ function appendConnectionPath(
   edge: LocalEdge,
   svgNamespace: string,
   tuning: BezierTuning,
-  gradientId: string
+  gradientId: string,
+  routedPath?: string
 ): void {
   const horizontalDirection = target.x >= source.x ? 1 : -1;
   const gapX = Math.abs(target.x - source.x);
@@ -381,7 +365,7 @@ function appendConnectionPath(
   defs.appendChild(gradient);
 
   const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
-  path.setAttribute("d", commands.join(" "));
+  path.setAttribute("d", routedPath ?? commands.join(" "));
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.classList.add("connection-path", renderDirection);
   path.dataset.kind = edge.kind;
@@ -565,98 +549,46 @@ function drawPathConnections(context: ConnectionsContext): void {
   overlay.dataset.active = "true";
 }
 
-/**
- * Draw connections for multi-hop exploration.
- * 
- * Each hop has three columns:
- *   - upstream (dependencies, hopIndex N)
- *   - center (the hop's center node, hopIndex N)
- *   - downstream (dependents, hopIndex N)
- * 
- * Connections are drawn within each hop (upstream→center, center→downstream).
- * No cross-hop connections are drawn - visual continuity comes from
- * the downstream column of hop N containing the center of hop N+1.
- */
-function drawMultiHopConnections(context: ConnectionsContext): void {
-  const { runtime, state, multiHopData, getAnchorWithHop } = context;
-  const { overlay, container, mapTransform } = runtime;
-
-  if (!multiHopData || !getAnchorWithHop) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
+/** Draw every retained relationship, including neighbor-to-neighbor and cyclic links. */
+function drawBranchConnections(context: ConnectionsContext): void {
+  const { runtime, branches, state } = context;
+  if (!branches) return;
   const extents = context.measureLayoutExtents();
-  if (!extents) {
-    overlay.dataset.active = "false";
-    return;
-  }
-  const bounds = extents.content;
-
-  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
-
-  const segments: Array<{
-    edge: LocalEdge;
-    renderDirection: "inbound" | "outbound";
-    source: Point;
-    target: Point;
-    hopIndex: number;
-  }> = [];
-
-  for (const hopEntry of multiHopData) {
-    const { hopIndex, centerId, subgraph } = hopEntry;
-
-    subgraph.links.forEach(edge => {
-      // Skip self-loops for now in multi-hop (can be extended later)
-      const isSelfLoop = edge.sourceId === centerId && edge.targetId === centerId;
-      if (isSelfLoop) {
-        return;
-      }
-
-      const isDependency = edge.direction === "outbound";
-
-      // For multi-hop, use hop-aware anchor lookup
-      // Dependencies: upstream(hopN) → center(hopN)
-      // Dependents: center(hopN) → downstream(hopN)
-      const providerAnchor = isDependency
-        ? measureAnchor(getAnchorWithHop(edge.targetId, "upstream", hopIndex, "outbound", edge.targetSymbol))
-        : measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "outbound", edge.targetSymbol));
-
-      const consumerAnchor = isDependency
-        ? measureAnchor(getAnchorWithHop(centerId, "center", hopIndex, "inbound", edge.sourceSymbol))
-        : measureAnchor(getAnchorWithHop(edge.sourceId, "downstream", hopIndex, "inbound", edge.sourceSymbol));
-
-      if (!providerAnchor || !consumerAnchor) {
-        return;
-      }
-
-      const sourcePoint = offsetToEdge(providerAnchor, "outbound");
-      const targetPoint = offsetToEdge(consumerAnchor, "inbound");
-      const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
-      segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint, hopIndex });
-    });
-  }
-
-  if (segments.length === 0) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  const { svg, defs } = createOverlaySvg(context, bounds);
-
-  let gradientIndex = 0;
-  segments.forEach(({ edge, renderDirection, source, target, hopIndex }) => {
-    const adjustedSource = {
-      x: source.x - bounds.left,
-      y: source.y - bounds.top
-    };
-    const adjustedTarget = {
-      x: target.x - bounds.left,
-      y: target.y - bounds.top
-    };
-    const gradientId = `conn-grad-hop${hopIndex}-${gradientIndex++}`;
-    appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier, gradientId);
+  if (!extents) return;
+  const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
+  const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
+  const segments = branches.subgraph.links.flatMap(edge => {
+    const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
+    const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
+    return provider && consumer ? [{ edge, provider, consumer }] : [];
   });
-
-  overlay.dataset.active = "true";
+  const routed = segments.filter(({ edge }) => edge.sourceId !== edge.targetId && columnOf.get(edge.sourceId)! !== columnOf.get(edge.targetId)! + 1);
+  const headroom = routed.length ? 32 + routed.length * 9 : 0;
+  const bounds = { ...extents.content, top: extents.content.top - headroom, height: extents.content.height + headroom };
+  const { svg, defs } = createOverlaySvg(context, bounds);
+  const columnBounds = branches.columns.map(nodes => {
+    const cards = nodes.flatMap(node => {
+      const anchor = measure(context.getAnchor(node.id, "center", "outbound"));
+      return anchor ? [anchor] : [];
+    });
+    return { left: Math.min(...cards.map(card => card.cardLeft)), right: Math.max(...cards.map(card => card.cardRight)) };
+  });
+  let lane = 0;
+  segments.forEach(({ edge, provider, consumer }, index) => {
+    const p = offsetToEdge(provider, "outbound"), q = offsetToEdge(consumer, "inbound");
+    const from = { x: p.x - bounds.left, y: p.y - bounds.top };
+    const to = { x: q.x - bounds.left, y: q.y - bounds.top };
+    if (edge.sourceId === edge.targetId) {
+      appendSelfLoopPath(svg, from, to, provider, consumer, { left: provider.cardLeft, right: provider.cardRight, top: 0, bottom: 0 }, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      return;
+    }
+    const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
+    let route: string | undefined;
+    if (b !== a + 1) {
+      const y = headroom - 20 - lane++ * 9;
+      route = roundedBranchRoute(branchDetourPoints(from, to, columnBounds[a].right - bounds.left, columnBounds[b].left - bounds.left, y));
+    }
+    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `branch-${index}`, route);
+  });
+  runtime.overlay.dataset.active = String(segments.length > 0);
 }

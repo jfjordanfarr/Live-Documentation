@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-09-28T01:11:43.276Z
+- Generated At: 2026-10-02T21:07:39.194Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L13)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L14)
 
 ##### `ViewName` — Summary
 Names of the four main Explorer views.
@@ -37,14 +37,14 @@ Created 2025-11-22 with the initial Explorer scaffold.
 
 #### `ExplorerFilters` {#symbol-explorerfilters}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L16)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L17)
 
 ##### `ExplorerFilters` — Summary
 Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L26)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L27)
 
 ##### `BezierTuning` — Summary
 Cubic-Bézier connection path tuning parameters.
@@ -52,7 +52,7 @@ Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L38)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L39)
 
 ##### `LocalMapTuning` — Summary
 Tuning knobs specific to the Local Map (3-column) view.
@@ -61,14 +61,14 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L51)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L52)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L60)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L61)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -76,21 +76,21 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L69)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L72)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L72)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L75)
 
 ##### `CircuitTransform` — Summary
 Pan/zoom transform for the Circuit Board (treemap) view.
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L82)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L85)
 
 ##### `DirectoryNode` — Summary
 Tree node representing a directory in the workspace.
@@ -99,5 +99,6 @@ Built by the Circuit Board view to lay out the treemap hierarchy.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`pin-state.PinSet`](./views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

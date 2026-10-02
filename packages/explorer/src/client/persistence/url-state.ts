@@ -7,7 +7,7 @@
  */
 
 import type { ViewName } from "../types";
-import { decompressSnapshot } from "./compressed-url-state";
+import { decompressSnapshot, compressSnapshot } from "./compressed-url-state";
 import { commitUrl } from "./history";
 
 /**
@@ -94,6 +94,11 @@ export const updateUrlState = (view: ViewName, nodeId: string | null): void => {
 
   // Preserve data param if present
   const dataParam = params.get("data");
+
+  const compressed = params.get("s");
+  if (compressed) {
+    params.set("s", compressSnapshot({ ...decompressSnapshot(compressed), view, selectedNodeId: nodeId }));
+  }
 
   // Clear existing view/node params
   params.delete("view");

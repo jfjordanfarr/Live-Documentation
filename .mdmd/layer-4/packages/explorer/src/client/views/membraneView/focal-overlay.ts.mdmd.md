@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/focal-overlay.ts
-- Generated At: 2026-09-28T01:11:44.123Z
+- Generated At: 2026-10-02T21:07:39.927Z
 
 ## Authored
 ### Purpose
@@ -53,7 +53,7 @@ and an anchor registry for subsequent connection routing.
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L78)
 - Returns: [`FocalOverlayResult`](#symbol-focaloverlayresult)
-- Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`FocalOverlayCallbacks`](#symbol-focaloverlaycallbacks); `skipNodeIds`: `ReadonlySet`
+- Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`FocalOverlayCallbacks`](#symbol-focaloverlaycallbacks); `skipNodeIds`: `ReadonlySet`
 
 ##### `renderFocalOverlay` — Summary
 Render the focal overlay: symbol expansion panels on pinned nodes.
@@ -99,7 +99,7 @@ Uses circled numbers for 0-19, falls back to plain number for larger indices.
 #### `attachHopBadges` {#symbol-attachhopbadges}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L553)
-- Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
+- Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
 Attach hop badges to focal panels that are part of an active path.
@@ -121,7 +121,7 @@ Callbacks for breadcrumb bar interaction.
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L601)
-- Parameters: `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
+- Parameters: `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
 Render a path breadcrumb bar showing the sequence of hops.
@@ -168,7 +168,7 @@ Remove all hover-dimming state from the SVG overlay and container.
 #### `markConnectedEndpoints` {#symbol-markconnectedendpoints}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L818)
-- Parameters: `svgOverlay`: `SVGSVGElement`; `pinSet`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
+- Parameters: `svgOverlay`: `SVGSVGElement`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `markConnectedEndpoints` — Summary
 After connections are drawn in pin-active mode, scan all SVG connection
@@ -185,12 +185,6 @@ Pin dots for connected endpoints also get lit up with directional coloring.
 ### Dependencies
 - [`connection-geometry.BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams) (type-only)
 - [`animation.animateLineDrawIn`](./animation.ts.mdmd.md#symbol-animatelinedrawin)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.VisibleConnection`](./pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
-- [`pin-state.getPathEntries`](./pin-state.ts.mdmd.md#symbol-getpathentries) (type-only)
-- [`pin-state.getPinnedNodeIds`](./pin-state.ts.mdmd.md#symbol-getpinnednodeids) (type-only)
-- [`pin-state.hasActivePath`](./pin-state.ts.mdmd.md#symbol-hasactivepath) (type-only)
-- [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
 - [`routing.BackTrace`](./routing.ts.mdmd.md#symbol-backtrace) (type-only)
 - [`routing.FrontTrace`](./routing.ts.mdmd.md#symbol-fronttrace) (type-only)
 - [`routing.PinAnchor`](./routing.ts.mdmd.md#symbol-pinanchor) (type-only)
@@ -198,6 +192,12 @@ Pin dots for connected endpoints also get lit up with directional coloring.
 - [`routing.routeConnection`](./routing.ts.mdmd.md#symbol-routeconnection) (type-only)
 - [`types.MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout) (type-only)
 - [`types.MembraneNode`](./types.ts.mdmd.md#symbol-membranenode) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.VisibleConnection`](../pin-state.ts.mdmd.md#symbol-visibleconnection) (type-only)
+- [`pin-state.getPathEntries`](../pin-state.ts.mdmd.md#symbol-getpathentries) (type-only)
+- [`pin-state.getPinnedNodeIds`](../pin-state.ts.mdmd.md#symbol-getpinnednodeids) (type-only)
+- [`pin-state.hasActivePath`](../pin-state.ts.mdmd.md#symbol-hasactivepath) (type-only)
+- [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

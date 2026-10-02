@@ -6,6 +6,8 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
+    getSubjectAnchor: nodeId => controller.getSubjectAnchor(nodeId),
+    placeSubjectAnchor: (nodeId, anchor) => controller.placeSubjectAnchor(nodeId, anchor),
     drawConnections: () => controller.drawConnections(),
     highlightSelection: () => controller.highlightSelection(),
     zoomIn: () => controller.zoomIn(),
@@ -13,9 +15,6 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     resetZoom: () => controller.resetZoom(),
     // Multi-hop API
     get localMapState() { return controller.localMapState; },
-    addPinToPath: (nodeId, symbol, hopIndex) => controller.addPinToPath(nodeId, symbol, hopIndex),
-    removePinFromPath: (fromHopIndex) => controller.removePinFromPath(fromHopIndex),
-    getPinnedPath: () => controller.getPinnedPath(),
     // Path mode API
     setActivePath: (path) => controller.setActivePath(path),
     getActivePath: () => controller.getActivePath(),

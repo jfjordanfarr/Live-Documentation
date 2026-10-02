@@ -203,7 +203,7 @@ The testing strategy is:
 - `packages/explorer/src/client/views/membraneView/layout.ts` — Recursive squarify engine with focus-aware weight boosting
 - `packages/explorer/src/client/views/membraneView/hierarchy.ts` — `isBarrelFile()`, `applyBarrelSemantics()`, `getAncestorDirectories()`
 - `packages/explorer/src/client/views/membraneView/detail-levels.ts` — `resolveDetailLevels()` (full/summary/badge/hidden)
-- `packages/explorer/src/client/views/membraneView/pin-state.ts` — Pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
+- `packages/explorer/src/client/views/pin-state.ts` — Shared pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
 - `packages/explorer/src/client/views/membraneView/routing.ts` — Front/back trace classification + geometry (French Corset stubs)
 
 #### DOM Modules

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/membraneView/pin-layout.test.ts
-- Generated At: 2026-09-27T23:21:29.037Z
+- Generated At: 2026-10-02T21:07:40.098Z
 
 ## Authored
 ### Purpose
@@ -31,9 +31,9 @@ _No public symbols detected_
 - [`pin-layout.computeLCA`](./pin-layout.ts.mdmd.md#symbol-computelca)
 - [`pin-layout.computePinLayout`](./pin-layout.ts.mdmd.md#symbol-computepinlayout)
 - [`pin-layout.parentDirectory`](./pin-layout.ts.mdmd.md#symbol-parentdirectory)
-- [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
-- [`pin-state.PinSet`](./pin-state.ts.mdmd.md#symbol-pinset) (type-only)
-- [`pin-state.addPin`](./pin-state.ts.mdmd.md#symbol-addpin) (type-only)
+- [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
+- [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset) (type-only)
+- [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin) (type-only)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`

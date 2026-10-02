@@ -9,8 +9,8 @@ import {
   DEFAULT_SNAPSHOT,
 } from "./compressed-url-state";
 import type { UrlStateSnapshot, CompressedPayload } from "./compressed-url-state";
-import { EMPTY_PIN_SET } from "../views/membraneView/pin-state";
-import type { PinSet } from "../views/membraneView/pin-state";
+import { EMPTY_PIN_SET } from "../views/pin-state";
+import type { PinSet } from "../views/pin-state";
 
 // ─── snapshotToPayload ─────────────────────────────────────────────
 

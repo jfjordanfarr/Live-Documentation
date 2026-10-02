@@ -1,46 +1,46 @@
-# packages/explorer/src/client/views/membraneView/pin-state.ts
+# packages/explorer/src/client/views/pin-state.ts
 
 ## Metadata
 - Layer: 4
 - Archetype: implementation
-- Code Path: packages/explorer/src/client/views/membraneView/pin-state.ts
-- Generated At: 2026-09-28T01:11:44.362Z
+- Code Path: packages/explorer/src/client/views/pin-state.ts
+- Generated At: 2026-10-02T21:07:40.197Z
 
 ## Authored
 ### Purpose
 
-Immutable pure-function state machine for the continuous pin model, managing the `PinSet` data structure that drives the Membrane Map's progressive disclosure spectrum from Browse through Explore, Compare, and Path modes without discrete mode switches.
+Immutable pure-function state machine for the continuous pin model, managing the `PinSet` data structure shared by Local Map, Force Graph and Membrane Map, driving the latter’s progressive disclosure spectrum from Browse through Explore, Compare, and Path modes without discrete mode switches.
 
 ### Notes
 
-- Created during [Dev Day 80 Step 6a](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) after a pivotal design decision: the original plan called for separate Explore/Compare/Path mode renderers, but the continuous pin model collapsed these into a single state machine where pin count determines rendering behavior (0 pins = Browse, 1 = Explore, 2 = Compare, N = multi-focal, path = Path).
+- Created during [Dev Day 80 Step 6a](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) after a pivotal design decision: the original plan called for separate Explore/Compare/Path mode renderers, but the continuous pin model collapsed these into a single state machine where pin count determines rendering behavior (0 pins = Browse, 1 = Explore, 2 = Compare, N = multi-focal, path = Path).
 - All mutations (`addPin`, `removePin`, `togglePin`, `clearPins`, `setPinsFromPath`) return a new `PinSet` object — the immutable API enables React-style re-render-on-change in the imperative controller without reference equality bugs.
 - `getVisibleConnections` is the bridge between pin state and graph data: it filters the full edge list to only those edges touching a pinned (nodeId, symbol) pair, producing the `VisibleConnection[]` that the focal overlay draws.
 - `setPinsFromPath` populates `hopIndex` on each entry, enabling the focal overlay's numbered hop badges (①②③) and the path breadcrumb bar.
 - `serializePins`/`deserializePins` round-trip to a compact JSON array for URL state persistence via `compressed-url-state.ts`.
 - `getRequiredExpansions` extracts parent directory paths from pinned node IDs so the controller can auto-expand collapsed ancestors to make pinned nodes visible.
-- `areAllSymbolsPinned` (added [Dev Day 84](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md)) checks whether all symbols for a given node (including `__internals__`) are pinned, enabling pin-all/unpin-all toggle buttons in both renderers.
+- `areAllSymbolsPinned` (added [Dev Day 84](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md)) checks whether all symbols for a given node (including `__internals__`) are pinned, enabling pin-all/unpin-all toggle buttons in both renderers.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PinEntry` {#symbol-pinentry}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L22)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L22)
 
 ##### `PinEntry` — Summary
 A single pinned symbol on a node.
 
 #### `PinSet` {#symbol-pinset}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L35)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L35)
 
 ##### `PinSet` — Summary
 Immutable pin set. All mutations return a new PinSet.
 
 #### `VisibleConnection` {#symbol-visibleconnection}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L43)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L43)
 
 ##### `VisibleConnection` — Summary
 A connection visible because of the current pin set.
@@ -48,7 +48,7 @@ Carries the original link plus which pin entry caused it to be visible.
 
 #### `EMPTY_PIN_SET` {#symbol-empty_pin_set}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L52)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L52)
 - Returns: [`PinSet`](#symbol-pinset)
 
 ##### `EMPTY_PIN_SET` — Summary
@@ -56,7 +56,7 @@ The empty pin set.
 
 #### `addPin` {#symbol-addpin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L65)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L65)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -66,7 +66,7 @@ the same PinSet unchanged.
 
 #### `removePin` {#symbol-removepin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L76)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L76)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -75,7 +75,7 @@ Remove a pin by (nodeId, symbol). Returns unchanged PinSet if not found.
 
 #### `togglePin` {#symbol-togglepin}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L86)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -84,7 +84,7 @@ Toggle a pin: add if absent, remove if present.
 
 #### `removePinsForNode` {#symbol-removepinsfornode}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L97)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -93,7 +93,7 @@ Remove all pins for a specific node.
 
 #### `clearPins` {#symbol-clearpins}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L106)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L106)
 - Returns: [`PinSet`](#symbol-pinset)
 
 ##### `clearPins` — Summary
@@ -101,7 +101,7 @@ Clear all pins.
 
 #### `setPinsFromPath` {#symbol-setpinsfrompath}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L114)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L114)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `hops`: `ReadonlyArray`
 
@@ -111,7 +111,7 @@ Each entry gets a hopIndex corresponding to its position in the path.
 
 #### `getPinnedNodeIds` {#symbol-getpinnednodeids}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L131)
 - Returns: `ReadonlySet`
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -120,7 +120,7 @@ Get the set of distinct node IDs that have at least one pin.
 
 #### `isSymbolPinned` {#symbol-issymbolpinned}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L138)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L138)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `isSymbolPinned` — Summary
@@ -128,7 +128,7 @@ Check whether a specific (nodeId, symbol) is pinned.
 
 #### `areAllSymbolsPinned` {#symbol-areallsymbolspinned}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L146)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L146)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `areAllSymbolsPinned` — Summary
@@ -136,7 +136,7 @@ Check whether ALL symbols of a node (including __internals__) are pinned.
 
 #### `hasActivePath` {#symbol-hasactivepath}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L154)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L154)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `hasActivePath` — Summary
@@ -144,7 +144,7 @@ Whether the pin set contains any entries with hop indices (i.e., a path is activ
 
 #### `getPathEntries` {#symbol-getpathentries}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L162)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `getPathEntries` — Summary
@@ -153,7 +153,7 @@ Returns only entries that have a hopIndex.
 
 #### `getVisibleConnections` {#symbol-getvisibleconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L189)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L189)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `getVisibleConnections` — Summary
@@ -170,7 +170,7 @@ Returns the list of visible connections with causation metadata.
 
 #### `serializePins` {#symbol-serializepins}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L282)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L282)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `serializePins` — Summary
@@ -178,7 +178,7 @@ Serialize pin set to a plain JSON-friendly array for lz-string compression.
 
 #### `deserializePins` {#symbol-deserializepins}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L293)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L293)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `data`: `ReadonlyArray`
 
@@ -187,7 +187,7 @@ Deserialize pin set from URL state.
 
 #### `getRequiredExpansions` {#symbol-getrequiredexpansions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-state.ts#L316)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L316)
 - Returns: `ReadonlySet`
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -208,6 +208,6 @@ Set of directory IDs that should be expanded
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
-- [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
+- [`symbolAnchors.normalizeSymbolIdentifier`](./symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
+- [`types.ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
