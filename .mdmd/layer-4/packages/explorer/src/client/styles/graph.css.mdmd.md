@@ -9,12 +9,12 @@
 ## Authored
 ### Purpose
 
-Minimal styles for the Force Graph view: ensures the `#graph-svg` container fills its parent viewport. The force-directed layout is driven entirely by D3/three.js in the client TypeScript; CSS only controls the SVG element dimensions.
+Sizes and bounds the Force Graph canvas container and styles the HTML label that follows the selected file. The simulation and projected label position are controlled by the view.
 
 ### Notes
 
 - Extracted from monolithic `styles.css` on [2025-12-04](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19) as part of the CSS decomposition (`4504d36a`).
-- Intentionally minimal (4 lines) — layout logic lives in client code, not CSS.
+- The historical `#graph-svg` ID hosts a WebGL canvas. Its positioned container provides the coordinate origin for the focus label; keyboard focus has a visible outline.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

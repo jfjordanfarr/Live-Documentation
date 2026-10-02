@@ -245,8 +245,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       showBundledDocInDetailPanel(docPath);
     },
     onFocusNode: (node: ExplorerNodePayload) => {
-      state.focusedNode = node;
-      detailPanel.showNode(node);
+      selectNode(node);
     }
   });
 
@@ -840,6 +839,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   }
 
   function renderCurrentView(): void {
+    forceGraphView.setActive(state.view === "graph");
     if (state.view === "sources") {
       doRenderSourcesView();
       return;

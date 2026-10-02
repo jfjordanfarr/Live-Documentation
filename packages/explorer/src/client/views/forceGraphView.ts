@@ -9,6 +9,7 @@
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
+import { Vector3 } from "three";
 
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type {
@@ -18,6 +19,7 @@ import type {
 } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { ExplorerState } from "../types";
+import { focusedCameraPosition, type CameraPoint } from "./forceGraphCamera";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -34,6 +36,9 @@ export interface ForceGraphLink {
 export type ForceGraphNode = ExplorerNodePayload & {
   /** Archetype for Related Documentation nodes */
   archetype?: string;
+  x?: number;
+  y?: number;
+  z?: number;
 };
 
 /** Complete data structure for the Force Graph view. */
@@ -61,6 +66,7 @@ export interface ForceGraphViewOptions {
 /** Public API surface of the Force Graph view. */
 export interface ForceGraphViewApi {
   render(): void;
+  setActive(active: boolean): void;
 }
 
 /** Creates the Force Graph (3D) view for the Live Docs Explorer. */
@@ -76,12 +82,81 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   } = options;
 
   let forceGraphInstance: ForceGraph3DInstance | null = null;
+  const nodeCache = new Map<string, ForceGraphNode>();
+  let membership = "";
+  let focusedId: string | null = null;
+  let active = false;
+  let animation = 0;
+  let focusMotion: { started: number; camera: CameraPoint; target: CameraPoint; offset: CameraPoint } | null = null;
+  let following = false;
+  let focusLabel: HTMLButtonElement | null = null;
+  let pausedAt = 0;
+
+  function setActive(value: boolean): void {
+    if (value && !active && focusMotion && pausedAt) focusMotion.started += performance.now() - pausedAt;
+    if (!value && active) pausedAt = performance.now();
+    active = value;
+    if (value) {
+      forceGraphInstance?.resumeAnimation();
+      if (!animation && forceGraphInstance) animation = requestAnimationFrame(updateFocus);
+    } else {
+      forceGraphInstance?.pauseAnimation();
+      cancelAnimationFrame(animation);
+      animation = 0;
+    }
+  }
+
+  function updateFocus(now: number): void {
+    animation = 0;
+    if (!active || !forceGraphInstance) return;
+    const node = focusedId ? nodeCache.get(focusedId) : undefined;
+    if (node && Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)) {
+      const point = node as ForceGraphNode & CameraPoint;
+      if (following) {
+        const controls = forceGraphInstance.controls() as { target: CameraPoint };
+        if (!focusMotion) {
+          const camera = { ...forceGraphInstance.cameraPosition() };
+          const target = { x: controls.target.x, y: controls.target.y, z: controls.target.z };
+          focusMotion = { started: now, camera, target, offset: focusedCameraPosition(camera, target, { x: 0, y: 0, z: 0 }) };
+        }
+        const motion = focusMotion;
+        const t = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : Math.min(1, (now - motion.started) / 650);
+        const k = 1 - Math.pow(1 - t, 3);
+        const mix = (from: CameraPoint, to: CameraPoint): CameraPoint => ({ x: from.x + (to.x - from.x) * k, y: from.y + (to.y - from.y) * k, z: from.z + (to.z - from.z) * k });
+        forceGraphInstance.cameraPosition(mix(motion.camera, { x: point.x + motion.offset.x, y: point.y + motion.offset.y, z: point.z + motion.offset.z }), mix(motion.target, point));
+      }
+      const screen = forceGraphInstance.graph2ScreenCoords(point.x, point.y, point.z);
+      const depth = new Vector3(point.x, point.y, point.z).project(forceGraphInstance.camera()).z;
+      if (focusLabel) {
+        focusLabel.hidden = depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > forceGraphInstance.width() || screen.y > forceGraphInstance.height();
+        focusLabel.style.left = `${screen.x}px`;
+        focusLabel.style.top = `${screen.y}px`;
+      }
+    } else if (focusLabel) {
+      focusLabel.hidden = true;
+    }
+    animation = requestAnimationFrame(updateFocus);
+  }
+
+  function focusSelection(force = false): void {
+    const node = state.focusedNode ?? state.selectedNode;
+    if (!force && node?.id === focusedId) return;
+    focusedId = node?.id ?? null;
+    following = !!node;
+    focusMotion = null;
+    if (focusLabel) {
+      focusLabel.textContent = node?.name ?? "";
+      focusLabel.title = node ? `${node.codeRelativePath} — Show details` : "";
+      focusLabel.dataset.nodeId = node?.id ?? "";
+      focusLabel.hidden = !node;
+    }
+  }
 
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
 
     const includeNode = (node: ExplorerNodePayload): boolean => {
-      if (state.selectedNode && state.selectedNode.id === node.id) {
+      if ((state.focusedNode ?? state.selectedNode)?.id === node.id) {
         return true;
       }
       const archetype = (node.archetype || "").toLowerCase();
@@ -103,7 +178,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
 
     // Build base graph data
-    const graphNodes: ForceGraphNode[] = filteredNodes.map(node => ({ ...node }));
+    const graphNodes: ForceGraphNode[] = filteredNodes.map(node => nodeCache.get(node.id) ?? { ...node });
     const graphLinks: ForceGraphLink[] = filteredLinks.map(link => ({
       source: resolveLinkEndpoint(link.source),
       target: resolveLinkEndpoint(link.target),
@@ -204,13 +279,25 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       links: graphLinks
     };
 
+    for (let index = 0; index < graphNodes.length; index++) {
+      const node = graphNodes[index];
+      graphNodes[index] = nodeCache.get(node.id) ?? node;
+      nodeCache.set(node.id, graphNodes[index]);
+    }
+    const nextMembership = JSON.stringify([graphNodes.map(node => node.id), graphLinks]);
+
     if (forceGraphInstance) {
-      forceGraphInstance.graphData(dataForGraph);
+      if (nextMembership !== membership) forceGraphInstance.graphData(dataForGraph);
+      membership = nextMembership;
+      focusSelection();
+      setActive(true);
       return;
     }
 
     // The library types its callbacks for any node and link; the ones it hands back are this view's own.
     forceGraphInstance = new ForceGraph3D(container)
+      .width(container.clientWidth)
+      .height(container.clientHeight)
       .graphData(dataForGraph)
       .nodeLabel("name")
       .nodeColor(node => {
@@ -257,8 +344,29 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           return;
         }
         onFocusNode(original);
+        focusSelection(true);
       });
+    membership = nextMembership;
+    focusLabel = document.createElement("button");
+    focusLabel.className = "force-graph-focus";
+    focusLabel.hidden = true;
+    focusLabel.addEventListener("click", () => {
+      const node = focusedId ? nodesById.get(focusedId) : undefined;
+      if (node) {
+        onFocusNode(node);
+        focusSelection(true);
+      }
+    });
+    container.append(focusLabel);
+    const interrupt = (): void => { following = false; focusMotion = null; };
+    container.addEventListener("pointerdown", interrupt);
+    container.addEventListener("wheel", interrupt, { passive: true });
+    new ResizeObserver(() => {
+      if (container.clientWidth && container.clientHeight) forceGraphInstance?.width(container.clientWidth).height(container.clientHeight);
+    }).observe(container);
+    focusSelection();
+    setActive(true);
   }
 
-  return { render };
+  return { render, setActive };
 }

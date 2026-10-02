@@ -1,4 +1,26 @@
 #graph-svg {
+    position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+}
+
+.force-graph-focus {
+    position: absolute;
+    transform: translate(-50%, 16px);
+    max-width: calc(100% - 24px);
+    padding: 5px 9px;
+    color: var(--text-primary, #eee);
+    background: var(--bg-surface, #202020);
+    border: 1px solid var(--border-color, #555);
+    border-radius: 4px;
+    font: inherit;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.force-graph-focus:focus-visible {
+    outline: 2px solid #0091ff;
+    outline-offset: 3px;
 }
