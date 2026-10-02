@@ -68,4 +68,9 @@ The production focus repair passed the full `npm run safe:commit -- --e2e` chain
 
 The initial overview picture was refreshed after ensuring that unselected nodes begin at full brightness and pinning fades the others. The matched pinned-state route pictures retain their previous styling. The hosted build includes the production focus repair committed as `8fd76252`.
 
-The experiment remains disposable. No existing renderer was replaced, no composite score was introduced, and no visual preference has yet been supplied by the owner.
+The experiment remains disposable. No existing renderer was replaced, no composite score was introduced, and the owner’s live interaction review is still pending.
+
+
+## Owner’s first reading
+
+In [October 2, Turn 3](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-3), the owner reported that the server was unavailable. From the comparison sheet they judged “3 of the four are totally unusable and the fourth is aesthetically acceptable,” and wanted to operate it before judging further. The sheet’s fourth tile is the behind-card alternative. They also welcomed the working Force Graph camera focus seen in the recording. This is a verdict on the pictured alternatives, not adoption of the probe or approval of its interaction.
