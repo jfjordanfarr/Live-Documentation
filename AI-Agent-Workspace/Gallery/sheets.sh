@@ -4,6 +4,7 @@
 # Needs ImageMagick (convert, montage), which the devcontainer carries.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
+selected_sheet="${1:-}"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
@@ -11,6 +12,7 @@ trap 'rm -rf "$work"' EXIT
 # Every tile is padded to 1600 by 1000 so that the labels line up whatever the picture's size.
 sheet() {
   local out="$1" title="$2"; shift 2
+  if [[ -n "$selected_sheet" && "$out" != "$selected_sheet" ]]; then return; fi
   local args=()
   while (($#)); do
     local label="$1" picture="$2"; shift 2
@@ -53,3 +55,9 @@ sheet graph-ts-astra-four-ways.png "graph.ts in Astra's four navigations" \
   "Interfaces: isometric cards, right-angle wires" graph-ts/interfaces.png \
   "Depth, side view: wires in lanes behind the plane" graph-ts/depth-side.png \
   "Analysis surface: the scoped overview" graph-ts/analysis-surface-overview.png
+
+sheet graph-ts-journey-routes.png "Five retained files, 40 pins, 24 references: four route choices" \
+  "Outer lanes, no bundling" graph-ts/journey-lanes.png \
+  "Outer lanes, by file pair" graph-ts/journey-file-bundles.png \
+  "Outer lanes, by directory pair" graph-ts/journey-directory-bundles.png \
+  "Behind cards, foreground pin ends" graph-ts/journey-behind-cards.png

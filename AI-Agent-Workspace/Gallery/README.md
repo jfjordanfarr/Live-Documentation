@@ -65,6 +65,19 @@ The sheets in `sheets/` put the pictures of one subject side by side at full siz
 
 ## The sheets
 
+The October 2 additions below use the same 602-file repository bundle. The four route variants retain the same five files, 40 symbol pins and 24 raw references, with `staticBuilder.ts` selected and the reading surface positioned at `graph.ts`. They are a matched comparison within this probe; the older pictures above have different graph snapshots and disclosure policies.
+
+| File | View, state | Origin |
+| --- | --- | --- |
+| `graph-ts/force-graph-focused.png` | Shipped Force Graph, `graph.ts` centered from its URL | [October 2 screenshots](../Screenshots/2026-10-02/README.md) |
+| `graph-ts/journey-lanes.png` | Journey probe, outer lanes without bundling | [Journey record](../Probes/2026-10-02/journey.md), `02-lanes-none.png` |
+| `graph-ts/journey-file-bundles.png` | Same state, lanes shared by file pair | Same record, `02-lanes-file.png` |
+| `graph-ts/journey-directory-bundles.png` | Same state, lanes shared by directory pair | Same record, `02-lanes-folder.png` |
+| `graph-ts/journey-behind-cards.png` | Same state, long paths behind cards | Same record, `02-behind-none.png` |
+| `payment-service/journey-five-files.png` | Estate's five retained files, with the last selected file in reading position; three raw references among the five | Same record, `estate-final-reading.png` |
+
+`sheets.sh` accepts an optional sheet filename to rebuild only that sheet; without one it rebuilds the full comparison set.
+
 | Sheet | Tiles |
 | --- | --- |
 | [graph.ts, six ways](sheets/graph-ts-six-ways.png) | Local Map, Membrane Map, Rings, folder columns, the analysis surface, Force Graph |
@@ -72,6 +85,7 @@ The sheets in `sheets/` put the pictures of one subject side by side at full siz
 | [Two symbols, three ways](sheets/two-symbols-three-ways.png) | Membrane Map, the analysis surface, the handoff |
 | [The estate from outside, four ways](sheets/estate-outside-four-ways.png) | World Map, interfaces, the handoff, the analysis surface's docked board |
 | [graph.ts in Astra's four navigations](sheets/graph-ts-astra-four-ways.png) | orientation, interfaces, depth from the side, the analysis surface's overview |
+| [Five retained files, four route choices](sheets/graph-ts-journey-routes.png) | outer lanes, file bundles, directory bundles, behind-card paths; matched October 2 state |
 
 ## Verdicts on record
 

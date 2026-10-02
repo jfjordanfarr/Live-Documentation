@@ -1,0 +1,28 @@
+# Graph readability and aesthetic measures
+
+_Historical research note, October 2, 2026. Requested during [Turn 2](../ChatHistory/2026/10/2026-10-02.1.record.md#turn-2). This focused survey informs an experiment; it does not select a renderer or establish a universal quality score._
+
+The owner asked whether research offers more reliable ways to quantify design and aesthetics, after the still-picture deck rewarded pictures they found harder to understand. The sources below offer empirical methods and bounded findings, rather than a formula that can replace human judgment. Publisher/author abstracts and relevant paper sections were consulted; this is not an exhaustive literature review.
+
+## What has been measured
+
+| Work | Evidence and limits | Relevance here — our inference |
+| --- | --- | --- |
+| Ware, Purchase, Colpoys and McGill, **Cognitive Measurements of Graph Aesthetics** (2002), [author-hosted paper](https://vislab-ccom.unh.edu/pdfs/GraphAesthetics.pdf) | Studies shortest-path finding in spring-layout graphs. After path length, continuity and crossings are important contributors; branching also matters. Their argument explicitly allows crossing reduction to worsen path continuity. These are task-specific cognitive costs, not an aesthetic preference scale. | Count crossings as one diagnostic, and watch whether a person can follow the actual selected route. A whole-picture total cannot describe every path's difficulty. This does not justify banning right-angle connectors. |
+| Huang, Hong and Eades, **Effects of Sociogram Drawing Conventions and Edge Crossings in Social Network Visualization** (2007), [journal article and abstract](https://jgaa.info/index.php/jgaa/article/view/paper152) | Compared five drawing conventions using task performance and preference. Layout and crossings affected finding groups and user preference, while perception of actor importance responded differently. | Different questions can favor different presentations. A criterion established for recognizing a group may not establish interface readability or connection tracing. |
+| Lavie and Tractinsky, **Assessing dimensions of perceived visual aesthetics of web sites** (2004), [authors' institutional publication record](https://www.bgu.ac.il/en/researcher/noam-tractinsky/publications/327435009/) | Developed and validated rating scales distinguishing orderly/clear design from creative/original design, termed classical and expressive aesthetics. These quantify people's reported perceptions; the study concerns websites, not software dependency maps. | Human aesthetic judgments can be collected systematically without pretending to derive them solely from geometry. Clarity and novelty deserve separate questions. Applying the scales unchanged here would require validation. |
+| Munzner, **A Nested Model for Visualization Design and Validation** (2009), [author-hosted paper](https://www.cs.ubc.ca/labs/imager/tr/2009/NestedModel/NestedModel.pdf) | Distinguishes the domain problem, data/task abstraction, encoding/interaction and algorithms, with different validation methods. An upstream mistake can invalidate a technically successful downstream implementation. This is a design/evaluation framework, not a controlled proof that one drawing wins. | A passing endpoint-visibility check cannot validate the assumption that visible endpoints make a dependency understandable. Test the intended activity as well as the implementation. |
+| Heer and Robertson, **Animated Transitions in Statistical Data Graphics** (2007), [authors' project page](https://idl.uw.edu/papers/animated-transitions) | Two controlled experiments found benefits from animated transitions for graphical perception, alongside a taxonomy and design principles. The studied transitions were between statistical charts. | Motion deserves its own inspection, including intermediate frames and continuity of identity. These findings do not certify our graph-to-card transition or imply that more animation is better. |
+
+## Implications for the approved experiment
+
+Keep four kinds of evidence distinct:
+
+- **Truthfulness:** displayed identities and relationships agree with the graph; aggregation preserves membership and evidence; hidden information is recoverable and accurately described.
+- **Task outcome:** can a person identify the source and destination, follow the branch and return to a known place? A scripted successful click sequence establishes reachability, not human comprehension.
+- **Effort and orientation:** observe wrong turns, repeated searches, lost selections and travel. Compare identical data and disclosure state. A recording and sampled positions can expose jumps but cannot establish the owner's subjective experience.
+- **Preference:** ask which version is clearer, calmer or more appealing, and why. Preserve disagreement between preference and performance as a finding. Do not blend those answers into a single winner by arbitrary weights.
+
+The current measures remain useful for concrete faults and comparisons within their definitions. Their names and denominators need to be interpreted precisely: readable endpoint labels are a narrower property than a legible relationship, and a collapsed folder is not an absent file. The October 1 deck's limitations are recorded in [the handoff review](../ChatHistory/2026/10/Summarized/2026-10-01.1.SUMMARIZED.md#review-notes-october-2).
+
+The practical recommendation is a matched journey with the owner's live review and separate geometry diagnostics. None of these sources supplies evidence that our existing measures, or a weighted sum of them, predict the owner's aesthetic judgment across arbitrary styles.
