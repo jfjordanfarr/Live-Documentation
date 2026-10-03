@@ -52,3 +52,13 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 - The peers as the owner sees them: GitLab Knowledge Graph (first named 2025-10-16), Windsurf's code graph (with GitLab's, 2025-11-06), and Google CodeWiki (all three by 2025-11-19); Windsurf's is now Codemaps. What they care about: MIT licence, offline, markdown-first, "vastly more secure". The README carries a comparison table.
 - The README still promises "redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph" at release. Agent context is no longer the goal (see [direction.md](direction.md)); revisit that paragraph when the README is rewritten.
+
+
+## Continuous file perspectives — October 3, 2026
+
+Open hypotheses from [Turn 12](../ChatHistory/2026/10/2026-10-02.1.record.md#turn-12), not selected behavior:
+
+- Introduce force-like freedom and a third spatial dimension gradually as retained branches become difficult to arrange in two dimensions. The owner asks whether failing left-to-right organization could be a trigger.
+- On zooming out, let file cards become small nodes in a galaxy; on approaching a node, let it and nearby files become readable cards. The change should remain recognizable to the eye, beyond keeping a coordinate fixed.
+- A gentle camera attraction might help approach a likely subject and disclose it as if its interfaces were pinned. Whether this changes persistent pins, how intent is recognized and how manual navigation overrides it are unresolved.
+- Directory membranes/names must remain understandable through any such continuum. The owner explicitly identifies their reconciliation with 3D connectivity as unsolved.
