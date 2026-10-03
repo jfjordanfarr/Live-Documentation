@@ -32,6 +32,7 @@ Describe the static Explorer that renders the canonical Live Doc graph and autho
 - Ensure rendered edges, symbol anchors, and directional styling stay in parity with `live-docs inspect` CLI payloads—UI must never invent or omit graph facts.
 - Source and generated Live Docs remain external to the static viewer. The World Map can retain moved placements in the browser and download updated board text.
 - **Static distribution**: the bundle is `index.html`, `static/`, and `explorer-data.json`, which holds the graph index and the related markdown. Any static host serves it; this repository's is published to GitHub Pages.
+- **Links share explorations; files carry authorship** (proposed 2026-10-03, not settled): the owner would bound what a link can share by what readable, uncompressed URL parameters can carry, so that a colleague can see what a link does before opening it, and would have any change authored into a persisted file, which any copy of the Explorer, hosted or not, can write out afresh. Recorded with the agent's reading in `AI-Agent-Workspace/Memory/direction.md`; the compressed `?s=` state is unchanged.
 
 ### Independent exploration
 

@@ -93,6 +93,8 @@ Membrane-specific share state and broader cross-session fallback are intentional
 - **Versioned localStorage** (`local-storage.ts`) persists Explorer UI and navigation fallback across sessions when no explicit URL state is present.
 - **Startup precedence** is explicit URL state (`?s=` or legacy `?view=` / `?node=`) → localStorage → viewerConfig → defaults.
 
+_Reopened 2026-10-03: the owner proposes that a link share only what readable, uncompressed URL parameters can carry, with anything beyond that authored into a file; see [direction.md](../../AI-Agent-Workspace/Memory/direction.md). The compressed `?s=` form (Q8 below) was chosen in March for size; readability was not weighed then. Nothing has changed yet._
+
 ### Namespace Mode (C# Enhancement)
 
 For languages where namespaces do not align with directories (primarily C#), the Membrane Map supports an alternative hierarchy function that groups files by namespace rather than directory:
