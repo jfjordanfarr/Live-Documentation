@@ -20,3 +20,12 @@ User-provided screenshots, preserved byte-for-byte in their received order. The 
 | [turn-12-local-symbols-and-checks.png](turn-12-local-symbols-and-checks.png) | `5aaea42e-339b-4621-bd89-c874180428b2/Pasted Image 2.png` | `f2a71472698ed663f8fc9905d40240ccd4111233d275991b76a073f95cbc197f` |
 | [turn-12-membrane-two-symbol-files.png](turn-12-membrane-two-symbol-files.png) | `a30e1aa8-a327-4b71-a7cc-713ede8fed64/Pasted Image 3.png` | `89bae656b9e075b9a87b719083b6354d70b452b13569230433ea89623b68f5b5` |
 | [turn-12-local-two-symbol-files.png](turn-12-local-two-symbol-files.png) | `44b9c1fc-0155-4762-b499-03c8a6cd36fc/Pasted Image 4.png` | `c6fa62620216e8d731cb1507e43cf5631dadf7eff8bfb73de2f1e85d3c0446ee` |
+
+## October 3 closing review — Turn 14
+
+Owner-supplied screenshots accompanying [the closing review](../2026-10-02.1.record.md#turn-14), preserved byte-for-byte in received order. The first shows the native Local Map’s directory bands and remaining exterior right-angle routes; the second shows the Membrane Map comparison. The owner praised the recorded node reorientation and identified routing and future wire splitting as the remaining topics. No identical-dataset claim is inferred from these images.
+
+| Image | Received attachment suffix | SHA-256 |
+| --- | --- | --- |
+| [turn-14-local-symbols-and-checks.png](turn-14-local-symbols-and-checks.png) | `f2135450-9fda-4c14-9b34-2223a901d998/Pasted Image.png` | `48ce0eb48a19bee4c62e60188a7ed83dd00e68f915ddd00039b7645effc6e278` |
+| [turn-14-membrane-symbols-and-checks.png](turn-14-membrane-symbols-and-checks.png) | `542ce6fd-5efa-4220-99d6-c1cace8785b3/Pasted Image 2.png` | `81551837c8535caefc5ef929a75c139653cd4acc5fe7a319631c0cf2806ce6c9` |

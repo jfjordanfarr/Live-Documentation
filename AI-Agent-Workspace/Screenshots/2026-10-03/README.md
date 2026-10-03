@@ -1,6 +1,6 @@
 # October 3, 2026 — native inspection and exploration
 
-Historical evidence of the experiment authorized in [October 2–3 Turn 13](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-13), captured in Chromium at 1600 × 1000. These are the actual Explorer views over the 615-file repository graph, with tests shown and assets normally hidden. Explicit path members remain visible in the Force Graph even if their category filter is off. There is no owner aesthetic verdict on this pass yet.
+Historical evidence of the experiment authorized in [October 2–3 Turn 13](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-13), captured in Chromium at 1600 × 1000. These are the actual Explorer views over the 615-file repository graph, with tests shown and assets normally hidden. Explicit path members remain visible in the Force Graph even if their category filter is off. In [the subsequent closing review](../../ChatHistory/2026/10/2026-10-02.1.record.md#turn-14), the owner strongly praised the videos and called node reorientation “perfect”. Wire splitting/gathering is a deferred next idea; the Local Map’s remaining right-angle routes still drew criticism.
 
 | Capture | State |
 | --- | --- |
