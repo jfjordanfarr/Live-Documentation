@@ -24,3 +24,18 @@ The boundary uses experimental legibility/approach thresholds and a second gestu
 The long-route example is a file path from the estate’s Oracle account table to its Portal page. Full symbol-to-symbol path continuity and World Map path presentation remain future work. Current canonical references and their bases remain the source of every relationship; aggregation changes only the overview rendering.
 
 Verification: the complete `npm run safe:commit -- --e2e` chain passed **933 unit, 50 integration and 81 browser tests**, with the existing 35 JSDoc warnings. Direct checks of this inventory and the conversation evidence found no broken links or anchors.
+
+## Later October 3 pass — retention, pruning and transition detail
+
+Historical evidence from [October 3 session 1](../../ChatHistory/2026/10/2026-10-03.1.record.md), captured in Chromium at 1600 × 1000 against the 617-file repository graph. Tests are shown and assets hidden. These captures reflect the new click-to-retain and X-to-prune rule, superseding the earlier layered file/row interaction for the Local Map. They are agent-reviewed results; the owner has not yet reviewed this pass.
+
+| Capture | State |
+| --- | --- |
+| [Click-retained files](local-click-retained.png) | Symbol-reference implementation and checker retained by clicking their cards. The independent configuration provider sits beside the checker, eliminating the previous unnecessary overhead rank skip. Directory shells extend to the scan root. |
+| [After closing the implementation](local-close-pruned.png) | The checker stays pinned. The implementation remains as a compact neighbor with only SymbolRuleSetting, SymbolReferenceIssue and findSymbolReferenceAnomalies; its unused branches disappear. Its title stays at the same screen position. |
+| [Wire and directory round trip](wire-directory-roundtrip.webm) | Twenty native symbol curves gather into six file-pair segments, then the file points move to the native force projection. On return the same routes unfold. Directory shells disappear root-first and reappear from direct directories outward. |
+| [Chronological transition frames](wire-directory-motion-sheet.png) | Top row: outward transition; bottom row: inward transition. Five successive browser captures per direction, sampled after approximately 160 ms pauses plus capture overhead. These are chronological stills, not a claim of evenly spaced video frames. |
+
+The agent inspected the final stills and motion sheet. Frame sampling observed 74 outward and 70 inward animation frames with the same twenty curves and six file pairs, and no page errors. A separate real controller-file example verified six distinct directory identities at containment depths zero through four; loose-file layout buckets do not introduce duplicate membranes. The pure geometry and browser tests cover correspondence and order. A separate sphere-to-card silhouette morph remains exploratory, and genuinely cyclic or long connections may still require exterior routes. The observed improvement does not establish universal layout superiority over Membrane.
+
+The final complete `safe:commit -- --e2e` gate passed **939 unit, 50 integration and 84 browser tests**, including the nested-directory regression, with 617 validated Live Docs and the 35 existing JSDoc warnings. The record preserves earlier failures and corrections; these results establish mechanics and invariants, not an owner aesthetic verdict.

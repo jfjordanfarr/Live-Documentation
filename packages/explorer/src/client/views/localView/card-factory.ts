@@ -81,14 +81,13 @@ export function createNodeCard(
   header.className = "node-title";
   header.textContent = node.name;
   card.appendChild(header);
-  const pin = document.createElement("button");
-  pin.className = "local-file-pin";
-  pin.title = "Pin file and its connections";
-  pin.setAttribute("aria-label", `Pin ${node.name} and its connections`);
-  pin.setAttribute("aria-pressed", String(controller.isPinned(node.id, "*")));
-  pin.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2h-5v6h-2v-6H6v-2l4-4z"/></svg>';
-  pin.addEventListener("click", event => { event.stopPropagation(); controller.togglePinnedSymbol(node.id, "*"); });
-  card.append(pin);
+  const close = document.createElement("button");
+  close.className = "local-file-close";
+  close.title = "Close this expansion; keep symbols needed by other pins";
+  close.setAttribute("aria-label", `Close ${node.name}`);
+  close.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+  close.addEventListener("click", event => { event.stopPropagation(); controller.closeNode(node.id); });
+  card.append(close);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
@@ -133,7 +132,13 @@ export function createNodeCard(
 
   card.addEventListener("click", event => {
     event.stopPropagation();
-    void controller.selectNode(node);
+    controller.togglePinnedSymbol(node.id, "*");
+  });
+
+  card.addEventListener("keydown", event => {
+    if (event.target === card && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault(); card.click();
+    }
   });
 
   card.addEventListener("dblclick", event => {
@@ -424,7 +429,7 @@ function makePinAccessible(element: HTMLElement, file: string, symbol: string, p
   element.setAttribute("role", "button");
   element.setAttribute("aria-label", `Pin ${symbol} in ${file}`);
   element.setAttribute("aria-pressed", String(pressed));
-  element.title = "Pin this symbol's connections";
+  element.title = pressed ? "Unpin this symbol's connections" : "Pin this symbol's connections";
   element.addEventListener("keydown", event => {
     if (event.key === "Enter" || event.key === " ") { event.preventDefault(); element.click(); }
   });

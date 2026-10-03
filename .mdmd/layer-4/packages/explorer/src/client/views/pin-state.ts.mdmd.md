@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/pin-state.ts
-- Generated At: 2026-10-02T21:07:40.197Z
+- Generated At: 2026-10-03T18:02:22.995Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ Immutable pure-function state machine for the continuous pin model, managing the
 - `getVisibleConnections` is the bridge between pin state and graph data: it filters the full edge list to only those edges touching a pinned (nodeId, symbol) pair, producing the `VisibleConnection[]` that the focal overlay draws.
 - `setPinsFromPath` populates `hopIndex` on each entry, enabling the focal overlay's numbered hop badges (①②③) and the path breadcrumb bar.
 - `serializePins`/`deserializePins` round-trip to a compact JSON array for URL state persistence via `compressed-url-state.ts`.
+- `retainFile` is idempotent and uses a wildcard for complete interface selection. `toggleFileSymbol` can remove one effective row from that selection by materializing the remaining public symbols and Internals; the wildcard therefore cannot conceal an unpin action. These operations support the Local Map's click-to-retain and close-to-prune interaction while the lower-level mutations remain available to other consumers.
 - `getRequiredExpansions` extracts parent directory paths from pinned node IDs so the controller can auto-expand collapsed ancestors to make pinned nodes visible.
 - `areAllSymbolsPinned` (added [Dev Day 84](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-28.1.md)) checks whether all symbols for a given node (including `__internals__`) are pinned, enabling pin-all/unpin-all toggle buttons in both renderers.
 
@@ -91,9 +92,28 @@ Toggle a pin: add if absent, remove if present.
 ##### `removePinsForNode` — Summary
 Remove all pins for a specific node.
 
+#### `retainFile` {#symbol-retainfile}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L104)
+- Returns: [`PinSet`](#symbol-pinset)
+- Parameters: `set`: [`PinSet`](#symbol-pinset)
+
+##### `retainFile` — Summary
+Retain every interface of a file; repeating the action never releases it.
+
+#### `toggleFileSymbol` {#symbol-togglefilesymbol}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L113)
+- Returns: [`PinSet`](#symbol-pinset)
+- Parameters: `set`: [`PinSet`](#symbol-pinset)
+
+##### `toggleFileSymbol` — Summary
+Toggle a row in the effective selection. Removing a row from a whole-file
+selection materializes its remaining rows, so the wildcard cannot mask it.
+
 #### `clearPins` {#symbol-clearpins}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L106)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L125)
 - Returns: [`PinSet`](#symbol-pinset)
 
 ##### `clearPins` — Summary
@@ -101,7 +121,7 @@ Clear all pins.
 
 #### `setPinsFromPath` {#symbol-setpinsfrompath}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L114)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L133)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `hops`: `ReadonlyArray`
 
@@ -111,7 +131,7 @@ Each entry gets a hopIndex corresponding to its position in the path.
 
 #### `getPinnedNodeIds` {#symbol-getpinnednodeids}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L150)
 - Returns: `ReadonlySet`
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -120,7 +140,7 @@ Get the set of distinct node IDs that have at least one pin.
 
 #### `isSymbolPinned` {#symbol-issymbolpinned}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L138)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L157)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `isSymbolPinned` — Summary
@@ -128,7 +148,7 @@ Check whether a specific (nodeId, symbol) is pinned.
 
 #### `areAllSymbolsPinned` {#symbol-areallsymbolspinned}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L146)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L165)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `areAllSymbolsPinned` — Summary
@@ -136,7 +156,7 @@ Check whether ALL symbols of a node (including __internals__) are pinned.
 
 #### `hasActivePath` {#symbol-hasactivepath}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L154)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L173)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `hasActivePath` — Summary
@@ -144,7 +164,7 @@ Whether the pin set contains any entries with hop indices (i.e., a path is activ
 
 #### `getPathEntries` {#symbol-getpathentries}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L181)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `getPathEntries` — Summary
@@ -153,7 +173,7 @@ Returns only entries that have a hopIndex.
 
 #### `getVisibleConnections` {#symbol-getvisibleconnections}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L189)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L208)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `getVisibleConnections` — Summary
@@ -170,7 +190,7 @@ Returns the list of visible connections with causation metadata.
 
 #### `serializePins` {#symbol-serializepins}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L282)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L301)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `serializePins` — Summary
@@ -178,7 +198,7 @@ Serialize pin set to a plain JSON-friendly array for lz-string compression.
 
 #### `deserializePins` {#symbol-deserializepins}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L293)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L312)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `data`: `ReadonlyArray`
 
@@ -187,7 +207,7 @@ Deserialize pin set from URL state.
 
 #### `getRequiredExpansions` {#symbol-getrequiredexpansions}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L316)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L335)
 - Returns: `ReadonlySet`
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 

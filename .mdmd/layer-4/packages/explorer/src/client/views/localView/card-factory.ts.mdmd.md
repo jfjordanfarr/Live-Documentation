@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-02T22:58:01.350Z
+- Generated At: 2026-10-03T18:02:22.349Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Creates individual node cards for the Local Map view. Each card displays artifac
 
 ### Notes
 Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the three-column layout, including symbol sections and type badges.
+
+File bodies retain all interfaces; row buttons toggle individual symbols and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible. Type badges retain their source row and expose the referenced artifact's evidence.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -35,7 +37,7 @@ The created card element
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L162)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
@@ -53,7 +55,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L331)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L336)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -68,7 +70,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L382)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L387)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary

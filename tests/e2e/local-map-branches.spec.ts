@@ -48,15 +48,18 @@ test("both perspective changes keep the subject at its screen anchor during moti
   const recording = page.evaluate(async () => {
     const samples: Array<{ x: number; y: number }> = [];
     const start = performance.now();
+    let firstFrame: number | null = null;
     await new Promise<void>(resolve => {
       const sample = (): void => {
         const container = document.querySelector<HTMLElement>("#view-graph.active #graph-svg");
         const label = container?.querySelector<HTMLElement>(".force-graph-focus:not([hidden])");
         if (container && label) {
+          firstFrame ??= performance.now();
           const rect = container.getBoundingClientRect();
           samples.push({ x: rect.left + parseFloat(label.style.left), y: rect.top + parseFloat(label.style.top) });
         }
-        if (performance.now() - start < 1800) requestAnimationFrame(sample); else resolve();
+        const finished = firstFrame !== null && performance.now() - firstFrame > 500 && !document.querySelector(".perspective-transition");
+        if (!finished && performance.now() - start < 10000) requestAnimationFrame(sample); else resolve();
       };
       requestAnimationFrame(sample);
     });
@@ -78,25 +81,58 @@ test("both perspective changes keep the subject at its screen anchor during moti
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
 });
 
-test("file pins and symbol pins work by keyboard with reduced motion", async ({ page }) => {
+test("file retention, individual pruning and close work by keyboard with reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await start(page);
-  const symbol = pin(page, "helpers.ts", "format");
-  await symbol.focus();
-  await page.keyboard.press("Space");
-  await expect(symbol).toHaveAttribute("aria-pressed", "true");
-  await expect(symbol).toBeFocused();
-  await page.keyboard.press("Space");
-  await expect(symbol).toHaveAttribute("aria-pressed", "false");
-  const file = card(page, "helpers.ts").locator(".local-file-pin");
+  const file = card(page, "helpers.ts");
   await file.focus();
   await page.keyboard.press("Enter");
-  await expect(file).toHaveAttribute("aria-pressed", "true");
-  await expect(card(page, "helpers.ts").getByText(/connections? hidden by filters/)).toBeVisible();
+  const symbol = pin(page, "helpers.ts", "format");
+  await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await expect(file.getByText(/connections? hidden by filters/)).toBeVisible();
+  await symbol.focus();
+  await page.keyboard.press("Space");
+  await expect(symbol).toHaveAttribute("aria-pressed", "false");
+  await expect(symbol).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(symbol).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Force Graph · 3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
   await page.getByRole("button", { name: "Local Map · 2D", exact: true }).click();
-  await expect(file).toHaveAttribute("aria-pressed", "true");
+  await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await file.getByRole("button", { name: "Close helpers.ts", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#map-container .node-card")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+  await expect(page.locator("#context-name")).toHaveText("None");
+  await expect(page.locator("#map-container .empty-hint")).toBeFocused();
+});
+
+test("closing a retained file keeps only symbols needed elsewhere and removes its unneeded branch", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const file = (name: string) => page.locator(`#map-container .node-card[data-id="scripts/slopcop/${name}"]`);
+  await page.goto("/?view=local&node=scripts/slopcop/symbolReferences.ts");
+  await file("symbolReferences.ts").locator(".node-title").click();
+  await file("check-symbols.ts").locator(".node-title").click();
+  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
+  const before = (await file("symbolReferences.ts").boundingBox())!;
+  const config = (await file("config.ts").boundingBox())!;
+  expect(Math.abs(config.x - before.x)).toBeLessThan(2);
+  const routes = await page.locator('#map-connections .connection-path[data-target-id="scripts/slopcop/config.ts"]').evaluateAll(paths => paths.map(path => path.getAttribute("d")!));
+  expect(routes.length).toBeGreaterThan(0);
+  expect(routes.every(route => route.includes(" C ") && !route.includes(" Q "))).toBe(true);
+  await file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true }).click();
+  const after = (await file("symbolReferences.ts").boundingBox())!;
+  expect(after.height).toBeLessThan(before.height);
+  expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);
+  expect(await file("symbolReferences.ts").locator(".symbol-row:not(.branch-symbol-hidden)").evaluateAll(rows => rows.map(row => (row as HTMLElement).dataset.symbol))).toEqual([
+    "SymbolRuleSetting", "SymbolReferenceIssue", "findSymbolReferenceAnomalies"
+  ]);
+  await expect(file("markdownShared.ts")).toHaveCount(0);
+  await expect(file("check-symbols.ts").locator('.symbol-row[data-symbol="__internals__"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
+  await file("symbolReferences.ts").locator(".node-title").click();
+  await expect(file("markdownShared.ts")).toBeVisible();
+  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
 });
 
 test("a type-reference badge retains its source pin and keeps the referenced file as the detail target", async ({ page }) => {

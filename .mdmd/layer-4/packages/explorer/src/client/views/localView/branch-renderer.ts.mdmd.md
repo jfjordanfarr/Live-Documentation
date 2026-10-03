@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-03T02:21:29.115Z
+- Generated At: 2026-10-03T18:02:22.273Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Renders independently retained branches using the Local Map’s existing cards, 
 
 ### Notes
 
-Wraps native cards in the Membrane Map’s cross-column directory bands while preserving dependency ranks. Keeps explicit pins and the selected file legible, mutes unrelated rows, and shows counts for symbols or connections outside the current disclosure.
+Wraps native cards in the Membrane Map's cross-column directory bands, including a scan-root boundary, while preserving dependency ranks. Keeps explicit pins and the selected file legible; other cards can collapse to the rows required by retained symbols. Revealing a card is separate from retaining its interfaces, and closing clears that reveal override. Counts expose symbols and connections outside the current disclosure.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -35,7 +35,6 @@ Extend the native card grammar to the independently retained branches.
 - [`pin-layout.DirectoryBand`](../membraneView/pin-layout.ts.mdmd.md#symbol-directoryband)
 - [`pin-layout.FlowNode`](../membraneView/pin-layout.ts.mdmd.md#symbol-flownode)
 - [`pin-layout.computeDirectoryBands`](../membraneView/pin-layout.ts.mdmd.md#symbol-computedirectorybands)
-- [`pin-layout.computeLCA`](../membraneView/pin-layout.ts.mdmd.md#symbol-computelca)
 - [`pin-layout.parentDirectory`](../membraneView/pin-layout.ts.mdmd.md#symbol-parentdirectory)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->

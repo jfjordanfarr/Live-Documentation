@@ -248,7 +248,7 @@
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }
 
-.local-file-pin {
+.local-file-close {
     position: absolute;
     right: 5px;
     top: 5px;
@@ -259,14 +259,14 @@
     border-radius: 4px;
     cursor: pointer;
 }
-.local-file-pin[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.local-file-close:hover { color: var(--accent); border-color: var(--accent); }
 .local-column .node-title { padding-right: 24px; }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
 button.local-disclosure:hover { color: var(--accent); }
 span.local-disclosure { cursor: default; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
-.symbol-label-wrapper:focus-visible, .local-file-pin:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.symbol-label-wrapper:focus-visible, .local-file-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .perspective-controls { position: absolute; bottom: 18px; right: 18px; z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
 .perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
@@ -279,6 +279,7 @@ span.local-disclosure { cursor: default; }
 .local-directory-band { display: grid; grid-template-columns: subgrid; border: 1px solid var(--border); border-radius: 8px; background: #ffffff03; padding: 12px; min-width: 0; }
 .local-directory-label { grid-column: 1 / -1; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
 .local-directory-content { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; align-items: center; row-gap: 24px; }
+.local-directory-files { display: grid; grid-template-columns: subgrid; min-width: 0; }
 .local-directory-band .local-column-label { display: none; }
 .local-map-host:not(.symbol-hover-active) .branch-symbol-muted > * { opacity: var(--hover-dim-symbols, .5); }
 

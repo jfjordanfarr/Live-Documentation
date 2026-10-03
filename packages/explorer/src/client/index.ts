@@ -37,7 +37,7 @@ import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { createMembraneView } from "./views/membraneView";
-import { animatePerspective, captureCards, holdPerspective } from "./views/perspectiveTransition";
+import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
@@ -386,7 +386,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     const epoch = ++perspectiveEpoch;
     transitionDestination = view;
     const previousView = state.view;
-    const sourceCards = previousView === "map" ? captureCards(requireElement("view-map")) : [];
+    const sourceCards = previousView === "map" ? captureLocalScene(requireElement("view-map")) : null;
     const sourceGraph = previousView === "graph" ? forceGraphView.captureScene() : null;
     const releaseCover = (previousView === "map" || previousView === "graph") && target
       ? holdPerspective(requireElement(`view-${previousView}`)) : () => {};
@@ -416,7 +416,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       if (epoch !== perspectiveEpoch) { releaseCover(); return; }
       if (target && anchor) (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
       if (target && (previousView === "map" || previousView === "graph")) {
-        const cards = view === "graph" ? sourceCards : captureCards(requireElement("view-map"));
+        const cards = view === "graph" ? sourceCards! : captureLocalScene(requireElement("view-map"));
         const graph = view === "graph" ? forceGraphView.captureScene() : sourceGraph!;
         forceGraphView.setActive(false);
         changingPerspective = true;
@@ -937,7 +937,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (leavingPath) clearPathResult();
     syncPerspectiveControls();
     const contextName = document.getElementById("context-name");
-    if (contextName && state.selectedNode) contextName.textContent = state.selectedNode.codeRelativePath;
+    if (contextName) contextName.textContent = state.selectedNode?.codeRelativePath ?? "None";
     writeUrlState({ ...readUrlState(), view: state.view, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, filters: state.filters }, { preservePath: !leavingPath });
   }

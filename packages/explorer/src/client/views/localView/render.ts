@@ -40,7 +40,7 @@ export function renderLocalView(controller: LocalViewController): void {
   controller.clearAnchors();
 
   if (!state.selectedNode) {
-    container.innerHTML = '<div class="empty-hint">Select a node to view local relationships.</div>';
+    container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">Select a node to view local relationships.</div>';
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;
     controller.mapUserAdjusted = false;

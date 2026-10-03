@@ -11,6 +11,29 @@ function node(id: string, archetype = "implementation"): ExplorerNodePayload {
 }
 
 describe("independent Local Map branches", () => {
+  it("places an independent provider beside its consumer instead of skipping an unrelated column", () => {
+    const files = ["markdown", "symbols", "config", "check"].map(id => node(id));
+    const edges: LocalEdge[] = [["symbols", "markdown"], ["check", "symbols"], ["check", "config"]]
+      .map(([sourceId, targetId]) => ({ sourceId, targetId, direction: "outbound", kind: "dependency" }));
+    expect(rankBranches(files, edges).map(column => column.map(file => file.id))).toEqual([
+      ["markdown"], ["config", "symbols"], ["check"]
+    ]);
+  });
+
+  it("keeps only externally needed rows relevant after a neighboring file's pins are released", () => {
+    const files = [node("a"), node("b"), node("c")];
+    const links = [
+      { source: "a", target: "b", sourceSymbol: "value", targetSymbol: "used", kind: "dependency" as const },
+      { source: "b", target: "c", sourceSymbol: "unrelated", targetSymbol: "value", kind: "dependency" as const }
+    ];
+    const graph = { nodes: files, links, stats: { nodes: 3, links: 2, missingDependencies: 0 } };
+    const pins = addPin(EMPTY_PIN_SET, "a", "value");
+    const result = buildBranches(files[0], graph, pins, () => true);
+    expect([...result.relevantSymbols.get("b")!]).toEqual(["used"]);
+    expect(result.subgraph.nodes.map(file => file.id)).toEqual(["a", "b"]);
+    expect(result.hiddenConnections.get("b")).toBe(1);
+  });
+
   const nodes = [node("base"), node("left"), node("right"), node("join"), node("outside"), node("catalog", "asset")];
   const links = [
     { source: "left", target: "base", targetSymbol: "symbol-value" },

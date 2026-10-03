@@ -1,5 +1,6 @@
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { getVisibleConnections, type PinSet } from "../pin-state";
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
 
@@ -8,6 +9,7 @@ export interface BranchGraph {
   subgraph: LocalSubgraph;
   columns: ExplorerNodePayload[][];
   hiddenConnections: Map<string, number>;
+  relevantSymbols: Map<string, Set<string>>;
 }
 
 /**
@@ -24,7 +26,16 @@ export function buildBranches(
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
   const retained = new Set([center.id, ...pins.entries.map(pin => pin.nodeId)]);
+  const relevantSymbols = new Map<string, Set<string>>();
+  const remember = (nodeId: string, symbol?: string): void => {
+    const rows = relevantSymbols.get(nodeId) ?? new Set<string>();
+    rows.add(symbol === "*" ? "*" : normalizeSymbolIdentifier(symbol) ?? "__internals__");
+    relevantSymbols.set(nodeId, rows);
+  };
+  for (const pin of pins.entries) remember(pin.nodeId, pin.symbol);
   for (const { link } of getVisibleConnections(pins, graph.links)) {
+    remember(id(link.source), link.sourceSymbol);
+    remember(id(link.target), link.targetSymbol);
     for (const endpoint of [id(link.source), id(link.target)]) {
       const node = byId.get(endpoint);
       if (node && include(node)) retained.add(endpoint);
@@ -51,7 +62,8 @@ export function buildBranches(
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
     columns: rankBranches(nodes, links),
-    hiddenConnections
+    hiddenConnections,
+    relevantSymbols
   };
 }
 
@@ -60,8 +72,9 @@ function edgeKey(edge: LocalEdge): string {
 }
 
 /**
- * Rank providers before consumers. Strongly connected components share a
- * column, so cycles terminate without dropping edges or duplicating files.
+ * Rank providers before consumers, placing each as near its consumers as
+ * its longest downstream chain permits. Strongly connected components share
+ * a column, so cycles terminate without dropping edges or duplicating files.
  */
 export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): ExplorerNodePayload[][] {
   const successors = new Map(nodes.map(node => [node.id, new Set<string>()]));
@@ -85,18 +98,19 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): 
   };
   for (const id of [...successors.keys()].sort()) if (!index.has(id)) visit(id);
   const componentOf = new Map(components.flatMap((members, i) => members.map(id => [id, i] as const)));
-  const providers = components.map(() => new Set<number>());
+  const consumers = components.map(() => new Set<number>());
   for (const edge of links) {
     const from = componentOf.get(edge.targetId), to = componentOf.get(edge.sourceId);
-    if (from !== undefined && to !== undefined && from !== to) providers[to].add(from);
+    if (from !== undefined && to !== undefined && from !== to) consumers[from].add(to);
   }
   const ranks = new Map<number, number>();
-  const rank = (component: number): number => {
-    if (!ranks.has(component)) ranks.set(component, Math.max(0, ...[...providers[component]].map(p => rank(p) + 1)));
+  const distanceToSink = (component: number): number => {
+    if (!ranks.has(component)) ranks.set(component, Math.max(0, ...[...consumers[component]].map(p => distanceToSink(p) + 1)));
     return ranks.get(component)!;
   };
+  const lastColumn = Math.max(0, ...components.map((_, i) => distanceToSink(i)));
   const columns: ExplorerNodePayload[][] = [];
-  for (const node of nodes) (columns[rank(componentOf.get(node.id)!)] ??= []).push(node);
+  for (const node of nodes) (columns[lastColumn - distanceToSink(componentOf.get(node.id)!)] ??= []).push(node);
   for (const column of columns) column.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
   return columns;
 }

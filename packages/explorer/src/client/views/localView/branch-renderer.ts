@@ -1,7 +1,7 @@
 import { buildBranches } from "./branches";
 import { createHierarchicalColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
-import { computeDirectoryBands, computeLCA, parentDirectory, type DirectoryBand, type FlowNode } from "../membraneView/pin-layout";
+import { computeDirectoryBands, parentDirectory, type DirectoryBand, type FlowNode } from "../membraneView/pin-layout";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /** Extend the native card grammar to the independently retained branches. */
@@ -17,23 +17,28 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   branches.columns.forEach((nodes, column) => nodes.forEach(node => flow.set(node.id, {
     id: node.id, column, role: "pinned", directory: parentDirectory(node.codeRelativePath)
   })));
-  const lca = computeLCA(branches.subgraph.nodes.map(node => node.codeRelativePath));
-  const bands = computeDirectoryBands(flow, lca);
+  const bands = computeDirectoryBands(flow);
+  const scanRoot: DirectoryBand = { directory: "", minColumn: 0, maxColumn: branches.columns.length - 1,
+    bandRow: 0, nodesByColumn: new Map(), allNodeIds: branches.subgraph.nodes.map(node => node.id), children: bands };
   const byId = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
-  const renderBand = (band: DirectoryBand, parent: HTMLElement, firstColumn: number): void => {
+  const renderBand = (band: DirectoryBand, parent: HTMLElement, firstColumn: number, parentDirectory?: string): void => {
     const group = document.createElement("section");
-    group.className = "local-directory-band";
-    group.dataset.directory = band.directory;
+    // A band's loose-file bucket has its parent's path; it is not another directory.
+    const isDirectory = band.directory !== parentDirectory;
+    group.className = isDirectory ? "local-directory-band" : "local-directory-files";
+    if (isDirectory) group.dataset.directory = band.directory;
     group.style.gridColumn = `${band.minColumn - firstColumn + 1} / span ${band.maxColumn - band.minColumn + 1}`;
     group.style.gridRow = String(band.bandRow + 1);
-    const label = document.createElement("div");
-    label.className = "local-directory-label";
-    label.textContent = band.directory || "/";
-    group.append(label);
+    if (isDirectory) {
+      const label = document.createElement("div");
+      label.className = "local-directory-label";
+      label.textContent = band.directory || "/";
+      group.append(label);
+    }
     const content = document.createElement("div");
     content.className = "local-directory-content";
     group.append(content);
-    for (const child of band.children) renderBand(child, content, band.minColumn);
+    for (const child of band.children) renderBand(child, content, band.minColumn, band.directory);
     for (const [columnIndex, ids] of band.nodesByColumn) {
       const nodes = ids.flatMap(id => byId.get(id) ?? []);
       const column = createHierarchicalColumn(controller, "", nodes, "center", "", "center", new Map());
@@ -42,13 +47,10 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     }
     parent.append(group);
   };
-  for (const band of bands) renderBand(band, root, 0);
+  renderBand(scanRoot, root, 0);
   const connected = new Set<string>();
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
-  for (const link of branches.subgraph.links) {
-    connected.add(key(link.sourceId, link.sourceSymbol));
-    connected.add(key(link.targetId, link.targetSymbol));
-  }
+  for (const [id, rows] of branches.relevantSymbols) for (const row of rows) connected.add(key(id, row));
   for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
   root.querySelectorAll<HTMLElement>(".node-card").forEach(card => {
     const id = card.dataset.id!;

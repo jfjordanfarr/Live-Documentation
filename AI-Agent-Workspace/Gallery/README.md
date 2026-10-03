@@ -114,3 +114,9 @@ The [motion recording](../Screenshots/2026-10-02/native-branches-journey.webm) a
 ## Native zoom experiment, October 3
 
 [Local Map](slopcop-native-zoom/local-map.png) and [Force Graph](slopcop-native-zoom/force-graph.png) show the Markdown helper selected with it and the symbol-reference file wholly pinned. Both are copied from the [October 3 screenshot inventory](../Screenshots/2026-10-03/README.md), which names the graph state and preserves the motion recordings. This pass combines actual directory bands with native cards and tests a deliberate zoom boundary. In [the closing review](../ChatHistory/2026/10/2026-10-02.1.record.md#turn-14), the owner strongly praised the videos and called node reorientation “perfect”; straight-to-curved wire transformation is a deferred next idea, and the remaining right-angle routes remain a concern.
+
+## Retaining and pruning the checker exploration, later October 3
+
+The [retained Local Map](slopcop-retention/local-map.png) and [pruned Local Map](slopcop-retention/local-map-pruned.png) are copies of `local-click-retained.png` and `local-close-pruned.png` in the [October 3 evidence](../Screenshots/2026-10-03/README.md#later-october-3-pass--retention-pruning-and-transition-detail). Both use the same 617-file graph: the second releases the symbol-reference file's own pins and keeps only its interfaces needed by the checker. The [side-by-side sheet](sheets/slopcop-retention.png) compares those two disclosure states. Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh slopcop-retention.png`.
+
+The native configuration provider now sits beside its consumer instead of routing over an unrelated column. The [round-trip recording](../Screenshots/2026-10-03/wire-directory-roundtrip.webm) preserves the corresponding wire gathering and hierarchical directory animation. This pass awaits the owner's visual verdict.

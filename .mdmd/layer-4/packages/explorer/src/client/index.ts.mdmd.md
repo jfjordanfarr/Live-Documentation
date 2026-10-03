@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-03T02:21:28.505Z
+- Generated At: 2026-10-03T18:02:21.790Z
 
 ## Authored
 ### Purpose
@@ -71,7 +71,7 @@ _No public symbols detected_
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
 - [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
-- [`perspectiveTransition.captureCards`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturecards)
+- [`perspectiveTransition.captureLocalScene`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturelocalscene)
 - [`perspectiveTransition.holdPerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-holdperspective)
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)

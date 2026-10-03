@@ -8,6 +8,8 @@ import {
   removePin,
   togglePin,
   removePinsForNode,
+  retainFile,
+  toggleFileSymbol,
   clearPins,
   setPinsFromPath,
   getPinnedNodeIds,
@@ -40,6 +42,19 @@ function link(
 // ─── Pin Manipulation ──────────────────────────────────────────────
 
 describe("pin manipulation", () => {
+  it("lets a file click retain all rows and an individual click prune that effective selection", () => {
+    const other = addPin(EMPTY_PIN_SET, "other.ts", "kept");
+    const all = retainFile(other, "a.ts");
+    expect(retainFile(all, "a.ts")).toEqual(all);
+    const subset = toggleFileSymbol(all, "a.ts", "first", ["first", "second"]);
+    expect(subset.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([
+      ["other.ts", "kept"], ["a.ts", "second"], ["a.ts", "__internals__"]
+    ]);
+    const restored = toggleFileSymbol(subset, "a.ts", "first", ["first", "second"]);
+    expect(restored.entries).toContainEqual({ nodeId: "a.ts", symbol: "first", hopIndex: undefined });
+    expect(removePinsForNode(restored, "a.ts")).toEqual(other);
+  });
+
   it("starts with an empty pin set", () => {
     expect(EMPTY_PIN_SET.entries).toHaveLength(0);
   });

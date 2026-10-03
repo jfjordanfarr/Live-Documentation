@@ -1,4 +1,4 @@
-import { EMPTY_PIN_SET, togglePin, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import type { BranchGraph } from "./branches";
 import type {
   ExplorerNodePayload
@@ -383,15 +383,40 @@ export class LocalViewController implements LocalViewApi {
 
   /** Toggle one independent pin, preserving other branches and the clicked symbol’s screen position. */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
+    const node = this.resolveNode(nodeId);
+    if (!node) return;
+    const previous = this.options.state.selectedNode;
+    const base = !this.pins.entries.length && previous && previous.id !== nodeId
+      ? retainFile(this.pins, previous.id) : this.pins;
+    const pins = symbol === "*" ? retainFile(base, nodeId)
+      : toggleFileSymbol(base, nodeId, symbol, node.publicSymbols);
+    if (pins === this.pins && previous?.id === nodeId && !this.getActivePath()) return;
+    this.updateRetainedPins(nodeId, symbol, pins);
+  }
+
+  /** Release this file's expansion; other pins may still need some of its rows. */
+  closeNode(nodeId: string): void {
+    this.expandedCards.delete(nodeId);
+    const pins = removePinsForNode(this.pins, nodeId);
+    const next = pins.entries.find(pin => pin.nodeId !== nodeId);
+    if (this.options.state.selectedNode?.id === nodeId || !pins.entries.length) {
+      this.options.state.selectedNode = this.options.state.focusedNode = next ? this.resolveNode(next.nodeId) ?? null : null;
+    }
+    this.updateRetainedPins(nodeId, "*", pins, false);
+  }
+
+  /** Apply retained scope while keeping the acted-on row in its screen position. */
+  private updateRetainedPins(nodeId: string, symbol: string, pins: PinSet, focus = true): void {
     const leavingPath = !!this.localMapState.getState().activePath;
     const selector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`
       : `.symbol-row[data-node-id="${CSS.escape(nodeId)}"][data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper`;
     const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     const keyboardFocus = this.container.contains(document.activeElement);
-    this.options.state.pins = togglePin(this.pins, nodeId, symbol);
+    this.options.state.pins = pins;
     const subject = this.resolveNode(nodeId);
-    if (subject) this.options.state.selectedNode = this.options.state.focusedNode = subject;
+    if (subject && focus) this.options.state.selectedNode = this.options.state.focusedNode = subject;
+    if (!pins.entries.length) this.options.state.selectedNode = this.options.state.focusedNode = null;
     this.localMapState.update(s => ({ ...s, activePath: null }));
     this.render();
     const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
@@ -405,8 +430,9 @@ export class LocalViewController implements LocalViewApi {
       this.drawConnections();
     }
     if (keyboardFocus) {
-      const focusSelector = symbol === "*" ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin` : selector;
-      this.container.querySelector<HTMLElement>(focusSelector)?.focus({ preventScroll: true });
+      const focusSelector = symbol === "*" ? `.node-card[data-id="${CSS.escape(nodeId)}"]` : selector;
+      const element = this.container.querySelector<HTMLElement>(focusSelector) ?? this.container.querySelector<HTMLElement>(".node-card, .empty-hint");
+      element?.focus({ preventScroll: true });
     }
     this.options.onExplorationChange?.(leavingPath);
   }
@@ -451,7 +477,7 @@ export class LocalViewController implements LocalViewApi {
    * Checks if a symbol is currently pinned.
    */
   isPinned(nodeId: string, symbol: string): boolean {
-    return isExplorationPin(this.pins, nodeId, symbol);
+    return isExplorationPin(this.pins, nodeId, symbol) || isExplorationPin(this.pins, nodeId, "*");
   }
 
   /** Restore legible card size when crossing inward through the zoom boundary. */

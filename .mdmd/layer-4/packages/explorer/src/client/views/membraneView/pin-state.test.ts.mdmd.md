@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/membraneView/pin-state.test.ts
-- Generated At: 2026-10-02T21:07:40.144Z
+- Generated At: 2026-10-03T18:02:22.900Z
 
 ## Authored
 ### Purpose
@@ -38,8 +38,10 @@ _No public symbols detected_
 - [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)
 - [`pin-state.removePin`](../pin-state.ts.mdmd.md#symbol-removepin)
 - [`pin-state.removePinsForNode`](../pin-state.ts.mdmd.md#symbol-removepinsfornode)
+- [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)
 - [`pin-state.serializePins`](../pin-state.ts.mdmd.md#symbol-serializepins)
 - [`pin-state.setPinsFromPath`](../pin-state.ts.mdmd.md#symbol-setpinsfrompath)
+- [`pin-state.toggleFileSymbol`](../pin-state.ts.mdmd.md#symbol-togglefilesymbol)
 - [`pin-state.togglePin`](../pin-state.ts.mdmd.md#symbol-togglepin)
 - [`types.ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`

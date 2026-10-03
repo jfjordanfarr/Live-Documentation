@@ -65,3 +65,7 @@ sheet graph-ts-journey-routes.png "Five retained files, 40 pins, 24 references: 
 sheet rosetta-native-perspectives.png "TypeScript Rosetta: retained branches, two native perspectives" \
   "Local Map: format and processor pinned" rosetta-native/local-map.png \
   "Force Graph: same pins and subject anchor" rosetta-native/force-graph.png
+
+sheet slopcop-retention.png "Checker exploration: retain by clicking, prune with close" \
+  "Implementation and checker retained" slopcop-retention/local-map.png \
+  "Implementation closed; checker keeps its needed interfaces" slopcop-retention/local-map-pruned.png
