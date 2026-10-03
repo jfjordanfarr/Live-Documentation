@@ -1,3 +1,4 @@
+import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { renderBranches } from "./branch-renderer";
 import { createHierarchicalColumn, createStackedColumn, highlightSymbolInColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
@@ -250,6 +251,27 @@ function renderPathModeColumns(
     centerColumn.dataset.columnRole = "center";
     centerColumn.dataset.pathIndex = String(i);
     layoutRoot.appendChild(centerColumn);
+
+    const relevant = new Set<string>();
+    for (const edge of pathSubgraph.links) {
+      if (edge.sourceId === node.id) relevant.add(normalizeSymbolIdentifier(edge.sourceSymbol) ?? "__internals__");
+      if (edge.targetId === node.id) relevant.add(normalizeSymbolIdentifier(edge.targetSymbol) ?? "__internals__");
+    }
+    if (isOrigin && fromSymbol) relevant.add(normalizeSymbolIdentifier(fromSymbol)!);
+    if (isDestination && toSymbol) relevant.add(normalizeSymbolIdentifier(toSymbol)!);
+    let hidden = 0;
+    centerColumn.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+      const collapse = !controller.expandedCards.has(node.id) && !relevant.has(normalizeSymbolIdentifier(row.dataset.symbol) ?? "__internals__");
+      row.classList.toggle("branch-symbol-hidden", collapse);
+      if (collapse) hidden++;
+    });
+    if (hidden) {
+      const reveal = document.createElement("button");
+      reveal.className = "local-disclosure";
+      reveal.textContent = `+${hidden} symbols`;
+      reveal.addEventListener("click", event => { event.stopPropagation(); controller.expandedCards.add(node.id); controller.render(); });
+      centerColumn.querySelector(".node-card")?.append(reveal);
+    }
 
     // Highlight symbols if specified
     if (isOrigin && fromSymbol) {

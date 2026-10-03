@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/pan-zoom.ts
-- Generated At: 2026-10-01T21:05:42.358Z
+- Generated At: 2026-10-03T02:21:29.416Z
 
 ## Authored
 ### Purpose
@@ -107,7 +107,7 @@ Handles wheel events for pan and zoom.
 
 #### `startDrag` {#symbol-startdrag}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/pan-zoom.ts#L269)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/pan-zoom.ts#L273)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `startDrag` — Summary

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-10-02T21:07:39.808Z
+- Generated At: 2026-10-03T02:21:29.570Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ click-to-navigate type references in the Local Map symbol cards.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L45)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -46,7 +46,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L80)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L84)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -62,7 +62,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L92)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L96)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -70,7 +70,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L105)
 
 ##### `LocalSubgraph` — Summary
 The 1-hop neighborhood of the center node, partitioned into inbound
@@ -81,7 +81,7 @@ to lay out the three-column Local Map view.
 
 #### `CenterAlignmentGuides` {#symbol-centeralignmentguides}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L121)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L125)
 
 ##### `CenterAlignmentGuides` — Summary
 Captures per-symbol anchor positions and card vertical centers in the
@@ -97,7 +97,7 @@ Created 2025-12-04 during the SVG Bezier connector work. Used by
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L130)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L134)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -105,7 +105,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L148)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L152)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -118,7 +118,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L161)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L165)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -130,7 +130,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L176)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L180)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

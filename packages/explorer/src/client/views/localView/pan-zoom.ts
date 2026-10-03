@@ -235,19 +235,23 @@ export function handleWheel(
   event: WheelEvent,
   onTransformChange: () => void
 ): void {
-  // Ctrl/Cmd + wheel = zoom
-  if (event.ctrlKey || event.metaKey) {
+  // Wheel approaches detail; Shift-wheel and horizontal trackpad motion pan.
+  if (!event.shiftKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
     event.preventDefault();
     runtime.mapUserAdjusted = true;
     cancelInertia(runtime);
-    const viewportRect = runtime.viewport.getBoundingClientRect();
-    zoomAtPoint(
-      runtime,
-      event.clientX - viewportRect.left,
-      event.clientY - viewportRect.top,
-      -event.deltaY * 0.0015,
-      onTransformChange
-    );
+    const rect = runtime.viewport.getBoundingClientRect();
+    const from = runtime.mapAnimationTarget ?? runtime.mapTransform;
+    const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? rect.height : 1);
+    const k = clamp(from.k * Math.exp(-delta * 0.0015), 0.62, 3);
+    const x = event.clientX - rect.left, y = event.clientY - rect.top;
+    const target = { x: x - (x - from.x) * k / from.k, y: y - (y - from.y) * k / from.k, k };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cancelAnimationFrame(runtime.mapAnimationFrame);
+      runtime.mapAnimationTarget = null;
+      runtime.mapTransform = target;
+      onTransformChange();
+    } else animateMapTransform(runtime, target, onTransformChange);
     return;
   }
 

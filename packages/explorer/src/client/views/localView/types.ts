@@ -22,6 +22,9 @@ import type { ExplorerState, TestCoverageMap } from "../../types";
 export interface LocalViewOptions {
   state: ExplorerState;
   /** Persist shared exploration after an independent pin changes. */
+  /** Deliberate zoom boundary into the file overview. */
+  onZoomOut?: () => void;
+  onZoomBoundary?: (active: boolean) => void;
   onExplorationChange?: (leavingPath?: boolean) => void;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
@@ -45,6 +48,7 @@ export interface LocalViewApi {
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   drawConnections(): void;
   highlightSelection(): void;
+  ensureReadable(): void;
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;

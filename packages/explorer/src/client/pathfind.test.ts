@@ -37,6 +37,18 @@ describe("findPath", () => {
     expect(result.maxDepthReached).toBe(false);
   });
 
+  it("finds a long route through a cyclic graph without a fixed ten-hop cutoff", () => {
+    const names = Array.from({ length: 24 }, (_, i) => `file${i}`);
+    const files = new Map([...names, "island"].map(id => [id, node(id)]));
+    const chain = names.slice(1).map((id, i) => link(id, names[i]));
+    chain.push(link("file3", "file5"));
+    expect(ids(findPath("file0", "file23", files, chain).path)).toEqual(names);
+    const missing = findPath("file0", "island", files, chain);
+    expect(missing.path).toEqual([]);
+    expect(missing.maxDepthReached).toBe(false);
+    expect(missing.searchedNodes).toBeLessThanOrEqual(files.size * 2);
+  });
+
   it("stops at the hop limit in both directions and says so", () => {
     const result = findPath("a", "c", nodesById, links, 1);
     expect(result.path).toEqual([]);

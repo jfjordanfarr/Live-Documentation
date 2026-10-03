@@ -173,7 +173,7 @@ describe("symbol-highlight", () => {
       expect(result.relatedEdges).toHaveLength(2);
     });
 
-    it("handles __internals__ hover on neighbor node (highlights all edges)", () => {
+    it("isolates a neighbor’s private/file references independently of the reading focus", () => {
       const center = createNode("center");
       const neighbor = createNode("neighbor");
       const subgraph: LocalSubgraph = {
@@ -181,7 +181,9 @@ describe("symbol-highlight", () => {
         nodes: [center, neighbor],
         links: [
           createLink("center", "neighbor", "outbound", "funcA", "targetA"),
-          createLink("neighbor", "center", "inbound", "funcB", "targetB")
+          createLink("neighbor", "center", "inbound", "funcB", "targetB"),
+          createLink("neighbor", "center", "inbound", undefined, "helper"),
+          createLink("center", "neighbor", "outbound", "caller", undefined)
         ],
         inboundIds: new Set(["neighbor"]),
         outboundIds: new Set(["neighbor"])
@@ -190,8 +192,10 @@ describe("symbol-highlight", () => {
 
       const result = computeSymbolHighlight(subgraph, options, "neighbor", "__internals__", false);
 
-      // Hovering Internals on a neighbor highlights ALL edges involving that neighbor
-      expect(result.relatedEdges).toHaveLength(2);
+      expect(result.relatedEdges).toEqual(subgraph.links.slice(2));
+      expect(result.relatedSymbols.has("neighbor:funcb")).toBe(false);
+      const refocused = computeSymbolHighlight({ ...subgraph, center: neighbor }, options, "neighbor", "__internals__", false);
+      expect(refocused.relatedEdges).toEqual(result.relatedEdges);
     });
 
     it("marks edges without source symbol as __internals__", () => {

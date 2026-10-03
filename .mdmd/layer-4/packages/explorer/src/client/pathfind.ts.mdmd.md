@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-10-01T21:05:41.802Z
+- Generated At: 2026-10-03T02:21:28.626Z
 
 ## Authored
 ### Purpose
@@ -49,23 +49,16 @@ A hop in a path result
 ##### `PathfindResult` — Summary
 What a search between two files found.
 
-#### `DEFAULT_MAX_HOPS` {#symbol-default_max_hops}
-- Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L55)
-
-##### `DEFAULT_MAX_HOPS` — Summary
-Default maximum hops to search
-
 #### `PathfindCallbacks` {#symbol-pathfindcallbacks}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L58)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L55)
 
 ##### `PathfindCallbacks` — Summary
 Callbacks for pathfind events
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L79)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L76)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
@@ -81,7 +74,7 @@ and that path is returned as `reversePath`, provider first, never drawn.
 
 #### `referencesAgainstPath` {#symbol-referencesagainstpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L131)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L128)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
 ##### `referencesAgainstPath` — Summary
@@ -91,14 +84,14 @@ The path drawer leaves them out, so the toolbar counts them aloud.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L200)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L198)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
 #### `pathfindHref` {#symbol-pathfindhref}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L229)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L227)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `pathfindHref` — Summary
@@ -106,7 +99,7 @@ The page's address with the pathfind state written into it and everything else k
 
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L259)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L257)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -114,14 +107,14 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L264)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L262)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L277)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L275)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 

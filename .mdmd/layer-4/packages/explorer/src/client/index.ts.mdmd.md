@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-02T21:07:38.840Z
+- Generated At: 2026-10-03T02:21:28.505Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,6 @@ _No public symbols detected_
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
-- [`pathfind.DEFAULT_MAX_HOPS`](./pathfind.ts.mdmd.md#symbol-default_max_hops)
 - [`pathfind.PathHop`](./pathfind.ts.mdmd.md#symbol-pathhop)
 - [`pathfind.PathfindEndpoint`](./pathfind.ts.mdmd.md#symbol-pathfindendpoint)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
@@ -71,6 +70,9 @@ _No public symbols detected_
 - [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
+- [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
+- [`perspectiveTransition.captureCards`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturecards)
+- [`perspectiveTransition.holdPerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-holdperspective)
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/render.ts
-- Generated At: 2026-10-02T21:07:39.688Z
+- Generated At: 2026-10-03T02:21:29.450Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Uses the same native card and symbol factories across all three disclosures. Bra
 ### Public Symbols
 #### `renderLocalView` {#symbol-renderlocalview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/render.ts#L9)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/render.ts#L10)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller)
 
 ##### `renderLocalView` — Summary
@@ -36,4 +36,5 @@ Renders (or re-renders) the Local Map DOM layout from the current controller sta
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
+- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->

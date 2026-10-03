@@ -51,9 +51,6 @@ export interface PathfindResult {
   maxDepthReached: boolean;
 }
 
-/** Default maximum hops to search */
-export const DEFAULT_MAX_HOPS = 10;
-
 /** Callbacks for pathfind events */
 export interface PathfindCallbacks {
   onFromChange: (endpoint: PathfindEndpoint | undefined) => void;
@@ -81,7 +78,7 @@ export function findPath(
   toNodeId: string,
   nodesById: Map<string, ExplorerNodePayload>,
   links: ExplorerLinkPayload[],
-  maxHops: number = DEFAULT_MAX_HOPS
+  maxHops: number = Math.max(0, nodesById.size - 1)
 ): PathfindResult {
   const fromNode = nodesById.get(fromNodeId);
   const toNode = nodesById.get(toNodeId);
@@ -161,8 +158,9 @@ function directedBFS(
   const queue: Array<{ nodeId: string; depth: number }> = [{ nodeId: fromNodeId, depth: 0 }];
   let maxDepthReached = false;
 
-  while (queue.length > 0) {
-    const { nodeId, depth } = queue.shift()!;
+  // Each file is enqueued once; the cursor avoids repeated array shifting.
+  for (let cursor = 0; cursor < queue.length; cursor++) {
+    const { nodeId, depth } = queue[cursor];
 
     if (nodeId === toNodeId) {
       const path: PathHop[] = [];
@@ -178,7 +176,7 @@ function directedBFS(
     }
 
     if (depth >= maxHops) {
-      maxDepthReached = true;
+      maxDepthReached ||= [...(adjacency.get(nodeId) ?? [])].some(id => nodesById.has(id) && !visited.has(id));
       continue;
     }
 

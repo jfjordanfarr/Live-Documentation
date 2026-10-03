@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-02T21:07:39.572Z
+- Generated At: 2026-10-03T02:21:29.301Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, the c
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L72)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -84,5 +84,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
+- [`ZoomBarrier`](../zoomBarrier.ts.mdmd.md#symbol-zoombarrier)
+- [`zoomBarrier.wheelPixels`](../zoomBarrier.ts.mdmd.md#symbol-wheelpixels)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

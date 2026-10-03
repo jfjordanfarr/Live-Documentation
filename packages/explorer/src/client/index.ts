@@ -14,7 +14,6 @@ import {
   pathfindHref,
   referencesAgainstPath,
   updatePathfindUrl,
-  DEFAULT_MAX_HOPS,
   type PathHop,
   type PathfindEndpoint,
   type PathfindResult
@@ -38,6 +37,7 @@ import { createCircuitView } from "./views/circuitView";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { createMembraneView } from "./views/membraneView";
+import { animatePerspective, captureCards, holdPerspective } from "./views/perspectiveTransition";
 import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
@@ -228,6 +228,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   const localView = createLocalView({
     state,
     onExplorationChange: persistExploration,
+    onZoomOut: () => changePerspective("graph"),
+    onZoomBoundary: active => showZoomBoundary(active ? "Scroll again for 3D" : ""),
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
@@ -238,6 +240,9 @@ function startExplorer(bundle: StaticExplorerData): void {
   });
 
   const forceGraphView = createForceGraphView({
+    onZoomIn: () => changePerspective("map", state.focusedNode ?? state.selectedNode, true),
+    onZoomBoundary: active => showZoomBoundary(active ? "Scroll again for 2D" : ""),
+    getPath: () => localView.getActivePath()?.nodeIds,
     state,
     graphData,
     nodesById,
@@ -344,23 +349,52 @@ function startExplorer(bundle: StaticExplorerData): void {
   clearPinsButton.title = "Clear exploration pins";
   clearPinsButton.setAttribute("aria-label", "Clear exploration pins");
   clearPinsButton.addEventListener("click", () => { state.pins = { entries: [] }; persistExploration(); renderCurrentView(); });
-  perspectiveControls.append(mapButton, graphButton, clearPinsButton);
+  const zoomBoundary = document.createElement("span");
+  zoomBoundary.className = "zoom-boundary";
+  zoomBoundary.setAttribute("role", "status");
+  function showZoomBoundary(text: string): void { zoomBoundary.textContent = text; zoomBoundary.hidden = !text; }
+  showZoomBoundary("");
+  const perspectivePath = document.createElement("span");
+  perspectivePath.className = "perspective-path-status";
+  perspectiveControls.append(zoomBoundary, perspectivePath, mapButton, graphButton, clearPinsButton);
   requireElement("main").append(perspectiveControls);
 
   function syncPerspectiveControls(): void {
     perspectiveControls.hidden = state.view !== "map" && state.view !== "graph";
     mapButton.setAttribute("aria-pressed", String(state.view === "map"));
     graphButton.setAttribute("aria-pressed", String(state.view === "graph"));
+    const path = localView.getActivePath();
+    perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
+    perspectivePath.hidden = !path;
     const count = state.pins?.entries.length ?? 0;
     clearPinsButton.hidden = count === 0;
     clearPinsButton.textContent = `${count} ${count === 1 ? "pin" : "pins"} ×`;
   }
 
+  let changingPerspective = false;
+  let pendingPerspective: (() => void) | null = null;
+  let perspectiveEpoch = 0;
+  let transitionDestination: ViewName | null = null;
+  let releasePerspectiveCover = (): void => {};
+  let cancelPerspectiveAnimation = (): void => {};
+
   /** Change file perspective around the identity the person was last inspecting. */
-  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode): void {
+  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode, approaching = false): void {
+    if (changingPerspective) { pendingPerspective = () => changePerspective(view, target, approaching); return; }
     if (state.view === view && target?.id === state.selectedNode?.id) return;
+    showZoomBoundary("");
+    const epoch = ++perspectiveEpoch;
+    transitionDestination = view;
+    const previousView = state.view;
+    const sourceCards = previousView === "map" ? captureCards(requireElement("view-map")) : [];
+    const sourceGraph = previousView === "graph" ? forceGraphView.captureScene() : null;
+    const releaseCover = (previousView === "map" || previousView === "graph") && target
+      ? holdPerspective(requireElement(`view-${previousView}`)) : () => {};
+    releasePerspectiveCover = releaseCover;
+    changingPerspective = true;
+    mapButton.disabled = graphButton.disabled = true;
     const source = state.view === "map" ? localView : state.view === "graph" ? forceGraphView : null;
-    const anchor = target && source ? source.getSubjectAnchor(target.id) : null;
+    let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
     detailPanel.hide();
     state.selectedNode = target;
     state.focusedNode = target;
@@ -369,16 +403,38 @@ function startExplorer(bundle: StaticExplorerData): void {
     updateUrlState(view, target?.id ?? null);
     schedulePersistNav();
     renderCurrentView();
+    if (approaching && view === "map") localView.ensureReadable();
     if (target && anchor) {
       const viewport = requireElement(`view-${view}`).getBoundingClientRect();
       // Off-screen subjects cannot provide a visible continuity anchor.
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
         (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+      } else anchor = null;
+    }
+    const ready = view === "graph" ? forceGraphView.whenReady() : Promise.resolve();
+    void ready.then(() => {
+      if (epoch !== perspectiveEpoch) { releaseCover(); return; }
+      if (target && anchor) (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+      if (target && (previousView === "map" || previousView === "graph")) {
+        const cards = view === "graph" ? sourceCards : captureCards(requireElement("view-map"));
+        const graph = view === "graph" ? forceGraphView.captureScene() : sourceGraph!;
+        forceGraphView.setActive(false);
+        changingPerspective = true;
+        mapButton.disabled = graphButton.disabled = true;
+        cancelPerspectiveAnimation = animatePerspective(cards, graph, view === "graph", target.id, requireElement(`view-${view}`).getBoundingClientRect(), () => {
+          if (epoch !== perspectiveEpoch) return;
+          transitionDestination = null;
+          changingPerspective = false;
+          mapButton.disabled = graphButton.disabled = false;
+          forceGraphView.setActive(state.view === "graph");
+          const pending = pendingPerspective; pendingPerspective = null; pending?.();
+        });
+      } else {
+        changingPerspective = false;
+        mapButton.disabled = graphButton.disabled = false;
       }
-    }
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      requireElement(`view-${view}`).animate([{ opacity: 0.25 }, { opacity: 1 }], { duration: 240, easing: "ease-out" });
-    }
+      releaseCover();
+    });
     highlightSelectedCards();
   }
 
@@ -619,7 +675,7 @@ function startExplorer(bundle: StaticExplorerData): void {
 
     setPathStatus(
       result.maxDepthReached
-        ? `No path within ${DEFAULT_MAX_HOPS} hops either way (searched ${result.searchedNodes} files)`
+        ? `No path within ${Math.max(0, nodesById.size - 1)} hops either way (searched ${result.searchedNodes} files)`
         : `No path either way (searched ${result.searchedNodes} files)`,
       "error"
     );
@@ -887,6 +943,14 @@ function startExplorer(bundle: StaticExplorerData): void {
   }
 
   function renderCurrentView(): void {
+    // History and navigation can interrupt an animated perspective change.
+    if (changingPerspective && state.view !== transitionDestination) {
+      perspectiveEpoch++;
+      releasePerspectiveCover(); cancelPerspectiveAnimation();
+      changingPerspective = false; pendingPerspective = null; transitionDestination = null;
+      mapButton.disabled = graphButton.disabled = false;
+      showZoomBoundary("");
+    }
     syncPerspectiveControls();
     forceGraphView.setActive(state.view === "graph");
     if (state.view === "sources") {

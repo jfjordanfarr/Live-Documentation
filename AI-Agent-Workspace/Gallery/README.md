@@ -101,7 +101,7 @@ The owner's words about these pictures, dated, so that a reader knows what has a
 
 ## Native file perspectives, October 2
 
-The TypeScript Rosetta processor is selected, with `helpers.format` and the processor file independently pinned. Both pictures use the repaired 609-file graph; tests are shown and assets hidden. They show different presentations of the same exploration state. No owner verdict on this implementation has been recorded yet.
+The TypeScript Rosetta processor is selected, with `helpers.format` and the processor file independently pinned. Both pictures use the repaired 609-file graph; tests are shown and assets hidden. They show different presentations of the same exploration state. In the [October 3 review](../ChatHistory/2026/10/2026-10-02.1.record.md#turn-12), the owner preferred the Local Map’s card aesthetics but the Membrane Map’s multi-hop functionality and directory context, and judged the perspective switch to feel like a hard cut.
 
 | Picture | Origin |
 | --- | --- |
@@ -110,3 +110,7 @@ The TypeScript Rosetta processor is selected, with `helpers.format` and the proc
 | [Two perspectives together](sheets/rosetta-native-perspectives.png) | Rebuild with `bash AI-Agent-Workspace/Gallery/sheets.sh rosetta-native-perspectives.png` |
 
 The [motion recording](../Screenshots/2026-10-02/native-branches-journey.webm) and its [frame sheet](../Screenshots/2026-10-02/native-branches-motion-frames.png) preserve the transition evidence; these two stills alone do not establish continuity.
+
+## Native zoom experiment, October 3
+
+[Local Map](slopcop-native-zoom/local-map.png) and [Force Graph](slopcop-native-zoom/force-graph.png) show the Markdown helper selected with it and the symbol-reference file wholly pinned. Both are copied from the [October 3 screenshot inventory](../Screenshots/2026-10-03/README.md), which names the graph state and preserves the motion recordings. This pass combines actual directory bands with native cards and tests a deliberate zoom boundary; no owner verdict has been recorded for it.

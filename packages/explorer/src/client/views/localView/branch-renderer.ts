@@ -1,6 +1,7 @@
 import { buildBranches } from "./branches";
 import { createHierarchicalColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
+import { computeDirectoryBands, computeLCA, parentDirectory, type DirectoryBand, type FlowNode } from "../membraneView/pin-layout";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /** Extend the native card grammar to the independently retained branches. */
@@ -11,12 +12,37 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   controller.currentSubgraph = branches.subgraph;
   root.classList.add("branch-mode");
   root.style.gridTemplateColumns = `repeat(${branches.columns.length}, max-content)`;
-  root.style.alignItems = "center";
-  for (const nodes of branches.columns) {
-    const selected = nodes.some(node => node.id === state.selectedNode?.id);
-    const column = createHierarchicalColumn(controller, selected ? "Selected artifact" : "", nodes, "center", "", "center", new Map());
-    root.append(column);
-  }
+  root.style.alignItems = "start";
+  const flow = new Map<string, FlowNode>();
+  branches.columns.forEach((nodes, column) => nodes.forEach(node => flow.set(node.id, {
+    id: node.id, column, role: "pinned", directory: parentDirectory(node.codeRelativePath)
+  })));
+  const lca = computeLCA(branches.subgraph.nodes.map(node => node.codeRelativePath));
+  const bands = computeDirectoryBands(flow, lca);
+  const byId = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
+  const renderBand = (band: DirectoryBand, parent: HTMLElement, firstColumn: number): void => {
+    const group = document.createElement("section");
+    group.className = "local-directory-band";
+    group.dataset.directory = band.directory;
+    group.style.gridColumn = `${band.minColumn - firstColumn + 1} / span ${band.maxColumn - band.minColumn + 1}`;
+    group.style.gridRow = String(band.bandRow + 1);
+    const label = document.createElement("div");
+    label.className = "local-directory-label";
+    label.textContent = band.directory || "/";
+    group.append(label);
+    const content = document.createElement("div");
+    content.className = "local-directory-content";
+    group.append(content);
+    for (const child of band.children) renderBand(child, content, band.minColumn);
+    for (const [columnIndex, ids] of band.nodesByColumn) {
+      const nodes = ids.flatMap(id => byId.get(id) ?? []);
+      const column = createHierarchicalColumn(controller, "", nodes, "center", "", "center", new Map());
+      column.style.gridColumn = String(columnIndex - band.minColumn + 1);
+      content.append(column);
+    }
+    parent.append(group);
+  };
+  for (const band of bands) renderBand(band, root, 0);
   const connected = new Set<string>();
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
   for (const link of branches.subgraph.links) {
@@ -31,6 +57,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
       const collapse = !all && state.tuning.localMap.collapseOnPin && !connected.has(key(id, row.dataset.symbol));
       row.classList.toggle("branch-symbol-hidden", collapse);
+      row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !connected.has(key(id, row.dataset.symbol)));
       if (collapse) hidden++;
     });
     if (hidden) {

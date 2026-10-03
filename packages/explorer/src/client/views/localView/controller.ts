@@ -9,6 +9,7 @@ import {
   normalizeSymbolIdentifier,
   tryBuildNormalizedKeyFromAnchorKey
 } from "../symbolAnchors";
+import { ZoomBarrier, wheelPixels } from "../zoomBarrier";
 import { drawConnections } from "./connections";
 import {
   computeLayoutExtents,
@@ -137,10 +138,29 @@ export class LocalViewController implements LocalViewApi {
     handleDragMove(this.runtime, event.clientX, event.clientY, () => this.updateMapTransform());
   };
 
+  private readonly zoomBarrier = new ZoomBarrier();
+
   private readonly handleWheel = (event: WheelEvent): void => {
     const { state } = this.options;
     if (state.view !== "map") {
       return;
+    }
+    if (!event.shiftKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX) && this.options.onZoomOut) {
+      const delta = wheelPixels(event.deltaY, event.deltaMode, this.viewport.clientHeight);
+      const scale = (this.runtime.mapAnimationTarget ?? this.mapTransform).k;
+      if (delta > 0 && scale <= 0.62) {
+        event.preventDefault();
+        this.options.onZoomBoundary?.(true);
+        if (this.zoomBarrier.push(delta, performance.now())) {
+          this.options.onZoomBoundary?.(false);
+          this.options.onZoomOut();
+        }
+        return;
+      }
+      this.zoomBarrier.reset();
+      const arriving = delta > 0 && scale * Math.exp(-delta * .0015) <= .62;
+      this.options.onZoomBoundary?.(arriving);
+      if (arriving) this.zoomBarrier.push(delta, performance.now());
     }
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
   };
@@ -308,17 +328,14 @@ export class LocalViewController implements LocalViewApi {
    * We normalize everything to lowercase for matching.
    * 
    * Special cases:
-   * - Hovering "__internals__" on center: highlight all edges that have no targetSymbol
-   *   (connections into internal implementation)
-   * - Hovering "__internals__" on a neighbor: highlight the symbol on center that connects to it
+   * - Hovering "__internals__" isolates edges with no named symbol on that file,
+   *   independently of which retained file currently has reading focus.
    */
   highlightSymbolConnections(nodeId: string, symbol: string, fromPin = false): void {
     const { currentSubgraph, options } = this;
     if (!currentSubgraph) return;
 
-    // If a symbol is pinned and this isn't the pin-triggering call, suppress hover
-    const hasPinnedPath = this.pins.entries.length > 0;
-    if (hasPinnedPath && !fromPin) return;
+    clearSymbolHighlightDOM(this.container, this.overlay, () => this.drawConnections());
 
     // Update hover state in the state store (for reactive updates)
     if (!fromPin) {
@@ -327,6 +344,8 @@ export class LocalViewController implements LocalViewApi {
 
     // Compute the highlight using pure function
     const highlight = computeSymbolHighlight(currentSubgraph, options, nodeId, symbol, fromPin);
+    // Retained branches stay in place while hover isolates attention.
+    if (this.branches) highlight.shouldCollapse = false;
 
     // Get dimming values from tuning config
     const dimSymbols = options.state.tuning.localMap?.hoverDimSymbols ?? 0.5;
@@ -347,15 +366,9 @@ export class LocalViewController implements LocalViewApi {
 
   /**
    * Clears symbol hover highlighting, restoring all elements to normal opacity.
-   * If a symbol is pinned, this is a no-op unless force=true.
+   * Persistent pins remain; only transient attention is cleared.
    */
-  clearSymbolHighlight(force = false): void {
-    // Don't clear if we have a pinned symbol (unless forced)
-    const hasPinnedPath = this.pins.entries.length > 0;
-    if (hasPinnedPath && !force) {
-      return;
-    }
-
+  clearSymbolHighlight(_force = false): void {
     // Clear hover state in the state store
     this.localMapState.update(s => setHoveredSymbol(s, null));
 
@@ -439,6 +452,14 @@ export class LocalViewController implements LocalViewApi {
    */
   isPinned(nodeId: string, symbol: string): boolean {
     return isExplorationPin(this.pins, nodeId, symbol);
+  }
+
+  /** Restore legible card size when crossing inward through the zoom boundary. */
+  ensureReadable(): void {
+    cancelAnimationFrame(this.runtime.mapAnimationFrame);
+    this.runtime.mapAnimationTarget = null;
+    this.mapTransform = { ...this.mapTransform, k: Math.max(1, this.mapTransform.k) };
+    this.updateMapTransform();
   }
 
   /** Zooms the map in by 20%. */

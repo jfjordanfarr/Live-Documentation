@@ -54,8 +54,16 @@ test("manual pan survives a trip to detail and back without restarting the settl
   // The existing force simulation has a 15-second cooldown. Compare a settled graph.
   await page.waitForTimeout(16_000);
   const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
-  const x = canvas.x + canvas.width * 0.7, y = canvas.y + canvas.height * 0.7;
-  await page.mouse.move(x, y);
+  // File-pair aggregation changes placement. Pan the background: a press on
+  // a sphere invokes the library's node drag and reheats the simulation.
+  let x = 0, y = 0, background = false;
+  for (const [fx, fy] of [[.7, .7], [.8, .8], [.3, .8], [.8, .3], [.2, .2]]) {
+    x = canvas.x + canvas.width * fx; y = canvas.y + canvas.height * fy;
+    await page.mouse.move(x, y);
+    await page.waitForTimeout(120); // Native hover picking is throttled at 50 ms.
+    if (await page.locator("#graph-svg").getAttribute("data-hovered-node") === "false") { background = true; break; }
+  }
+  expect(background, "the gesture begins on background, not a draggable sphere").toBe(true);
   await page.mouse.down({ button: "right" });
   // Deliver a real drag over several rendered frames. A burst of synthetic
   // moves can be coalesced before TrackballControls observes the gesture.

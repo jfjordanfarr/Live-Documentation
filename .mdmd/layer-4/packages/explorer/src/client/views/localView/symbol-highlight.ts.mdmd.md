@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/symbol-highlight.ts
-- Generated At: 2026-09-28T01:11:43.895Z
+- Generated At: 2026-10-03T02:21:29.547Z
 
 ## Authored
 ### Purpose
@@ -38,7 +38,7 @@ touching the DOM, making it testable.
 
 #### `applySymbolHighlight` {#symbol-applysymbolhighlight}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L172)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L165)
 - Parameters: `highlight`: [`SymbolHighlightResult`](#symbol-symbolhighlightresult)
 
 ##### `applySymbolHighlight` — Summary
@@ -47,7 +47,7 @@ This is the side-effectful part of symbol highlighting.
 
 #### `clearSymbolHighlightDOM` {#symbol-clearsymbolhighlightdom}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L243)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/symbol-highlight.ts#L236)
 
 ##### `clearSymbolHighlightDOM` — Summary
 Clears all symbol highlighting from the DOM.

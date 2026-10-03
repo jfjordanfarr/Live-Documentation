@@ -56,7 +56,6 @@ export function computeSymbolHighlight(
   symbol: string,
   fromPin: boolean
 ): SymbolHighlightResult {
-  const centerId = subgraph.center.id;
 
   // Normalize the hovered symbol for matching
   const isInternalsHover = symbol === "__internals__";
@@ -67,21 +66,15 @@ export function computeSymbolHighlight(
   // Find all edges that involve this symbol on this node
   let relatedEdges: LocalSubgraphLink[];
 
-  if (isInternalsHover && nodeId === centerId) {
-    // Hovering Internals on the CENTER node:
-    // Find edges where center's receiving end goes to Internals (no specific symbol).
+  if (isInternalsHover) {
+    // Internals denotes unresolved/private implementation on this file,
+    // regardless of which retained file currently has reading focus.
     relatedEdges = subgraph.links.filter(edge => {
       const isDependencyToInternals =
-        edge.sourceId === centerId && isInternalsEdge(edge.sourceSymbol);
+        edge.sourceId === nodeId && isInternalsEdge(edge.sourceSymbol);
       const isDependentFromInternals =
-        edge.targetId === centerId && isInternalsEdge(edge.targetSymbol);
+        edge.targetId === nodeId && isInternalsEdge(edge.targetSymbol);
       return isDependencyToInternals || isDependentFromInternals;
-    });
-  } else if (isInternalsHover) {
-    // Hovering Internals on a NEIGHBOR node:
-    // Highlight ALL edges that involve this neighbor
-    relatedEdges = subgraph.links.filter(edge => {
-      return edge.sourceId === nodeId || edge.targetId === nodeId;
     });
   } else {
     // Normal symbol hover
@@ -262,9 +255,6 @@ export function clearSymbolHighlightDOM(
   });
   overlay.querySelectorAll<SVGPathElement>(".connection-highlighted").forEach(path => {
     path.classList.remove("connection-highlighted");
-  });
-  container.querySelectorAll<HTMLElement>(".symbol-pinned").forEach(el => {
-    el.classList.remove("symbol-pinned");
   });
 
   // If we had collapsed symbols, reapply centering first, then redraw connections
