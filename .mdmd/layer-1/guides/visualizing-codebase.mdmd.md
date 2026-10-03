@@ -22,7 +22,21 @@ npx serve dist/explorer
 
 ## The Views
 
-### Membrane Map (default)
+Which view the page opens on depends on the bundle: the **World Map** when it was built with a board (`--board <board.md>`), otherwise the **Membrane Map**. The sidebar switches between views, and **Back** and **Forward** retrace your moves between views, files and folders; pins, pan and zoom change the current place without adding a step.
+
+### World Map
+
+The outside of an estate: each system a closed piece on a board, with blue doors where it offers an opening (a route, a service address, a stored procedure, a table) and green doors where it uses one, wires door to door, districts as tints, and a declared tunnel where a wire crosses between them. What a piece stands on hangs beneath it. Drag to orbit, scroll to zoom; a hover peeks, and a click pins a panel in which every name is a link. Wheel in on a piece, double-click it, or follow the link in its panel to open it into the Membrane Map focused on its folder. Pieces sit where you put them; **save board** downloads the board text with the positions written in. The board text's grammar is in [Boards](../../layer-3/boards.mdmd.md).
+
+### Local Map
+
+One file in the centre with the files it uses on the left and the files that use it on the right, its public symbols as rows, and a wire from the blue pin of the file that offers a symbol to the green pin of the file that uses it. Click a file to retain its whole neighbourhood, or pin one symbol to retain only that: every retained file keeps its neighbourhood, every reference among the retained files is drawn, and the clicked card stays where it was while the rest arranges around it. Directories are drawn as bands behind the cards. Hovering a symbol fades everything not connected to it. From and To inputs find a path (see [Tracing Impact](tracing-impact.mdmd.md)). The **3D** control, or wheeling out past a deliberate boundary, folds the cards into named points that take their places in the Force Graph; the same gesture in reverse brings them back.
+
+### Force Graph
+
+The whole workspace as a physics layout, one line per pair of files that reference each other, with its count. Files that talk to each other settle near each other, which makes this the quickest way to see a system's natural clusters and its outliers. Markdown documents linked from Live Docs (READMEs, design notes) appear as smaller purple nodes, and asset files such as JSON manifests as grey ones when **Show Assets** is on. Drag to rotate, scroll to zoom; a search or a link centres the camera on a file without losing the direction you were looking from. Click a node to select and centre it; the **2D** control, or wheeling in past the boundary, opens it in the Local Map.
+
+### Membrane Map
 
 Your workspace as nested membranes: directories contain directories, and files sit inside them as cards. A breadcrumb at the top shows where you are; use a directory's **Explore** control to drill in and the breadcrumb to climb back out.
 
@@ -31,17 +45,13 @@ Your workspace as nested membranes: directories contain directories, and files s
 - Hovering a symbol fades everything not connected to it. Pinning keeps that focus.
 - **Back to Browse** returns to the directory view.
 
-### Force Graph
-
-The whole workspace as a physics layout. Files that talk to each other settle near each other, which makes this the quickest way to see a system's natural clusters and its outliers. Markdown documents linked from Live Docs (READMEs, design notes) appear as smaller purple nodes. Drag to rotate, scroll to zoom, click a node to open it.
-
 ### Knowledge Sources
 
 Graph statistics and health warnings: files with unusually high fan-out (likely barrel files) or fan-in, and isolated files with no connections at all. The export controls described below live here too.
 
-### Local Map and Circuit Board
+### Circuit Board
 
-Two earlier views that remain available. The Local Map shows one file in the centre with its dependencies on the left and its dependents on the right, symbol wires between them, and From/To inputs for pathfinding (see [Tracing Impact](tracing-impact.mdmd.md)). The Circuit Board is a directory treemap. Both are being folded into the Membrane Map.
+An earlier directory treemap, still present.
 
 ---
 
@@ -102,7 +112,7 @@ Only files with Live Docs appear. Check your `glob` configuration and run `npm r
 
 ### The Force Graph is slow
 
-At a thousand nodes or more the physics layout gets sluggish. Use the Membrane Map for navigation and the Force Graph for the overview.
+At a thousand nodes or more the physics layout gets sluggish. Use the Local Map or the Membrane Map for reading and the Force Graph for the overview.
 
 ---
 

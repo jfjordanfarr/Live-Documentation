@@ -2,6 +2,18 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-10-03
+
+Named in [the day's record](2026-10-03/README.md): the native Local Map with directory bands and retained files, the deliberate zoom boundary, the Force Graph with one counted line per file pair, the thirteen-file estate path in both perspectives, and two recordings of the zoom in motion with their frame sheets.
+
+## 2026-10-02
+
+Named in [the day's record](2026-10-02/README.md): the Force Graph centring a file from a URL and from search, with a recording of the approach; the restored Rosetta hub; the native Local Map before and after pins, a retained branch, the same file in the Force Graph at the same screen anchor and the return, with a recording and its frames.
+
+## 2026-10-01
+
+Named in [the day's record](2026-10-01/README.md): the still-picture deck's states of the Local Map and the Membrane Map on this repository and the estate; the path mode drawn, reversed and cleared; the subject staying put when a symbol is pinned; wrapped symbol names; and a saved Membrane camera before and after its fix.
+
 ## 2026-09-30
 
 The later provenance-restoration pictures are described in [the day's record](2026-09-30/README.md): summary nodes in the Force Graph and a linked summary opened in the reader.

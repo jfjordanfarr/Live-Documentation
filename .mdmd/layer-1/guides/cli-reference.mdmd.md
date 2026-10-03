@@ -127,7 +127,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 #### `live-docs:visualize`
 
-Builds a self-contained static Explorer bundle: the Membrane Map, Force Graph and Knowledge Sources views, plus the earlier Local Map and Circuit Board. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+Builds a self-contained static Explorer bundle: the Local Map, Force Graph, Membrane Map and Knowledge Sources views, the Circuit Board, and the World Map when a board is given. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
 ```bash
 npm run live-docs:visualize -- --output ./public --pretty
@@ -138,6 +138,7 @@ npm run live-docs:visualize -- --output ./public --pretty
 |------|-------------|
 | `--output <dir>` | Output directory (default: `dist/explorer/`) |
 | `--config <file>` | Path to config file |
+| `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from; the bundle then opens on it |
 | `--pretty` | Pretty-print JSON for debugging |
 
 ---

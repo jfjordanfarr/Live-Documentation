@@ -1,6 +1,6 @@
 # Live Documentation
 
-**The Universal Map for Any Codebase. Offline-First. Shareable. AI-Ready.**
+**A map of any codebase. Offline, static, shareable, markdown-first.**
 
 > Point Live Documentation at any folder of interconnected files, and it reveals the public connection surface between them—generating markdown documents that serve as a **lightweight, verifiable AST** for your entire workspace.
 
@@ -30,9 +30,9 @@ Software is a web of interconnected files. Understanding that web has always req
 - **Engineers** can inspect for ripple effects before merging
 - **Architects** can explore visually without reading implementation details
 - **Non-technical stakeholders** can navigate to understand what the system does
-- **AI assistants** can consume as structured ground truth
+- **Agents** can read, like anyone else, given the hosted site or the file
 
-This shared representation closes communication gaps—not just between humans, but between humans and machines.
+This shared representation closes the gap between the people who build a system and the people who need to understand it.
 
 ---
 
@@ -53,11 +53,9 @@ Found a critical dependency path? **Share the link.** The Explorer generates sta
 - **Cloud wikis** drift from code. **AI chat contexts** vanish when the session ends. **Just-in-time maps** disappear when you close the tab.
 - **Live Documentation** writes the intelligence _back into your repo_. It travels with your code, works offline, and survives any vendor switch. Delete the cache? Regenerate it deterministically.
 
-### Machine-Readable by Design
+### Written for people, readable by a machine
 
-Every CLI command has a `--json` mode. Every visual surface reads from the same underlying graph. When your AI coding assistant needs to know "what depends on this file?" or "what's the shortest path between these two modules?"—it can query the same ground truth that humans see.
-
-Rather than embedding LLM calls in the tool, Live Documentation is designed so that **your own AI coding assistant** can consume it directly—deterministic markdown as structured context, `--json` CLI output as prompt fuel, and (at release time) redistributable prompt/instruction files that teach agents how to navigate the Live Doc graph. The exact conventions for these agent-steering files are evolving rapidly across the ecosystem; we'll adopt whatever is standard when we ship. The result: AI-enabled workflows (impact analysis, code generation grounding, review assistance) with zero security burden on the tool itself.
+Every CLI command has a `--json` mode, and the Explorer reads the same graph index the CLI does, so whatever a person can learn by clicking, a script can learn by a command. Live Documentation calls no model and makes no network request. It is not shaped around feeding a coding agent context: an agent you point at a hosted Explorer, or hand the bundle, can read the same map as anyone else, and that is all it promises.
 
 ---
 
@@ -68,20 +66,22 @@ Live Documentation turns your workspace into a navigable markdown graph:
 1. **Discovery**: Selects source artifacts via configurable glob patterns.
 2. **Analysis**: Extracts public symbols and dependency edges (language-aware where possible).
 3. **Materialization**: Writes deterministic markdown mirrors—each file gets a `.md` companion with headers for every public symbol.
-4. **Exploration**: Visual tools (Circuit Board, Local Map, Force Graph) and CLI commands let you navigate, trace paths, and share links.
-5. **Consumption**: AI assistants, CI pipelines, and human reviewers all read from the same markdown-as-AST corpus.
+4. **Exploration**: The Explorer's views (World Map, Local Map, Force Graph, Membrane Map, Circuit Board) and CLI commands let you navigate, trace paths, and share links.
+5. **Consumption**: Reviewers, CI checks and any agent you hand it to read the same markdown.
 
 ---
 
 ## The Explorer: See Your Code Like Never Before
 
-Live Documentation includes a visual Explorer with three complementary views:
+Live Documentation includes a visual Explorer with five views over one graph:
 
-| View              | Purpose                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------- |
-| **Circuit Board** | Macro view—see your entire workspace as a treemap of interconnected clusters              |
-| **Local Map**     | Micro view—focus on one file, see its symbols, and trace connections to neighbors         |
-| **Force Graph**   | Discovery view—explore the natural clustering of your codebase through physics simulation |
+| View              | Purpose                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **World Map**     | The outside: systems as closed pieces on a board, doors where they offer and use openings, wires between them     |
+| **Local Map**     | One file with what it uses and what uses it, symbol by symbol; pin as many files as you like and zoom out into 3D |
+| **Force Graph**   | The whole workspace as a physics layout, one counted line per pair of files that reference each other             |
+| **Membrane Map**  | Directories as nested membranes with files as cards inside; pin a symbol and the map re-lays itself as a flow     |
+| **Circuit Board** | An earlier directory treemap                                                                                      |
 
 ### Path Mode: The "Oracle of Bacon" for Code
 
@@ -103,30 +103,27 @@ Every view generates stable URLs. When you need to explain a complex dependency 
 
 Live Documentation is polyglot. Support varies by language (some have richer symbol graphs than others), but all are unified into the same markdown mirror format.
 
-- **TypeScript / JavaScript**: Full analysis via the TypeScript compiler API (public symbols + module dependency resolution).
-- **C / C++**: Adapter-based symbol + include/import extraction.
-- **C#**: Adapter-based symbol + using/namespace extraction; also supports ASP.NET ecosystems via markup files.
-- **ASP.NET Markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor` (dependency-centric extraction; connects code-behind + configuration conventions).
-- **Java**: Adapter-based symbol + import extraction.
-- **Python**: Adapter-based symbol + import/from extraction.
-- **Ruby**: Adapter-based symbol + require extraction.
-- **Rust**: Adapter-based symbol + use/mod extraction.
-- **PowerShell**: Adapter-based extraction for `.ps1`, `.psm1`, `.psd1`.
-- **HTML / CSS**: Dependency extraction for assets and references.
+- **TypeScript / JavaScript**: the TypeScript compiler API resolves public symbols and module dependencies.
+- **C#, Python, Java, Go, Rust**: tree-sitter parsers, with names resolved by each language's own rules (namespaces, packages, modules, crates) and measured against the compiler's resolution through SCIP indexers.
+- **C / C++, Ruby, PowerShell**: hand-written scanners for symbols and for includes, requires and module imports; no compiler oracle yet for C or Ruby.
+- **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, connected to code-behind and configuration conventions.
+- **.NET configuration and SQL**: the addresses and connection strings of `web.config` and `app.config`, and the procedures, tables and views of `.sql` files, read as the openings a system offers and uses.
+- **Manifests**: `.csproj`, `packages.config` and `package.json`, read as what a project stands on.
+- **HTML / CSS / JSON**: asset and reference extraction.
 
 ---
 
 ## Competitive Landscape
 
-| Feature             | **Live Documentation**        | **Google CodeWiki**    | **Windsurf Codemaps** | **GitLab Knowledge Graph** |
-| :------------------ | :---------------------------- | :--------------------- | :-------------------- | :------------------------- |
-| **Primary Goal**    | **Falsifiable Truth**         | Exploration & Search   | Flow State & Speed    | Cross-Project Intelligence |
-| **Hosting**         | **Local & Git-based**         | Cloud-hosted           | Local (Session-based) | Server-side                |
-| **Durability**      | **High** (Version Controlled) | Low (External Service) | Low (Ephemeral)       | High (Database)            |
-| **Offline Access**  | **100%**                      | No                     | Yes                   | No                         |
-| **Shareable Links** | **Yes** (stable URLs)         | Yes                    | No                    | Yes                        |
-| **AI-Consumable**   | **Yes** (`--json` everywhere) | No                     | No                    | API only                   |
-| **Cost**            | **Free** (MIT License)        | Free (Public Repos)    | Paid                  | Enterprise                 |
+| Feature              | **Live Documentation**        | **Google CodeWiki**    | **Windsurf Codemaps** | **GitLab Knowledge Graph** |
+| :------------------- | :---------------------------- | :--------------------- | :-------------------- | :------------------------- |
+| **Primary Goal**     | **Falsifiable Truth**         | Exploration & Search   | Flow State & Speed    | Cross-Project Intelligence |
+| **Hosting**          | **Local & Git-based**         | Cloud-hosted           | Local (Session-based) | Server-side                |
+| **Durability**       | **High** (Version Controlled) | Low (External Service) | Low (Ephemeral)       | High (Database)            |
+| **Offline Access**   | **100%**                      | No                     | Yes                   | No                         |
+| **Shareable Links**  | **Yes** (stable URLs)         | Yes                    | No                    | Yes                        |
+| **Machine-readable** | **Yes** (`--json` everywhere) | No                     | No                    | API only                   |
+| **Cost**             | **Free** (MIT License)        | Free (Public Repos)    | Paid                  | Enterprise                 |
 
 **The key difference**: Other tools own the data or let it vanish. Live Documentation writes intelligence _back into your repo_ where it belongs.
 
@@ -157,8 +154,8 @@ Traces the dependency graph to answer "What does this touch?" or "What touches t
 ### Visualization Explorer
 
 ```powershell
-npm run live-docs:visualize          # Interactive server
-npm run live-docs:visualize:static   # Static export for GitHub Pages
+npm run live-docs:visualize             # Static Explorer bundle in dist/explorer/; this repository's build carries its own board
+npm run live-docs:board -- <board.md>   # Read a board, check it against the docs, and print its things, doors and wires
 ```
 
 ### Quality Gates
@@ -205,7 +202,7 @@ This repository uses an internal MDMD convention (`.mdmd/layer-4/*.mdmd.md`) to 
 npm install
 npm run build
 npm run live-docs:generate   # Materialize the graph
-npm run live-docs:visualize  # Explore it visually
+npm run live-docs:visualize  # Build the Explorer into dist/explorer/, then serve that folder
 ```
 
 ---

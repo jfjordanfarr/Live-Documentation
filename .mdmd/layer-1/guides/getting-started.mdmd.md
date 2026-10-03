@@ -57,7 +57,7 @@ npm run live-docs:visualize
 npx serve dist/explorer
 ```
 
-It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Force Graph** shows the whole workspace as a physics layout, and **Knowledge Sources** reports graph statistics and health warnings. Two earlier views, Circuit Board and Local Map, are still present and are being folded into the Membrane Map. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Local Map** shows one file with the files it uses and the files that use it, keeps as many files pinned as you like, and zooms out into the **Force Graph**, the whole workspace as a physics layout; **Knowledge Sources** reports graph statistics and health warnings. Pass `--board <board.md>` to the build to open on a **World Map** of systems instead. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
 ### Step 3: Trace a dependency path
 
@@ -65,7 +65,7 @@ It opens on the **Membrane Map**: your directories as nested membranes, files as
 npm run live-docs:inspect -- --from src/core/auth.ts --to src/api/endpoints.ts
 ```
 
-The same question can be asked in the Explorer: the Local Map view takes From and To artifacts, and pinning symbols in the Membrane Map follows their connections hop by hop. See [Tracing Impact](tracing-impact.mdmd.md).
+The same question can be asked in the Explorer: the Local Map takes From and To artifacts, and pinning symbols in the Local Map or the Membrane Map follows their connections hop by hop. See [Tracing Impact](tracing-impact.mdmd.md).
 
 ### Step 4: Validate the mirror
 
@@ -111,13 +111,13 @@ npm run live-docs:generate -- --config .live-docs.config.json
 
 ## What Can You Do?
 
-| Task                         | How                                                                                        |
-| ---------------------------- | ------------------------------------------------------------------------------------------ |
-| See the shape of a codebase  | Build the Explorer and browse the Membrane Map                                             |
-| Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer                  |
-| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph           |
-| Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                                |
-| Consume as data              | The graph index at `<root>/index.json`, `live-docs:inspect -- --json`, or the raw markdown |
+| Task                         | How                                                                                          |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| See the shape of a codebase  | Build the Explorer: browse the Membrane Map, pin files in the Local Map, fly the Force Graph |
+| Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer                    |
+| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph             |
+| Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                                  |
+| Consume as data              | The graph index at `<root>/index.json`, `live-docs:inspect -- --json`, or the raw markdown   |
 
 ---
 
