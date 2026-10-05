@@ -27,7 +27,7 @@ Verification: the complete `npm run safe:commit -- --e2e` chain passed **933 uni
 
 ## Later October 3 pass — retention, pruning and transition detail
 
-Historical evidence from [October 3 session 1](../../ChatHistory/2026/10/2026-10-03.1.record.md), captured in Chromium at 1600 × 1000 against the 617-file repository graph. Tests are shown and assets hidden. These captures reflect the new click-to-retain and X-to-prune rule, superseding the earlier layered file/row interaction for the Local Map. They are agent-reviewed results; the owner has not yet reviewed this pass.
+Historical evidence from [October 3 session 1](../../ChatHistory/2026/10/2026-10-03.1.record.md), captured in Chromium at 1600 × 1000 against the 617-file repository graph. Tests are shown and assets hidden. These captures reflect the new click-to-retain and X-to-prune rule, superseding the earlier layered file/row interaction for the Local Map. In [the October 5 closing review](../../ChatHistory/2026/10/2026-10-03.1.record.md#turn-5), the owner reports having checked the built work more than once and been “really impressed”. The positive verdict does not close the remaining layout and shape-morph questions.
 
 | Capture | State |
 | --- | --- |
