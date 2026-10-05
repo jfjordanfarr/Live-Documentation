@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-10-05
+
+Named in [the day's record](2026-10-05/README.md): the shipped Local Map with five files retained whole beside the Membrane Map with the same files' symbols all pinned, on this repository's five-file and chain scopes and the estate's five files, with the still-picture deck's measures for all six pictures. Taken to check where the many-file layout stands, not after a change.
+
 ## 2026-10-03
 
 Named in [the day's record](2026-10-03/README.md): the native Local Map with directory bands and retained files, the deliberate zoom boundary, the Force Graph with one counted line per file pair, the thirteen-file estate path in both perspectives, and two recordings of the zoom in motion with their frame sheets.
