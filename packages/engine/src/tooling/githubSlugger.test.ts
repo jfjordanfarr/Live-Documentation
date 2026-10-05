@@ -1,8 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { GitHubSlugger, createSlugger, slug } from "./githubSlugger";
+import { GitHubSlugger, createSlugger, slug, slugText } from "./githubSlugger";
 
 describe("github slugger", () => {
+  it("slugs a heading's rendered text, not its markdown", () => {
+    // The decisions log's headings carry an emphasized suffix; GitHub's anchor has no underscores from it.
+    expect(slug(slugText("The Native Views Are the Base _(Recorded 2026-10-03)_"))).toBe("the-native-views-are-the-base-recorded-2026-10-03");
+    expect(slug("The Native Views Are the Base _(Recorded 2026-10-03)_")).toBe("the-native-views-are-the-base-_recorded-2026-10-03_");
+    expect(slug(slugText("Use `renderLiveDoc` for [docs](../guide.md) and __strong__ words"))).toBe("use-renderlivedoc-for-docs-and-strong-words");
+    expect(slug(slugText("An ![icon](i.png) and a [ref][1] here"))).toBe("an-icon-and-a-ref-here");
+    // An underscore inside a word is not emphasis and stays in the slug, as on GitHub.
+    expect(slug(slugText("snake_case and __dunder__ and _lead"))).toBe("snake_case-and-dunder-and-lead");
+  });
+
   it("matches GitHub slug casing and punctuation rules", () => {
     expect(slug("Hello World"))
       .toBe("hello-world");

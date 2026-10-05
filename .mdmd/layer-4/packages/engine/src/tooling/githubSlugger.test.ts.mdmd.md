@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/tooling/githubSlugger.test.ts
-- Generated At: 2026-09-27T23:21:31.634Z
+- Generated At: 2026-10-05T17:11:04.591Z
 
 ## Authored
 ### Purpose
@@ -25,5 +25,6 @@ _No public symbols detected_
 - [`GitHubSlugger`](./githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`githubSlugger.createSlugger`](./githubSlugger.ts.mdmd.md#symbol-createslugger)
 - [`githubSlugger.slug`](./githubSlugger.ts.mdmd.md#symbol-slug)
+- [`githubSlugger.slugText`](./githubSlugger.ts.mdmd.md#symbol-slugtext)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

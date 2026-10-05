@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
+import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
 
 import {
   computeLineStarts,
@@ -214,7 +214,8 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
       const { text: headingText, anchorSlug } = stripExplicitHeadingAnchor(sanitized);
       const finalText = headingText.length > 0 ? headingText : sanitized.trim();
       const column = leadingWhitespaceWidth(line) + 1;
-      const slugContext = slugger.slugWithContext(finalText, false);
+      // GitHub anchors the rendered text: a link's words, code without backticks, emphasis without its marks.
+      const slugContext = slugger.slugWithContext(slugText(finalText), false);
       headings.push({
         text: finalText,
         slug: slugContext.slug,
@@ -235,7 +236,7 @@ function analyzeFile(filePath: string, workspaceRoot: string): FileAnalysis {
         const { text: headingText, anchorSlug } = stripExplicitHeadingAnchor(sanitized);
         const finalText = headingText.length > 0 ? headingText : sanitized;
         const column = leadingWhitespaceWidth(line) + 1;
-        const slugContext = slugger.slugWithContext(finalText, false);
+        const slugContext = slugger.slugWithContext(slugText(finalText), false);
         headings.push({
           text: finalText,
           slug: slugContext.slug,

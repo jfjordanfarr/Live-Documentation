@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/doc-tools/documentationLinks.ts
-- Generated At: 2026-09-28T01:00:43.447Z
+- Generated At: 2026-10-05T17:11:06.337Z
 
 ## Authored
 ### Purpose
@@ -118,7 +118,7 @@ Parsed anchors with code paths and backlinks.
 
 #### `resolveCodeToDocumentationMap` {#symbol-resolvecodetodocumentationmap}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L248)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L249)
 - Returns: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 - Parameters: `documents`: [`DocumentationDocumentAnchors`](#symbol-documentationdocumentanchors)[]; `targetMap`: [`DocumentationTargetMap`](#symbol-documentationtargetmap)
 
@@ -137,7 +137,7 @@ The (mutated) target map.
 
 #### `formatDocumentationLinkComment` {#symbol-formatdocumentationlinkcomment}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L293)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L294)
 - Parameters: `target`: [`ResolvedDocumentationTarget`](#symbol-resolveddocumentationtarget)
 
 ##### `formatDocumentationLinkComment` — Summary
@@ -158,7 +158,7 @@ Formatted comment string (e.g. `// Live Documentation: path.mdmd.md#slug`).
 
 #### `runDocumentationLinkEnforcement` {#symbol-rundocumentationlinkenforcement}
 - Type: function
-- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L316)
+- Source: [source](../../../../scripts/doc-tools/documentationLinks.ts#L317)
 - Returns: [`DocumentationLinkEnforcementResult`](#symbol-documentationlinkenforcementresult)
 - Parameters: `options`: [`RunDocumentationLinkEnforcementOptions`](#symbol-rundocumentationlinkenforcementoptions)
 
@@ -182,6 +182,7 @@ Aggregate enforcement result with violations.
 - `node:fs` - `fs`
 - `node:path` - `path`
 - [`githubSlugger.createSlugger`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-createslugger)
+- [`githubSlugger.slugText`](../../packages/engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
 - [`pathUtils.normalizeWorkspacePath`](../../packages/engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`markdownShared.extractReferenceDefinitions`](../slopcop/markdownShared.ts.mdmd.md#symbol-extractreferencedefinitions)
 <!-- LIVE-DOC:END Dependencies -->

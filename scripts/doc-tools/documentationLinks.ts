@@ -3,7 +3,7 @@ import { globSync } from "glob";
 import fs from "node:fs";
 import path from "node:path";
 
-import { createSlugger } from "@live-documentation/engine/tooling/githubSlugger";
+import { createSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
 import { normalizeWorkspacePath } from "@live-documentation/engine/tooling/pathUtils";
 
 import { extractReferenceDefinitions } from "../slopcop/markdownShared";
@@ -197,7 +197,8 @@ export function parseDocumentationAnchors(
     if (headingMatch) {
       const [, hashes, headingText] = headingMatch;
       const level = hashes.length;
-      const slug = slugger.slug(headingText.trim());
+      // GitHub anchors the rendered text, so emphasis marks, backticks and link addresses do not enter the slug.
+      const slug = slugger.slug(slugText(headingText.trim()));
       anchors.push({
         heading: headingText.trim(),
         slug,

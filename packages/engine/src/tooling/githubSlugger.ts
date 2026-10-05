@@ -97,6 +97,29 @@ export function createSlugger(): GitHubSlugger {
   return new GitHubSlugger();
 }
 
+/**
+ * The text of a heading as GitHub slugs it: the rendered text, not the markdown.
+ *
+ * GitHub builds a heading's anchor from its rendered content, so a link's text
+ * stands without its address, an image without its source, inline code without
+ * its backticks, and emphasis without its delimiters. Asterisks and backticks
+ * the slug pattern removes anyway; underscores it keeps, since `snake_case`
+ * belongs in a slug, so an underscore is dropped only where it delimits
+ * emphasis: at the start of a word or at its end. Without this, a heading such
+ * as `### Decision _(Recorded 2026-10-05)_` slugs to a form GitHub never makes.
+ *
+ * @param markdown - The heading's text as written, after the ATX hashes.
+ * @returns The text to pass to {@link slug}.
+ */
+export function slugText(markdown: string): string {
+  return markdown
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]*)\]\[[^\]]*\]/g, "$1")
+    .replace(/`+/g, "")
+    .replace(/(^|[^\p{L}\p{N}])_+(?=\S)/gu, "$1")
+    .replace(/(?<=\S)_+(?=$|[^\p{L}\p{N}])/gu, "");
+}
+
 function createOccurrences(): Record<string, number> {
   return Object.create(null) as Record<string, number>;
 }

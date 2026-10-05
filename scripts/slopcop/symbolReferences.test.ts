@@ -6,6 +6,37 @@ import { describe, expect, it } from "vitest";
 import { findSymbolReferenceAnomalies } from "./symbolReferences";
 
 describe("findSymbolReferenceAnomalies", () => {
+  it("anchors a heading by its rendered text, so an emphasized suffix or inline code does not change the slug", () => {
+    withWorkspace((workspace) => {
+      writeFile(
+        workspace,
+        "docs/log.md",
+        [
+          "### The Native Views Are the Base _(Recorded 2026-10-03)_",
+          "A decision.",
+          "### Use `renderLiveDoc` for [docs](guide.md)",
+          "Another."
+        ].join("\n")
+      );
+      writeFile(
+        workspace,
+        "docs/links.md",
+        [
+          "See [the decision](log.md#the-native-views-are-the-base-recorded-2026-10-03).",
+          "And [the other](log.md#use-renderlivedoc-for-docs).",
+          "Not [the markdown's own underscores](log.md#the-native-views-are-the-base-_recorded-2026-10-03_)."
+        ].join("\n")
+      );
+      const issues = findSymbolReferenceAnomalies({
+        workspaceRoot: workspace,
+        files: [path.join(workspace, "docs/log.md"), path.join(workspace, "docs/links.md")]
+      });
+      expect(issues.map((issue) => `${issue.kind} ${issue.slug}`)).toEqual([
+        "missing-anchor the-native-views-are-the-base-_recorded-2026-10-03_"
+      ]);
+    });
+  });
+
   it("flags duplicate headings and missing anchors across markdown files", () => {
     withWorkspace((workspace) => {
       writeFile(
