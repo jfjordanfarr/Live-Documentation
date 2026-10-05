@@ -29,6 +29,7 @@ import {
   scoreExpanded,
   scoreForeign,
   scoreHiddenAmongDrawn,
+  scoreLength,
   scoreHops,
   scoreLegibility,
   scoreOcclusion,
@@ -195,6 +196,7 @@ interface Still {
   expanded: Scoreboard["expanded"];
   hiddenAmongDrawn: Scoreboard["hiddenAmongDrawn"];
   foreign: Scoreboard["foreign"];
+  length: Scoreboard["length"];
 }
 
 async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraphPayload, facts: Fact[], names: Record<string, Record<string, string>>, read?: PictureReading): Promise<Still> {
@@ -207,7 +209,8 @@ async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraph
     text: await scoreText(page, view),
     expanded: scoreExpanded(picture, symbolCounts(graph)),
     hiddenAmongDrawn: scoreHiddenAmongDrawn(graph, picture),
-    foreign: scoreForeign(picture)
+    foreign: scoreForeign(picture),
+    length: scoreLength(picture)
   };
 }
 
@@ -345,6 +348,7 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
     expanded: scoreExpanded(picture, symbolCounts(graph)),
     hiddenAmongDrawn: scoreHiddenAmongDrawn(graph, picture),
     foreign: scoreForeign(picture),
+    length: scoreLength(picture),
     churn: null,
     tour: null,
     chain: null,
@@ -638,6 +642,7 @@ for (const run of RUNS) {
         expanded: null,
         hiddenAmongDrawn: null,
         foreign: null,
+        length: null,
         churn: null,
         tour: null,
         chain: null,

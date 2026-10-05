@@ -283,6 +283,8 @@ export interface WireReading {
   /** Samples inside a lane, and of those, inside a foreign directory's box: a lane placed where the wire does not belong. */
   laneSamples: number;
   foreignLaneSamples: number;
+  /** The drawn length of the path in screen pixels. */
+  lengthPx: number;
   /** The whole path sampled every 8 px in screen coordinates, flattened x, y, x, y. */
   points: number[];
   /** Which end of the sampled path sits at the provider's card: the first (0) or the last (1). */
@@ -442,10 +444,12 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         let foreignSamples = 0;
         let laneSamples = 0;
         let foreignLaneSamples = 0;
+        let lengthPx = 0;
         const points: number[] = [];
         const ctm = el.getScreenCTM();
         if (ctm && typeof el.getTotalLength === "function") {
           const length = el.getTotalLength();
+          lengthPx = length * Math.hypot(ctm.a, ctm.b);
           const sample = (at: number): DOMPoint => el.getPointAtLength(at).matrixTransform(ctm);
           for (let at = 0; at <= length; at += 8) {
             const point = sample(at);
@@ -494,7 +498,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
           const top = Math.min(...rects.map(r => r.top));
           endpointBox = { x: left, y: top, width: Math.max(...rects.map(r => r.right)) - left, height: Math.max(...rects.map(r => r.bottom)) - top };
         }
-        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
+        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },
@@ -594,6 +598,21 @@ export function scoreForeign(picture: PictureReading): ForeignScore {
     score.foreignLaneSamples += wire.foreignLaneSamples;
   }
   return score;
+}
+
+export interface LengthScore {
+  wires: number;
+  /** The drawn length of every wire added up, in screen pixels at the view's scale. */
+  totalPx: number;
+  /** The mean per wire. */
+  meanPx: number;
+}
+
+/** Test 17: the total drawn length of the wires, the owner's reward for the Local Map (2026-10-05): the shorter, the fewer turns and extensions. */
+export function scoreLength(picture: PictureReading): LengthScore {
+  const wires = picture.wires.filter(wire => !wire.stub);
+  const totalPx = wires.reduce((sum, wire) => sum + wire.lengthPx, 0);
+  return { wires: wires.length, totalPx: Math.round(totalPx), meanPx: wires.length ? Math.round(totalPx / wires.length) : 0 };
 }
 
 /** The legibility of one wire by the deck's full definition. */
@@ -1036,6 +1055,8 @@ export interface Scoreboard {
   hiddenAmongDrawn?: HiddenScore | null;
   /** Test 16; absent on rows measured before it was defined. */
   foreign?: ForeignScore | null;
+  /** Test 17; absent on rows measured before it was defined. */
+  length?: LengthScore | null;
   /** Test 14, after the journey's one gesture. */
   churn?: ChurnScore | null;
   /** Test 15. */
@@ -1093,13 +1114,14 @@ export function scoreboardTable(rows: readonly Scoreboard[]): string {
 /** The expanded measures of one bundle as a second table, one row per view. */
 export function expandedTable(rows: readonly Scoreboard[]): string {
   const header = [
-    "| View | State | Crossings (points / spots / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Foreign directory (wires of drawn / samples of all / in lanes of lane samples) | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
+    "| View | State | Crossings (points / spots / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Foreign directory (wires of drawn / samples of all / in lanes of lane samples) | Wire length (total px / mean) | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
   ];
   const lines = rows.map(row => {
     const e = row.expanded ?? null;
     const h = row.hiddenAmongDrawn ?? null;
     const f = row.foreign ?? null;
+    const n = row.length ?? null;
     const c = row.churn ?? null;
     const t = row.tour ?? null;
     return [
@@ -1113,6 +1135,7 @@ export function expandedTable(rows: readonly Scoreboard[]): string {
       e ? `${e.symbols.legible} of ${e.symbols.total}` : "n/a",
       h ? `${h.hidden} of ${h.facts}` : "n/a",
       f ? `${f.foreignWires} of ${f.wires} / ${f.foreignSamples} of ${f.samples} / ${f.foreignLaneSamples} of ${f.laneSamples}` : "n/a",
+      n ? `${n.totalPx} / ${n.meanPx}` : "n/a",
       c ? `${c.moved} of ${c.present} / ${c.movedPx} / ${c.added} / ${c.removed}` : "n/a",
       t ? `${t.pans.length} / ${t.blindPans} / ${t.legibleAfter} of ${t.drawn} / ${t.unreachable} / ${t.verified}` : "n/a"
     ].join(" | ");

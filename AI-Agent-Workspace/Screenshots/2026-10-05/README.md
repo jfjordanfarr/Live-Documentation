@@ -93,3 +93,29 @@ The order is kept by the ordering's tests and by a Playwright test that reads al
 | Estate, chain | 91 | 79 | 17 | 24 | 50 | 86 |
 
 The ordering counts straight segments between places in its own index space, where every card is one unit tall; the deck counts the drawn curves, lanes and cables in pixels, where a card of twenty rows is ten times taller than one of two. An ordering that measures heights in rows rather than cards is the next step the chain numbers ask for, if the owner's eye agrees that the chain pictures lost something.
+
+
+## Placed by the exact step, the same night
+
+On the rows-ordered picture the owner saw that graph.ts, board.ts and boardGraph.ts would serve the whole by standing lower, and named the Local Map's reward: the total length of the drawn connectors across a frame, to be minimized cumulatively ([Turn 12](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-12)). Asked for the durable, correct, permanent implementation ([Turn 13](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-13)), the pass built the placement step of layered drawing as Gansner, Koutsofios, North and Vo solve it, exactly, by network simplex: every column's cards and lanes placed where the weighted vertical distances between wired pins are least, inside directory boxes drawn tight around their members and standing in their rows. The picture is no longer a grid; cards, lanes and boxes are positioned from the solution. Same states, same frame.
+
+| Capture | State |
+| --- | --- |
+| [Five files, placed](repository-five-local-map-placed.png) | graph.ts dropped to meet document.ts's rows and boardGraph.ts with it, the move the owner described; the cables from document.ts's top rows run straight to the lane. |
+| [Where the bundles part, placed](repository-five-bundles-part-placed.png) | The same state panned right. |
+| [Chain, placed](repository-chain-local-map-placed.png) | The consumers of index.ts gathered around its pin's height. |
+| [Estate five, placed](estate-five-local-map-placed.png) | PaymentResult's cable runs level into its lane; the Hub stands where its wires arrive. |
+| [Estate five, where the bundles part](estate-five-bundles-part-placed.png) | Panned right to the consumers. |
+| [A bundle on hover, placed](estate-five-bundle-hover-placed.png) | PaymentRequest's cable lit. |
+| [Estate chain, placed](estate-chain-local-map-placed.png) | Models and Controllers level with the wires between them, Services below the lane that passes it; every box tight around its cards. |
+
+Measured like for like, the previous commit built in a worktree against this tree, both under the deck's new measure of the owner's reward:
+
+| Scope | Total wire length, before | after | Picture height, before | after | Crossing spots, before | after |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Repository, five files | 681,249 px | 610,394 px | 6,236 px | 5,653 px | 438 | 636 |
+| Repository, chain | 793,840 px | 600,503 px | 6,460 px | 5,379 px | 736 | 1,223 |
+| Estate, five files | 104,995 px | 88,288 px | 1,854 px | 1,562 px | 39 | 44 |
+| Estate, chain | 64,456 px | 38,884 px | 1,380 px | 1,208 px | 24 | 28 |
+
+The length fell on every scope, by a tenth to two fifths, and every picture is shorter. The crossing spots rose: cards packed to their partners cross more of the wires that pass them, and the placement minimizes length, not crossings, which the ordering before it minimized in its own index space. [The scoreboard](scoreboard-placed.md) is the gate's run, with the length in its last column but one. Open for the owner's eye: whether the crossings the length buys are the right price, and the glass question for wires crossing a directory that holds neither of their ends.

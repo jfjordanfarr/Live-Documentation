@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture.spec.ts
-- Generated At: 2026-10-05T18:59:24.372Z
+- Generated At: 2026-10-05T22:17:17.003Z
 
 ## Authored
 ### Purpose
@@ -66,6 +66,7 @@ _No public symbols detected_
 - [`still-picture.scoreHiddenAmongDrawn`](./still-picture.ts.mdmd.md#symbol-scorehiddenamongdrawn)
 - [`still-picture.scoreHops`](./still-picture.ts.mdmd.md#symbol-scorehops)
 - [`still-picture.scoreLegibility`](./still-picture.ts.mdmd.md#symbol-scorelegibility)
+- [`still-picture.scoreLength`](./still-picture.ts.mdmd.md#symbol-scorelength)
 - [`still-picture.scoreOcclusion`](./still-picture.ts.mdmd.md#symbol-scoreocclusion)
 - [`still-picture.scoreRoutes`](./still-picture.ts.mdmd.md#symbol-scoreroutes)
 - [`still-picture.scoreText`](./still-picture.ts.mdmd.md#symbol-scoretext)
