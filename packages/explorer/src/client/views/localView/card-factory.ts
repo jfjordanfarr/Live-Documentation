@@ -8,6 +8,7 @@
  * @module card-factory
  */
 
+import { compareSymbolNames } from "./branches";
 import type { LocalViewController } from "./controller";
 import type { ColumnRole } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
@@ -194,7 +195,9 @@ export function createSymbolSection(
     }
   }
 
-  node.publicSymbols.forEach(symbol => {
+  // Alphabetical order holds wherever a card is drawn; the layout order is applied by the branch renderer where there is a layout.
+  const symbols = controller.options.state.tuning.localMap.symbolOrder === "alphabetical" ? [...node.publicSymbols].sort(compareSymbolNames) : node.publicSymbols;
+  symbols.forEach(symbol => {
     const extended = extendedByName.get(symbol);
     const typeRefs = extended?.typeReferences;
     const hasTypeRefs = typeRefs && typeRefs.length > 0;

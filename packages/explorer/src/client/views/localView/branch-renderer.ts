@@ -9,7 +9,7 @@ import { normalizeSymbolIdentifier } from "../symbolAnchors";
 /** Extend the native card grammar to the independently retained branches. */
 export function renderBranches(controller: LocalViewController, root: HTMLElement): void {
   const { state, graphData } = controller.options;
-  const branches = buildBranches(state.selectedNode!, graphData, controller.pins, node => controller.shouldIncludeNode(node));
+  const branches = buildBranches(state.selectedNode!, graphData, controller.pins, node => controller.shouldIncludeNode(node), state.tuning.localMap.symbolOrder);
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
   root.classList.add("branch-mode");
@@ -86,6 +86,23 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   }
   root.querySelectorAll<HTMLElement>(".node-card").forEach(card => {
     const id = card.dataset.id!;
+    // The card's rows stand in the chosen order; rows the order does not name keep their place after them, Internals last.
+    // Two symbols may share a normalized name (LinkTarget and linkTarget), so a name may claim one row per mention.
+    const rowOrder = branches.rows.get(id);
+    if (rowOrder) {
+      const byName = new Map<string, HTMLElement[]>();
+      card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+        const name = normalizeSymbolIdentifier(row.dataset.symbol) ?? "__internals__";
+        (byName.get(name) ?? byName.set(name, []).get(name)!).push(row);
+      });
+      for (const name of rowOrder) {
+        const row = byName.get(name)?.shift();
+        if (row) row.parentElement?.append(row);
+      }
+      for (const rows of byName.values()) for (const row of rows) row.parentElement?.append(row);
+      const internals = card.querySelector<HTMLElement>(".symbol-row.internals-row");
+      if (internals) internals.parentElement?.append(internals);
+    }
     const all = controller.isPinned(id, "*") || controller.expandedCards.has(id) || id === state.selectedNode?.id;
     let hidden = 0;
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {

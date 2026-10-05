@@ -795,6 +795,18 @@
     text-align: right;
 }
 
+.tuning-slider select {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 11px;
+    color: var(--text-primary);
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
 .tuning-slider input[type="range"] {
     grid-column: 1 / -1;
     grid-row: 2;

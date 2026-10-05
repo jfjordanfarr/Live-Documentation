@@ -37,6 +37,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
   const selfLoopTaperInput = document.getElementById("tuning-self-loop-taper") as HTMLInputElement | null;
   const strainNudgeInput = document.getElementById("tuning-strain-nudge") as HTMLInputElement | null;
+  const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -110,6 +111,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.hoverDimConnections = setSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", state.tuning.localMap.hoverDimConnections);
     state.tuning.localMap.selfLoopTaper = setSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", state.tuning.localMap.selfLoopTaper);
     state.tuning.localMap.strainNudge = setSlider(strainNudgeInput, "tuning-strain-nudge-value", state.tuning.localMap.strainNudge, v => String(v));
+    if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -131,6 +133,16 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   wireLocalMapSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", "--hover-dim-symbols", v => { state.tuning.localMap.hoverDimSymbols = v; });
   wireLocalMapSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", "--hover-dim-connections", v => { state.tuning.localMap.hoverDimConnections = v; });
   wireLocalMapSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", "--self-loop-taper", v => { state.tuning.localMap.selfLoopTaper = v; });
+
+  // The symbol order changes where every card's rows stand: the view re-renders.
+  if (symbolOrderSelect) {
+    symbolOrderSelect.addEventListener("change", () => {
+      const value = symbolOrderSelect.value;
+      state.tuning.localMap.symbolOrder = value === "alphabetical" || value === "appearance" ? value : "layout";
+      onTuningChange();
+      if (state.view === "map") onRender();
+    });
+  }
 
   // The nudge threshold changes a status, not a drawing: the view re-renders so the perspective controls read it again.
   if (strainNudgeInput) {

@@ -5,7 +5,7 @@
  * state (view, node selection) across browser sessions.
  */
 
-import type { ExplorerFilters, TuningConfig, ViewName } from "../types";
+import type { ExplorerFilters, SymbolOrder, TuningConfig, ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -48,7 +48,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     selfLoopTaper: 0.2,
     collapseOnHover: false,
     collapseOnPin: true,
-    strainNudge: 48
+    strainNudge: 48,
+    symbolOrder: "layout"
   }
 });
 
@@ -64,6 +65,9 @@ const getRecord = (obj: Record<string, unknown>, key: string): Record<string, un
 const readBoolean = (value: unknown): boolean | undefined => {
   return typeof value === "boolean" ? value : undefined;
 };
+
+const readSymbolOrder = (value: unknown): SymbolOrder | undefined =>
+  value === "layout" || value === "alphabetical" || value === "appearance" ? value : undefined;
 
 const readFiniteNumber = (value: unknown): number | undefined => {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
@@ -133,6 +137,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
         const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
+        const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         tuning.localMap = {
           ...(columnGap !== undefined ? { columnGap } : null),
           ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
@@ -140,7 +145,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null),
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
-          ...(strainNudge !== undefined ? { strainNudge } : null)
+          ...(strainNudge !== undefined ? { strainNudge } : null),
+          ...(symbolOrder !== undefined ? { symbolOrder } : null)
         };
       }
 

@@ -51,7 +51,16 @@ export interface LocalMapTuning {
    * Map says the picture is dense and the Force Graph may read better (2026-10-05).
    */
   strainNudge: number;
+  /** How a card's symbol rows stand (2026-10-05). */
+  symbolOrder: SymbolOrder;
 }
+
+/**
+ * How a card's symbol rows stand: where their wires lead, which the many-file
+ * layout chooses and the single-file view cannot; alphabetically; or as the
+ * Live Doc lists them, the order of appearance in the file.
+ */
+export type SymbolOrder = "layout" | "alphabetical" | "appearance";
 
 /** Aggregate tuning configuration threading through into every Explorer view. */
 export interface TuningConfig {

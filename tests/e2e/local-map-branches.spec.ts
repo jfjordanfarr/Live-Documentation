@@ -187,3 +187,86 @@ test("a type-reference badge retains its source pin and keeps the referenced fil
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", document);
   await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("1 pin ×");
 });
+
+test("a card's rows stand where their wires lead by default, and Tuning offers the alphabetical order and the file's own", async ({ page }) => {
+  // Four renders of a five-file scope and a reload: the suite's half minute is not enough.
+  test.setTimeout(240_000);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const subject = "packages/engine/src/live-docs/document.ts";
+  const files = [
+    "packages/engine/src/live-docs/graph.ts",
+    subject,
+    "packages/engine/src/live-docs/graphFiles.ts",
+    "packages/explorer/src/shared/staticExplorerData.ts",
+    "packages/explorer/src/shared/staticBuilder.ts"
+  ];
+  const settle = async (): Promise<void> => {
+    await page.waitForSelector("#map-container .branch-mode");
+    await page.waitForSelector("#map-connections .connection-path");
+    await page.waitForTimeout(900);
+  };
+  /** The card's symbol rows, top to bottom, Internals left out. */
+  const rowsOf = async (): Promise<string[]> =>
+    page.locator(`#map-container .node-card[data-id="${subject}"] .symbol-row:not(.internals-row)`).evaluateAll(rows => rows.map(row => (row as HTMLElement).dataset.symbol!));
+  /** How far the card's rows are from the order their wires' far ends ask for: pairs of rows whose far ends stand the other way round. */
+  const disorder = async (): Promise<number> => page.evaluate(id => {
+    const far = new Map<string, number[]>();
+    document.querySelectorAll<SVGPathElement>("#map-connections path.connection-path:not(.back-route):not(.bundle-run)").forEach(path => {
+      const numbers = (path.getAttribute("d") ?? "").match(/-?\d+(?:\.\d+)?/gu)?.map(Number) ?? [];
+      if (numbers.length < 4) return;
+      const start = numbers[1], end = numbers[numbers.length - 1];
+      const row = path.dataset.targetId === id ? [path.dataset.targetSymbol!, end] as const : path.dataset.sourceId === id ? [path.dataset.sourceSymbol!, start] as const : null;
+      if (row) (far.get(row[0]) ?? far.set(row[0], []).get(row[0])!).push(row[1]);
+    });
+    const rows = [...document.querySelectorAll<HTMLElement>(`#map-container .node-card[data-id="${id}"] .symbol-row:not(.internals-row)`)].map(row => row.dataset.symbol!.toLowerCase());
+    const means = rows.map(name => { const ends = far.get(name); return ends ? ends.reduce((a, b) => a + b, 0) / ends.length : null; });
+    let pairs = 0;
+    for (let i = 0; i < means.length; i++) for (let j = i + 1; j < means.length; j++) if (means[i] !== null && means[j] !== null && means[i]! > means[j]! + 1) pairs++;
+    return pairs;
+  }, subject);
+  const choose = async (order: string): Promise<void> => {
+    await page.locator("#tuning-symbol-order").evaluate(select => { select.closest("details")!.open = true; });
+    await page.locator("#tuning-symbol-order").selectOption(order);
+    await settle();
+  };
+  /** Every card keeps every symbol row whatever the order: graph.ts has LinkTarget and linkTarget, which share a normalized name. */
+  const everyRowKept = async (): Promise<void> => {
+    const cards = await page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => ({
+      id: (card as HTMLElement).dataset.id!,
+      rows: [...card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")].map(row => row.dataset.symbol!)
+    })));
+    for (const card of cards) {
+      const node = graph.nodes.find(node => node.id === card.id);
+      if (node) expect([...card.rows].sort(), card.id).toEqual([...node.publicSymbols].sort());
+    }
+  };
+  await page.goto(localRetainUrl("/", files));
+  await settle();
+  const graph = await loadGraph(page, "/");
+  const listed = graph.nodes.find(node => node.id === subject)!.publicSymbols;
+  expect(listed.length).toBeGreaterThan(10);
+  const byLayout = await rowsOf();
+  const layoutDisorder = await disorder();
+  expect([...byLayout].sort()).toEqual([...listed].sort());
+  await everyRowKept();
+
+  await choose("appearance");
+  expect(await rowsOf()).toEqual(listed);
+  const appearanceDisorder = await disorder();
+  expect(layoutDisorder, "the layout order follows the wires more closely than the file's order").toBeLessThan(appearanceDisorder);
+
+  await choose("alphabetical");
+  const alphabetical = await rowsOf();
+  expect(alphabetical).toEqual([...listed].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }) || a.localeCompare(b)));
+  await everyRowKept();
+  const graphRows = await page.locator('#map-container .node-card[data-id="packages/engine/src/live-docs/graph.ts"] .symbol-row:not(.internals-row)').evaluateAll(rows => rows.map(row => (row as HTMLElement).dataset.symbol!));
+  expect(graphRows).toEqual([...graphRows].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }) || a.localeCompare(b)));
+  // The choice is kept across a reload, and every card ends with Internals whatever the order.
+  await page.reload();
+  await settle();
+  expect(await rowsOf()).toEqual(alphabetical);
+  const lastRows = await page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => [...card.querySelectorAll<HTMLElement>(".symbol-row")].at(-1)?.dataset.symbol));
+  expect(lastRows.every(symbol => symbol === "__internals__")).toBe(true);
+  await choose("layout");
+  expect(await rowsOf()).toEqual(byLayout);
+});

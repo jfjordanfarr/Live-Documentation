@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-05T16:55:00.725Z
+- Generated At: 2026-10-05T20:41:23.181Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - Click Behavior and Visual checkbox sections removed in [Dev Day 83](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code after the Membrane Map replaced those interactions.
 - CSS variable `--local-column-gap` is set on `document.documentElement` (not `.local-layout`) so it cascades to both Local Map and Membrane Map grid containers.
 - `TuningPanelConfig.drawMembraneConnections` callback triggers lightweight SVG connection redraw when column gap or bezier sliders change in membrane view, avoiding full DOM reconstruction.
+- The Symbol Order select (2026-10-05) holds the owner's three strategies for a card's rows, layout, alphabetical and order of appearance; like the dense-picture nudge it changes the layout rather than a drawing, so the Local Map re-renders on change and the choice persists with the rest of the tuning.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -63,5 +64,6 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuning-stub-factor)
 - [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuning-stub-max-offset)
 - [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)
+- [`template.tuning-symbol-order`](../../shared/template.html.mdmd.md#symbol-tuning-symbol-order)
 - [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
 <!-- LIVE-DOC:END Dependencies -->

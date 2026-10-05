@@ -8,13 +8,16 @@ import { computeDirectoryBands, type DirectoryBand, type FlowNode } from "../mem
  *
  * Pure-function module: no DOM. The columns come from the ranking; the bands
  * come from the Membrane Map's band computation; this module decides the order
- * of band rows, the order of files within a band, and where the threaded wires
- * pass. A bundle's stand-in in a column it passes is a virtual node: in a
- * directory's stack of files it takes a place among them, and in a directory
- * of directories it takes a row of its own beside them. A barycenter sweep
- * walks the columns left to right and then right to left, each column ordered
- * against the one just settled, and the order with the fewest crossings
- * between adjacent columns is kept.
+ * of band rows, the order of files within a band, the order of each card's
+ * rows, and where the threaded wires pass. A bundle's stand-in in a column it
+ * passes is a virtual node: in a directory's stack of files it takes a place
+ * among them, and in a directory of directories it takes a row of its own
+ * beside them. A barycenter sweep walks the columns left to right and then
+ * right to left, each column ordered against the one just settled, and the
+ * order with the fewest crossings between adjacent columns is kept. When the
+ * rows may move, each card's rows are then sorted by the mean height of their
+ * wires' far ends, the columns are swept once more at the new heights, and
+ * the result is kept only if it crosses no more than the given rows did.
  *
  * @module branch-order
  */
@@ -27,10 +30,10 @@ export interface ForwardReference {
   consumer: string;
   /** The offering pin the wire leaves, the provider's symbol row; the wires of one pin bundle. */
   pin: string;
-  /** Where on the provider's card the wire leaves, as a fraction of the card's rows from the top. */
-  providerRow: number;
-  /** Where on the consumer's card the wire arrives, as a fraction of the card's rows from the top. */
-  consumerRow: number;
+  /** The row on the provider's card the wire leaves, by name, as `OrderInput.rows` lists it. */
+  providerRow: string;
+  /** The row on the consumer's card the wire arrives at, by name. */
+  consumerRow: string;
 }
 
 /** What the ordering takes: the ranked columns, each file's directory, and the forward references with their heights on the cards. */
@@ -38,6 +41,10 @@ export interface OrderInput {
   /** The files of each column, left to right, in any order. */
   columns: readonly (readonly string[])[];
   directoryOf: (id: string) => string;
+  /** The rows each card shows, top to bottom as given; a wire's height on its card is its row's place in this list. */
+  rows: ReadonlyMap<string, readonly string[]>;
+  /** Which rows may move to where their wires lead; a row refused keeps its place. Omitted, every row stays as given. */
+  movable?: (row: string) => boolean;
   edges: readonly ForwardReference[];
   /** How many left-and-right sweeps to try; the best order seen is kept. Zero keeps the starting order. */
   sweeps?: number;
@@ -70,6 +77,8 @@ export interface BranchOrder {
   bands: DirectoryBand[];
   /** The files of each column, top to bottom. */
   columns: string[][];
+  /** The rows of each card, top to bottom, in the chosen order. */
+  rows: Map<string, string[]>;
   /** The lanes, keyed as `Lane.key`. */
   lanes: Map<string, Lane>;
   /** For each wire and each column it passes (`${edge}\0${column}`), its lane and its bundle's slot in it. */
@@ -83,6 +92,9 @@ interface Segment {
   b: string;
   aRow: number;
   bRow: number;
+  /** The row names at each end, null at a bundle's stand-in. */
+  aName: string | null;
+  bName: string | null;
   column: number;
 }
 
@@ -109,9 +121,10 @@ const LANE_BAND = "\0lane";
 export function orderBranches(input: OrderInput): BranchOrder {
   const columnOf = new Map<string, number>();
   input.columns.forEach((files, column) => files.forEach(id => columnOf.set(id, column)));
-  const { virtuals, segments } = bundleWires(input.edges, columnOf);
-  const virtualById = new Map(virtuals.map(virtual => [virtual.id, virtual]));
   const columnCount = input.columns.length;
+  const given = new Map([...input.rows].map(([id, rows]) => [id, [...rows]]));
+  const { virtuals, segments } = bundleWires(input.edges, columnOf, fractionsOf(given));
+  const virtualById = new Map(virtuals.map(virtual => [virtual.id, virtual]));
 
   const flow = new Map<string, FlowNode>();
   input.columns.forEach((files, column) => files.forEach(id => flow.set(id, { id, column, role: "pinned", directory: input.directoryOf(id) })));
@@ -128,33 +141,16 @@ export function orderBranches(input: OrderInput): BranchOrder {
   for (let column = 0; column < columnCount; column++) bands = reorderColumn(bands, column, startKey);
   bands = repackRows(bands, startKey);
 
-  const keys = new Map<string, number>();
-  const keyOf = (id: string): number | undefined => keys.get(id);
-  let merged = walkColumns(bands, columnCount);
-  let positions = positionsOf(merged);
-  let best = { bands, crossings: countCrossings(segments, positions) };
-
   const sweeps = input.sweeps ?? 4;
-  for (let sweep = 0; sweep < sweeps; sweep++) {
-    for (const side of ["left", "right"] as const) {
-      const order = side === "left"
-        ? Array.from({ length: Math.max(0, columnCount - 1) }, (_, i) => i + 1)
-        : Array.from({ length: Math.max(0, columnCount - 1) }, (_, i) => columnCount - 2 - i);
-      for (const column of order) {
-        const bary = barycenters(segments, positions, side, column);
-        for (const id of merged[column]) keys.set(id, bary.get(id) ?? positions.get(id) ?? 0);
-        bands = reorderColumn(bands, column, keyOf);
-        merged[column] = walkColumns(bands, columnCount)[column];
-        merged[column].forEach((id, index) => positions.set(id, index));
-      }
-      // Band rows are shared by every column, so they are settled once per pass, from where every member's wires lead.
-      const neighbours = neighbourMeans(segments, positions);
-      bands = repackRows(bands, id => neighbours.get(id) ?? positions.get(id) ?? 0);
-      merged = walkColumns(bands, columnCount);
-      positions = positionsOf(merged);
-      const crossings = countCrossings(segments, positions);
-      if (crossings < best.crossings) best = { bands, crossings };
-    }
+  let best = sweepColumns(bands, segments, columnCount, sweeps);
+  let rows = given;
+  if (input.movable) {
+    // The rows of each card, by where their wires lead at the settled order; then the columns once more at the new heights.
+    const merged = walkColumns(best.bands, columnCount);
+    const moved = orderRows(given, merged, positionsOf(merged), segments, input.movable);
+    const resegmented = bundleWires(input.edges, columnOf, fractionsOf(moved)).segments;
+    const next = sweepColumns(best.bands, resegmented, columnCount, sweeps);
+    if (next.crossings <= best.crossings) { best = next; rows = moved; }
   }
 
   const lanes = new Map<string, Lane>();
@@ -199,7 +195,95 @@ export function orderBranches(input: OrderInput): BranchOrder {
       children: strip(band.children)
     }));
   const stripped = strip(best.bands);
-  return { bands: stripped, columns: walkColumns(stripped, columnCount), lanes, passages, crossings: best.crossings };
+  return { bands: stripped, columns: walkColumns(stripped, columnCount), rows, lanes, passages, crossings: best.crossings };
+}
+
+/** A barycenter sweep from a starting band tree: the order with the fewest crossings seen, the start included. */
+function sweepColumns(start: readonly DirectoryBand[], segments: readonly Segment[], columnCount: number, sweeps: number): { bands: DirectoryBand[]; crossings: number } {
+  let bands = [...start];
+  const keys = new Map<string, number>();
+  const keyOf = (id: string): number | undefined => keys.get(id);
+  let merged = walkColumns(bands, columnCount);
+  let positions = positionsOf(merged);
+  let best = { bands, crossings: countCrossings(segments, positions) };
+  for (let sweep = 0; sweep < sweeps; sweep++) {
+    for (const side of ["left", "right"] as const) {
+      const order = side === "left"
+        ? Array.from({ length: Math.max(0, columnCount - 1) }, (_, i) => i + 1)
+        : Array.from({ length: Math.max(0, columnCount - 1) }, (_, i) => columnCount - 2 - i);
+      for (const column of order) {
+        const bary = barycenters(segments, positions, side, column);
+        for (const id of merged[column]) keys.set(id, bary.get(id) ?? positions.get(id) ?? 0);
+        bands = reorderColumn(bands, column, keyOf);
+        merged[column] = walkColumns(bands, columnCount)[column];
+        merged[column].forEach((id, index) => positions.set(id, index));
+      }
+      // Band rows are shared by every column, so they are settled once per pass, from where every member's wires lead.
+      const neighbours = neighbourMeans(segments, positions);
+      bands = repackRows(bands, id => neighbours.get(id) ?? positions.get(id) ?? 0);
+      merged = walkColumns(bands, columnCount);
+      positions = positionsOf(merged);
+      const crossings = countCrossings(segments, positions);
+      if (crossings < best.crossings) best = { bands, crossings };
+    }
+  }
+  return best;
+}
+
+/** A wire's height on a card: its row's place among the card's rows, from the top; the middle when the row is unknown. */
+function fractionsOf(rows: ReadonlyMap<string, readonly string[]>): (id: string, row: string) => number {
+  return (id, row) => {
+    const list = rows.get(id) ?? [];
+    const index = list.indexOf(row);
+    return index < 0 || !list.length ? 0.5 : (index + 0.5) / list.length;
+  };
+}
+
+/**
+ * Each card's rows sorted by the mean height of their wires' far ends: the
+ * rows that may move take the places of one another in that order, wired
+ * rows first and unwired ones after them as given, while a row that may not
+ * move keeps its place. The cards are settled one at a time, left to right
+ * and then right to left, each against its neighbours' rows as they stand,
+ * so that two cards wired crosswise do not both turn over and cross again.
+ */
+function orderRows(
+  rows: ReadonlyMap<string, readonly string[]>,
+  merged: readonly (readonly string[])[],
+  positions: ReadonlyMap<string, number>,
+  segments: readonly Segment[],
+  movable: (row: string) => boolean
+): Map<string, string[]> {
+  const current = new Map([...rows].map(([id, list]) => [id, [...list]]));
+  const fraction = (id: string, name: string | null): number => {
+    if (name === null) return LANE_FRACTION;
+    const list = current.get(id) ?? [];
+    const index = list.indexOf(name);
+    return index < 0 || !list.length ? 0.5 : (index + 0.5) / list.length;
+  };
+  const touching = new Map<string, Array<{ neighbour: string; name: string | null }>>();
+  const touch = (id: string, name: string | null, neighbour: string, neighbourName: string | null): void => {
+    if (name === null) return;
+    const key = `${id}\0${name}`;
+    (touching.get(key) ?? touching.set(key, []).get(key)!).push({ neighbour, name: neighbourName });
+  };
+  for (const segment of segments) { touch(segment.a, segment.aName, segment.b, segment.bName); touch(segment.b, segment.bName, segment.a, segment.aName); }
+  const settle = (id: string): void => {
+    const list = current.get(id);
+    if (!list) return;
+    const keyOf = (name: string): number | undefined => {
+      const ends = (touching.get(`${id}\0${name}`) ?? []).filter(end => positions.has(end.neighbour));
+      if (!ends.length) return undefined;
+      return ends.reduce((sum, end) => sum + positions.get(end.neighbour)! + fraction(end.neighbour, end.name), 0) / ends.length;
+    };
+    const moving = list.map((name, index) => ({ name, index, key: keyOf(name) })).filter(row => movable(row.name));
+    const wired = moving.filter(row => row.key !== undefined).sort((x, y) => x.key! - y.key! || x.index - y.index);
+    const unwired = moving.filter(row => row.key === undefined);
+    const queue = [...wired, ...unwired].map(row => row.name);
+    current.set(id, list.map(name => (movable(name) ? queue.shift()! : name)));
+  };
+  for (const sweep of [merged, [...merged].reverse()]) for (const column of sweep) for (const id of column) settle(id);
+  return current;
 }
 
 /**
@@ -207,7 +291,7 @@ export function orderBranches(input: OrderInput): BranchOrder {
  * together, and each leaves the bundle in the gutter before its consumer's
  * column. A bundle's shared run is one segment, so the sweep counts it once.
  */
-function bundleWires(edges: readonly ForwardReference[], columnOf: ReadonlyMap<string, number>): { virtuals: Virtual[]; segments: Segment[] } {
+function bundleWires(edges: readonly ForwardReference[], columnOf: ReadonlyMap<string, number>, fraction: (id: string, row: string) => number): { virtuals: Virtual[]; segments: Segment[] } {
   const byPin = new Map<string, ForwardReference[]>();
   for (const edge of edges) {
     const a = columnOf.get(edge.provider), b = columnOf.get(edge.consumer);
@@ -221,18 +305,19 @@ function bundleWires(edges: readonly ForwardReference[], columnOf: ReadonlyMap<s
     const provider = wires[0].provider;
     const a = columnOf.get(provider)!;
     const far = Math.max(...wires.map(wire => columnOf.get(wire.consumer)!));
-    let previous = provider, previousRow = wires[0].providerRow;
+    let previous = provider, previousRow = fraction(provider, wires[0].providerRow), previousName: string | null = wires[0].providerRow;
     for (let column = a + 1; column <= far; column++) {
       for (const wire of wires.filter(wire => columnOf.get(wire.consumer) === column).sort(byKey)) {
-        segments.push({ a: previous, b: wire.consumer, aRow: previousRow, bRow: wire.consumerRow, column: column - 1 });
+        segments.push({ a: previous, b: wire.consumer, aRow: previousRow, bRow: fraction(wire.consumer, wire.consumerRow), aName: previousName, bName: wire.consumerRow, column: column - 1 });
       }
       const passing = wires.filter(wire => columnOf.get(wire.consumer)! > column).sort(byKey);
       if (!passing.length) break;
       const id = `\0${pin}\0${column}`;
       virtuals.push({ id, column, pin, provider, members: passing.map(wire => ({ key: wire.key, consumer: wire.consumer })) });
-      segments.push({ a: previous, b: id, aRow: previousRow, bRow: LANE_FRACTION, column: column - 1 });
+      segments.push({ a: previous, b: id, aRow: previousRow, bRow: LANE_FRACTION, aName: previousName, bName: null, column: column - 1 });
       previous = id;
       previousRow = LANE_FRACTION;
+      previousName = null;
     }
   }
   return { virtuals, segments };
@@ -410,15 +495,18 @@ export function countCrossings(segments: readonly Segment[], positions: Readonly
   return crossings;
 }
 
-/** The crossings among the wires between adjacent columns of an order, for a scope whose wires skip no column. */
-export function crossingsOf(order: readonly (readonly string[])[], edges: readonly ForwardReference[]): number {
+/** The crossings among the wires between adjacent columns of an order, at the given rows, for a scope whose wires skip no column. */
+export function crossingsOf(order: readonly (readonly string[])[], rows: ReadonlyMap<string, readonly string[]>, edges: readonly ForwardReference[]): number {
   const columnOf = new Map<string, number>();
   order.forEach((files, column) => files.forEach(id => columnOf.set(id, column)));
   const positions = positionsOf(order);
+  const fraction = fractionsOf(rows);
   const segments: Segment[] = [];
   for (const edge of edges) {
     const a = columnOf.get(edge.provider), b = columnOf.get(edge.consumer);
-    if (a !== undefined && b === a + 1) segments.push({ a: edge.provider, b: edge.consumer, aRow: edge.providerRow, bRow: edge.consumerRow, column: a });
+    if (a !== undefined && b === a + 1) {
+      segments.push({ a: edge.provider, b: edge.consumer, aRow: fraction(edge.provider, edge.providerRow), bRow: fraction(edge.consumer, edge.consumerRow), aName: edge.providerRow, bName: edge.consumerRow, column: a });
+    }
   }
   return countCrossings(segments, positions);
 }

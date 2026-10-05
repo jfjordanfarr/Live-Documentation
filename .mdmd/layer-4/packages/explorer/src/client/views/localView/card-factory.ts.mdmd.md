@@ -4,13 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-03T18:02:22.349Z
+- Generated At: 2026-10-05T20:41:23.763Z
 
 ## Authored
 ### Purpose
 Creates individual node cards for the Local Map view. Each card displays artifact metadata, public symbols, and provides interaction targets for hover/click/pin behaviors.
 
 ### Notes
+
+- Since 2026-10-05 the card draws its symbol rows alphabetically when that symbol order is chosen in Tuning, wherever a card is drawn; the layout order is applied afterwards by the branch renderer, where there is a layout, and the order of appearance is the Live Doc's.
 Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the three-column layout, including symbol sections and type badges.
 
 File bodies retain all interfaces; row buttons toggle individual symbols and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible. Type badges retain their source row and expose the referenced artifact's evidence.
@@ -20,7 +22,7 @@ File bodies retain all interfaces; row buttons toggle individual symbols and sup
 ### Public Symbols
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L25)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L26)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -37,7 +39,7 @@ The created card element
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L162)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L163)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
@@ -55,7 +57,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L336)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L339)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -70,7 +72,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L387)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L390)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary
@@ -90,6 +92,7 @@ The badge element
 ### Dependencies
 - [`layoutUtils.ROOT_KEY`](../layoutUtils.ts.mdmd.md#symbol-root_key)
 - [`layoutUtils.getDirectoryKey`](../layoutUtils.ts.mdmd.md#symbol-getdirectorykey)
+- [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

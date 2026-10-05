@@ -69,3 +69,27 @@ The owner looked at the afternoon's pictures in [Turn 8](../../ChatHistory/2026/
 | Estate, chain | 39 | 17 | 57 | 50 | 1,020 | 0 |
 
 The spots fall because a cable crossed once is one place; the points rise where a cable of many members crosses a wire, since each member is a pair, which is what that count means. The deck now holds foreign lane samples at zero on every retained row. What remains for the owner's eye: the curves in a gutter still cross a directory that spans the gutter and holds neither of their ends (on the repository's five files, 24,886 samples of 83 wires, up from 18,835 of 133, since lanes outside a foreign box mean longer climbs into them), which is the residual case for the glass they asked about; the width scale of the shared run; and the Portal/Services box moved to its own row, the price of the lane above it.
+
+## The rows of a card where their wires lead, later the same evening
+
+The owner's verdict on the pictures above ([Turn 10](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-10)): the estate chain "looks phenomenal", the bundle on hover "really great", and the repository's five files still showed "guitar strings", which they read rightly as one cable per pin of document.ts. They asked whether those symbols could stand higher on the card so their cables need not cross the wires bound for graph.ts, board.ts and boardGraph.ts, and chose, of the fork offered, that a card's rows be ordered by where their wires lead, with fixed orders on offer for anyone who wants them ([Turn 11](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-11)). The pass: the port-ordering step of layered drawing, each card's rows sorted by the mean height of their wires' far ends after the columns are ordered and before one more sweep, kept only if it crosses no more than before; Internals keeps the foot of the card; and a Symbol Order choice in Tuning with "Layout" as the default, "Alphabetical" wherever a card is drawn, and "Order of appearance", the Live Doc's own. The same states as above, same frame.
+
+| Capture | State |
+| --- | --- |
+| [Five files, rows ordered](repository-five-local-map-ordered-rows.png) | document.ts's rows whose cables climb to the lane above graph.ts now stand at the top of its card, and graph.ts's rows stand in the order their wires arrive, LinkTarget and linkTarget first. |
+| [Where the bundles part, rows ordered](repository-five-bundles-part-ordered-rows.png) | The same state panned right. |
+| [Chain, rows ordered](repository-chain-local-map-ordered-rows.png) | The consumers' rows wired to index.ts stand by the height of its pin. |
+| [Estate five, rows ordered](estate-five-local-map-ordered-rows.png) | IPaymentService's rows are Post, Get, IPaymentService: the two the Contracts providers feed on top, the one whose cable leaves for the Hub below. |
+| [Estate chain, rows ordered](estate-chain-local-map-ordered-rows.png) | PaymentsController's rows stand by their wires to GatewayClient and HubProxy; the picture the owner called phenomenal is otherwise unchanged. |
+| [Alphabetical, from Tuning](repository-five-symbol-order-alphabetical.png) | The five files with Symbol Order set to Alphabetical in the open Tuning panel: every card's rows in name order, Internals last, and the cables crossing again. |
+
+The order is kept by the ordering's tests and by a Playwright test that reads all three orders from the page and holds the layout order closer to the wires than the file's own. [The scoreboard](scoreboard-rows.md) is the gate's run. The ordering's own count, crossings between straight segments in its index space, fell on every scope; the deck's count of the drawn curves fell on the five-file scopes and rose on the chain scopes, where every consumer's rows lead to one pin of index.ts or GatewayClient and the row order changes little a reader would see:
+
+| Scope | Ordering's crossings, file's order | by wires | Drawn spots, before | after | Drawn points, before | after |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Repository, five files | 5,689 | 5,553 | 498 | 438 | 3,778 | 2,727 |
+| Repository, chain | 9,531 | 9,383 | 483 | 736 | 1,540 | 3,025 |
+| Estate, five files | 165 | 164 | 48 | 39 | 390 | 360 |
+| Estate, chain | 91 | 79 | 17 | 24 | 50 | 86 |
+
+The ordering counts straight segments between places in its own index space, where every card is one unit tall; the deck counts the drawn curves, lanes and cables in pixels, where a card of twenty rows is ten times taller than one of two. An ordering that measures heights in rows rather than cards is the next step the chain numbers ask for, if the owner's eye agrees that the chain pictures lost something.

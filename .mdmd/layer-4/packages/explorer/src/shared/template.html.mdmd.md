@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-05T16:55:02.394Z
+- Generated At: 2026-10-05T20:41:24.623Z
 
 ## Authored
 ### Purpose
@@ -209,6 +209,9 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-stub-min-value` {#symbol-tuning-stub-min-value}
+- Type: variable
+
+#### `tuning-symbol-order` {#symbol-tuning-symbol-order}
 - Type: variable
 
 #### `tuning-vertical-offset` {#symbol-tuning-vertical-offset}

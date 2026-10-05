@@ -1,4 +1,5 @@
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
+import type { SymbolOrder } from "../../types";
 import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
@@ -15,6 +16,8 @@ export interface BranchGraph {
   relevantSymbols: Map<string, Set<string>>;
   /** The keys of the references that read against the columns: each cycle's feedback, drawn as stubs. */
   back: Set<string>;
+  /** The rows each card shows, top to bottom, in the chosen symbol order; Internals last. */
+  rows: Map<string, string[]>;
   /** The bands, lanes and crossings of the chosen order. */
   order: BranchOrder;
 }
@@ -34,12 +37,15 @@ export function edgeKey(edge: LocalEdge): string {
  * Disclose the union of independent pins. Once both endpoints are present,
  * retain their relationship even when neither pin directly requested it.
  * Filters hide neighbors, but never the selected or explicitly pinned files.
+ * The symbol order says how a card's rows stand: by where their wires lead
+ * (the layout's choice), alphabetically, or as the Live Doc lists them.
  */
 export function buildBranches(
   center: ExplorerNodePayload,
   graph: ExplorerGraphPayload,
   pins: PinSet,
-  include: (node: ExplorerNodePayload) => boolean
+  include: (node: ExplorerNodePayload) => boolean,
+  symbolOrder: SymbolOrder = "layout"
 ): BranchGraph {
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
@@ -78,20 +84,18 @@ export function buildBranches(
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
   }
   const ranking = rankBranches(nodes, links);
-  const rows = visibleRows(nodes, center.id, relevantSymbols);
-  const fraction = (nodeId: string, symbol: string | undefined): number => {
-    const list = rows.get(nodeId) ?? [];
-    const index = list.indexOf(normalizeSymbolIdentifier(symbol) ?? "__internals__");
-    return index < 0 || !list.length ? 0.5 : (index + 0.5) / list.length;
-  };
+  const rows = visibleRows(nodes, center.id, relevantSymbols, symbolOrder);
+  const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
   const forward: ForwardReference[] = links
     .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
     .map(edge => ({ key: edgeKey(edge), provider: edge.targetId, consumer: edge.sourceId,
-      pin: `${edge.targetId}\0${normalizeSymbolIdentifier(edge.targetSymbol) ?? "__internals__"}`,
-      providerRow: fraction(edge.targetId, edge.targetSymbol), consumerRow: fraction(edge.sourceId, edge.sourceSymbol) }));
+      pin: `${edge.targetId}\0${row(edge.targetSymbol)}`, providerRow: row(edge.targetSymbol), consumerRow: row(edge.sourceSymbol) }));
   const order = orderBranches({
     columns: ranking.columns.map(column => column.map(node => node.id)),
     directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
+    rows,
+    // Only the layout order moves rows, and Internals keeps the foot of the card.
+    movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
     edges: forward
   });
   return {
@@ -100,6 +104,7 @@ export function buildBranches(
     hiddenConnections,
     relevantSymbols,
     back: ranking.back,
+    rows: order.rows,
     order
   };
 }
@@ -107,19 +112,26 @@ export function buildBranches(
 /**
  * The rows each card will show, top to bottom, by their normalized names: every
  * row of a file retained whole or in focus, otherwise the rows some pin needs,
- * with Internals last. The ordering reads a wire's height on its card from this.
+ * with Internals last; alphabetical when that order is chosen, otherwise as
+ * the Live Doc lists them, which the layout order then moves by the wires.
  */
-function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string, relevant: ReadonlyMap<string, ReadonlySet<string>>): Map<string, string[]> {
+function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string, relevant: ReadonlyMap<string, ReadonlySet<string>>, symbolOrder: SymbolOrder): Map<string, string[]> {
   const rows = new Map<string, string[]>();
   for (const node of nodes) {
     const needed = relevant.get(node.id);
     const all = node.id === centerId || needed?.has("*");
     const names = node.publicSymbols.map(symbol => normalizeSymbolIdentifier(symbol) ?? symbol);
     const shown = all ? names : names.filter(name => needed?.has(name));
+    if (symbolOrder === "alphabetical") shown.sort(compareSymbolNames);
     if (all || needed?.has("__internals__")) shown.push("__internals__");
     rows.set(node.id, shown);
   }
   return rows;
+}
+
+/** Alphabetical order of symbol names, case first set aside, then as the names compare. */
+export function compareSymbolNames(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { sensitivity: "base" }) || a.localeCompare(b);
 }
 
 /**
