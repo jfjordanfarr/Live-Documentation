@@ -12,9 +12,9 @@ _Source inventory for October 2026, maintained by the root agent of each session
 
 ## Owner captures
 
-- [October 5 Claude Code terminal export](2026-10-05-172035-hi-again-fable-51-it-is-105-in-my-timezone-pl.txt): placed in this folder by the owner during the session, named by the harness with a timestamp (17:20:35) that agrees with where the capture ends, not with the session's start. It runs from the opening prompt through the agent's status line "Docs are regenerating and the gate follows them", before the owner's Turn 5 steering message; later turns are in [the maintained record](2026-10-05.1.record.md) only. Received bytes and filename are preserved; the agent has not edited it.
+- [October 5 Claude Code terminal export](2026-10-05-172035-hi-again-fable-51-it-is-105-in-my-timezone-pl.txt): placed in this folder by the owner during the session, named by the harness with a timestamp (17:20:35) that agrees with where the capture ends, not with the session's start. Re-exported by the owner during Turn 8: it now runs from the opening prompt through the agent's final reply to Turn 7 and the compaction that followed it, before the owner's Turn 8 message; later turns are in [the maintained record](2026-10-05.1.record.md) only. Received bytes and filename are preserved; the agent has not edited it. The earlier copy, committed at `f6eba721`, ended before the Turn 5 steering message (368,941 bytes; 5,880 lines; SHA-256 `e665708c5e1b53c756941a793eba002e54ba6e86d23f99b16ae472a0213ec252`) and remains in git.
 
-  Coverage: 368,941 bytes; 5,880 lines. SHA-256: `e665708c5e1b53c756941a793eba002e54ba6e86d23f99b16ae472a0213ec252`. Prompts are marked `❯` and responses `●`, with collapsed tool counts and terminal wrapping as capture characteristics, not extra turns. No hidden reasoning was extracted.
+  Coverage: 405,657 bytes; 6,505 lines. SHA-256: `b100a2af56a6378f151ab570d7ced43ce79922ba1d8a7479b40a04f15c2284eb`. Prompts are marked `❯` and responses `●`, with collapsed tool counts and terminal wrapping as capture characteristics, not extra turns. No hidden reasoning was extracted.
 
 - [October 2–3, session 1: ten owner screenshots](2026-10-02.1.images/README.md), supplied with Turns 7, 12 and 14; original PNG bytes, attachment paths and SHA-256 hashes retained.
 
