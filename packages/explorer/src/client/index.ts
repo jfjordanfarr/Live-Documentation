@@ -356,7 +356,12 @@ function startExplorer(bundle: StaticExplorerData): void {
   showZoomBoundary("");
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(zoomBoundary, perspectivePath, mapButton, graphButton, clearPinsButton);
+  // The Local Map says when its layout is strained, so a person can choose the Force Graph; the threshold is in Tuning.
+  const perspectiveStrain = document.createElement("span");
+  perspectiveStrain.className = "perspective-strain";
+  perspectiveStrain.setAttribute("role", "status");
+  perspectiveStrain.textContent = "Dense picture: the Force Graph may read better";
+  perspectiveControls.append(zoomBoundary, perspectivePath, perspectiveStrain, mapButton, graphButton, clearPinsButton);
   requireElement("main").append(perspectiveControls);
 
   function syncPerspectiveControls(): void {
@@ -366,6 +371,12 @@ function startExplorer(bundle: StaticExplorerData): void {
     const path = localView.getActivePath();
     perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
     perspectivePath.hidden = !path;
+    const strain = state.view === "map" ? localView.getStrain() : null;
+    const dense = !!strain && strain.threaded + strain.back >= state.tuning.localMap.strainNudge;
+    perspectiveStrain.hidden = !dense;
+    if (strain) {
+      perspectiveStrain.title = `${strain.threaded} ${strain.threaded === 1 ? "reference skips" : "references skip"} columns and ${strain.back} ${strain.back === 1 ? "reads" : "read"} against them, across ${strain.columns} columns. Tuning sets the threshold.`;
+    }
     const count = state.pins?.entries.length ?? 0;
     clearPinsButton.hidden = count === 0;
     clearPinsButton.textContent = `${count} ${count === 1 ? "pin" : "pins"} ×`;
@@ -968,6 +979,8 @@ function startExplorer(bundle: StaticExplorerData): void {
       circuitView.render();
     } else if (state.view === "map") {
       localView.render();
+      // The strain of the picture just drawn decides the nudge.
+      syncPerspectiveControls();
     } else if (state.view === "graph") {
       forceGraphView.render();
     } else if (state.view === "membrane") {

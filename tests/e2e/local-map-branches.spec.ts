@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { LOCAL_MAP, displayNames, loadGraph, localRetainUrl, readPicture, scoreExpanded, scoreOcclusion, symbolCounts } from "./still-picture";
+
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
 const pin = (page: Page, file: string, symbol: string) => card(page, file).locator(`.symbol-row[data-symbol="${symbol}"] .symbol-label-wrapper`);
@@ -121,6 +123,8 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   const routes = await page.locator('#map-connections .connection-path[data-target-id="scripts/slopcop/config.ts"]').evaluateAll(paths => paths.map(path => path.getAttribute("d")!));
   expect(routes.length).toBeGreaterThan(0);
   expect(routes.every(route => route.includes(" C ") && !route.includes(" Q "))).toBe(true);
+  // Two files and their neighbours strain nothing: no nudge toward the Force Graph.
+  await expect(page.locator(".perspective-strain")).toBeHidden();
   await file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true }).click();
   const after = (await file("symbolReferences.ts").boundingBox())!;
   expect(after.height).toBeLessThan(before.height);
@@ -133,6 +137,40 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await file("symbolReferences.ts").locator(".node-title").click();
   await expect(file("markdownShared.ts")).toBeVisible();
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
+});
+
+test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const files = [
+    "packages/engine/src/live-docs/graph.ts",
+    "packages/engine/src/live-docs/document.ts",
+    "packages/engine/src/live-docs/graphFiles.ts",
+    "packages/explorer/src/shared/staticExplorerData.ts",
+    "packages/explorer/src/shared/staticBuilder.ts"
+  ];
+  await page.goto(localRetainUrl("/", files));
+  await page.waitForSelector("#map-container .branch-mode");
+  await page.waitForSelector("#map-connections .connection-path");
+  await page.waitForTimeout(900);
+  const graph = await loadGraph(page, "/");
+  const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));
+  expect(picture.wires.length).toBeGreaterThan(100);
+  expect(scoreOcclusion(picture).occludedWires, "no wire crosses a card it does not end at").toBe(0);
+  const routesOnly = { ...picture, wires: picture.wires.filter(wire => !wire.stub) };
+  expect(scoreExpanded(routesOnly, symbolCounts(graph)).flow.backward, "no drawn route reads backward; a cycle's feedback is stubs").toBe(0);
+  // This scope's references skip columns, so lanes exist, and every wire stays inside the picture's own extent: no headroom above it.
+  const lanes = await page.locator("#map-container .local-pass-through").count();
+  expect(lanes).toBeGreaterThan(0);
+  const top = await page.evaluate(() => Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-pass-through")].map(el => el.getBoundingClientRect().top)));
+  const highest = Math.min(...picture.wires.flatMap(wire => wire.points.filter((_, i) => i % 2 === 1)));
+  expect(highest).toBeGreaterThanOrEqual(top - 1);
+  // The old detour drew every skipped reference as an orthogonal route; a threaded wire is curves and lane runs only.
+  const detours = await page.locator('#map-connections path.connection-path:not(.back-route)').evaluateAll(paths => paths.filter(path => /\sQ\s.*\sQ\s/u.test(path.getAttribute("d") ?? "")).length);
+  expect(detours).toBe(0);
+  // Over a hundred references thread columns here, past the default threshold: the Local Map says so beside the 3D control.
+  const nudge = page.locator(".perspective-strain");
+  await expect(nudge).toBeVisible();
+  await expect(nudge).toHaveAttribute("title", /references skip columns/);
 });
 
 test("a type-reference badge retains its source pin and keeps the referenced file as the detail target", async ({ page }) => {

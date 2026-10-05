@@ -171,6 +171,11 @@ export function membraneBrowseUrl(base: string, file: string): string {
 
 export const localMapUrl = (base: string, file: string): string => `${base}?view=local&node=${encodeURIComponent(file)}`;
 
+/** The address of the Local Map with every file of the set retained whole, the first as the subject, at the view's own fit. */
+export function localRetainUrl(base: string, files: readonly string[]): string {
+  return `${base}?s=${compressToEncodedURIComponent(JSON.stringify({ v: 1, w: "map", n: files[0], p: files.map(n => ({ n, s: "*" })) }))}`;
+}
+
 export const forceGraphUrl = (base: string, file: string): string => `${base}?view=force&node=${encodeURIComponent(file)}`;
 
 // ─── Reading a view ───────────────────────────────────────────────────────
@@ -272,6 +277,8 @@ export interface WireReading {
   providerEnd: 0 | 1;
   /** The union of the four endpoint texts' boxes, when all four exist. */
   endpointBox: Box | null;
+  /** A French Corset stub rather than a route: a closed shape at one pin that marks a reference drawn no further. */
+  stub: boolean;
 }
 
 /** What the page reports about one card. */
@@ -397,6 +404,8 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         const sourceId = data.sourceId ?? "";
         const targetId = data.targetId ?? "";
         if (!sourceId || !targetId || sourceId === targetId) continue;
+        // A wire the page holds but does not show, such as a back reference's route before a hover, is not drawn.
+        if (getComputedStyle(el).display === "none") continue;
         const clean = (symbol: string | undefined): string => (symbol === "__internals__" || symbol === "*" || symbol === undefined ? "" : symbol);
         const consumer = view.sourceIs === "consumer" ? sourceId : targetId;
         const provider = view.sourceIs === "consumer" ? targetId : sourceId;
@@ -458,7 +467,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
           const top = Math.min(...rects.map(r => r.top));
           endpointBox = { x: left, y: top, width: Math.max(...rects.map(r => r.right)) - left, height: Math.max(...rects.map(r => r.bottom)) - top };
         }
-        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, points, providerEnd, endpointBox });
+        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },

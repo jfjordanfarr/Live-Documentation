@@ -1,5 +1,5 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
-import type { BranchGraph } from "./branches";
+import { edgeKey, type BranchGraph } from "./branches";
 import type {
   ExplorerNodePayload
 } from "../../../shared/types";
@@ -61,6 +61,7 @@ import {
   clearSymbolHighlightDOM
 } from "./symbol-highlight";
 import type {
+  BranchStrain,
   ColumnRole,
   LocalViewApi,
   LocalViewOptions,
@@ -97,6 +98,20 @@ export class LocalViewController implements LocalViewApi {
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
   /** Shared pins are owned by the application, not this renderer. */
   get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
+
+  /** How many references the drawn exploration threads through lanes, and how many it draws as stubs. */
+  getStrain(): BranchStrain | null {
+    const branches = this.branches;
+    if (!branches) return null;
+    const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
+    let threaded = 0;
+    for (const edge of branches.subgraph.links) {
+      if (edge.sourceId === edge.targetId || branches.back.has(edgeKey(edge))) continue;
+      const a = columnOf.get(edge.targetId), b = columnOf.get(edge.sourceId);
+      if (a !== undefined && b !== undefined && b > a + 1) threaded++;
+    }
+    return { threaded, back: branches.back.size, columns: branches.columns.length };
+  }
 
   /** Screen position of a file's readable identity, shared across perspectives. */
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
@@ -817,7 +832,8 @@ export class LocalViewController implements LocalViewApi {
    * {@link resetZoom} calls.
    */
   fitMapToContent(): void {
-    this.fitMap((extents, frame) => computeFitTransform(extents, frame));
+    // A retained exploration is framed at reading size: the whole of it when it fits, else the subject with its surroundings.
+    this.fitMap((extents, frame) => computeFitTransform(extents, frame, this.branches ? { minScale: 1 } : undefined));
   }
 
   /**

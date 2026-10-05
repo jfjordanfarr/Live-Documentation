@@ -141,7 +141,7 @@ export function computeLayoutExtents(
   return withTransformReset(container, containerRect => {
     // Query for layout elements
     const trackedElements = contentRoot.querySelectorAll<HTMLElement>(
-      ".layout-node, .layout-box, .node-card"
+      ".layout-node, .layout-box, .node-card, .local-pass-through"
     );
     const contentBounds = measureElementsBounds(trackedElements, containerRect);
     if (!contentBounds) {

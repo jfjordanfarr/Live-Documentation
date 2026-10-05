@@ -36,6 +36,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const hoverDimSymbolsInput = document.getElementById("tuning-hover-dim-symbols") as HTMLInputElement | null;
   const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
   const selfLoopTaperInput = document.getElementById("tuning-self-loop-taper") as HTMLInputElement | null;
+  const strainNudgeInput = document.getElementById("tuning-strain-nudge") as HTMLInputElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -108,6 +109,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.hoverDimSymbols = setSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", state.tuning.localMap.hoverDimSymbols);
     state.tuning.localMap.hoverDimConnections = setSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", state.tuning.localMap.hoverDimConnections);
     state.tuning.localMap.selfLoopTaper = setSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", state.tuning.localMap.selfLoopTaper);
+    state.tuning.localMap.strainNudge = setSlider(strainNudgeInput, "tuning-strain-nudge-value", state.tuning.localMap.strainNudge, v => String(v));
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -129,4 +131,15 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   wireLocalMapSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", "--hover-dim-symbols", v => { state.tuning.localMap.hoverDimSymbols = v; });
   wireLocalMapSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", "--hover-dim-connections", v => { state.tuning.localMap.hoverDimConnections = v; });
   wireLocalMapSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", "--self-loop-taper", v => { state.tuning.localMap.selfLoopTaper = v; });
+
+  // The nudge threshold changes a status, not a drawing: the view re-renders so the perspective controls read it again.
+  if (strainNudgeInput) {
+    const output = document.getElementById("tuning-strain-nudge-value") as HTMLOutputElement | null;
+    strainNudgeInput.addEventListener("input", () => {
+      state.tuning.localMap.strainNudge = parseFloat(strainNudgeInput.value);
+      if (output) output.textContent = strainNudgeInput.value;
+      onTuningChange();
+      if (state.view === "map") onRender();
+    });
+  }
 }

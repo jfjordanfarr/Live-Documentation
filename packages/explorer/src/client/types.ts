@@ -46,6 +46,11 @@ export interface LocalMapTuning {
   collapseOnHover: boolean;
   /** Collapse (hide) unrelated symbols when a symbol is pinned */
   collapseOnPin: boolean;
+  /**
+   * How many references may skip columns or read against them before the Local
+   * Map says the picture is dense and the Force Graph may read better (2026-10-05).
+   */
+  strainNudge: number;
 }
 
 /** Aggregate tuning configuration threading through into every Explorer view. */

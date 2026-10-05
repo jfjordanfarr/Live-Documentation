@@ -47,7 +47,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     hoverDimConnections: 0.1,
     selfLoopTaper: 0.2,
     collapseOnHover: false,
-    collapseOnPin: true
+    collapseOnPin: true,
+    strainNudge: 48
   }
 });
 
@@ -131,13 +132,15 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const selfLoopTaper = readFiniteNumber(localMapRaw.selfLoopTaper);
         const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
+        const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
         tuning.localMap = {
           ...(columnGap !== undefined ? { columnGap } : null),
           ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
           ...(hoverDimConnections !== undefined ? { hoverDimConnections } : null),
           ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null),
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
-          ...(collapseOnPin !== undefined ? { collapseOnPin } : null)
+          ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
+          ...(strainNudge !== undefined ? { strainNudge } : null)
         };
       }
 

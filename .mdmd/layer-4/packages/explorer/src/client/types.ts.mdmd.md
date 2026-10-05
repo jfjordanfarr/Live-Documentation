@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-02T21:07:39.194Z
+- Generated At: 2026-10-05T16:55:01.017Z
 
 ## Authored
 ### Purpose
@@ -61,14 +61,14 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L52)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L57)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L61)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L66)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -76,21 +76,21 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L72)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L77)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L75)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L80)
 
 ##### `CircuitTransform` — Summary
 Pan/zoom transform for the Circuit Board (treemap) view.
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L85)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L90)
 
 ##### `DirectoryNode` — Summary
 Tree node representing a directory in the workspace.

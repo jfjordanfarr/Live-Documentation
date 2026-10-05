@@ -19,6 +19,7 @@ import {
   legibleNames,
   loadGraph,
   localMapUrl,
+  localRetainUrl,
   membraneBrowseUrl,
   membranePinAllUrl,
   readPicture,
@@ -37,6 +38,7 @@ import {
   type ChurnScore,
   type Fact,
   type Journey,
+  type PictureReading,
   type Scoreboard,
   type ViewReading
 } from "./still-picture";
@@ -165,6 +167,12 @@ const settleLocalMap = async (page: Page, file: string): Promise<void> => {
   await page.waitForTimeout(700);
 };
 
+const settleLocalBranches = async (page: Page): Promise<void> => {
+  await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
+  await page.waitForSelector("#map-connections .connection-path", { timeout: 10_000 });
+  await page.waitForTimeout(900);
+};
+
 const settleMembranePins = async (page: Page): Promise<void> => {
   await page.waitForSelector(".pin-active-root", { timeout: 20_000 });
   await page.waitForSelector("#membrane-container .membrane-connection", { timeout: 10_000 });
@@ -187,8 +195,9 @@ interface Still {
   hiddenAmongDrawn: Scoreboard["hiddenAmongDrawn"];
 }
 
-async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraphPayload, facts: Fact[], names: Record<string, Record<string, string>>): Promise<Still> {
-  const picture = await readPicture(page, view, names);
+async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraphPayload, facts: Fact[], names: Record<string, Record<string, string>>, read?: PictureReading): Promise<Still> {
+  // A caller that has already read the picture passes it in: a reading samples every wire, and a retained scope has hundreds.
+  const picture = read ?? await readPicture(page, view, names);
   return {
     legibility: scoreLegibility(facts, picture),
     picture: { scale: picture.scale, smallestLabelPx: picture.smallestLabelPx, cardsTotal: picture.cardsTotal, cardsInFrame: picture.cardsInFrame, cardsPartlyInFrame: picture.cardsPartlyInFrame, wires: picture.wires.length },
@@ -513,6 +522,47 @@ for (const run of RUNS) {
       expect(still.text!.cutOffs, still.text!.faults).toBe(0);
       expect(routes.changed, routes.examples.join("\n")).toBe(0);
       expect(still.occlusion!.occludedWires, "the Local Map keeps its wires in the gutters between columns").toBe(0);
+    });
+
+    test("Local Map, retained", async ({ page }) => {
+      // A retained scope draws every reference among dozens of files, three to four times the wires of the selected
+      // state, and the tour and the six pans each read the whole picture again; the budget is sized to that work.
+      test.setTimeout(360_000);
+      const graph = await loadGraph(page, run.base);
+      const facts = factsInScope(graph, run.scope);
+      const names = displayNames(graph, graph.nodes.map(node => node.id));
+
+      await page.goto(localRetainUrl(run.base, run.scope));
+      await settleLocalBranches(page);
+      await shot(page, run, "Local Map retained", "state");
+      const picture = await readPicture(page, LOCAL_MAP, names);
+      const still = await stillMeasures(page, LOCAL_MAP, graph, facts, names, picture);
+      // The deck counts a back reference's stubs as backward, as it does the Membrane's; the rule here is for routes.
+      const routesOnly = scoreExpanded({ ...picture, wires: picture.wires.filter(wire => !wire.stub) }, symbolCounts(graph));
+      const tour = await runTour(page, LOCAL_MAP, facts, names);
+      const routes = await scoreRoutes(page, LOCAL_MAP);
+
+      recordBoard({
+        measuredAt: new Date().toISOString(),
+        bundle: run.bundle,
+        scopeName: run.scopeName,
+        view: "Local Map",
+        state: `${run.scope.length} files retained`,
+        scope: { files: run.scope.length, facts: facts.length },
+        ...still,
+        routes,
+        journey: null,
+        churn: null,
+        tour,
+        chain: null,
+        notes: ["every file of the scope retained whole, the first as the subject, at the view's own fit; the Membrane row above pins the same files' symbols"]
+      });
+
+      expect(still.text!.collisions, still.text!.faults).toBe(0);
+      expect(still.text!.cutOffs, still.text!.faults).toBe(0);
+      expect(routes.changed, routes.examples.join("\n")).toBe(0);
+      expect(still.occlusion!.occludedWires, "a retained exploration keeps every wire out of every card it does not end at").toBe(0);
+      expect(routesOnly.flow.backward, "every route a retained exploration draws reads forward; a cycle's feedback is stubs").toBe(0);
     });
 
     test("Membrane Map", async ({ page }) => {

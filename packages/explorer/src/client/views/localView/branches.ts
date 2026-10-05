@@ -1,15 +1,33 @@
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
+import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { orderBranches, type BranchOrder, type ForwardReference } from "./branch-order";
 import { buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
 
 /** A disclosed exploration, with every connection between its retained files. */
 export interface BranchGraph {
   subgraph: LocalSubgraph;
+  /** The files of each column, left to right, each column top to bottom in the chosen order. */
   columns: ExplorerNodePayload[][];
   hiddenConnections: Map<string, number>;
   relevantSymbols: Map<string, Set<string>>;
+  /** The keys of the references that read against the columns: each cycle's feedback, drawn as stubs. */
+  back: Set<string>;
+  /** The bands, lanes and crossings of the chosen order. */
+  order: BranchOrder;
+}
+
+/** The ranking of retained files into columns, and the references the ranking reads backward. */
+export interface BranchRanking {
+  columns: ExplorerNodePayload[][];
+  back: Set<string>;
+}
+
+/** One reference's identity: its two files, its two symbols and its kind. */
+export function edgeKey(edge: LocalEdge): string {
+  return JSON.stringify([edge.sourceId, edge.targetId, edge.sourceSymbol, edge.targetSymbol, edge.kind]);
 }
 
 /**
@@ -59,33 +77,68 @@ export function buildBranches(
   for (const node of nodes) for (const edge of buildSelfLoopEdges(node)) {
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
   }
+  const ranking = rankBranches(nodes, links);
+  const rows = visibleRows(nodes, center.id, relevantSymbols);
+  const fraction = (nodeId: string, symbol: string | undefined): number => {
+    const list = rows.get(nodeId) ?? [];
+    const index = list.indexOf(normalizeSymbolIdentifier(symbol) ?? "__internals__");
+    return index < 0 || !list.length ? 0.5 : (index + 0.5) / list.length;
+  };
+  const forward: ForwardReference[] = links
+    .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
+    .map(edge => ({ key: edgeKey(edge), provider: edge.targetId, consumer: edge.sourceId,
+      providerRow: fraction(edge.targetId, edge.targetSymbol), consumerRow: fraction(edge.sourceId, edge.sourceSymbol) }));
+  const order = orderBranches({
+    columns: ranking.columns.map(column => column.map(node => node.id)),
+    directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
+    edges: forward
+  });
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
-    columns: rankBranches(nodes, links),
+    columns: order.columns.map(ids => ids.flatMap(nodeId => byId.get(nodeId) ?? [])),
     hiddenConnections,
-    relevantSymbols
+    relevantSymbols,
+    back: ranking.back,
+    order
   };
 }
 
-function edgeKey(edge: LocalEdge): string {
-  return JSON.stringify([edge.sourceId, edge.targetId, edge.sourceSymbol, edge.targetSymbol, edge.kind]);
+/**
+ * The rows each card will show, top to bottom, by their normalized names: every
+ * row of a file retained whole or in focus, otherwise the rows some pin needs,
+ * with Internals last. The ordering reads a wire's height on its card from this.
+ */
+function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string, relevant: ReadonlyMap<string, ReadonlySet<string>>): Map<string, string[]> {
+  const rows = new Map<string, string[]>();
+  for (const node of nodes) {
+    const needed = relevant.get(node.id);
+    const all = node.id === centerId || needed?.has("*");
+    const names = node.publicSymbols.map(symbol => normalizeSymbolIdentifier(symbol) ?? symbol);
+    const shown = all ? names : names.filter(name => needed?.has(name));
+    if (all || needed?.has("__internals__")) shown.push("__internals__");
+    rows.set(node.id, shown);
+  }
+  return rows;
 }
 
 /**
- * Rank providers before consumers, placing each as near its consumers as
- * its longest downstream chain permits. Strongly connected components share
- * a column, so cycles terminate without dropping edges or duplicating files.
+ * Rank providers before consumers, placing each as near its consumers as its
+ * longest forward chain permits. A cycle is broken at the references that read
+ * backward in a provider-first order of its members, so that every other
+ * reference flows left to right; the broken ones are returned as `back`.
  */
-export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): ExplorerNodePayload[][] {
-  const successors = new Map(nodes.map(node => [node.id, new Set<string>()]));
-  for (const edge of links) {
-    if (successors.has(edge.sourceId)) successors.get(edge.targetId)?.add(edge.sourceId);
-  }
+export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): BranchRanking {
+  const ids = nodes.map(node => node.id);
+  const present = new Set(ids);
+  const edges = links.filter(edge => edge.sourceId !== edge.targetId && present.has(edge.sourceId) && present.has(edge.targetId));
+  // A link runs from the file that depends (its source) to the file it depends on (its target); the picture reads provider to consumer.
+  const successors = new Map(ids.map(id => [id, new Set<string>()]));
+  for (const edge of edges) successors.get(edge.targetId)!.add(edge.sourceId);
   const index = new Map<string, number>(), low = new Map<string, number>();
   const stack: string[] = [], onStack = new Set<string>(), components: string[][] = [];
   const visit = (id: string): void => {
     index.set(id, index.size); low.set(id, index.get(id)!); stack.push(id); onStack.add(id);
-    for (const next of successors.get(id) ?? []) {
+    for (const next of successors.get(id)!) {
       if (!index.has(next)) { visit(next); low.set(id, Math.min(low.get(id)!, low.get(next)!)); }
       else if (onStack.has(next)) low.set(id, Math.min(low.get(id)!, index.get(next)!));
     }
@@ -96,21 +149,47 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): 
       components.push(component);
     }
   };
-  for (const id of [...successors.keys()].sort()) if (!index.has(id)) visit(id);
+  for (const id of [...ids].sort()) if (!index.has(id)) visit(id);
   const componentOf = new Map(components.flatMap((members, i) => members.map(id => [id, i] as const)));
-  const consumers = components.map(() => new Set<number>());
-  for (const edge of links) {
-    const from = componentOf.get(edge.targetId), to = componentOf.get(edge.sourceId);
-    if (from !== undefined && to !== undefined && from !== to) consumers[from].add(to);
+  // Within a cycle, members stand provider-first, by Eades, Lin and Smyth's order: a file nothing in the cycle
+  // serves goes to the front, one that serves nothing in it goes to the back, and otherwise the one that
+  // serves the most more than it uses; what is left after each choice is looked at again.
+  const rank = new Map<string, number>();
+  for (const members of components) {
+    const remaining = new Set(members);
+    const serves = (id: string): number => [...successors.get(id)!].filter(consumer => remaining.has(consumer)).length;
+    const uses = (id: string): number => [...remaining].filter(other => successors.get(other)!.has(id)).length;
+    const front: string[] = [], back: string[] = [];
+    while (remaining.size) {
+      const sorted = [...remaining].sort();
+      const sink = sorted.find(id => serves(id) === 0);
+      if (sink) { back.unshift(sink); remaining.delete(sink); continue; }
+      const source = sorted.find(id => uses(id) === 0);
+      if (source) { front.push(source); remaining.delete(source); continue; }
+      const choice = sorted.reduce((best, id) => serves(id) - uses(id) > serves(best) - uses(best) ? id : best);
+      front.push(choice);
+      remaining.delete(choice);
+    }
+    [...front, ...back].forEach((id, i) => rank.set(id, i));
   }
-  const ranks = new Map<number, number>();
-  const distanceToSink = (component: number): number => {
-    if (!ranks.has(component)) ranks.set(component, Math.max(0, ...[...consumers[component]].map(p => distanceToSink(p) + 1)));
-    return ranks.get(component)!;
+  const back = new Set<string>();
+  const forward = new Map(ids.map(id => [id, new Set<string>()]));
+  for (const edge of edges) {
+    const provider = edge.targetId, consumer = edge.sourceId;
+    if (componentOf.get(provider) === componentOf.get(consumer) && rank.get(provider)! > rank.get(consumer)!) back.add(edgeKey(edge));
+    else forward.get(provider)!.add(consumer);
+  }
+  const distance = new Map<string, number>();
+  const distanceToSink = (id: string): number => {
+    if (!distance.has(id)) {
+      distance.set(id, 0);
+      distance.set(id, Math.max(0, ...[...forward.get(id)!].map(consumer => distanceToSink(consumer) + 1)));
+    }
+    return distance.get(id)!;
   };
-  const lastColumn = Math.max(0, ...components.map((_, i) => distanceToSink(i)));
+  const lastColumn = Math.max(0, ...ids.map(distanceToSink));
   const columns: ExplorerNodePayload[][] = [];
-  for (const node of nodes) (columns[lastColumn - distanceToSink(componentOf.get(node.id)!)] ??= []).push(node);
+  for (const node of nodes) (columns[lastColumn - distanceToSink(node.id)] ??= []).push(node);
   for (const column of columns) column.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
-  return columns;
+  return { columns, back };
 }

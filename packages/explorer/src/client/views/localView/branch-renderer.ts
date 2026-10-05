@@ -1,7 +1,9 @@
-import { buildBranches } from "./branches";
+import type { Lane } from "./branch-order";
+import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
+import { buildBranches, edgeKey } from "./branches";
 import { createHierarchicalColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
-import { computeDirectoryBands, parentDirectory, type DirectoryBand, type FlowNode } from "../membraneView/pin-layout";
+import type { DirectoryBand } from "../membraneView/pin-layout";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /** Extend the native card grammar to the independently retained branches. */
@@ -11,15 +13,12 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
   root.classList.add("branch-mode");
-  root.style.gridTemplateColumns = `repeat(${branches.columns.length}, max-content)`;
+  const columnCount = branches.columns.length;
+  root.style.gridTemplateColumns = `repeat(${columnCount}, max-content)`;
   root.style.alignItems = "start";
-  const flow = new Map<string, FlowNode>();
-  branches.columns.forEach((nodes, column) => nodes.forEach(node => flow.set(node.id, {
-    id: node.id, column, role: "pinned", directory: parentDirectory(node.codeRelativePath)
-  })));
-  const bands = computeDirectoryBands(flow);
-  const scanRoot: DirectoryBand = { directory: "", minColumn: 0, maxColumn: branches.columns.length - 1,
-    bandRow: 0, nodesByColumn: new Map(), allNodeIds: branches.subgraph.nodes.map(node => node.id), children: bands };
+  const { order } = branches;
+  const scanRoot: DirectoryBand = { directory: "", minColumn: 0, maxColumn: columnCount - 1,
+    bandRow: 0, nodesByColumn: new Map(), allNodeIds: branches.subgraph.nodes.map(node => node.id), children: order.bands };
   const byId = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
   const renderBand = (band: DirectoryBand, parent: HTMLElement, firstColumn: number, parentDirectory?: string): void => {
     const group = document.createElement("section");
@@ -38,11 +37,20 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     const content = document.createElement("div");
     content.className = "local-directory-content";
     group.append(content);
-    for (const child of band.children) renderBand(child, content, band.minColumn, band.directory);
+    for (const child of [...band.children].sort((x, y) => x.bandRow - y.bandRow)) renderBand(child, content, band.minColumn, band.directory);
     for (const [columnIndex, ids] of band.nodesByColumn) {
       const nodes = ids.flatMap(id => byId.get(id) ?? []);
       const column = createHierarchicalColumn(controller, "", nodes, "center", "", "center", new Map());
       column.style.gridColumn = String(columnIndex - band.minColumn + 1);
+      // The lanes threaded wires pass through: above the column's first file when this slot holds it, and after each file.
+      const surface = column.querySelector<HTMLElement>(".local-focus-surface") ?? column;
+      const top = order.lanes.get(`${columnIndex}\0`);
+      if (top && order.columns[columnIndex]?.[0] === ids[0]) surface.prepend(laneElement(top));
+      for (const id of ids) {
+        const lane = order.lanes.get(`${columnIndex}\0${id}`);
+        const card = lane && surface.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`);
+        if (lane && card) card.insertAdjacentElement("afterend", laneElement(lane));
+      }
       content.append(column);
     }
     parent.append(group);
@@ -52,6 +60,11 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
   for (const [id, rows] of branches.relevantSymbols) for (const row of rows) connected.add(key(id, row));
   for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
+  const backReferences = new Map<string, number>();
+  for (const edge of branches.subgraph.links) {
+    if (!branches.back.has(edgeKey(edge))) continue;
+    for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
+  }
   root.querySelectorAll<HTMLElement>(".node-card").forEach(card => {
     const id = card.dataset.id!;
     const all = controller.isPinned(id, "*") || controller.expandedCards.has(id) || id === state.selectedNode?.id;
@@ -72,6 +85,14 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
       });
       card.append(reveal);
     }
+    const back = backReferences.get(id) ?? 0;
+    if (back) {
+      const note = document.createElement("span");
+      note.className = "local-disclosure local-back-references";
+      note.textContent = `${back} ${back === 1 ? "reference reads" : "references read"} back`;
+      note.title = "Against the reading direction, part of a cycle: drawn as stubs at its pins. Hover a symbol to trace it.";
+      card.append(note);
+    }
     const outside = branches.hiddenConnections.get(id) ?? 0;
     if (outside) {
       const filePinned = controller.isPinned(id, "*");
@@ -85,4 +106,13 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
       card.append(reveal);
     }
   });
+}
+
+/** The room a lane's wires take between two cards; the router reads its position back from the page. */
+function laneElement(lane: Lane): HTMLElement {
+  const element = document.createElement("div");
+  element.className = "local-pass-through";
+  element.dataset.lane = lane.key;
+  element.style.height = `${LANE_PADDING * 2 + lane.edges.length * LANE_PITCH}px`;
+  return element;
 }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-09-30T16:22:04.215Z
+- Generated At: 2026-10-05T16:55:00.725Z
 
 ## Authored
 ### Purpose
@@ -58,6 +58,8 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-connections)
 - [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-symbols)
 - [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)
+- [`template.tuning-strain-nudge`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge)
+- [`template.tuning-strain-nudge-value`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge-value)
 - [`template.tuning-stub-factor`](../../shared/template.html.mdmd.md#symbol-tuning-stub-factor)
 - [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuning-stub-max-offset)
 - [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)

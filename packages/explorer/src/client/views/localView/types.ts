@@ -37,6 +37,18 @@ export interface LocalViewOptions {
 }
 
 /**
+ * How hard the retained exploration's layout is working: the references that
+ * skip columns and are threaded through lanes, and the references that read
+ * against the columns and are drawn as stubs. The Explorer compares their sum
+ * with the tuning's nudge threshold to suggest the Force Graph.
+ */
+export interface BranchStrain {
+  threaded: number;
+  back: number;
+  columns: number;
+}
+
+/**
  * Public contract the Local Map exposes to the parent Explorer application.
  *
  * Exposes rendering, camera alignment and explicit FROM/TO pathfinding.
@@ -44,6 +56,8 @@ export interface LocalViewOptions {
  */
 export interface LocalViewApi {
   render(): void;
+  /** The strain of the retained exploration drawn now, or null outside branch mode. */
+  getStrain(): BranchStrain | null;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   drawConnections(): void;

@@ -1,5 +1,5 @@
-import { branchDetourPoints, roundedBranchRoute } from "./branch-routing";
-import type { BranchGraph } from "./branches";
+import { curveTo, LANE_MARGIN, LANE_PADDING, LANE_PITCH, threadedRoute, type Passage } from "./branch-routing";
+import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
@@ -307,26 +307,10 @@ function appendConnectionPath(
   svgNamespace: string,
   tuning: BezierTuning,
   gradientId: string,
-  routedPath?: string
+  routedPath?: string,
+  extraClass?: string
 ): void {
-  const horizontalDirection = target.x >= source.x ? 1 : -1;
-  const gapX = Math.abs(target.x - source.x);
-  const commands: string[] = [`M ${source.x} ${source.y}`];
-
-  if (gapX < 24) {
-    const midY = (source.y + target.y) / 2;
-    commands.push(`Q ${source.x} ${midY} ${target.x} ${target.y}`);
-  } else {
-    const stubBase = Math.max(gapX * tuning.stubFactor, tuning.stubMin);
-    const stubLimit = Math.max(44, gapX - tuning.stubMaxOffset);
-    const stub = Math.min(stubBase, stubLimit);
-    const control1X = source.x + horizontalDirection * stub;
-    const control2X = target.x - horizontalDirection * stub;
-    const deltaY = target.y - source.y;
-    const control1Y = source.y + deltaY * tuning.verticalOffset;
-    const control2Y = target.y - deltaY * tuning.verticalOffset;
-    commands.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${target.x} ${target.y}`);
-  }
+  const commands: string[] = [`M ${source.x} ${source.y}`, curveTo(source, target, tuning)];
 
   // Create a linear gradient from source (outbound/blue) to target (inbound/green).
   // Colors match the CSS variables: --outbound-color and --inbound-color.
@@ -368,6 +352,7 @@ function appendConnectionPath(
   path.setAttribute("d", routedPath ?? commands.join(" "));
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.classList.add("connection-path", renderDirection);
+  if (extraClass) path.classList.add(extraClass);
   path.dataset.kind = edge.kind;
   // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
   path.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
@@ -549,7 +534,13 @@ function drawPathConnections(context: ConnectionsContext): void {
   overlay.dataset.active = "true";
 }
 
-/** Draw every retained relationship, including neighbor-to-neighbor and cyclic links. */
+/**
+ * Draw every retained relationship. A reference between adjacent columns is
+ * the native curve; one that skips columns is threaded through the lanes the
+ * order reserved for it, so it never reaches backward and never enters a card;
+ * a reference that reads against the columns, a cycle's feedback, is a pair of
+ * French Corset stubs at its pins with its full route drawn only on hover.
+ */
 function drawBranchConnections(context: ConnectionsContext): void {
   const { runtime, branches, state } = context;
   if (!branches) return;
@@ -557,14 +548,7 @@ function drawBranchConnections(context: ConnectionsContext): void {
   if (!extents) return;
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
-  const segments = branches.subgraph.links.flatMap(edge => {
-    const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
-    const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
-    return provider && consumer ? [{ edge, provider, consumer }] : [];
-  });
-  const routed = segments.filter(({ edge }) => edge.sourceId !== edge.targetId && columnOf.get(edge.sourceId)! !== columnOf.get(edge.targetId)! + 1);
-  const headroom = routed.length ? 32 + routed.length * 9 : 0;
-  const bounds = { ...extents.content, top: extents.content.top - headroom, height: extents.content.height + headroom };
+  const bounds = extents.content;
   const { svg, defs } = createOverlaySvg(context, bounds);
   const columnBounds = branches.columns.map(nodes => {
     const cards = nodes.flatMap(node => {
@@ -573,22 +557,48 @@ function drawBranchConnections(context: ConnectionsContext): void {
     });
     return { left: Math.min(...cards.map(card => card.cardLeft)), right: Math.max(...cards.map(card => card.cardRight)) };
   });
-  let lane = 0;
-  segments.forEach(({ edge, provider, consumer }, index) => {
+  const laneTop = new Map<string, number>();
+  runtime.container.querySelectorAll<HTMLElement>(".local-pass-through[data-lane]").forEach(element => {
+    const measured = measure(element);
+    if (measured) laneTop.set(element.dataset.lane!, measured.topY);
+  });
+  let drawn = 0;
+  branches.subgraph.links.forEach((edge, index) => {
+    const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
+    const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
+    if (!provider || !consumer) return;
+    drawn++;
     const p = offsetToEdge(provider, "outbound"), q = offsetToEdge(consumer, "inbound");
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
+    const cardBounds = { left: provider.cardLeft, right: provider.cardRight, top: 0, bottom: 0 };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, provider, consumer, { left: provider.cardLeft, right: provider.cardRight, top: 0, bottom: 0 }, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      appendSelfLoopPath(svg, from, to, provider, consumer, cardBounds, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      return;
+    }
+    const key = edgeKey(edge);
+    if (branches.back.has(key)) {
+      appendSelfLoopPath(svg, from, to, provider, consumer, cardBounds, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route");
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     let route: string | undefined;
-    if (b !== a + 1) {
-      const y = headroom - 20 - lane++ * 9;
-      route = roundedBranchRoute(branchDetourPoints(from, to, columnBounds[a].right - bounds.left, columnBounds[b].left - bounds.left, y));
+    if (b > a + 1) {
+      const passages: Passage[] = [];
+      for (let column = a + 1; column < b; column++) {
+        const passage = branches.order.passages.get(`${key}\0${column}`);
+        const top = passage ? laneTop.get(passage.lane) : undefined;
+        if (!passage || top === undefined) break;
+        passages.push({
+          left: columnBounds[column].left - bounds.left - LANE_MARGIN,
+          right: columnBounds[column].right - bounds.left + LANE_MARGIN,
+          y: top - bounds.top + LANE_PADDING + passage.index * LANE_PITCH + LANE_PITCH / 2
+        });
+      }
+      if (passages.length === b - a - 1) route = threadedRoute(from, to, passages, state.tuning.bezier).d;
     }
     appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `branch-${index}`, route);
   });
-  runtime.overlay.dataset.active = String(segments.length > 0);
+  runtime.overlay.dataset.active = String(drawn > 0);
 }
