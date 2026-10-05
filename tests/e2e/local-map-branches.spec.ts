@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { LOCAL_MAP, displayNames, loadGraph, localRetainUrl, readPicture, scoreExpanded, scoreOcclusion, symbolCounts } from "./still-picture";
+import { displayNames, loadGraph, LOCAL_MAP, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
@@ -156,6 +156,9 @@ test("a retained exploration threads skipped references through lanes: nothing o
   const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));
   expect(picture.wires.length).toBeGreaterThan(100);
   expect(scoreOcclusion(picture).occludedWires, "no wire crosses a card it does not end at").toBe(0);
+  const foreign = scoreForeign(picture);
+  expect(foreign.laneSamples, "the lanes are where the wires run").toBeGreaterThan(0);
+  expect(foreign.foreignLaneSamples, "no lane lies in a directory that holds neither end of its wires").toBe(0);
   const routesOnly = { ...picture, wires: picture.wires.filter(wire => !wire.stub) };
   expect(scoreExpanded(routesOnly, symbolCounts(graph)).flow.backward, "no drawn route reads backward; a cycle's feedback is stubs").toBe(0);
   // This scope's references skip columns, so lanes exist, and every wire stays inside the picture's own extent: no headroom above it.

@@ -15,6 +15,7 @@ Styles specific to the Local Map view: the multi-column grid layout (dependency 
 
 - Extracted from monolithic `styles.css` on [2025-12-04](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19) as part of the CSS decomposition (`4504d36a`).
 - The 3-column local layout with per-symbol rail ordering was first implemented on [2025-11-24](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) (Turns 15–17) and later extended to support multi-hop pathfinding columns.
+- The many-file layout's rules sit at the end: directory bands as subgrids with their lanes (`.local-pass-through`) as plain spacers the router measures, a back reference's route hidden until highlighted, and a bundle's shared run (`.bundle-run`) drawn beneath its wires at reduced opacity so the wires stay the thing read (2026-10-05).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

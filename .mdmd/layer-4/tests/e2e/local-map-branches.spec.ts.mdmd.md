@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-05T16:55:02.903Z
+- Generated At: 2026-10-05T18:59:23.881Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Exercises native Local Map branching and the continuous identity handoff to the 
 
 ### Notes
 
-Uses the TypeScript Rosetta sample to follow multiple symbols, inspect a neighbor-to-neighbor relationship, reload, remove a pin and traverse history. Samples projected positions during the perspective transition and checks keyboard pinning with reduced motion. On this repository's five-file deck scope it holds the many-file layout to its invariants with the still-picture instrument: no wire across a card it does not end at, no route reading backward, no wire above the picture's own extent, no orthogonal detour, and the dense-picture nudge shown; the two-file SlopCop scope shows no nudge (2026-10-05).
+Uses the TypeScript Rosetta sample to follow multiple symbols, inspect a neighbor-to-neighbor relationship, reload, remove a pin and traverse history. Samples projected positions during the perspective transition and checks keyboard pinning with reduced motion. On this repository's five-file deck scope it holds the many-file layout to its invariants with the still-picture instrument: no wire across a card it does not end at, no route reading backward, no lane in a directory that holds neither end of its wires, no wire above the picture's own extent, no orthogonal detour, and the dense-picture nudge shown; the two-file SlopCop scope shows no nudge (2026-10-05).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -30,6 +30,7 @@ _No public symbols detected_
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 - [`still-picture.readPicture`](./still-picture.ts.mdmd.md#symbol-readpicture)
 - [`still-picture.scoreExpanded`](./still-picture.ts.mdmd.md#symbol-scoreexpanded)
+- [`still-picture.scoreForeign`](./still-picture.ts.mdmd.md#symbol-scoreforeign)
 - [`still-picture.scoreOcclusion`](./still-picture.ts.mdmd.md#symbol-scoreocclusion)
 - [`still-picture.symbolCounts`](./still-picture.ts.mdmd.md#symbol-symbolcounts)
 <!-- LIVE-DOC:END Dependencies -->

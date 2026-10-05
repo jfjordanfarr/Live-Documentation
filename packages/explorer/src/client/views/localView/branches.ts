@@ -87,6 +87,7 @@ export function buildBranches(
   const forward: ForwardReference[] = links
     .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
     .map(edge => ({ key: edgeKey(edge), provider: edge.targetId, consumer: edge.sourceId,
+      pin: `${edge.targetId}\0${normalizeSymbolIdentifier(edge.targetSymbol) ?? "__internals__"}`,
       providerRow: fraction(edge.targetId, edge.targetSymbol), consumerRow: fraction(edge.sourceId, edge.sourceSymbol) }));
   const order = orderBranches({
     columns: ranking.columns.map(column => column.map(node => node.id)),

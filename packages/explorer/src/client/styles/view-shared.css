@@ -57,6 +57,8 @@
 }
 
 .node-card {
+    /* The card fills the room its content asked for; with its padding counted outside, it overflowed its column by that padding. */
+    box-sizing: border-box;
     width: 100%;
     min-width: 200px;
     background: var(--node-bg);

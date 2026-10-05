@@ -20,15 +20,24 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   const scanRoot: DirectoryBand = { directory: "", minColumn: 0, maxColumn: columnCount - 1,
     bandRow: 0, nodesByColumn: new Map(), allNodeIds: branches.subgraph.nodes.map(node => node.id), children: order.bands };
   const byId = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
+  // The lanes by where they go: in a directory's stack of files, after a file or above the first; in a directory of directories, in a row.
+  const stackLanes = new Map<string, Lane>();
+  const rowLanes = new Map<string, Lane[]>();
+  for (const lane of order.lanes.values()) {
+    if (lane.row === null) stackLanes.set(`${lane.host}\0${lane.column}\0${lane.after ?? ""}`, lane);
+    else (rowLanes.get(lane.host) ?? rowLanes.set(lane.host, []).get(lane.host)!).push(lane);
+  }
   const renderBand = (band: DirectoryBand, parent: HTMLElement, firstColumn: number, parentDirectory?: string): void => {
     const group = document.createElement("section");
     // A band's loose-file bucket has its parent's path; it is not another directory.
     const isDirectory = band.directory !== parentDirectory;
-    group.className = isDirectory ? "local-directory-band" : "local-directory-files";
+    // The root is the picture itself: a band for the perspective transition's outermost shell, with no box and no name.
+    const isRoot = isDirectory && band.directory === "";
+    group.className = isDirectory ? `local-directory-band${isRoot ? " local-directory-root" : ""}` : "local-directory-files";
     if (isDirectory) group.dataset.directory = band.directory;
     group.style.gridColumn = `${band.minColumn - firstColumn + 1} / span ${band.maxColumn - band.minColumn + 1}`;
     group.style.gridRow = String(band.bandRow + 1);
-    if (isDirectory) {
+    if (isDirectory && !isRoot) {
       const label = document.createElement("div");
       label.className = "local-directory-label";
       label.textContent = band.directory || "/";
@@ -38,16 +47,26 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     content.className = "local-directory-content";
     group.append(content);
     for (const child of [...band.children].sort((x, y) => x.bandRow - y.bandRow)) renderBand(child, content, band.minColumn, band.directory);
+    // The lanes this directory holds beside its subdirectories, each in a row packed with theirs.
+    if (band.children.length) {
+      for (const lane of rowLanes.get(band.directory) ?? []) {
+        const element = laneElement(lane);
+        element.style.gridColumn = String(lane.column - band.minColumn + 1);
+        element.style.gridRow = String(lane.row! + 1);
+        content.append(element);
+      }
+    }
     for (const [columnIndex, ids] of band.nodesByColumn) {
       const nodes = ids.flatMap(id => byId.get(id) ?? []);
-      const column = createHierarchicalColumn(controller, "", nodes, "center", "", "center", new Map());
+      // A directory may span a column with no file of its own there, where only a lane of its wires runs.
+      const column = nodes.length ? createHierarchicalColumn(controller, "", nodes, "center", "", "center", new Map()) : emptyColumn();
       column.style.gridColumn = String(columnIndex - band.minColumn + 1);
-      // The lanes threaded wires pass through: above the column's first file when this slot holds it, and after each file.
+      // The lanes threaded wires pass through: above the stack's first file, and after each file.
       const surface = column.querySelector<HTMLElement>(".local-focus-surface") ?? column;
-      const top = order.lanes.get(`${columnIndex}\0`);
-      if (top && order.columns[columnIndex]?.[0] === ids[0]) surface.prepend(laneElement(top));
+      const top = stackLanes.get(`${band.directory}\0${columnIndex}\0`);
+      if (top) surface.prepend(laneElement(top));
       for (const id of ids) {
-        const lane = order.lanes.get(`${columnIndex}\0${id}`);
+        const lane = stackLanes.get(`${band.directory}\0${columnIndex}\0${id}`);
         const card = lane && surface.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"]`);
         if (lane && card) card.insertAdjacentElement("afterend", laneElement(lane));
       }
@@ -108,11 +127,20 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   });
 }
 
-/** The room a lane's wires take between two cards; the router reads its position back from the page. */
+/** The room a lane's bundles take, one slot each; the router reads its position back from the page. */
 function laneElement(lane: Lane): HTMLElement {
   const element = document.createElement("div");
   element.className = "local-pass-through";
   element.dataset.lane = lane.key;
-  element.style.height = `${LANE_PADDING * 2 + lane.edges.length * LANE_PITCH}px`;
+  element.style.height = `${LANE_PADDING * 2 + lane.bundles.length * LANE_PITCH}px`;
   return element;
+}
+
+/** A column with no file, where a directory's lane runs through its own span. */
+function emptyColumn(): HTMLElement {
+  const column = document.createElement("div");
+  column.className = "local-column center";
+  column.dataset.direction = "center";
+  column.dataset.position = "center";
+  return column;
 }

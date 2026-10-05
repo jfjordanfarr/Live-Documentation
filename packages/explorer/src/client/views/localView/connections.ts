@@ -1,4 +1,4 @@
-import { curveTo, LANE_MARGIN, LANE_PADDING, LANE_PITCH, threadedRoute, type Passage } from "./branch-routing";
+import { curveTo, LANE_MARGIN, LANE_PADDING, LANE_PITCH, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
@@ -540,6 +540,9 @@ function drawPathConnections(context: ConnectionsContext): void {
  * order reserved for it, so it never reaches backward and never enters a card;
  * a reference that reads against the columns, a cycle's feedback, is a pair of
  * French Corset stubs at its pins with its full route drawn only on hover.
+ * The wires of one pin that pass a column together share one slot there, and
+ * their shared run is drawn once more beneath them, as wide as their number,
+ * so a bundle says how many it carries before they part.
  */
 function drawBranchConnections(context: ConnectionsContext): void {
   const { runtime, branches, state } = context;
@@ -563,6 +566,8 @@ function drawBranchConnections(context: ConnectionsContext): void {
     if (measured) laneTop.set(element.dataset.lane!, measured.topY);
   });
   let drawn = 0;
+  // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
+  const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number }>();
   branches.subgraph.links.forEach((edge, index) => {
     const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
     const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
@@ -584,8 +589,10 @@ function drawBranchConnections(context: ConnectionsContext): void {
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     let route: string | undefined;
+    const gradientId = `branch-${index}`;
     if (b > a + 1) {
       const passages: Passage[] = [];
+      const slots: string[] = [];
       for (let column = a + 1; column < b; column++) {
         const passage = branches.order.passages.get(`${key}\0${column}`);
         const top = passage ? laneTop.get(passage.lane) : undefined;
@@ -595,10 +602,48 @@ function drawBranchConnections(context: ConnectionsContext): void {
           right: columnBounds[column].right - bounds.left + LANE_MARGIN,
           y: top - bounds.top + LANE_PADDING + passage.index * LANE_PITCH + LANE_PITCH / 2
         });
+        slots.push(`${passage.lane}\0${passage.index}`);
       }
-      if (passages.length === b - a - 1) route = threadedRoute(from, to, passages, state.tuning.bezier).d;
+      if (passages.length === b - a - 1) {
+        const threaded = threadedRoute(from, to, passages, state.tuning.bezier);
+        route = threaded.d;
+        slots.forEach((slot, i) => {
+          if (runs.has(slot)) return;
+          const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
+          const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
+          runs.set(slot, { curve: threaded.pieces[2 * i], lane: threaded.pieces[2 * i + 1], gradient: gradientId, members });
+        });
+      }
     }
-    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `branch-${index}`, route);
+    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId, route);
   });
+  for (const run of runs.values()) {
+    if (run.members < 2) continue;
+    appendBundleRun(svg, defs, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier);
+  }
   runtime.overlay.dataset.active = String(drawn > 0);
+}
+
+/**
+ * The shared run of a bundle through one column, beneath its wires: the curve
+ * into the lane and the run along it, drawn as wide as the bundle's member
+ * count on a logarithmic scale. Carries no reference of its own.
+ */
+function appendBundleRun(
+  svg: SVGSVGElement,
+  defs: SVGDefsElement,
+  curve: RoutePiece,
+  lane: RoutePiece,
+  gradientId: string,
+  members: number,
+  svgNamespace: string,
+  tuning: BezierTuning
+): void {
+  const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
+  path.setAttribute("d", `M ${curve.from.x} ${curve.from.y} ${curveTo(curve.from, curve.to, tuning)} L ${lane.to.x} ${lane.to.y}`);
+  path.setAttribute("stroke", `url(#${gradientId})`);
+  path.style.strokeWidth = `${(2.2 + 1.3 * Math.log(members)).toFixed(2)}px`;
+  path.classList.add("connection-path", "bundle-run");
+  path.dataset.members = String(members);
+  svg.insertBefore(path, defs.nextSibling);
 }

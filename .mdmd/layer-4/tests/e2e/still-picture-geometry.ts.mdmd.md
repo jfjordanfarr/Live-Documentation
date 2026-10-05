@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture-geometry.ts
-- Generated At: 2026-10-01T19:06:09.333Z
+- Generated At: 2026-10-05T19:22:52.965Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The geometry under the still-picture deck's expanded measures, pure so that Vite
 
 ### Notes
 
-- A crossing is an intersection of two sampled paths more than 24 px from either wire's ends, so two wires leaving one pin are not crossing at their stub, at an angle of at least 15 degrees, so two wires weaving inside one cable are a shared channel rather than a crossing. Ends count, because a wire sampled exactly through another must not be missed, and one crossing seen by up to four segment pairs is counted once. The score also reports the points more than 80 px from both wires' ends, which tells a crossing in the open from one in the fan at a pin; an overlay of the counted points on the live pages settled both refinements on 2026-10-01.
+- A crossing is an intersection of two sampled paths more than 24 px from either wire's ends, so two wires leaving one pin are not crossing at their stub, at an angle of at least 15 degrees, so two wires weaving inside one cable are a shared channel rather than a crossing. A meeting at a sample point counts only when the two wires' directions out of it, read from their neighbouring samples, alternate around it: a wire sampled exactly through another is not missed, while two wires drawn along one path, as the members of a Local Map bundle are, cross nowhere, and two that part from one point cross nowhere either; until 2026-10-05 every bend sample of such a pair counted, and the first measurement of the bundles read thousands of crossings that were not there ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-9)). One crossing seen by up to four segment pairs is counted once, and `spots` counts the distinct places within 4 px, so a cable of many wires crossed once reads as one. The score also reports the points more than 80 px from both wires' ends, which tells a crossing in the open from one in the fan at a pin; an overlay of the counted points on the live pages settled both refinements on 2026-10-01.
 - A shared channel is a run of more than 40 px within 6 px of another wire, beyond the stubs. Flow forgives a stub-sized step back (24 px) and not a detour. Folder adjacency measures the gap between boxes, not between centers, and a tie counts.
 - The tour aims each pan at a not-yet-seen fact, takes the pan that makes the most facts legible, prefers a pan that keeps a card in view, and breaks ties by the shortest pan; a fact under reading size or wider than the frame is unreachable by panning and is reported as such. Segments are bucketed on a 32 px grid so the pair tests stay cheap over two hundred wires.
 - Built on 2026-10-01 for the measures the owner's reading of the first scoreboard added ([Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-8)).
@@ -51,14 +51,14 @@ Beyond this distance from a wire's ends, a crossing is in the open rather than i
 
 #### `arcLengths` {#symbol-arclengths}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L37)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L39)
 
 ##### `arcLengths` — Summary
 The arc position of each point along its polyline, in px.
 
 #### `intersectionOf` {#symbol-intersectionof}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L89)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L91)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `a`: `Straight`; `b`: `Straight`
 
@@ -68,11 +68,11 @@ overlap is a shared channel, not a crossing, and returns null.
 
 #### `CrossingScore` {#symbol-crossingscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L102)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L104)
 
 #### `angleBetween` {#symbol-anglebetween}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L114)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L118)
 - Parameters: `a`: `Straight`; `b`: `Straight`
 
 ##### `angleBetween` — Summary
@@ -80,33 +80,37 @@ The angle between two segments' directions, in degrees from 0 to 90.
 
 #### `Crossing` {#symbol-crossing}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L122)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L126)
 
 #### `findCrossings` {#symbol-findcrossings}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L134)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L142)
 - Returns: [`Crossing`](#symbol-crossing)[]
 
 ##### `findCrossings` — Summary
 Every crossing of two wires, more than `endExclusionPx` from either wire's ends, at an angle of at least
 `minAngleDeg`. Two wires that merge at a shallower angle are a shared channel, which test 8 counts; without the
-angle, every weave inside a cable counted as a crossing and the number stopped meaning what the eye sees.
+angle, every weave inside a cable counted as a crossing and the number stopped meaning what the eye sees. A
+crossing is a crossing: either each segment reaches across the other, or the wires meet at a sample point and
+their directions out of it alternate around it. Two wires drawn along one path, which touch at every sample,
+cross nowhere, and two that part from one point cross nowhere either (2026-10-05, when the Local Map began to
+bundle the wires of one pin and the old count read every bend of a bundle as crossings).
 
 #### `crossings` {#symbol-crossings}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L164)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L206)
 - Returns: [`CrossingScore`](#symbol-crossingscore)
 
 ##### `crossings` — Summary
-Test 7, summarized: points, pairs of wires and wires taking part.
+Test 7, summarized: points, spots, pairs of wires and wires taking part.
 
 #### `ChannelScore` {#symbol-channelscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L179)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L222)
 
 #### `sharedChannels` {#symbol-sharedchannels}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L187)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L230)
 - Returns: [`ChannelScore`](#symbol-channelscore)
 
 ##### `sharedChannels` — Summary
@@ -114,11 +118,11 @@ Test 8: wires that share a channel, running within `withinPx` of another for mor
 
 #### `FlowReading` {#symbol-flowreading}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L229)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L272)
 
 #### `flowOf` {#symbol-flowof}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L237)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L280)
 - Returns: [`FlowReading`](#symbol-flowreading)
 
 ##### `flowOf` — Summary
@@ -126,11 +130,11 @@ Test 9: one wire's flow, from its offering end to its using end.
 
 #### `CardPlace` {#symbol-cardplace}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L250)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L293)
 
 #### `boxGap` {#symbol-boxgap}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L257)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L300)
 - Parameters: `a`: [`Box`](#symbol-box); `b`: [`Box`](#symbol-box)
 
 ##### `boxGap` — Summary
@@ -138,11 +142,11 @@ The gap between two boxes, 0 when they touch or overlap.
 
 #### `AdjacencyScore` {#symbol-adjacencyscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L263)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L306)
 
 #### `folderAdjacency` {#symbol-folderadjacency}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L271)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L314)
 - Returns: [`AdjacencyScore`](#symbol-adjacencyscore)
 
 ##### `folderAdjacency` — Summary
@@ -150,19 +154,19 @@ Test 10: folder adjacency over the whole drawing.
 
 #### `TourFact` {#symbol-tourfact}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L290)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L333)
 
 #### `TourPan` {#symbol-tourpan}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L299)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L342)
 
 #### `TourPlan` {#symbol-tourplan}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L307)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L350)
 
 #### `planTour` {#symbol-plantour}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L325)
+- Source: [source](../../../../tests/e2e/still-picture-geometry.ts#L368)
 - Returns: [`TourPlan`](#symbol-tourplan)
 - Parameters: `frame`: [`Box`](#symbol-box)
 

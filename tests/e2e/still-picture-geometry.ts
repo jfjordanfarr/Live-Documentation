@@ -27,6 +27,8 @@ export const FAR_FROM_PINS_PX = 80;
 
 interface Segment {
   line: number;
+  /** The index of the segment's end point in its polyline; it runs from the point before. */
+  i: number;
   ax: number;
   ay: number;
   bx: number;
@@ -52,7 +54,7 @@ function segmentsOf(lines: readonly Polyline[], endExclusionPx: number): Segment
       if (at[i] <= endExclusionPx || at[i - 1] >= total - endExclusionPx) continue;
       const [ax, ay] = line.points[i - 1];
       const [bx, by] = line.points[i];
-      segments.push({ line: index, ax, ay, bx, by });
+      segments.push({ line: index, i, ax, ay, bx, by });
     }
   });
   return segments;
@@ -100,8 +102,10 @@ export function intersectionOf(a: Straight, b: Straight): Point | null {
 }
 
 export interface CrossingScore {
-  /** Points where two wires cross. */
+  /** Points where two wires cross, one per pair of wires. */
   points: number;
+  /** Distinct places where wires cross, within 4 px: a cable of many wires crossed once is one spot. */
+  spots: number;
   /** Of those, points more than 80 px from both wires' ends: crossings in the open, not in a fan at a pin. */
   farPoints: number;
   /** Pairs of wires that cross at least once. */
@@ -129,7 +133,11 @@ export interface Crossing {
 /**
  * Every crossing of two wires, more than `endExclusionPx` from either wire's ends, at an angle of at least
  * `minAngleDeg`. Two wires that merge at a shallower angle are a shared channel, which test 8 counts; without the
- * angle, every weave inside a cable counted as a crossing and the number stopped meaning what the eye sees.
+ * angle, every weave inside a cable counted as a crossing and the number stopped meaning what the eye sees. A
+ * crossing is a crossing: either each segment reaches across the other, or the wires meet at a sample point and
+ * their directions out of it alternate around it. Two wires drawn along one path, which touch at every sample,
+ * cross nowhere, and two that part from one point cross nowhere either (2026-10-05, when the Local Map began to
+ * bundle the wires of one pin and the old count read every bend of a bundle as crossings).
  */
 export function findCrossings(lines: readonly Polyline[], endExclusionPx = 24, minAngleDeg = 15): Crossing[] {
   const segments = segmentsOf(lines, endExclusionPx);
@@ -148,6 +156,7 @@ export function findCrossings(lines: readonly Polyline[], endExclusionPx = 24, m
         tested.add(key);
         const at = intersectionOf(a, b);
         if (!at || angleBetween(a, b) < minAngleDeg) continue;
+        if (!reachesAcross(a, b) && !crossesAtVertex(lines, a, b, at)) continue;
         const pair = a.line < b.line ? `${a.line}:${b.line}` : `${b.line}:${a.line}`;
         // One crossing that falls on a sample point is seen by up to four segment pairs; count it once.
         const spot = `${pair}@${Math.round(at[0] * 2) / 2},${Math.round(at[1] * 2) / 2}`;
@@ -160,12 +169,46 @@ export function findCrossings(lines: readonly Polyline[], endExclusionPx = 24, m
   return found;
 }
 
-/** Test 7, summarized: points, pairs of wires and wires taking part. */
+/** Whether each segment's ends lie strictly on either side of the other: a crossing, not a touch at an end. */
+const reachesAcross = (a: Straight, b: Straight): boolean =>
+  orient(b.ax, b.ay, b.bx, b.by, a.ax, a.ay) * orient(b.ax, b.ay, b.bx, b.by, a.bx, a.by) < 0 &&
+  orient(a.ax, a.ay, a.bx, a.by, b.ax, b.ay) * orient(a.ax, a.ay, a.bx, a.by, b.bx, b.by) < 0;
+
+/**
+ * Whether two wires that meet at a sample point of one or both cross there: the directions each wire takes out
+ * of the point, read from its neighbouring samples, alternate around it. A shared direction is coincidence, not
+ * a crossing; a wire's end has one direction and crosses nothing.
+ */
+function crossesAtVertex(lines: readonly Polyline[], a: Segment, b: Segment, at: Point): boolean {
+  const near = (p: Point): boolean => Math.abs(p[0] - at[0]) < 1e-6 && Math.abs(p[1] - at[1]) < 1e-6;
+  const heading = (p: Point): number => Math.atan2(p[1] - at[1], p[0] - at[0]);
+  const directions = (s: Segment): number[] => {
+    const points = lines[s.line].points;
+    const k = near(points[s.i - 1]) ? s.i - 1 : near(points[s.i]) ? s.i : -1;
+    if (k < 0) return [heading(points[s.i - 1]), heading(points[s.i])];
+    const out: number[] = [];
+    if (k > 0) out.push(heading(points[k - 1]));
+    if (k + 1 < points.length) out.push(heading(points[k + 1]));
+    return out;
+  };
+  const da = directions(a);
+  const db = directions(b);
+  if (da.length < 2 || db.length < 2) return false;
+  const around = [...da.map(t => ({ t, wire: 0 })), ...db.map(t => ({ t, wire: 1 }))].sort((x, y) => x.t - y.t);
+  for (let i = 0; i < around.length; i += 1) {
+    const gap = Math.abs(around[(i + 1) % around.length].t - around[i].t);
+    if (gap < 1e-9 || Math.abs(gap - 2 * Math.PI) < 1e-9) return false;
+  }
+  return around.every((entry, i) => entry.wire !== around[(i + 1) % around.length].wire);
+}
+
+/** Test 7, summarized: points, spots, pairs of wires and wires taking part. */
 export function crossings(lines: readonly Polyline[], endExclusionPx = 24, minAngleDeg = 15): CrossingScore {
   const found = findCrossings(lines, endExclusionPx, minAngleDeg);
   const pairs = new Set(found.map(c => `${c.a}|${c.b}`));
   const wires = new Set(found.flatMap(c => [c.a, c.b]));
-  return { points: found.length, farPoints: findCrossings(lines, FAR_FROM_PINS_PX, minAngleDeg).length, pairs: pairs.size, wiresCrossed: wires.size };
+  const spots = new Set(found.map(c => `${Math.round(c.x / 4)},${Math.round(c.y / 4)}`));
+  return { points: found.length, spots: spots.size, farPoints: findCrossings(lines, FAR_FROM_PINS_PX, minAngleDeg).length, pairs: pairs.size, wiresCrossed: wires.size };
 }
 
 const pointToSegment = (px: number, py: number, s: Segment): number => {

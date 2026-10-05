@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-05T17:18:21.749Z
+- Generated At: 2026-10-05T18:59:22.291Z
 
 ## Authored
 ### Purpose
@@ -57,7 +57,7 @@ Filters hide neighbors, but never the selected or explicitly pinned files.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L130)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L131)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
 

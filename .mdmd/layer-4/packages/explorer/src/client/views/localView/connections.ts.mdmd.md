@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-10-05T16:55:01.458Z
+- Generated At: 2026-10-05T18:59:22.384Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 - Every wire runs from a provider's blue pin to a consumer's green pin. The path drawer, `drawPathConnections`, takes the wires from the path subgraph: the later file of an adjacent pair uses the earlier one, so the provider is the earlier column's blue pin and the consumer the later column's green pin. A reference that runs against the path is not drawn; the toolbar counts it. Until [Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10) the path wires took the dependent's blue pin as their start, so they reached backwards across the columns or flowed from the wrong pins.
 - Self-loops on each disclosed card are drawn as the two tapered stubs of the "French Corset".
 - The branch drawer, `drawBranchConnections`, draws every reference among the retained files: a reference between adjacent columns as the native curve; one that skips columns threaded by `threadedRoute` through the lanes the order reserved, read back from the renderer's spacers, so it never reaches backward and never enters a card; and one that reads against the columns, a cycle's feedback, as Corset stubs at its pins with a `back-route` path that CSS shows only while a symbol's hover highlights it. Until 2026-10-05 every skipped or cyclic reference took an orthogonal detour over the top of the whole picture in a lane of its own, which on this repository's five-file scope was 162 of 204 wires ([the October 5 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-4)).
+- The wires of one offering pin that pass a column together share one slot of its lane, so their paths coincide there; beneath them the branch drawer draws the bundle's shared run once more, the curve into the lane and the run along it, as wide as the member count on a logarithmic scale and stamped `data-members`, so the picture says how many a bundle carries before they part. The run carries no reference: it has no endpoint attributes, the deck does not read it as a wire, and it never highlights (2026-10-05, after the owner's review of the first pass).
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics, through the pure `curveTo` of `branch-routing.ts`.
 
 ## Generated
@@ -52,6 +53,7 @@ overlay.
 - [`branch-routing.LANE_PADDING`](./branch-routing.ts.mdmd.md#symbol-lane_padding)
 - [`branch-routing.LANE_PITCH`](./branch-routing.ts.mdmd.md#symbol-lane_pitch)
 - [`branch-routing.Passage`](./branch-routing.ts.mdmd.md#symbol-passage)
+- [`branch-routing.RoutePiece`](./branch-routing.ts.mdmd.md#symbol-routepiece)
 - [`branch-routing.curveTo`](./branch-routing.ts.mdmd.md#symbol-curveto)
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)

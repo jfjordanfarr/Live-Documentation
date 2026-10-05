@@ -278,6 +278,8 @@ span.local-disclosure { cursor: default; }
 .branch-mode { row-gap: 28px; }
 .local-directory-band { display: grid; grid-template-columns: subgrid; border: 1px solid var(--border); border-radius: 8px; background: #ffffff03; padding: 12px; min-width: 0; }
 .local-directory-label { grid-column: 1 / -1; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
+/* The root band is the picture itself: present for the perspective transition's outermost shell, drawn as nothing. */
+.local-directory-band.local-directory-root { border: 0; background: none; padding: 0; }
 .local-directory-content { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; align-items: center; row-gap: 24px; }
 .local-directory-files { display: grid; grid-template-columns: subgrid; min-width: 0; }
 .local-directory-band .local-column-label { display: none; }
@@ -286,6 +288,8 @@ span.local-disclosure { cursor: default; }
 .local-pass-through { flex: none; width: 100%; pointer-events: none; }
 /* A reference that reads against the columns shows as stubs at its pins; its route appears when a symbol is hovered. */
 .connection-path.back-route:not(.connection-highlighted) { display: none; }
+/* The shared run of a bundle beneath its wires, as wide as their number; it carries no reference and never highlights. */
+.connection-path.bundle-run { opacity: .45; stroke-linecap: butt; }
 
 .perspective-transition { position: fixed; z-index: 104; overflow: hidden; pointer-events: auto; }
 .perspective-file-name { position: absolute; transform: translateX(-50%); color: var(--text-primary); font-size: 12px; font-weight: 600; white-space: nowrap; padding: 4px 7px; border-radius: 4px; background: #15191fe8; }

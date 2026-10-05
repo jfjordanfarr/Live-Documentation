@@ -43,3 +43,29 @@ The owner agreed the plan in [Turn 3](../../ChatHistory/2026/10/2026-10-05.1.rec
 | Legible facts at the fit | 0 of 15 | 0 of 15 |
 
 The chain went from 11,029 crossing points to 1,469 and the estate's five from 1,291 to 224. The legible count did not move: the fit is the subject at reading size, and a five-file exploration's facts have ends further apart than the frame, which the tour measures. Vertical placement that aligns pins with partners, and what to do when a lane bundle grows thick, are left for after the owner has looked. The nudge's default threshold of 48 makes the estate's five-file scope dense as well; the owner's eye sets it, in Tuning.
+
+## After the owner's review, the same evening
+
+The owner looked at the afternoon's pictures in [Turn 8](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-8) and asked three things: whether the "guitar strings" of parallel wires from one symbol could stay bunched until the separation is needed; whether the two wires through the Portal/Services box could be seen as passing behind it; and why the cards overflowed their directory boxes. The answers, measured before they were given and accepted in [Turn 9](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-9), became the evening's pass: the wires of one offering pin bundle through the columns they pass together and part in the gutter before each consumer's column, with the shared run drawn beneath them as wide as its member count; a lane lies inside the deepest directory that holds an end of every wire in it, never inside one that holds neither; and the card is a border box, so it fills the room its content asked for instead of overflowing it by its padding. The box labelled "/" around everything went with it. The pictures are the same states as above, on the shipped bundles at `1600 × 1000`.
+
+| Capture | State |
+| --- | --- |
+| [Five files, bundled](repository-five-local-map-bundled.png) | The same 44 cards and 204 wires. Each of document.ts's pins now sends one cable rather than a string per consumer; the lanes above graph.ts hold one slot per pin. |
+| [Where the bundles part](repository-five-bundles-part.png) | The same state panned right: the cables from document.ts run past graphFiles.ts and pathfind.ts, and a member leaves each one only in the gutter before its consumer. |
+| [Chain, bundled](repository-chain-local-map-bundled.png) | The same 46 cards and 227 wires; the cables converge on index.ts from the consumers' column at its left. |
+| [Estate five, bundled](estate-five-local-map-bundled.png) | The three Contracts providers each send one cable where twenty strings ran above IPaymentHub and fifteen below IPaymentService in the afternoon picture. |
+| [Estate five, where the bundles part](estate-five-bundles-part.png) | Panned right to the Gateway and Portal consumers: the cables split at HubProxy's and PaymentsController's pins. |
+| [A bundle on hover](estate-five-bundle-hover.png) | PaymentRequest's row hovered: every member of its cable lights to its consumer while the rest dim. |
+| [Estate chain, bundled](estate-chain-local-map-bundled.png) | The two wires from Portal/Models to Portal/Controllers now run inside Portal above the Portal/Services box, which stands in a row of its own below them, and every card ends inside its directory's box. |
+| [The classic Local Map](repository-local-map-classic-border-box.png) | graph.ts selected with no pins, after the card's sizing changed: the cards fill their columns. |
+| [The Circuit Board](repository-circuit-board-border-box.png) | packages/engine/src/live-docs, whose file cards share the card style; unchanged to the eye. |
+
+[The scoreboard](scoreboard-bundled.md) is the gate's full run with the deck's new column, wires through a foreign directory, and its corrected crossing counter: the first measurement of the bundles read thousands of crossings between members of one bundle, because two wires drawn along one path touch at every sample and the counter took each bend sample for a crossing; it now counts a meeting at a sample point only when the wires' directions alternate around it, and reports crossing spots, the distinct places within 4 px, beside the points, one per pair of wires. Measured like for like, the previous commit built in a worktree against this tree, both under the corrected counter:
+
+| Scope | Crossing spots, before | after | Crossing points, before | after | Lane samples in a foreign directory, before | after |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Repository, five files | 1,324 | 498 | 3,276 | 3,778 | 9,243 | 0 |
+| Estate, five files | 122 | 48 | 224 | 390 | 3,029 | 0 |
+| Estate, chain | 39 | 17 | 57 | 50 | 1,020 | 0 |
+
+The spots fall because a cable crossed once is one place; the points rise where a cable of many members crosses a wire, since each member is a pair, which is what that count means. The deck now holds foreign lane samples at zero on every retained row. What remains for the owner's eye: the curves in a gutter still cross a directory that spans the gutter and holds neither of their ends (on the repository's five files, 24,886 samples of 83 wires, up from 18,835 of 133, since lanes outside a foreign box mean longer climbs into them), which is the residual case for the glass they asked about; the width scale of the shared run; and the Portal/Services box moved to its own row, the price of the lane above it.

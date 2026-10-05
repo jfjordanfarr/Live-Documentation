@@ -204,6 +204,10 @@ export interface ViewReading {
   folderText?: string[];
   /** A container the view draws around the cards of one folder, and the element within it that names the folder. */
   folderContainer?: { container: string; label: string };
+  /** The box the view draws around a directory's cards, carrying `data-directory`; a wire inside one that holds neither of its ends passes a foreign directory. */
+  folderBox?: string;
+  /** The gaps the view reserves for wires that pass a column, when it reserves any. */
+  lane?: string;
 }
 
 export const LOCAL_MAP: ViewReading = {
@@ -227,7 +231,9 @@ export const LOCAL_MAP: ViewReading = {
     "#view-map .local-column-empty"
   ],
   folderText: [".node-path", ".node-directory"],
-  folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" }
+  folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" },
+  folderBox: "#map-container .local-directory-band[data-directory]",
+  lane: "#map-container .local-pass-through"
 };
 
 export const MEMBRANE_MAP: ViewReading = {
@@ -253,7 +259,8 @@ export const MEMBRANE_MAP: ViewReading = {
     "#view-membrane .membrane-browse-breadcrumb__segment"
   ],
   folderText: [".membrane-card__path", ".membrane-card__directory"],
-  folderContainer: { container: ".pa-band-membrane, .pa-ancestor-membrane, .membrane", label: ".pa-band-membrane__label, .pa-ancestor-membrane__label, .membrane__label" }
+  folderContainer: { container: ".pa-band-membrane, .pa-ancestor-membrane, .membrane", label: ".pa-band-membrane__label, .pa-ancestor-membrane__label, .membrane__label" },
+  folderBox: "#membrane-container .pa-band-membrane[data-directory]"
 };
 
 /** What the page reports about one wire. */
@@ -271,6 +278,11 @@ export interface WireReading {
   /** Samples along the path that fell on a card the wire does not end at, and samples taken. */
   occludedSamples: number;
   samples: number;
+  /** Samples, over the whole path, inside a directory's box that holds neither end of the wire. */
+  foreignSamples: number;
+  /** Samples inside a lane, and of those, inside a foreign directory's box: a lane placed where the wire does not belong. */
+  laneSamples: number;
+  foreignLaneSamples: number;
   /** The whole path sampled every 8 px in screen coordinates, flattened x, y, x, y. */
   points: number[];
   /** Which end of the sampled path sits at the provider's card: the first (0) or the last (1). */
@@ -326,6 +338,11 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       };
       const legibleText = (el: Element): boolean => inside(el.getBoundingClientRect()) && uncovered(el) && fontPx(el) >= readingPx;
       const folderOf = (id: string): string => (id.lastIndexOf("/") < 0 ? "" : id.slice(0, id.lastIndexOf("/")));
+      const within = (r: DOMRect, x: number, y: number): boolean => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      /** Whether a file lies in a directory or below it; the root holds everything. */
+      const under = (directory: string, file: string): boolean => directory === "" || folderOf(file) === directory || folderOf(file).startsWith(`${directory}/`);
+      const folderBoxes = (view.folderBox ? [...document.querySelectorAll<HTMLElement>(view.folderBox)] : []).map(el => ({ directory: el.dataset.directory ?? "", rect: el.getBoundingClientRect() }));
+      const laneBoxes = (view.lane ? [...document.querySelectorAll<HTMLElement>(view.lane)] : []).map(el => el.getBoundingClientRect());
       /** Whether a label's text names the folder: the whole path, its last segment, or a file path inside it. */
       const namesFolder = (text: string, folder: string): boolean => {
         const t = text.trim().toLowerCase();
@@ -422,6 +439,9 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
 
         let occludedSamples = 0;
         let samples = 0;
+        let foreignSamples = 0;
+        let laneSamples = 0;
+        let foreignLaneSamples = 0;
         const points: number[] = [];
         const ctm = el.getScreenCTM();
         if (ctm && typeof el.getTotalLength === "function") {
@@ -430,6 +450,13 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
           for (let at = 0; at <= length; at += 8) {
             const point = sample(at);
             points.push(point.x, point.y);
+            // Where the wire is drawn, in or out of the frame: a directory's box is a fact of the layout, not of the camera.
+            const foreign = folderBoxes.some(folder => within(folder.rect, point.x, point.y) && !under(folder.directory, consumer) && !under(folder.directory, provider));
+            if (foreign) foreignSamples += 1;
+            if (laneBoxes.some(rect => within(rect, point.x, point.y))) {
+              laneSamples += 1;
+              if (foreign) foreignLaneSamples += 1;
+            }
             if (point.x < frame.left || point.x > frame.right || point.y < frame.top || point.y > frame.bottom) continue;
             samples += 1;
             const top = document.elementFromPoint(point.x, point.y);
@@ -467,7 +494,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
           const top = Math.min(...rects.map(r => r.top));
           endpointBox = { x: left, y: top, width: Math.max(...rects.map(r => r.right)) - left, height: Math.max(...rects.map(r => r.bottom)) - top };
         }
-        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
+        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },
@@ -543,6 +570,30 @@ export function scoreOcclusion(picture: PictureReading): OcclusionScore {
     samples += wire.samples;
   }
   return { wires: picture.wires.length, occludedWires, occludedSamples, samples };
+}
+
+export interface ForeignScore {
+  wires: number;
+  /** Wires with any sample inside a directory's box that holds neither of their ends. */
+  foreignWires: number;
+  foreignSamples: number;
+  samples: number;
+  /** Samples inside lanes, and of those, inside a foreign directory; a view without lanes reports zero of zero. */
+  laneSamples: number;
+  foreignLaneSamples: number;
+}
+
+/** Test 16: wires drawn through a directory that holds neither of their ends, over the whole path, and the part of it that lies in lanes. */
+export function scoreForeign(picture: PictureReading): ForeignScore {
+  const score: ForeignScore = { wires: picture.wires.length, foreignWires: 0, foreignSamples: 0, samples: 0, laneSamples: 0, foreignLaneSamples: 0 };
+  for (const wire of picture.wires) {
+    if (wire.foreignSamples > 0) score.foreignWires += 1;
+    score.foreignSamples += wire.foreignSamples;
+    score.samples += wire.points.length / 2;
+    score.laneSamples += wire.laneSamples;
+    score.foreignLaneSamples += wire.foreignLaneSamples;
+  }
+  return score;
 }
 
 /** The legibility of one wire by the deck's full definition. */
@@ -983,6 +1034,8 @@ export interface Scoreboard {
   expanded?: ExpandedScore | null;
   /** Test 13. */
   hiddenAmongDrawn?: HiddenScore | null;
+  /** Test 16; absent on rows measured before it was defined. */
+  foreign?: ForeignScore | null;
   /** Test 14, after the journey's one gesture. */
   churn?: ChurnScore | null;
   /** Test 15. */
@@ -1040,24 +1093,26 @@ export function scoreboardTable(rows: readonly Scoreboard[]): string {
 /** The expanded measures of one bundle as a second table, one row per view. */
 export function expandedTable(rows: readonly Scoreboard[]): string {
   const header = [
-    "| View | State | Crossings (points / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
+    "| View | State | Crossings (points / spots / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Foreign directory (wires of drawn / samples of all / in lanes of lane samples) | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
   ];
   const lines = rows.map(row => {
     const e = row.expanded ?? null;
     const h = row.hiddenAmongDrawn ?? null;
+    const f = row.foreign ?? null;
     const c = row.churn ?? null;
     const t = row.tour ?? null;
     return [
       row.view,
       row.state,
-      e ? `${e.crossings.points} / ${e.crossings.farPoints} / ${e.crossings.pairs} / ${e.crossings.wiresCrossed} of ${e.flow.drawn}` : "n/a",
+      e ? `${e.crossings.points} / ${e.crossings.spots ?? "n/a"} / ${e.crossings.farPoints} / ${e.crossings.pairs} / ${e.crossings.wiresCrossed} of ${e.flow.drawn}` : "n/a",
       e ? `${e.channels.wires} of ${e.flow.drawn} / ${e.channels.longestRunPx}` : "n/a",
       e ? `${e.flow.flowing} of ${e.flow.drawn} / ${e.flow.backward}` : "n/a",
       e ? `${e.folders.adjacency.adjacent} of ${e.folders.adjacency.counted}` : "n/a",
       e ? `${e.folders.legible.legible} of ${e.folders.legible.counted}` : "n/a",
       e ? `${e.symbols.legible} of ${e.symbols.total}` : "n/a",
       h ? `${h.hidden} of ${h.facts}` : "n/a",
+      f ? `${f.foreignWires} of ${f.wires} / ${f.foreignSamples} of ${f.samples} / ${f.foreignLaneSamples} of ${f.laneSamples}` : "n/a",
       c ? `${c.moved} of ${c.present} / ${c.movedPx} / ${c.added} / ${c.removed}` : "n/a",
       t ? `${t.pans.length} / ${t.blindPans} / ${t.legibleAfter} of ${t.drawn} / ${t.unreachable} / ${t.verified}` : "n/a"
     ].join(" | ");

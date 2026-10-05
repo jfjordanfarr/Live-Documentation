@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branch-order.test.ts
-- Generated At: 2026-10-05T16:55:01.228Z
+- Generated At: 2026-10-05T18:59:22.136Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-order.ForwardReference`](./branch-order.ts.mdmd.md#symbol-forwardreference)
+- [`branch-order.Lane`](./branch-order.ts.mdmd.md#symbol-lane)
 - [`branch-order.OrderInput`](./branch-order.ts.mdmd.md#symbol-orderinput)
 - [`branch-order.crossingsOf`](./branch-order.ts.mdmd.md#symbol-crossingsof)
 - [`branch-order.orderBranches`](./branch-order.ts.mdmd.md#symbol-orderbranches)

@@ -15,6 +15,7 @@ Shared visual primitives consumed by multiple Explorer views: viewport layers (p
 
 - Extracted from monolithic `styles.css` on [2025-12-04](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19–21) as part of the CSS decomposition (`4504d36a`).
 - Z-index stacking was refined iteratively in Turns 21–22 of that session after the user reported connectors drawing behind nodes and test-backed glow drawing above nodes.
+- The card is sized as a border box since 2026-10-05: at `width: 100%` with its padding and border counted outside, every card was 26 px wider than the room its content had asked the grid for, which the owner saw as cards overflowing their directory boxes in the Local Map's many-file layout ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-8)). The Circuit Board shares the card and was pictured after the change.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

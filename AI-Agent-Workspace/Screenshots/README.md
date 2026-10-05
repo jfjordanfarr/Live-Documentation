@@ -4,7 +4,7 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-10-05
 
-Named in [the day's record](2026-10-05/README.md): the shipped Local Map with five files retained whole beside the Membrane Map with the same files' symbols all pinned, on this repository's five-file and chain scopes and the estate's five files, with the still-picture deck's measures for all six pictures. Taken to check where the many-file layout stands, not after a change.
+Named in [the day's record](2026-10-05/README.md): the shipped Local Map with five files retained whole beside the Membrane Map with the same files' symbols all pinned, on this repository's five-file and chain scopes and the estate's five files, with the still-picture deck's measures for all six pictures, taken to check where the many-file layout stands; then the same states after the two passes of the day, the layered layout in the afternoon and, after the owner's review, bundles by offering pin and lanes hosted by directories in the evening, with the bundles parting at their consumers, a bundle on hover, and the shared card seen in the classic Local Map and the Circuit Board after its sizing changed.
 
 ## 2026-10-03
 

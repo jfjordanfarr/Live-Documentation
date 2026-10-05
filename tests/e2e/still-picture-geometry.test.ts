@@ -13,7 +13,25 @@ const sampled = (id: string, from: [number, number], to: [number, number], step 
 describe("crossings", () => {
   it("counts an X as one point, one pair, two wires", () => {
     const score = crossings([sampled("a", [0, 0], [200, 200]), sampled("b", [0, 200], [200, 0])]);
-    expect(score).toEqual({ points: 1, farPoints: 1, pairs: 1, wiresCrossed: 2 });
+    expect(score).toEqual({ points: 1, spots: 1, farPoints: 1, pairs: 1, wiresCrossed: 2 });
+  });
+
+  it("does not count two wires drawn along one path, bends included, and counts a cable crossed once as one spot", () => {
+    // A bundle's two members share every sample of a sharp bend; the old count read each bend sample as a crossing.
+    const bend: Array<[number, number]> = [];
+    for (let x = 0; x <= 100; x += 4) bend.push([x, 0]);
+    for (let i = 1; i <= 20; i += 1) bend.push([100 + 10 * Math.sin((i / 20) * (Math.PI / 2)), 10 - 10 * Math.cos((i / 20) * (Math.PI / 2))]);
+    for (let y = 14; y <= 200; y += 4) bend.push([110, y]);
+    expect(crossings([{ id: "a", points: bend }, { id: "b", points: [...bend] }]).points).toBe(0);
+    // Members that part from one point do not cross each other either.
+    const shared = bend.slice(0, 20);
+    const partUp: Array<[number, number]> = [...shared, ...sampled("x", [shared[19][0], 0], [300, -80]).points];
+    const partDown: Array<[number, number]> = [...shared, ...sampled("y", [shared[19][0], 0], [300, 80]).points];
+    expect(crossings([{ id: "up", points: partUp }, { id: "down", points: partDown }]).points).toBe(0);
+    // A third wire across the two coincident members is two points at one spot.
+    const across = crossings([{ id: "a", points: bend }, { id: "b", points: [...bend] }, sampled("c", [50, -100], [50, 100])]);
+    expect(across.points).toBe(2);
+    expect(across.spots).toBe(1);
   });
 
   it("does not count parallel wires, touching ends, or two wires leaving one pin", () => {
@@ -36,7 +54,7 @@ describe("crossings", () => {
 
   it("counts a wire crossed twice by two others as two pairs and three wires", () => {
     const score = crossings([sampled("a", [0, 100], [400, 100]), sampled("b", [100, 0], [100, 200]), sampled("c", [300, 0], [300, 200])]);
-    expect(score).toEqual({ points: 2, farPoints: 2, pairs: 2, wiresCrossed: 3 });
+    expect(score).toEqual({ points: 2, spots: 2, farPoints: 2, pairs: 2, wiresCrossed: 3 });
   });
 
   it("tells a crossing in a fan at a pin from one in the open", () => {

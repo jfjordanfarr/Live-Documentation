@@ -27,6 +27,7 @@ import {
   scoreboardTable,
   scoreChurn,
   scoreExpanded,
+  scoreForeign,
   scoreHiddenAmongDrawn,
   scoreHops,
   scoreLegibility,
@@ -193,6 +194,7 @@ interface Still {
   text: Scoreboard["text"];
   expanded: Scoreboard["expanded"];
   hiddenAmongDrawn: Scoreboard["hiddenAmongDrawn"];
+  foreign: Scoreboard["foreign"];
 }
 
 async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraphPayload, facts: Fact[], names: Record<string, Record<string, string>>, read?: PictureReading): Promise<Still> {
@@ -204,7 +206,8 @@ async function stillMeasures(page: Page, view: ViewReading, graph: ExplorerGraph
     occlusion: scoreOcclusion(picture),
     text: await scoreText(page, view),
     expanded: scoreExpanded(picture, symbolCounts(graph)),
-    hiddenAmongDrawn: scoreHiddenAmongDrawn(graph, picture)
+    hiddenAmongDrawn: scoreHiddenAmongDrawn(graph, picture),
+    foreign: scoreForeign(picture)
   };
 }
 
@@ -341,6 +344,7 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
     journey: null,
     expanded: scoreExpanded(picture, symbolCounts(graph)),
     hiddenAmongDrawn: scoreHiddenAmongDrawn(graph, picture),
+    foreign: scoreForeign(picture),
     churn: null,
     tour: null,
     chain: null,
@@ -539,6 +543,7 @@ for (const run of RUNS) {
       const still = await stillMeasures(page, LOCAL_MAP, graph, facts, names, picture);
       // The deck counts a back reference's stubs as backward, as it does the Membrane's; the rule here is for routes.
       const routesOnly = scoreExpanded({ ...picture, wires: picture.wires.filter(wire => !wire.stub) }, symbolCounts(graph));
+      expect(still.foreign!.foreignLaneSamples, "no lane lies in a directory that holds neither end of its wires").toBe(0);
       const tour = await runTour(page, LOCAL_MAP, facts, names);
       const routes = await scoreRoutes(page, LOCAL_MAP);
 
@@ -632,6 +637,7 @@ for (const run of RUNS) {
         journey: null,
         expanded: null,
         hiddenAmongDrawn: null,
+        foreign: null,
         churn: null,
         tour: null,
         chain: null,
