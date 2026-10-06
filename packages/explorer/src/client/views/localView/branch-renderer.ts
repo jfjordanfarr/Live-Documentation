@@ -1,5 +1,5 @@
 import type { Lane } from "./branch-order";
-import { placeBranches, type PlacementBand, type PlacementWire } from "./branch-placement";
+import { placeBranches, type PlacementBand, type PlacementWire, type StackEntry } from "./branch-placement";
 import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
 import { buildBranches, edgeKey } from "./branches";
 import { createNodeCard } from "./card-factory";
@@ -12,6 +12,9 @@ const ITEM_GAP = 24;
 
 /** The room between sibling directory boxes that share a column. */
 const BAND_GAP = 28;
+
+/** Where a wire runs through a slot of a lane: the slot's middle pixel, from its top. */
+const SLOT_LINE = Math.floor(LANE_PITCH / 2);
 
 /** A directory box's padding and border, as `local.css` draws them. */
 const BAND_PADDING = 12;
@@ -29,11 +32,14 @@ interface Box {
   /** Padding plus border on each side, zero for a box drawn as nothing. */
   inset: number;
   insetTop: number;
+  insetBottom: number;
   minColumn: number;
   maxColumn: number;
   row: number;
   items: string[];
   children: Box[];
+  /** A lane's slots, top to bottom, one per bundle, which are its items; null for a directory's box. */
+  slots: string[] | null;
   /** Set once placed. */
   left: number;
   top: number;
@@ -41,7 +47,7 @@ interface Box {
   bottom: number;
 }
 
-/** A card or a lane: an item the placement stands in a column. */
+/** A card: an item the placement stands in a column. A lane is a box of slots instead. */
 interface Item {
   id: string;
   element: HTMLElement;
@@ -56,8 +62,9 @@ interface Item {
  * symbol pins and interface colours, placed on the vertical axis by the
  * exact placement of `branch-placement.ts`: the cards and lanes of every
  * column stand where the wires between pins are shortest, inside the
- * directory boxes the order chose. The elements keep the names the router,
- * the deck and the perspective transition read.
+ * directory boxes the order chose, and each lane is as tall as the slots
+ * its wires spread. The elements keep the names the router, the deck and
+ * the perspective transition read.
  */
 export function renderBranches(controller: LocalViewController, root: HTMLElement): void {
   const { state, graphData } = controller.options;
@@ -80,16 +87,20 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   }
 
   const items = new Map<string, Item>();
-  const columns: string[][] = Array.from({ length: columnCount }, () => []);
+  const columns: StackEntry[][] = Array.from({ length: columnCount }, () => []);
   let boxCount = 0;
   const anchorOf = (box: Box): Box | null => (box.element ? box : box.anchor);
+  // A lane is a box whose items are its slots, one per bundle; it stands in its column's stack by its edges.
+  const laneBoxes = new Map<string, Box>();
   const laneBox = (lane: Lane, parent: Box): Box => {
     const element = laneElement(lane);
     (anchorOf(parent)?.element ?? root).append(element);
-    const box: Box = { key: `lane\0${boxCount++}`, element: null, parent, anchor: anchorOf(parent), directory: parent.directory, inset: 0, insetTop: 0,
-      minColumn: lane.column, maxColumn: lane.column, row: lane.row ?? 0, items: [lane.key], children: [], left: 0, top: 0, right: 0, bottom: 0 };
-    items.set(lane.key, { id: lane.key, element, column: lane.column, box, inset: ancestorsInset(box) });
-    columns[lane.column].push(lane.key);
+    const key = `lane\0${lane.key}`;
+    const slots = lane.bundles.map((_, slot) => `${key}\0${slot}`);
+    const box: Box = { key, element, parent, anchor: anchorOf(parent), directory: parent.directory, inset: 0, insetTop: LANE_PADDING, insetBottom: LANE_PADDING,
+      minColumn: lane.column, maxColumn: lane.column, row: lane.row ?? 0, items: slots, children: [], slots, left: 0, top: 0, right: 0, bottom: 0 };
+    laneBoxes.set(lane.key, box);
+    columns[lane.column].push({ key, slots });
     return box;
   };
   const build = (band: DirectoryBand, parent: Box | null): Box => {
@@ -110,9 +121,10 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
       }
       ((parent && anchorOf(parent)?.element) ?? root).append(element);
     }
+    const inset = drawn ? BAND_PADDING + BAND_BORDER : 0;
     const box: Box = { key: `${band.directory}\0${boxCount++}`, element, parent, anchor: parent ? anchorOf(parent) : null, directory: band.directory,
-      inset: drawn ? BAND_PADDING + BAND_BORDER : 0, insetTop: 0, minColumn: band.minColumn, maxColumn: band.maxColumn, row: band.bandRow,
-      items: [], children: [], left: 0, top: 0, right: 0, bottom: 0 };
+      inset, insetTop: 0, insetBottom: inset, minColumn: band.minColumn, maxColumn: band.maxColumn, row: band.bandRow,
+      items: [], children: [], slots: null, left: 0, top: 0, right: 0, bottom: 0 };
     const hostElement = anchorOf(box)?.element ?? root;
     // Children first, in their rows, the lanes this directory holds among them by row; then this box's own files and their lanes.
     const rows: Array<{ row: number; child?: DirectoryBand; lane?: Lane }> = band.children.map(child => ({ row: child.bandRow, child }));
@@ -126,7 +138,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
         columns[column].push(id);
       };
       const top = stackLanes.get(`${band.directory}\0${column}\0`);
-      if (top) { const element = laneElement(top); hostElement.append(element); push(top.key, element); }
+      if (top) box.children.push(laneBox(top, box));
       for (const id of ids) {
         const node = byId.get(id);
         if (!node) continue;
@@ -142,7 +154,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
         hostElement.append(wrapper);
         push(id, wrapper);
         const after = stackLanes.get(`${band.directory}\0${column}\0${id}`);
-        if (after) { const element = laneElement(after); hostElement.append(element); push(after.key, element); }
+        if (after) box.children.push(laneBox(after, box));
       }
     }
     return box;
@@ -184,9 +196,12 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   Object.assign(root.style, { width: `${pictureWidth}px` });
   const heights = new Map<string, number>();
   for (const item of items.values()) heights.set(item.id, item.element.offsetHeight);
+  for (const box of laneBoxes.values()) for (const slot of box.slots!) heights.set(slot, LANE_PITCH);
   const measureInsets = (box: Box): void => {
-    const label = box.element?.querySelector<HTMLElement>(":scope > .local-directory-label");
-    box.insetTop = box.inset + (label ? label.offsetHeight : 0);
+    if (!box.slots) {
+      const label = box.element?.querySelector<HTMLElement>(":scope > .local-directory-label");
+      box.insetTop = box.inset + (label ? label.offsetHeight : 0);
+    }
     for (const child of box.children) measureInsets(child);
   };
   measureInsets(rootBox);
@@ -217,8 +232,9 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     let previous = { item: edge.targetId, offset: provider };
     for (let column = a + 1; column < b; column++) {
       const passage = order.passages.get(`${edgeKey(edge)}\0${column}`);
-      if (!passage) break;
-      const slot = { item: passage.lane, offset: LANE_PADDING + passage.index * LANE_PITCH + LANE_PITCH / 2 };
+      const slots = passage ? laneBoxes.get(passage.lane)?.slots : undefined;
+      if (!passage || !slots) break;
+      const slot = { item: slots[passage.index], offset: SLOT_LINE };
       addWire(previous, slot);
       previous = slot;
     }
@@ -226,7 +242,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   }
 
   const toPlacementBand = (box: Box): PlacementBand => ({
-    key: box.key, insetTop: box.insetTop, insetBottom: box.inset, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
+    key: box.key, insetTop: box.insetTop, insetBottom: box.insetBottom, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
     items: box.items, children: box.children.map(toPlacementBand)
   });
   const placement = placeBranches({ columns, heights, wires: [...wires.values()], bands: [toPlacementBand(rootBox)], gap: ITEM_GAP, bandGap: BAND_GAP });
@@ -243,6 +259,10 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     for (const child of box.children) placeDown(child);
   };
   placeDown(rootBox);
+  // Each lane says where its slots came to rest, from its top edge to the line of each, for the router to thread the wires through.
+  for (const box of laneBoxes.values()) {
+    box.element!.dataset.slots = box.slots!.map(slot => String((placement.top.get(slot) ?? 0) - box.top + SLOT_LINE)).join(",");
+  }
   let pictureHeight = 0;
   for (const item of items.values()) {
     const top = placement.top.get(item.id) ?? 0;
@@ -335,11 +355,10 @@ function dressCards(controller: LocalViewController, root: HTMLElement, branches
   });
 }
 
-/** The room a lane's bundles take, one slot each; the router reads its position back from the page. */
+/** The room a lane's bundles pass through; the placement sizes it, and the router reads its place and its slots back from the page. */
 function laneElement(lane: Lane): HTMLElement {
   const element = document.createElement("div");
   element.className = "local-pass-through";
   element.dataset.lane = lane.key;
-  element.style.height = `${LANE_PADDING * 2 + lane.bundles.length * LANE_PITCH}px`;
   return element;
 }

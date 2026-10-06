@@ -3,10 +3,10 @@ import type { BezierTuning } from "../../types";
 /** A point in unscaled Local Map coordinates. */
 export interface RoutePoint { x: number; y: number }
 
-/** The vertical room each threaded wire takes in a lane, in CSS pixels. */
+/** A lane slot's height, the least room between neighbouring wires through a lane, in CSS pixels; the placement may spread them further. */
 export const LANE_PITCH = 7;
 
-/** The room above and below a lane's wires, in CSS pixels. */
+/** The room between a lane's edge and its first or last slot, in CSS pixels. */
 export const LANE_PADDING = 6;
 
 /** How far outside a column's cards a lane's straight run begins and ends, in CSS pixels. */

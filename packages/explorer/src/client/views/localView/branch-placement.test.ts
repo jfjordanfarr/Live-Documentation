@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { placeBranches, placementCost, type PlacementBand, type PlacementInput, type PlacementWire } from "./branch-placement";
+import { placeBranches, placementCost, type PlacementBand, type PlacementInput, type PlacementLane, type PlacementWire, type StackEntry } from "./branch-placement";
 
 const heights = (pairs: Array<[string, number]>): Map<string, number> => new Map(pairs);
 
@@ -9,11 +9,30 @@ const band = (key: string, items: string[], columns: [number, number], row = 0, 
 
 const wire = (from: [string, number], to: [string, number], weight = 1): PlacementWire => ({ from: { item: from[0], offset: from[1] }, to: { item: to[0], offset: to[1] }, weight });
 
-/** Every item inside its box with the insets, every column in order with the gap, and sibling boxes that share a column apart. */
+/** The lane's slot height and padding as the renderer gives them, and the slot's middle pixel, where its wire runs. */
+const PITCH = 7, PADDING = 6, LINE = Math.floor(PITCH / 2);
+
+/** A lane of `count` slots in one column, as the stack entry and as the band around its slots. */
+const lane = (key: string, column: number, count: number, row = 0): { entry: PlacementLane; band: PlacementBand; slots: string[]; heights: Array<[string, number]> } => {
+  const slots = Array.from({ length: count }, (_, i) => `${key}/${i}`);
+  return { entry: { key, slots }, band: band(key, slots, [column, column], row, [], [PADDING, PADDING]), slots, heights: slots.map(slot => [slot, PITCH] as [string, number]) };
+};
+
+/** Every item inside its box with the insets, every column in order with the gap, slots in order at their pitch, and sibling boxes that share a column apart. */
 function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof placeBranches>): void {
+  const edges = (entry: StackEntry): { top: number; bottom: number } =>
+    typeof entry === "string"
+      ? { top: placement.top.get(entry)!, bottom: placement.top.get(entry)! + input.heights.get(entry)! }
+      : placement.boxes.get(entry.key)!;
   for (const column of input.columns) {
     for (let i = 1; i < column.length; i++) {
-      expect(placement.top.get(column[i])!).toBeGreaterThanOrEqual(placement.top.get(column[i - 1])! + input.heights.get(column[i - 1])! + input.gap);
+      expect(edges(column[i]).top).toBeGreaterThanOrEqual(edges(column[i - 1]).bottom + input.gap);
+    }
+    for (const entry of column) {
+      if (typeof entry === "string") continue;
+      for (let i = 1; i < entry.slots.length; i++) {
+        expect(placement.top.get(entry.slots[i])!).toBeGreaterThanOrEqual(placement.top.get(entry.slots[i - 1])! + input.heights.get(entry.slots[i - 1])!);
+      }
     }
   }
   const visit = (bands: readonly PlacementBand[]): void => {
@@ -116,23 +135,105 @@ describe("placing the retained files", () => {
     expect(placement.cost).toBe(0);
   });
 
+  it("stands a lane in its column's stack like a card: the gap to its neighbours, and its slots at their pitch inside its padding", () => {
+    const l = lane("lane", 0, 2);
+    const input: PlacementInput = {
+      columns: [["a", l.entry, "b"]],
+      heights: heights([["a", 100], ["b", 50], ...l.heights]),
+      wires: [],
+      bands: [band("root", ["a", "b"], [0, 0], 0, [l.band], [0, 0])],
+      gap: 24, bandGap: 28
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    // Nothing pulls, so the lane is its slots at pitch inside its padding: 6 + 7 + 7 + 6 = 26 tall, as a rigid lane was.
+    expect(placement.boxes.get("lane")).toEqual({ top: 124, bottom: 150 });
+    expect([placement.top.get("lane/0"), placement.top.get("lane/1")]).toEqual([130, 137]);
+    expect(placement.top.get("b")).toBe(174);
+  });
+
+  it("spreads a lane's slots to the wires through them, and the lane grows exactly as far as they ask", () => {
+    // Card p's pins at 20 and 280 each send a wire through a slot of the lane to a card on the far side, q and r. A
+    // rigid lane would hold the two slots 7 px apart and one wire or the other would bend; free slots let both run level.
+    const l = lane("lane", 1, 2);
+    const input: PlacementInput = {
+      columns: [["p"], [l.entry], ["q", "r"]],
+      heights: heights([["p", 300], ["q", 60], ["r", 60], ...l.heights]),
+      wires: [
+        wire(["p", 20], ["lane/0", LINE]), wire(["lane/0", LINE], ["q", 10]),
+        wire(["p", 280], ["lane/1", LINE]), wire(["lane/1", LINE], ["r", 10])
+      ],
+      bands: [band("root", ["p", "q", "r"], [0, 2], 0, [l.band], [0, 0])],
+      gap: 24, bandGap: 28
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    expect(placement.cost).toBe(0);
+    expect(placement.optimal).toBe(true);
+    const p = placement.top.get("p")!;
+    expect(placement.top.get("lane/0")! + LINE).toBe(p + 20);
+    expect(placement.top.get("lane/1")! + LINE).toBe(p + 280);
+    expect(placement.boxes.get("lane")).toEqual({ top: placement.top.get("lane/0")! - PADDING, bottom: placement.top.get("lane/1")! + PITCH + PADDING });
+    expect(placement.top.get("q")! + 10).toBe(p + 20);
+    expect(placement.top.get("r")! + 10).toBe(p + 280);
+  });
+
+  it("keeps a lane's slots in their order and at their pitch when their wires pull them past each other", () => {
+    // The first slot's wire leaves p's pin at 100 and the second's at 20, so the wires want the slots the other way
+    // round; the far ends are left out so that only the pins pull. The slots stay in order, touching, and the two
+    // wires between them bend by the 80 px between the pins plus the 7 px slot they cannot close.
+    const l = lane("lane", 1, 2);
+    const input: PlacementInput = {
+      columns: [["p"], [l.entry]],
+      heights: heights([["p", 200], ...l.heights]),
+      wires: [wire(["p", 100], ["lane/0", LINE]), wire(["p", 20], ["lane/1", LINE])],
+      bands: [band("root", ["p"], [0, 1], 0, [l.band], [0, 0])],
+      gap: 24, bandGap: 28
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    expect(placement.top.get("lane/1")! - placement.top.get("lane/0")!).toBe(PITCH);
+    expect(placement.cost).toBe(80 + PITCH);
+    expect(placement.optimal).toBe(true);
+  });
+
+  it("refuses a lane that is no box of the bands, since its edges would float free of its slots", () => {
+    const l = lane("lane", 0, 1);
+    const input: PlacementInput = { columns: [["a", l.entry]], heights: heights([["a", 10], ...l.heights]), wires: [], bands: [band("root", ["a"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28 };
+    expect(() => placeBranches(input)).toThrow(/no box of the bands/u);
+  });
+
   it("never costs more than the stacked start, and places the same way every time", () => {
     let state = 5;
     const next = (): number => { state = (state * 1103515245 + 12345) % 2147483648; return state / 2147483648; };
-    const columns = [["a", "b", "c"], ["d", "e", "f", "g"], ["h", "i"]];
-    const h = heights(columns.flat().map(id => [id, 60 + Math.floor(next() * 200)] as [string, number]));
+    const cards = [["a", "b", "c"], ["d", "e", "f", "g"], ["h", "i"]];
+    const l = lane("lane", 1, 3);
+    const columns: StackEntry[][] = [cards[0], ["d", "e", l.entry, "f", "g"], cards[2]];
+    const h = heights([...cards.flat().map(id => [id, 60 + Math.floor(next() * 200)] as [string, number]), ...l.heights]);
     const wires: PlacementWire[] = [];
     for (let i = 0; i < 12; i++) {
       const c = Math.floor(next() * 2);
-      const from = columns[c][Math.floor(next() * columns[c].length)], to = columns[c + 1][Math.floor(next() * columns[c + 1].length)];
+      const from = cards[c][Math.floor(next() * cards[c].length)], to = cards[c + 1][Math.floor(next() * cards[c + 1].length)];
       wires.push(wire([from, Math.floor(next() * h.get(from)!)], [to, Math.floor(next() * h.get(to)!)], 1 + Math.floor(next() * 3)));
     }
-    const input: PlacementInput = { columns, heights: h, wires, bands: [band("root", columns.flat(), [0, 2], 0, [], [0, 0])], gap: 24, bandGap: 28 };
+    // Three wires from the first column thread the lane's slots to the third.
+    for (const slot of l.slots) {
+      const from = cards[0][Math.floor(next() * 3)], to = cards[2][Math.floor(next() * 2)];
+      wires.push(wire([from, Math.floor(next() * h.get(from)!)], [slot, LINE]), wire([slot, LINE], [to, Math.floor(next() * h.get(to)!)]));
+    }
+    const input: PlacementInput = { columns, heights: h, wires, bands: [band("root", cards.flat(), [0, 2], 0, [l.band], [0, 0])], gap: 24, bandGap: 28 };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
     const stacked = new Map<string, number>();
-    for (const column of columns) { let y = 0; for (const id of column) { stacked.set(id, y); y += h.get(id)! + 24; } }
-    expect(placement.cost).toBeLessThanOrEqual(placementCost(wires, stacked));
+    for (const column of columns) {
+      let y = 0;
+      for (const entry of column) {
+        if (typeof entry === "string") { stacked.set(entry, y); y += h.get(entry)! + 24; continue; }
+        y += PADDING;
+        for (const slot of entry.slots) { stacked.set(slot, y); y += PITCH; }
+        y += PADDING + 24;
+      }
+    }
     expect(placement.cost).toBeLessThan(placementCost(wires, stacked));
     expect(placeBranches(input)).toEqual(placement);
   });

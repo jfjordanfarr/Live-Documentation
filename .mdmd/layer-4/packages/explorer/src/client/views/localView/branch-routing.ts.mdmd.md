@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-routing.ts
-- Generated At: 2026-10-05T16:55:01.324Z
+- Generated At: 2026-10-06T15:18:09.721Z
 
 ## Authored
 ### Purpose
 The pure geometry of a Local Map wire: the native curve between two pins, and the threaded route of a reference that skips columns.
 
 ### Notes
-A threaded route is curve, lane, curve, lane, curve: each curve lives in a gutter and each straight run in a lane the ordering reserved between two cards, so by construction it never reaches backward and never enters a card. The lane constants, 7 px per wire with 6 px above and below and a 10 px margin outside the column, are the room the renderer leaves and the router reads back. This replaced the orthogonal detour over the top of the whole picture on 2026-10-05, after the owner's October 3 criticism of "right-angle-ey hopping-over-a-column connectors" and their answer that routing is a balance of legibility, directionality and no overlaps rather than a rule.
+A threaded route is curve, lane, curve, lane, curve: each curve lives in a gutter and each straight run in a lane the ordering reserved between two cards, so by construction it never reaches backward and never enters a card. The lane constants, a 7 px slot per bundle, which is the least between neighbouring wires, 6 px above the first slot and below the last, and a 10 px margin outside the column, are the least room the renderer leaves and the router reads back; since 2026-10-06 the placement spreads a lane's slots further apart where the wires through them ask. This replaced the orthogonal detour over the top of the whole picture on 2026-10-05, after the owner's October 3 criticism of "right-angle-ey hopping-over-a-column connectors" and their answer that routing is a balance of legibility, directionality and no overlaps rather than a rule.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,14 +28,14 @@ A point in unscaled Local Map coordinates.
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L7)
 
 ##### `LANE_PITCH` — Summary
-The vertical room each threaded wire takes in a lane, in CSS pixels.
+A lane slot's height, the least room between neighbouring wires through a lane, in CSS pixels; the placement may spread them further.
 
 #### `LANE_PADDING` {#symbol-lane_padding}
 - Type: const
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L10)
 
 ##### `LANE_PADDING` — Summary
-The room above and below a lane's wires, in CSS pixels.
+The room between a lane's edge and its first or last slot, in CSS pixels.
 
 #### `LANE_MARGIN` {#symbol-lane_margin}
 - Type: const

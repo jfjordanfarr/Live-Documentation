@@ -162,8 +162,19 @@ test("a retained exploration threads skipped references through lanes: nothing o
   const routesOnly = { ...picture, wires: picture.wires.filter(wire => !wire.stub) };
   expect(scoreExpanded(routesOnly, symbolCounts(graph)).flow.backward, "no drawn route reads backward; a cycle's feedback is stubs").toBe(0);
   // This scope's references skip columns, so lanes exist, and every wire stays inside the picture's own extent: no headroom above it.
-  const lanes = await page.locator("#map-container .local-pass-through").count();
-  expect(lanes).toBeGreaterThan(0);
+  const lanes = await page.locator("#map-container .local-pass-through[data-lane]").evaluateAll(elements => elements.map(element => ({
+    height: (element as HTMLElement).offsetHeight,
+    slots: ((element as HTMLElement).dataset.slots ?? "").split(",").map(Number)
+  })));
+  expect(lanes.length).toBeGreaterThan(0);
+  // A lane is a box around its slots: its first wire 9 px below its top (the padding and the slot's middle pixel), each next
+  // wire at least the 7 px pitch further, its bottom edge 10 px below the last; and on this scope the wires spread some lane's slots.
+  for (const lane of lanes) {
+    expect(lane.slots[0]).toBe(9);
+    for (let i = 1; i < lane.slots.length; i++) expect(lane.slots[i] - lane.slots[i - 1]).toBeGreaterThanOrEqual(7);
+    expect(lane.height).toBe(lane.slots[lane.slots.length - 1] + 10);
+  }
+  expect(lanes.some(lane => lane.height > 12 + 7 * lane.slots.length), "the placement spreads a lane's slots where its wires ask").toBe(true);
   const top = await page.evaluate(() => Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-pass-through")].map(el => el.getBoundingClientRect().top)));
   const highest = Math.min(...picture.wires.flatMap(wire => wire.points.filter((_, i) => i % 2 === 1)));
   expect(highest).toBeGreaterThanOrEqual(top - 1);

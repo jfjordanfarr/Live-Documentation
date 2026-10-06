@@ -1,4 +1,4 @@
-import { curveTo, LANE_MARGIN, LANE_PADDING, LANE_PITCH, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
+import { curveTo, LANE_MARGIN, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
@@ -497,10 +497,11 @@ function drawBranchConnections(context: ConnectionsContext): void {
     });
     return { left: Math.min(...cards.map(card => card.cardLeft)), right: Math.max(...cards.map(card => card.cardRight)) };
   });
-  const laneTop = new Map<string, number>();
+  // Each lane as the renderer placed it: its top, and where each slot rests below that top.
+  const lanes = new Map<string, { top: number; slots: number[] }>();
   runtime.container.querySelectorAll<HTMLElement>(".local-pass-through[data-lane]").forEach(element => {
     const measured = measure(element);
-    if (measured) laneTop.set(element.dataset.lane!, measured.topY);
+    if (measured) lanes.set(element.dataset.lane!, { top: measured.topY, slots: (element.dataset.slots ?? "").split(",").filter(Boolean).map(Number) });
   });
   let drawn = 0;
   const laceRanks = new Map<string, number>();
@@ -532,12 +533,13 @@ function drawBranchConnections(context: ConnectionsContext): void {
       const slots: string[] = [];
       for (let column = a + 1; column < b; column++) {
         const passage = branches.order.passages.get(`${key}\0${column}`);
-        const top = passage ? laneTop.get(passage.lane) : undefined;
-        if (!passage || top === undefined) break;
+        const lane = passage ? lanes.get(passage.lane) : undefined;
+        const slot = passage && lane ? lane.slots[passage.index] : undefined;
+        if (!passage || !lane || slot === undefined) break;
         passages.push({
           left: columnBounds[column].left - bounds.left - LANE_MARGIN,
           right: columnBounds[column].right - bounds.left + LANE_MARGIN,
-          y: top - bounds.top + LANE_PADDING + passage.index * LANE_PITCH + LANE_PITCH / 2
+          y: lane.top - bounds.top + slot
         });
         slots.push(`${passage.lane}\0${passage.index}`);
       }
