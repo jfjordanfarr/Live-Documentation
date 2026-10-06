@@ -8,3 +8,15 @@ Evidence from [the October 5 session's fourteenth turn](../../ChatHistory/2026/1
 | [Five files, the whole picture](repository-five-local-map-whole.png) | The committed optimum zoomed out eight steps: the frame the owner saw is the left third of the live-docs box; the lanes of columns 2 to 5 carry `document.ts`'s and `graph.ts`'s bundles to consumers that stand from the top of the picture to its foot, and it is those that hold the box where it is. |
 
 Every forced offset from 200 to 500 px raised the drawn total, monotonically: 613,479, 617,224, 621,403, 626,498, 632,792, 639,169, 645,606 px. The same probe's input, solved again with every lane's slots as free variables ordered at the lane's pitch, cut the solver's measure from 350,158 to 329,370 and stretched the column-2 lane so that `document.ts`'s bundles cross it level with the lanes on either side; that is the next step proposed to the owner, not yet built.
+
+## The French Corset's laces, later the same night
+
+After [Turn 15](../../ChatHistory/2026/10/2026-10-05.1.record.md#turn-15), where the owner showed two pictures of loop-shaped laces and asked for "a slightly more distinctive loop-around shape" that "gives the appearance of wrapping around the present node to re-connect to itself at another spot": the straight tapered stubs of a self-reference, which could meet at one pin as a chevron that read as an arrowhead, became laces that leave the pin, turn toward the partner row and return to the card's edge. Taken at twice the device scale so the shape can be judged; the cards are at the view's own scale.
+
+| Capture | State |
+| --- | --- |
+| [graph.ts, five files retained](repository-five-local-map-graph-card-laces.png) | The card where the owner saw the chevron at DocLocation's pin and the half-arrow at LiveDocGraph's. Each self-reference is now a lace at each of its pins; two laces of one pin, one turning up and one down, make a bracket. |
+| [csharp.dependencies.ts selected](repository-csharp-dependencies-laces.png) | The subject of the owner's second picture: TypeResolver's two laces, one at each side, and resolveReflectionTargets' lace up its left edge. |
+| [staticBuilder.ts selected](repository-staticBuilder-laces.png) | The subject of the owner's first picture: BuildStaticExplorerOptions' lace turning down at its right pin, buildStaticExplorer's turning up at its left. |
+
+Measured on the five-file scope before and after: the drawn total and the crossing spots are the same (610,394 px, 636), since laces are not routes. The same spec also let Internals move with its wires, as the owner wondered: on this scope the wires put Internals last on every card anyway, and the deck's total and crossings nudged up by 25 px and 19 spots, so the rule as it stands cost nothing here.

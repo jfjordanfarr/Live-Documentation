@@ -4,6 +4,7 @@ import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState } from "../../types";
+import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
@@ -116,8 +117,6 @@ export function drawConnections(context: ConnectionsContext): void {
   // Self-loop segments need special wraparound rendering
   const selfLoopSegments: Array<{
     edge: LocalEdge;
-    source: AnchorMeasurement;
-    target: AnchorMeasurement;
     sourcePoint: Point;
     targetPoint: Point;
   }> = [];
@@ -138,7 +137,7 @@ export function drawConnections(context: ConnectionsContext): void {
 
       const sourcePoint = offsetToEdge(providerAnchor, "outbound");
       const targetPoint = offsetToEdge(consumerAnchor, "inbound");
-      selfLoopSegments.push({ edge, source: providerAnchor, target: consumerAnchor, sourcePoint, targetPoint });
+      selfLoopSegments.push({ edge, sourcePoint, targetPoint });
       return;
     }
 
@@ -189,10 +188,11 @@ export function drawConnections(context: ConnectionsContext): void {
     appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier, gradientId);
   });
 
-  // Render self-loop connections (intra-node type references) with wraparound beziers
+  // The file's own references, each a pair of laces at its pins.
   if (centerCardBounds) {
-    const taper = state.tuning.localMap?.selfLoopTaper ?? 0.5;
-    selfLoopSegments.forEach(({ edge, source, target, sourcePoint, targetPoint }) => {
+    const taper = state.tuning.localMap?.selfLoopTaper ?? DEFAULT_SELF_LOOP_PARAMS.taper;
+    const ranks = new Map<string, number>();
+    selfLoopSegments.forEach(({ edge, sourcePoint, targetPoint }) => {
       const adjustedSource = {
         x: sourcePoint.x - bounds.left,
         y: sourcePoint.y - bounds.top
@@ -201,13 +201,7 @@ export function drawConnections(context: ConnectionsContext): void {
         x: targetPoint.x - bounds.left,
         y: targetPoint.y - bounds.top
       };
-      const cardBoundsAdjusted = {
-        left: centerCardBounds.left - bounds.left,
-        right: centerCardBounds.right - bounds.left,
-        top: centerCardBounds.top - bounds.top,
-        bottom: centerCardBounds.bottom - bounds.top
-      };
-      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, source, target, cardBoundsAdjusted, edge, context.svgNamespace, taper);
+      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, edge, context.svgNamespace, taper, ranks);
     });
   }
 
@@ -363,108 +357,51 @@ function appendConnectionPath(
 }
 
 /**
- * Renders a "French Corset" self-loop as two tiny "nubby" stubs that suggest
- * the connection wraps around behind the card.
- *
- * Visual approach:
- * - Provider stub (blue/outbound): tiny curve extending right from the blue pin,
- *   then curling slightly inward (toward target Y) before fading/thinning
- * - Consumer stub (green/inbound): tiny curve extending left from the green pin,
- *   then curling slightly inward (toward source Y) before fading/thinning
- *
- * The stubs don't connect visually — the "behind the card" connection is implied.
- * This creates a cleaner "lacing" effect without tangled beziers.
- * 
- * Tapering: The strokes thin from full width at the pin to a narrower width at the end,
- * controlled by the selfLoopTaper tuning parameter (0 = no taper, 1 = taper to 25% width).
+ * Draws a self-reference as the two laces of the French Corset, one at each
+ * pin, from {@link computeSelfLoopStubs}: each leaves its pin, turns toward
+ * the other row and returns to the card's edge, as if it ran on behind the
+ * card. The laces of one pin that turn the same way nest outward, so a row
+ * referred to from several rows below shows as many laces; `ranks` counts
+ * them across one drawing. Each lace is a filled polygon in its pin's colour,
+ * carrying the reference's symbols for hover.
  */
 function appendSelfLoopPath(
   svg: SVGSVGElement,
   source: Point,
   target: Point,
-  _sourceAnchor: AnchorMeasurement,
-  _targetAnchor: AnchorMeasurement,
-  _cardBounds: { left: number; right: number; top: number; bottom: number },
   edge: LocalEdge,
   svgNamespace: string,
-  taper: number
+  taper: number,
+  ranks: Map<string, number>
 ): void {
-  // Stub parameters - small nubs that extend from the pin's outer edge
-  const STUB_LENGTH = 14;      // How far the stub extends horizontally from pin edge
-  const CURL_AMOUNT = 8;       // How much the stub curls toward partner symbol
-  const BASE_WIDTH = 2.5;      // Width at the pin edge
-  // Taper: 0 = stay at BASE_WIDTH, 1 = go down to 25% of BASE_WIDTH
-  const END_WIDTH = BASE_WIDTH * (1 - taper * 0.75);
-
-  // Direction of Y curl: toward the partner symbol
-  const providerCurlY = target.y > source.y ? CURL_AMOUNT : -CURL_AMOUNT;
-  const consumerCurlY = source.y > target.y ? CURL_AMOUNT : -CURL_AMOUNT;
-
-  // Calculate perpendicular offsets for the polygon edges
-  const halfBaseWidth = BASE_WIDTH / 2;
-  const halfEndWidth = END_WIDTH / 2;
-
-  // === Provider stub (outbound/blue side) ===
-  // source.x is already at the pin's RIGHT edge (center + PIN_RADIUS from caller)
-  // Start right at the pin edge, extend outward
-  const providerStartX = source.x;  // Pin's right edge
-  const providerEndX = source.x + STUB_LENGTH;  // Extend outward
-  const providerEndY = source.y + providerCurlY;
-  
-  const providerPolygonPoints = [
-    `${providerStartX},${source.y - halfBaseWidth}`,
-    `${providerEndX},${providerEndY - halfEndWidth}`,
-    `${providerEndX},${providerEndY + halfEndWidth}`,
-    `${providerStartX},${source.y + halfBaseWidth}`
-  ].join(" ");
-
-  // === Consumer stub (inbound/green side) ===
-  // target.x is already at the pin's LEFT edge (center - PIN_RADIUS from caller)
-  // Start right at the pin edge, extend outward
-  const consumerStartX = target.x;  // Pin's left edge
-  const consumerEndX = target.x - STUB_LENGTH;  // Extend outward
-  const consumerEndY = target.y + consumerCurlY;
-  
-  const consumerPolygonPoints = [
-    `${consumerStartX},${target.y - halfBaseWidth}`,
-    `${consumerEndX},${consumerEndY - halfEndWidth}`,
-    `${consumerEndX},${consumerEndY + halfEndWidth}`,
-    `${consumerStartX},${target.y + halfBaseWidth}`
-  ].join(" ");
-
-  // Solid colors matching the pin colors (no gradient/opacity fade)
-  const PROVIDER_COLOR = "#38bdf8"; // sky-400 (outbound blue)
-  const CONSUMER_COLOR = "#34d399"; // emerald-400 (inbound green)
-
-  // === Render provider stub as filled polygon (true taper) ===
-  const providerPolygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
-  providerPolygon.setAttribute("points", providerPolygonPoints);
-  // Use style.fill (inline CSS) instead of attribute to override the CSS fill:none rule
-  providerPolygon.style.fill = PROVIDER_COLOR;
-  providerPolygon.style.stroke = "none";
-  providerPolygon.classList.add("connection-path", "self-loop", "self-loop-provider");
-  providerPolygon.dataset.kind = edge.kind;
-  providerPolygon.dataset.sourceId = edge.sourceId;
-  providerPolygon.dataset.targetId = edge.targetId;
-  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
-  providerPolygon.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
-  providerPolygon.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
-  svg.appendChild(providerPolygon);
-
-  // === Render consumer stub as filled polygon (true taper) ===
-  const consumerPolygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
-  consumerPolygon.setAttribute("points", consumerPolygonPoints);
-  // Use style.fill (inline CSS) instead of attribute to override the CSS fill:none rule
-  consumerPolygon.style.fill = CONSUMER_COLOR;
-  consumerPolygon.style.stroke = "none";
-  consumerPolygon.classList.add("connection-path", "self-loop", "self-loop-consumer");
-  consumerPolygon.dataset.kind = edge.kind;
-  consumerPolygon.dataset.sourceId = edge.sourceId;
-  consumerPolygon.dataset.targetId = edge.targetId;
-  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
-  consumerPolygon.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
-  consumerPolygon.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
-  svg.appendChild(consumerPolygon);
+  const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+  const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
+  const down = target.y >= source.y;
+  const rank = (key: string): number => {
+    const seen = ranks.get(key) ?? 0;
+    ranks.set(key, seen + 1);
+    return seen;
+  };
+  const laces = computeSelfLoopStubs(source, target, { ...DEFAULT_SELF_LOOP_PARAMS, taper, pinRadius: PIN_RADIUS }, {
+    provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
+    consumer: rank(`${edge.sourceId}\0in\0${sourceSymbol}\0${down ? "up" : "down"}`)
+  });
+  const PROVIDER_COLOR = "#38bdf8"; // sky-400, the offering side
+  const CONSUMER_COLOR = "#34d399"; // emerald-400, the using side
+  for (const [points, color, role] of [[laces.providerPoints, PROVIDER_COLOR, "provider"], [laces.consumerPoints, CONSUMER_COLOR, "consumer"]] as const) {
+    const polygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
+    polygon.setAttribute("points", points);
+    // Inline, since the stylesheet's base rule gives every connection path no fill.
+    polygon.style.fill = color;
+    polygon.style.stroke = "none";
+    polygon.classList.add("connection-path", "self-loop", `self-loop-${role}`);
+    polygon.dataset.kind = edge.kind;
+    polygon.dataset.sourceId = edge.sourceId;
+    polygon.dataset.targetId = edge.targetId;
+    polygon.dataset.sourceSymbol = sourceSymbol;
+    polygon.dataset.targetSymbol = targetSymbol;
+    svg.appendChild(polygon);
+  }
 }
 
 /**
@@ -566,6 +503,7 @@ function drawBranchConnections(context: ConnectionsContext): void {
     if (measured) laneTop.set(element.dataset.lane!, measured.topY);
   });
   let drawn = 0;
+  const laceRanks = new Map<string, number>();
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number }>();
   branches.subgraph.links.forEach((edge, index) => {
@@ -576,14 +514,13 @@ function drawBranchConnections(context: ConnectionsContext): void {
     const p = offsetToEdge(provider, "outbound"), q = offsetToEdge(consumer, "inbound");
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
-    const cardBounds = { left: provider.cardLeft, right: provider.cardRight, top: 0, bottom: 0 };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, provider, consumer, cardBounds, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper, laceRanks);
       return;
     }
     const key = edgeKey(edge);
     if (branches.back.has(key)) {
-      appendSelfLoopPath(svg, from, to, provider, consumer, cardBounds, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper);
+      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper, laceRanks);
       appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route");
       return;
     }

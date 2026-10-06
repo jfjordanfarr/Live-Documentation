@@ -16,8 +16,9 @@ import { computeDirectoryBands, type DirectoryBand, type FlowNode } from "../mem
  * right to left, each column ordered against the one just settled, and the
  * order with the fewest crossings between adjacent columns is kept. When the
  * rows may move, each card's rows are then sorted by the mean height of their
- * wires' far ends, the columns are swept once more at the new heights, and
- * the result is kept only if it crosses no more than the given rows did.
+ * wires' far ends, ties broken by the file's own references, the columns are
+ * swept once more at the new heights, and the result is kept only if it
+ * crosses no more than the given rows did.
  *
  * @module branch-order
  */
@@ -46,6 +47,11 @@ export interface OrderInput {
   /** Which rows may move to where their wires lead; a row refused keeps its place. Omitted, every row stays as given. */
   movable?: (row: string) => boolean;
   edges: readonly ForwardReference[];
+  /**
+   * Each card's own references, as pairs of its row names, provider first. They break ties among rows whose
+   * wires lead alike, drawing the two rows of a reference together; a wire to another card always outweighs them.
+   */
+  internal?: ReadonlyMap<string, readonly (readonly [string, string])[]>;
   /** How many left-and-right sweeps to try; the best order seen is kept. Zero keeps the starting order. */
   sweeps?: number;
 }
@@ -147,7 +153,7 @@ export function orderBranches(input: OrderInput): BranchOrder {
   if (input.movable) {
     // The rows of each card, by where their wires lead at the settled order; then the columns once more at the new heights.
     const merged = walkColumns(best.bands, columnCount);
-    const moved = orderRows(given, merged, positionsOf(merged), segments, input.movable);
+    const moved = orderRows(given, merged, positionsOf(merged), segments, input.movable, input.internal ?? new Map());
     const resegmented = bundleWires(input.edges, columnOf, fractionsOf(moved)).segments;
     const next = sweepColumns(best.bands, resegmented, columnCount, sweeps);
     if (next.crossings <= best.crossings) { best = next; rows = moved; }
@@ -242,19 +248,31 @@ function fractionsOf(rows: ReadonlyMap<string, readonly string[]>): (id: string,
 /**
  * Each card's rows sorted by the mean height of their wires' far ends: the
  * rows that may move take the places of one another in that order, wired
- * rows first and unwired ones after them as given, while a row that may not
- * move keeps its place. The cards are settled one at a time, left to right
- * and then right to left, each against its neighbours' rows as they stand,
- * so that two cards wired crosswise do not both turn over and cross again.
+ * rows first and unwired ones after them, while a row that may not move
+ * keeps its place. Rows whose wires lead alike, and the unwired rows among
+ * themselves, are ordered by the file's own references: such a row moves
+ * halfway from where it stands toward the rows it refers to or is built on,
+ * so the two rows of a self-reference draw together, and a row with none
+ * keeps its place. The cards are settled one at a time, left to right and
+ * then right to left, each against its neighbours' rows as they stand, so
+ * that two cards wired crosswise do not both turn over and cross again.
  */
 function orderRows(
   rows: ReadonlyMap<string, readonly string[]>,
   merged: readonly (readonly string[])[],
   positions: ReadonlyMap<string, number>,
   segments: readonly Segment[],
-  movable: (row: string) => boolean
+  movable: (row: string) => boolean,
+  internal: ReadonlyMap<string, readonly (readonly [string, string])[]>
 ): Map<string, string[]> {
   const current = new Map([...rows].map(([id, list]) => [id, [...list]]));
+  const partnersOf = new Map<string, string[]>();
+  for (const [id, pairs] of internal) for (const [provider, consumer] of pairs) {
+    for (const [name, partner] of [[provider, consumer], [consumer, provider]]) {
+      const key = `${id}\0${name}`;
+      (partnersOf.get(key) ?? partnersOf.set(key, []).get(key)!).push(partner);
+    }
+  }
   const fraction = (id: string, name: string | null): number => {
     if (name === null) return LANE_FRACTION;
     const list = current.get(id) ?? [];
@@ -276,9 +294,13 @@ function orderRows(
       if (!ends.length) return undefined;
       return ends.reduce((sum, end) => sum + positions.get(end.neighbour)! + fraction(end.neighbour, end.name), 0) / ends.length;
     };
-    const moving = list.map((name, index) => ({ name, index, key: keyOf(name) })).filter(row => movable(row.name));
-    const wired = moving.filter(row => row.key !== undefined).sort((x, y) => x.key! - y.key! || x.index - y.index);
-    const unwired = moving.filter(row => row.key === undefined);
+    const tieOf = (name: string): number => {
+      const partners = (partnersOf.get(`${id}\0${name}`) ?? []).filter(partner => partner !== name && list.includes(partner));
+      return [name, ...partners].reduce((sum, row) => sum + fraction(id, row), 0) / (partners.length + 1);
+    };
+    const moving = list.map((name, index) => ({ name, index, key: keyOf(name), tie: tieOf(name) })).filter(row => movable(row.name));
+    const wired = moving.filter(row => row.key !== undefined).sort((x, y) => x.key! - y.key! || x.tie - y.tie || x.index - y.index);
+    const unwired = moving.filter(row => row.key === undefined).sort((x, y) => x.tie - y.tie || x.index - y.index);
     const queue = [...wired, ...unwired].map(row => row.name);
     current.set(id, list.map(name => (movable(name) ? queue.shift()! : name)));
   };

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/connection-geometry.test.ts
-- Generated At: 2026-09-27T23:21:27.889Z
+- Generated At: 2026-10-06T01:30:52.118Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,7 @@ _No public symbols detected_
 - [`connection-geometry.BezierTuningParams`](./connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
 - [`connection-geometry.DEFAULT_BEZIER_TUNING`](./connection-geometry.ts.mdmd.md#symbol-default_bezier_tuning)
 - [`connection-geometry.DEFAULT_SELF_LOOP_PARAMS`](./connection-geometry.ts.mdmd.md#symbol-default_self_loop_params)
+- [`connection-geometry.LACE_PITCH`](./connection-geometry.ts.mdmd.md#symbol-lace_pitch)
 - [`connection-geometry.PathResult`](./connection-geometry.ts.mdmd.md#symbol-pathresult)
 - [`connection-geometry.Point`](./connection-geometry.ts.mdmd.md#symbol-point)
 - [`connection-geometry.Rect`](./connection-geometry.ts.mdmd.md#symbol-rect)

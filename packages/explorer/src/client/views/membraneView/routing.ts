@@ -7,8 +7,9 @@
  * the appropriate geometry for each:
  * - **Front traces**: Standard Bézier curves (connection flows "naturally"
  *   from outbound pin rightward to inbound pin leftward).
- * - **Back traces**: French Corset stubs only — a short curve departing
- *   each pin, implying the connection routes "behind the board."
+ * - **Back traces**: French Corset laces only — at each pin a lace that
+ *   leaves it, turns toward the other and returns to its card's edge,
+ *   implying the connection routes "behind the board."
  *
  * @module routing
  */
@@ -123,13 +124,11 @@ export function computeFrontTrace(
 // ─── Back Trace Routing ────────────────────────────────────────────
 
 /**
- * Compute back-trace French Corset stubs for a backward connection.
+ * Compute the French Corset laces for a backward connection.
  *
- * Each pin gets an independent stub:
- * - The outbound pin's stub curves rightward and vanishes.
- * - The inbound pin's stub curves leftward and appears from nowhere.
- *
- * No connecting path is drawn between them.
+ * Each pin gets an independent lace that leaves it, turns toward the other
+ * pin's row and returns to its card's edge, as if the wire ran on behind the
+ * card. No connecting path is drawn between them.
  */
 export function computeBackTrace(
   outbound: PinAnchor,
@@ -147,7 +146,7 @@ export function computeBackTrace(
     y: inbound.center.y,
   };
 
-  const stubs = computeSelfLoopStubs(sourceEdge, targetEdge, params);
+  const stubs = computeSelfLoopStubs(sourceEdge, targetEdge, { ...params, pinRadius: outbound.pinRadius });
 
   return {
     kind: "back",

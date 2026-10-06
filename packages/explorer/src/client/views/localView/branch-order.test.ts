@@ -221,6 +221,19 @@ describe("ordering the rows of a card", () => {
     expect(order.rows.get("p")).toEqual(["y", "x", "__internals__"]);
   });
 
+  it("breaks a tie among rows whose wires lead alike by the file's own references, which draw their two rows together", () => {
+    // p's four rows all feed c's one row, a four-way tie that leaves them as given; then p's r3 is built on its r0.
+    const rows = new Map([["p", ["r0", "r1", "r2", "r3"]], ["c", ["u"]]]);
+    const given = input([["p"], ["c"]], ["r0", "r1", "r2", "r3"].map(name => edge("p", "c", name, "u")), flat, rows);
+    expect(orderBranches({ ...given, movable: () => true }).rows.get("p")).toEqual(["r0", "r1", "r2", "r3"]);
+    const internal = new Map([["p", [["r3", "r0"] as const]]]);
+    // Each of the pair moves halfway toward the other, to the middle, where they meet; the other two keep their places.
+    expect(orderBranches({ ...given, movable: () => true, internal }).rows.get("p")).toEqual(["r1", "r0", "r3", "r2"]);
+    // A wire to another card outweighs the file's own: r3 wired above r0 stays above it.
+    const wired = input([["p"], ["c"]], [edge("p", "c", "r3", "u"), edge("p", "c", "r0", "v")], flat, new Map([["p", ["r0", "r1", "r2", "r3"]], ["c", ["u", "v"]]]));
+    expect(orderBranches({ ...wired, movable: () => true, internal }).rows.get("p")).toEqual(["r3", "r0", "r1", "r2"]);
+  });
+
   it("returns every card's rows as a permutation, and never crosses more than the given rows", () => {
     for (const seed of [6, 23, 48, 99]) {
       const given = seeded(seed, 4, 5, 22);

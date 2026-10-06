@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-10-01T21:05:42.473Z
+- Generated At: 2026-10-06T01:30:52.632Z
 
 ## Authored
 ### Purpose
@@ -64,8 +64,8 @@ This is a pure function that builds a subgraph containing:
 ##### `buildSelfLoopEdges` — Summary
 Build self-loop edges from intra-file type references.
 
-When a symbol references another symbol in the same file, we create a self-loop edge.
-These enable the "French Corset" wraparound bezier visualization.
+When a symbol references another symbol in the same file, we create a self-loop edge,
+which the connections module draws as the two laces of the French Corset.
 
 #### `buildPathSubgraph` {#symbol-buildpathsubgraph}
 - Type: function

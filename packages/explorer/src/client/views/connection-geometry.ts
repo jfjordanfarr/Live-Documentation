@@ -161,90 +161,122 @@ export function distance(a: Point, b: Point): number {
 }
 
 /**
- * Parameters for self-loop "French Corset" stubs.
+ * Parameters for the laces of a self-reference, the "French Corset": at each
+ * of its two pins a lace leaves the pin, turns toward the partner and returns
+ * to the card's edge, as if it ran on behind the card to the other pin.
  */
 export interface SelfLoopParams {
-  /** How far the stub extends horizontally from the pin edge */
+  /** How far out from the pin's edge the lace sweeps before it turns back. */
   stubLength: number;
-  /** How much the stub curls vertically toward the partner symbol */
+  /** How far along the card's edge from the pin the lace returns, toward the partner. */
   curlAmount: number;
-  /** Stroke width at the pin edge */
+  /** The lace's width at the pin's edge. */
   baseWidth: number;
-  /** Taper factor (0 = no taper, 1 = full taper to 25% width) */
+  /** How much the lace thins by the card's edge: 0 keeps its width, 1 ends in a hairline. */
   taper: number;
+  /** The pin's radius: the lace leaves the pin's outer edge and returns to the card's edge, one radius inward. */
+  pinRadius: number;
 }
 
 /**
- * Default self-loop parameters for the "French Corset" effect.
+ * Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next.
  */
 export const DEFAULT_SELF_LOOP_PARAMS: SelfLoopParams = {
-  stubLength: 14,
-  curlAmount: 8,
+  stubLength: 18,
+  curlAmount: 12,
   baseWidth: 2.5,
-  taper: 0.5
+  taper: 0.5,
+  pinRadius: 6
 };
 
+/** Laces of one pin that turn the same way stand each this much further out, nested, sharing their return. */
+export const LACE_PITCH = 3;
+
 /**
- * Result of self-loop stub computation.
- * Self-loops render as two small stubs that "imply" a connection behind the card.
+ * The two laces of a self-reference, as SVG polygon point strings.
  */
 export interface SelfLoopStubResult {
-  /** Polygon points for the provider (outbound) stub */
+  /** The lace at the provider's (outbound) pin. */
   providerPoints: string;
-  /** Polygon points for the consumer (inbound) stub */
+  /** The lace at the consumer's (inbound) pin. */
   consumerPoints: string;
 }
 
 /**
- * Computes the polygon points for self-loop "French Corset" stubs.
+ * Computes the two laces of a self-reference, a symbol referring to another on
+ * the same card. No route is drawn between them: the provider's lace leaves
+ * its pin outward, turns toward the consumer's row and comes back to the
+ * card's edge, and the consumer's lace does the same toward the provider's
+ * row, so that each reads as one wire that passes behind the card. A lace
+ * that turns back is a shape no wire between cards ever makes, and two laces
+ * of one pin, one turning up and one down, make a bracket rather than an
+ * arrowhead, which two straight stubs did (the owner's note, 2026-10-06).
  *
- * Self-loops occur when a symbol references another symbol on the same node.
- * Rather than drawing a complex looping bezier, we render two small "nubs"
- * that suggest the connection wraps around behind the card.
- *
- * @param source - The provider pin position (outbound side)
- * @param target - The consumer pin position (inbound side)
- * @param params - Self-loop styling parameters
- * @returns Polygon point strings for both stubs
+ * @param source - The provider pin's outer edge
+ * @param target - The consumer pin's outer edge
+ * @param params - The laces' shape
+ * @param ranks - Each lace's place among the laces of its pin that turn the same way, from 0; later ones nest outward
  */
 export function computeSelfLoopStubs(
   source: Point,
   target: Point,
-  params: SelfLoopParams = DEFAULT_SELF_LOOP_PARAMS
+  params: SelfLoopParams = DEFAULT_SELF_LOOP_PARAMS,
+  ranks: { provider: number; consumer: number } = { provider: 0, consumer: 0 }
 ): SelfLoopStubResult {
-  const { stubLength, curlAmount, baseWidth, taper } = params;
+  // The consumer stands below the provider, or on its row, in which case the laces part downward and upward.
+  const down = target.y >= source.y;
+  return {
+    providerPoints: lace(source, 1, down ? 1 : -1, params, ranks.provider),
+    consumerPoints: lace(target, -1, down ? -1 : 1, params, ranks.consumer)
+  };
+}
 
-  // End width tapers based on taper parameter
-  const endWidth = baseWidth * (1 - taper * 0.75);
+/**
+ * One lace as a tapered polygon: from the pin's outer edge out to `side` (1 right, -1 left), turning `toward`
+ * (1 down, -1 up) and back to the card's edge, the outline sampled along a cubic curve.
+ */
+function lace(pin: Point, side: 1 | -1, toward: 1 | -1, params: SelfLoopParams, rank: number): string {
+  const out = (params.stubLength + Math.max(0, rank) * LACE_PITCH) * 1.6;
+  const along = params.curlAmount;
+  const endWidth = params.baseWidth * (1 - 0.85 * Math.min(1, Math.max(0, params.taper)));
+  const p0 = pin;
+  const p1 = { x: pin.x + side * out, y: pin.y + toward * along * 0.1 };
+  const p2 = { x: pin.x + side * out, y: pin.y + toward * along };
+  const p3 = { x: pin.x - side * params.pinRadius, y: pin.y + toward * along };
+  const steps = 12;
+  const left: Point[] = [];
+  const right: Point[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const point = cubicPoint(p0, p1, p2, p3, t);
+    const tangent = cubicTangent(p0, p1, p2, p3, t);
+    const length = Math.hypot(tangent.x, tangent.y) || 1;
+    const normal = { x: -tangent.y / length, y: tangent.x / length };
+    const half = (params.baseWidth + (endWidth - params.baseWidth) * t) / 2;
+    left.push({ x: point.x + normal.x * half, y: point.y + normal.y * half });
+    right.push({ x: point.x - normal.x * half, y: point.y - normal.y * half });
+  }
+  return [...left, ...right.reverse()].map(point => `${round2(point.x)},${round2(point.y)}`).join(" ");
+}
 
-  // Direction of Y curl: toward the partner symbol
-  const providerCurlY = target.y > source.y ? curlAmount : -curlAmount;
-  const consumerCurlY = source.y > target.y ? curlAmount : -curlAmount;
+function cubicPoint(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
+  const u = 1 - t;
+  return {
+    x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
+    y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y
+  };
+}
 
-  const halfBaseWidth = baseWidth / 2;
-  const halfEndWidth = endWidth / 2;
+function cubicTangent(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
+  const u = 1 - t;
+  return {
+    x: 3 * u * u * (p1.x - p0.x) + 6 * u * t * (p2.x - p1.x) + 3 * t * t * (p3.x - p2.x),
+    y: 3 * u * u * (p1.y - p0.y) + 6 * u * t * (p2.y - p1.y) + 3 * t * t * (p3.y - p2.y)
+  };
+}
 
-  // Provider stub (extends right from source)
-  const providerEndX = source.x + stubLength;
-  const providerEndY = source.y + providerCurlY;
-  const providerPoints = [
-    `${source.x},${source.y - halfBaseWidth}`,
-    `${providerEndX},${providerEndY - halfEndWidth}`,
-    `${providerEndX},${providerEndY + halfEndWidth}`,
-    `${source.x},${source.y + halfBaseWidth}`
-  ].join(" ");
-
-  // Consumer stub (extends left from target)
-  const consumerEndX = target.x - stubLength;
-  const consumerEndY = target.y + consumerCurlY;
-  const consumerPoints = [
-    `${target.x},${target.y - halfBaseWidth}`,
-    `${consumerEndX},${consumerEndY - halfEndWidth}`,
-    `${consumerEndX},${consumerEndY + halfEndWidth}`,
-    `${target.x},${target.y + halfBaseWidth}`
-  ].join(" ");
-
-  return { providerPoints, consumerPoints };
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 /**

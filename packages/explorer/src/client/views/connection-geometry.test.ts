@@ -10,6 +10,7 @@ import {
   computeStubLength,
   computeBezierPath,
   computeSelfLoopStubs,
+  LACE_PITCH,
   offsetToPinEdge,
   rectCenter,
   rectSize,
@@ -177,71 +178,71 @@ describe("connection-geometry", () => {
   });
 
   describe("computeSelfLoopStubs", () => {
-    it("computes stub polygons for same-node connections", () => {
-      const provider: Point = { x: 150, y: 100 };
-      const consumer: Point = { x: 50, y: 200 };
+    const params = DEFAULT_SELF_LOOP_PARAMS;
+    const parse = (points: string): Point[] => points.split(" ").map(pair => { const [x, y] = pair.split(",").map(Number); return { x, y }; });
+    const xs = (points: Point[]): number[] => points.map(point => point.x);
+    const ys = (points: Point[]): number[] => points.map(point => point.y);
+    /** The outline runs out along one side and back along the other, so the lace's far end is the middle pair of points. */
+    const farEnd = (points: Point[]): [Point, Point] => [points[points.length / 2 - 1], points[points.length / 2]];
+    /** The far end's centre, between the two sides of the lace. */
+    const farMid = (points: Point[]): Point => { const [a, b] = farEnd(points); return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; };
+    const provider: Point = { x: 150, y: 100 };
+    const consumer: Point = { x: 50, y: 200 };
 
-      const result = computeSelfLoopStubs(provider, consumer, DEFAULT_SELF_LOOP_PARAMS);
-
-      expect(result.providerPoints).toBeDefined();
-      expect(result.consumerPoints).toBeDefined();
-      expect(typeof result.providerPoints).toBe("string");
-      expect(typeof result.consumerPoints).toBe("string");
+    it("leaves the pin's edge at its full width and returns to the card's edge one radius inward, toward its partner", () => {
+      const { providerPoints, consumerPoints } = computeSelfLoopStubs(provider, consumer, params);
+      const lace = parse(providerPoints);
+      expect(lace).toHaveLength(26);
+      // The first and last points are the two sides of the lace at the pin's edge.
+      expect(Math.abs(lace[0].x - provider.x)).toBeLessThan(0.3);
+      expect(Math.abs(lace[lace.length - 1].x - provider.x)).toBeLessThan(0.3);
+      expect(Math.abs(lace[0].y - lace[lace.length - 1].y)).toBeCloseTo(params.baseWidth, 1);
+      // The far end lies on the card's edge, curlAmount below the pin, since the consumer stands below.
+      expect(farMid(lace).x).toBeCloseTo(provider.x - params.pinRadius, 1);
+      expect(farMid(lace).y).toBeCloseTo(provider.y + params.curlAmount, 1);
+      // The consumer's lace mirrors it: out to the left and back, turning up toward the provider.
+      const other = parse(consumerPoints);
+      expect(farMid(other).x).toBeCloseTo(consumer.x + params.pinRadius, 1);
+      expect(farMid(other).y).toBeCloseTo(consumer.y - params.curlAmount, 1);
+      expect(Math.min(...xs(other))).toBeLessThan(consumer.x - params.stubLength);
     });
 
-    it("generates polygon format suitable for SVG", () => {
-      const provider: Point = { x: 100, y: 100 };
-      const consumer: Point = { x: 100, y: 150 };
-
-      const result = computeSelfLoopStubs(provider, consumer, DEFAULT_SELF_LOOP_PARAMS);
-
-      // Polygon points: "x1,y1 x2,y2 x3,y3 x4,y4"
-      expect(result.providerPoints).toMatch(/[\d.]+,[\d.]+\s+[\d.]+,[\d.]+/);
-      expect(result.consumerPoints).toMatch(/[\d.]+,[\d.]+\s+[\d.]+,[\d.]+/);
+    it("turns the other way when the consumer stands above, and parts downward and upward on one row", () => {
+      const above = computeSelfLoopStubs({ x: 150, y: 200 }, { x: 50, y: 100 }, params);
+      expect(farMid(parse(above.providerPoints)).y).toBeCloseTo(200 - params.curlAmount, 1);
+      expect(farMid(parse(above.consumerPoints)).y).toBeCloseTo(100 + params.curlAmount, 1);
+      const same = computeSelfLoopStubs({ x: 150, y: 100 }, { x: 50, y: 100 }, params);
+      expect(farMid(parse(same.providerPoints)).y).toBeCloseTo(100 + params.curlAmount, 1);
+      expect(farMid(parse(same.consumerPoints)).y).toBeCloseTo(100 - params.curlAmount, 1);
     });
 
-    it("respects custom stub parameters", () => {
-      const provider: Point = { x: 100, y: 100 };
-      const consumer: Point = { x: 100, y: 200 };
+    it("never reaches into the card past the pin, and sweeps out no further than its length allows", () => {
+      const lace = parse(computeSelfLoopStubs(provider, consumer, params).providerPoints);
+      expect(Math.min(...xs(lace))).toBeGreaterThanOrEqual(provider.x - params.pinRadius - 0.3);
+      const reach = Math.max(...xs(lace)) - provider.x;
+      expect(reach).toBeGreaterThan(params.stubLength);
+      expect(reach).toBeLessThan(params.stubLength * 1.6 + params.baseWidth);
+      // It stays on its partner's side of the pin's row, bar its own width.
+      expect(Math.min(...ys(lace))).toBeGreaterThanOrEqual(provider.y - params.baseWidth);
+    });
 
-      const shortParams: SelfLoopParams = {
-        stubLength: 5,
-        curlAmount: 2,
-        baseWidth: 1,
-        taper: 0.2
+    it("nests the laces of one pin that turn the same way outward by rank, sharing their return", () => {
+      const first = parse(computeSelfLoopStubs(provider, consumer, params, { provider: 0, consumer: 0 }).providerPoints);
+      const second = parse(computeSelfLoopStubs(provider, consumer, params, { provider: 1, consumer: 0 }).providerPoints);
+      expect(Math.max(...xs(second)) - Math.max(...xs(first))).toBeCloseTo(LACE_PITCH * 1.2, 0);
+      expect(farMid(second).x).toBeCloseTo(farMid(first).x, 1);
+      expect(farMid(second).y).toBeCloseTo(farMid(first).y, 1);
+    });
+
+    it("thins to the card's edge by the taper: a hairline at 1, its full width at 0", () => {
+      const width = (taper: number): number => {
+        const [a, b] = farEnd(parse(computeSelfLoopStubs(provider, consumer, { ...params, taper }).providerPoints));
+        return Math.hypot(a.x - b.x, a.y - b.y);
       };
-
-      const longParams: SelfLoopParams = {
-        stubLength: 30,
-        curlAmount: 15,
-        baseWidth: 5,
-        taper: 0.8
-      };
-
-      const shortResult = computeSelfLoopStubs(provider, consumer, shortParams);
-      const longResult = computeSelfLoopStubs(provider, consumer, longParams);
-
-      expect(shortResult.providerPoints).not.toBe(longResult.providerPoints);
-    });
-
-    it("curls toward consumer when consumer is below", () => {
-      const provider: Point = { x: 100, y: 50 };
-      const consumer: Point = { x: 100, y: 200 };
-
-      const result = computeSelfLoopStubs(provider, consumer, DEFAULT_SELF_LOOP_PARAMS);
-
-      // Provider stub should curl downward (positive curlAmount)
-      expect(result.providerPoints).toBeDefined();
-    });
-
-    it("curls toward consumer when consumer is above", () => {
-      const provider: Point = { x: 100, y: 200 };
-      const consumer: Point = { x: 100, y: 50 };
-
-      const result = computeSelfLoopStubs(provider, consumer, DEFAULT_SELF_LOOP_PARAMS);
-
-      // Provider stub should curl upward (negative curlAmount)
-      expect(result.providerPoints).toBeDefined();
+      expect(width(0)).toBeCloseTo(params.baseWidth, 1);
+      expect(width(1)).toBeCloseTo(params.baseWidth * 0.15, 1);
+      expect(width(0.5)).toBeGreaterThan(width(1));
+      expect(width(0.5)).toBeLessThan(width(0));
     });
   });
 
@@ -457,6 +458,7 @@ describe("connection-geometry", () => {
       expect(DEFAULT_SELF_LOOP_PARAMS.baseWidth).toBeGreaterThan(0);
       expect(DEFAULT_SELF_LOOP_PARAMS.taper).toBeGreaterThanOrEqual(0);
       expect(DEFAULT_SELF_LOOP_PARAMS.taper).toBeLessThanOrEqual(1);
+      expect(DEFAULT_SELF_LOOP_PARAMS.pinRadius).toBeGreaterThan(0);
     });
   });
 

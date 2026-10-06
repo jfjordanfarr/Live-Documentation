@@ -4,7 +4,7 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-10-06
 
-Named in [the day's record](2026-10-06/README.md): the owner's nudge measured on the repository's five-file scope, `graph.ts` forced lower than the exact placement puts it, with the deck's drawn total rising at every step, and the whole placed picture zoomed out to show the consumers that hold the live-docs box where it stands.
+Named in [the day's record](2026-10-06/README.md): the owner's nudge measured on the repository's five-file scope, `graph.ts` forced lower than the exact placement puts it, with the deck's drawn total rising at every step, and the whole placed picture zoomed out to show the consumers that hold the live-docs box where it stands; then, at twice the device scale, three cards with the French Corset's laces in place of the straight stubs.
 
 ## 2026-10-05
 

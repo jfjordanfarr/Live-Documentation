@@ -4,18 +4,18 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/connection-geometry.ts
-- Generated At: 2026-09-28T02:41:13.532Z
+- Generated At: 2026-10-06T01:30:52.134Z
 
 ## Authored
 ### Purpose
 
-Pure-function SVG geometry for the Local Map: Bézier path computation, self-loop stub generation, gradient definitions, and rect/point primitives.
+Pure-function SVG geometry for the Local Map: Bézier path computation, the French Corset's laces for a self-reference, gradient definitions, and rect/point primitives.
 
 ### Notes
 
 - Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as third of three pure-function module extractions.
 - `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances.
-- `computeSelfLoopStubs()` handles intra-node symbol connections (same file, different symbols).
+- `computeSelfLoopStubs()` draws a self-reference, a symbol referring to another on the same card, as two laces: at each pin a tapered polygon that leaves the pin outward, turns toward the partner's row and returns to the card's edge one pin radius inward, so that it reads as one wire passing behind the card. Until 2026-10-06 each end was a straight tapered stub curling toward the partner; two such stubs leaving one pin toward partners above and below met as a chevron that read as an arrowhead, which the owner saw at graph.ts's DocLocation pin ([Turn 14](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-14)) and answered with the loop-around shape ([Turn 15](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-15)). The laces of one pin that turn the same way nest outward by `LACE_PITCH`, sharing their return, so a row referred to from several rows shows as many laces. The tests hold the geometry: the lace starts at the pin's edge at its full width, ends on the card's edge toward the partner, never reaches inside the card past the pin, nests by rank, and thins by the taper.
 - `createConnectionGradient()` returns `GradientDef` for directional color transitions.
 - Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting.
 - 385 lines of geometry, all unit-testable without DOM.
@@ -118,51 +118,60 @@ Euclidean distance between two points.
 
 #### `SelfLoopParams` {#symbol-selfloopparams}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L166)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L168)
 
 ##### `SelfLoopParams` — Summary
-Parameters for self-loop "French Corset" stubs.
+Parameters for the laces of a self-reference, the "French Corset": at each
+of its two pins a lace leaves the pin, turns toward the partner and returns
+to the card's edge, as if it ran on behind the card to the other pin.
 
 #### `DEFAULT_SELF_LOOP_PARAMS` {#symbol-default_self_loop_params}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L180)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L184)
 - Returns: [`SelfLoopParams`](#symbol-selfloopparams)
 
 ##### `DEFAULT_SELF_LOOP_PARAMS` — Summary
-Default self-loop parameters for the "French Corset" effect.
+Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next.
+
+#### `LACE_PITCH` {#symbol-lace_pitch}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L193)
+
+##### `LACE_PITCH` — Summary
+Laces of one pin that turn the same way stand each this much further out, nested, sharing their return.
 
 #### `SelfLoopStubResult` {#symbol-selfloopstubresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L191)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L198)
 
 ##### `SelfLoopStubResult` — Summary
-Result of self-loop stub computation.
-Self-loops render as two small stubs that "imply" a connection behind the card.
+The two laces of a self-reference, as SVG polygon point strings.
 
 #### `computeSelfLoopStubs` {#symbol-computeselfloopstubs}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L210)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L220)
 - Returns: [`SelfLoopStubResult`](#symbol-selfloopstubresult)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point); `params`: [`SelfLoopParams`](#symbol-selfloopparams)
 
 ##### `computeSelfLoopStubs` — Summary
-Computes the polygon points for self-loop "French Corset" stubs.
-
-Self-loops occur when a symbol references another symbol on the same node.
-Rather than drawing a complex looping bezier, we render two small "nubs"
-that suggest the connection wraps around behind the card.
+Computes the two laces of a self-reference, a symbol referring to another on
+the same card. No route is drawn between them: the provider's lace leaves
+its pin outward, turns toward the consumer's row and comes back to the
+card's edge, and the consumer's lace does the same toward the provider's
+row, so that each reads as one wire that passes behind the card. A lace
+that turns back is a shape no wire between cards ever makes, and two laces
+of one pin, one turning up and one down, make a bracket rather than an
+arrowhead, which two straight stubs did (the owner's note, 2026-10-06).
 
 ##### `computeSelfLoopStubs` — Parameters
-- `params`: Self-loop styling parameters
-- `source`: The provider pin position (outbound side)
-- `target`: The consumer pin position (inbound side)
-
-##### `computeSelfLoopStubs` — Returns
-Polygon point strings for both stubs
+- `params`: The laces' shape
+- `ranks`: Each lace's place among the laces of its pin that turn the same way, from 0; later ones nest outward
+- `source`: The provider pin's outer edge
+- `target`: The consumer pin's outer edge
 
 #### `offsetToPinEdge` {#symbol-offsettopinedge}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L261)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L293)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `center`: [`Point`](#symbol-point)
 
@@ -182,7 +191,7 @@ The point at the pin's edge
 
 #### `rectCenter` {#symbol-rectcenter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L275)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L307)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -191,7 +200,7 @@ Computes the center point of a rectangle.
 
 #### `rectSize` {#symbol-rectsize}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L285)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L317)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
 ##### `rectSize` — Summary
@@ -199,7 +208,7 @@ Computes the dimensions of a rectangle.
 
 #### `expandRect` {#symbol-expandrect}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L295)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L327)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -208,7 +217,7 @@ Expands a rectangle by a given margin on all sides.
 
 #### `boundingBoxFromPoints` {#symbol-boundingboxfrompoints}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L307)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L339)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `points`: [`Point`](#symbol-point)[]
 
@@ -217,7 +226,7 @@ Computes the bounding box that contains all given points.
 
 #### `mergeRects` {#symbol-mergerects}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L328)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L360)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rects`: [`Rect`](#symbol-rect)[]
 
@@ -226,14 +235,14 @@ Merges multiple rectangles into their bounding box.
 
 #### `GradientDef` {#symbol-gradientdef}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L342)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L374)
 
 ##### `GradientDef` — Summary
 Linear gradient definition for path coloring.
 
 #### `createConnectionGradient` {#symbol-createconnectiongradient}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L364)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L396)
 - Returns: [`GradientDef`](#symbol-gradientdef)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point)
 

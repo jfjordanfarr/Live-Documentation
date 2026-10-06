@@ -105,8 +105,8 @@ export function createLocalSubgraph(
 /**
  * Build self-loop edges from intra-file type references.
  *
- * When a symbol references another symbol in the same file, we create a self-loop edge.
- * These enable the "French Corset" wraparound bezier visualization.
+ * When a symbol references another symbol in the same file, we create a self-loop edge,
+ * which the connections module draws as the two laces of the French Corset.
  */
 export function buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraphLink[] {
   const selfLoopEdges: LocalSubgraphLink[] = [];

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-05T20:41:23.737Z
+- Generated At: 2026-10-06T01:30:52.341Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Builds the Local Map’s independently disclosed graph and ranks its files from 
 
 Every edge between retained files remains present, including connections not directly requested by a pin. Relevant symbol sets separately identify which rows a compact neighbor must display; the same rows give each wire a height on its card for the ordering. Explicit pins survive category filters. Columns count backward from consumers so an independent provider need not skip an unrelated column merely because it has no dependencies of its own.
 
-A cycle no longer shares a column. Its members stand in the provider-first order of Eades, Lin and Smyth, the references that read backward in that order are returned as `back`, and everything else ranks forward; the renderer draws a back reference as French Corset stubs with its route on hover, under the owner's words of 2026-10-05 that ugly design may produce ugly visualization and the picture must say what it hides. The ranking then hands its columns, each card's rows and the symbol order to `branch-order.ts`, which orders them and reserves the lanes. The symbol order is the owner's three strategies of 2026-10-05: the layout's own, where rows stand by their wires and only Internals keeps the foot of the card; alphabetical, which `compareSymbolNames` defines for every card; and the order of appearance, the Live Doc's.
+A cycle no longer shares a column. Its members stand in the provider-first order of Eades, Lin and Smyth, the references that read backward in that order are returned as `back`, and everything else ranks forward; the renderer draws a back reference as French Corset laces with its route on hover, under the owner's words of 2026-10-05 that ugly design may produce ugly visualization and the picture must say what it hides. The ranking then hands its columns, each card's rows, the symbol order and each file's own references to `branch-order.ts`, which orders them and reserves the lanes; the own references break ties among rows whose wires lead alike. The symbol order is the owner's three strategies of 2026-10-05: the layout's own, where rows stand by their wires and only Internals keeps the foot of the card; alphabetical, which `compareSymbolNames` defines for every card; and the order of appearance, the Live Doc's.
 
 The earlier linear hop-layout module originated in the [December 18, 2025 extraction](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-18.1.md). Its truncating path model and duplicate-card exploration renderer were retired in the [October 2, 2026 native-view pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-02.1.record.md#turn-11); explicit FROM/TO paths retain their own renderer.
 
@@ -59,14 +59,14 @@ The symbol order says how a card's rows stand: by where their wires lead
 
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L140)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L143)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L150)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
 

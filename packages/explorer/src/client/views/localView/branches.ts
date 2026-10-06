@@ -90,13 +90,20 @@ export function buildBranches(
     .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
     .map(edge => ({ key: edgeKey(edge), provider: edge.targetId, consumer: edge.sourceId,
       pin: `${edge.targetId}\0${row(edge.targetSymbol)}`, providerRow: row(edge.targetSymbol), consumerRow: row(edge.sourceSymbol) }));
+  // A file's own references, which the ordering uses to break ties among its rows.
+  const internal = new Map<string, [string, string][]>();
+  for (const edge of links) {
+    if (edge.sourceId !== edge.targetId) continue;
+    (internal.get(edge.sourceId) ?? internal.set(edge.sourceId, []).get(edge.sourceId)!).push([row(edge.targetSymbol), row(edge.sourceSymbol)]);
+  }
   const order = orderBranches({
     columns: ranking.columns.map(column => column.map(node => node.id)),
     directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
     rows,
     // Only the layout order moves rows, and Internals keeps the foot of the card.
     movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
-    edges: forward
+    edges: forward,
+    internal
   });
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },

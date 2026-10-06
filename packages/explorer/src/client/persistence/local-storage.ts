@@ -45,7 +45,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     columnGap: 100,
     hoverDimSymbols: 0.5,
     hoverDimConnections: 0.1,
-    selfLoopTaper: 0.2,
+    selfLoopTaper: 0.5,
     collapseOnHover: false,
     collapseOnPin: true,
     strainNudge: 48,
