@@ -197,18 +197,30 @@ class TreeIndex {
     return this.below(index, node) === this.below(index, edge.head);
   }
 
-  /** For each tree edge, the weight of edges crossing its cut the same way less those crossing the other way. */
+  /**
+   * For each tree edge, the weight of edges crossing its cut toward its head's side less those crossing the other
+   * way. Found in one pass over the edges and one over the tree: an edge into a node counts for it and an edge out
+   * of it against it, and summed over a subtree the edges inside cancel, leaving the edges that cross its cut.
+   */
   cutValues(): Map<number, number> {
+    const flow = new Array<number>(this.count).fill(0);
+    for (const edge of this.edges) { flow[edge.head] += edge.weight; flow[edge.tail] -= edge.weight; }
+    // Children before parents: a node's postorder number is greater than every number in its subtree.
+    const byPostorder = new Array<number>(this.count);
+    for (let v = 0; v < this.count; v++) byPostorder[this.lim[v] - 1] = v;
+    const subtree = flow.slice();
+    for (const v of byPostorder) {
+      const index = this.parentEdge[v];
+      if (index < 0) continue;
+      const edge = this.edges[index];
+      subtree[edge.tail === v ? edge.head : edge.tail] += subtree[v];
+    }
     const cut = new Map<number, number>();
     for (const index of this.treeEdges) {
-      let value = 0;
-      this.edges.forEach(edge => {
-        const tailOnHead = this.onHeadSide(index, edge.tail);
-        const headOnHead = this.onHeadSide(index, edge.head);
-        if (tailOnHead === headOnHead) return;
-        value += headOnHead ? edge.weight : -edge.weight;
-      });
-      cut.set(index, value);
+      const edge = this.edges[index];
+      const child = this.parentEdge[edge.head] === index ? edge.head : edge.tail;
+      // The subtree's sum counts an edge into it toward the child; the cut value counts toward the tree edge's head.
+      cut.set(index, child === edge.head ? subtree[child] : -subtree[child]);
     }
     return cut;
   }

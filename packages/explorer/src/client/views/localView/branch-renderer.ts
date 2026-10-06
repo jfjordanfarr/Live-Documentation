@@ -26,6 +26,9 @@ const SLOT_LINE = Math.floor(LANE_PITCH / 2);
 const BAND_PADDING = 12;
 const BAND_BORDER = 1;
 
+/** How far a membrane's corners are rounded: the padding, so the rounding never reaches a card's corner. */
+const MEMBRANE_RADIUS = BAND_PADDING;
+
 /** One column's part of a box: its edges there. */
 interface BoxSegment {
   column: number;
@@ -299,7 +302,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
       if (!box.slots) box.element.dataset.segments = box.segments.map(segment => `${segment.column}:${segment.left}:${segment.top}:${segment.right}:${segment.bottom}`).join(";");
     }
     if (box.shape) {
-      box.shape.setAttribute("d", membranePath(box.segments.map(segment => ({ left: segment.left - box.left, right: segment.right - box.left, top: segment.top - box.top, bottom: segment.bottom - box.top }))));
+      box.shape.setAttribute("d", membranePath(box.segments.map(segment => ({ left: segment.left - box.left, right: segment.right - box.left, top: segment.top - box.top, bottom: segment.bottom - box.top })), MEMBRANE_RADIUS));
     }
     if (box.label) box.label.style.top = `${box.segments[0].top - box.top + box.inset}px`;
     for (const child of box.children) placeDown(child);

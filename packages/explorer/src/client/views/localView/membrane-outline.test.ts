@@ -27,6 +27,17 @@ describe("a membrane's outline", () => {
     expect(points).toEqual([{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 140, y: 0 }, { x: 240, y: 0 }, { x: 240, y: 100 }, { x: 140, y: 100 }, { x: 100, y: 100 }, { x: 0, y: 100 }]);
   });
 
+  it("rounds every corner by the radius, convex and concave, and by half a short edge where the radius would not fit", () => {
+    // The rectangle: each corner's curve starts and ends 8 px along its edges, with the corner as the control point.
+    expect(membranePath([{ left: 10, right: 110, top: 20, bottom: 70 }], 8)).toBe(
+      "M 18 20 L 102 20 Q 110 20 110 28 L 110 62 Q 110 70 102 70 L 18 70 Q 10 70 10 62 L 10 28 Q 10 20 18 20 Z"
+    );
+    // A step of 6 px between two segments is rounded by 3 at each of its two corners, so the two curves meet without overlapping.
+    const stepped = membranePath([{ left: 0, right: 100, top: 0, bottom: 100 }, { left: 140, right: 240, top: 6, bottom: 100 }], 8);
+    expect(stepped).toContain("L 97 0 Q 100 0 100 3");
+    expect(stepped).toContain("Q 100 6 103 6");
+  });
+
   it("gives nothing for no segments", () => {
     expect(membraneOutline([])).toEqual([]);
     expect(membranePath([])).toBe("");

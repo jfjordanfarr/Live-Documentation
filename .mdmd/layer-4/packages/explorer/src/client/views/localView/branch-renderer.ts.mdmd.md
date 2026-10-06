@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-06T16:47:47.616Z
+- Generated At: 2026-10-06T17:29:23.409Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Places native cards, lanes and the Membrane Map's directory bands on the vertica
 ### Public Symbols
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L90)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L93)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller)
 
 ##### `renderBranches` — Summary

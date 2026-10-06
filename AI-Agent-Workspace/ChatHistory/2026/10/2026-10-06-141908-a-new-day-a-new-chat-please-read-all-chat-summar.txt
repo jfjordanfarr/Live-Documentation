@@ -514,3 +514,334 @@ completed (exit code 0)
   forces to tune, and the deck should read the horizontal and vertical halves
   apart so each experiment lands on one. The laces remain next unless you want
   one of these first.
+
+❯ <ide_selection>The user selected the lines 227 to 228 from /workspaces/Live-D
+  ocumentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md:
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ >The horizontal half is set by the ranking, which puts each file at its
+  longest forward chain. The span-minimal layering, the standard one in dot and
+  solvable by our own network simplex, cuts the column spans from 890 to 587
+  and the lane passages from 570 to 267 in the same seven columns. That is
+  roughly a third off the horizontal half and half the threading, with the
+  reading direction intact. It moves 34 of 44 files to another column, once.
+
+  WOW. Indeed, if I'm understanding correctly relative to the above paragraph
+  and those preceding it, relaxing the _same column_ requirement of directory
+  co-occupation substantially improved cumulative wire length. If so, that's
+  really sensible. We perceive the directories as "membranes" and it should be
+  intuitive, then, that the membrane is allowed to extrude itself in both
+  spatial dimensions available, even if the X dimension is quantized as lanes.
+
+  >Random initialization belongs in exactly one place. Ranking and placement
+  are exact; only the order step is a local search, a barycenter sweep from the
+  ranking's order that minimizes crossings, not length. Restarts from varied
+  starts, each judged by the exact placement's cost, would find better local
+  minima and stay deterministic with a fixed set of starts. We have no knob for
+  it yet. At one to four seconds a solve it is an offline experiment first,
+  not a live one, until the solver keeps its cut values incrementally.
+
+  OHHHHHH that's gonna look so god damn cool when the animated solver is
+  running. Watching symbols inside nodes nudge and rearrange to try and get the
+  layout right... oh MAN that's gonna be cool. I cannot contain my excitement
+  on this!
+
+  >One more structural fact: a tenth of the wires carries half the vertical
+  cost, led by bundles from liveDocumentationConfig.ts dropping 1,500 px to
+  lanes below. The picture is 5,653 px tall because boxes stack in rows; the
+  tallest column of cards alone is 3,115.
+
+  Tricky-tricky. I hope allowing ourselves a bit of freedom in the quantized X
+  dimension gives us just a tad bit of leeway here. I'm not sure though. Tell
+  me what you think as well.
+
+  >What I would hold invariant: the reading direction, no wire through a card
+  it does not end at, no overlapping cards, containment of a directory's
+  members, and the same picture every time. The rows rule, the gaps, and the
+  ranking are forces to tune, and the deck should read the horizontal and
+  vertical halves apart so each experiment lands on one. The laces remain next
+  unless you want one of these first.
+
+  But what if the 1-hops were _rooooughly_ the same X-distance away, even if a
+  little x-positional nudging in a lane might be needed to order the 1-hop
+  members properly? Let me know if you think that's reductive or unuseful for
+  the situation.
+
+● The membrane picture you describe can be measured right now with the probe's
+  data: directories as per-column segments that keep their order but may stand
+  at different heights in each column. I'm solving that variant before
+  answering.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  My bottom-spoken proposal could introduce variable-width lanes. Can be tricky
+  to contend with. Interested in your two cents.
+
+  Ran 1 shell command (ctrl+o to expand)
+● The membrane you describe measures as the biggest win yet. Two corrections of
+  fact first, then the numbers.
+
+  Which lever is which. The paragraph you quoted is the ranking, which works on
+  the horizontal half and moves cards between columns. The 45% figure is a
+  different rule, the one that makes two sibling directories sharing a column
+  stand one wholly above the other. That rule is what your membrane intuition
+  relaxes, and it works on the vertical half. Both are real and separate.
+
+  Membranes extruding in both dimensions, measured. I solved the probe's data
+  with every directory as one segment per column it spans, each segment holding
+  that column's members and its children's segments there, siblings keeping
+  their order in every column but each segment free to stand at its own height.
+  The membrane becomes a staircase outline instead of a rectangle, and no two
+  membranes cross.
+
+  ┌────────────┬────────────┬─────────────────────┬───────────────────┐
+  │   Scope    │ Rectangles │ Staircase membranes │  Picture height   │
+  ├────────────┼────────────┼─────────────────────┼───────────────────┤
+  │ Five files │    328,807 │      221,617 (-33%) │ 5,653 to 4,480 px │
+  ├────────────┼────────────┼─────────────────────┼───────────────────┤
+  │ Chain      │    284,009 │      206,540 (-27%) │ 5,512 to 4,743 px │
+  └────────────┴────────────┴─────────────────────┴───────────────────┘
+
+  The full relaxation, where membranes may interleave and cross, was -45%. The
+  twelve points between are the price of membranes that never cross, and I would
+  pay it: a membrane crossing another in a gutter is exactly the mud the
+  Membrane Map's glass question was about. The heaviest bundle,
+  liveDocumentationConfig.ts down to the live-docs lanes, halves from 18,360 to
+  8,712 px, because the live-docs membrane in column 1 no longer has to start
+  below everything the config directory holds in other columns. That is the
+  leeway you hoped for on the structural fact. The other part of it, the column
+  of 21 cards stacked 3,115 px tall, is not touched by membranes. It needs X
+  freedom of a different kind: a rank allowed two sub-columns when its stack is
+  tall, which trades stack height against horizontal span.
+
+  On 1-hops at roughly the same X distance. Not reductive; it is precisely what
+  the span-minimal layering minimizes, the total by which each direct reference
+  exceeds one column. Exact equality is impossible whenever a chain and a
+  shortcut coexist, since C cannot be one column from both A and B when A uses B
+  uses C and A uses C. Nudging cards in x inside a column cannot close a
+  whole-column gap, so the lever is the ranking, not the nudge. My two cents on
+  variable-width lanes: I would not. The vertical order already orders a
+  column's members, a wire enters a card's left edge wherever that edge stands,
+  and the quantized X is what lets the eye read rank at a glance. Spend X
+  freedom on sub-columns, where it buys something.
+
+  On watching it run. The exact solver's pivots are not a progression worth
+  watching; positions jump by cut shifts. What is watchable is the order sweep
+  settling column by column, the rows inside cards sorting to their wires, and
+  then the move into the exact placement. An animated solver would show those,
+  and with restarts, the best so far.
+
+  What comes next is yours. The agreed order has the laces next. If the layout
+  pulls harder today, I would build the staircase membranes first: the placement
+  model changes little, the renderer draws each directory as an orthogonal
+  outline around its segments with its label once, and the deck gains separate
+  horizontal and vertical readings so the ranking experiment after it lands on a
+  number. Membranes, then ranking, then laces, or the laces now: say which.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >The full relaxation, where membranes may interleave and cross, was -45%.
+
+  Oof. Gotcha. Okay so probably wanna keep forces attempting to avoid membrane
+  crossing. (I hadn't considered it; I am not 100% averse to membrane crossing,
+  we just need parameterized levers to adjust how strong the aversion to
+  membrane crossing is).
+
+  > That is the leeway you hoped for on the structural fact. The other part of
+  it, the column of 21 cards stacked 3,115 px tall, is not touched by
+  membranes. It needs X freedom of a different kind: a rank allowed two
+  sub-columns when its stack is tall, which trades stack height against
+  horizontal span.
+
+  I _think_ I understand but I'm not totally confident I'm following. Before
+  understanding runs away from me, is this to say that "sub-columns" are the
+  same as my proposed x-positional-adjustment-freedom-within-a-lane, but by a
+  concrete implementation name? Just making sure.
+
+  > My two cents on variable-width lanes: I would not. The vertical order
+  already orders a column's members, a wire enters a card's left edge wherever
+  that edge stands, and the quantized X is what lets the eye read rank at a
+  glance. Spend X freedom on sub-columns, where it buys something.
+
+  Hmmm, okay so I suspect my understanding in my above sentence was perhaps
+  incorrect?
+
+  >An animated solver would show those, and with restarts, the best so far.
+
+  Slick
+
+  >ayout pulls harder today, I would build the staircase membranes first: the
+  placement model changes little, the renderer draws each directory as an
+  orthogonal outline around its segments with its label once, and the deck
+  gains separate horizontal and vertical readings so the ranking experiment
+  after it lands on a number. Membranes, then ranking, then laces, or the laces
+  now: say which.
+
+  Laces after the global layout improvements. We, based on the screenshots, are
+  nowhere near the bottom of the gradient. Membranes are squishy. Let's get
+  squishin'.
+
+● Go on the membranes, laces after the layout work. Recording your answers, then
+  measuring one design choice before building: whether requiring a membrane's
+  segments in neighbouring columns to overlap, so the shape stays one connected
+  piece, costs much of the gain.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Connectivity costs little—with label room on the first segment and 60px
+  overlaps between neighbors, the five-file scope gains 38% and the chain 30%.
+  Next I'll find every consumer of the directory band elements before altering
+  their shape. · summary
+
+  Searched for 3 patterns, ran 7 shell commands (ctrl+o to expand)
+
+● Now building. The model first: a directory becomes one segment per column it
+  spans, siblings in rows per column, neighbouring segments overlapping by a
+  neck so the membrane is one shape.
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Found a real model gap: a 60px neck requires each segment to be at least 60px
+  tall for overlap to work. I'll add that constraint, fix the test expectations,
+  and re-run the tests. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Unit tests and lint pass, and the Explorer is rebuilding with membranes now.
+  Next I'll write the Playwright invariants for membranes, checkpoint the
+  record, and gather the Live Docs and Memory sections that need updating.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Rebuild both bundles with membranes, run the lanes test
+and capture the five-file picture, in the background" completed (exit code 0)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The composite rendered correctly: the five-file image is now 4,172px tall
+  (down from 5,653) with placement at 203,473 as predicted, and the lane
+  invariants still pass. I'll run the membrane invariants test and background
+  deck job while updating the docs and Memory. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The membrane invariants test passed. Waiting on the deck's four retained rows,
+  then pictures, the decisions entry, the gate and the commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the membrane invariants test and the deck's retained
+rows on the rebuilt Explorer, in the background" completed (exit code 0)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Confirmed the gain, but found a real bug: the wider bounding element now
+  overlaps sibling cards and intercepts pointer events, dropping legible symbols
+  from 11 to 5. I'll make it pass pointer events through while its cards/label
+  re-enable them, then rebuild and re-run the deck. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Let membrane elements pass the pointer through, rebuild,
+and rerun the branch tests and the deck in the background" completed (exit code
+0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The pointer fix held: legibility is back to where it was on every scope, with
+  the gains intact. Placing the pictures and README, noting the record and the
+  re-exported capture, then the full gate.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright in the background"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Committed as 48e3ee4b. Noting the hash in the record, then the report.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ HOLY MOLY these screenshots coming out look SO COOL! I can tell immediately
+  that we'll want rounded corners on the membranes to sell their squishiness.
+  You are absolutely COOKIN'!
+
+● Rounded corners it is. I'll round every corner of the outline, convex and
+  concave, by the membrane's own padding, so the rounding never reaches a card,
+  then look.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+❯ A-ha! And, if we find a way to measure such a thing (and if we don't
+  _already_ measure such a thing), I bet we can optimize another force: the
+  force directing against wires crossing membrane boundaries for which they are
+  not a member. Another ingredient in the mix of forces to tug upon the 2D
+  local map simulation.
+
+● Background command "Rebuild both bundles with rounded membranes, run the
+membrane test and capture the five-file and estate pictures, in the background"
+completed (exit code 0)
+
+● Got it — the deck already captures this via the foreign-directory samples, and
+  the membranes cut that force by over half, so I'll cover that in the reply.
+  Now fixing the arithmetic in my test and rebuilding with the rounded outline.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ Daaaaang and another counter-force: optimization for the reduction of
+  connector length which spans _outside_ its containing membrane _if both the
+  source and the target are members of the same membrane_.
+
+● I'm also noting an intra-membrane wire that escapes its own membrane in a
+  gutter — unmeasured so far, but testable with the same shape check and
+  expressible as corridor placement constraints. The rounded build is running
+  now. · summary
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Looking at the rounded membranes, and clearing a stale test server that held
+  the port.
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+❯ estate-five-fit.png makes me wish for membranes which would blob a little
+  more to smoothly contain their subdirectories. But you're working in the
+  right direction. This is REALLY cool. We are absolutely cooking today.
+
+❯ Indeed, that screenshot makes me wish for independently running functions
+  which are optimizing for:
+  - Membrane boundaries: ensuring connector wires of contained siblings do not
+  fall outside the bounds of the membrane
+  - Connectors: Ensuring connectors minimize cumulative length
+
+❯ And, if we do not already optimize for this: optimizations to minimize the
+  number of times that a node must defy the left-to-right layout rule (wire
+  _must_ swing back and connect elsewhere).
+
+● Noted three more points to address in my reply: the blobbier subdirectory
+  membranes, treating the two forces as one unified solve, and the
+  back-reference count already handled heuristically by cycle breaking. Jotting
+  these down while the gate finishes running. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ Any other forces/constraints which you wish to add in which I maybe hadn't
+  considered? The idea is to find a series of (roughly) independent levers that
+  we can randomly initialize and explore the parameter space of, such that we
+  can minimize/maximize the various signals which we deem salient (cumulative
+  wire length being strongest among them so far, membrane membership and other
+  considerations relatively farther behind, perhaps also in a
+  parameterizable/weighted fashion).
+
+● Recording this one as well. My own additions and the sweep design go in the
+  reply.
+
+  Ran 1 shell command (ctrl+o to expand)

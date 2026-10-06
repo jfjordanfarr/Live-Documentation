@@ -3,8 +3,9 @@
  * column it spans, each at its own height, joined across each gutter by the
  * part of the gutter where the two neighbouring rectangles overlap, so that
  * the shape is one rectilinear polygon that follows its members from column
- * to column. The segments arrive left to right, each overlapping the next
- * vertically, as the placement guarantees with its neck.
+ * to column, its corners rounded when drawn. The segments arrive left to
+ * right, each overlapping the next vertically, as the placement guarantees
+ * with its neck.
  *
  * Pure-function module: no DOM. Coordinates are whatever the caller's are.
  *
@@ -69,9 +70,35 @@ export function membraneOutline(segments: readonly OutlineSegment[]): OutlinePoi
   return points;
 }
 
-/** The outline as an SVG path, closed. */
-export function membranePath(segments: readonly OutlineSegment[]): string {
+/**
+ * The outline as a closed SVG path, every corner rounded by `radius`, convex
+ * and concave alike, as a quadratic curve with the corner as its control
+ * point. A corner between short edges is rounded by half the shorter edge
+ * instead, so neighbouring curves never overlap; a radius of zero draws the
+ * corners sharp.
+ */
+export function membranePath(segments: readonly OutlineSegment[], radius = 0): string {
   const points = membraneOutline(segments);
   if (!points.length) return "";
-  return `${points.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`;
+  if (radius <= 0 || points.length < 3) return `${points.map((point, index) => `${index ? "L" : "M"} ${point.x} ${point.y}`).join(" ")} Z`;
+  const count = points.length;
+  const at = (index: number): OutlinePoint => points[(index + count) % count];
+  // For each corner, the points where its curve begins and ends, along the edges before and after it.
+  const corners = points.map((corner, index) => {
+    const before = at(index - 1), after = at(index + 1);
+    const inLength = Math.hypot(corner.x - before.x, corner.y - before.y);
+    const outLength = Math.hypot(after.x - corner.x, after.y - corner.y);
+    const r = Math.min(radius, inLength / 2, outLength / 2);
+    const start = { x: corner.x - (corner.x - before.x) / inLength * r, y: corner.y - (corner.y - before.y) / inLength * r };
+    const end = { x: corner.x + (after.x - corner.x) / outLength * r, y: corner.y + (after.y - corner.y) / outLength * r };
+    return { corner, start, end };
+  });
+  const n = (value: number): number => Math.round(value * 100) / 100;
+  const commands = [`M ${n(corners[0].end.x)} ${n(corners[0].end.y)}`];
+  for (let i = 1; i <= count; i++) {
+    const { corner, start, end } = corners[i % count];
+    commands.push(`L ${n(start.x)} ${n(start.y)}`, `Q ${n(corner.x)} ${n(corner.y)} ${n(end.x)} ${n(end.y)}`);
+  }
+  commands.push("Z");
+  return commands.join(" ");
 }

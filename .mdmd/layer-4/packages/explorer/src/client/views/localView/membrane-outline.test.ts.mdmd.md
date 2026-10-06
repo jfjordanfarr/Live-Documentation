@@ -9,7 +9,7 @@
 ## Authored
 ### Purpose
 
-Holds the membrane outline to its shape: one segment is its rectangle, two level segments join without a step, two stepped segments join through the corridor where they overlap with the corners in drawing order, and no segments give no path.
+Holds the membrane outline to its shape: one segment is its rectangle, two level segments join without a step, two stepped segments join through the corridor where they overlap with the corners in drawing order, the rounding takes the radius at a wide corner and half a short edge at a narrow one, and no segments give no path.
 
 ### Notes
 
