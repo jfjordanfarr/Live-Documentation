@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/verify.ts
-- Generated At: 2026-10-06T20:39:26.094Z
+- Generated At: 2026-10-06T23:02:46.044Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The high-precision pass: a configuration rendered by the page itself, with the t
 
 ### Notes
 
-Seeds `PERSISTED_UI_KEY` with the configuration as Local Map tuning before the page loads, opens the retained scope over the bundle on disk, and reads it with `readPicture`, `scoreLength`, `scoreExpanded` and `scoreForeign`; the placement measure and the picture's size from the placed root. The table is the lab against the page, signal by signal.
+Seeds `PERSISTED_UI_KEY` with the configuration as Local Map tuning before the page loads, opens the retained scope over the bundle on disk, and reads it with `readPicture`, `scoreLength`, `scoreExpanded` and `scoreForeign`; the placement measure and the picture's size from the placed root, and since the restarts of 2026-10-06 the start the page drew and its layout time by the page's own clock (`data-order-start`, `data-layout-ms`). The table is the lab against the page, signal by signal. This pass found the page drawing every branch picture twice on load (its second drawing named the first as its start), which `index.ts` no longer does.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -27,7 +27,7 @@ What the page showed for a configuration, read by the deck's instrument.
 
 #### `verifyConfig` {#symbol-verifyconfig}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/verify.ts#L31)
+- Source: [source](../../../../scripts/layout-lab/verify.ts#L34)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `config`: [`LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
 
 ##### `verifyConfig` — Summary
@@ -35,7 +35,7 @@ Renders a configuration in the page with the tuning seeded and reads it with the
 
 #### `compareTable` {#symbol-comparetable}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/verify.ts#L55)
+- Source: [source](../../../../scripts/layout-lab/verify.ts#L64)
 - Parameters: `lab`: [`Signals`](./signals.ts.mdmd.md#symbol-signals); `page`: [`Verification`](#symbol-verification)
 
 ##### `compareTable` — Summary

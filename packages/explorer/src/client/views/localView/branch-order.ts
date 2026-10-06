@@ -56,6 +56,12 @@ export interface OrderInput {
   sweeps?: number;
   /** A seed for a shuffled starting order of each column, so that the sweep starts elsewhere; omitted, the columns start as given. */
   seed?: number;
+  /**
+   * A starting order of each column, its files top to bottom as a previous picture stood them; it outranks the seed. A file
+   * a column's start does not name follows the named ones in the column's given order, so a start taken from a picture
+   * that showed fewer files still begins where that picture stood.
+   */
+  start?: readonly (readonly string[])[];
 }
 
 /** The wires of one offering pin that pass one column together, sharing a slot in its lane. */
@@ -137,9 +143,9 @@ export function orderBranches(input: OrderInput): BranchOrder {
   const flow = new Map<string, FlowNode>();
   input.columns.forEach((files, column) => files.forEach(id => flow.set(id, { id, column, role: "pinned", directory: input.directoryOf(id) })));
 
-  // The starting order: each column as the ranking gave it, or shuffled by the seed, each stand-in at the mean place of its wires' ends.
+  // The starting order: each column as a previous picture stood it, or shuffled by the seed, or as the ranking gave it; each stand-in at the mean place of its wires' ends.
   const start = new Map<string, number>();
-  const startColumns = input.seed === undefined ? input.columns : shuffledColumns(input.columns, input.seed);
+  const startColumns = input.start ? alignedStart(input.columns, input.start) : input.seed === undefined ? input.columns : shuffledColumns(input.columns, input.seed);
   startColumns.forEach(files => files.forEach((id, index) => start.set(id, index + 0.5)));
   for (const virtual of virtuals) {
     const ends = [virtual.provider, ...virtual.members.map(member => member.consumer)].map(id => start.get(id) ?? 0);
@@ -205,6 +211,15 @@ export function orderBranches(input: OrderInput): BranchOrder {
     }));
   const stripped = strip(best.bands);
   return { bands: stripped, columns: walkColumns(stripped, columnCount), rows, lanes, passages, crossings: best.crossings };
+}
+
+/** Each column in the order its start names its files, the files it does not name after them as given. */
+function alignedStart(columns: readonly (readonly string[])[], start: readonly (readonly string[])[]): string[][] {
+  return columns.map((files, column) => {
+    const rank = new Map((start[column] ?? []).map((id, index) => [id, index]));
+    const at = (id: string): number => rank.get(id) ?? files.length;
+    return [...files].sort((a, b) => at(a) - at(b));
+  });
 }
 
 /** Each column shuffled by a small deterministic generator (mulberry32) from the seed, the same every time for a seed. */

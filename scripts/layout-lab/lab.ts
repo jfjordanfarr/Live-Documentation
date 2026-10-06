@@ -4,10 +4,11 @@
  * configuration laid out by the page's own ranking, order, scene and
  * placement with a capture of the page's cards in the page's place, scored
  * on the signals the still-picture deck reads, and reported for a person to
- * read. Three verbs:
+ * read. Four verbs:
  *
  *   npm run layout:lab -- capture <bundle/scope> [--out <dir>]
  *   npm run layout:lab -- sweep <bundle/scope> [--capture <file>] [--grid <spec>] [--sample <n>] [--seed <n>] [--weights k=v,...] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- restarts <bundle/scope> [--capture <file>] [--starts <n>] [--costs <spec>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
@@ -22,6 +23,7 @@ import process from "node:process";
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
+import { parseCosts, renderRestarts, tabulateStarts, trialCosts } from "./restarts";
 import { findScope, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
 import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } from "./sweep";
 import { compareTable, verifyConfig } from "./verify";
@@ -62,7 +64,7 @@ async function loadCapture(run: ScopeRun, options: Record<string, string>): Prom
 async function main(): Promise<void> {
   const { verb, scope, options } = parseArgs(process.argv.slice(2));
   if (!verb || !scope) {
-    console.error("Usage: layout-lab <capture|sweep|verify> <bundle/scope> [options]");
+    console.error("Usage: layout-lab <capture|sweep|restarts|verify> <bundle/scope> [options]");
     process.exit(2);
   }
   const run = findScope(scope);
@@ -126,6 +128,27 @@ async function main(): Promise<void> {
     console.log(`Shortest: ${best.signals.lengthPx.toLocaleString("en-US")} px (baseline ${baseline.signals.lengthPx.toLocaleString("en-US")}) at ${differences(best.config, baselineConfiguration)}.`);
     return;
   }
+  if (verb === "restarts") {
+    const capture = await loadCapture(run, options);
+    const graph = await loadBundleGraph(run);
+    const startedAt = new Date().toISOString();
+    const config: LabConfig = { ...baselineConfig(), ...(JSON.parse(options.config ?? "{}") as Partial<LabConfig>) };
+    const seeds = Number(options.starts ?? 8);
+    const weights = parseWeights(options.weights);
+    const rows = tabulateStarts(capture, graph, run, config, seeds);
+    const trials = trialCosts(rows, parseCosts(options.costs), weights);
+    const label = options.label ?? "restarts";
+    await fs.mkdir(out, { recursive: true });
+    const markdown = path.join(out, `${scopeSlug(run)}-${label}.md`);
+    await fs.writeFile(markdown, renderRestarts(run, rows, trials, weights, capture, startedAt));
+    await fs.writeFile(path.join(out, `${scopeSlug(run)}-${label}.json`), JSON.stringify({ run: { bundle: run.bundle, scopeName: run.scopeName, subject: run.subject, files: run.scope }, capturedAt: capture.capturedAt, startedAt, config, weights, rows, trials: trials.map(t => ({ ...t, pick: t.pick.name, best: t.best.name })) }));
+    const shortest = [...rows].sort((a, b) => a.cheap.vertical - b.cheap.vertical)[0];
+    const agreeing = trials.filter(t => t.pick === t.best);
+    console.log(`${rows.length} starts in ${((Date.now() - Date.parse(startedAt)) / 1000).toFixed(1)} s; report at ${path.relative(process.cwd(), markdown)}.`);
+    console.log(`Shortest vertical: ${shortest.name} at ${shortest.cheap.vertical.toLocaleString("en-US")} px (ranked ${rows[0].cheap.vertical.toLocaleString("en-US")}); the full score prefers ${trials[0]?.best.name ?? "n/a"}.`);
+    console.log(agreeing.length ? `The page agrees with the full score at ${agreeing.length} of ${trials.length} cost settings: ${agreeing.map(t => `crossing ${t.costs.crossing}, height ${t.costs.height}`).join("; ")}.` : `The page agrees with the full score at none of the ${trials.length} cost settings.`);
+    return;
+  }
   if (verb === "verify") {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
@@ -134,10 +157,11 @@ async function main(): Promise<void> {
     const lab = evaluate(capture, graph, run, config);
     const page = await verifyConfig(run, graph, config, options.shot);
     console.log(`Configuration: ${differences(config, baselineConfig())}`);
+    console.log(`The lab drew the start ${JSON.stringify(lab.start)}; the page drew ${JSON.stringify(page.start)} in ${page.layoutMs} ms by its own clock.`);
     console.log(compareTable(lab.signals, page));
     return;
   }
-  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep or verify.`);
+  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts or verify.`);
   process.exit(2);
 }
 

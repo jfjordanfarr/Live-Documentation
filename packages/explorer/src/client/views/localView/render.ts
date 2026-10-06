@@ -111,7 +111,11 @@ export function renderLocalView(controller: LocalViewController): void {
     renderSingleHopColumns(controller, layoutRoot, subgraph, connectionScore);
   }
 
-  if (!controller.branches) controller.applyColumnVerticalCentering(layoutRoot);
+  if (!controller.branches) {
+    // Leaving the branches: the next branch picture starts fresh, not from where this one's predecessor stood.
+    controller.previousTops = null;
+    controller.applyColumnVerticalCentering(layoutRoot);
+  }
 
   if (!controller.mapHasInitialFit && controller.contentRoot) {
     controller.fitMapToContent();

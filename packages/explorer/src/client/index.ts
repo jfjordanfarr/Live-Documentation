@@ -783,13 +783,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     setTimeout(() => pathfindApi.executeFindPath(), 100);
   }
 
-  // Set initial sidebar active state based on parsed URL/config
-  setActiveView(state.view);
-
-  // Render initial view
-  renderCurrentView();
-
-  // Apply initial focus node if specified (after initial render)
+  // The node to focus first, chosen before the first drawing so that the page draws the focused picture once, rather
+  // than a default picture and then the focused one.
   const urlRequestedNodeId = initialState.hasUrlState ? initialState.nodeId : null;
   const storedOrConfiguredNodeId = !initialState.hasUrlState ? (persistedNav?.nodeId ?? initialState.nodeId) : null;
 
@@ -802,27 +797,34 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
     return inferDefaultEntryNodeId(graphData, resolveLinkEndpoint, nodesById);
   })();
-  if (initialFocusNodeId) {
-    const focusNode = nodesById.get(initialFocusNodeId);
-    if (focusNode) {
-      const focusSource =
-        initialState.hasUrlState && initialState.nodeId
-          ? "URL"
-          : !initialState.hasUrlState && persistedNav?.nodeId && nodesById.has(persistedNav.nodeId)
-            ? "localStorage"
-            : "heuristic";
-      console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
-      // Use setTimeout to ensure view is fully rendered before focusing
-      setTimeout(() => {
-        selectNode(focusNode, { suppressDetailPanel: true });
-        // For circuit view, expand the directory and scroll to the node
-        if (state.view === "circuit") {
-          circuitView.expandAndScrollToNode(focusNode.id);
-        }
-      }, 100);
-    } else {
-      console.warn(`Initial focus node not found: ${initialFocusNodeId}`);
-    }
+  const focusNode = initialFocusNodeId ? nodesById.get(initialFocusNodeId) : undefined;
+  if (focusNode) {
+    const focusSource =
+      initialState.hasUrlState && initialState.nodeId
+        ? "URL"
+        : !initialState.hasUrlState && persistedNav?.nodeId && nodesById.has(persistedNav.nodeId)
+          ? "localStorage"
+          : "heuristic";
+    console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
+    markSelected(focusNode);
+  } else if (initialFocusNodeId) {
+    console.warn(`Initial focus node not found: ${initialFocusNodeId}`);
+  }
+
+  // Set initial sidebar active state based on parsed URL/config
+  setActiveView(state.view);
+
+  // Render initial view
+  renderCurrentView();
+
+  if (focusNode) {
+    // The selected cards are marked once the view has settled; the Circuit Board also opens the node's directory.
+    setTimeout(() => {
+      highlightSelectedCards();
+      if (state.view === "circuit") {
+        circuitView.expandAndScrollToNode(focusNode.id);
+      }
+    }, 100);
   }
 
   initTuningPanel({
@@ -884,7 +886,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     suppressDetailPanel?: boolean;
   }
 
-  function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
+  /** The node the person is looking at: the state, the context name, the address and the stored place, without drawing. */
+  function markSelected(node: ExplorerNodePayload): void {
     state.selectedNode = node;
     state.focusedNode = node;
     const contextName = document.getElementById("context-name");
@@ -893,6 +896,10 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
     updateUrlState(state.view, node.id);
     schedulePersistNav();
+  }
+
+  function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
+    markSelected(node);
     renderCurrentView();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {

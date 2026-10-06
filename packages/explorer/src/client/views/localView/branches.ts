@@ -3,7 +3,7 @@ import type { SymbolOrder } from "../../types";
 import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
-import { orderBranches, type BranchOrder, type ForwardReference } from "./branch-order";
+import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
 import { buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
@@ -41,17 +41,35 @@ export interface RankingOptions {
   tie?: "fewest" | "right" | "left";
 }
 
+/** Where the order step begins and how long it looks. */
+export interface OrderOptions {
+  /** How many left-and-right sweeps the ordering tries; four when omitted. */
+  sweeps?: number;
+  /** A seed for a shuffled starting order of each column; the ranking's order when omitted. */
+  seed?: number;
+  /** A starting order of each column, as a previous picture stood its files; it outranks the seed. */
+  start?: readonly (readonly string[])[];
+}
+
 /** The dials of the layout's first two steps. */
 export interface BranchOptions {
   /** How a card's rows stand; the layout's own order when omitted. */
   symbolOrder?: SymbolOrder;
   ranking?: RankingOptions;
-  order?: {
-    /** How many left-and-right sweeps the ordering tries; four when omitted. */
-    sweeps?: number;
-    /** A seed for a shuffled starting order of each column; the ranking's order when omitted. */
-    seed?: number;
-  };
+  order?: OrderOptions;
+}
+
+/**
+ * A disclosed exploration before its order: the retained files and the references between them, ranked into columns,
+ * with everything the order step takes but its start, so that the order step can be run from several starts.
+ */
+export interface Exploration {
+  subgraph: LocalSubgraph;
+  ranking: BranchRanking;
+  hiddenConnections: Map<string, number>;
+  relevantSymbols: Map<string, Set<string>>;
+  /** What the order step takes, its sweeps and start apart. */
+  order: Omit<OrderInput, "sweeps" | "seed" | "start">;
 }
 
 /** One reference's identity: its two files, its two symbols and its kind. */
@@ -66,7 +84,10 @@ export function edgeKey(edge: LocalEdge): string {
  * The options set the layout's dials: the symbol order says how a card's rows
  * stand, by where their wires lead (the layout's choice), alphabetically, or as
  * the Live Doc lists them; the ranking's pull and tie rule and the order's
- * sweeps and seed are the layout lab's levers.
+ * sweeps and start are the layout lab's levers. The exploration and its order
+ * are two steps, `exploreBranches` and `orderExploration`, so that the order
+ * step, the layout's one inexact step, can be run from several starts over
+ * one exploration; this runs both once.
  */
 export function buildBranches(
   center: ExplorerNodePayload,
@@ -75,6 +96,17 @@ export function buildBranches(
   include: (node: ExplorerNodePayload) => boolean,
   options: BranchOptions = {}
 ): BranchGraph {
+  return orderExploration(exploreBranches(center, graph, pins, include, options), options.order);
+}
+
+/** The exploration's first two steps: the retained files and references disclosed, and the files ranked into columns. */
+export function exploreBranches(
+  center: ExplorerNodePayload,
+  graph: ExplorerGraphPayload,
+  pins: PinSet,
+  include: (node: ExplorerNodePayload) => boolean,
+  options: Pick<BranchOptions, "symbolOrder" | "ranking"> = {}
+): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
@@ -125,23 +157,33 @@ export function buildBranches(
     if (edge.sourceId !== edge.targetId) continue;
     (internal.get(edge.sourceId) ?? internal.set(edge.sourceId, []).get(edge.sourceId)!).push([row(edge.targetSymbol), row(edge.sourceSymbol)]);
   }
-  const order = orderBranches({
-    columns: ranking.columns.map(column => column.map(node => node.id)),
-    directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
-    rows,
-    // Only the layout order moves rows, and Internals keeps the foot of the card.
-    movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
-    edges: forward,
-    internal,
-    sweeps: options.order?.sweeps,
-    seed: options.order?.seed
-  });
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
-    columns: order.columns.map(ids => ids.flatMap(nodeId => byId.get(nodeId) ?? [])),
+    ranking,
     hiddenConnections,
     relevantSymbols,
-    back: ranking.back,
+    order: {
+      columns: ranking.columns.map(column => column.map(node => node.id)),
+      directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
+      rows,
+      // Only the layout order moves rows, and Internals keeps the foot of the card.
+      movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
+      edges: forward,
+      internal
+    }
+  };
+}
+
+/** The exploration's third step: its columns ordered from the given start, with the lanes and each card's rows the order chose. */
+export function orderExploration(exploration: Exploration, options: OrderOptions = {}): BranchGraph {
+  const byId = new Map(exploration.subgraph.nodes.map(node => [node.id, node]));
+  const order = orderBranches({ ...exploration.order, sweeps: options.sweeps, seed: options.seed, start: options.start });
+  return {
+    subgraph: exploration.subgraph,
+    columns: order.columns.map(ids => ids.flatMap(nodeId => byId.get(nodeId) ?? [])),
+    hiddenConnections: exploration.hiddenConnections,
+    relevantSymbols: exploration.relevantSymbols,
+    back: exploration.ranking.back,
     rows: order.rows,
     order
   };

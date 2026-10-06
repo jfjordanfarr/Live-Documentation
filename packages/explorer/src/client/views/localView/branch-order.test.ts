@@ -72,6 +72,19 @@ describe("ordering the retained files", () => {
     expect(swept.crossings).toBeLessThanOrEqual(once.crossings);
   });
 
+  it("starts the sweep from a given order when one is given, the files it does not name after the named, whatever the seed", () => {
+    const given = seeded(7, 4, 6, 18, () => "");
+    const reversed = given.columns.map(column => [...column].reverse());
+    expect(orderBranches({ ...given, sweeps: 0, start: reversed }).columns).toEqual(reversed);
+    // A start naming one file per column: that file first, the rest as given; the start outranks the seed.
+    const partial = given.columns.map(column => [column[column.length - 1]]);
+    const partly = orderBranches({ ...given, sweeps: 0, seed: 3, start: partial });
+    expect(partly.columns).toEqual(given.columns.map(column => [column[column.length - 1], ...column.slice(0, -1)]));
+    // The sweep from a given start still ends no worse than that start.
+    const swept = orderBranches({ ...given, start: reversed });
+    expect(swept.crossings).toBeLessThanOrEqual(orderBranches({ ...given, sweeps: 0, start: reversed }).crossings);
+  });
+
   it("reduces the crossings a scope with no skipped columns starts with, on the instrument's own count", () => {
     let improved = 0;
     for (const seed of [5, 9, 13, 21, 34]) {

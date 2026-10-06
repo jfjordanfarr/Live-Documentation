@@ -91,6 +91,12 @@ export class LocalViewController implements LocalViewApi {
 
   /** The independently disclosed branch graph, absent in classic or path mode. */
   branches: BranchGraph | null = null;
+  /**
+   * Where the last branch picture stood each card, by its top in the picture: the order step starts from it among its
+   * other starts, and prices a start by the pairs of cards it would swap, so the picture stays put unless another
+   * arrangement is clearly cheaper. Null until a branch picture has been drawn, and again when the branches are left.
+   */
+  previousTops: ReadonlyMap<string, number> | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
   private renderedPath = false;

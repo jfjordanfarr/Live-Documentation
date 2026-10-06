@@ -1477,3 +1477,463 @@ completed (exit code 0)
      both.
 
   Answer those two and I build.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -06-141908-a-new-day-a-new-chat-please-read-all-chat-summar.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ >since horizontal wire length is mostly card widths plus the 100 px gutters,
+  a width cap is a real lever, and the lab should have it. Paths would wrap.
+  Your eye decides where the cap sits.
+
+  Hah! Of course it's a lever! That's awesome. Yeah, good point. If nudges
+  along word wrapping/lane width is helpful for resolving a layout, that's a
+  great point. Hadn't even thought it about it that way but aloud it's easy to
+  realize as intuitively true.
+
+  >by iterating Codex and Claude
+
+  Hmmm heh heh heh heh heh who knows what that sounds like.
+
+  >That removes the one inexactness I warned about. The cost is a model of the
+  card in code that mirrors the CSS, which could drift, so a test compares its
+  answers to the browser's on every run and fails on a pixel. Pretext itself
+  needs a canvas, so it cannot run in node, but the Explorer may want it later:
+  the animated re-layout will need text measured every frame, which is exactly
+  what it is for.
+
+  Indeed; if it splits now, hope and plan for reuinification later.
+
+● Taken as the go: the card model as the split, reunification planned, the lab's
+  reports under Probes, two precisions, and the width cap as a lever. The font
+  question stays open and does not block anything. I am recording the turn and
+  reading the renderer, the router and the deck in full before I cut the pure
+  model out of the renderer.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+❯ >What I need from you
+
+  It's fair to fret that I didn't answer these.
+
+  >Card model from measured words, exact, with a drift test, or the simpler
+  whole-card capture with the small wrapping error. I now recommend the model.
+
+  What is the reasonable model if the plan is to unify the rendering model
+  (i.e. via Pretext dependency)?
+
+  >Ship a font or not. Not needed for the lab, which will be exact against the
+  deck's font either way. Needed if you want your screen to match the pictures.
+  If yes, mono or proportional is for your eye, and I would show both.
+
+  Does Pretext solve this for us? Is there any universal solution for this
+  (i.e. a unicode font which can be monotyped in any language)?
+
+  Read 1 file (ctrl+o to expand)
+
+● Fetch(https://raw.githubusercontent.com/chenglou/pretext/main/README.md)
+  ⎿  Received 26.7KB (200 OK)
+
+  Searched for 2 patterns, read 2 files, listed 1 directory, ran 13 shell commands (ctrl+o to expand)
+
+● The reading is done and Pretext is installed as a dev dependency. I am
+  checking that its layout step runs in node without a browser, then I start
+  cutting the pure scene model out of the renderer.
+
+  Searched for 1 pattern, read 2 files, ran 11 shell commands (ctrl+o to expand)
+
+● Background command "Build both Explorer bundles with the scene module"
+completed (exit code 0)
+
+● The scene module is in place and passing unit tests. Next I'll verify the page
+  renders identically through it—checking that placement measures match the
+  committed numbers and that the branch e2e tests still pass. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Lint the tree with the scene module" completed (exit code
+0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The page renders the same picture via the scene module, and I fixed a
+  pre-existing knife-edge bug in the pin measurement along the way. While the
+  bundles rebuild, I'm writing up the docs for this milestone. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+● Background command "Rebuild both bundles with the deterministic pin rounding"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Regenerate the Live Docs so the new modules get their doc
+files" completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● While the gate runs on the scene milestone, I'll draft the lab's modules in
+  the scratchpad: page capture with Pretext, the card model, captured measurer,
+  routes/signals, and the sweep with its report. · summary
+
+  Searched for 3 patterns (ctrl+o to expand)
+
+● Background command "Correct the inventory's extent note, then run the full
+gate with Playwright" completed (exit code 0)
+
+  Searched for 4 patterns, read 1 file, ran 16 shell commands (ctrl+o to expand)
+
+● The gate is in its last stretch, the still-picture rows. The lab's drafts are
+  complete in the scratchpad: capture, card model, measurer, routes, signals,
+  evaluation, sweep, report, verify, the command-line entry, four unit test
+  files and the drift spec. They go into the tree the moment the mended scene
+  commit is gated and amended.
+
+● Background command "Run the full gate again on the mended scene milestone"
+completed (exit code 0)
+  ⎿  4 skills available
+
+  Searched for 2 patterns, read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● The third gate is running with the wait fixed. Meanwhile I am drafting the
+  lab's probe record, the brief the run reports will hang under.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The gate is at its build step with Playwright still ahead, about ten minutes.
+  Everything that can be prepared without touching the tree is prepared, so I
+  will wait for its notification before moving the lab in.
+
+● Background command "Run the full gate a third time with the wait fixed"
+completed (exit code 0)
+
+  Ran 11 shell commands (ctrl+o to expand)
+
+● The lab's own scopes module was left behind in the scratchpad, which is why
+  the capture could not start. I am copying it in and running the capture.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Correct the pin-resolution test's expected key and show
+how symbol names normalize" failed with exit code 144
+
+  Searched for 2 patterns, ran 12 shell commands (ctrl+o to expand)
+
+● The lab lints clean but for one comment, and its tests pass. Now I fix the
+  last two comment stubs and run the capture again to see whether the placement
+  measure now matches the page.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Capture the other three deck scopes and check each against
+the page" completed (exit code 0)
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The captures are re-running in the background. Meanwhile I am putting the
+  probe record and the command's entry in AGENTS.md into the tree.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Size the dot from a probe, recapture all four scopes, and
+verify the five-file baseline against the page" completed (exit code 0)
+
+  Read 1 file, listed 1 directory, ran 14 shell commands (ctrl+o to expand)
+
+● I rewrote the deck's crossing count loop to drop string keys, and tests pass.
+  Now I'm timing it and verifying the count is unchanged before rerunning the
+  sweeps. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Stop the old sweep loop and start the sweeps again with
+the faster crossing count" failed with exit code 144
+
+● Background command "Run the first sweep of 400 sampled configurations plus
+each lever alone on all four scopes" failed with exit code 144
+
+● Background command "Regenerate the Live Docs so the lab's modules get their
+doc files" completed (exit code 0)
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● The authored notes for all sixteen new documents are in. While the sweeps run,
+  I am linting and unit-testing the lab and the instruments it touched.
+
+  Listed 2 directories, ran 10 shell commands (ctrl+o to expand)
+
+● The first sweep is on its third scope. I am queueing the layout-only sweep for
+  the estate scopes, which take seconds, while it finishes.
+
+  Read 2 files, ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Sweep the whole grid of the layout-only levers on the two
+estate scopes" completed (exit code 0)
+● Background command "Run the first sweep on all four scopes" completed (exit
+code 0)
+
+  Read 2 files (ctrl+o to expand)
+
+● The two shortest configs render and measure within half a percent of the
+  deck's numbers, but the screenshots reveal long identifiers breaking mid-word
+  at 260px despite the card cap. I'm now logging these findings into the probe
+  record and screenshot README while the layout-only sweep continues on the
+  repository scopes. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The layout-only sweep is on its last stretch for the five-file scope, with the
+  chain scope after it. Everything that does not depend on its results is
+  already written, so I am waiting for its notification before verifying the
+  chain's layout-only finalist, running the gate and committing.
+
+● Background command "Sweep the whole grid of the layout-only levers on the
+repository's two scopes" completed (exit code 0)
+
+  Read 2 files, ran 6 shell commands (ctrl+o to expand)
+
+● The last finalist is photographed. I am adding its row to the README and
+  starting the full gate on the lab.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The gate is at its lint step with the build, the unit and integration suites
+  and Playwright still ahead, about a quarter of an hour. Every file is in place
+  and nothing else can run against the tree meanwhile, so I will wait for its
+  notification, commit only on its exit 0, and then report.
+
+● Background command "Add the chain picture's row to the README, then run the
+full gate with Playwright on the lab" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The gate is running again in full on the lab, with the three links corrected.
+  I will commit only on its exit 0 and then report the whole of it.
+
+● Background command "Note the link fix in the record and run the full gate
+again" completed (exit code 0)
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The lab is built, gated and committed as cdb32c7a, on top of the scene
+  milestone 8bc2d908. Here is what it is, what it found, and the one decision
+  the findings put to you.
+
+  What was built
+
+  Two commits. The first cuts the Local Map's layout geometry out of the
+  renderer into a pure scene module with a measurer interface. The page is one
+  measurer; the lab is another. The layout's dials became Local Map tuning the
+  page reads, so anything the lab finds can be rendered by the page: the
+  ranking's pull toward consumers and its tie rule, the order's sweep count and
+  a seeded start, the symbol order, the column gap, the item and band gaps, the
+  membrane neck and padding, and the card width cap.
+
+  The second is the lab itself, run as npm run layout:lab with three verbs.
+  Capture opens a deck scope in a browser once, prepares every text with Pretext
+  inside the page, reads every card's sizes, pins, chips and badges plus the
+  stylesheet's constants, and records what the page itself showed. Sweep lays
+  out hundreds of configurations in node with the page's own ranking, order,
+  scene and placement, routes the wires with the page's own routing, scores them
+  on the deck's signals, and writes a markdown report. Verify renders a
+  configuration in the page with the tuning seeded and reads it with the deck's
+  instrument. Reports live under Probes as you chose. Captures and the per-run
+  JSON are regenerable and not committed, so the lab added 164 KB of markdown
+  and 2.3 MB of pictures to the repository.
+
+  The model against the page
+
+  The lab reproduces every deck scope to the pixel at the page's own tuning:
+  every card's width, height and pin, every label, the picture's size and the
+  placement measure. An e2e spec holds that on all four scopes. Verified in the
+  page, the five-file baseline reads 373,803 px by the lab against the deck's
+  373,863. Away from the page's tuning, with cards capped at 260 px and every
+  gap changed, the lab stays within half a percent. That is the low-precision
+  sweep you asked for, and why finalists are read in the page.
+
+  The drift check taught the model three things about the browser that I did not
+  know: the Internals row is four pixels taller than the others because its dot
+  carries a top margin, a collapsed row must resolve to no pin at all because
+  the page finds the anchor but cannot measure it, and Chromium keeps a text
+  that overflows its box by one sixty-fourth of a pixel on one line while
+  wrapping one that overflows by five. The deck's crossing finder also turned
+  out to cost 2.9 of an evaluation's 3 seconds; with numeric pair keys it gives
+  the same counts five times faster.
+
+  What the first sweeps found
+
+  Reports for eight sweeps are in the probe record
+  (AI-Agent-Workspace/Probes/2026-10-06/layout-lab.md). Four finalists are
+  rendered in the screenshot README (AI-Agent-Workspace/Screenshots/2026-10-06/R
+  EADME.md#the-layout-labs-finalists-the-night-of-october-6), each verified in
+  the page.
+
+  The order step's start is the largest layout lever, and a lottery. On the
+  five-file scope, five of eight shuffled starts of the barycenter sweep end 24%
+  shorter than the ranked start, with a picture 20% shorter and a quarter of
+  the wire samples over foreign membranes, at 16% more crossing spots. On the
+  chain the ranked start is already the best of nine. The sweep minimizes
+  crossings, not length, so where it lands depends on where it begins.
+
+  The pull toward consumers trades length for tidy membranes. On the chain it
+  lengthens wires 7% and cuts crossing spots 7%, foreign samples by a third and
+  escaping wires by a third. On the five files, pull 2 with a shuffled start
+  betters every signal at once: 23% shorter, 14% fewer crossing spots, a tenth
+  of the foreign samples, a third less height. That picture is the one to look
+  at first.
+
+  The spacing levers shrink the picture, and the length with it. Column gap 60
+  takes 3 to 12% off everywhere. The card cap at 260 px takes up to 10% off
+  where cards are wide, and the picture shows the price: long identifiers break
+  mid-word. These are dials for your eye, not layout findings.
+
+  The tie rule rarely matters, doubling the sweeps changes nothing, and the
+  symbol orders cost crossings on the repository while saving them on the
+  estate's chain.
+
+  The decision this raises
+
+  The page runs the order step once from the ranked start. The lab says that on
+  the scope you first looked at, trying several seeded starts and keeping the
+  one the exact placement prices lowest is worth a quarter of the wire length,
+  and on the chain it costs nothing but a few tenths of a second. Say whether
+  you want restarts in the page, and whether they should pick by length alone or
+  by the weighted score, and I build it. The laces come after, as ordered.
+
+❯ >Say whether you want restarts in the page, and whether they should pick by
+  length alone or by the weighted score, and I build it. The laces come after,
+  as ordered.
+
+  What do you think is wisest with respect to restarts in the page? I recommend
+  a weighted score that can be tabulated and tuned (indeed I thought these
+  were the levers being initialized randomly? Correct me if I'm wrong).
+
+  Read 1 file (ctrl+o to expand)
+
+● Your correction is half right, and the half that is wrong matters, so let me
+  separate the two things.
+
+  What was randomized
+
+  The sweep drew random configurations of the levers: which gap, which pull,
+  which cap, which seed. That is how a grid of a few million combinations was
+  sampled down to four hundred. The levers themselves are dials a person sets,
+  not things to restart.
+
+  One of those levers is special: the order step's starting permutation. Ranking
+  and placement are exact, so running them twice gives the same answer. The
+  order step is a local search, and where it lands depends on where it begins. A
+  "restart" means running that one step several times from different starts and
+  keeping the best, every time the page lays out. That is the only lever where
+  repetition buys anything.
+
+  What I think is wisest
+
+  Restarts in the page, deterministic, scored by a weighted sum of what the page
+  can measure cheaply, with the weights in tuning.
+
+  The reasoning:
+
+  - Determinism. A fixed list of seeds, so the same pins give the same picture
+    every time. Nothing random at run time.
+  - The cheap signals are the right ones. The exact placement's measure is the
+    vertical wire length, and it comes free with the solve. The order step
+    already counts its own crossings. The picture's height falls out of the
+    placement. Those three score a start in no extra time. The membrane signals
+    need routed wires and sampling, which costs more than the layout itself, so
+    they stay in the lab.
+  - The lab tunes the page. A new lab report tabulates every start of a scope:
+    the cheap signals the page would see and the full signals the deck would
+    read. You set the weights so the page's choice agrees with the full picture.
+    That is your "tabulated and tuned".
+  - Cost. On the five-file scope the order step plus placement takes about 130
+    ms. Eight starts add a second before the picture appears, four add half a
+    second. The count is a dial.
+  - The risk is continuity. Restarts can send the picture into a different basin
+    when one pin changes. I would include the current order as a candidate
+    start and a churn weight, so the page stays put unless another start is
+    clearly better. The animated re-layout will depend on this.
+
+  The plan
+
+  1. The order step takes a list of starts: the ranked order, the previous order
+     when there is one, and N seeded shuffles. Each is swept and placed; a
+     weighted score picks one.
+  2. Three weights and the start count join the tuning: vertical length,
+     crossings, height, churn. Defaults from the lab's first tabulation.
+  3. The lab gets a restarts verb that tabulates every start on a scope with
+     cheap and full signals side by side.
+  4. The deck runs before and after on all four scopes, pictures into the dated
+     folder.
+
+  Say go, or move a default, and I build it. Laces after.
+
+● Your correction is half right, and the half that is wrong matters, so let me
+  separate the two things.
+
+  What was randomized
+
+  The sweep drew random configurations of the levers: which gap, which pull,
+  which cap, which seed. That is how a grid of a few million combinations was
+  sampled down to four hundred. The levers themselves are dials a person sets,
+  not things to restart.
+
+  One of those levers is special: the order step's starting permutation. Ranking
+  and placement are exact, so running them twice gives the same answer. The
+  order step is a local search, and where it lands depends on where it begins. A
+  "restart" means running that one step several times from different starts and
+  keeping the best, every time the page lays out. That is the only lever where
+  repetition buys anything.
+
+  What I think is wisest
+
+  Restarts in the page, deterministic, scored by a weighted sum of what the page
+  can measure cheaply, with the weights in tuning.
+
+  The reasoning:
+
+  - Determinism. A fixed list of seeds, so the same pins give the same picture
+    every time. Nothing random at run time.
+  - The cheap signals are the right ones. The exact placement's measure is the
+    vertical wire length, and it comes free with the solve. The order step
+    already counts its own crossings. The picture's height falls out of the
+    placement. Those three score a start in no extra time. The membrane signals
+    need routed wires and sampling, which costs more than the layout itself, so
+    they stay in the lab.
+  - The lab tunes the page. A new lab report tabulates every start of a scope:
+    the cheap signals the page would see and the full signals the deck would
+    read. You set the weights so the page's choice agrees with the full picture.
+    That is your "tabulated and tuned".
+  - Cost. On the five-file scope the order step plus placement takes about 130
+    ms. Eight starts add a second before the picture appears, four add half a
+    second. The count is a dial.
+  - The risk is continuity. Restarts can send the picture into a different basin
+    when one pin changes. I would include the current order as a candidate
+    start and a churn weight, so the page stays put unless another start is
+    clearly better. The animated re-layout will depend on this.
+
+  The plan
+
+  1. The order step takes a list of starts: the ranked order, the previous order
+     when there is one, and N seeded shuffles. Each is swept and placed; a
+     weighted score picks one.
+  2. Three weights and the start count join the tuning: vertical length,
+     crossings, height, churn. Defaults from the lab's first tabulation.
+  3. The lab gets a restarts verb that tabulates every start on a scope with
+     cheap and full signals side by side.
+  4. The deck runs before and after on all four scopes, pictures into the dated
+     folder.
+
+  Say go, or move a default, and I build it. Laces after.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c4
+     7-b1db-fa9555e124bb/scratchpad/lab-sweeps-layout-repo.log (36 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c4
+     7-b1db-fa9555e124bb/scratchpad/lab-sweeps3.log (54 lines)
+  ⎿  Referenced file tests/e2e/still-picture.spec.ts
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/76d2de
+     05-aa3f-4c47-b1db-fa9555e124bb/scratchpad/scene-gate2.log
+  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-order.ts

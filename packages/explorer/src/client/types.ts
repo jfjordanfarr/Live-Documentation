@@ -62,8 +62,19 @@ export interface LocalMapTuning {
   rankingTie: "fewest" | "right" | "left";
   /** How many left-and-right sweeps the ordering tries. */
   orderSweeps: number;
-  /** A seed for a shuffled starting order of the ordering's sweep; null starts from the ranking's order. */
+  /**
+   * A seed for one shuffled starting order of the ordering's sweep, tried alone; null tries the ranking's order, the
+   * previous picture's and `orderStarts` seeded shuffles, and keeps the cheapest picture.
+   */
   orderSeed: number | null;
+  /** How many seeded starts the ordering tries beside the ranking's order and the previous picture's (2026-10-06). */
+  orderStarts: number;
+  /** What one crossing of the order's own count costs when a start's picture is priced, in pixels of wire. */
+  crossingCost: number;
+  /** What one pixel of the picture's height costs when a start's picture is priced, in pixels of wire. */
+  heightCost: number;
+  /** What one pair of cards swapped against the previous picture costs when a start's picture is priced, in pixels of wire. */
+  churnCost: number;
   /** The room between neighbouring cards and lanes of a column, in CSS pixels. */
   itemGap: number;
   /** The room between sibling membranes' segments in a column they share. */

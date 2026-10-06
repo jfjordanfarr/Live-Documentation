@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildBranches, edgeKey, rankBranches } from "./branches";
+import { buildBranches, edgeKey, exploreBranches, orderExploration, rankBranches } from "./branches";
 import type { LocalEdge } from "./types";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { addPin, EMPTY_PIN_SET, removePin } from "../pin-state";
@@ -33,6 +33,27 @@ describe("independent Local Map branches", () => {
     expect([...result.relevantSymbols.get("b")!]).toEqual(["used"]);
     expect(result.subgraph.nodes.map(file => file.id)).toEqual(["a", "b"]);
     expect(result.hiddenConnections.get("b")).toBe(1);
+  });
+
+  it("explores once and orders from any start, as building in one go does", () => {
+    const files = ["p", "q", "r", "s"].map(id => node(id));
+    const wires = ([["q", "p"], ["r", "p"], ["s", "q"], ["s", "r"]] as Array<[string, string]>)
+      .map(([source, target]) => ({ source, target, sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }));
+    const small: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 4, missingDependencies: 0 } };
+    const pins = files.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
+    const exploration = exploreBranches(files[0], small, pins, () => true);
+    expect(exploration.ranking.columns.map(column => column.map(file => file.id))).toEqual([["p"], ["q", "r"], ["s"]]);
+    const ids = (graphed: ReturnType<typeof buildBranches>): string[][] => graphed.columns.map(column => column.map(file => file.id));
+    for (const seed of [undefined, 1, 2]) {
+      const once = buildBranches(files[0], small, pins, () => true, { order: { seed } });
+      const again = orderExploration(exploration, { seed });
+      expect(ids(again)).toEqual(ids(once));
+      expect(again.order.crossings).toBe(once.order.crossings);
+      expect([...again.rows]).toEqual([...once.rows]);
+    }
+    // A start of the previous picture's making: the second column the other way round, kept with no sweeps.
+    const started = orderExploration(exploration, { sweeps: 0, start: [["p"], ["r", "q"], ["s"]] });
+    expect(ids(started)).toEqual([["p"], ["r", "q"], ["s"]]);
   });
 
   const nodes = [node("base"), node("left"), node("right"), node("join"), node("outside"), node("catalog", "asset")];

@@ -54,6 +54,10 @@ export const getDefaultTuning = (): TuningConfig => ({
     rankingTie: "fewest",
     orderSweeps: 4,
     orderSeed: null,
+    orderStarts: 4,
+    crossingCost: 80,
+    heightCost: 5,
+    churnCost: 100,
     itemGap: 24,
     bandGap: 28,
     membraneNeck: 60,
@@ -158,6 +162,10 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const rankingTie = readRankingTie(localMapRaw.rankingTie);
         const orderSweeps = readFiniteNumber(localMapRaw.orderSweeps);
         const orderSeed = readNullableNumber(localMapRaw.orderSeed);
+        const orderStarts = readFiniteNumber(localMapRaw.orderStarts);
+        const crossingCost = readFiniteNumber(localMapRaw.crossingCost);
+        const heightCost = readFiniteNumber(localMapRaw.heightCost);
+        const churnCost = readFiniteNumber(localMapRaw.churnCost);
         const itemGap = readFiniteNumber(localMapRaw.itemGap);
         const bandGap = readFiniteNumber(localMapRaw.bandGap);
         const membraneNeck = readFiniteNumber(localMapRaw.membraneNeck);
@@ -176,6 +184,10 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(rankingTie !== undefined ? { rankingTie } : null),
           ...(orderSweeps !== undefined ? { orderSweeps } : null),
           ...(orderSeed !== undefined ? { orderSeed } : null),
+          ...(orderStarts !== undefined ? { orderStarts } : null),
+          ...(crossingCost !== undefined ? { crossingCost } : null),
+          ...(heightCost !== undefined ? { heightCost } : null),
+          ...(churnCost !== undefined ? { churnCost } : null),
           ...(itemGap !== undefined ? { itemGap } : null),
           ...(bandGap !== undefined ? { bandGap } : null),
           ...(membraneNeck !== undefined ? { membraneNeck } : null),

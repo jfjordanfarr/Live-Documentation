@@ -13,7 +13,7 @@ The configurations a run tries and how they are scored: a grid over the levers' 
 
 ### Notes
 
-A grid spec names each lever's values (`lever=a,b;lever=none,1..4`); the whole grid is walked when it is no larger than the limit, else the limit's worth is drawn by mulberry32 from the seed, the baseline first and nothing twice. Each lever alone from the baseline is the report's sensitivity table. The score is the weighted sum of the signals as fractions of the baseline's, the owner's order of 2026-10-06 as the default weights (length first, the membranes' concerns behind); a signal the baseline has none of counts double when it appears. The Pareto front is the rows no other beats on both the length and the crossing spots.
+A grid spec names each lever's values (`lever=a,b;lever=none,1..4`); the default grid gained `orderStarts` (0, 4, 8) with the restarts of 2026-10-06, and a configuration with restarts on lays out every start before its routes are drawn once; the whole grid is walked when it is no larger than the limit, else the limit's worth is drawn by mulberry32 from the seed, the baseline first and nothing twice. Each lever alone from the baseline is the report's sensitivity table. The score is the weighted sum of the signals as fractions of the baseline's, the owner's order of 2026-10-06 as the default weights (length first, the membranes' concerns behind); a signal the baseline has none of counts double when it appears. The Pareto front is the rows no other beats on both the length and the crossing spots.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

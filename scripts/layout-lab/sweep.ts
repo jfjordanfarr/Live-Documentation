@@ -17,7 +17,7 @@ export interface LeverValues {
 
 /** The first grid: the levers at the values the design has stood at and around them. */
 export const DEFAULT_GRID =
-  "rankingPull=0,0.5,1,2,5;rankingTie=fewest,right,left;orderSeed=none,1,2,3,4,5,6,7,8;orderSweeps=4,8;symbolOrder=layout,alphabetical,appearance;" +
+  "rankingPull=0,0.5,1,2,5;rankingTie=fewest,right,left;orderSeed=none,1,2,3,4,5,6,7,8;orderStarts=0,4,8;orderSweeps=4,8;symbolOrder=layout,alphabetical,appearance;" +
   "columnGap=60,100,140;itemGap=16,24,32;bandGap=16,28,40;membraneNeck=40,60,90;membranePadding=8,12,18;cardMaxWidth=none,480,400,320,260";
 
 /** `lever=a,b,c;lever=none,1..4`: lists, `none` for null, `a..b` for every integer between. */

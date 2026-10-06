@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branches.test.ts
-- Generated At: 2026-10-05T16:55:01.350Z
+- Generated At: 2026-10-06T23:02:44.740Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ _No public symbols detected_
 ### Dependencies
 - [`branches.buildBranches`](./branches.ts.mdmd.md#symbol-buildbranches)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
+- [`branches.exploreBranches`](./branches.ts.mdmd.md#symbol-explorebranches)
+- [`branches.orderExploration`](./branches.ts.mdmd.md#symbol-orderexploration)
 - [`branches.rankBranches`](./branches.ts.mdmd.md#symbol-rankbranches)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)

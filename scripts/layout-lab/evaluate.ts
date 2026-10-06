@@ -15,8 +15,9 @@ import { retainedSubject, type ScopeRun } from "./scopes";
 import { measureScene, type Signals } from "./signals";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
+import { candidateStarts, layoutStarts, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { layoutScene, planBranches, type Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
-import { buildBranches, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { exploreBranches, orderExploration, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { addPin, EMPTY_PIN_SET, type PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
@@ -26,6 +27,9 @@ export interface LabConfig {
   rankingTie: "fewest" | "right" | "left";
   orderSweeps: number;
   orderSeed: number | null;
+  orderStarts: number;
+  crossingCost: number;
+  heightCost: number;
   symbolOrder: SymbolOrder;
   columnGap: number;
   itemGap: number;
@@ -36,7 +40,7 @@ export interface LabConfig {
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(): LabConfig {
@@ -54,6 +58,9 @@ export interface Evaluation {
   routes: Route[];
   /** Every card's metrics from the card model, by id. */
   metrics: Map<string, CardMetrics>;
+  /** The start whose picture this is, and every start tried with what the page would price it at. */
+  start: string;
+  starts: Array<{ name: string; signals: StartSignals; score: number }>;
 }
 
 /** The scope's pins, every file retained whole, and its subject. */
@@ -74,19 +81,33 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const center = byId.get(retainedSubject(run));
   if (!center) throw new Error(`The bundle has no file ${JSON.stringify(retainedSubject(run))}.`);
   const pins = scopePins(run);
-  const branches = buildBranches(center, graph, pins, includeNode(pins, retainedSubject(run)), {
+  const exploration = exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run)), {
     symbolOrder: config.symbolOrder,
-    ranking: { pull: config.rankingPull, tie: config.rankingTie },
-    order: { sweeps: config.orderSweeps, seed: config.orderSeed ?? undefined }
+    ranking: { pull: config.rankingPull, tie: config.rankingTie }
   });
-  const plan = planBranches(branches, config.membranePadding);
-  const measurer = capturedMeasurer(capture, branches, { pins, selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin });
-  const scene = layoutScene(plan, branches, measurer, {
-    columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth
-  });
-  const routes = routeScene(scene, branches, capture, measurer.metrics, getDefaultTuning().bezier);
+  // The page's own starts and choice, with the capture's card model as the measurer; the lab has no previous picture.
+  const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));
+  const starts = candidateStarts(config.orderStarts, config.orderSeed, null, ranked);
+  const metricsOf = new Map<Scene, Map<string, CardMetrics>>();
+  const { chosen, outcomes } = layoutStarts(starts, start => {
+    const branches = orderExploration(exploration, { sweeps: config.orderSweeps, ...startOrder(start) });
+    const plan = planBranches(branches, config.membranePadding);
+    const measurer = capturedMeasurer(capture, branches, { pins, selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin });
+    const scene = layoutScene(plan, branches, measurer, {
+      columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth
+    });
+    metricsOf.set(scene, measurer.metrics);
+    return { branches, scene };
+  }, { crossing: config.crossingCost, height: config.heightCost, churn: 0 }, null);
+  const { branches, scene } = chosen;
+  const metrics = metricsOf.get(scene)!;
+  const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = measureScene(scene, branches, routes);
-  return { config, signals, ms: performance.now() - started, branches, scene, routes, metrics: measurer.metrics };
+  return {
+    config, signals, ms: performance.now() - started, branches, scene, routes, metrics,
+    start: startName(chosen.start),
+    starts: outcomes.map(outcome => ({ name: startName(outcome.start), signals: outcome.signals, score: outcome.score }))
+  };
 }
 
 /** Where the baseline evaluation differs from what the page showed at capture: nothing, when the model is right. */

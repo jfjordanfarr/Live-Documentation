@@ -25,6 +25,9 @@ export interface Verification {
   pictureHeight: number;
   placementCost: number;
   scale: number;
+  /** The start the page drew, as it names it, and how long its layout took, by the page's own clock. */
+  start: string;
+  layoutMs: number;
 }
 
 /** Renders a configuration in the page with the tuning seeded and reads it with the deck's instrument. */
@@ -43,9 +46,15 @@ export async function verifyConfig(run: ScopeRun, graph: ExplorerGraphPayload, c
     const length = scoreLength(picture);
     const expanded = scoreExpanded(picture, symbolCounts(graph));
     const foreign = scoreForeign(picture);
-    const root = await page.evaluate(() => { const el = document.querySelector<HTMLElement>("#map-container .local-placed"); return { cost: Number(el?.dataset.placementCost), width: parseFloat(el?.style.width ?? "0"), height: parseFloat(el?.style.height ?? "0") }; });
+    const root = await page.evaluate(() => {
+      const el = document.querySelector<HTMLElement>("#map-container .local-placed");
+      return { cost: Number(el?.dataset.placementCost), width: parseFloat(el?.style.width ?? "0"), height: parseFloat(el?.style.height ?? "0"), start: el?.dataset.orderStart ?? "", layoutMs: Number(el?.dataset.layoutMs) };
+    });
     if (shot) await page.screenshot({ path: shot });
-    return { lengthPx: length.totalPx, horizontalPx: length.horizontalPx, verticalPx: length.verticalPx, spots: expanded.crossings.spots ?? 0, foreignSamples: foreign.foreignSamples, pictureWidth: root.width, pictureHeight: root.height, placementCost: root.cost, scale: picture.scale };
+    return {
+      lengthPx: length.totalPx, horizontalPx: length.horizontalPx, verticalPx: length.verticalPx, spots: expanded.crossings.spots ?? 0, foreignSamples: foreign.foreignSamples,
+      pictureWidth: root.width, pictureHeight: root.height, placementCost: root.cost, scale: picture.scale, start: root.start, layoutMs: root.layoutMs
+    };
   } finally {
     await browser.close();
   }

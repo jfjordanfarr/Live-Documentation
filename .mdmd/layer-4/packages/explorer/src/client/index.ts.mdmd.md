@@ -14,6 +14,7 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was modularised.
 - Since 2026-09-28 the bundle is loaded from `explorer-data.json` beside the page, or from the URL named by `?data=`; the fetches from the retired server and their lazy loader are gone.
 - Exposes `window.switchView`, `window.openInEditor`, and zoom controls to the HTML template.
+- The initial node (from the address, the stored place or the heuristic) is selected before the first drawing (`markSelected`, the selection's bookkeeping without a drawing, which `selectNode` also uses), so the page draws the focused picture once. Until 2026-10-06 it drew a default picture and then, a hundred milliseconds later, the focused one, and every load paid the Local Map's layout twice; found when the layout lab's verify pass read the page's second drawing ([Turn 12](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
