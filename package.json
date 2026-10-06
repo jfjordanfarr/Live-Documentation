@@ -57,6 +57,7 @@
     "oracle:index": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/index-fixture.ts",
     "oracle:compare": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/compare.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts --docs-root .mdmd --base-layer layer-4",
+    "layout:lab": "tsx --tsconfig ./tsconfig.base.json scripts/layout-lab/lab.ts",
     "ci-check": "node ./scripts/safe-to-commit.mjs --skip-git-status"
   },
   "devDependencies": {

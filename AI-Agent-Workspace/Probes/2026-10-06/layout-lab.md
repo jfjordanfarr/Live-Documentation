@@ -1,0 +1,80 @@
+# The layout lab
+
+_Design instrument, 2026-10-06. Root agent: Claude Fable 5.1. Built under the owner's wish in [Turn 7](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-7) of the October 6 session, "**This** I would love to perform, analyze, and understand completely", with the choices of [Turn 9](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-9) (reports here, under Probes; "low-precision sweep, followed by high-precision sweep") and [Turn 10](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-10) (a card model in code now, "if it splits now, hope and plan for reunification later"). Unlike the other probes in this folder, the lab is a kept instrument, `scripts/layout-lab/`; what accrues here are its runs. A run decides nothing: the owner's eye on the page decides, and the deck's high-precision pass is what a finalist is judged by._
+
+## What it is
+
+The Local Map's many-file layout has four steps: a ranking into columns, an ordering within them, an exact placement down the page, and the routing of the wires. The first three are arithmetic over the graph; only the cards' sizes come from the browser, which lays out their text. The lab runs the three steps in node with the page's own code (`branches.ts`, `branch-order.ts`, `branch-scene.ts`, `branch-placement.ts`, `branch-routing.ts`), and stands in for the browser with a **capture**: a reading of the page, taken once per scope, from which a **card model** gives every card's height and every pin's place at any width. A configuration of the layout's **levers** is then laid out in about a tenth of a second, its wires routed as the page routes them, and scored on **signals** the still-picture deck also reads from the page. A **sweep** tries hundreds of configurations and reports what each lever does alone, the best found by a weighted score, and the trade between length and crossings. A **verify** pass renders a configuration in the page itself, with the tuning seeded, and reads it with the deck's own instrument: the high-precision sweep, over the few.
+
+### The capture, and the card model it feeds
+
+The page is opened on the scope with every file retained whole, and read in one evaluation: every card's width as its content asks, its border and padding, every text block (title, path, directory line, each symbol row's label, the notes under the card) **prepared by Pretext** inside the page, every row's type-badge width, every test chip's width and height, each pin's horizontal place, the stylesheet's constants (margins, gaps, the dot's size, a label's padding) read from computed styles, the heights of one line of each font, and, as the truth the model is held to, what the page showed: each card's height, each pin's offset as the renderer rounds it, each membrane label's height, the placement measure and the picture's size.
+
+[Pretext](https://github.com/chenglou/pretext) is Cheng Lou's library for text layout without the DOM: `prepareWithSegments` measures a text's break segments once with a canvas, where the browser's fonts are, and `layoutWithLines` is pure arithmetic over the prepared widths, which the lab runs in node on the serialized preparation. The card model composes a card from its blocks: border, padding, the title in its width less its right padding, the path, the symbols block whose margin swallows the meta line's, each row as tall as its dot, its label's lines or its badges, the rows a gap apart, the test chips wrapped as a flex row wraps, the directory line, and each note. A pin is at the middle of its row; the hub at the middle of the card; a wire finds its pin as the page's registry resolves it. The capture reports, at once, where Pretext's layout of a text at the page's width disagrees with the page by more than half a pixel, and the lab's baseline (the page's own tuning) is checked against the truth in every card's width and height, every label, the placement measure and the picture's size: a **drift** of a pixel anywhere is reported, and `tests/e2e/layout-lab.spec.ts` holds it at zero on every deck scope.
+
+What the model does not know: a note under a card that the page never showed (a "+N symbols" line, a "N references read back" line, which a configuration can create) is set from the font's glyph widths, one line unless its words overflow; the membranes the signals test against are the sharp outlines, where the page rounds the corners by the padding; and a card narrower than the page's `min-width` is not a width the page can show, so the cap's floor is 200 px.
+
+### The levers
+
+Each is a value of the Local Map's tuning, so the page can render what the lab finds.
+
+| Lever | What it moves | The page's value |
+| --- | --- | --- |
+| `rankingPull` | How strongly every file is pulled toward the last column against the cost of the spans: zero is the span-minimal ranking of 2026-10-06, a weight above every pair's the longest-chain ranking of before | 0 |
+| `rankingTie` | Which column a file takes when several cost the same: the fewest other cards (the rightmost among equals), the rightmost, the leftmost | fewest |
+| `orderSweeps` | How many left-and-right barycenter sweeps the ordering tries | 4 |
+| `orderSeed` | A seed shuffling each column's starting order before the sweep; none starts from the ranking's order | none |
+| `symbolOrder` | How a card's rows stand: where their wires lead, alphabetically, or as the Live Doc lists them | layout |
+| `columnGap` | The room between columns | 100 |
+| `itemGap` | The room between neighbouring cards and lanes of a column | 24 |
+| `bandGap` | The room between sibling membranes' segments in a column they share | 28 |
+| `membraneNeck` | The least overlap of a membrane's segments in neighbouring columns | 60 |
+| `membranePadding` | The room between a membrane's outline and its members, and the rounding of its corners | 12 |
+| `cardMaxWidth` | A card may be no wider than this; none for as wide as its content asks | none |
+
+### The signals
+
+Length in the picture's pixels, with its horizontal and vertical parts summed over points every eight pixels, as the deck reads a drawn wire (the deck's screen pixels equal these at its scale of 1); crossing spots by the deck's own count over the same sampled routes; samples of a wire inside a membrane that holds neither of its ends, and the wires with any; wires whose two ends one membrane holds and that leave it, and their samples outside; lane runs over all wires and the wires threaded through any lane; references read against the columns; the columns, the lanes, the picture's width and height, and the exact placement's measure. The weighted score is the sum of the signals as fractions of the baseline's, weighted by the owner's order of 2026-10-06, the length first and the membranes' concerns behind it; the weights are a run's argument, and the Pareto front over length and crossings is reported so that the weights can be chosen after seeing the trade.
+
+## How to run it
+
+```
+npm run live-docs:visualize && npm run live-docs:visualize:estate
+npm run layout:lab -- capture repository/five
+npm run layout:lab -- sweep repository/five --sample 400 --seed 1
+npm run layout:lab -- verify repository/five --config '{"cardMaxWidth":400}' --shot picture.png
+```
+
+The scopes are the deck's (`repository/five`, `repository/chain`, `estate/five`, `estate/chain`), defined once in `tests/e2e/scopes.ts`. A capture goes stale when the stylesheet or the cards' content changes; the drift check says so. A run writes a markdown report, which is committed beside this record, and a JSON of every configuration and its signals, which is not: a run is reproducible from its grid and seed in minutes, and the JSON weighs half a megabyte a scope, which the owner would rather the repository did not carry (2026-10-06).
+
+## The model against the page
+
+Every deck scope reproduces the page to the pixel at the page's own tuning: every card's width and height, every pin, every membrane label, the picture's size and the placement measure (`tests/e2e/layout-lab.spec.ts`). The five-file baseline verified in the page by the deck's own instrument reads 373,803 px of wire by the lab against the deck's 373,863, the horizontal and vertical parts and the picture's size exact, crossing spots 668 against 670, foreign samples 12,861 against 12,851: the lab's length is the deck's to a sixtieth of a percent. Away from the page's own tuning the model is held less tightly: the shortest configuration found on the five-file scope, with cards capped at 260 px and every gap changed, reads 232,847 px by the lab against 234,005 in the page (−0.5%), its height 3,047 against 3,062, and on the chain 278,007 against 278,659, the crossing spots 1,039 against 1,135; a card's wrapped text is where the model and the browser part by a pixel here and there. That is the low-precision sweep the owner asked for, and why a finalist is read in the page.
+
+Three facts of the browser the model had to learn, each found by the drift check: the Internals row is taller than the others by the four-pixel top margin of its dot and placeholder, with the dot below the row's middle by it; a row the page collapses must resolve to no pin at all, since the page's registry finds the anchor but cannot measure it and so places and draws no wire; and Chromium keeps a text that overflows its box by one layout unit (a sixty-fourth of a pixel) on one line and wraps one that overflows by five, which the lab lends Pretext's layout as its tolerance. Canvas and the DOM agree on a text's width to a hundredth of a pixel; the question is only what the browser does at the edge.
+
+## The first sweeps, October 6
+
+Two sweeps per scope, seed 1: `first-sweep`, the default grid of all eleven levers (400 sampled configurations and each lever alone), and `layout-levers`, the whole grid of the five levers that move the layout's logic rather than its spacing (the ranking's pull and tie rule, the order's seed and sweeps, the symbol order: 648 configurations). The reports are beside this record. An evaluation takes 0.6 s on the repository's five files, 0.4 on its chain and under a tenth on the estate's scopes.
+
+### What each lever does alone
+
+**The spacing levers shrink the picture, and the length with it.** The column gap at 60 instead of 100 takes 3 to 12% off the length on every scope (the chain's wires are long and cross many gutters: −5.6% on the repository's chain, −12% on the estate's); the membrane padding at 8 instead of 12 another 3 to 4%; the card width cap, where cards are wide (the repository's), 2 to 10% at 260 px, nothing on the estate whose cards are already narrower; the item and band gaps a percent or two. These are not layout findings: a smaller picture has shorter wires, and the cap breaks long identifiers mid-word at 260 px, which the pictures show. They are the dials the owner's eye sets.
+
+**The order's start is the largest layout lever, and a lottery.** On the repository's five files, five of eight shuffled starts of the barycenter sweep end at 284,428 px, 24% shorter than the ranked start's 373,803, with 16% more crossing spots, a quarter of the wire samples over foreign membranes (3,426 against 12,861) and a picture 20% shorter; the other three end 6 to 7% shorter. On the chain the ranked start is the best or equal best of nine, and a bad seed costs 16%. On the estate's five files a seed takes a quarter of the crossing spots away for a percent of length. The sweep minimizes crossings between adjacent columns, not length, so the order it settles in is one of many local minima, and which one depends on where it starts. Restarts judged by the exact placement's measure, which the owner called "Slick" when proposed, are worth a quarter of the length on the scope the owner first looked at; at a tenth of a second a solve they are affordable in the page.
+
+**The pull toward the consumers trades length for tidy membranes.** `rankingPull` at 1 or 2 (the longest-chain ranking's direction, the span-minimal ranking's spans costed against it) lengthens the chain's wires 7 to 8% but cuts its crossing spots 7 to 9%, its foreign samples from 1,515 to 956 and its escaping wires from 62 to 39; on the five files a pull of 1 shortens the wires 6% (the files pulled right stand in shorter stacks) and a pull of 5 cuts the foreign samples from 12,861 to 2,927 and halves the escaping wires. A pull lighter than any pair's weight (0.5) changes nothing, as the arithmetic says. The pull is the graded lever against membrane crossing the owner asked for in another form: it keeps a file near the files that use it, so its wires pass fewer membranes that are not its own.
+
+**The tie rule rarely matters.** `rankingTie` moves nothing on three scopes; on the five files `left` lengthens the wires 2% and cuts the crossing spots 9%.
+
+**The symbol order costs crossings.** The alphabetical order shortens the five files' wires 5% but adds a quarter more crossing spots; the Live Doc's order adds a fifth; on the estate's chain the Live Doc's order takes the crossings down a quarter and the foreign samples to none, at a taller picture. The layout's own order earns its default on the repository and not everywhere.
+
+**Doubling the sweeps changes nothing** on any scope: four left-and-right passes are already at the sweep's fixed point.
+
+### The best found, and the trade
+
+On the five files the shortest configuration of the first sweep is 232,847 px, 38% under the baseline (cards capped at 260, gaps at 60 and 16, padding 8, neck 40, a shuffled start), with 4% more crossing spots; the Pareto front over length and crossings runs from there to 285,976 px at 29% fewer spots (a pull of 2, a shuffled start, gap 60, cap 320). On the chain the shortest is 278,007 px, 15% under, and the front reaches 21% fewer spots at 2% less length. The weighted score (length 1, crossing spots 0.3, foreign samples 0.2, escaping 0.1, height 0.1, backward 0.5) picks configurations that move several levers at once; the one-lever tables above are the legible part of the result, and the owner's eye on the pictures the rest.
+
+### The layout levers alone
+
+The `layout-levers` sweep walks the whole grid of the five logic levers (648 configurations), the spacing left at the page's values. On the five files the best by the weighted score is the pull at 2 with the tie rule right and a shuffled start (seed 2): 285,951 px, 23.5% under the baseline, crossing spots 574 against 668, foreign samples 1,169 against 12,861, escaping wires 49 against 62, the picture 2,641 px tall against 3,936, every signal better at once; verified in the page to the pixel (285,984 px, 574 spots). The shortest on that scope is a shuffled start with the alphabetical rows, 279,636 px, at 27% more crossing spots. On the chain no configuration of the logic levers beats the baseline's length: the ranked start is already the shortest of nine starts, and the pull at 1 is the best by score, 7% longer and 7% fewer crossing spots with the foreign samples down a third. The estate's two scopes move by a percent or two either way, their seeds trading a quarter of the crossing spots for a percent of length. The lesson across scopes: the order step's start matters most and unpredictably, the pull is a real dial between length and tidiness, and the two scopes the owner first looked at answer differently, so a rule that fits one must be checked on the other.

@@ -170,7 +170,7 @@ test("a retained exploration threads skipped references through lanes: nothing o
   ];
   await page.goto(localRetainUrl("/", files));
   await page.waitForSelector("#map-container .branch-mode");
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await page.waitForTimeout(900);
   const graph = await loadGraph(page, "/");
   const picture = await readPicture(page, LOCAL_MAP, displayNames(graph, graph.nodes.map(node => node.id)));
@@ -208,7 +208,7 @@ test("a lane's slots spread to the wires through them where the wires ask", asyn
   ];
   await page.goto(localRetainUrl("/", files));
   await page.waitForSelector("#map-container .branch-mode");
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await page.waitForTimeout(900);
   const lanes = await readLanes(page);
   expect(lanes.length).toBeGreaterThan(0);
@@ -227,7 +227,7 @@ test("directories are membranes: one connected shape per directory, siblings nev
   ];
   await page.goto(localRetainUrl("/", files));
   await page.waitForSelector("#map-container .branch-mode");
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await page.waitForTimeout(900);
   /** Each directory's segments as the renderer published them, in the picture's own pixels, with the cards it holds directly. */
   const bands = await page.evaluate(() => {
@@ -307,7 +307,7 @@ test("a card's rows stand where their wires lead by default, and Tuning offers t
   ];
   const settle = async (): Promise<void> => {
     await page.waitForSelector("#map-container .branch-mode");
-    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(900);
   };
   /** The card's symbol rows, top to bottom, Internals left out. */

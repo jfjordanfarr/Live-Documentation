@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture.spec.ts
-- Generated At: 2026-10-05T22:17:17.003Z
+- Generated At: 2026-10-06T20:39:27.043Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Plays the still-picture deck over the shipped bundles, this repository's and the
 - The chain journeys ask "how does A reach D?" by each view's own route: the Local Map through the pathfinder toolbar, whose path state is recorded as a row of its own (asked with the dependent first, the map offers the reverse question as a link and the journey takes it as one more gesture; when the map draws another shortest path than the chain, the journey's note names it); the Membrane Map by pinning all of A, then of B as it appears, then of C, with Escape as the return move when the layout has carried the header's back control off screen.
 - The journeys answer "which files use symbol S of file F" with the answer taken from the graph: in the Local Map by pinning the symbol's row on the subject's card, in the Membrane Map by opening the subject's card in its folder and pinning the symbol's label, each followed by the view's own return move. The Force Graph offers no way to locate a file, so its journey is recorded as not scriptable.
 - Created on 2026-10-01; the scope sets and journeys are fixed in `RUNS` so that the numbers mean the same thing on every run.
-- Since 2026-10-05 each scope also has a "Local Map, retained" row: every file of the scope retained whole by URL, the first as the subject, at the view's own fit, the state the Membrane row's all-pinned picture is compared with. Three rules hold there beyond the four above: no wire crosses a card it does not end at, no route reads backward, and no lane lies in a directory that holds neither end of its wires; a cycle's feedback is stubs, which the deck's own numbers count as backward in both views alike.
+- Since 2026-10-05 each scope also has a "Local Map, retained" row: every file of the scope retained whole by URL, the first as the subject, at the view's own fit, the state the Membrane row's all-pinned picture is compared with. Three rules hold there beyond the four above: no wire crosses a card it does not end at, no route reads backward, and no lane lies in a directory that holds neither end of its wires; a cycle's feedback is stubs, which the deck's own numbers count as backward in both views alike. Since 2026-10-06 the deck's four scopes (the repository's five files and chain, the estate's) are defined once in `scopes.ts` and shared with the layout lab, so both instruments measure the same pictures; and every wait for a drawn wire asks for a wire that is not a bundle's shared run, since a level run has a bounding box of no height and Playwright calls it invisible.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,6 +32,8 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
+- [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`scopes.DeckScope`](./scopes.ts.mdmd.md#symbol-deckscope)
 - [`still-picture.ChainJourney`](./still-picture.ts.mdmd.md#symbol-chainjourney)
 - [`still-picture.ChurnScore`](./still-picture.ts.mdmd.md#symbol-churnscore)
 - [`still-picture.Fact`](./still-picture.ts.mdmd.md#symbol-fact)

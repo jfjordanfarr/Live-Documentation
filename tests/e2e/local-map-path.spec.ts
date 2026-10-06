@@ -23,7 +23,7 @@ test.use({ viewport: FRAME });
 async function openLocalMap(page: Page, file: string): Promise<void> {
   await page.goto(`${BASE}?view=local&node=${encodeURIComponent(file)}`);
   await page.waitForSelector(`#map-container .node-card[data-id="${file}"]`);
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await page.waitForTimeout(600);
 }
 
@@ -97,7 +97,7 @@ test.describe("Local Map path mode", () => {
     // Taking the offer swaps the ends and draws
     await page.click("#pathfind-status a");
     await page.waitForSelector("#view-map.has-path");
-    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     expect(page.url()).toContain(`from=${encodeURIComponent(DEPENDENCY)}`);
     expect(page.url()).toContain(`to=${encodeURIComponent(DEPENDENT)}`);
@@ -129,7 +129,7 @@ test.describe("Local Map path mode", () => {
 
     // Clear returns to the selected file: same place, same wires, same address
     await page.click("#pathfind-clear");
-    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
     const returned = await boxOf(page, subject);
@@ -146,7 +146,7 @@ test.describe("Local Map path mode", () => {
     await pick(page, "to", DEPENDENT);
     await page.click("#pathfind-go");
     await page.waitForSelector("#view-map.has-path");
-    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
     expect(await page.locator("#pathfind-status a").count()).toBe(0);
@@ -155,7 +155,7 @@ test.describe("Local Map path mode", () => {
 
     await page.goto(`${BASE}?view=local&node=${encodeURIComponent(DEPENDENCY)}&from=${encodeURIComponent(DEPENDENCY)}&to=${encodeURIComponent(DEPENDENT)}`);
     await page.waitForSelector("#view-map.has-path");
-    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)");
+    await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     expect(await columnLabels(page)).toEqual(["FROM", "Via 1", "Via 2", "TO"]);
     expect((await wireEnds(page)).length).toBe(drawn.length);

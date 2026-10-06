@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
+import { DECK_SCOPES, type DeckScope } from "./scopes";
 import {
   LOCAL_MAP,
   MEMBRANE_MAP,
@@ -59,52 +60,10 @@ import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/ty
  * the Local Map's wires in their gutters. Everything else is reported.
  */
 
-interface Run {
-  bundle: string;
-  base: string;
-  /** Which scope set: the five files that broke both views, or a chain of four across four folders. */
-  scopeName: "five files" | "chain";
-  /** The files whose references among themselves are the facts in scope. */
-  scope: string[];
-  /** The file the Local Map and the Force Graph open on. */
-  subject: string;
-  /** The question the journey answers: which files use `symbol` of `file`. */
-  journey?: { file: string; symbol: string };
-  /** A uses B uses C uses D; the journey asks how A reaches D. */
-  chain?: string[];
-}
+type Run = DeckScope;
 
-const FIVE_REPOSITORY = [
-  "packages/engine/src/live-docs/graph.ts",
-  "packages/engine/src/live-docs/document.ts",
-  "packages/engine/src/live-docs/graphFiles.ts",
-  "packages/explorer/src/shared/staticExplorerData.ts",
-  "packages/explorer/src/shared/staticBuilder.ts"
-];
-
-const CHAIN_REPOSITORY = [
-  "packages/explorer/src/client/index.ts",
-  "packages/explorer/src/client/persistence/compressed-url-state.ts",
-  "packages/explorer/src/client/views/pin-state.ts",
-  "packages/explorer/src/client/views/symbolAnchors.ts"
-];
-
-const FIVE_ESTATE = [
-  "Contracts/IPaymentService.cs",
-  "PaymentService/PaymentService.cs",
-  "Gateway/Wcf/HubProxy.cs",
-  "Hub/PaymentHub.cs",
-  "Portal/Services/GatewayClient.cs"
-];
-
-const CHAIN_ESTATE = ["Portal/Services/GatewayClient.cs", "Gateway/Controllers/PaymentsController.cs", "Gateway/Wcf/HubProxy.cs", "Contracts/IPaymentHub.cs"];
-
-const RUNS: Run[] = [
-  { bundle: "repository", base: "/", scopeName: "five files", scope: FIVE_REPOSITORY, subject: FIVE_REPOSITORY[0], journey: { file: FIVE_REPOSITORY[0], symbol: "GraphFile" } },
-  { bundle: "repository", base: "/", scopeName: "chain", scope: CHAIN_REPOSITORY, subject: CHAIN_REPOSITORY[0], chain: CHAIN_REPOSITORY },
-  { bundle: "estate", base: "/samples/estate/", scopeName: "five files", scope: FIVE_ESTATE, subject: FIVE_ESTATE[1], journey: { file: FIVE_ESTATE[0], symbol: "IPaymentService" } },
-  { bundle: "estate", base: "/samples/estate/", scopeName: "chain", scope: CHAIN_ESTATE, subject: CHAIN_ESTATE[0], chain: CHAIN_ESTATE }
-];
+/** The deck's scopes, shared with the layout lab in `scopes.ts`. */
+const RUNS: Run[] = DECK_SCOPES;
 
 const FORCE_GRAPH: ViewReading = {
   wires: "#view-graph .no-such-wire",
@@ -165,13 +124,13 @@ const shot = async (page: Page, run: Run, view: string, moment: string): Promise
 
 const settleLocalMap = async (page: Page, file: string): Promise<void> => {
   await page.waitForSelector(`#map-container .node-card.local-focus[data-id="${file}"]`, { timeout: 20_000 });
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
   await page.waitForTimeout(700);
 };
 
 const settleLocalBranches = async (page: Page): Promise<void> => {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
   await page.waitForTimeout(900);
 };
 
@@ -317,7 +276,7 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
     moves.take(await press(page, "#pathfind-status a"));
   }
   await page.waitForSelector("#view-map.has-path", { timeout: 10_000 });
-  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
   await page.waitForTimeout(1200);
   await shot(page, run, "Local Map", "chain-path");
   const after = await boxOf(page, subject);

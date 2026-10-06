@@ -142,16 +142,22 @@ export interface Crossing {
 export function findCrossings(lines: readonly Polyline[], endExclusionPx = 24, minAngleDeg = 15): Crossing[] {
   const segments = segmentsOf(lines, endExclusionPx);
   const grid = gridOf(segments);
-  const tested = new Set<string>();
+  const count = segments.length;
+  // Pairs tested, by number: a pair of segments sharing several cells is tested once. The layout lab runs this
+  // thousands of times a run, and string keys for every pair made it the slowest step by far.
+  const tested = new Set<number>();
   const seenPoints = new Set<string>();
   const found: Crossing[] = [];
   for (const bucket of grid.values()) {
     for (let i = 0; i < bucket.length; i += 1) {
+      const a = segments[bucket[i]];
+      const aLeft = Math.min(a.ax, a.bx), aRight = Math.max(a.ax, a.bx), aTop = Math.min(a.ay, a.by), aBottom = Math.max(a.ay, a.by);
       for (let j = i + 1; j < bucket.length; j += 1) {
-        const a = segments[bucket[i]];
         const b = segments[bucket[j]];
         if (a.line === b.line) continue;
-        const key = bucket[i] < bucket[j] ? `${bucket[i]}:${bucket[j]}` : `${bucket[j]}:${bucket[i]}`;
+        // Segments whose boxes stand apart cannot meet; the intersection test would say so at more cost.
+        if (Math.min(b.ax, b.bx) > aRight || Math.max(b.ax, b.bx) < aLeft || Math.min(b.ay, b.by) > aBottom || Math.max(b.ay, b.by) < aTop) continue;
+        const key = bucket[i] < bucket[j] ? bucket[i] * count + bucket[j] : bucket[j] * count + bucket[i];
         if (tested.has(key)) continue;
         tested.add(key);
         const at = intersectionOf(a, b);

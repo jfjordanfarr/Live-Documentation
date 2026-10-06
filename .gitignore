@@ -68,3 +68,7 @@ reports/
 # The derived graph index the generator writes; never committed
 .mdmd/index.json
 
+
+# The layout lab's captures of the page are rebuilt in seconds and weigh hundreds of kilobytes each; the runs' reports are the records.
+AI-Agent-Workspace/Probes/**/layout-lab/capture-*.json
+AI-Agent-Workspace/Probes/**/layout-lab/*.json
