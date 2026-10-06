@@ -5,7 +5,6 @@ import {
   type Rect,
   type BezierTuningParams,
   type PathResult,
-  type SelfLoopParams,
   distance,
   computeStubLength,
   computeBezierPath,
