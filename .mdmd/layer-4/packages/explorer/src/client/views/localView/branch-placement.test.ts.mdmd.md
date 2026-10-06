@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branch-placement.test.ts
-- Generated At: 2026-10-06T15:18:09.644Z
+- Generated At: 2026-10-06T16:47:47.549Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`branch-placement.PlacementInput`](./branch-placement.ts.mdmd.md#symbol-placementinput)
 - [`branch-placement.PlacementLane`](./branch-placement.ts.mdmd.md#symbol-placementlane)
 - [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire)
+- [`branch-placement.Segment`](./branch-placement.ts.mdmd.md#symbol-segment)
 - [`branch-placement.StackEntry`](./branch-placement.ts.mdmd.md#symbol-stackentry)
 - [`branch-placement.placeBranches`](./branch-placement.ts.mdmd.md#symbol-placebranches)
 - [`branch-placement.placementCost`](./branch-placement.ts.mdmd.md#symbol-placementcost)

@@ -206,6 +206,8 @@ export interface ViewReading {
   folderContainer?: { container: string; label: string };
   /** The box the view draws around a directory's cards, carrying `data-directory`; a wire inside one that holds neither of its ends passes a foreign directory. */
   folderBox?: string;
+  /** The directories' shapes as SVG geometry, each with `data-directory`, where a view draws them as outlines rather than boxes. */
+  folderShape?: string;
   /** The gaps the view reserves for wires that pass a column, when it reserves any. */
   lane?: string;
 }
@@ -232,7 +234,7 @@ export const LOCAL_MAP: ViewReading = {
   ],
   folderText: [".node-path", ".node-directory"],
   folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" },
-  folderBox: "#map-container .local-directory-band[data-directory]",
+  folderShape: "#map-container .local-membrane-shape[data-directory]",
   lane: "#map-container .local-pass-through"
 };
 
@@ -283,8 +285,10 @@ export interface WireReading {
   /** Samples inside a lane, and of those, inside a foreign directory's box: a lane placed where the wire does not belong. */
   laneSamples: number;
   foreignLaneSamples: number;
-  /** The drawn length of the path in screen pixels. */
+  /** The drawn length of the path in screen pixels, and its horizontal and vertical parts summed over the samples. */
   lengthPx: number;
+  horizontalPx: number;
+  verticalPx: number;
   /** The whole path sampled every 8 px in screen coordinates, flattened x, y, x, y. */
   points: number[];
   /** Which end of the sampled path sits at the provider's card: the first (0) or the last (1). */
@@ -344,6 +348,12 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       /** Whether a file lies in a directory or below it; the root holds everything. */
       const under = (directory: string, file: string): boolean => directory === "" || folderOf(file) === directory || folderOf(file).startsWith(`${directory}/`);
       const folderBoxes = (view.folderBox ? [...document.querySelectorAll<HTMLElement>(view.folderBox)] : []).map(el => ({ directory: el.dataset.directory ?? "", rect: el.getBoundingClientRect() }));
+      const folderShapes = (view.folderShape ? [...document.querySelectorAll<SVGGeometryElement>(view.folderShape)] : [])
+        .flatMap(el => { const inverse = el.getScreenCTM()?.inverse(); return inverse ? [{ directory: el.dataset.directory ?? "", el, inverse }] : []; });
+      /** Whether a screen point lies in a directory's drawn region: its box, or its shape's fill. */
+      const inFolder = (folder: { directory: string }, x: number, y: number): boolean =>
+        "rect" in folder ? within((folder as { rect: DOMRect }).rect, x, y) : (folder as { el: SVGGeometryElement; inverse: DOMMatrix }).el.isPointInFill(new DOMPoint(x, y).matrixTransform((folder as { inverse: DOMMatrix }).inverse));
+      const folders: Array<{ directory: string }> = [...folderBoxes, ...folderShapes];
       const laneBoxes = (view.lane ? [...document.querySelectorAll<HTMLElement>(view.lane)] : []).map(el => el.getBoundingClientRect());
       /** Whether a label's text names the folder: the whole path, its last segment, or a file path inside it. */
       const namesFolder = (text: string, folder: string): boolean => {
@@ -455,7 +465,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
             const point = sample(at);
             points.push(point.x, point.y);
             // Where the wire is drawn, in or out of the frame: a directory's box is a fact of the layout, not of the camera.
-            const foreign = folderBoxes.some(folder => within(folder.rect, point.x, point.y) && !under(folder.directory, consumer) && !under(folder.directory, provider));
+            const foreign = folders.some(folder => inFolder(folder, point.x, point.y) && !under(folder.directory, consumer) && !under(folder.directory, provider));
             if (foreign) foreignSamples += 1;
             if (laneBoxes.some(rect => within(rect, point.x, point.y))) {
               laneSamples += 1;
@@ -498,7 +508,9 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
           const top = Math.min(...rects.map(r => r.top));
           endpointBox = { x: left, y: top, width: Math.max(...rects.map(r => r.right)) - left, height: Math.max(...rects.map(r => r.bottom)) - top };
         }
-        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
+        let horizontalPx = 0, verticalPx = 0;
+        for (let i = 2; i < points.length; i += 2) { horizontalPx += Math.abs(points[i] - points[i - 2]); verticalPx += Math.abs(points[i + 1] - points[i - 1]); }
+        wires.push({ key, consumer, provider, inFrame: meets(box), endpointsInFrame, endpointsUncovered, smallestFontPx, occludedSamples, samples, foreignSamples, laneSamples, foreignLaneSamples, lengthPx, horizontalPx, verticalPx, points, providerEnd, endpointBox, stub: el.tagName.toLowerCase() === "polygon" });
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },
@@ -606,13 +618,18 @@ export interface LengthScore {
   totalPx: number;
   /** The mean per wire. */
   meanPx: number;
+  /** The horizontal and vertical parts of the total, summed over the sampled points. */
+  horizontalPx: number;
+  verticalPx: number;
 }
 
 /** Test 17: the total drawn length of the wires, the owner's reward for the Local Map (2026-10-05): the shorter, the fewer turns and extensions. */
 export function scoreLength(picture: PictureReading): LengthScore {
   const wires = picture.wires.filter(wire => !wire.stub);
   const totalPx = wires.reduce((sum, wire) => sum + wire.lengthPx, 0);
-  return { wires: wires.length, totalPx: Math.round(totalPx), meanPx: wires.length ? Math.round(totalPx / wires.length) : 0 };
+  const horizontalPx = wires.reduce((sum, wire) => sum + wire.horizontalPx, 0);
+  const verticalPx = wires.reduce((sum, wire) => sum + wire.verticalPx, 0);
+  return { wires: wires.length, totalPx: Math.round(totalPx), meanPx: wires.length ? Math.round(totalPx / wires.length) : 0, horizontalPx: Math.round(horizontalPx), verticalPx: Math.round(verticalPx) };
 }
 
 /** The legibility of one wire by the deck's full definition. */
@@ -1114,7 +1131,7 @@ export function scoreboardTable(rows: readonly Scoreboard[]): string {
 /** The expanded measures of one bundle as a second table, one row per view. */
 export function expandedTable(rows: readonly Scoreboard[]): string {
   const header = [
-    "| View | State | Crossings (points / spots / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Foreign directory (wires of drawn / samples of all / in lanes of lane samples) | Wire length (total px / mean) | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
+    "| View | State | Crossings (points / spots / beyond 80 px of pins / pairs / wires crossed of drawn) | Channels (wires of drawn / longest px) | Flow (flowing of drawn / backward) | Folder adjacency | Folder legible | Symbols shown | Hidden among drawn | Foreign directory (wires of drawn / samples of all / in lanes of lane samples) | Wire length (total px / mean / horizontal / vertical) | Churn (moved of present / px / added / removed) | Tour (pans / blind / legible after of drawn / unreachable / verified) |",
     "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"
   ];
   const lines = rows.map(row => {
@@ -1135,7 +1152,7 @@ export function expandedTable(rows: readonly Scoreboard[]): string {
       e ? `${e.symbols.legible} of ${e.symbols.total}` : "n/a",
       h ? `${h.hidden} of ${h.facts}` : "n/a",
       f ? `${f.foreignWires} of ${f.wires} / ${f.foreignSamples} of ${f.samples} / ${f.foreignLaneSamples} of ${f.laneSamples}` : "n/a",
-      n ? `${n.totalPx} / ${n.meanPx}` : "n/a",
+      n ? `${n.totalPx} / ${n.meanPx} / ${n.horizontalPx} / ${n.verticalPx}` : "n/a",
       c ? `${c.moved} of ${c.present} / ${c.movedPx} / ${c.added} / ${c.removed}` : "n/a",
       t ? `${t.pans.length} / ${t.blindPans} / ${t.legibleAfter} of ${t.drawn} / ${t.unreachable} / ${t.verified}` : "n/a"
     ].join(" | ");

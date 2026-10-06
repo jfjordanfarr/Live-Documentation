@@ -276,18 +276,19 @@ span.local-disclosure { cursor: default; }
 
 /* Directory containment and dependency rank are independent in the reading view. */
 .branch-mode { row-gap: 28px; }
-.local-directory-band { display: grid; grid-template-columns: subgrid; border: 1px solid var(--border); border-radius: 8px; background: #ffffff03; padding: 12px; min-width: 0; }
-.local-directory-label { grid-column: 1 / -1; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
-/* The root band is the picture itself: present for the perspective transition's outermost shell, drawn as nothing. */
-.local-directory-band.local-directory-root { border: 0; background: none; padding: 0; }
-/* The placed layout: every box, card and lane stands where the placement put it, inside the box it belongs to. */
+/* A directory is a membrane. Its element bounds it and holds what it contains, drawn as nothing; the outline inside it is
+   the shape, one segment per column joined through the gutters, beneath the cards; the label sits at the leftmost segment's top.
+   The root band is the picture itself: present for the perspective transition's outermost shell, with no outline. */
+.local-directory-band { display: block; position: absolute; box-sizing: border-box; min-width: 0; pointer-events: none; }
+/* The bounds reach beyond the shape, over a sibling's cards where the membranes step past one another, so the element lets the pointer through and its cards and label take it back. */
+.local-directory-band > .local-column, .local-directory-band > .local-directory-label { pointer-events: auto; }
+.local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
+.local-directory-label { position: absolute; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
+/* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }
-.local-placed .local-directory-band { display: block; position: absolute; box-sizing: border-box; }
 .local-placed .local-directory-band .local-column, .local-placed .local-directory-band .local-pass-through { position: absolute; display: block; margin: 0; }
 .local-placed .local-column .node-card { margin: 0; }
-.local-placed .local-directory-label { padding-bottom: 14px; }
-.local-directory-content { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; align-items: center; row-gap: 24px; }
-.local-directory-files { display: grid; grid-template-columns: subgrid; min-width: 0; }
 .local-directory-band .local-column-label { display: none; }
 .local-map-host:not(.symbol-hover-active) .branch-symbol-muted > * { opacity: var(--hover-dim-symbols, .5); }
 /* The room between two cards through which threaded wires pass; the router reads its place from the page. */

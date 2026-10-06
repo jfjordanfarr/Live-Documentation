@@ -187,6 +187,71 @@ test("a retained exploration threads skipped references through lanes: nothing o
   await expect(nudge).toHaveAttribute("title", /references skip columns/);
 });
 
+test("directories are membranes: one connected shape per directory, siblings never crossing, every card inside its own", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const files = [
+    "packages/engine/src/live-docs/graph.ts",
+    "packages/engine/src/live-docs/document.ts",
+    "packages/engine/src/live-docs/graphFiles.ts",
+    "packages/explorer/src/shared/staticExplorerData.ts",
+    "packages/explorer/src/shared/staticBuilder.ts"
+  ];
+  await page.goto(localRetainUrl("/", files));
+  await page.waitForSelector("#map-container .branch-mode");
+  await page.waitForSelector("#map-connections .connection-path");
+  await page.waitForTimeout(900);
+  /** Each directory's segments as the renderer published them, in the picture's own pixels, with the cards it holds directly. */
+  const bands = await page.evaluate(() => {
+    const layout = document.querySelector<HTMLElement>("#map-container .local-placed")!;
+    const origin = layout.getBoundingClientRect();
+    const scale = origin.width / layout.offsetWidth || 1;
+    const parse = (text: string) => text.split(";").filter(Boolean).map(part => {
+      const [column, left, top, right, bottom] = part.split(":").map(Number);
+      return { column, left, top, right, bottom };
+    });
+    return [...document.querySelectorAll<HTMLElement>("#map-container .local-directory-band[data-segments]")].map(band => ({
+      directory: band.dataset.directory ?? "",
+      parent: band.parentElement?.closest<HTMLElement>(".local-directory-band")?.dataset.directory ?? null,
+      segments: parse(band.dataset.segments ?? ""),
+      drawn: band.querySelector(":scope > .local-membrane > .local-membrane-shape[d]") !== null,
+      cards: [...band.querySelectorAll<HTMLElement>(":scope > .local-column > .node-card")].map(card => {
+        const r = card.getBoundingClientRect();
+        return { id: card.dataset.id, left: (r.left - origin.left) / scale, top: (r.top - origin.top) / scale, right: (r.right - origin.left) / scale, bottom: (r.bottom - origin.top) / scale };
+      })
+    }));
+  });
+  expect(bands.length).toBeGreaterThan(2);
+  for (const band of bands) {
+    // Every directory but the root draws one outline; its segments run column by column, each overlapping the next by the neck.
+    expect(band.drawn, band.directory).toBe(band.directory !== "");
+    expect(band.segments.length).toBeGreaterThan(0);
+    for (let i = 1; i < band.segments.length; i++) {
+      const a = band.segments[i - 1], b = band.segments[i];
+      expect(b.column).toBe(a.column + 1);
+      expect(Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top), `${band.directory} between columns ${a.column} and ${b.column}`).toBeGreaterThanOrEqual(60);
+    }
+    // Every card the directory holds directly lies inside its segment of that column, with the padding; the root pads nothing.
+    const inset = band.directory === "" ? 0 : 12;
+    for (const card of band.cards) {
+      const segment = band.segments.find(s => card.left >= s.left - 1 && card.right <= s.right + 1);
+      expect(segment, `${card.id} across a segment of ${band.directory || "the root"}`).toBeTruthy();
+      expect(card.top, `${card.id} below the top of its segment`).toBeGreaterThanOrEqual(segment!.top + inset - 1);
+      expect(card.bottom, `${card.id} above the bottom of its segment`).toBeLessThanOrEqual(segment!.bottom - inset + 1);
+    }
+  }
+  // Siblings never cross: two directories in one parent keep apart in every column they share, one wholly above the other.
+  for (const a of bands) for (const b of bands) {
+    if (a.directory >= b.directory || a.parent !== b.parent) continue;
+    for (const sa of a.segments) {
+      const sb = b.segments.find(s => s.column === sa.column);
+      if (!sb) continue;
+      expect(sa.bottom + 28 <= sb.top || sb.bottom + 28 <= sa.top, `${a.directory} and ${b.directory} in column ${sa.column}`).toBe(true);
+    }
+  }
+  // And the membranes extrude: on this scope some directory's segments stand at different heights in different columns.
+  expect(bands.some(band => band.segments.some(s => s.top !== band.segments[0].top || s.bottom !== band.segments[0].bottom)), "a membrane follows its members from column to column").toBe(true);
+});
+
 test("a type-reference badge retains its source pin and keeps the referenced file as the detail target", async ({ page }) => {
   const graph = "packages/engine/src/live-docs/graph.ts";
   const document = "packages/engine/src/live-docs/document.ts";

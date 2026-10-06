@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { placeBranches, placementCost, type PlacementBand, type PlacementInput, type PlacementLane, type PlacementWire, type StackEntry } from "./branch-placement";
+import { placeBranches, placementCost, type PlacementBand, type PlacementInput, type PlacementLane, type PlacementWire, type Segment, type StackEntry } from "./branch-placement";
 
 const heights = (pairs: Array<[string, number]>): Map<string, number> => new Map(pairs);
 
@@ -18,12 +18,19 @@ const lane = (key: string, column: number, count: number, row = 0): { entry: Pla
   return { entry: { key, slots }, band: band(key, slots, [column, column], row, [], [PADDING, PADDING]), slots, heights: slots.map(slot => [slot, PITCH] as [string, number]) };
 };
 
-/** Every item inside its box with the insets, every column in order with the gap, slots in order at their pitch, and sibling boxes that share a column apart. */
+/**
+ * Every item inside its membrane's segment in its column with the insets, every column in order with the gap, slots in
+ * order at their pitch, children's segments inside their parent's, neighbouring segments overlapping by the neck, and
+ * siblings that share a column apart there.
+ */
 function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof placeBranches>): void {
+  const columnOf = new Map<string, number>();
+  input.columns.forEach((column, index) => column.forEach(entry => { if (typeof entry === "string") columnOf.set(entry, index); else entry.slots.forEach(slot => columnOf.set(slot, index)); }));
+  const segmentOf = (key: string, column: number): Segment => placement.boxes.get(key)!.find(segment => segment.column === column)!;
   const edges = (entry: StackEntry): { top: number; bottom: number } =>
     typeof entry === "string"
       ? { top: placement.top.get(entry)!, bottom: placement.top.get(entry)! + input.heights.get(entry)! }
-      : placement.boxes.get(entry.key)!;
+      : placement.boxes.get(entry.key)![0];
   for (const column of input.columns) {
     for (let i = 1; i < column.length; i++) {
       expect(edges(column[i]).top).toBeGreaterThanOrEqual(edges(column[i - 1]).bottom + input.gap);
@@ -37,19 +44,30 @@ function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof pl
   }
   const visit = (bands: readonly PlacementBand[]): void => {
     for (const b of bands) {
-      const box = placement.boxes.get(b.key)!;
+      const segments = placement.boxes.get(b.key)!;
+      expect(segments.map(segment => segment.column)).toEqual(Array.from({ length: b.maxColumn - b.minColumn + 1 }, (_, i) => b.minColumn + i));
+      const above = (column: number): number => (column === b.minColumn ? b.insetTop : b.insetBottom);
       for (const item of b.items) {
-        expect(placement.top.get(item)!).toBeGreaterThanOrEqual(box.top + b.insetTop);
-        expect(placement.top.get(item)! + input.heights.get(item)!).toBeLessThanOrEqual(box.bottom - b.insetBottom);
+        const column = columnOf.get(item)!;
+        const segment = segmentOf(b.key, column);
+        expect(placement.top.get(item)!).toBeGreaterThanOrEqual(segment.top + above(column));
+        expect(placement.top.get(item)! + input.heights.get(item)!).toBeLessThanOrEqual(segment.bottom - b.insetBottom);
       }
       for (const child of b.children) {
-        const inner = placement.boxes.get(child.key)!;
-        expect(inner.top).toBeGreaterThanOrEqual(box.top + b.insetTop);
-        expect(inner.bottom).toBeLessThanOrEqual(box.bottom - b.insetBottom);
+        for (let column = child.minColumn; column <= child.maxColumn; column++) {
+          const inner = segmentOf(child.key, column), outer = segmentOf(b.key, column);
+          expect(inner.top).toBeGreaterThanOrEqual(outer.top + above(column));
+          expect(inner.bottom).toBeLessThanOrEqual(outer.bottom - b.insetBottom);
+        }
+      }
+      for (let i = 1; i < segments.length; i++) {
+        expect(Math.min(segments[i - 1].bottom, segments[i].bottom) - Math.max(segments[i - 1].top, segments[i].top)).toBeGreaterThanOrEqual(input.neck);
       }
       for (const other of bands) {
-        if (other === b || b.row >= other.row || b.maxColumn < other.minColumn || other.maxColumn < b.minColumn) continue;
-        expect(placement.boxes.get(other.key)!.top).toBeGreaterThanOrEqual(box.bottom + input.bandGap);
+        if (other === b || b.row >= other.row) continue;
+        for (let column = Math.max(b.minColumn, other.minColumn); column <= Math.min(b.maxColumn, other.maxColumn); column++) {
+          expect(segmentOf(other.key, column).top).toBeGreaterThanOrEqual(segmentOf(b.key, column).bottom + input.bandGap);
+        }
       }
       visit(b.children);
     }
@@ -59,10 +77,10 @@ function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof pl
 
 describe("placing the retained files", () => {
   it("stacks a column at its gaps when nothing pulls, and starts the picture at zero", () => {
-    const input: PlacementInput = { columns: [["a", "b", "c"]], heights: heights([["a", 100], ["b", 50], ["c", 80]]), wires: [], bands: [band("root", ["a", "b", "c"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28 };
+    const input: PlacementInput = { columns: [["a", "b", "c"]], heights: heights([["a", 100], ["b", 50], ["c", 80]]), wires: [], bands: [band("root", ["a", "b", "c"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
     const placement = placeBranches(input);
     expect([placement.top.get("a"), placement.top.get("b"), placement.top.get("c")]).toEqual([0, 124, 198]);
-    expect(placement.boxes.get("root")).toEqual({ top: 0, bottom: 278 });
+    expect(placement.boxes.get("root")).toEqual([{ column: 0, top: 0, bottom: 278 }]);
     expectWellFormed(input, placement);
   });
 
@@ -73,7 +91,7 @@ describe("placing the retained files", () => {
       heights: heights([["document", 400], ["graph", 120]]),
       wires: [wire(["document", 300], ["graph", 20])],
       bands: [band("root", ["document", "graph"], [0, 1], 0, [], [0, 0])],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     expect(placement.top.get("graph")! + 20).toBe(placement.top.get("document")! + 300);
@@ -89,7 +107,7 @@ describe("placing the retained files", () => {
       heights: heights([["p", 200], ["q", 60], ["r", 60]]),
       wires: [wire(["p", 50], ["q", 10], 1), wire(["p", 100], ["r", 10], 5)],
       bands: [band("root", ["p", "q", "r"], [0, 1], 0, [], [0, 0])],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     // The bundle wins: r aligns exactly, and q stands as close to its pin as r allows, 34 short of it.
@@ -111,27 +129,30 @@ describe("placing the retained files", () => {
       // g's wire pulls it up toward s; the band rows keep it below the whole of Portal.
       wires: [wire(["g", 10], ["s", 10], 3), wire(["m1", 10], ["s", 10], 1)],
       bands: [portal, gateway],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
-    const portalBox = placement.boxes.get("portal")!;
-    expect(placement.top.get("g")!).toBeGreaterThanOrEqual(portalBox.bottom + 28 + 30);
-    expect(portalBox.bottom).toBeGreaterThanOrEqual(placement.top.get("s")! + 150 + 12 + 12);
+    const [portal0, portal1] = placement.boxes.get("portal")!;
+    expect(placement.top.get("g")!).toBeGreaterThanOrEqual(portal0.bottom + 28 + 30);
+    expect(portal1.bottom).toBeGreaterThanOrEqual(placement.top.get("s")! + 150 + 12 + 12);
   });
 
   it("draws every box tight around its members, with its label's room above and its padding below", () => {
     const inner = band("a/b", ["x"], [0, 0], 0, [], [30, 12]);
     const outer = band("a", [], [0, 1], 0, [inner, band("a/c", ["y"], [1, 1], 0, [], [30, 12])], [30, 12]);
-    const input: PlacementInput = { columns: [["x"], ["y"]], heights: heights([["x", 100], ["y", 40]]), wires: [wire(["x", 90], ["y", 10])], bands: [outer], gap: 24, bandGap: 28 };
+    const input: PlacementInput = { columns: [["x"], ["y"]], heights: heights([["x", 100], ["y", 40]]), wires: [wire(["x", 90], ["y", 10])], bands: [outer], gap: 24, bandGap: 28, neck: 60 };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
-    expect(placement.boxes.get("a/b")).toEqual({ top: placement.top.get("x")! - 30, bottom: placement.top.get("x")! + 100 + 12 });
-    const c = placement.boxes.get("a/c")!, a = placement.boxes.get("a")!;
-    expect(c).toEqual({ top: placement.top.get("y")! - 30, bottom: placement.top.get("y")! + 40 + 12 });
-    expect(a.top).toBe(Math.min(placement.boxes.get("a/b")!.top, c.top) - 30);
-    expect(a.bottom).toBe(Math.max(placement.boxes.get("a/b")!.bottom, c.bottom) + 12);
-    // And the wire is still straight: the boxes cost nothing against it.
+    const [ab] = placement.boxes.get("a/b")!;
+    expect(ab).toEqual({ column: 0, top: placement.top.get("x")! - 30, bottom: placement.top.get("x")! + 100 + 12 });
+    const [c] = placement.boxes.get("a/c")!, [a0, a1] = placement.boxes.get("a")!;
+    expect(c).toEqual({ column: 1, top: placement.top.get("y")! - 30, bottom: placement.top.get("y")! + 40 + 12 });
+    // The outer membrane's leftmost segment keeps its label's room above a/b; its other segment only its padding above a/c.
+    expect(a0).toEqual({ column: 0, top: ab.top - 30, bottom: ab.bottom + 12 });
+    expect(a1.top).toBe(c.top - 12);
+    expect(a1.bottom).toBe(c.bottom + 12);
+    // And the wire is still straight: the membranes cost nothing against it.
     expect(placement.cost).toBe(0);
   });
 
@@ -142,12 +163,12 @@ describe("placing the retained files", () => {
       heights: heights([["a", 100], ["b", 50], ...l.heights]),
       wires: [],
       bands: [band("root", ["a", "b"], [0, 0], 0, [l.band], [0, 0])],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
     // Nothing pulls, so the lane is its slots at pitch inside its padding: 6 + 7 + 7 + 6 = 26 tall, as a rigid lane was.
-    expect(placement.boxes.get("lane")).toEqual({ top: 124, bottom: 150 });
+    expect(placement.boxes.get("lane")).toEqual([{ column: 0, top: 124, bottom: 150 }]);
     expect([placement.top.get("lane/0"), placement.top.get("lane/1")]).toEqual([130, 137]);
     expect(placement.top.get("b")).toBe(174);
   });
@@ -164,7 +185,7 @@ describe("placing the retained files", () => {
         wire(["p", 280], ["lane/1", LINE]), wire(["lane/1", LINE], ["r", 10])
       ],
       bands: [band("root", ["p", "q", "r"], [0, 2], 0, [l.band], [0, 0])],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
@@ -173,7 +194,7 @@ describe("placing the retained files", () => {
     const p = placement.top.get("p")!;
     expect(placement.top.get("lane/0")! + LINE).toBe(p + 20);
     expect(placement.top.get("lane/1")! + LINE).toBe(p + 280);
-    expect(placement.boxes.get("lane")).toEqual({ top: placement.top.get("lane/0")! - PADDING, bottom: placement.top.get("lane/1")! + PITCH + PADDING });
+    expect(placement.boxes.get("lane")).toEqual([{ column: 1, top: placement.top.get("lane/0")! - PADDING, bottom: placement.top.get("lane/1")! + PITCH + PADDING }]);
     expect(placement.top.get("q")! + 10).toBe(p + 20);
     expect(placement.top.get("r")! + 10).toBe(p + 280);
   });
@@ -188,7 +209,7 @@ describe("placing the retained files", () => {
       heights: heights([["p", 200], ...l.heights]),
       wires: [wire(["p", 100], ["lane/0", LINE]), wire(["p", 20], ["lane/1", LINE])],
       bands: [band("root", ["p"], [0, 1], 0, [l.band], [0, 0])],
-      gap: 24, bandGap: 28
+      gap: 24, bandGap: 28, neck: 60
     };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
@@ -197,10 +218,69 @@ describe("placing the retained files", () => {
     expect(placement.optimal).toBe(true);
   });
 
+  it("follows its members from column to column: a sibling's segment may stand above another's in one column and below it in the next", () => {
+    // Card p's pins at 20, 100, 210 and 310 are wired to m0 (column 1), n0 (column 1), m1 (column 2) and n1 (column 2).
+    // M holds m0 and m1, N holds n0 and n1, and N stands in the row below M in both columns. One rectangle for M would
+    // have to reach down to m1 in column 1 too, forcing n0 below it; as segments, M's column-1 part ends at m0 and its
+    // column-2 part reaches up to meet it through the gutter, so n0 stands above m1 and every wire is level.
+    const m = band("m", ["m0", "m1"], [1, 2], 0, [], [0, 0]);
+    const n = band("n", ["n0", "n1"], [1, 2], 1, [], [0, 0]);
+    const input: PlacementInput = {
+      columns: [["p"], ["m0", "n0"], ["m1", "n1"]],
+      heights: heights([["p", 400], ["m0", 40], ["n0", 40], ["m1", 40], ["n1", 40]]),
+      wires: [wire(["p", 20], ["m0", 10]), wire(["p", 100], ["n0", 10]), wire(["p", 210], ["m1", 10]), wire(["p", 310], ["n1", 10])],
+      bands: [band("root", ["p"], [0, 2], 0, [m, n], [0, 0])],
+      gap: 24, bandGap: 28, neck: 0
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    expect(placement.cost).toBe(0);
+    const p = placement.top.get("p")!;
+    expect([placement.top.get("m0"), placement.top.get("n0"), placement.top.get("m1"), placement.top.get("n1")]).toEqual([p + 10, p + 90, p + 200, p + 300]);
+    // M's column-1 segment is tight above m0 and ends above n0; its column-2 segment is tight below m1 and meets the first.
+    // Where the step between them falls is a tie among shapes of one total height, which the solver settles the same way every time.
+    const [m1, m2] = placement.boxes.get("m")!;
+    expect(m1.top).toBe(p + 10);
+    expect(m1.bottom).toBeLessThan(placement.top.get("n0")!);
+    expect(m2.bottom).toBe(p + 240);
+    expect(m2.top).toBeLessThanOrEqual(m1.bottom);
+  });
+
+  it("keeps a membrane one shape: every segment at least the neck tall and neighbours overlapping by it, the shape growing where that costs no wire", () => {
+    // As above, with n0 wired 20 px lower so that a 60 px neck fits above it.
+    const m = band("m", ["m0", "m1"], [1, 2], 0, [], [0, 0]);
+    const n = band("n", ["n0", "n1"], [1, 2], 1, [], [0, 0]);
+    const input: PlacementInput = {
+      columns: [["p"], ["m0", "n0"], ["m1", "n1"]],
+      heights: heights([["p", 400], ["m0", 40], ["n0", 40], ["m1", 40], ["n1", 40]]),
+      wires: [wire(["p", 20], ["m0", 10]), wire(["p", 120], ["n0", 10]), wire(["p", 210], ["m1", 10]), wire(["p", 310], ["n1", 10])],
+      bands: [band("root", ["p"], [0, 2], 0, [m, n], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60
+    };
+    const placement = placeBranches(input);
+    expectWellFormed(input, placement);
+    expect(placement.cost).toBe(0);
+    const p = placement.top.get("p")!;
+    expect(placement.top.get("n0")).toBe(p + 110);
+    // M's column-1 segment grows past m0's 40 px to at least the neck's 60, and its column-2 segment reaches up to overlap it by 60.
+    const [m1, m2] = placement.boxes.get("m")!;
+    expect(m1.top).toBe(p + 10);
+    expect(m1.bottom - m1.top).toBeGreaterThanOrEqual(60);
+    expect(m2.bottom).toBe(p + 240);
+    expect(Math.min(m1.bottom, m2.bottom) - Math.max(m1.top, m2.top)).toBe(60);
+  });
+
+  it("refuses an item outside its membrane's columns, and a child reaching outside its parent", () => {
+    const outside: PlacementInput = { columns: [["a"], ["b"]], heights: heights([["a", 10], ["b", 10]]), wires: [], bands: [band("m", ["a", "b"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
+    expect(() => placeBranches(outside)).toThrow(/stands in no column of that membrane/u);
+    const reaching: PlacementInput = { columns: [["a"], ["b"]], heights: heights([["a", 10], ["b", 10]]), wires: [], bands: [band("m", ["a"], [0, 0], 0, [band("m/c", ["b"], [1, 1], 0, [], [0, 0])], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
+    expect(() => placeBranches(reaching)).toThrow(/reaches outside/u);
+  });
+
   it("refuses a lane that is no box of the bands, since its edges would float free of its slots", () => {
     const l = lane("lane", 0, 1);
-    const input: PlacementInput = { columns: [["a", l.entry]], heights: heights([["a", 10], ...l.heights]), wires: [], bands: [band("root", ["a"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28 };
-    expect(() => placeBranches(input)).toThrow(/no box of the bands/u);
+    const input: PlacementInput = { columns: [["a", l.entry]], heights: heights([["a", 10], ...l.heights]), wires: [], bands: [band("root", ["a"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
+    expect(() => placeBranches(input)).toThrow(/no single-column box of the bands/u);
   });
 
   it("never costs more than the stacked start, and places the same way every time", () => {
@@ -221,7 +301,7 @@ describe("placing the retained files", () => {
       const from = cards[0][Math.floor(next() * 3)], to = cards[2][Math.floor(next() * 2)];
       wires.push(wire([from, Math.floor(next() * h.get(from)!)], [slot, LINE]), wire([slot, LINE], [to, Math.floor(next() * h.get(to)!)]));
     }
-    const input: PlacementInput = { columns, heights: h, wires, bands: [band("root", cards.flat(), [0, 2], 0, [l.band], [0, 0])], gap: 24, bandGap: 28 };
+    const input: PlacementInput = { columns, heights: h, wires, bands: [band("root", cards.flat(), [0, 2], 0, [l.band], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
     const placement = placeBranches(input);
     expectWellFormed(input, placement);
     const stacked = new Map<string, number>();

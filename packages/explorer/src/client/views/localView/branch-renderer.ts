@@ -4,26 +4,45 @@ import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
 import { buildBranches, edgeKey } from "./branches";
 import { createNodeCard } from "./card-factory";
 import type { LocalViewController } from "./controller";
+import { membranePath } from "./membrane-outline";
 import type { DirectoryBand } from "../membraneView/pin-layout";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /** The room between neighbouring cards and lanes of a column, in CSS pixels. */
 const ITEM_GAP = 24;
 
-/** The room between sibling directory boxes that share a column. */
+/** The room between sibling membranes' segments in a column they share. */
 const BAND_GAP = 28;
+
+/** The least overlap of a membrane's segments in neighbouring columns: the corridor through the gutter that joins them. */
+const MEMBRANE_NECK = 60;
+
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 /** Where a wire runs through a slot of a lane: the slot's middle pixel, from its top. */
 const SLOT_LINE = Math.floor(LANE_PITCH / 2);
 
-/** A directory box's padding and border, as `local.css` draws them. */
+/** The room between a membrane's outline and its members: the padding and the outline's stroke. */
 const BAND_PADDING = 12;
 const BAND_BORDER = 1;
 
-/** A box of the picture: a directory, the root, or a directory's loose files, with its element when it has one. */
+/** One column's part of a box: its edges there. */
+interface BoxSegment {
+  column: number;
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+/** A box of the picture: a directory's membrane, the root, a directory's loose files, or a lane, with its element when it has one. */
 interface Box {
   key: string;
+  /** The element that bounds the box, positioned at the segments' extent; its children are placed inside it. */
   element: HTMLElement | null;
+  /** A drawn directory's outline, and its label. */
+  shape: SVGPathElement | null;
+  label: HTMLElement | null;
   /** The box this one lies in; null for the root. */
   parent: Box | null;
   /** The nearest box around this one with an element, whose padding box its elements are placed in; null for the layout root. */
@@ -40,7 +59,8 @@ interface Box {
   children: Box[];
   /** A lane's slots, top to bottom, one per bundle, which are its items; null for a directory's box. */
   slots: string[] | null;
-  /** Set once placed. */
+  /** Set once placed: one segment per column, and the extent of them all. */
+  segments: BoxSegment[];
   left: number;
   top: number;
   right: number;
@@ -62,9 +82,10 @@ interface Item {
  * symbol pins and interface colours, placed on the vertical axis by the
  * exact placement of `branch-placement.ts`: the cards and lanes of every
  * column stand where the wires between pins are shortest, inside the
- * directory boxes the order chose, and each lane is as tall as the slots
- * its wires spread. The elements keep the names the router, the deck and
- * the perspective transition read.
+ * directory membranes the order chose, each membrane one segment per column
+ * following its members and drawn as one outline, and each lane as tall as
+ * the slots its wires spread. The elements keep the names the router, the
+ * deck and the perspective transition read.
  */
 export function renderBranches(controller: LocalViewController, root: HTMLElement): void {
   const { state, graphData } = controller.options;
@@ -97,8 +118,8 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     (anchorOf(parent)?.element ?? root).append(element);
     const key = `lane\0${lane.key}`;
     const slots = lane.bundles.map((_, slot) => `${key}\0${slot}`);
-    const box: Box = { key, element, parent, anchor: anchorOf(parent), directory: parent.directory, inset: 0, insetTop: LANE_PADDING, insetBottom: LANE_PADDING,
-      minColumn: lane.column, maxColumn: lane.column, row: lane.row ?? 0, items: slots, children: [], slots, left: 0, top: 0, right: 0, bottom: 0 };
+    const box: Box = { key, element, shape: null, label: null, parent, anchor: anchorOf(parent), directory: parent.directory, inset: 0, insetTop: LANE_PADDING, insetBottom: LANE_PADDING,
+      minColumn: lane.column, maxColumn: lane.column, row: lane.row ?? 0, items: slots, children: [], slots, segments: [], left: 0, top: 0, right: 0, bottom: 0 };
     laneBoxes.set(lane.key, box);
     columns[lane.column].push({ key, slots });
     return box;
@@ -109,22 +130,32 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     const isRoot = isDirectory && band.directory === "";
     const drawn = isDirectory && !isRoot;
     let element: HTMLElement | null = null;
+    let shape: SVGPathElement | null = null;
+    let label: HTMLElement | null = null;
     if (isDirectory) {
       element = document.createElement("section");
       element.className = `local-directory-band${isRoot ? " local-directory-root" : ""}`;
       element.dataset.directory = band.directory;
       if (drawn) {
-        const label = document.createElement("div");
+        // The membrane's outline, beneath everything the element holds, and its label at its leftmost segment's top.
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.classList.add("local-membrane");
+        svg.dataset.directory = band.directory;
+        shape = document.createElementNS(SVG_NS, "path");
+        shape.classList.add("local-membrane-shape");
+        shape.dataset.directory = band.directory;
+        svg.append(shape);
+        label = document.createElement("div");
         label.className = "local-directory-label";
         label.textContent = band.directory;
-        element.append(label);
+        element.append(svg, label);
       }
       ((parent && anchorOf(parent)?.element) ?? root).append(element);
     }
     const inset = drawn ? BAND_PADDING + BAND_BORDER : 0;
-    const box: Box = { key: `${band.directory}\0${boxCount++}`, element, parent, anchor: parent ? anchorOf(parent) : null, directory: band.directory,
+    const box: Box = { key: `${band.directory}\0${boxCount++}`, element, shape, label, parent, anchor: parent ? anchorOf(parent) : null, directory: band.directory,
       inset, insetTop: 0, insetBottom: inset, minColumn: band.minColumn, maxColumn: band.maxColumn, row: band.bandRow,
-      items: [], children: [], slots: null, left: 0, top: 0, right: 0, bottom: 0 };
+      items: [], children: [], slots: null, segments: [], left: 0, top: 0, right: 0, bottom: 0 };
     const hostElement = anchorOf(box)?.element ?? root;
     // Children first, in their rows, the lanes this directory holds among them by row; then this box's own files and their lanes.
     const rows: Array<{ row: number; child?: DirectoryBand; lane?: Lane }> = band.children.map(child => ({ row: child.bandRow, child }));
@@ -177,15 +208,18 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
   let x = 0;
   for (let column = 0; column < columnCount; column++) { lefts.push(x); x += widths[column] + columnGap; }
   const pictureWidth = Math.max(0, x - columnGap);
-  const origin = (anchor: Box | null): { left: number; top: number } => {
-    if (!anchor?.element) return { left: 0, top: 0 };
-    const border = anchor.inset ? BAND_BORDER : 0;
-    return { left: anchor.left + border, top: anchor.top + border };
-  };
+  // An element's children are placed relative to its top-left corner, which is its segments' extent.
+  const origin = (anchor: Box | null): { left: number; top: number } => (anchor?.element ? { left: anchor.left, top: anchor.top } : { left: 0, top: 0 });
   const placeAcross = (box: Box, around: number): void => {
-    box.left = lefts[box.minColumn] + around;
-    box.right = lefts[box.maxColumn] + widths[box.maxColumn] - around;
+    box.segments = [];
+    for (let column = box.minColumn; column <= box.maxColumn; column++) {
+      box.segments.push({ column, left: lefts[column] + around, right: lefts[column] + widths[column] - around, top: 0, bottom: 0 });
+    }
+    box.left = box.segments[0].left;
+    box.right = box.segments[box.segments.length - 1].right;
     if (box.element) Object.assign(box.element.style, { left: `${box.left - origin(box.anchor).left}px`, width: `${box.right - box.left}px` });
+    // The label wraps within its segment, as it must before its height is measured.
+    if (box.label) Object.assign(box.label.style, { left: `${box.inset}px`, width: `${Math.max(0, box.segments[0].right - box.segments[0].left - 2 * box.inset)}px` });
     for (const child of box.children) placeAcross(child, around + box.inset);
   };
   placeAcross(rootBox, 0);
@@ -245,17 +279,29 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     key: box.key, insetTop: box.insetTop, insetBottom: box.insetBottom, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
     items: box.items, children: box.children.map(toPlacementBand)
   });
-  const placement = placeBranches({ columns, heights, wires: [...wires.values()], bands: [toPlacementBand(rootBox)], gap: ITEM_GAP, bandGap: BAND_GAP });
+  const placement = placeBranches({ columns, heights, wires: [...wires.values()], bands: [toPlacementBand(rootBox)], gap: ITEM_GAP, bandGap: BAND_GAP, neck: MEMBRANE_NECK });
   root.dataset.placementCost = String(placement.cost);
   root.dataset.placementOptimal = String(placement.optimal);
 
-  // Place down: every box's edges and every item's top from the solution, each relative to the padding box of the
-  // element it sits in, which is the box's edge inside its border.
+  // Place down: every segment's edges and every item's top from the solution, each element relative to the one it
+  // sits in; a drawn directory gets its outline, its label at its leftmost segment, and its segments as data.
   const placeDown = (box: Box): void => {
-    const edges = placement.boxes.get(box.key)!;
-    box.top = edges.top;
-    box.bottom = edges.bottom;
-    if (box.element) Object.assign(box.element.style, { top: `${box.top - origin(box.anchor).top}px`, height: `${Math.max(0, box.bottom - box.top)}px` });
+    const placed = placement.boxes.get(box.key)!;
+    for (const segment of box.segments) {
+      const edges = placed[segment.column - box.minColumn];
+      segment.top = edges.top;
+      segment.bottom = edges.bottom;
+    }
+    box.top = Math.min(...box.segments.map(segment => segment.top));
+    box.bottom = Math.max(...box.segments.map(segment => segment.bottom));
+    if (box.element) {
+      Object.assign(box.element.style, { top: `${box.top - origin(box.anchor).top}px`, height: `${Math.max(0, box.bottom - box.top)}px` });
+      if (!box.slots) box.element.dataset.segments = box.segments.map(segment => `${segment.column}:${segment.left}:${segment.top}:${segment.right}:${segment.bottom}`).join(";");
+    }
+    if (box.shape) {
+      box.shape.setAttribute("d", membranePath(box.segments.map(segment => ({ left: segment.left - box.left, right: segment.right - box.left, top: segment.top - box.top, bottom: segment.bottom - box.top }))));
+    }
+    if (box.label) box.label.style.top = `${box.segments[0].top - box.top + box.inset}px`;
     for (const child of box.children) placeDown(child);
   };
   placeDown(rootBox);
@@ -269,7 +315,7 @@ export function renderBranches(controller: LocalViewController, root: HTMLElemen
     item.element.style.top = `${top - origin(anchorOf(item.box)).top}px`;
     pictureHeight = Math.max(pictureHeight, top + (heights.get(item.id) ?? 0));
   }
-  for (const box of placement.boxes.values()) pictureHeight = Math.max(pictureHeight, box.bottom);
+  for (const segments of placement.boxes.values()) for (const segment of segments) pictureHeight = Math.max(pictureHeight, segment.bottom);
   root.style.height = `${pictureHeight}px`;
 }
 

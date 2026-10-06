@@ -78,7 +78,9 @@ export function captureLocalScene(root: HTMLElement): LocalScene {
   const directories = [...root.querySelectorAll<HTMLElement>(".local-directory-band")].map(band => {
     const rect = band.getBoundingClientRect();
     const clone = visualCopy(band, false);
-    // Only the shell and its label travel here; cards and nested bands each have one identity.
+    // Only the shell travels here, its outline and its label; cards and nested bands each have one identity.
+    const shape = band.querySelector<HTMLElement>(":scope > .local-membrane");
+    if (shape) clone.append(visualCopy(shape));
     const label = band.querySelector<HTMLElement>(":scope > .local-directory-label");
     if (label) clone.append(visualCopy(label));
     Object.assign(clone.style, { display: "block", width: `${band.offsetWidth}px`, height: `${band.offsetHeight}px`,
