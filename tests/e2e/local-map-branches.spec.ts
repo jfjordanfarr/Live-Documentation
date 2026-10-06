@@ -18,6 +18,26 @@ async function branches(page: Page): Promise<void> {
   await pin(page, "processor.ts", "run").click();
 }
 
+/** Every lane's height and the slot lines it publishes, as the router reads them. */
+async function readLanes(page: Page): Promise<Array<{ height: number; slots: number[] }>> {
+  return page.locator("#map-container .local-pass-through[data-lane]").evaluateAll(elements => elements.map(element => ({
+    height: (element as HTMLElement).offsetHeight,
+    slots: ((element as HTMLElement).dataset.slots ?? "").split(",").map(Number)
+  })));
+}
+
+/**
+ * A lane is a box around its slots: its first wire 9 px below its top (the padding and the slot's middle pixel), each next
+ * wire at least the 7 px pitch further, its bottom edge 10 px below the last.
+ */
+function expectLaneBoxes(lanes: ReadonlyArray<{ height: number; slots: number[] }>): void {
+  for (const lane of lanes) {
+    expect(lane.slots[0]).toBe(9);
+    for (let i = 1; i < lane.slots.length; i++) expect(lane.slots[i] - lane.slots[i - 1]).toBeGreaterThanOrEqual(7);
+    expect(lane.height).toBe(lane.slots[lane.slots.length - 1] + 10);
+  }
+}
+
 test("independent symbol branches retain cross-connections, survive reload, and remove only the chosen pin", async ({ page }) => {
   await page.setViewportSize({ width: 1800, height: 1100 });
   await start(page);
@@ -162,19 +182,9 @@ test("a retained exploration threads skipped references through lanes: nothing o
   const routesOnly = { ...picture, wires: picture.wires.filter(wire => !wire.stub) };
   expect(scoreExpanded(routesOnly, symbolCounts(graph)).flow.backward, "no drawn route reads backward; a cycle's feedback is stubs").toBe(0);
   // This scope's references skip columns, so lanes exist, and every wire stays inside the picture's own extent: no headroom above it.
-  const lanes = await page.locator("#map-container .local-pass-through[data-lane]").evaluateAll(elements => elements.map(element => ({
-    height: (element as HTMLElement).offsetHeight,
-    slots: ((element as HTMLElement).dataset.slots ?? "").split(",").map(Number)
-  })));
+  const lanes = await readLanes(page);
   expect(lanes.length).toBeGreaterThan(0);
-  // A lane is a box around its slots: its first wire 9 px below its top (the padding and the slot's middle pixel), each next
-  // wire at least the 7 px pitch further, its bottom edge 10 px below the last; and on this scope the wires spread some lane's slots.
-  for (const lane of lanes) {
-    expect(lane.slots[0]).toBe(9);
-    for (let i = 1; i < lane.slots.length; i++) expect(lane.slots[i] - lane.slots[i - 1]).toBeGreaterThanOrEqual(7);
-    expect(lane.height).toBe(lane.slots[lane.slots.length - 1] + 10);
-  }
-  expect(lanes.some(lane => lane.height > 12 + 7 * lane.slots.length), "the placement spreads a lane's slots where its wires ask").toBe(true);
+  expectLaneBoxes(lanes);
   const top = await page.evaluate(() => Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-pass-through")].map(el => el.getBoundingClientRect().top)));
   const highest = Math.min(...picture.wires.flatMap(wire => wire.points.filter((_, i) => i % 2 === 1)));
   expect(highest).toBeGreaterThanOrEqual(top - 1);
@@ -185,6 +195,25 @@ test("a retained exploration threads skipped references through lanes: nothing o
   const nudge = page.locator(".perspective-strain");
   await expect(nudge).toBeVisible();
   await expect(nudge).toHaveAttribute("title", /references skip columns/);
+});
+
+test("a lane's slots spread to the wires through them where the wires ask", async ({ page }) => {
+  // The five-file scope's lanes all stand at pitch since the span-minimal ranking (2026-10-06); on the chain scope the wires still ask.
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  const files = [
+    "packages/explorer/src/client/index.ts",
+    "packages/explorer/src/client/persistence/compressed-url-state.ts",
+    "packages/explorer/src/client/views/pin-state.ts",
+    "packages/explorer/src/client/views/symbolAnchors.ts"
+  ];
+  await page.goto(localRetainUrl("/", files));
+  await page.waitForSelector("#map-container .branch-mode");
+  await page.waitForSelector("#map-connections .connection-path");
+  await page.waitForTimeout(900);
+  const lanes = await readLanes(page);
+  expect(lanes.length).toBeGreaterThan(0);
+  expectLaneBoxes(lanes);
+  expect(lanes.some(lane => lane.height > 12 + 7 * lane.slots.length), "the placement spreads a lane's slots where its wires ask").toBe(true);
 });
 
 test("directories are membranes: one connected shape per directory, siblings never crossing, every card inside its own", async ({ page }) => {

@@ -84,6 +84,34 @@ describe("independent Local Map branches", () => {
     expect(cyclic).toHaveLength(4);
   });
 
+  const columnsOf = (ranking: { columns: ExplorerNodePayload[][] }): string[][] => ranking.columns.map(column => column.map(file => file.id));
+  const reference = (sourceId: string, targetId: string, targetSymbol?: string): LocalEdge => ({ sourceId, targetId, targetSymbol, direction: "outbound", kind: "dependency" });
+  // base, m1, m2, m3, end: a chain of five, one file to a column.
+  const chain = [reference("m1", "base"), reference("m2", "m1"), reference("m3", "m2"), reference("end", "m3")];
+
+  it("ranks by the fewest column spans: a file that uses only the root and serves nothing stands beside the root", () => {
+    // The longest-chain rule stood leaf in the last column, four columns from base, since nothing it serves held it back.
+    const files = ["base", "m1", "m2", "m3", "end", "leaf"].map(id => node(id));
+    const ranking = rankBranches(files, [...chain, reference("leaf", "base")]);
+    expect(columnsOf(ranking)).toEqual([["base"], ["leaf", "m1"], ["m2"], ["m3"], ["end"]]);
+    expect(ranking.back.size).toBe(0);
+  });
+
+  it("weighs a pair by its references, and gives a file that costs the same anywhere the column with the fewest cards, the rightmost among equals", () => {
+    // two uses base through two symbols and end uses it once: its cost grows with every column it stands from base, so it stands beside base.
+    // one uses base once and end uses it once: any column between costs the same; column 1 holds m1 and two, columns 2 and 3 one card each.
+    const files = ["base", "m1", "m2", "m3", "end", "two", "one"].map(id => node(id));
+    const edges = [...chain, reference("two", "base", "x"), reference("two", "base", "y"), reference("end", "two"), reference("one", "base"), reference("end", "one")];
+    const ranking = rankBranches(files, edges);
+    expect(columnsOf(ranking)).toEqual([["base"], ["m1", "two"], ["m2"], ["m3", "one"], ["end"]]);
+  });
+
+  it("ends every unconnected group at the last column, where a file nothing uses stands", () => {
+    const files = ["base", "mid", "end", "p", "q", "alone"].map(id => node(id));
+    const ranking = rankBranches(files, [reference("mid", "base"), reference("end", "mid"), reference("q", "p")]);
+    expect(columnsOf(ranking)).toEqual([["base"], ["mid", "p"], ["alone", "end", "q"]]);
+  });
+
   it("breaks a longer cycle at the fewest references the provider-first order allows", () => {
     // a uses b uses c uses a, and d uses c: one reference must read backward, the other three flow.
     const files = ["a", "b", "c", "d"].map(id => node(id));

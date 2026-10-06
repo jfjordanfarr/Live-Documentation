@@ -845,3 +845,242 @@ completed (exit code 0)
   reply.
 
   Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright in the background"
+completed (exit code 0)
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The chain scope is now rendering at ~19.5s, right at the 20s limit, because
+  the solver recomputes every cut value from scratch on each pivot. I'll
+  refactor it to compute cut values with a single pass over the edges and tree
+  instead, keeping results identical, then re-time it. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Updating the solver's Live Doc note, which still claimed the old cut-value
+  cost was a few milliseconds, while the rebuilt page is timed and the gate
+  runs.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Rebuild, time the page with the faster solver, then run
+the full gate, in the background" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything is committed and the tree is clean: the membranes as 48e3ee4b, the
+  rounded corners and the solver fix as 260fdbc9, and a one-line inventory
+  correction as aec6a92f. Here is the report, with your questions answered in
+  turn.
+
+  Membranes, built and measured
+
+  A directory is now one segment per column it spans, each at its own height
+  around that column's members and its subdirectories' segments there. Siblings
+  keep their rows in every shared column, so membranes never cross. Neighbouring
+  segments overlap by a 60 px neck and stand at least that tall, so each
+  membrane is one connected shape, joined through the gutter by the overlap.
+  Every corner is rounded by the membrane's 12 px padding, so the rounding never
+  reaches a card.
+
+  ┌──────────────────────┬──────────────────┬───────────────┬───────────────┐
+  │        Scope         │  Drawn total px  │   Foreign     │   Crossing    │
+  │                      │                  │    samples    │     spots     │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Repository, five     │      595,233 to  │    21,575 to  │    665 to 734 │
+  │ files                │          475,587 │         8,695 │               │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Repository, chain    │      595,442 to  │     8,835 to  │     1,208 to  │
+  │                      │          518,793 │         4,310 │         1,340 │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Estate, five files   │ 88,265 to 77,886 │    526 to 115 │      43 to 64 │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Estate, chain        │ 38,623 to 37,729 │    135 to 105 │      30 to 34 │
+  └──────────────────────┴──────────────────┴───────────────┴───────────────┘
+
+  The five-file picture is 4,172 px tall where it was 5,653, and its placement
+  measure is 203,473, the probe's prediction to the unit. The deck now splits
+  each row's wire length into its horizontal and vertical parts. Folder
+  adjacency fell on the repository scopes, since a card's nearest neighbour is
+  now often a card of another directory level with it across a gutter. That is
+  the trade you made: co-occupation by containment, not by distance. The
+  pictures, sharp and rounded, are in the screenshot README
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#directories-as-membranes-
+  the-evening-of-october-6).
+
+  Two defects the gate caught
+
+  The deck's first run read six of the estate's symbol labels as covered. A
+  membrane's bounding element reaches beyond its shape, and where siblings step
+  past one another it lay over a sibling's cards and would have taken their
+  hover and clicks. It now lets the pointer through. Then the full gate timed
+  out once on the chain scope: the segments had grown the constraint graph, and
+  the solver summed every edge for every tree edge on every pivot, 19.5 s to
+  render. The cut values now come from one pass over the edges and one over the
+  tree, with identical answers. The chain renders in under a second and the five
+  files in half of one, which also makes your parameter sweeps cheap.
+
+  Your questions
+
+  Sub-columns and your x-nudge. Same dimension of freedom, different quantum and
+  aim. Your nudge moves one card a little to even out hop distances, which it
+  cannot reach because a chain and a shortcut force whole-column spans.
+  Sub-columns split a tall rank's stack into two side by side, a card-width
+  step, to shorten the stack. So your sentence was half right: the freedom is
+  the one you named, pointed at a different problem.
+
+  Blobbier membranes around subdirectories. The levers are the radius, the neck
+  and the padding, and an outer membrane could take larger ones than what it
+  holds, by depth. That is for your eye with pictures. The "Hub" label on the
+  estate also sits at the leftmost segment's top while the membrane rises to the
+  right. Where a label should stand when the leftmost segment is low is open.
+
+  Independently running functions. In the exact placement the forces are terms
+  of one solve, not separate functions, which would fight. Your boundary force
+  is already measured as the foreign-directory samples, which the membranes just
+  halved. Your other one, a wire between two members of one membrane escaping
+  it in the gutter, is not measured yet but is cheap to add, and it is
+  expressible as constraints on the corridor, hard or weighted. The
+  crossing-aversion lever cannot be graded in the exact placement, only
+  forbidden or allowed, so it would live in the order step as a threshold.
+
+  Wires reading backward. Already minimized, heuristically, by the cycle
+  breaking of Eades, Lin and Smyth. Each card says how many of its references
+  read back and the deck's flow row counts them. The exact minimum is a
+  feedback-arc-set problem, which is hard. The cheap improvement is to break
+  each cycle at its lightest reference by count.
+
+  Levers you did not name. Continuity: a weighted pull toward the previous
+  placement when a pin changes, which the animation will want and the deck
+  already measures as churn. The lane's host directory, now the deepest holding
+  an end, as a choice. How far a file may stand right of its longest-chain
+  depth, the dial between the two rankings. How many rows a card shows.
+  Crossings against length as a weight. And the numeric gaps.
+
+  The sweep. Ranking, order and placement are pure, and only the card geometry
+  needs the page once. A headless layout lab over captured scope inputs would
+  run thousands of configurations an hour at a tenth of a second a solve,
+  scoring each on the deck's signals with your weights. I would build it before
+  the random starts, since it is where they run.
+
+  Next
+
+  The span-minimal ranking, as you ordered. It has one fork for you: a column
+  would stop meaning longest-chain depth and mean only "right of what it uses,
+  as close as the chains allow". The reading direction stays. Say go and I build
+  it, with the deck's halves before and after.
+
+● Everything is committed and the tree is clean: the membranes as 48e3ee4b, the
+  rounded corners and the solver fix as 260fdbc9, and a one-line inventory
+  correction as aec6a92f. Here is the report, with your questions answered in
+  turn.
+
+  Membranes, built and measured
+
+  A directory is now one segment per column it spans, each at its own height
+  around that column's members and its subdirectories' segments there. Siblings
+  keep their rows in every shared column, so membranes never cross. Neighbouring
+  segments overlap by a 60 px neck and stand at least that tall, so each
+  membrane is one connected shape, joined through the gutter by the overlap.
+  Every corner is rounded by the membrane's 12 px padding, so the rounding never
+  reaches a card.
+
+  ┌──────────────────────┬──────────────────┬───────────────┬───────────────┐
+  │        Scope         │  Drawn total px  │   Foreign     │   Crossing    │
+  │                      │                  │    samples    │     spots     │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Repository, five     │      595,233 to  │    21,575 to  │    665 to 734 │
+  │ files                │          475,587 │         8,695 │               │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Repository, chain    │      595,442 to  │     8,835 to  │     1,208 to  │
+  │                      │          518,793 │         4,310 │         1,340 │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Estate, five files   │ 88,265 to 77,886 │    526 to 115 │      43 to 64 │
+  ├──────────────────────┼──────────────────┼───────────────┼───────────────┤
+  │ Estate, chain        │ 38,623 to 37,729 │    135 to 105 │      30 to 34 │
+  └──────────────────────┴──────────────────┴───────────────┴───────────────┘
+
+  The five-file picture is 4,172 px tall where it was 5,653, and its placement
+  measure is 203,473, the probe's prediction to the unit. The deck now splits
+  each row's wire length into its horizontal and vertical parts. Folder
+  adjacency fell on the repository scopes, since a card's nearest neighbour is
+  now often a card of another directory level with it across a gutter. That is
+  the trade you made: co-occupation by containment, not by distance. The
+  pictures, sharp and rounded, are in the screenshot README
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#directories-as-membranes-
+  the-evening-of-october-6).
+
+  Two defects the gate caught
+
+  The deck's first run read six of the estate's symbol labels as covered. A
+  membrane's bounding element reaches beyond its shape, and where siblings step
+  past one another it lay over a sibling's cards and would have taken their
+  hover and clicks. It now lets the pointer through. Then the full gate timed
+  out once on the chain scope: the segments had grown the constraint graph, and
+  the solver summed every edge for every tree edge on every pivot, 19.5 s to
+  render. The cut values now come from one pass over the edges and one over the
+  tree, with identical answers. The chain renders in under a second and the five
+  files in half of one, which also makes your parameter sweeps cheap.
+
+  Your questions
+
+  Sub-columns and your x-nudge. Same dimension of freedom, different quantum and
+  aim. Your nudge moves one card a little to even out hop distances, which it
+  cannot reach because a chain and a shortcut force whole-column spans.
+  Sub-columns split a tall rank's stack into two side by side, a card-width
+  step, to shorten the stack. So your sentence was half right: the freedom is
+  the one you named, pointed at a different problem.
+
+  Blobbier membranes around subdirectories. The levers are the radius, the neck
+  and the padding, and an outer membrane could take larger ones than what it
+  holds, by depth. That is for your eye with pictures. The "Hub" label on the
+  estate also sits at the leftmost segment's top while the membrane rises to the
+  right. Where a label should stand when the leftmost segment is low is open.
+
+  Independently running functions. In the exact placement the forces are terms
+  of one solve, not separate functions, which would fight. Your boundary force
+  is already measured as the foreign-directory samples, which the membranes just
+  halved. Your other one, a wire between two members of one membrane escaping
+  it in the gutter, is not measured yet but is cheap to add, and it is
+  expressible as constraints on the corridor, hard or weighted. The
+  crossing-aversion lever cannot be graded in the exact placement, only
+  forbidden or allowed, so it would live in the order step as a threshold.
+
+  Wires reading backward. Already minimized, heuristically, by the cycle
+  breaking of Eades, Lin and Smyth. Each card says how many of its references
+  read back and the deck's flow row counts them. The exact minimum is a
+  feedback-arc-set problem, which is hard. The cheap improvement is to break
+  each cycle at its lightest reference by count.
+
+  Levers you did not name. Continuity: a weighted pull toward the previous
+  placement when a pin changes, which the animation will want and the deck
+  already measures as churn. The lane's host directory, now the deepest holding
+  an end, as a choice. How far a file may stand right of its longest-chain
+  depth, the dial between the two rankings. How many rows a card shows.
+  Crossings against length as a weight. And the numeric gaps.
+
+  The sweep. Ranking, order and placement are pure, and only the card geometry
+  needs the page once. A headless layout lab over captured scope inputs would
+  run thousands of configurations an hour at a tenth of a second a solve,
+  scoring each on the deck's signals with your weights. I would build it before
+  the random starts, since it is where they run.
+
+  Next
+
+  The span-minimal ranking, as you ordered. It has one fork for you: a column
+  would stop meaning longest-chain depth and mean only "right of what it uses,
+  as close as the chains allow". The reading direction stays. Say go and I build
+  it, with the deck's halves before and after.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read packages/explorer/src/client/views/localView/network-simplex.ts (250
+     lines)
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-06/README.md (60 lines)
+  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-renderer.ts
+  ⎿  Read packages/explorer/src/client/views/localView/branch-placement.ts (261
+     lines)
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md

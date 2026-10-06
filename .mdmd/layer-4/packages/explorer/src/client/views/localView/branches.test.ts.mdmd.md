@@ -13,7 +13,7 @@ Checks independent branch disclosure, induced cross-connections and dependency r
 
 ### Notes
 
-Exercises a diamond with a cross-edge, disconnected pins, category filters, a two-file cycle with a self-reference and a three-file cycle with an outside consumer. A cycle must be broken at exactly one reference, every other reference must rank forward, and no edge may be lost. It checks preserved edges as well as retained files, so a prettier but incomplete graph fails.
+Exercises a diamond with a cross-edge, disconnected pins, category filters, a two-file cycle with a self-reference and a three-file cycle with an outside consumer. A cycle must be broken at exactly one reference, every other reference must rank forward, and no edge may be lost. It checks preserved edges as well as retained files, so a prettier but incomplete graph fails. Three tests pin the span-minimal ranking's rules on a chain of five with extra files (2026-10-06): a file that uses only the root and serves nothing stands beside the root rather than at the far right; a pair weighs its references, and a file that costs the same in several columns takes the one with the fewest cards, the rightmost among equals; and every unconnected group ends at the last column, where a file nothing uses stands.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

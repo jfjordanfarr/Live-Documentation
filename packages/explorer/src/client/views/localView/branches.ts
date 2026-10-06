@@ -4,6 +4,7 @@ import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference } from "./branch-order";
+import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
 import { buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
 
@@ -142,10 +143,16 @@ export function compareSymbolNames(a: string, b: string): number {
 }
 
 /**
- * Rank providers before consumers, placing each as near its consumers as its
- * longest forward chain permits. A cycle is broken at the references that read
- * backward in a provider-first order of its members, so that every other
- * reference flows left to right; the broken ones are returned as `back`.
+ * Rank providers before consumers so that the references cross the fewest
+ * columns in all: every forward reference costs the columns it spans, and the
+ * columns are the exact minimum of that sum, found by the same network simplex
+ * that places the cards (Gansner, Koutsofios, North and Vo, section 2). A file
+ * that could stand in several columns at the same cost takes the one with the
+ * fewest cards, the rightmost among equals; a file nothing retained uses
+ * stands in the last column, and so does every file no reference reaches. A
+ * cycle is broken at the references that read backward in a provider-first
+ * order of its members, so that every other reference flows left to right;
+ * the broken ones are returned as `back`.
  */
 export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): BranchRanking {
   const ids = nodes.map(node => node.id);
@@ -199,17 +206,50 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): 
     if (componentOf.get(provider) === componentOf.get(consumer) && rank.get(provider)! > rank.get(consumer)!) back.add(edgeKey(edge));
     else forward.get(provider)!.add(consumer);
   }
-  const distance = new Map<string, number>();
-  const distanceToSink = (id: string): number => {
-    if (!distance.has(id)) {
-      distance.set(id, 0);
-      distance.set(id, Math.max(0, ...[...forward.get(id)!].map(consumer => distanceToSink(consumer) + 1)));
+  // The columns: each forward reference, weighted by the references between its two files, costs the columns it
+  // spans, and the solver finds the least total. Every file is a node; a reference is a constraint of at least one column.
+  const at = new Map(ids.map((id, i) => [id, i]));
+  const weights = new Map<string, number>();
+  for (const edge of edges) {
+    if (back.has(edgeKey(edge))) continue;
+    const pair = `${edge.targetId}\0${edge.sourceId}`;
+    weights.set(pair, (weights.get(pair) ?? 0) + 1);
+  }
+  const constraints: Constraint[] = [...weights].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
+    const [provider, consumer] = pair.split("\0");
+    return { tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight };
+  });
+  const column = rankByNetworkSimplex(ids.length, constraints).position;
+  // Files no reference joins stand apart from one another, so each connected group ends at the last column, as a
+  // file nothing uses does: the picture's right edge is where the chains end.
+  const group = ids.map((_, i) => i);
+  const find = (v: number): number => (group[v] === v ? v : (group[v] = find(group[v])));
+  for (const edge of constraints) group[find(edge.tail)] = find(edge.head);
+  const last = Math.max(0, ...column);
+  const groupLast = new Map<number, number>();
+  for (let v = 0; v < ids.length; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
+  for (let v = 0; v < ids.length; v++) column[v] += last - groupLast.get(find(v))!;
+  // A file whose references weigh the same on both sides costs the same in any column between its providers and its
+  // consumers; it takes the column with the fewest other cards, the rightmost among equals, so no stack grows for nothing.
+  const cards = new Map<number, number>();
+  for (const value of column) cards.set(value, (cards.get(value) ?? 0) + 1);
+  for (let v = 0; v < ids.length; v++) {
+    let inbound = 0, outbound = 0, low = 0, high = last;
+    for (const edge of constraints) {
+      if (edge.head === v) { inbound += edge.weight; low = Math.max(low, column[edge.tail] + 1); }
+      if (edge.tail === v) { outbound += edge.weight; high = Math.min(high, column[edge.head] - 1); }
     }
-    return distance.get(id)!;
-  };
-  const lastColumn = Math.max(0, ...ids.map(distanceToSink));
-  const columns: ExplorerNodePayload[][] = [];
-  for (const node of nodes) (columns[lastColumn - distanceToSink(node.id)] ??= []).push(node);
-  for (const column of columns) column.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
+    if (!inbound || inbound !== outbound) continue;
+    let best = column[v];
+    const others = (value: number): number => (cards.get(value) ?? 0) - (value === column[v] ? 1 : 0);
+    for (let value = low; value <= high; value++) if (others(value) <= others(best)) best = value;
+    cards.set(column[v], cards.get(column[v])! - 1);
+    cards.set(best, (cards.get(best) ?? 0) + 1);
+    column[v] = best;
+  }
+  const used = [...new Set(column)].sort((a, b) => a - b);
+  const columns: ExplorerNodePayload[][] = used.map(() => []);
+  nodes.forEach((node, i) => columns[used.indexOf(column[i])].push(node));
+  for (const list of columns) list.sort((a, b) => a.codeRelativePath.localeCompare(b.codeRelativePath));
   return { columns, back };
 }
