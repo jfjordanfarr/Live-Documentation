@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-10-06
+
+Named in [the day's record](2026-10-06/README.md): the owner's nudge measured on the repository's five-file scope, `graph.ts` forced lower than the exact placement puts it, with the deck's drawn total rising at every step, and the whole placed picture zoomed out to show the consumers that hold the live-docs box where it stands.
+
 ## 2026-10-05
 
 Named in [the day's record](2026-10-05/README.md): the shipped Local Map with five files retained whole beside the Membrane Map with the same files' symbols all pinned, on this repository's five-file and chain scopes and the estate's five files, with the still-picture deck's measures for all six pictures, taken to check where the many-file layout stands; then the same states after the two passes of the day, the layered layout in the afternoon and, after the owner's review, bundles by offering pin and lanes hosted by directories in the evening, with the bundles parting at their consumers, a bundle on hover, and the shared card seen in the classic Local Map and the Circuit Board after its sizing changed; and, later that evening, the rows of every card ordered by where their wires lead, with the alphabetical order from Tuning beside it; and, last that night, every card and lane placed by the exact placement step under the owner's reward, the total drawn wire length, measured before and after.

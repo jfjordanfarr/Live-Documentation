@@ -6504,3 +6504,978 @@ again in the background" completed (exit code 0)
   ⎿  Referenced file tests/e2e/still-picture.spec.ts
   ⎿  Read .mdmd/layer-4/packages/explorer/src/client/views/localView/branches.ts
      .mdmd.md (86 lines)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -05-172035-hi-again-fable-51-it-is-105-in-my-timezone-pl.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ Based on what I can see in the screenshots of @AI-Agent-Workspace/Screenshots
+  /2026-10-05/repository-five-local-map-retained-after.png ,
+  @AI-Agent-Workspace/Screenshots/2026-10-05/estate-back-reference-hover.png ,
+  and @AI-Agent-Workspace/Screenshots/2026-10-05/repository-five-local-map-reta
+  ined-after.png  I wonder if we might benefit from only splitting out those
+  bundles where necessary? I see a lot of (aesthetically interesting!) noisy
+  segments of these "guitar strings" of evenly-spaced bezier curves, parallel,
+  on en route to the same direction. For those, I wonder if there is some way
+  to keep the bundle bunched until actual navigable separation is warranted? A
+  very tough layout problem, but the multitudes of wires pouring out of one
+  symbol towards numerous consumers near and distant feels like we could do a
+  little bit more to enhance the visual interpretability. That said, you could
+  absolutely make the case to me that "hey, that weirdness is the shape of our
+  codebase. Don't like it? Change the codebase shape", and I could very well be
+  put right in my place as plainly wrong.
+
+  Based on  @AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-r
+  etained-after.png , I wonder if there is an option to make it appear as
+  though the two connecting wires passing over the Portal/Services directory
+  boundary actually passed _behind_ that directory boundary? Not invisible but
+  perhaps dulled or refracted or blurred in some way, depending on how "liquid
+  glass" we want those directory membranes to feel. (Also: visible in the
+  screenshot, the actual cards for the code files are shifted off to the right
+  of their containing directory membrane, overflowing slightly to the right of
+  their ostensible containing boundary).
+  ⎿  Read
+     AI-Agent-Workspace/Screenshots/2026-10-05/estate-back-reference-hover.png
+     (241.4KB)
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-retai
+     ned-after.png (226.6KB)
+
+● I'll record the turn first, then read the layout modules so the answers rest
+  on what the code actually does rather than on the pictures alone.
+
+  Searched for 7 patterns, read 2 files, listed 1 directory, ran 11 shell commands (ctrl+o to expand)
+
+● Still reading the code and measuring: I'm pinning down why the cards overflow
+  their directory boxes, then I'll write up the three answers and the plan.
+
+  Searched for 3 patterns, read 1 file, listed 1 directory, ran 9 shell commands (ctrl+o to expand)
+
+● I've found the overflow's cause by measurement, so I'm writing the record and
+  the answer now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I measured before answering, so two of the three have causes rather than
+  impressions. Nothing in the code changed; the record and your re-exported
+  capture are committed as 7ab7d232.
+
+  The guitar strings
+
+  You are half right about the codebase's shape. A symbol used by fifteen files
+  is fifteen references, and both views draw all of them. Giving each its own
+  string through every gap is the drawing's choice, though, not the code's. The
+  layered-drawing answer is to bundle. References leaving one offering pin share
+  one lane slot through every column they pass together, and a member leaves
+  the bundle only at the gutter before its consumer's column, which is where the
+  eye needs the separation. Pupyrev, Nachmanson and Kaufmann did this for
+  layered drawings in 2010 by merging the dummy nodes of edges with a common
+  source. In the estate's five-file picture, the twenty strings above
+  IPaymentHub come from two pins and would become two strokes. The fifteen below
+  IPaymentService would become one. Each reference keeps its own path, so
+  hovering still traces one reference, and the shared run can thicken with its
+  member count so the picture does not hide what it carries. The deck's crossing
+  counter already ignores contacts shallower than fifteen degrees, so
+  coincident strokes would not read as crossings. Its shared-channel count would
+  rise, by design. I would do this in the ordering rather than only in the
+  drawing, so lanes are sized by bundles and the sweep stops arranging fifteen
+  identical strings.
+
+  Wires through Portal/Services
+
+  Those two wires pass through that box because the ordering places a lane after
+  a file, and the only file in that column is GatewayClient, inside
+  Portal/Services. The truthful fix is placement, not glass. A lane should
+  belong to the deepest directory in its column that holds one of the wire's
+  ends, here Portal, so the wire runs in Portal's box beside the Services box
+  instead of through it. Glass is possible. The overlay is one layer, so it
+  would mean per-wire masks cut from the band boxes, with the foreign piece
+  blurred and dimmed. But it would dress a wrong placement as intended. What
+  remains after the placement fix is curves in gutters that cross a directory
+  spanning that gutter. I would add a deck measure for samples inside a foreign
+  directory, for both views, and decide on glass with that number and picture in
+  front of us.
+
+  The overflow
+
+  Measured in the built page:
+
+  ┌──────────────────────┬────────┐
+  │                      │ Width  │
+  ├──────────────────────┼────────┤
+  │ GatewayClient's card │ 256 px │
+  ├──────────────────────┼────────┤
+  │ Its column           │ 244 px │
+  └──────────────────────┴────────┘
+
+  The card's width is 100% of its container plus its own padding and border, so
+  it is always 26 px wider than the room its content asked the grid for.
+  Border-box sizing ends it in the built page. The subgrid is innocent, since
+  removing the bands' padding shrinks the tracks by exactly that padding. One
+  more defect seen while measuring: the whole layout sits in a box labelled "/"
+  with its own padding, from the native-view pass. The Membrane draws no box at
+  the root. I would remove it.
+
+  Plan, if you say go
+
+  1. Border-box cards and no root box, with pictures of both Local Map modes and
+     the Circuit Board, which shares the card.
+  2. Lanes hosted by the deepest directory holding an end, the deck's
+     foreign-directory measure, and a Playwright rule that no straight run lies
+     in a foreign directory.
+  3. Bundles by offering pin in the ordering, members leaving at their
+     consumer's gutter, stroke width by member count.
+  4. Pictures, scoreboard before and after, docs, the full gate, commit.
+
+  Two forks are yours. Placement first with glass only for any residual, which I
+  recommend, or glass now. And bundles in the ordering, which I recommend, or
+  in the drawing only.
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >The layered-drawing answer is to bundle. References leaving one offering pin
+  share one lane slot through every column they pass together, and a member
+  leaves the bundle only at the gutter before its consumer's column, which is
+  where the eye needs the separation.
+
+  Very smart. I like this.
+
+  >
+  Those two wires pass through that box because the ordering places a lane
+  after a file, and the only file in that column is GatewayClient, inside
+  Portal/Services. The truthful fix is placement, not glass. A lane should
+  belong to the deepest directory in its column that holds one of the wire's
+  ends, here Portal, so the wire runs in Portal's box beside the Services box
+  instead of through it. Glass is possible. The overlay is one layer, so it
+  would mean per-wire masks cut from the band boxes, with the foreign piece
+  blurred and dimmed. But it would dress a wrong placement as intended. What
+  remains after the placement fix is curves in gutters that cross a directory
+  spanning that gutter. I would add a deck measure for samples inside a foreign
+  directory, for both views, and decide on glass with that number and picture
+  in front of us.
+  I LOVE being pushed back on like this! Keep it comin'! AWESOME! Yeah, your
+  rebuttal is convincing. I think we're in agreement here. So long as what you
+  say proves out in practice, I have totally come around to your side of this
+  argument.
+
+  >Border-box cards and no root box
+
+  Sounds good
+
+  >with pictures of both Local Map modes and the Circuit Board, which shares
+  the card.
+
+  ? I'm not sure I understand what you mean here
+
+  >Lanes hosted by the deepest directory holding an end, the deck's
+  foreign-directory measure, and a Playwright rule that no straight run lies in
+  a foreign directory.
+
+  Yeah! Let's give this a shot. Very curious to see what that yields.
+
+  >Bundles by offering pin in the ordering, members leaving at their consumer's
+  gutter, stroke width by member count.
+
+  Yep!
+
+  >Pictures, scoreboard before and after, docs, the full gate, commit.
+
+  I hope the scoreboard is any use at all. I left that experience feeling it
+  had let us down, but you seem to still value it. On the one hand, some
+  measurement is no measurement. On the other hand, bad information is worse
+  than no information. I know not which situation we are in. But I trust your
+  judgment to integrate the facts as you see them programmatically alongside my
+  judgment which I provide intermittently. Between the two, I believe we can
+  succeed.
+
+● Go received on all four. I'll record the turn, then read the remaining pieces
+  I need and start the pass.
+
+  Searched for 3 patterns, read 2 files, ran 8 shell commands (ctrl+o to expand)
+
+● Now writing the ordering module with bundles and hosted lanes.
+
+  Searched for 1 pattern, read 4 files, ran 7 shell commands (ctrl+o to expand)
+
+● Looking at the two remaining pictures and adding the deck's foreign-directory
+  measure.
+
+  Searched for 1 pattern, read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Invariants pass. Next I'm starting the deck's retained rows in the background
+  for the numbers, taking the extra pictures, and reading the docs I need to
+  bring to the pass.
+
+  Read 4 files, listed 1 directory, ran 10 shell commands (ctrl+o to expand)
+
+● Background command "Run the deck's retained rows to measure the pass"
+completed (exit code 0)
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● The deck's retained rows passed, but the crossing counts went up on every
+  scope, so I'm diagnosing that before writing any numbers down.
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+● I'm checking whether the extra crossings are members of one bundle crossing
+  each other where they part, or different bundles crossing. One scratch run
+  tells; the rebuild waits on it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The deck's own counter is at fault: it reads two wires drawn on the same path
+  as crossing at every bend sample. I'll fix the counter and re-measure both
+  builds under it.
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Build the previous commit's Explorer in a detached
+worktree for a like-for-like measurement" completed (exit code 0)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The corrected counter now resolves the crossing issues across every scope,
+  with no lanes left in the wrong directory. Next I'll re-capture screenshots on
+  the rebuilt bundles, clean up the scratch instruments, and update the docs to
+  match. · summary
+
+  Searched for 1 pattern, read 2 files, listed 1 directory, ran 8 shell commands (ctrl+o to expand)
+
+● The gate is running in the background. Meanwhile I'm checking the markdown
+  links and symbols myself so a doc slip doesn't cost a second gate.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Both audits are clean on the current tree. The full gate is running in the
+  background with Playwright. I'll report with the pictures and numbers when it
+  finishes.
+
+● Background command "Update the screenshot index, direction.md and the record,
+then run the full gate with Playwright" completed (exit code 0)
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● The failing perspective transition builds its outer shell from the root band,
+  so the root needs to remain an element but without its box or name. I'll
+  inspect how the transition reads it, make the root bare instead of removing
+  it, then rerun. · summary
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● The second gate is running. The tree holds the ten new pictures and the
+  scoreboard copy as untracked files, and 31 modified ones. I'll wait for the
+  gate, then copy its scoreboard, commit and report.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything that can be done before the gate reports is done. Waiting on the
+  gate.
+
+● Background command "Note the root band's role, record the gate finding, and
+run the full gate again" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Written for: the owner, who gave the go on all four steps and asked what the
+  "both Local Map modes and the Circuit Board" line meant.
+
+  The pass is committed as ec6e3d14, 41 files, after a full gate. The first gate
+  found one thing I had broken, fixed below. Everything you asked for proved
+  out in the built page, with one honest surprise in the instrument.
+
+  What you will see
+
+  Screenshots/2026-10-05, the evening section (AI-Agent-Workspace/Screenshots/20
+  26-10-05/README.md#after-the-owners-review-the-same-evening) has nine
+  pictures. The ones to open first:
+
+  - Estate five, bundled (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-
+    local-map-bundled.png): the three Contracts providers each send one cable
+    where twenty strings ran above IPaymentHub. Where they part
+    (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-bundles-part.png) is
+    the same state panned to the consumers. On hover
+    (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-bundle-hover.png),
+    one pin's whole cable lights to its consumers.
+  - Estate chain, bundled (AI-Agent-Workspace/Screenshots/2026-10-05/estate-chai
+    n-local-map-bundled.png): the two Models-to-Controllers wires run inside
+    Portal above the Services box. The price is that the Services box now stands
+    in a row of its own below them. Every card ends inside its directory's box.
+  - Repository five, bundled (AI-Agent-Workspace/Screenshots/2026-10-05/reposito
+    ry-five-local-map-bundled.png) and where its bundles part (AI-Agent-Workspac
+    e/Screenshots/2026-10-05/repository-five-bundles-part.png).
+
+  Your question about "both Local Map modes and the Circuit Board"
+
+  One stylesheet rule sizes every file card in the Explorer: the Local Map's
+  cards with no pins, its cards with pins, and the Circuit Board's cards.
+  Changing how that card is sized could have moved all three pictures, so I
+  looked at all three. The two unrelated ones are unchanged to the eye and are
+  in the folder.
+
+  The numbers, like for like
+
+  I built the previous commit in a scratch worktree and measured both under the
+  same instrument. "Spots" are distinct places where wires cross. "Points" count
+  one per pair of wires, so a cable of fifteen crossing one wire is fifteen
+  points.
+
+  ┌──────────────┬────────┬───────┬────────┬───────┬───────────────┬───────┐
+  │              │        │       │ Points │       │ Lane samples  │       │
+  │    Scope     │ Spots  │ after │        │ after │ in a foreign  │ after │
+  │              │ before │       │ before │       │  directory    │       │
+  │              │        │       │        │       │    before     │       │
+  ├──────────────┼────────┼───────┼────────┼───────┼───────────────┼───────┤
+  │ Repository,  │  1,324 │   498 │  3,276 │ 3,778 │         9,243 │     0 │
+  │ five files   │        │       │        │       │               │       │
+  ├──────────────┼────────┼───────┼────────┼───────┼───────────────┼───────┤
+  │ Estate, five │    122 │    48 │    224 │   390 │         3,029 │     0 │
+  │  files       │        │       │        │       │               │       │
+  ├──────────────┼────────┼───────┼────────┼───────┼───────────────┼───────┤
+  │ Estate,      │     39 │    17 │     57 │    50 │         1,020 │     0 │
+  │ chain        │        │       │        │       │               │       │
+  └──────────────┴────────┴───────┴────────┴───────┴───────────────┴───────┘
+
+  The scoreboard let us down once more, and I fixed it
+
+  The first measurement of the bundles read thousands of crossings between wires
+  of one pin. The deck's counter took two wires drawn along one path, which
+  touch at every sample, as crossing at every bend. That was bad information. It
+  now counts a meeting at a sample point only when the wires' directions
+  alternate around it, and it reports spots beside points. The geometric rules
+  remain tests. The counts remain reports to read beside the picture.
+
+  What the gate found
+
+  Removing the "/" box broke two perspective-transition tests, because the
+  transition builds its outermost shell from the root band. The root stays as an
+  element drawn as nothing. The second gate passed in full: 953 unit tests, 50
+  integration tests, 619 Live Docs with no drift, both audits clean, 89
+  Playwright tests.
+
+  Left for your eye
+
+  - Curves in a gutter still cross a directory that spans the gutter. On the
+    repository's five files that is 83 wires. This is the residual case for the
+    glass you asked about.
+  - The width scale of the shared run, and the Services box moved to its own
+    row.
+
+❯ @AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-bundled.png
+   looks phenomenal.
+  @AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-bundle-hover.png
+  looks really great.  @AI-Agent-Workspace/Screenshots/2026-10-05/repository-fi
+  ve-local-map-bundled.png still appears to contain "guitar strings". But I
+  think these are bona fide individual bundles all running off to some other
+  conection. In which case... I wonder if perhaps we could lay out those
+  symbols higher on the node such that they do not have to cross over the
+  connectors bound fro graph.ts, board.ts, and boardGraph.ts?
+
+  Overall: Humungous improvement. You are performing astoundingly. A great
+  commit, and a great bar to beat.
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-bundl
+     ed.png (239.1KB)
+
+● The owner's verdict is in. I'll record the turn, then look at how card rows
+  are ordered today so the answer about moving the pass-through symbols up is
+  concrete.
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● Your reading of the repository picture is right, and the fix is a known step I
+  have not built yet.
+
+  What those strings are
+
+  The lanes above graph.ts hold one slot per offering pin of document.ts. That
+  file offers eighteen symbols, and each has consumers beyond graph.ts, so
+  eighteen cables pass. Each is a real bundle. The crossings you see come from
+  the card, not the lanes. A card lists its rows in the Live Doc's symbol order,
+  so the rows whose cables go up to the lane are scattered among the rows wired
+  straight to graph.ts, board.ts and boardGraph.ts, and every cable from a
+  lower row climbs across the wires above it.
+
+  The step
+
+  Layered drawing orders ports after it orders nodes. Here that means sorting
+  each card's rows by where their wires go: a row's key is the mean height of
+  its wires' far ends, offers to the right and uses to the left, and the rows
+  sort by it. Rows whose cables leave for the lane above rise to the top, rows
+  wired to the neighbour card sit level with it, rows wired downward sink. Then
+  one more column sweep, so the crossing count sees the new heights. The classic
+  no-pins view keeps the Live Doc's order. Internals stays last either way.
+
+  The fork
+
+  - Order by wires (my recommendation). The card reads like a pinout. The cost
+    is that the same file's rows stand in a different order in different
+    explorations. Names are on the rows, so a symbol is found by name either
+    way.
+  - Partition only. Rows whose wires pass on go to the top, the rest keep the
+    Live Doc's order. This is what you described literally. It fixes this
+    picture and leaves crossings the first option removes, such as two
+    neighbour-bound rows wired to cards above and below each other.
+
+  Tests would be properties: a row whose wires all lead above another's stands
+  above it, crossings never worse than before the row step, same order every
+  run. Say which, and I'll build it with pictures of the same three scopes.
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >Order by wires (my recommendation). The card reads like a pinout. The cost
+  is that the same file's rows stand in a different order in different
+  explorations. Names are on the rows, so a symbol is found by name either way.
+
+  What a phenomenal fork to present me. I agree with the recommendation. While
+  it doesn't guarantee symbol order, it does substantially improve orderliness
+  of the resulting visualization. I believe that prioritizing the navigability
+  of the whole over the navigability of the few is plausibly a reasonable
+  design sacrifice, insofar as it means nondeterminisim of symbol order.
+
+  For those users which feel that there are so many public symbols in their
+  file that they demand deterministic ordering, we should provide differing
+  organizing strategies, such as "alphabetical", "layout-optimized (default)",
+  and "order of appearance"/"ordinal" (however we want to phrase that; respect
+  of user-defined public symbol ordering).
+
+● Go received: order by wires, with a symbol-order choice of layout,
+  alphabetical and order of appearance. I'll record the turn, read the tuning
+  and card code, then build it.
+
+  Searched for 2 patterns, ran 6 shell commands (ctrl+o to expand)
+
+● Code next: the ordering owns the rows and orders them by their wires; the
+  renderer applies the order; a Symbol Order choice goes into Tuning.
+
+  Searched for 1 pattern, read 2 files, ran 9 shell commands (ctrl+o to expand)
+
+● The row ordering passes its tests. Now I'm looking at the retaken pictures to
+  judge the effect by eye before running the gate.
+
+  Read 4 files, ran 4 shell commands (ctrl+o to expand)
+
+● The alphabetical picture shows a defect: graph.ts has both LinkTarget and
+  linkTarget, and the renderer lost one when moving rows by normalized name.
+  I'll stop the gate, fix it, and restart.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the full gate with Playwright on the row-ordering
+pass" failed with exit code 144
+
+  Read 2 files, ran 6 shell commands (ctrl+o to expand)
+
+● The row-loss fix holds in both pictures: graph.ts now lists both LinkTarget
+  and linkTarget in either order. The full gate is running again in the
+  background. I'll commit and report when it passes.
+
+● Background command "Run the full gate with Playwright on the row-ordering
+pass" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The gate passed completely, with crossings falling on both five-file scopes
+  and rising on both chain scopes. Before recording results, I'll verify the
+  ordering's count with and without the row step and examine the chain picture.
+  · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Written for: the owner, who chose ordering by wires and asked for the fixed
+  orders beside it.
+
+  Committed as 5a502dfd, 32 files, after a full gate: 957 unit tests, 50
+  integration tests, 619 Live Docs with no drift, both audits clean, 90
+  Playwright tests.
+
+  What you will see
+
+  The third section of the day's screenshots
+  (AI-Agent-Workspace/Screenshots/2026-10-05/README.md#the-rows-of-a-card-where-
+  their-wires-lead-later-the-same-evening):
+
+  - Five files, rows ordered (AI-Agent-Workspace/Screenshots/2026-10-05/reposito
+    ry-five-local-map-ordered-rows.png): document.ts's rows whose cables climb
+    to the lane now stand at the top of its card. graph.ts's rows stand in the
+    order their wires arrive.
+  - Alphabetical, from Tuning (AI-Agent-Workspace/Screenshots/2026-10-05/reposit
+    ory-five-symbol-order-alphabetical.png): the new Symbol Order control open
+    in the panel, every card in name order, and the cables crossing again.
+  - Estate five (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-local-map
+    -ordered-rows.png): IPaymentService's rows are Post, Get, IPaymentService.
+    The two the providers feed are on top. The one whose cable leaves for the
+    Hub is below.
+
+  The three strategies
+
+  Layout is the default and moves rows only where there is a layout.
+  Alphabetical holds wherever a card is drawn. Order of appearance is the Live
+  Doc's. Internals keeps the foot of the card in all three. The choice persists
+  with the rest of Tuning.
+
+  Two things found on the way
+
+  The first draft settled every card's rows at once, so two cards wired
+  crosswise both turned over and crossed again. The rows are now settled one
+  card at a time, left to right and back. The second was in the picture:
+  graph.ts has both LinkTarget and linkTarget, which share a normalized name,
+  and the renderer lost one row while moving the other. Both have tests now.
+
+  The numbers, honestly
+
+  The ordering's own count fell on every scope. The drawn picture, as the deck
+  counts it, fell on the five-file scopes and rose on the chain scopes:
+
+  ┌────────────────────────┬────────────────────┬───────┐
+  │         Scope          │ Drawn spots before │ after │
+  ├────────────────────────┼────────────────────┼───────┤
+  │ Repository, five files │                498 │   438 │
+  ├────────────────────────┼────────────────────┼───────┤
+  │ Repository, chain      │                483 │   736 │
+  ├────────────────────────┼────────────────────┼───────┤
+  │ Estate, five files     │                 48 │    39 │
+  ├────────────────────────┼────────────────────┼───────┤
+  │ Estate, chain          │                 17 │    24 │
+  └────────────────────────┴────────────────────┴───────┘
+
+  The ordering measures heights in cards, where every card is one unit tall. The
+  deck measures pixels, where a card of twenty rows is ten times taller than
+  one of two. On the chains every consumer's rows lead to one pin, so the row
+  order changes little a reader would see, but the curves and cables moved. If
+  your eye says the chain pictures lost something, the next step is an ordering
+  that measures heights in rows rather than cards.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ @AI-Agent-Workspace/Screenshots/2026-10-05/repository-five-local-map-ordered-
+  rows.png  shows that you've improved further. But still guitar strings exist.
+  This time, the guitar strings are the result of many _symbols'_ bundles
+  extending rightward toward their destination nodes.
+
+  Holy crap what a good problem to have. Wow wow wow. Okay let me snap back to
+  reality. Anyway, the graph.ts node in the center seems like it would
+  plausibly be served well, relative to the overall layout, by being lowered
+  further (indeed, boardGraph.ts may too need to be lowered as a result). The
+  idea is reducing the amount of unnecessary turns and extensions. Indeed, it
+  strikes me that the connector drawing/layout issues we're resolving are not
+  too dissimilar from traditional pathfinding problems, such that we want to
+  minimize the path length to the destination cumulatively across all rendered
+  paths. A nudge down on graph.ts, board.ts,j and boardGraph.ts, would have, in
+  your screenshot, eased the layout and reduced the total length of connectors
+  on the screen (which, it occurs to me, is a variable whose value we
+  genuinely want to optimize and reduce across a frame, cumulatively; I suspect
+  this might be the true reward function of the Local Map, if such a thing
+  existed).
+
+  P.S. Killer screenshots; you capture the frontier of problem-solving
+  elegantly. It is appreciated sincerely. Continue, please. (Noting that you're
+  free to ask me for anything you need to succeed, of course).
+
+● The owner's observation names the next step of layered drawing, vertical
+  placement, and the objective it should serve. I'll record the turn and their
+  objective, then lay out the plan and its forks.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Written for: the owner, who named the objective and asked me to continue.
+
+  You have named the step I have not built. Layered drawing has four: rank,
+  order, order the ports, place. The first three are in. Cards still stand where
+  the grid stacks them, so graph.ts sits level with document.ts's top rows
+  whether or not its wires want that. Lowering it is what a placement step would
+  do on its own, if it serves the total.
+
+  The objective, measured first
+
+  I would add your reward to the deck before touching the layout: the total
+  drawn length of the wires in a frame, and the mean per wire. Then the step is
+  judged by your number, not by crossings.
+
+  The step
+
+  Every item in a column, cards and lanes alike, gets a vertical position. A
+  card wants to sit where its wired pins meet their partners, the median of the
+  partners' heights less the pin's own offset on the card. A lane wants the
+  median of its bundles' ends. The constraints are the order the sweep chose, a
+  gap between neighbours, and directories that do not interleave, so a directory
+  above another stays above it in every column they share. The solver sweeps
+  the columns left to right and back, placing each column as close to its wishes
+  as the constraints allow, and keeps the placement with the shortest total.
+
+  What has to change underneath
+
+  The picture is a CSS grid whose rows are shared across columns. Pushing
+  graph.ts down in its row pushes every column's content in that row down with
+  it, so the grid cannot express the step. Cards and lanes would be positioned
+  from the solver instead, with the directory boxes drawn from their members'
+  extents, nested with padding. The same elements keep their names, so the
+  perspective transition, the router and the deck read the page as they do
+  today. Heights come from a measuring render before placement, as the lanes are
+  measured back now.
+
+  The forks
+
+  - Placement inside the grid, by spacers above cards. Cheap, and it would nudge
+    graph.ts, board.ts and boardGraph.ts down. But a spacer in one column moves
+    every column sharing the row, so the result is coupled and partly blind. I
+    do not recommend it.
+  - Free placement, as above. My recommendation. It is the step the literature
+    has, it serves your total directly, and it removes the card-versus-pixel
+    mismatch that cost the chain scopes tonight. The cost is a renderer
+    restructure and a full day's pass with pictures.
+
+  One more choice I would make myself unless you object: the solver's own
+  measure is vertical displacement between pin and partner, since the columns
+  fix the horizontal spans. The deck measures the true drawn length.
+
+  Say go on the free placement and I'll build it, measure it on all four scopes,
+  and bring the pictures.
+
+❯ Can I ask about the right step forward pedagogically?
+
+  What is the durable, corect, permanent implementation? Implement that.
+
+  The Pythagorean theorem forgot to go obsolete. Seems that when you're correct
+  100%, you're correct forever.
+
+● The durable form is the exact one: the placement that minimizes your total
+  subject to the constraints, not a heuristic that approximates it. That is the
+  coordinate step of Gansner, Koutsofios, North and Vo, solved by network
+  simplex, the method Graphviz has run for thirty years. I'll build that, with
+  cards placed from the solution rather than by the grid. First I need to see
+  what the perspective transition reads from the page, since the page's
+  structure changes.
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll build the exact solver as a pure, testable module first, then move on to
+  the renderer, keeping bands and card classes intact for the transition to
+  work. · summary
+
+  Searched for 1 pattern, read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● Solver and placement pass their tests. Now the renderer: cards, lanes and
+  boxes placed from the solution instead of the grid.
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Tidy the renderer, rebuild the bundles and take the four
+scope pictures on the placed layout" failed with exit code 144
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'm checking the browser console on the placed layout, since the root never
+  got its size and an exception during placement would explain that.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I found the bug: the renderer pushes a directory's row lanes after its
+  subdirectories, but band rows can place a lane above that. I'll fix the walk
+  to merge subdirectories and lanes by row, then rebuild and test again.
+  · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I'll add a box-height term alongside the wire terms to tighten each
+  directory's box around its members, then check the boxes against their cards.
+  · summary
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● The screenshot confirms graph.ts and boardGraph.ts now align with
+  document.ts's rows, though the probe revealed incorrect coordinate bookkeeping
+  for nested boxes, which caused the overlap. I'm fixing the box parent chain
+  and re-measuring. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+● The tests row wraps at the applied width but not under max-content sizing, so
+  heights must be measured after the widths are set. I'll make the measurement
+  two-pass and re-measure.
+
+  Read 4 files, ran 4 shell commands (ctrl+o to expand)
+
+● The extra spacing comes from measuring heights before layout width is set,
+  causing labels to wrap to one character per line. I'll fix this by applying
+  horizontal geometry before measuring heights. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Build the previous commit's Explorer in a worktree and
+serve it for a like-for-like length measurement" completed (exit code 0)
+
+● I've got the previous commit built and running alongside the new one. Next,
+  I'll review the retaken screenshots, draft Live Doc notes for the new modules,
+  and set up the before-and-after length measurement. · summary
+
+  Searched for 1 pattern, read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Run the branch, perspective and design-audit specs on the
+placed layout" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The like-for-like measurement of wire length is still running. Meanwhile I'm
+  writing the decisions-log entry and the screenshot README section, with the
+  numbers to fill in when the run reports.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Measure wire length and crossings on the previous build
+and this one" completed (exit code 0)
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● The docs are in place and the gate is running on the placement pass. I'll copy
+  the scoreboard, commit and report when it finishes.
+
+● Background command "Fill the measured numbers into the docs, clean up the
+scratch instruments, finish the record, and run the full gate" completed (exit
+code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Found two failures in the deck's Local Map journeys, caused by a column
+  wrapper the placed layout dropped that's needed for subject lookup and hover
+  styles. I'll restore that wrapper around each placed card to preserve the
+  page's contract. · summary
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● I'm checking the retaken repository picture, which shows wires drawn straight
+  across graph.ts as if the lanes were not found, before anything else moves.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● I found the bug: I named a wrapper variable column inside the loop, which
+  shadowed the column number and broke the lane lookup. Renaming it now and
+  rebuilding. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Background command "Measure the after side again and run the branch,
+perspective and Local Map deck rows on the wrapped build" failed with exit code
+144
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The repository picture is right again, with every skipped reference threaded
+  through its lane. The Playwright subset is running on the fixed build; the
+  gate follows it.
+
+● Background command "Measure the after side again and run the branch,
+perspective and Local Map deck rows on the fixed build" completed (exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The subset passed in full with the numbers the docs already hold. The gate is
+  running on the final build; when it reports I'll copy its scoreboard, commit,
+  and reply with the pictures and the like-for-like table.
+
+● Background command "Remove the scratch spec and run the full gate on the
+placement pass" completed (exit code 0)
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Written for: the owner, who asked for the durable, correct, permanent
+  implementation of the placement step.
+
+  Built and committed as b5cc8536, 31 files, after a full gate: 969 unit tests,
+  50 integration tests, 623 Live Docs with no drift, both audits clean, 90
+  Playwright tests.
+
+  What the durable implementation is
+
+  The placement of cards on the vertical axis is a linear program. Its
+  constraints are differences: a card below another by at least its height and
+  the gap, a box's edge above its members by the label's room, a sibling box
+  below another by the band gap. Its objective is your reward, the weighted sum
+  of vertical distances between the two pins of every wire, with a bundle's
+  shared run weighing its members. Gansner, Koutsofios, North and Vo solved
+  exactly this in 1993 by the network simplex method, and Graphviz has run it
+  since. That is what the Local Map runs now. The solver is tested against
+  enumeration on forty small instances, so its optimum is the optimum. Boxes are
+  drawn tight beneath the wires by a million-to-one weight, so no wire is ever
+  traded for a box.
+
+  What you will see
+
+  The fourth section of the day's screenshots (AI-Agent-Workspace/Screenshots/20
+  26-10-05/README.md#placed-by-the-exact-step-the-same-night):
+
+  - Five files, placed (AI-Agent-Workspace/Screenshots/2026-10-05/repository-fiv
+    e-local-map-placed.png): graph.ts dropped to meet document.ts's rows,
+    boardGraph.ts with it. The move you described is what the optimum chose.
+  - Estate chain, placed (AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain
+    -local-map-placed.png): Models and Controllers level with the wires between
+    them, every box tight around its cards.
+  - Estate five, placed (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-l
+    ocal-map-placed.png): PaymentResult's cable runs level into its lane.
+
+  Your reward, measured
+
+  The deck now measures the total drawn wire length. The previous commit, built
+  beside this one:
+
+  ┌─────────────┬──────────┬─────────┬─────────┬───────┬──────────┬───────┐
+  │             │  Total   │         │ Picture │       │ Crossing │       │
+  │    Scope    │  wire    │  after  │  height │ after │  spots   │ after │
+  │             │ length   │         │  before │       │  before  │       │
+  │             │  before  │         │         │       │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Repository, │ 681,249  │ 610,394 │  6,236  │ 5,653 │      438 │   636 │
+  │  five files │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Repository, │ 793,840  │ 600,503 │  6,460  │ 5,379 │      736 │ 1,223 │
+  │  chain      │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Estate,     │ 104,995  │ 88,288  │  1,854  │ 1,562 │       39 │    44 │
+  │ five files  │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Estate,     │  64,456  │ 38,884  │  1,380  │ 1,208 │       24 │    28 │
+  │ chain       │       px │      px │      px │    px │          │       │
+  └─────────────┴──────────┴─────────┴─────────┴───────┴──────────┴───────┘
+
+  The length fell on every scope, by a tenth to two fifths, and every picture is
+  shorter. The crossings rose. Cards packed to their partners cross more of the
+  wires that pass them, and this step minimizes length, not crossings. Whether
+  that is the right price is yours to say with the pictures open.
+
+  What broke on the way, and was fixed
+
+  Three things, each caught by a probe or a picture before the gate: directory
+  labels wrapped to one character per line in boxes not yet given a width, which
+  put 250 px of slack above every card; a card's row of test names wrapped at
+  the column width but not at its own, which grew it a line after measurement;
+  and a variable named for the column wrapper shadowed the column number, which
+  lost half the lanes. The branch, perspective and deck tests hold all three
+  now.
+
+  Left open
+
+  The glass question for wires crossing a directory that holds neither of their
+  ends, with the deck's number in front of you. And the solver recomputes its
+  cut values after every exchange, milliseconds today; a scope of a thousand
+  wires would want the incremental update the paper describes.
+
+● Written for: the owner, who asked for the durable, correct, permanent
+  implementation of the placement step.
+
+  Built and committed as b5cc8536, 31 files, after a full gate: 969 unit tests,
+  50 integration tests, 623 Live Docs with no drift, both audits clean, 90
+  Playwright tests.
+
+  What the durable implementation is
+
+  The placement of cards on the vertical axis is a linear program. Its
+  constraints are differences: a card below another by at least its height and
+  the gap, a box's edge above its members by the label's room, a sibling box
+  below another by the band gap. Its objective is your reward, the weighted sum
+  of vertical distances between the two pins of every wire, with a bundle's
+  shared run weighing its members. Gansner, Koutsofios, North and Vo solved
+  exactly this in 1993 by the network simplex method, and Graphviz has run it
+  since. That is what the Local Map runs now. The solver is tested against
+  enumeration on forty small instances, so its optimum is the optimum. Boxes are
+  drawn tight beneath the wires by a million-to-one weight, so no wire is ever
+  traded for a box.
+
+  What you will see
+
+  The fourth section of the day's screenshots (AI-Agent-Workspace/Screenshots/20
+  26-10-05/README.md#placed-by-the-exact-step-the-same-night):
+
+  - Five files, placed (AI-Agent-Workspace/Screenshots/2026-10-05/repository-fiv
+    e-local-map-placed.png): graph.ts dropped to meet document.ts's rows,
+    boardGraph.ts with it. The move you described is what the optimum chose.
+  - Estate chain, placed (AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain
+    -local-map-placed.png): Models and Controllers level with the wires between
+    them, every box tight around its cards.
+  - Estate five, placed (AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-l
+    ocal-map-placed.png): PaymentResult's cable runs level into its lane.
+
+  Your reward, measured
+
+  The deck now measures the total drawn wire length. The previous commit, built
+  beside this one:
+
+  ┌─────────────┬──────────┬─────────┬─────────┬───────┬──────────┬───────┐
+  │             │  Total   │         │ Picture │       │ Crossing │       │
+  │    Scope    │  wire    │  after  │  height │ after │  spots   │ after │
+  │             │ length   │         │  before │       │  before  │       │
+  │             │  before  │         │         │       │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Repository, │ 681,249  │ 610,394 │  6,236  │ 5,653 │      438 │   636 │
+  │  five files │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Repository, │ 793,840  │ 600,503 │  6,460  │ 5,379 │      736 │ 1,223 │
+  │  chain      │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Estate,     │ 104,995  │ 88,288  │  1,854  │ 1,562 │       39 │    44 │
+  │ five files  │       px │      px │      px │    px │          │       │
+  ├─────────────┼──────────┼─────────┼─────────┼───────┼──────────┼───────┤
+  │ Estate,     │  64,456  │ 38,884  │  1,380  │ 1,208 │       24 │    28 │
+  │ chain       │       px │      px │      px │    px │          │       │
+  └─────────────┴──────────┴─────────┴─────────┴───────┴──────────┴───────┘
+
+  The length fell on every scope, by a tenth to two fifths, and every picture is
+  shorter. The crossings rose. Cards packed to their partners cross more of the
+  wires that pass them, and this step minimizes length, not crossings. Whether
+  that is the right price is yours to say with the pictures open.
+
+  What broke on the way, and was fixed
+
+  Three things, each caught by a probe or a picture before the gate: directory
+  labels wrapped to one character per line in boxes not yet given a width, which
+  put 250 px of slack above every card; a card's row of test names wrapped at
+  the column width but not at its own, which grew it a line after measurement;
+  and a variable named for the column wrapper shadowed the column number, which
+  lost half the lanes. The branch, perspective and deck tests hold all three
+  now.
+
+  Left open
+
+  The glass question for wires crossing a directory that holds neither of their
+  ends, with the deck's number in front of you. And the solver recomputes its
+  cut values after every exchange, milliseconds today; a scope of a thousand
+  wires would want the incremental update the paper describes.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/05b61a71-7d85-431
+     5-922a-e5f3f424a2fc/tasks/bfi313qak.output (18 lines)
+  ⎿  Referenced file AI-Agent-Workspace/Screenshots/2026-10-05/README.md
+  ⎿  Referenced file packages/explorer/src/client/views/localView/connections.ts
+  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-renderer.ts
+  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-order.test.ts
+❯ @AI-Agent-Workspace/Screenshots/2026-10-05/estate-five-local-map-placed.png
+  is looking better,
+  @AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-placed.png
+  is looking better, and  @AI-Agent-Workspace/Screenshots/2026-10-05/repository
+  -five-local-map-placed.png still gives the appearance of guitar strings,
+  projecting a bit of unnecessary length. How else can we get that graph.ts,
+  board.ts, and maaaaaybe even boardgraph.ts(? debatable; positioning might be
+  very close to perfect) down a nudge so that the blue wires coming from the
+  left can emit outward to the right without the excess length?
+
+  The total wire length seems to be an awesome reward function, but what can we
+  do to minimize further, I wonder? This is uh... I mean these screenshots are
+  genuinely mind-bending for me. They are so profoundly informative about our
+  software and they leave me wondering whether the "French Corset"
+  visualization might need an update to avoid those times where, like we see in
+  the repository-five-local-map-placed.png screenshot,  where a multitude of
+  self-loops creates the illusion of a directional arrow. Specifically, the
+  blue pin to the right of DocLocation gives this impression. There also is
+  this semblance of a half-arrow at the rightward blue pin of LiveDocGraph.
+  ⎿  Read
+     AI-Agent-Workspace/Screenshots/2026-10-05/estate-chain-local-map-placed.png
+     (245.7KB)
+
+● I'll record the turn first, then look at the picture and the code behind the
+  self-loops before answering.
+
+  Read 1 file (ctrl+o to expand)
