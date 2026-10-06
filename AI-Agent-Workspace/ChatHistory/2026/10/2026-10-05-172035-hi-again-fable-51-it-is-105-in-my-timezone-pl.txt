@@ -7551,3 +7551,277 @@ placement pass" completed (exit code 0)
   yet permeative through the 2D universe.
 
   Ran 3 shell commands (ctrl+o to expand)
+
+● Committed as ab7ee4f5: the record, the two probe pictures under
+  Screenshots/2026-10-06 (AI-Agent-Workspace/Screenshots/2026-10-06/README.md),
+  and the index line. The probe patch is reverted and the Explorer rebuilt from
+  clean source.
+
+  The nudge, measured
+
+  Your first reading is the right one. I forced graph.ts lower by steps, let the
+  exact placement re-place everything else, and read the drawn total each time:
+
+  ┌──────────────────────────────────┬─────────────┐
+  │ graph.ts below document.ts's top │ Drawn total │
+  ├──────────────────────────────────┼─────────────┤
+  │             141 px (the optimum) │  610,394 px │
+  ├──────────────────────────────────┼─────────────┤
+  │                           200 px │  613,479 px │
+  ├──────────────────────────────────┼─────────────┤
+  │                           300 px │  621,403 px │
+  ├──────────────────────────────────┼─────────────┤
+  │                           400 px │  632,792 px │
+  ├──────────────────────────────────┼─────────────┤
+  │                           500 px │  645,606 px │
+  └──────────────────────────────────┴─────────────┘
+
+  The forced picture (AI-Agent-Workspace/Screenshots/2026-10-06/repository-five-
+  local-map-graph-forced-lower.png) shows the wires from document.ts running
+  more nearly level, as you wanted, and it is longer. The reason is in the whole
+  picture (AI-Agent-Workspace/Screenshots/2026-10-06/repository-five-local-map-
+  whole.png). The frame you saw is the left third of the live-docs box.
+  LiveDocGraph alone sends a bundle of 45 references into the lane above
+  boardGraph.ts, which holds graph.ts level with that lane. That lane is the
+  junction for everything heading right, so lowering graph.ts drags 48 items
+  down with it, the whole lower half of the picture, and their wires up to
+  liveDocumentationConfig.ts, generator.ts, the engine's lanes and the scripts
+  lengthen by four times what the left side saves. The picture is at the minimum
+  of the reward you named. The strings in the frame are the shape of the
+  codebase: thirteen bundles from document.ts must pass column 1, graph.ts
+  stands there by rank, and the picture above the junction is full.
+
+  What can still shorten it
+
+  The probe exposed one real defect in the model. A lane is a rigid block of
+  slots at 7 px pitch, so its heavy slots decide where its light ones go. In the
+  frame that is the 173 px drop at the gutter before boardGraph.ts and the 160
+  px climb out again: document.ts's thirteen bundles go up, down and up to pass
+  a lane whose other twelve bundles want to be low. I solved the same input with
+  every lane's slots as free variables, each lane a tight box around slots
+  ordered at its pitch, in the same solver. The solver's measure fell from
+  350,158 to 329,370, the picture from 5,653 to 5,549 px, and the junction
+  stretched so document.ts's bundles cross it level with the lanes on either
+  side. The rise over graph.ts stays. That is a day's pass, exact and durable,
+  and I recommend it next. Behind it, two smaller levers: the order step
+  minimizes crossings only and could weigh length, and the solver counts
+  vertical displacement linearly where the drawn length is convex in it. Neither
+  would move graph.ts.
+
+  A force-directed Local Map
+
+  Pushing back, as asked. What you describe already exists here. A force
+  simulation is gradient descent on an energy, and its terms are what you
+  listed: wires as springs, left-to-right as a strong field, directory
+  co-occupation as attraction. The placement step minimizes that energy exactly
+  in one solve, with the two strong fields as hard constraints: the columns are
+  an infinitely strong left-to-right force and the boxes an infinitely strong
+  co-occupation. A simulation would approach the same answer slowly and
+  approximately, from a starting state, and it would land in a different place
+  each time, which is churn, the thing the deck measures and your orientation
+  rule forbids. Two parts of the idea are worth keeping. The jiggle is a
+  presentation: the move from one placement to the next could be animated as a
+  relaxation, so a new pin tugs the picture into its new shape rather than
+  cutting to it, and that would help the eye more than any shared law would. And
+  the Force Graph's springs are quadratic, which spreads a bend across many
+  wires, where our objective is linear and lets a few wires carry the whole bend
+  so the rest sit exactly level. The eye may prefer spreading. That is a
+  question about the reward's shape, and I would answer it after the lane pass,
+  with pictures, not before.
+
+  The corset
+
+  The chevron at DocLocation's pin and the half-arrow at LiveDocGraph's are two
+  straight tapered stubs leaving one pin toward partners above and below. Two
+  renderings cannot form an arrowhead:
+
+  - Hooks that return to the card. Each lace bows out 10 px and comes back to
+    the card's edge beside its pin, toward the partner, tapering to nothing. Two
+    from one pin make a bracket, not a chevron. My recommendation: the
+    per-reference shapes and the partner direction stay.
+  - One lace per pin, weighted. A pin draws one stub whose curl says where most
+    partners lie, straight when split, thicker with the count. Fewer shapes,
+    less information.
+
+  Say go on the free-slot lanes and pick a corset, and I will build both,
+  measure, and bring the pictures.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  ⎿  [Image #1]
+  ⎿  [Image #2]
+
+❯ >Pushing back, as asked. What you describe already exists here. A force
+  simulation is gradient descent on an energy, and its terms are what you
+  listed: wires as springs, left-to-right as a strong field, directory
+  co-occupation as attraction. The placement step minimizes that energy exactly
+  in one solve, with the two strong fields as hard constraints: the columns
+  are an infinitely strong left-to-right force and the boxes an infinitely
+  strong co-occupation. A simulation would approach the same answer slowly and
+  approximately, from a starting state, and it would land in a different place
+  each time, which is churn, the thing the deck measures and your orientation
+  rule forbids.
+
+  Fair. So the system existing solves fully-ish and presents that as the render
+  result.
+
+  >The jiggle is a presentation: the move from one placement to the next could
+  be animated as a relaxation, so a new pin tugs the picture into its new shape
+  rather than cutting to it, and that would help the eye more than any shared
+  law would. And the Force Graph's springs are quadratic, which spreads a bend
+  across many wires, where our objective is linear and lets a few wires carry
+  the whole bend so the rest sit exactly level. The eye may prefer spreading.
+  That is a question about the reward's shape, and I would answer it after the
+  lane pass, with pictures, not before.
+
+  That actually sounds quite pedagogically useful and beautiful.
+
+  >The corset
+
+  Truthfully, I wonder if a slightly more distinctive loop-around shape might
+  suffice. So long as it produces a shape which is highly atypical for a
+  node-to-node connector and gives the appearance of wrapping around the
+  present node to re-connect to itself at another spot (do we measure that
+  self-connection force and try to minimze it at all? Good force to have in the
+  layout rules I suspect; probably a good tie-breaker), might entirely suffice
+  and prevent us from needing some kind of longer re-design. Astra came up
+  with this kind of shape. Not saying I adore it but I recognize it as
+  distinct.
+
+● The owner's message gives a direction on the corset, raises the
+  internal-reference force in the row order, and endorses the relaxation idea.
+  I'll record the turn, study the two pictures, and read the code behind the
+  stubs and the row ordering before building.
+
+  Searched for 3 patterns, read 1 file, listed 1 directory, ran 11 shell commands (ctrl+o to expand)
+
+● The lace geometry, the tie-breaker and the drawing code are written. Now I'm
+  fixing the Membrane routing note, then building and running the unit tests.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+❯ While I love the "Internals" pseudo-symbol taking the bottom position in all
+  nodes, I do wonder what might be gained by relaxing that requirement? Or, put
+  another way, making it a force to optimize? A rule to adhere to as much as
+  feasible within a system of many simultaneous constraints? I just want to
+  press on this force simulation idea because I think it's maybe not so simple
+  as "we produce the solved version" for the 2D local map. If we wanted to
+  allow folks the option to re-order the symbols on their nodes by
+  "Layout-Optimized (Default)", "Declared Order", and "Alphabetical", I suspect
+  that we need a way for the 2D Local map to _update_ in game-frame-like-time
+  to produce the rearrangements necessary to accomidate an optimal layout. I
+  think that seeing the layout forces in action is itself pedagogical,
+  especially when one's own clicks yield a shift in the gravity of the layout.
+
+● I've noted the owner's update on Internals and animated re-layout. Next I'll
+  log it, run unit tests and the build, capture the lace screenshots, then probe
+  the Internals question briefly. · summary
+
+  Searched for 1 pattern, read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● The chevrons are gone and the laces now close on the card, though they're
+  small—I'll enlarge them slightly, capture at 2× to check the shape, then run
+  the Internals probe. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Captured at 2×. Viewing the three lace pictures now, and starting the
+  Internals probe build in parallel since it doesn't depend on the look.
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● The laces are clearly readable at 2×, and the Internals probe barely affected
+  this scope (just 25 px longer, 19 extra crossing spots, graph.ts rows
+  unchanged), so I'll revert the probe and move on to wiring up the test and
+  docs. · summary
+
+  Searched for 1 pattern, read 1 file, ran 14 shell commands (ctrl+o to expand)
+
+● Found that the retained-scope test picked the wrong pin due to
+  LinkTarget/linkTarget normalized name overlap. I'll fix the test to match the
+  nearest pin, remove the scratch spec, and regenerate Live Docs before running
+  the full gate. · summary
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The full gate (lint, build, unit, integration, Live Docs drift, audits,
+  Playwright) is running in the background; I'll commit and reply as soon as it
+  finishes.
+
+● Background command "Run the full pre-commit gate with Playwright in the
+background" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The first gate stopped at two import-order lint errors in the new spec, now
+  fixed and lint-clean. The full gate is running again in the background; I'll
+  commit and reply when it finishes.
+
+● Background command "Run the full pre-commit gate again in the background"
+completed (exit code 0)
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● The follow-up commit went in without the import fix because the edit script
+  failed silently in the chain. I'm removing the line properly and amending that
+  commit so its message is true.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as b6e59542 (31 files) with a one-line follow-up 654e829c, after the
+  full gate: 970 unit tests, 50 integration, 624 Live Docs with no drift, both
+  audits clean, 92 Playwright tests.
+
+  The corset
+
+  Each end of a self-reference is now a lace: it leaves the pin outward, turns
+  toward the partner's row and comes back to the card's edge one pin radius
+  inward, so it reads as one wire passing behind the card. Two laces of one pin
+  make a bracket, and laces that turn the same way nest outward, so a row
+  referred to from several rows shows as many. The Membrane Map's back traces
+  use the same geometry. Pictures at twice the device scale, under today's
+  screenshots (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#the-french-co
+  rsets-laces-later-the-same-night):
+
+  - graph.ts in the five-file scope (AI-Agent-Workspace/Screenshots/2026-10-06/r
+    epository-five-local-map-graph-card-laces.png), where you saw the chevron
+    and the half-arrow.
+  - csharp.dependencies.ts (AI-Agent-Workspace/Screenshots/2026-10-06/repository
+    -csharp-dependencies-laces.png) and staticBuilder.ts (AI-Agent-Workspace/Scr
+    eenshots/2026-10-06/repository-staticBuilder-laces.png), the subjects of
+    your two pictures.
+
+  A Playwright spec reads every lace and its pin in both drawers and holds each
+  lace closed on the card's edge. Your eye decides whether the size is right.
+  The taper slider still thins the returning end.
+
+  The self-connection force
+
+  It was not counted anywhere. It is now a tie-breaker in the row order, as you
+  suggested: among rows whose wires lead alike, and among the unwired rows, a
+  row moves halfway toward the rows it refers to or is built on, so the two rows
+  of a self-reference draw together. A wire to another card always outweighs
+  it. On the five-file scope no row was tied, so no card changed.
+
+  Internals as a force
+
+  I measured it rather than argued. With Internals free to move with its wires,
+  the wires put it last on every card of the five-file scope anyway, and the
+  drawn total and crossing spots nudged up (25 px, 19 spots). The rule cost
+  nothing there, so it stands, with one scope's evidence. It is a one-line
+  change if another scope says otherwise.
+
+  The layout in motion
+
+  Agreed on the pedagogy, and I would build it as a transition between two exact
+  solutions rather than a simulation: when a click changes the order or adds a
+  pin, every card, row, box and wire moves at once from the old placement to the
+  new over a few hundred milliseconds, so the picture is tugged into shape and
+  lands in the same place every time. That is a pass of its own, and it is
+  recorded with your words in direction and ideas.
+
+  Still waiting on your go
+
+  The free-slot lanes, which the probe put at six percent of the solver's
+  measure and which straighten document.ts's bundles through the junction. Say
+  go on that, and whether the animated re-layout comes before or after it.
